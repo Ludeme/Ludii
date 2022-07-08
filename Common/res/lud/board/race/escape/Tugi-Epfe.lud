@@ -2,26 +2,22 @@
 
 (define "SiteToMoveOnSelectedTrack" 
     (if (= (value Player Mover) 2)
-        (trackSite Move "TrackCCW" steps:("ThrowValue"))
-        (trackSite Move "TrackCW" steps:("ThrowValue"))
+        ("NextSiteOnTrack" ("ThrowValue") "TrackCCW")
+        ("NextSiteOnTrack" ("ThrowValue") "TrackCW")
     )
 )
 
-(define "SiteToMoveOnTrackCW" (trackSite Move "TrackCW" steps:("ThrowValue")))
-(define "SiteToMoveOnTrackCCW" (trackSite Move "TrackCCW" steps:("ThrowValue")))
+(define "SiteToMoveOnTrackCW" ("NextSiteOnTrack" ("ThrowValue") "TrackCW"))
+(define "SiteToMoveOnTrackCCW" ("NextSiteOnTrack" ("ThrowValue") "TrackCCW"))
 
-(define "SelectCW" 
-    (set Value Mover 1)
-)
+(define "SelectCW" (set Value Mover 1))
 
-(define "SelectCCW" 
-    (set Value Mover 2)
-)
+(define "SelectCCW" (set Value Mover 2))
 
 (define "RememberSelectedTrack"
     (then 
         (if 
-            (= (value Player Mover) Off) 
+            ("IsOffBoard" (value Player Mover)) 
             #1
         )
     )
@@ -37,14 +33,14 @@
 )
 
 (define "MoveOn" 
-    (if (!= #1 Off)
+    (if ("IsNotOffBoard" #1)
         (if (or
-                (is In #1 (sites Empty))
+                (is Empty #1)
                 (and 
                     ("IsEnemyAt" #1)
                     (or 
                         (= (value Player Mover) (value Player (who at:#1))) 
-                        (= (value Player Mover) Off)
+                        ("IsOffBoard" (value Player Mover))
                     ) 
                 )
             )
@@ -87,7 +83,7 @@
             (pair 10 15) (pair 11 15) // Two flat or Two round with notches up
         })
         (piece "Horse" Each
-            (if (= Off (value Player Mover))
+            (if ("IsOffBoard" (value Player Mover))
                 (or 
                     ("MoveOn" ("SiteToMoveOnTrackCW") ("RememberSelectedTrack" ("SelectCW")))
                     ("MoveOn" ("SiteToMoveOnTrackCCW") ("RememberSelectedTrack" ("SelectCCW")))
@@ -102,8 +98,8 @@
             (place Stack items:{<Player:initHorse>} 0)
         )
         (play 
-            (do (roll) 
-                next:(forEach Piece)
+            ("RollMove"
+                (forEach Piece)
                 (then 
                     (if 
                         (= (last To) ("Goal"))
@@ -160,8 +156,6 @@
         (piece Scale "Horse" 0.4)
         (stackType 0 Ring 0.5)
         (show Edges Hidden)
-        
     })
     
 )
-

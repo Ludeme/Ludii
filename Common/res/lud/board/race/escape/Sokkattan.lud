@@ -50,7 +50,7 @@
         
         (play 
             ("RollMove"
-            	(if (= (var "ExtraOne") 1)
+                (if (= (var "ExtraOne") 1)
                     (priority {
                         (if (is Occupied (handSite Mover))
                             (move

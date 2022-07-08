@@ -1,5 +1,5 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #2 #1))
 (define "ReplayThrow"
     (or 
         (= ("ThrowValue") 5)
@@ -22,7 +22,7 @@
 )
 
 (define "Move"
-    (if (= End ("SiteToMoveOnTrack" from:(from) ("ThrowValue")))
+    (if ("IsEndTrack" ("SiteToMoveOnTrack" from:(from) ("ThrowValue")))
         (move 
             (from (from))
             (to (mapEntry "Start" Mover))
@@ -101,7 +101,7 @@
         (piece "Stick" P1 ("Move"))
         (piece "Stick" P3 ("Move"))
         (piece "Stick" Neutral)
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
         (hand P1)
         (hand P3)
         (map "Throw" {(pair 0 10) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 5)})
@@ -118,8 +118,8 @@
             (place "Stick0" (handSite P3) count:<Scoring:num>)
         })
         (play 
-            (do (roll) 
-                next:(if (or (is Mover P1) (is Mover P2))
+            ("RollMove"
+                (if (or (is Mover P1) (is Mover P2))
                     (forEach Piece P1)
                     (forEach Piece P3)
                 )
@@ -195,4 +195,3 @@
     })
     
 )
-

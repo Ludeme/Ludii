@@ -1,6 +1,6 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
 (define "Throw4" (= ("ThrowValue") 4))
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #2 #1))
 
 (define "AllPiecesInCenter" ("AllOwnedPiecesIn" (sites {(centrePoint)})))
 
@@ -25,7 +25,7 @@
             <Players:tracks>
             }
         )
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
         (piece "Marker" Each
             (move 
                 (from (from) level:(level))
@@ -37,7 +37,7 @@
                             (forEach Site (sites Track Mover "Track" from:("SiteToMoveOnTrack" from:(from) 1) to:("SiteToMoveOnTrack" from:(from) (- ("ThrowValue") 1)))
                                 (if (not (is In (sites "SafeSites")))
                                     (forEach Level (site) FromTop
-                                        (if (is Enemy (who at:(site) level:(level)))
+                                        (if ("IsEnemyAt" (site) level:(level))
                                             (fromTo
                                                 (from (site) level:(level))
                                                 (to 
@@ -60,8 +60,8 @@
     (rules 
         <Players:start>
         (play 
-            (do (roll) 
-                next:(forEach Piece)
+            ("RollMove"
+                (forEach Piece)
                 (then
                     (if (and ("Throw4") (not ("SameTurn")))
                         (moveAgain)
