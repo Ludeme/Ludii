@@ -6,7 +6,6 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.io.File;
 import java.net.URL;
 import java.util.Objects;
 
@@ -89,8 +88,8 @@ public class DesignPalette
         BACKGROUND_DOT_PADDING = (int) (DEFAULT_BACKGROUND_DOT_PADDING * (1.0/SCALAR));
         BACKGROUND_LINE_PADDING = (int) (DEFAULT_BACKGROUND_LINE_PADDING * (1.0/SCALAR));
 
-        LUDEME_TITLE_FONT = new Font("Roboto Bold", Font.PLAIN,  LUDEME_TITLE_FONT_SIZE);
-        LUDEME_INPUT_FONT = new Font("Robot Regular", Font.PLAIN, LUDEME_INPUT_FONT_SIZE);
+        LUDEME_TITLE_FONT = new Font("Arial", Font.BOLD,  LUDEME_TITLE_FONT_SIZE);
+        LUDEME_INPUT_FONT = new Font("Arial", Font.PLAIN, LUDEME_INPUT_FONT_SIZE);
         LUDEME_EDGE_STROKE = new BasicStroke(CONNECTION_STROKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
         LUDEME_NODE_BORDER = BorderFactory.createLineBorder(Handler.currentPalette().LUDEME_BORDER_COLOR(), NODE_BORDER_WIDTH);
         LUDEME_NODE_BORDER_SELECTED = BorderFactory.createLineBorder(Handler.currentPalette().LUDEME_SELECTION_COLOR(), NODE_BORDER_WIDTH);
