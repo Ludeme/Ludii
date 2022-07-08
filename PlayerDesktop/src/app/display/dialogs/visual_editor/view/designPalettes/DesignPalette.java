@@ -37,13 +37,53 @@ public class DesignPalette
     public static final float MAX_SCALAR = 2.5f;
     public static final float MIN_SCALAR = 0.3f;
 
-    private static final int DEFAULT_NODE_WIDTH = 220; // small: 200, default: 220, bigger: 250 big: 250
+
+
+
+
+    // SIZES ================================================================
+    private static int DEFAULT_NODE_WIDTH = 220; // small: 200, default: 220, bigger: 250 big: 250
+    private static int DEFAULT_TERMINAL_INPUT_HEIGHT = 20; // small: 17, default, bigger: 20, big: 24
+
+    private static int DEFAULT_LUDEME_TITLE_FONT_SIZE = 14; // small: 10, default, bigger 14, big: 18
+    private static int DEFAULT_LUDEME_INPUT_FONT_SIZE = 13; // small: 10, default, bigger: 13, big: 16
+
+
+    public static void makeSizeSmall()
+    {
+        DEFAULT_NODE_WIDTH = 180;
+        DEFAULT_TERMINAL_INPUT_HEIGHT = 17;
+        DEFAULT_LUDEME_TITLE_FONT_SIZE = 10;
+        DEFAULT_LUDEME_INPUT_FONT_SIZE = 10;
+        SCALAR = 1f;
+        scale(SCALAR);
+    }
+
+    public static void makeSizeMedium()
+    {
+        DEFAULT_NODE_WIDTH = 220;
+        DEFAULT_TERMINAL_INPUT_HEIGHT = 20;
+        DEFAULT_LUDEME_TITLE_FONT_SIZE = 14;
+        DEFAULT_LUDEME_INPUT_FONT_SIZE = 13;
+        SCALAR = 1f;
+        scale(SCALAR);
+    }
+
+    public static void makeSizeLarge()
+    {
+        DEFAULT_NODE_WIDTH = 250;
+        DEFAULT_TERMINAL_INPUT_HEIGHT = 24;
+        DEFAULT_LUDEME_TITLE_FONT_SIZE = 18;
+        DEFAULT_LUDEME_INPUT_FONT_SIZE = 16;
+        SCALAR = 1f;
+        scale(SCALAR);
+    }
+
+
     public static int NODE_WIDTH = (int) (DEFAULT_NODE_WIDTH * SCALAR);
-
-    private static final int DEFAULT_TERMINAL_INPUT_HEIGHT = 20; // small: 17, default, bigger: 20, big: 24
     public static int TERMINAL_INPUT_HEIGHT = (int) (DEFAULT_TERMINAL_INPUT_HEIGHT * SCALAR);
-
-
+    private static int LUDEME_INPUT_FONT_SIZE = (int) (DEFAULT_LUDEME_INPUT_FONT_SIZE * (1.0/SCALAR));
+    public static int LUDEME_TITLE_FONT_SIZE = (int) (DEFAULT_LUDEME_TITLE_FONT_SIZE * SCALAR);
 
     // COLOURS ================================================================
 
@@ -316,11 +356,7 @@ public class DesignPalette
 
 
 
-    private static final int DEFAULT_LUDEME_INPUT_FONT_SIZE = 13; // small: 10, default, bigger: 13, big: 16
-    private static int LUDEME_INPUT_FONT_SIZE = (int) (DEFAULT_LUDEME_INPUT_FONT_SIZE * (1.0/SCALAR));
 
-    private static final int DEFAULT_LUDEME_TITLE_FONT_SIZE = 14; // small: 10, default, bigger 14, big: 18
-    private static int LUDEME_TITLE_FONT_SIZE = (int) (DEFAULT_LUDEME_TITLE_FONT_SIZE * SCALAR);
 
     private static final int DEFAULT_INPUTAREA_PADDING_BOTTOM = 12;
     public static int INPUTAREA_PADDING_BOTTOM = (int) (DEFAULT_INPUTAREA_PADDING_BOTTOM * SCALAR);

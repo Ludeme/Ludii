@@ -1563,6 +1563,23 @@ public class Handler
         return currentBackground;
     }
 
+    public static void setFont(String size)
+    {
+        switch(size)
+        {
+            case "Small":
+                DesignPalette.makeSizeSmall();
+                break;
+            case "Medium":
+                DesignPalette.makeSizeMedium();
+                break;
+            case "Large":
+                DesignPalette.makeSizeLarge();
+                break;
+        }
+        for(IGraphPanel graphPanel : graphPanelMap.values())
+            graphPanel.repaint();
+    }
 
     // ~~~~~~~  Utility  ~~~~~~~
 

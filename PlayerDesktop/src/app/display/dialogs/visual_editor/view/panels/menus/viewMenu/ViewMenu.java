@@ -15,9 +15,11 @@ public class ViewMenu extends JMenu
 
         JMenu appearance = new JMenu("Colour Scheme");
         JMenu background = new JMenu("Background");
+        JMenu fontSize = new JMenu("Font Size");
 
         add(appearance);
         add(background);
+        add(fontSize);
 
         List<String> paletteNames = Handler.palettes();
         for (String paletteName : paletteNames)
@@ -26,6 +28,11 @@ public class ViewMenu extends JMenu
         menuBar.addJMenuItem(background, "Dot Grid", dotGrid);
         menuBar.addJMenuItem(background, "Cartesian Grid", cartesianGrid);
         menuBar.addJMenuItem(background, "No Grid", noGrid);
+
+        menuBar.addJMenuItem(fontSize, "Small", e->Handler.setFont("Small"));
+        menuBar.addJMenuItem(fontSize, "Medium", e->Handler.setFont("Medium"));
+        menuBar.addJMenuItem(fontSize, "Large", e->Handler.setFont("Large"));
+
     }
 
     final ActionListener dotGrid = e -> Handler.setBackground(Handler.DotGridBackground);

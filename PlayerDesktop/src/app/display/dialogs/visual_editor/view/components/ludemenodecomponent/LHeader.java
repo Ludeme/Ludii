@@ -33,6 +33,7 @@ public class LHeader extends JComponent
     /** Label for the title */
     private final JLabel title;
     private final JButton clauseBtn;
+    private final JPanel constructorPanel;
 
     /**
      * Constructor for a new LHeader
@@ -62,7 +63,10 @@ public class LHeader extends JComponent
         connectionAndTitle.setOpaque(false);
 
         // button for selecting the clause
-        clauseBtn = new JButton(DesignPalette.DOWN_ICON());
+        int iconHeight = (int)(title.getPreferredSize().getHeight());
+        ImageIcon icon = new ImageIcon(DesignPalette.DOWN_ICON().getImage().getScaledInstance(iconHeight, iconHeight, Image.SCALE_SMOOTH));
+
+        clauseBtn = new JButton(icon);
         clauseBtn.setFocusPainted(false);
         clauseBtn.setOpaque(false);
         clauseBtn.setContentAreaFilled(false);
@@ -71,7 +75,7 @@ public class LHeader extends JComponent
         clauseBtn.setSize(new Dimension(title.getHeight(), title.getHeight()));
 
         // menu showing available clauses
-        JPanel constructorPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        constructorPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         constructorPanel.add(clauseBtn);
         constructorPanel.add(Box.createHorizontalStrut(0));
         constructorPanel.setOpaque(false);
@@ -229,9 +233,29 @@ public class LHeader extends JComponent
         super.paintComponent(g);
 
         title.setText(LNC.node().title());
-        title.setFont(DesignPalette.LUDEME_TITLE_FONT);
-        title.setForeground(DesignPalette.FONT_LUDEME_TITLE_COLOR());
+        if(title.getFont().getSize() != DesignPalette.LUDEME_TITLE_FONT_SIZE)
+        {
+            title.setFont(DesignPalette.LUDEME_TITLE_FONT);
+            int iconHeight = DesignPalette.LUDEME_TITLE_FONT_SIZE;
+            ImageIcon icon = new ImageIcon(DesignPalette.DOWN_ICON().getImage().getScaledInstance(iconHeight, iconHeight, Image.SCALE_SMOOTH));
+            clauseBtn.setIcon(null);
+            clauseBtn.setIcon(icon);
+            clauseBtn.setPreferredSize(new Dimension(iconHeight, iconHeight));
+            clauseBtn.setSize(new Dimension(iconHeight, iconHeight));
+            clauseBtn.repaint();
+            clauseBtn.revalidate();
+
+            System.out.println("icon height: "+iconHeight);
+        }
+        if(title.getForeground() != DesignPalette.FONT_LUDEME_TITLE_COLOR())
+        {
+            title.setForeground(DesignPalette.FONT_LUDEME_TITLE_COLOR());
+        }
+
+
+
         title.setSize(title.getPreferredSize());
+
         if(ludemeNodeComponent().node().description() != null)
         {
             FontMetrics fontMetrics = title.getFontMetrics(title.getFont());
