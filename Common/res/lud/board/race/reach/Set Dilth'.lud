@@ -36,16 +36,8 @@
 (game "Set Dilth'"
     (players <Player:num>)
     (equipment {
-        (board
-            (add
-                (remove 
-                    (concentric {44})
-                    vertices:{43 21 0 22}
-                )
-                edges:{{20 18} {0 1} {19 21} {38 39}}
-            )
+    	("FortyStonesWithFourGapsBoard"
             <Player:track>
-            use:Edge
         )
         (regions "AllSites" (sites Board))
         (map "Throw" {(pair 0 10) (pair 1 2) (pair 2 3) (pair 3 5)})

@@ -56,19 +56,11 @@
 (game "Owasokotz"
     (players <Player:num>)
     (equipment {
-        (board
-            (add
-                (remove 
-                    (concentric {44})
-                    vertices:{43 21 0 22}
-                )
-                edges:{{20 18} {0 1} {19 21} {38 39}}
-            )
+    	("FortyStonesWithFourGapsBoard"
             {
             (track "TrackCW" {39 35 33 31 29 27 25 23 21 19 38 17 15 13 11 9 7 5 3 1 37 0 2 4 6 8 10 12 14 16 36 18 20 22 24 26 28 30 32 34} loop:True)
             (track "TrackCCW" {39 34 32 30 28 26 24 22 20 18 36 16 14 12 10 8 6 4 2 0 37 1 3 5 7 9 11 13 15 17 38 19 21 23 25 27 29 31 33 35} loop:True)
             }
-            use:Edge
         )
         (regions "AllSites" (sites Board))
         (piece "Stick" Each
