@@ -12,7 +12,9 @@ import main.grammar.Clause;
 import main.grammar.ClauseArg;
 import main.grammar.Symbol;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 /**
  * Node representation of a ludeme in the current description
@@ -1104,6 +1106,18 @@ public class LudemeNode implements iGNode
             return helpInformation.description();
         else
             return DocumentationReader.instance().documentation().get(selectedClause.symbol()).description();
+    }
+
+    public String remark()
+    {
+        if(helpInformation == null)
+            return "";
+        if(selectedClause == null)
+            return "";
+        if(selectedClause.symbol() == symbol())
+            return helpInformation.remark();
+        else
+            return DocumentationReader.instance().documentation().get(selectedClause.symbol()).remark();
     }
 
     public int x()

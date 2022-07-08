@@ -30,14 +30,31 @@ public class AddArgumentPanel extends JPanel
         @Override
         public String getToolTipText(MouseEvent e)
         {
+            String htmlTip = "<html>";
             int index = locationToIndex(e.getPoint());
             if(index == -1)
                 return null;
             String description = null;
-            try{
+            String remark = null;
+            try
+            {
                 description = DocumentationReader.instance().documentation().get((listModel.getElementAt(index).getSymbol())).description();
-            } catch(Exception ignored) {}
-            return description;
+                remark = DocumentationReader.instance().documentation().get((listModel.getElementAt(index).getSymbol())).remark();
+            }
+            catch(Exception ignored) {}
+
+            FontMetrics fontMetrics = searchField.getFontMetrics(searchField.getFont());
+
+            htmlTip += description.replaceAll("<", "&lt;").replaceAll(">", "&gt;") + "<br>";
+            if(remark != null)
+            {
+                int length = fontMetrics.stringWidth(remark);
+                htmlTip += "<p width=\"" + (Math.min(length, 350)) + "px\">" + remark.replaceAll("<", "&lt;").replaceAll(">", "&gt;") + "</p>";
+
+            }
+            htmlTip += "</html>";
+
+            return htmlTip;
         }
 
         @Override

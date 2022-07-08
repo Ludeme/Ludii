@@ -86,7 +86,7 @@ public class DocumentationReader
                 String exampleString = line.substring(10);
                 currentHelpInfo.addExample(currentClause, exampleString);
             }
-            else if(line.startsWith("REMARK:"))
+            else if(line.startsWith("REMARKS:"))
             {
                 String remarkString = line.substring(9);
                 currentHelpInfo.setRemark(remarkString);

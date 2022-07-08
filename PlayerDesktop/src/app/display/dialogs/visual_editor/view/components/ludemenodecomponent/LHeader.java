@@ -232,7 +232,20 @@ public class LHeader extends JComponent
         title.setFont(DesignPalette.LUDEME_TITLE_FONT);
         title.setForeground(DesignPalette.FONT_LUDEME_TITLE_COLOR());
         title.setSize(title.getPreferredSize());
-        title.setToolTipText(ludemeNodeComponent().node().description());
+        if(ludemeNodeComponent().node().description() != null)
+        {
+            FontMetrics fontMetrics = title.getFontMetrics(title.getFont());
+
+            String toolTipHtml = "<html>" + ludemeNodeComponent().node().description().replaceAll("<", "&lt;").replaceAll(">", "&gt;") + "<br>";
+            if(ludemeNodeComponent().node().remark() != null && !ludemeNodeComponent().node().remark().equals(ludemeNodeComponent().node().description()))
+            {
+                int length = fontMetrics.stringWidth(ludemeNodeComponent().node().remark());
+                toolTipHtml += "<p width=\"" + (Math.min(length, 350)) + "px\">" + ludemeNodeComponent().node().remark().replaceAll("<", "&lt;").replaceAll(">", "&gt;") + "</p>";
+
+            }
+            toolTipHtml += "</html>";
+            title.setToolTipText(toolTipHtml);
+        }
 
         if(!clauseBtn.getIcon().equals(DesignPalette.DOWN_ICON()))
             clauseBtn.setIcon(DesignPalette.DOWN_ICON());

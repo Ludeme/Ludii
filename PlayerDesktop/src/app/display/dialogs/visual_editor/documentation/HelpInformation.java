@@ -56,6 +56,11 @@ public class HelpInformation
         return description;
     }
 
+    public String remark()
+    {
+        return remark;
+    }
+
     public String parameter(ClauseArg arg)
     {
         return parameters.get(arg);
