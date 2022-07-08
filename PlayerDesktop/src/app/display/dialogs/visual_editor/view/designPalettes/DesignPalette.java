@@ -27,10 +27,10 @@ public class DesignPalette
     private static final int DEFAULT_NODE_WIDTH = 250;
     public static int NODE_WIDTH = (int) (DEFAULT_NODE_WIDTH * SCALAR);
 
-    private static final int DEFAULT_LUDEME_INPUT_FONT_SIZE = 12;
+    private static final int DEFAULT_LUDEME_INPUT_FONT_SIZE = 13;
     private static int LUDEME_INPUT_FONT_SIZE = (int) (DEFAULT_LUDEME_INPUT_FONT_SIZE * (1.0/SCALAR));
 
-    private static final int DEFAULT_LUDEME_TITLE_FONT_SIZE = 14;
+    private static final int DEFAULT_LUDEME_TITLE_FONT_SIZE = 15;
     private static int LUDEME_TITLE_FONT_SIZE = (int) (DEFAULT_LUDEME_TITLE_FONT_SIZE * SCALAR);
 
     private static final int DEFAULT_INPUTAREA_PADDING_BOTTOM = 10;
@@ -253,7 +253,7 @@ public class DesignPalette
     }
 
     // LUDEME BLOCK //
-    public static Font LUDEME_TITLE_FONT = new Font("Arial", Font.PLAIN,  LUDEME_TITLE_FONT_SIZE);
+    public static Font LUDEME_TITLE_FONT = new Font("Arial", Font.BOLD,  LUDEME_TITLE_FONT_SIZE);
     public static Font LUDEME_INPUT_FONT = new Font("Arial", Font.PLAIN, LUDEME_INPUT_FONT_SIZE);
     public static final Font LUDEME_INPUT_FONT_ITALIC = new Font("Arial", Font.ITALIC, LUDEME_INPUT_FONT_SIZE);
 

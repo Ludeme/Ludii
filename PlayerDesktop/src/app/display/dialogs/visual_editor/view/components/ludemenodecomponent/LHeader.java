@@ -46,7 +46,7 @@ public class LHeader extends JComponent
         setLayout(new BorderLayout());
         // initialize title
         title = new JLabel(LNC.node().title());
-        title.setFont(Handler.currentPalette().LUDEME_TITLE_FONT);
+        title.setFont(DesignPalette.LUDEME_TITLE_FONT);
         title.setForeground(Handler.currentPalette().FONT_LUDEME_TITLE_COLOR());
         title.setSize(title.getPreferredSize());
         // initialize connection component
