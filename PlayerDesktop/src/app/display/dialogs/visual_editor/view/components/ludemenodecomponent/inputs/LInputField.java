@@ -1281,8 +1281,7 @@ public class LInputField extends JComponent
             return false;
         else if(connectionComponent().connectedTo() == null)
             return false;
-        return
-                connectionComponent().connectedTo().node().collapsed();
+        return connectionComponent().connectedTo().node().collapsed();
     }
 
     /**
