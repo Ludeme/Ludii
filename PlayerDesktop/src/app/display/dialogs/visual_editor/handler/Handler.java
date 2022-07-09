@@ -94,6 +94,8 @@ public class Handler
 
 
     // Sensitivity to changes
+    /** Whether sensitivive actions should be confirmed by the user */
+    public static boolean sensitivityToChanges = true;
     /** When X nodes are removed at once, ask the user for confirmation */
     public static final int SENSITIVITY_REMOVAL = 6;
     /** When X collection elements are removed at once, ask the user for confirmation */
@@ -318,7 +320,7 @@ public class Handler
         if(DEBUG) System.out.println("[HANDLER] removeNodes(graph, nodes) -> Removing nodes: " + nodes.size());
 
         // display dialog to confirm removal of nodes
-        if(nodes.size() >= SENSITIVITY_REMOVAL)
+        if(nodes.size() >= SENSITIVITY_REMOVAL && Handler.sensitivityToChanges)
         {
             int userChoice = JOptionPane.showConfirmDialog(null, "Are you sure you want to remove " + nodes.size() + " nodes?", "Remove nodes", JOptionPane.YES_NO_OPTION);
             if(userChoice != JOptionPane.YES_OPTION)

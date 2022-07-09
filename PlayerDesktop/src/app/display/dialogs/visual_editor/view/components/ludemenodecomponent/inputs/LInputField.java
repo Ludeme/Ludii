@@ -139,7 +139,7 @@ public class LInputField extends JComponent
             items[i].addActionListener(e1 ->
             {
                 // ask user for confirmation
-                if(children.size()+1 >= Handler.SENSITIVITY_COLLECTION_REMOVAL)
+                if(children.size()+1 >= Handler.SENSITIVITY_COLLECTION_REMOVAL && Handler.sensitivityToChanges)
                 {
                     int userChoice = JOptionPane.showConfirmDialog(null, "When changing the argument " + (children.size() + 1) + " collection elements will be reset.", "Remove nodes", JOptionPane.OK_CANCEL_OPTION);
                     if(userChoice != JOptionPane.OK_OPTION)

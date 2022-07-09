@@ -23,6 +23,8 @@ public class EditMenu extends JMenu
         menuBar.addJMenuItem(this, "Collapse", collapse, KeyStroke.getKeyStroke("control W"));
         menuBar.addJMenuItem(this, "Expand", expand, KeyStroke.getKeyStroke("control E"));
         menuBar.addJMenuItem(this, "Expand All", expandAll);
+        add(new JSeparator());
+        menuBar.addJCheckBoxMenuItem(this, "Confirm Sensitive Actions", Handler.sensitivityToChanges, e -> Handler.sensitivityToChanges = !Handler.sensitivityToChanges);
     }
 
     final ActionListener undo = e -> Handler.undo();
