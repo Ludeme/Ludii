@@ -2,12 +2,14 @@ package app.display.dialogs.visual_editor.handler;
 
 import app.DesktopApp;
 import app.PlayerApp;
+import app.display.dialogs.editor.LudiiTokeniser;
 import app.display.dialogs.visual_editor.StartVisualEditor;
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.Edge;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.model.UserActions.*;
+import app.display.dialogs.visual_editor.view.VisualEditorFrame;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
 import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
@@ -23,10 +25,7 @@ import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSett
 import app.display.dialogs.visual_editor.view.panels.header.ToolsPanel;
 import app.utils.GameUtil;
 import game.Game;
-import main.grammar.Clause;
-import main.grammar.Description;
-import main.grammar.Report;
-import main.grammar.Symbol;
+import main.grammar.*;
 import main.options.UserSelections;
 
 import java.util.*;
@@ -103,6 +102,9 @@ public class Handler
 
 
     // Additional Panels of the Frame
+    /** Main Frame */
+    public static VisualEditorFrame visualEditorFrame;
+    /** Define Editor */
     public static DefineEditor defineEditor;
     /** ToolsPanel, including undo, redo and play buttons */
     public static ToolsPanel toolsPanel;
@@ -1016,7 +1018,6 @@ public class Handler
     {
         return gameGraphPanel.graph().toLud();
     }
-
 
     // ~~~~~~~  Selecting Nodes  ~~~~~~~
 

@@ -810,7 +810,8 @@ public class LudemeNode implements iGNode
                 return "{ } ";
             StringBuilder b = new StringBuilder();
             b.append("{");
-            for (Object in : collection) {
+            for (Object in : collection)
+            {
                 if (in == null)
                     continue;
                 if (in instanceof String)
@@ -850,7 +851,7 @@ public class LudemeNode implements iGNode
                 sb.append(((LudemeNode) input).toLud(isDefinePanel));
             else if(input instanceof Object[])
             {
-                sb.append(collectionToLud((Object[]) input,isDefinePanel));
+                sb.append(collectionToLud((Object[]) input, arg, isDefinePanel));
             }
             else if(input instanceof String)
                 sb.append("\"").append(input).append("\"");
@@ -877,7 +878,7 @@ public class LudemeNode implements iGNode
             if(input instanceof LudemeNode)
                 replacement = ((LudemeNode)input).toLud();
             else if(input instanceof Object[])
-                replacement = collectionToLud((Object[])input, false);
+                replacement = collectionToLud((Object[])input,currentNodeArguments.get(currentI-1), false);
             else if(input instanceof String)
                 replacement = "\"" + input + "\"";
             else if(input!=null)
@@ -903,8 +904,9 @@ public class LudemeNode implements iGNode
         return rawLud;
     }
 
-    public String collectionToLud(Object[] collection, boolean isDefinePanel)
+    public String collectionToLud(Object[] collection, NodeArgument arg, boolean isDefinePanel)
     {
+        if(collection.length == 0 && arg.optional()) return "";
         StringBuilder sb = new StringBuilder();
         sb.append("{ ");
         for(Object obj : collection)

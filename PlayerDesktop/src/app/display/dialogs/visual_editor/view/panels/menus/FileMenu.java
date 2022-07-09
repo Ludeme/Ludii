@@ -79,6 +79,22 @@ public class FileMenu extends JMenu
     private void exportAsLud()
     {
         String lud = Handler.toLud();
+
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Export as .lud");
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Ludii Game", "lud"));
+        int userSelection = fileChooser.showSaveDialog(Handler.visualEditorFrame);
+        if(userSelection == JFileChooser.APPROVE_OPTION)
+        {
+            File file = fileChooser.getSelectedFile();
+            String path = file.getAbsolutePath();
+            if(!file.getName().endsWith(".lud"))
+                path += ".lud";
+
+            FileHandling.saveStringToFile(lud, path, "");
+        }
+
         // TODO: select where to export etc
         System.out.println("\n\n## GAME DESCRIPTION .lud ###");
         System.out.println(lud);

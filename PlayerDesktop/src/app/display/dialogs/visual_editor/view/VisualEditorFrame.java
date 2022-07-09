@@ -1,6 +1,7 @@
 package app.display.dialogs.visual_editor.view;
 
 import app.display.dialogs.visual_editor.StartVisualEditor;
+import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.DocHandler;
 import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.panels.menus.EditorMenuBar;
@@ -21,6 +22,7 @@ public class VisualEditorFrame extends JFrame
 
     public VisualEditorFrame()
     {
+        Handler.visualEditorFrame = this;
         // set frame properties
         setTitle(TITLE);
         setIconImage(FRAME_ICON.getImage());
