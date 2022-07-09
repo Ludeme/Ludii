@@ -16,7 +16,7 @@ public class UserGuideContentPanel extends JPanel
         titleLabel.setText(title);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
         add(titleLabel);
-        add(Box.createVerticalStrut(20));
+        add(Box.createVerticalStrut(15));
 
         for(UserGuideContent content : contents)
         {
@@ -42,6 +42,8 @@ public class UserGuideContentPanel extends JPanel
         titleLabel.setText(title);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
         add(titleLabel);
+        add(Box.createVerticalStrut(15));
+
 
         for(Image image : content.images())
         {
@@ -52,7 +54,7 @@ public class UserGuideContentPanel extends JPanel
         JLabel paragraphLabel = new JLabel(content.paragraph());
         paragraphLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         add(paragraphLabel);
-        add (Box.createVerticalStrut(8));
+        add (Box.createVerticalStrut(18));
 
         setVisible(true);
     }

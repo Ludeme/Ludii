@@ -206,7 +206,7 @@ public class UserGuideFrame extends JFrame
 
         image = "toolbar.png";
         paragraph = "<html>" +
-                "To compile and play the game, click on the <b>Play<\b> button on the toolbar <br>" +
+                "To compile and play the game, click on the <b>Play</b> button on the toolbar <br>" +
                 "situated at the top-right of the editor." +
                 "</html>";
 
@@ -217,7 +217,7 @@ public class UserGuideFrame extends JFrame
         image = "auto_compile.png";
         paragraph = "<html>" +
                 "When the auto-compile feature is turned on, the game is compiled at every change to the <br>" +
-                "description. <b>Warning!: This can be computationally expensive!<\b> <br>" +
+                "description. <b>Warning!: This can be computationally expensive!</b> <br>" +
                 "When the game is not compilable, the Play button appears red and offers disclosure." +
                 "</html>";
         content = new UserGuideContent(paragraph, image);
