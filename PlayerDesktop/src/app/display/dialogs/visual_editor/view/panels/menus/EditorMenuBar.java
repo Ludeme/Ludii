@@ -1,6 +1,7 @@
 package app.display.dialogs.visual_editor.view.panels.menus;
 
 import app.display.dialogs.visual_editor.view.panels.menus.viewMenu.ViewMenu;
+import app.display.dialogs.visual_editor.view.panels.userGuide.UserGuideFrame;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
@@ -19,6 +20,7 @@ public class EditorMenuBar extends JMenuBar {
 
         JMenu about = new JMenu("About"); // read about the editor: documentation, research report, DLP
         // adding about menu items
+        addJMenuItem(about, "User Guide", e-> new UserGuideFrame());
         addJMenuItem(about, "Open documentation", null);
         addJMenuItem(about, "Learn more about the editor", null); // opens research paper
         addJMenuItem(about, "Learn more about DLP", null);
