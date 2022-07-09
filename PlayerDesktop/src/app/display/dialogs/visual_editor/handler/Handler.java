@@ -558,9 +558,21 @@ public class Handler
      * @param graph The graph that contains the nodes.
      * @param from The node that the edge starts from.
      * @param to The node that the edge ends at.
-     * @param inputFieldIndex The index of the inputfield where the connection stems from
      */
     public static void addEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, int inputFieldIndex)
+    {
+        addEdge(graph, from, to, inputFieldIndex, true);
+    }
+
+    /**
+     * Adds and edge between two nodes.
+     * @param graph The graph that contains the nodes.
+     * @param from The node that the edge starts from.
+     * @param to The node that the edge ends at.
+     * @param inputFieldIndex The index of the inputfield where the connection stems from
+     * @param notify Whether to notify the graph panel of the edge addition
+     */
+    public static void addEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, int inputFieldIndex, boolean notify)
     {
         // check whether the edge already exists
         for(Edge e : graph.getEdgeList())
@@ -574,9 +586,12 @@ public class Handler
         from.addChildren(to);
         to.setParent(from);
 
-        // notify graph panel to draw edge
-        IGraphPanel graphPanel = graphPanelMap.get(graph);
-        graphPanel.notifyEdgeAdded(graphPanel.nodeComponent(from), graphPanel.nodeComponent(to), inputFieldIndex);
+        if(notify)
+        {
+            // notify graph panel to draw edge
+            IGraphPanel graphPanel = graphPanelMap.get(graph);
+            graphPanel.notifyEdgeAdded(graphPanel.nodeComponent(from), graphPanel.nodeComponent(to), inputFieldIndex);
+        }
     }
 
 

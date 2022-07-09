@@ -248,6 +248,18 @@ public class LInputArea extends JPanel
             if(providedNodeArgument != null)
                 break;
         }
+        // if the nodeArgument is choice, we need to find the correct one
+        if(providedNodeArgument.choice())
+        {
+            for(ClauseArg ca : providedNodeArgument.args())
+            {
+                if(ca.symbol() == lnc.node().symbol())
+                {
+                    providedNodeArgument.setActiveChoiceArg(ca);
+                    break;
+                }
+            }
+        }
         // Update active and inactive variables for dynamic nodes
         // if(dynamic()) providedNodeArgument(providedNodeArgument);
         // If the input field only contains one NodeArgument, it is the one that the user provided input for

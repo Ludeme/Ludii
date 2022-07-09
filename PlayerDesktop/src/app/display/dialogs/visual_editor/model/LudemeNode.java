@@ -12,7 +12,6 @@ import main.grammar.Clause;
 import main.grammar.ClauseArg;
 import main.grammar.Symbol;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 

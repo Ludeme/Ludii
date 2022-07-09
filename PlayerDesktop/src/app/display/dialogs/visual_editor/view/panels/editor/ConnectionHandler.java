@@ -2,13 +2,17 @@ package app.display.dialogs.visual_editor.view.panels.editor;
 
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
+import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.ImmutablePoint;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeConnection;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
+import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
 import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
+import main.grammar.ClauseArg;
+import main.grammar.Symbol;
 
 import java.awt.*;
 import java.awt.geom.Path2D;
@@ -86,7 +90,20 @@ public class ConnectionHandler
         if(source.inputField().isMerged())
         {
             source.fill(false);
-            source = source.lnc().inputArea().addedConnection(target.getHeader().ludemeNodeComponent(), source.inputField()).connectionComponent();
+            LInputField singledOutField = source.lnc().inputArea().addedConnection(target.getHeader().ludemeNodeComponent(), source.inputField());
+            if(singledOutField.connectionComponent() == null)
+            {
+                for(ClauseArg arg : singledOutField.nodeArgument(0).args())
+                {
+                    if(!arg.symbol().ludemeType().equals(Symbol.LudemeType.Predefined))
+                    {
+                        singledOutField.nodeArgument(0).setActiveChoiceArg(arg);
+                        singledOutField.reconstruct();
+                        break;
+                    }
+                }
+            }
+            source = singledOutField.connectionComponent();
         }
         // Otherwise notify the InputArea about the added connection
         else
@@ -95,6 +112,7 @@ public class ConnectionHandler
         }
 
         // update creator argument of the target node
+        // find correct NodeArgument
         target.getHeader().ludemeNodeComponent().node().setCreatorArgument(source.inputField().nodeArgument(0));
 
         // update the positions of the source connection component again (for the case that the InputField was merged)
