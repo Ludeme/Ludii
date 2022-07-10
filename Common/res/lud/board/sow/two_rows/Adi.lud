@@ -11,7 +11,7 @@
 
 (define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
 
-(define "NoPieceOnBoard" (no Pieces All in:(union (sites P1) (sites P2))))
+(define "NoPieceOnBoard" (all Sites (union (sites P1) (sites P2)) if:(= 0 (count at:(site)))))
 
 (define "RightMostEmpty" 
     (trackSite FirstSite 

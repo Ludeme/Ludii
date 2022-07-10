@@ -5,7 +5,6 @@
         (all Sites (sites P2) if:(is Empty (site)))  
     )
 )
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
 (define "NumCapturedPieces" 
     (+ 

@@ -27,8 +27,7 @@
         (map "LeftHole" {(pair P1 0) (pair P2 17)})                            // leftHole of each player
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+     })  
     (rules 
         
         (start (set Count 3 to:(union (sites P1 "Home") (sites P2 "Home"))))
@@ -109,16 +108,12 @@
             )
         )
         
-        (end
-            (if (or {
-                    (= (count in:(sites P1 "Home")) 0)  
-                    (= (count in:(sites P2 "Home")) 0)
+        (end ("MancalaByScoreWhen"
+        		(or {
+                    (all Sites (sites P1 "Home") if:(= 0 (count at:(site)))) 
+                    (all Sites (sites P2 "Home") if:(= 0 (count at:(site)))) 
                 })
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
+        		)
         )
     )
 )

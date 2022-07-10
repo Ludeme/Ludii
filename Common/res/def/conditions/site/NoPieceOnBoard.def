@@ -1,0 +1,4 @@
+// Checks if the board is empty. This ludemeplex is not working for games involving stacks.
+// @example ("NoPieceOnBoard)
+
+(define "NoPieceOnBoard" (all Sites (sites Board) if:(= 0 (count at:(site)))))

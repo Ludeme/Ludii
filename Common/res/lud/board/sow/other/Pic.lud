@@ -1,6 +1,5 @@
 (define "NumPlayers" <Player:num>)
 (define "PiecesOwnedBy" (count Cell at:(handSite #1)))
-(define "NoPieceOnBoard" (all Sites (sites Board) if:(= 0 (count at:(site)))))
 
 //------------------------------------------------------------------------------
 

@@ -63,8 +63,6 @@
     (all Sites (union (sites (values Remembered "OwnedP1")) (sites (values Remembered "OwnedP2"))) if:(is Empty (site)))
 )
 
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
-
 //------------------------------------------------------------------------------
 
 (game "Bay Khom"  
