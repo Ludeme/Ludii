@@ -110,14 +110,12 @@
             )
         )
         
-        (end {
-            (if  ("EmptyOuterRow" P1)
-                (result P1 Loss)
-            )
-            (if  ("EmptyOuterRow" P2)
-                (result P2 Loss)
-            )
-        })
+        (end 
+        		(forEach Player
+                        if:("EmptyOuterRow" Player)
+                        (result Player Loss)
+                    )
+        )
     )
 )
 

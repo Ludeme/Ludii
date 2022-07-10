@@ -131,10 +131,12 @@
         )
         }
         
-        (end {
-            (if (= 0 ("PiecesOwnedBy" P1)) (result P2 Win)) 
-            (if (= 0 ("PiecesOwnedBy" P2)) (result P1 Win)) 
-        })
+        (end 
+        	(forEach Player
+        			if:(= 0 ("PiecesOwnedBy" Player))
+        		(result Player Loss)
+        	)
+        	)
     )
 )
 

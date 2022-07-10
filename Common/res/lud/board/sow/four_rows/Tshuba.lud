@@ -69,10 +69,10 @@
         )
         
         (end
-            (if  (= 0 ("PiecesOwnedBy" Next))
-                (result Mover Win)
+                (if (all Sites (sites Next "Home") if:(= 0 (count at:(site))))
+                    (result Mover Win)
+                )
             )
-        )
     )
 )
 

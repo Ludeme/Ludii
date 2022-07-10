@@ -156,12 +156,7 @@
             )
         )
         
-        (end
-            (forEach NonMover
-                if:(no Moves Player)
-                (result Player Loss)
-            )
-        )
+        (end "ForEachNonMoverNoMovesLoss")
     )
 )
 

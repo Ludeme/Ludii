@@ -103,7 +103,7 @@
         
         }
         
-        (end (if (= 0 (count in:(sites Next "Home"))) (result Next Loss)))
+        (end (if (all Sites (sites Next "Home") if:(= 0 (count at:(site)))) (result Next Loss)))
     )
 )
 
