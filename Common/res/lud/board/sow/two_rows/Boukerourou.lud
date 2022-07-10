@@ -18,8 +18,7 @@
         (piece "Seed" Shared)
         (regions P1 (sites Bottom))                    // P1 home
         (regions P2 (sites Top))                       // P2 home
-        }
-    )  
+    })  
     (rules 
         
         (start (set Count 6 to:(sites Track)))
@@ -50,14 +49,12 @@
             )
         )
         
-        (end {
-            (if  ("NoCounters" P1)
-                (result P2 Win)
-            )
-            (if  ("NoCounters" P2)
-                (result P1 Win)
-            )
-        })
+        (end 
+        	(forEach Player
+        		if:("NoCounters" Player)
+        		(result Player Loss)
+        	)
+        )
     )
 )
 

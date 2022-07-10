@@ -1,7 +1,5 @@
 (define "Columns" 7)
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
-
 (define "PiecesOwnedBy" (count at:(mapEntry #1)))
 
 //------------------------------------------------------------------------------
@@ -20,11 +18,10 @@
         (regions P1 (sites Bottom))                    // P1 home
         (regions P2 (sites Top))                       // P2 home   
         (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
-        }
-    )  
+    })  
     (rules 
         
-        (start (set Count 7 to:(union (sites P1)  (sites P2))))
+        (start (set Count 7 to:(union (sites P1) (sites P2))))
         
         (play 
             (move
@@ -48,12 +45,12 @@
                             (moveAgain)
                             (if (and 
                                     (is In (to) (sites Mover)) 
-                                    (> (count at:"OppositePit") 0)
+                                    (> (count at:("OppositePit" (to))) 0)
                                 )
                                 (fromTo 
-                                    (from "OppositePit") 
+                                    (from ("OppositePit" (to))) 
                                     (to (mapEntry Mover)) 
-                                    count:(count at:"OppositePit" )
+                                    count:(count at:("OppositePit" (to)) )
                                 ) 
                             )
                         )
@@ -62,14 +59,8 @@
             )		
         )
         
-        (end
-            (if (and (no Moves Mover) (no Moves Next)) 
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+
+        (end ("MancalaByScoreWhen" (and (no Moves Mover) (no Moves Next)) ))
     )
 )
 

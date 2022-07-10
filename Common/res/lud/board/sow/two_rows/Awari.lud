@@ -1,3 +1,7 @@
+(define "PiecesOwnedBy" (count Cell at:(handSite #1)))
+
+//------------------------------------------------------------------------------
+
 (game "Awari"  
     (players 2)  
     
@@ -9,8 +13,7 @@
         (regions P2 (sites Top))                        // P2 home
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+    })  
     (rules 
         
         (start (set Count 4 to:(sites Track)))
@@ -46,14 +49,7 @@
             )
         )
         
-        (end 
-            (if (= 0 (count Sites in:(forEach (sites Track) if:(> (count at:(site)) 1))))
-                (byScore {
-                    (score P1 (count Cell at:(handSite P1))) 
-                    (score P2 (count Cell at:(handSite P2)))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (all Sites (sites Track) if:(<= (count at:(site)) 1))))
     )
 )
 
