@@ -64,14 +64,7 @@
                 )
             )
         )
-        (end
-            (if (is Pending)
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (is Pending)))
     )
 )
 
