@@ -111,10 +111,10 @@
         )
         
         (end 
-        		(forEach Player
-                        if:("EmptyOuterRow" Player)
-                        (result Player Loss)
-                    )
+            (forEach Player
+                if:("EmptyOuterRow" Player)
+                (result Player Loss)
+            )
         )
     )
 )

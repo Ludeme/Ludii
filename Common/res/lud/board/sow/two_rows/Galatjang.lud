@@ -17,11 +17,11 @@
 
 (define "NoLegalMoves" 
     (all Sites (forEach 
-                (difference (union (sites Bottom) (sites Top)) (sites Empty))
-                if:(is In (site) (values Remembered))
-            )
-    		if:(= 0 (count at:(site)))
+            (difference (union (sites Bottom) (sites Top)) (sites Empty))
+            if:(is In (site) (values Remembered))
         )
+        if:(= 0 (count at:(site)))
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -40,7 +40,7 @@
         (regions "Home" P1 (sites Bottom))              // P1 Home
         (regions "Home" P2 (sites Top))                 // P2 home
         (map {(pair P1 LastSite) (pair P2 FirstSite)})  // kalahs (storage pits)
-     })  
+    })  
     (rules 
         
         (start {

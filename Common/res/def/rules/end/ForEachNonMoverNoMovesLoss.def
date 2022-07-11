@@ -2,8 +2,8 @@
 // @example ("ForEachNonMoverNoMovesLoss")
 
 (define "ForEachNonMoverNoMovesLoss"
-		(forEach NonMover
-                if:(no Moves Player)
-                (result Player Loss)
-            )
+    (forEach NonMover
+        if:(no Moves Player)
+        (result Player Loss)
+    )
 )

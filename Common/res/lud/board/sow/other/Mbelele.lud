@@ -188,11 +188,11 @@
             )
         )
         (end
-                (forEach NonMover
-                    if:("NoPiece" Player)
-                    (result Player Loss)
-                )
+            (forEach NonMover
+                if:("NoPiece" Player)
+                (result Player Loss)
             )
+        )
     )
 )
 

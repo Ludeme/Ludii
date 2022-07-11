@@ -8,9 +8,9 @@
 
 (define "OnlyOneCounterInEachHole" 
     (all Sites 
-                (sites Board) 
-                if:(<= (count at:(site)) 1)
-            )
+        (sites Board) 
+        if:(<= (count at:(site)) 1)
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -85,10 +85,10 @@
                 )		
             )
             (end
-            		(forEach Player
-            			if:("NoCounters" Player)
-            			(result Player Loss)
-            		)
+                (forEach Player
+                    if:("NoCounters" Player)
+                    (result Player Loss)
+                )
             )
         )
         }

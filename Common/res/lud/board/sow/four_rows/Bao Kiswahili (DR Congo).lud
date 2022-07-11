@@ -184,11 +184,11 @@
         }
         
         (end 
-        		(forEach Player
-                        if:("NoPiecesInInner" Player)
-                        (result Player Loss)
-                    )
-        		)
+            (forEach Player
+                if:("NoPiecesInInner" Player)
+                (result Player Loss)
+            )
+        )
     )
 )
 

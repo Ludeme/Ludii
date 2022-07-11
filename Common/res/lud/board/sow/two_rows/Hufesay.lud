@@ -1,15 +1,11 @@
 (define "Columns" 6)
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
-
 (define "OwnedHoles" 
     (if (is Mover P1)
         (sites (values Remembered "OwnedP1"))
         (sites (values Remembered "OwnedP2"))
     )
 )
-
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
 (define "RemmemberOwnedHoles" 
     (if (is Mover P1)
@@ -20,8 +16,8 @@
 
 (define "OneRowIsEmpty"	
     (or
-        (no Pieces All in:(sites P1))
-        (no Pieces All in:(sites P2))
+        (all Sites (sites P1) if:(= 0 (count at:(site))))
+        (all Sites (sites P2) if:(= 0 (count at:(site))))
     )
 )
 
@@ -66,8 +62,7 @@
         (phase "Sowing"
             (play 
                 (or {
-                    (move
-                        Select 
+                    (move Select 
                         (from 
                             (if 
                                 ("SameTurn") 
@@ -82,12 +77,12 @@
                                     (moveAgain)
                                     (if (and 
                                             (is In (to) (sites Mover)) 
-                                            (> (count at:"OppositePit") 0)
+                                            (> (count at:("OppositePit" (to))) 0)
                                         )
                                         (fromTo 
-                                            (from "OppositePit") 
+                                            (from ("OppositePit" (to))) 
                                             (to (handSite Mover)) 
-                                            count:(count at:"OppositePit" )
+                                            count:(count at:("OppositePit" (to)))
                                         ) 
                                     )
                                 )

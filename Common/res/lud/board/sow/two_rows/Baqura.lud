@@ -119,10 +119,10 @@
         }
         
         (end 
-        	(forEach Player
-        		if:(= 0 ("PiecesOwnedBy" Player))
-        		(result Player Loss)
-        	)
+            (forEach Player
+                if:(= 0 ("PiecesOwnedBy" Player))
+                (result Player Loss)
+            )
         )
     )
 )

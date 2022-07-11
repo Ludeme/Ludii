@@ -58,11 +58,11 @@
         )
         
         (end ("MancalaByScoreWhen"
-        		(or 
-                        (= (count in:(sites Bottom)) 0)
-                        (= (count in:(sites Top)) 0)
-                    )
-        	)
+                (or 
+                    (= (count in:(sites Bottom)) 0)
+                    (= (count in:(sites Top)) 0)
+                )
+            )
         )
     )
 )

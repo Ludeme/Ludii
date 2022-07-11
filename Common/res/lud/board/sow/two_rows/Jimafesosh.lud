@@ -1,6 +1,5 @@
 (define "Columns" 6)
-(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns")))
-(define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
+(define "NextHole" ("NextSiteOnTrack" #2 from:#1 "Track"))
 (define "OneOrLessPieceOnBoard" 
     (>= 1 (count Pieces All in:(sites Board)))
 )
@@ -25,8 +24,6 @@
         (remember Value "OwnedP2" #1)
     )
 )
-
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
 (define "RightMostEmpty" 
     (trackSite FirstSite "TrackCW"
@@ -105,11 +102,11 @@
                                     (moveAgain)
                                     (set Var "Replay" (to))
                                 )
-                                (if (is Occupied ("OppositePit"))
+                                (if (is Occupied ("OppositePitTwoRows" (to)))
                                     (fromTo
-                                        (from ("OppositePit"))
+                                        (from ("OppositePitTwoRows" (to)))
                                         (to (handSite Mover))
-                                        count:(count at:("OppositePit"))
+                                        count:(count at:("OppositePitTwoRows" (to)))
                                     )
                                 )
                             )
@@ -140,11 +137,11 @@
                                         (moveAgain)
                                         (set Var "Replay" (to))
                                     )
-                                    (if (is Occupied ("OppositePit"))
+                                    (if (is Occupied ("OppositePitTwoRows" (to)))
                                         (fromTo
-                                            (from ("OppositePit"))
+                                            (from ("OppositePitTwoRows" (to)))
                                             (to (handSite Mover))
-                                            count:(count at:("OppositePit"))
+                                            count:(count at:("OppositePitTwoRows" (to)))
                                         )
                                     )
                                 )

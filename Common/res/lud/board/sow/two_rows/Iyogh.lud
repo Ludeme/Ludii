@@ -1,11 +1,9 @@
 (define "Columns" 8)
 
-(define "NextHoleFrom" (trackSite Move from:#1 #2 #3))
-
-(define "OppositePit" (if (is In #1 (sites Bottom)) (+ #1 "Columns") (- #1 "Columns")))
+(define "NextHoleFrom" ("NextSiteOnTrack" #3 from:#1 #2))
 
 (define "NoPiecesInPlayerSide" 
-    (no Pieces All in:(sites #1))
+    (all Sites (sites #1) if:(= 0 (count at:(site))))
 )
 
 //------------------------------------------------------------------------------
@@ -60,17 +58,17 @@
                                                 count:(var "NumToSow")
                                                 "TrackCCW"
                                                 if:(or
-                                                    (= 1 (count at:("OppositePit" (to))))
-                                                    (= 3 (count at:("OppositePit" (to))))
+                                                    (= 1 (count at:("OppositePitTwoRows" (to))))
+                                                    (= 3 (count at:("OppositePitTwoRows" (to))))
                                                 )
                                                 apply:(if (or
-                                                        (= 1 (count at:("OppositePit" (to))))
-                                                        (= 3 (count at:("OppositePit" (to))))
+                                                        (= 1 (count at:("OppositePitTwoRows" (to))))
+                                                        (= 3 (count at:("OppositePitTwoRows" (to))))
                                                     )
                                                     (fromTo
-                                                        (from ("OppositePit" (to)))
+                                                        (from ("OppositePitTwoRows" (to)))
                                                         (to (handSite Mover))
-                                                        count:(count at:("OppositePit" (to)))
+                                                        count:(count at:("OppositePitTwoRows" (to)))
                                                     )
                                                 )
                                                 forward:True
@@ -88,8 +86,8 @@
                                 next:(move
                                     (from Cell (handSite Mover)
                                         if:(or
-                                            (= 1 (count at:("OppositePit" ("NextHoleFrom" (mapEntry "LeftMost" Mover) "TrackCW" steps:(value)))))
-                                            (= 3 (count at:("OppositePit" ("NextHoleFrom" (mapEntry "LeftMost" Mover) "TrackCW" steps:(value)))))
+                                            (= 1 (count at:("OppositePitTwoRows" ("NextHoleFrom" (mapEntry "LeftMost" Mover) "TrackCW" (value)))))
+                                            (= 3 (count at:("OppositePitTwoRows" ("NextHoleFrom" (mapEntry "LeftMost" Mover) "TrackCW" (value)))))
                                         )
                                     )
                                     (to (mapEntry "LeftMost" Mover))
@@ -100,17 +98,17 @@
                                                 count:(var "NumToSow")
                                                 "TrackCW"
                                                 if:(or
-                                                    (= 1 (count at:("OppositePit" (to))))
-                                                    (= 3 (count at:("OppositePit" (to))))
+                                                    (= 1 (count at:("OppositePitTwoRows" (to))))
+                                                    (= 3 (count at:("OppositePitTwoRows" (to))))
                                                 )
                                                 apply:(if (or
-                                                        (= 1 (count at:("OppositePit" (to))))
-                                                        (= 3 (count at:("OppositePit" (to))))
+                                                        (= 1 (count at:("OppositePitTwoRows" (to))))
+                                                        (= 3 (count at:("OppositePitTwoRows" (to))))
                                                     )
                                                     (fromTo
-                                                        (from ("OppositePit" (to)))
+                                                        (from ("OppositePitTwoRows" (to)))
                                                         (to (handSite Mover))
-                                                        count:(count at:("OppositePit" (to)))
+                                                        count:(count at:("OppositePitTwoRows" (to)))
                                                     )
                                                 )
                                                 forward:True
@@ -131,17 +129,17 @@
                             (sow
                                 "TrackCCW"
                                 if:(or
-                                    (= 1 (count at:("OppositePit" (to))))
-                                    (= 3 (count at:("OppositePit" (to))))
+                                    (= 1 (count at:("OppositePitTwoRows" (to))))
+                                    (= 3 (count at:("OppositePitTwoRows" (to))))
                                 )
                                 apply:(if (or
-                                        (= 1 (count at:("OppositePit" (to))))
-                                        (= 3 (count at:("OppositePit" (to))))
+                                        (= 1 (count at:("OppositePitTwoRows" (to))))
+                                        (= 3 (count at:("OppositePitTwoRows" (to))))
                                     )
                                     (fromTo
-                                        (from ("OppositePit" (to)))
+                                        (from ("OppositePitTwoRows" (to)))
                                         (to (handSite Mover))
-                                        count:(count at:("OppositePit" (to)))
+                                        count:(count at:("OppositePitTwoRows" (to)))
                                     )
                                 )
                                 forward:True
@@ -154,8 +152,8 @@
                             if:(and 
                                 (< 0 (count at:(from)))
                                 (or
-                                    (= 1 (count at:("OppositePit" ("NextHoleFrom" (from) "TrackCW" steps:(count at:(from))))))
-                                    (= 3 (count at:("OppositePit" ("NextHoleFrom" (from) "TrackCW" steps:(count at:(from))))))
+                                    (= 1 (count at:("OppositePitTwoRows" ("NextHoleFrom" (from) "TrackCW" (count at:(from))))))
+                                    (= 3 (count at:("OppositePitTwoRows" ("NextHoleFrom" (from) "TrackCW" (count at:(from))))))
                                 )
                             )
                         )
@@ -163,17 +161,17 @@
                             (sow
                                 "TrackCW"
                                 if:(or
-                                    (= 1 (count at:("OppositePit" (to))))
-                                    (= 3 (count at:("OppositePit" (to))))
+                                    (= 1 (count at:("OppositePitTwoRows" (to))))
+                                    (= 3 (count at:("OppositePitTwoRows" (to))))
                                 )
                                 apply:(if (or
-                                        (= 1 (count at:("OppositePit" (to))))
-                                        (= 3 (count at:("OppositePit" (to))))
+                                        (= 1 (count at:("OppositePitTwoRows" (to))))
+                                        (= 3 (count at:("OppositePitTwoRows" (to))))
                                     )
                                     (fromTo
-                                        (from ("OppositePit" (to)))
+                                        (from ("OppositePitTwoRows" (to)))
                                         (to (handSite Mover))
-                                        count:(count at:("OppositePit" (to)))
+                                        count:(count at:("OppositePitTwoRows" (to)))
                                     )
                                 )
                                 forward:True
@@ -186,14 +184,12 @@
         )
         }
         
-        (end {
-            (if  ("NoPiecesInPlayerSide" P1)
-                (result P2 Win)
+        (end 
+            (forEach Player
+                if:("NoPiecesInPlayerSide" Player)
+                (result Player Loss)
             )
-            (if  ("NoPiecesInPlayerSide" P2)
-                (result P1 Win)
-            )
-        })
+        )
     )
 )
 

@@ -1,15 +1,13 @@
 (define "Columns" 6)
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
-
 (define "NoFreeSeed" 
-    (no Pieces All in:(forEach (sites Board) if:(= 0 (state at:(site)))))
+    (all Sites (forEach (sites Board) if:(= 0 (state at:(site)))) if:(= 0 (count at:(site))))
 )
 
 (define "PiecesOwnedBy" 
     (+ 
         (count Cell at:(handSite #1)) 
-        (count in:(forEach (sites Board) if:(= #1 (state at:(site)))))
+        (count in:(forEach (sites Board) if:(= (id #1) (state at:(site)))))
     )
 )
 
@@ -26,8 +24,7 @@
         (regions P1 (sites Bottom)) 
         (regions P2 (sites Top)) 
         (hand Each)
-        }
-    )  
+    })  
     (rules 
         
         (start (set Count 4 to:(sites Track)))
@@ -47,9 +44,9 @@
                                 (is In (to) (sites Mover))
                                 (= 1 (count at:(to)))
                             )
-                            (if (= 1 (count at:("OppositePit")))
+                            (if (= 1 (count at:("OppositePit" (to))))
                                 (fromTo
-                                    (from ("OppositePit"))
+                                    (from ("OppositePit" (to)))
                                     (to (handSite Mover))
                                     count:1
                                 )
@@ -68,14 +65,7 @@
             )		
         )
         
-        (end
-            (if  ("NoFreeSeed")
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" 1)) 
-                    (score P2 ("PiecesOwnedBy" 2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" ("NoFreeSeed")))
     )
 )
 

@@ -49,10 +49,10 @@
         )
         
         (end 
-        	(forEach Player
-        		if:("NoCounters" Player)
-        		(result Player Loss)
-        	)
+            (forEach Player
+                if:("NoCounters" Player)
+                (result Player Loss)
+            )
         )
     )
 )
