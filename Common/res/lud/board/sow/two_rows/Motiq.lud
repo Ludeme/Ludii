@@ -62,10 +62,10 @@
                                             (to (handSite Mover))
                                             count:4
                                         )
-                                        (if (is Occupied ("NextHoleFrom" (to) steps:1))
+                                        (if (is Occupied ("NextHoleFrom" (to) 1))
                                             (and
                                                 (moveAgain)
-                                                (set Var "Replay" ("NextHoleFrom" (to) steps:1))
+                                                (set Var "Replay" ("NextHoleFrom" (to) 1))
                                             )
                                         )
                                     )

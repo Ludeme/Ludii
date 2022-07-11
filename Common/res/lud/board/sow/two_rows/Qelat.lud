@@ -20,7 +20,7 @@
 )
 
 (define "OnlyPiecesInMarked" 
-    (all Sites (forEach (sites Board) if:(= 0 (state at:(site)))) if:(+ 0 (count at:(site))))
+    (all Sites (forEach (sites Board) if:(= 0 (state at:(site)))) if:(= 0 (count at:(site))))
 )
 
 (define "RightMostEmpty" 

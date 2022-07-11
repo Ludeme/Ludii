@@ -108,7 +108,7 @@ public class TestTrialsIntegrityERIC
 		}
 		
 		boolean gameReached = false;
-		final String gameToReached = "";
+		final String gameToReached = "Qelat (Beni Amir-Mensa)";
 		final String gameToSkip = "";
 
 		final long startTime = System.currentTimeMillis();
