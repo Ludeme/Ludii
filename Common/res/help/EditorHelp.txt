@@ -5835,6 +5835,16 @@ PARAM JAVADOC: <string>: The name of the concept.
 PARAM JAVADOC: <float>: The double value.
 PARAM JAVADOC: <boolean>: The boolean value.
 EXAMPLE: (concept "Num Players" 6)
+DEFINE: IsInCheck
+DEFINE JAVADOC: Checks if a specific piece is threatened by any other enemy piece. #1 = The name of the piece (without the number). #2 = The roleType of the owner of the piece. #3 = The location where is the piece or The specific moves used to threat. This parameter is optional. If not specify the current location of the piece is used and all the legal moves are used. 
+DEFINE EXAMPLE: ("IsInCheck" "Osho" Next)
+DEFINE EXAMPLE: ("IsInCheck" "King" Mover at:(to))
+DEFINE: IsEnemyAt
+DEFINE JAVADOC: Checks if an enemy is on a site. #1 = The site. #2 = The level [the topest]. 
+DEFINE EXAMPLE: ("IsEnemyAt" (to))
+DEFINE: IsFriendAt
+DEFINE JAVADOC: Checks if a friend is on a site. #1 = The site. #2 = The level [the topest]. 
+DEFINE EXAMPLE: ("IsFriendAt" (to))
 DEFINE: AllOwnedPiecesIn
 DEFINE JAVADOC: Checks if all pieces on the board owned by the mover are in a region. #1 = The region. 
 DEFINE EXAMPLE: ("AllOwnedPiecesIn" (sites Top))
@@ -5847,19 +5857,12 @@ DEFINE EXAMPLE: ("HandEmpty" Mover)
 DEFINE: IsEmptyAndNotVisited
 DEFINE JAVADOC: Checks if a site is empty and not visited so far in the same turn. #1 = The site. 
 DEFINE EXAMPLE: ("IsEmptyAndNotVisited" (to))
-DEFINE: IsInCheck
-DEFINE JAVADOC: Checks if a specific piece is threatened by any other enemy piece. #1 = The name of the piece (without the number). #2 = The roleType of the owner of the piece. #3 = The location where is the piece or The specific moves used to threat. This parameter is optional. If not specify the current location of the piece is used and all the legal moves are used. 
-DEFINE EXAMPLE: ("IsInCheck" "Osho" Next)
-DEFINE EXAMPLE: ("IsInCheck" "King" Mover at:(to))
+DEFINE: IsPieceAt
+DEFINE JAVADOC: Checks if a piece #1 owned by #2 is at a site #3. #1 = The name of the piece. #2 = The owner of the piece. #3 = The site. #4 = The level. 
+DEFINE EXAMPLE: ("IsPieceAt" "Ball" Shared 32)
 DEFINE: NoSites
 DEFINE JAVADOC: Checks if a region has no sites. #1 = The region. 
 DEFINE EXAMPLE: ("NoSites" (sites Empty))
-DEFINE: IsEnemyAt
-DEFINE JAVADOC: Checks if an enemy is on a site. #1 = The site. #2 = The level [the topest]. 
-DEFINE EXAMPLE: ("IsEnemyAt" (to))
-DEFINE: IsFriendAt
-DEFINE JAVADOC: Checks if a friend is on a site. #1 = The site. #2 = The level [the topest]. 
-DEFINE EXAMPLE: ("IsFriendAt" (to))
 DEFINE: IsEmptyOrSingletonStack
 DEFINE JAVADOC: Checks if a stack has a size of 1 at a site or if the site is empty. #1 = The site. 
 DEFINE EXAMPLE: ("IsEmptyOrSingletonStack" (to))
@@ -6019,6 +6022,9 @@ DEFINE EXAMPLE: ("NextSiteOnTrack" 3)
 DEFINE: OccupiedNbors
 DEFINE JAVADOC: Returns the number of pieces owned by a player around a given site. #1 = The site to test around. #2 = The owner of the pieces to count. 
 DEFINE EXAMPLE: ("OccupiedNbors" (to) Mover)
+DEFINE: BlockWin
+DEFINE JAVADOC: If the next player has no legal moves, the mover is winning. This ludemeplex can be used only in an ending condition. 
+DEFINE EXAMPLE: ("BlockWin")
 DEFINE: Checkmate
 DEFINE JAVADOC: If the next player is checkmate, the mover is winning. This ludemeplex can be used only in an ending condition. #1 = The name of the piece to check. 
 DEFINE EXAMPLE: ("Checkmate" "King")
@@ -6034,6 +6040,9 @@ DEFINE EXAMPLE: ("FillWin" (sites Top))
 DEFINE: NoMoves
 DEFINE JAVADOC: Checks if the next player has no legal moves and apply a specific result to the next player. This ludemeplex can be used only in an ending condition. #1 = The result to apply. 
 DEFINE EXAMPLE: ("NoMoves" Loss)
+DEFINE: ReachWin
+DEFINE JAVADOC: If the mover is reaching a space of a region with his last movement, a player is winning. This ludemeplex can be used only in an ending condition. #1 = The region to reach. #2 = The player to win. 
+DEFINE EXAMPLE: ("ReachWin" (sites Top) P1)
 DEFINE: CustodialCapture
 DEFINE JAVADOC: Defines a custodial capture in all the directions specified (by default Adjacent). The enemy piece is removed. #1 = Directions of the capture. #2 = The consequences. 
 DEFINE EXAMPLE: ("CustodialCapture")
