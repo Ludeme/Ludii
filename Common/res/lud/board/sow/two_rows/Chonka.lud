@@ -1,5 +1,4 @@
 (define "Columns" 7)
-(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns")))
 (define "GoalNumCapturedCounters"
     (/ (* 7 (- (count Sites in:(sites Board)) 2)) 2)
 )
@@ -23,13 +22,10 @@
     })  
     (rules 
         
-        (start { 
-            (set Count 7 to:(union (sites P1)  (sites P2))) 
-        })
+        (start (set Count 7 to:(union (sites P1)  (sites P2))))
         
         (play 
-            (move
-                Select 
+            (move Select 
                 (from 
                     (if 
                         ("SameTurn") 
@@ -45,9 +41,9 @@
                                 (moveAgain)
                                 (and
                                     (fromTo 
-                                        (from "OppositePit") 
+                                        (from ("OppositePitTwoRows" (to))) 
                                         (to (mapEntry Mover)) 
-                                        count:(count at:"OppositePit" )
+                                        count:(count at:("OppositePitTwoRows" (to)))
                                     ) 
                                     (fromTo 
                                         (from (to)) 

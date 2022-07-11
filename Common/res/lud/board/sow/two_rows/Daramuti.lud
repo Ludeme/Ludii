@@ -1,8 +1,7 @@
 (define "Columns" 7)
 (define "PlayableSites" (sites (values Remembered "Playable")))
 (define "BlockingHoles" (sites (values Remembered "Blocked")))
-(define "NextHole" (trackSite Move from:#1 #2 steps:#3))
-(define "NoPieceOnBoard" (no Pieces All in:(union (sites Top) (sites Bottom))))
+(define "NextHole" ("NextSiteOnTrack" #3 from:#1 #2))
 (define "LeftMostEmpty" 
     (if (is Mover P1)
         (intersection (sites Bottom) (expand (sites Left)))

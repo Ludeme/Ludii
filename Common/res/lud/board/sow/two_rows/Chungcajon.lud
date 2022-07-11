@@ -22,8 +22,7 @@
     (rules 
         (start (set Count 7 to:(union (sites P1) (sites P2))))		  
         (play 
-            (move
-                Select 
+            (move Select 
                 (from 
                     (if 
                         ("SameTurn") 

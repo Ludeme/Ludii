@@ -13,10 +13,8 @@
 )
 
 (define "OnlyPiecesInMarked" 
-    (no Pieces All in:(forEach (sites Board) if:(= 0 (state at:(site)))))
+    (all Sites (forEach (sites Board) if:(= 0 (state at:(site)))) if:(= 0 (count at:(site))))
 )
-
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
 (define "RightMostEmpty" 
     (trackSite FirstSite 
@@ -30,7 +28,7 @@
     (forEach (sites Board) if:(= #1 (state at:(site))))
 )
 
-(define "NextHole" (trackSite Move from:#1 #2 steps:#3))
+(define "NextHole" ("NextSiteOnTrack" #3 from:#1 #2))
 
 (define "RememberOwnedHolesRandom" 
     (if (< 50 (value Random (range 1 100)))
@@ -73,7 +71,7 @@
                 (or {
                     (move Select
                         (from 
-                            (if (is Mover Prev)
+                            (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 ("OwnedHoles") 
                             )

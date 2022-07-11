@@ -1,5 +1,4 @@
-(define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
+(define "NextHole" ("NextSiteOnTrack" #2 from:#1 "Track"))
 (define "PiecesOwnedBy" (count Cell at:(handSite #1)))
 
 //------------------------------------------------------------------------------
@@ -25,7 +24,7 @@
             (play
                 (move Select 
                     (from
-                        (if (is Mover Prev)
+                        (if ("SameTurn")
                             (var "Replay")
                             0
                         )
@@ -51,7 +50,7 @@
             (play
                 (move Select 
                     (from
-                        (if (and (is Mover Prev) (!= Undefined (var "Replay")))
+                        (if (and ("SameTurn") (!= Undefined (var "Replay")))
                             (var "Replay")
                             6
                         )
@@ -93,7 +92,7 @@
             (play
                 (move Select 
                     (from
-                        (if (and (is Mover Prev) (!= Undefined (var "Replay")))
+                        (if (and ("SameTurn") (!= Undefined (var "Replay")))
                             (sites {(var "Replay")})
                             (sites Mover)
                         )
@@ -131,15 +130,8 @@
         )
         
         }
-        
-        (end
-            (if ("NoPieceOnBoard") 
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+
+    (end ("MancalaByScoreWhen" ("NoPieceOnBoard")))
         
     )
 )

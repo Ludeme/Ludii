@@ -23,8 +23,7 @@
             (play 
                 (move Select 
                     (from 
-                        (if 
-                            ("SameTurn") 
+                        (if ("SameTurn") 
                             ("LastHoleSowed") 
                             (sites Mover) 
                         )  
@@ -54,8 +53,7 @@
                             )
                             next:(and {
                                 (pass)
-                                (forEach
-                                    Site
+                                (forEach Site
                                     (forEach (sites Track from:(var "From") to:(var "To"))
                                         if:(and (is In (site) (sites P1)) (= 4 (count at:(site))))
                                     )
@@ -65,8 +63,7 @@
                                         count:(count at:(site))
                                     )
                                 )
-                                (forEach
-                                    Site
+                                (forEach Site
                                     (forEach (sites Track from:(var "From") to:(var "To"))
                                         if:(and (is In (site) (sites P2)) (= 4 (count at:(site))))
                                     )
@@ -87,8 +84,7 @@
             (play 
                 (move Select 
                     (from 
-                        (if 
-                            ("SameTurn") 
+                        (if ("SameTurn") 
                             ("LastHoleSowed") 
                             (sites Mover) 
                         )  

@@ -1,6 +1,6 @@
 (define "PiecesOwnedBy" (count Cell at:(handSite #1)))
 (define "LastHoleSowed" (last To afterConsequence:True))
-(define "NextHoleFrom" (trackSite Move from:#1 #2 #3))
+(define "NextHoleFrom" ("NextSiteOnTrack" #3 from:#1 #2))
 (define "CaptureMove"
     (and
         (fromTo 
