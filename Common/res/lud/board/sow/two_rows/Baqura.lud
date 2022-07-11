@@ -1,7 +1,5 @@
 (define "Columns" 6)
 
-(define "OppositePit" (if (is In #1 (sites P1)) (+ #1 "Columns") (- #1 "Columns")))
-
 (define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
 
 //------------------------------------------------------------------------------
@@ -37,7 +35,7 @@
         )
         (phase "Sowing" 
             (play 
-                (if (!= 0 (count in:(sites Mover)))
+                (if (not (all Sites (sites Mover) if:(= 0 (count at:(site)))))
                     (move
                         Select 
                         (from 
@@ -54,11 +52,11 @@
                                 apply:(if (and (> (count at:(to)) 1) (is Odd (count at:(to))))
                                     (moveAgain)
                                     (and
-                                        (if (> (count at:("OppositePit" (to))) 0)
+                                        (if (> (count at:("OppositePitTwoRows" (to))) 0)
                                             (fromTo 
-                                                (from ("OppositePit" (to))) 
+                                                (from ("OppositePitTwoRows" (to))) 
                                                 (to (handSite Mover)) 
-                                                count:(count at:("OppositePit" (to)))
+                                                count:(count at:("OppositePitTwoRows" (to)))
                                             ) 
                                         )
                                         (fromTo 
@@ -106,7 +104,7 @@
                                 (if (is Occupied (site))
                                     (fromTo 
                                         (from Cell (handSite Next))
-                                        (to ("OppositePit" (site)))
+                                        (to ("OppositePitTwoRows" (site)))
                                         count:(count at:(site))
                                     )
                                 )

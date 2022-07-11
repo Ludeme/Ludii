@@ -64,8 +64,7 @@
         (hand Each)
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
-        }
-    )  
+    })  
     (rules 
         
         (start (set Count 5 to:(sites Track)))
@@ -76,7 +75,7 @@
                     (move Select
                         (from 
                             (if 
-                                (is Mover Prev) 
+                                ("SameTurn") 
                                 (sites {("NextHoleFrom" "LastHoleSowed" "TrackCCW" steps:1) })
                                 (sites Mover) 
                             ) 
@@ -109,7 +108,7 @@
                     (move Select
                         (from 
                             (if 
-                                (is Mover Prev) 
+                                ("SameTurn") 
                                 (sites {("NextHoleFrom" "LastHoleSowed" "TrackCW" steps:1) })
                                 (sites Mover) 
                             ) 
@@ -140,15 +139,8 @@
                 )
             )
         )
-        
-        (end
-            (if (<= (count Pieces All in:(sites Board)) 1)
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+
+        (end ("MancalaByScoreWhen" (<= (count Pieces All in:(sites Board)) 1)))
     )
 )
 

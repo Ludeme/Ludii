@@ -18,8 +18,7 @@
         (start (set Count 3 to:(sites Track)))
         
         (play 
-            (move
-                Select 
+            (move Select 
                 (from 
                     (sites Mover) 
                     if:(> (count at:(from)) 0)

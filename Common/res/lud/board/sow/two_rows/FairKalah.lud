@@ -1,7 +1,5 @@
 (define "Columns" 6)
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
-
 (define "PiecesOwnedBy" (+ (count at:(mapEntry #1)) (count in:(sites #1))))
 
 //------------------------------------------------------------------------------
@@ -25,8 +23,7 @@
         })
         
         (play 
-            (move 
-                Select 
+            (move Select 
                 (from 
                     (sites Mover) 
                     if:(> (count at:(from)) 0)
@@ -38,7 +35,7 @@
                             (if (and { 
                                     (is In (to) (sites Mover)) 
                                     (= (count at:(to)) 1) 
-                                    (>= (count at:"OppositePit") 0)
+                                    (>= (count at:("OppositePit" (to))) 0)
                                 })
                                 (and 
                                     (fromTo 
@@ -47,9 +44,9 @@
                                         count:(count at:(to))
                                     ) 
                                     (fromTo 
-                                        (from "OppositePit") 
+                                        (from ("OppositePit" (to))) 
                                         (to (mapEntry (mover))) 
-                                        count:(count at:"OppositePit")
+                                        count:(count at:("OppositePit" (to)))
                                     ) 
                                 ) 
                             )
@@ -60,16 +57,12 @@
             )
         )
         
-        (end
-            (if (or 
-                    (= (count in:(sites Bottom)) 0)
-                    (= (count in:(sites Top)) 0)
-                ) 
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
+        (end ("MancalaByScoreWhen"
+        		(or 
+                        (= (count in:(sites Bottom)) 0)
+                        (= (count in:(sites Top)) 0)
+                    )
+        	)
         )
     )
 )

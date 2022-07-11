@@ -2,9 +2,9 @@
 
 (define "PlayFromLastHole" (last To afterConsequence:True))
 
-(define "NextHole" (trackSite Move from:#1 "Track" steps:1))
+(define "NextHole" ("NextSiteOnTrack" 1 from:#1 "Track"))
 
-(define "NoCounters" (= 0 (count in:(sites #1))))
+(define "NoCounters" (all Sites (sites #1) if:(= 0 (count at:(site)))))
 
 //------------------------------------------------------------------------------
 
@@ -24,10 +24,9 @@
         (start (set Count 6 to:(sites Track)))
         
         (play
-            (move
-                Select 
+            (move Select 
                 (from 
-                    (if (is Mover Prev) 
+                    (if ("SameTurn") 
                         (sites {("NextHole" ("PlayFromLastHole"))})
                         (sites Mover) 
                     )
@@ -37,7 +36,7 @@
                     (sow 
                         apply:(if (and
                                 (= 1 (count at:(to)))
-                                (not (is Empty ("NextHole" (to))))
+                                (is Occupied ("NextHole" (to)))
                             )
                             (moveAgain)
                             (if (and (is In (to) (sites Next)) (= 6 (count at:(to))))

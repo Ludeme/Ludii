@@ -33,7 +33,7 @@
             (or {
                 (move Select
                     (from 
-                        (if (is Mover Prev)
+                        (if ("SameTurn")
                             (sites {(var "Replay") })
                             (sites Mover)
                         )
@@ -86,10 +86,7 @@
             )
         )
         
-        (end { 
-            (if (no Moves P1) (result P2 Win))
-            (if (no Moves P2) (result P1 Win))
-        })
+        (end ("ForEachPlayerNoMovesLoss"))
     )
 )
 

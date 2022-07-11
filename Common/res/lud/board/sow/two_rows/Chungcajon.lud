@@ -26,7 +26,7 @@
                 Select 
                 (from 
                     (if 
-                        (is Mover Prev) 
+                        ("SameTurn") 
                         "LastHoleSowed" 
                         (sites Mover) 
                     ) 
@@ -45,14 +45,7 @@
                 )
             )
         )
-        (end
-            (if (= 0 (count Sites in:(intersection (sites Occupied by:All) (union (sites P1) (sites P2)))))
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (all Sites (union (sites P1) (sites P2)) if:(= 0 (count at:(site))))))
     )
 )
 

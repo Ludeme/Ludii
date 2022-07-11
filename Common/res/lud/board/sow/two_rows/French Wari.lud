@@ -1,7 +1,5 @@
 (define "Columns" 6)
 
-(define "OppositePit" (if (is In (to) (sites P1)) (+ (to) "Columns") (- (to) "Columns")))
-
 (define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
 
 //------------------------------------------------------------------------------
@@ -17,15 +15,13 @@
         (regions P2 (sites Top))                        // P2 home
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+    })  
     (rules 
         
         (start (set Count 4 to:(sites Track)))
         
         (play 
-            (move
-                Select 
+            (move Select 
                 (from 
                     (if 
                         (is Mover Prev) 
@@ -38,11 +34,11 @@
                     (sow
                         apply:(if (> (count at:(to)) 1)
                             (moveAgain)
-                            (if (> (count at:"OppositePit") 0)
+                            (if (> (count at:("OppositePitTwoRows" (to))) 0)
                                 (fromTo 
-                                    (from "OppositePit") 
+                                    (from ("OppositePitTwoRows" (to))) 
                                     (to (handSite Mover)) 
-                                    count:(count at:"OppositePit" )
+                                    count:(count at:("OppositePitTwoRows" (to)))
                                 ) 
                             )
                         )
@@ -50,16 +46,8 @@
                 )
             )
         )
-        
-        (end
-            (if (no Moves Mover) 
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
-        
+
+        (end ("MancalaByScoreWhen" (no Moves Mover)))
     )
 )
 

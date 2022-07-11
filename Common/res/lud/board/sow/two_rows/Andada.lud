@@ -2,21 +2,15 @@
 
 (define "PlayFromLastHole" (last To afterConsequence:True))
 
-(define "NextHole" (trackSite Move from:#1 "Track" steps:1))
+(define "NextHole" ("NextSiteOnTrack" 1 from:#1 "Track"))
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
-
-(define "NoCounters" (= 0 (count in:(sites #1))))
+(define "NoCounters" (all Sites (sites #1) if:(= 0 (count at:(site)))))
 
 (define "OnlyOneCounterInEachHole" 
-    (= 0 
-        (count 
-            in:(forEach 
+    (all Sites 
                 (sites Board) 
-                if:(> (count at:(site)) 1)
+                if:(<= (count at:(site)) 1)
             )
-        )
-    )
 )
 
 //------------------------------------------------------------------------------
@@ -40,10 +34,9 @@
         phases:{
         (phase "Opening"
             (play 
-                (move
-                    Select 
+                (move Select 
                     (from 
-                        (if (is Mover Prev) 
+                        (if ("SameTurn") 
                             (sites {("NextHole" ("PlayFromLastHole"))})
                             (sites Mover) 
                         )
@@ -58,10 +51,9 @@
         
         (phase "Playing"
             (play 
-                (move
-                    Select 
+                (move Select 
                     (from 
-                        (if (is Mover Prev) 
+                        (if ("SameTurn") 
                             (sites {"PlayFromLastHole"})
                             (sites Mover) 
                         )
@@ -78,11 +70,11 @@
                                             count:(count at:(to))
                                         )
                                     )
-                                    (if (and (not (is Empty ("OppositePit"))) (is In (to) (sites Mover)))
+                                    (if (and (is Occupied ("OppositePit" (to))) (is In (to) (sites Mover)))
                                         (fromTo 
-                                            (from ("OppositePit")) 
+                                            (from ("OppositePit" (to))) 
                                             (to (handSite Mover)) 
-                                            count:(count at:("OppositePit"))
+                                            count:(count at:("OppositePit" (to)))
                                         )
                                     )
                                 )

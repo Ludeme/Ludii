@@ -24,11 +24,10 @@
         (start (set Count 7 to:(union (sites P1) (sites P2))))
         
         (play 
-            (move
-                Select 
+            (move Select 
                 (from 
                     (if 
-                        (is Mover Prev) 
+                        ("SameTurn") 
                         "LastHoleSowed" 
                         (sites Mover) 
                     ) 
@@ -58,7 +57,6 @@
                 )
             )		
         )
-        
 
         (end ("MancalaByScoreWhen" (and (no Moves Mover) (no Moves Next)) ))
     )

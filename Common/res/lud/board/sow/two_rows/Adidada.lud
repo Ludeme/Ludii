@@ -17,8 +17,7 @@
     (rules 
         (start (set Count 4 to:(sites Track)))		  
         (play 
-            (move
-                Select 
+            (move Select 
                 (from 
                     (sites Mover) 
                     if:(< 0 (count at:(from)))

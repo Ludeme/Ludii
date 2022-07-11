@@ -1,8 +1,7 @@
 (define "NumCaptureDone" (value Player Mover))
 
 (define "Sow" 
-    (move 
-        Select 
+    (move Select 
         (from 
             (sites Mover) 
             if:(> (count at:(from)) 0)
@@ -12,14 +11,14 @@
                 #1
                 if:(or {
                     (and {(<= (count at:(to)) 9) (is Odd (count at:(to))) (>= "NumCaptureDone" <Capture:doneSoFar>) }) // Two or more captures done so far
-                    (and (= "NumCaptureDone" Off) (= (count at:(to)) <Capture:numCounters>)) // No capture done so far.
+                    (and ("IsOffBoard" "NumCaptureDone") (= (count at:(to)) <Capture:numCounters>)) // No capture done so far.
                     <Capture:ruleSecondCapture> // Only one capture done so far.
                 }) 
                 apply:(fromTo (from (to)) (to (mapEntry (mover))) count:(count at:(to)) 
                     // We update the number of capture done so far for that player.
                     (then (and 
                             (if (= "NumCaptureDone" 1) (set Value Mover 2)) 
-                            (if (= "NumCaptureDone" Off) (set Value Mover 1))
+                            (if ("IsOffBoard" "NumCaptureDone") (set Value Mover 1))
                         ) 
                     )
                 )
@@ -124,4 +123,3 @@
     )
     
 )
-

@@ -19,8 +19,6 @@
 
 (define "PiecesOwnedBy" (+ (count at:(mapEntry #1)) (count in:(sites #1))))
 
-(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns")))
-
 (define "OnlySingleCounters"
     (all Sites (forEach (sites Mover) if:(is In (site) ("PlayableSites"))) if:(>= 1 (count at:(site))))
 )
@@ -61,11 +59,11 @@
                                 (sow
                                     "TrackCCW"
                                     apply:(if (= 1 (count at:(to)))
-                                        (if (is Occupied ("OppositePit"))
+                                        (if (is Occupied ("OppositePitTwoRows" (to)))
                                             (fromTo
-                                                (from ("OppositePit"))
+                                                (from ("OppositePitTwoRows" (to)))
                                                 (to (mapEntry Mover))
-                                                count:(count at:("OppositePit"))
+                                                count:(count at:("OppositePitTwoRows" (to)))
                                             )
                                         )
                                         (and
@@ -89,11 +87,11 @@
                                 (sow
                                     "TrackCW"
                                     apply:(if (= 1 (count at:(to)))
-                                        (if (is Occupied ("OppositePit"))
+                                        (if (is Occupied ("OppositePitTwoRows" (to)))
                                             (fromTo
-                                                (from ("OppositePit"))
+                                                (from ("OppositePitTwoRows" (to)))
                                                 (to (mapEntry Mover))
-                                                count:(count at:("OppositePit"))
+                                                count:(count at:("OppositePitTwoRows" (to)))
                                             )
                                         )
                                         (and
@@ -134,11 +132,11 @@
                             (sow
                                 "TrackCCW"
                                 apply:(if (= 1 (count at:(to)))
-                                    (if (is Occupied ("OppositePit"))
+                                    (if (is Occupied ("OppositePitTwoRows" (to)))
                                         (fromTo
-                                            (from ("OppositePit"))
+                                            (from ("OppositePitTwoRows" (to)))
                                             (to (mapEntry Mover))
-                                            count:(count at:("OppositePit"))
+                                            count:(count at:("OppositePitTwoRows" (to)))
                                         )
                                     )
                                     (and
@@ -169,11 +167,11 @@
                             (sow
                                 "TrackCW"
                                 apply:(if (= 1 (count at:(to)))
-                                    (if (is Occupied ("OppositePit"))
+                                    (if (is Occupied ("OppositePitTwoRows" (to)))
                                         (fromTo
-                                            (from ("OppositePit"))
+                                            (from ("OppositePitTwoRows" (to)))
                                             (to (mapEntry Mover))
-                                            count:(count at:("OppositePit"))
+                                            count:(count at:("OppositePitTwoRows" (to)))
                                         )
                                     )
                                     (and
@@ -247,7 +245,7 @@
                                     (if (> 4 (count at:(last To)))
                                         (and
                                             (fromTo
-                                                (from ("OppositePit"))
+                                                (from ("OppositePitTwoRows" (to)))
                                                 (to (mapEntry Next))
                                                 count:(- 4 (count at:(last To)))
                                             )
@@ -271,7 +269,7 @@
                                     (if (> 4 (count at:(last To)))
                                         (and
                                             (fromTo
-                                                (from ("OppositePit"))
+                                                (from ("OppositePitTwoRows" (to)))
                                                 (to (mapEntry Next))
                                                 count:(- 4 (count at:(last To)))
                                             )

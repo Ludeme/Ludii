@@ -19,7 +19,7 @@
         
         (start {
             (set Count 6 to:(sites Track)) 
-            (set RememberValue "Playable" (union (sites Top) (sites Bottom)))
+            (set RememberValue "Playable" (sites Board))
         })
         
         phases:{

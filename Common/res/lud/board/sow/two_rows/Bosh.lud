@@ -1,6 +1,6 @@
-(define "NextHoleFrom" (trackSite Move from:#1 #2))
+(define "NextHoleFrom" ("NextSiteOnTrack" #2 from:#1))
 
-(define "PlayFromNextHole" (sites {("NextHoleFrom" (last To afterConsequence:True) steps:1)}))
+(define "PlayFromNextHole" (sites {("NextHoleFrom" (last To afterConsequence:True) 1)}))
 
 (define "OwnedHoles" 
     (if (is Mover P1)
@@ -59,11 +59,10 @@
         (phase "Sowing" 
             (play
                 (or {
-                    (move 
-                        Select 
+                    (move Select 
                         (from 
                             (if 
-                                (is Mover Prev) 
+                                ("SameTurn") 
                                 "PlayFromNextHole" 
                                 ("OwnedHoles") 
                             ) 
@@ -73,16 +72,16 @@
                             (sow
                                 apply:(if 
                                     (and 
-                                        (= (count at:("NextHoleFrom" (to) steps:1)) 0) 
-                                        (> (count at:("NextHoleFrom" (to) steps:2)) 0)
+                                        (= (count at:("NextHoleFrom" (to) 1)) 0) 
+                                        (> (count at:("NextHoleFrom" (to) 2)) 0)
                                     )
                                     (fromTo 
-                                        (from ("NextHoleFrom" (to) steps:2)) 
+                                        (from ("NextHoleFrom" (to) 2)) 
                                         (to (handSite Mover)) 
-                                        count:(count at:("NextHoleFrom" (to) steps:2))
+                                        count:(count at:("NextHoleFrom" (to) 2))
                                     )
                                     (if
-                                        (> (count at:("NextHoleFrom" (to) steps:1)) 0) 
+                                        (> (count at:("NextHoleFrom" (to) 1)) 0) 
                                         (moveAgain)
                                     )
                                 )

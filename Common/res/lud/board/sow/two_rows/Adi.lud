@@ -9,7 +9,7 @@
     )
 )
 
-(define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
+(define "NextHole" ("NextSiteOnTrack" #2 from:#1 "Track"))
 
 (define "NoPieceOnBoard" (all Sites (union (sites P1) (sites P2)) if:(= 0 (count at:(site)))))
 
@@ -53,15 +53,13 @@
     (not 
         (can Move
             (or
-                (move
-                    Select 
+                (move Select 
                     (from 
                         (sites (values Remembered "OwnedP1"))  
                         if:(and (not (is In (from) (values Remembered "P1SowFrom"))) (< 0 (count at:(from))))
                     )
                 )
-                (move
-                    Select 
+                (move Select 
                     (from 
                         (sites (values Remembered "OwnedP2"))  
                         if:(and (not (is In (from) (values Remembered "P2SowFrom"))) (< 0 (count at:(from))))
@@ -101,8 +99,7 @@
         (phase "Sowing"
             (play 
                 (or {
-                    (move
-                        Select 
+                    (move Select 
                         (from 
                             ("OwnedHoles")  
                             if:(and ("PossibleSowFrom") (< 0 (count at:(from))))

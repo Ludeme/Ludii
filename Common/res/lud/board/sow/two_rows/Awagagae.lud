@@ -1,4 +1,4 @@
-(define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
+(define "NextHole" ("NextSiteOnTrack" #2 from:#1 "Track"))
 
 (define "OwnedHoles" 
     (if (is Mover P1)
@@ -74,7 +74,7 @@
                     (move Select
                         (from 
                             (if 
-                                (is Mover Prev) 
+                                ("SameTurn") 
                                 "LastHoleSowed" 
                                 ("OwnedHoles")  
                             )

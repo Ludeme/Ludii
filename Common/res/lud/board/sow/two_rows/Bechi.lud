@@ -1,5 +1,5 @@
 (define "Column" <Board:size>)
-(define "NextHole" (trackSite Move from:#1 #2 steps:#3))
+(define "NextHole" ("NextSiteOnTrack" #3 from:#1 #2))
 (define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1 "Home"))))
 
 (define "CaptureMove" 
@@ -66,8 +66,7 @@
 
 (define "Move"
     (or {
-        (move
-            Select 
+        (move Select 
             (from 
                 (sites Mover "LeftSide") 
                 if:(> (count at:(from)) 1)
@@ -85,8 +84,7 @@
                 )
             )
         )
-        (move
-            Select 
+        (move Select 
             (from 
                 (sites Mover "RightSide") 
                 if:(> (count at:(from)) 1)
