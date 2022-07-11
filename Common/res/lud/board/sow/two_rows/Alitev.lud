@@ -1,4 +1,4 @@
-(define "CapturedPiece" (count Cell at:(handSite #1)))
+(define "PiecesOwnedBy" (count Cell at:(handSite #1)))
 
 //------------------------------------------------------------------------------
 
@@ -12,15 +12,13 @@
         (regions P2 (sites Top))                        // P2 home
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+    })  
     (rules 
         
         (start (set Count 3 to:(sites Track)))
         
         (play 
-            (move
-                Select 
+            (move Select 
                 (from 
                     (sites Mover) 
                     if:(> (count at:(from)) 0)
@@ -38,14 +36,7 @@
             )
         )
         
-        (end
-            (if (= 0 (count in:(union (sites P1) (sites P2))))
-                (byScore {
-                    (score P1 ("CapturedPiece" P1)) 
-                    (score P2 ("CapturedPiece" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" ("NoPieceOnBoard")))
     )
 )
 

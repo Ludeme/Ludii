@@ -12,10 +12,10 @@
 (define "NotEnemyOrOnlyOne"   
     (or 
         (and 
-            (is Enemy (who at:(to))) 
+            ("IsEnemyAt" (to)) 
             (= (topLevel at:(to)) 0)
         ) 
-        (not (is Enemy (who at:(to))))
+        (not ("IsEnemyAt" (to)))
     )
 )
 
@@ -56,7 +56,7 @@
                             (to ("NextSiteFrom" (site))
                                 if:("NotEnemyOrOnlyOne")
                                 (apply 
-                                    if:(is Enemy (who at:(to))) 
+                                    if:("IsEnemyAt" (to)) 
                                     (remove (to))
                                 )
                             )

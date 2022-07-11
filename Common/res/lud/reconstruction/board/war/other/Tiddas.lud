@@ -14,7 +14,7 @@
     (rules 
         (start [#]) // 11 pieces.
         (play [#])
-        (end (if (no Pieces Next) (result Mover Win)) )  
+        (end (if (no Pieces Next) (result Mover Win)))  
     )
 )
 

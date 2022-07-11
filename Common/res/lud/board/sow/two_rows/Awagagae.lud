@@ -1,6 +1,4 @@
-(define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
-(define "NoPieceOnBoard" (no Pieces All in:(union (sites P1) (sites P2))))
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+(define "NextHole" ("NextSiteOnTrack" #2 from:#1 "Track"))
 
 (define "OwnedHoles" 
     (if (is Mover P1)
@@ -40,8 +38,6 @@
     )
 )
 
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
-
 (define "RemmemberOwnedHoles" 
     (if (is Mover P1)
         (remember Value "OwnedP1" #1)
@@ -62,8 +58,7 @@
         (hand Each)
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
-        }
-    )  
+    })  
     (rules 
         (start {
             (set RememberValue "OwnedP1" (sites Bottom))
@@ -79,8 +74,8 @@
                     (move Select
                         (from 
                             (if 
-                                (is Mover Prev) 
-                                "PlayFromLastHole" 
+                                ("SameTurn") 
+                                "LastHoleSowed" 
                                 ("OwnedHoles")  
                             )
                             if:(and ("PossibleSowFrom") (< 0 (count at:(from))))

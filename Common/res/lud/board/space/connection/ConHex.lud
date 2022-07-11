@@ -67,8 +67,8 @@
         (piece "Marker" Each)
         (piece "Rectangle" Each)
         (regions "Holes"  (union (difference (sites Board Vertex) (sites Outer Vertex)) (sites Corners Vertex)))
-        (regions P1 { (sites Side N) (sites Side S) })
-        (regions P2 { (sites Side W) (sites Side E) })
+        (regions P1 {(sites Side N) (sites Side S) })
+        (regions P2 {(sites Side W) (sites Side E) })
     })
     (rules
         

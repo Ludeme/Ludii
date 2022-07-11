@@ -11,18 +11,16 @@
     (players 2)
     (equipment {
         (board (rectangle 7 11))
-        (piece "Bull" P1
-            ("StepForwardToEmpty")
-        )
+        (piece "Bull" P1 ("StepForwardToEmpty"))
         (piece "Colonel" P2
             (move Step Adjacent
                 (to if:
                     (and
                         "ToCenter"
-                        (not (is Friend (who at:(to))))
+                        (not ("IsFriendAt" (to)))
                     )
                     (apply
-                        (if (is Enemy (who at:(to)))
+                        (if ("IsEnemyAt" (to))
                             (remove (to))
                         )
                     )
@@ -31,8 +29,7 @@
         )
         (piece "Dog" P2
             (move Slide
-                (between if:
-                    (and
+                (between if:(and
                         "ToCenter"
                         (is Empty (to))
                     )
@@ -46,15 +43,10 @@
             (place "Colonel2" {"F6"})
             (place "Dog2" {"D6" "E6" "G6" "H6"})
         })
-        (play
-            (forEach Piece)
-        )
+        (play (forEach Piece))
         (end {
-            (if
-                (is In (last To) (sites Top))
-                (result P1 Win)
-            )
-            (if (no Moves Next) (result Mover Win))
+            ("ReachWin" (sites Top) P1)
+            ("BlockWin")
         })
     )
 )

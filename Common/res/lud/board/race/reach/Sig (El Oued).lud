@@ -13,7 +13,7 @@
 (define "GroundAway" 23)
 
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #2 #1))
 (define "ExtraThrowValue" (mapEntry "ExtraThrow" (count Pips)))
 
 (define "AllPiecesInMecca"
@@ -31,7 +31,7 @@
         (forEach Site (sites Track Mover #1 from:(last From) to:(last To))
             (if (!= (site) (last To))
                 (forEach Level (site) FromTop
-                    (if (is Enemy (who at:(site) level:(level)))
+                    (if ("IsEnemyAt" (site) level:(level))
                         (fromTo
                             (from (site) level:(level))
                             (to
@@ -45,7 +45,7 @@
     )		
 )
 
-(define "NextSite" (trackSite Move from:#1 #2 steps:1))
+(define "NextSite" ("NextSiteOnTrack" 1 from:#1 #2))
 
 (define "SigMove" 
     (if 
@@ -132,7 +132,7 @@
             }
         )
         (dice d:2 from:0 num:6)
-        (piece "Father" Each  ("Move" (if (= 1 (var "SpecialSig")) (+ 1 ("ThrowValue")) ("ThrowValue"))))
+        (piece "Father" Each ("Move" (if (= 1 (var "SpecialSig")) (+ 1 ("ThrowValue")) ("ThrowValue"))))
         (piece "Djinn" Each  
             (if (= ("Mecca") (where "Father" Mover))
                 ("Move" (* 2 (if (= 1 (var "SpecialSig")) (+ 1 ("ThrowValue")) ("ThrowValue"))) ("GoToStep1Djinn"))
@@ -149,8 +149,8 @@
     (rules
         <Player:start>
         (play 
-            (do (roll) 
-                next:(if (can Move (forEach Piece)) (forEach Piece) (move Pass))
+            ("RollMove"
+                (if (can Move (forEach Piece)) (forEach Piece) (move Pass))
                 (then
                     (if (!= 0 ("ExtraThrowValue"))
                         (and

@@ -24,7 +24,7 @@
 
 (define "PieceMove"
     (or
-        (if (and { (= 0 (count MovesThisTurn)) ("Triple") ("HasASixThreeOrTwo") (= 3 ("CountPieceTypeInStack" (mover) (from))) })
+        (if (and {(= 0 (count MovesThisTurn)) ("Triple") ("HasASixThreeOrTwo") (= 3 ("CountPieceTypeInStack" (mover) (from))) })
             (move 
                 (from (from) level:(level))
                 (to ("NextSiteOnTrack" (* 2 ("Die1")) from:(from) #1))

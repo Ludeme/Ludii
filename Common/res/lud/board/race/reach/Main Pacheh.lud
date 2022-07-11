@@ -1,16 +1,6 @@
 (define "ThrowValue" (mapEntry "ThrowDiceValue" (count Pips)))
 
-(define "SiteToMoveOnTrack" (trackSite Move steps:("ThrowValue")))
-
-(define "CaptureEnemyPiece" 
-    (apply 
-        if:(is Enemy (who at:(to))) 
-        (fromTo 
-            (from (to))
-            (to (mapEntry "StartingPoint" (who at:(to))))
-        )
-    ) 
-)
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" ("ThrowValue")))
 
 (define "Goal" 12)
 
@@ -29,16 +19,16 @@
             }
         )
         (piece "Marker" Each
-            (if (!= "SiteToMoveOnTrack" Off)
+            (if ("IsNotOffBoard" "SiteToMoveOnTrack")
                 (if (or
-                        (is In "SiteToMoveOnTrack" (sites Empty))
-                        (is Enemy (who at:"SiteToMoveOnTrack"))
+                        (is Empty "SiteToMoveOnTrack")
+                        ("IsEnemyAt" "SiteToMoveOnTrack")
                     )
                     (move 
                         (from (from) level:(level))
                         (to 
                             "SiteToMoveOnTrack" 
-                            "CaptureEnemyPiece"
+                            ("HittingCapture" (mapEntry "StartingPoint" (who at:(to))))
                         )
                     )
                 )
@@ -51,7 +41,7 @@
         )
         (map "ThrowDiceValue" {(pair 0 8) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})
         (map "StartingPoint" {(pair 1 2) (pair 2 22) (pair 3 14) (pair 4 10)})
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
     })
     (rules 
         (start {
@@ -61,9 +51,8 @@
             <Player:startP4>
         })
         (play 
-            (do  
-                (roll) 
-                next:(if (can Move (forEach Piece))
+            ("RollMove"
+                (if (can Move (forEach Piece))
                     (forEach Piece (then (if (= ("ThrowValue") 8) (moveAgain))))
                     (move Pass (then (if (= ("ThrowValue") 8) (moveAgain))))
                 )

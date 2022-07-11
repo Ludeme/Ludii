@@ -1,6 +1,4 @@
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
-
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
 
 (define "Columns" 8)
 
@@ -27,7 +25,7 @@
     (rules 
         
         (start 
-            (set Count 4 to:(union (sites P1 "Inner") (sites P2 "Inner")) )
+            (set Count 4 to:(union (sites P1 "Inner") (sites P2 "Inner")))
         )
         
         (play 
@@ -35,8 +33,8 @@
                 Select
                 (from 
                     (if 
-                        (is Mover Prev) 
-                        "PlayFromLastHole" 
+                        ("SameTurn") 
+                        "LastHoleSowed" 
                         (sites Mover "Home") 
                     ) 
                     if:(< 1 (count at:(from)))

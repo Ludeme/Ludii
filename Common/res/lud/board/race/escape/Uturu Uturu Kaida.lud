@@ -37,7 +37,7 @@
         (start (place "Horse" "Hand"))
         (play 
             ("RollMove"
-            	(if (< 0 ("ThrowValue"))
+                (if (< 0 ("ThrowValue"))
                     (or (forEach Piece) (forEach Piece container:(mover)))
                 )
             )

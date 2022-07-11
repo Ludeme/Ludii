@@ -1,6 +1,6 @@
-(define "NextHoleFrom" (trackSite Move from:#1 #2))
+(define "NextHoleFrom" ("NextSiteOnTrack" #2 from:#1))
 
-(define "PlayFromNextHole" (sites {("NextHoleFrom" (last To afterConsequence:True) steps:1)}))
+(define "PlayFromNextHole" (sites {("NextHoleFrom" (last To afterConsequence:True) 1)}))
 
 (define "OwnedHoles" 
     (if (is Mover P1)
@@ -11,12 +11,10 @@
 
 (define "OneRowIsEmpty"
     (or 
-        (no Pieces All in:(sites P1))
-        (no Pieces All in:(sites P2))
+        (all Sites (sites P1) if:(= 0 (count at:(site))))
+        (all Sites (sites P2) if:(= 0 (count at:(site))))
     )
 )
-
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
 (define "ForgetValue" 
     (if (is Mover P1)
@@ -33,7 +31,7 @@
 )
 
 (define "NoPiecesInP1Side" 
-    (no Pieces All in:(sites P1))
+    (all Sites (sites P1) if:(= 0 (count at:(site))))
 )
 
 (define "LeftMostEmpty" 
@@ -64,8 +62,7 @@
         (regions P2 (sites Top)) 
         (hand Each)
         (map "LeftMost" {(pair P1 0) (pair P2 11)})
-        }
-    )  
+    })  
     (rules 
         
         (start { 
@@ -78,11 +75,10 @@
         (phase "Sowing"
             (play 
                 (or {
-                    (move 
-                        Select 
+                    (move Select 
                         (from 
                             (if 
-                                (is Mover Prev) 
+                                ("SameTurn") 
                                 "PlayFromNextHole" 
                                 ("OwnedHoles") 
                             ) 
@@ -91,14 +87,14 @@
                         (then 
                             (sow
                                 apply:(if (> (count at:(to)) 1)
-                                    (if (>= (count at:("NextHoleFrom" (to) steps:1)) 1)
+                                    (if (>= (count at:("NextHoleFrom" (to) 1)) 1)
                                         (moveAgain)
                                     )
-                                    (if (>= (count at:("NextHoleFrom" (to) steps:1)) 1)
+                                    (if (>= (count at:("NextHoleFrom" (to) 1)) 1)
                                         (fromTo
-                                            (from ("NextHoleFrom" (to) steps:1))
+                                            (from ("NextHoleFrom" (to) 1))
                                             (to (handSite Mover))
-                                            count:(count at:("NextHoleFrom" (to) steps:1))
+                                            count:(count at:("NextHoleFrom" (to) 1))
                                         )
                                     )
                                 )
@@ -162,7 +158,6 @@
             (nextPhase (all Passed) "Sowing")
         )
         }
-        
     )
 )
 

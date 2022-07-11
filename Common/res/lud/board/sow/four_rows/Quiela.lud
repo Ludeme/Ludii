@@ -1,6 +1,6 @@
 (define "Columns" 7)
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))) )
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
 
 (define "LeftMostCounters"
     (all Sites (difference (sites Mover "Home") (mapEntry "LeftMost" Mover))
@@ -8,7 +8,6 @@
     )
 )
 
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 (define "HoleOnLeft"
     (if (is Mover P1)
         (ahead (site) W)
@@ -68,7 +67,7 @@
     (rules 
         
         (start 
-            (set Count 3 to:(union (sites P1 "Outer") (sites P2 "Outer")) )
+            (set Count 3 to:(union (sites P1 "Outer") (sites P2 "Outer")))
         )
         
         phases:{
@@ -79,7 +78,7 @@
                         (from (sites Mover "Home") if:(is Occupied (from)))
                         (to (difference (sites Mover) (from)))
                     )
-                    (if (and { ("LeftMostCounters") ("EqualOrLessThanLeftHole") ("MaximumOfTwoHolesInInner") })
+                    (if (and {("LeftMostCounters") ("EqualOrLessThanLeftHole") ("MaximumOfTwoHolesInInner") })
                         (move Pass)
                     )
                 )
@@ -92,8 +91,8 @@
                 (move Select
                     (from 
                         (if 
-                            (is Mover Prev) 
-                            "PlayFromLastHole" 
+                            ("SameTurn") 
+                            "LastHoleSowed" 
                             (sites Mover "Home") 
                         ) 
                         if:(is Occupied (from))
@@ -136,8 +135,8 @@
                 (move Select
                     (from 
                         (if 
-                            (is Mover Prev) 
-                            "PlayFromLastHole" 
+                            ("SameTurn") 
+                            "LastHoleSowed" 
                             (sites Mover "Home") 
                         ) 
                         if:(if (< 1 (count at:(from)))

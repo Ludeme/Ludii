@@ -15,7 +15,7 @@
                     (forEach
                         (sites Board)
                         if:(and { 
-                            (not (is Friend (who at:(site))))
+                            (not ("IsFriendAt" (site)))
                             (= 2 (count Steps (from) (site)))
                             (!= (phase of:(from)) (phase of:(site))) 
                         })

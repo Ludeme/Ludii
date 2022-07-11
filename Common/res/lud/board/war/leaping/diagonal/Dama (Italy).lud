@@ -4,7 +4,7 @@
         (from #1) 
         (directions {FR FL}) 
         (between 
-            if:(and (is Enemy (who at:(between))) (!= (what at:(between)) (id "DoubleCounter" Next)))
+            if:(and ("IsEnemyAt" (between)) (!= (what at:(between)) (id "DoubleCounter" Next)))
             (apply (remove (between)))
         ) 
         (to if:(is Empty (to))) 
@@ -33,7 +33,7 @@
         (start
             { 
             (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ))
-            (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1)) )
+            (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1)))
             }
         )
         
@@ -87,7 +87,7 @@
             )
         ) 
         
-        (end (if (no Moves Next) (result Mover Win))) 
+        (end ("BlockWin"))
     )
 )
 

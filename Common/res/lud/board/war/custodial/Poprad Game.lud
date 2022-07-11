@@ -29,10 +29,10 @@
                             Orthogonal
                             (between
                                 (max 1)
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
-                            (to if:(is Friend (who at:(to))))
+                            (to if:("IsFriendAt" (to)))
                         )
                     )
                 )
@@ -49,7 +49,7 @@
                         (from (handSite Mover))
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
-                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                            (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
                         )
                     )
                 )
@@ -79,10 +79,10 @@
                             Orthogonal
                             (between
                                 (max 1)
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
-                            (to if:(is Friend (who at:(to))))
+                            (to if:("IsFriendAt" (to)))
                         )
                     )
                 )
@@ -99,7 +99,7 @@
                         (from (handSite Mover))
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
-                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                            (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
                         )
                     )
                 )
@@ -129,10 +129,10 @@
                             Orthogonal
                             (between
                                 (max 1)
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
-                            (to if:(is Friend (who at:(to))))
+                            (to if:("IsFriendAt" (to)))
                         )
                     )
                 )
@@ -149,7 +149,7 @@
                         (from (handSite Mover))
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
-                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                            (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
                         )
                     )
                 )
@@ -179,10 +179,10 @@
                             Orthogonal
                             (between
                                 (max 1)
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
-                            (to if:(is Friend (who at:(to))))
+                            (to if:("IsFriendAt" (to)))
                         )
                     )
                 )
@@ -199,7 +199,7 @@
                         (from (handSite Mover))
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
-                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                            (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
                         )
                     )
                 )
@@ -222,7 +222,7 @@
         (define "Castle" (centrePoint))
         (define "JarlWasCaptured" (is Triggered "Surrounded" P2))
         (define "CaptureJarl" (apply (trigger "Surrounded" P2)))
-        (define "FriendOrCentre" (or (is Friend (who at:(to))) (= (to) ("Castle"))))
+        (define "FriendOrCentre" (or ("IsFriendAt" (to)) (= (to) ("Castle"))))
         (define "JarlAndExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (or (= (between) ("Castle")) (is In (between) (sites "OrthogonalSitesCentre")))))
         (define "JarlButNotTheExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (and (!= (between) ("Castle")) (not (is In (between) (sites "OrthogonalSitesCentre"))))))
         
@@ -267,7 +267,7 @@
                                     if:"JarlButNotTheExpandedCentre" 
                                     "CaptureJarl" 
                                 )
-                                (to if:(is Friend (who at:(to))))
+                                (to if:("IsFriendAt" (to)))
                             )
                         })
                     )
@@ -324,7 +324,7 @@
         (define "Castle" (centrePoint))
         (define "JarlWasCaptured" (is Triggered "Surrounded" P2))
         (define "CaptureJarl" (apply (trigger "Surrounded" P2)))
-        (define "FriendOrCentre" (or (is Friend (who at:(to))) (= (to) ("Castle"))))
+        (define "FriendOrCentre" (or ("IsFriendAt" (to)) (= (to) ("Castle"))))
         (define "JarlAndExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (or (= (between) ("Castle")) (is In (between) (sites "OrthogonalSitesCentre")))))
         (define "JarlButNotTheExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (and (!= (between) ("Castle")) (not (is In (between) (sites "OrthogonalSitesCentre"))))))
         
@@ -369,7 +369,7 @@
                                     if:"JarlButNotTheExpandedCentre" 
                                     "CaptureJarl" 
                                 )
-                                (to if:(is Friend (who at:(to))))
+                                (to if:("IsFriendAt" (to)))
                             )
                         })
                     )

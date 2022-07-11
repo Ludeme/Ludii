@@ -1,9 +1,5 @@
 (define "Columns" 6)
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
-
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "CaptureEnoughSeed" (> 7 (count in:(difference (sites Board) (mapEntry Mover)))))
 
 (define "PlayableSites" 
@@ -20,13 +16,11 @@
 )
 
 (define "NoLegalMoves" 
-    (= 0 
-        (count Sites 
-            in:(forEach 
-                (difference (union (sites Bottom) (sites Top)) (sites Empty))
-                if:(is In (site) (values Remembered))
-            )
+    (all Sites (forEach 
+            (difference (union (sites Bottom) (sites Top)) (sites Empty))
+            if:(is In (site) (values Remembered))
         )
+        if:(= 0 (count at:(site)))
     )
 )
 
@@ -46,8 +40,7 @@
         (regions "Home" P1 (sites Bottom))              // P1 Home
         (regions "Home" P2 (sites Top))                 // P2 home
         (map {(pair P1 LastSite) (pair P2 FirstSite)})  // kalahs (storage pits)
-        }
-    )  
+    })  
     (rules 
         
         (start {
@@ -58,12 +51,11 @@
         phases:{
         (phase "Round"
             (play 
-                (move
-                    Select
+                (move Select
                     (from 
                         (if 
-                            (and (not (is Pending)) (is Mover Prev)) 
-                            ("PlayFromLastHole") 
+                            (and (not (is Pending)) ("SameTurn")) 
+                            ("LastHoleSowed") 
                             ("PlayableSites") 
                         ) 
                         if:(> (count at:(from)) 0)
@@ -77,11 +69,11 @@
                                 (and (moveAgain) (set Pending))
                                 (if (> (count at:(to)) 1)
                                     (moveAgain)
-                                    (if (and (is In (to) (sites Mover "Home")) (> (count at:("OppositePit")) 0))
+                                    (if (and (is In (to) (sites Mover "Home")) (> (count at:("OppositePit" (to))) 0))
                                         (fromTo 
-                                            (from "OppositePit") 
+                                            (from ("OppositePit" (to))) 
                                             (to (mapEntry Mover)) 
-                                            count:(count at:"OppositePit")
+                                            count:(count at:("OppositePit" (to)))
                                         )
                                     )
                                 )

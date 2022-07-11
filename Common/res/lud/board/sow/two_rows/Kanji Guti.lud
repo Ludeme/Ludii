@@ -4,11 +4,9 @@
 
 (define "NumPiecesOnBoard" (count in:(sites Track)))
 
-(define "NextHole" (trackSite Move from:#1 steps:1))
+(define "NextHole" ("NextSiteOnTrack" 1 from:#1))
 
 (define "LastHolePlayed" (last To afterConsequence:True))
-
-(define "OppositePit" (if (is In #1 (sites Bottom)) (+ #1 "Columns") (- #1 "Columns")) )
 
 //------------------------------------------------------------------------------
 
@@ -23,8 +21,7 @@
         (hand Each)
         (regions "Home" P1 (expand (sites Left) steps:2))    // P1 Home
         (regions "Home" P2 (expand (sites Right) steps:2))   // P2 home
-        }
-    )  
+    })  
     (rules 
         
         (start {
@@ -33,11 +30,10 @@
         })
         
         (play 
-            (move
-                Select 
+            (move Select 
                 (from 
                     (if 
-                        (is Mover Prev) 
+                        ("SameTurn") 
                         (sites {("NextHole" "LastHolePlayed")})
                         (sites Mover) 
                     ) 
@@ -47,11 +43,11 @@
                     (sow  
                         apply:(if (> (count at:("NextHole" (to))) 0)
                             (moveAgain)
-                            (if (> (count at:("OppositePit" ("NextHole" (to)))) 0)
+                            (if (> (count at:("OppositePitTwoRows" ("NextHole" (to)))) 0)
                                 (fromTo 
-                                    (from ("OppositePit" ("NextHole" (to)))) 
+                                    (from ("OppositePitTwoRows" ("NextHole" (to)))) 
                                     (to (handSite Mover)) 
-                                    count:(count at:("OppositePit" ("NextHole" (to))))
+                                    count:(count at:("OppositePitTwoRows" ("NextHole" (to))))
                                 )
                             )
                         )
@@ -60,14 +56,7 @@
             )		
         )
         
-        (end 
-            (if (= 0 ("NumPiecesOnBoard"))
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (= 0 ("NumPiecesOnBoard"))))
     )
 )
 

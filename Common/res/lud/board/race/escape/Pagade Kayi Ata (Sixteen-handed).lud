@@ -4,7 +4,7 @@
 (define "HasCapturedAnEnemy" (set Pending))
 
 (define "CanThrowAgain" (is Pending))
-(define "SiteToMoveOnTrack" (trackSite Move from:#1 steps:(pips)))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" (pips) from:#1))
 
 (define "RemoveAPiece" (move Remove #1))
 
@@ -84,14 +84,13 @@
             (pair 5 111) (pair 6 135) (pair 7 159) (pair 8 183)
             (pair 9 207) (pair 10 231) (pair 11 255) (pair 12 279)
             (pair 13 303) (pair 14 327) (pair 15 351) (pair 16 375)
-            }
-        )
+        })
         (piece "Disc" Each
             (if (and 
                     (!= (pips) 0) 
-                    (!= ("SiteToMoveOnTrack" (from)) Off)
+                    ("IsNotOffBoard" ("SiteToMoveOnTrack" (from)))
                 )
-                (if (= ("SiteToMoveOnTrack" (from)) End)
+                (if ("IsEndTrack" ("SiteToMoveOnTrack" (from)))
                     ("RemoveAPiece" (from))
                     (move 
                         (from (from) level:(level)) 
@@ -102,19 +101,19 @@
                                     (not (is In (to) (sites "Castle")))
                                     (and
                                         (is In (to) (sites "Castle"))
-                                        (not (is Enemy (who at:(to)))) 
+                                        (not ("IsEnemyAt" (to))) 
                                     )
                                 )
                                 (not 
                                     (and 
-                                        (is Enemy (who at:(to))) 
+                                        ("IsEnemyAt" (to)) 
                                         (> (count at:(to)) 1)
                                     )
                                 )
                             )
                             (apply 
                                 if:(and 
-                                    (is Enemy (who at:(to))) 
+                                    ("IsEnemyAt" (to)) 
                                     (= (count at:(to)) 1)
                                 )
                                 (and
@@ -155,8 +154,8 @@
         (play
             (if ("CanThrowAgain")
                 (move Select (from (sites "DiceHand")) (then (and (roll) (moveAgain))))
-                (do (if (not "SameTurn") (roll))
-                    next:(forEach Die 
+                ("RollEachNewTurnMove"
+                    (forEach Die 
                         combined:True 
                         replayDouble:True 
                         (or

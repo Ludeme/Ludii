@@ -36,7 +36,7 @@
 
 (option "Start Rules" <Place> args:{ <geese> }
     {
-    (item "13 Geese" <(place "Goose2" (union (expand (sites Bottom)) (sites Row 2)) )>  "The game starts with 13 geese.")*   
+    (item "13 Geese" <(place "Goose2" (union (expand (sites Bottom)) (sites Row 2)))>  "The game starts with 13 geese.")*   
     (item "15 Geese" <(place "Goose2" (union {(expand (sites Bottom)) (sites Row 2) (sites {"A4" "G4"})}))> "The game starts with 15 geese.") 
     (item "17 Geese" <(place "Goose2" (union {(expand (sites Bottom)) (sites Row 2) (sites {"A4" "G4" "A5" "G5"})}))> "The game starts with 17 geese.") 
     }

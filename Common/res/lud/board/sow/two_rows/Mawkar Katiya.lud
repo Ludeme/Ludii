@@ -1,5 +1,5 @@
 (define "Columns" 7)
-(define "OppositePit" (if (is In #1 (sites Bottom)) (+ #1 "Columns") (- #1 "Columns")) )
+(define "OppositePit" (if (is In #1 (sites Bottom)) (+ #1 "Columns") (- #1 "Columns")))
 (define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
 (define "PlayableSites" (sites (values Remembered "Playable")))
 (define "NoPieceOnBoard" (no Pieces All in:(forEach (sites Board) if:(= 0 (state at:(site))))))
@@ -41,7 +41,7 @@
                     (move Select
                         (from 
                             (if 
-                                (is Mover Prev) 
+                                ("SameTurn") 
                                 (sites {(var "Replay")}) 
                                 (sites Mover) 
                             ) 

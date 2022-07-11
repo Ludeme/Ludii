@@ -18,13 +18,10 @@
     (no Pieces All in:(forEach (sites Board) if:(= 0 (state at:(site)))))
 )
 
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "SitesMarkedBy" 
     (forEach (sites Board) if:(= #1 (state at:(site))))
 )
 
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 (define "NoEmptyHoleRow" (all Sites (sites Mover) if:(is Occupied (site))))
 
 //------------------------------------------------------------------------------
@@ -55,8 +52,8 @@
                 (or {
                     (move Select
                         (from 
-                            (if (and (not (is Pending)) (is Mover Prev))
-                                ("PlayFromLastHole") 
+                            (if (and (not (is Pending)) ("SameTurn"))
+                                ("LastHoleSowed") 
                                 ("OwnedHoles") 
                             )
                             if:(and (< 0 (count at:(from))) (= 0 (state at:(from))))
@@ -80,7 +77,7 @@
                                             )
                                             (set State at:(to) (state at:(to)))
                                         })
-                                        (if (and { (< 2 (count Turns)) (= 0 (state at:(to))) (= 4 (count at:(to))) })
+                                        (if (and {(< 2 (count Turns)) (= 0 (state at:(to))) (= 4 (count at:(to))) })
                                             (set State at:(to) (mover))	
                                             (moveAgain)
                                         )

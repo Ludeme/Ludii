@@ -19,8 +19,6 @@
     )
 )
 
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
-
 (define "LeftMostEmpty" 
     (trackSite FirstSite 
         "Track"

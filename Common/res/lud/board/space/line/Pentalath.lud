@@ -4,8 +4,8 @@
     (enclose 
         (from (last To)) 
         (between 
-            if:(is Enemy (who at:(between))) 
-            (apply (remove (between)) ) 
+            if:("IsEnemyAt" (between)) 
+            (apply (remove (between))) 
         )
     )
 )

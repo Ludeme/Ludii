@@ -14,7 +14,7 @@
                 )
                 (move Step
                     (to 
-                        if:(is Enemy (who at:(to))) 
+                        if:("IsEnemyAt" (to)) 
                         (apply 
                             (and
                                 (if

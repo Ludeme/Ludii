@@ -86,7 +86,7 @@
                 (or {
                     (move Select
                         (from 
-                            (if (is Mover Prev)
+                            (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 ("OwnedHoles") 
                             )
@@ -326,7 +326,7 @@
                     )
                 )
             )
-            (nextPhase (and { (is Empty (handSite P1)) (is Empty (handSite P2)) (is Empty (handSite P3))}) "Sowing")
+            (nextPhase (and {(is Empty (handSite P1)) (is Empty (handSite P2)) (is Empty (handSite P3))}) "Sowing")
         )
         
         }

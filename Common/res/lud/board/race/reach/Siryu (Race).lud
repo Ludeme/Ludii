@@ -23,7 +23,7 @@
 
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
 
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #2 #1))
 
 (define "ExtraThrowValue" (mapEntry "ExtraThrow" (count Pips)))
 
@@ -32,7 +32,7 @@
 (define "PrepareLastStep" 
     (if (and {
             ("Sir") 
-            (is In (from) (sites { ("Step3") ("Medina") ("Cairo")}))
+            (is In (from) (sites {("Step3") ("Medina") ("Cairo")}))
             (< (state at:(from) level:(level)) 2)
         })
         (move 
@@ -75,7 +75,7 @@
     )	
 )
 
-(define "NextSite" (trackSite Move from:#1 #2 steps:1))
+(define "NextSite" ("NextSiteOnTrack" 1 from:#1 #2))
 
 (define "EnterToMinaret" ("SirMove" ("EnterMinaret") ("Minaret")))
 (define "ExitFromMinaret" ("SirMove" ("Minaret") ("ExitMinaret")))
@@ -88,7 +88,7 @@
     (then
         (forEach Site (sites Track Mover #1 from:("NextSite" (last From) #1) to:(last To))
             (forEach Level (site) FromTop
-                (if (is Enemy (who at:(site) level:(level)))
+                (if ("IsEnemyAt" (site) level:(level))
                     (fromTo
                         (from (site) level:(level))
                         (to
@@ -160,21 +160,19 @@
             (track "SecondTrack" "6,S1,E1,N,E1,S" directed:True)
             }
         )
-        (dice d:2 from:0 num:6)
+        ("StickDice" 6)
         (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 0) (pair 3 0) (pair 4 0) (pair 5 1) (pair 6 6)})
         (map "ExtraThrow" {(pair 0 1) (pair 1 1) (pair 2 0) (pair 3 0) (pair 4 0) (pair 5 1) (pair 6 3)})
         (piece "Father" Each ("Move" ("ThrowValue")))
         (piece "Angel" Each ("Move" (* 2 ("ThrowValue")) ("GoToStep3Angel")))
         (piece "Mother" Each ("Move" ("ThrowValue")))
-        }
-    )  
+    })  
     (rules 
         <Player:start>
         
         (play 
-            (do 
-                (roll) 
-                next:(forEach Piece)
+            ("RollMove"
+                (forEach Piece)
                 (then
                     (if (!= 0 ("ExtraThrowValue"))
                         (and

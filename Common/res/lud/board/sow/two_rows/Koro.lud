@@ -30,7 +30,7 @@
     })  
     (rules 
         
-        (start (set Count <Start:numSeeds> to:(sites Track)) )
+        (start (set Count <Start:numSeeds> to:(sites Track)))
         
         (play 
             (if (<= <Start:usingHogon> (count at:(mapEntry "Hogon" Mover)))

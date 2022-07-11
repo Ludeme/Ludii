@@ -21,14 +21,14 @@
                                 if:(not (is In (to) (sites Around (from))))
                                 (apply 
                                     (if (and 
-                                            (not (is Friend (who at:(to))))
+                                            (not ("IsFriendAt" (to)))
                                             (not (is In (to) (sites To (slide (between if:True)))))
                                         )
                                         (move 
                                             (from) 
                                             (to 
                                                 (apply 
-                                                    if:(is Enemy (who at:(to)))
+                                                    if:("IsEnemyAt" (to))
                                                     (remove (to))
                                                 )
                                             )

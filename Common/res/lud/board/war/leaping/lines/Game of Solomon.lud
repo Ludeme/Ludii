@@ -3,7 +3,7 @@
         Hop
         (directions {Forwards Rightward Leftward} bySite:True) 
         (between 
-            if:(is Enemy (who at:(between))) 
+            if:("IsEnemyAt" (between)) 
             (apply (remove (between)))
         )
         (to if:(is Empty (to)))
@@ -62,7 +62,7 @@
         )
         
         (end {
-            (if (no Moves Next) (result Mover Win))
+            ("BlockWin")
             (if 
                 (and {
                     (= 1 (count Pieces P1)) 

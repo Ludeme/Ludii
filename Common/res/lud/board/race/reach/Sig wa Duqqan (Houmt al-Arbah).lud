@@ -7,8 +7,8 @@
 (define "EndTrack" 6)
 (define "BeginningExtensionTrack" 4)
 
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
-(define "GhoulaOnTrack" (trackSite Move from:(where "Ghoula" Neutral) #1 steps:#2))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #2 #1))
+(define "GhoulaOnTrack" ("NextSiteOnTrack" #2 from:(where "Ghoula" Neutral) #1))
 
 (define "IsSpecialThrow" (is In ("ThrowValue") (sites {1 6 4})))
 
@@ -18,10 +18,10 @@
 
 (define "ActivePiece" (set State at:#1 level:#2 1))
 
-(define "GhoulaPhaseDone" (and (= 1 (size Stack at:(where "Ghoula" Neutral))) (= ("EndTrack") (where "Ghoula" Neutral))))
+(define "GhoulaPhaseDone" (and ("IsSingletonStack" (where "Ghoula" Neutral)) (= ("EndTrack") (where "Ghoula" Neutral))))
 
 (define "MoveGhoula"
-    (if (= 1 (size Stack at:(where "Ghoula" Neutral)))
+    (if ("IsSingletonStack" (where "Ghoula" Neutral))
         (move
             (from (where "Ghoula" Neutral) level:(where Level "Ghoula" Neutral at:(where "Ghoula" Neutral)))
             (to ("GhoulaOnTrack" "GhoulaTrack" 1))
@@ -145,7 +145,7 @@
             )
             maxState:8
         )
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
         (map "Throw" {(pair 0 4) (pair 1 3) (pair 2 0) (pair 3 1) (pair 4 6)})
     })
     (rules 

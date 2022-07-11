@@ -1,5 +1,5 @@
-(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")) )
-(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2))) )
+(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")))
+(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2))))
 (define "Columns" 10)
 (define "OnlyHoleWithSingleCounters" (all Sites (sites Mover "Home") if:(>= 1 (count at:(site)))))
 
@@ -103,7 +103,7 @@
         
         }
         
-        (end (if (= 0 (count in:(sites Next "Home"))) (result Next Loss)))
+        (end (if (all Sites (sites Next "Home") if:(= 0 (count at:(site)))) (result Next Loss)))
     )
 )
 

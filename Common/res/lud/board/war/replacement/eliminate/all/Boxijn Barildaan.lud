@@ -11,7 +11,7 @@
                     (is In (to) (union (sites Occupied by:Next) (sites Empty)))
                 )
             )
-            (apply (if (is Enemy (who at:(to))) (remove (to))))
+            (apply (if ("IsEnemyAt" (to)) (remove (to))))
         )
         (then 
             (if (= 2 (count Sites in:(forEach  (sites Board) if:(= 1 (state at:(site))))))

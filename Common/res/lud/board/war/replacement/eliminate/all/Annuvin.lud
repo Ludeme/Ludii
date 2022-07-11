@@ -10,13 +10,13 @@
         #1
         (between 
             (max ("RemainingMove"))
-            if:(not (is Enemy (who at:(between))))
+            if:(not ("IsEnemyAt" (between)))
         )
         (to
-            if:(is Enemy (who at:(to)))
+            if:("IsEnemyAt" (to))
             (apply
-                if:(not (is Friend (who at:(to))))
-                (if (is Enemy (who at:(to)))
+                if:(not ("IsFriendAt" (to)))
+                (if ("IsEnemyAt" (to))
                     (remove (to)
                         (then (set Value Next (+ (value Player Next) 1)))
                     )
@@ -46,11 +46,11 @@
     })
     (rules
         (start {
-            (place "Ball1" (difference (union { (sites Side NW) (sites Side NE) (expand (sites Side N))}) (union (sites Left) (sites Right))))
-            (place "Ball2" (difference (union { (sites Side SW) (sites Side SE) (expand (sites Side S))}) (union (sites Left) (sites Right))))
+            (place "Ball1" (difference (union {(sites Side NW) (sites Side NE) (expand (sites Side N))}) (union (sites Left) (sites Right))))
+            (place "Ball2" (difference (union {(sites Side SW) (sites Side SE) (expand (sites Side S))}) (union (sites Left) (sites Right))))
         })
         (play
-            (if (is Prev Mover)
+            (if ("SameTurn")
                 ("PieceMovement" (from (last To)))
                 (forEach Piece)
             )

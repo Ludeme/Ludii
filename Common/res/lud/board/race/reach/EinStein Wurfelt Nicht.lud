@@ -1,17 +1,15 @@
 (define "CaptureToPiece"
     (apply 
         (if (is Occupied (to))
-            (remove 
-                (to) 
-            )
+            (remove (to))
         )
     ) 
 )
 
 (define "EmptySitesInHome" 
-    (intersection 
+    (forEach 
         (sites Mover "Home") 
-        (sites Empty)
+        if:(is Empty (site))
     )
 )
 
@@ -20,17 +18,14 @@
 )
 
 (define "GoalReached" 
-    ("NoSites" 
-        (difference 
-            (sites Mover "Goal") 
-            (sites Occupied by:Mover)
-        )
+    (all Sites 
+        (sites Mover "Goal") 
+        if:(is In (site) (sites Occupied by:Mover))
     )
 )
 
 (define "MoveForwards" 
-    (move
-        Step
+    (move Step
         Forwards
         (to 
             if:True
@@ -57,7 +52,7 @@
 )
 
 (define "PieceIsOnTheBoard" 
-    (!= (where "Square" Mover state:(count Pips)) Off)
+    ("IsNotOffBoard" (where "Square" Mover state:(count Pips)))
 )
 
 //------------------------------------------------------------------------------
@@ -90,9 +85,8 @@
         )
         (phase "Movement" 	        
             (play 
-                (do 
-                    (roll)
-                    next:(if ("PieceIsOnTheBoard")
+                ("RollMove"
+                    (if ("PieceIsOnTheBoard")
                         ("MoveAPieceOf" ("SameValue"))
                         ("MoveAPieceOf" ("ValueCloseToOne"))
                     )
@@ -203,6 +197,7 @@
         (show Piece State Middle)
         (show RegionOwner)
     })
+    
     (ai
         "EinStein Wurfelt Nicht_ai"
     )

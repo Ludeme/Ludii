@@ -228,7 +228,7 @@
     (rules
         (play
             (if
-                (not (is Mover Prev))
+                (not ("SameTurn"))
                 (if
                     (> 1 ("SizeLargestBug"))
                     (move Add (to (sites Board)))
@@ -245,7 +245,7 @@
             (if
                 (and
                     (no Moves Mover)
-                    (not (is Prev Mover))
+                    (not ("SameTurn"))
                 ) 
                 (if
                     (= (var "Last2Grow") (mover))
@@ -305,7 +305,7 @@
                 (forEach Group 
                     if:(and
                         {
-                        (is Mover Prev)
+                        ("SameTurn")
                         (is Mover (who at:(to))) 
                         (= 1 (state at:(to)))
                         }

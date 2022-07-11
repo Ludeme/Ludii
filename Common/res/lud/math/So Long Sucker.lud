@@ -147,7 +147,7 @@
                             })
                         )
                     )
-                    (if (and (not (is Pending)) (is Prev Mover))
+                    (if (and (not (is Pending)) ("SameTurn"))
                         (if ("AllActivePlayersInLastStack")
                             (move Set NextPlayer (player ("OwnerMostRecentPlayedChip")))
                             (forEach Player

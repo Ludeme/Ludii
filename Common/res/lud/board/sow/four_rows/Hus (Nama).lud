@@ -1,8 +1,8 @@
 (define "Columns" <Board:rowSize>)
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))) )
-(define "OppositePitOuter" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))) )
-(define "OppositeOuterPitOuter" (if (is Mover P1) (+ (to) (* "Columns" 3)) (- (to) (* "Columns" 3))) )
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
+(define "OppositePitOuter" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
+(define "OppositeOuterPitOuter" (if (is Mover P1) (+ (to) (* "Columns" 3)) (- (to) (* "Columns" 3))))
 
 //------------------------------------------------------------------------------
 
@@ -30,7 +30,7 @@
     (rules 
         
         (start 
-            (set Count 2 to:(union { (sites P1 "Outer") (sites P2 "Outer") (sites P1 "HalfRightInner")  (sites P2 "HalfRightInner") })) 
+            (set Count 2 to:(union {(sites P1 "Outer") (sites P2 "Outer") (sites P1 "HalfRightInner")  (sites P2 "HalfRightInner") })) 
         )
         
         phases:{
@@ -170,7 +170,7 @@
             (play
                 (move Select
                     (from
-                        (if (is Mover Prev)
+                        (if ("SameTurn")
                             (sites {(var "Replay")})
                             (sites Mover "Home")
                         )
@@ -258,12 +258,7 @@
                     )
                 )
             )
-            (end
-                (forEach NonMover
-                    if:(no Moves Player)
-                    (result Player Loss)
-                )
-            )
+            (end "ForEachNonMoverNoMovesLoss")
         )
         }
         

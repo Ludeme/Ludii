@@ -1,7 +1,7 @@
 (define "DiagonalCapture" 
     (move Step Diagonal 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )		

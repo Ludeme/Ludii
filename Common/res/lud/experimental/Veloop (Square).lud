@@ -126,7 +126,7 @@
 (option "Move Protocol" <Protocol> args:{ <turn> }
     {
     (item "Alternating" < > "Turns alternate")
-    (item "122..." <(if (and (not (is Prev Mover)) (< -1 (counter))) (moveAgain))> " First player takes one turn, then players alternate taking 2 turns each")**
+    (item "122..." <(if (and (not ("SameTurn")) (< -1 (counter))) (moveAgain))> " First player takes one turn, then players alternate taking 2 turns each")**
     }
 )
 

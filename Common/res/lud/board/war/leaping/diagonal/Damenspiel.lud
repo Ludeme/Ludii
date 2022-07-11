@@ -4,7 +4,7 @@
         (between 
             #1
             #2
-            if:(is Enemy (who at:(between))) 
+            if:("IsEnemyAt" (between)) 
             (apply (remove (between) #3))
         )
         (to if:(is Empty (to)))
@@ -16,7 +16,7 @@
                             (from (last To)) 
                             Diagonal
                             (between 
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
                             (to if:(is Empty (to)))
@@ -36,7 +36,7 @@
             before:(count Rows)
             (range 1 (count Rows))
             after:(count Rows)
-            if:(is Enemy (who at:(between))) 
+            if:("IsEnemyAt" (between)) 
             (apply (remove (between)))
         )
         (to if:(is Empty (to)))
@@ -49,7 +49,7 @@
                             before:(count Rows)
                             (range 1 (count Rows))
                             after:(count Rows)
-                            if:(is Enemy (who at:(between))) 
+                            if:("IsEnemyAt" (between)) 
                             (apply (remove (between)))
                         )
                         (to if:(is Empty (to)))
@@ -81,7 +81,7 @@
         (start
             { 
             (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 0)  ))
-            (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 0)) )
+            (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 0)))
             }
         )
         
@@ -92,7 +92,7 @@
                         (from (last To)) 
                         Diagonal
                         (between 
-                            if:(is Enemy (who at:(between)))
+                            if:("IsEnemyAt" (between))
                             (apply (remove (between)))
                         )
                         (to if:(is Empty (to)))
@@ -104,7 +104,7 @@
                                             (from (last To)) 
                                             Diagonal
                                             (between 
-                                                if:(is Enemy (who at:(between)))
+                                                if:("IsEnemyAt" (between))
                                                 (apply (remove (between)))
                                             )
                                             (to if:(is Empty (to)))
@@ -122,7 +122,7 @@
                             before:(count Rows)
                             (range 1 (count Rows))
                             after:(count Rows)
-                            if:(is Enemy (who at:(between))) 
+                            if:("IsEnemyAt" (between)) 
                             (apply (remove (between)))
                         )
                         (to if:(is Empty (to)))
@@ -135,7 +135,7 @@
                                             before:(count Rows)
                                             (range 1 (count Rows))
                                             after:(count Rows)
-                                            if:(is Enemy (who at:(between))) 
+                                            if:("IsEnemyAt" (between)) 
                                             (apply (remove (between)))
                                         )
                                         (to if:(is Empty (to)))

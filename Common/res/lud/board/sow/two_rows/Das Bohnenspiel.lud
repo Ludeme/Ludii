@@ -12,15 +12,13 @@
         (regions "Home" P2 (sites Top)) 				// P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
         (piece "Seed" Shared)
-        }
-    )  
+    })  
     (rules 
         
         (start (set Count 6 to:(sites Track)))
         
         (play 
-            (move 
-                Select 
+            (move Select 
                 (from
                     (sites Mover) 
                     if:(> (count at:(from)) 0)
@@ -39,14 +37,7 @@
             )
         )
         
-        (end
-            (if (no Moves Mover) 
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (no Moves Mover)))
     )
 )
 

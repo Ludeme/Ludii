@@ -1,5 +1,5 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #2 #1))
 
 (define "IsSpecialThrow" (is In ("ThrowValue") (sites {10 25 30})))
 
@@ -8,17 +8,7 @@
 (game "Pachesi"  
     (players 4)  
     (equipment { 
-        (board 
-            (add
-                (hole
-                    (merge 
-                        (shift 0 8 (rectangle 3 19)) 
-                        (shift 8 0 (rectangle 19 3))
-                    )
-                    (poly {{8 8} {8 11} {11 11} {11 8}})
-                )
-                cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9 } }
-            )
+        ("PachisiBoard" 
             {
             (track "Track1" "96,9,S,W,N,7,W,N,E,51,N,E,S,43,E,S,W,10,S,W1,N7,End" P1 directed:True)
             (track "Track2" "96,26,W,N,E,51,N,E,S,43,E,S,W,10,S,W,N,7,W,N1,W7,End" P2 directed:True)
@@ -26,27 +16,18 @@
             (track "Track4" "96,27,E,S,W,10,S,W,N,7,W,N,E,51,N,E,S,43,E,S1,W7,End" P4 directed:True)
             }
         )
-        (dice d:2 from:0 num:7)
+        ("StickDice" 7)
         (piece "Pawn" Each
-            (if (= End ("SiteToMoveOnTrack" from:(from) ("ThrowValue")))
+            (if ("IsEndTrack" ("SiteToMoveOnTrack" from:(from) ("ThrowValue")))
                 (move Remove (from) level:(level))
-                (if (and (= End ("SiteToMoveOnTrack" from:(from) 1)) ("IsSpecialThrow"))
+                (if (and ("IsEndTrack" ("SiteToMoveOnTrack" from:(from) 1)) ("IsSpecialThrow"))
                     (move Remove (from) level:(level))
                     (move 
                         (from (from) level:(level))
                         (to
                             ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
-                            if:(not (and (is In (to) (sites "SafeSites")) (is Enemy (who at:(to)))))
-                            (apply
-                                (if (is Enemy (who at:(to)))
-                                    (forEach Level (to) FromTop
-                                        (fromTo
-                                            (from (to) level:(level))
-                                            (to (centrePoint))
-                                        )
-                                    )
-                                )
-                            )
+                            if:(not (and (is In (to) (sites "SafeSites")) ("IsEnemyAt" (to))))
+                            ("HittingStackCapture" (centrePoint))
                         )
                     )
                 )
@@ -65,9 +46,8 @@
         })
         
         (play 
-            (do 
-                (roll) 
-                next:(or
+            ("RollMove"
+                (or
                     (if (and (is Occupied (handSite Mover)) ("IsSpecialThrow"))
                         (move
                             (from (handSite Mover))

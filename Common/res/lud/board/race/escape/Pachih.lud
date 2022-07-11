@@ -1,23 +1,13 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #2 #1))
 (define "IsSpecialThrow" (is In ("ThrowValue") (sites {7 25 30 14})))
 
 //------------------------------------------------------------------------------
 
 (game "Pachih"  
     (players 4)  
-    (equipment { 
-        (board 
-            (add
-                (hole
-                    (merge 
-                        (shift 0 8 (rectangle 3 19)) 
-                        (shift 8 0 (rectangle 19 3))
-                    )
-                    (poly {{8 8} {8 11} {11 11} {11 8}})
-                )
-                cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9 } }
-            )
+    (equipment {
+        ("PachisiBoard"
             {
             (track "Track1" "96,9,S,E,N,11,E,N,W,53,N,W,S,42,W,S,E,8,S,E1,N7,End" P1 directed:True)
             (track "Track2" "96,26,W,S,E,8,S,E,N,11,E,N,W,53,N,W,S,42,W,S1,E7,End" P2 directed:True)
@@ -25,9 +15,9 @@
             (track "Track4" "96,27,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W7,End" P4 directed:True)
             }
         )
-        (dice d:2 from:0 num:7)
+        ("StickDice" 7)
         (piece "Pawn" Each
-            (if (= End ("SiteToMoveOnTrack" from:(from) ("ThrowValue")))
+            (if ("IsEndTrack" ("SiteToMoveOnTrack" from:(from) ("ThrowValue")))
                 (move Remove (from) level:(level))
                 (move 
                     (from (from) level:(level))
@@ -35,7 +25,7 @@
                         ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
                         if:True
                         (apply
-                            (if (and (not (is In (to) (sites "SafeSites"))) (is Enemy (who at:(to))))
+                            (if (and (not (is In (to) (sites "SafeSites"))) ("IsEnemyAt" (to)))
                                 (forEach Level (to) FromTop
                                     (fromTo
                                         (from (to) level:(level))
@@ -50,8 +40,7 @@
         )
         (regions "SafeSites" (sites {60 62 2 37 87 89 16 48}))
         (map "Throw" {(pair 0 7) (pair 1 10) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 25) (pair 6 30) (pair 7 14)})
-        }
-    )  
+    })  
     (rules 
         (start {
             (place Stack "Pawn1" 9 count:4)
@@ -61,8 +50,8 @@
         })
         
         (play 
-            (do (roll) 
-                next:(forEach Piece)
+            ("RollMove"
+                (forEach Piece)
                 (then 
                     (if (and (< (value Player Mover) 2) ("IsSpecialThrow"))
                         (and (moveAgain) (set Value Mover (+ 1 (value Player Mover))))

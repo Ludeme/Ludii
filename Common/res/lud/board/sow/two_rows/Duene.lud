@@ -1,6 +1,6 @@
 (define "PiecesOwnedBy" (+ (count at:(mapEntry #1)) (count in:(sites #1))))
 
-(define "PlayFromLastHole" (sites {(var "To")}))
+(define "LastHoleSowed" (sites {(var "To")}))
 
 //------------------------------------------------------------------------------
 
@@ -21,12 +21,10 @@
         phases:{
         (phase "Playing"
             (play 
-                (move
-                    Select 
+                (move Select 
                     (from 
-                        (if 
-                            (is Mover Prev) 
-                            ("PlayFromLastHole") 
+                        (if ("SameTurn") 
+                            ("LastHoleSowed") 
                             (sites Mover) 
                         )  
                         if:(< 0 (count at:(from)))
@@ -55,8 +53,7 @@
                             )
                             next:(and {
                                 (pass)
-                                (forEach
-                                    Site
+                                (forEach Site
                                     (forEach (sites Track from:(var "From") to:(var "To"))
                                         if:(and (is In (site) (sites P1)) (= 4 (count at:(site))))
                                     )
@@ -66,8 +63,7 @@
                                         count:(count at:(site))
                                     )
                                 )
-                                (forEach
-                                    Site
+                                (forEach Site
                                     (forEach (sites Track from:(var "From") to:(var "To"))
                                         if:(and (is In (site) (sites P2)) (= 4 (count at:(site))))
                                     )
@@ -86,12 +82,10 @@
         )
         (phase "EndGame"
             (play 
-                (move
-                    Select 
+                (move Select 
                     (from 
-                        (if 
-                            (is Mover Prev) 
-                            ("PlayFromLastHole") 
+                        (if ("SameTurn") 
+                            ("LastHoleSowed") 
                             (sites Mover) 
                         )  
                         if:(< 0 (count at:(from)))
@@ -120,14 +114,8 @@
             )
         )
         }
-        (end
-            (if (= (count in:(sites Track)) 0)
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        
+        (end ("MancalaByScoreWhen" (all Sites (sites Track) if:(= 0 (count at:(site))))))
     )	
 )
 

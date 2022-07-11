@@ -47,7 +47,7 @@
             (to 
                 ("NextSiteFrom" #1) 
                 if:(and 
-                    (not (is Friend (who at:(to))))
+                    (not ("IsFriendAt" (to)))
                     (if (>= (count Turns) 2) 
                         True
                         (if (and 
@@ -60,7 +60,7 @@
                     )
                 )
                 (apply 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     (remove (to))
                 )
             )
@@ -70,9 +70,9 @@
                 (from)
                 (to 
                     ("NextSiteFrom" (if (= #1 12) 4 (if (= #1 6) 2 #1)) "CornerTrack") 
-                    if:(not (is Friend (who at:(to))))
+                    if:(not ("IsFriendAt" (to)))
                     (apply 
-                        if:(is Enemy (who at:(to))) 
+                        if:("IsEnemyAt" (to)) 
                         (remove (to))
                     )
                 )

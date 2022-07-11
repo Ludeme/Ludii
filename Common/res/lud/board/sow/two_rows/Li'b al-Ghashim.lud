@@ -1,6 +1,6 @@
 (define "Columns" 6)
 
-(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns")) )
+(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns")))
 
 (define "FourInEach" (all Sites (sites Board) if:(<= 4 (count at:(site)))))
 
@@ -86,8 +86,8 @@
                     (move Select
                         (from 
                             (if 
-                                (and (not (is Pending)) (is Mover Prev))
-                                (sites { (var "Replay") })
+                                (and (not (is Pending)) ("SameTurn"))
+                                (sites {(var "Replay") })
                                 (sites Mover) 
                             ) 
                             if:(is Occupied (from))

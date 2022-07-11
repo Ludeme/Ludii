@@ -1,6 +1,6 @@
 (define "Columns" <Board:rowSize>)
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))) )
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
 
 //------------------------------------------------------------------------------
 
@@ -25,7 +25,7 @@
     })  
     (rules 
         
-        (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home")) ))
+        (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home"))))
         
         (play
             (or
@@ -33,7 +33,7 @@
                     (move Select
                         (from 
                             (if 
-                                (is Mover Prev) 
+                                ("SameTurn") 
                                 (sites {(var "Replay")})
                                 (sites Mover "Home") 
                             ) 
@@ -87,7 +87,7 @@
                     (move Select
                         (from 
                             (if 
-                                (is Mover Prev) 
+                                ("SameTurn") 
                                 (sites {(var "Replay")})
                                 (sites Mover "Home") 
                             ) 
@@ -139,12 +139,7 @@
             )
         )
         
-        (end
-            (forEach NonMover
-                if:(no Moves Player)
-                (result Player Loss)
-            )
-        )
+        (end "ForEachNonMoverNoMovesLoss")
     )
 )
 

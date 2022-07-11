@@ -1,10 +1,6 @@
 (define "Columns" <Board:size>)
-
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
-
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))) )
-
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
 
 //------------------------------------------------------------------------------
 
@@ -48,8 +44,8 @@
             (move
                 Select
                 (from 
-                    (if (is Mover Prev) 
-                        ("PlayFromLastHole")
+                    (if ("SameTurn") 
+                        ("LastHoleSowed")
                         (sites Mover "Home") 
                     ) 
                     if:(> (count at:(from)) 1)
@@ -92,12 +88,7 @@
             )
         )
         
-        (end
-            (if  
-                (no Moves Next)
-                (result Mover Win)
-            )
-        )
+        (end ("BlockWin"))
     )
 )
 

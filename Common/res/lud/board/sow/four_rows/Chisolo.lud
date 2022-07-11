@@ -1,7 +1,6 @@
 (define "Columns" <Board:rowSize>)
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))) )
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
 (define "InitOneSeed" <Board:InitOneSeed>)
 (define "InitTwoSeed" <Board:InitTwoSeeds>)
 
@@ -38,7 +37,7 @@
         
         (phase "SowingCW"
             (play 
-                (if (and (is Mover Prev) (= (var "CaptureOther") 1))
+                (if (and ("SameTurn") (= (var "CaptureOther") 1))
                     (move
                         (from (sites Next) if:(is Occupied (from)))
                         (to (handSite Mover))
@@ -50,8 +49,8 @@
                     (move Select
                         (from 
                             (if 
-                                (is Mover Prev) 
-                                "PlayFromLastHole" 
+                                ("SameTurn") 
+                                "LastHoleSowed" 
                                 (sites Mover "Home") 
                             ) 
                             if:(is Occupied (from))
@@ -71,7 +70,7 @@
         
         (phase "Sowing"
             (play 
-                (if (and (is Mover Prev) (= (var "CaptureOther") 1))
+                (if (and ("SameTurn") (= (var "CaptureOther") 1))
                     (move
                         (from (sites Next) if:(is Occupied (from)))
                         (to (handSite Mover))
@@ -85,8 +84,8 @@
                             (move Select
                                 (from 
                                     (if 
-                                        (is Mover Prev) 
-                                        "PlayFromLastHole" 
+                                        ("SameTurn") 
+                                        "LastHoleSowed" 
                                         (sites Mover "Home") 
                                     ) 
                                     if:(is Occupied (from))
@@ -108,8 +107,8 @@
                             (move Select
                                 (from 
                                     (if 
-                                        (is Mover Prev) 
-                                        "PlayFromLastHole" 
+                                        ("SameTurn") 
+                                        "LastHoleSowed" 
                                         (sites Mover "Home") 
                                     ) 
                                     if:(is Occupied (from))
@@ -133,10 +132,7 @@
         
         }
         
-        (end {
-            (if (no Moves P1) (result P2 Win))
-            (if (no Moves P2) (result P1 Win))
-        })
+        (end ("ForEachPlayerNoMovesLoss"))
     )
 )
 
@@ -173,7 +169,7 @@
     (item "Namudilakunze"  
         <
         (start 
-            (set Count 1 to:(difference (union (sites P1 "Home") (sites P2 "Home")) (union (intersection (sites Left) (sites Bottom)) (intersection (sites Top) (sites Right)))) )
+            (set Count 1 to:(difference (union (sites P1 "Home") (sites P2 "Home")) (union (intersection (sites Left) (sites Bottom)) (intersection (sites Top) (sites Right)))))
         )
         >  
     "Starting positions of the Namudilakunze ruleset.") 

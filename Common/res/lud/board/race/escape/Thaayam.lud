@@ -47,13 +47,13 @@
 )
 
 (define "AllPieceInCentre" 
-		(all Sites (sites Occupied by:Mover) if:(is In (site) (sites Centre)))
+    (all Sites (sites Occupied by:Mover) if:(is In (site) (sites Centre)))
 )
 
 (define "Move" 
     (if (or (not "SameTurn") ("HasToThrowAgain")) 
         ("RollMove"
-                (move Pass 
+            (move Pass 
                 (then 
                     (and {
                         (if 

@@ -12,7 +12,7 @@
 )
 
 (define "FriendOrCentreOrFortress"
-    (or (is Friend (who at:(to))) (is In (to) (union (sites Centre) (sites "Fortresses"))))
+    (or ("IsFriendAt" (to)) (is In (to) (union (sites Centre) (sites "Fortresses"))))
 )
 
 (define "JarlIsCaptured" (apply (trigger "Surrounded" P2)))

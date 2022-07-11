@@ -1,6 +1,5 @@
 (define "NumPlayers" <Player:num>)
 (define "PiecesOwnedBy" (count Cell at:(handSite #1)))
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
 //------------------------------------------------------------------------------
 
@@ -18,7 +17,7 @@
         <Player:regions>
     })  
     (rules 
-        (start (set Count <Start:numSeeds> to:(sites Track)) )
+        (start (set Count <Start:numSeeds> to:(sites Track)))
         
         (play 
             (or {	
@@ -64,7 +63,7 @@
         )
         
         (end
-            (if  ("NoPieceOnBoard")
+            (if ("NoPieceOnBoard")
                 (byScore {
                     <Player:scores>
                 })

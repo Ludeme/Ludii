@@ -13,7 +13,7 @@
 
 (define "CaptureToPiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove 
                 (to)
             )
@@ -26,7 +26,7 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to)))
+            if:("IsEnemyAt" (to))
             (apply 
                 (remove 
                     (to)
@@ -60,7 +60,7 @@
                 (move
                     Step 
                     (to 
-                        if:(not (is Friend (who at:(to)))) 
+                        if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
                     )
                 )
@@ -70,7 +70,7 @@
                             Hop 
                             (between 
                                 (range 1 2)
-                                if:(not (is Enemy (who at:(between))))
+                                if:(not ("IsEnemyAt" (between)))
                             ) 
                             (to 
                                 if:(is Empty (to))
@@ -93,7 +93,7 @@
                 Slide 
                 Orthogonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )		
@@ -104,7 +104,7 @@
                 Diagonal 
                 (between if:True) 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
                 )
             )		
@@ -114,7 +114,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )			
@@ -125,7 +125,7 @@
                     Step 
                     Diagonal
                     (to 
-                        if:(not (is Friend (who at:(to)))) 
+                        if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
                     )
                     "RememberPieceHasMoved"

@@ -74,7 +74,7 @@
             (to 
                 ("NextSiteFrom" (from) (value))	
                 if:(and
-                    (not (is Friend (who at:(to))))
+                    (not ("IsFriendAt" (to)))
                     (or 
                         (= 1 (value))
                         (= 0 
@@ -88,7 +88,7 @@
                 (apply
                     (and
                         ("Forget" (value))		
-                        (if (is Enemy (who at:(to)))
+                        (if ("IsEnemyAt" (to))
                             (remove (to))
                         )
                     )
@@ -114,7 +114,7 @@
         (to 
             ("NextSiteFrom" (from) ("ThrowValue"))	
             if:(and
-                (not (is Friend (who at:(to))))
+                (not ("IsFriendAt" (to)))
                 (or 
                     (= 1 ("ThrowValue"))
                     (= 0 
@@ -126,7 +126,7 @@
                 )
             )
             (apply
-                (if (is Enemy (who at:(to)))
+                (if ("IsEnemyAt" (to))
                     (remove (to))
                 )
             )

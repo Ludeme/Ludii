@@ -1,18 +1,11 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
 
-(define "SiteToMoveOnTrack" (trackSite Move steps:#1))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #1))
 
-(define "NextSite" (trackSite Move from:#1 #2 steps:1))
+(define "NextSite" ("NextSiteOnTrack" 1 from:#1 #2))
 
 (define "MadeACompleteCircuit" 
     (is In (mapEntry "Start" Mover) (sites Track Mover "Track" from:("NextSite" (last From) "Track") to:(last To)))
-)
-
-(define "CaptureEnemyPiece" 
-    (apply 
-        if:(is Enemy (who at:(to))) 
-        (fromTo (from (to)) (to (mapEntry "Start" (who at:(to)))))
-    ) 
 )
 
 (define "Move" 
@@ -21,11 +14,11 @@
         (to 
             ("SiteToMoveOnTrack" ("ThrowValue"))
             if:True
-            "CaptureEnemyPiece"
+            ("HittingCapture" (mapEntry "Start" (who at:(to))))
         )
         (then
             (forEach Site (sites Track Mover "Track" from:("NextSite" (last From) "Track") to:(last To))
-                (if (is Enemy (who at:(site)))
+                (if ("IsEnemyAt" (site))
                     (forEach Level (site)
                         (move
                             (from (site) level:(level))
@@ -43,29 +36,20 @@
 (game "Set Dilth'"
     (players <Player:num>)
     (equipment {
-        (board
-            (add
-                (remove 
-                    (concentric {44})
-                    vertices:{43 21 0 22}
-                )
-                edges:{{20 18} {0 1} {19 21} {38 39}}
-            )
+        ("FortyStonesWithFourGapsBoard"
             <Player:track>
-            use:Edge
         )
         (regions "AllSites" (sites Board))
         (map "Throw" {(pair 0 10) (pair 1 2) (pair 2 3) (pair 3 5)})
         (map "Start" {(pair 1 37) (pair 2 38) (pair 3 39) (pair 4 36)})
         (piece "Stick" Each ("Move"))
-        (dice d:2 from:0 num:3)
+        ("StickDice" 3)
     })
     (rules 
         <Player:start>
         (play 
-            (do 
-                (roll) 
-                next:(forEach Piece)
+            ("RollMove" 
+                (forEach Piece)
                 (then 
                     (do
                         (if ("MadeACompleteCircuit") 

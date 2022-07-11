@@ -11,7 +11,7 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
@@ -44,7 +44,7 @@
                 Slide 
                 Orthogonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )
@@ -53,7 +53,7 @@
             (move
                 Step 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
                 )
             )
@@ -64,7 +64,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )
@@ -74,7 +74,7 @@
                 Step 
                 Diagonal
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
                 )
             )
@@ -115,15 +115,15 @@
 (option "Play Rules" <Elephant> args:{ <move> }
     {
     (item "Elephant Move is Orthogonal Jump"             
-        <(move Hop Orthogonal (between if:True) (to if:(not (is Friend (who at:(to)))) (apply (remove (to)))))>   
+        <(move Hop Orthogonal (between if:True) (to if:(not ("IsFriendAt" (to))) (apply (remove (to)))))>   
         "The elephants can jump only orthogonally."
     )
     (item "Elephant Move is Diagonal Jump"             
-        <(move Hop Diagonal (between if:True) (to if:(not (is Friend (who at:(to)))) (apply (remove (to)))))>    
+        <(move Hop Diagonal (between if:True) (to if:(not ("IsFriendAt" (to))) (apply (remove (to)))))>    
         "The elephants can jump only diagonally."
     ) 
     (item "Elephant Move is like a Silver in Shogi"             
-        <(move Step (directions {Forward BL BR FL FR}) (to if:(not (is Friend (who at:(to)))) (apply (remove (to)))))>   
+        <(move Step (directions {Forward BL BR FL FR}) (to if:(not ("IsFriendAt" (to))) (apply (remove (to)))))>   
         "The elephants can move like a Silver in Shogi."
     )     
 })

@@ -1,10 +1,9 @@
 (define "Hop" 
-    (move
-        Hop 
+    (move Hop 
         (from #1)
         Diagonal
-        (between if:(is Enemy (who at:(between))))
-        (to if:(and (is Empty (to)) (not (is Visited (to)))))
+        (between if:("IsEnemyAt" (between)))
+        (to if:("IsEmptyAndNotVisited" (to)))
         #2		
     )
 ) 
@@ -13,17 +12,17 @@
 
 (define "GoalOfP1Filled" 
     (and {
-        (= (what at:(coord "J10")) (id "Salta1Star1")) (= (what at:(coord "H10")) (id "Salta2Star1")) (= (what at:(coord "F10")) (id "Salta3Star1")) (= (what at:(coord "D10")) (id "Salta4Star1")) (= (what at:(coord "B10")) (id "Salta5Star1"))
-        (= (what at:(coord "I9")) (id "Salta1Moon1")) (= (what at:(coord "G9")) (id "Salta2Moon1")) (= (what at:(coord "E9")) (id "Salta3Moon1")) (= (what at:(coord "C9")) (id "Salta4Moon1")) (= (what at:(coord "A9")) (id "Salta5Moon1"))
-        (= (what at:(coord "J8")) (id "Salta1Dot1")) (= (what at:(coord "H8")) (id "Salta2Dot1")) (= (what at:(coord "F8")) (id "Salta3Dot1")) (= (what at:(coord "D8")) (id "Salta4Dot1")) (= (what at:(coord "B8")) (id "Salta5Dot1"))
+        ("IsPieceAt" "Salta1Star" P1 (coord "J10")) ("IsPieceAt" "Salta2Star" P1 (coord "H10")) ("IsPieceAt" "Salta3Star" P1 (coord "F10")) ("IsPieceAt" "Salta4Star" P1 (coord "D10")) ("IsPieceAt" "Salta5Star" P1 (coord "B10"))
+        ("IsPieceAt" "Salta1Moon" P1 (coord "I9")) ("IsPieceAt" "Salta2Moon" P1 (coord "G9")) ("IsPieceAt" "Salta3Moon" P1 (coord "E9")) ("IsPieceAt" "Salta4Moon" P1 (coord "C9")) ("IsPieceAt" "Salta5Moon" P1 (coord "A9"))
+        ("IsPieceAt" "Salta1Dot" P1 (coord "J8")) ("IsPieceAt" "Salta2Dot" P1 (coord "H8")) ("IsPieceAt" "Salta3Dot" P1 (coord "F8")) ("IsPieceAt" "Salta4Dot" P1 (coord "D8")) ("IsPieceAt" "Salta5Dot" P1 (coord "B8"))
     })
 )
 
 (define "GoalOfP2Filled" 
     (and { 
-        (= (what at:(coord "A1")) (id "Salta1Star2")) (= (what at:(coord "C1")) (id "Salta2Star2")) (= (what at:(coord "E1")) (id "Salta3Star2")) (= (what at:(coord "G1")) (id "Salta4Star2")) (= (what at:(coord "I1")) (id "Salta5Star2"))
-        (= (what at:(coord "B2")) (id "Salta1Moon2")) (= (what at:(coord "D2")) (id "Salta2Moon2")) (= (what at:(coord "F2")) (id "Salta3Moon2")) (= (what at:(coord "H2")) (id "Salta4Moon2")) (= (what at:(coord "J2")) (id "Salta5Moon2"))
-        (= (what at:(coord "A3")) (id "Salta1Dot2")) (= (what at:(coord "C3")) (id "Salta2Dot2")) (= (what at:(coord "E3")) (id "Salta3Dot2")) (= (what at:(coord "G3")) (id "Salta4Dot2")) (= (what at:(coord "I3")) (id "Salta5Dot2"))
+        ("IsPieceAt" "Salta1Star" P2 (coord "A1")) ("IsPieceAt" "Salta2Star" P2 (coord "C1")) ("IsPieceAt" "Salta3Star" P2 (coord "E1")) ("IsPieceAt" "Salta4Star" P2 (coord "G1")) ("IsPieceAt" "Salta5Star" P2 (coord "I1"))
+        ("IsPieceAt" "Salta1Moon" P2 (coord "B2")) ("IsPieceAt" "Salta2Moon" P2 (coord "D2")) ("IsPieceAt" "Salta3Moon" P2 (coord "F2")) ("IsPieceAt" "Salta4Moon" P2 (coord "H2")) ("IsPieceAt" "Salta5Moon" P2 (coord "J2"))
+        ("IsPieceAt" "Salta1Dot" P2 (coord "A3")) ("IsPieceAt" "Salta2Dot" P2 (coord "C3")) ("IsPieceAt" "Salta3Dot" P2 (coord "E3")) ("IsPieceAt" "Salta4Dot" P2 (coord "G3")) ("IsPieceAt" "Salta5Dot" P2 (coord "I3"))
     })
 )
 
@@ -48,12 +47,10 @@
         (piece "Salta3Star" Each)
         (piece "Salta4Star" Each)
         (piece "Salta5Star" Each)
-        }
-    )  
+    })  
     
     (rules 
-        (start
-            { 
+        (start { 
             (place "Salta1Star1" coord:"A1") (place "Salta2Star1" coord:"C1") (place "Salta3Star1" coord:"E1") (place "Salta4Star1" coord:"G1") (place "Salta5Star1" coord:"I1")
             (place "Salta1Moon1" coord:"B2") (place "Salta2Moon1" coord:"D2") (place "Salta3Moon1" coord:"F2") (place "Salta4Moon1" coord:"H2") (place "Salta5Moon1" coord:"J2")
             (place "Salta1Dot1" coord:"A3") (place "Salta2Dot1" coord:"C3") (place "Salta3Dot1" coord:"E3") (place "Salta4Dot1" coord:"G3") (place "Salta5Dot1" coord:"I3")
@@ -61,19 +58,15 @@
             (place "Salta1Star2" coord:"J10") (place "Salta2Star2" coord:"H10") (place "Salta3Star2" coord:"F10") (place "Salta4Star2" coord:"D10") (place "Salta5Star2" coord:"B10")
             (place "Salta1Moon2" coord:"I9") (place "Salta2Moon2" coord:"G9") (place "Salta3Moon2" coord:"E9") (place "Salta4Moon2" coord:"C9") (place "Salta5Moon2" coord:"A9")
             (place "Salta1Dot2" coord:"J8") (place "Salta2Dot2" coord:"H8") (place "Salta3Dot2" coord:"F8") (place "Salta4Dot2" coord:"D8") (place "Salta5Dot2" coord:"B8")
-            
-            }
-        )
+        })
         
         (play 
             (if "SameTurn"
                 ("HopSequence" (last To))
-                (priority
-                    { 
+                (priority { 
                     (forEach Piece ("HopSequence" (from)))
                     (forEach Piece "StepDiagonalToEmpty")
-                    }
-                ) 
+                }) 
             )
         ) 
         
@@ -84,8 +77,7 @@
             (if "GoalOfP2Filled" 
                 (result P2 Win)
             )
-            }
-        )
+        })
     )
 )
 

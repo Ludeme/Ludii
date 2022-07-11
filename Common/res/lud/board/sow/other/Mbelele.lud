@@ -1,4 +1,4 @@
-(define "NoPiece" (no Pieces All in:(sites #1)))
+(define "NoPiece" (all Sites (sites #1) if:(= 0 (count at:(site)))))
 
 //------------------------------------------------------------------------------
 
@@ -187,7 +187,12 @@
                 )
             )
         )
-        (end (if (if (is Mover P1) ("NoPiece" P2) ("NoPiece" P1)) (result Mover Win)))
+        (end
+            (forEach NonMover
+                if:("NoPiece" Player)
+                (result Player Loss)
+            )
+        )
     )
 )
 

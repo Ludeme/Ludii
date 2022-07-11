@@ -3,35 +3,18 @@
 // #2 = Direction = Forward | Backward
 // #3 = Then moves - conditional (moveagain) envoked
 (define "HopCounter"
-    (move 
-        Hop
+    (move Hop
         (from #1)
         #2
         (between 
             if:(and 
                 (not (is In (between) (sites ToClear))) 
-                (is Enemy (who at:(between)))
+                ("IsEnemyAt" (between))
             )
             (apply (remove (between) at:EndOfTurn))
         ) 
         (to if:(is Empty (to))) 
         #3
-    )
-)
-
-// Defines a hop move in all the orthogonal directions over an enemy to an empty site.
-// The enemy piece is removed.
-// @example ("HopOrthogonalCapture")
-// #1 = Direction = Forward | Backward
-
-(define "HopOrthogonalCapture"
-    (move Hop 
-        #1
-        (between 
-            if:(is Enemy (who at:(between))) 
-            (apply (remove (between)))
-        )
-        (to if:(is Empty (to)))
     )
 )
 
@@ -45,10 +28,17 @@
         (piece "DoubleCounter" Each)
         
         (regions "RunnerGoal" P1 (difference (sites Top) (sites Corners)))
-        (regions "RunnerGoalRed" Neutral (intersection
-        (difference (sites Top) (sites Corners)) (sites Phase 0)))
-        (regions "RunnerGoalPink" Neutral (intersection
-        (difference (sites Top) (sites Corners)) (sites Phase 1)))
+        (regions "RunnerGoalRed" Neutral 
+            (intersection
+                (difference (sites Top) (sites Corners)) 
+                (sites Phase 0)
+            )
+        )
+        (regions "RunnerGoalPink" Neutral
+            (intersection
+                (difference (sites Top) (sites Corners)) (sites Phase 1)
+            )
+        )
         }
     )  
     
@@ -85,15 +75,13 @@
                 )
                 (or  
                     (forEach Piece "Counter" 
-                        (move
-                            Step 
+                        (move Step 
                             (directions Forward)
                             (to if:(is Empty (to)))
                         )
                     )
                     (forEach Piece "DoubleCounter"
-                        (move
-                            Step 
+                        (move Step 
                             (directions Backward)
                             (to if:(is Empty (to)))
                         )

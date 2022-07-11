@@ -2,21 +2,13 @@
 
 (define "ToIsOnTheRegionToFill" (is In #1 (sites (player (mapEntry (mover))))))
 
-(define "EmptyAndNotVisited"     							  
-    (and 
-        (is Empty (to)) 
-        (not (is Visited (to))) 
-    ) 
-)
-
 (define "Hop" 
-    (move
-        Hop
+    (move Hop
         (from #1)
-        (between if:(not (is Empty (between))))
+        (between if:(is Occupied (between)))
         (to 
             if:(and
-                "EmptyAndNotVisited"
+                ("IsEmptyAndNotVisited" (to))
                 (or
                     (not ("FromIsOnTheRegionToFill" #1))
                     ("ToIsOnTheRegionToFill" (to)) 
@@ -28,8 +20,6 @@
 ) 
 
 (define "HopSequence" ("Hop" #1 (then (if (can Move ("Hop" (last To))) (moveAgain)))))
-
-(define "RegionFilled" (= (sites (player (mapEntry (mover)))) (sites Occupied by:Mover)))
 
 (define "Dim" <Board:size>)
 
@@ -48,10 +38,10 @@
         phases:{
         (phase "Movement"  
             (play 
-                (forEach Piece (or 
+                (forEach Piece 
+                    (or 
                         ("HopSequence" (from)) 
-                        (move
-                            Step
+                        (move Step
                             (to 
                                 if:(and
                                     (is Empty (to))
@@ -77,7 +67,7 @@
         ) 
         }
         
-        (end  (if "RegionFilled" (result Mover Win)))
+        (end ("FillWin" (sites (player (mapEntry (mover))))))
     )
 )
 

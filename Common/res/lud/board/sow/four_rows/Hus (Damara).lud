@@ -1,10 +1,8 @@
 (define "Columns" <Board:size>)
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
 
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))) )
-
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
 
 (define "NextHole" (trackSite Move from:(to) "Track" steps:1))
 
@@ -52,8 +50,8 @@
             (move
                 Select
                 (from 
-                    (if (is Mover Prev) 
-                        (if "MoveAgainAfterCapture" "PlayFromNextHole" "PlayFromLastHole" ) 
+                    (if ("SameTurn") 
+                        (if "MoveAgainAfterCapture" "PlayFromNextHole" "LastHoleSowed" ) 
                         (sites Mover "Home") 
                     ) 
                     if:(> (count at:(from)) <Sow:numSeed>)
@@ -101,14 +99,7 @@
             )
         )
         
-        (end
-            (if (no Moves Mover) 
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (no Moves Mover)))
     )
 )
 

@@ -2,11 +2,11 @@
 
 (define "EmptyOuterRow" (= 0 (count in:(sites #1 "Outer"))))
 
-(define "InnerPit" (if (is Mover P1) (- #1 "Columns") (+ #1 "Columns")) )
+(define "InnerPit" (if (is Mover P1) (- #1 "Columns") (+ #1 "Columns")))
 
-(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")) )
+(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")))
 
-(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2))) )
+(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2))))
 
 (define "InnerPitsWithPossibleCapture"
     (forEach (difference (sites Mover "Inner") (sites Empty))
@@ -74,7 +74,7 @@
                 (move
                     Select
                     (from 
-                        (if (and (is In 2 (sites Pending)) (is Mover Prev)) 
+                        (if (and (is In 2 (sites Pending)) ("SameTurn")) 
                             (sites {("NextHole" "LastHole")})
                             (sites Mover "Home") 
                         )
@@ -110,14 +110,12 @@
             )
         )
         
-        (end {
-            (if  ("EmptyOuterRow" P1)
-                (result P1 Loss)
+        (end 
+            (forEach Player
+                if:("EmptyOuterRow" Player)
+                (result Player Loss)
             )
-            (if  ("EmptyOuterRow" P2)
-                (result P2 Loss)
-            )
-        })
+        )
     )
 )
 
@@ -126,7 +124,7 @@
 (option "Start Rules" <Start> args:{<rules>}
     {
     (item "3 Seeds per hole" 
-        <(set Count 3 to:(union (sites P1 "Outer") (sites P2 "Outer")) )>   
+        <(set Count 3 to:(union (sites P1 "Outer") (sites P2 "Outer")))>   
         "At the initial state 3 seeds are in each outer hole."
     )**
     (item "Starting Position 1" 

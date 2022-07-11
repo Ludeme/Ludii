@@ -3,7 +3,7 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
@@ -38,7 +38,7 @@
                 Slide 
                 Orthogonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     (apply (remove (to)))
                 ) 
             )
@@ -47,7 +47,7 @@
             (move
                 Step 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     (apply (remove (to)))
                 ) 
             )
@@ -57,7 +57,7 @@
                 Slide 
                 Diagonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     (apply (remove (to)))
                 ) 
             )
@@ -67,7 +67,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     (apply (remove (to)))
                 ) 
             )
@@ -76,7 +76,7 @@
             (move
                 Slide 
                 (to 
-                    if:(is Enemy (who at:(to)))
+                    if:("IsEnemyAt" (to))
                     (apply (remove (to)))
                 ) 
             ) 

@@ -17,7 +17,7 @@
                             (sites Around (from)) 
                         )
                         if:(and { 
-                            (not (is Friend (who at:(site))))
+                            (not ("IsFriendAt" (site)))
                             (not (is In (site) (sites Around (from))))
                             (!= (phase of:(from)) (phase of:(site))) 
                         })

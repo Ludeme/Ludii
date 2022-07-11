@@ -27,18 +27,18 @@
             }
             |
             {
-            (place "Marker1" (union { (sites Row 0) (sites Row 1)}))
-            (place "Marker2" (union { (sites Row 8) (sites Row 7)}))
+            (place "Marker1" (union {(sites Row 0) (sites Row 1)}))
+            (place "Marker2" (union {(sites Row 8) (sites Row 7)}))
             }
             |
             {
-            (place "Marker1" (union { (sites Row 0) (sites Row 1) (sites Row 2)}))
-            (place "Marker2" (union { (sites Row 8) (sites Row 7) (sites Row 6)}))
+            (place "Marker1" (union {(sites Row 0) (sites Row 1) (sites Row 2)}))
+            (place "Marker2" (union {(sites Row 8) (sites Row 7) (sites Row 6)}))
             }
             |
             {
-            (place "Marker1" (union { (sites Row 0) (sites Row 1) (sites Row 2) (sites Row 3)}))
-            (place "Marker2" (union { (sites Row 8) (sites Row 7) (sites Row 6) (sites Row 5)}))
+            (place "Marker1" (union {(sites Row 0) (sites Row 1) (sites Row 2) (sites Row 3)}))
+            (place "Marker2" (union {(sites Row 8) (sites Row 7) (sites Row 6) (sites Row 5)}))
             }
         ])
         (play (forEach Piece))

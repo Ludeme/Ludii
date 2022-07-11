@@ -32,7 +32,7 @@
             (sites Occupied by:#1 container:"Board")
             if:(= (size Stack at:(site)) 2)
         )
-        (and { (remove (site)) (remove (site)) (add (piece (id "Marker" #1)) (to (site)))})
+        (and {(remove (site)) (remove (site)) (add (piece (id "Marker" #1)) (to (site)))})
     )
 )
 
@@ -93,7 +93,7 @@
                     )
                 )
             )
-            (end (if (no Moves Next) (result Mover Win)))
+            (end ("BlockWin"))
         )
         }
     )

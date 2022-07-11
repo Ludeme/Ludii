@@ -21,7 +21,7 @@
 
 (define "CaptureToPiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
             )
@@ -117,7 +117,7 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
@@ -152,7 +152,7 @@
                 Slide 
                 Orthogonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
                 "RememberPieceHasMoved"
@@ -169,7 +169,7 @@
                 (move
                     Step 
                     (to 
-                        if:(not (is Friend (who at:(to)))) 
+                        if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece"
                     ) 
                 )
@@ -181,7 +181,7 @@
                 Slide 
                 Diagonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )
@@ -191,7 +191,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )
@@ -200,7 +200,7 @@
             (move
                 Slide 
                 (to 
-                    if:(and (!= (id "Queen" Next) (what at:(to))) (is Enemy (who at:(to)))) 
+                    if:(and (!= (id "Queen" Next) (what at:(to))) ("IsEnemyAt" (to))) 
                     "CaptureToPiece"
                 ) 
             ) 
@@ -256,7 +256,7 @@
                 (result Mover Win)
             ) 
             (if (= 1 (count Pieces Next)) (result Mover Win)) 
-            (if (no Moves Next) (result Mover Win)) 
+            ("BlockWin")
         })
     )
 )

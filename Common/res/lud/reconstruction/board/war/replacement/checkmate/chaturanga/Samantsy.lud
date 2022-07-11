@@ -1,6 +1,6 @@
 (define "CaptureToPiece"
     (apply 
-        (if (and (is Enemy (who at:(to))) (!= (what at:(to)) (id "King" Next)))
+        (if (and ("IsEnemyAt" (to)) (!= (what at:(to)) (id "King" Next)))
             (remove 
                 (to) 
             )
@@ -13,7 +13,7 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(and (is Enemy (who at:(to))) (!= (what at:(to)) (id "King" Next)))
+            if:(and ("IsEnemyAt" (to)) (!= (what at:(to)) (id "King" Next)))
             (apply (remove (to)))
         )
     )
@@ -32,7 +32,7 @@
             (move
                 Slide 
                 (to 
-                    if:(and (is Enemy (who at:(to))) (!= (what at:(to)) (id "King" Next)))
+                    if:(and ("IsEnemyAt" (to)) (!= (what at:(to)) (id "King" Next)))
                     "CaptureToPiece"
                 ) 
             )
@@ -54,7 +54,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(or (is Empty (to)) (and (is Enemy (who at:(to))) (!= (what at:(to)) (id "King" Next))))
+                    if:(or (is Empty (to)) (and ("IsEnemyAt" (to)) (!= (what at:(to)) (id "King" Next))))
                     "CaptureToPiece"
                 ) 
             )		
@@ -64,7 +64,7 @@
                 Slide 
                 Orthogonal 
                 (to 
-                    if:(and (is Enemy (who at:(to))) (!= (what at:(to)) (id "King" Next)))
+                    if:(and ("IsEnemyAt" (to)) (!= (what at:(to)) (id "King" Next)))
                     "CaptureToPiece"
                 ) 
             )		
@@ -78,7 +78,7 @@
                     if:(is Empty (between))
                 )
                 (to 
-                    if:(and (is Enemy (who at:(to))) (!= (what at:(to)) (id "King" Next)))
+                    if:(and ("IsEnemyAt" (to)) (!= (what at:(to)) (id "King" Next)))
                     "CaptureToPiece"
                 ) 
             )		

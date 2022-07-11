@@ -1,13 +1,12 @@
-(define "SiteToMoveOnTrack" (trackSite Move steps:(mapEntry "DieValue" (count Pips))))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" (mapEntry "DieValue" (count Pips))))
 
-(define "MoveToNextSiteOnTrack" (trackSite Move steps:1))
+(define "MoveToNextSiteOnTrack" ("NextSiteOnTrack" 1))
 
 //------------------------------------------------------------------------------
 
 (game "Ashtapada"
     (players <Version:numPlayers>)  
-    (equipment 
-        { 
+    (equipment { 
         (board (square 8)
             {
             (track "Track1" "3,E,N,W,S,E1,N6,E5,S5,W4,N4,E3,S3,W1" 1 directed:True)
@@ -16,17 +15,17 @@
             (track "Track4" "32,S,E,N,W,S1,E6,S5,W5,N4,E4,S3,W3,N1" 4 directed:True)
             }
         )
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
         (hand Each)
-        (map "DieValue" { (pair 4 8) })
+        (map "DieValue" {(pair 4 8)})
         <Version:map>
         (regions "Protect" (sites {"A1" "A4" "A5" "A8" "D1" "D4" "D5" "D8" "E1" "E4" "E5" "E8" "H1" "H4" "H5" "H8"}))
         
         (piece "Disc" Each 
-            (if (!= "SiteToMoveOnTrack" Off)  			
+            (if ("IsNotOffBoard" "SiteToMoveOnTrack")  			
                 (if 
                     (if (is In "SiteToMoveOnTrack" (sites "Protect"))
-                        (not (is Enemy (who at:"SiteToMoveOnTrack")))
+                        (not ("IsEnemyAt" "SiteToMoveOnTrack"))
                         True
                     )
                     (move 
@@ -34,7 +33,7 @@
                         (to 
                             "SiteToMoveOnTrack" 
                             (apply 
-                                if:(is Enemy (who at:(to))) 
+                                if:("IsEnemyAt" (to)) 
                                 (fromTo (from (to)) (to (handSite (who at:(to)))))
                             )
                         ) 
@@ -43,36 +42,29 @@
             )
         ) 
         
-        }
-    )  
+    })  
     
     (rules 
         <Version:start>	
         
         (play 
-            (do (if (not "SameTurn") (roll))
-                next:(if "SameTurn"
+            ("RollEachNewTurnMove"
+                (if "SameTurn"
                     (or
                         (forEach Piece 
                             (if (= (from) (mapEntry "Exit" Mover))
                                 (move Remove (from))
-                                (if (!= "MoveToNextSiteOnTrack" Off)  			
+                                (if ("IsNotOffBoard" "MoveToNextSiteOnTrack")  			
                                     (if 
                                         (if (is In "MoveToNextSiteOnTrack" (sites "Protect"))
-                                            (not (is Enemy (who at:"MoveToNextSiteOnTrack")))
+                                            (not ("IsEnemyAt" "MoveToNextSiteOnTrack"))
                                             True
                                         )
                                         (move 
                                             (from) 
                                             (to 
                                                 "MoveToNextSiteOnTrack"
-                                                (apply 
-                                                    if:(is Enemy (who at:(to))) 
-                                                    (fromTo 
-                                                        (from (to)) 
-                                                        (to (handSite (who at:(to))))
-                                                    )
-                                                )
+                                                ("HittingCapture" (handSite (who at:(to))))
                                             )
                                         )
                                     )
@@ -85,7 +77,7 @@
                                 (from (handSite Mover)) 
                                 (to 
                                     (mapEntry "Entry" Mover) 
-                                    if:(not (is Enemy (who at:(to))))
+                                    if:(not ("IsEnemyAt" (to)))
                                 )
                             )
                         )
@@ -115,8 +107,8 @@
         })
         >
         <
-        (map "Entry" { (pair P1 "D1") (pair P2 "E8")})
-        (map "Exit" { (pair P1 "E3") (pair P2 "D6")})
+        (map "Entry" {(pair P1 "D1") (pair P2 "E8")})
+        (map "Exit" {(pair P1 "E3") (pair P2 "D6")})
         >
         "The version of the game played with 2 players."
     )*   
@@ -131,8 +123,8 @@
         })
         >
         <
-        (map "Entry" { (pair P1 "D1") (pair P2 "E8") (pair P3 "H4") (pair P4 "A5")})
-        (map "Exit" { (pair P1 "E3") (pair P2 "D6") (pair P3 "F5") (pair P4 "C4")})
+        (map "Entry" {(pair P1 "D1") (pair P2 "E8") (pair P3 "H4") (pair P4 "A5")})
+        (map "Exit" {(pair P1 "E3") (pair P2 "D6") (pair P3 "F5") (pair P4 "C4")})
         >
         "The version of the game played with 4 players."
     ) 

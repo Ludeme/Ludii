@@ -2,7 +2,7 @@
     (or
         {
         (if
-            (is Prev Mover)
+            ("SameTurn")
             (or
                 ("TurnPass")
                 ("PlaceHex")
@@ -42,7 +42,7 @@
 
 (define "HopChange" //  Options: eg. "Moversites" or  <Multi:capture>
     (if 
-        (is Prev Mover)
+        ("SameTurn")
         (if 
             (is Pending)
             (#1 (from (last To)) #2)
@@ -183,7 +183,7 @@
 
 (define "PlaceDisc" 
     (if
-        (not (is Prev Mover))
+        (not ("SameTurn"))
         (move Add 
             (piece (id "Disc" Mover))
             (to (forEach <PlaceDisc:suicideOption> if:<PlaceDisc:location>))

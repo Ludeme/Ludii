@@ -467,7 +467,7 @@
     )		
 )
 
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:(count Pips)))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" (count Pips) #1))
 
 (define "MovePiece"
     (move
@@ -554,8 +554,8 @@
         phases:{
         (phase "Opening"
             (play 
-                (do (roll) 
-                    next:(if (is Empty (mapEntry "FirstSite" (count Pips)))
+                ("RollMove"
+                    (if (is Empty (mapEntry "FirstSite" (count Pips)))
                         (move 
                             (from (handSite Mover))
                             (to (mapEntry "FirstSite" (count Pips)))
@@ -570,8 +570,8 @@
             (play 
                 (if (is Proposed "End")
                     (or (move Vote "End") (move Vote "No"))
-                    (do (roll)
-                        next:(or (forEach Piece) (move Propose "End"))
+                    ("RollMove"
+                        (or (forEach Piece) (move Propose "End"))
                     )
                 )
             )

@@ -1,12 +1,10 @@
 (define "Columns" <Board:size>)
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
 
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))) )
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
 
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
-(define "MoveAgainAfterCapture" (and (is Pending) (is Mover Prev)))
+(define "MoveAgainAfterCapture" (and (is Pending) ("SameTurn")))
 
 (define "StylizedMove" 
     (if (is Mover P1)
@@ -119,8 +117,8 @@
                     (move Select 
                         (from 
                             (if 
-                                (is Mover Prev) 
-                                "PlayFromLastHole" 
+                                ("SameTurn") 
+                                "LastHoleSowed" 
                                 (if 
                                     (< (count Turns) 3) 
                                     "StylizedMove" 
@@ -135,8 +133,8 @@
                         Select 
                         (from 
                             (if 
-                                (is Mover Prev) 
-                                "PlayFromLastHole" 
+                                ("SameTurn") 
+                                "LastHoleSowed" 
                                 (sites Mover "Home") 
                             )
                             if:(= (count at:(from)) 1)
@@ -147,14 +145,7 @@
             )
         )
         
-        (end
-            (if (no Moves Mover) 
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (no Moves Mover)))
     )
 )
 

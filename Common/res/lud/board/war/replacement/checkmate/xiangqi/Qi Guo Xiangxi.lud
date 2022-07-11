@@ -21,7 +21,7 @@
 
 (define "CaptureToPiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             ("RemoveEnemyPiece")
         )
     )
@@ -40,7 +40,7 @@
 
 (define "EnemyNotKing"
     (and {
-        (is Enemy (who at:#1)) 
+        ("IsEnemyAt" #1) 
         ("NotaKing" #1)
     })
 )
@@ -167,7 +167,7 @@
                     (between 
                         before:(count Rows)  
                         after:(count Rows)  
-                        if:(is Friend (who at:(between)))
+                        if:("IsFriendAt" (between))
                     )
                     (to 
                         if:(is Empty (to)) 
@@ -194,7 +194,7 @@
                                     (from) 
                                     (to 
                                         (apply 
-                                            if:(is Enemy (who at:(to)))
+                                            if:("IsEnemyAt" (to))
                                             ("RemoveEnemyPiece")
                                         )
                                     )

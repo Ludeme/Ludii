@@ -1,19 +1,12 @@
-(define "ThrowValue" 
-    (if (= (count Pips) 0) 
-        8
-        (count Pips)
-    )
-)
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
 
-(define "Grace" 
-    (or (= (count Pips) 0) (= (count Pips) 4))
-)
+(define "Grace" (is In (count Pips) (array {0 4})))
 
-(define "SiteToMoveOnTrack" (trackSite Move steps:("ThrowValue")))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" ("ThrowValue")))
 
 (define "CaptureEnemyPiece" 
     (apply 
-        if:(and (not (is In (to) (sites "ProtectedSites"))) (is Enemy (who at:(to)))) 
+        if:(and (not (is In (to) (sites "ProtectedSites"))) ("IsEnemyAt" (to))) 
         (and
             (fromTo 
                 (from (to))
@@ -43,7 +36,7 @@
             }
         )
         (piece "Paddle" Each
-            (if (and (is In (from) (sites Board)) (!= "SiteToMoveOnTrack" Off))
+            (if (and (is In (from) (sites Board)) ("IsNotOffBoard" "SiteToMoveOnTrack"))
                 (move 
                     (from (from) level:(level))
                     (to 
@@ -59,8 +52,9 @@
             )	
         )
         (hand Each)
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
         (map {(pair 1 "G4") (pair 2 "A4") (pair 3 "D1") (pair 4 "D7")})
+        (map "Throw" {(pair 0 8)})
         (regions "ProtectedSites" (sites {0 3 6 21 27 3 45 42 48 24}))
     })
     (rules 
@@ -71,8 +65,8 @@
             <Player:startP4>
         })
         (play 
-            (do (roll) 
-                next:(or {
+            ("RollMove"
+                (or {
                     (forEach Piece)
                     (move Pass)
                     (if (and ("Grace") (!= 0 (who at:(handSite Mover))))

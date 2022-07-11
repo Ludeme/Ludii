@@ -7,8 +7,8 @@
     
     (rules 
         (start { 
-            (place "Counter1" (union { (expand (sites Bottom)) (sites {"D3" "E3"}) }))
-            (place "Counter2" (union { (sites {"A3" "B3"}) (expand (sites Top)) }))
+            (place "Counter1" (union {(expand (sites Bottom)) (sites {"D3" "E3"}) }))
+            (place "Counter2" (union {(sites {"A3" "B3"}) (expand (sites Top)) }))
         })
         
         <Play>
@@ -68,7 +68,7 @@
             (move
                 Hop 
                 (between 
-                    if:(is Enemy (who at:(between)))
+                    if:("IsEnemyAt" (between))
                     (apply (remove (between)))
                 ) 
                 (to if:(is Empty (to))) 
@@ -78,7 +78,7 @@
                                 (hop
                                     (from (last To)) 
                                     (between 
-                                        if:(is Enemy (who at:(between)))
+                                        if:("IsEnemyAt" (between))
                                         (apply (remove (between)))
                                     )
                                     (to if:(is Empty (to)))
@@ -157,7 +157,7 @@
                             Hop 
                             (from (last To))
                             (between 
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             ) 
                             (to if:(is Empty (to))) 

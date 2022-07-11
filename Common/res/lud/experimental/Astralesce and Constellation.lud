@@ -126,7 +126,7 @@
 ))
 
 (define "AMSEnd" (if (no Moves Next) (result Mover Loss)))
-(define "Last2MoveEnd" (if (no Moves Next) (result Mover Win)))
+(define "Last2MoveEnd" ("BlockWin"))
 (define "Dummy" (place <Game:token> 1))
 
 //-------------------------------------------------

@@ -33,7 +33,7 @@
             "Placement"
             (play
                 (if
-                    (is Prev Mover)
+                    ("SameTurn")
                     (move
                         Remove
                         (sites Occupied by:Next container:"Board")
@@ -55,7 +55,7 @@
             "Movement"
             (play
                 (if
-                    (is Prev Mover)
+                    ("SameTurn")
                     (move
                         Remove
                         (sites Occupied by:Next container:"Board")

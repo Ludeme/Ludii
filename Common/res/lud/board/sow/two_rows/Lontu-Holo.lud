@@ -40,14 +40,14 @@
         (map "Store" {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
     })  
     (rules 
-        (start (set Count 4 to:(union (sites Bottom) (sites Top))) )
+        (start (set Count 4 to:(union (sites Bottom) (sites Top))))
         
         phases:{
         <Variant:opening>
         
         (phase "Sowing"
             (play 
-                (if (is Mover Prev)
+                (if ("SameTurn")
                     (if ("OneSeedInEachHole" Next)
                         (move 
                             (from 
@@ -263,28 +263,28 @@
             (play 
                 (move 
                     (from 
-                        (sites { (mapEntry "CentreClosestRow" Mover) (mapEntry "RightClosestRow" Mover)})
+                        (sites {(mapEntry "CentreClosestRow" Mover) (mapEntry "RightClosestRow" Mover)})
                         if:(= 4 (count at:(from)))
                     )
                     (to (mapEntry "LeftClosestRow" Mover))
                     count:2
                 )
             )
-            (nextPhase Mover (all Sites (sites { (mapEntry "CentreClosestRow" Mover) (mapEntry "RightClosestRow" Mover)}) if:(= 2 (count at:(site)))) "Opening2")
+            (nextPhase Mover (all Sites (sites {(mapEntry "CentreClosestRow" Mover) (mapEntry "RightClosestRow" Mover)}) if:(= 2 (count at:(site)))) "Opening2")
         )
         
         (phase "Opening2"
             (play 
                 (move 
                     (from 
-                        (sites { (mapEntry "CentreFurtherRow" Mover) (mapEntry "RightFurtherRow" Mover)})
+                        (sites {(mapEntry "CentreFurtherRow" Mover) (mapEntry "RightFurtherRow" Mover)})
                         if:(= 4 (count at:(from)))
                     )
                     (to (mapEntry "LeftFurtherRow" Mover))
                     count:2
                 )
             )
-            (nextPhase Mover (all Sites (sites { (mapEntry "CentreFurtherRow" Mover) (mapEntry "RightFurtherRow" Mover)}) if:(= 2 (count at:(site)))) "Opening3")
+            (nextPhase Mover (all Sites (sites {(mapEntry "CentreFurtherRow" Mover) (mapEntry "RightFurtherRow" Mover)}) if:(= 2 (count at:(site)))) "Opening3")
         )
         (phase "Opening3"
             (play 

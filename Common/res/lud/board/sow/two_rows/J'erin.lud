@@ -1,5 +1,3 @@
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "OwnedHoles" 
     (if (is Mover P1)
         (sites (values Remembered "OwnedP1"))
@@ -15,7 +13,6 @@
 )
 
 (define "EightPiecesOnBoard" (>= 8 (count Pieces All in:(sites Board))))
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
 //------------------------------------------------------------------------------
 
@@ -45,8 +42,8 @@
                 (or {
                     (move Select
                         (from 
-                            (if (is Mover Prev)
-                                ("PlayFromLastHole") 
+                            (if ("SameTurn")
+                                ("LastHoleSowed") 
                                 ("OwnedHoles") 
                             )
                             if:(< 0 (count at:(from)))
@@ -56,7 +53,7 @@
                                 (set Var "NumSowed" (count at:(last To)))
                                 next:(if (and 
                                         ("EightPiecesOnBoard") 
-                                        (not (all Sites (sites Track from:(trackSite Move from:(last From) "Track" steps:1) to:(trackSite Move from:(last From) "Track" steps:(var "NumSowed")))
+                                        (not (all Sites (sites Track from:("NextSiteOnTrack" 1 from:(last From) "Track") to:("NextSiteOnTrack" (var "NumSowed") from:(last From) "Track"))
                                                 if:(!= 3 (count at:(site)))
                                         ))
                                     )

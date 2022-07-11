@@ -10,7 +10,7 @@
             (place "Marker2" (sites Top))
         })
         (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (end ("BlockWin"))
     )
 )
 

@@ -7,7 +7,7 @@
                 Hop
                 Orthogonal 
                 (between 
-                    if:(is Friend (who at:(between))) 
+                    if:("IsFriendAt" (between)) 
                     (apply (remove (between)))
                 )
                 (to if:(is Empty (to)))
@@ -17,11 +17,11 @@
     )  
     (rules 
         (start { 
-            (place "Marker" (difference (sites Board) (sites <Variant:noPieceSite>)) )
+            (place "Marker" (difference (sites Board) (sites <Variant:noPieceSite>)))
         })
         
         (play (forEach Piece))
-        (end (if <Variant:end> (result P1 Win)) )  
+        (end (if <Variant:end> (result P1 Win)))  
     )
 )
 

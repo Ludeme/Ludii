@@ -11,7 +11,7 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
@@ -45,7 +45,7 @@
                 Slide 
                 Orthogonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )
@@ -55,7 +55,7 @@
                 (move
                     Step 
                     (to 
-                        if:(not (is Friend (who at:(to)))) 
+                        if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
                     )
                 )
@@ -76,7 +76,7 @@
                 Slide 
                 Diagonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )
@@ -86,7 +86,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )
@@ -95,7 +95,7 @@
             (move
                 Slide 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )
@@ -135,7 +135,7 @@
                 (result Mover Win)
             ) 
             (if (= (count Pieces Next) 1) (result Mover Win)) 
-            (if (no Moves Next) (result Mover Win)) 
+            ("BlockWin")
             }
         )
     )

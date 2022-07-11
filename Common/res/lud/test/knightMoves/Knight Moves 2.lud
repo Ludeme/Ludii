@@ -17,12 +17,12 @@
                         (forEach Direction 
                             (from (to)) 
                             (directions {FR FL} of:All) 
-                            (if (not (is Friend (who at:(to)))) 
+                            (if (not ("IsFriendAt" (to))) 
                                 (move 
                                     (from) 
                                     (to 
                                         (apply 
-                                            if:(is Enemy (who at:(to)))
+                                            if:("IsEnemyAt" (to))
                                             (remove (to))
                                         )
                                     )

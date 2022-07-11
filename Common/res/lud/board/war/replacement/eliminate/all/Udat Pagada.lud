@@ -32,7 +32,7 @@
                 (from (from) level:(level))
                 (to ("TrackMove" from:(from) "Track" ("ThrowValue"))
                     (apply 
-                        (if (is Enemy (who at:(to)))
+                        (if ("IsEnemyAt" (to))
                             (forEach Level (to) FromTop
                                 (remove (to) level:(level))
                             )
@@ -59,7 +59,7 @@
                             (from (handSite Mover))
                             (to ("TrackMove" from:(mapEntry "Entry" Mover) "Track" (- ("ThrowValue") 1))
                                 (apply 
-                                    (if (is Enemy (who at:(to)))
+                                    (if ("IsEnemyAt" (to))
                                         (forEach Level (to) FromTop
                                             (remove (to) level:(level))
                                         )

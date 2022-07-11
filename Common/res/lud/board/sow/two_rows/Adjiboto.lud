@@ -1,4 +1,4 @@
-(define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
+(define "NextHole" ("NextSiteOnTrack" #2 from:#1 "Track"))
 
 (define "RemmemberSowedHoles" 
     (if (is Mover P1)
@@ -27,11 +27,10 @@
         (hand Each)
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
-        }
-    )  
+    })  
     (rules 
         
-        (start (set Count 10 to:(sites Track)) )
+        (start (set Count 10 to:(sites Track)))
         
         phases:{
         (phase "Opening"
@@ -40,9 +39,7 @@
                     (from (difference (sites Mover) (sites ("SowedHoles"))) if:(< 1 (count at:(to))))
                     (then
                         (and
-                            (sow
-                                origin:True		
-                            )
+                            (sow origin:True)
                             ("RemmemberSowedHoles" (last From))
                         )
                     )
@@ -83,7 +80,6 @@
             )
         )
         }
-        
     )
 )
 

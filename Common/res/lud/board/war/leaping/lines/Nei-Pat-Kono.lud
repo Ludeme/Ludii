@@ -9,8 +9,8 @@
                 (move
                     Hop
                     Orthogonal 
-                    (between if:(is Friend (who at:(between))))
-                    (to if:(is Enemy (who at:(to)))) 
+                    (between if:("IsFriendAt" (between)))
+                    (to if:("IsEnemyAt" (to))) 
                 ) 
             ) 
         )

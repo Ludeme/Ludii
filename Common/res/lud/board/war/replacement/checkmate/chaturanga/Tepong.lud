@@ -1,6 +1,6 @@
 (define "CaptureEnemyToPiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove (to))
         )
     ) 
@@ -11,7 +11,7 @@
         Step 
         (if (= 1 (state at:(from))) (directions {BR BL}) (directions {FR FL}))
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
@@ -47,7 +47,7 @@
         (piece "King_noCross" Each
             (or
                 (move Step
-                    (to if:(not (is Friend (who at:(to))))
+                    (to if:(not ("IsFriendAt" (to)))
                         ("CaptureEnemyToPiece")
                     )
                     (then
@@ -66,7 +66,7 @@
                                 if:True
                             )
                             (to 
-                                if:(not (is Friend (who at:(to)))) 
+                                if:(not ("IsFriendAt" (to))) 
                                 "CaptureEnemyToPiece"
                             ) 
                         )
@@ -74,7 +74,7 @@
                             Leap 
                             "KnightWalk" 
                             (to 
-                                if:(not (is Friend (who at:(to)))) 
+                                if:(not ("IsFriendAt" (to))) 
                                 "CaptureEnemyToPiece"
                             ) 
                         )
@@ -116,7 +116,7 @@
             (move
                 Slide 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureEnemyToPiece"
                 ) 
             )
@@ -126,7 +126,7 @@
                 Slide 
                 Diagonal
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureEnemyToPiece"
                 ) 
             )		
@@ -136,7 +136,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureEnemyToPiece"
                 ) 
             )		
@@ -146,7 +146,7 @@
                 Slide 
                 Orthogonal
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureEnemyToPiece"
                 ) 
                 (then

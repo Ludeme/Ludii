@@ -27,7 +27,7 @@
                 (or
                     (forEach Piece "Pawn"
                         (move Hop
-                            (between if:(is Enemy (who at:(between))))
+                            (between if:("IsEnemyAt" (between)))
                             (to if:(and (not (is In (to) (sites "GoalKing"))) (is Empty (to)))
                                 (apply (remove (between)))
                             )
@@ -35,7 +35,7 @@
                     )
                     (forEach Piece "King"
                         (move Hop
-                            (between if:(is Enemy (who at:(between))))
+                            (between if:("IsEnemyAt" (between)))
                             (to if:(is Empty (to)))
                         )
                     )

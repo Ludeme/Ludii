@@ -29,7 +29,7 @@
                         (from (site)) 
                         (between 
                             (max 1) 
-                            if:(is Enemy (who at:(between))) 
+                            if:("IsEnemyAt" (between)) 
                             (apply (and
                                     (remove (between))
                                     (or
@@ -44,12 +44,12 @@
                                     )
                             ))
                         )
-                        (to if:(is Friend (who at:(to))))
+                        (to if:("IsFriendAt" (to)))
                         (then (moveAgain))
                     )
                 )
                 (forEach piece
-                    (if (is Prev Mover)
+                    (if ("SameTurn")
                         (if (is In (last To) (sites {"E5"}))
                             (move Step
                                 (from (last To))

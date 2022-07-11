@@ -1,5 +1,5 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #2 #1))
 
 (define "IsSpecialThrow" (is In ("ThrowValue") (sites {10 25 30})))
 
@@ -15,17 +15,7 @@
 (game "Pasit"  
     (players 4)  
     (equipment { 
-        (board 
-            (add
-                (hole
-                    (merge 
-                        (shift 0 8 (rectangle 3 19)) 
-                        (shift 8 0 (rectangle 19 3))
-                    )
-                    (poly {{8 8} {8 11} {11 11} {11 8}})
-                )
-                cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9 } }
-            )
+        ("PachisiBoard"
             {
             (track "Track1" "8,S,E,N,11,E,N,W,53,N,W,S,42,W,S,E,8,S,E1,N8" P1 directed:True)
             (track "Track2" "42,W,S,E,8,S,E,N,11,E,N,W,53,N,W,S,42,W,S1,E8" P2 directed:True)
@@ -34,9 +24,9 @@
             }
         )
         (hand Each) 
-        (dice d:2 from:0 num:6)
+        ("StickDice" 6)
         (piece "Pawn" Each
-            (if (= Off ("SiteToMoveOnTrack" from:(from) ("ThrowValue")))
+            (if ("IsOffBoard" ("SiteToMoveOnTrack" from:(from) ("ThrowValue")))
                 (move 
                     (from (from) level:(level))
                     (to (centrePoint))
@@ -47,7 +37,7 @@
                         ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
                         if:True
                         (apply
-                            (if (and (not (is In (to) (sites "SafeSites"))) (is Enemy (who at:(to))))
+                            (if (and (not (is In (to) (sites "SafeSites"))) ("IsEnemyAt" (to)))
                                 (forEach Level (to) FromTop
                                     (fromTo
                                         (from (to) level:(level))
@@ -75,9 +65,8 @@
         phases:{
         (phase "Opening" 
             (play 
-                (do 
-                    (roll) 
-                    next:(if ("IsSpecialThrow")
+                ("RollMove"
+                    (if ("IsSpecialThrow")
                         (move
                             (from (handSite Mover))
                             (to (mapEntry "Entry" Mover))
@@ -96,9 +85,8 @@
         )
         (phase "Moving" 
             (play 
-                (do 
-                    (roll) 
-                    next:(or
+                ("RollMove"
+                    (or
                         (if (and (is Occupied (handSite Mover)) ("IsSpecialThrow"))
                             (move
                                 (from (handSite Mover))

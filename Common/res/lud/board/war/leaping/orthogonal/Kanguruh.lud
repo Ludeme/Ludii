@@ -15,7 +15,7 @@
                     if:(is Empty (to))
                     (apply
                         (and {
-                            (if (is Enemy (who at:(between)))
+                            (if ("IsEnemyAt" (between))
                                 (remove (between))
                             )
                             (remember Value (from))
@@ -46,7 +46,7 @@
         })
         
         (play 
-            (if (is Prev Mover)
+            (if ("SameTurn")
                 (or
                     (move Pass
                         (then
@@ -60,7 +60,7 @@
                             if:(and (is Empty (to)) (not (is In (to) (values Remembered))))
                             (apply
                                 (and
-                                    (if (is Enemy (who at:(between)))
+                                    (if ("IsEnemyAt" (between))
                                         (remove (between))
                                     )
                                     (remember Value (to))

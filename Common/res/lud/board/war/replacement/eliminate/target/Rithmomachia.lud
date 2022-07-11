@@ -22,16 +22,16 @@
                         (sites To
                             (forEach Level (site) FromBottom
                                 (if (= (what at:(site) level:(level)) (id "Disc" Mover))
-                                    (step (from (site) level:(level)) Orthogonal (to if:(not (is Friend (who at:(to))))))
+                                    (step (from (site) level:(level)) Orthogonal (to if:(not ("IsFriendAt" (to)))))
                                     (if (= (what at:(site) level:(level)) (id "Triangle" Mover))
                                         (slide (from (site) level:(level)) Diagonal 
                                             (between (exact 2) if:(is Empty (between)))
-                                            (to if:(is Enemy (who at:(to))))
+                                            (to if:("IsEnemyAt" (to)))
                                         )
                                         (if (= (what at:(site) level:(level)) (id "Square" Mover))
                                             (slide (from (site) level:(level)) Orthogonal 
                                                 (between (exact 3) if:(is Empty (between)))
-                                                (to if:(is Enemy (who at:(to))))
+                                                (to if:("IsEnemyAt" (to)))
                                             )
                                         )
                                     )
@@ -59,16 +59,16 @@
                         (sites To
                             (forEach Level (site) FromBottom
                                 (if (= (what at:(site) level:(level)) (id "Disc" Mover))
-                                    (step (from (site) level:(level)) Orthogonal (to if:(not (is Friend (who at:(to))))))
+                                    (step (from (site) level:(level)) Orthogonal (to if:(not ("IsFriendAt" (to)))))
                                     (if (= (what at:(site) level:(level)) (id "Triangle" Mover))
                                         (slide (from (site) level:(level)) Diagonal 
                                             (between (exact 2) if:(is Empty (between)))
-                                            (to if:(is Enemy (who at:(to))))
+                                            (to if:("IsEnemyAt" (to)))
                                         )
                                         (if (= (what at:(site) level:(level)) (id "Square" Mover))
                                             (slide (from (site) level:(level)) Orthogonal 
                                                 (between (exact 3) if:(is Empty (between)))
-                                                (to if:(is Enemy (who at:(to))))
+                                                (to if:("IsEnemyAt" (to)))
                                             )
                                         )
                                     )
@@ -96,16 +96,16 @@
                         (sites To
                             (forEach Level (site) FromBottom
                                 (if (= (what at:(site) level:(level)) (id "Disc" Mover))
-                                    (step (from (site) level:(level)) Orthogonal (to if:(not (is Friend (who at:(to))))))
+                                    (step (from (site) level:(level)) Orthogonal (to if:(not ("IsFriendAt" (to)))))
                                     (if (= (what at:(site) level:(level)) (id "Triangle" Mover))
                                         (slide (from (site) level:(level)) Diagonal 
                                             (between (exact 2) if:(is Empty (between)))
-                                            (to if:(is Enemy (who at:(to))))
+                                            (to if:("IsEnemyAt" (to)))
                                         )
                                         (if (= (what at:(site) level:(level)) (id "Square" Mover))
                                             (slide (from (site) level:(level)) Orthogonal 
                                                 (between (exact 3) if:(is Empty (between)))
-                                                (to if:(is Enemy (who at:(to))))
+                                                (to if:("IsEnemyAt" (to)))
                                             )
                                         )
                                     )
@@ -133,16 +133,16 @@
                         (sites To
                             (forEach Level (site) FromBottom
                                 (if (= (what at:(site) level:(level)) (id "Disc" Mover))
-                                    (step (from (site) level:(level)) Orthogonal (to if:(not (is Friend (who at:(to))))))
+                                    (step (from (site) level:(level)) Orthogonal (to if:(not ("IsFriendAt" (to)))))
                                     (if (= (what at:(site) level:(level)) (id "Triangle" Mover))
                                         (slide (from (site) level:(level)) Diagonal 
                                             (between (exact 2) if:(is Empty (between)))
-                                            (to if:(is Enemy (who at:(to))))
+                                            (to if:("IsEnemyAt" (to)))
                                         )
                                         (if (= (what at:(site) level:(level)) (id "Square" Mover))
                                             (slide (from (site) level:(level)) Orthogonal 
                                                 (between (exact 3) if:(is Empty (between)))
-                                                (to if:(is Enemy (who at:(to))))
+                                                (to if:("IsEnemyAt" (to)))
                                             )
                                         )
                                     )
@@ -178,21 +178,21 @@
             (count Sites 
                 in:(sites To
                     (if (= (what at:(site) level:(level)) (id "Disc" Next))
-                        (step (from (site) level:(level)) Orthogonal (to if:(is Friend (who at:(to)))))
+                        (step (from (site) level:(level)) Orthogonal (to if:("IsFriendAt" (to))))
                         (if (= (what at:(site) level:(level)) (id "Triangle" Next))
                             (slide (from (site) level:(level)) Diagonal 
                                 (between (exact 2) if:(is Empty (between)))
                                 (to 
-                                    if:(is Friend (who at:(to)))
-                                    (apply if:(is Friend (who at:(to))))	
+                                    if:("IsFriendAt" (to))
+                                    (apply if:("IsFriendAt" (to)))	
                                 )
                             )
                             (if (= (what at:(site) level:(level)) (id "Square" Next))
                                 (slide (from (site) level:(level)) Orthogonal 
                                     (between (exact 3) if:(is Empty (between)))
                                     (to 
-                                        if:(is Friend (who at:(to)))
-                                        (apply if:(is Friend (who at:(to))))	
+                                        if:("IsFriendAt" (to))
+                                        (apply if:("IsFriendAt" (to)))	
                                     )
                                 )
                             )
@@ -207,16 +207,16 @@
                 in:
                 (sites To
                     (if (= (what at:(site) level:(level)) (id "Disc" Next))
-                        (step (from (site) level:(level)) Orthogonal (to if:(or (is Empty (to)) (is Enemy (who at:(to))))))
+                        (step (from (site) level:(level)) Orthogonal (to if:(or (is Empty (to)) ("IsEnemyAt" (to)))))
                         (if (= (what at:(site) level:(level)) (id "Triangle" Next))
                             (slide (from (site) level:(level)) Diagonal 
                                 (between (exact 2) if:(is Empty (between)))
-                                (to if:(is Enemy (who at:(to))))
+                                (to if:("IsEnemyAt" (to)))
                             )
                             (if (= (what at:(site) level:(level)) (id "Square" Next))
                                 (slide (from (site) level:(level)) Orthogonal 
                                     (between (exact 3) if:(is Empty (between)))
-                                    (to if:(is Enemy (who at:(to))))
+                                    (to if:("IsEnemyAt" (to)))
                                 )
                             )
                         )
@@ -783,10 +783,10 @@
             (move Slide Orthogonal
                 (between (exact 3) if:(is Empty (between)))
                 (to
-                    if:(and (is Enemy (who at:(to))) ("CaptureConditions"))
+                    if:(and ("IsEnemyAt" (to)) ("CaptureConditions"))
                     (apply 
                         (if 
-                            (is Enemy (who at:(to))) 
+                            ("IsEnemyAt" (to)) 
                             (forEach Level (to) FromTop
                                 (remove (to) level:(level))
                             )
@@ -800,9 +800,9 @@
             (move Slide Diagonal
                 (between (exact 2) if:(is Empty (between)))
                 (to
-                    if:(and (is Enemy (who at:(to))) ("CaptureConditions"))
+                    if:(and ("IsEnemyAt" (to)) ("CaptureConditions"))
                     (apply
-                        (if (is Enemy (who at:(to))) 
+                        (if ("IsEnemyAt" (to)) 
                             (forEach Level (to) FromTop
                                 (remove (to) level:(level))
                             )
@@ -815,9 +815,9 @@
         (piece "Disc" Each
             (move Step Orthogonal
                 (to 
-                    if:(if (is Enemy (who at:(to))) ("CaptureConditions") (is Empty (to)))
+                    if:(if ("IsEnemyAt" (to)) ("CaptureConditions") (is Empty (to)))
                     (apply 
-                        (if (is Enemy (who at:(to))) 
+                        (if ("IsEnemyAt" (to)) 
                             (forEach Level (to) FromTop
                                 (remove (to) level:(level))
                             )

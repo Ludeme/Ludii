@@ -1,9 +1,5 @@
 (define "Columns" <Row:size>)
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
-
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
 
 //------------------------------------------------------------------------------
@@ -25,12 +21,10 @@
         (start (set Count 4 to:(sites Track)))
         
         (play 
-            (move
-                Select 
+            (move Select 
                 (from 
-                    (if 
-                        (is Mover Prev) 
-                        "PlayFromLastHole" 
+                    (if ("SameTurn") 
+                        "LastHoleSowed" 
                         (sites Mover) 
                     ) 
                     if:(> (count at:(from)) 0)
@@ -41,13 +35,13 @@
                             (moveAgain)
                             (if (and 
                                     (is In (to) (sites Mover)) 
-                                    (> (count at:"OppositePit") 0)
+                                    (> (count at:("OppositePit" (to))) 0)
                                 )
                                 (and
                                     (fromTo 
-                                        (from "OppositePit") 
+                                        (from ("OppositePit" (to))) 
                                         (to (handSite Mover)) 
-                                        count:(count at:"OppositePit" )
+                                        count:(count at:("OppositePit" (to)))
                                     ) 
                                     (fromTo 
                                         (from (to)) 
@@ -63,14 +57,7 @@
             )
         )
         
-        (end
-            (if (no Moves Mover) 
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (no Moves Mover)))
     )
 )
 

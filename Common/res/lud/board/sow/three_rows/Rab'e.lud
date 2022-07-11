@@ -1,12 +1,10 @@
 (define "Columns" 6)
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 (define "OneHomeEmpty" 
     (or
         (all Sites (sites P1) if:(is Empty (site)))  
         (all Sites (sites P2) if:(is Empty (site)))  
     )
 )
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
 (define "NumCapturedPieces" 
     (+ 
@@ -50,8 +48,8 @@
                 (or {
                     (move Select
                         (from 
-                            (if (is Mover Prev)
-                                ("PlayFromLastHole") 
+                            (if ("SameTurn")
+                                ("LastHoleSowed") 
                                 (sites Mover) 
                             )
                             if:(< 0 (count at:(from)))

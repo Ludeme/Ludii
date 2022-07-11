@@ -1,9 +1,5 @@
 (define "Columns" 6)
 
-(define "OppositePit" (if (is In #1 (sites P1)) (+ #1 "Columns") (- #1 "Columns")) )
-
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
 
 //------------------------------------------------------------------------------
@@ -39,13 +35,13 @@
         )
         (phase "Sowing" 
             (play 
-                (if (!= 0 (count in:(sites Mover)))
+                (if (not (all Sites (sites Mover) if:(= 0 (count at:(site)))))
                     (move
                         Select 
                         (from 
                             (if 
                                 "SameTurn" 
-                                "PlayFromLastHole" 
+                                "LastHoleSowed" 
                                 (sites Mover) 
                             ) 
                             if:(> (count at:(from)) 0)
@@ -56,11 +52,11 @@
                                 apply:(if (and (> (count at:(to)) 1) (is Odd (count at:(to))))
                                     (moveAgain)
                                     (and
-                                        (if (> (count at:("OppositePit" (to))) 0)
+                                        (if (> (count at:("OppositePitTwoRows" (to))) 0)
                                             (fromTo 
-                                                (from ("OppositePit" (to))) 
+                                                (from ("OppositePitTwoRows" (to))) 
                                                 (to (handSite Mover)) 
-                                                count:(count at:("OppositePit" (to)))
+                                                count:(count at:("OppositePitTwoRows" (to)))
                                             ) 
                                         )
                                         (fromTo 
@@ -70,7 +66,7 @@
                                         ) 
                                     )
                                 )
-                                backtracking:(and { (is In (to) (sites Mover)) (> (count at:(to)) 1) (is Even (count at:(to))) })
+                                backtracking:(and {(is In (to) (sites Mover)) (> (count at:(to)) 1) (is Even (count at:(to))) })
                             )
                         )
                     )
@@ -108,7 +104,7 @@
                                 (if (is Occupied (site))
                                     (fromTo 
                                         (from Cell (handSite Next))
-                                        (to ("OppositePit" (site)))
+                                        (to ("OppositePitTwoRows" (site)))
                                         count:(count at:(site))
                                     )
                                 )
@@ -122,10 +118,12 @@
         )
         }
         
-        (end {
-            (if (= 0 ("PiecesOwnedBy" P1)) (result P2 Win)) 
-            (if (= 0 ("PiecesOwnedBy" P2)) (result P1 Win)) 
-        })
+        (end 
+            (forEach Player
+                if:(= 0 ("PiecesOwnedBy" Player))
+                (result Player Loss)
+            )
+        )
     )
 )
 

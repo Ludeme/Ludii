@@ -3,7 +3,7 @@
         (= 3 (count Sites in:
                 (forEach
                     (sites Row (row of:(last To)))
-                    if:(is Friend (who at:(site)))
+                    if:("IsFriendAt" (site))
                 )
             )
         )
@@ -11,21 +11,21 @@
                 (forEach
                     (sites Column (column of:(last To)))
                     
-                    if:(is Friend (who at:(site)))
+                    if:("IsFriendAt" (site))
                 )
             )
         )
         (= 3 (count Sites in:
                 (forEach
                     (union (sites Direction from:(last To) NE included:True) (sites Direction from:(last To) SW)) 
-                    if:(is Friend (who at:(site)))
+                    if:("IsFriendAt" (site))
                 )
             )
         )
         (= 3 (count Sites in:
                 (forEach
                     (union (sites Direction from:(last To) NW included:True) (sites Direction from:(last To) SE)) 
-                    if:(is Friend (who at:(site)))
+                    if:("IsFriendAt" (site))
                 )
             )
         )

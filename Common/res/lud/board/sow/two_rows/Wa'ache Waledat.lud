@@ -6,7 +6,6 @@
     )
 )
 (define "PiecesOwnedBy" (count Cell at:(handSite #1)))
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 
 //------------------------------------------------------------------------------
 
@@ -30,15 +29,15 @@
         (hand Each)
     })  
     (rules 
-        (start (set Count 3 to:(sites Track)) )
+        (start (set Count 3 to:(sites Track)))
         
         (play 
             (or
                 (if (or (>= 0 (var "Direction")) (= 1 (var "Direction")))
                     (move Select
                         (from
-                            (if (and (is Mover Prev) (= 1 (var "ContinueSowing")))
-                                "PlayFromLastHole" 
+                            (if (and ("SameTurn") (= 1 (var "ContinueSowing")))
+                                "LastHoleSowed" 
                                 (sites Mover "RightHome")
                             )
                             if:(> (count at:(from)) 0)
@@ -71,8 +70,8 @@
                 (if (or (>= 0 (var "Direction")) (= 2 (var "Direction")))
                     (move Select
                         (from
-                            (if (and (is Mover Prev) (= 1 (var "ContinueSowing")))
-                                "PlayFromLastHole" 
+                            (if (and ("SameTurn") (= 1 (var "ContinueSowing")))
+                                "LastHoleSowed" 
                                 (sites Mover "LeftHome")
                             )
                             if:(> (count at:(from)) 0)

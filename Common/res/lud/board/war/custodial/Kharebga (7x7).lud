@@ -10,10 +10,10 @@
                         Orthogonal
                         (between
                             (max 1)
-                            if:(is Enemy (who at:(between)))
+                            if:("IsEnemyAt" (between))
                             (apply (remove (between)))
                         )
-                        (to if:(is Friend (who at:(to))))
+                        (to if:("IsFriendAt" (to)))
                     )
                 )
             )
@@ -29,7 +29,7 @@
                     (from (handSite Mover))
                     (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                     (then
-                        (if (not (is Mover Prev)) (moveAgain))
+                        (if (not ("SameTurn")) (moveAgain))
                     )
                 )
             )

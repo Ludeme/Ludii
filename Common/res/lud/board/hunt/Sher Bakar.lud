@@ -4,7 +4,7 @@
         ("AlquerqueBoard" 5 5)
         (piece "Goat" P1 
             (move Step 
-                (to if:(or (and (is In (to) (sites "StartingSitesGoats")) (is Friend (who at:(to)))) (is Empty (to))))
+                (to if:(or (and (is In (to) (sites "StartingSitesGoats")) ("IsFriendAt" (to))) (is Empty (to))))
             )
         )
         (piece "Tiger" P2

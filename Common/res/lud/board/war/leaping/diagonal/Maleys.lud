@@ -7,7 +7,7 @@
             (between 
                 before:3
                 after:1
-                if:(and (= 4 (count Steps (from) (between))) (is Enemy (who at:(between))))
+                if:(and (= 4 (count Steps (from) (between))) ("IsEnemyAt" (between)))
                 (apply (remove (between)))
             ) 
             (to if:(is Empty (to))) 
@@ -24,7 +24,7 @@
         Diagonal
         (between 
             before:1
-            if:(and (= 2 (count Steps (from) (between))) (is Enemy (who at:(between))))
+            if:(and (= 2 (count Steps (from) (between))) ("IsEnemyAt" (between)))
             (apply (remove (between)))
         ) 
         (to if:(is Empty (to))) 
@@ -41,7 +41,7 @@
             (between 
                 before:3
                 after:1
-                if:(and (= 4 (count Steps (from) (between))) (is Enemy (who at:(between))))
+                if:(and (= 4 (count Steps (from) (between))) ("IsEnemyAt" (between)))
                 (apply (remove (between)))
             ) 
             (to if:(is Empty (to))) 
@@ -58,7 +58,7 @@
         Diagonal
         (between 
             before:1
-            if:(and (= 2 (count Steps (from) (between))) (is Enemy (who at:(between))))
+            if:(and (= 2 (count Steps (from) (between))) ("IsEnemyAt" (between)))
             (apply (remove (between)))
         ) 
         (to if:(is Empty (to)))
@@ -158,7 +158,7 @@
         (start
             { 
             (place "Counter1" (difference (expand (sites Bottom) steps:3) (sites Phase 1)  ))
-            (place "Counter2" (difference (expand (sites Top) steps:3) (sites Phase 1)) )
+            (place "Counter2" (difference (expand (sites Top) steps:3) (sites Phase 1)))
             }
         )
         

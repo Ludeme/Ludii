@@ -34,7 +34,7 @@
                         (move Select
                             (from
                                 (if 
-                                    (is Mover Prev) 
+                                    ("SameTurn") 
                                     "PlayFromNextLastHole" 
                                     (sites Mover) 
                                 ) 

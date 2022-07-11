@@ -1,10 +1,10 @@
 (define "Columns" <Row:size>)
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
 
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))) )
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
 
-(define "NoPiece" (= (count in:(sites Player "Home")) 0))
+(define "NoPiece" (all Sites (sites Player "Home") if:(= 0 (count at:(site)))))
 
 (define "HaveHolesWithMoreThanOneCounter" 
     (!= 0 
@@ -18,8 +18,6 @@
 )
 
 (define "NextHoleFrom" (trackSite Move from:#1 steps:1))
-
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 
 //------------------------------------------------------------------------------
 
@@ -48,7 +46,7 @@
         
         (play 
             (if (and 
-                    (is Mover Prev) 
+                    ("SameTurn") 
                     (< 0 (var))
                 )
                 (move 
@@ -72,8 +70,8 @@
                         Select
                         (from 
                             (if 
-                                (is Mover Prev) 
-                                "PlayFromLastHole" 
+                                ("SameTurn") 
+                                "LastHoleSowed" 
                                 (sites Mover "Home") 
                             ) 
                             if:(< 1 (count at:(from)))

@@ -29,7 +29,7 @@
                         (sites Board)
                         if:(and {
                             ("RightIndexSite")
-                            (or (is Empty (site)) (is Enemy (who at:(site))))
+                            (or (is Empty (site)) ("IsEnemyAt" (site)))
                             (is In (site) (sites Around (sites Around (from))))
                         })
                     )

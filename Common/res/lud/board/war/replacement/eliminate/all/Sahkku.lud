@@ -9,15 +9,15 @@
     (if (and ("Sahkku" ("Die1") 1) (all DiceEqual))
         3
         (if (or {
-                (and { (not ("Sahkku" ("Die1"))) ("Sahkku" ("Die2")) ("Sahkku" ("Die3"))})
-                (and { ("Sahkku" ("Die1")) (not ("Sahkku" ("Die2"))) ("Sahkku" ("Die3"))})
-                (and { ("Sahkku" ("Die1")) ("Sahkku" ("Die2")) (not ("Sahkku" ("Die3")))})
+                (and {(not ("Sahkku" ("Die1"))) ("Sahkku" ("Die2")) ("Sahkku" ("Die3"))})
+                (and {("Sahkku" ("Die1")) (not ("Sahkku" ("Die2"))) ("Sahkku" ("Die3"))})
+                (and {("Sahkku" ("Die1")) ("Sahkku" ("Die2")) (not ("Sahkku" ("Die3")))})
             })
             2
             (if (or {
-                    (and { (not ("Sahkku" ("Die1"))) (not ("Sahkku" ("Die2"))) ("Sahkku" ("Die3"))})
-                    (and { ("Sahkku" ("Die1")) (not ("Sahkku" ("Die2"))) (not ("Sahkku" ("Die3")))})
-                    (and { (not ("Sahkku" ("Die1"))) ("Sahkku" ("Die2")) (not ("Sahkku" ("Die3")))})
+                    (and {(not ("Sahkku" ("Die1"))) (not ("Sahkku" ("Die2"))) ("Sahkku" ("Die3"))})
+                    (and {("Sahkku" ("Die1")) (not ("Sahkku" ("Die2"))) (not ("Sahkku" ("Die3")))})
+                    (and {(not ("Sahkku" ("Die1"))) ("Sahkku" ("Die2")) (not ("Sahkku" ("Die3")))})
                 })
                 1
                 0	
@@ -46,7 +46,7 @@
                 if:(or {
                     (= (id "Gonagas" Shared) (what at:(to))) 
                     (is Empty (to))
-                    (and (is Enemy (who at:(to))) ("IsActivated" (to) (topLevel at:(to))))
+                    (and ("IsEnemyAt" (to)) ("IsActivated" (to) (topLevel at:(to))))
                 })
                 (apply 
                     (and {
@@ -54,7 +54,7 @@
                         (forget Value "Pips" (value))
                         (if (= (what at:(to)) (id "Gonagas" Shared))
                             (set State at:(to) (mover))
-                            (if (is Enemy (who at:(to)))
+                            (if ("IsEnemyAt" (to))
                                 (remove (to))
                             )
                         )
@@ -80,7 +80,7 @@
                 (apply 
                     if:(or 
                         (is Empty (to))
-                        (and (is Enemy (who at:(to))) ("IsActivated" (to) (topLevel at:(to))))
+                        (and ("IsEnemyAt" (to)) ("IsActivated" (to) (topLevel at:(to))))
                     )
                 )
             )
@@ -124,7 +124,7 @@
                         if:(or {
                             (= (id "Gonagas" Shared) (what at:(to))) 
                             (is Empty (to))
-                            (and (is Enemy (who at:(to))) ("IsActivated" (to) (topLevel at:(to))))
+                            (and ("IsEnemyAt" (to)) ("IsActivated" (to) (topLevel at:(to))))
                         })
                         (apply 
                             (and {
@@ -132,7 +132,7 @@
                                 (forget Value "Pips" (pips))
                                 (if (= (what at:(to)) (id "Gonagas" Shared))
                                     (set State at:(to) (mover))
-                                    (if (is Enemy (who at:(to)))
+                                    (if ("IsEnemyAt" (to))
                                         (remove (to))
                                     )
                                 )
@@ -160,7 +160,7 @@
                         (apply 
                             if:(or 
                                 (is Empty (to))
-                                (and (is Enemy (who at:(to))) ("IsActivated" (to) (topLevel at:(to))))
+                                (and ("IsEnemyAt" (to)) ("IsActivated" (to) (topLevel at:(to))))
                             )
                         )
                     )

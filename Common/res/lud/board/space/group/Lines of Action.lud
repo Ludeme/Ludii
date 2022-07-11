@@ -12,11 +12,11 @@
         #1 
         (between 
             (exact (- #2 1))
-            if:(not (is Enemy (who at:(between))))
+            if:(not ("IsEnemyAt" (between)))
         )
         (to 
-            if:(not (is Friend (who at:(to))))
-            (apply (if (is Enemy (who at:(to))) (remove (to))))
+            if:(not ("IsFriendAt" (to)))
+            (apply (if ("IsEnemyAt" (to)) (remove (to))))
         )
     )
 )

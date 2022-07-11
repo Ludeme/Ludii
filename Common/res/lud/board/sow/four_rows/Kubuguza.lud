@@ -1,6 +1,6 @@
 (define "Columns" 8)
-(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")) )
-(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2))) )
+(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")))
+(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2))))
 (define "NextHoleFrom" (trackSite Move from:#1 #2 #3))
 
 //------------------------------------------------------------------------------
@@ -29,7 +29,7 @@
     (rules 
         
         (start 
-            (set Count 3 to:(union (sites P1 "Inner") (sites P2 "Inner")) )
+            (set Count 3 to:(union (sites P1 "Inner") (sites P2 "Inner")))
         )
         
         (play 
@@ -37,7 +37,7 @@
                 (move Select
                     (from 
                         (if 
-                            (is Mover Prev) 
+                            ("SameTurn") 
                             (sites {(var "Replay")})
                             (sites Mover "Home") 
                         ) 
@@ -79,7 +79,7 @@
                 (move Select
                     (from 
                         (if 
-                            (is Mover Prev) 
+                            ("SameTurn") 
                             (sites {(var "Replay")})
                             (sites Mover "HolesCW") 
                         ) 
@@ -131,10 +131,7 @@
             )
         )
         
-        (end {
-            (if (no Moves P1) (result P2 Win))
-            (if (no Moves P2) (result P1 Win))
-        })
+        (end ("ForEachPlayerNoMovesLoss"))
     )
 )
 

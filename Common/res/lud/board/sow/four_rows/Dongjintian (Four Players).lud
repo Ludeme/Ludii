@@ -188,11 +188,13 @@
             )
         )
         
-        (end
+        (end 
             (if (<= (count Pieces All in:(sites Board)) 1)
                 (byScore {
                     (score P1 ("PiecesOwnedBy" P1)) 
                     (score P2 ("PiecesOwnedBy" P2))
+                    (score P3 ("PiecesOwnedBy" P3))
+                    (score P4 ("PiecesOwnedBy" P4))
                 })
             )
         )

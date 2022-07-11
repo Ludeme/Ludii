@@ -5,7 +5,7 @@
         (between 
             before:(count Rows) 
             after:(count Rows)
-            if:(is Enemy (who at:(between))) 
+            if:("IsEnemyAt" (between)) 
             (apply (remove (between)))
         )
         (to if:(is Empty (to)))
@@ -19,7 +19,7 @@
                             after:(count Rows)
                             if:(and 
                                 (not (is In (between) (sites ToClear))) 
-                                (is Enemy (who at:(between)))
+                                ("IsEnemyAt" (between))
                             )
                             (apply (remove (between)))
                         )
@@ -38,7 +38,7 @@
         (from #1) 
         (directions {Forward Rightward Leftward}) 
         (between 
-            if:(is Enemy (who at:(between)))
+            if:("IsEnemyAt" (between))
             (apply (remove (between)))
         ) 
         (to if:(is Empty (to))) 
@@ -117,7 +117,7 @@
             )
         ) 
         
-        (end (if (no Moves Next) (result Mover Win)))  
+        (end ("BlockWin"))
     )
 )
 

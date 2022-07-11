@@ -35,7 +35,7 @@
         (piece "Calf" P1    
             (move Step 
                 (to 
-                    if:(or (= (what at:(to)) (id "Cow" P1)) (is Empty (to)))
+                    if:(or ("IsPieceAt" "Cow" P1 (to)) (is Empty (to)))
                     (apply (remove (to)))
                 )
             )

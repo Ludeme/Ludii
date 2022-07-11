@@ -2,24 +2,18 @@
 
 (define "Columns" 6)
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
-
-(define "NextHoleFrom" (trackSite Move from:#1 #2))
-
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+(define "NextHoleFrom" ("NextSiteOnTrack" #2 from:#1))
 
 (define "OneRowIsEmpty"
     (or 
-        (no Pieces All in:(sites P1))
-        (no Pieces All in:(sites P2))
+        (all Sites (sites P1) if:(= 0 (count at:(site))))
+        (all Sites (sites P2) if:(= 0 (count at:(site))))
     )
 )
 
 (define "NoPiecesInP1Side" 
-    (no Pieces All in:(sites P1))
+    (all Sites (sites P1) if:(= 0 (count at:(site))))
 )
-
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
 (define "LeftMostEmpty" 
     (trackSite FirstSite 
@@ -43,22 +37,20 @@
         (hand Each)
         (map "LeftMost" {(pair P1 0) (pair P2 11)})
         (map "CorrespondingHoles" {(pair 0 11) (pair 1 10) (pair 2 9) (pair 3 8) (pair 4 7) (pair 5 6) (pair 6 5) (pair 7 4) (pair 8 3) (pair 9 2) (pair 10 1) (pair 11 0)})
-        }
-    )  
+    })  
     (rules 
         
-        (start (set Count 3 to:(sites Track)) )
+        (start (set Count 3 to:(sites Track)))
         
         phases:{
         (phase "Sowing"
             (play         
                 (or {
-                    (move 
-                        Select 
+                    (move Select 
                         (from 
                             (if 
-                                (is Mover Prev) 
-                                "PlayFromLastHole" 
+                                ("SameTurn") 
+                                "LastHoleSowed" 
                                 (sites Mover) 
                             ) 
                             if:(> (count at:(from)) 0)
@@ -68,12 +60,12 @@
                                 apply:(if (> (count at:(to)) 1)
                                     (moveAgain)
                                     (if (is In (to) (sites Mover))
-                                        (if (!= 0 (count at:("OppositePit")))
+                                        (if (!= 0 (count at:("OppositePit" (to))))
                                             (and
                                                 (fromTo
-                                                    (from ("OppositePit"))
+                                                    (from ("OppositePit" (to)))
                                                     (to (handSite Mover))
-                                                    count:(count at:("OppositePit"))
+                                                    count:(count at:("OppositePit" (to)))
                                                 )
                                                 (moveAgain)
                                             )
@@ -176,7 +168,6 @@
             )
             (nextPhase (or (is Empty (handSite P1)) (is Empty (handSite P2))) "Sowing")
         )
-        
         }
     )
 )

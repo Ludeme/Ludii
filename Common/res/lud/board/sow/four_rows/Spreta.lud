@@ -1,8 +1,6 @@
 (define "Columns" <Board:size>)
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))) )
-(define "PiecesOwnedBy" (count in:(sites #1 "Home")))
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
 (define "NextSite" (trackSite Move #1 steps:1))
 
 //------------------------------------------------------------------------------
@@ -24,8 +22,7 @@
         (regions "Outer" P1  (sites Bottom))                                           // P1 outer Home
         (regions "Outer" P2  (sites Top))                                             // P2 outer Home
         (piece "Seed" Shared)
-        }
-    )  
+    })  
     (rules 
         
         (start { 
@@ -81,8 +78,8 @@
                             Select
                             (from 
                                 (if 
-                                    (is Mover Prev) 
-                                    "PlayFromLastHole" 
+                                    ("SameTurn") 
+                                    "LastHoleSowed" 
                                     (sites Mover) 
                                 ) 
                                 if:(< 1 (count at:(from)))
@@ -113,8 +110,8 @@
                             Select
                             (from 
                                 (if 
-                                    (is Mover Prev) 
-                                    "PlayFromLastHole" 
+                                    ("SameTurn") 
+                                    "LastHoleSowed" 
                                     (sites Mover) 
                                 ) 
                                 if:(and
@@ -151,7 +148,7 @@
         }
         
         (end
-            (if  (= 0 ("PiecesOwnedBy" Next))
+            (if (all Sites (sites Next "Home") if:(= 0 (count at:(site))))
                 (result Mover Win)
             )
         )

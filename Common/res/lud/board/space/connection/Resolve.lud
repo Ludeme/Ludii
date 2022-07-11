@@ -27,7 +27,7 @@
         (then 
             (if 
                 (and
-                    (not (is Prev Mover))
+                    (not ("SameTurn"))
                     ("HasCrosscuts" (last To))
                 )
                 (set Var "LT" (last To) (then (moveAgain)))
@@ -76,8 +76,8 @@
     (equipment
         {
         "SquareGrid"
-        (regions P1 { (sites Side N) (sites Side S) }) 
-        (regions P2 { (sites Side W) (sites Side E) })
+        (regions P1 {(sites Side N) (sites Side S) }) 
+        (regions P2 {(sites Side W) (sites Side E) })
         (piece "Ball" P1)
         (piece "Ball" P2)
         }
@@ -85,7 +85,7 @@
     (rules
         (play
             (if
-                (not (is Prev Mover))
+                (not ("SameTurn"))
                 (or
                     ("Place")
                     ("Choose2Resolve")

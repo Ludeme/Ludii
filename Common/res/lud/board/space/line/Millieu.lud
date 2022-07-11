@@ -12,7 +12,7 @@
             to:(forEach
                 (difference
                     (difference
-                        (sites { ("ColumnAt" (from)) (+ ("ColumnAt" (from)) 9) (+ ("ColumnAt" (from)) 18) })
+                        (sites {("ColumnAt" (from)) (+ ("ColumnAt" (from)) 9) (+ ("ColumnAt" (from)) 18) })
                         (from)
                     )
                     (sites Empty)
@@ -31,7 +31,7 @@
             to:(forEach
                 (intersection
                     (difference
-                        (sites { ("ColumnAt" (from)) (+ ("ColumnAt" (from)) 9) (+ ("ColumnAt" (from)) 18) })
+                        (sites {("ColumnAt" (from)) (+ ("ColumnAt" (from)) 9) (+ ("ColumnAt" (from)) 18) })
                         (from)
                     )
                     (sites Empty)
@@ -161,7 +161,7 @@
             )
         )
         ifAfterwards:(all Sites
-            (sites { (var "LastMove1") (var "LastMove2") }) 
+            (sites {(var "LastMove1") (var "LastMove2") }) 
             if:(not (is Empty (site))) // not allowed to remove the pieces moved to make the mill
 )))
 
@@ -225,7 +225,7 @@
                 
                 // regular moves
                 (if
-                    (not (is Mover Prev))  // Move begins with a placement that can be followed by an adjacent slide
+                    (not ("SameTurn"))  // Move begins with a placement that can be followed by an adjacent slide
                     ("FirstAction") 
                     (if
                         (= 0 (count Sites in:(sites Pending)))

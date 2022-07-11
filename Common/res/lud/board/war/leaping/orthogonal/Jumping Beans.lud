@@ -13,11 +13,11 @@
         })
         
         (play 
-            (if (is Prev Mover)
+            (if ("SameTurn")
                 (max Moves
                     (move Hop
                         (from (last To))
-                        (between if:(is Enemy (who at:(between))))
+                        (between if:("IsEnemyAt" (between)))
                         (to if:(is Empty (to))
                             (apply 
                                 (remove (between))
@@ -27,7 +27,7 @@
                             (if (can Move
                                     (hop
                                         (from (last To))
-                                        (between if:(is Enemy (who at:(between))))
+                                        (between if:("IsEnemyAt" (between)))
                                         (to if:(is Empty (to)))
                                     )
                                 )
@@ -40,7 +40,7 @@
                     (max Moves
                         (forEach Piece
                             (move Hop
-                                (between if:(is Enemy (who at:(between))))
+                                (between if:("IsEnemyAt" (between)))
                                 (to if:(is Empty (to))
                                     (apply 
                                         (remove (between))
@@ -50,7 +50,7 @@
                                     (if (can Move
                                             (hop
                                                 (from (last To))
-                                                (between if:(is Enemy (who at:(between))))
+                                                (between if:("IsEnemyAt" (between)))
                                                 (to if:(is Empty (to)))
                                             )
                                         )

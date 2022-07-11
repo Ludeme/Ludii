@@ -13,7 +13,7 @@
 (define "NumDiceSix" (count Value 6 in:("AllDiceValues")))
 (define "Palace" 0)
 (define "NumberOfPossibleMove"
-    (+ { (size Array (values Remembered "Te")) (size Array (values Remembered "Cung")) (size Array (values Remembered "Chang")) })		
+    (+ {(size Array (values Remembered "Te")) (size Array (values Remembered "Cung")) (size Array (values Remembered "Chang")) })		
 )
 
 (define "MovePiece"
@@ -32,7 +32,7 @@
                 )
                 (move 
                     (from (where "Pawn" Mover))
-                    (to (trackSite Move from:(where "Pawn" Mover) steps:1))
+                    (to ("NextSiteOnTrack" 1 from:(where "Pawn" Mover)))
                     (then
                         (and
                             (forget Value "Te" 1)
@@ -185,8 +185,8 @@
         phases:{
         (phase "Opening"
             (play
-                (do (roll)
-                    next:(or {
+                ("RollMove"
+                    (or {
                         (if (= 2 "NumDiceOne") 
                             (move 
                                 (from (handSite Mover))
@@ -223,13 +223,13 @@
                                 (to (mapEntry "Site" 6))
                             )
                         )
-                        (if (or { (= 5 "NumDiceOne") (= 5 "NumDiceTwo") (= 5 "NumDiceThree") (= 5 "NumDiceFour") (= 5 "NumDiceFive") (= 5 "NumDiceSix") })
+                        (if (or {(= 5 "NumDiceOne") (= 5 "NumDiceTwo") (= 5 "NumDiceThree") (= 5 "NumDiceFour") (= 5 "NumDiceFive") (= 5 "NumDiceSix") })
                             (move 
                                 (from (handSite Mover))
                                 (to (mapEntry "Site" 7))
                             )
                         )
-                        (if (or { (= 6 "NumDiceOne") (= 6 "NumDiceTwo") (= 6 "NumDiceThree") (= 6 "NumDiceFour") (= 6 "NumDiceFive") (= 6 "NumDiceSix") })
+                        (if (or {(= 6 "NumDiceOne") (= 6 "NumDiceTwo") (= 6 "NumDiceThree") (= 6 "NumDiceFour") (= 6 "NumDiceFive") (= 6 "NumDiceSix") })
                             (move 
                                 (from (handSite Mover))
                                 (to (mapEntry "Site" 8))
@@ -329,8 +329,8 @@
                             )
                         )
                     )
-                    (do (roll)
-                        next:(move Pass)
+                    ("RollMove"
+                        (move Pass)
                         (then
                             (and {
                                 (moveAgain)

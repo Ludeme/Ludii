@@ -1,18 +1,10 @@
 (define "Columns" 8)
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
-
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))) )
-
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "Sow" 
-    (move
-        Select
+    (move Select
         (from 
-            (if 
-                (is Mover Prev) 
-                (if #1 "PlayFromLastHole") 
+            (if ("SameTurn") 
+                (if #1 "LastHoleSowed") 
                 (sites Mover "Home") 
             ) 
             if:(> (count at:(from)) 0)
@@ -25,19 +17,19 @@
                     (if (is In (to) (sites Mover "Inner"))
                         (and
                             (if 
-                                (> (count at:"OppositePit") 0) 
+                                (> (count at:("OppositePit" (to))) 0) 
                                 (fromTo 
-                                    (from "OppositePit") 
+                                    (from ("OppositePit" (to))) 
                                     (to (handSite Mover)) 
-                                    count:(count at:"OppositePit")
+                                    count:(count at:("OppositePit" (to)))
                                 ) 
                             ) 
                             (if 
-                                (> (count at:"OppositeOuterPit") 0) 
+                                (> (count at:("OppositeOuterPit" (to))) 0) 
                                 (fromTo 
-                                    (from "OppositeOuterPit") 
+                                    (from ("OppositeOuterPit" (to))) 
                                     (to (handSite Mover)) 
-                                    count:(count at:"OppositeOuterPit")
+                                    count:(count at:("OppositeOuterPit" (to)))
                                 ) 
                             ) 
                         )
@@ -71,27 +63,19 @@
         (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))   // P2 inner Home
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+    })  
     (rules 
         
-        (start (set Count 3 to:(union (sites P1 "Home") (sites P2 "Home")) ))
+        (start (set Count 3 to:(sites Board)))
         
         (play 
             (or
                 ("Sow" (is Pending) "TrackCW"  (and (moveAgain) (set Pending)))
-                ("Sow" (not (is Pending)) "TrackCCW"  (moveAgain))
+                ("Sow" (not (is Pending)) "TrackCCW" (moveAgain))
             )
         )
         
-        (end
-            (if (no Moves Mover) 
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (no Moves Mover)))
     )
 )
 

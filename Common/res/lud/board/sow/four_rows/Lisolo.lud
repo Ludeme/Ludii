@@ -1,9 +1,8 @@
 (define "Columns" 8)
 
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))) )
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
 (define "PiecesOwnedBy" (count in:(sites #1 "Home")))
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 
 //------------------------------------------------------------------------------
 
@@ -26,7 +25,7 @@
     )  
     (rules 
         
-        (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home")) ))
+        (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home"))))
         
         phases:{
         (phase "Opening"
@@ -55,8 +54,8 @@
                     Select
                     (from 
                         (if 
-                            (is Mover Prev) 
-                            "PlayFromLastHole" 
+                            ("SameTurn") 
+                            "LastHoleSowed" 
                             (sites Mover) 
                         ) 
                         if:(> (count at:(from)) 0)
@@ -97,10 +96,12 @@
         )
         }
         
-        (end {
-            (if (= 0 ("PiecesOwnedBy" P1)) (result P2 Win))
-            (if (= 0 ("PiecesOwnedBy" P2)) (result P1 Win))
-        })
+        (end 
+            (forEach Player
+                if:(= 0 ("PiecesOwnedBy" Player))
+                (result Player Loss)
+            )		
+        )
     )
 )
 

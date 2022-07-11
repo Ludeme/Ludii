@@ -5,7 +5,7 @@
 (define "HopOpponent" 
     (move
         Hop 
-        (between if:(is Enemy (who at:(between))))
+        (between if:("IsEnemyAt" (between)))
         (to if:(is Empty (to)))
     )
 )

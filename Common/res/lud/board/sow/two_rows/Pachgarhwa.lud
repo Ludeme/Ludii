@@ -4,7 +4,7 @@
 
 (define "NextNextHole" (trackSite Move from:(to) steps:2))
 
-(define "PlayFromLastHole" (sites {(value Pending)}))
+(define "LastHoleSowed" (sites {(value Pending)}))
 
 //------------------------------------------------------------------------------
 
@@ -21,14 +21,14 @@
         }
     )  
     (rules 
-        (start (set Count 5 to:(sites Track)) )
+        (start (set Count 5 to:(sites Track)))
         
         (play (move 
                 Select 
                 (from 
                     (if 
-                        (is Mover Prev) 
-                        "PlayFromLastHole" 
+                        ("SameTurn") 
+                        "LastHoleSowed" 
                         (sites Mover) 
                     ) 
                     if:(> (count at:(from)) 0)

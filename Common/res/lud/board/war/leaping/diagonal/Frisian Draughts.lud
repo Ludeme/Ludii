@@ -8,7 +8,7 @@
                 (between 
                     before:1
                     after:1
-                    if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
+                    if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
                     (apply (remove (between) at:EndOfTurn))
                 ) 
                 (to if:(is Empty (to))) 
@@ -22,7 +22,7 @@
             (from #1) 
             Diagonal 
             (between
-                if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
+                if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
                 (apply (remove (between) at:EndOfTurn))
             ) 
             (to if:(is Empty (to))) 
@@ -42,7 +42,7 @@
             (between
                 #1
                 #2
-                if:(is Enemy (who at:(between)))
+                if:("IsEnemyAt" (between))
                 (apply (remove (between) #3))
             )
             (to if:(is Empty (to)))
@@ -58,7 +58,7 @@
                                         #2
                                         if:(and
                                             (not (is In (between) (sites ToClear)))
-                                            (is Enemy (who at:(between)))
+                                            ("IsEnemyAt" (between))
                                         )
                                     )
                                     (to if:(is Empty (to)))
@@ -88,7 +88,7 @@
             (between
                 #1
                 #2
-                if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
+                if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
                 (apply (remove (between) #3))
             )
             (to if:(is Empty (to)))
@@ -104,7 +104,7 @@
                                         #2
                                         if:(and
                                             (not (is In (between) (sites ToClear)))
-                                            (is Enemy (who at:(between)))
+                                            ("IsEnemyAt" (between))
                                         )
                                     )
                                     (to if:(is Empty (to)))
@@ -265,7 +265,7 @@
         )
         
         (end {
-            (if (no Moves Next) (result Mover Win))
+            ("BlockWin")
             (if (= 7 (value Player Mover)) (result Mover Draw))
         })
         

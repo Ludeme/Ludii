@@ -1,7 +1,7 @@
 (define "Columns" 8)
-(define "OuterPhaseOppositePit" (if (is Mover P1) (+ (to) (* 3 ("Columns"))) (- (to) (* ("Columns") 3))) )
-(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")) )
-(define "OuterOppositePit" (if (is Mover P1) (+ #1 (* 2 ("Columns"))) (- #1 (* ("Columns") 2))) )
+(define "OuterPhaseOppositePit" (if (is Mover P1) (+ (to) (* 3 ("Columns"))) (- (to) (* ("Columns") 3))))
+(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")))
+(define "OuterOppositePit" (if (is Mover P1) (+ #1 (* 2 ("Columns"))) (- #1 (* ("Columns") 2))))
 (define "NextHole" (trackSite Move from:#1 #2 steps:#3))
 
 //------------------------------------------------------------------------------
@@ -22,9 +22,9 @@
         (regions "Home" P2 (sites Track "TrackCCW2"))                              // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
         (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))   // P2 inner Home
-        (map "FirstMove" { (pair P1 10) (pair P2 21)})
-        (map "SecondMove" { (pair P1 12) (pair P2 19)})
-        (map "ThirdMove" { (pair P1 14) (pair P2 17)})
+        (map "FirstMove" {(pair P1 10) (pair P2 21)})
+        (map "SecondMove" {(pair P1 12) (pair P2 19)})
+        (map "ThirdMove" {(pair P1 14) (pair P2 17)})
         (map "LeftMostOuter" {(pair P1 0) (pair P2 31)})
         (map "SecondLeftInner" {(pair P1 9) (pair P2 22)})
         (piece "Seed" Shared)
@@ -191,7 +191,7 @@
                 )
             )
             
-            (end (if (no Moves Next) (result Mover Win)))
+            (end ("BlockWin"))
         )
         
         }

@@ -13,15 +13,13 @@
         (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
         (map "RightHole" {(pair P1 3) (pair P2 4)})
         (piece "Seed" Shared)
-        }
-    )  
+    })  
     (rules 
         
         (start (set Count 7 to:(sites Track)))
         
         (play 
-            (move
-                Select 
+            (move Select 
                 (from 
                     (sites Mover) 
                     if:(> (count at:(from)) 0)
@@ -30,7 +28,7 @@
                     (sow
                         if:(and 
                             (is In (count at:(to)) (sites {2 4 6})) 
-                            (is In (to) (union (sites Next) (sites { (mapEntry "RightHole" (mover))})))
+                            (is In (to) (union (sites Next) (sites {(mapEntry "RightHole" (mover))})))
                         )
                         apply:(fromTo 
                             (from (to)) 
@@ -42,14 +40,7 @@
             )
         )
         
-        (end
-            (if (no Moves Mover) 
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (no Moves Mover)))
     )
 )
 

@@ -1,6 +1,5 @@
 (define "NextHoleFrom" (trackSite Move from:#1 #2 #3))
 (define "PiecesOwnedBy" (count at:(mapEntry #1)))
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 
 //------------------------------------------------------------------------------
 
@@ -18,14 +17,14 @@
     })  
     (rules 
         
-        (start (set Count 4 to:(sites Track)) )
+        (start (set Count 4 to:(sites Track)))
         
         (play 
             (move Select
                 (from 
                     (if 
-                        (is Mover Prev) 
-                        "PlayFromLastHole" 
+                        ("SameTurn") 
+                        "LastHoleSowed" 
                         (sites Mover) 
                     ) 
                     if:(or 

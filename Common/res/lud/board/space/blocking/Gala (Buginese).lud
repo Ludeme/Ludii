@@ -13,23 +13,23 @@
                             Orthogonal
                             (between 
                                 (max 1)
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
-                            (to if:(is Friend (who at:(to))))
+                            (to if:("IsFriendAt" (to)))
                         )
                         (surround 
                             (from (last To)) 
                             Orthogonal 
                             (between 
                                 if:(and 
-                                    (is Enemy (who at:(between))) 
+                                    ("IsEnemyAt" (between)) 
                                     (is In (between) (sites Corners))
                                 )
                                 (apply (remove (between)))
                             ) 
                             (to 
-                                if:(is Friend (who at:(to)))
+                                if:("IsFriendAt" (to))
                             )
                         )
                     )

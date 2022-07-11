@@ -4,7 +4,7 @@
         (from #1) 
         Diagonal 
         (between 
-            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
+            if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
             (apply (remove (between) at:EndOfTurn))
         ) 
         (to if:(is Empty (to))) 
@@ -32,7 +32,7 @@
         (start
             { 
             (place "Counter1" (difference (expand (intersection (sites Right) (sites Bottom)) steps:8 Orthogonal) (sites Phase 1)  ))
-            (place "Counter2" (difference (expand (intersection (sites Left) (sites Top)) steps:8 Orthogonal) (sites Phase 1)) )
+            (place "Counter2" (difference (expand (intersection (sites Left) (sites Top)) steps:8 Orthogonal) (sites Phase 1)))
             }
         )
         
@@ -90,7 +90,7 @@
             )
         ) 
         
-        (end (if (no Moves Next) (result Mover Win))) 
+        (end ("BlockWin"))
     )
 )
 

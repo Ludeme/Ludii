@@ -2,11 +2,11 @@
     (move Step #1
         (to
             if:(and
-                (not (is Friend (who at:(to))))
-                (is Friend (who at:(ahead (coord #2) #1)))
+                (not ("IsFriendAt" (to)))
+                ("IsFriendAt" (ahead (coord #2) #1))
             )
             (apply 
-                (if (is Enemy (who at:(to)))
+                (if ("IsEnemyAt" (to))
                     (remove (to))
                 )
             )
@@ -21,11 +21,11 @@
         )
         (to
             if:(and
-                (not (is Friend (who at:(to))))
-                (is Friend (who at:(ahead (coord #2) steps:2 #1)))
+                (not ("IsFriendAt" (to)))
+                ("IsFriendAt" (ahead (coord #2) steps:2 #1))
             )
             (apply 
-                (if (is Enemy (who at:(to)))
+                (if ("IsEnemyAt" (to))
                     (remove (to))
                 )
             )
@@ -148,7 +148,7 @@
                 )
             )
         )
-        (end (if (no Moves Next) (result Mover Win)))
+        (end ("BlockWin"))
     )
 )
 

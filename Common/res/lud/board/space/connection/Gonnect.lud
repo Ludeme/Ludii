@@ -5,8 +5,8 @@
         (from (last To)) 
         Orthogonal 
         (between 
-            if:(is Enemy (who at:(between))) 
-            (apply (remove (between)) ) 
+            if:("IsEnemyAt" (between)) 
+            (apply (remove (between))) 
         )
     )
 )
@@ -18,8 +18,8 @@
     (equipment { 
         (board <Board> use:Vertex) 
         (piece "Marker" Each)
-        (regions P1 { (sites Side N) (sites Side S) })
-        (regions P2 { (sites Side W) (sites Side E) })
+        (regions P1 {(sites Side N) (sites Side S) })
+        (regions P2 {(sites Side W) (sites Side E) })
     })
     
     (rules 
@@ -40,7 +40,7 @@
         
         (end {
             (if (is Connected Mover) (result Mover Win))
-            (if (no Moves Next) (result Mover Win))
+            ("BlockWin")
         }) 
     )
 )

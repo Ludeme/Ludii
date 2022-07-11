@@ -11,7 +11,7 @@
             (sow
                 #1
                 if:(or {
-                    (and { (<= (count at:(to)) 9) (is Odd (count at:(to))) (>= "NumCaptureDone" <Capture:doneSoFar>) }) // Two or more captures done so far
+                    (and {(<= (count at:(to)) 9) (is Odd (count at:(to))) (>= "NumCaptureDone" <Capture:doneSoFar>) }) // Two or more captures done so far
                     (and (= "NumCaptureDone" Off) (= (count at:(to)) <Capture:numCounters>)) // No capture done so far.
                     <Capture:ruleSecondCapture> // Only one capture done so far.
                 }) 
@@ -50,9 +50,9 @@
     )  
     (rules 
         
-        (start (set Count 10 to:(sites Track)) )
+        (start (set Count 10 to:(sites Track)))
         
-        (play (or ("Sow" "TrackCW") ("Sow" "TrackCCW")) )
+        (play (or ("Sow" "TrackCW") ("Sow" "TrackCCW")))
         
         (end
             (if (no Moves Mover) 

@@ -57,7 +57,7 @@
 
 (define "Capture" 
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (and
                 (if (and 
                         
@@ -142,7 +142,7 @@
         
         (regions "HomeP1" P1 (expand (sites Bottom) steps:3))
         (regions "HomeP2" P2 (expand (sites Top) steps:3))
-        (map { (pair 1 84) (pair 2 96) (pair 3 85) (pair 4 97) (pair 5 86) (pair 6 98) (pair 7 87) (pair 8 99) (pair 9 88)
+        (map {(pair 1 84) (pair 2 96) (pair 3 85) (pair 4 97) (pair 5 86) (pair 6 98) (pair 7 87) (pair 8 99) (pair 9 88)
         (pair 10 100) (pair 11 89) (pair 12 101) (pair 13 90) (pair 14 102) (pair 15 91) (pair 16 103) (pair 17 92) (pair 18 104) (pair 19 93) (pair 20 105) (pair 21 94) (pair 22 106) (pair 23 95) (pair 24 107)})
         }
     )  
@@ -196,7 +196,7 @@
                             Step
                             Orthogonal 
                             (to 
-                                if:(not (is Friend (who at:(to)))) 
+                                if:(not ("IsFriendAt" (to))) 
                                 "Capture"
                             )
                         )
@@ -214,7 +214,7 @@
                                 (from)
                                 (to 
                                     (sites LineOfSight Piece at:(from) Orthogonal)
-                                    if:(is Enemy (who at:(to)))
+                                    if:("IsEnemyAt" (to))
                                 )
                                 (then   
                                     (and

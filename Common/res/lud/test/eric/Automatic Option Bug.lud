@@ -140,7 +140,7 @@
                 (rules
                     (play
                         (if
-                            (not (is Prev Mover))
+                            (not ("SameTurn"))
                             
                             (do
                                 (forEach Site (difference (sites Board) (sites State 0)) (set State at:(site) 0))

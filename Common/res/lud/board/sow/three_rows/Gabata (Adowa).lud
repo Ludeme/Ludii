@@ -25,8 +25,6 @@
     (no Pieces All in:(forEach (sites Board) if:(= 0 (state at:(site)))))
 )
 
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
-
 (define "LeftMostEmpty" 
     (trackSite FirstSite 
         from:(mapEntry "LeftMost" Mover)
@@ -73,7 +71,7 @@
                 (or {
                     (move Select
                         (from 
-                            (if (is Mover Prev)
+                            (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 ("OwnedHoles") 
                             )

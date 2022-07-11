@@ -25,10 +25,10 @@
         (to 
             if:(and 
                 (is In (to) (sites Mover "Palace")) 
-                (not (is Friend (who at:(to))))
+                (not ("IsFriendAt" (to)))
             ) 
             (apply 
-                if:(is Enemy (who at:(to)))
+                if:("IsEnemyAt" (to))
                 (add 
                     (piece (mapEntry "captured" (what at:(to)))) 
                     (to Cell (mapEntry "where" (what at:(to))))
@@ -61,10 +61,10 @@
                     })
                 )
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     (apply 
                         (if 
-                            (is Enemy (who at:(to)))
+                            ("IsEnemyAt" (to))
                             (add 
                                 (piece (mapEntry "captured" (what at:(to)))) 
                                 (to Cell (mapEntry "where" (what at:(to))))
@@ -85,12 +85,12 @@
                         (forEach Direction 
                             (from (to)) 
                             (directions {FR FL} of:All) 
-                            (if (not (is Friend (who at:(to)))) 
+                            (if (not ("IsFriendAt" (to))) 
                                 (move 
                                     (from) 
                                     (to 
                                         (apply 
-                                            if:(is Enemy (who at:(to)))
+                                            if:("IsEnemyAt" (to))
                                             (add 
                                                 (piece (mapEntry "captured" (what at:(to)))) 
                                                 (to Cell (mapEntry "where" (what at:(to))))
@@ -111,10 +111,10 @@
                 Slide
                 Orthogonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     (apply 
                         (if 
-                            (is Enemy (who at:(to)))
+                            ("IsEnemyAt" (to))
                             (add 
                                 (piece (mapEntry "captured" (what at:(to)))) 
                                 (to Cell (mapEntry "where" (what at:(to))))
@@ -140,7 +140,7 @@
                     (to 
                         if:(is Empty (to)) 
                         (apply 
-                            if:(is Enemy (who at:(to))) 
+                            if:("IsEnemyAt" (to)) 
                             (add 
                                 (piece (mapEntry "captured" (what at:(to)))) 
                                 (to Cell (mapEntry "where" (what at:(to))))
@@ -162,7 +162,7 @@
                 ) 
                 (to 
                     (apply 
-                        if:(is Enemy (who at:(to)))
+                        if:("IsEnemyAt" (to))
                         (add 
                             (piece (mapEntry "captured" (what at:(to)))) 
                             (to Cell (mapEntry "where" (what at:(to))))
@@ -179,8 +179,8 @@
         (regions "PalaceP2" P2 { 66..68 75..77 84..86 })
         (regions "Home" P1 (expand (sites Bottom) steps:4))
         (regions "Home" P2 (expand (sites Top) steps:4))
-        (map "where" { (pair 2 90) (pair 1 96) (pair 4 91) (pair 3 97) (pair 6 92) (pair 5 98) (pair 8 93) (pair 7 99) (pair 10 94) (pair 9 100) (pair 12 95) (pair 11 101)})        
-        (map "captured" { (pair 1 2) (pair 2 1) (pair 3 4) (pair 4 3) (pair 5 6) (pair 6 5) (pair 7 8) (pair 8 7) (pair 9 10) (pair 10 9) (pair 11 12) (pair 12 11)})
+        (map "where" {(pair 2 90) (pair 1 96) (pair 4 91) (pair 3 97) (pair 6 92) (pair 5 98) (pair 8 93) (pair 7 99) (pair 10 94) (pair 9 100) (pair 12 95) (pair 11 101)})        
+        (map "captured" {(pair 1 2) (pair 2 1) (pair 3 4) (pair 4 3) (pair 5 6) (pair 6 5) (pair 7 8) (pair 8 7) (pair 9 10) (pair 10 9) (pair 11 12) (pair 12 11)})
         
         (regions "PalaceShiP1" P1 { 3 5 13 21 23 })
         (regions "PalaceShiP2" P2 { 66 68 76 84 86 })
@@ -216,7 +216,7 @@
                 ) 
                 (result Mover Win)
             ) 
-            (if (no Moves Next) (result Mover Win)) 
+            ("BlockWin")
         })
     )
 )

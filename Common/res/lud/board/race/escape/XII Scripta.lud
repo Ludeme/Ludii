@@ -65,8 +65,8 @@
         })	
         
         (play 
-                ("RollEachNewTurnMove"
-                        (if (!= (what at:(handSite Mover 1)) 0)
+            ("RollEachNewTurnMove"
+                (if (!= (what at:(handSite Mover 1)) 0)
                     ("PieceMove" (handSite Mover 1) (handSite Mover))
                     (or (forEach Piece) (forEach Piece container:(mover)))
                     (then (if (can Move 

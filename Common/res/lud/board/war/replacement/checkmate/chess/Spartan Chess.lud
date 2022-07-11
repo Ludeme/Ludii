@@ -96,7 +96,7 @@
 
 (define "CaptureToPieceAndResetCounter"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
                 (then (set Counter))
@@ -112,7 +112,7 @@
         Slide 
         #1
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             "CaptureToPieceAndResetCounter"
         ) 
         #2
@@ -126,7 +126,7 @@
         Step 
         #1
         (to 
-            if:(not (is Friend (who at:(to)))) 
+            if:(not ("IsFriendAt" (to))) 
             "CaptureToPieceAndResetCounter"
         ) 
         #2
@@ -139,7 +139,7 @@
         Hop 
         #1 
         (to 
-            if:(or (is Enemy (who at:(to))) (is Empty (to)))
+            if:(or ("IsEnemyAt" (to)) (is Empty (to)))
             "CaptureToPieceAndResetCounter"
         ) 
     )
@@ -150,7 +150,7 @@
         Leap 
         "KnightWalk" 
         (to 
-            if:(not (is Friend (who at:(to)))) 
+            if:(not ("IsFriendAt" (to))) 
             "CaptureToPieceAndResetCounter"
         ) 
     )
@@ -175,7 +175,7 @@
         Step 
         #1
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )

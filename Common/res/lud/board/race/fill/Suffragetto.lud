@@ -2,14 +2,10 @@
 (define "MinorPiece" 0)
 
 //#1 - region
-(define "PiecesInRegion"
-    ((intersection (sites #1) (sites Occupied by:All)))
-)
+(define "PiecesInRegion" (intersection (sites #1) (sites Occupied by:All)))
 
 //#1 - region
-(define "NumberOfPiecesInRegion"
-    (count Sites in:("PiecesInRegion" #1))
-)
+(define "NumberOfPiecesInRegion" (count Sites in:("PiecesInRegion" #1)))
 
 // #1 - region
 // #2 - state
@@ -59,7 +55,7 @@
 )
 (define "MajorPieceHopCondition"
     (and
-        (is Enemy (who at:(between)))
+        ("IsEnemyAt" (between))
         (is In (between) (sites "The Arena"))
     )
 )
@@ -416,7 +412,6 @@ If at any point, the Prison andthe Hospital each contain 12 or more inmates, eit
     ("MinorPieceGraphics" "Policeman")
     ("MajorPieceGraphics" "Leader")
     ("MajorPieceGraphics" "Inspector")
-    
 })
 (ai
     "Suffragetto_ai"

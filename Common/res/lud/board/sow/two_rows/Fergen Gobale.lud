@@ -1,4 +1,4 @@
-(define "OppositePit" (if (is Mover P1) (+ (to) 3) (- (to) 3)) )
+(define "Columns" 3)
 (define "PlayableSites" (sites (values Remembered "Playable")))
 (define "LeftMostEmpty" 
     (trackSite FirstSite 
@@ -21,7 +21,7 @@
     (equipment {
         (board 
             (merge {
-                (rectangle 2 3)
+                (rectangle 2 "Columns")
                 (shift 5 0 (rectangle 2 3))
                 (shift 3 0.5 (rectangle 1 2))
             })
@@ -71,7 +71,7 @@
                                 (sites {(var "Replay")})
                                 (sites Mover "Home")
                             )
-                            if:(and { (= 0 (state at:(from))) (is In (from) ("PlayableSites")) (is Occupied (from)) })
+                            if:(and {(= 0 (state at:(from))) (is In (from) ("PlayableSites")) (is Occupied (from)) })
                         )
                         (then
                             (sow
@@ -84,15 +84,15 @@
                                         )
                                     )
                                     (if (is In (to) (sites Mover "Home"))
-                                        (if (= 3 (count at:("OppositePit")))
+                                        (if (= 3 (count at:("OppositePit" (to))))
                                             (and {
                                                 (fromTo
-                                                    (from ("OppositePit"))
+                                                    (from ("OppositePit" (to)))
                                                     (to (to))
                                                     count:1
                                                 )
                                                 (set State at:(to) (mover))
-                                                (set State at:("OppositePit") (mover))
+                                                (set State at:("OppositePit" (to)) (mover))
                                                 (moveAgain)
                                                 (set Pending)
                                             })
@@ -102,11 +102,11 @@
                                                     (to (handSite Mover))
                                                     count:1
                                                 )
-                                                (if (is Occupied ("OppositePit"))
+                                                (if (is Occupied ("OppositePit" (to)))
                                                     (fromTo 
-                                                        (from ("OppositePit"))
+                                                        (from ("OppositePit" (to)))
                                                         (to (handSite Mover))
-                                                        count:(count at:("OppositePit"))
+                                                        count:(count at:("OppositePit" (to)))
                                                     )
                                                 )
                                             )

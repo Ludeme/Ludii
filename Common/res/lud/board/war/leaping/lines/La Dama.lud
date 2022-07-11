@@ -9,7 +9,7 @@
         Hop 
         (directions {Rightward Leftward Forwards} of:All)
         (between 
-            if:(is Enemy (who at:(between)))
+            if:("IsEnemyAt" (between))
             (apply (remove (between)))
         ) 
         (to if:(is Empty (to))) 
@@ -29,7 +29,7 @@
         (between 
             before:9
             after:9
-            if:(is Enemy (who at:(between))) 
+            if:("IsEnemyAt" (between)) 
             (apply (remove (between)))
         )
         (to if:(is Empty (to)))
@@ -54,7 +54,7 @@
                         (between 
                             before:9
                             after:9
-                            if:(is Enemy (who at:(between))) 
+                            if:("IsEnemyAt" (between)) 
                             (apply (remove (between)))
                         )
                         (to if:(is Empty (to)))
@@ -120,8 +120,8 @@
     
     (rules 
         (start { 
-            (place "Disc1" (union { (expand (sites Bottom)) (sites {"D3" "E3"}) }))
-            (place "Disc2" (union { (sites {"A3" "B3"}) (expand (sites Top)) }))
+            (place "Disc1" (union {(expand (sites Bottom)) (sites {"D3" "E3"}) }))
+            (place "Disc2" (union {(sites {"A3" "B3"}) (expand (sites Top)) }))
         })
         
         (play 

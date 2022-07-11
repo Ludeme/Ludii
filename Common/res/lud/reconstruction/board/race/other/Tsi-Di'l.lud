@@ -6,7 +6,7 @@
     (players <Player:num>)
     (equipment {
         (board
-            (merge { (rectangle 1 ("Dim")) (rectangle ("Dim") 1) (shift 0 (- "Dim" 1) (rectangle 1 ("Dim"))) (shift (- "Dim" 1) 0 (rectangle ("Dim") 1))})
+            (merge {(rectangle 1 ("Dim")) (rectangle ("Dim") 1) (shift 0 (- "Dim" 1) (rectangle 1 ("Dim"))) (shift (- "Dim" 1) 0 (rectangle ("Dim") 1))})
             use:Edge
         )
         (piece "Stick" Each)

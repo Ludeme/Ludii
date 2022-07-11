@@ -26,19 +26,12 @@
             (place "Ball2" (forEach (sites Top) if:(is Odd (site))))
         })
         phases:{
-        (phase "FirstMove"
-            (play ("PlaceStone"))
-            (nextPhase "Main")
-        )
+        (phase "FirstMove" (play ("PlaceStone")) (nextPhase "Main"))
         (phase "Main"
             (play 
                 (or 
-                    ("PlaceStone"
-                        (then
-                            (if (not (is Prev Mover)) (moveAgain))
-                        )
-                    )
-                    (if (is Prev Mover) (move Pass))
+                    ("PlaceStone" (then (if ("NewTurn") (moveAgain))))
+                    (if ("SameTurn") (move Pass))
                 )
             )
         )
@@ -46,12 +39,10 @@
         (end 
             (if 
                 (and (no Moves P1) (no Moves P2)) 
-                (byScore
-                    {		
+                (byScore {		
                     (score P1 (count Sites in:(forEach (sites Bottom) if:(= (who at:(site)) P1))))
                     (score P2 (count Sites in:(forEach (sites Bottom) if:(= (who at:(site)) P2))))
-                    }
-                )
+                })
             )
         )
     )

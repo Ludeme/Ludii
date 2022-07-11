@@ -1,7 +1,7 @@
 (define "CaptureEnemy"
     (apply 
         (if 
-            (is Enemy (who at:(to))) 
+            ("IsEnemyAt" (to)) 
             (remove (to))
         )
     )		
@@ -28,7 +28,7 @@
         #1
         #2 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             ("CaptureEnemy")
         ) 
         #3
@@ -40,7 +40,7 @@
         Step
         #1
         (to 
-            if:(not (is Friend (who at:(to)))) 
+            if:(not ("IsFriendAt" (to))) 
             ("CaptureEnemy")
         ) 
         #2 
@@ -55,7 +55,7 @@
             if:True
         )
         (to 
-            if:(not (is Friend (who at:(to)))) 
+            if:(not ("IsFriendAt" (to))) 
             ("CaptureEnemy")
         ) 
         #2 
@@ -73,7 +73,7 @@
             if:True
         )
         (to 
-            if:(not (is Friend (who at:(to)))) 
+            if:(not ("IsFriendAt" (to))) 
             ("CaptureEnemy")
         ) 
         #5 
@@ -85,7 +85,7 @@
         Step
         #1
         (to 
-            if:(not (is Friend (who at:(to)))) 
+            if:(not ("IsFriendAt" (to))) 
             ("CaptureEnemy")
         ) 
         (then 
@@ -93,7 +93,7 @@
                 (from (last To))
                 #2
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     ("CaptureEnemy")
                 )	
             )
@@ -110,7 +110,7 @@
                 (forEach Direction 
                     (from (to)) 
                     (directions {FR FL}) 
-                    (if (not (is Friend (who at:(to)))) 
+                    (if (not ("IsFriendAt" (to))) 
                         (move 
                             (from) 
                             (to 
@@ -134,7 +134,7 @@
             if:(not (is In (what at:(between))  #2))
         )
         (to 
-            if:(and (is Enemy (who at:(to))) (not (is In (what at:(to)) #3))) 
+            if:(and ("IsEnemyAt" (to)) (not (is In (what at:(to)) #3))) 
             ("CaptureEnemy")
         ) 
     )		
@@ -206,7 +206,7 @@
                     Step
                     Adjacent
                     (to 
-                        if:(is Enemy (who at:(to)))
+                        if:("IsEnemyAt" (to))
                         ("CaptureEnemy")
                     ) 
                     (then 
@@ -266,7 +266,7 @@
                     Leap 
                     "KnightWalk" 
                     (to 
-                        if:(not (is Friend (who at:(to)))) 
+                        if:(not ("IsFriendAt" (to))) 
                         ("CaptureEnemy")
                     ) 
                 )
@@ -391,12 +391,12 @@
                     (to 
                         if:(and 
                             (not (is In (to) (sites Around (from)))) 
-                            (is Enemy (who at:(to)))
+                            ("IsEnemyAt" (to))
                         ) 
                         (apply 
                             if:(not (is In (to) (sites Around (from)))) 
                             (if 
-                                (is Enemy (who at:(to))) 
+                                ("IsEnemyAt" (to)) 
                                 (remove (to))
                             )
                         )
@@ -414,12 +414,12 @@
                     (to 
                         if:(and 
                             (not (is In (to) (sites Around (from)))) 
-                            (is Enemy (who at:(to)))
+                            ("IsEnemyAt" (to))
                         ) 
                         (apply 
                             if:(not (is In (to) (sites Around (from)))) 
                             (if 
-                                (is Enemy (who at:(to))) 
+                                ("IsEnemyAt" (to)) 
                                 (remove (to))
                             )
                         )
@@ -503,7 +503,7 @@
                     Leap 
                     "KnightWalk" 
                     (to 
-                        if:(not (is Friend (who at:(to)))) 
+                        if:(not ("IsFriendAt" (to))) 
                         ("CaptureEnemy")
                     ) 
                 )

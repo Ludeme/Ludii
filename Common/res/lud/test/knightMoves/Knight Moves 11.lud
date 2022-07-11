@@ -13,7 +13,7 @@
                 (from)
                 (to 
                     (sites { {F F R F} {F F L F} })
-                    if: (not (is Friend (who at:(to))))
+                    if: (not ("IsFriendAt" (to)))
                 )
             )
         )

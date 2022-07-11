@@ -11,8 +11,8 @@
                 if:(is Empty (between))
             ) 
             (to 
-                if:(is Enemy (who at:(to))) 
-                (apply if:(not (is Friend (who at:(to)))) (remove (to)))
+                if:("IsEnemyAt" (to)) 
+                (apply if:(not ("IsFriendAt" (to))) (remove (to)))
             )
             (then
                 (if (= (state at:(last To)) 0)

@@ -21,7 +21,7 @@
     )
 )
 
-(define "NextHole" (trackSite Move from:#1 #2 steps:#3))
+(define "NextHole" ("NextSiteOnTrack" #3 from:#1 #2))
 (define "NumBigPiecesCaptured" (count Cell in:(sites {(handSite P1 1) (handSite P2 1)})))
 
 (define "LeftMostEmpty" 
@@ -39,8 +39,6 @@
         if:(and {(not (is In (to) (sites "EndHoles"))) (is Empty (to)) (!= (("LeftMostEmpty") (to)))})
     )
 )
-
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
 (define "NoPieceOnOwnedHoles" 
     (if (= 1 #1)
@@ -404,7 +402,7 @@
         }
         >
         <
-        (or { (= 13 (count Cell at:(handSite Mover))) (= 12 (count Cell at:(handSite Mover))) (= 11 (count Cell at:(handSite Mover)))})
+        (or {(= 13 (count Cell at:(handSite Mover))) (= 12 (count Cell at:(handSite Mover))) (= 11 (count Cell at:(handSite Mover)))})
         >
     "Each row has 7 holes.")   
 })

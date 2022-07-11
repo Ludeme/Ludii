@@ -1,25 +1,25 @@
-(define "NextSite" (trackSite Move #1 steps:1))
+(define "NextSite" ("NextSiteOnTrack" 1 #1 #2))
 
 (define "NextSitePrev"
     (if (is Prev P1)
-        (trackSite Move from:(where "Marker" Prev) "Track1" steps:1)
+        ("NextSite" from:(where "Marker" Prev) "Track1")
         (if (is Prev P2)
-            (trackSite Move from:(where "Marker" Prev) "Track2" steps:1)
+            ("NextSite" from:(where "Marker" Prev) "Track2")
             (if (is Prev P3)
-                (trackSite Move from:(where "Marker" Prev) "Track3" steps:1)
-                (trackSite Move from:(where "Marker" Prev) "Track4" steps:1)
+                ("NextSite" from:(where "Marker" Prev) "Track3")
+                ("NextSite" from:(where "Marker" Prev) "Track4")
             )
         )
     )
 )
 
 (define "TakeBall"
-    (if (= (what at:32) (id "Ball" Shared))
+    (if ("IsPieceAt" "Ball" Shared 32)
         (and
             (remove 32)
             (add (piece (id "Ball" #1)) (to 32))
         )
-        (if (= (what at:33) (id "Ball" Shared))
+        (if ("IsPieceAt" "Ball" Shared 33)
             (and
                 (remove 33)
                 (add (piece (id "Ball" #1)) (to 33))
@@ -70,7 +70,6 @@
         })
         
         phases:{
-        
         (phase "Hiding"
             (play
                 (move Add
@@ -117,18 +116,14 @@
             )
             (nextPhase "Hiding")
         )
-        
         }
         
         (end  
             (if (!= (- (count Players) (count Active)) (count Sites in:(difference ("Centre") (sites Empty))))
                 {
                 (if (and (is Active P1) (is In (where "Marker" P1) ("Centre"))) (result P1 Win))
-                
                 (if (and (is Active P2) (is In (where "Marker" P2) ("Centre"))) (result P2 Win))
-                
                 (if (and (is Active P3) (is In (where "Marker" P3) ("Centre"))) (result P3 Win))
-                
                 (if (and (is Active P4) (is In (where "Marker" P4) ("Centre"))) (result P4 Win))
                 }
             )

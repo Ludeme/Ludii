@@ -1,16 +1,11 @@
 (define "Columns" 10)
 
-(define "OppositePit" (if (is In (to) (sites P1 "Home")) (+ (to) "Columns") (- (to) "Columns")) )
-
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "Sow" 
-    (move
-        Select 
+    (move Select 
         (from 
             (if 
-                (is Mover Prev) 
-                "PlayFromLastHole" 
+                ("SameTurn") 
+                "LastHoleSowed" 
                 (sites Mover #1) 
             ) 
             if:(> (count at:(from)) 0)
@@ -21,13 +16,13 @@
                     (and { 
                         (is In (to) (sites Mover "Home")) 
                         (= (count at:(to)) 1) 
-                        (> (count at:"OppositePit") 0) 
+                        (> (count at:("OppositePit" (to))) 0) 
                     }) 
                     (and 
                         (fromTo 
-                            (from "OppositePit") 
+                            (from ("OppositePit" (to))) 
                             (to (handSite Mover)) 
-                            count:(count at:"OppositePit")
+                            count:(count at:("OppositePit" (to)))
                         ) 
                         (fromTo 
                             (from (to)) 
@@ -59,11 +54,10 @@
         (regions "RightMost" P2 (sites <Rightmost:sitesP2>))  // The Rightmost  holes of the P2 home
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+    })  
     (rules 
         
-        (start (set Count 4 to:(sites Track)) )
+        (start (set Count 4 to:(sites Track)))
         
         phases:{
         (phase "Rightmost" 			  	
@@ -75,14 +69,8 @@
         )
         }
         
-        (end
-            (if  (no Moves Mover)
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (no Moves Mover)))
+        
     )
 )
 

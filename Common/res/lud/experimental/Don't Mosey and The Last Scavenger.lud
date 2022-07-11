@@ -96,7 +96,7 @@
 // End conditions
 
 (define "AMSEnd" (if (no Moves Next) (result Mover Loss)))
-(define "Last2MoveEnd" (if (no Moves Next) (result Mover Win)))
+(define "Last2MoveEnd" ("BlockWin"))
 
 //-------------------------------------------------
 // Options

@@ -19,7 +19,7 @@
         (between 
             #2
             #3
-            if:(is Enemy (who at:(between))) 
+            if:("IsEnemyAt" (between)) 
             (apply (fromTo (from (between)) (to)))
         )
         (to if:(and 
@@ -37,7 +37,7 @@
                         (between 
                             #2
                             #3
-                            if:(and (not (is In (between) (last Between))) (is Enemy (who at:(between)))) 
+                            if:(and (not (is In (between) (last Between))) ("IsEnemyAt" (between))) 
                             (apply (fromTo (from (between)) (to)))
                         )     	
                         (to if:(and 
@@ -73,7 +73,7 @@
     (rules 
         (start { 
             (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ))
-            (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1)) )
+            (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1)))
         })
         
         (play
@@ -83,7 +83,7 @@
                         Hop 
                         (from (last To)) 
                         (directions {FR FL}) 
-                        (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to)))) 
+                        (between if:("IsEnemyAt" (between)) (apply (fromTo (from (between)) (to)))) 
                         (to if:(and 
                                 (is In (from) (sites Occupied by:Mover)) 
                                 (is Empty (to))
@@ -98,7 +98,7 @@
                                             (from (last To)) 
                                             (directions {FR FL}) 
                                             (between 
-                                                if:(is Enemy (who at:(between))) 
+                                                if:("IsEnemyAt" (between)) 
                                                 (apply (fromTo (from (between)) (to)))
                                             ) 		
                                             (to if:(and 
@@ -121,7 +121,7 @@
                         (between 
                             before:(count Rows)
                             after:(count Rows)
-                            if:(and (not (is In (between) (last Between))) (is Enemy (who at:(between))))
+                            if:(and (not (is In (between) (last Between))) ("IsEnemyAt" (between)))
                             (apply (fromTo (from (between)) (to)))
                         ) 
                         (to if:(and 
@@ -139,7 +139,7 @@
                                         (between 
                                             before:(count Rows)
                                             after:(count Rows)
-                                            if:(and (not (is In (between) (last Between))) (is Enemy (who at:(between))))
+                                            if:(and (not (is In (between) (last Between))) ("IsEnemyAt" (between)))
                                             (apply (fromTo (from (between)) (to)))
                                         ) 
                                         (to if:(and 
@@ -169,7 +169,7 @@
             )
         ) 
         
-        (end (if (no Moves Next) (result Mover Win))) 
+        (end ("BlockWin"))
     )
 )
 

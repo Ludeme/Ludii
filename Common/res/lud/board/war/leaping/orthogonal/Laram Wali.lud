@@ -24,7 +24,7 @@
                     Orthogonal
                     (between 
                         (range 1 "NumInitPiece")
-                        if:(is Enemy (who at:(between))) 
+                        if:("IsEnemyAt" (between)) 
                         (apply (remove (between)))
                     )
                     (to if:(is Empty (to)))

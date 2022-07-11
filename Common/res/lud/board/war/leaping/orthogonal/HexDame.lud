@@ -3,7 +3,7 @@
         Hop 
         (from #1) 
         (between 
-            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
+            if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
             (apply (remove (between) at:EndOfTurn))
         ) 
         (to if:(is Empty (to))) 
@@ -87,7 +87,7 @@
                 })
             )
         )
-        (end (if (no Moves Next) (result Mover Win)) )
+        (end ("BlockWin"))
     )
 )
 

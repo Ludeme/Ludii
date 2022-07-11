@@ -7,7 +7,7 @@
 (define "ThrowOf1" (= ("ThrowValue") 1))
 (define "ThrowOf2" (= ("ThrowValue") 2))
 
-(define "SiteToMoveOnTrack" (trackSite Move #1 #2 steps:#3))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #3 #1 #2))
 
 (define "Untabulate"
     (if (is Mover P1)
@@ -98,7 +98,7 @@
     (= 9 (state at:(where "Hyena" Neutral) level:(where Level "Hyena" Neutral at:(where "Hyena" Neutral))))	
 )
 
-(define "NextSite" (trackSite Move from:#1 #2 steps:1))
+(define "NextSite" ("NextSiteOnTrack" 1 from:#1 #2))
 
 (define "MoveHyena"
     (if (= (where "Hyena" Neutral) ("CentralSite"))
@@ -183,9 +183,9 @@
 
 (define "WinningCommonCondition" 
     (and {
-        (if (!= ("InitSite") (where "Hyena" Neutral)) (= 1 (size Stack at:(where "Hyena" Neutral))) True)
-        (!= Off (where "Hyena" Neutral))
-        (= 0 (count Sites in:(difference (sites Occupied by:All top:False) (union (sites Hand Shared) (sites {("InitSite") (where "Hyena" Neutral)})))))
+        (if (!= ("InitSite") (where "Hyena" Neutral)) ("IsSingletonStack" (where "Hyena" Neutral)) True)
+        ("IsNotOffBoard" (where "Hyena" Neutral))
+        (all Sites (sites Occupied by:All top:False) if:(is In (site) (union (sites Hand Shared) (sites {("InitSite") (where "Hyena" Neutral)}))))
     })
 )
 
@@ -216,7 +216,7 @@
             (track "ReverseTrack" "0,E,N,W,S,E,N,W,S,E,N,W" directed:True)
             }
         )
-        (dice d:2 from:0 num:3)
+        ("StickDice" 3)
         (piece "Stick" Each
             (if (= (from) ("CentralSite"))
                 (if ("AllowToMoveOutFromCentral")
@@ -276,7 +276,7 @@
                                     )
                                     (then
                                         (if	(= (last To) ("InitSite"))
-                                            (if (= Off (where "Hyena" Neutral))
+                                            (if ("IsOffBoard" (where "Hyena" Neutral))
                                                 (add (piece (id "Hyena" Neutral)) (to (last To)))
                                             )
                                         )
@@ -301,8 +301,8 @@
             <Player:start>
         })
         (play 
-            (do (roll) 
-                next:(if (and (= ("InitSite") (where "Stick" Mover)) (!= 0 (state at:(where "Stick" Mover) level:(where Level "Stick" Mover at:(where "Stick" Mover)))))
+            ("RollMove"
+                (if (and (= ("InitSite") (where "Stick" Mover)) (!= 0 (state at:(where "Stick" Mover) level:(where Level "Stick" Mover at:(where "Stick" Mover)))))
                     ("MoveHyena")
                     (forEach Piece)
                 )
@@ -409,4 +409,3 @@
     })
     
 )
-

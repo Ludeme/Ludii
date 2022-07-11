@@ -1,9 +1,8 @@
 (define "Columns" 8)
-(define "OppositePitInner" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
-(define "OppositeOuterPitInner" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))) )
+(define "OppositePitInner" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
+(define "OppositeOuterPitInner" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
 (define "OppositePitOuter" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
-(define "OppositeOuterPitOuter" (if (is Mover P1) (+ (to) (* "Columns" 3)) (- (to) (* "Columns" 3))) )
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+(define "OppositeOuterPitOuter" (if (is Mover P1) (+ (to) (* "Columns" 3)) (- (to) (* "Columns" 3))))
 (define "NoSeedsInInner"
     (all Sites (sites Mover "Inner") if:(= 0 (count at:(site))))
 )
@@ -29,7 +28,7 @@
     })  
     (rules 
         
-        (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home")) ))
+        (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home"))))
         
         phases:{
         (phase "Opening"
@@ -49,8 +48,8 @@
                     (move Select
                         (from 
                             (if 
-                                (is Mover Prev) 
-                                "PlayFromLastHole" 
+                                ("SameTurn") 
+                                "LastHoleSowed" 
                                 (sites Mover "Home") 
                             ) 
                             if:(> (count at:(from)) 0)
@@ -112,7 +111,7 @@
                             )
                         )
                     )
-                    (if (and (not (is Mover Prev)) (is Occupied Cell (handSite Mover)))
+                    (if (and (not ("SameTurn")) (is Occupied Cell (handSite Mover)))
                         (move Select
                             (from Cell (handSite Mover))
                             (then
@@ -131,12 +130,7 @@
         
         }
         
-        (end
-            (forEach NonMover
-                if:(no Moves Player)
-                (result Player Loss)
-            )
-        )
+        (end "ForEachNonMoverNoMovesLoss")
     )
 )
 

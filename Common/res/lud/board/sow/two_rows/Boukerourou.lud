@@ -2,9 +2,9 @@
 
 (define "PlayFromLastHole" (last To afterConsequence:True))
 
-(define "NextHole" (trackSite Move from:#1 "Track" steps:1))
+(define "NextHole" ("NextSiteOnTrack" 1 from:#1 "Track"))
 
-(define "NoCounters" (= 0 (count in:(sites #1))))
+(define "NoCounters" (all Sites (sites #1) if:(= 0 (count at:(site)))))
 
 //------------------------------------------------------------------------------
 
@@ -18,17 +18,15 @@
         (piece "Seed" Shared)
         (regions P1 (sites Bottom))                    // P1 home
         (regions P2 (sites Top))                       // P2 home
-        }
-    )  
+    })  
     (rules 
         
-        (start (set Count 6 to:(sites Track)) )
+        (start (set Count 6 to:(sites Track)))
         
         (play
-            (move
-                Select 
+            (move Select 
                 (from 
-                    (if (is Mover Prev) 
+                    (if ("SameTurn") 
                         (sites {("NextHole" ("PlayFromLastHole"))})
                         (sites Mover) 
                     )
@@ -38,7 +36,7 @@
                     (sow 
                         apply:(if (and
                                 (= 1 (count at:(to)))
-                                (not (is Empty ("NextHole" (to))))
+                                (is Occupied ("NextHole" (to)))
                             )
                             (moveAgain)
                             (if (and (is In (to) (sites Next)) (= 6 (count at:(to))))
@@ -50,14 +48,12 @@
             )
         )
         
-        (end {
-            (if  ("NoCounters" P1)
-                (result P2 Win)
+        (end 
+            (forEach Player
+                if:("NoCounters" Player)
+                (result Player Loss)
             )
-            (if  ("NoCounters" P2)
-                (result P1 Win)
-            )
-        })
+        )
     )
 )
 

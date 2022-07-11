@@ -1,6 +1,6 @@
 (define "Columns" 8)
-(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")) )
-(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2))) )
+(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")))
+(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2))))
 (define "NextHole" (trackSite Move from:#1 #2 steps:#3))
 
 //------------------------------------------------------------------------------
@@ -51,7 +51,7 @@
                     (if (!= 2 (var "Direction"))
                         (move Select
                             (from 
-                                (if (is Mover Prev)
+                                (if ("SameTurn")
                                     (sites {(var "Replay")})
                                     (sites Mover "Home") 
                                 )
@@ -102,13 +102,13 @@
                     (if (!= 1 (var "Direction"))
                         (move Select
                             (from 
-                                (if (is Mover Prev)
+                                (if ("SameTurn")
                                     (sites {(var "Replay")})
                                     (sites Mover "Left") 
                                 )
                                 if:(and
                                     (< 1 (count at:(from)))
-                                    (if (is Mover Prev)
+                                    (if ("SameTurn")
                                         True
                                         (if (is In ("NextHole" (from) "TrackCW" (count at:(from))) (sites Mover "Inner"))
                                             (and

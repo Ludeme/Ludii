@@ -24,14 +24,14 @@
                                         (from (to)) 
                                         Orthogonal
                                         (if (and 
-                                                (not (is Friend (who at:(to))))
+                                                (not ("IsFriendAt" (to)))
                                                 (is In (to) (sites Around (sites Around (from))))
                                             )
                                             (move 
                                                 (from) 
                                                 (to 
                                                     (apply 
-                                                        if:(is Enemy (who at:(to)))
+                                                        if:("IsEnemyAt" (to))
                                                         (remove (to))
                                                     )
                                                 )

@@ -1,6 +1,6 @@
 (define "CaptureEnemyToPiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove (to))
         )
     ) 
@@ -11,7 +11,7 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(and (is Enemy (who at:(to))) 
+            if:(and ("IsEnemyAt" (to)) 
                 (if (not (is In (to) (sites Next "Promotion")))
                     True
                     (!= (what at:(to)) (id "Pawn" Next))
@@ -45,7 +45,7 @@
         (board (square 8))
         (piece "King_noCross"
             (move Step
-                (to if:(and (not (is Friend (who at:(to))))
+                (to if:(and (not ("IsFriendAt" (to)))
                         (if (not (is In (to) (sites Next "Promotion")))
                             True
                             (!= (what at:(to)) (id "Pawn" Next))
@@ -58,7 +58,7 @@
         (piece "Queen"
             (move Step
                 Diagonal
-                (to if:(and (not (is Friend (who at:(to))))
+                (to if:(and (not ("IsFriendAt" (to)))
                         (if (not (is In (to) (sites Next "Promotion")))
                             True
                             (!= (what at:(to)) (id "Pawn" Next))
@@ -71,7 +71,7 @@
         (piece "Bishop_noCross"
             (move Hop Diagonal 
                 (between if:True) 
-                (to if:(and (not (is Friend (who at:(to))))
+                (to if:(and (not ("IsFriendAt" (to)))
                         (if (not (is In (to) (sites Next "Promotion")))
                             True
                             (!= (what at:(to)) (id "Pawn" Next))
@@ -86,7 +86,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(and (not (is Friend (who at:(to))))
+                    if:(and (not ("IsFriendAt" (to)))
                         (if (not (is In (to) (sites Next "Promotion")))
                             True
                             (!= (what at:(to)) (id "Pawn" Next))
@@ -101,7 +101,7 @@
                 Slide 
                 Orthogonal
                 (to 
-                    if:(and (not (is Friend (who at:(to))))
+                    if:(and (not ("IsFriendAt" (to)))
                         (if (not (is In (to) (sites Next "Promotion")))
                             True
                             (!= (what at:(to)) (id "Pawn" Next))
@@ -149,7 +149,7 @@
                         (if (is In (from) (sites Start (piece (what at:(from)))))
                             (move Hop Diagonal 
                                 (between (exact 1) if:True) 
-                                (to if:(and (not (is Friend (who at:(to))))
+                                (to if:(and (not ("IsFriendAt" (to)))
                                         (if (not (is In (to) (sites Next "Promotion")))
                                             True
                                             (!= (what at:(to)) (id "Pawn" Next))

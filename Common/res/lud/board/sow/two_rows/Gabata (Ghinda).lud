@@ -1,7 +1,6 @@
-(define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
-(define "NoPieceOnOwnedHolesP1" (no Pieces All in:(sites (values Remembered "OwnedP1"))))
-(define "NoPieceOnOwnedHolesP2" (no Pieces All in:(sites (values Remembered "OwnedP2"))))
+(define "NextHole" ("NextSiteOnTrack" #2 from:#1 "Track"))
+(define "NoPieceOnOwnedHolesP1" (all Sites (sites (values Remembered "OwnedP1")) if:(= 0 (count at:(site)))))
+(define "NoPieceOnOwnedHolesP2" (all Sites (sites (values Remembered "OwnedP2")) if:(= 0 (count at:(site)))))
 (define "RemmemberOwnedHoles" 
     (if (is Mover P1)
         (remember Value "OwnedP1" #1)
@@ -59,7 +58,7 @@
                 (or {
                     (move Select 
                         (from
-                            (if (is Mover Prev)
+                            (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 (if (= 1 (value Player Mover))
                                     ("OwnedHoles")
@@ -195,9 +194,7 @@
             )
             (nextPhase (and (is Empty (handSite P1)) (is Empty (handSite P2))) "Sowing")
         )
-        
         }
-        
     )
 )
 

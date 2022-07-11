@@ -12,7 +12,7 @@
 
 (define "CaptureEnemyPiece" 
     (apply 
-        if:(is Enemy (who at:(to))) 
+        if:("IsEnemyAt" (to)) 
         (if (is In (to) (sites Next "Home"))
             (remove (to))
             (if (= ("FirstAvailableInHome" Next) Off) 
@@ -32,7 +32,7 @@
 
 (define "CaptureEnemyPieceInEntering" 
     (apply 
-        if:(is Enemy (who at:(to))) 
+        if:("IsEnemyAt" (to)) 
         (if (= ("FirstAvailableInHome" Next) Off) 
             (remove (to))
             (fromTo

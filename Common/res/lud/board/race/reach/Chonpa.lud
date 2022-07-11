@@ -37,9 +37,8 @@
     )
 )
 
-(define "TrackMove" (trackSite Move #1 #2 steps:#3))
+(define "TrackMove" ("NextSiteOnTrack" #3 #1 #2))
 
-(define "DieNotUsed" (!= (pips) 0))
 (define "StorePreviousPipsUsed" (set Var "Pips" #1))
 (define "PreviousPipsUsed" (var "Pips"))
 
@@ -141,17 +140,7 @@
 (game "Chonpa"  
     (players 4)  
     (equipment { 
-        (board 
-            (add
-                (hole
-                    (merge 
-                        (shift 0 8 (rectangle 3 19)) 
-                        (shift 8 0 (rectangle 19 3))
-                    )
-                    (poly {{8 8} {8 11} {11 11} {11 8}})
-                )
-                cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9 } }
-            )
+        ("PachisiBoard" 
             {
             (track "TrackNormal1" "64,S,E,N,11,E,N,W,53,N,W,S,42,W,S,E,8,54,E1,N8" P1 directed:True)
             (track "TrackPaired1" "57,S,E,N,11,E,N,W,53,N,W,S,42,W,S,E,8,54,E1,N8" P1 directed:True)
@@ -185,9 +174,8 @@
         })
         
         (play 
-            (do 
-                (if (not ("SameTurn")) (roll)) 
-                next:(if (can Move ("Move"))
+            ("RollEachNewTurnMove"
+                (if (can Move ("Move"))
                     ("Move") 
                     (move Pass 
                         (then (and

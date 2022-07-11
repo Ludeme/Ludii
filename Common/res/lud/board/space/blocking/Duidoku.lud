@@ -80,7 +80,7 @@
         )
         (end { 
             (if (all Sites (sites Board) if:(is Occupied (site))) (result Mover Draw))
-            (if (no Moves Next) (result Mover Win))
+            ("BlockWin")
         })
     )
 )

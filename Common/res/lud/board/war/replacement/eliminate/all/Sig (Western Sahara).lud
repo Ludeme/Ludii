@@ -8,7 +8,7 @@
 
 (define "CaptureEnemyPiece" 
     (apply 
-        if:(is Enemy (who at:(to))) 
+        if:("IsEnemyAt" (to)) 
         (remove (to))
     ) 
 )
@@ -25,7 +25,7 @@
             if:(and 
                 (or
                     (is Empty (to))
-                    (and (not (is In (to) (sites Next "Home"))) (is Enemy (who at:(to))))
+                    (and (not (is In (to) (sites Next "Home"))) ("IsEnemyAt" (to)))
                 )
                 ("NoFriendPieceInBetween" #1)
             )

@@ -20,7 +20,7 @@
                 (to 
                     if:(or 
                         (is Empty (to))
-                        (and (= (to) (centrePoint)) (is Friend (who at:(to))))
+                        (and (= (to) (centrePoint)) ("IsFriendAt" (to)))
                     )
                 )
             )
@@ -30,10 +30,10 @@
                 ("StepToEmpty")
                 ("HopCapture")
                 // Special captures from a site to another.
-                (if (and {(= (from) 2) (is Enemy (who at:(centrePoint))) (is Empty 1)})
+                (if (and {(= (from) 2) ("IsEnemyAt" (centrePoint)) (is Empty 1)})
                     (move (from 2) (to 1) (then (remove (centrePoint))))
                 )
-                (if (and {(= (from) 1) (is Enemy (who at:(centrePoint))) (is Empty 2)})
+                (if (and {(= (from) 1) ("IsEnemyAt" (centrePoint)) (is Empty 2)})
                     (move (from 1) (to 2) (then (remove (centrePoint))))
                 )
             })

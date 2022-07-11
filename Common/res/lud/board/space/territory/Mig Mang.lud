@@ -3,10 +3,10 @@
         (from (last To)) 
         Orthogonal 
         (between 
-            if:(or (is Enemy (who at:(between))) (is Empty (between)))
+            if:(or ("IsEnemyAt" (between)) (is Empty (between)))
             (apply
                 (and
-                    (if (is Enemy (who at:(between)))
+                    (if ("IsEnemyAt" (between))
                         (remove (between)) 
                     )
                     (set State at:(between) (mover))

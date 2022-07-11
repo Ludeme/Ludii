@@ -1,10 +1,10 @@
 (define "Columns" 12)
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
 
 (define "LastHole" (last To afterConsequence:True))
 
-(define "PlayFromLastHole" (sites {("LastHole")}))
+(define "LastHoleSowed" (sites {("LastHole")}))
 
 (define "NoPiece" (= (count in:(sites Player "Home")) 0))
 
@@ -28,7 +28,7 @@
         }
     )  
     (rules 
-        (start (set Count 3 to:(sites {1 2 4 5 7 8 10 11 22 21 19 18 16 15 13 12})) )
+        (start (set Count 3 to:(sites {1 2 4 5 7 8 10 11 22 21 19 18 16 15 13 12})))
         
         phases:{
         
@@ -58,14 +58,14 @@
                     Select 
                     (from 
                         (if 
-                            (is Mover Prev) 
-                            "PlayFromLastHole" 
+                            ("SameTurn") 
+                            "LastHoleSowed" 
                             (sites Mover "Home") 
                         ) 
                         if:(and
                             (> (count at:(from)) 0)
-                            (or (is Mover Prev)
-                                (and (not (is Mover Prev))
+                            (or ("SameTurn")
+                                (and (not ("SameTurn"))
                                     (not 
                                         (and 
                                             (is In ("NextHoleFrom" (from) (count at:(from))) (sites Mover "Home")) 

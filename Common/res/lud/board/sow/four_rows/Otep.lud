@@ -1,7 +1,6 @@
 (define "Columns" 8)
-(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")) )
-(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2))) )
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")))
+(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2))))
 
 //------------------------------------------------------------------------------
 
@@ -88,8 +87,8 @@
                 (move Select
                     (from 
                         (if 
-                            (is Mover Prev) 
-                            "PlayFromLastHole" 
+                            ("SameTurn") 
+                            "LastHoleSowed" 
                             (sites {(mapEntry "RightOuter" Mover)}) 
                         ) 
                         
@@ -113,8 +112,8 @@
                 (move Select
                     (from 
                         (if 
-                            (is Mover Prev) 
-                            "PlayFromLastHole" 
+                            ("SameTurn") 
+                            "LastHoleSowed" 
                             (sites Mover) 
                         ) 
                         if:(> (count at:(from)) 1)
@@ -159,10 +158,7 @@
         )
         }
         
-        (end {
-            (if (no Moves P1) (result P2 Win))
-            (if (no Moves P2) (result P1 Win))
-        })
+        (end ("ForEachPlayerNoMovesLoss"))
     )
 )
 

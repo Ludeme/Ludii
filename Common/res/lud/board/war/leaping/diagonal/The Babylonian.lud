@@ -7,7 +7,7 @@
             (between 
                 before:2
                 after:2
-                if:(and (= 2 (count Steps (from) (between))) (is Enemy (who at:(between))))
+                if:(and (= 2 (count Steps (from) (between))) ("IsEnemyAt" (between)))
                 (apply (remove (between)))
             ) 
             (to if:(is Empty (to))) 
@@ -23,7 +23,7 @@
         #1
         Diagonal
         (between 
-            if:(is Enemy (who at:(between)))
+            if:("IsEnemyAt" (between))
             (apply (remove (between)))
         ) 
         (to if:(is Empty (to)))
@@ -79,7 +79,7 @@
         (start
             { 
             (place "Counter1" (difference (expand (sites Bottom) steps:3) (sites Phase 0)  ))
-            (place "Counter2" (difference (expand (sites Top) steps:3) (sites Phase 0)) )
+            (place "Counter2" (difference (expand (sites Top) steps:3) (sites Phase 0)))
             }
         )
         

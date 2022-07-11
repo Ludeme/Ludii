@@ -3,7 +3,7 @@
         in:(sites Around 
             (from) 
             Orthogonal 
-            if:(is Friend (who at:(to)))
+            if:("IsFriendAt" (to))
         )
     )
 )
@@ -23,7 +23,7 @@
                     if:True
                 )
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     (apply (remove (to)))
                 )
             )

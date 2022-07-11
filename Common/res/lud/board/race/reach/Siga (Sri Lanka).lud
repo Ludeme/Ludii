@@ -1,5 +1,5 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #2 #1))
 (define "IsSpecialThrow" (is In ("ThrowValue") (sites {1 8})))
 (define "Throw1" (= ("ThrowValue") 1))
 
@@ -28,7 +28,7 @@
                     ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
                     if:True
                     (apply
-                        (if (and (not (is In (to) (sites "SafeSites"))) (is Enemy (who at:(to))))
+                        (if (and (not (is In (to) (sites "SafeSites"))) ("IsEnemyAt" (to)))
                             (and
                                 (forEach Level (to) FromTop
                                     (fromTo
@@ -44,7 +44,7 @@
             )		
         )
         (hand Each)
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
         (map "Throw" {(pair 0 8) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})
         (map "Entry" {(pair P1 2) (pair P2 22)})
         (regions "SafeSites" (sites {2 10 12 14 22}))
@@ -55,8 +55,8 @@
             (place Stack "Marker2" (handSite P2) count:2)
         })
         (play 
-            (do (roll) 
-                next:(or
+            ("RollMove"
+                (or
                     (if (and (is Occupied (handSite Mover)) ("Throw1"))
                         (move 
                             (from (handSite Mover))

@@ -1,5 +1,5 @@
 (define "Columns" 7)
-(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")) )
+(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")))
 
 (define "NoPieceOnBoard" (= 4 (count Pieces All in:(sites Board))))
 (define "PiecesOwnedBy" (+ (count in:(sites Mover)) (count Cell at:(handSite #1))))
@@ -24,7 +24,7 @@
     )  
     (rules 
         
-        (start (set Count 4 to:(sites Track)) )
+        (start (set Count 4 to:(sites Track)))
         
         phases:{
         (phase "Opening"

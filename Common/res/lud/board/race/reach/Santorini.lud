@@ -8,23 +8,19 @@
     ) 
 )
 
-(define "EmptyOrNeutralPiece"
-    (= (who at:(to)) 0) 
-)
+(define "EmptyOrNeutralPiece" (= (who at:(to)) 0))
 
 //-------------------------------------------------------------------------
 
 (game "Santorini"  
     (players 2)  
-    (equipment 
-        { 
+    (equipment { 
         (board (square 5)) 
         (hand Each)
         // Map between level and each piece to build the building.
-        (map { (pair 0 "SquareLarge0") (pair 1 "SquareSmall0") (pair 2 "Octagon0") (pair 3 "Marker0")})
+        (map {(pair 0 "SquareLarge0") (pair 1 "SquareSmall0") (pair 2 "Octagon0") (pair 3 "Marker0")})
         (piece "Pawn3d" Each 
-            (move
-                Step
+            (move Step
                 (to 
                     if:(and 
                         ("LevelBetweenGroundAndDestinationPlusOne") 
@@ -38,15 +34,12 @@
         (piece "SquareSmall" Neutral)
         (piece "Octagon" Neutral)
         (piece "Marker" Neutral)
-        }
-    )  
+    })  
     (rules 
-        (start 
-            {
+        (start {
             (place Stack "Pawn3d1" (handSite P1) count:2)
             (place Stack "Pawn3d2" (handSite P2) count:2)
-            }
-        )
+        })
         
         phases:{
         (phase "Placement"
@@ -67,8 +60,7 @@
         (phase "Movement" 
             (play 
                 (if ("SameTurn")
-                    (move
-                        Select 
+                    (move Select 
                         (from
                             (sites Around 
                                 (last To) 
@@ -95,23 +87,14 @@
         (end {
             (if 
                 (and 
-                    (= 3 
-                        (topLevel at:(last To))
-                    )
-                    (= 
-                        (what 
-                            at:(last To) 
-                            level:(topLevel at:(last To))
-                        ) 
-                        (id "Pawn3d" Mover)
-                    )
+                    (= 3 (topLevel at:(last To)))
+                    ("IsPieceAt" "Pawn3d" Mover (last To) level:(topLevel at:(last To))) 
                 )
                 (result Mover Win) 
             )
             (if (no Moves P1) (result P2 Win))
             (if (no Moves P2) (result P1 Win))
-            }
-        )
+        })
     )
 )
 

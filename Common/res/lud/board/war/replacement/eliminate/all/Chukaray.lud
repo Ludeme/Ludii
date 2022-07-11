@@ -98,7 +98,7 @@
                     if:True
                     (apply
                         (and
-                            (if (is Enemy (who at:(to)))
+                            (if ("IsEnemyAt" (to))
                                 (if (= Off ("NearestHomeWithStick" (who at:(to))))
                                     (remove (to))
                                     (fromTo

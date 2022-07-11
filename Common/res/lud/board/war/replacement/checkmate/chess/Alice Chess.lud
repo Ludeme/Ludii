@@ -24,10 +24,10 @@
 
 (define "CaptureToPieceAndResetCounter"
     (apply 
-        if: (or (and (is Enemy (who at:(to))) (= (value Piece at:(from)) (value Piece at:(to)))) (is Empty (to)))
+        if: (or (and ("IsEnemyAt" (to)) (= (value Piece at:(from)) (value Piece at:(to)))) (is Empty (to)))
         (if 
             (and 
-                (is Enemy (who at:(to)))
+                ("IsEnemyAt" (to))
                 (= (value Piece at:(from)) (value Piece at:(to)))
             )
             (remove 
@@ -116,7 +116,7 @@
         (directions {FR FL}) 
         (to 
             if:(and 
-                (is Enemy (who at:(to)))
+                ("IsEnemyAt" (to))
                 (= (value Piece at:(from)) (value Piece at:(to)))
             ) 
             (apply (remove (to)))
@@ -163,7 +163,7 @@
                     )
                 ) 
                 (to 
-                    if:(and (is Enemy (who at:(to))) (= (value Piece at:(from)) (value Piece at:(to))))
+                    if:(and ("IsEnemyAt" (to)) (= (value Piece at:(from)) (value Piece at:(to))))
                     "CaptureToPieceAndResetCounter"
                 ) 
                 "RememberPieceHasMoved"
@@ -173,7 +173,7 @@
             (move
                 Step 
                 (to 
-                    if:(and (not (is Friend (who at:(to)))) (or (is Empty (to)) (= (value Piece at:(from)) (value Piece at:(to)))))
+                    if:(and (not ("IsFriendAt" (to))) (or (is Empty (to)) (= (value Piece at:(from)) (value Piece at:(to)))))
                     "CaptureToPieceAndResetCounter"
                 ) 
                 "RememberPieceHasMoved"
@@ -190,7 +190,7 @@
                     )
                 ) 
                 (to 
-                    if:(and (is Enemy (who at:(to))) (= (value Piece at:(from)) (value Piece at:(to))))
+                    if:(and ("IsEnemyAt" (to)) (= (value Piece at:(from)) (value Piece at:(to))))
                     "CaptureToPieceAndResetCounter"
                 ) 
                 (then
@@ -203,7 +203,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(and (not (is Friend (who at:(to)))) (or (is Empty (to)) (= (value Piece at:(from)) (value Piece at:(to)))))
+                    if:(and (not ("IsFriendAt" (to))) (or (is Empty (to)) (= (value Piece at:(from)) (value Piece at:(to)))))
                     "CaptureToPieceAndResetCounter"
                 ) 
                 (then
@@ -221,7 +221,7 @@
                     )
                 ) 
                 (to 
-                    if:(and (is Enemy (who at:(to))) (= (value Piece at:(from)) (value Piece at:(to))))
+                    if:(and ("IsEnemyAt" (to)) (= (value Piece at:(from)) (value Piece at:(to))))
                     "CaptureToPieceAndResetCounter"
                 ) 
                 (then

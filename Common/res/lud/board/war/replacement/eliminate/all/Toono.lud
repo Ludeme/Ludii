@@ -13,8 +13,8 @@
                 (from) 
                 (to 
                     (sites Distance from:(from) (exact 3))
-                    if:(not (is Friend (who at:(to))))
-                    (apply (if (is Enemy (who at:(to))) (remove (to))))
+                    if:(not ("IsFriendAt" (to)))
+                    (apply (if ("IsEnemyAt" (to)) (remove (to))))
                 )
             )
         )

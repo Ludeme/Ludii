@@ -3,7 +3,7 @@
     (equipment { 
         <Board>
         (piece "Counter" P1 "StepToEmpty") 
-        (piece "Hare" P2 (or <Jump:hare> (if "SameTurn" (move Pass) "StepToEmpty")) )
+        (piece "Hare" P2 (or <Jump:hare> (if "SameTurn" (move Pass) "StepToEmpty")))
     })  
     (rules 
         (start { 

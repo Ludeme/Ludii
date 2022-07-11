@@ -4,9 +4,9 @@
 // @example ("LeapToEmpty" "KnightWalk")
 
 (define "LeapToEmpty"
-        (move Leap
-                #1
-                (to if:(is Empty (to)))
-                #2
-            )
+    (move Leap
+        #1
+        (to if:(is Empty (to)))
+        #2
+    )
 )

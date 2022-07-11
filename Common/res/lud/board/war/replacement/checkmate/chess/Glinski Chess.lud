@@ -8,7 +8,7 @@
 // Source: Chess.lud - CaptureToPieceAndResetCounter
 (define "CaptureToPieceAndResetCounter"
     (apply
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove (to)
                 (then (set Counter))
             )
@@ -27,7 +27,7 @@
 
 (define "IsToEmptyOrEnemy"
     (or "IsToEmpty"
-        (is Enemy (who at:(to)))
+        ("IsEnemyAt" (to))
     )
 )
 
@@ -49,7 +49,7 @@
     (move
         Slide
         #1
-        (to if:(is Enemy (who at:(to)))
+        (to if:("IsEnemyAt" (to))
             "CaptureToPieceAndResetCounter"
         )
         #2
@@ -111,7 +111,7 @@
     (move
         Step
         #1
-        (to if:(is Enemy (who at:(to)))
+        (to if:("IsEnemyAt" (to))
             (apply (remove (to)))
         )
     )

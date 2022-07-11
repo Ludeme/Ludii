@@ -15,10 +15,10 @@
 
 (define "CanMove2PiecesToHucke" 
     (if (= ("Die1") ("Die2"))
-        (<= 2 (count Pieces Mover in:(sites { ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")) })))
+        (<= 2 (count Pieces Mover in:(sites {("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")) })))
         (and
-            (<= 1 (count Pieces Mover in:(sites { ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die1")) })))
-            (<= 1 (count Pieces Mover in:(sites { ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")) })))	
+            (<= 1 (count Pieces Mover in:(sites {("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die1")) })))
+            (<= 1 (count Pieces Mover in:(sites {("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")) })))	
         )
     )
 )

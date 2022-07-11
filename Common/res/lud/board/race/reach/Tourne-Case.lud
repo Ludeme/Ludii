@@ -1,11 +1,6 @@
 (define "ThrowValue" (min (face 26) (face 27)))
 
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
-        steps:#2
-    )
-)
+(define "NextSiteFrom" ("NextSiteOnTrack" #2 from:#1))
 
 (define "ThreePiecesOnFinalPoint" (= 3 (count Pieces Mover in:(sites {(mapEntry "FinalPoint" Mover)}))))
 
@@ -14,12 +9,11 @@
 (game "Tourne-Case"
     (players 2)
     (equipment {
-        (board (rectangle 2 13) 
+        ("BackgammonBoard" 
             {
             (track "Track1" {6 0..5 7..12 25..20 18..13} P1 directed:True)
             (track "Track2" {19 13..18 20..25 12..7 5..0} P2 directed:True)
             } 
-            use:Vertex
         ) 
         (dice d:6 num:2)
         (piece "Disc" Each
@@ -47,8 +41,8 @@
                     )
                     (apply
                         (if (and 
-                                (is Enemy (who at:(mapEntry "Opposite" (to))))
-                                (= 1 (size Stack at:(mapEntry "Opposite" (to))))
+                                ("IsEnemyAt" (mapEntry "Opposite" (to)))
+                                ("IsSingletonStack" (mapEntry "Opposite" (to)))
                             )
                             (fromTo
                                 (from (mapEntry "Opposite" (to)))	
@@ -67,7 +61,6 @@
             (pair 13 0) (pair 14 1) (pair 15 2) (pair 16 3) (pair 17 4) (pair 18 5) 
             (pair 20 7) (pair 21 8) (pair 22 9) (pair 23 10) (pair 24 11) (pair 25 12)
         })
-        
     })
     (rules 
         (start {
@@ -75,8 +68,8 @@
             (place Stack "Disc2" 19 count:3) 
         })
         (play 
-            (do (roll) 
-                next:(forEach Piece top:True)
+            ("RollMove"
+                (forEach Piece top:True)
             )
         )
         (end (if ("ThreePiecesOnFinalPoint") (result Mover Win)))
@@ -106,4 +99,3 @@
     })
     
 )
-

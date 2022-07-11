@@ -1,6 +1,6 @@
 (define "Columns" 6)
 
-(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns")) )
+(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns")))
 (define "PlayableSites" (sites (values Remembered "Playable")))
 
 (define "APlayerCanNotMove"
@@ -53,7 +53,7 @@
                 (or {
                     (move Select
                         (from
-                            (if (is Mover Prev)
+                            (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 (sites Mover) 
                             )

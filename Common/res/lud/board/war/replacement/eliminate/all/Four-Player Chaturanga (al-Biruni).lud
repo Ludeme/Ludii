@@ -4,7 +4,7 @@
     (apply
         (if (not (is Empty (to)))
             (and {
-                (if (is In (to) (sites { (where "King" P1) (where "King" P2) (where "King" P3) (where "King" P4)}))
+                (if (is In (to) (sites {(where "King" P1) (where "King" P2) (where "King" P3) (where "King" P4)}))
                     (set Value Mover (+ (value Player Mover) 1))
                 )
                 (if (and (!= Off (where "King" Mover)) (= (value Player Mover) 1))
@@ -22,7 +22,7 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             ("CaptureToPieceAndAddScore")
         )
     )
@@ -64,7 +64,7 @@
                 Hop 
                 Diagonal 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndAddScore"
                 )
             )
@@ -74,7 +74,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndAddScore"
                 ) 
             )
@@ -85,7 +85,7 @@
                 Orthogonal 
                 (between if:(is Empty (between))) 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndAddScore" 
                 )
             )
@@ -94,7 +94,7 @@
             (move
                 Step 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndAddScore" 
                 )
             )

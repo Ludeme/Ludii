@@ -1,14 +1,12 @@
 (define "Columns" <Row:size>)
 
-(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")) )
+(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")))
 
-(define "OppositeMiddlePit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2))) )
+(define "OppositeMiddlePit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2))))
 
-(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 3)) (- #1 (* "Columns" 3))) )
+(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 3)) (- #1 (* "Columns" 3))))
 
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
-(define "NoPiece" (= (count in:(sites Player "Home")) 0))
+(define "NoPiece" (all Sites (sites Player "Home") if:(= 0 (count at:(site)))))
 
 (define "OneSingePieceInTheMiddle" (and (= (count in:(sites Mover "Home")) 1) (= (count in:(sites Mover "Middle")) 1)))
 (define "OneSingePieceInTheOuter" (and (= (count in:(sites Mover "Home")) 1) (= (count in:(sites Mover "Outer")) 1)))
@@ -41,8 +39,7 @@
         (regions "Middle" P2 (sites Row 4))             // P2 inner Home
         (regions "Outer" P1 (sites Bottom))             // P1 inner Home
         (regions "Outer" P2 (sites Top))                // P2 inner Home
-        }
-    )  
+    })  
     (rules 
         
         (start (set Count 2 to:(sites Board)))
@@ -54,8 +51,8 @@
                         Select
                         (from 
                             (if 
-                                (is Mover Prev) 
-                                "PlayFromLastHole" 
+                                ("SameTurn") 
+                                "LastHoleSowed" 
                                 ("OuterMostRowWithPieces") 
                             ) 
                             if:(> (count at:(from)) 0)
@@ -105,8 +102,8 @@
                         Select
                         (from 
                             (if 
-                                (is Mover Prev) 
-                                "PlayFromLastHole" 
+                                ("SameTurn") 
+                                "LastHoleSowed" 
                                 ("OuterMostRowWithPieces") 
                             ) 
                             if:(> (count at:(from)) 0)

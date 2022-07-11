@@ -3,8 +3,8 @@
 // @example ("FillWin" (sites Top))
 
 (define "FillWin"
-        (if 
-                (= (sites Occupied by:Mover) #1)
-                (result Mover Win)
-            )
+    (if 
+        (= (sites Occupied by:Mover) #1)
+        (result Mover Win)
+    )
 )

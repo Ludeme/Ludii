@@ -1,12 +1,10 @@
 (define "Columns" <Row:size>)
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
 
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))) )
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
 
-(define "NoPiece" (= (count in:(sites Player "Home")) 0))
-
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+(define "NoPiece" (all Sites (sites Player "Home") if:(= 0 (count at:(site)))))
 
 (define "AHoleHasMoreThanOneCounter" 
     (!= 0 (count Sites in:(forEach (sites Mover) if:(< 1 (count at:(site))))))
@@ -35,8 +33,7 @@
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
         (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))   // P2 inner Home
         (piece "Seed" Shared)
-        }
-    )  
+    })  
     (rules 
         
         (start (set Count 2 to:(union (sites Top) (sites Bottom ))))
@@ -57,8 +54,8 @@
                     Select
                     (from 
                         (if 
-                            (is Mover Prev) 
-                            "PlayFromLastHole" 
+                            ("SameTurn") 
+                            "LastHoleSowed" 
                             (sites Mover "Home") 
                         ) 
                         if:(if "AHoleHasMoreThanOneCounter"

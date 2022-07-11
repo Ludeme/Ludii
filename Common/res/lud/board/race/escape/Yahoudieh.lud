@@ -70,8 +70,8 @@
         phases:{
         (phase "UnStacking" 
             (play
-                    ("RollEachNewTurnMove"
-                            (forEach Die 
+                ("RollEachNewTurnMove"
+                    (forEach Die 
                         if:("DieNotUsed")
                         (or
                             (if ("PieceFullStacked" "SiteToSelect")
@@ -105,8 +105,8 @@
         )
         (phase "Stacking" 
             (play 
-                    ("RollEachNewTurnMove"
-                            (forEach Die 
+                ("RollEachNewTurnMove"
+                    (forEach Die 
                         if:("DieNotUsed")
                         (or
                             (if ("PieceUnstacked" "SiteToSelect")
@@ -134,12 +134,12 @@
                 )
             )
             (nextPhase Mover 
-                    (all Sites (sites Occupied by:Mover) if:(not ("PieceUnstacked" (site)))) 
+                (all Sites (sites Occupied by:Mover) if:(not ("PieceUnstacked" (site)))) 
                 "BearingOff"
             )
         )
         (phase "BearingOff" 
-        	(play 
+            (play 
                 (do 
                     (if (or (all DiceEqual) (not "SameTurn")) (roll)) 
                     next:(forEach Piece top:True)
