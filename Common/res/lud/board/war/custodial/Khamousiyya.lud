@@ -80,7 +80,7 @@
                         if:(is Empty (to))
                     )
                     (then
-                        (if (not (is Mover Prev)) (moveAgain))
+                        (if (not ("SameTurn")) (moveAgain))
                     )
                 )
             )

@@ -40,7 +40,7 @@
         (phase "Opening2"
             (play
                 (if 
-                    (is Mover Prev) 
+                    ("SameTurn") 
                     (move Select
                         (from 
                             (sites {"PlayFromLastHole"})

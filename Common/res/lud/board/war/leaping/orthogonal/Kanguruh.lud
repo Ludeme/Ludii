@@ -46,7 +46,7 @@
         })
         
         (play 
-            (if (is Prev Mover)
+            (if ("SameTurn")
                 (or
                     (move Pass
                         (then

@@ -4,7 +4,7 @@
 
 (define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
 
-(define "MoveAgainAfterCapture" (and (is Pending) (is Mover Prev)))
+(define "MoveAgainAfterCapture" (and (is Pending) ("SameTurn")))
 
 (define "StylizedMove" 
     (if (is Mover P1)
@@ -117,7 +117,7 @@
                     (move Select 
                         (from 
                             (if 
-                                (is Mover Prev) 
+                                ("SameTurn") 
                                 "LastHoleSowed" 
                                 (if 
                                     (< (count Turns) 3) 
@@ -133,7 +133,7 @@
                         Select 
                         (from 
                             (if 
-                                (is Mover Prev) 
+                                ("SameTurn") 
                                 "LastHoleSowed" 
                                 (sites Mover "Home") 
                             )

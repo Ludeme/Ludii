@@ -45,7 +45,7 @@
                     (move Select
                         (from
                             (if 
-                                (and (not (is Pending)) (is Mover Prev)) 
+                                (and (not (is Pending)) ("SameTurn")) 
                                 (sites {(var "Replay")}) 
                                 (sites Mover) 
                             ) 

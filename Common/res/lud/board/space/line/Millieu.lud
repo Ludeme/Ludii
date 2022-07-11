@@ -225,7 +225,7 @@
                 
                 // regular moves
                 (if
-                    (not (is Mover Prev))  // Move begins with a placement that can be followed by an adjacent slide
+                    (not ("SameTurn"))  // Move begins with a placement that can be followed by an adjacent slide
                     ("FirstAction") 
                     (if
                         (= 0 (count Sites in:(sites Pending)))

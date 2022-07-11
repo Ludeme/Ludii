@@ -35,7 +35,7 @@
         phases:{
         (phase "Sowing"
             (play 
-                (if (is Mover Prev) 
+                (if ("SameTurn") 
                     (or
                         (move 
                             (from (ahead ("LastHole") W))

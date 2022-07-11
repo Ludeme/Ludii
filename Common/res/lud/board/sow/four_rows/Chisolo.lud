@@ -37,7 +37,7 @@
         
         (phase "SowingCW"
             (play 
-                (if (and (is Mover Prev) (= (var "CaptureOther") 1))
+                (if (and ("SameTurn") (= (var "CaptureOther") 1))
                     (move
                         (from (sites Next) if:(is Occupied (from)))
                         (to (handSite Mover))
@@ -49,7 +49,7 @@
                     (move Select
                         (from 
                             (if 
-                                (is Mover Prev) 
+                                ("SameTurn") 
                                 "LastHoleSowed" 
                                 (sites Mover "Home") 
                             ) 
@@ -70,7 +70,7 @@
         
         (phase "Sowing"
             (play 
-                (if (and (is Mover Prev) (= (var "CaptureOther") 1))
+                (if (and ("SameTurn") (= (var "CaptureOther") 1))
                     (move
                         (from (sites Next) if:(is Occupied (from)))
                         (to (handSite Mover))
@@ -84,7 +84,7 @@
                             (move Select
                                 (from 
                                     (if 
-                                        (is Mover Prev) 
+                                        ("SameTurn") 
                                         "LastHoleSowed" 
                                         (sites Mover "Home") 
                                     ) 
@@ -107,7 +107,7 @@
                             (move Select
                                 (from 
                                     (if 
-                                        (is Mover Prev) 
+                                        ("SameTurn") 
                                         "LastHoleSowed" 
                                         (sites Mover "Home") 
                                     ) 

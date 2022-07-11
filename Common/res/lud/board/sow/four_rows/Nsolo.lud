@@ -39,7 +39,7 @@
         )
         
         (play 
-            (if (and (is Mover Prev) (= (var "Replay") Undefined))
+            (if (and ("SameTurn") (= (var "Replay") Undefined))
                 (move Remove 
                     (sites Next "Home")
                 )
@@ -56,7 +56,7 @@
                     (move Select
                         (from 
                             (if 
-                                (is Mover Prev) 
+                                ("SameTurn") 
                                 (sites {(var "Replay") })
                                 (sites Mover "Home") 
                             ) 

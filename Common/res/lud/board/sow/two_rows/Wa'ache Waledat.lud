@@ -36,7 +36,7 @@
                 (if (or (>= 0 (var "Direction")) (= 1 (var "Direction")))
                     (move Select
                         (from
-                            (if (and (is Mover Prev) (= 1 (var "ContinueSowing")))
+                            (if (and ("SameTurn") (= 1 (var "ContinueSowing")))
                                 "LastHoleSowed" 
                                 (sites Mover "RightHome")
                             )
@@ -70,7 +70,7 @@
                 (if (or (>= 0 (var "Direction")) (= 2 (var "Direction")))
                     (move Select
                         (from
-                            (if (and (is Mover Prev) (= 1 (var "ContinueSowing")))
+                            (if (and ("SameTurn") (= 1 (var "ContinueSowing")))
                                 "LastHoleSowed" 
                                 (sites Mover "LeftHome")
                             )

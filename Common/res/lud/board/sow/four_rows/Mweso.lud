@@ -51,7 +51,7 @@
                     (if (!= 2 (var "Direction"))
                         (move Select
                             (from 
-                                (if (is Mover Prev)
+                                (if ("SameTurn")
                                     (sites {(var "Replay")})
                                     (sites Mover "Home") 
                                 )
@@ -102,13 +102,13 @@
                     (if (!= 1 (var "Direction"))
                         (move Select
                             (from 
-                                (if (is Mover Prev)
+                                (if ("SameTurn")
                                     (sites {(var "Replay")})
                                     (sites Mover "Left") 
                                 )
                                 if:(and
                                     (< 1 (count at:(from)))
-                                    (if (is Mover Prev)
+                                    (if ("SameTurn")
                                         True
                                         (if (is In ("NextHole" (from) "TrackCW" (count at:(from))) (sites Mover "Inner"))
                                             (and

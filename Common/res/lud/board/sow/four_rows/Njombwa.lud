@@ -64,7 +64,7 @@
                 (move Select
                     (from 
                         (if 
-                            (is Mover Prev) 
+                            ("SameTurn") 
                             "LastHoleSowed" 
                             (forEach (sites Mover "Home") if:(= 29 (count at:(site))))	
                         ) 
@@ -100,7 +100,7 @@
                     (move Select
                         (from 
                             (if 
-                                (is Mover Prev) 
+                                ("SameTurn") 
                                 "LastHoleSowed"
                                 (sites Mover "Home") 
                             ) 

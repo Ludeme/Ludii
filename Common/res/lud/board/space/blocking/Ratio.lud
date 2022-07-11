@@ -542,7 +542,7 @@
         )
         (phase "Main"
             (play 
-                (if (and (!= 1 (count Turns)) (is Prev Mover))
+                (if (and (!= 1 (count Turns)) ("SameTurn"))
                     (or
                         (move Hop 
                             (from (last To))
@@ -661,7 +661,7 @@
         )
         (phase "Main"
             (play 
-                (if (and (!= 1 (count Turns)) (is Prev Mover))
+                (if (and (!= 1 (count Turns)) ("SameTurn"))
                     (or
                         (move Hop 
                             (from (last To))
@@ -780,7 +780,7 @@
         )
         (phase "Main"
             (play 
-                (if (and (!= 1 (count Turns)) (is Prev Mover))
+                (if (and (!= 1 (count Turns)) ("SameTurn"))
                     (or
                         (move Hop 
                             (from (last To))
@@ -899,7 +899,7 @@
         )
         (phase "Main"
             (play 
-                (if (and (!= 1 (count Turns)) (is Prev Mover))
+                (if (and (!= 1 (count Turns)) ("SameTurn"))
                     (or
                         (move Hop 
                             (from (last To))
@@ -1018,7 +1018,7 @@
         )
         (phase "Main"
             (play 
-                (if (and (!= 1 (count Turns)) (is Prev Mover))
+                (if (and (!= 1 (count Turns)) ("SameTurn"))
                     (or
                         (move Hop 
                             (from (last To))
@@ -1137,7 +1137,7 @@
         )
         (phase "Main"
             (play 
-                (if (and (!= 1 (count Turns)) (is Prev Mover))
+                (if (and (!= 1 (count Turns)) ("SameTurn"))
                     (or
                         (move Hop 
                             (from (last To))
@@ -1250,7 +1250,7 @@
         )
         (phase "Main"
             (play 
-                (if (and (!= 1 (count Turns)) (is Prev Mover))
+                (if (and (!= 1 (count Turns)) ("SameTurn"))
                     (or
                         (move Hop 
                             (from (last To))

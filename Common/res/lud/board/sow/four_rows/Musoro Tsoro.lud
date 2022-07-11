@@ -45,14 +45,14 @@
         
         (play 
             (or
-                (if (and (!= 0 (state at:(var))) (is Mover Prev))
+                (if (and (!= 0 (state at:(var))) ("SameTurn"))
                     (move Pass)
                 )
                 (move
                     Select
                     (from 
                         (if 
-                            (is Mover Prev)
+                            ("SameTurn")
                             "LastHoleSowed" 
                             (sites Mover "Home") 
                         ) 

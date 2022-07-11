@@ -78,7 +78,7 @@
             (place "Counter2" (sites {44..46 28..30 12..14 52..54 36..38 20..22}))
         })
         (play 
-            (if (is Prev Mover)
+            (if ("SameTurn")
                 (or
                     (if (is In (last To) (sites "SecondInnerMostCircle"))
                         (move Hop

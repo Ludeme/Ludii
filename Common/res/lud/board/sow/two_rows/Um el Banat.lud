@@ -64,7 +64,7 @@
                 (or {
                     (move Select
                         (from 
-                            (if (and (is Mover Prev) (= 1 (var "ContinueSowing")))
+                            (if (and ("SameTurn") (= 1 (var "ContinueSowing")))
                                 ("LastHoleSowed") 
                                 ("OwnedHoles") 
                             )

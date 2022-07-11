@@ -41,7 +41,7 @@
                     (move Select
                         (from 
                             (if 
-                                (is Mover Prev) 
+                                ("SameTurn") 
                                 (sites {(var "Replay")}) 
                                 (sites Mover) 
                             ) 

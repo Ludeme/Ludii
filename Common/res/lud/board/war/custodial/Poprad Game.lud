@@ -49,7 +49,7 @@
                         (from (handSite Mover))
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
-                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                            (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
                         )
                     )
                 )
@@ -99,7 +99,7 @@
                         (from (handSite Mover))
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
-                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                            (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
                         )
                     )
                 )
@@ -149,7 +149,7 @@
                         (from (handSite Mover))
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
-                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                            (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
                         )
                     )
                 )
@@ -199,7 +199,7 @@
                         (from (handSite Mover))
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
-                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                            (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
                         )
                     )
                 )

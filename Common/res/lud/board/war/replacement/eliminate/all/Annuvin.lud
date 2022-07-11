@@ -50,7 +50,7 @@
             (place "Ball2" (difference (union {(sites Side SW) (sites Side SE) (expand (sites Side S))}) (union (sites Left) (sites Right))))
         })
         (play
-            (if (is Prev Mover)
+            (if ("SameTurn")
                 ("PieceMovement" (from (last To)))
                 (forEach Piece)
             )

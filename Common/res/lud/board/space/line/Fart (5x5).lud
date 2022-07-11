@@ -16,7 +16,7 @@
                     (from (handSite Mover))
                     (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                     (then
-                        (if (not (is Mover Prev)) (moveAgain))
+                        (if (not ("SameTurn")) (moveAgain))
                     )
                 )
             )

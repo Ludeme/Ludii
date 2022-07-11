@@ -32,7 +32,7 @@
             (to (sites Empty))
             (then
                 (if
-                    (not (is Prev Mover)) 
+                    (not ("SameTurn")) 
                     (remember Value (last To))
         )))
         (move Select
@@ -49,11 +49,11 @@
                             (to (site))
                         )
                         (if
-                            (not (is Prev Mover))
+                            (not ("SameTurn"))
                             (remember Value (site))
         )))))
         (if
-            (is Prev Mover)
+            ("SameTurn")
             (move Pass) // allows playing less than 2 pieces
         )
         }
@@ -63,7 +63,7 @@
 
 (define "GamePlay"
     (if
-        (not (is Prev Mover))
+        (not ("SameTurn"))
         (do
             ("Placements") 
             ifAfterwards:(or

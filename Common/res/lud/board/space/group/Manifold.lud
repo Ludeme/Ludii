@@ -193,7 +193,7 @@
             (if 
                 (or
                     (= 0 (count Moves))
-                    (!= 0 (count MovesThisTurn))//(is Prev Mover)
+                    (!= 0 (count MovesThisTurn))//("SameTurn")
                 )
                 ("PlaceHex")
                 (or

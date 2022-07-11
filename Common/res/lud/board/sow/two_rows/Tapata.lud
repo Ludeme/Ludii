@@ -58,14 +58,14 @@
                     Select 
                     (from 
                         (if 
-                            (is Mover Prev) 
+                            ("SameTurn") 
                             "LastHoleSowed" 
                             (sites Mover "Home") 
                         ) 
                         if:(and
                             (> (count at:(from)) 0)
-                            (or (is Mover Prev)
-                                (and (not (is Mover Prev))
+                            (or ("SameTurn")
+                                (and (not ("SameTurn"))
                                     (not 
                                         (and 
                                             (is In ("NextHoleFrom" (from) (count at:(from))) (sites Mover "Home")) 

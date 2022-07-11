@@ -102,13 +102,13 @@
                     (or
                         (move Select
                             (from 
-                                (if (is Mover Prev)
+                                (if ("SameTurn")
                                     (sites {(var "Replay")})
                                     (sites Mover "Home") 
                                 )
                                 if:(and 
                                     (< 1 (count at:(from)))
-                                    (if (is Mover Prev)
+                                    (if ("SameTurn")
                                         True
                                         (is Empty ("PreviousHole"))	
                                     )
@@ -154,13 +154,13 @@
                         )
                         (move Select
                             (from 
-                                (if (is Mover Prev)
+                                (if ("SameTurn")
                                     (sites {(var "Replay")})
                                     (sites Mover "Home") 
                                 )
                                 if:(and 
                                     (= 1 (count at:(from)))
-                                    (if (is Mover Prev)
+                                    (if ("SameTurn")
                                         True
                                         (is Empty ("PreviousHole"))	
                                     )

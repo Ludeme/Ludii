@@ -37,7 +37,7 @@
                     (from
                         (if (= 0 (count Moves)) 
                             (sites {5})
-                            (if (is Mover Prev)
+                            (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 (sites Mover) 
                             )

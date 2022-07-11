@@ -9,7 +9,7 @@
         (start (place "Ball" (sites Board)))
         
         (play 
-            (if (is Prev Mover)
+            (if ("SameTurn")
                 (or
                     (if (= 1 (count MovesThisTurn))
                         (move Select

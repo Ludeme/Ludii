@@ -50,7 +50,7 @@
             (move
                 Select
                 (from 
-                    (if (is Mover Prev) 
+                    (if ("SameTurn") 
                         (if "MoveAgainAfterCapture" "PlayFromNextHole" "LastHoleSowed" ) 
                         (sites Mover "Home") 
                     ) 

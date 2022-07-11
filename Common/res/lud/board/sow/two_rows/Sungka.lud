@@ -32,7 +32,7 @@
                     (from 
                         (if 
                             (and 
-                                (is Mover Prev) 
+                                ("SameTurn") 
                                 (not ("WasInStore"))
                             ) 
                             "LastHoleSowed" 

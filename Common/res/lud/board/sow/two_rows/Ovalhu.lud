@@ -34,7 +34,7 @@
                 (or {
                     (move Select
                         (from 
-                            (if (and (is Pending) (is Mover Prev))
+                            (if (and (is Pending) ("SameTurn"))
                                 (sites {(var "Replay")})
                                 (sites Mover) 
                             )

@@ -27,7 +27,7 @@
         (then 
             (if 
                 (and
-                    (not (is Prev Mover))
+                    (not ("SameTurn"))
                     ("HasCrosscuts" (last To))
                 )
                 (set Var "LT" (last To) (then (moveAgain)))
@@ -85,7 +85,7 @@
     (rules
         (play
             (if
-                (not (is Prev Mover))
+                (not ("SameTurn"))
                 (or
                     ("Place")
                     ("Choose2Resolve")

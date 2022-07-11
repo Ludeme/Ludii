@@ -33,7 +33,7 @@
                 (move Select
                     (from 
                         (if 
-                            (is Mover Prev) 
+                            ("SameTurn") 
                             ("LastHoleSowed")
                             (sites Mover "Home") 
                         ) 
@@ -67,7 +67,7 @@
                         (move Select
                             (from 
                                 (if 
-                                    (is Mover Prev) 
+                                    ("SameTurn") 
                                     ("LastHoleSowed")
                                     (sites Mover "Home") 
                                 ) 
@@ -100,7 +100,7 @@
                         (move Select
                             (from 
                                 (if 
-                                    (is Mover Prev) 
+                                    ("SameTurn") 
                                     ("LastHoleSowed")
                                     (sites Mover "Home") 
                                 ) 

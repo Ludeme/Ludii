@@ -24,7 +24,7 @@
                 Select 
                 (from 
                     (if 
-                        (is Mover Prev) 
+                        ("SameTurn") 
                         (sites {("NextHoleFrom" ("LastHole") 1)})
                         (if (= 0 (count Moves))
                             (sites Board) 

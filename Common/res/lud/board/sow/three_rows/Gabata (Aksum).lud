@@ -71,14 +71,14 @@
                 (or {
                     (move Select
                         (from 
-                            (if (is Mover Prev)
+                            (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 ("OwnedHoles") 
                             )
                             if:(and {
                                 (if (!= (from) (mapEntry "LeftMost" Mover))
                                     True
-                                    (if (is Mover Prev)
+                                    (if ("SameTurn")
                                         True
                                         (or 
                                             (< 3 (count at:(from)))

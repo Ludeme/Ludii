@@ -22,7 +22,7 @@
                 Select 
                 (from 
                     (if 
-                        (is Mover Prev) 
+                        ("SameTurn") 
                         "LastHoleSowed" 
                         (if (= (score P1) 1)
                             (if (is Mover P1)

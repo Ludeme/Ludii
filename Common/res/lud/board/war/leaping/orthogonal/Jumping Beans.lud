@@ -13,7 +13,7 @@
         })
         
         (play 
-            (if (is Prev Mover)
+            (if ("SameTurn")
                 (max Moves
                     (move Hop
                         (from (last To))

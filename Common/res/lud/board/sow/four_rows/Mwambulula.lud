@@ -48,7 +48,7 @@
                     (move Select
                         (from 
                             (if 
-                                (is Mover Prev) 
+                                ("SameTurn") 
                                 "LastHoleSowed" 
                                 (sites Mover "Home") 
                             ) 
@@ -111,7 +111,7 @@
                             )
                         )
                     )
-                    (if (and (not (is Mover Prev)) (is Occupied Cell (handSite Mover)))
+                    (if (and (not ("SameTurn")) (is Occupied Cell (handSite Mover)))
                         (move Select
                             (from Cell (handSite Mover))
                             (then

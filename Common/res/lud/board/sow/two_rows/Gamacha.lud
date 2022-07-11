@@ -46,11 +46,11 @@
                 (move Select
                     (from 
                         (if 
-                            (is Mover Prev) 
+                            ("SameTurn") 
                             "LastHoleSowed" 
                             (sites Mover) 
                         ) 
-                        if:(if  (is Mover Prev) 
+                        if:(if  ("SameTurn") 
                             True
                             (and
                                 (> (count at:(from)) 0)

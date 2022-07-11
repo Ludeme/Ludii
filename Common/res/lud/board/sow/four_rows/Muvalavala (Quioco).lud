@@ -44,7 +44,7 @@
             (move
                 Select
                 (from 
-                    (if (is Mover Prev) 
+                    (if ("SameTurn") 
                         ("LastHoleSowed")
                         (sites Mover "Home") 
                     ) 

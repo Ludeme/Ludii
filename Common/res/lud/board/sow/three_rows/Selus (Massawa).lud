@@ -52,7 +52,7 @@
                 (or {
                     (move Select
                         (from 
-                            (if (and (not (is Pending)) (is Mover Prev))
+                            (if (and (not (is Pending)) ("SameTurn"))
                                 ("LastHoleSowed") 
                                 ("OwnedHoles") 
                             )

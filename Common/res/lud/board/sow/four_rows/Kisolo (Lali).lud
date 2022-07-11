@@ -33,7 +33,7 @@
                 Select
                 (from 
                     (if 
-                        (is Mover Prev) 
+                        ("SameTurn") 
                         "LastHoleSowed" 
                         (sites Mover "Home") 
                     ) 

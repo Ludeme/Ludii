@@ -37,7 +37,7 @@
                 Select 
                 (from 
                     (if 
-                        (is Mover Prev) 
+                        ("SameTurn") 
                         (sites {("NextHole" "LastHolePlayed")})
                         (sites Mover) 
                     ) 

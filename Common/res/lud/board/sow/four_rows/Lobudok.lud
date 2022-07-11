@@ -37,7 +37,7 @@
                 (move Select
                     (from 
                         (if 
-                            (is Mover Prev) 
+                            ("SameTurn") 
                             "LastHoleSowed" 
                             (difference (sites Mover "Home") (sites Mover "SideHoles"))
                         ) 
@@ -89,7 +89,7 @@
                     (move Select
                         (from 
                             (if 
-                                (is Mover Prev) 
+                                ("SameTurn") 
                                 "LastHoleSowed" 
                                 (sites Mover "SideHoles")
                             ) 

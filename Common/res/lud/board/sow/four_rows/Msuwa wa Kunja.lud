@@ -46,7 +46,7 @@
         
         (play 
             (if (and 
-                    (is Mover Prev) 
+                    ("SameTurn") 
                     (< 0 (var))
                 )
                 (move 
@@ -70,7 +70,7 @@
                         Select
                         (from 
                             (if 
-                                (is Mover Prev) 
+                                ("SameTurn") 
                                 "LastHoleSowed" 
                                 (sites Mover "Home") 
                             ) 

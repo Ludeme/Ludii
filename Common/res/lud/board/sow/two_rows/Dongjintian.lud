@@ -4,41 +4,41 @@
 (define "CaptureMove"
     (and
         (fromTo 
-            (from ("NextHoleFrom" (to) #1 steps:2))
+            (from ("NextHoleFrom" (to) #1 2))
             (to (handSite Mover))
-            count:(count at:("NextHoleFrom" (to) #1 steps:2))
+            count:(count at:("NextHoleFrom" (to) #1 2))
         )
         (if 
             (and
-                (is Empty ("NextHoleFrom" (to) #1 steps:3))	
-                (is Occupied ("NextHoleFrom" (to) #1 steps:4))		
+                (is Empty ("NextHoleFrom" (to) #1 3))	
+                (is Occupied ("NextHoleFrom" (to) #1 4))		
             )
             (and
                 (fromTo 
-                    (from ("NextHoleFrom" (to) #1 steps:4))
+                    (from ("NextHoleFrom" (to) #1 4))
                     (to (handSite Mover))
-                    count:(count at:("NextHoleFrom" (to) #1 steps:4))
+                    count:(count at:("NextHoleFrom" (to) #1 4))
                 )
                 (if 
                     (and
-                        (is Empty ("NextHoleFrom" (to) #1 steps:5))	
-                        (is Occupied ("NextHoleFrom" (to) #1 steps:6))		
+                        (is Empty ("NextHoleFrom" (to) #1 5))	
+                        (is Occupied ("NextHoleFrom" (to) #1 6))		
                     )
                     (and
                         (fromTo 
-                            (from ("NextHoleFrom" (to) #1 steps:6))
+                            (from ("NextHoleFrom" (to) #1 6))
                             (to (handSite Mover))
-                            count:(count at:("NextHoleFrom" (to) #1 steps:6))
+                            count:(count at:("NextHoleFrom" (to) #1 6))
                         )
                         (if 
                             (and
-                                (is Empty ("NextHoleFrom" (to) #1 steps:7))	
-                                (is Occupied ("NextHoleFrom" (to) #1 steps:8))		
+                                (is Empty ("NextHoleFrom" (to) #1 7))	
+                                (is Occupied ("NextHoleFrom" (to) #1 8))		
                             )
                             (fromTo 
-                                (from ("NextHoleFrom" (to) #1 steps:8))
+                                (from ("NextHoleFrom" (to) #1 8))
                                 (to (handSite Mover))
-                                count:(count at:("NextHoleFrom" (to) #1 steps:8))
+                                count:(count at:("NextHoleFrom" (to) #1 8))
                             )
                         )
                     )
@@ -76,7 +76,7 @@
                         (from 
                             (if 
                                 ("SameTurn") 
-                                (sites {("NextHoleFrom" "LastHoleSowed" "TrackCCW" steps:1) })
+                                (sites {("NextHoleFrom" "LastHoleSowed" "TrackCCW" 1) })
                                 (sites Mover) 
                             ) 
                             if:(is Occupied (from))
@@ -84,15 +84,15 @@
                         (then
                             (sow
                                 "TrackCCW"
-                                apply:(if (is Occupied ("NextHoleFrom" (to) "TrackCCW" steps:1))
+                                apply:(if (is Occupied ("NextHoleFrom" (to) "TrackCCW" 1))
                                     (and
                                         (moveAgain)
                                         (set Var "Direction" 1)
                                     )
                                     (if 
                                         (and
-                                            (is Empty ("NextHoleFrom" (to) "TrackCCW" steps:1))	
-                                            (is Occupied ("NextHoleFrom" (to) "TrackCCW" steps:2))		
+                                            (is Empty ("NextHoleFrom" (to) "TrackCCW" 1))	
+                                            (is Occupied ("NextHoleFrom" (to) "TrackCCW" 2))		
                                         )
                                         (and
                                             ("CaptureMove" "TrackCCW")	
@@ -109,7 +109,7 @@
                         (from 
                             (if 
                                 ("SameTurn") 
-                                (sites {("NextHoleFrom" "LastHoleSowed" "TrackCW" steps:1) })
+                                (sites {("NextHoleFrom" "LastHoleSowed" "TrackCW" 1) })
                                 (sites Mover) 
                             ) 
                             if:(is Occupied (from))
@@ -117,15 +117,15 @@
                         (then
                             (sow
                                 "TrackCW"
-                                apply:(if (is Occupied ("NextHoleFrom" (to) "TrackCW" steps:1))
+                                apply:(if (is Occupied ("NextHoleFrom" (to) "TrackCW" 1))
                                     (and
                                         (moveAgain)
                                         (set Var "Direction" 2)
                                     )
                                     (if 
                                         (and
-                                            (is Empty ("NextHoleFrom" (to) "TrackCW" steps:1))	
-                                            (is Occupied ("NextHoleFrom" (to) "TrackCW" steps:2))		
+                                            (is Empty ("NextHoleFrom" (to) "TrackCW" 1))	
+                                            (is Occupied ("NextHoleFrom" (to) "TrackCW" 2))		
                                         )
                                         (and
                                             ("CaptureMove" "TrackCW")	

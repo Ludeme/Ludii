@@ -17,7 +17,7 @@
                     (move Select
                         (from 
                             (if 
-                                (is Mover Prev) 
+                                ("SameTurn") 
                                 (sites {(last To)})
                                 (sites Mover) 
                             ) 
@@ -49,7 +49,7 @@
                         )
                         (then
                             (and {
-                                (if (is Prev Mover)
+                                (if ("SameTurn")
                                     (and
                                         (set Var "Count" (- (var "Count") 1))
                                         (if (< 1 (var "Count")) 
@@ -84,7 +84,7 @@
                                 (fromTo
                                     (from (last From))
                                     (to (last To))
-                                    count:(if (is Prev Mover) (var "Count") (count at:(last From)))
+                                    count:(if ("SameTurn") (var "Count") (count at:(last From)))
                                 )
                                 (if (>= 0 (var "MainDirection")) (set Var "MainDirection" 1))
                             })
@@ -95,7 +95,7 @@
                     (move Select
                         (from 
                             (if 
-                                (is Mover Prev) 
+                                ("SameTurn") 
                                 (sites {(last To)})
                                 (sites Mover) 
                             ) 
@@ -127,7 +127,7 @@
                         )
                         (then
                             (and {
-                                (if (is Prev Mover)
+                                (if ("SameTurn")
                                     (and
                                         (set Var "Count" (- (var "Count") 1))
                                         (if (< 1 (var "Count")) 
@@ -162,7 +162,7 @@
                                 (fromTo
                                     (from (last From))
                                     (to (last To))
-                                    count:(if (is Prev Mover) (var "Count") (count at:(last From)))
+                                    count:(if ("SameTurn") (var "Count") (count at:(last From)))
                                 )
                                 (if (>= 0 (var "MainDirection")) (set Var "MainDirection" 2))
                             })

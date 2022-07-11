@@ -51,7 +51,7 @@
                         Select
                         (from 
                             (if 
-                                (is Mover Prev) 
+                                ("SameTurn") 
                                 "LastHoleSowed" 
                                 ("OuterMostRowWithPieces") 
                             ) 
@@ -102,7 +102,7 @@
                         Select
                         (from 
                             (if 
-                                (is Mover Prev) 
+                                ("SameTurn") 
                                 "LastHoleSowed" 
                                 ("OuterMostRowWithPieces") 
                             ) 

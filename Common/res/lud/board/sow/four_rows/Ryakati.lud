@@ -98,14 +98,14 @@
                 (move Select
                     (from
                         (if 
-                            (is Mover Prev) 
+                            ("SameTurn") 
                             (var "Replay")
                             (mapEntry "RightMostOuter" Mover) 
                         ) 
                     )
                     (then
                         (sow
-                            count:(if (is Mover Prev) (count at:(last To)) 4)
+                            count:(if ("SameTurn") (count at:(last To)) 4)
                             "Track"
                             owner:(mover)
                             apply:(if (< 1 (count at:(to)))
@@ -114,7 +114,7 @@
                                     (set Var "Replay" (to))
                                 )
                             )
-                            origin:(not (is Mover Prev))
+                            origin:(not ("SameTurn"))
                         )
                     )
                 )
@@ -127,7 +127,7 @@
                 (move Select
                     (from 
                         (if 
-                            (is Mover Prev) 
+                            ("SameTurn") 
                             (sites {(var "Replay") })
                             (sites Mover "Home") 
                         ) 

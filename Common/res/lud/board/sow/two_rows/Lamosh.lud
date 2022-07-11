@@ -62,7 +62,7 @@
             (play
                 (move
                     (from
-                        (if (is Mover Prev)
+                        (if ("SameTurn")
                             (var "Replay")
                             11
                         )
@@ -96,7 +96,7 @@
                     {
                     (move Select 
                         (from
-                            (if (is Mover Prev)
+                            (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 ("OwnedHoles") 
                             )

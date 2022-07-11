@@ -87,7 +87,7 @@
                 (move Select
                     (from 
                         (if 
-                            (is Mover Prev) 
+                            ("SameTurn") 
                             "LastHoleSowed" 
                             (sites {(mapEntry "RightOuter" Mover)}) 
                         ) 
@@ -112,7 +112,7 @@
                 (move Select
                     (from 
                         (if 
-                            (is Mover Prev) 
+                            ("SameTurn") 
                             "LastHoleSowed" 
                             (sites Mover) 
                         ) 

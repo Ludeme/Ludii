@@ -47,7 +47,7 @@
         
         (phase "Sowing"
             (play 
-                (if (is Mover Prev)
+                (if ("SameTurn")
                     (if ("OneSeedInEachHole" Next)
                         (move 
                             (from 

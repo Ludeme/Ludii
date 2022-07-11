@@ -49,7 +49,7 @@
                     )
                 )
                 (forEach piece
-                    (if (is Prev Mover)
+                    (if ("SameTurn")
                         (if (is In (last To) (sites {"E5"}))
                             (move Step
                                 (from (last To))

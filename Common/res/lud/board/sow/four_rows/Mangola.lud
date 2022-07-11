@@ -50,7 +50,7 @@
                 (move Select
                     (from 
                         (if 
-                            (is Mover Prev) 
+                            ("SameTurn") 
                             "PlayFromNextLastHole" 
                             (sites Mover "LeftMost") 
                         ) 
@@ -73,7 +73,7 @@
                 (move Select
                     (from 
                         (if 
-                            (is Mover Prev) 
+                            ("SameTurn") 
                             (sites {(var "Replay") })
                             (sites Mover "EndHoles") 
                         ) 
@@ -132,7 +132,7 @@
                 (move Select
                     (from 
                         (if 
-                            (is Mover Prev) 
+                            ("SameTurn") 
                             (sites {(var "Replay")})
                             (sites Mover "Home") 
                         ) 

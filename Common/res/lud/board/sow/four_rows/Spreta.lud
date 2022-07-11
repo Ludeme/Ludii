@@ -78,7 +78,7 @@
                             Select
                             (from 
                                 (if 
-                                    (is Mover Prev) 
+                                    ("SameTurn") 
                                     "LastHoleSowed" 
                                     (sites Mover) 
                                 ) 
@@ -110,7 +110,7 @@
                             Select
                             (from 
                                 (if 
-                                    (is Mover Prev) 
+                                    ("SameTurn") 
                                     "LastHoleSowed" 
                                     (sites Mover) 
                                 ) 

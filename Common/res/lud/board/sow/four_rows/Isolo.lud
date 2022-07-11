@@ -68,7 +68,7 @@
             (play
                 (move Select 
                     (from
-                        (if (is Mover Prev)
+                        (if ("SameTurn")
                             ("LastHoleSowed") 
                             (sites {(mapEntry "RightmostInner" Mover)})
                         )
@@ -96,7 +96,7 @@
             (play
                 (move Select
                     (from
-                        (if (is Mover Prev)
+                        (if ("SameTurn")
                             ("LastHoleSowed") 
                             (sites Mover "Home")
                         )

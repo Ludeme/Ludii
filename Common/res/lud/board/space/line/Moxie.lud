@@ -8,7 +8,7 @@
     (rules
         (start (place "Pawn" "Hand" count:8))
         (play 
-            (if (is Prev Mover)
+            (if ("SameTurn")
                 (move Hop 
                     (from (last To))
                     (between if:("IsEnemyAt" (between))) 
