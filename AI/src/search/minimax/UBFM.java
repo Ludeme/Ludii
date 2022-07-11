@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import game.Game;
+import gnu.trove.list.array.TLongArrayList;
 import main.FileHandling;
 import main.collections.FVector;
 import main.collections.FastArrayList;
@@ -20,6 +21,7 @@ import metadata.ai.heuristics.terms.Material;
 import metadata.ai.heuristics.terms.MobilityAdvanced;
 import other.RankUtils;
 import other.context.Context;
+import other.context.TempContext;
 import other.move.Move;
 import other.state.State;
 import other.trial.Trial;
@@ -27,8 +29,8 @@ import training.expert_iteration.ExItExperience;
 import training.expert_iteration.ExpertPolicy;
 import training.expert_iteration.ExItExperience.ExItExperienceState;
 import utils.data_structures.ScoredMove;
-import utils.data_structures.transposition_table.TranspositionTableBFS;
-import utils.data_structures.transposition_table.TranspositionTableBFS.BFSTTData;
+import utils.data_structures.transposition_table.TranspositionTableUBFM;
+import utils.data_structures.transposition_table.TranspositionTableUBFM.UBFMTTData;
 
 /**
  * Implementation of Unbounded Best-First Minimax
@@ -49,9 +51,6 @@ public class UBFM extends ExpertPolicy
 	public boolean savingSearchTreeDescription = false;
 	public String treeSaveFile = "/home/cyprien/Documents/M1/Internship/search_trees_raw/default.sav"; //FIXME
 	
-	/** Set to true to activate a scouting phase with Alpha-Beta iterative deepening before the actual BFS algorithm */
-	protected boolean alphaBetaScouting = false; // won't work while bounds are not dealt with properly in minimax
-	
 	/** If there is a scouting phase, this is the proportion of the decision time dedicated to scouting */
 	protected final double scoutingTimeProportion = 0.4;
 	
@@ -63,6 +62,10 @@ public class UBFM extends ExpertPolicy
 
 	/** Value of epsilon if a randomised policy is picked (default is epsilon-greedy) */
 	protected double selectionEpsilon = 0.2;
+	
+	/** If set to an integer, the AI will always play for the same maxisining player. This is useful when using 
+	 * the same AI to play for an opponent with the same transposition table*/
+	protected Integer forcedMaximisingPlayer = null;
 	
 	//-------------------------------------------------------------------------
 	
@@ -110,7 +113,7 @@ public class UBFM extends ExpertPolicy
 	final boolean heuristicsFromMetadata;
 	
 	/** We'll automatically return our move after at most this number of seconds if we only have one move */
-	protected double autoPlaySeconds = 0.0;
+	protected final double autoPlaySeconds = 0.0;
 	
 	/** Estimated score of the root node based on last-run search */
 	protected float estimatedRootScore = 0.f;
@@ -142,13 +145,13 @@ public class UBFM extends ExpertPolicy
 	protected int numPlayersInGame = 0;
 	
 	/** Needed for visualisations */
-	protected float rootAlphaInit = ALPHA_INIT;
+	protected final float rootAlphaInit = ALPHA_INIT;
 	
 	/** Needed for visualisations */
-	protected float rootBetaInit = BETA_INIT;
+	protected final float rootBetaInit = BETA_INIT;
 	
 	/** Transposition Table */
-	protected TranspositionTableBFS transpositionTable = null;
+	protected TranspositionTableUBFM transpositionTable = null;
 	
 	//-------------------------------------------------------------------------
 	
@@ -164,9 +167,6 @@ public class UBFM extends ExpertPolicy
 	/** numBitsPrimaryCode argument given when a TT is created (to avoid magic numbers in the code)*/
 	private final int numBitsPrimaryCodeForTT = 12;
 	
-	/** An Alpha-Beta AI for the scouting */
-	protected AlphaBetaSearch alphaBetaScout;
-	
 	//-------------------------------------------------------------------------
 	
 	public StringBuffer searchTreeOutput = new StringBuffer();
@@ -175,7 +175,7 @@ public class UBFM extends ExpertPolicy
 	
 	protected int callsOfSelectAction = 0;
 	
-	/** We skip the first select action when registering values because it is usually not 
+	/** We skip the first select action when registering values (for analysis purposes) because it is usually not 
 	 * comparable to the others regarding available time */
 	boolean skippedFirstSelectAction = false;
 	
@@ -243,7 +243,6 @@ public class UBFM extends ExpertPolicy
 		final int maxDepth
 	)
 	{
-		
 		maxDepthReached = 0;
 		nbStatesEvaluated = 0;
 		
@@ -259,12 +258,8 @@ public class UBFM extends ExpertPolicy
 			callsOfSelectAction += 1;
 		}
 		
-		
 		if ((transpositionTable != null) && (!transpositionTable.isAllocated()))
 			transpositionTable.allocate();
-		
-		if (game.players().count() > 2) //FIXME: remove
-			throw new RuntimeException("BFS not implemented for more than 2 players");
 		
 		lastReturnedMove = BFSSelection(game, context, (maxSeconds >= 0) ? maxSeconds : Double.MAX_VALUE, maxIterations);
 
@@ -283,7 +278,7 @@ public class UBFM extends ExpertPolicy
 	 * @param maximising
 	 * @return
 	 */
-	protected ScoredMove finalDecision(final BFSTTData rootTableData, boolean maximising)
+	protected ScoredMove finalDecision(final UBFMTTData rootTableData, boolean maximising)
 	{
 		switch (selectionPolicy)
 		{
@@ -337,7 +332,7 @@ public class UBFM extends ExpertPolicy
 	 * @param game
 	 * @param context
 	 * @param maxSeconds
-	 * @param iterationLimit
+	 * @param iterationLimit (set to -1 for no limit)
 	 * @return
 	 */
 	protected Move BFSSelection
@@ -345,7 +340,7 @@ public class UBFM extends ExpertPolicy
 		final Game game,
 		final Context context,
 		final double maxSeconds,
-		final int depthLimit
+		final int iterationLimit
 	)
 	{
 		final long startTime = System.currentTimeMillis();
@@ -354,9 +349,14 @@ public class UBFM extends ExpertPolicy
 		currentRootMoves = new FastArrayList<Move>(game.moves(context).moves());
 		
 		final int numRootMoves = currentRootMoves.size();
-		final int maximisingPlayer = context.state().playerToAgent(context.state().mover());
 		final State state = context.state();
 		final int mover = state.playerToAgent(state.mover());
+		
+		final int maximisingPlayer;
+		if (forcedMaximisingPlayer == null)
+			maximisingPlayer = context.state().playerToAgent(context.state().mover());
+		else
+			maximisingPlayer = forcedMaximisingPlayer;
 		
 		if (numRootMoves == 1)
 		{
@@ -370,39 +370,37 @@ public class UBFM extends ExpertPolicy
 		rootMovesScores = new float[numRootMoves];
 
 		// For visualisation purpose:
-		rootAlphaInit = ALPHA_INIT;
-		rootBetaInit = BETA_INIT;
 		minHeuristicEval = rootBetaInit;
 		maxHeuristicEval = rootAlphaInit;
 		
 		// To ouput a visual graph of the search tree:
 		searchTreeOutput.setLength(0);
 		searchTreeOutput.append("[\n");
-		
+
+		long zobrist = context.state().fullHash(context);
 		final Context contextCopy = copyContext(context);
-		List<Long> initialnodeHashes = new ArrayList<Long>();
-		initialnodeHashes.add(contextCopy.state().fullHash());
+		TLongArrayList initialnodeHashes = new TLongArrayList();
+		initialnodeHashes.add(zobrist);
 		if (savingSearchTreeDescription)
-			searchTreeOutput.append("("+stringOfnodeHashes(initialnodeHashes)+","+Float.toString(getContextValue(contextCopy,maximisingPlayer,initialnodeHashes,0))+","+Integer.toString((mover==maximisingPlayer)? 1:2)+"),\n");
+			searchTreeOutput.append("("+stringOfnodeHashes(initialnodeHashes)+","+Float.toString(getContextValue(context,maximisingPlayer,initialnodeHashes,0))+","+Integer.toString((mover==maximisingPlayer)? 1:2)+"),\n");
 		
-		boolean firstCall = true;
-		// TODO: add a counter of iterations
-		while (firstCall || (System.currentTimeMillis() < stopTime && ( !wantsInterrupt)))
+		int iterationCount = 0;
+		final int maxNbIterations = (iterationLimit>0)? iterationLimit : Integer.MAX_VALUE;
+		while ((iterationCount == 0) || (System.currentTimeMillis() < stopTime && ( !wantsInterrupt) && (iterationCount < maxNbIterations)))
 		{
-			firstCall = false;
 			// Calling the recursive minimaxBFS:
-			minimaxBFS(contextCopy, maximisingPlayer, stopTime, 1, depthLimit, initialnodeHashes);
-		
+			minimaxBFS(contextCopy, maximisingPlayer, stopTime, 1, initialnodeHashes);
+			
+			iterationCount += 1;
 		};
 		
-		long zobrist = context.state().fullHash();
-		final BFSTTData rootTableData = transpositionTable.retrieve(zobrist);
+		final UBFMTTData rootTableData = transpositionTable.retrieve(zobrist);
 		final ScoredMove finalChoice = finalDecision(rootTableData, mover==maximisingPlayer);
 		
 		analysisReport = friendlyName + " (player " + maximisingPlayer + ") completed an analysis that reached at some point a depth of " + maxDepthReached + ":\n";
 		analysisReport += "best value observed: "+Float.toString(finalChoice.score)+",\n";
-		analysisReport += Integer.toString(nbStatesEvaluated)+" different states were evaluated";
-		analysisReport += "\n"+Integer.toString(callsOfMinimax)+" calls of minimax";
+		analysisReport += Integer.toString(nbStatesEvaluated)+" different states were evaluated\n";
+		analysisReport += String.format("\n %d iteration, with %d calls of minimax",iterationCount,callsOfMinimax);
 		if ((maxSeconds > 0.) && (System.currentTimeMillis()<stopTime))
 			analysisReport += " (finished analysis early) ";
 		
@@ -459,7 +457,6 @@ public class UBFM extends ExpertPolicy
 	 * @param maximisingPlayer
 	 * @param stopTime
 	 * @param analysisDepth
-	 * @param depthLimit
 	 * @param nodeHashes
 	 * @return the score of the context
 	 */
@@ -469,8 +466,7 @@ public class UBFM extends ExpertPolicy
 		final int maximisingPlayer,
 		final long stopTime,
 		final int analysisDepth,
-		final int depthLimit, //FIXME
-		final List<Long> nodeHashes //used when we want to output the tree-search graph
+		final TLongArrayList nodeHashes //used when we want to output the tree-search graph
 	)
 	{
 		final Trial trial = context.trial();
@@ -494,8 +490,8 @@ public class UBFM extends ExpertPolicy
 
 
 		List<ScoredMove> sortedScoredMoves = null;
-		final long zobrist = context.state().fullHash();
-		final BFSTTData tableData = transpositionTable.retrieve(zobrist);
+		final long zobrist = context.state().fullHash(context);
+		final UBFMTTData tableData = transpositionTable.retrieve(zobrist);
 		if (tableData != null)
 			if (tableData.sortedScoredMoves != null)
 				sortedScoredMoves = new ArrayList<ScoredMove>(tableData.sortedScoredMoves);
@@ -514,11 +510,10 @@ public class UBFM extends ExpertPolicy
 		boolean firstExploration = false;
 		if (sortedScoredMoves == null)
 		{
-			/** 
-			 * ------------------------------------------------------------------------------
+			/**----------------------------------------------------------------
 			 * In this case it is the first full analysis of this state.
 			 * Thus we compute a quick evaluation of all the possible moves to order them before exploration.
-			 * ------------------------------------------------------------------------------
+			 *-----------------------------------------------------------------
 			*/
 			firstExploration = true;
 			
@@ -531,25 +526,24 @@ public class UBFM extends ExpertPolicy
 				tempScoredMoves.add(new ScoredMove(legalMoves.get(i), moveScores.get(i), 1));
 			}
 			sortedScoredMoves = new ArrayList<ScoredMove>(numLegalMoves);
-			for (int i = 0; i < numLegalMoves; ++i)
+			for (int i=0; i<numLegalMoves; i++)
 			{
 				sortedScoredMoves.add(tempScoredMoves.removeSwap(ThreadLocalRandom.current().nextInt(tempScoredMoves.size())));
 			}
 			if (mover == maximisingPlayer)
 				Collections.sort(sortedScoredMoves); //(the natural order of scored Move Indices is decreasing)
 			else
-				Collections.sort(sortedScoredMoves,Collections.reverseOrder());
+				Collections.sort(sortedScoredMoves, Collections.reverseOrder());
 			
 			outputScore = sortedScoredMoves.get(0).score;
 		}
 		
-		if ((!firstExploration) || fullPlayouts)
+		if ((!firstExploration) || (fullPlayouts && !wantsInterrupt && (System.currentTimeMillis() < stopTime)))
 		{
-			/** 
-			 * ------------------------------------------------------------------------------
+			/**----------------------------------------------------------------
 			 * If we already explored this state (or if fullPlayout is true), then we will recursively explore the most promising move
 			 * at this state.
-			 * ------------------------------------------------------------------------------
+			 * ----------------------------------------------------------------
 			*/
 			
 			final int indexPicked;
@@ -571,13 +565,13 @@ public class UBFM extends ExpertPolicy
 			final Move bestMove = sortedScoredMoves.get(indexPicked).move;
 			final int previousNbVisits = sortedScoredMoves.get(indexPicked).nbVisits; //number of times this moves was already tried
 			
-			final Context copyContext = copyContext(context);
-			game.apply(copyContext, bestMove);
+			final Context contextCopy = copyContext(context);
+			game.apply(contextCopy, bestMove);
 			
-			nodeHashes.add(copyContext.state().fullHash());
+			nodeHashes.add(contextCopy.state().fullHash(contextCopy));
 			
 			/** Recursive call: */
-			final float scoreOfMostPromisingMove = minimaxBFS(copyContext, maximisingPlayer, stopTime, analysisDepth+1, depthLimit, nodeHashes);			
+			final float scoreOfMostPromisingMove = minimaxBFS(contextCopy, maximisingPlayer, stopTime, analysisDepth+1, nodeHashes);			
 			
 			nodeHashes.remove(nodeHashes.size()-1);
 			
@@ -589,7 +583,7 @@ public class UBFM extends ExpertPolicy
 				(
 					((sortedScoredMoves.get(k+1).score >= scoreOfMostPromisingMove) && (mover == maximisingPlayer))
 					||
-					((sortedScoredMoves.get(k+1).score <= scoreOfMostPromisingMove) && (mover!=maximisingPlayer))
+					((sortedScoredMoves.get(k+1).score <= scoreOfMostPromisingMove) && (mover != maximisingPlayer))
 				)
 				{
 					sortedScoredMoves.set(k, sortedScoredMoves.get(k+1));
@@ -601,9 +595,9 @@ public class UBFM extends ExpertPolicy
 					{
 						if
 						(
-							((sortedScoredMoves.get(k-1).score < scoreOfMostPromisingMove) && (mover==maximisingPlayer))
+							((sortedScoredMoves.get(k-1).score < scoreOfMostPromisingMove) && (mover == maximisingPlayer))
 							||
-							((sortedScoredMoves.get(k-1).score > scoreOfMostPromisingMove) && (mover!=maximisingPlayer))
+							((sortedScoredMoves.get(k-1).score > scoreOfMostPromisingMove) && (mover != maximisingPlayer))
 						)
 						{
 							sortedScoredMoves.set(k, sortedScoredMoves.get(k-1));
@@ -629,7 +623,7 @@ public class UBFM extends ExpertPolicy
 		
 		// Updating the transposition table at each call:
 		if (transpositionTable != null)
-			transpositionTable.store(null, zobrist, outputScore, analysisDepth-1, TranspositionTableBFS.EXACT_VALUE,sortedScoredMoves);
+			transpositionTable.store(null, zobrist, outputScore, analysisDepth-1, TranspositionTableUBFM.EXACT_VALUE, sortedScoredMoves);
 
 		return outputScore;
 	}
@@ -650,7 +644,7 @@ public class UBFM extends ExpertPolicy
 		final FastArrayList<Move> legalMoves,
 		final Context context,
 		final int maximisingPlayer,
-		final List<Long> nodeHashes, //used when we want to output the tree-search graph
+		final TLongArrayList nodeHashes, //used when we want to output the tree-search graph
 		final int depth,
 		final long stopTime
 	)
@@ -663,17 +657,17 @@ public class UBFM extends ExpertPolicy
 		final FVector moveScores = new FVector(numLegalMoves);
 		
 		if (savingSearchTreeDescription)
-			getContextValue(context,maximisingPlayer,nodeHashes,depth-1); //to make sure we recorded the visit of the parent node
+			getContextValue(context, maximisingPlayer, nodeHashes, depth-1); //to make sure we recorded the visit of the parent node
 		
 		for (int i = 0; i < numLegalMoves; ++i)
 		{			
 			final Move m = legalMoves.get(i);
-			final Context contextCopy = copyContext(context);
+			final Context contextCopy = new TempContext(context);
 			
 			game.apply(contextCopy, m);
 
-			nodeHashes.add(contextCopy.state().fullHash());
-			final float heuristicScore = getContextValue(contextCopy,maximisingPlayer,nodeHashes,depth);
+			nodeHashes.add(contextCopy.state().fullHash(contextCopy));
+			final float heuristicScore = getContextValue(contextCopy, maximisingPlayer, nodeHashes, depth);
 			nodeHashes.remove(nodeHashes.size()-1);
 			
 			moveScores.set(i,heuristicScore);
@@ -703,17 +697,17 @@ public class UBFM extends ExpertPolicy
 	(
 		final Context context,
 		final int maximisingPlayer,
-		final List<Long> nodeHashes,
+		final TLongArrayList nodeHashes,
 		final int depth // just used  to fill the depth field in the TT which is not important
 	)
 	{
 		boolean valueRetrievedFromMemory = false;
 		float heuristicScore = 0;
-		final long zobrist = context.state().fullHash();
+		final long zobrist = context.state().fullHash(context);
 		final State state = context.state();
 		final int newMover = state.playerToAgent(state.mover());
 		
-		final BFSTTData tableData;
+		final UBFMTTData tableData;
 		if (transpositionTable != null)
 		{
 			tableData = transpositionTable.retrieve(zobrist);
@@ -723,11 +717,11 @@ public class UBFM extends ExpertPolicy
 				// Already searched for data in TT, use results
 				switch(tableData.valueType)
 				{
-				case TranspositionTableBFS.EXACT_VALUE:
+				case TranspositionTableUBFM.EXACT_VALUE:
 					heuristicScore = tableData.value;
 					valueRetrievedFromMemory = true;
 					break;
-				case TranspositionTableBFS.INVALID_VALUE:
+				case TranspositionTableUBFM.INVALID_VALUE:
 					System.err.println("INVALID TRANSPOSITION TABLE DATA: INVALID VALUE");
 					break;
 				default:
@@ -764,7 +758,7 @@ public class UBFM extends ExpertPolicy
 			
 			// Every time a state is evaluated, we store the value in the transposition table (worth?)
 			if (transpositionTable != null)
-				transpositionTable.store(null, zobrist, heuristicScore, depth, TranspositionTableBFS.EXACT_VALUE, null);
+				transpositionTable.store(null, zobrist, heuristicScore, depth, TranspositionTableUBFM.EXACT_VALUE, null);
 			
 			nbStatesEvaluated += 1;
 		};
@@ -852,8 +846,8 @@ public class UBFM extends ExpertPolicy
 		
 		// reset these things used for visualisation purposes
 		estimatedRootScore = 0.f;
-		maxHeuristicEval = 0.f;
-		minHeuristicEval = 0.f;
+		maxHeuristicEval = Float.MIN_VALUE;
+		minHeuristicEval = Float.MAX_VALUE;
 		analysisReport = null;
 		
 		currentRootMoves = null;
@@ -865,21 +859,12 @@ public class UBFM extends ExpertPolicy
 		
 		numPlayersInGame = game.players().count();
 		
-		transpositionTable = new TranspositionTableBFS(numBitsPrimaryCodeForTT);
-	
-		if (alphaBetaScouting)
-		{
-			alphaBetaScout = new AlphaBetaSearch(heuristicValueFunction);
-			alphaBetaScout.initAI(game, playerID);
-		}
+		transpositionTable = new TranspositionTableUBFM(numBitsPrimaryCodeForTT);
 	}
 	
 	@Override
 	public boolean supportsGame(final Game game)
 	{
-		if (game.players().count() > 2)
-			return false;
-		
 		if (game.isStochasticGame())
 			return false;
 		
@@ -1010,15 +995,27 @@ public class UBFM extends ExpertPolicy
 		resetTTeachTurn = value;
 	}
 	
+	public TranspositionTableUBFM getTranspositionTable()
+	{
+		return transpositionTable;
+	}
+	
+	/**
+	 */
+	public void forceAMaximisingPlayer(Integer player)
+	{
+		forcedMaximisingPlayer = player;
+	}
+	
 	//-------------------------------------------------------------------------
 	
-	public static String stringOfnodeHashes( List<Long> nodeHashes)
+	public static String stringOfnodeHashes(TLongArrayList nodeHashes)
 	{
 		String res = "(";
 		
-		for (Long hash: nodeHashes)
+		for (int i=0; i<nodeHashes.size(); ++i)
 		{
-			res += Long.toString(hash);
+			res += Long.toString(nodeHashes.get(i));
 			res += ",";
 		};
 		res += ")";

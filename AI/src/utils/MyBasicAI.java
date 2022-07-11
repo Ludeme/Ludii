@@ -68,7 +68,5 @@ public class MyBasicAI extends AI
 		this.player = playerID;
 		lastReturnedMove = null;
 	}
-	
-	//-------------------------------------------------------------------------
 
 }

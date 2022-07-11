@@ -20,7 +20,6 @@ import other.context.Context;
  */
 public abstract class HeuristicTerm implements AIItem
 {
-	
 	//-------------------------------------------------------------------------
 	
 	/** The weight of this term in linear combinations */

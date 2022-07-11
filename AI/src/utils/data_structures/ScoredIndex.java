@@ -31,7 +31,6 @@ public class ScoredIndex implements Comparable<ScoredIndex>
 	@Override
 	public int compareTo(final ScoredIndex other)
 	{
-		//nbVisits is not taken into account for the moment
 		final float delta = other.score - score;
 		if (delta < 0.f)
 			return -1;

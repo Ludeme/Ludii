@@ -13,7 +13,7 @@ import utils.data_structures.ScoredMove;
  * @author cyprien
  */
 
-public class TranspositionTableBFS
+public class TranspositionTableUBFM
 {
 	
 	//-------------------------------------------------------------------------
@@ -27,9 +27,9 @@ public class TranspositionTableBFS
 	/** A upper bound stored in Transposition Table */
 	public final static byte UPPER_BOUND			= (byte) (0x1 << 2);
 	/** An exact value marked (only used by the heuristic learning code) */
-	public final static byte MARKED_EXACT_VALUE			= (byte) (0x1 << 3);
+	public final static byte MARKED			= (byte) (0x1 << 3);
 	/** An exact value validated (only used by the heuristic learning code) */
-	public final static byte VALIDATED_EXACT_VALUE			= (byte) (0x1 << 4);
+	public final static byte VALIDATED			= (byte) (0x1 << 4);
 	
 	//-------------------------------------------------------------------------
 	
@@ -40,7 +40,7 @@ public class TranspositionTableBFS
 	private final int maxNumEntries;
 	
 	/** Our table of entries */
-	private BFSTTEntry[] table;
+	private UBFMTTEntry[] table;
 	
 	//-------------------------------------------------------------------------
 	
@@ -51,7 +51,7 @@ public class TranspositionTableBFS
 	 * 
 	 * @param numBitsPrimaryCode Number of bits from hashes to use as primary code.
 	 */
-	public TranspositionTableBFS(final int numBitsPrimaryCode)
+	public TranspositionTableUBFM(final int numBitsPrimaryCode)
 	{
 		this.numBitsPrimaryCode = numBitsPrimaryCode;
 		maxNumEntries = 1 << numBitsPrimaryCode;
@@ -65,7 +65,7 @@ public class TranspositionTableBFS
 	 */
 	public void allocate()
 	{
-		table = new BFSTTEntry[maxNumEntries];
+		table = new UBFMTTEntry[maxNumEntries];
 	}
 	
 	/**
@@ -89,13 +89,13 @@ public class TranspositionTableBFS
 	 * @param fullHash
 	 * @return Stored data for given full hash (full 64bits code), or null if not found
 	 */
-	public BFSTTData retrieve(final long fullHash)
+	public UBFMTTData retrieve(final long fullHash)
 	{
-		final BFSTTEntry entry = table[(int) (fullHash >>> (Long.SIZE - numBitsPrimaryCode))];
+		final UBFMTTEntry entry = table[(int) (fullHash >>> (Long.SIZE - numBitsPrimaryCode))];
 		if (entry == null)
 			return null;
 		else
-			for (BFSTTData data : entry.data)
+			for (UBFMTTData data : entry.data)
 			{
 				if (data.fullHash == fullHash)
 					return data;
@@ -122,22 +122,22 @@ public class TranspositionTableBFS
 	)
 	{
 		final int idx = (int) (fullHash >>> (Long.SIZE - numBitsPrimaryCode));
-		BFSTTEntry entry = table[idx];
+		UBFMTTEntry entry = table[idx];
 		
 		if (entry == null)
 		{
-			entry = new BFSTTEntry();
-			entry.data.add( new BFSTTData(bestMove, fullHash, value, depth, valueType, sortedScoredMoves));
+			entry = new UBFMTTEntry();
+			entry.data.add(new UBFMTTData(bestMove, fullHash, value, depth, valueType, sortedScoredMoves));
 			table[idx] = entry;
 		}
 		else
 		{
-			BFSTTData dataToSave =  new BFSTTData(bestMove, fullHash, value, depth, valueType, sortedScoredMoves);
+			UBFMTTData dataToSave =  new UBFMTTData(bestMove, fullHash, value, depth, valueType, sortedScoredMoves);
 			
 			// We erase a previous entry if it has the same fullHash
 			for (int i =0; i<entry.data.size(); i++)
 			{
-				BFSTTData data = entry.data.get(i);
+				UBFMTTData data = entry.data.get(i);
 				if (data.fullHash == fullHash)
 				{
 					// is the previous entry properly erased from memory?
@@ -147,7 +147,7 @@ public class TranspositionTableBFS
 			};
 			
 			// If we arrive to this point it means that we had no previous data about this fullHash
-			entry.data.add( dataToSave );
+			entry.data.add(dataToSave);
 			
 		}
 	}
@@ -159,7 +159,7 @@ public class TranspositionTableBFS
 	 * 
 	 * @author cyprien
 	 */
-	public static final class BFSTTData
+	public static final class UBFMTTData
 	{
 		
 		/** The best move according to previous AB search */
@@ -188,7 +188,7 @@ public class TranspositionTableBFS
 		 * @param depth
 		 * @param valueType
 		 */
-		public BFSTTData
+		public UBFMTTData
 		(
 			final Move bestMove, 
 			final long fullHash,
@@ -215,7 +215,7 @@ public class TranspositionTableBFS
 		int res = 0;
 		for (int i=0; i<maxNumEntries; i++)
 		{
-			if (table[i]!=null)
+			if (table[i] != null)
 				res += table[i].data.size();
 		}
 		return res;
@@ -225,9 +225,9 @@ public class TranspositionTableBFS
 	{
 		int res = 0;
 		for (int i=0; i<maxNumEntries; i++)
-			if (table[i]!=null)
-				for (BFSTTData entry : table[i].data)
-					if (entry.valueType == MARKED_EXACT_VALUE)
+			if (table[i] != null)
+				for (UBFMTTData entry : table[i].data)
+					if (entry.valueType == MARKED)
 						res += 1;
 		return res;
 	}
@@ -243,7 +243,7 @@ public class TranspositionTableBFS
 		{
 			if (table[i]!=null)
 			{
-				for (BFSTTData data : table[i].data)
+				for (UBFMTTData data : table[i].data)
 				{
 					if (data.depth>maxDepth)
 						maxDepth = data.depth;
@@ -256,7 +256,7 @@ public class TranspositionTableBFS
 		{
 			if (table[i]!=null)
 			{
-				for (BFSTTData data : table[i].data)
+				for (UBFMTTData data : table[i].data)
 				{
 					int index = data.valueType;
 					switch (index)
@@ -289,19 +289,15 @@ public class TranspositionTableBFS
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * An entry in a Transposition Table for Alpha-Beta. Every entry contains
-	 * two slots.
+	 * An entry in a Transposition Table for Alpha-Beta. Every entry can contain any number 
+	 * of slots (BFSTTData).
 	 *
 	 * @author cyprien
 	 */
-	public static final class BFSTTEntry
+	public static final class UBFMTTEntry
 	{
-		
 		/** Data in our entry's first slot */
-		public List<BFSTTData> data = new ArrayList<BFSTTData>(3);
-		
+		public List<UBFMTTData> data = new ArrayList<UBFMTTData>(3);
 	}
-	
-	//-------------------------------------------------------------------------
 
 }

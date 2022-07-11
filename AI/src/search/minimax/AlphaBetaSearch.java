@@ -485,7 +485,7 @@ public class AlphaBetaSearch extends ExpertPolicy
 
 		nbStatesEvaluated += 1;
 		
-		final long zobrist = state.fullHash();
+		final long zobrist = state.fullHash(context);
 		final ABTTData tableData;
 		if (transpositionTable != null)
 		{
@@ -1254,9 +1254,9 @@ public class AlphaBetaSearch extends ExpertPolicy
 	 * replaces the heuristic after being registered
 	 * @param newHeuristicFunction
 	 */
-	public void replaceHeuristics(Heuristics newHeuristicFunction) {
+	public void replaceHeuristics(Heuristics newHeuristicFunction)
+	{
 		this.heuristicValueFunction = newHeuristicFunction;
-		
 	}
 	
 	//-------------------------------------------------------------------------

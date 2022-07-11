@@ -8,9 +8,13 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import game.Game;
+import gnu.trove.list.array.TFloatArrayList;
+import gnu.trove.list.array.TLongArrayList;
 import main.collections.FVector;
 import main.collections.FastArrayList;
+import metadata.ai.heuristics.Heuristics;
 import other.context.Context;
+import other.context.TempContext;
 import other.move.Move;
 import other.state.State;
 import policies.softmax.SoftmaxFromMetadataSelection;
@@ -19,6 +23,7 @@ import utils.data_structures.ScoredIndex;
 
 /**
  * AI based on Unbounded Best-First Search, using trained action evaluations to complete the heuristic scores.
+ * [...]
  * 
  * @author cyprien
  */
@@ -35,15 +40,12 @@ public class LazyUBFM extends UBFM
 	protected String dataSaveAdress = "analytic_data/default.sav";
 	
 	//-------------------------------------------------------------------------
-	
-	/** An epsilon parameter to give to the selection policy */
-	private final float epsilon = 0f;
 
 	/** A learned policy to use in for the action evaluation */
 	protected SoftmaxPolicy learnedSelectionPolicy = null; 
 	
 	/** A boolean to know if it is the first turn the AI is playing on this game. If so, it will just use
-	 *  a basic BFS approach to have an idea of the heuristics range.*/
+	 *  a basic BFS approach to have an idea of the heuristics range. */
 	boolean firstTurn;
 	
 	/** Different fields to have an idea of how to combine action evaluations and heuristic scores properly */
@@ -56,23 +58,25 @@ public class LazyUBFM extends UBFM
 	float estimatedActionLogitMean;
 	
 	//-------------------------------------------------------------------------
+	
+	/** Variables not actually used for the reasoning: */
 
-	/** Recording the values assosciated to the action encountered */
-	protected List<Float> actionEvaluations;
+	/** Recording the values assosciated to the actions encountered */
+	protected TFloatArrayList actionEvaluations;
 	
-	/** Recording the difference in the heuristic evaluation as consequence of the possible moves*/
-	protected List<Float> scoreEvolutions;
+	/** Recording the difference in the heuristic evaluation as consequence of the possible moves */
+	protected TFloatArrayList scoreEvolutions;
 	
-	/** Recording the correlation coefficient between the ranking according to the action evaluations and the ranking according to the heuristic scores of the resulting states.*/
-	protected List<Float> rankingCorrelations;
+	/** Recording the correlation coefficient between the ranking according to the action evaluations and the ranking according to the heuristic scores of the resulting states */
+	protected TFloatArrayList rankingCorrelations;
 	
-	/** Comparative datas regarding action evaluations and score evolutions that will be written in a file*/
+	/** Comparative datas regarding action evaluations and score evolutions that will be written in a file */
 	protected StringBuffer analyticData = new StringBuffer("[]");
 	
 	
 	//-------------------------------------------------------------------------
 	
-	public static LazyUBFM createLazyBFS ()
+	public static LazyUBFM createLazyUBFM ()
 	{
 		return new LazyUBFM();
 	}
@@ -83,10 +87,20 @@ public class LazyUBFM extends UBFM
 	public LazyUBFM ()
 	{
 		super();
-		setLearnedSelectionPolicy(new SoftmaxFromMetadataSelection(epsilon));
+		setLearnedSelectionPolicy(new SoftmaxFromMetadataSelection(0f));
 		friendlyName = "Lazy UBFM";
-		
 		return;
+	}
+	
+	/**
+	 * Constructor
+	 * @param heuristics
+	 */
+	public LazyUBFM(final Heuristics heuristics)
+	{
+		super(heuristics);
+		setLearnedSelectionPolicy(new SoftmaxFromMetadataSelection(0f));
+		friendlyName = "Lazy UBFM";
 	}
 	
 	//-------------------------------------------------------------------------
@@ -94,25 +108,24 @@ public class LazyUBFM extends UBFM
 	@Override
 	public Move selectAction
 	(
-			final Game game, 
-			final Context context, 
-			final double maxSeconds,
-			final int maxIterations,
-			final int maxDepth
+		final Game game, 
+		final Context context, 
+		final double maxSeconds,
+		final int maxIterations,
+		final int maxDepth
 	)
 	{
 		
-		actionEvaluations = new ArrayList<Float>();
-		scoreEvolutions = new ArrayList<Float>();
-		rankingCorrelations = new ArrayList<Float>();
+		actionEvaluations = new TFloatArrayList();
+		scoreEvolutions = new TFloatArrayList();
+		rankingCorrelations = new TFloatArrayList();
 		
-		final Move bestMove = super.selectAction(game,context,maxSeconds,maxIterations,maxDepth);
+		final Move bestMove = super.selectAction(game, context, maxSeconds, maxIterations, maxDepth);
 		
 		if (performAnalysis)
 		{
 			System.out.println(analyticObservations());
-			try
-			{
+			try {
 			   FileWriter myWriter = new FileWriter("/home/cyprien/Documents/M1/Internship/"+dataSaveAdress);
 			   myWriter.write(analyticData.toString());
 			   myWriter.close();
@@ -128,7 +141,7 @@ public class LazyUBFM extends UBFM
 		
 		estimatedHeuristicScoresRange = maxHeuristicEval - minHeuristicEval;
 		estimatedActionLogitRange = maxActionLogit - minActionLogit;
-		estimatedActionLogitMean = actionLogitSum/actionLogitComputations;
+		estimatedActionLogitMean = actionLogitSum / actionLogitComputations;
 		
 		return bestMove;
 	}
@@ -139,7 +152,7 @@ public class LazyUBFM extends UBFM
 		final FastArrayList<Move> legalMoves,
 		final Context context,
 		final int maximisingPlayer,
-		final List<Long> nodeHashes,
+		final TLongArrayList nodeHashes,
 		final int depth,
 		final long stopTime
 	)
@@ -149,12 +162,10 @@ public class LazyUBFM extends UBFM
 		final int mover = state.playerToAgent(state.mover());
 		final Game game = context.game();
 		
-		final float heuristicScore = getContextValue(context,maximisingPlayer,nodeHashes,mover);
+		final float heuristicScore = getContextValue(context, maximisingPlayer, nodeHashes, mover);
 		
 		if (savingSearchTreeDescription)
-		{
 			searchTreeOutput.append("("+stringOfnodeHashes(nodeHashes)+","+Float.toString(heuristicScore)+","+((mover==maximisingPlayer)? 1:2)+"),\n");
-		}
 		
 		final int numLegalMoves = legalMoves.size();
 		final FVector moveScores = new FVector(numLegalMoves);
@@ -163,24 +174,17 @@ public class LazyUBFM extends UBFM
 		{
 			final Move m = legalMoves.get(i);
 			
-			final float actionValue = (float) learnedSelectionPolicy.computeLogit(context,m);
+			final float actionValue = (float) learnedSelectionPolicy.computeLogit(context, m);
 			
 			actionLogitSum += actionValue;
 			actionLogitComputations += 1;
 			maxActionLogit = Math.max(actionValue, maxActionLogit);
-			minActionLogit = Math.min(actionValue,minActionLogit);
+			minActionLogit = Math.min(actionValue, minActionLogit);
 			
-			moveScores.set(i,actionValue);
-			
-			if (System.currentTimeMillis() >= stopTime || ( wantsInterrupt))
-			{
-				for (int j=i+1; j<numLegalMoves; j++)
-					moveScores.set(j,mover==maximisingPlayer? -BETA_INIT + 1 : BETA_INIT-1);
-				break;
-			}
+			moveScores.set(i, actionValue);
 		};
 		
-		if (performAnalysis&&!(wantsInterrupt||System.currentTimeMillis()>=stopTime))
+		if (performAnalysis && !(wantsInterrupt || (System.currentTimeMillis() >= stopTime)))
 		{
 			final FVector moveHeuristicScores = new FVector(numLegalMoves);
 			
@@ -188,11 +192,11 @@ public class LazyUBFM extends UBFM
 			{
 				final Move m = legalMoves.get(i);
 				
-				final Context contextCopy = copyContext(context);
+				final Context contextCopy = new TempContext(context);
 				game.apply(contextCopy, m);
-				final float nextHeuristicScore = getContextValue(contextCopy,maximisingPlayer,nodeHashes,mover);
+				final float nextHeuristicScore = getContextValue(contextCopy, maximisingPlayer, nodeHashes, mover);
 				
-				moveHeuristicScores.set(i,nextHeuristicScore);
+				moveHeuristicScores.set(i, nextHeuristicScore);
 				
 				scoreEvolutions.add(normalise(nextHeuristicScore)-normalise(heuristicScore));
 				actionEvaluations.add((mover==maximisingPlayer)? moveScores.get(i): -moveScores.get(i));
@@ -216,14 +220,14 @@ public class LazyUBFM extends UBFM
 				
 				for (int i=0; i<numLegalMoves; i++)
 				{
-					evaluatedMoveIndices.add(new ScoredIndex(i,moveScores.get(i)));
-					scoredMoveIndices.add(new ScoredIndex(i,moveHeuristicScores.get(i)));
+					evaluatedMoveIndices.add(new ScoredIndex(i, moveScores.get(i)));
+					scoredMoveIndices.add(new ScoredIndex(i, moveHeuristicScores.get(i)));
 				}
 				
 				if (mover==maximisingPlayer)
 					Collections.sort(scoredMoveIndices);
 				else
-					Collections.sort(scoredMoveIndices,Collections.reverseOrder());
+					Collections.sort(scoredMoveIndices, Collections.reverseOrder());
 				
 				Collections.sort(evaluatedMoveIndices);
 				
@@ -258,22 +262,22 @@ public class LazyUBFM extends UBFM
 		}
 		
 		if (firstTurn)
-			// Uses the classical BFS approach on the first turn.
-			return super.estimateMoveValues(legalMoves,context,maximisingPlayer,nodeHashes,depth,stopTime);
+			// Uses the classical UBFM approach on the first turn.
+			return super.estimateMoveValues(legalMoves, context, maximisingPlayer, nodeHashes, depth, stopTime);
 		else
 		{
-			int sign = (maximisingPlayer == mover)? 1 : -1 ;
+			final int sign = (maximisingPlayer == mover)? 1 : -1 ;
 				
-			for (int i = 0; i < numLegalMoves; ++i)
+			for (int i=0; i<numLegalMoves; i++)
 			{
-				final double r = Math.random();
-				
+				final double r = Math.random(); // just for occasional display
 				if (debugDisplay)
 					if (r<0.05)
 						System.out.printf("action score is %.6g and heuristicScore is %.6g ",moveScores.get(i),heuristicScore);
 				
 				// (*2 because the maximal gap is half of the range)
-				moveScores.set(i,(actionEvaluationWeight*(moveScores.get(i)-estimatedActionLogitMean)*sign*estimatedHeuristicScoresRange*2)/estimatedActionLogitRange+heuristicScore);
+				moveScores.set(i, (actionEvaluationWeight * (moveScores.get(i)-estimatedActionLogitMean) * sign * estimatedHeuristicScoresRange * 2)  /  estimatedActionLogitRange);
+				moveScores.set(i,moveScores.get(i)  +  heuristicScore);
 				
 				if (debugDisplay)
 					if (r<0.05)
@@ -284,15 +288,15 @@ public class LazyUBFM extends UBFM
 		}
 	}
 	
-	private float normalise(float heuristicScore)
+	private float normalise(float heuristicScore) // just for display
 	{
 		
 		float maxValue = 5f ; //FIXME
 		float minValue = -5f ;
 		
-		if (heuristicScore>maxValue)
+		if (heuristicScore > maxValue)
 			return maxValue;
-		else if (heuristicScore<minValue)
+		else if (heuristicScore < minValue)
 			return minValue;
 		else
 			return heuristicScore;
@@ -302,13 +306,17 @@ public class LazyUBFM extends UBFM
 	
 	public void initAI(final Game game, final int playerID)
 	{
-		super.initAI(game,  playerID);
+		super.initAI(game, playerID);
 		
 		// Instantiate feature sets for selection policy
 		if (learnedSelectionPolicy != null)
 			learnedSelectionPolicy.initAI(game, playerID);
 		
 		firstTurn = true;
+		actionLogitComputations = 0;
+		actionLogitSum = 0;
+		maxActionLogit = Float.NEGATIVE_INFINITY;
+		minActionLogit = Float.POSITIVE_INFINITY;
 		
 		return;
 	}
@@ -333,7 +341,7 @@ public class LazyUBFM extends UBFM
 			scoreEvolutionsSum += scoreEvolutions.get(i);
 			actionEvaluationsAbsSum += Math.abs(actionEvaluations.get(i));
 			scoreEvolutionsAbsSum += Math.abs(scoreEvolutions.get(i));
-		};
+		}
 		for (int i=0; i<rankingCorrelations.size(); i++)
 		{
 			rankingCorrelationSum += rankingCorrelations.get(i);
@@ -342,7 +350,7 @@ public class LazyUBFM extends UBFM
 		float actionEvaluationsMean = actionEvaluationsSum/nbEntries;
 		float scoreEvolutionsMean = scoreEvolutionsSum/nbEntries;
 		
-		float rankingCorrelationMean = rankingCorrelationSum / rankingCorrelations.size();
+		float rankingCorrelationMean = rankingCorrelationSum/rankingCorrelations.size();
 		
 		float covarianceSum = 0f;
 		float actionEvaluationsVarianceSum = 0f;
@@ -374,11 +382,33 @@ public class LazyUBFM extends UBFM
 		res.append(Float.toString(rankingCorrelationMean));
 		
 		analyticData.deleteCharAt(analyticData.length()-1);
-		analyticData.append("["+Float.toString(actionEvaluationsMean)+","+Float.toString(scoreEvolutionsMean)+","+Float.toString(correlationCoeficient)+","+Float.toString(rankingCorrelationMean)+"],\n]");
+		analyticData.append(
+							"["+Float.toString(actionEvaluationsMean)+
+							","+Float.toString(scoreEvolutionsMean)+
+							","+Float.toString(correlationCoeficient)+
+							","+Float.toString(rankingCorrelationMean)+"],\n]"
+							);
 		
 		return res.toString();
 	}
 	
+	@Override
+	public boolean supportsGame(final Game game)
+	{
+		if (game.isStochasticGame())
+			return false;
+		
+		if (game.hiddenInformation())
+			return false;
+		
+		if (game.hasSubgames())		// Cant properly init most heuristics
+			return false;
+		
+		if (!(game.isAlternatingMoveGame()))
+			return false;
+		
+		return ((game.metadata().ai().features() != null) || (game.metadata().ai().trainedFeatureTrees() != null));
+	}
 	
 	//-------------------------------------------------------------------------
 	
@@ -386,7 +416,7 @@ public class LazyUBFM extends UBFM
 	 * Sets the learned policy to use in Selection phase
 	 * @param policy The policy.
 	 */
-	public void setLearnedSelectionPolicy( final SoftmaxPolicy policy )
+	public void setLearnedSelectionPolicy(final SoftmaxPolicy policy)
 	{
 		learnedSelectionPolicy = policy;
 	}
@@ -395,7 +425,7 @@ public class LazyUBFM extends UBFM
 	 * Sets the weight of the action evaluation in the context evaluations.
 	 * @param value the weight
 	 */
-	public void setActionEvaluationWeight( final float value)
+	public void setActionEvaluationWeight(final float value)
 	{
 		actionEvaluationWeight = value;
 	}

@@ -35,7 +35,6 @@ import utils.RandomAI;
  */
 
 public class EvaluateUBFM
-
 {
 	
 	/** Activation of some displays to help debugging if true: */
@@ -73,16 +72,10 @@ public class EvaluateUBFM
 		
 		final Game game = GameLoader.loadGameFromName(gameName+".lud");
 		
-		//final HeuristicTerm materialHeuristic = new Material(null, Float.valueOf(1.f), null, null);
-		//final HeuristicTerm[] heuristicsTerms = {materialHeuristic};
-		//final Heuristics heuristics = new Heuristics(heuristicsTerms);
-		
 		final Stats resultsAgent1asFirst = new Stats("Results of agent 1 (as first player)");
 		final Stats resultsAgent1asSecond = new Stats("Results of agent 1 (as second player)");
 		
 		int nbDraws = 0;
-		
-		//final ArrayList<Double> resultsAgent2 = new ArrayList<Double>(numTrialsPerComparison);
 		
 		output("\n");
 		
@@ -106,7 +99,7 @@ public class EvaluateUBFM
 							{
 								final LazyUBFM UBFM_AI = new NaiveActionBasedSelection();
 								UBFM_AI.setSelectionPolicy(UBFM.SelectionPolicy.SAFEST);
-								//final AI UBFM_AI = new AlphaBetaSearch(heuristics);
+								
 								final AI alphaBetaAI = new AlphaBetaSearch();
 								
 								UBFM_AI.debugDisplay = false;
@@ -115,7 +108,7 @@ public class EvaluateUBFM
 								
 								final Float[] agentScores = new Float[]{0f,0f};
 								
-								if (m%2==0)
+								if (m%2 == 0)
 									compareAgents(game, UBFM_AI, alphaBetaAI, agentScores);
 								else
 									compareAgents(game, alphaBetaAI, UBFM_AI, agentScores);
@@ -142,14 +135,14 @@ public class EvaluateUBFM
 			System.out.println("Games done.");
 			
 			double result;
-			for (int n = 0; n < numTrialsPerComparison; ++n)
+			for (int n=0; n<numTrialsPerComparison; ++n)
 			{	
 				result = futures.get(n).get();
-				if (n%2==0)
+				if (n%2 == 0)
 					resultsAgent1asFirst.addSample(result);
 				else
 					resultsAgent1asSecond.addSample(result);
-				if (result==0.5)
+				if (result == 0.5)
 					nbDraws += 1;				
 				if (debugDisplays) System.out.println("Score of agent 1 in game "+n+" is "+futures.get(n).get());
 			}
@@ -196,11 +189,13 @@ public class EvaluateUBFM
 		AI1.initAI(game, 1);
 		AI2.initAI(game, 2);
 		
-		if (debugDisplays) System.out.println("launching a playout");
+		if (debugDisplays)
+			System.out.println("launching a playout");
 		
 		game.playout(context, agents, thinkingTime, null, -1, 200, ThreadLocalRandom.current());
 		
-		if (debugDisplays) System.out.println("a game is over");
+		if (debugDisplays)
+			System.out.println("a game is over");
 		
 		resultsArray[0] += (float) RankUtils.agentUtilities(context)[1];
 		resultsArray[1] += (float) RankUtils.agentUtilities(context)[2];
