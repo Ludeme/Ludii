@@ -1,7 +1,5 @@
 (define "Columns" 6)
 
-(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns")))
-
 (define "APlayerCanNotMove"
     (and (not (is Next Mover))
         (or
@@ -11,7 +9,7 @@
     )
 )
 
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
+(define "PiecesOwnedBy" (count Cell at:(handSite #1)))
 
 //------------------------------------------------------------------------------
 
@@ -57,22 +55,22 @@
                                     )
                                 )
                                 (if (is In (to) (sites Mover))
-                                    (if (!= 3 (count at:("OppositePit")))
-                                        (if (!= 0 (count at:("OppositePit")))
+                                    (if (!= 3 (count at:("OppositePitTwoRows" (to))))
+                                        (if (!= 0 (count at:("OppositePitTwoRows" (to))))
                                             (fromTo
-                                                (from ("OppositePit"))
+                                                (from ("OppositePitTwoRows" (to)))
                                                 (to (handSite Mover))
-                                                count:(count at:("OppositePit"))
+                                                count:(count at:("OppositePitTwoRows" (to)))
                                             )
                                         )
                                         (and {
                                             (fromTo
-                                                (from ("OppositePit"))
+                                                (from ("OppositePitTwoRows" (to)))
                                                 (to (to))
                                                 count:1
                                             )
                                             (set State at:(to) (mover))
-                                            (set State at:("OppositePit") (mover))
+                                            (set State at:("OppositePitTwoRows" (to)) (mover))
                                         })
                                     )
                                 )
@@ -126,14 +124,8 @@
                 )
             )
         )	
-        
-        (end (if ("NoPieceOnBoard")
-                (byScore {
-                    (score P1 (count Cell at:(handSite P1))) 
-                    (score P2 (count Cell at:(handSite P2)))
-                })
-            )
-        )
+
+        (end ("MancalaByScoreWhen" ("NoPieceOnBoard")))
     )
 )
 

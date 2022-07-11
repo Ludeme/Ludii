@@ -2,7 +2,7 @@
 
 (define "PiecesHandOwnedBy" (+ (count in:(sites #1)) (count Cell at:(handSite #1))))
 
-(define "NextHole" (trackSite Move from:(to) #1 steps:1))
+(define "NextHole" ("NextSiteOnTrack" 1 from:(to) #1))
 
 //------------------------------------------------------------------------------
 
@@ -16,8 +16,7 @@
         (piece "Seed" Shared)
         <Players:homes>
         <Players:store>  // kalahs (storage pits)
-        }
-    )  
+    })  
     (rules 
         
         (start (set Count <Players:init> to:(sites Track)))
@@ -45,8 +44,7 @@
         <4>
         <
         (play 
-            (move
-                Select 
+            (move Select 
                 (from 
                     (sites Mover) 
                     if:(> (count at:(from)) 0)
@@ -69,14 +67,7 @@
         )
         >
         <
-        (end
-            (if (no Moves Next)
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (no Moves Next)))
         >
         "The game is played with 2 players."
     )*   

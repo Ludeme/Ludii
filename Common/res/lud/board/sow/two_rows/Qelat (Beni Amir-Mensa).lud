@@ -1,4 +1,4 @@
-(define "PiecesOwnedBy" (count in:(forEach (sites Board) if:(= #1 (state at:(site))))))
+(define "PiecesOwnedBy" (count in:(forEach (sites Board) if:(= (id #1) (state at:(site))))))
 
 //------------------------------------------------------------------------------
 
@@ -55,15 +55,8 @@
                 )
             )
         )
-        
-        (end
-            (if  (and (no Moves P1) (no Moves P2))
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" 1)) 
-                    (score P2 ("PiecesOwnedBy" 2))
-                })
-            )
-        )
+
+        (end ("MancalaByScoreWhen" (and (no Moves P1) (no Moves P2))))
     )
 )
 

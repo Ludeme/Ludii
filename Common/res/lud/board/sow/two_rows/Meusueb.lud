@@ -1,4 +1,4 @@
-(define "NextHoleFrom" (trackSite Move from:#1 steps:1))
+(define "NextHoleFrom" ("NextSiteOnTrack" 1 from:#1))
 
 (define "PlayFromNextHole" (sites {("NextHoleFrom" (last From afterConsequence:True))}))
 
@@ -16,8 +16,7 @@
         (regions P2 (sites Top))                        // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
         (piece "Seed" Shared)
-        }
-    )  
+    })  
     (rules 
         
         (start (set Count 4 to:(sites Track)))
@@ -26,8 +25,7 @@
             (move
                 Select 
                 (from 
-                    (if 
-                        "SameTurn" 
+                    (if "SameTurn" 
                         (if (is Pending) "PlayFromNextHole" "LastHoleSowed") 
                         (sites Mover) 
                     ) 
@@ -57,15 +55,8 @@
                 )
             )
         )
-        
-        (end
-            (if (no Moves Mover) 
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+
+        (end ("MancalaByScoreWhen" (no Moves Mover)))
     )
 )
 

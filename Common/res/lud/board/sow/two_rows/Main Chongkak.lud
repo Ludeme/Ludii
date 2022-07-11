@@ -1,11 +1,10 @@
 (define "Columns" <Board:size>)
 (define "PlayableSites" (sites (values Remembered "Playable")))
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
-(define "NoPieceOnBoard" (no Pieces All in:(union (sites Top) (sites Bottom))))
+(define "NoPieceOnBoard" (all Sites (union (sites Top) (sites Bottom)) if:(= 0 (count at:(site)))))
 (define "OneRowIsEmpty"
     (or
-        (no Pieces All in:(sites Bottom))
-        (no Pieces All in:(sites Top))
+        (all Sites (sites Bottom) if:(= 0 (count at:(site))))
+        (all Sites (sites Top)  if:(= 0 (count at:(site))))
     )
 )
 
@@ -54,11 +53,11 @@
                         (then
                             (sow
                                 apply:(if (and (is In (to) (sites Mover)) (= 1 (count at:(to))))
-                                    (if (is Occupied ("OppositePit"))
+                                    (if (is Occupied ("OppositePit" (to)))
                                         (fromTo
-                                            (from ("OppositePit"))
+                                            (from ("OppositePit" (to)))
                                             (to (mapEntry Mover))
-                                            count:(count at:("OppositePit"))
+                                            count:(count at:("OppositePit" (to)))
                                         )
                                     )
                                     (if (= (to) (mapEntry Mover))

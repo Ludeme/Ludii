@@ -1,5 +1,5 @@
 (define "PlayableSites" (sites (values Remembered "Playable")))
-(define "NoPieceOnBoard" (no Pieces All in:(union (sites Top) (sites Bottom))))
+(define "NoPieceOnBoard" (all Sites (union (sites Top) (sites Bottom)) if:(= 0 (count at:(site)))))
 
 //------------------------------------------------------------------------------
 

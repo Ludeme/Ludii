@@ -1,10 +1,8 @@
 (define "Columns" 6)
 
-(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns")))
-
 (define "FourInEach" (all Sites (sites Board) if:(<= 4 (count at:(site)))))
 
-(define "NoCounters" (no Pieces All in:(sites #1)))
+(define "NoCounters" (all Sites (sites #1) if:(= 0 (count at:(site)))))
 (define "EmptyBoardOrOne" (= 1 (count in:(sites Board))))
 
 (define "RightMostNotEmpty" 
@@ -107,11 +105,11 @@
                                             (to (handSite Mover))
                                             count:(count at:(to))
                                         )
-                                        (if (is Occupied ("OppositePit"))
+                                        (if (is Occupied ("OppositePitTwoRows" (to)))
                                             (fromTo
-                                                (from ("OppositePit"))
+                                                (from ("OppositePitTwoRows" (to)))
                                                 (to (handSite Mover))
-                                                count:(count at:("OppositePit"))
+                                                count:(count at:("OppositePitTwoRows" (to)))
                                             )
                                         )
                                     )

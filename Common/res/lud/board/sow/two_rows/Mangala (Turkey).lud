@@ -1,3 +1,7 @@
+(define "PiecesOwnedBy" (count Cell at:(handSite #1)))
+
+//------------------------------------------------------------------------------
+
 (game "Mangala (Turkey)" 
     (players 2)  
     (equipment { 
@@ -8,13 +12,11 @@
         (regions P2 (sites Top))                        // P2 home
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+    })  
     (rules 
         (start (set Count 5 to:(sites Track)))
         
-        (play (move 
-                Select 
+        (play (move Select 
                 (from 
                     (sites Mover) 
                     if:(> (count at:(from)) 0)
@@ -35,15 +37,8 @@
                 )
             )
         )
-        
-        (end
-            (if (= (count in:(sites Track)) 0) 
-                (byScore {
-                    (score P1 (count Cell at:(handSite P1))) 
-                    (score P2 (count Cell at:(handSite P2)))
-                })
-            )
-        )
+
+        (end ("MancalaByScoreWhen" (= (count in:(sites Track)) 0)))
     )
 )
 

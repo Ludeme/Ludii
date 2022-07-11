@@ -4,8 +4,6 @@
         (sites (values Remembered "OwnedP2"))
     )
 )
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
-
 (define "RightMostEmpty" 
     (trackSite FirstSite "TrackCW"
         from:(mapEntry "RightMost" Mover)
@@ -165,7 +163,6 @@
             (nextPhase (all Passed) "Sowing")
         )
         }
-        
     )
 )
 

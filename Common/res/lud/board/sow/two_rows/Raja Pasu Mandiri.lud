@@ -1,5 +1,5 @@
 (define "PlayableSites" (sites (values Remembered "Playable")))
-(define "NextHole" (trackSite Move from:#1 "Track" steps:1))
+(define "NextHole" ("NextSiteOnTrack" 1 from:#1 "Track"))
 
 (define "HomeP1"
     (if (> 3 (% (+ 1 (var "Round")) 9))

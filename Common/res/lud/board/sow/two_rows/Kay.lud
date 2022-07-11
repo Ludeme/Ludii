@@ -1,4 +1,4 @@
-(define "NextHoleFrom" (trackSite Move from:#1 #2 #3))
+(define "NextHoleFrom" ("NextSiteOnTrack" #3 from:#1 #2))
 (define "PiecesOwnedBy" (count at:(mapEntry #1)))
 
 //------------------------------------------------------------------------------
@@ -22,8 +22,7 @@
         (play 
             (move Select
                 (from 
-                    (if 
-                        ("SameTurn") 
+                    (if ("SameTurn") 
                         "LastHoleSowed" 
                         (sites Mover) 
                     ) 
@@ -31,7 +30,7 @@
                         (< 1 (count at:(from)))
                         (and 
                             (= 1 (count at:(from)))
-                            (is Empty ("NextHoleFrom" (from) "Track" steps:1))
+                            (is Empty ("NextHoleFrom" (from) "Track" 1))
                         )
                     )
                 )
@@ -45,7 +44,7 @@
                                 count:(count at:(to))
                             )
                             (if (< 1 (count at:(to)))
-                                (if (is Occupied ("NextHoleFrom" (to) "Track" steps:1))
+                                (if (is Occupied ("NextHoleFrom" (to) "Track" 1))
                                     (moveAgain)
                                 )
                             )
@@ -56,15 +55,8 @@
                 )
             )
         )
-        
-        (end
-            (if (no Moves Next) 
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+
+        (end ("MancalaByScoreWhen" (no Moves Next)))
     )
 )
 
