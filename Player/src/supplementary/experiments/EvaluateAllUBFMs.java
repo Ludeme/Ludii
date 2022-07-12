@@ -43,12 +43,12 @@ public class EvaluateAllUBFMs
 	public static boolean debugDisplays = false;
 	
 	/** Number of trials that will be played to compare the agents: (must be even)*/
-	final private static int numTrialsPerComparison = 2;
+	final private static int numTrialsPerComparison = 100;
 	
 	/** Time for the AI to think in the simulations (seconds): */
 	final private static double thinkingTime = 1;
 	
-	final String repository = "/home/cyprien/Documents/M1/Internship/data/";
+	final String repository = "/data/";
 	
 	//-------------------------------------------------------------------------
 	
@@ -329,7 +329,7 @@ public class EvaluateAllUBFMs
 		if (args.length>0)
 			evaluator.gameName = args[0];
 		else
-			evaluator.gameName = "Alquerque"; // by default
+			evaluator.gameName = "Lines of Action"; // by default
 		
 		evaluator.runExperiment();
 	}

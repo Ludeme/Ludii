@@ -5,12 +5,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadLocalRandom;
 
 import game.Game;
 import gnu.trove.list.array.TFloatArrayList;
 import main.collections.FVector;
 import main.collections.FastArrayList;
+import main.collections.Pair;
 import metadata.ai.heuristics.Heuristics;
 import metadata.ai.heuristics.terms.CentreProximity;
 import metadata.ai.heuristics.terms.ComponentValues;
@@ -33,7 +38,6 @@ import metadata.ai.heuristics.terms.SidesProximity;
 import metadata.ai.heuristics.terms.ThreatenedMaterial;
 import metadata.ai.heuristics.terms.ThreatenedMaterialMultipleCount;
 import metadata.ai.heuristics.terms.UnthreatenedMaterial;
-import metadata.ai.misc.Pair;
 import other.AI;
 import other.GameLoader;
 import other.RankUtils;
@@ -57,8 +61,8 @@ import weka.classifiers.functions.LinearRegression;
  * used by minimax based algorithm like Alpha-Beta search or UBFM.
  * 
  * @author cyprien
- *
  */
+
 public class HeuristicsLearning
 {
 	
@@ -68,28 +72,31 @@ public class HeuristicsLearning
 	private final double trainingDuration = 10000.;
 	
 	/** Game played: */
-	private final String gameName = "Breakthrough";
+	private String gameName;
 	
 	/** Thinking time of the AI in seconds: */
 	private final float thinkingTime = 0.3f;
 	
 	/** Path of the directory with the files: */
-	private static final String repository = "/home/cyprien/Documents/M1/Internship/data/learning";
+	private static final String repository = "/data/learning/";
 	
-	private final String trainDataFile = "training_data/training.arff";
-	private final String testDataFile = "training_data/testing.arff";
+	private final String trainDataFile = "training.arff";
+	private final String testDataFile = "testing.arff";
 	
 	private final StringBuffer trainDataARFF = new StringBuffer();
-	private final StringBuffer testDataARFF = new StringBuffer();
+	private final StringBuffer testDataARFF  = new StringBuffer();
 	
 	/** Probability that an entry gets assigned to the testing data set: */
 	private final double proportionOfTestingEntries = 0.15;
 	
 	/** Score assosciated to a win: */
-	private final float scoreWin = 20f ;
+	private final float scoreWin = 20f;
 	
 	/** Number of playouts before the weights are updated */
-	private final float numPlayoutsPerIteration = 6;
+	private final int numPlayoutsPerIteration = 10;
+	
+	/** Threhshold of the heuristics weights (under it thy are not saved) */
+	private final float heuristicWeightsThreshold = 0.001f;
 	
 	//-------------------------------------------------------------------------
 	
@@ -100,17 +107,21 @@ public class HeuristicsLearning
 	
 	private Game game;
 	
-	private int maximisingPlayer;
-	
 	int numPlayers;
 	
 	/** Total number of calls of the recursive function to fill training data */
 	int fillTrainingCallNumber;
+
+	// Thread executor (maximum number of threads possible)
+	final static int numThreads = Runtime.getRuntime().availableProcessors();
+	final ExecutorService executor = Executors.newFixedThreadPool(numThreads); // note: was static on the previous file
 	
 	//-------------------------------------------------------------------------
 	
-	public HeuristicsLearning()
+	public HeuristicsLearning(String gameName)
 	{
+		this.gameName = gameName;
+		
 		game = GameLoader.loadGameFromName(gameName+".lud");
 		numPlayers = game.players().count();
 		
@@ -131,11 +142,21 @@ public class HeuristicsLearning
 			System.out.println("Number of parameters : "+Integer.toString(nbParameters));
 	}
 	
-	public static void main (String[] args) throws Exception
+	public static void main (String[] args)
 	{
-		HeuristicsLearning heuristicLearning = new HeuristicsLearning();
+		String gameName;
+		if (args.length > 0)
+			gameName = args[0];
+		else
+			gameName = "Breakthrough";
 		
-		heuristicLearning.runHeuristicLearning();		
+		HeuristicsLearning heuristicLearning = new HeuristicsLearning(gameName);
+
+		try {
+			heuristicLearning.runHeuristicLearning();	
+		} catch (final Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	//-------------------------------------------------------------------------
@@ -153,27 +174,6 @@ public class HeuristicsLearning
 		final List<Double> correlationCoeficients = new ArrayList<Double>();
 		
 		final FVector heuristicWeights = heuristics.paramsVector();
-		
-//		int pointer = 0;
-//		// Initialising weights with (not) random values
-//		for (int i=0; i<nbHeuristics; i++)
-//		{
-//			// value: r * (previous weight) where r <- U([0,1[)
-//			FVector params = heuristicTermsList.get(i).paramsVector();
-//			if (params != null)
-//			{
-//				for (int k=0; k<params.dim(); k++)
-//				{
-//					heuristicWeights[pointer] = params.get(k);//ThreadLocalRandom.current().nextFloat()*
-//					pointer += 1;
-//				}
-//			}
-//			else
-//			{
-//				heuristicWeights[pointer] = heuristicTermsList.get(i).weight();
-//				pointer += 1;
-//			}
-//		}
 		
 		int numIteration = 0;
 		
@@ -205,69 +205,64 @@ public class HeuristicsLearning
 			}
 			
 			heuristics.updateParams(game, heuristicWeights, 0);
+
+			fillTrainingCallNumber = 0;
 			
-//			int pointer = 0;
-//			for (int i=0; i<nbHeuristics; i++)
-//			{
-//				if (heuristicTermsList.get(i).paramsVector() != null)
-//				{
-//					heuristicTermsList.get(i).updateParams(game, new FVector(heuristicWeights), pointer);
-//					pointer += heuristicTermsList.get(i).paramsVector().dim();
-//				}
-//				else
-//				{
-//					heuristicTermsList.get(i).setWeight(heuristicWeights[pointer]);
-//					pointer += 1;
-//				}
-//			}
+			// Run trials concurrently
+			final CountDownLatch latch = new CountDownLatch(numPlayoutsPerIteration);
+
+			final List<Future<Pair<String,String>>> futures = new ArrayList<Future<Pair<String,String>>>(numPlayoutsPerIteration);
 			
 			for (int k=0; k<numPlayoutsPerIteration; k++)
 			{
-				// Setting up a playout:
+				final int index = k;
+				final int iterationNumber = numIteration;
 				
-				final Trial trial = new Trial(game);
-				final Context context = new Context(game, trial);
-				
-				maximisingPlayer = 1+(k%2);
-				
-				final BiasedUBFM AI = new BiasedUBFM(heuristics);
-				
-				AI.setIfFullPlayouts(true); // switches to the "Descent" algorithm
-				AI.setNbStateEvaluationsPerNode(6);
-				AI.savingSearchTreeDescription = false;
-				AI.forceAMaximisingPlayer(maximisingPlayer);
-	
-				final List<AI> agents = new ArrayList<>();
-				agents.add(null);
-				agents.add(AI);
-				agents.add(AI);
+				futures.add
+				(
+					executor.submit
+					(
+						() -> 
+						{
+							try
+							{
+								// Generating training set for the linear regression:
+								System.out.printf("\nBeginning the playout number %d of iteration %d:\n",index,iterationNumber);
+								
+								final Pair<String,String> res = generateATrainingSet(heuristics, 1+(index%2));
+								
+								latch.countDown();
+								
+								return res;
+							}
+							catch (final Exception e)
+							{
+								e.printStackTrace();
+								return new Pair<String,String>("","");
+							}
+						}
+					)
+				);
+			}
 			
-				game.start(context);
+			latch.await(); // wait for all trials to finish
+			
+			Pair<String,String> outputs;
+			for (int n=0; n<numPlayoutsPerIteration; ++n)
+			{	
+				outputs = futures.get(n).get();
 				
-				AI.initAI(game, maximisingPlayer);
-	
-				final Context initialContext = AI.copyContext(context); // used later
-				
-				System.out.printf("\nBeginning the playout number %d of iteration %d:\n",k,numIteration);
-				
-				game.playout(context, agents, thinkingTime, null, -1, 100, ThreadLocalRandom.current()); // TODO: change max nb playout actions
-				
-				System.out.println("done");
-				
-
-				System.out.println("Result of maximising player: "+Double.toString(RankUtils.agentUtilities(context)[maximisingPlayer]));
-				
-				//-----------------------------------------------------------------
-				// Generating training set for the linear regression:
-				
-				generateTrainingSet(AI, initialContext);
+				trainDataARFF.append(outputs.key());
+				testDataARFF.append(outputs.value());
 			}
 
 			// Saving data in a file
 			for (int i : new int[] {0,1})
 			{
 				try {
-			      FileWriter myWriter = new FileWriter(repository+dataFileNames[i]);
+				  File directory = new File(String.valueOf(repository+"training/"));
+				  directory.mkdirs();
+			      FileWriter myWriter = new FileWriter(repository+"training/"+dataFileNames[i]);
 			      myWriter.write(dataFileContents[i].toString());
 			      myWriter.close();
 			    } catch (IOException e) {
@@ -310,13 +305,25 @@ public class HeuristicsLearning
 			//---------------------------------------------------------------------
 			// Saving weights in a file:
 			try {
-		      FileWriter myWriter = new FileWriter(repository+"heuristic_weights_"+game.name()+Integer.toString(numIteration)+".sav");
-		      myWriter.write(heuristicWeights.toString());
+			  File directory = new File(String.valueOf(repository+"/learned_heuristics/"));
+			  directory.mkdirs();
+		      FileWriter myWriter = new FileWriter(repository+"/learned_heuristics/"+game.name()+Integer.toString(numIteration)+".sav");
+		      myWriter.write(heuristics.toStringThresholded(heuristicWeightsThreshold));
 		      myWriter.close();
 			} catch (IOException e) {
 		      System.out.println("An error occurred.");
 		      e.printStackTrace();
 			}
+			try {
+				  File directory = new File(String.valueOf(repository+"/parameters/"));
+				  directory.mkdirs();
+			      FileWriter myWriter = new FileWriter(repository+"/parameters/"+game.name()+Integer.toString(numIteration)+".sav");
+			      myWriter.write(heuristics.paramsVector().toString());
+			      myWriter.close();
+				} catch (IOException e) {
+			      System.out.println("An error occurred.");
+			      e.printStackTrace();
+				}
 			try {
 		      FileWriter myWriter = new FileWriter(repository+"correlation_coeficients_"+game.name()+".sav");
 		      myWriter.write(toString(correlationCoeficients));
@@ -333,7 +340,7 @@ public class HeuristicsLearning
 	{
 		ArffLoader loader = new ArffLoader();
 		
-		loader.setSource(new File(repository + fileName));
+		loader.setSource(new File(repository + "training/"+fileName));
 		
 		Instances dataSet = loader.getDataSet();
 		
@@ -347,25 +354,56 @@ public class HeuristicsLearning
 	 * Takes the value directly from the TT, and ignores leaves which are are not terminal states.
 	 * 
 	 * @param TT
+	 * @return 
 	 */
-	protected void generateTrainingSet (final UBFM AI, final Context initialContext)
+	protected Pair<String, String> generateATrainingSet (final Heuristics heuristics, final int maximisingPlayer)
 	{
+		// Setting up a playout:
+		final Trial trial = new Trial(game);
+		final Context context = new Context(game, trial);
+		
+		final BiasedUBFM AI = new BiasedUBFM(heuristics);
+		
+		AI.setIfFullPlayouts(true); // switches to the "Descent" algorithm
+		AI.setNbStateEvaluationsPerNode(6);
+		AI.savingSearchTreeDescription = false;
+		AI.forceAMaximisingPlayer(maximisingPlayer);
+		AI.setTTReset(false);
+
+		final List<AI> agents = new ArrayList<>();
+		agents.add(null);
+		agents.add(AI);
+		agents.add(AI);
+	
+		game.start(context);
+		
+		AI.initAI(game, maximisingPlayer);
+
+		final Context initialContext = AI.copyContext(context); // used later
+		
+		game.playout(context, agents, thinkingTime, null, -1, 100, ThreadLocalRandom.current()); // TODO: change max nb playout actions
+		
+		System.out.println("done");
+		
+
+		System.out.println("Result of maximising player: "+Double.toString(RankUtils.agentUtilities(context)[maximisingPlayer]));
+		
 		if (debugDisplays)
 		{
-			System.out.println("\nGenerating training set for the linear regression:");
-//			System.out.println("Transposition table stats:");
-//			AI.getTranspositionTable().dispValueStats();
-			System.out.println("\n");
+			System.out.println("\nGenerating training set for the linear regression:\n");
 		}
 		
-		fillTrainingCallNumber = 0;
 		
 		final long zobrist = initialContext.state().fullHash(initialContext);
 		final UBFMTTData tableData = AI.getTranspositionTable().retrieve(zobrist);
+		
 		// Marking the value in the TT so that it is not visited again in the same recursive call
 		AI.getTranspositionTable().store(tableData.bestMove, tableData.fullHash, tableData.value, tableData.depth, TranspositionTableUBFM.MARKED, tableData.sortedScoredMoves);
 
-		float rootValue = fillTrainingData(AI, initialContext);
+		final StringBuffer trainDataEntries = new StringBuffer();
+		final StringBuffer testDataEntries = new StringBuffer();
+		
+		float rootValue = fillTrainingData(AI, initialContext, trainDataEntries, testDataEntries, maximisingPlayer);
 		
 		if (debugDisplays)
 		{
@@ -376,7 +414,7 @@ public class HeuristicsLearning
 		// Validating the value in the TT so that it is not visited again
 		AI.getTranspositionTable().store(tableData.bestMove, tableData.fullHash, rootValue, tableData.depth, TranspositionTableUBFM.VALIDATED, tableData.sortedScoredMoves);
 				
-		return;
+		return new Pair<String,String>(trainDataEntries.toString(), testDataEntries.toString());
 	}
 	
 	/**
@@ -390,7 +428,10 @@ public class HeuristicsLearning
 	protected float fillTrainingData
 	(
 		final UBFM AI,
-		final Context context
+		final Context context,
+		final StringBuffer trainingEntries,
+		final StringBuffer testingEntries,
+		final int maximisingPlayer
 	)
 	{
 		
@@ -455,7 +496,7 @@ public class HeuristicsLearning
 																	newTableData.depth, TranspositionTableUBFM.MARKED,
 																	newTableData.sortedScoredMoves);
 								
-								final float childValue = fillTrainingData(AI, contextCopy);
+								final float childValue = fillTrainingData(AI, contextCopy, trainingEntries, testingEntries, maximisingPlayer);
 								
 								// Un-marking the value in the TT so that it is not considered as a draw if encountered elsewhere in the tree
 								AI.getTranspositionTable().store(	newTableData.bestMove, newTableData.fullHash, childValue, 
@@ -479,24 +520,6 @@ public class HeuristicsLearning
 			else if (value < -scoreWin)
 				value = -scoreWin;
 			
-//			if (childrenValues.size()>0)
-//			{
-//				float myMax = childrenValues.get(0); // actually a min if the opposent is playing
-//				
-//				for (float childValue : childrenValues)
-//				{
-//					if (((childValue>myMax)&&(mover==maximisingPlayer))||((childValue<myMax)&&(mover!=maximisingPlayer)))
-//					{
-//						myMax = childValue;
-//					}
-//				};
-//				value = myMax;
-//			}
-//			else
-//			{
-//				value = 0;
-//			}
-			
 			//-----------------------------------------------------------------
 			// Adding entry with heuristic value differences:
 			
@@ -505,37 +528,14 @@ public class HeuristicsLearning
 				
 				StringBuffer dataFileContent;
 				if (Math.random()>proportionOfTestingEntries)
-					dataFileContent = trainDataARFF;
+					dataFileContent = trainingEntries;
 				else
-					dataFileContent = testDataARFF;
+					dataFileContent = testingEntries;
 	
 				final String valueEntry = String.format("%.2g", value);
 				dataFileContent.append(valueEntry+" ".repeat(14-valueEntry.length())+",");
 				
 				final FVector trainingEntry = AI.heuristicValueFunction().computeStateFeatureVector(context, maximisingPlayer);
-
-				//				int pointer = 0;
-//				for (int i=0; i<heuristicTermsList.size(); i++)
-//				{
-//					for (int player=1; player<=numPlayers; player++)
-//					{
-//						FVector featuresVector = heuristicTermsList.get(i).computeStateFeatureVector(context, player);
-//
-//						for (int k=0; k<featuresVector.dim(); k++)
-//						{
-//							if (player == maximisingPlayer)
-//								trainingEntry[pointer+k] += featuresVector.get(k);
-//							else
-//								trainingEntry[pointer+k] -= featuresVector.get(k)*oppScoreMultiplier;
-//						}
-//					}
-//					
-//					final FVector params = heuristicTermsList.get(i).paramsVector();
-//					if (params != null)
-//						pointer += heuristicTermsList.get(i).paramsVector().dim();
-//					else
-//						pointer += 1;
-//				}
 
 				for (int k=0; k<nbParameters; k++)
 				{
@@ -558,49 +558,35 @@ public class HeuristicsLearning
 	{
 		/** The initial weight of the heuristics is important for the initialisation */
 		
-		List<HeuristicTerm> heuristicTerms = new ArrayList<HeuristicTerm>();
-		
-//		final List<Pair[]> allComponentPairsCombinations = new ArrayList<>();
-//		for (int i = 0; i < game.equipment().components().length-1; i++)
-//		{
-//			final Pair[] componentPairs  = new Pair[game.equipment().components().length-1];
-//			for (int j = 0; j < game.equipment().components().length-1; j++)
-//			{
-//				if (j == i)
-//					componentPairs[j] = new Pair(game.equipment().components()[j+1].name(), 1f);
-//				else
-//					componentPairs[j] = new Pair(game.equipment().components()[j+1].name(), 0f);
-//			}
-//			allComponentPairsCombinations.add(componentPairs);
-//		}
-//		
-		final float defaultWeight = 1f;
+		List<HeuristicTerm> heuristicTerms = new ArrayList<HeuristicTerm>();	
 		
 		if (CurrentMoverHeuristic.isApplicableToGame(game))
 			heuristicTerms.add(new CurrentMoverHeuristic(null, 0f));
-		
-		if (LineCompletionHeuristic.isApplicableToGame(game))
-			heuristicTerms.add(new LineCompletionHeuristic(null, 0f, null));
+
+		if (Material.isApplicableToGame(game))
+			heuristicTerms.add(new Material(null, 1f, null, null));
 		
 		if (MobilityAdvanced.isApplicableToGame(game))
 			heuristicTerms.add(new MobilityAdvanced(null, 0f));
 		
 		if (InfluenceAdvanced.isApplicableToGame(game))
 			heuristicTerms.add(new InfluenceAdvanced(null, 0f));
+
+		if (LineCompletionHeuristic.isApplicableToGame(game))
+			heuristicTerms.add(new LineCompletionHeuristic(null, 0f, null));
 		
-//		if (OwnRegionsCount.isApplicableToGame(game))
-//			heuristicTerms.add(new OwnRegionsCount(null, 0f));
 		
-//		if (PlayerSiteMapCount.isApplicableToGame(game))
-//			heuristicTerms.add(new PlayerSiteMapCount(null, 0f));
+		if (OwnRegionsCount.isApplicableToGame(game))
+			heuristicTerms.add(new OwnRegionsCount(null, 0f));
 		
-//		if (Score.isApplicableToGame(game))
-//			heuristicTerms.add(new Score(null, 0f));
+		if (PlayerSiteMapCount.isApplicableToGame(game))
+			heuristicTerms.add(new PlayerSiteMapCount(null, 0f));
+		
+		if (Score.isApplicableToGame(game))
+			heuristicTerms.add(new Score(null, 0f));
 		
 //		if (CentreProximity.isApplicableToGame(game))
-//		{
 //			heuristicTerms.add(new CentreProximity(null, 0f, null));
-//		}
 		
 //		if (ComponentValues.isApplicableToGame(game))
 //		{
@@ -610,31 +596,18 @@ public class HeuristicsLearning
 //		}
 			
 //		if (CornerProximity.isApplicableToGame(game))
-//		{
-////			heuristicTerms.add(new CornerProximity(null, 0f, null));
-//			heuristicTerms.add(new CornerProximity(null, defaultWeight, null));
-//		}
+//			heuristicTerms.add(new CornerProximity(null, 0f, null));
 	
-		if (Material.isApplicableToGame(game))
-		{
-//			heuristicTerms.add(new Material(null, Float.valueOf(weight), null, null));
-			heuristicTerms.add(new Material(null, 1f, null, null));
-		}
-	
-//		if (SidesProximity.isApplicableToGame(game))
-//		{
-////			heuristicTerms.add(new SidesProximity(null, Float.valueOf(defaultWeight), null));
-//			heuristicTerms.add(new SidesProximity(null, defaultWeight, null));
-//		}
+		if (SidesProximity.isApplicableToGame(game))
+			heuristicTerms.add(new SidesProximity(null, 0f, null));
 		
-//		if (PlayerRegionsProximity.isApplicableToGame(game))
-//		{
-//			for (int p = 1; p <= game.players().count(); ++p)
-//			{
-////				heuristicTerms.add(new PlayerRegionsProximity(null, Float.valueOf(defaultWeight), Integer.valueOf(p), null));
-//				heuristicTerms.add(new PlayerRegionsProximity(null, defaultWeight, p, null));
-//			}
-//		}
+		if (PlayerRegionsProximity.isApplicableToGame(game))
+		{
+			for (int p = 1; p <= game.players().count(); ++p)
+			{
+				heuristicTerms.add(new PlayerRegionsProximity(null, 0f, p, null));
+			}
+		}
 		
 		/*
 		 if (RegionProximity.isApplicableToGame(game))

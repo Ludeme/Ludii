@@ -10,6 +10,7 @@ import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
 import supplementary.experiments.EvaluateAllUBFMs;
 import supplementary.experiments.EvaluateUBFM;
+import supplementary.experiments.HeuristicsLearning;
 import supplementary.experiments.debugging.FindCrashingTrial;
 import supplementary.experiments.eval.EvalAgents;
 import supplementary.experiments.eval.EvalGames;
@@ -71,7 +72,8 @@ public class PlayerCLI
 					"--game-distance",
 					"--generate-feature-eval-scripts",
 					"--kilothon",
-					"--eval-ubfm"
+					"--eval-ubfm",
+					"--learning-with-descent"
 				)
 				.withNumVals(1)
 				.withType(OptionTypes.String));
@@ -117,6 +119,8 @@ public class PlayerCLI
 			Kilothon.main(passArgs);
 		else if (command.equalsIgnoreCase("--eval-ubfm"))
 			EvaluateAllUBFMs.main(passArgs);
+		else if (command.equalsIgnoreCase("--learning-with-descent"))
+			HeuristicsLearning.main(passArgs);
 		else
 			System.err.println("ERROR: command not yet implemented: " + command);
 

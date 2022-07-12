@@ -38,6 +38,9 @@ import utils.data_structures.transposition_table.TranspositionTableUBFM.UBFMTTDa
 without Knowledge by Quentin Cohen-Solal (2021))
  * (chunks of code copied from AlphaBetaSearch, especially the variables initialisation)
  * 
+ * note that by default the transposition table is cleared each turn, if 
+ * it is not the case then it keeps growing infinitely
+ * 
  * @author cyprien
 */
 
@@ -55,7 +58,7 @@ public class UBFM extends ExpertPolicy
 	protected boolean fullPlayouts = false;
 	
 	/** Set to true to reset the TT after each move (usually only for tree search display) */
-	public boolean resetTTeachTurn = false;
+	public boolean resetTTeachTurn = true;
 
 	/** Value of epsilon if a randomised policy is picked (default is epsilon-greedy) */
 	protected double selectionEpsilon = 0.2;
@@ -383,9 +386,6 @@ public class UBFM extends ExpertPolicy
 			minimaxBFS(contextCopy, maximisingPlayer, stopTime, 1, initialnodeHashes);
 
 			iterationCount += 1;
-			
-			if (iterationCount == 12)
-				break;
 		};
 		
 		final UBFMTTData rootTableData = transpositionTable.retrieve(zobrist);
@@ -747,11 +747,15 @@ public class UBFM extends ExpertPolicy
 						heuristicScore -= heuristicValueFunction().computeValue(context, opp, ABS_HEURISTIC_WEIGHT_THRESHOLD);
 					else if (context.winners().contains(opp))
 						heuristicScore -= PARANOID_OPP_WIN_SCORE;
-				}				transpositionTable.store(null, zobrist, heuristicScore, depth, TranspositionTableUBFM.EXACT_VALUE, null);
+				}
+				
+				
 				
 				minHeuristicEval = Math.min(minHeuristicEval, heuristicScore);
-				maxHeuristicEval = Math.max(maxHeuristicEval, heuristicScore);
+				maxHeuristicEval = Math.max(maxHeuristicEval, heuristicScore);	
 			}
+			
+			transpositionTable.store(null, zobrist, heuristicScore, depth, TranspositionTableUBFM.EXACT_VALUE, null);
 			
 			// Invert scores if players swapped (to check)
 			if (context.state().playerToAgent(maximisingPlayer) != maximisingPlayer)

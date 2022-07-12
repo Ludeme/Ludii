@@ -17,6 +17,7 @@ import other.GameLoader;
 import other.RankUtils;
 import other.context.Context;
 import other.trial.Trial;
+import search.mcts.MCTS;
 //import other.trial.Trial;
 import search.minimax.AlphaBetaSearch;
 import search.minimax.HybridUBFM;
@@ -49,7 +50,7 @@ public class EvaluateUBFM
 	private static double thinkingTime = 1;
 	
 	/** Game played: */
-	private static final String gameName = "Breakthrough";
+	private static final String gameName = "Alquerque";
 	
 	/** Name of the file in which the results will be written: */
 	private String outputFile = "comparison_output.sav";
@@ -97,10 +98,10 @@ public class EvaluateUBFM
 						{
 							try
 							{
-								final UBFM UBFM_AI = new UBFM();
+								final UBFM UBFM_AI = new BiasedUBFM();
 								UBFM_AI.setSelectionPolicy(UBFM.SelectionPolicy.SAFEST);
 								
-								final AI alphaBetaAI = new AlphaBetaSearch();
+								final AI alphaBetaAI = MCTS.createUCT();
 								
 								UBFM_AI.debugDisplay = false;
 								UBFM_AI.savingSearchTreeDescription = false;
