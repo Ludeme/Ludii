@@ -1,13 +1,13 @@
 (define "Columns" 6)
 
-(define "NextHoleFrom" (trackSite Move from:#1 #2))
+(define "NextHoleFrom" ("NextSiteOnTrack" #2 from:#1))
 
 (define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
 
-(define "OneRowIsEmpty" 
+(define "OneRowIsEmpty"
     (or
-        (= 0 (count in:(sites P1)))
-        (= 0 (count in:(sites P2)))
+        (all Sites (sites P1) if:(= 0 (count at:(site))))
+        (all Sites (sites P2)  if:(= 0 (count at:(site))))
     )
 )
 
@@ -40,13 +40,13 @@
                 )
                 (then 
                     (sow  
-                        apply:(if (and (!= (count at:("NextHoleFrom" (to) steps:1)) 0) (> (count at:(to)) 1))
+                        apply:(if (and (!= (count at:("NextHoleFrom" (to) 1)) 0) (> (count at:(to)) 1))
                             (moveAgain)
-                            (if (and (= (count at:("NextHoleFrom" (to) steps:1)) 0) (> (count at:(to)) 1))
+                            (if (and (= (count at:("NextHoleFrom" (to) 1)) 0) (> (count at:(to)) 1))
                                 (fromTo 
-                                    (from ("NextHoleFrom" (to) steps:2)) 
+                                    (from ("NextHoleFrom" (to) 2)) 
                                     (to (handSite (mover))) 
-                                    count:(count at:("NextHoleFrom" (to) steps:2))
+                                    count:(count at:("NextHoleFrom" (to) 2))
                                 )
                             )
                         )
@@ -54,14 +54,8 @@
                 )
             )
         )
-        (end
-            (if ("OneRowIsEmpty")
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        
+        (end ("MancalaByScoreWhen" ("OneRowIsEmpty")))
     )	
 )
 

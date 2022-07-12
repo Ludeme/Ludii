@@ -1,8 +1,6 @@
 (define "Columns" <Row:size>)
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
 (define "NoPiece" (all Sites (sites Player) if:(= 0 (count at:(site)))))
-(define "PreviousHole" (trackSite Move from:(from) "TrackCW" steps:1))
+(define "PreviousHole" ("NextSiteOnTrack" 1 from:(from) "TrackCW"))
 
 //------------------------------------------------------------------------------
 
@@ -52,18 +50,18 @@
                                 owner:(mover)
                                 apply:(if (is In (to) (sites Mover "Inner"))
                                     (if 
-                                        (is Occupied ("OppositePit"))
+                                        (is Occupied ("OppositePit" (to)))
                                         (and {
                                             (fromTo
-                                                (from ("OppositePit"))
+                                                (from ("OppositePit" (to)))
                                                 (to (handSite Mover))
-                                                count: (count at:("OppositePit"))
+                                                count: (count at:("OppositePit" (to)))
                                             )
-                                            (if (is Occupied ("OppositeOuterPit"))
+                                            (if (is Occupied ("OppositeOuterPit" (to)))
                                                 (fromTo
-                                                    (from ("OppositeOuterPit"))
+                                                    (from ("OppositeOuterPit" (to)))
                                                     (to (handSite Mover))
-                                                    count: (count at:("OppositeOuterPit"))
+                                                    count: (count at:("OppositeOuterPit" (to)))
                                                 )
                                             )
                                             (set Value Mover (+ 1 (value Player Mover)))
@@ -125,18 +123,18 @@
                                         })
                                         (if (is In (to) (sites Mover "Inner"))
                                             (if 
-                                                (is Occupied ("OppositePit"))
+                                                (is Occupied ("OppositePit" (to)))
                                                 (and {
                                                     (fromTo
-                                                        (from ("OppositePit"))
+                                                        (from ("OppositePit" (to)))
                                                         (to (handSite Mover))
-                                                        count: (count at:("OppositePit"))
+                                                        count: (count at:("OppositePit" (to)))
                                                     )
-                                                    (if (is Occupied ("OppositeOuterPit"))
+                                                    (if (is Occupied ("OppositeOuterPit" (to)))
                                                         (fromTo
-                                                            (from ("OppositeOuterPit"))
+                                                            (from ("OppositeOuterPit" (to)))
                                                             (to (handSite Mover))
-                                                            count: (count at:("OppositeOuterPit"))
+                                                            count: (count at:("OppositeOuterPit" (to)))
                                                         )
                                                     )
                                                     (set Value Mover (+ 1 (value Player Mover)))

@@ -1,16 +1,12 @@
 (define "Columns" <Row:size>)
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
-
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
-
 (define "NoPiece" (all Sites (sites Player "Home") if:(= 0 (count at:(site)))))
 
 (define "AHoleHasMoreThanOneCounter" 
-    (!= 0 (count Sites in:(forEach (sites Mover) if:(< 1 (count at:(site))))))
+    (not (all Sites (forEach (sites Mover) if:(< 1 (count at:(site)))) if:(= 0 (count at:(site)))))
 )
 
-(define "NextHoleFrom" (trackSite Move from:#1 #2 steps:1))
+(define "NextHoleFrom" ("NextSiteOnTrack" 1 from:#1 #2))
 
 (define "NumCapture" (var))
 
@@ -40,8 +36,7 @@
         
         (play 
             (if (< 0 ("NumCapture"))
-                (move 
-                    Remove
+                (move Remove
                     (forEach (sites Next) if:(< 0 (count at:(site))))
                     (then 
                         (and
@@ -50,8 +45,7 @@
                         )
                     )
                 )
-                (move
-                    Select
+                (move Select
                     (from 
                         (if 
                             ("SameTurn") 
@@ -69,12 +63,12 @@
                             owner:(mover)
                             apply:(if (= (count at:(to)) 1)
                                 (if (is In (to) (sites Mover "Inner"))
-                                    (if (> (count at:"OppositePit") 0) 
+                                    (if (> (count at:("OppositePit" (to))) 0) 
                                         (and {
-                                            (remove ("OppositePit")) 
+                                            (remove ("OppositePit" (to))) 
                                             (if 
-                                                (> (count at:"OppositeOuterPit") 0) 
-                                                (remove "OppositeOuterPit") 
+                                                (> (count at:("OppositeOuterPit" (to))) 0) 
+                                                (remove ("OppositeOuterPit" (to))) 
                                             ) 
                                             (moveAgain)
                                             ("HaveToMakeExtraCapture")

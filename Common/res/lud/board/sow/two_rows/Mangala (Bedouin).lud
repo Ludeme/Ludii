@@ -2,12 +2,10 @@
 
 (define "PiecesOwnedBy" (count Cell at:(handSite #1)))
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
-
-(define "OneRowIsEmpty" 
+(define "OneRowIsEmpty"
     (or
-        (all Sites (sites P1) if:(is Empty (site)))
-        (all Sites (sites P2) if:(is Empty (site)))
+        (all Sites (sites P1) if:(= 0 (count at:(site))))
+        (all Sites (sites P2)  if:(= 0 (count at:(site))))
     )
 )
 
@@ -71,9 +69,7 @@
             (play
                 (move Select
                     (from (mapEntry Mover)  if:(is Occupied (from)))
-                    (then
-                        (sow)
-                    )
+                    (then (sow))
                 )
             )
             (nextPhase Mover "Sowing")
@@ -83,8 +79,7 @@
             (play
                 (move Select
                     (from
-                        (if 
-                            ("SameTurn") 
+                        (if ("SameTurn") 
                             "LastHoleSowed" 
                             (sites Mover) 
                         ) 
@@ -95,7 +90,7 @@
                             apply:(if (< 10 (count at:(to)))
                                 (moveAgain)
                                 (if (is Even (count at:(to)))
-                                    (if (is Even (count at:("OppositePit")))
+                                    (if (is Even (count at:("OppositePit" (to))))
                                         (and
                                             (fromTo
                                                 (from (to))
@@ -103,9 +98,9 @@
                                                 count:(count at:(to))
                                             )
                                             (fromTo
-                                                (from ("OppositePit"))
+                                                (from ("OppositePit" (to)))
                                                 (to (handSite Mover))
-                                                count:(count at:("OppositePit"))
+                                                count:(count at:("OppositePit" (to)))
                                             )
                                         )
                                         (moveAgain)
@@ -116,14 +111,8 @@
                     )
                 )
             )
-            (end
-                (if ("OneRowIsEmpty")
-                    (byScore {
-                        (score P1 ("PiecesOwnedBy" P1)) 
-                        (score P2 ("PiecesOwnedBy" P2))
-                    })
-                )
-            )
+            
+            (end ("MancalaByScoreWhen" ("OneRowIsEmpty")))
         )
         }
     )

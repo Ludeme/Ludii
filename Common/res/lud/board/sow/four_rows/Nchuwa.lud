@@ -2,10 +2,6 @@
 
 (define "PiecesOwnedBy" (count in:(sites #1 "Home")))
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
-
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
-
 (define "FirstSiteToSow"
     (if (is Mover P1)
         (intersection (sites Right) (sites Row 1))
@@ -13,7 +9,7 @@
     )	
 )
 
-(define "NextSite" (trackSite Move #1 steps:1))
+(define "NextSite" ("NextSiteOnTrack" 1 #1))
 
 //------------------------------------------------------------------------------
 
@@ -34,8 +30,7 @@
         (regions "Outer" P1 (sites Row 0))                                   // P1 Outer Home
         (regions "Outer" P2 (sites Row 3))                                   // P2 Outer Home
         (piece "Seed" Shared)
-        }
-    )  
+    })  
     (rules 
         
         (start 
@@ -74,7 +69,7 @@
                     )
                 )
             )
-            (nextPhase Mover (= Off (value Player Mover)) "Opening3")
+            (nextPhase Mover ("IsOffBoard" (value Player Mover)) "Opening3")
         )
         (phase "Opening3"
             (play
@@ -96,11 +91,9 @@
         )
         (phase "Playing"
             (play
-                (move
-                    Select 
+                (move Select 
                     (from 
-                        (if 
-                            ("SameTurn") 
+                        (if ("SameTurn") 
                             "LastHoleSowed" 
                             (sites Mover "Home") 
                         ) 
@@ -112,12 +105,12 @@
                             owner:(mover)
                             apply:(if (= (count at:(to)) 1)
                                 (if (is In (to) (sites Mover "Inner"))
-                                    (if (> (count at:"OppositePit") 0) 
+                                    (if (> (count at:("OppositePit" (to))) 0) 
                                         (and
-                                            (remove ("OppositePit")) 
+                                            (remove ("OppositePit" (to))) 
                                             (if 
-                                                (> (count at:"OppositeOuterPit") 0) 
-                                                (remove ("OppositeOuterPit")) 
+                                                (> (count at:("OppositeOuterPit" (to))) 0) 
+                                                (remove ("OppositeOuterPit" (to))) 
                                             ) 
                                         ) 
                                     ) 

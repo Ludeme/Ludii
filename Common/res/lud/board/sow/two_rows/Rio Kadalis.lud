@@ -1,12 +1,10 @@
-(define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
+(define "NextHole" ("NextSiteOnTrack" #2 from:#1 "Track"))
 (define "OwnedHoles" 
     (if (is Mover P1)
         (sites (values Remembered "OwnedP1"))
         (sites (values Remembered "OwnedP2"))
     )
 )
-
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
 (define "RightMostEmpty" 
     (trackSite FirstSite "TrackCW"
@@ -59,8 +57,7 @@
         phases:{
         (phase "Sowing"
             (play
-                (or 
-                    {
+                (or {
                     (move Select 
                         (from
                             (if ("SameTurn")

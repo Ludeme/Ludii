@@ -1,9 +1,5 @@
 (define "Columns" <Board:size>)
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
-
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
-
 (define "MoveAgainAfterCapture" (and (is Pending) ("SameTurn")))
 
 (define "StylizedMove" 
@@ -34,18 +30,18 @@
                             (to (handSite Mover)) 
                             count:(count at:(to)) 
                         )
-                        (if (> (count at:"OppositePit") 0)
+                        (if (> (count at:("OppositePit" (to))) 0)
                             (fromTo 
-                                (from "OppositePit") 
+                                (from ("OppositePit" (to))) 
                                 (to (handSite Mover)) 
-                                count:(count at:"OppositePit")
+                                count:(count at:("OppositePit" (to)))
                             ) 
                         ) 
-                        (if (> (count at:"OppositeOuterPit") 0)
+                        (if (> (count at:("OppositeOuterPit" (to))) 0)
                             (fromTo 
-                                (from "OppositeOuterPit") 
+                                (from ("OppositeOuterPit" (to))) 
                                 (to (handSite Mover)) 
-                                count:(count at:"OppositeOuterPit")
+                                count:(count at:("OppositeOuterPit" (to)))
                             ) 
                         )
                         (set Pending) // We indicate we can capture again in pending the next state.
@@ -78,8 +74,7 @@
         (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))   // P2 inner Home
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+    })  
     (rules 
         
         (start { 
@@ -102,8 +97,7 @@
         
         (play 
             (if "MoveAgainAfterCapture"
-                (move
-                    Select
+                (move Select
                     (from (sites Next "Home") if:(> (count at:(from)) 0))
                     (then 
                         (fromTo 
@@ -116,8 +110,7 @@
                 (priority
                     (move Select 
                         (from 
-                            (if 
-                                ("SameTurn") 
+                            (if ("SameTurn") 
                                 "LastHoleSowed" 
                                 (if 
                                     (< (count Turns) 3) 
@@ -129,11 +122,9 @@
                         )
                         "Sow"
                     )
-                    (move 
-                        Select 
+                    (move Select 
                         (from 
-                            (if 
-                                ("SameTurn") 
+                            (if ("SameTurn") 
                                 "LastHoleSowed" 
                                 (sites Mover "Home") 
                             )

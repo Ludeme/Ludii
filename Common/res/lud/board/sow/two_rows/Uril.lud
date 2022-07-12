@@ -18,8 +18,7 @@
         (start (set Count 4 to:(sites Track)))		  
         (play 
             (do  
-                (move
-                    Select 
+                (move Select 
                     (from 
                         (sites Mover) 
                         if:(< 0 (count at:(from)))
@@ -47,14 +46,10 @@
             )
         )
         (end
-            {
-            (if (>= (count at:(mapEntry P1)) 25)
-                (result P1 Win)
+            (forEach Player
+                if:(>= (count at:(mapEntry Player)) 25)
+                (result Player Win)
             )
-            (if (>= (count at:(mapEntry P2)) 25)
-                (result P2 Win)
-            )
-            }
         )
     )
 )

@@ -1,8 +1,7 @@
 (define "Columns" 7)
-(define "OppositePit" (if (is In #1 (sites Bottom)) (+ #1 "Columns") (- #1 "Columns")))
-(define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
+(define "NextHole" ("NextSiteOnTrack" #2 from:#1 "Track"))
 (define "PlayableSites" (sites (values Remembered "Playable")))
-(define "NoPieceOnBoard" (no Pieces All in:(forEach (sites Board) if:(= 0 (state at:(site))))))
+(define "NoPieceOnBoard" (all Sites (forEach (sites Board) if:(= 0 (state at:(site)))) if:(= 0 (count at:(site)))))
 (define "LeftMostEmpty" 
     (trackSite FirstSite "TrackCCW"
         from:(mapEntry "LeftMost" Mover)
@@ -64,14 +63,14 @@
                                             (moveAgain)
                                             (set Var "Replay" ("NextHole" (to) 1))
                                         )
-                                        (if (is Occupied ("OppositePit" ("NextHole" (to) 1)))
+                                        (if (is Occupied ("OppositePitTwoRows" ("NextHole" (to) 1)))
                                             (and
                                                 (fromTo
-                                                    (from ("OppositePit" ("NextHole" (to) 1)))
+                                                    (from ("OppositePitTwoRows" ("NextHole" (to) 1)))
                                                     (to (handSite Mover))
-                                                    count:(count at: ("OppositePit" ("NextHole" (to) 1)))
+                                                    count:(count at: ("OppositePitTwoRows" ("NextHole" (to) 1)))
                                                 )
-                                                (set State at:("OppositePit" ("NextHole" (to) 1)) (state at:("OppositePit" ("NextHole" (to) 1))))
+                                                (set State at:("OppositePitTwoRows" ("NextHole" (to) 1)) (state at:("OppositePitTwoRows" ("NextHole" (to) 1))))
                                             )
                                         )
                                     )

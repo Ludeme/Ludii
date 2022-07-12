@@ -1,4 +1,4 @@
-(define "NextHoleFrom" (trackSite Move from:#1 steps:#2))
+(define "NextHoleFrom" ("NextSiteOnTrack" #2 from:#1))
 
 (define "LastHole" (last To afterConsequence:True))
 
@@ -20,8 +20,7 @@
     (rules
         (start (set Count 4 to:(sites Board)))
         (play 
-            (move
-                Select 
+            (move Select 
                 (from 
                     (if 
                         ("SameTurn") 

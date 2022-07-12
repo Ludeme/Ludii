@@ -5,7 +5,7 @@
         if:(is Mover (who at:(to)))
     )
 )
-(define "NextHoleFrom" (trackSite Move from:#1 #2))
+(define "NextHoleFrom" ("NextSiteOnTrack" #2 from:#1))
 
 //------------------------------------------------------------------------------
 
@@ -30,11 +30,8 @@
         (play 
             (if (!= 1 (count Pieces Mover))
                 (or
-                    (move
-                        Select 
-                        (from 
-                            ("RightMost") 
-                        )
+                    (move Select 
+                        (from ("RightMost"))
                         (then 
                             (sow
                                 numPerHole:(if (is Empty (to)) 2 1)
@@ -53,7 +50,7 @@
                     (if (not ("SameTurn"))
                         (move
                             (from ("RightMost"))
-                            (to ("NextHoleFrom" ("RightMost") steps:1)
+                            (to ("NextHoleFrom" ("RightMost") 1)
                                 (apply 
                                     (if (and (!= (mover) (what at:(to))) (is Occupied (to)))
                                         (and

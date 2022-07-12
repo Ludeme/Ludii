@@ -49,7 +49,7 @@
                     (then 
                         (fromTo 
                             (from (last To)) 
-                            (to (trackSite Move from:(last To) steps:1)) 
+                            (to ("NextSiteOnTrack" 1 from:(last To))) 
                             count:(count at:(last To))
                         ) 
                     )

@@ -17,8 +17,7 @@
     (rules 
         (start (set Count 6 to:(sites Track)))		  
         (play 
-            (move 
-                Select 
+            (move Select 
                 (from 
                     (sites Mover) 
                     if:(< 0 (count at:(from)))
@@ -35,14 +34,7 @@
                 )
             )
         )
-        (end
-            (if <End:cond>
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" <End:cond>))
     )
 )
 

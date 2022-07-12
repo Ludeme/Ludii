@@ -1,6 +1,4 @@
 (define "Columns" <Board:rowSize>)
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
 
 //------------------------------------------------------------------------------
 
@@ -50,22 +48,22 @@
                                                 (moveAgain)
                                                 (set Var "Replay" (to))
                                             )
-                                            (if (< 1 (count at:("OppositePit")))
+                                            (if (< 1 (count at:("OppositePit" (to))))
                                                 (and {
                                                     (fromTo
-                                                        (from ("OppositePit"))
+                                                        (from ("OppositePit" (to)))
                                                         (to (to))
-                                                        count:(count at:("OppositePit"))
+                                                        count:(count at:("OppositePit" (to)))
                                                     )
                                                     (moveAgain)
                                                     (set Var "Replay" (to))
                                                 })
-                                                (if (< 1 (count at:("OppositeOuterPit")))
+                                                (if (< 1 (count at:("OppositeOuterPit" (to))))
                                                     (and {
                                                         (fromTo
-                                                            (from ("OppositeOuterPit"))
+                                                            (from ("OppositeOuterPit" (to)))
                                                             (to (to))
-                                                            count:(count at:("OppositeOuterPit"))
+                                                            count:(count at:("OppositeOuterPit" (to)))
                                                         )
                                                         (moveAgain)
                                                         (set Var "Replay" (to))
@@ -104,22 +102,22 @@
                                                 (moveAgain)
                                                 (set Var "Replay" (to))
                                             )
-                                            (if (< 1 (count at:("OppositePit")))
+                                            (if (< 1 (count at:("OppositePit" (to))))
                                                 (and {
                                                     (fromTo
-                                                        (from ("OppositePit"))
+                                                        (from ("OppositePit" (to)))
                                                         (to (to))
-                                                        count:(count at:("OppositePit"))
+                                                        count:(count at:("OppositePit" (to)))
                                                     )
                                                     (moveAgain)
                                                     (set Var "Replay" (to))
                                                 })
-                                                (if (< 1 (count at:("OppositeOuterPit")))
+                                                (if (< 1 (count at:("OppositeOuterPit" (to))))
                                                     (and {
                                                         (fromTo
-                                                            (from ("OppositeOuterPit"))
+                                                            (from ("OppositeOuterPit" (to)))
                                                             (to (to))
-                                                            count:(count at:("OppositeOuterPit"))
+                                                            count:(count at:("OppositeOuterPit" (to)))
                                                         )
                                                         (moveAgain)
                                                         (set Var "Replay" (to))

@@ -1,12 +1,11 @@
 // Game modelled without the simultaneous play.
 
 (define "Columns" 5)
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
 (define "LastHoleSowed" (sites {("NextSite" from:(last To afterConsequence:True))}))
 (define "NextSite" 
-    (if (= (trackSite Move #1 steps:1) (mapEntry Mover))
-        (trackSite Move #1 steps:2)
-        (trackSite Move #1 steps:1)
+    (if (= ("NextSiteOnTrack" 1 #1) (mapEntry Mover))
+        ("NextSiteOnTrack" 2 #1)
+        ("NextSiteOnTrack" 1 #1)
     )
 )
 
@@ -26,8 +25,7 @@
         (regions "Home" P1 (sites Bottom))
         (regions "Home" P2 (sites Top))
         (map {(pair P1 LastSite) (pair P2 FirstSite)})  // kalahs (storage pits)
-        }
-    )  
+    })  
     (rules 
         (start (set Count 6 to:(union (sites Bottom) (sites Top))))
         
@@ -50,11 +48,11 @@
                             apply:(if (!= 0 (count at:("NextSite" from:(to))))
                                 (moveAgain)
                                 (if (is In (to) (sites Mover "Home"))
-                                    (if (!= 0 (count at:("OppositePit")))
+                                    (if (!= 0 (count at:("OppositePit" (to))))
                                         (fromTo
-                                            (from ("OppositePit"))
+                                            (from ("OppositePit" (to)))
                                             (to (mapEntry Mover))
-                                            count:(count at:("OppositePit"))
+                                            count:(count at:("OppositePit" (to)))
                                         )
                                     )
                                 )
@@ -85,7 +83,6 @@
             (nextPhase (all Passed) "Sowing")
         )
         }
-        
     )
 )
 

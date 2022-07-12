@@ -1,14 +1,13 @@
 (define "Columns" 8)
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
 (define "PiecesOwnedBy" (count at:(mapEntry #1)))
-(define "NextHole" (trackSite Move from:#1 #2 steps:#3))
+(define "NextHole" ("NextSiteOnTrack" #3 from:#1 #2))
 (define "Capture" 
     (if (and (= 1 (var "GoInOpponentRow")) (is In (to) (sites Mover)))
-        (if (!= 0 (count at:("OppositePit")))
+        (if (!= 0 (count at:("OppositePit" (to))))
             (fromTo
-                (from ("OppositePit"))
+                (from ("OppositePit" (to)))
                 (to (mapEntry Mover))
-                count:(count at:("OppositePit"))
+                count:(count at:("OppositePit" (to)))
                 (then
                     (if (and (is Empty ("NextHole" (last From) #1 1)) (is In ("NextHole" (last From) #1 1) (sites Mover)))
                         (and
@@ -228,14 +227,7 @@
         
         }
         
-        (end
-            (if (no Moves Mover)
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (no Moves Mover)))
     )	
 )
 

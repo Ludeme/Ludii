@@ -1,7 +1,5 @@
 (define "Columns" 6)
 
-(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns")))
-
 (define "APlayerCanNotMove"
     (and (not (is Next Mover))
         (or
@@ -62,7 +60,7 @@
                                         )
                                         (and
                                             (set State at:(to) (mover))
-                                            (set State at:("OppositePit" (to)) (mover))
+                                            (set State at:("OppositePitTwoRows" (to)) (mover))
                                         )
                                         (if (< 1 (count at:(to)))
                                             (and
@@ -186,9 +184,7 @@
                 )		
             "Sowing")
         )
-        
         }
-        
     )
 )
 

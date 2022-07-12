@@ -15,14 +15,12 @@
         (regions "Home" P1 (sites Bottom)) // P1 Home
         (regions "Home" P2 (sites Top))    // P2 home
         (hand Each)
-        }
-    )  
+    })  
     (rules 
         (start (set Count 6 to:(sites Track)))
         
         (play 
-            (move
-                Select 
+            (move Select 
                 (from 
                     (sites Mover "Home") 
                     if:(> (count at:(from)) 0)
@@ -46,14 +44,7 @@
             )		
         )
         
-        (end 
-            (if (= 0 ("NumPiecesOnBoard"))
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (= 0 ("NumPiecesOnBoard"))))
     )
 )
 

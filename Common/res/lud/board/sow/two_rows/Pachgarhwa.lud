@@ -1,8 +1,8 @@
 (define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
 
-(define "NextHole" (trackSite Move from:(to) steps:1))
+(define "NextHole" ("NextSiteOnTrack" 1 from:(to)))
 
-(define "NextNextHole" (trackSite Move from:(to) steps:2))
+(define "NextNextHole" ("NextSiteOnTrack" 2 from:(to)))
 
 (define "LastHoleSowed" (sites {(value Pending)}))
 
@@ -18,16 +18,13 @@
         (regions P2 (sites Top))                        // P2 home
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+    })  
     (rules 
         (start (set Count 5 to:(sites Track)))
         
-        (play (move 
-                Select 
+        (play (move Select 
                 (from 
-                    (if 
-                        ("SameTurn") 
+                    (if ("SameTurn") 
                         "LastHoleSowed" 
                         (sites Mover) 
                     ) 
@@ -59,14 +56,7 @@
             )
         )
         
-        (end
-            (if (= 1 (count in:(sites Board)))
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (= 1 (count in:(sites Board)))))
     )
 )
 

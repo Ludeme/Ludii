@@ -1,10 +1,9 @@
 (define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1 "Home"))))
-(define "NextHoleFrom" (trackSite Move from:#1 #2))
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
+(define "NextHoleFrom" ("NextSiteOnTrack" #2 from:#1))
 (define "OneRowIsEmpty"
     (or
-        (no Pieces All in:(sites P1))
-        (no Pieces All in:(sites P2))
+        (all Sites (sites P1) if:(= 0 (count at:(site))))
+        (all Sites (sites P2)  if:(= 0 (count at:(site))))
     )
 )
 (define "OwnedHoles" 
@@ -63,10 +62,10 @@
                                             (to (handSite Mover))
                                             count:4
                                         )
-                                        (if (is Occupied ("NextHoleFrom" (to) steps:1))
+                                        (if (is Occupied ("NextHoleFrom" (to) 1))
                                             (and
                                                 (moveAgain)
-                                                (set Var "Replay" ("NextHoleFrom" (to) steps:1))
+                                                (set Var "Replay" ("NextHoleFrom" (to) 1))
                                             )
                                         )
                                     )
@@ -139,7 +138,6 @@
             (nextPhase (all Passed) "Sowing")
         )
         }
-        
     )
 )
 

@@ -1,6 +1,4 @@
 (define "Columns" 8)
-(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")))
-(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2))))
 
 //------------------------------------------------------------------------------
 
@@ -22,8 +20,7 @@
         (regions "SideHoles" P2 (intersection (sites Track "Track2") (union (sites Right) (sites Left)))) // P2 sides holes
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+    })  
     (rules 
         
         (start {
@@ -36,8 +33,7 @@
             (or
                 (move Select
                     (from 
-                        (if 
-                            ("SameTurn") 
+                        (if ("SameTurn") 
                             "LastHoleSowed" 
                             (difference (sites Mover "Home") (sites Mover "SideHoles"))
                         ) 
@@ -88,8 +84,7 @@
                     )
                     (move Select
                         (from 
-                            (if 
-                                ("SameTurn") 
+                            (if ("SameTurn") 
                                 "LastHoleSowed" 
                                 (sites Mover "SideHoles")
                             ) 

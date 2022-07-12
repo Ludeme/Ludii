@@ -1,7 +1,5 @@
 (define "Columns" <Board:size>)
 
-(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns")))
-
 (define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1 "Home"))))
 
 //------------------------------------------------------------------------------
@@ -10,7 +8,6 @@
     (players 2)  
     
     (equipment { 
-        
         (mancalaBoard 2 "Columns" store:None
             {
             (track "Track" "0,E,N,W" loop:True)
@@ -52,15 +49,15 @@
                                 apply:(if (and
                                         (is In (to) (sites Next "Home"))
                                         (or {
-                                            (= 1 (count at:("OppositePit")))
-                                            (= 3 (count at:("OppositePit")))
-                                            (= 5 (count at:("OppositePit")))
+                                            (= 1 (count at:("OppositePitTwoRows" (to))))
+                                            (= 3 (count at:("OppositePitTwoRows" (to))))
+                                            (= 5 (count at:("OppositePitTwoRows" (to))))
                                         })
                                     )
                                     (fromTo
-                                        (from ("OppositePit"))
+                                        (from ("OppositePitTwoRows" (to)))
                                         (to (handSite Mover))
-                                        count:(count at:("OppositePit"))
+                                        count:(count at:("OppositePitTwoRows" (to)))
                                     )
                                 )
                                 origin:(< 1 (count at:(from)))
@@ -92,7 +89,7 @@
         )
         }
         
-        (end (if (no Pieces in:(sites Board))
+        (end (if (all Sites (sites Board) if:(= 0 (count at:(site))))
                 {
                 (if (is Empty (handSite P1)) (result P2 Win))
                 (if (is Empty (handSite P2)) (result P1 Win))

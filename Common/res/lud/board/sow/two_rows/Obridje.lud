@@ -18,11 +18,9 @@
         (start (set Count 4 to:(sites Track)))
         
         (play 
-            (move
-                Select 
+            (move Select 
                 (from 
-                    (if 
-                        ("SameTurn") 
+                    (if ("SameTurn") 
                         (sites {(var "Replay")})
                         (sites Mover) 
                     ) 
@@ -62,14 +60,7 @@
             )
         )
         
-        (end
-            (if (no Moves Next) 
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (no Moves Next)))
     )
 )
 

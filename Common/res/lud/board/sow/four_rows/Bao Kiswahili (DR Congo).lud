@@ -1,5 +1,5 @@
 (define "Columns" 8)
-(define "NoPiecesInInner" (no Pieces All in:(sites #1 "Inner")))
+(define "NoPiecesInInner" (all Sites (sites #1 "Inner") if:(= 0 (count at:(site)))))
 (define "Sowing"
     (sow
         #1

@@ -26,11 +26,9 @@
         (start (set Count 2 to:(sites Board)))
         
         (play 
-            (move
-                Select
+            (move Select
                 (from 
-                    (if 
-                        ("SameTurn") 
+                    (if ("SameTurn") 
                         "LastHoleSowed" 
                         (sites Mover "Home") 
                     ) 

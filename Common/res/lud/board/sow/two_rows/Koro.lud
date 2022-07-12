@@ -74,10 +74,12 @@
             )
         )
         
-        (end {
-            (if ("NoOwnedHoleWithMoreThanOneSeed" P1) (result P2 Win))
-            (if ("NoOwnedHoleWithMoreThanOneSeed" P2) (result P1 Win))
-        })
+        (end 
+            (forEach Player
+                if:("NoOwnedHoleWithMoreThanOneSeed" Player)
+                (result Player Loss)
+            )
+        )
     )
 )
 

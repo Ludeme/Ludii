@@ -1,10 +1,7 @@
 (define "Columns" 7)
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
-
 (define "Sow" 
-    (move
-        Select
+    (move Select
         (from (sites Mover "Home") if:#1)
         (then 
             (sow
@@ -13,12 +10,12 @@
                 if:(and { 
                     (= (count at:(to)) 1) 
                     (is In (to) (sites Mover "Inner")) 
-                    (> (count at:"OppositePit") 0) 
+                    (> (count at:("OppositePit" (to))) 0) 
                 })
                 apply:(fromTo 
-                    (from "OppositePit") 
+                    (from ("OppositePit" (to))) 
                     (to (handSite Mover)) 
-                    count:(count at:"OppositePit")
+                    count:(count at:("OppositePit" (to)))
                 ) 
             )
         )
@@ -45,8 +42,7 @@
         (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))   // P2 inner Home
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+    })  
     (rules 
         
         (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home"))))

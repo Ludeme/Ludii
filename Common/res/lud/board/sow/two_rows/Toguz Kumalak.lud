@@ -1,7 +1,5 @@
 (define "Columns" 9)
 
-(define "OppositePit" (if (is Mover P1) (- (to) "Columns") (+ (to) "Columns")))
-
 (define "Tuz" (value Player #1))
 
 (define "CaptureFromTuzOf" 
@@ -31,8 +29,7 @@
         (start (set Count 9 to:(sites Track)))
         
         (play 
-            (move
-                Select 
+            (move Select 
                 (from 
                     (sites Mover) 
                     if:(> (count at:(from)) 0)
@@ -80,14 +77,7 @@
             )
         )
         
-        (end
-            (if (no Moves Mover) 
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (no Moves Mover)))
     )
 )
 

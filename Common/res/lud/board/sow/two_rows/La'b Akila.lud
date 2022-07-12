@@ -1,5 +1,4 @@
 (define "Columns" 7)
-(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns")))
 
 (define "NoPieceOnBoard" (>= 1 (count Pieces All in:(sites Board))))
 (define "PiecesOwnedBy" (+ (count in:(sites Mover)) (count Cell at:(handSite #1))))
@@ -42,11 +41,11 @@
                                     (to (handSite Mover))
                                     count:(count at:(to))
                                 )
-                                (if (!= 0 (count at:("OppositePit")))
+                                (if (!= 0 (count at:("OppositePitTwoRows" (to))))
                                     (fromTo
-                                        (from ("OppositePit"))
+                                        (from ("OppositePitTwoRows" (to)))
                                         (to (handSite Mover))
-                                        count:(count at:("OppositePit"))
+                                        count:(count at:("OppositePitTwoRows" (to)))
                                     )
                                 )
                             )
@@ -60,14 +59,7 @@
             )	
         )
         
-        (end
-            (if ("NoPieceOnBoard") 
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" ("NoPieceOnBoard")))
     )
 )
 
