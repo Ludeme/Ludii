@@ -6,14 +6,12 @@
 )
 
 (define "OnlyPiecesInMarked" 
-    (no Pieces All in:(forEach (sites Board) if:(= 0 (state at:(site)))))
+    (all Sites (forEach (sites Board) if:(= 0 (state at:(site)))) if:(= 0 (count at:(site))))
 )
 
 (define "SitesMarkedBy" 
     (forEach (sites Board) if:(= #1 (state at:(site))))
 )
-
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
 (define "NumCapturedPieces" 
     (+ 
@@ -182,7 +180,6 @@
             )
             (nextPhase (and (is Empty (handSite P1)) (is Empty (handSite P2))) "Sowing")
         )
-        
         }
     )
 )

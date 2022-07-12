@@ -18,11 +18,9 @@
         (start (set Count 4 to:(sites Track)))
         
         (play 
-            (move
-                Select 
+            (move Select 
                 (from 
-                    (if 
-                        ("SameTurn") 
+                    (if ("SameTurn") 
                         "LastHoleSowed" 
                         (if (= (score P1) 1)
                             (if (is Mover P1)
@@ -96,7 +94,7 @@
         )
         
         (end
-            (if  (= (var) 1)
+            (if (= (var) 1)
                 (byScore)
             )
         )

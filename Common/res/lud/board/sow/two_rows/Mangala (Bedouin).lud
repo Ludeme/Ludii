@@ -3,11 +3,11 @@
 (define "PiecesOwnedBy" (count Cell at:(handSite #1)))
 
 (define "OneRowIsEmpty"
-	    (or
-	        (all Sites (sites P1) if:(= 0 (count at:(site))))
-	        (all Sites (sites P2)  if:(= 0 (count at:(site))))
-	    )
-	)
+    (or
+        (all Sites (sites P1) if:(= 0 (count at:(site))))
+        (all Sites (sites P2)  if:(= 0 (count at:(site))))
+    )
+)
 
 //------------------------------------------------------------------------------
 
@@ -111,7 +111,7 @@
                     )
                 )
             )
-
+            
             (end ("MancalaByScoreWhen" ("OneRowIsEmpty")))
         )
         }

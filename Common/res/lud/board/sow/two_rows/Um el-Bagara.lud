@@ -1,6 +1,5 @@
 (define "Sow" 
-    (move
-        Select 
+    (move Select 
         (from 
             (sites Mover #1) 
             if:(> (count at:(from)) 1)
@@ -47,8 +46,7 @@
         (regions "Right2" P2 (sites {7..5}))           // P2 Three RightMost
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+    })  
     (rules 
         
         (start (set Count 5 to:(sites Track))) 
@@ -59,14 +57,7 @@
             )
         )
         
-        (end
-            (if (all Passed)
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (all Passed)))
     )
 )
 

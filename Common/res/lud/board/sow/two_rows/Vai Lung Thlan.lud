@@ -1,4 +1,4 @@
-(define "PiecesCaptured" (count Cell at:(handSite #1)))
+(define "PiecesOwnedBy" (count Cell at:(handSite #1)))
 
 //------------------------------------------------------------------------------
 
@@ -17,8 +17,7 @@
     (rules 
         (start (set Count 5 to:(sites Track)))		  
         (play 
-            (move
-                Select
+            (move Select
                 (from 
                     (sites Mover) 
                     if:(< 0 (count at:(from)))
@@ -36,14 +35,8 @@
                 )
             )
         )
-        (end
-            (if (no Moves Mover)
-                (byScore {
-                    (score P1 ("PiecesCaptured" P1)) 
-                    (score P2 ("PiecesCaptured" P2))
-                })
-            )
-        )
+        
+        (end ("MancalaByScoreWhen" (no Moves Mover)))
     )
 )
 

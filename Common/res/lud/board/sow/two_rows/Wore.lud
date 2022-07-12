@@ -1,3 +1,7 @@
+(define "PiecesOwnedBy" (count Cell at:(handSite #1)))
+
+//------------------------------------------------------------------------------
+
 (game "Wore" 
     (players 2)  
     (equipment { 
@@ -13,8 +17,7 @@
     (rules 
         (start (set Count 6 to:(sites Track)))		  
         (play 
-            (move
-                Select 
+            (move Select 
                 (from 
                     (sites Mover) 
                     if:(< 0 (count at:(from)))
@@ -35,14 +38,7 @@
                 )
             )
         )
-        (end
-            (if (no Moves Mover)
-                (byScore {
-                    (score P1 (count Cell at:(handSite P1))) 
-                    (score P2 (count Cell at:(handSite P2)))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (no Moves Mover)))
     )
 )
 

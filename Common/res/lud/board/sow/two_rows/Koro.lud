@@ -75,10 +75,10 @@
         )
         
         (end 
-        	(forEach Player
-        		if:("NoOwnedHoleWithMoreThanOneSeed" Player)
-        		(result Player Loss)
-        	)
+            (forEach Player
+                if:("NoOwnedHoleWithMoreThanOneSeed" Player)
+                (result Player Loss)
+            )
         )
     )
 )

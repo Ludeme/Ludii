@@ -12,15 +12,13 @@
         (regions P2 (sites Top))                        // P2 home
         (map {(pair P1 LastSite) (pair P2 FirstSite)})  // kalahs (storage pits)
         (piece "Seed" Shared)
-        }
-    )  
+    })  
     (rules 
         
         (start (set Count 4 to:(union (sites P1) (sites P2))))
         
         (play 
-            (move
-                Select 
+            (move Select 
                 (from 
                     (sites Mover) 
                     if:(> (count at:(from)) 0)
@@ -37,7 +35,7 @@
         )
         
         (end
-            (if (= 0 (count in:(sites Mover)))
+            (if (all Sites (sites Mover) if:(= 0 (count at:(site))))
                 (result Mover Win)
             )
         )

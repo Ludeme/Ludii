@@ -1,4 +1,4 @@
-(define "NextHole" (trackSite Move from:#1 #2 steps:#3))
+(define "NextHole" ("NextSiteOnTrack" #3 from:#1 #2))
 (define "NumBigPiecesCaptured" (count Cell in:(sites {(handSite P1 1) (handSite P2 1)})))
 
 (define "LeftMostEmpty" 

@@ -2,8 +2,6 @@
 
 (define "PiecesOwnedBy" (+ (count at:(mapEntry #1)) (count in:(sites #1))))
 
-(define "OppositePit" (if (is In (to) (sites P1)) (+ (to) "Columns") (- (to) "Columns")))
-
 //------------------------------------------------------------------------------
 
 (game "Yovodi"
@@ -21,11 +19,9 @@
     (rules 
         (start (set Count 4 to:(sites Track)))
         (play 
-            (move
-                Select 
+            (move Select 
                 (from 
-                    (if 
-                        ("SameTurn") 
+                    (if ("SameTurn") 
                         ("LastHoleSowed") 
                         (sites Mover) 
                     )  
@@ -37,14 +33,14 @@
                             (moveAgain)
                             (if (is In (to) (sites Mover))
                                 (fromTo 
-                                    (from ("OppositePit")) 
+                                    (from ("OppositePitTwoRows" (to))) 
                                     (to (mapEntry (mover))) 
-                                    count:(count at:("OppositePit"))
+                                    count:(count at:("OppositePitTwoRows" (to)))
                                 )
                                 (fromTo 
-                                    (from ("OppositePit")) 
+                                    (from ("OppositePitTwoRows" (to))) 
                                     (to (mapEntry (next))) 
-                                    count:(count at:("OppositePit"))
+                                    count:(count at:("OppositePitTwoRows" (to)))
                                 )
                             )
                         )
@@ -52,14 +48,7 @@
                 )
             )
         )
-        (end
-            (if (no Moves Mover)
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (no Moves Mover)))
     )	
 )
 

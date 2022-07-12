@@ -1,10 +1,10 @@
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 (define "OneRowEmpty"
     (or
-        (no Pieces All in:(sites P1 "Home"))
-        (no Pieces All in:(sites P2 "Home"))
+        (all Sites (sites P1 "Home") if:(= 0 (count at:(site))))
+        (all Sites (sites P2 "Home")  if:(= 0 (count at:(site))))
     )
 )
+
 (define "PiecesOwnedBy" (count Cell at:(handSite #1)))
 
 //------------------------------------------------------------------------------
@@ -124,14 +124,7 @@
             )
         )
         
-        (end
-            (if  ("NoPieceOnBoard")
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" ("NoPieceOnBoard")))
     )
 )
 

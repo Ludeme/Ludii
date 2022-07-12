@@ -22,11 +22,8 @@
         phases:{
         (phase "Opening"
             (play 
-                (move
-                    Select 
-                    (from 
-                        (- ("Column") 1) 
-                    )
+                (move Select 
+                    (from (- ("Column") 1))
                     (then 
                         (sow  
                             if:(= (count at:(to)) 1)
@@ -43,8 +40,7 @@
         )
         (phase "Play"
             (play 
-                (move
-                    Select 
+                (move Select 
                     (from 
                         (sites Mover) 
                         if:(< 0 (count at:(from)))
@@ -64,14 +60,7 @@
         )
         }
         
-        (end
-            (if (all Sites (sites Board) if:(is Empty (site)))
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (all Sites (sites Board) if:(is Empty (site)))))
     )
 )
 
