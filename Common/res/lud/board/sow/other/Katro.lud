@@ -1,7 +1,5 @@
 (define "Columns" <Row:size>)
 
-(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")))
-
 (define "OppositeMiddlePit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2))))
 
 (define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 3)) (- #1 (* "Columns" 3))))
@@ -47,11 +45,9 @@
         (play 
             (or {
                 (if (or (= (value Player Mover) 1) (<= (value Player Mover) 0))
-                    (move
-                        Select
+                    (move Select
                         (from 
-                            (if 
-                                ("SameTurn") 
+                            (if ("SameTurn") 
                                 "LastHoleSowed" 
                                 ("OuterMostRowWithPieces") 
                             ) 
@@ -98,11 +94,9 @@
                     )
                 )
                 (if (or (= (value Player Mover) 2) (<= (value Player Mover) 0))
-                    (move
-                        Select
+                    (move Select
                         (from 
-                            (if 
-                                ("SameTurn") 
+                            (if ("SameTurn") 
                                 "LastHoleSowed" 
                                 ("OuterMostRowWithPieces") 
                             ) 
