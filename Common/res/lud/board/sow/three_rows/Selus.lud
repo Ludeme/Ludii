@@ -2,7 +2,7 @@
 (define "NoNedf"
     (all Sites (sites Board) if:(!= (mover) (state at:(site))))
 )
-(define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
+(define "NextHole" ("NextSiteOnTrack" #2 from:#1 "Track"))
 
 (define "OnlyHolesWithTwoOrThree"
     (all Sites 
@@ -243,11 +243,7 @@
             })
         )
         
-        (end
-            (if  (no Moves Next)
-                (result Mover Win)
-            )
-        )
+        (end ("BlockWin"))
     )
 )
 

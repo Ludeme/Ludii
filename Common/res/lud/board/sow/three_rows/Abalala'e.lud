@@ -33,11 +33,9 @@
         (start (set Count 3 to:(union (sites P1 "Home") (sites P2 "Home"))))
         
         (play 
-            (move
-                Select 
+            (move Select 
                 (from 
-                    (if 
-                        ("SameTurn") 
+                    (if ("SameTurn") 
                         "LastHoleSowed" 
                         (sites Mover "Home") 
                     ) 
