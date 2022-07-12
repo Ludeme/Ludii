@@ -136,7 +136,9 @@ public class ConnectionHandler
             Handler.updateCollectionInput(graphPanel.graph(), source.lnc().node(), source.inputField().nodeArgument(0), target.getHeader().ludemeNodeComponent().node(), source.inputField().elementIndex());
         else
             Handler.updateInput(graphPanel.graph(), source.lnc().node(), source.inputField().nodeArgument(0), target.getHeader().ludemeNodeComponent().node());
-        
+
+        if(Handler.autoplacement) graphPanel.getLayoutHandler().executeLayout();
+        //TODO: check if menu is opened; if yes - close
         graphPanel.repaint();
     }
 

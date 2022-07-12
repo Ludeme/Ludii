@@ -745,7 +745,7 @@ public class LudemeNode implements iGNode
      * Adds a child to this node
      * @param child the child to add
      */
-    public void addChildren(LudemeNode child)
+    public void addChild(LudemeNode child)
     {
         // Checks if child nodes was already added
         if (!this.children.contains(child))
@@ -753,6 +753,7 @@ public class LudemeNode implements iGNode
             this.children.add(child);
             // get order of new child in current constructor
             // TODO: something goes wrong for [optional] inputs
+            // TODO: keep track of number of connection components of a node
             int order = -1;
 
             for (ClauseArg arg : selectedClause.args())

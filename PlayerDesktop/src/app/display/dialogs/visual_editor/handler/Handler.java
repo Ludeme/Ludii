@@ -2,7 +2,6 @@ package app.display.dialogs.visual_editor.handler;
 
 import app.DesktopApp;
 import app.PlayerApp;
-import app.display.dialogs.editor.LudiiTokeniser;
 import app.display.dialogs.visual_editor.StartVisualEditor;
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.Edge;
@@ -118,7 +117,7 @@ public class Handler
     /** Whether layout-arrangement animations are enabled */
     public static boolean animation = true;
     /** Whether nodes should be placed arranged automatically */
-    public static boolean autoplacement = false;
+    public static boolean autoplacement = true;
 
 
     // Appearance Settings
@@ -516,7 +515,7 @@ public class Handler
         if(DEBUG) System.out.println("[HANDLER] addEdge(graph, form, to, nodeArgument) -> Adding edge: " + from.title() + " -> " + to.title());
         graph.addEdge(from.id(), to.id());
         // here form is the parent node
-        from.addChildren(to);
+        from.addChild(to);
         to.setParent(from);
 
         // notify graph panel to draw edge
@@ -541,7 +540,7 @@ public class Handler
         if(DEBUG) System.out.println("[HANDLER] addEdge(graph, form, to, nodeArgument, elementIndex) -> Adding edge: " + from.title() + " -> " + to.title() + ", elementIndex: " + elementIndex);
         graph.addEdge(from.id(), to.id());
         // here form is the parent node
-        from.addChildren(to);
+        from.addChild(to);
         to.setParent(from);
 
         // if the edge is part of a collection, adjust the collection size
@@ -583,7 +582,7 @@ public class Handler
 
         graph.addEdge(from.id(), to.id());
         // here form is the parent node
-        from.addChildren(to);
+        from.addChild(to);
         to.setParent(from);
 
         if(notify)
@@ -1185,7 +1184,7 @@ public class Handler
                     {
                         LudemeNode inputNodeCopy = copiedNodes.get(inputNode);
                         copy.setProvidedInput(arg, inputNodeCopy);
-                        copy.addChildren(inputNodeCopy);
+                        copy.addChild(inputNodeCopy);
                         inputNodeCopy.setParent(copy);
                     }
                 }
@@ -1205,7 +1204,7 @@ public class Handler
                             {
                                 LudemeNode inputNodeCopy = copiedNodes.get(inputNode);
                                 inputCollectionCopy[i] = inputNodeCopy;
-                                copy.addChildren(inputNodeCopy);
+                                copy.addChild(inputNodeCopy);
                                 inputNodeCopy.setParent(copy);
                             }
                         }

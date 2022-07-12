@@ -80,7 +80,7 @@ public interface IGraphPanel {
     /** Unselects all nodes */
     void deselectEverything();
     /** Displays all available ludemes that may be created */
-    void showAllAvailableLudemes(int x, int y);
+    void showAllAvailableLudemes();
     /** Notifies the panel that the user clicked on a node */
     void clickedOnNode(LudemeNodeComponent lnc);
     /** The LayoutHandler */

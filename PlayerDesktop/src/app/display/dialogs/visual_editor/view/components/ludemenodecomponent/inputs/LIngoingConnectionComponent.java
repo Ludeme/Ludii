@@ -8,7 +8,8 @@ import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import javax.swing.*;
 import java.awt.*;
 
-public class LIngoingConnectionComponent extends JComponent {
+public class LIngoingConnectionComponent extends JComponent
+{
 
     private final LHeader lHeader;
     private boolean fill;
@@ -16,7 +17,8 @@ public class LIngoingConnectionComponent extends JComponent {
     private final ConnectionPointComponent connectionPointComponent;
     private ImmutablePoint connectionPointPosition = new ImmutablePoint(0, 0);
 
-    public LIngoingConnectionComponent(LHeader header, boolean fill){
+    public LIngoingConnectionComponent(LHeader header, boolean fill)
+    {
         this.lHeader = header;
         int height = lHeader.title().getSize().height;
         RADIUS = (int) (lHeader.title().getSize().height * 0.4);

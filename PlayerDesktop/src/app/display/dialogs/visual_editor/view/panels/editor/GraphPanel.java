@@ -621,12 +621,9 @@ public class GraphPanel extends JPanel implements IGraphPanel
 
     /**
      * Displays all available ludemes that may be created
-     * //TODO: why do you need x and y here?
-     * @param x
-     * @param y
      */
     @Override
-    public void showAllAvailableLudemes(int x, int y)
+    public void showAllAvailableLudemes()
     {
         addLudemePanel.setVisible(true);
         addLudemePanel.setLocation(mousePosition);
@@ -815,7 +812,6 @@ public class GraphPanel extends JPanel implements IGraphPanel
                         Handler.addNode(graph(), connectionHandler().selectedComponent().possibleSymbolInputs().get(0), connectionHandler().selectedComponent().inputField().nodeArgument(0), e.getX(), e.getY(), true);
                     else if(!connectArgumentPanel.isVisible() && connectionHandler().selectedComponent().possibleSymbolInputs().size() > 1)
                         showCurrentlyAvailableLudemes();
-                    if(Handler.autoplacement) lm.executeLayout();
                 }
 
                 // When selection was performed user can clear it out by clicking on blank area

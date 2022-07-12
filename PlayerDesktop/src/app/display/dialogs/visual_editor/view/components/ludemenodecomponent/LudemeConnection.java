@@ -4,7 +4,8 @@ import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 
-public class LudemeConnection {
+public class LudemeConnection
+{
 
     private final LConnectionComponent CONNECTION_COMPONENT;
     private final LIngoingConnectionComponent INGOING_CONNECTION_COMPONENT;
@@ -15,7 +16,8 @@ public class LudemeConnection {
     private final ImmutablePoint inputPoint;
     private final ImmutablePoint targetPoint;
 
-    public LudemeConnection(LConnectionComponent connectionComponent, LIngoingConnectionComponent ingoingConnectionComponent){
+    public LudemeConnection(LConnectionComponent connectionComponent, LIngoingConnectionComponent ingoingConnectionComponent)
+    {
         this.CONNECTION_COMPONENT = connectionComponent;
         this.INGOING_CONNECTION_COMPONENT = ingoingConnectionComponent;
 
@@ -24,12 +26,14 @@ public class LudemeConnection {
         this.targetPoint = ingoingConnectionComponent.getConnectionPointPosition();
     }
 
-    public ImmutablePoint getInputPosition(){
+    public ImmutablePoint getInputPosition()
+    {
         CONNECTION_COMPONENT.updatePosition();
         return inputPoint;
     }
 
-    public ImmutablePoint getTargetPosition(){
+    public ImmutablePoint getTargetPosition()
+    {
         INGOING_CONNECTION_COMPONENT.updatePosition();
         return targetPoint;
     }

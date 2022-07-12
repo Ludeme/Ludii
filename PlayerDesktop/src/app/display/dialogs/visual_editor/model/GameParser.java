@@ -27,7 +27,7 @@ public class GameParser
      * @param description valid partial game description (brackets match)
      * @return call tree with dummy root
      */
-    public static Call createPartialCallTree(String description)
+    private static Call createPartialCallTree(String description)
     {
         Token tokenTree_test = new Token(description, new Report());
         Grammar gm = grammar.Grammar.grammar();
@@ -52,17 +52,7 @@ public class GameParser
     public static void ParseFileToGraph(File file, IGraphPanel graphPanel, ProgressBar progressBar)
     {
         // #1 file to string
-        StringBuilder sb = new StringBuilder();
-        try (final BufferedReader rdr = new BufferedReader(new FileReader(file.getAbsolutePath())))
-        {
-            String line;
-            while ((line = rdr.readLine()) != null)
-                sb.append(line).append("\n");
-        }
-        catch (final IOException e)
-        {
-            e.printStackTrace();
-        }
+        StringBuilder sb = descriptionToString(file.getPath());
         progressBar.updateProgress(1);
         // creating a call tree from game description
         // #2 file to description
@@ -168,9 +158,10 @@ public class GameParser
                 LudemeNode ln = new LudemeNode(ludemeSymbol, Handler.gameGraphPanel.parentScrollPane().getViewport().getViewRect().x,
                         Handler.gameGraphPanel.parentScrollPane().getViewport().getViewRect().y);
                 ln.setCreatorArgument(creatorArgument);
-                Handler.addNode(graph, ln);
+
                 // setting up current clause constructor
-                Handler.updateCurrentClause(graph, ln, currentClause);
+                ln.setSelectedClause(currentClause);
+                // Handler.updateCurrentClause(graph, ln, currentClause);
                 // providing argument to the ludeme node
                 int orGroup = 0;
                 int orGroupFinished = -1;
@@ -181,6 +172,8 @@ public class GameParser
                 // check for the constructor name extension
                 int j = currentClause.args().get(0).symbol().ludemeType().equals(Symbol.LudemeType.Constant) ? 1 : 0;
                 Object input;
+                // temp storage of ludeme inputs
+                HashMap<NodeArgument, Object> ludemeInputs = new HashMap<>();
                 while (i < ln.providedInputsMap().size())
                 {
                     // check if input for orGroup was produced
@@ -195,7 +188,10 @@ public class GameParser
                         input = constructGraph(call, d+1, ln, -1, ln.currentNodeArguments().get(i), graph);
                         // update terminal input
                         if (!(input instanceof LudemeNode || input instanceof Object[]))
-                            Handler.updateInput(graph, ln, ln.currentNodeArguments().get(i), input);
+                            //Handler.updateInput(graph, ln, ln.currentNodeArguments().get(i), input);
+                            ln.setProvidedInput(ln.currentNodeArguments().get(i), input);
+
+                        ludemeInputs.put(ln.currentNodeArguments().get(i), input);
 
                         if (currentClause.args().get(j).orGroup() > orGroup)
                         {
@@ -221,6 +217,26 @@ public class GameParser
                     }
                 }
 
+                Handler.addNode(graph, ln);
+
+                for (int k = 0; k < ludemeInputs.size(); k++)
+                {
+                    input = ludemeInputs.get(ln.currentNodeArguments().get(k));
+                    if (input instanceof LudemeNode)
+                    {
+                        Handler.addEdge(graph, ln, (LudemeNode) input, ((LudemeNode) input).creatorArgument());
+                    }
+                    else if (input instanceof Object[])
+                    {
+                        for (int l = 0; l < ((Object[]) input).length; l++)
+                        {
+                            LudemeNode lnInput = (LudemeNode) ((Object[]) input)[l];
+                            Handler.addEdge(graph, ln, lnInput, lnInput.creatorArgument(), l);
+                        }
+                    }
+                }
+
+                /*
                 // add edge to graph model
                 if (parent != null)
                 {
@@ -229,6 +245,7 @@ public class GameParser
                     else
                         Handler.addEdge(graph, parent, ln, ln.creatorArgument(), collectionIndex);
                 }
+                 */
 
                 return ln;
 

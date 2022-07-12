@@ -8,9 +8,11 @@ import app.display.dialogs.visual_editor.view.panels.editor.gameEditor.GameGraph
 import javax.swing.*;
 import java.awt.*;
 
-public class EditorPopupMenu extends JPopupMenu {
+public class EditorPopupMenu extends JPopupMenu
+{
 
-    public EditorPopupMenu(IGraphPanel graphPanel, int x, int y) {
+    public EditorPopupMenu(IGraphPanel graphPanel, int x, int y)
+    {
         JMenuItem newLudeme = new JMenuItem("New Ludeme");
         JMenuItem paste = new JMenuItem("Paste");
 
@@ -24,7 +26,7 @@ public class EditorPopupMenu extends JPopupMenu {
         JMenuItem compact = new JMenuItem("Arrange graph");
         // JMenuItem settings = new JMenuItem("Layout Settings");
 
-        newLudeme.addActionListener(e -> graphPanel.showAllAvailableLudemes(getX(), getY()));
+        newLudeme.addActionListener(e -> graphPanel.showAllAvailableLudemes());
 
         compact.addActionListener(e -> graphPanel.getLayoutHandler().executeLayout());
 
