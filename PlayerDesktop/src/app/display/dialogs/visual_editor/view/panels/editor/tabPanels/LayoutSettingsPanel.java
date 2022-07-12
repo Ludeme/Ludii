@@ -7,10 +7,12 @@ import app.display.dialogs.visual_editor.LayoutManagement.NodePlacementRoutines;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorSidebar;
+import app.display.dialogs.visual_editor.view.panels.menus.TreeLayoutMenu;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 /**
  * Class for the single instance of the Layout Settings Panel
@@ -68,11 +70,7 @@ public class LayoutSettingsPanel extends JPanel
         unfixNodes = createButton("Ungroup subtree", buttonDim);
         unfixNodes.setEnabled(false);
 
-        redraw.addActionListener(e -> {
-            lh.evaluateGraphWeights();
-            executeDFSLayout(Handler.currentGraphPanel);
-            Handler.currentGraphPanel.deselectEverything();
-        });
+        redraw.addActionListener(lh.getEvaluateAndArrange());
 
         alignX.addActionListener(e -> {
             NodePlacementRoutines.alignNodes(Handler.currentGraphPanel.selectedNodes(), NodePlacementRoutines.X_AXIS, Handler.currentGraphPanel);
@@ -163,13 +161,11 @@ public class LayoutSettingsPanel extends JPanel
         add(closeBox);
     }
 
-    private Box getSplitterBox()
-    {
-        Box splitterBox = Box.createHorizontalBox();
-        splitterBox.add(new JSeparator());
-        return splitterBox;
-    }
-
+    /**
+     * Adds a JButton of specified size to container
+     * @param button
+     * @param container
+     */
     private static void addAButton(JButton button, Container container)
     {
         button.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -178,6 +174,12 @@ public class LayoutSettingsPanel extends JPanel
         container.add(button);
     }
 
+    /**
+     * Creates a JButton with specified text and size
+     * @param text
+     * @param size
+     * @return
+     */
     private JButton createButton(String text, Dimension size)
     {
         JButton button = new JButton(text);
@@ -187,20 +189,19 @@ public class LayoutSettingsPanel extends JPanel
         return button;
     }
 
-    private Component createStrut()
-    {
-        JComponent component = (JComponent) Box.createVerticalStrut(5);
-        component.setMinimumSize(new Dimension(0, 0));
-        component.setMaximumSize(new Dimension(Short.MAX_VALUE, Short.MAX_VALUE));
-        return component;
-    }
-
+    /**
+     * Singleton getter method for layout settings panel
+     * @return
+     */
     public static LayoutSettingsPanel getLayoutSettingsPanel()
     {
         if (lsPanel == null) lsPanel = new LayoutSettingsPanel();
         return lsPanel;
     }
 
+    /**
+     * Updates layout metrics values in LayoutHander according to slider values
+     */
     private void updateWeights()
     {
         lh.updateCompactness(getSliderValue(cSl));
@@ -209,6 +210,12 @@ public class LayoutSettingsPanel extends JPanel
                 getSliderValue(sSl));
     }
 
+    /**
+     * Update slider values for layout metrics
+     * @param o
+     * @param d
+     * @param s
+     */
     public void updateSliderValues(double o, double d, double s)
     {
         changeListen = false;
@@ -218,26 +225,31 @@ public class LayoutSettingsPanel extends JPanel
         changeListen = true;
     }
 
+    /**
+     * Get slider value for arrangement
+     * @param slider
+     * @return
+     */
     private double getSliderValue(JSlider slider) {return slider.getValue() / 100.0;}
 
+    /**
+     * Executes arrangement procedure of graph in a specified panel
+     * @param graphPanel
+     */
     private void executeDFSLayout(IGraphPanel graphPanel)
     {
         graphPanel.getLayoutHandler().executeLayout();
     }
 
+    /**
+     * Display name of selected ludeme node
+     * @param node
+     * @param subtree
+     */
     public void setSelectedComponent(String node, boolean subtree)
     {
         if (subtree) selectedComponent.setText("Selected subtree of: "+node);
         else selectedComponent.setText("Selected: "+node);
-    }
-
-    public static void getSettingsFrame()
-    {
-        JFrame frame = new JFrame("Layout Settings");
-        frame.setSize(300, 400);
-        frame.add(new LayoutSettingsPanel());
-        frame.setVisible(true);
-        frame.setResizable(false);
     }
 
     public void enableFixButton() { fixNodes.setEnabled(true); }
@@ -251,4 +263,5 @@ public class LayoutSettingsPanel extends JPanel
     public JCheckBox animatePlacement() {return animatePlacement;}
 
     public JCheckBox autoPlacement() {return autoPlacement;}
+
 }

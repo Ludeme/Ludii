@@ -35,6 +35,9 @@ public class GraphAnimator
 
     private final List<iGNode> nodesToProcess;
 
+    /**
+     * Constructor
+     */
     private GraphAnimator()
     {
         nodeInitPositions = new HashMap<>();
@@ -43,24 +46,25 @@ public class GraphAnimator
         nodesToProcess = new ArrayList<>();
     }
 
+    /**
+     * Returns single instance of GraphAnimator
+     * @return
+     */
     public static GraphAnimator getGraphAnimator()
     {
         if (graphAnimator == null) graphAnimator = new GraphAnimator();
         return graphAnimator;
     }
 
+    /**
+     * Animates smooth transition between previous nodes positions and new positions
+     * @return return true if finished animation
+     */
     public boolean animateGraphNodes()
     {
         if (updateCounter == 0)
         {
-            nodeFinalPosition.forEach((k,v) -> {
-                // compute node increments
-                double incX = (v.x() - nodeInitPositions.get(k).x()) / (ANIMATION_UPDATES-1);
-                double incY = (v.y() - nodeInitPositions.get(k).y()) / (ANIMATION_UPDATES-1);
-                nodePosIncrements.put(k, new Vector2D(incX, incY));
-                // set node positions to initial
-                k.setPos(nodeInitPositions.get(k));
-            });
+            updateToInitPositions();
         }
 
         nodePosIncrements.forEach((k,v) -> k.setPos(new Vector2D(nodeInitPositions.get(k).x()+v.x()*updateCounter,
@@ -71,19 +75,41 @@ public class GraphAnimator
         if (updateCounter == ANIMATION_UPDATES)
         {
             updateCounter = 0;
-            clearAnimationData();
             return true;
         }
         return false;
     }
 
-    public void clearAnimationData()
+    /**
+     * Sets nodes to their previous positions and calculates increments for further animation
+     */
+    public void updateToInitPositions()
     {
-        nodeInitPositions.clear();
-        nodeFinalPosition.clear();
-        nodePosIncrements.clear();
+        nodeFinalPosition.forEach((k,v) -> {
+            // compute node increments
+            double incX = (v.x() - nodeInitPositions.get(k).x()) / (ANIMATION_UPDATES-1);
+            double incY = (v.y() - nodeInitPositions.get(k).y()) / (ANIMATION_UPDATES-1);
+            nodePosIncrements.put(k, new Vector2D(incX, incY));
+            // set node positions to initial
+            k.setPos(nodeInitPositions.get(k));
+        });
+        Handler.currentGraphPanel.syncNodePositions();
     }
 
+    /**
+     * Sets nodes to their new position
+     */
+    public void updateToFinalPositions()
+    {
+        nodeFinalPosition.forEach(iGNode::setPos);
+        Handler.currentGraphPanel.syncNodePositions();
+    }
+
+    /**
+     * Preserves initial/previous positions of nodes of a subtree that starts with provided root
+     * @param graph
+     * @param root
+     */
     public void preserveInitPositions(iGraph graph, int root)
     {
         List<Integer> Q = new ArrayList<>();
@@ -98,6 +124,10 @@ public class GraphAnimator
         }
     }
 
+    /**
+     * Preserves initial/previous positions of a given list of nodes
+     * @param nodes
+     */
     public void preserveInitPositions(List<iGNode> nodes)
     {
         nodes.forEach(n -> {
@@ -123,16 +153,6 @@ public class GraphAnimator
     public HashMap<iGNode, Vector2D> nodeInitPositions()
     {
         return nodeInitPositions;
-    }
-
-    public HashMap<iGNode, Vector2D> nodePosIncrements()
-    {
-        return nodePosIncrements;
-    }
-
-    public int ANIMATION_UPDATES()
-    {
-        return ANIMATION_UPDATES;
     }
 
     public int updateCounter()

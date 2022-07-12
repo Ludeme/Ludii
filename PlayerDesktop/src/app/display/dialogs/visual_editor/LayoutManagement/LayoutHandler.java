@@ -4,9 +4,12 @@ import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
+import app.display.dialogs.visual_editor.view.panels.menus.TreeLayoutMenu;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,6 +24,8 @@ public class LayoutHandler
 
     private final iGraph graph;
     private final DFBoxDrawing layout;
+
+    private final EvaluateAndArrange evaluateAndArrange = new EvaluateAndArrange();
 
     /**
      * Constructor
@@ -55,13 +60,12 @@ public class LayoutHandler
     public void evaluateGraphWeights()
     {
         double[] weights = GraphRoutines.computeLayoutMetrics(graph, graph.getRoot().id());
-        System.out.println(Arrays.toString(weights));
         layout.updateWeights(weights);
         LayoutSettingsPanel.getLayoutSettingsPanel().updateSliderValues(weights[0], weights[1], weights[2]);
     }
 
     /**
-     * Arranges layout of all components of graph
+     * Arranges layout of all components of a graph
      */
     public void executeLayout()
     {
@@ -144,4 +148,21 @@ public class LayoutHandler
 
     }
 
+    /**
+     * An action listener for evaluation of user metrics and further execution of arrangement procedure
+     */
+    private class EvaluateAndArrange implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            evaluateGraphWeights();
+            executeLayout();
+            TreeLayoutMenu.redoP.setEnabled(false);
+            TreeLayoutMenu.undoP.setEnabled(true);
+            Handler.currentGraphPanel.deselectEverything();
+        }
+    }
+
+    public EvaluateAndArrange getEvaluateAndArrange() {return evaluateAndArrange;}
 }
