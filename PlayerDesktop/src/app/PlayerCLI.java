@@ -69,6 +69,7 @@ public class PlayerCLI
 					"--tutorial-generation",
 					"--game-distance",
 					"--generate-feature-eval-scripts",
+					"--generate-biased-mcts-eval-scripts",
 					"--kilothon"
 				)
 				.withNumVals(1)
