@@ -49,7 +49,7 @@ public class EvaluateUBFM
 	private static double thinkingTime = 1;
 	
 	/** Game played: */
-	private static final String gameName = "Reversi";
+	private static final String gameName = "Breakthrough";
 	
 	/** Name of the file in which the results will be written: */
 	private String outputFile = "comparison_output.sav";
@@ -97,14 +97,13 @@ public class EvaluateUBFM
 						{
 							try
 							{
-								final LazyUBFM UBFM_AI = new NaiveActionBasedSelection();
+								final UBFM UBFM_AI = new UBFM();
 								UBFM_AI.setSelectionPolicy(UBFM.SelectionPolicy.SAFEST);
 								
 								final AI alphaBetaAI = new AlphaBetaSearch();
 								
 								UBFM_AI.debugDisplay = false;
 								UBFM_AI.savingSearchTreeDescription = false;
-								UBFM_AI.setActionEvaluationWeight(20f);
 								
 								final Float[] agentScores = new Float[]{0f,0f};
 								

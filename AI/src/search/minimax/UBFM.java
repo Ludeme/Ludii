@@ -39,7 +39,7 @@ without Knowledge by Quentin Cohen-Solal (2021))
  * (chunks of code copied from AlphaBetaSearch, especially the variables initialisation)
  * 
  * @author cyprien
- */
+*/
 
 public class UBFM extends ExpertPolicy
 {
@@ -50,10 +50,7 @@ public class UBFM extends ExpertPolicy
 	/** Set to true to store a description of the search tree in the treeSaveFile */
 	public boolean savingSearchTreeDescription = false;
 	public String treeSaveFile = "/home/cyprien/Documents/M1/Internship/search_trees_raw/default.sav"; //FIXME
-	
-	/** If there is a scouting phase, this is the proportion of the decision time dedicated to scouting */
-	protected final double scoutingTimeProportion = 0.4;
-	
+
 	/** If true, each exploration will be continued up to the end of the tree. */
 	protected boolean fullPlayouts = false;
 	
@@ -113,7 +110,7 @@ public class UBFM extends ExpertPolicy
 	final boolean heuristicsFromMetadata;
 	
 	/** We'll automatically return our move after at most this number of seconds if we only have one move */
-	protected final double autoPlaySeconds = 0.0;
+	protected final double autoPlaySeconds = 0.3;
 	
 	/** Estimated score of the root node based on last-run search */
 	protected float estimatedRootScore = 0.f;
@@ -263,12 +260,6 @@ public class UBFM extends ExpertPolicy
 		
 		lastReturnedMove = BFSSelection(game, context, (maxSeconds >= 0) ? maxSeconds : Double.MAX_VALUE, maxIterations);
 
-		if (debugDisplay)
-		{
-			System.out.println("Nb of entries in the TT:"+transpositionTable.nbEntries());
-			transpositionTable.dispValueStats();
-		}
-		
 		return lastReturnedMove;
 	}
 	
@@ -390,19 +381,28 @@ public class UBFM extends ExpertPolicy
 		{
 			// Calling the recursive minimaxBFS:
 			minimaxBFS(contextCopy, maximisingPlayer, stopTime, 1, initialnodeHashes);
-			
+
 			iterationCount += 1;
+			
+			if (iterationCount == 12)
+				break;
 		};
 		
 		final UBFMTTData rootTableData = transpositionTable.retrieve(zobrist);
 		final ScoredMove finalChoice = finalDecision(rootTableData, mover==maximisingPlayer);
 		
 		analysisReport = friendlyName + " (player " + maximisingPlayer + ") completed an analysis that reached at some point a depth of " + maxDepthReached + ":\n";
-		analysisReport += "best value observed: "+Float.toString(finalChoice.score)+",\n";
+		analysisReport += "best value observed at root "+Float.toString(finalChoice.score)+",\n";
 		analysisReport += Integer.toString(nbStatesEvaluated)+" different states were evaluated\n";
 		analysisReport += String.format("\n %d iteration, with %d calls of minimax",iterationCount,callsOfMinimax);
 		if ((maxSeconds > 0.) && (System.currentTimeMillis()<stopTime))
 			analysisReport += " (finished analysis early) ";
+
+		if (debugDisplay)
+		{
+			System.out.println("Nb of entries in the TT:"+transpositionTable.nbEntries());
+			transpositionTable.dispValueStats();
+		}
 		
 		if (resetTTeachTurn)
 		{
@@ -486,8 +486,7 @@ public class UBFM extends ExpertPolicy
 		 * If so we can just return the value of the state for maximising player
 		 */
 		if (trial.over() || !context.active(maximisingPlayer))
-			return getContextValue(context, mover, nodeHashes, analysisDepth-1);
-
+			return getContextValue(context, maximisingPlayer, nodeHashes, analysisDepth-1);
 
 		List<ScoredMove> sortedScoredMoves = null;
 		final long zobrist = context.state().fullHash(context);
@@ -705,7 +704,6 @@ public class UBFM extends ExpertPolicy
 		float heuristicScore = 0;
 		final long zobrist = context.state().fullHash(context);
 		final State state = context.state();
-		final int newMover = state.playerToAgent(state.mover());
 		
 		final UBFMTTData tableData;
 		if (transpositionTable != null)
@@ -749,7 +747,10 @@ public class UBFM extends ExpertPolicy
 						heuristicScore -= heuristicValueFunction().computeValue(context, opp, ABS_HEURISTIC_WEIGHT_THRESHOLD);
 					else if (context.winners().contains(opp))
 						heuristicScore -= PARANOID_OPP_WIN_SCORE;
-				}
+				}				transpositionTable.store(null, zobrist, heuristicScore, depth, TranspositionTableUBFM.EXACT_VALUE, null);
+				
+				minHeuristicEval = Math.min(minHeuristicEval, heuristicScore);
+				maxHeuristicEval = Math.max(maxHeuristicEval, heuristicScore);
 			}
 			
 			// Invert scores if players swapped (to check)
@@ -758,16 +759,15 @@ public class UBFM extends ExpertPolicy
 			
 			// Every time a state is evaluated, we store the value in the transposition table (worth?)
 			if (transpositionTable != null)
-				transpositionTable.store(null, zobrist, heuristicScore, depth, TranspositionTableUBFM.EXACT_VALUE, null);
-			
+
 			nbStatesEvaluated += 1;
 		};
 
 		if (savingSearchTreeDescription)
+		{
+			final int newMover = state.playerToAgent(state.mover());
 			searchTreeOutput.append("("+stringOfnodeHashes(nodeHashes)+","+Float.toString(heuristicScore)+","+((newMover==maximisingPlayer)? 1:2)+"),\n");
-		
-		minHeuristicEval = Math.min(minHeuristicEval, heuristicScore);
-		maxHeuristicEval = Math.max(maxHeuristicEval, heuristicScore);
+		}
 		
 		return heuristicScore;
 	}

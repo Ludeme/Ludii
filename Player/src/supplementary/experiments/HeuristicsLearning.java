@@ -74,7 +74,7 @@ public class HeuristicsLearning
 	private final float thinkingTime = 0.3f;
 	
 	/** Path of the directory with the files: */
-	private static final String repository = "/home/cyprien/Documents/M1/Internship/data/";
+	private static final String repository = "/home/cyprien/Documents/M1/Internship/data/learning";
 	
 	private final String trainDataFile = "training_data/training.arff";
 	private final String testDataFile = "training_data/testing.arff";

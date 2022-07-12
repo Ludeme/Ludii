@@ -43,10 +43,12 @@ public class EvaluateAllUBFMs
 	public static boolean debugDisplays = false;
 	
 	/** Number of trials that will be played to compare the agents: (must be even)*/
-	final private static int numTrialsPerComparison = 100;
+	final private static int numTrialsPerComparison = 2;
 	
 	/** Time for the AI to think in the simulations (seconds): */
 	final private static double thinkingTime = 1;
+	
+	final String repository = "/home/cyprien/Documents/M1/Internship/data/";
 	
 	//-------------------------------------------------------------------------
 	
@@ -61,7 +63,7 @@ public class EvaluateAllUBFMs
 	//-------------------------------------------------------------------------
 
 	// Thread executor (maximum number of threads possible)
-	final static int numThreads = 56;
+	final static int numThreads = 10;
 	final ExecutorService executor = Executors.newFixedThreadPool(numThreads); // note: was static on the previous file
 	
 	//-------------------------------------------------------------------------
@@ -73,8 +75,8 @@ public class EvaluateAllUBFMs
 		
 		final Game game = GameLoader.loadGameFromName(gameName+".lud");
 		
-		configurations = new ArrayList<String[]>(60);
-		for (String epsilon : new String[] {"0", "0.1", "0.3", "0.5"})
+		configurations = new ArrayList<String[]>(80);
+		for (String epsilon : new String[] {"0", "0.1", "0.2", "0.3", "0.5"})
 		{
 			
 			configurations.add(new String[] {"UBFM",epsilon});
@@ -95,7 +97,7 @@ public class EvaluateAllUBFMs
 		}
 		if ((game.metadata().ai().features() != null) || (game.metadata().ai().trainedFeatureTrees() != null))
 		{
-			configurations.add(new String[] {"Naive Action Based Selector"});
+			configurations.add(new String[] {"Naive Action Based Selection"});
 		};
 		
 		configurations.add(new String[] {"Bob"});
@@ -197,9 +199,9 @@ public class EvaluateAllUBFMs
 	
 									try
 									{
-										File directory = new File(String.valueOf("/data/"+gameName+"/"+opponent+"/"));
+										File directory = new File(String.valueOf(repository+gameName+"/"+opponent+"/"));
 										directory.mkdirs();
-										FileWriter myWriter = new FileWriter("/data/"+gameName+"/"+opponent+"/"+configurationToString(configuration)+".sav");
+										FileWriter myWriter = new FileWriter(repository+gameName+"/"+opponent+"/"+configurationToString(configuration)+".sav");
 										myWriter.write("Results of the duel between "+configurationToString(configuration)+" against "+opponent+":\n");
 										myWriter.write("Game: "+gameName+"\n");
 										myWriter.write("(thinking time: "+Double.toString(thinkingTime)+", numberOfPlayouts: "+Integer.toString(numTrialsPerComparison)+")\n");
@@ -211,6 +213,7 @@ public class EvaluateAllUBFMs
 										myWriter.write("\n");
 										myWriter.write("UBFM WR average:"+Double.toString((agentScores[2]+agentScores[0])/2.)+"\n");
 										myWriter.write("Opponent WR average:"+Double.toString((agentScores[1]+agentScores[3])/2.)+"\n");
+										myWriter.write("UBFM score:"+Double.toString(100*(agentScores[0]+agentScores[2])/(agentScores[0]+agentScores[1]+agentScores[2]+agentScores[3]))+"\n");
 										myWriter.close();
 									}
 									catch (IOException e)
@@ -301,8 +304,10 @@ public class EvaluateAllUBFMs
 			if (debugDisplays)
 				System.out.println("a game is over");
 			
-			resultsArray[0+(i%2)*2] += (RankUtils.agentUtilities(context)[1+i%2] + 1)*100 / nbTrials;
-			resultsArray[1+(i%2)*2] += (RankUtils.agentUtilities(context)[1+(i+1)%2] + 1)*100 / nbTrials;
+			if (RankUtils.agentUtilities(context)[1+i%2]==1)
+				resultsArray[0+(i%2)*2] += 2 * 100 / nbTrials;
+			if (RankUtils.agentUtilities(context)[2-i%2]==1)
+				resultsArray[1+(i%2)*2] += 2 * 100 / nbTrials;
 		}
 		
 		return;
@@ -324,7 +329,7 @@ public class EvaluateAllUBFMs
 		if (args.length>0)
 			evaluator.gameName = args[0];
 		else
-			evaluator.gameName = "Reversi"; // by default
+			evaluator.gameName = "Alquerque"; // by default
 		
 		evaluator.runExperiment();
 	}
