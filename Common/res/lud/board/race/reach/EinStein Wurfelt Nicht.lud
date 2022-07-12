@@ -38,9 +38,37 @@
     (= (state at:(from)) (count Pips))
 )
 
-(define "ValueCloseToOne" 
-    (= 1 (abs (- (state at:(from)) (count Pips))))
+(define "ValueNextHigher" 
+	(if ("IsNotOffBoard" (where "Square" Mover state:(+ (count Pips) 1)))
+	    (= (state at:(from)) (+ (count Pips) 1))
+		(if ("IsNotOffBoard" (where "Square" Mover state:(+ (count Pips) 2)))
+		    (= (state at:(from)) (+ (count Pips) 2))
+			(if ("IsNotOffBoard" (where "Square" Mover state:(+ (count Pips) 3)))
+			    (= (state at:(from)) (+ (count Pips) 3))
+				(if ("IsNotOffBoard" (where "Square" Mover state:(+ (count Pips) 4)))
+				    (= (state at:(from)) (+ (count Pips) 4))
+				    (= (state at:(from)) (+ (count Pips) 5))
+				)
+			)
+		)
+	)
 )
+
+(define "ValueNextLower" 
+		(if ("IsNotOffBoard" (where "Square" Mover state:(- (count Pips) 1)))
+		    (= (state at:(from)) (- (count Pips) 1))
+			(if ("IsNotOffBoard" (where "Square" Mover state:(- (count Pips) 2)))
+			    (= (state at:(from)) (- (count Pips) 2))
+				(if ("IsNotOffBoard" (where "Square" Mover state:(- (count Pips) 3)))
+				    (= (state at:(from)) (- (count Pips) 3))
+					(if ("IsNotOffBoard" (where "Square" Mover state:(- (count Pips) 4)))
+					    (= (state at:(from)) (- (count Pips) 4))
+					    (= (state at:(from)) (- (count Pips) 5))
+					)
+				)
+			)
+		)
+	)
 
 (define "MoveAPieceOf" 
     (forEach Piece       
@@ -88,7 +116,10 @@
                 ("RollMove"
                     (if ("PieceIsOnTheBoard")
                         ("MoveAPieceOf" ("SameValue"))
-                        ("MoveAPieceOf" ("ValueCloseToOne"))
+                        (or
+	                        ("MoveAPieceOf" ("ValueNextHigher"))
+	                        ("MoveAPieceOf" ("ValueNextLower"))
+                        )
                     )
                 )
             )
