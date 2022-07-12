@@ -1,12 +1,8 @@
 (define "Columns" 8)
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
-
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
-
 (define "NoPiece" (all Sites (sites Player "Home") if:(= 0 (count at:(site)))))
 
-(define "NextHoleFrom" (trackSite Move from:#1 steps:1))
+(define "NextHoleFrom" ("NextSiteOnTrack" 1 from:#1))
 
 //------------------------------------------------------------------------------
 
@@ -25,8 +21,7 @@
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
         (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))   // P2 inner Home
         (piece "Seed" Shared)
-        }
-    )  
+    })  
     (rules 
         
         (start 
@@ -42,8 +37,7 @@
         )
         
         (play 
-            (move
-                Select
+            (move Select
                 (from 
                     (sites Mover "Home") 
                     if:(and 
@@ -55,8 +49,8 @@
                     (sow
                         "Track"
                         owner:(mover)
-                        apply:(if (and (= (count at:("OppositePit")) 0) (is In (to) (sites Mover "Inner")))
-                            (remove ("OppositeOuterPit"))
+                        apply:(if (and (= (count at:("OppositePit" (to))) 0) (is In (to) (sites Mover "Inner")))
+                            (remove ("OppositeOuterPit" (to)))
                         )
                     )
                 )

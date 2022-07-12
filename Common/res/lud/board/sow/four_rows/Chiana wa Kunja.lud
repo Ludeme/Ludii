@@ -1,5 +1,5 @@
 (define "Columns" <Board:size>)
-(define "NextHoleFrom" (trackSite Move from:#1 #2 #3))
+(define "NextHoleFrom" ("NextSiteOnTrack" #3 from:#1 #2))
 (define "LeftMost" 
     (trackSite FirstSite 
         from:(trackSite FirstSite if:(not (is Mover (who at:(to)))))
@@ -28,11 +28,8 @@
         
         (play 
             (or
-                (move
-                    Select 
-                    (from 
-                        ("LeftMost") 
-                    )
+                (move Select 
+                    (from ("LeftMost"))
                     (then
                         (do
                             (and
@@ -52,8 +49,8 @@
                                 (and {
                                     (if (< 1 (var "NumSowed"))
                                         (if (and
-                                                (= 1 (count at:("NextHoleFrom" (last From) "Track" steps:(var "NumSowed"))))
-                                                (= 2 (count at:("NextHoleFrom" (last From) "Track" steps:(- (var "NumSowed") 1))))
+                                                (= 1 (count at:("NextHoleFrom" (last From) "Track" (var "NumSowed"))))
+                                                (= 2 (count at:("NextHoleFrom" (last From) "Track" (- (var "NumSowed") 1))))
                                             )
                                             (moveAgain)
                                         )
@@ -71,11 +68,11 @@
                         )
                     )
                 )
-                (if (and (= 1 (count Pieces Mover)) (is Empty ("NextHoleFrom" (from) "Track" steps:1)))
+                (if (and (= 1 (count Pieces Mover)) (is Empty ("NextHoleFrom" (from) "Track" 1)))
                     (move
                         (from ("LeftMost"))
                         (to 
-                            ("NextHoleFrom" (from) "Track" steps:2)
+                            ("NextHoleFrom" (from) "Track" 2)
                             (apply
                                 (and
                                     (remove (to) count:(count at:(to)))

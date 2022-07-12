@@ -1,7 +1,5 @@
 (define "Columns" <Board:size>)
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
-(define "NextSite" (trackSite Move #1 steps:1))
+(define "NextSite" ("NextSiteOnTrack" 1 #1))
 
 //------------------------------------------------------------------------------
 
@@ -41,8 +39,7 @@
         phases:{
         (phase "Opening"
             (play 
-                (move
-                    Select
+                (move Select
                     (from 
                         (sites Mover) 
                         if:(= 2 (count at:(from)))
@@ -74,11 +71,9 @@
                         )
                     )
                     (priority {
-                        (move
-                            Select
+                        (move Select
                             (from 
-                                (if 
-                                    ("SameTurn") 
+                                (if ("SameTurn") 
                                     "LastHoleSowed" 
                                     (sites Mover) 
                                 ) 
@@ -92,11 +87,11 @@
                                         (moveAgain)
                                         (if (is In (to) (sites Mover "Inner"))
                                             (and {
-                                                (if (> (count at:"OppositePit") 0) 
-                                                    (remove "OppositePit" count:(count at:"OppositePit")) 
+                                                (if (> (count at:("OppositePit" (to))) 0) 
+                                                    (remove ("OppositePit" (to)) count:(count at:("OppositePit" (to)))) 
                                                 )
-                                                (if (> (count at:"OppositeOuterPit") 0) 
-                                                    (remove "OppositeOuterPit" count:(count at:"OppositeOuterPit")) 
+                                                (if (> (count at:("OppositeOuterPit" (to))) 0) 
+                                                    (remove ("OppositeOuterPit" (to)) count:(count at:("OppositeOuterPit" (to)))) 
                                                 )
                                                 (set Var "ExtraCapture" 1)
                                                 (moveAgain)
@@ -106,11 +101,9 @@
                                 )
                             )
                         )
-                        (move
-                            Select
+                        (move Select
                             (from 
-                                (if 
-                                    ("SameTurn") 
+                                (if ("SameTurn") 
                                     "LastHoleSowed" 
                                     (sites Mover) 
                                 ) 
@@ -127,11 +120,11 @@
                                         (moveAgain)
                                         (if (is In (to) (sites Mover "Inner"))
                                             (and {
-                                                (if (> (count at:"OppositePit") 0) 
-                                                    (remove "OppositePit" count:(count at:"OppositePit")) 
+                                                (if (> (count at:("OppositePit" (to))) 0) 
+                                                    (remove ("OppositePit" (to)) count:(count at:("OppositePit" (to)))) 
                                                 )
-                                                (if (> (count at:"OppositeOuterPit") 0) 
-                                                    (remove "OppositeOuterPit" count:(count at:"OppositeOuterPit")) 
+                                                (if (> (count at:("OppositeOuterPit" (to))) 0) 
+                                                    (remove ("OppositeOuterPit" (to)) count:(count at:("OppositeOuterPit" (to)))) 
                                                 )
                                                 (set Var "ExtraCapture" 1)
                                                 (moveAgain)

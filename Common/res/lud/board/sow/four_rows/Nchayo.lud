@@ -1,6 +1,4 @@
 (define "Columns" <Board:size>)
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
 (define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1 "Home"))))
 
 //------------------------------------------------------------------------------
@@ -38,18 +36,18 @@
                         apply:(if (< 1 (count at:(to)))
                             (moveAgain)
                             (if (is In (to) (sites Mover "Inner"))
-                                (if (is Occupied ("OppositePit"))
+                                (if (is Occupied ("OppositePit" (to)))
                                     (and
                                         (fromTo 
-                                            (from ("OppositePit"))
+                                            (from ("OppositePit" (to)))
                                             (to (handSite Mover))
-                                            count:(count at:("OppositePit"))
+                                            count:(count at:("OppositePit" (to)))
                                         )	
-                                        (if (is Occupied ("OppositeOuterPit"))
+                                        (if (is Occupied ("OppositeOuterPit" (to)))
                                             (fromTo 
-                                                (from ("OppositeOuterPit"))
+                                                (from ("OppositeOuterPit" (to)))
                                                 (to (handSite Mover))
-                                                count:(count at:("OppositeOuterPit"))
+                                                count:(count at:("OppositeOuterPit" (to)))
                                             )	
                                         )
                                     )

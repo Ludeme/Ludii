@@ -1,23 +1,20 @@
 (define "Columns" <Row:size>)
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
-
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
-
 (define "NoPiece" (all Sites (sites Player "Home") if:(= 0 (count at:(site)))))
 
 (define "HaveHolesWithMoreThanOneCounter" 
-    (!= 0 
-        (count Sites 
-            in:(forEach 
+    (not
+        (all Sites
+            (forEach 
                 (sites Mover "Home") 
                 if:(< 1 (count at:(site)))
             )
+            if:(= 0 (count at:(site)))
         )
     )
 )
 
-(define "NextHoleFrom" (trackSite Move from:#1 steps:1))
+(define "NextHoleFrom" ("NextSiteOnTrack" 1 from:#1))
 
 //------------------------------------------------------------------------------
 
@@ -36,8 +33,7 @@
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
         (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))   // P2 inner Home
         (piece "Seed" Shared)
-        }
-    )  
+    })  
     (rules 
         
         (start {
@@ -50,8 +46,7 @@
                     ("SameTurn") 
                     (< 0 (var))
                 )
-                (move 
-                    Remove 
+                (move Remove 
                     (forEach
                         (sites Next "Home")
                         if:(< 0 (count at:(site)))
@@ -67,11 +62,9 @@
                     )
                 )
                 (if ("HaveHolesWithMoreThanOneCounter") 
-                    (move
-                        Select
+                    (move Select
                         (from 
-                            (if 
-                                ("SameTurn") 
+                            (if ("SameTurn") 
                                 "LastHoleSowed" 
                                 (sites Mover "Home") 
                             ) 
@@ -84,12 +77,12 @@
                                 apply:(if (< 1 (count at:(to)))
                                     (moveAgain)
                                     (if (is In (to) (sites Mover "Inner"))
-                                        (if (< 0 (count at:("OppositePit")))
+                                        (if (< 0 (count at:("OppositePit" (to))))
                                             (and
-                                                (remove ("OppositePit"))
-                                                (if (< 0 (count at:("OppositeOuterPit")))
+                                                (remove ("OppositePit" (to)))
+                                                (if (< 0 (count at:("OppositeOuterPit" (to))))
                                                     (and {
-                                                        (remove ("OppositeOuterPit"))
+                                                        (remove ("OppositeOuterPit" (to)))
                                                         (set Var 2)
                                                         (moveAgain)
                                                     })
@@ -101,8 +94,7 @@
                             )
                         )
                     )
-                    (move
-                        Select
+                    (move Select
                         (from 
                             (sites Mover "Home") 
                             if:(and
@@ -116,12 +108,12 @@
                                 owner:(mover)
                                 apply:
                                 (if (is In (to) (sites Mover "Inner"))
-                                    (if (< 0 (count at:("OppositePit")))
+                                    (if (< 0 (count at:("OppositePit" (to))))
                                         (and
-                                            (remove ("OppositePit"))
-                                            (if (< 0 (count at:("OppositeOuterPit")))
+                                            (remove ("OppositePit" (to)))
+                                            (if (< 0 (count at:("OppositeOuterPit" (to))))
                                                 (and {
-                                                    (remove ("OppositeOuterPit"))
+                                                    (remove ("OppositeOuterPit" (to)))
                                                     (set Var 2)
                                                     (moveAgain)
                                                 })

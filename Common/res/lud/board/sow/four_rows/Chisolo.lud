@@ -1,6 +1,4 @@
 (define "Columns" <Board:rowSize>)
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
 (define "InitOneSeed" <Board:InitOneSeed>)
 (define "InitTwoSeed" <Board:InitTwoSeeds>)
 
@@ -42,14 +40,11 @@
                         (from (sites Next) if:(is Occupied (from)))
                         (to (handSite Mover))
                         count:(count at:(from))
-                        (then
-                            (set Var "CaptureOther" 0)
-                        )
+                        (then (set Var "CaptureOther" 0))
                     )
                     (move Select
                         (from 
-                            (if 
-                                ("SameTurn") 
+                            (if ("SameTurn") 
                                 "LastHoleSowed" 
                                 (sites Mover "Home") 
                             ) 
@@ -75,16 +70,13 @@
                         (from (sites Next) if:(is Occupied (from)))
                         (to (handSite Mover))
                         count:(count at:(from))
-                        (then
-                            (set Var "CaptureOther" 0)
-                        )
+                        (then (set Var "CaptureOther" 0))
                     )
                     (or
                         (if (or (<= (value Player Mover) 0) (= (value Player Mover) 1))
                             (move Select
                                 (from 
-                                    (if 
-                                        ("SameTurn") 
+                                    (if ("SameTurn") 
                                         "LastHoleSowed" 
                                         (sites Mover "Home") 
                                     ) 
@@ -106,8 +98,7 @@
                         (if (or (<= (value Player Mover) 0) (= (value Player Mover) 2))
                             (move Select
                                 (from 
-                                    (if 
-                                        ("SameTurn") 
+                                    (if ("SameTurn") 
                                         "LastHoleSowed" 
                                         (sites Mover "Home") 
                                     ) 
@@ -129,9 +120,7 @@
                 )
             )
         )
-        
         }
-        
         (end ("ForEachPlayerNoMovesLoss"))
     )
 )
@@ -223,18 +212,18 @@
         (if (< 1 (count at:(to)))
             (moveAgain)
             (if (is In (to) (sites Mover "Inner"))
-                (if (is Occupied ("OppositePit"))
+                (if (is Occupied ("OppositePit" (to)))
                     (and {
                         (fromTo
-                            (from ("OppositePit"))
+                            (from ("OppositePit" (to)))
                             (to (handSite Mover))
-                            count:(count at:("OppositePit"))
+                            count:(count at:("OppositePit" (to)))
                         )
-                        (if (is Occupied ("OppositeOuterPit"))
+                        (if (is Occupied ("OppositeOuterPit" (to)))
                             (fromTo
-                                (from ("OppositeOuterPit"))
+                                (from ("OppositeOuterPit" (to)))
                                 (to (handSite Mover))
-                                count:(count at:("OppositeOuterPit"))
+                                count:(count at:("OppositeOuterPit" (to)))
                             )
                         )
                         (moveAgain)
@@ -251,12 +240,12 @@
         (if (< 1 (count at:(to)))
             (moveAgain)
             (if (is In (to) (sites Mover "Inner"))
-                (if (and (is Empty ("OppositePit")) (is Occupied ("OppositeOuterPit")))
+                (if (and (is Empty ("OppositePit" (to))) (is Occupied ("OppositeOuterPit" (to))))
                     (and {
                         (fromTo
-                            (from ("OppositeOuterPit"))
+                            (from ("OppositeOuterPit" (to)))
                             (to (handSite Mover))
-                            count:(count at:("OppositeOuterPit"))
+                            count:(count at:("OppositeOuterPit" (to)))
                         )
                         (moveAgain)
                         (set Var "CaptureOther" 1)

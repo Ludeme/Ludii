@@ -4,7 +4,7 @@
         if:(is Mover (who at:(to)))
     )
 )
-(define "NextHoleFrom" (trackSite Move from:#1 #2 #3))
+(define "NextHoleFrom" ("NextSiteOnTrack" #3 from:#1 #2))
 
 //------------------------------------------------------------------------------
 
@@ -41,8 +41,7 @@
                         )	
                     )
                 )
-                (move
-                    Select 
+                (move Select 
                     (from 
                         ("LeftMost") 
                     )
@@ -54,7 +53,7 @@
                                     (add (piece (id "Seed" Mover)) (to (to)) count:(count at:(to)))
                                 )
                             )
-                            apply:(if (and (= 1 (count at:("NextHoleFrom" (to) "ReverseTrack" steps:1))) (= 1 (count at:(to))))
+                            apply:(if (and (= 1 (count at:("NextHoleFrom" (to) "ReverseTrack" 1))) (= 1 (count at:(to))))
                                 (moveAgain)
                             )
                         )

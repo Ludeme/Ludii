@@ -1,7 +1,5 @@
 (define "Columns" 8)
-(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")))
-(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2))))
-(define "NextHoleFrom" (trackSite Move from:#1 #2 #3))
+(define "NextHoleFrom" ("NextSiteOnTrack" #3 from:#1 #2))
 
 //------------------------------------------------------------------------------
 
@@ -36,8 +34,7 @@
             (or
                 (move Select
                     (from 
-                        (if 
-                            ("SameTurn") 
+                        (if ("SameTurn") 
                             (sites {(var "Replay")})
                             (sites Mover "Home") 
                         ) 
@@ -78,18 +75,17 @@
                 )
                 (move Select
                     (from 
-                        (if 
-                            ("SameTurn") 
+                        (if ("SameTurn") 
                             (sites {(var "Replay")})
                             (sites Mover "HolesCW") 
                         ) 
                         if:(and {
                             (> (count at:(from)) 1)
                             (is In (from) (sites Mover "HolesCW"))
-                            (if (is In ("NextHoleFrom" (from) "TrackCW" steps:(count at:(from))) (sites Mover "Inner"))
+                            (if (is In ("NextHoleFrom" (from) "TrackCW" (count at:(from))) (sites Mover "Inner"))
                                 (and
-                                    (is Occupied ("OppositeOuterPit" ("NextHoleFrom" (from) "TrackCW" steps:(count at:(from)))))
-                                    (is Occupied ("OppositePit" ("NextHoleFrom" (from) "TrackCW" steps:(count at:(from)))))
+                                    (is Occupied ("OppositeOuterPit" ("NextHoleFrom" (from) "TrackCW" (count at:(from)))))
+                                    (is Occupied ("OppositePit" ("NextHoleFrom" (from) "TrackCW" (count at:(from)))))
                                 )
                                 False
                             )

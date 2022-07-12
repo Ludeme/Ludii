@@ -1,8 +1,6 @@
 (define "Columns" 8)
 (define "OuterPhaseOppositePit" (if (is Mover P1) (+ (to) (* 3 ("Columns"))) (- (to) (* ("Columns") 3))))
-(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")))
-(define "OuterOppositePit" (if (is Mover P1) (+ #1 (* 2 ("Columns"))) (- #1 (* ("Columns") 2))))
-(define "NextHole" (trackSite Move from:#1 #2 steps:#3))
+(define "NextHole" ("NextSiteOnTrack" #3 from:#1 #2))
 
 //------------------------------------------------------------------------------
 
@@ -108,7 +106,7 @@
                                 (is In (from) (sites {(mapEntry "LeftMostOuter" Mover) (mapEntry "SecondLeftInner" Mover)}))
                                 (is In ("NextHole" (from) "TrackCW" (count at:(from))) (sites Mover "Inner"))
                                 (is Occupied ("OppositePit" ("NextHole" (from) "TrackCW" (count at:(from)))))
-                                (is Occupied ("OuterOppositePit" ("NextHole" (from) "TrackCW" (count at:(from)))))
+                                (is Occupied ("OppositeOuterPit" ("NextHole" (from) "TrackCW" (count at:(from)))))
                             })
                         )
                         (then 
@@ -121,7 +119,7 @@
                                         (moveAgain)
                                         (if (and {
                                                 (is Occupied ("OppositePit" (to)))
-                                                (is Occupied ("OuterOppositePit" (to)))
+                                                (is Occupied ("OppositeOuterPit" (to)))
                                                 (is In (to) (sites Mover "Inner"))
                                             })
                                             (and {
@@ -131,9 +129,9 @@
                                                     count:(count at:("OppositePit" (to)))
                                                 )
                                                 (fromTo
-                                                    (from ("OuterOppositePit" (to)))
+                                                    (from ("OppositeOuterPit" (to)))
                                                     (to (last From))
-                                                    count:(count at:("OuterOppositePit" (to)))
+                                                    count:(count at:("OppositeOuterPit" (to)))
                                                 )
                                                 (set Var "Replay" (from))
                                             })
@@ -165,7 +163,7 @@
                                         (moveAgain)
                                         (if (and {
                                                 (is Occupied ("OppositePit" (to)))
-                                                (is Occupied ("OuterOppositePit" (to)))
+                                                (is Occupied ("OppositeOuterPit" (to)))
                                                 (is In (to) (sites Mover "Inner"))
                                             })
                                             (and {
@@ -175,9 +173,9 @@
                                                     count:(count at:("OppositePit" (to)))
                                                 )
                                                 (fromTo
-                                                    (from ("OuterOppositePit" (to)))
+                                                    (from ("OppositeOuterPit" (to)))
                                                     (to (last From))
-                                                    count:(count at:("OuterOppositePit" (to)))
+                                                    count:(count at:("OppositeOuterPit" (to)))
                                                 )
                                                 (set Var "Replay" (from))
                                             })
@@ -190,10 +188,8 @@
                     )
                 )
             )
-            
             (end ("BlockWin"))
         )
-        
         }
     )
 )

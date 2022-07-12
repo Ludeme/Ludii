@@ -26,8 +26,7 @@
         (start (set Count 4 to:(union (sites Top) (sites Bottom))))
         
         (play 
-            (move
-                Select
+            (move Select
                 (from 
                     (sites Mover "Home") 
                     if:(> (count at:(from)) 0)

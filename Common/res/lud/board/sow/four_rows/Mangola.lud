@@ -1,8 +1,6 @@
 (define "Columns" 8)
-(define "PlayFromNextLastHole" (sites {("NextHoleFrom" (last To afterConsequence:True) "TrackCCW" steps:1)}))
-(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")))
-(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2))))
-(define "NextHoleFrom" (trackSite Move from:#1 #2 #3))
+(define "PlayFromNextLastHole" (sites {("NextHoleFrom" (last To afterConsequence:True) "TrackCCW" 1)}))
+(define "NextHoleFrom" ("NextSiteOnTrack" #3 from:#1 #2))
 
 (define "FirstEmptyHole" 
     (trackSite FirstSite 
@@ -49,8 +47,7 @@
             (play
                 (move Select
                     (from 
-                        (if 
-                            ("SameTurn") 
+                        (if ("SameTurn") 
                             "PlayFromNextLastHole" 
                             (sites Mover "LeftMost") 
                         ) 
@@ -61,7 +58,7 @@
                             numPerHole:2
                             "TrackCCW"
                             owner:(mover)
-                            apply:(if (is Occupied ("NextHoleFrom" (to) "TrackCCW" steps:1)) (moveAgain))
+                            apply:(if (is Occupied ("NextHoleFrom" (to) "TrackCCW" 1)) (moveAgain))
                         )
                     )
                 )
@@ -72,8 +69,7 @@
             (play
                 (move Select
                     (from 
-                        (if 
-                            ("SameTurn") 
+                        (if ("SameTurn") 
                             (sites {(var "Replay") })
                             (sites Mover "EndHoles") 
                         ) 
@@ -96,16 +92,16 @@
                                         (and {
                                             (fromTo
                                                 (from ("OppositeOuterPit" (to)))
-                                                (to ("NextHoleFrom" ("FirstEmptyHole" (to)) "TrackCCW" steps:1))
+                                                (to ("NextHoleFrom" ("FirstEmptyHole" (to)) "TrackCCW" 1))
                                                 count:(count at:("OppositeOuterPit" (to)))
                                             )
                                             (fromTo
                                                 (from ("OppositePit" (to)))
-                                                (to ("NextHoleFrom" ("FirstEmptyHole" (to)) "TrackCCW" steps:1))
+                                                (to ("NextHoleFrom" ("FirstEmptyHole" (to)) "TrackCCW" 1))
                                                 count:(count at:("OppositePit" (to)))
                                             )
                                             (sow
-                                                ("NextHoleFrom" ("FirstEmptyHole" (to)) "TrackCCW" steps:1)
+                                                ("NextHoleFrom" ("FirstEmptyHole" (to)) "TrackCCW" 1)
                                                 count:(+ (count at:("OppositePit" (to))) (count at:("OppositeOuterPit" (to))))
                                                 "TrackCCW"
                                                 owner:(mover)	
@@ -115,7 +111,7 @@
                                 })
                                 (fromTo
                                     (from (to))
-                                    (to ("NextHoleFrom" (to) "TrackCCW" steps:1))
+                                    (to ("NextHoleFrom" (to) "TrackCCW" 1))
                                     count:1
                                 )
                             )
@@ -155,16 +151,16 @@
                                         (and {
                                             (fromTo
                                                 (from ("OppositeOuterPit" (to)))
-                                                (to ("NextHoleFrom" ("FirstEmptyHole" (to)) "TrackCCW" steps:1))
+                                                (to ("NextHoleFrom" ("FirstEmptyHole" (to)) "TrackCCW" 1))
                                                 count:(count at:("OppositeOuterPit" (to)))
                                             )
                                             (fromTo
                                                 (from ("OppositePit" (to)))
-                                                (to ("NextHoleFrom" ("FirstEmptyHole" (to)) "TrackCCW" steps:1))
+                                                (to ("NextHoleFrom" ("FirstEmptyHole" (to)) "TrackCCW" 1))
                                                 count:(count at:("OppositePit" (to)))
                                             )
                                             (sow
-                                                ("NextHoleFrom" ("FirstEmptyHole" (to)) "TrackCCW" steps:1)
+                                                ("NextHoleFrom" ("FirstEmptyHole" (to)) "TrackCCW" 1)
                                                 count:(+ (count at:("OppositePit" (to))) (count at:("OppositeOuterPit" (to))))
                                                 "TrackCCW"
                                                 owner:(mover)	
@@ -174,7 +170,7 @@
                                 })
                                 (fromTo
                                     (from (to))
-                                    (to ("NextHoleFrom" (to) "TrackCCW" steps:1))
+                                    (to ("NextHoleFrom" (to) "TrackCCW" 1))
                                     count:1
                                 )
                             )
@@ -185,9 +181,7 @@
             
         )
         }
-        
         (end ("ForEachPlayerNoMovesLoss"))
-        
     )
 )
 

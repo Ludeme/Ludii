@@ -1,8 +1,6 @@
 (define "Columns" <Row:size>)
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
 (define "NoPiece" (all Sites (sites Player) if:(= 0 (count at:(site)))))
-(define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
+(define "NextHole" ("NextSiteOnTrack" #2 from:#1 "Track"))
 (define "NoSiteWith2Seeds"
     (all Sites (sites Mover "Home") if:(!= 2 (count at:(site))))
 )
@@ -48,9 +46,9 @@
                             owner:(mover)
                             apply:(if (and
                                     (is In (to) (sites Mover "Inner"))
-                                    (is Occupied ("OppositePit"))
+                                    (is Occupied ("OppositePit" (to)))
                                 )
-                                (remove ("OppositePit"))
+                                (remove ("OppositePit" (to)))
                             )
                         )
                     )
@@ -114,12 +112,12 @@
                                     (moveAgain)
                                     (if (and 
                                             (is In (to) (sites Mover "Inner"))
-                                            (is Occupied ("OppositePit"))
+                                            (is Occupied ("OppositePit"  (to)))
                                         )
                                         (and
-                                            (remove ("OppositePit"))
-                                            (if (is Occupied ("OppositeOuterPit"))
-                                                (remove ("OppositeOuterPit"))
+                                            (remove ("OppositePit" (to)))
+                                            (if (is Occupied ("OppositeOuterPit" (to)))
+                                                (remove ("OppositeOuterPit" (to)))
                                             )
                                         )
                                     )

@@ -1,10 +1,6 @@
 (define "Columns" <Board:size>)
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
-
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
-
-(define "NextHole" (trackSite Move from:(to) "Track" steps:1))
+(define "NextHole" ("NextSiteOnTrack" 1 from:(to) "Track"))
 
 (define "PlayFromNextHole" (sites {(value Pending)}))
 
@@ -32,8 +28,7 @@
         (regions "Outer" P2 (sites Top))                                        // P1 outer Home
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+    })  
     (rules 
         
         (start 
@@ -47,8 +42,7 @@
         )
         
         (play 
-            (move
-                Select
+            (move Select
                 (from 
                     (if ("SameTurn") 
                         (if "MoveAgainAfterCapture" "PlayFromNextHole" "LastHoleSowed" ) 
@@ -63,8 +57,8 @@
                         apply:(if (> (count at:(to)) 1)
                             (if (and { 
                                     (is In (to) (sites Mover "Inner")) 
-                                    (> (count at:"OppositePit") 0) 
-                                    (> (count at:"OppositeOuterPit") 0)
+                                    (> (count at:("OppositePit" (to))) 0) 
+                                    (> (count at:("OppositeOuterPit" (to))) 0)
                                 })
                                 (and
                                     {
@@ -74,14 +68,14 @@
                                         count:(count at:(to))
                                     ) 
                                     (fromTo 
-                                        (from "OppositePit") 
+                                        (from ("OppositePit" (to))) 
                                         (to (handSite Mover)) 
-                                        count:(count at:"OppositePit")
+                                        count:(count at:("OppositePit" (to)))
                                     ) 
                                     (fromTo 
-                                        (from "OppositeOuterPit") 
+                                        (from ("OppositeOuterPit" (to))) 
                                         (to (handSite Mover)) 
-                                        count:(count at:"OppositeOuterPit")
+                                        count:(count at:("OppositeOuterPit" (to)))
                                     )
                                     (if (> (count at:"NextHole") 1)
                                         (and

@@ -1,8 +1,5 @@
 (define "Columns" 12)
 
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
-
 (define "PiecesOwnedBy" (count Cell at:(handSite #1)))
 
 //------------------------------------------------------------------------------
@@ -23,8 +20,7 @@
         (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))   // P2 inner Home
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+    })  
     (rules 
         
         (start 
@@ -32,8 +28,7 @@
         )
         
         (play
-            (move
-                Select
+            (move Select
                 (from (sites Mover "Home") if:(> (count at:(from)) 0))
                 (then 
                     (sow
@@ -41,19 +36,19 @@
                         owner:(mover)
                         if:(and { 
                             (is In (to) (sites Mover "Inner")) 
-                            (> (count at:"OppositePit") 0) 
+                            (> (count at:("OppositePit" (to))) 0) 
                         })
                         apply:(and
                             (fromTo 
-                                (from "OppositePit") 
+                                (from ("OppositePit" (to))) 
                                 (to (handSite Mover)) 
-                                count:(count at:"OppositePit")
+                                count:(count at:("OppositePit" (to)))
                             )
-                            (if  (> (count at:"OppositeOuterPit") 0) 
+                            (if  (> (count at:("OppositeOuterPit" (to))) 0) 
                                 (fromTo 
-                                    (from "OppositeOuterPit") 
+                                    (from ("OppositeOuterPit" (to))) 
                                     (to (handSite Mover)) 
-                                    count:(count at:"OppositeOuterPit")
+                                    count:(count at:("OppositeOuterPit" (to)))
                                 )
                             )
                         )

@@ -1,6 +1,4 @@
 (define "Columns" <Board:size>)
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
 
 //------------------------------------------------------------------------------
 
@@ -21,8 +19,7 @@
         (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))   // P2 inner Home
         (regions "Outer" P1 (sites Bottom))                                        // P1 outer Home
         (regions "Outer" P2 (sites Top))                                          // P2 outer Home
-        }
-    )  
+    })  
     (rules 
         
         (start { 
@@ -57,25 +54,25 @@
                         apply:(if (and {
                                 (> (count at:(to)) 1)
                                 (is In (to) (sites Mover "Inner")) 
-                                (> (count at:"OppositePit") 0) 
+                                (> (count at:("OppositePit" (to))) 0) 
                             })
                             (and
                                 {
                                 (fromTo 
-                                    (from "OppositePit") 
+                                    (from ("OppositePit" (to))) 
                                     (to (to)) 
-                                    count:(count at:"OppositePit")
+                                    count:(count at:("OppositePit" (to)))
                                 ) 
-                                (if (> (count at:"OppositeOuterPit") 0)
+                                (if (> (count at:("OppositeOuterPit" (to))) 0)
                                     (fromTo 
-                                        (from "OppositeOuterPit") 
+                                        (from ("OppositeOuterPit" (to))) 
                                         (to (to)) 
-                                        count:(count at:"OppositeOuterPit")
+                                        count:(count at:("OppositeOuterPit" (to)))
                                     )
                                 )
                                 (sow 
                                     (to)
-                                    count:(+ (count at:"OppositePit") (count at:"OppositeOuterPit"))
+                                    count:(+ (count at:("OppositePit" (to))) (count at:("OppositeOuterPit" (to))))
                                     "Track"
                                     owner:(mover)
                                 )

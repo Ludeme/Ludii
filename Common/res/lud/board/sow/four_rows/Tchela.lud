@@ -52,8 +52,7 @@
         
         (phase "OpeningPair"
             (play
-                (move
-                    Select
+                (move Select
                     (from (sites {("NextSite" (value Player Mover) "TrackCCW" 1)}))
                     (then 
                         (sow
@@ -70,8 +69,7 @@
         (phase "Playing"
             (play
                 (or
-                    (move
-                        Select
+                    (move Select
                         (from 
                             (if 
                                 ("SameTurn") 
@@ -110,8 +108,7 @@
                         )
                     )
                     (do
-                        (move
-                            Select
+                        (move Select
                             (from 
                                 (if 
                                     ("SameTurn") 
