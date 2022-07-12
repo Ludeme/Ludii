@@ -15,8 +15,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.DoubleAdder;
 import java.util.regex.Pattern;
 
-import decision_trees.logits.ExperienceLogitTreeLearner;
-import decision_trees.logits.LogitTreeNode;
+import decision_trees.classifiers.DecisionTreeNode;
+import decision_trees.classifiers.ExperienceIQRTreeLearner;
 import features.feature_sets.BaseFeatureSet;
 import features.spatial.Walk;
 import function_approx.LinearFunction;
@@ -48,18 +48,15 @@ import utils.data_structures.experience_buffers.UniformExperienceBuffer;
 
 /**
  * Class with main method to automatically generate all the appropriate evaluation
- * scripts (and build decision trees) for features on the Snellius cluster.
+ * scripts for features on the Snellius cluster.
  *
  * @author Dennis Soemers
  */
-public class GenerateFeatureEvalScripts
+public class GenerateBiasedMCTSEvalScripts
 {
 	
-	/** Number of threads to use for our actual job that's building decision trees and generating eval scripts */
+	/** Number of threads to use for our actual job that's generating eval scripts */
 	private static final int NUM_GENERATION_THREADS = 96;
-	
-	/** Depth limits for which we want to build decision trees */
-	private static final int[] DECISION_TREE_DEPTHS = new int[] {1, 2, 3, 4, 5};
 	
 	/** Don't submit more than this number of jobs at a single time */
 	private static final int MAX_JOBS_PER_BATCH = 800;
@@ -80,7 +77,7 @@ public class GenerateFeatureEvalScripts
 	private static final int NUM_TRIALS = 100;
 	
 	/** Max wall time (in minutes) */
-	private static final int MAX_WALL_TIME = 60;
+	private static final int MAX_WALL_TIME = 1445;
 	
 	/** Number of cores per node (this is for Thin nodes on Snellius) */
 	private static final int CORES_PER_NODE = 128;
@@ -116,7 +113,7 @@ public class GenerateFeatureEvalScripts
 	/**
 	 * Constructor (don't need this)
 	 */
-	private GenerateFeatureEvalScripts()
+	private GenerateBiasedMCTSEvalScripts()
 	{
 		// Do nothing
 	}
@@ -222,6 +219,14 @@ public class GenerateFeatureEvalScripts
 				if (game.hiddenInformation())
 					continue;
 				
+				final double drawishness = RulesetConceptsUCT.getValue(RulesetNames.gameRulesetName(game), "Drawishness");
+				
+				if (drawishness == 1.0)
+				{
+					System.out.println("Skipping " + shortGameName + " (" + fullRulesetName + ") because of drawishness.");
+					continue;
+				}
+				
 				if (Walk.allGameRotations(game).length == 0)
 					continue;
 				
@@ -295,14 +300,14 @@ public class GenerateFeatureEvalScripts
 			
 		});
 
-		// First create list with data for every process we want to run
+		// Create list with data for every process we want to run
 		final List<ProcessData> processDataList = new ArrayList<ProcessData>();
 		for (int idx : sortedGameIndices)
 		{
-			processDataList.add(new ProcessData(gameNames.get(idx), rulesetNames.get(idx), gamePlayerCounts.getQuick(idx)));
+			final int numPlayers = gamePlayerCounts.getQuick(idx);
+			processDataList.add(new ProcessData(gameNames.get(idx), rulesetNames.get(idx), numPlayers));
 		}
 		
-		// Build all the decision trees
 		final ExecutorService executor = Executors.newFixedThreadPool(NUM_GENERATION_THREADS);
 		
 		try
@@ -371,9 +376,10 @@ public class GenerateFeatureEvalScripts
 							
 							playoutSoftmax.initAI(game, -1);
 							
-							// Now build trees
-							final metadata.ai.features.trees.logits.LogitTree[][] metadataTreesPerDepth = 
-									new metadata.ai.features.trees.logits.LogitTree[DECISION_TREE_DEPTHS.length][featureSets.length - 1];
+							// Now build trees (only depth 3)
+							final int DEPTH = 3;
+							final metadata.ai.features.trees.classifiers.DecisionTree[] metadataTrees = 
+									new metadata.ai.features.trees.classifiers.DecisionTree[featureSets.length - 1];
 							
 							for (int p = 1; p < featureSets.length; ++p)
 							{
@@ -418,49 +424,42 @@ public class GenerateFeatureEvalScripts
 									}
 								}
 								
-								for (final int depth : DECISION_TREE_DEPTHS)
-								{
-									// Generate decision tree for Player p
-									final LogitTreeNode root = 
-											ExperienceLogitTreeLearner.buildTree(featureSets[p], linearFunctions[p], buffer, depth, 5);
-									
-									// Convert to metadata structure
-									final metadata.ai.features.trees.logits.LogitNode metadataRoot = root.toMetadataNode();
-									metadataTreesPerDepth[ArrayUtils.indexOf(depth, DECISION_TREE_DEPTHS)][p - 1] = 
-											new metadata.ai.features.trees.logits.LogitTree(RoleType.roleForPlayerId(p), metadataRoot);
-								}
+								// Generate decision tree for Player p
+								final DecisionTreeNode root = 
+										ExperienceIQRTreeLearner.buildTree(featureSets[p], linearFunctions[p], buffer, DEPTH, 5);
+								
+								// Convert to metadata structure
+								final metadata.ai.features.trees.classifiers.DecisionTreeNode metadataRoot = root.toMetadataNode();
+								metadataTrees[p - 1] = 
+										new metadata.ai.features.trees.classifiers.DecisionTree(RoleType.roleForPlayerId(p), metadataRoot);
 							}
 							
-							for (int depthIdx = 0; depthIdx < DECISION_TREE_DEPTHS.length; ++depthIdx)
+							final String outFile = 
+									"/home/" + 
+									userName + 
+									"/TrainFeaturesSnelliusAllGames/Out" + 
+									StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), "")) 
+									+ 
+									"_"
+									+
+									StringRoutines.cleanRulesetName(processData.rulesetName).replaceAll(Pattern.quote("/"), "_")
+									+
+									"/IQR_Tree_"
+									+
+									3
+									+
+									".txt";
+							
+							System.out.println("Writing IQR tree to: " + outFile);
+							new File(outFile).getParentFile().mkdirs();
+							
+							try (final PrintWriter writer = new PrintWriter(outFile))
 							{
-								final int depth = DECISION_TREE_DEPTHS[depthIdx];
-								final String outFile = 
-										"/home/" + 
-										userName + 
-										"/TrainFeaturesSnelliusAllGames/Out" + 
-										StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), "")) 
-										+ 
-										"_"
-										+
-										StringRoutines.cleanRulesetName(processData.rulesetName).replaceAll(Pattern.quote("/"), "_")
-										+
-										"/CE_Selection_Logit_Tree_"
-										+
-										depth
-										+
-										".txt";
-								
-								System.out.println("Writing Logit Regression tree to: " + outFile);
-								new File(outFile).getParentFile().mkdirs();
-								
-								try (final PrintWriter writer = new PrintWriter(outFile))
-								{
-									writer.println(new FeatureTrees(metadataTreesPerDepth[depthIdx], null));
-								}
-								catch (final IOException e)
-								{
-									e.printStackTrace();
-								}
+								writer.println(new FeatureTrees(null, metadataTrees));
+							}
+							catch (final IOException e)
+							{
+								e.printStackTrace();
 							}
 						}
 						catch (final Exception e)
@@ -486,10 +485,11 @@ public class GenerateFeatureEvalScripts
 		final List<EvalProcessData> evalProcessDataList = new ArrayList<EvalProcessData>();
 		for (final ProcessData processData : processDataList)
 		{
-			for (int i = 0; i < DECISION_TREE_DEPTHS.length - 1; ++i)
-			{
-				evalProcessDataList.add(new EvalProcessData(processData.gameName, processData.rulesetName, processData.numPlayers, DECISION_TREE_DEPTHS[i], DECISION_TREE_DEPTHS[i + 1]));
-			}
+			final int numPlayers = processData.numPlayers;
+			evalProcessDataList.add(new EvalProcessData(processData.gameName, processData.rulesetName, processData.numPlayers, "Biased"));
+			
+			if (numPlayers == 1)		// Need to evaluate UCT separately
+				evalProcessDataList.add(new EvalProcessData(processData.gameName, processData.rulesetName, processData.numPlayers, "UCT"));
 		}
 		
 		final DoubleAdder totalCoreHoursRequested = new DoubleAdder();
@@ -507,7 +507,7 @@ public class GenerateFeatureEvalScripts
 				final int evalProcessEndIdx = Math.min((batchIdx + 1) * PROCESSES_PER_JOB, evalProcessDataList.size());
 				
 				// Start a new job script
-				final String jobScriptFilename = "EvalFeatureTrees_" + batchIdx + ".sh";
+				final String jobScriptFilename = "EvalBiasedMCTS_" + batchIdx + ".sh";
 
 				executor.submit
 				(
@@ -518,16 +518,16 @@ public class GenerateFeatureEvalScripts
 							final PrintWriter writer = 
 								new UnixPrintWriter
 								(
-									new File("/home/" + userName + "/EvalFeatureTreesSnelliusAllGames/" + jobScriptFilename), "UTF-8"
+									new File("/home/" + userName + "/EvalBiasedMCTSAllGames/" + jobScriptFilename), "UTF-8"
 								)
 						)
 						{
 							
 							writer.println("#!/bin/bash");
-							writer.println("#SBATCH -J EvalFeatureTrees");
+							writer.println("#SBATCH -J EvalBiasedMCTS");
 							writer.println("#SBATCH -p thin");
-							writer.println("#SBATCH -o /home/" + userName + "/EvalFeatureTreesSnelliusAllGames/Out/Out_%J.out");
-							writer.println("#SBATCH -e /home/" + userName + "/EvalFeatureTreesSnelliusAllGames/Out/Err_%J.err");
+							writer.println("#SBATCH -o /home/" + userName + "/EvalBiasedMCTSAllGames/Out/Out_%J.out");
+							writer.println("#SBATCH -e /home/" + userName + "/EvalBiasedMCTSAllGames/Out/Err_%J.err");
 							writer.println("#SBATCH -t " + MAX_WALL_TIME);
 							writer.println("#SBATCH -N 1");		// 1 node, no MPI/OpenMP/etc
 							
@@ -547,6 +547,8 @@ public class GenerateFeatureEvalScripts
 							
 							if (exclusive)
 								writer.println("#SBATCH --exclusive");
+							else
+								writer.println("#SBATCH --exclusive");
 							
 							// load Java modules
 							writer.println("module load 2021");
@@ -559,36 +561,20 @@ public class GenerateFeatureEvalScripts
 								final EvalProcessData evalProcessData = evalProcessDataList.get(processIdx);
 								
 								final List<String> agentStrings = new ArrayList<String>();
-								final String agentStr1 = 
-											StringRoutines.join
-											(
-												";", 
-												"algorithm=SoftmaxPolicyLogitTree",
-												"policytrees=/" + 
-												StringRoutines.join
-												(
-													"/", 
-													"home",
-													userName,
-													"TrainFeaturesSnelliusAllGames",
-													"Out" 
-													+
-													StringRoutines.cleanGameName(evalProcessData.gameName.replaceAll(Pattern.quote(".lud"), "")) 
-													+ 
-													"_"
-													+
-													StringRoutines.cleanRulesetName(evalProcessData.rulesetName).replaceAll(Pattern.quote("/"), "_"),
-													"CE_Selection_Logit_Tree_" + evalProcessData.treeDepth1 + ".txt"
-												),
-												"friendly_name=Depth" + evalProcessData.treeDepth1,
-												"greedy=false"
-											);
+								final String agentStr1;
 								
-								final String agentStr2 = 
-										StringRoutines.join
+								if (evalProcessData.evalAgent.equals("UCT"))
+								{
+									agentStr1 = "algorithm=UCT";
+								}
+								else
+								{
+									final List<String> playoutStrParts = new ArrayList<String>();
+									playoutStrParts.add("playout=classificationtreepolicy");
+									for (int p = 1; p <= evalProcessData.numPlayers; ++p)
+									{
+										playoutStrParts.add
 										(
-											";", 
-											"algorithm=SoftmaxPolicyLogitTree",
 											"policytrees=/" + 
 											StringRoutines.join
 											(
@@ -603,24 +589,61 @@ public class GenerateFeatureEvalScripts
 												"_"
 												+
 												StringRoutines.cleanRulesetName(evalProcessData.rulesetName).replaceAll(Pattern.quote("/"), "_"),
-												"CE_Selection_Logit_Tree_" + evalProcessData.treeDepth2 + ".txt"
-											),
-											"friendly_name=Depth" + evalProcessData.treeDepth2,
+												"IQR_Tree_3" + ".txt"
+											)
+											+ "," +
 											"greedy=false"
 										);
+									}
+									
+									final List<String> learnedSelectionStrParts = new ArrayList<String>();
+									learnedSelectionStrParts.add("learned_selection_policy=playout");
+									
+									agentStr1 = 
+											StringRoutines.join
+											(
+												";", 
+												"algorithm=MCTS",
+												"selection=noisyag0selection",		// Noisy variant here because we're using playout policy in selection
+												StringRoutines.join
+												(
+													",", 
+													playoutStrParts
+												),
+												"tree_reuse=true",
+												"use_score_bounds=true",
+												"num_threads=3",
+												"final_move=robustchild",
+												StringRoutines.join
+												(
+													",", 
+													learnedSelectionStrParts
+												),
+												"friendly_name=BiasedMCTS"
+											);
+								}
 			
 								while (agentStrings.size() < evalProcessData.numPlayers)
 								{
 									agentStrings.add(StringRoutines.quote(agentStr1));
 									
 									if (agentStrings.size() < evalProcessData.numPlayers)
-										agentStrings.add(StringRoutines.quote(agentStr2));
+										agentStrings.add(StringRoutines.quote("algorithm=UCT"));
 								}
 								
 								// Write Java call for this process
 								String javaCall = StringRoutines.join
 										(
 											" ", 
+											"taskset",			// Assign specific cores to each process
+											"-c",
+											StringRoutines.join
+											(
+												",", 
+												String.valueOf(numJobProcesses * 3), 
+												String.valueOf(numJobProcesses * 3 + 1),
+												String.valueOf(numJobProcesses * 3 + 2)
+											),
 											"java",
 											"-Xms" + JVM_MEM + "M",
 											"-Xmx" + JVM_MEM + "M",
@@ -629,7 +652,7 @@ public class GenerateFeatureEvalScripts
 											"-dsa",
 											"-XX:+UseStringDeduplication",
 											"-jar",
-											StringRoutines.quote("/home/" + userName + "/EvalFeatureTreesSnelliusAllGames/Ludii.jar"),
+											StringRoutines.quote("/home/" + userName + "/EvalBiasedMCTSAllGames/Ludii.jar"),
 											"--eval-agents",
 											"--game",
 											StringRoutines.quote(evalProcessData.gameName),
@@ -640,7 +663,7 @@ public class GenerateFeatureEvalScripts
 											"--agents",
 											StringRoutines.join(" ", agentStrings),
 											"--warming-up-secs",
-											String.valueOf(0),
+											String.valueOf(30),
 											"--game-length-cap",
 											String.valueOf(1000),
 											"--out-dir",
@@ -648,7 +671,7 @@ public class GenerateFeatureEvalScripts
 											(
 												"/home/" + 
 												userName + 
-												"/EvalFeatureTreesSnelliusAllGames/Out" + 
+												"/EvalBiasedMCTSAllGames/Out" + 
 												StringRoutines.cleanGameName(evalProcessData.gameName.replaceAll(Pattern.quote(".lud"), "")) 
 												+ 
 												"_"
@@ -657,14 +680,14 @@ public class GenerateFeatureEvalScripts
 												+
 												"/" 
 												+
-												evalProcessData.treeDepth1 + "_vs_" + evalProcessData.treeDepth2
+												evalProcessData.evalAgent
 											),
 											"--output-summary",
 											"--output-alpha-rank-data",
 											"--max-wall-time",
 											String.valueOf(MAX_WALL_TIME),
 											">",
-											"/home/" + userName + "/EvalFeatureTreesSnelliusAllGames/Out/Out_${SLURM_JOB_ID}_" + numJobProcesses + ".out",
+											"/home/" + userName + "/EvalBiasedMCTSAllGames/Out/Out_${SLURM_JOB_ID}_" + numJobProcesses + ".out",
 											"&"		// Run processes in parallel
 										);
 								
@@ -724,7 +747,7 @@ public class GenerateFeatureEvalScripts
 
 		for (int i = 0; i < jobScriptsLists.size(); ++i)
 		{
-			try (final PrintWriter writer = new UnixPrintWriter(new File("/home/" + userName + "/EvalFeatureTreesSnelliusAllGames/SubmitJobs_Part" + i + ".sh"), "UTF-8"))
+			try (final PrintWriter writer = new UnixPrintWriter(new File("/home/" + userName + "/EvalBiasedMCTSAllGames/SubmitJobs_Part" + i + ".sh"), "UTF-8"))
 			{
 				for (final String jobScriptName : jobScriptsLists.get(i))
 				{
@@ -777,28 +800,21 @@ public class GenerateFeatureEvalScripts
 		public final String gameName;
 		public final String rulesetName;
 		public final int numPlayers;
-		public final int treeDepth1;
-		public final int treeDepth2;
-
+		public final String evalAgent;
+		
 		/**
 		 * Constructor
 		 * @param gameName
 		 * @param rulesetName
 		 * @param numPlayers
-		 * @param treeDepth1
-		 * @param treeDepth2
+		 * @param evalAgent
 		 */
-		public EvalProcessData
-		(
-			final String gameName, final String rulesetName, final int numPlayers,
-			final int treeDepth1, final int treeDepth2
-		)
+		public EvalProcessData(final String gameName, final String rulesetName, final int numPlayers, final String evalAgent)
 		{
 			this.gameName = gameName;
 			this.rulesetName = rulesetName;
 			this.numPlayers = numPlayers;
-			this.treeDepth1 = treeDepth1;
-			this.treeDepth2 = treeDepth2;
+			this.evalAgent = evalAgent;
 		}
 	}
 
@@ -815,7 +831,7 @@ public class GenerateFeatureEvalScripts
 				new CommandLineArgParse
 				(
 					true,
-					"Generates decision trees and scripts to run on cluster for feature evaluation."
+					"Generates scripts to run on cluster for evaluation of MCTS with features."
 				);
 		
 		argParse.addOption(new ArgOption()
