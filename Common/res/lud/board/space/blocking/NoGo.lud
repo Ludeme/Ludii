@@ -1,19 +1,6 @@
 (define "HasFreedom" (> (count Liberties Orthogonal) 0))
 
-(define "NoCapture"
-    (not 
-        (can Move 
-            (enclose 
-                (from (last To)) 
-                Orthogonal 
-                (between 
-                    if:("IsEnemyAt" (between)) 
-                    (apply (remove (between))) 
-                )
-            )
-        )
-    )
-)
+(define "NoCapture" (not (can Move ("EncloseCapture" Orthogonal))))
 
 //------------------------------------------------------------------------------
 

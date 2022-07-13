@@ -6,13 +6,11 @@
 
 (game "Mu Torere"
     (players 2)  
-    (equipment 
-        { 
+    (equipment { 
         <Board:type>
         
         (piece "Marker" Each <Play>) 
-        }
-    )  
+    })  
     (rules 
         (start { 
             <Board:start>
@@ -111,4 +109,3 @@
     )
     
 )
-
