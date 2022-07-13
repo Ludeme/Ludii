@@ -1,0 +1,6 @@
+// If the mover has no legal moves, the mover is winning. This ludemeplex can be used only in an ending condition.
+// @example ("MisereBlockWin")
+
+(define "MisereBlockWin"
+    (if (no Moves Mover) (result Mover Win))
+)

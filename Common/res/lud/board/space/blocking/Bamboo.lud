@@ -21,12 +21,7 @@
                 )
             )
         )
-        (end 
-            (if 
-                (no Moves Next) 
-                (result Next <Result>)
-            )
-        )
+        (end ("NoMoves" <Result>))
     )
 )
 

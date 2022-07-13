@@ -8,13 +8,11 @@
     (rules 
         (play 
             (or 
-                (move 
-                    Add 
+                (move Add 
                     (piece (mover) state:0) 
                     (to (sites Empty))
                 )
-                (move 
-                    Add 
+                (move Add 
                     (piece (mover) state:1) 
                     (to (sites Empty))
                 )

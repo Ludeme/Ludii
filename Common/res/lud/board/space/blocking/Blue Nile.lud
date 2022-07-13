@@ -1,6 +1,5 @@
 (define "AdjacentNotEmptySites"
-    (sites 
-        Around 
+    (sites Around 
         (to) 
         if:(not (is In (to) (sites Empty)))
     )
@@ -13,8 +12,7 @@
     (equipment { 
         (board (hex 5)) 
         (piece "Marker" Neutral) 
-        }
-    )  
+    })  
     
     (rules 
         
@@ -26,8 +24,7 @@
         
         (phase "play"     
             (play 
-                (move 
-                    Add 
+                (move Add 
                     (piece "Marker0") 
                     (to 
                         (sites Around 

@@ -17,8 +17,8 @@
                 (move Shoot (piece "Dot0"))
             )
         )
-        
-        (end (if (no Moves Next)  (result Mover Win)))  
+
+        (end ("BlockWin"))
     )
 )
 
