@@ -29,8 +29,7 @@
     
     (rules 
         (play (or
-                (move 
-                    Add 
+                (move Add 
                     (to (sites Empty)) 
                     (then (set Counter)) // To know this move was not a slide.
                 )

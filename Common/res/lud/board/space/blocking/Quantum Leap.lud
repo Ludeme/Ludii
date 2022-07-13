@@ -15,8 +15,7 @@
     (equipment { 
         (board (hex 5))
         (piece "Marker" Each 
-            (move
-                Hop 
+            (move Hop 
                 Orthogonal 
                 (between 
                     (exact (- "DistanceToMove" 1))
@@ -51,9 +50,7 @@
             )
             (nextPhase "Play")		
         )
-        (phase "Play"
-            (play (forEach Piece))		
-        )
+        (phase "Play" (play (forEach Piece)))
         }
         (end ("NoMoves" Loss))  
     )

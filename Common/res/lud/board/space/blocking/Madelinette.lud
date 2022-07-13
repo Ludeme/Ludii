@@ -2,17 +2,17 @@
     (players 2)  
     (equipment { 
         (board 
-        	(add
-            (remove 
-                ("AlquerqueGraph" 3 3)
-                vertices:{7 1} 
-            )
-            edges:{{0 1}}
+            (add
+                (remove 
+                    ("AlquerqueGraph" 3 3)
+                    vertices:{7 1} 
+                )
+                edges:{{0 1}}
             )
             use:Vertex
         ) 
         (piece "Counter" Each ("StepToEmpty"))
-     })  
+    })  
     
     (rules 
         (start {

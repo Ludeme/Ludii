@@ -4,13 +4,13 @@
 // @example ("EncloseCapture")
 
 (define "EncloseCapture"
-        (enclose 
-                (from (last To)) 
-                #1 
-                (between 
-                    if:("IsEnemyAt" (between)) 
-                    (apply (remove (between))) 
-                )
-                #2
-            )
+    (enclose 
+        (from (last To)) 
+        #1 
+        (between 
+            if:("IsEnemyAt" (between)) 
+            (apply (remove (between))) 
+        )
+        #2
+    )
 )

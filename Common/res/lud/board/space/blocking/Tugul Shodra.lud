@@ -1,18 +1,14 @@
 (game "Tugul Shodra"  
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (remove (square 3) edges:{{0 1} {1 2}}) use:Vertex)
         (piece "Disc" Each "StepToEmpty")
-        }
-    )
+    })
     (rules 
-        (start 
-            {
+        (start {
             (place "Disc1" {2 5 8}) 
             (place "Disc2" {0 3 6})
-            }
-        )
+        })
         (play (forEach Piece))
         (end ("NoMoves" Loss)) 
     )
@@ -37,7 +33,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai

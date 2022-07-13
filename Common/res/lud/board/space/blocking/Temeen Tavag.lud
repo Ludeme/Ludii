@@ -6,9 +6,7 @@
         (piece "Disc" Each "StepToEmpty")
     })
     (rules 
-        (start 
-            (place "Disc" "Hand" count:2)
-        )
+        (start (place "Disc" "Hand" count:2))
         phases:{
         (phase "Placement" 
             (play 
@@ -20,9 +18,7 @@
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )  
         
-        (phase "Movement" 
-            (play (forEach Piece))
-        )
+        (phase "Movement" (play (forEach Piece)))
         }
         (end ("BlockWin"))
     )
@@ -90,7 +86,6 @@
     )
     (graphics {
         (useFor "Ruleset/Temeen Tavag (Observed)" (board Background image:"disc.svg" edgeColour:(colour 90 90 90) scale:0.5 offsetX:-0.6))
-        
     })
     (ai
         "Temeen Tavag_ai"

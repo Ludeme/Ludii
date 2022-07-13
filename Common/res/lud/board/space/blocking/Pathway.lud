@@ -11,11 +11,11 @@
                     (sites Empty)
                     if:(or 
                         (all Sites
-                        	(sites Around
-                                    (to)
-                                    Orthogonal
-                                )
-                        	if:(is Empty (site))
+                            (sites Around
+                                (to)
+                                Orthogonal
+                            )
+                            if:(is Empty (site))
                         )
                         (= 1
                             (count Sites

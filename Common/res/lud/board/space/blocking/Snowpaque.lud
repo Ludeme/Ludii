@@ -15,8 +15,7 @@
     (equipment { 
         (board (hex 5)) 
         (piece "Marker" Neutral) 
-        }
-    )  
+    })  
     (rules 
         
         phases:{
@@ -26,8 +25,7 @@
         )
         (phase "play"   
             (play 
-                (move 
-                    Add 
+                (move Add 
                     (piece "Marker0") 
                     (to 
                         (sites Empty) 
