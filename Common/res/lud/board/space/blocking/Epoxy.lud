@@ -2,16 +2,14 @@
 // utilities
 
 (define "QtyAround"
-    (count 
-        Pieces 
+    (count Pieces 
         Next
         in:(sites Around #1 "LoSDirection")
     )
 )
 
 (define "LoSAt"
-    (count 
-        Pieces 
+    (count Pieces 
         Next 
         in:(sites LineOfSight Piece at:#1 "LoSDirection")
     )
@@ -23,17 +21,21 @@
             from:(sites Occupied by:#1)
             to:(sites LineOfSight Empty at:(from) "LoSDirection")
             (to)
-)))
+        )
+    )
+)
 
 (define "Placement"
-    (move
-        Add
+    (move Add
         (piece (mover))
         (to
             (difference
                 (sites Empty)
                 ("SitesControlledBy" Next)
-))))
+            )
+        )
+    )
+)
 
 (define "Movement"
     (forEach Piece
@@ -48,9 +50,12 @@
                 (and 
                     (= ("QtyAround" (last To)) (var "QtyAroundFrom")) 
                     (> ("LoSAt" (last To)) (var "LoSFrom")) 
-        )))
+                )
+            )
+        )
         #1      
-))
+    )
+)
 
 (define "MPScoring"
     (set Score
@@ -60,12 +65,18 @@
                 (array
                     (sites From
                         ("Movement" #1)
-            )))
+                    )
+                )
+            )
             (count Sites 
                 in:(difference
                     ("SitesControlledBy" #1)
                     ("SitesControlledBy" #2)
-)))))
+                )
+            )
+        )
+    )
+)
 
 (define "ScoreTerritory" (and ("MPScoring" Mover Next) ("MPScoring" Next Mover)))
 
@@ -73,21 +84,14 @@
 
 (game "Epoxy" 
     (players 2)
-    (equipment
-        {
+    (equipment {
         "BoardUsed"
         (piece "Ball" Each (move Slide))
-        }
-    )
+    })
     (rules
-        (start 
-            {
-            (set Score Each 0)
-            }
-        )
+        (start (set Score Each 0))
         (play 
-            (or
-                {
+            (or {
                 ("Placement") 
                 ("Movement" Mover) 
                 (if
@@ -99,13 +103,16 @@
                 )
                 }
                 (then 
-                    (if
-                        (is Prev Next)
+                    (if (is Prev Next)
                         (moveAgain)
                         ("ScoreTerritory")
-        ))))
+                    ) 
+                )
+            )
+        )
         (end "PassEnd")
-))
+    )
+)
 
 //--------------------------
 // ending rules:

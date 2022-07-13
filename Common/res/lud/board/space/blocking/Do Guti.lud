@@ -14,8 +14,7 @@
         )
         (hand Each)
         (piece "Disc" Each "StepToEmpty")
-        }
-    )  
+    })  
     
     (rules 
         (start (place "Disc" "Hand" count:2))
@@ -30,9 +29,7 @@
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )  
         
-        (phase "Movement" 
-            (play (forEach Piece))
-        )
+        (phase "Movement" (play (forEach Piece)))
         }
         (end ("NoMoves" Loss))  
     )

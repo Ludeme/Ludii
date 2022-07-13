@@ -265,17 +265,13 @@
 
 (game "Ex Nihilo"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (hex <Board>))
         (piece "Disc" Each)
         (piece "Disc" Neutral)
-        }
-    )
+    })
     (rules
-        (start {
-            (place "Disc0" (sites Board))
-        })
+        (start (place "Disc0" (sites Board)))
         (play
             (priority
                 (do
@@ -314,12 +310,7 @@
                 )
             )
         )
-        (end
-            (if 
-                (no Moves Next)
-                (result Next Loss)
-            )
-        )
+        (end ("NoMoves" Loss))
     )
 )
 

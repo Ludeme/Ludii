@@ -13,11 +13,7 @@
                 (intersection (sites Outer) (sites Column (column of:(centrePoint))))
             })
         )
-        (piece "Marker" Each 
-            (move Step Orthogonal 
-                (to if:(is Empty (to)))
-            )
-        )
+        (piece "Marker" Each ("StepOrthogonalToEmpty"))
     })
     (rules 
         (start {
@@ -39,16 +35,7 @@
         (phase "Movement" 
             (play 
                 (forEach Piece
-                    (then 
-                        (custodial 
-                            (from (last To))
-                            (between 
-                                if:("IsEnemyAt" (between))
-                                (apply (remove (between)))
-                            )
-                            (to if:("IsFriendAt" (to)))
-                        )
-                    )
+                    (then ("CustodialCapture"))
                 )
             )
             
