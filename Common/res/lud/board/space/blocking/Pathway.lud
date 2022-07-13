@@ -10,14 +10,12 @@
                 (to
                     (sites Empty)
                     if:(or 
-                        (= 0
-                            (count Sites
-                                in:(sites Around
+                        (all Sites
+                        	(sites Around
                                     (to)
-                                    NotEmpty
                                     Orthogonal
                                 )
-                            )
+                        	if:(is Empty (site))
                         )
                         (= 1
                             (count Sites
@@ -32,12 +30,7 @@
                 )
             )        
         )
-        (end 
-            (if 
-                (no Moves Next) 
-                (result Next Win)
-            )
-        )
+        (end ("NoMoves" Win))
     )
 )
 

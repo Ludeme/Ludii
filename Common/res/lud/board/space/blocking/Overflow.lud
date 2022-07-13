@@ -1,8 +1,6 @@
 (define "OverflowMove"
     (move Select
-        (from 
-            (sites Occupied by:P1)
-        )
+        (from (sites Occupied by:P1))
         (to 
             (sites Around (from))
             if:(and
@@ -25,9 +23,7 @@
 
 (define "ContainedMove"
     (move Select
-        (from 
-            (sites Occupied by:P1)
-        )
+        (from (sites Occupied by:P1))
         (to
             (sites Around (from) NotEmpty)
             if:(and 
@@ -161,12 +157,10 @@
 
 (game "Overflow"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (square <Board>))
         (piece "Disc" P1)
-        }
-    )
+    })
     (rules
         (start {
             (place "Disc1" (sites Board))
