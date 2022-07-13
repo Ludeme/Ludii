@@ -20,10 +20,7 @@
         
         (play (forEach Piece))
         
-        (end {
-            ("NoMoves" Loss)
-            (if (no Pieces P2) (result P1 Win))
-        }) 
+        (end ("NoMovesLossAndNoPiecesPlayerLoss" P2))
     )
 )
 

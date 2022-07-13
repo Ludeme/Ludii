@@ -19,10 +19,7 @@
         
         (play (forEach Piece)) 
         
-        (end {
-            ("NoMoves" Loss)
-            (if (<= (count Pieces P2) 6) (result P1 Win))
-        })
+        (end ("NoMovesLossAndLessNumPiecesPlayerLoss" P2 6))
     )
 )
 

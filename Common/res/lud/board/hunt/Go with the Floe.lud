@@ -17,15 +17,13 @@
             ) 
         )
         (piece "Seal" P1 N (or 
-                (move
-                    Slide
+                (move Slide
                     (between 
                         (max 2) 
                         trail:(id "Disc0")
                     ) 
                 ) 
-                (move
-                    Hop
+                (move Hop
                     (between if:("IsPieceAt" "Disc0" Neutral (between)))
                     (to if:(is Empty (to))) 
                     (then "LetADiscOnTheFromLocation")
@@ -33,21 +31,18 @@
             )
         )
         (piece "Bear" P2 (or {
-                (move
-                    Slide
+                (move Slide
                     (between 
                         (max 2) 
                         trail:(id "Disc0")
                     ) 
                 ) 
-                (move
-                    Hop
+                (move Hop
                     (between if:("IsPieceAt" "Disc0" Neutral (between))) 
                     (to if:(is Empty (to))) 
                     (then "LetADiscOnTheFromLocation")
                 )
-                (move
-                    Step
+                (move Step
                     (to 
                         if:("IsPieceAt" "Seal1" P1 (to))
                         (apply (remove (to)))

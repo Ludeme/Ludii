@@ -27,9 +27,7 @@
             (play (move (from (handSite Mover)) (to (sites Empty))))
             (nextPhase Mover ("HandEmpty" Mover) "Playing")
         )
-        (phase "Playing"
-            (play (forEach Piece))
-        )
+        (phase "Playing" (play (forEach Piece)))
         }
         
         (end {

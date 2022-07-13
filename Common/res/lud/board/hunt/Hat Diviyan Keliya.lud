@@ -29,13 +29,7 @@
         
         (phase "Movement"
             (play (forEach Piece))
-            (end {
-                ("NoMoves" Loss)
-                (if 
-                    (= (count Pieces P2) <Board:leopardGoal>) 
-                    (result P1 Win)
-                )
-            })
+            (end ("NoMovesLossAndLessNumPiecesPlayerLoss" P2 <Board:leopardGoal>))
         )
         }
     )

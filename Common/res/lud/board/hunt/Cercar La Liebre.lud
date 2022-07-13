@@ -13,10 +13,7 @@
         
         (play (forEach Piece)) 
         
-        (end {
-            ("NoMoves" Loss)
-            (if (<= (count Pieces P1) 9) (result P2 Win))
-        })
+        (end ("NoMovesLossAndLessNumPiecesPlayerLoss" P1 9))
     )
 )
 

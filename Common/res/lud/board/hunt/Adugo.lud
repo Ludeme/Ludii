@@ -13,10 +13,7 @@
         
         (play (forEach Piece)) 
         
-        (end {
-            ("NoMoves" Loss)
-            (if (<= (count Pieces P2) <Num:dogs>) (result P1 Win))
-        })
+        (end ("NoMovesLossAndLessNumPiecesPlayerLoss" P2 <Num:dogs>))
     )
 )
 

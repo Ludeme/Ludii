@@ -34,10 +34,7 @@
             
         )
         
-        (end { 
-            (if (no Moves P2) (result P1 Win))
-            (if (no Pieces P1) (result P2 Win))
-        })  
+        (end ("NoMovesP2NoPiecesP1"))
     )
 )
 
