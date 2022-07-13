@@ -15,8 +15,7 @@
             (play 
                 (move Add (to (sites Empty))
                     (then 
-                        (if 
-                            (= 0 (count MovesThisTurn)) 
+                        (if (= 0 (count MovesThisTurn)) 
                             (moveAgain)
                         )
                     )

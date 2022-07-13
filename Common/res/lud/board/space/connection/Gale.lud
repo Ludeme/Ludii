@@ -5,21 +5,15 @@
         (piece "Square" Each)
         (regions P1 {(sites Top) (sites Bottom) })
         (regions P2 {(sites Left) (sites Right) })
-        
-        }
-    )  
+    })  
     (rules 
-        (start 
-            {
+        (start {
             (place "Square1" (forEach (sites Board) if:(and (is Even (column of:(site))) (is Odd (row of:(site))))))
             (place "Square2" (forEach (sites Board) if:(and (is Even (row of:(site))) (is Odd (column of:(site))))))
-            }
-        )
+        })
         (play (move Add (to (sites Empty))))
         
-        (end {
-            (if (is Connected Mover) (result Mover <Result>))
-        })
+        (end (if (is Connected Mover) (result Mover <Result>)))
     )
 )
 

@@ -3,20 +3,17 @@
     (equipment { 
         (board (hex <Board>)) 
         (piece "Marker" Each) 
-        }
-    )  
+    })  
     (rules 
         <Meta:rule>
         (play (move Add (to (sites Empty))))
         (end 
             (if 
-                (or 
-                    {
+                (or {
                     (is Loop)  
                     (is Connected 3 SidesNoCorners) 
                     (is Connected 2 Corners) 
-                    }
-                )
+                })
                 (result Mover Win)
             )
         )    

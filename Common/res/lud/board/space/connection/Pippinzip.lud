@@ -24,35 +24,31 @@
         (piece "Disc" Each) 
     })  
     (rules 
-        phases: {
+        phases:{
         (phase "Opening"
             (play
                 (or
-                    
                     (or
-                        (move 
-                            Add (piece (id "Disc" P2)) (to (sites Empty))
-                        (then (if (< (count MovesThisTurn) 2) (moveAgain))))
+                        (move Add 
+                            (piece (id "Disc" P2)) 
+                            (to (sites Empty))
+                            (then (if (< (count MovesThisTurn) 2) (moveAgain)))
+                        )
                         "Skip"
                     )
                     (if (= (count MovesThisTurn) 0)
-                        (move
-                            Pass
+                        (move Pass
                             (then
                                 (if
                                     (is Mover P1)
-                                    (swap
-                                        Players
-                                        P1
-                                        P2
+                                    (swap Players P1 P2
                                         (then
                                             (note "Player 1 is now Black. Player 2 is now White." to:All)
                                         )
                                     )
                                     (note "Player 1 remains White. Player 2 remains Black." to:All)
                                     (then
-                                        (do
-                                            (set NextPlayer (player 1))
+                                        (do (set NextPlayer (player 1))
                                             next:(set Var 1) // (var) represents the phase here
                                         )
                                     )

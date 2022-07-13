@@ -25,13 +25,11 @@
 
 (game "Abak"  
     (players <Players>)
-    (equipment
-        {
+    (equipment {
         (board (square <Board:size>))
         (piece "Disc" Each)
         <Board:regions>
-        }
-    )
+    })
     (rules 
         
         phases:
@@ -43,8 +41,7 @@
         
         (phase "Movement"
             (play 
-                (move 
-                    Add 
+                (move Add 
                     (to (difference (sites Playable) (sites Centre)))
                     (then 
                         (forEach Site (sites Occupied by:All)  

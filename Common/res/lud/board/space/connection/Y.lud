@@ -7,8 +7,7 @@
     (rules 
         (play (move Add (to (sites Empty))))
         (end 
-            (if 
-                (is Connected 3 Sides)  
+            (if (is Connected 3 Sides)  
                 (result Mover <Result>) 
             ) 
         )

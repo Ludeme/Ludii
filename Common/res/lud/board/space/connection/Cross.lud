@@ -3,8 +3,7 @@
     (equipment { 
         (board (hex <Board>)) 
         (piece "Marker" Each)
-        }
-    )  
+    })  
     (rules 
         (play (move Add (to (sites Empty))))
         (end {

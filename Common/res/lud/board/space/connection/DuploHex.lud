@@ -15,8 +15,7 @@
         )
         (piece "Ring" Each
             (move Step 
-                (to if:
-                    (or 
+                (to if:(or 
                         (= (what at:(to)) (id "Disc1"))
                         (= (what at:(to)) (id "Disc2"))
                     )

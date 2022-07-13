@@ -28,24 +28,18 @@
         (piece "Disc" Each) 
     })  
     (rules 
-        phases: {
+        phases:{
         (phase "Opening"
             (play
                 (or
-                    (move
-                        Add
+                    (move Add
                         (piece (id "Disc" P2))
                         (to <Edge:target_zone>)
                     )
-                    (move
-                        Pass
+                    (move Pass
                         (then
-                            (if
-                                (is Mover P1)
-                                (swap
-                                    Players
-                                    P1
-                                    P2
+                            (if (is Mover P1)
+                                (swap Players P1 P2
                                     (then
                                         (note "Player 1 is now Black. Player 2 is now White." to:All)
                                     )

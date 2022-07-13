@@ -1,9 +1,7 @@
 (game "Chameleon"  
     (players 2)  
     (equipment { 
-        (board 
-            (hex Diamond <Board>)
-        ) 
+        (board (hex Diamond <Board>)) 
         (piece "Marker" Each)
         (hand Shared size:2)
         (regions P1 {(sites Side NE) (sites Side SW) })

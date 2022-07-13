@@ -32,8 +32,7 @@
     (rules
         (meta (swap))
         (play
-            (if
-                (< 0 (count MovesThisTurn))
+            (if (< 0 (count MovesThisTurn))
                 ("Connect")
                 (move Add (to (sites Empty)))
                 (then
@@ -45,9 +44,7 @@
                 
             )
         )
-        (end {
-            (if (is Connected Orthogonal Mover) (result Mover Win))
-        })
+        (end (if (is Connected Orthogonal Mover) (result Mover Win)))
     )
 )
 

@@ -6,14 +6,14 @@
     })  
     (rules 
         (play
-            (move 
-                Add 
-                (to (sites Empty) if:(not (is In (to) (sites Around (last To))))) 
+            (move Add 
+                (to (sites Empty) 
+                    if:(not (is In (to) (sites Around (last To))))
+                ) 
             )
         )
         (end 
-            (if 
-                (is Connected 3 Sides)  
+            (if (is Connected 3 Sides)  
                 (result Mover <Result>) 
             ) 
         )

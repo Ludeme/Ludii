@@ -1,18 +1,12 @@
 (game "Gyre"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (hex <Board>))
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
         (meta (swap))
-        (play
-            (move Add
-                (to (sites Empty))
-            )        
-        )
+        (play (move Add (to (sites Empty))))
         (end 
             (if 
                 (>=
