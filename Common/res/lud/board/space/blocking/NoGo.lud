@@ -1,5 +1,3 @@
-(define "HasFreedom" (> (count Liberties Orthogonal) 0))
-
 (define "NoCapture" (not (can Move ("EncloseCapture" Orthogonal))))
 
 //------------------------------------------------------------------------------
@@ -16,7 +14,7 @@
             (do
                 (move Add (to (sites Empty)))
                 ifAfterwards:(and 
-                    "HasFreedom" 
+                    ("HasFreedom" Orthogonal)
                     "NoCapture"
                 )
             )
