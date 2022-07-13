@@ -3,21 +3,10 @@
     (equipment {
         (board (square 7))
         (piece "Marker" Each
-            (move Step 
-                Orthogonal
-                (to if:(is Empty (to)))
+        		("StepToEmpty" Orthogonal
                 (then 
                     (and
-                        (custodial 
-                            (from (last To))
-                            Orthogonal
-                            (between 
-                                (max 1)
-                                if:("IsEnemyAt" (between))
-                                (apply (remove (between)))
-                            )
-                            (to if:("IsFriendAt" (to)))
-                        )
+                    	("CustodialCapture" Orthogonal (max 1))
                         (surround 
                             (from (last To)) 
                             Orthogonal 
@@ -34,7 +23,7 @@
                         )
                     )
                 )
-            )
+                )
         )
         (hand Each)
         (regions "HalfBoard" P1 (expand (sites Bottom) steps:3))
