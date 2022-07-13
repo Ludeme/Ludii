@@ -1,4 +1,4 @@
-(define "AllCowsInBottom" (= 0 (count Sites in:(difference (sites Occupied by:P2) (sites Bottom)))))
+(define "AllCowsInBottom" (all Sites (difference (sites Occupied by:P2) (sites Bottom)) if:(= 0 (count at:(site)))))
 
 //------------------------------------------------------------------------------
 
@@ -44,7 +44,6 @@
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (show Edges Diagonal Hidden)
-        
     })
     (ai
         "Gurvan Xudag_ai"

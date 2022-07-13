@@ -10,8 +10,7 @@
             <Board:placement>
         })
         (play 
-            (if
-                (is Even (count Moves))
+            (if (is Even (count Moves))
                 (forEach Piece)
                 (move Add (piece "Square0") (to (sites Empty)))
             )

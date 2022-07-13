@@ -53,8 +53,7 @@
         (board (hex 7)) 
         (piece "Queen" Each ("QueenMove" (then (moveAgain))))
         (piece "Dot" Neutral)
-        }
-    )  
+    })  
     (rules 
         (start { 
             (place "Queen1" {"B2" "G2" "E5" "B7"})
@@ -82,7 +81,7 @@
         )
         }
         
-        (end (if (no Moves Next)  (result Mover Win)))  
+        (end ("BlockWin"))  
     )
 )
 
