@@ -9,7 +9,7 @@
         (from (last To))
         #1
         (between 
-        	#2
+            #2
             if:("IsEnemyAt" (between))
             (apply (remove (between)))
         )

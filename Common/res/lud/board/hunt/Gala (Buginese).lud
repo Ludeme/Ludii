@@ -3,10 +3,10 @@
     (equipment {
         (board (square 7))
         (piece "Marker" Each
-        		("StepToEmpty" Orthogonal
+            ("StepToEmpty" Orthogonal
                 (then 
                     (and
-                    	("CustodialCapture" Orthogonal (max 1))
+                        ("CustodialCapture" Orthogonal (max 1))
                         (surround 
                             (from (last To)) 
                             Orthogonal 
@@ -23,7 +23,7 @@
                         )
                     )
                 )
-                )
+            )
         )
         (hand Each)
         (regions "HalfBoard" P1 (expand (sites Bottom) steps:3))

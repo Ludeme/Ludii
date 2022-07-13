@@ -6,16 +6,16 @@
 
 (define "SurroundCapture"
     (surround 
-            (from (last To)) 
-            #1
-            (between 
-            	#2
-                if:("IsEnemyAt" (between)) 
-                (apply (remove (between)))
-            ) 
-            (to 
-                if:("IsFriendAt" (to))
-            )
-            #3
+        (from (last To)) 
+        #1
+        (between 
+            #2
+            if:("IsEnemyAt" (between)) 
+            (apply (remove (between)))
+        ) 
+        (to 
+            if:("IsFriendAt" (to))
         )
+        #3
+    )
 )

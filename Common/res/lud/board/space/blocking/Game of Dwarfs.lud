@@ -2,17 +2,13 @@
     (players {(player S) (player N)})
     
     (equipment {
-        (board
+        (board 
             (add
                 (remove
-                    (merge {
-                        (rectangle 3 3 diagonals:Alternating) 
-                        (shift 0 2 (wedge 2)) 
-                        (shift 0 -1 (rotate 180 (wedge 2))) 
-                    })
-                    vertices:{3 5 1}
+                    (rotate 90 ("ThreeMenMorrisGraphWithLeftAndRightTriangles"))
+                    vertices:{3 7 1}
                 )
-                edges:{{0 3} {1 5} {2 7} {0 1}}
+                edges:{{0 1} {4 5} {2 7} {0 4}}
             )
             use:Vertex
         )
@@ -28,7 +24,7 @@
             )
         )
         
-        (piece "Gnome" P2 (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to)))))
+        (piece "Gnome" P2 ("StepToEmpty" (directions {Forwards Rightward Leftward})))
         
         (hand P1)
         (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
