@@ -156,6 +156,7 @@ public class LayoutHandler
         @Override
         public void actionPerformed(ActionEvent e)
         {
+            GraphAnimator.getGraphAnimator().clearPositionHistory();
             evaluateGraphWeights();
             executeLayout();
             TreeLayoutMenu.redoP.setEnabled(false);

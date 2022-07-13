@@ -171,7 +171,6 @@ public class GraphPanel extends JPanel implements IGraphPanel
         remove(lnc);
         connectionHandler().removeAllConnections(lnc.node(), false);
         repaint();
-        if (Handler.autoplacement) lm.executeLayout();
     }
 
     /**
@@ -953,14 +952,13 @@ public class GraphPanel extends JPanel implements IGraphPanel
             if(e.getWheelRotation() > 0)
             {
                 DesignPalette.scale(1.02f);
-                scaleNodes(0.98);
+                if (DesignPalette.SCALAR < 1.9f) scaleNodesPositions(0.98);
             }
             else
             {
                 DesignPalette.scale(1.0f/1.02f);
-                scaleNodes(1.0/0.98);
+                if (DesignPalette.SCALAR > 0.86f) scaleNodesPositions(1.0/0.98);
             }
-            //updateNodePositions();
             syncNodePositions();
             repaint();
         }
@@ -969,7 +967,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
     /**
      * Iterate through nodes on a panel and scale their positions for zooming in/out
      */
-    private void scaleNodes(double scalar)
+    private void scaleNodesPositions(double scalar)
     {
         graph().getNodes().forEach(ludemeNode -> {
             Vector2D scaledPos = getScaledCoords(ludemeNode.pos(), scalar, Handler.getViewPortSize().width, Handler.getViewPortSize().height);

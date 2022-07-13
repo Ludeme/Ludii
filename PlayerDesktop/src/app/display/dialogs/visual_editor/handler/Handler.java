@@ -309,6 +309,12 @@ public class Handler
         graphPanel.notifyNodeRemoved(graphPanel.nodeComponent(node));
         if(lastActionEquals(action))
             Handler.recordUserActions = true;
+
+        if (Handler.autoplacement && currentGraphPanel.selectedLnc().size() == 1)
+        {
+            currentGraphPanel.graph().setSelectedRoot(-1);
+            currentGraphPanel.getLayoutHandler().executeLayout();
+        }
     }
 
     /**
@@ -349,6 +355,12 @@ public class Handler
             removeNode(graph, n);
         if(lastActionEquals(action))
             Handler.recordUserActions = true;
+
+        if (Handler.autoplacement)
+        {
+            currentGraphPanel.graph().setSelectedRoot(-1);
+            currentGraphPanel.getLayoutHandler().executeLayout();
+        }
     }
 
     /**
@@ -1546,7 +1558,7 @@ public class Handler
 
     /**
      * Sets the current active design palette
-     * @param palette
+     * @param
      */
     public static void setPalette(String paletteName)
     {

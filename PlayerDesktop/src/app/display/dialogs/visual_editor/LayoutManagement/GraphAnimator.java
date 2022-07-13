@@ -80,6 +80,13 @@ public class GraphAnimator
         return false;
     }
 
+    public void clearPositionHistory()
+    {
+        nodeInitPositions.clear();
+        nodeFinalPosition.clear();
+        nodePosIncrements.clear();
+    }
+
     /**
      * Sets nodes to their previous positions and calculates increments for further animation
      */

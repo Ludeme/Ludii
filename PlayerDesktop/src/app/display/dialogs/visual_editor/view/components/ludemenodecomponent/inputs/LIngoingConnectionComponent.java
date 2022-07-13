@@ -60,37 +60,38 @@ public class LIngoingConnectionComponent extends JComponent
         return connectionFrom;
     }
 
-        public void updatePosition(){
-            int x = connectionPointComponent.getX() + this.getX() + this.getParent().getX() + this.getParent().getParent().getX() + this.getParent().getParent().getParent().getX() + RADIUS;
-            int y = connectionPointComponent.getY() + this.getY() + this.getParent().getY() + this.getParent().getParent().getY() + this.getParent().getParent().getParent().getY() + RADIUS;
-            Point p = new Point(x,y);
-            if(connectionPointPosition == null)
-                connectionPointPosition = new ImmutablePoint(p);
-            connectionPointPosition.update(p);
-        }
+    public void updatePosition()
+    {
+        int x = connectionPointComponent.getX() + this.getX() + this.getParent().getX() + this.getParent().getParent().getX() + this.getParent().getParent().getParent().getX() + RADIUS;
+        int y = connectionPointComponent.getY() + this.getY() + this.getParent().getY() + this.getParent().getParent().getY() + this.getParent().getParent().getParent().getY() + RADIUS;
+        Point p = new Point(x,y);
+        if(connectionPointPosition == null)
+            connectionPointPosition = new ImmutablePoint(p);
+        connectionPointPosition.update(p);
+    }
 
-        public ImmutablePoint getConnectionPointPosition()
-        {
-            updatePosition();
-            return connectionPointPosition;
-        }
+    public ImmutablePoint getConnectionPointPosition()
+    {
+        updatePosition();
+        return connectionPointPosition;
+    }
 
-        public void setFill(boolean fill)
-        {
-            this.fill = fill;
-            connectionPointComponent.fill = fill;
-            connectionPointComponent.repaint();
-            connectionPointComponent.revalidate();
-        }
+    public void setFill(boolean fill)
+    {
+        this.fill = fill;
+        connectionPointComponent.fill = fill;
+        connectionPointComponent.repaint();
+        connectionPointComponent.revalidate();
+    }
 
-        public LHeader getHeader(){
-            return lHeader;
-        }
+    public LHeader getHeader(){
+        return lHeader;
+    }
 
-        public boolean isFilled()
-        {
-            return fill;
-        }
+    public boolean isFilled()
+    {
+        return fill;
+    }
 
 
 
