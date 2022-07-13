@@ -1,12 +1,11 @@
 (game "Janes Soppi (Symmetrical)"  
     (players 2)  
     (equipment { 
-        (board 
-            (merge {
-                (rectangle 3 3) 
-                (shift 1.5 0.5 (rotate -90 (wedge 2))) 
-                (shift -1.5 0.5 (rotate 90 (wedge 2))) 
-            })
+        (board
+            (remove
+                ("ThreeMenMorrisGraphWithLeftAndRightTriangles")
+                edges:{{6 4} {4 2} {0 4} {4 8}}
+            )
             use:Vertex
         )
         (hand Each)
@@ -55,7 +54,6 @@
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (show Edges Diagonal Hidden)
-        
     })
     
 )

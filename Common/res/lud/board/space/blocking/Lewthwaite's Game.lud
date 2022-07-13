@@ -9,15 +9,8 @@
             (place "Ball1" (sites Phase 1))
             (place "Ball2" (difference (sites Phase 0) (sites Centre)))
         })
-        (play 
-            (forEach Piece)
-        ) 
-        
-        (end 
-            (if (no Moves Next)
-                (result Mover Win)
-            )
-        )
+        (play (forEach Piece)) 
+        (end ("BlockWin"))
     )
 )
 
