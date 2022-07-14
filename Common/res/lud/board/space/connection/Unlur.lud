@@ -1,4 +1,4 @@
-// #1,#2 - sides ( S, N, NE, NW, SE, SW)
+// #1,#2 - sides (S, N, NE, NW, SE, SW)
 // #3 optional 3rd region
 (define "IsSidesConnected"
     (is Connected {(sites Side #1) (sites Side #2) #3})

@@ -451,7 +451,7 @@
     (if 
         (and 
             (is Active #1) 
-            ( < (count Pieces #1 in:(sites Occupied by:#1 component:"Base")) 1)
+            (< (count Pieces #1 in:(sites Occupied by:#1 component:"Base")) 1)
        ) 
         (forEach Site (sites Occupied by:#1)
             (if (is In (site) (sites Occupied by:#1 components:{"Town" "Base" "Factory" "Dock" "Airport"}))
@@ -761,7 +761,7 @@
         
         (end 
             (forEach NonMover 
-                if:( < (count Pieces Player in:(sites Occupied by:Player component:"Base")) 1) (result Player Loss)
+                if:(< (count Pieces Player in:(sites Occupied by:Player component:"Base")) 1) (result Player Loss)
            )
        )
    )
