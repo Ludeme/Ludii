@@ -86,7 +86,7 @@
                     (forEach Piece)
                 )
             )
-            (end (if (no Pieces Next in:(sites Board)) (result Mover Win)))
+            (end (if (all Sites (sites Occupied by:Next) if:(not (is In (site) (sites Board)))) (result Mover Win)))
         )
         }
     )
@@ -112,7 +112,6 @@
     (graphics {
         (stackType 1 Count)
         (stackType 2 Count)
-        
     })
     
 )

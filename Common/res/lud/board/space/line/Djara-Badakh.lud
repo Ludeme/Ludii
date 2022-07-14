@@ -4,12 +4,7 @@
     (equipment { 
         (board (square 3) use:Vertex) 
         (hand Each)
-        (piece "Marker" Each 
-            (move
-                Step 
-                (to if:(is Empty (to))) 
-            )
-        ) 
+        (piece "Marker" Each ("StepToEmpty")) 
     })
     
     (rules 
@@ -26,19 +21,10 @@
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
         
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
+        (phase "Movement" (play (forEach Piece)))
         }
         
-        (end 
-            (if 
-                (is Line 3)
-                (result Mover Win)
-            )
-        )
+        (end ("Line3Win"))
     )
 )
 
