@@ -1,12 +1,10 @@
 (game "RootZone" 
     (players 2)
-    (equipment
-        {
-        (board (tri <Board:size>)  use:Vertex)
-        (piece "Disc" Each )
+    (equipment {
+        (board (tri <Board:size>) use:Vertex)
+        (piece "Disc" Each)
         (piece "Disc" Neutral)
-        }
-    )
+    })
     (rules 
         (play
             (if    // want to add that if p1 mover one p2 piece in play option to swap players
@@ -18,8 +16,7 @@
                 (or
                     {
                     (if (= 1 (counter))
-                        (move 
-                            Select 
+                        (move Select 
                             (from (sites Occupied by:Enemy)) 
                             (then 
                                 (remove (last To) 
@@ -36,13 +33,11 @@
                                     (sites Outer)                             // place on an edge
                                     (sites Around (sites Occupied by:Mover))  // or next to a friendly piece
                                 )
-                                (union
-                                    { 
+                                (union { 
                                     (sites Around (sites Occupied by:Enemy))  // but not next to an enemy piece  
                                     (sites Around "SitesTooDense")            // nor next to pieces with too many neighbors
                                     (sites Around (sites Occupied by:Neutral))  // but not next to an enemy piece  
-                                    }
-                                )
+                                })
                             )
                             if:(and
                                 (is Empty (to))  // place on empty location
@@ -59,8 +54,7 @@
             )    
         )
         (end 
-            (if 
-                (all Passed) 
+            (if (all Passed) 
                 (byScore)
             )
         )

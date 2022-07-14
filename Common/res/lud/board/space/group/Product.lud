@@ -14,12 +14,7 @@
         (piece "Marker" Each) 
     })  
     (rules 
-        (play 
-            (move 
-                Add 
-                (to (sites Empty)) 
-            )
-        ) 
+        (play (move Add (to (sites Empty)))) 
         
         (end
             (if (is Full)

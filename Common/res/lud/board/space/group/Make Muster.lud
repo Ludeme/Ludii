@@ -1,18 +1,7 @@
 (define "NoPlacementAvailable"
-    (= 0 (count Sites in:(forEach (sites Empty) if:(no Pieces Mover in:(sites Around (site) All)))))
+    (all Sites (sites Empty) if:(not (no Pieces Mover in:(sites Around (site) All))))
 )
 
-(define "MJump" 
-    (move Hop 
-        (between 
-            (range 0 Infinity) 
-            if:(is Occupied (between))
-        ) 
-        (to 
-            if:(is Empty (to))
-        )
-    )
-)
 //---------------------------------------------
 
 (game "Make Muster"
@@ -22,17 +11,14 @@
             (rotate (- 90 <Orient:amount>)
                 (square <Board:poly> )
             ) 
-        use:Cell )
-        (piece "Disc" Each
-            (move Step 
-                (to if:(is Empty (to)))
-        ))
+            use:Cell 
+        )
+        (piece "Disc" Each ("StepToEmpty"))
     })
     (rules
         (play
             (priority
-                (move
-                    Add
+                (move Add
                     (to (sites Empty)
                         if:(no Pieces Mover in:(sites Around (to) Adjacent))
                     )
@@ -44,7 +30,7 @@
             (if 
                 (or
                     (and { 
-                        (= 1 (count Groups All if:(= (mover) (who at:(to))))) 
+                        ("IsSingleGroup" Mover All)
                         (< 1 (count Pieces Mover))
                         // Original rules disqualified winning condition if a placement could be made in the following turn. 
                         //            ("NoPlacementAvailable")
@@ -124,4 +110,3 @@
     }
 )
 )
-

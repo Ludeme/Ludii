@@ -4,8 +4,7 @@
         (board (rotate 90 (hex 5))) 
         (piece "Marker" Each)
         (hand Shared size:2)
-        }
-    )  
+    })  
     (rules 
         (start {
             (place "Marker1" (handSite Shared)) 

@@ -33,25 +33,20 @@
 
 (game "Yoin"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (hex <Size>))
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
         (meta (swap))
         (play
             (move Add
-                (to 
-                    (sites Empty)
-                )
+                (to (sites Empty))
                 (then <Score>)
             )
         )
         (end 
-            (if 
-                (is Full) 
+            (if (is Full) 
                 {(if
                     (< 
                         (score P1)

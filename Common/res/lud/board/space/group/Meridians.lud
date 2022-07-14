@@ -1,8 +1,7 @@
 (define "Move"
     (move Add 
         (to 
-            (forEach
-                (sites Empty)
+            (forEach (sites Empty)
                 if:(>
                     (count Pieces Mover in:(sites LineOfSight at:(site)))
                     0
@@ -42,12 +41,10 @@
 
 (game "Meridians"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (dual  (hex Prism <Size>)) use:Vertex)
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
         phases:{
         (phase "Opening"

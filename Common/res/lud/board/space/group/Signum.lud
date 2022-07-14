@@ -69,12 +69,10 @@
 
 (game "Signum"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (hex <Size>))
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
         (meta (swap))
         (play
@@ -84,10 +82,8 @@
             )
         )
         (end 
-            (if 
-                (is Full) 
-                (byScore
-                    {
+            (if (is Full) 
+                (byScore {
                     (score P1 ("ScoreOf" P1))
                     (score P2 ("ScoreOf" P2))
                 })

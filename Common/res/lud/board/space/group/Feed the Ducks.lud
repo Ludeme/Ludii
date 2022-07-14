@@ -13,8 +13,7 @@
         phases:{
         (phase "Throw Bread" 
             (play 
-                (move 
-                    Add 
+                (move Add 
                     (piece "Disc0")
                     (to (sites Empty)) 
                     (then (attract (from (last To))))
@@ -33,8 +32,8 @@
         )
         }
         (end {
-            (if (= 1 (count Groups if:(= (who at:(to)) P1))) (result P1 Win)) 
-            (if (= 1 (count Groups if:(= (who at:(to)) P2))) (result P2 Win))
+            ("SingleGroupWin" P1)
+            ("SingleGroupWin" P2)
         })  
     )
 )

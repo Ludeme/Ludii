@@ -6,8 +6,7 @@
     })  
     (rules 
         (play 
-            (move 
-                Add 
+            (move Add 
                 (piece (+ 1 (% (count Moves) (count Players)))) 
                 (to (sites Empty)) 
                 (then 

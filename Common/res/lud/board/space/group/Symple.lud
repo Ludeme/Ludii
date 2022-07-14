@@ -93,13 +93,11 @@
 
 (game "Symple"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (square <Size>) use:Vertex)
         (piece "Marker" Each)
         (piece "Marker" Neutral)
-        }
-    )
+    })
     (rules
         (play
             (if
@@ -116,8 +114,7 @@
             )
         )
         (end 
-            (if 
-                (is Full) 
+            (if (is Full) 
                 (byScore)
             )
         )

@@ -12,32 +12,23 @@
 (define "Hopping"       
     (forEach Piece 
         (or 
-            (move 
-                Hop 
+            (move Hop 
                 (between if:(not (is Empty (between))))
                 (to if:(is Empty (to)))
             )
-            (move 
-                Step
-                (to if:(is Empty (to)))
-            )
+            ("StepToEmpty")
         )
     )
 )
 
 (define "Sliding"       
     (forEach Piece 
-        (move 
-            Slide
-        )
+        (move Slide)
     )
 )
 (define "Stepping"       
     (forEach Piece 
-        (move 
-            Step
-            (to if:(is Empty (to)))
-        )
+        ("StepToEmpty")
     )
 )
 
@@ -58,17 +49,14 @@
 
 (game "Abrobad" 
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (hex Limping <Board:size>))
         (piece "Hex" Each)
-        }
-    )
+    })
     (rules 
         (play
             (priority 
-                (move 
-                    Add  
+                (move Add  
                     (to 
                         (sites Empty)
                         if:(= 0 (count Sites in:(sites Around (to) Own)))

@@ -25,12 +25,10 @@
 
 (game "Mono"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (hex <Size>))
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
         (play
             (move Add

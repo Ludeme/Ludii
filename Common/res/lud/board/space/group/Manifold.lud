@@ -181,13 +181,11 @@
 //--------------------------------------------------------- 
 (game "Manifold"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board <Board:size> use:Cell)
         (piece "Hex" Each maxState:7 maxValue:1023) // 32rows * 32columns for recording vectors
         (piece "Disc" Neutral)
-        }
-    )
+    })
     (rules
         (play
             (if 
@@ -209,8 +207,7 @@
             )
         )
         (end
-            (if
-                (all Passed)
+            (if (all Passed)
                 (byScore)
             )
         )

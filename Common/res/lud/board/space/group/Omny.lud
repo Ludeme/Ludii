@@ -6,12 +6,10 @@
 
 (game "Omny"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (hex <Shape> <Size>))
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
         (play
             (if

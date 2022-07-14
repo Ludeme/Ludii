@@ -7,8 +7,7 @@
 (define "DistInNWSE"   (count Sites in:(difference (sites Direction from:(from) (directions {NW SE}) included:True) (sites Empty))))
 
 (define "MoveTo" 
-    (move
-        Hop
+    (move Hop
         #1 
         (between 
             (exact (- #2 1))
@@ -36,16 +35,13 @@
                 ("MoveTo" (directions {NW SE}) "DistInNWSE")
             })
         )
-        }
-    )  
+    })  
     
     (rules 
-        (start
-            { 
+        (start { 
             (place "Disc1" (difference (union (sites Top) (sites Bottom)) (sites Corners)))
             (place "Disc2" (difference (union (sites Right) (sites Left)) (sites Corners)))
-            }
-        )
+        })
         
         (play (forEach Piece))
         

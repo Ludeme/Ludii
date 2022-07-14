@@ -1,9 +1,10 @@
-//
 (define "GroupCount"
     (max 0
         (max
             (sizes Group "ScoreConnectionDirection" #1 ) 
-)))
+        )
+    )
+)
 
 //---------------------
 // Defines for scoring options
@@ -14,7 +15,11 @@
             (set Var "NextScore"  ("GroupCount" Next)
                 (then
                     <TieScoring:tiebreaker> 
-)))))
+                )
+            )
+        )
+    )
+)
 
 (define "BonusMover"
     (set Var "MoverScore"
@@ -30,7 +35,11 @@
                 )
                 (then
                     <TieScoring:tiebreaker> 
-)))))
+                )
+            )
+        )
+    )
+)
 
 (define "BonusOpponent"
     (set Var "MoverScore"
@@ -46,7 +55,11 @@
                 )
                 (then
                     <TieScoring:tiebreaker> 
-)))))
+                )
+            )
+        )
+    )
+)
 
 //---------------------------
 // Defines for Tiebreaker scoring option
@@ -57,13 +70,17 @@
             (difference
                 (sizes Group "ScoreConnectionDirection" #1)
                 (sizes Group "ScoreConnectionDirection" #2)
-))))
+            )
+        )
+    )
+)
 
 (define "NoTiebreaker"
     (and
         (set Score Mover (var "MoverScore")) 
         (set Score Next  (var "NextScore")) 
-))
+    )
+)
 
 (define "CascadeTiebreaker"
     (if 
@@ -73,7 +90,8 @@
             (set Score Next (* -1 ("CascadeScore" Next Mover)))
         )
         ("NoTiebreaker")
-))
+    )
+)
 
 //----------------------------
 (define "AllHave1Connection2Edge"
@@ -91,35 +109,32 @@
                     )
                     (site)
                     (difference (sites Outer) (site))
-)))))
+                )
+            )
+        )
+    )
+)
 
 //-----------------------------------------------
 // Main routine
 
 (game "Brain Coral"
     (players 2)
-    (equipment
-        {
+    (equipment {
         "BoardUsed"
         (piece "Ball" Each)
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
         (start (set Score Each 0))
         (play
             (do
-                (move 
-                    Add
-                    (to (sites Empty))
-                )
+                (move Add (to (sites Empty)))
                 ifAfterwards:("AllHave1Connection2Edge" (sites Around (last To) "ConnectionDirection" includeSelf:True)) 
                 (then <Scoring:selScoring>)   
         ))
         (end 
-            (if 
-                (no Moves Next)
-                {
+            (if (no Moves Next) {
                 (if 
                     (= (score Mover) (score Next))
                     <TieScoring:finalTie>
@@ -128,8 +143,10 @@
                     (!= (score Mover) (score Next))
                     (byScore)
                 )
-                }
-))))
+            })
+        )
+    )
+)
 
 //-------------------------------------------------
 // Defines for Options
@@ -305,7 +322,5 @@
         (show Piece Value "Disc" Middle)
         (board Background image:<BoardShape:backgroundImage> fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.2 scaleY:1.15 ) 
         }
-    )
-    
+    )   
 )
-
