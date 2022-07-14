@@ -26,10 +26,10 @@
                 (move Slide Orthogonal) 
                 ("HopAllPiecesToEmpty" Orthogonal) 
                 (then 
-                	(or 
-                		("CustodialCapture" Orthogonal (max 1))
-                		"Surrounded"
-                	)
+                    (or 
+                        ("CustodialCapture" Orthogonal (max 1))
+                        "Surrounded"
+                    )
                 )
             )
         )

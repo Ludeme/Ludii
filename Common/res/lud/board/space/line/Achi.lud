@@ -93,7 +93,7 @@
                 (play (forEach Piece))
             )
             }
-            (end (if (is Line 3) (result Mover Win)))
+            (end ("Line3Win"))
         )
         >  
         "The game is played according to the rules described in Wikipedia in steping to any sites."
@@ -124,7 +124,7 @@
                 (play (forEach Piece))
             )
             }
-            (end (if (is Line 3) (result Mover Win)))
+            (end ("Line3Win"))
         )
         >  
         "The game is played according to the rules described in Wikipedia in steping to any sites except the middle."

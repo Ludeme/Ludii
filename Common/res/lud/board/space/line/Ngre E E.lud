@@ -8,7 +8,7 @@
     (rules 
         (start (place "Marker" "Hand" count:3))
         (play (move (from (handSite Mover)) (to (sites Empty))))
-        (end (if (is Line 3) (result Mover Win)))
+        (end ("Line3Win"))
     )
 )
 

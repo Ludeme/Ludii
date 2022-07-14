@@ -11,7 +11,7 @@
             (place "Ball2" (intersection (sites Phase 1) (union (sites Top) (sites Bottom))))
         })
         (play (forEach Piece))
-        (end (if (is Line 3 All) (result Mover Win)))
+        (end ("Line3Win" All))
     )
 )
 
