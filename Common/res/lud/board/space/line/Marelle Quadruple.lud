@@ -6,7 +6,7 @@
         (hand Each)
         (piece "Marker" Each "StepToEmpty")
         }
-    )  
+   )  
     (rules 
         (start (place "Marker" "Hand" count:5))
         
@@ -14,14 +14,14 @@
         (phase "Placement"
             (play (move (from (handSite Mover)) (to (sites Empty))))
             (nextPhase ("HandEmpty" P2) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play (forEach Piece))
-        )
+       )
         }
         (end (if (is Line 5) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -39,9 +39,9 @@
         (credit "Eric Piette")
         (origin  "This game was played in France, around 1840.")
         }
-    )
+   )
     
     (ai
         "Marelle Quadruple_ai"
-    )
+   )
 )

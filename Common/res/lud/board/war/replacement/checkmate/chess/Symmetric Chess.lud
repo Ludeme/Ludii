@@ -15,8 +15,8 @@
         (if 
             (= (state at:(last To)) 1) 
             ("PieceHasMoved" (last To))
-        ) 
-    ) 
+       ) 
+   ) 
 )
 
 (define "CaptureToPieceAndResetCounter"
@@ -25,16 +25,16 @@
             (remove 
                 (to) 
                 (then (set Counter))
-            )
-        )
-    ) 
+           )
+       )
+   ) 
 )
 
 (define "KingNotCheckedAndToEmpty"
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )   
+   )   
 )
 
 (define "DecideToCastle"
@@ -45,13 +45,13 @@
         (between 
             (exact #3) 
             if:#4
-        ) 
+       ) 
         (to 
             if:True
             (apply ("PieceHasMoved" (from)))
-        )
+       )
         #5
-    )
+   )
 )
 
 (define "CastleRook"
@@ -61,12 +61,12 @@
         (between 
             (exact #3) 
             if:#4
-        ) 
+       ) 
         (to 
             if:True
             (apply ("PieceHasMoved" (from)))
-        )
-    )
+       )
+   )
 )
 
 (define "SmallCastling"
@@ -80,7 +80,7 @@
 (define "SetEnPassantLocation"
     (then 
         (set Pending (ahead (last To) Backward))
-    )
+   )
 )
 
 (define "DoubleStep"
@@ -90,14 +90,14 @@
         (between (exact 2) if:(is Empty (between))) 
         (to if:(is Empty (to))) 
         "SetEnPassantLocation"
-    )
+   )
 )
 
 (define "InLocationEnPassant"
     (and 
         (is Pending) 
         (= (to) (value Pending)) 
-    )
+   )
 )
 
 (define "EnPassant"
@@ -108,9 +108,9 @@
         (then 
             (remove 
                 (ahead (last To) Backward)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "CaptureForwardDiagonal"
@@ -120,8 +120,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -135,7 +135,7 @@
             (or {
                 (if (is In (from) (sites Start (piece (what at:(from)))))
                     "DoubleStep"
-                )
+               )
                 "StepForwardToEmpty" 
                 "CaptureForwardDiagonal"
                 "EnPassant"
@@ -144,12 +144,12 @@
                     (and
                         (if (is In (last To) (sites Mover "Promotion")) 
                             (moveAgain)
-                        )
+                       )
                         (set Counter)
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (piece "Rook" Each 
             (move
@@ -158,20 +158,20 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
-                ) 
+               ) 
                 "RememberPieceHasMoved"
-            )
-        )
+           )
+       )
         (piece "King" Each 
             (move
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndResetCounter"
-                ) 
+               ) 
                 "RememberPieceHasMoved"
-            )
-        )
+           )
+       )
         // State = 1, means can step or slide, State = 2 means must step, State = 0 means must Slide
         (piece "Bishop" Each 
             (or {
@@ -179,37 +179,37 @@
                     Slide 
                     (from
                         if:(!= (state at:(from)) 2)
-                    )
+                   )
                     Diagonal 
                     (to 
                         if:("IsEnemyAt" (to)) 
                         "CaptureToPieceAndResetCounter"
-                    )
+                   )
                     (then
                         (and
                             (forEach Site (sites Occupied by:Mover component:"Bishop")
                                 (set State at:(site) 2)
-                            )
+                           )
                             (set State at:(last To) 0) 
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (move
                     Step 
                     Orthogonal
                     (to 
                         if:(and (not ("IsFriendAt" (to))) (!= (state at:(from)) 0)) 
                         "CaptureToPieceAndResetCounter"
-                    ) 
+                   ) 
                     (then
                         (forEach Site (sites Occupied by:Mover component:"Bishop")
                             (set State at:(site) 0)
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 }
-            )
-        )
+           )
+       )
         (piece "Knight" Each 
             (move
                 Leap 
@@ -217,18 +217,18 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndResetCounter"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "Queen" Each 
             (move
                 Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
-                ) 
-            ) 
-        )
+               ) 
+           ) 
+       )
         
         (map "King" {(pair 1 "E1") (pair 2 "E8")})
         (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})
@@ -253,38 +253,38 @@
                         (if (and 
                                 ("HasNeverMoved" "King")
                                 (not ("IsInCheck" "King" Mover)) 
-                            )
+                           )
                             (or
                                 (if (and 
                                         ("HasNeverMoved" "RookLeft")
                                         (can Move ("CastleRook" "RookLeft" E 2 (is Empty (to))))
-                                    )
+                                   )
                                     "BigCastling"
-                                )
+                               )
                                 (if (and 
                                         ("HasNeverMoved" "RookRight")
                                         (can Move ("CastleRook" "RookRight" W 2 (is Empty (to))))
-                                    )
+                                   )
                                     "SmallCastling"
-                                )
-                            )
-                        )
-                    )
+                               )
+                           )
+                       )
+                   )
                     ifAfterwards:(not ("IsInCheck" "King" Mover))
-                )
-            )
-        )
+               )
+           )
+       )
         
         (end {
             (if (and 
                     ("IsInCheck" "King" Next)
                     ("NextCanNotMove")
-                ) 
+               ) 
                 (result Mover Win)
-            ) 
+           ) 
             (if (or (no Moves Mover) (= (counter) 99)) (result Mover Draw)) 
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------

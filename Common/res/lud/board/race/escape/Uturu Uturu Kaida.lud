@@ -6,7 +6,7 @@
     (if (= (from) (handSite Mover))
         ("SiteToMoveOnTrack" from:0 (- ("ThrowValue") 1))
         ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
-    )	
+   )	
 )
 
 //------------------------------------------------------------------------------
@@ -18,7 +18,7 @@
             (rectangle 2 <Board:size>)
             (track "Track" <Board:track> directed:True)
             use:Vertex
-        )
+       )
         (hand Each)
         (piece "Horse" Each
             (if ("IsOffBoard" ("SiteToMove"))
@@ -27,9 +27,9 @@
                     (from (from) level:(level))
                     (to ("SiteToMove"))
                     stack:True
-                )
-            )
-        )
+               )
+           )
+       )
         ("StickDice" 2)
         (map {(pair 0 10) (pair 1 0) (pair 2 20)})
     })
@@ -39,11 +39,11 @@
             ("RollMove"
                 (if (< 0 ("ThrowValue"))
                     (or (forEach Piece) (forEach Piece container:(mover)))
-                )
-            )
-        )
+               )
+           )
+       )
         (end ("EscapeWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -87,7 +87,7 @@
         "Board Size/85" "Board Size/90" "Board Size/95" "Board Size/100"
         
         }
-    )*
+   )*
     
 })
 
@@ -105,7 +105,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Senegal, around 1955.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)

@@ -63,14 +63,14 @@
                 if:(and
                     ("Included" #1)
                     ("IsLowestReachableSite" #1)
-            ))
+           ))
             to:(from)
             (+ 1
                 (max
                     (-
                         (max ("Coordinates" #1 (column of:(to))))
                         (min ("Coordinates" #1 (column of:(to))))
-                    )
+                   )
                     (-
                         (max ("Coordinates" #1 (row of:(to))))
                         (min ("Coordinates" #1 (row of:(to))))
@@ -103,7 +103,7 @@
             (*
                 ("TC" #1)
                 (<Board:regionScoring> #1)
-        ))
+       ))
         }
 ))
 
@@ -116,21 +116,21 @@
                 (between (range 0 Infinity) if:True)
                 (to (sites Empty)
                     if:(is Empty (to))
-            ))
+           ))
             ifAfterwards:(or
                 (<
                     (var "SitesMoverAroundFrom")
                     (count Sites in:(sites Around (last To) Orthogonal if:(is Mover (who at:(to)))))
-                )
+               )
                 (and   
                     (=
                         (var "SitesMoverAroundFrom")
                         (count Sites in:(sites Around (last To) Orthogonal if:(is Mover (who at:(to)))))
-                    )   
+                   )   
                     (>
                         (count Sites in:(sites Around (last From) Orthogonal if:(is Next (who at:(to)))))
                         (count Sites in:(sites Around (last To) Orthogonal if:(is Next (who at:(to)))))
-            )))
+           )))
             (then 
                 (and
                     {
@@ -139,7 +139,7 @@
                     (if
                         (is Prev Next)
                         (moveAgain)
-                    )
+                   )
                     }
 )))))
 
@@ -157,7 +157,7 @@
         (piece "<Board:shape>" Each)
         (piece "<Board:shape>" Neutral)
         }
-    )
+   )
     (rules
         (start
             {
@@ -172,20 +172,20 @@
             (or
                 (move Pass)
                 "RabbitMove"
-        ))
+       ))
         (end 
             {
             (if 
                 (and
                     (= (score P1) (score P2))
                     (all Passed)
-                )
+               )
             (byScore {(score Mover 0)}) // (score Next (score Next))})
-        )
+       )
         (if 
             (all Passed)
             (byScore)
-        )
+       )
         }
 )))
 
@@ -280,7 +280,7 @@
         (credit "Dale W. Walton")
         (date "02-11-2021")
         }
-    )
+   )
     
     (graphics 
         {
@@ -290,8 +290,8 @@
         (piece Colour P1 strokeColour:(colour VeryDarkGrey))
         (piece Colour P2 strokeColour:(colour DarkGrey))
         (piece Background "Ball" image:"Disc" fillColour:(colour 0 0 0 75) edgeColour:(colour 0 0 0 0) scale:0.95 offsetX:1 offsetY:1.5)
-        (piece Foreground P2 "Ball" image:"Hare-alt2" fillColour:(colour 0 0 0 150) edgeColour:(colour 240 180 150 180) scale:0.7 )
-        (piece Foreground P1 "Ball" image:"Hare-alt2" fillColour:(colour 255 255 255 150) edgeColour:(colour 120 90 75 180) scale:0.7 )
+        (piece Foreground P2 "Ball" image:"Hare-alt2" fillColour:(colour 0 0 0 150) edgeColour:(colour 240 180 150 180) scale:0.7)
+        (piece Foreground P1 "Ball" image:"Hare-alt2" fillColour:(colour 255 255 255 150) edgeColour:(colour 120 90 75 180) scale:0.7)
         (board Colour Phase0 (colour 250 250 230 90))
         (board StyleThickness InnerEdges 1.2)
         (board StyleThickness OuterEdges 1.6)
@@ -309,6 +309,6 @@
         (piece Colour Neutral "<Board:shape>" fillColour:(colour White) strokeColour:(colour DarkGrey))       
         (show Piece Value "<Board:shape>" Middle scale:0.70 offsetX:.25 offsetY:.25)
         }
-    )
+   )
     (ai (heuristics (score)))
 )

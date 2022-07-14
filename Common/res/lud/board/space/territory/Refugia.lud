@@ -11,9 +11,9 @@
             (union
                 (sites Occupied by:Next)
                 (sites Occupied by:Neutral)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //--------------------------------------------------
@@ -42,11 +42,11 @@
                     from:(sites Occupied by:#1) 
                     to:(sites Around (from) if:(is #1 (who at:(to))))
                     1
-                )
-            )
+               )
+           )
             2
-        )
-    )
+       )
+   )
 )
 
 (define "Placement"
@@ -54,8 +54,8 @@
         (to 
             (sites Empty) 
             if:"NonAdjacent"
-        )
-    )
+       )
+   )
 )
 
 (define "StepMove"
@@ -65,12 +65,12 @@
                 if:(and
                     (is Empty (to))
                     ("MoveAllowed")
-                )
-            )
+               )
+           )
             (then ("UpdateScore" Mover))
-        )
+       )
         Mover
-    )
+   )
 )
 
 (define "HopNeutral"
@@ -82,19 +82,19 @@
                     (and 
                         (remove (between))
                         (add (piece (id "Fan" Neutral)) (to (between)))
-                    )
-                )
-            )
+                   )
+               )
+           )
             (to 
                 if:(and 
                     (is Empty (to))
                     ("MoveAllowed")
-                )
-            )
+               )
+           )
             (then (and ("UpdateScore" Mover) ("UpdateScore" Next)))
-        )
+       )
         Mover
-    )
+   )
 )
 
 (define "HopEnemy"
@@ -106,19 +106,19 @@
                     (and 
                         (remove (between))
                         (add (piece (id "Disc" Mover)) (to (between)))
-                    )
-                )
-            )
+                   )
+               )
+           )
             (to 
                 if:(and 
                     (is Empty (to))
                     ("MoveAllowed")
-                )
-            )
+               )
+           )
             (then (and ("UpdateScore" Mover) ("UpdateScore" Next)))
-        )
+       )
         Mover
-    )
+   )
 )
 
 //-------------------------------------------
@@ -127,12 +127,12 @@
     (players 2)
     (equipment
         {
-        (board (hex  <Board:size> ))
-        (piece "Disc" P1 )
-        (piece "Disc" P2 )
+        (board (hex  <Board:size>))
+        (piece "Disc" P1)
+        (piece "Disc" P2)
         (piece "Fan"  Neutral)
         }
-    )
+   )
     (rules   
         (start (set Score Each 0))
         (play
@@ -144,8 +144,8 @@
                 ("Placement")
                 (move Pass) 
                 }
-            )
-        )
+           )
+       )
         (end 
             (if 
                 (all Passed)
@@ -153,24 +153,24 @@
                 (if 
                     (> (score Mover) (score Next))
                     (result Mover Win)
-                )
+               )
                 (if 
                     (< (score Mover) (score Next))
                     (result Next Win)
-                )
+               )
                 (if 
                     (> ("TieBreaker" Mover) ("TieBreaker" Next))
                     (result Mover Win)
-                )
+               )
                 (if 
                     (< ("TieBreaker" Mover) ("TieBreaker" Next))
                     (result Next Win)
-                )
+               )
                 }
                 (result Next Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )           
 
 //---------------------------------------
@@ -237,7 +237,7 @@
         (credit "Dale W. Walton")
         (date "11-12-2020")
         }
-    )
+   )
     
     (graphics 
         {
@@ -247,8 +247,8 @@
         (board StyleThickness OuterEdges 2.0)
         (piece Foreground Neutral "Fan" image:"Fan" fillColour:(colour White) scale:0.96)
         }
-    )
+   )
     (ai
         "Refugia_ai"
-    )
+   )
 )

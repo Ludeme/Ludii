@@ -16,7 +16,7 @@
     (or
         ("IsSidesConnected" S NW (sites Side NE))
         ("IsSidesConnected" N SW (sites Side SE))
-    )
+   )
 )
 
 (define "IsPlayingPhase" (= 1 (var)))
@@ -35,32 +35,32 @@
                     (move Add
                         (piece (id "Disc" P2))
                         (to <Edge:target_zone>)
-                    )
+                   )
                     (move Pass
                         (then
                             (if (is Mover P1)
                                 (swap Players P1 P2
                                     (then
                                         (note "Player 1 is now Black. Player 2 is now White." to:All)
-                                    )
-                                )
+                                   )
+                               )
                                 (note "Player 1 remains White. Player 2 remains Black." to:All)
                                 (then
                                     (do
                                         (set NextPlayer (player 1))
                                         next:(set Var 1) // (var) represents the phase here
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             (nextPhase ("IsPlayingPhase") "Playing")
-        )
+       )
         (phase "Playing"
             (play (move Add (to (sites Empty))))
-        )
+       )
         }
         (end {
             (if (and {("IsPlayingPhase") (= (id P1) (mover)) ("BlackVC") (not ("WhiteVC"))}) (result P1 Loss)) 
@@ -68,7 +68,7 @@
             (if (and {("IsPlayingPhase") (= (id P1) (mover)) ("WhiteVC")}) (result P1 Win)) 
             (if (and {("IsPlayingPhase") (= (id P2) (mover)) ("BlackVC")}) (result P2 Win)) 
         })
-    )
+   )
 )
 
 (option "Board Size" <Board> args:{ <size> } {
@@ -105,7 +105,7 @@
         (credit "Nicholas Bamber")
         (date "2002")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
@@ -115,5 +115,5 @@
     
     (ai
         "Unlur_ai"
-    )
+   )
 )

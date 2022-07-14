@@ -10,26 +10,26 @@
         (phase "Opening" P1 
             (play (move Add (to (sites Empty))))
             (nextPhase "Playing")
-        )
+       )
         (phase "Playing" 
             (play 
                 (move Add (to (sites Empty))
                     (then 
                         (if (= 0 (count MovesThisTurn)) 
                             (moveAgain)
-                        )
-                    )
-                ) 
-            )
-        )
+                       )
+                   )
+               ) 
+           )
+       )
         }
         (end 
             (if 
                 (is Connected 3 Sides)  
                 (result Mover <Result>) 
-            ) 
-        )
-    )
+           ) 
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -81,8 +81,8 @@
         (author "Craige Schensted and Charles Titus")
         (credit "Eric Silverman")
         }
-    )
+   )
     (ai
         "Master Y_ai"
-    )
+   )
 )

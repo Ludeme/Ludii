@@ -12,11 +12,11 @@
                 (or
                     (not ("FromIsOnTheRegionToFill" #1))
                     ("ToIsOnTheRegionToFill" (to)) 
-                )
-            )
-        )
+               )
+           )
+       )
         #2		
-    )
+   )
 ) 
 
 (define "HopSequence" ("Hop" #1 (then (if (can Move ("Hop" (last To))) (moveAgain)))))
@@ -50,28 +50,28 @@
                                     (or
                                         (not (is In (from) (sites Next)))
                                         (is In (to) (sites Next)) 
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            ) 
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           ) 
             (nextPhase (is Mover (next)) "MultiJump")
-        ) 
+       ) 
         (phase "MultiJump" 
             (play 
                 (or 
                     ("HopSequence" (last To)) 
                     (move Pass)
-                )
-            ) 
+               )
+           ) 
             (nextPhase (not (is Mover (next))) "Movement")
-        ) 
+       ) 
         }
         
         (end ("FillWin" (sites (player (mapEntry (mover))))))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -85,7 +85,7 @@
         (regions "Home" P2 (expand origin:(coord "H8") steps:3 Orthogonal))
         >
         "The game is played on a board 8x8."
-    )*   
+   )*   
     (item "10x10"    
         <(square 10)>
         <  
@@ -93,7 +93,7 @@
         (regions "Home" P2 (expand origin:(coord "J10") steps:4 Orthogonal))
         >
         "The game is played on a board 10x10."
-    ) 
+   ) 
 })
 
 //------------------------------------------------------------------------------
@@ -110,10 +110,10 @@
         (classification "board/race/fill")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (ai 
         "Grasshopper_ai"
-    )
+   )
     
 )

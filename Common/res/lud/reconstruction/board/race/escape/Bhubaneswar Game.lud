@@ -6,14 +6,14 @@
                 (rectangle 6 3)
                 (shift 1 0 (rectangle 12 1))
             })
-        )
+       )
         (piece "Disc" Each (move [#]))
     })
     (rules
         (start [#])
         (play [#])
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -30,7 +30,7 @@
         (classification "board/race/escape/reconstruction")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

@@ -19,18 +19,18 @@
                         (if
                             (< 2 (count Sites in:(sites Around (last To) NotEmpty Orthogonal)))
                             (moveAgain)
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         (end 
             (if 
                 (is Full) 
                 (byScore)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -59,11 +59,11 @@
         (credit "Michael Amundsen")
         (date "2010")
         }
-    )
+   )
     (graphics
         (player Colour Neutral (colour Grey))
-    )
+   )
     (ai
         "Flume_ai"
-    )
+   )
 )

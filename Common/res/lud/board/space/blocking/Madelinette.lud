@@ -6,11 +6,11 @@
                 (remove 
                     ("AlquerqueGraph" 3 3)
                     vertices:{7 1} 
-                )
+               )
                 edges:{{0 1}}
-            )
+           )
             use:Vertex
-        ) 
+       ) 
         (piece "Counter" Each ("StepToEmpty"))
     })  
     
@@ -21,7 +21,7 @@
         })
         (play (forEach Piece)) 
         (end ("NoMoves" Loss))  
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -38,10 +38,10 @@
         (classification "board/space/blocking")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (ai 
         "Madelinette_ai"
-    )
+   )
     
 )

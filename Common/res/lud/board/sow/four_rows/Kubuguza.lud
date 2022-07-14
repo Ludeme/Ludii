@@ -14,7 +14,7 @@
             (track "TrackCW1"  "7,W,N1,E" loop:True P1)
             (track "TrackCW2" "23,W,N1,E" loop:True P2)
             }
-        )
+       )
         (regions "Home" P1 (sites Track "TrackCCW1"))                                     // P1 Home
         (regions "Home" P2 (sites Track "TrackCCW2"))                                     // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))        // P1 inner Home
@@ -28,7 +28,7 @@
         
         (start 
             (set Count 3 to:(union (sites P1 "Inner") (sites P2 "Inner")))
-        )
+       )
         
         (play 
             (or
@@ -37,9 +37,9 @@
                         (if ("SameTurn") 
                             (sites {(var "Replay")})
                             (sites Mover "Home") 
-                        ) 
+                       ) 
                         if:(> (count at:(from)) 1)
-                    )
+                   )
                     (then
                         (sow
                             "TrackCCW"
@@ -57,28 +57,28 @@
                                                 (from ("OppositeOuterPit" (to)))
                                                 (to (last From))
                                                 count:(count at:("OppositeOuterPit" (to)))
-                                            )
+                                           )
                                             (fromTo
                                                 (from ("OppositePit" (to)))
                                                 (to (last From))
                                                 count:(count at:("OppositePit" (to)))
-                                            )
+                                           )
                                             (set Var "Replay" (last From))
                                         })
                                         (set Var "Replay" (to))
-                                    )
+                                   )
                                     (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
+                               )
+                           )
+                       )
+                   )
+               )
                 (move Select
                     (from 
                         (if ("SameTurn") 
                             (sites {(var "Replay")})
                             (sites Mover "HolesCW") 
-                        ) 
+                       ) 
                         if:(and {
                             (> (count at:(from)) 1)
                             (is In (from) (sites Mover "HolesCW"))
@@ -86,11 +86,11 @@
                                 (and
                                     (is Occupied ("OppositeOuterPit" ("NextHoleFrom" (from) "TrackCW" (count at:(from)))))
                                     (is Occupied ("OppositePit" ("NextHoleFrom" (from) "TrackCW" (count at:(from)))))
-                                )
+                               )
                                 False
-                            )
+                           )
                         })
-                    )
+                   )
                     (then
                         (sow
                             "TrackCW"
@@ -108,27 +108,27 @@
                                                 (from ("OppositeOuterPit" (to)))
                                                 (to (last From))
                                                 count:(count at:("OppositeOuterPit" (to)))
-                                            )
+                                           )
                                             (fromTo
                                                 (from ("OppositePit" (to)))
                                                 (to (last From))
                                                 count:(count at:("OppositePit" (to)))
-                                            )
+                                           )
                                             (set Var "Replay" (last From))
                                         })
                                         (set Var "Replay" (to))
-                                    )
+                                   )
                                     (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (end ("ForEachPlayerNoMovesLoss"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -146,7 +146,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Rwanda, around 1953.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

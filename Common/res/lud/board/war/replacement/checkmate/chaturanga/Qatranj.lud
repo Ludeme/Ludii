@@ -3,9 +3,9 @@
         (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
-            )
-        )
-    ) 
+           )
+       )
+   ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -15,8 +15,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-        )
-    )
+       )
+   )
 )
 
 (define "NextCanNotMove"
@@ -37,9 +37,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         // Ghora
         (piece "Knight" Each
             (move
@@ -48,9 +48,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         // Fil
         (piece "Bishop_noCross" Each
             (move
@@ -59,9 +59,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         // Wazir
         (piece "Queen" Each
             (move
@@ -69,9 +69,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            )			
-        )
+               ) 
+           )			
+       )
         // Shahzada
         (piece "Commoner" Each
             (or
@@ -80,18 +80,18 @@
                     (to 
                         if:("IsEnemyAt" (to)) 
                         "CaptureToPiece"
-                    ) 
-                )
+                   ) 
+               )
                 (move
                     Leap 
                     "KnightWalk" 
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece"
-                    ) 
-                )	
-            )
-        )
+                   ) 
+               )	
+           )
+       )
         // Padshah
         (piece "King_noCross" Each
             (move
@@ -99,9 +99,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         // Kotwal
         (piece "Mann" Each
             (or
@@ -110,18 +110,18 @@
                     (to 
                         if:("IsEnemyAt" (to)) 
                         "CaptureToPiece"
-                    ) 
-                )
+                   ) 
+               )
                 (move
                     Leap 
                     "KnightWalk" 
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece"
-                    ) 
-                )	
-            )		
-        )
+                   ) 
+               )	
+           )		
+       )
         // Urdabegini
         (piece "Wazir" Each
             (do
@@ -130,27 +130,27 @@
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece"
-                    ) 
-                )
+                   ) 
+               )
                 ifAfterwards:(> (count Steps
                         (last From)
                         (where "King_noCross" Next)
-                    )
+                   )
                     (count Steps
                         (last To)
                         (where "King_noCross" Next)
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         // Paidal
         (piece "Pawn" Each
             (or 
                 "StepForwardToEmpty" 
                 "CaptureForwardDiagonal"
-            )		
-        )
+           )		
+       )
     })
     (rules 
         (start {
@@ -167,17 +167,17 @@
         })
         (play (do (forEach Piece) 
                 ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
-            )
-        )
+           )
+       )
         (end {
             (if (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-                ) 
+               ) 
                 (result Mover Win)
-            ) 
+           ) 
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -196,7 +196,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, around 1901.")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

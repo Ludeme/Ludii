@@ -19,9 +19,9 @@
             in:(difference 
                 ("SitesOccupiedTeam1")
                 ("StartSitesTeam2")  
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "Team2OnlyOnStartSitesTeam1"
@@ -31,9 +31,9 @@
             in:(difference 
                 ("SitesOccupiedTeam2")
                 ("StartSitesTeam1")  
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "LargePieveAvailable" (not ("HandEmpty" Mover)))
@@ -53,15 +53,15 @@
                         (merge
                             (square 13 diagonals:Solid) 
                             (shift 3 -1 (rectangle 2 7 diagonals:Solid)) 
-                        )
+                       )
                         (shift 3 12 (rectangle 2 7 diagonals:Solid)) 
-                    )
+                   )
                     (shift -3.5 5.5 (rotate 90 (rectangle 2 7 diagonals:Solid))) 
-                )
+               )
                 (shift 9.5 5.5 (rotate 90 (rectangle 2 7 diagonals:Solid))) 
-            )
+           )
             use:Vertex
-        )
+       )
         (piece "Counter" Each ("StepMove" (directions {FR FL})))
         (piece "DoubleCounter" Each ("StepMove" (directions {Rightward Forwards Leftward})))
         (regions "Home" P1 (sites {"D9" "E8" "F7" "G6" "H5" "I4"}))
@@ -70,7 +70,7 @@
         (regions "Home" P4 (sites {"V9" "U8" "T7" "S6" "R5" "Q4"}))
         (hand Each)
         }
-    )
+   )
     (rules
         (start {
             (set Team 1 {P1 P4})
@@ -96,33 +96,33 @@
                                     (remove (between))
                                     (if ("LargePieveAvailable")
                                         ("ReplaceByLargePiece")
-                                    )
+                                   )
                                     (addScore Mover 1)
                                     }
-                                )
+                               )
                                 
-                            )
-                        )
+                           )
+                       )
                         (to if:("IsFriendAt" (to))) 
-                    )
-                )
-            )
-        ) 
+                   )
+               )
+           )
+       ) 
         
         (end 
             (if 
                 (and 	
                     ("Team1OnlyOnStartSitesTeam2")
                     ("Team2OnlyOnStartSitesTeam1")
-                )
+               )
                 {
                 (if (> ("ScoreTeam1") ("ScoreTeam2")) (result Team1 Win))
                 (if (< ("ScoreTeam1") ("ScoreTeam2")) (result Team2 Win))
                 (if (= ("ScoreTeam1") ("ScoreTeam2")) (result Mover Draw))
                 }
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //--------------------------------------------------------------------------
@@ -139,7 +139,7 @@
         (classification "board/war/custodial")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         
@@ -147,5 +147,5 @@
     
     (ai
         "Awithlaknakwe_ai"
-    )
+   )
 )

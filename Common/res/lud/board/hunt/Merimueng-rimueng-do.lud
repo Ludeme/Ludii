@@ -5,9 +5,9 @@
             (exact #1)
             if:#2
             (apply (remove (between)))
-        )
+       )
         (to if:(is Empty (to)))
-    )
+   )
 )
 
 //-------------------------------------------------------------------------------
@@ -21,10 +21,10 @@
                     (scale 1 2 (wedge 5 6)) 
                     edges:{{0 1} {0 6}}
                     vertices:{24 19}
-                )
-            )
+               )
+           )
             use:Vertex
-        )
+       )
         (hand Each) 
         (piece "Tiger" P1 
             (or {
@@ -33,7 +33,7 @@
                 ("BigHop" 3 (and (!= (row of:(between)) (row of:(from))) ("IsEnemyAt" (between))))
                 ("BigHop" 4 ("IsEnemyAt" (between))) 
             })
-        ) 
+       ) 
         (piece "Sheep" P2 "StepToEmpty") 
     })  
     (rules 
@@ -48,17 +48,17 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty))
-                ) 
-            )
+               ) 
+           )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play (forEach Piece))
             (end ("NoMovesLossAndNoPiecesPlayerLoss" P2))
-        )
+       )
         }
-    )
+   )
 )
 
 //-------------------------------------------------------------------------------
@@ -77,7 +77,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Indonesia, around 1906.")
         }
-    )
+   )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})
@@ -86,6 +86,6 @@
     
     (ai 
         "Merimueng-rimueng-do_ai"
-    )
+   )
     
 )

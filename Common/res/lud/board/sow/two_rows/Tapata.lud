@@ -16,7 +16,7 @@
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
             (track "TrackCCW" "0,E,N,W" loop:True)
-        )
+       )
         (piece "Seed" Shared)
         (regions "Home" P1 (sites Bottom))                                                     // P1 home
         (regions "Home" P2 (sites Top))                                                        // P2 home
@@ -39,14 +39,14 @@
                                 (fromTo 
                                     (from (to))
                                     (to (mapEntry Next))
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             (nextPhase Mover "Play")
-        )
+       )
         
         (phase "Play" 
             (play
@@ -56,7 +56,7 @@
                             ("SameTurn") 
                             "LastHoleSowed" 
                             (sites Mover "Home") 
-                        ) 
+                       ) 
                         if:(and
                             (> (count at:(from)) 0)
                             (or ("SameTurn")
@@ -65,34 +65,34 @@
                                         (and 
                                             (is In ("NextHoleFrom" (from) (count at:(from))) (sites Mover "Home")) 
                                             (!= 0 (count at:("NextHoleFrom" (from) (count at:(from)))))
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
                     (then 
                         (sow
                             apply:(if (< 1 (count at:(to)))
                                 (moveAgain)
                                 (if (and (!= 0 (count at:("OppositePit" (to)))) (is In (to) (sites Mover "Home")))
                                     (remove ("OppositePit" (to)))
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         }
         
         (end
             (forEach NonMover
                 if:("NoPiece")
                 (result Player Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -110,13 +110,13 @@
         (credit "Eric Piette")
         (origin  "This game was played in Horn of Africa, around 1971.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
     })
     (ai
         "Tapata_ai"
-    )
+   )
 )
 

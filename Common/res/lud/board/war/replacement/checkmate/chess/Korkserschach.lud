@@ -15,8 +15,8 @@
         (if 
             (= (state at:(last To)) 1) 
             ("PieceHasMoved" (last To))
-        ) 
-    ) 
+       ) 
+   ) 
 )
 
 (define "CaptureToPiece"
@@ -25,9 +25,9 @@
             (and
                 (remember Value "CapturedPieces" (what at:(to)))
                 (remove (to))
-            )
-        )
-    ) 
+           )
+       )
+   ) 
 )
 
 (define "WasCaptured" (is In #1 (values Remembered "CapturedPieces")))
@@ -45,7 +45,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )   
+   )   
 )
 
 (define "DecideToCastle"
@@ -56,13 +56,13 @@
         (between 
             (exact #3) 
             if:#4
-        ) 
+       ) 
         (to 
             if:True
             (apply ("PieceHasMoved" (from)))
-        )
+       )
         #5
-    )
+   )
 )
 
 (define "CastleRook"
@@ -72,12 +72,12 @@
         (between 
             (exact #3) 
             if:#4
-        ) 
+       ) 
         (to 
             if:True
             (apply ("PieceHasMoved" (from)))
-        )
-    )
+       )
+   )
 )
 
 (define "SmallCastling"
@@ -94,7 +94,7 @@
         Forward 
         (between (exact 2) if:(is Empty (between))) 
         (to if:(is Empty (to))) 
-    )
+   )
 )
 
 (define "CaptureForwardDiagonal"
@@ -107,29 +107,29 @@
                 (and
                     (remember Value "CapturedPieces" (what at:(to)))
                     (remove (to))
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 (define "PromoteMove" 
     (or {
         (if ("WasCaptured" (id "Queen" Mover))
             (move Promote #1 (piece {"Queen"}) Mover)
-        )
+       )
         (if ("WasCaptured" (id "Knight" Mover))
             (move Promote #1 (piece {"Knight"}) Mover)
-        )
+       )
         (if ("WasCaptured" (id "Rook" Mover))
             (move Promote #1 (piece {"Rook"}) Mover)
-        )
+       )
         (if ("WasCaptured" (id "Bishop" Mover))
             (move Promote #1 (piece {"Bishop"}) Mover)
-        )
+       )
         }
         #2		
-    )		
+   )		
 )
 
 //------------------------------------------------------------------------------
@@ -144,7 +144,7 @@
                 (or {
                     (if (and ("AtLeastAStrongPieceWasCapture") (is In (from) (sites Mover "Promotion")))
                         ("PromoteMove" (from) (then (set Pending)))
-                    )
+                   )
                     <Play:doubleStep>
                     "StepForwardToEmpty" 
                     "CaptureForwardDiagonal"
@@ -154,20 +154,20 @@
                             (if (and
                                     (is In (last To) (sites Mover "Promotion")) 
                                     ("AtLeastAStrongPieceWasCapture")
-                                )
+                               )
                                 (moveAgain)
-                            )
+                           )
                             (if (and (not ("SameTurn")) (<= (count Turns) 2))
                                 (and
                                     (set Pending)
                                     (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (piece "Rook" Each 
             (move
@@ -176,20 +176,20 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
+               ) 
                 "RememberPieceHasMoved"
-            )
-        )
+           )
+       )
         (piece "King" Each 
             (move
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-                ) 
+               ) 
                 "RememberPieceHasMoved"
-            )
-        )
+           )
+       )
         (piece "Bishop" Each 
             (move
                 Slide 
@@ -197,9 +197,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "Knight" Each 
             (move
                 Leap 
@@ -207,18 +207,18 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "Queen" Each 
             (move
                 Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            ) 
-        )
+               ) 
+           ) 
+       )
         
         (map "King" {(pair 1 "E1") (pair 2 "E8")})
         (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})
@@ -242,55 +242,55 @@
                         (or 
                             (move Pass)
                             (forEach Piece "Pawn" Mover)
-                        )
+                       )
                         (or 
                             (forEach Piece)
                             (if (and 
                                     ("HasNeverMoved" "King")
                                     (not ("IsInCheck" "King" Mover)) 
-                                )
+                               )
                                 (or
                                     (if (and 
                                             ("HasNeverMoved" "RookLeft")
                                             (can Move ("CastleRook" "RookLeft" E 3 (is Empty (to))))
-                                        )
+                                       )
                                         "BigCastling"
-                                    )
+                                   )
                                     (if (and 
                                             ("HasNeverMoved" "RookRight")
                                             (can Move ("CastleRook" "RookRight" W 2 (is Empty (to))))
-                                        )
+                                       )
                                         "SmallCastling"
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                   )
+                               )
+                           )
+                       )
+                   )
                     ifAfterwards:(not ("IsInCheck" "King" Mover))
-                )
+               )
                 (then 
                     (and
                         (if (or ("IsInCheck" "Queen" P1) ("IsInCheck" "Queen" P2))
                             (note "Gardez la reine")
-                        )
+                       )
                         (if (and (= (state at:(where "King" Next)) 1) ("IsInCheck" "King" Next))
                             ("PieceHasMoved" (where "King" Next))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         
         (end {
             (if (and 
                     ("IsInCheck" "King" Next)
                     ("NextCanNotMove")
-                ) 
+               ) 
                 (result Mover Win)
-            ) 
+           ) 
             (if (no Moves Next) (result Mover Loss)) 
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -300,10 +300,10 @@
         <
         (if (is In (from) (sites Start (piece (what at:(from)))))
             "DoubleStep"
-        )
+       )
         >  
         "The pawns can double step from the starting positions."
-    )*   
+   )*   
     (item "No Pawn Double Step" <> "No double step for the pawns.")   
 })
 
@@ -315,7 +315,7 @@
         "Play Rules/Pawn Double Step"
         }
         variations:{"Play Rules/No Pawn Double Step"}
-    )
+   )
     
 })
 
@@ -334,7 +334,7 @@
         (classification "board/war/replacement/checkmate/chess")
         (origin  "This game was played in Germany, around 1873.")
         }
-    )
+   )
     
     (graphics {
         (show Check "King")

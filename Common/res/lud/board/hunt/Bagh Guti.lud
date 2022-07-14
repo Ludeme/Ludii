@@ -15,7 +15,7 @@
         (play <Tiger:playMove>)
         
         (end ("NoMovesP2NoPiecesP1"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -43,12 +43,12 @@
                     { {2 2} {1 3} }
                     { {1 3} {0 4} }
                     }
-                )
-            ) 
+               )
+           ) 
             use:Vertex
-        )> 
+       )> 
         "Played on a board with the diagonals forming a diamond."
-    )* 
+   )* 
     (item "Alquerque" <("AlquerqueBoard" 5 5)> "Played on a Alquerque board.")   
     (item "No diagonal" <(board (square 5) use:Vertex)> "Played on a board with no diagonal.")  
 })
@@ -60,30 +60,30 @@
         (or
             ("StepToEmpty")
             ("HopSequenceCapture")
-        )
+       )
         > 
         <
         (if ("SameTurn")
             (or
                 (move Pass)
                 ("HopSequenceCaptureAgain")
-            )
+           )
             (forEach Piece top:True)
-        )
+       )
         >
         "The tiger can jump a sequence of pieces to capture."
-    )*
+   )*
     
     (item "No Multiple hops"    
         <
         (or
             ("StepToEmpty")
             ("HopCapture")
-        )
+       )
         > 
         <(forEach Piece top:True)>
         "The tiger can not jump a sequence of pieces to capture."
-    ) 
+   ) 
     }
 )
 
@@ -128,7 +128,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in South Asia, from around 1906 to 1933.")
         }
-    )
+   )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})
@@ -136,6 +136,6 @@
     })
     (ai
         "Bagh Guti_ai"
-    )
+   )
 )
 

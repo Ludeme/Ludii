@@ -9,7 +9,7 @@
             (rectangle 4 12) 
             [#]
             use:Vertex
-        )
+       )
         (piece "Stick" Each (move [#]))
         (dice d:2 from:0 num:6)        
         (regions P1 (sites Bottom))
@@ -27,11 +27,11 @@
                 (and
                     (all Sites (difference (sites Next) (sites Occupied by:Mover)) if:(not ("IsFriendAt" (site)))) 
                     (not (no Pieces Mover))
-                )
+               )
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -49,7 +49,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Morocco, around 1905.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)    

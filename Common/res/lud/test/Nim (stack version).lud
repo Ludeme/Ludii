@@ -4,7 +4,7 @@
         (board (rectangle 1 <Size:board>)) 
         (piece "Marker" Neutral)
         }
-    )  
+   )  
     (rules
         (start {
             (place Stack "Marker0" (sites Bottom) counts:<Size:stacks>)
@@ -20,11 +20,11 @@
                             (if 
                                 (not (is Empty (last To))) 
                                 (moveAgain) 
-                            ) 
-                        ) 
-                    )
+                           ) 
+                       ) 
+                   )
                     (move Pass)
-                )
+               )
                 (move
                     Remove
                     (sites Occupied by:Neutral)
@@ -32,13 +32,13 @@
                         (if 
                             (not (is Empty (last To))) 
                             (moveAgain) 
-                        ) 
-                    ) 
-                )
-            )
-        ) 
+                       ) 
+                   ) 
+               )
+           )
+       ) 
         (end (if (no Moves Next) (result <Result> Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -77,7 +77,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Europe?, from around 1496CE to 1517CE.")
         }
-    )
+   )
     
     (graphics {
         (no Board)

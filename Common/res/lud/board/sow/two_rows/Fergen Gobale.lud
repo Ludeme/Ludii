@@ -5,7 +5,7 @@
         "TrackFill"
         from:(mapEntry "LeftMost" Mover)
         if:(is Empty (to))
-    )
+   )
 )
 
 (define "NoOccupiedFreeHoles" (all Sites (sites #1 "Home") if:(or (is Empty (site)) (!= 0 (state at:(site))))))
@@ -30,7 +30,7 @@
             (track "TrackFill" "0,E,6,E,N,W,5,W" loop:True)
             }
             use:Vertex
-        )
+       )
         (piece "Seed" Shared)
         (regions "Home" P1 (sites Bottom))  // P1 Home
         (regions "Home" P2 (sites Top))     // P2 Home
@@ -62,17 +62,17 @@
                         (from (sites "Central") if:(= 0 (state at:(from))))
                         (then
                             (set State at:(last To) (mover))
-                        )
-                    )
+                       )
+                   )
                     
                     (move Select
                         (from 
                             (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 (sites Mover "Home")
-                            )
+                           )
                             if:(and {(= 0 (state at:(from))) (is In (from) ("PlayableSites")) (is Occupied (from)) })
-                        )
+                       )
                         (then
                             (sow
                                 "Track"
@@ -81,8 +81,8 @@
                                         (and
                                             (moveAgain)
                                             (set Var "Replay" (to))
-                                        )
-                                    )
+                                       )
+                                   )
                                     (if (is In (to) (sites Mover "Home"))
                                         (if (= 3 (count at:("OppositePit" (to))))
                                             (and {
@@ -90,7 +90,7 @@
                                                     (from ("OppositePit" (to)))
                                                     (to (to))
                                                     count:1
-                                                )
+                                               )
                                                 (set State at:(to) (mover))
                                                 (set State at:("OppositePit" (to)) (mover))
                                                 (moveAgain)
@@ -101,22 +101,22 @@
                                                     (from (to))
                                                     (to (handSite Mover))
                                                     count:1
-                                                )
+                                               )
                                                 (if (is Occupied ("OppositePit" (to)))
                                                     (fromTo 
                                                         (from ("OppositePit" (to)))
                                                         (to (handSite Mover))
                                                         count:(count at:("OppositePit" (to)))
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
+                                                   )
+                                               )
+                                           )
+                                       )
+                                   )
+                               )
                                 skipIf:(and (not (is In (to) (sites "Central"))) (not (is In (to) ("PlayableSites"))))
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     
                     (then
                         (if (or ("NoOccupiedFreeHoles" P1) ("NoOccupiedFreeHoles" P2))
@@ -128,40 +128,40 @@
                                             (from (site))
                                             (to (handSite P1))
                                             count:(count at:(site))
-                                        )
+                                       )
                                         (if (or (and (= 0 (state at:(site))) (is In (site) (sites P2 "Home"))) (= (state at:(site)) 2))
                                             (fromTo
                                                 (from (site))
                                                 (to (handSite P2))
                                                 count:(count at:(site))
-                                            )
-                                        )
-                                    )
-                                )
+                                           )
+                                       )
+                                   )
+                               )
                                 (if (< ("NumCaptureSeeds" P1) ("NumCaptureSeeds" P2))
                                     (set NextPlayer (player 1))
                                     (set NextPlayer (player 2))
-                                )
+                               )
                                 (if (or (> 5 ("NumCaptureSeeds" P1)) (> 5 ("NumCaptureSeeds" P2)))
                                     (set Var "PlaceOne" 1)
-                                )
+                               )
                                 (forget Value "Playable" All)
                             })
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             
             (end (if (or ("NoOccupiedFreeHoles" P1) ("NoOccupiedFreeHoles" P2))
                     {
                     (if (= 0  (count Cell at:(handSite P1))) (result P2 Win))
                     (if (= 0 (count Cell at:(handSite P2))) (result P1 Win))
                     }
-                )
-            )
+               )
+           )
             (nextPhase (or ("NoOccupiedFreeHoles" P1) ("NoOccupiedFreeHoles" P2)) "BetweenRounds")
             
-        )
+       )
         
         (phase "BetweenRounds"
             (play
@@ -175,10 +175,10 @@
                                 (remember Value "Playable" (last To))
                                 (if (is Occupied (handSite Mover))
                                     (moveAgain)	
-                                )
-                            )
-                        )
-                    )
+                               )
+                           )
+                       )
+                   )
                     (if (<= (mapEntry "InitialCount" ("LeftMostEmpty")) (count Cell at:(handSite Mover)))
                         (move
                             (from (handSite Mover))
@@ -189,24 +189,24 @@
                                     (remember Value "Playable" (last To))
                                     (if (is Occupied (handSite Mover))
                                         (moveAgain)	
-                                    )
-                                )
-                            )
-                        )
+                                   )
+                               )
+                           )
+                       )
                         (if (all Sites (sites Mover "Home") if:(is Occupied (site)))
                             (move
                                 (from (handSite Mover))
                                 (to (if (is Empty 12) 12 13))
                                 count:(count Cell at:(handSite Mover))
-                            )
+                           )
                             (move
                                 (from (handSite Mover))
                                 (to ("LeftMostEmpty"))
                                 count:(count Cell at:(handSite Mover))
                                 (then (remember Value "Playable" (last To)))
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (then
                         (if (is Empty (handSite Mover))
                             (and
@@ -218,21 +218,21 @@
                                                 (from (handSite Next))
                                                 (to (mapEntry "CorrespondingHoles" (site)))
                                                 count:(count at:(site))
-                                            )
-                                        )
-                                    )
-                                )
+                                           )
+                                       )
+                                   )
+                               )
                                 (set Var "PlaceOne" 0)
-                            )
-                        )
-                    )
-                )
-            )
+                           )
+                       )
+                   )
+               )
+           )
             (nextPhase (is Empty (handSite Mover)) "Sowing")
-        )
+       )
         
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -249,7 +249,7 @@
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

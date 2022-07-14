@@ -10,10 +10,10 @@
                 (and
                     (trigger "CaptureMade" Next)
                     (remove (between)) 
-                )
-            ) 
-        )
-    )
+               )
+           ) 
+       )
+   )
 )
 
 (define "HasMadeACapture"
@@ -36,12 +36,12 @@
                     Add
                     (to (sites Empty))
                     (then ("CaptureSurroundedPiece"))
-                )
+               )
                 ifAfterwards:("HasFreedom")
-            )
-        )
+           )
+       )
         (end (if "HasMadeACapture" (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -68,7 +68,7 @@
         (classification "board/space/territory")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Style Go)
@@ -78,6 +78,6 @@
     
     (ai 
         "Atari Go_ai"
-    )
+   )
     
 )

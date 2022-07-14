@@ -3,15 +3,15 @@
     (equipment { 
         (board 
             (<Board:type> <BoardSize>)
-        ) 
+       ) 
         (piece "Marker" Each)
         }
-    )  
+   )  
     (rules 
         <Meta:rule>
         (play (move Add (to (sites Empty))))
         (end (if (is Line <Line:size> <Connection:type>) (result Mover <Result>))) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -93,7 +93,7 @@
         (credit "Eric Piette")
         (date "12-10-2020")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Red))
@@ -104,5 +104,5 @@
     
     (ai
         "Broken Line_ai"
-    )
+   )
 )

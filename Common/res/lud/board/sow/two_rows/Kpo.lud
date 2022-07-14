@@ -12,7 +12,7 @@
     (equipment { 
         (mancalaBoard 2 6
             <Players:track>
-        )
+       )
         (piece "Seed" Shared)
         <Players:homes>
         <Players:store>  // kalahs (storage pits)
@@ -24,7 +24,7 @@
         <Players:Play>
         
         <Players:end>
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -48,29 +48,29 @@
                 (from 
                     (sites Mover) 
                     if:(> (count at:(from)) 0)
-                )
+               )
                 (then 
                     (sow
                         apply:(if (or 
                                 (= (count at:(to)) 2)
                                 (= (count at:(to)) 3)
-                            )
+                           )
                             (fromTo 
                                 (from (to))
                                 (to (mapEntry Mover)) 
                                 count:(count at:(to))
-                            ) 
-                        )
-                    )
-                )
-            )			
-        )
+                           ) 
+                       )
+                   )
+               )
+           )			
+       )
         >
         <
         (end ("MancalaByScoreWhen" (no Moves Next)))
         >
         "The game is played with 2 players."
-    )*   
+   )*   
     
     (item "3"   
         <3> 
@@ -95,7 +95,7 @@
                     (from 
                         (sites Mover) 
                         if:(> (count at:(from)) 0)
-                    )
+                   )
                     (then 
                         (sow
                             "TrackCCW"
@@ -103,24 +103,24 @@
                                     (or 
                                         (= (count at:(to)) 2)
                                         (= (count at:(to)) 3)
-                                    )
+                                   )
                                     (!= (count at:("NextHole" "TrackCCW")) 0)
-                                )
+                               )
                                 (fromTo 
                                     (from ("NextHole" "TrackCCW"))
                                     (to (handSite Mover)) 
                                     count:(count at:("NextHole" "TrackCCW"))
-                                ) 
-                            )
-                        )
-                    )
-                )		
+                               ) 
+                           )
+                       )
+                   )
+               )		
                 (move
                     Select 
                     (from 
                         (sites Mover) 
                         if:(> (count at:(from)) 0)
-                    )
+                   )
                     (then 
                         (sow
                             "TrackCW"
@@ -128,20 +128,20 @@
                                     (or 
                                         (= (count at:(to)) 2)
                                         (= (count at:(to)) 3)
-                                    )
+                                   )
                                     (!= (count at:("NextHole" "TrackCW")) 0)
-                                )
+                               )
                                 (fromTo 
                                     (from ("NextHole" "TrackCW"))
                                     (to (handSite Mover)) 
                                     count:(count at:("NextHole" "TrackCW"))
-                                ) 
-                            )
-                        )
-                    )
-                )	
-            )
-        )
+                               ) 
+                           )
+                       )
+                   )
+               )	
+           )
+       )
         >
         <
         (end
@@ -155,11 +155,11 @@
                     (score P2 ("PiecesHandOwnedBy" P2))
                     (score P3 ("PiecesHandOwnedBy" P3)) 
                 })
-            )
-        )
+           )
+       )
         >
         "The game is played with 4 players."
-    )  
+   )  
     
     (item "4"   
         <4> 
@@ -185,7 +185,7 @@
                     (from 
                         (sites Mover) 
                         if:(> (count at:(from)) 0)
-                    )
+                   )
                     (then 
                         (sow
                             "TrackCCW"
@@ -193,24 +193,24 @@
                                     (or 
                                         (= (count at:(to)) 2)
                                         (= (count at:(to)) 3)
-                                    )
+                                   )
                                     (!= (count at:("NextHole" "TrackCCW")) 0)
-                                )
+                               )
                                 (fromTo 
                                     (from ("NextHole" "TrackCCW"))
                                     (to (handSite Mover)) 
                                     count:(count at:("NextHole" "TrackCCW"))
-                                ) 
-                            )
-                        )
-                    )
-                )		
+                               ) 
+                           )
+                       )
+                   )
+               )		
                 (move
                     Select 
                     (from 
                         (sites Mover) 
                         if:(> (count at:(from)) 0)
-                    )
+                   )
                     (then 
                         (sow
                             "TrackCW"
@@ -218,20 +218,20 @@
                                     (or 
                                         (= (count at:(to)) 2)
                                         (= (count at:(to)) 3)
-                                    )
+                                   )
                                     (!= (count at:("NextHole" "TrackCW")) 0)
-                                )
+                               )
                                 (fromTo 
                                     (from ("NextHole" "TrackCW"))
                                     (to (handSite Mover)) 
                                     count:(count at:("NextHole" "TrackCW"))
-                                ) 
-                            )
-                        )
-                    )
-                )	
-            )
-        )
+                               ) 
+                           )
+                       )
+                   )
+               )	
+           )
+       )
         >
         <
         (end
@@ -246,11 +246,11 @@
                     (score P3 ("PiecesHandOwnedBy" P3)) 
                     (score P4 ("PiecesHandOwnedBy" P4))
                 })
-            )
-        )
+           )
+       )
         >
         "The game is played with 4 players."
-    )  
+   )  
 })
 
 //------------------------------------------------------------------------------
@@ -293,12 +293,12 @@
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
     })
     (ai
         "Kpo_ai"
-    )
+   )
 )

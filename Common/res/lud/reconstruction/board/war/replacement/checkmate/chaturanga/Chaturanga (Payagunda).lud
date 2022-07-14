@@ -2,8 +2,8 @@
     (apply 
         (remove 
             (to) 
-        )
-    ) 
+       )
+   ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -13,8 +13,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -31,10 +31,10 @@
                 (then
                     (if (is In (last To) (sites Mover "Promotion")) 
                         (moveAgain)
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (piece "Rook" Each // Dvipa 
             (move
                 Slide 
@@ -42,18 +42,18 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "King_noCross" Each // Raja 
             (move
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-                )
-            )
-        )
+               )
+           )
+       )
         (piece "Elephant" Each // Mantri
             (move
                 Slide 
@@ -61,9 +61,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            )		
-        )  
+               ) 
+           )		
+       )  
         (piece "Knight" Each // Turaja 
             (move
                 Leap 
@@ -71,17 +71,17 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "Ferz_noCross" Each // Ratha 
             (move Hop Diagonal 
                 (between if:True) 
                 (to if:(not ("IsFriendAt" (to))) (apply (remove (to)))) 
-            )
-        )
+           )
+       )
         }
-    )
+   )
     
     (rules 
         (start { 
@@ -92,7 +92,7 @@
         })
         (play [#])
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -110,7 +110,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, from around 1700 to 1750.")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

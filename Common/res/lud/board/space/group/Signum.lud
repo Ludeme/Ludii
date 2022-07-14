@@ -13,16 +13,16 @@
                 from:(intersection
                     #1
                     (sites Perimeter)
-                )
+               )
                 to:(intersection
                     #1
                     (sites Perimeter)
-                )
+               )
                 (count Steps (from) (to))
-            )
-        )
+           )
+       )
         ("LengthOfDiagonal")
-    )
+   )
 )
 
 (define "ConnectsSLOWER"
@@ -46,9 +46,9 @@
                 ("Connects" (sites))
                 (addScore Mover (count Sites in:(sites)))
                 (addScore Mover (- (count Sites in:(sites))))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "ScoreOf" 
@@ -60,9 +60,9 @@
                 ("ConnectsAt" (from))
                 1 
                 -1
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -79,17 +79,17 @@
             (move Add
                 (to (sites Empty))
                 <Score>
-            )
-        )
+           )
+       )
         (end 
             (if (is Full) 
                 (byScore {
                     (score P1 ("ScoreOf" P1))
                     (score P2 ("ScoreOf" P2))
                 })
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -132,7 +132,7 @@
         (credit "Michael Amundsen")
         (date "2022")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Black))
@@ -143,5 +143,5 @@
     })
     (ai
         (bestAgent "MC-GRAVE")
-    )
+   )
 )

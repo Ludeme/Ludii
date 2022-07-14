@@ -10,10 +10,10 @@
                 (and 
                     (addScore Mover 1) 
                     (remove (between)) 
-                )
-            ) 
-        )
-    )
+               )
+           ) 
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -25,12 +25,12 @@
         (board <Board> use:Vertex) 
         (piece "Marker" Each)
         }
-    )
+   )
     
     (rules 
         (meta
             (no Repeat)
-        )
+       )
         (play 
             (or
                 (do
@@ -39,13 +39,13 @@
                         (to (sites Empty))
                         (then 
                             "CaptureSurroundedPiece"
-                        )
-                    )
+                       )
+                   )
                     ifAfterwards:"HasFreedom"
-                )
+               )
                 (move Pass)
-            )
-        )
+           )
+       )
         
         (end
             (if (all Passed)
@@ -53,9 +53,9 @@
                     (score P1 (+ (score P1) (size Territory P1))) 
                     (score P2 (+ (score P2) (size Territory P2)))
                 })
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -84,7 +84,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in China, from around 694 to 710.")
         }
-    )
+   )
     
     (graphics {
         (board Style Go)
@@ -94,6 +94,6 @@
     
     (ai 
         "Go_ai"
-    )
+   )
     
 )

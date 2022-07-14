@@ -5,11 +5,11 @@
             if:(= 0
                 (count Sites
                     in:(sites Around (to) Own Orthogonal)
-                )
-            )
-        )
+               )
+           )
+       )
         (then ("UpdateScore"))
-    )
+   )
 )
 
 (define "PlaceGrey"
@@ -21,22 +21,22 @@
                 if:(< 0
                     (count Sites
                         in:(sites Around (to) Own Orthogonal)
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         ifAfterwards:(all Groups Orthogonal of:(is Mover (who at:(to)))
             if:(> 2
                 (count Sites
                     in:(intersection
                         (sites Around (sites) NotEmpty Orthogonal)
                         (sites Occupied by:Neutral)
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         #1
-    )
+   )
 )
 
 (define "ReplaceAllGrey"
@@ -44,7 +44,7 @@
         (to 
             (sites Occupied by:Neutral)
             (apply (remove (to)))
-        )
+       )
         (then 
             (if 
                 (!= 1 (var "HasGrown"))
@@ -55,12 +55,12 @@
                         (and
                             (set Var "MoveThatMustBePlant" (count Moves))
                             (moveAgain)
-                        )
-                    )
-                )
-            )
-        )
-    )
+                       )
+                   )
+               )
+           )
+       )
+   )
 )
 
 (define "Grow"
@@ -72,10 +72,10 @@
                 (do
                     ("ReplaceAllGrey")
                     next:("UpdateScore")
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 (define "UpdateScore"
@@ -84,9 +84,9 @@
             (count Sites in:(sites Occupied by:Mover))
             (* <P>
                 (count Groups Orthogonal if:(is Mover (who at:(to))))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //-------------------------------------------------------------------------
@@ -108,17 +108,17 @@
                     (or
                         ("Plant")
                         ("Grow")
-                    )
+                   )
                     ("Grow")
-                )
-            )
-        )
+               )
+           )
+       )
         (end 
             (if (is Full) 
                 (byScore)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //-------------------------------------------------------------------------

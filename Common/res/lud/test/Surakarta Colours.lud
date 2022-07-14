@@ -6,11 +6,11 @@
             if:(or 
                 (= (between) (from)) 
                 (is Empty (between))
-            )
-        ) 
+           )
+       ) 
         <Slide:to>
         (then (set Counter))
-    )
+   )
 )
 
 (define "NoCaptureProposal" 101)
@@ -21,8 +21,8 @@
             Track
             if:(> #1 (count Pieces Mover in:(sites Track))) 
             (result Mover Loss)
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -38,10 +38,10 @@
                     Step
                     All
                     <Step:to>
-                )
+               )
                 ("SlideToCapture")						
             })
-        )
+       )
     })  
     (rules 
         (start {
@@ -55,13 +55,13 @@
                 (or 
                     (if (>= (counter) "NoCaptureProposal") 
                         (move Propose "End" (then (vote "End")))
-                    )
+                   )
                     (forEach Piece)
-                )
-            )
-        ) 
+               )
+           )
+       ) 
         <End:rules>
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -71,7 +71,7 @@
     (item "False"   
         <(to if:(is Empty (to)))>
         "The pieces can step to an empty site."
-    )*
+   )*
     (item "True"   
         <
         (to 
@@ -80,19 +80,19 @@
                 (and 
                     (is In (to) (sites Corners)) 
                     ("IsEnemyAt" (to))
-                )
-            )
+               )
+           )
             (apply 
                 (if ("IsEnemyAt" (to))
                     (remove 
                         (to) 
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         >
         "The pieces can step to an empty site or capturing an enemy piece in a corner in steping."
-    )
+   )
     }
 )
 
@@ -105,19 +105,19 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply if:False (remove (to)))
-        )
+       )
         >
         "The pieces can slide to capture."
-    )*
+   )*
     (item "To Move or Capture"   
         <
         (to 
             if:("IsEnemyAt" (to)) 
             (apply if:(is Empty (to)) (remove (to)))
-        )
+       )
         >
         "The pieces can slide to move or capture."
-    )
+   )
     }
 )
 
@@ -133,30 +133,30 @@
                     (score P1 (count Pieces P1)) 
                     (score P2 (count Pieces P2))
                 })
-            )
+           )
             (if (no Pieces Next) (result Mover Win))
         })
         >
         "The mover win if the next player does not have any piece."
-    )*
+   )*
     (item "Less Than 2 Pieces Per Track"   
         <
         ("NPiecesOnTrack" 2)
         >
         "The mover loses if it does not have 2 pieces on each track."
-    )
+   )
     (item "Less Than 3 Pieces Per Track"   
         <
         ("NPiecesOnTrack" 3)
         >
         "The mover loses if it does not have 3 pieces on each track."
-    )
+   )
     (item "Less Than 4 Pieces Per Track"   
         <
         ("NPiecesOnTrack" 4)
         >
         "The mover loses if it does not have 4 pieces on each track."
-    )
+   )
     }
 )
 
@@ -170,7 +170,7 @@
         <(expand (sites Top))>
         <>
         "The game is played on the Awithlaknan Mosona board."
-    )*   
+   )*   
     (item "Middle Line"             
         <2>          
         <(square 7) loops:3>
@@ -178,7 +178,7 @@
         <(expand (sites Top))>
         <>
         "The game is played on the Kolowis Awithlaknannai board."
-    )     
+   )     
     (item "Experimental 6x9"             
         <2>          
         <(rectangle 6 9)>
@@ -186,7 +186,7 @@
         <(expand (sites Top))>
         <>
         "The game is played on an experimental 6x9 board."
-    )     
+   )     
     (item "Experimental 9x6 (A)"             
         <2>          
         <(rectangle 9 6)>
@@ -194,7 +194,7 @@
         <(expand (sites Top))>
         <>
         "The game is played on an experimental 9x6 board."
-    )     
+   )     
     (item "Experimental 9x6 (B)"             
         <2>          
         <(rectangle 9 6)>
@@ -202,7 +202,7 @@
         <(expand (sites Top) steps:2)>
         <>
         "The game is played on an experimental 9x6 board."
-    )     
+   )     
     (item "Experimental 12x8"             
         <2>          
         <(rectangle 12 8) loops:3 from:1>
@@ -210,7 +210,7 @@
         <(difference (expand (sites Top) steps:4) (sites Top))>
         <>
         "The game is played on an experimental 12x8 board."
-    )     
+   )     
     (item "Ja-Jeon-Geo-Gonu (A)"  
         <2>
         <(square 4)>
@@ -218,7 +218,7 @@
         <{"C1" "D1" "C2" "D2"}>
         <>
         "Small 4x4 version of the game."
-    )     
+   )     
     (item "Ja-Jeon-Geo-Gonu (B)"             
         <2>          
         <(square 4)>
@@ -226,7 +226,7 @@
         <{"B1" "D1" "B2" "D2"}>
         <>
         "Small 4x4 version of the game (variant start)."
-    )     
+   )     
     (item "Triangular 4"             
         <2>          
         <(tri 4)>
@@ -234,7 +234,7 @@
         <(expand (sites {"D4"}))>
         <>
         "Experimental triangular version of the game."
-    )     
+   )     
     (item "Triangular 5"             
         <2>          
         <(tri 5)>
@@ -242,7 +242,7 @@
         <(union (expand (sites {"E5"})) (sites {"D3"}))>
         <>
         "Experimental triangular version of the game."
-    )     
+   )     
     (item "Triangular 6"             
         <2>          
         <(tri 6)>
@@ -250,7 +250,7 @@
         <(expand (sites {"F6"}) steps:2)>
         <>
         "Experimental triangular version of the game."
-    )     
+   )     
     (item "Triangular 6 (Inverted)"             
         <2>          
         <(tri 6)>
@@ -258,7 +258,7 @@
         <(union (expand (sites {"A1"})) (expand (sites {"F1"})))>
         <>
         "Experimental triangular version of the game."
-    )     
+   )     
     (item "Triangular 7"             
         <2>          
         <(tri 7)>
@@ -266,7 +266,7 @@
         <(union (expand (sites {"G7"}) steps:2) (sites {"E4" "F4"}))>
         <>
         "Experimental triangular version of the game."
-    )     
+   )     
     (item "Triangular 7 (Balanced)"             
         <2>          
         <(tri 7)>
@@ -274,7 +274,7 @@
         <(union (expand (sites {"G7"}) steps:2) (sites {"E4" "F4"}))>
         <>
         "Experimental triangular version of the game."
-    )     
+   )     
     (item "Triangular 7 (Balanced, Inverted)"             
         <2>          
         <(tri 7)>
@@ -282,7 +282,7 @@
         <(union {(expand (sites {"A1"})) (expand (sites {"G1"})) (sites {"C2" "F2"}) })>
         <>
         "Experimental triangular version of the game."
-    )     
+   )     
     (item "Triangular 8"             
         <2>          
         <(tri 8)>
@@ -290,7 +290,7 @@
         <(expand (sites {"H8"}) steps:3)>
         <>
         "Experimental triangular version of the game."
-    )     
+   )     
     (item "Triangular 8 (Inverted)"             
         <2>          
         <(tri 8)>
@@ -298,7 +298,7 @@
         <(union (expand (sites {"A1"}) steps:2) (expand (sites {"H1"}) steps:2))>
         <>
         "Experimental triangular version of the game."
-    )     
+   )     
     (item "Three Player A"             
         <3>          
         <(tri 8)>
@@ -306,7 +306,7 @@
         <(expand (sites {"H1"}) steps:2)>
         <(place "Marker3" (expand (sites {"H8"}) steps:2))>
         "Experimental triangular version of the game."
-    )     
+   )     
 })
 
 //------------------------------------------------------------------------------
@@ -323,7 +323,7 @@
         (credit "Eric Piette")
         (date "01-01-1970")
         }
-    )
+   )
     
     (graphics {
         (board Style Surakarta) 
@@ -337,5 +337,5 @@
     
     (ai
         "Surakarta_ai"
-    )
+   )
 )

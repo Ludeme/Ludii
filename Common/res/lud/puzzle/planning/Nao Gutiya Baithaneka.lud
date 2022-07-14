@@ -4,23 +4,23 @@
         (board 
             (splitCrossings (regular Star 5))
             use:Vertex
-        )
+       )
         (hand Each) 
         (piece "Marker" P1
             (move Hop 
                 (between 
                     if:("IsFriendAt" (between))
                     (apply (remove (between)))
-                )
+               )
                 (to if:(is Empty (to)))
-            )
-        ) 
+           )
+       ) 
         }
-    )  
+   )  
     (rules 
         (start 
             (place "Marker" (handSite P1) count:9)
-        )
+       )
         
         (play 
             (if (is Even (count Moves))
@@ -28,24 +28,24 @@
                     (from (handSite Mover)) 
                     (to (sites Empty))
                     (then (moveAgain))
-                ) 
+               ) 
                 (forEach Piece
                     (if (= (from) (last To))
                         (move Hop 
                             (between 
                                 if:(or ("IsFriendAt" (between)) (is Empty (between)))
-                            )
+                           )
                             (to if:(is Empty (to)))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         (end { 
             (if (and (is Even (count Moves)) ("HandEmpty" Mover)) (result Mover Win))
             (if (no Moves Next) (result Mover Loss))
         })
-    )		
+   )		
 )
 
 //------------------------------------------------------------------------------
@@ -64,7 +64,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, around 1935.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)
@@ -73,5 +73,5 @@
     
     (ai
         "Nao Gutiya Baithaneka_ai"
-    )
+   )
 )

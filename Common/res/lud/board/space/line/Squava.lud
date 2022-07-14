@@ -4,7 +4,7 @@
         (board (square 5)) 
         (piece "Marker" Each) 
         }
-    )  
+   )  
     (rules 
         (meta (swap))
         (play (move Add (to (sites Empty))))
@@ -12,7 +12,7 @@
             (if (is Line 4) (result Mover Win))
             (if (is Line 3) (result Mover Loss)) 
         })  
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -32,10 +32,10 @@
         (credit "Eric Piette")
         (date "2011")
         }
-    )
+   )
     
     (ai 
         "Squava_ai"
-    )
+   )
     
 )

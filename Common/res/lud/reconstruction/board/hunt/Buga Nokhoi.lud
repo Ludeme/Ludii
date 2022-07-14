@@ -8,7 +8,7 @@
                 (square 5 diagonals:Alternating)
             })
             use:Vertex
-        )
+       )
         (piece "Deer" P2 (and ("StepToEmpty") ("HopCapture")))
         (piece "Dog" P1 ("StepToEmpty"))
         (hand P1)
@@ -30,10 +30,10 @@
                     (from (handSite Mover)) 
                     (to (sites Empty)) 
                     (then (if (is Occupied (handSite P1)) (moveAgain)))
-                )  
-            ) 
+               )  
+           ) 
             (nextPhase Mover ("HandEmpty" P1) "Movement")
-        )
+       )
         
         (phase "Movement" (play (forEach Piece)))
         }
@@ -42,7 +42,7 @@
             (if (no Pieces P1) (result P2 Win))
             (if (no Moves P2) (result P1 Win))
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -60,7 +60,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Mongolia, from around 1988 to 1991.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)

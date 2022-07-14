@@ -11,9 +11,9 @@
             (remove (to))
             (if (= (what at:(to)) (id "Ambush" Next))
                 ("AmbushCaptureEffect")
-            )	
-        )
-    )		
+           )	
+       )
+   )		
 )
 
 (define "CaptureMoveSlide"
@@ -22,9 +22,9 @@
             (remove (to))
             (if (= (what at:(to)) (id "Ambush" Next))
                 ("AmbushCaptureEffect")
-            )	
-        )
-    )		
+           )	
+       )
+   )		
 )
 
 (define "CaptureMoveCannon"
@@ -34,9 +34,9 @@
             (remove (to))
             (if (= (what at:(to)) (id "Ambush" Next))
                 ("AmbushCaptureEffect")
-            )	
-        )
-    )		
+           )	
+       )
+   )		
 )
 
 //------------------------------------------------------------------------------
@@ -77,14 +77,14 @@
                                     (from) 
                                     (to 
                                         ("CaptureMove")
-                                    )
-                                )
-                            )
-                        ) 
-                    ) 		
-                )
-            )
-        )
+                                   )
+                               )
+                           )
+                       ) 
+                   ) 		
+               )
+           )
+       )
         
         // Chariot
         (piece "Ju" Each
@@ -94,9 +94,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     ("CaptureMoveSlide")
-                )
-            )		
-        )
+               )
+           )		
+       )
         
         // Canon
         (piece "Pao" Each
@@ -109,14 +109,14 @@
                         before:(count Rows) 
                         after:(count Rows)  
                         if:(and (not (is Empty (between))) (!= (id "Pao" Mover) (what at:(between))))
-                    )
+                   )
                     (to 
                         if:(is Empty (to)) 
                         ("CaptureMoveCannon")
-                    )  
-                ) 
-            )		
-        )
+                   )  
+               ) 
+           )		
+       )
         
         // Horse
         (piece "Ma" Each
@@ -133,14 +133,14 @@
                                     (from) 
                                     (to 
                                         ("CaptureMove")
-                                    )
-                                )
-                            )
-                        ) 
-                    )
-                )
-            ) 		
-        )
+                                   )
+                               )
+                           )
+                       ) 
+                   )
+               )
+           ) 		
+       )
         
         // Vanguard
         (piece "Jian" Each
@@ -149,13 +149,13 @@
                 All
                 (between
                     if:(and (is Empty (between)) (is In (between) (sites Mover "BeforePalace")))
-                )
+               )
                 (to 
                     if:("IsEnemyAt" (to)) 
                     ("CaptureMoveSlide")
-                )
-            )			
-        )
+               )
+           )			
+       )
         
         // Rearguard
         (piece "Gong" Each
@@ -164,13 +164,13 @@
                 All
                 (between
                     if:(and (is Empty (between)) (is In (between) (sites Mover "BeforeBehindPalace")))
-                )
+               )
                 (to 
                     if:("IsEnemyAt" (to)) 
                     ("CaptureMoveSlide")
-                )
-            )			
-        )
+               )
+           )			
+       )
         
         // Elite Officer
         (piece "Bai" Each
@@ -179,13 +179,13 @@
                 Orthogonal
                 (between
                     if:(and (is Empty (between)) (is In (between) (sites Mover "RankPalace")))
-                )
+               )
                 (to 
                     if:("IsEnemyAt" (to)) 
                     ("CaptureMoveSlide")
-                )
-            )		
-        )
+               )
+           )		
+       )
         
         // Traveler
         (piece "Hai" Each
@@ -196,9 +196,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     ("CaptureMoveSlide")
-                )
-            )			
-        )
+               )
+           )			
+       )
         
         // Ambush
         (piece "Pian" Neutral)
@@ -220,19 +220,19 @@
                                                 (move 
                                                     (from) 
                                                     (to)
-                                                )
-                                            )
-                                        ) 
-                                    )
-                                )
-                            ) 
-                        )
+                                               )
+                                           )
+                                       ) 
+                                   )
+                               )
+                           ) 
+                       )
                         All
                         if:(is Empty (to))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         // Infantry
         (piece "Zu" Each
@@ -242,9 +242,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     ("CaptureMove")
-                )
-            )		
-        )
+               )
+           )		
+       )
         
         // Cavalry
         (piece "Qi" Each
@@ -254,9 +254,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     ("CaptureMove")
-                )
-            )			
-        )
+               )
+           )			
+       )
         
         // General
         (piece "Zhou" Each ("MarshallMove"))
@@ -281,7 +281,7 @@
         })
         (play (forEach Piece))
         (end (if (= Off (where "Jiang" Next)) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -291,7 +291,7 @@
     (info
         {
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)

@@ -9,8 +9,8 @@
                 (is Empty (to)) 
                 (is Enemy (who at:(ahead #2 #3)))
             })
-        )
-    )
+       )
+   )
 )  
 
 (define "EmptyButNotVisitedWithEnemyIn"
@@ -25,21 +25,21 @@
     (and 
         (is Empty (to)) 
         (is Enemy (who at:(ahead #1 #2)))
-    )
+   )
 )
 
 (define "RemoveEnemyPiece"
     (to 
         if:("IsEnemyAt" (to)) 
         (apply (remove (to)))
-    )
+   )
 )
 
 (define "MoveThePiece"
     (fromTo 
         (from (last From)) 
         (to (last To))
-    ) 
+   ) 
 )
 
 (define "MoveAgainIn"
@@ -49,7 +49,7 @@
         (to 
             (sites Around #1) 
             if:("EmptyButNotVisitedWithEnemyIn" #2 #3)
-        ) 
+       ) 
         (then 
             (and {
                 "MoveThePiece" 
@@ -57,26 +57,26 @@
                     (from #4) 
                     #5
                     "RemoveEnemyPiece"
-                ) 
+               ) 
                 (if 
                     (can Move
                         (or 
                             ("CaptureAgainIn" #1 (to) SameDirection)
                             ("CaptureAgainIn" #1 (from) OppositeDirection)
-                        )
-                    )
+                       )
+                   )
                     (moveAgain)
-                )
+               )
             })
-        )
-    )
+       )
+   )
 )
 
 (define "CaptureFromLast"  		
     (or 
         ("MoveAgainIn" #1 (to) SameDirection (last To) (directions Vertex from:(last From) to:(last To)))
         ("MoveAgainIn" #1 (from) OppositeDirection (last From) (directions Vertex from:(last To) to:(last From)))
-    )
+   )
 )
 
 (define "MoveAgain" 
@@ -84,8 +84,8 @@
         (if 
             (can Move ("CaptureFromLast" (last To))) 
             (moveAgain)
-        )
-    ) 
+       )
+   ) 
 )
 
 (define "MoveIn"
@@ -96,7 +96,7 @@
             (to 
                 (sites Around (from)) 
                 if:("EmptyWithEnemyIn" #1 #2)
-            ) 
+           ) 
             (then 
                 (and 
                     "MoveThePiece" 
@@ -104,12 +104,12 @@
                         (from #3) 
                         #4
                         "RemoveEnemyPiece"
-                    )
-                ) 
-            )
-        ) 
+                   )
+               ) 
+           )
+       ) 
         #5
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -135,13 +135,13 @@
                         (or 
                             ("MoveIn" (to) SameDirection (last To) (directions Vertex from:(last From) to:(last To)))
                             ("MoveIn" (from) OppositeDirection (last From) (directions Vertex from:(last To) to:(last From)))
-                        )
-                    )
+                       )
+                   )
                     (forEach Piece "StepToEmpty")
                 })
-            )	
+           )	
             (nextPhase (<= (count Pieces P2) 5) "FanoronaPhase")
-        )
+       )
         
         (phase "FanoronaPhase"
             (play
@@ -151,23 +151,23 @@
                             (!= (what at:(last To)) 0) 
                             ("CaptureFromLast" (last To)) 
                             ("CaptureFromLast" (last From))
-                        )
+                       )
                         (move Pass)
-                    )
+                   )
                     (priority {
                         (or 
                             ("MoveIn" (to) SameDirection (last To) (directions Vertex from:(last From) to:(last To)) "MoveAgain")
                             ("MoveIn" (from) OppositeDirection (last From) (directions Vertex from:(last To) to:(last From)) "MoveAgain")
-                        )
+                       )
                         (forEach Piece "StepToEmpty")
                     })
-                )
-            )	
+               )
+           )	
             (end (if (no Pieces Mover) (result Next Win)))
-        )
+       )
         }
         
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -186,12 +186,12 @@
         (credit "Eric Piette")
         (origin  "This game was played in Madagascar, around 1896.")
         }
-    )
+   )
     
     (graphics {
         
     })
     (ai
         "Vela_ai"
-    )
+   )
 )

@@ -9,7 +9,7 @@
                 
                 //count:(size Stack at:(from))  // ?
                 
-        stack:True ))   //  but no whole stack-movement ..
+        stack:True))   //  but no whole stack-movement ..
     })
     (rules
         (start {(place Stack "Disc1" (coord:"B4") count:1)
@@ -20,10 +20,10 @@
             (place Stack "Disc2" (coord:"E6") count:3)
         })
         
-        (play  (forEach Piece)  )
+        (play  (forEach Piece) )
         
         (end (if (no Moves Next)  (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------

@@ -14,8 +14,8 @@
                         (if (is In (to) (expand (sites Left)))
                             (set Value Mover 1) // 1 = left
                             (set Value Mover 0) // 0 = choice
-                        )
-                    )
+                       )
+                   )
                 })
                 (if (< 1 (count at:( to)))
                     (and {
@@ -23,17 +23,17 @@
                         (set Var "Replay" (to))
                         (set Var "Direction" #2) // 1 = CCW, 2 = CW
                     })
-                )
-            )
+               )
+           )
             (if (< 1 (count at:( to)))
                 (and {
                     (moveAgain)
                     (set Var "Replay" (to))
                     (set Var "Direction" #2) // 1 = CCW, 2 = CW
                 })
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "SowingPhase2"
@@ -41,7 +41,7 @@
         (from 
             (sites Mover)
             if:(is Occupied (from))
-        )
+       )
         (then
             (sow
                 #1
@@ -52,10 +52,10 @@
                         (set Var "Replay" (to))
                         (set Var "Direction" #2) // 1 = CCW, 2 = CW
                     })
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -70,7 +70,7 @@
             (track "TrackCW1" "7,W,N1,E" loop:True P1)
             (track "TrackCW2" "23,W,N1,E" loop:True P2)
             }
-        )
+       )
         (piece "Seed" Shared)
         (hand Each)
         (regions "Home" P1 (expand (sites Bottom)))            // P1 home
@@ -101,27 +101,27 @@
                                         (from ("OppositePit" (last To afterConsequence:True)))
                                         (to (mapEntry "LeftMostInner" Mover))
                                         count:(count at:("OppositePit" (last To afterConsequence:True)))
-                                    )
+                                   )
                                     next:(move Select
                                         (from (mapEntry "LeftMostInner" Mover))
                                         (then ("Sowing" "TrackCW" 1))
-                                    )
-                                )
-                            )
+                                   )
+                               )
+                           )
                             (if (or (= 2 (value Player Mover)) (= 0 (value Player Mover))) // Sow capture pieces from the right.
                                 (do 
                                     (fromTo
                                         (from ("OppositePit" (last To afterConsequence:True)))
                                         (to (mapEntry "RightMostInner" Mover))
                                         count:(count at:("OppositePit" (last To afterConsequence:True)))
-                                    )
+                                   )
                                     next:(move Select
                                         (from (mapEntry "RightMostInner" Mover))
                                         (then ("Sowing" "TrackCCW" 2))
-                                    )
-                                )
-                            )
-                        )
+                                   )
+                               )
+                           )
+                       )
                         
                         // Continue to sow.
                         (or
@@ -129,16 +129,16 @@
                                 (move Select
                                     (from (var "Replay"))
                                     (then ("Sowing" "TrackCW" 1))
-                                )
-                            )
+                               )
+                           )
                             (if (or (= (var "Direction") 2) (= (var "Direction") 3))
                                 (move Select
                                     (from (var "Replay"))
                                     (then ("Sowing" "TrackCCW" 2))
-                                )
-                            )
-                        )
-                    )
+                               )
+                           )
+                       )
+                   )
                     (if (is Occupied (handSite Mover)) // Placement phase
                         (priority {
                             (move // Has to capture if possible
@@ -154,11 +154,11 @@
                                             (if (is In (last To) (expand (sites Left)))
                                                 (set Value Mover 1) // 1 = left
                                                 (set Value Mover 0) // 0 = choice
-                                            )
-                                        )
+                                           )
+                                       )
                                     })
-                                )
-                            )
+                               )
+                           )
                             (move // If not possible just place then sow in any direction.
                                 (from (handSite Mover))
                                 (to (sites Mover "Inner"))
@@ -169,27 +169,27 @@
                                         (set Var "Replay" (last To))
                                         (set Var "Direction" 3) // Right or Left
                                     })
-                                )
-                            )
+                               )
+                           )
                         })
                         // Sowing phase
                         (or // No capture in the first sowing in that phase of the game.
                             ("SowingPhase2" "TrackCW" 1)
                             ("SowingPhase2" "TrackCCW" 2)
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         }
         
         (end 
             (forEach Player
                 if:("NoPiecesInInner" Player)
                 (result Player Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -207,7 +207,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Central Africa, around 1977.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

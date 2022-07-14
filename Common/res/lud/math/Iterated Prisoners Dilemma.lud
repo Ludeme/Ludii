@@ -32,15 +32,15 @@
                             (if (and ("CooperateP1") ("DefectP2")) 
                                 (and (addScore P1 0) (addScore P2 5))
                                 (and (addScore P1 5) (addScore P2 0))
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     applyAfterAllMoves:True
-                )
-            )
-        )
+               )
+           )
+       )
         (end (if (= (counter) 8) (byScore)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -64,7 +64,7 @@
         (credit "Eric Piette")
         (date "1950")
         }
-    )
+   )
     
     (graphics {
         (board colour Phase0 (colour Hidden))

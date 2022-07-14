@@ -17,27 +17,27 @@
                         if:(and 
                             (!= (phase of:(from)) (phase of:(site)))
                             (or (is Empty (site)) ("IsEnemyAt" (site)))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
         }
-    )  
+   )  
     (rules 
         (start
             { 
             (place "Knight1" (expand (sites Bottom)))
             (place "Knight2" (expand (sites Top)))
             }
-        )
+       )
         
         (play (forEach Piece))
         
         (end (if "RegionReached" (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -47,7 +47,7 @@
     (info
         {
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)

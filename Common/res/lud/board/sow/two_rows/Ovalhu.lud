@@ -14,7 +14,7 @@
             (track "Track1" "1,E,17,16,W" loop:True P1)
             (track "Track2" "1,E,N,W,0" loop:True P2)
             }
-        )
+       )
         (piece "Seed" Shared)
         (map {(pair P1 LastSite) (pair P2 FirstSite)})  // kalahs (storage pits)
         (regions P1 (sites Bottom))                     // P1 home
@@ -36,9 +36,9 @@
                             (if (and (is Pending) ("SameTurn"))
                                 (sites {(var "Replay")})
                                 (sites Mover) 
-                            )
+                           )
                             if:(and (is Occupied (from)) (is In (from) ("PlayableSites")))
-                        )
+                       )
                         (then
                             (sow
                                 "Track"
@@ -50,40 +50,40 @@
                                             (and
                                                 (set Pending)
                                                 (set Var "Replay" (to))
-                                            )
-                                        )
-                                    )
+                                           )
+                                       )
+                                   )
                                     (if (is Occupied ("OppositePitTwoRows" (to)))
                                         (fromTo
                                             (from ("OppositePitTwoRows" (to)))
                                             (to (mapEntry Mover))
                                             count:(count at:("OppositePitTwoRows" (to)))
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                                 skipIf:(and (not (is In (to) ("Stores"))) (not (is In (to) ("PlayableSites"))))
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     }
                     (then
                         (if ("NoPieceOnBoard")
                             (forget Value "Playable" All)
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             
             (end (if ("NoPieceOnBoard")
                     {
                     (if (> 8 (count at:(mapEntry P1))) (result P2 Win))
                     (if (> 8 (count at:(mapEntry P2))) (result P1 Win))
                     }
-                )
-            )
+               )
+           )
             
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-        )
+       )
         
         (phase "BetweenRounds"
             (play
@@ -94,14 +94,14 @@
                             (to (sites Mover) if:(is Empty (to)))
                             count:8
                             (then (remember Value "Playable" (last To)))
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase (all Passed) "Sowing")
-        )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -118,7 +118,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Maldives, around 2000.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

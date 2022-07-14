@@ -8,7 +8,7 @@
     (equipment { 
         (mancalaBoard 2 6
             (track "Track" "1,E,N,W" loop:True)
-        )
+       )
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
@@ -28,7 +28,7 @@
                             (from 
                                 (sites Mover) 
                                 if:(< 0 (count at:(from)))
-                            )
+                           )
                             (then 
                                 (sow  
                                     if:(= (count at:(to)) 4)
@@ -36,19 +36,19 @@
                                         (from (to)) 
                                         (to (if (is In (to) (sites P1)) (mapEntry 1) (mapEntry 2)))
                                         count:(count at:(to))
-                                    )
+                                   )
                                     includeSelf:False
-                                )
-                            )
-                        )
+                               )
+                           )
+                       )
                         ifAfterwards:(< 0 (count in:(sites Next)))
-                    )
-                )
-            )		
-        )
+                   )
+               )
+           )		
+       )
         
         (end ("MancalaByScoreWhen" (and (no Moves Mover) (no Moves Next))))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -67,12 +67,12 @@
         (credit "Eric Piette")
         (origin  "This game was played in Benin, around 1955.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
     })
     (ai
         "Enindji_ai"
-    )
+   )
 )

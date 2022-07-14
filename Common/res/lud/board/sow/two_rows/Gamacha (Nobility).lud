@@ -8,7 +8,7 @@
     (+ 
         (count Cell at:(handSite #1)) 
         (count in:(forEach (sites Board) if:(= (id #1) (state at:(site)))))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -19,7 +19,7 @@
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
             (track "Track" "0,E,N,W" loop:True)		
-        )
+       )
         (piece "Seed" Shared)
         (regions P1 (sites Bottom)) 
         (regions P2 (sites Top)) 
@@ -35,38 +35,38 @@
                     (if ("SameTurn")
                         ("LastHoleSowed") 
                         (sites Mover) 
-                    )
+                   )
                     if:(and (< 0 (count at:(from))) (= 0 (state at:(from))))
-                )
+               )
                 (then
                     (sow
                         apply:(if (and 
                                 (is In (to) (sites Mover))
                                 (= 1 (count at:(to)))
-                            )
+                           )
                             (if (= 1 (count at:("OppositePit" (to))))
                                 (fromTo
                                     (from ("OppositePit" (to)))
                                     (to (handSite Mover))
                                     count:1
-                                )
-                            )
+                               )
+                           )
                             (if (< 1 (count at:(to)))
                                 (and
                                     (moveAgain)
                                     (if (and {(is In (to) (sites Next)) (= 0 (state at:(to))) (= 4 (count at:(to))) })
                                         (set State at:(to) (mover))
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )		
-        )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )		
+       )
         
         (end ("MancalaByScoreWhen" ("NoFreeSeed")))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -83,7 +83,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Ethiopia, around 1971.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

@@ -14,7 +14,7 @@
             (* 
                 (max (sizes Group <BoardShape:directionsUsed> Mover))
                 (count Pieces Next)
-        ))
+       ))
         (set Score Next 
             (* 
                 (max (sizes Group <BoardShape:directionsUsed> Next))
@@ -27,7 +27,7 @@
             (* 
                 (max (sizes Group Orthogonal Mover))
                 (count Pieces Next)
-        ))
+       ))
         (set Score Next 
             (* 
                 (max (sizes Group Orthogonal Next))
@@ -50,40 +50,40 @@
                             (< 0 (counter)) 
                             (set NextPlayer (player (next)))
                             (moveAgain)
-                )))
+               )))
                 (or 
                     (move Propose "Accept Pie Offer and Move" 
                         (then (set NextPlayer (player (mover))))
-                    )
+                   )
                     (move Propose "Swap Pieces" 
                         (then 
                             (do 
                                 (forEach Site 
                                     (sites Occupied by:Mover) 
                                     (remember Value (site)) 
-                                ) 
+                               ) 
                                 next:(forEach Site 
                                     (sites Occupied by:Next)
                                     (and
                                         (remove (site))
                                         (add (piece (mover)) (to (site)))
-                                ))
+                               ))
                                 (then
                                     (forEach Value (values Remembered)
                                         (and
                                             (remove (value))
                                             (add (piece (next)) (to (value)))
-                                        )
+                                       )
                                         (then 
                                             (and 
                                                 (forget Value All)
                                                 (set NextPlayer (player (next)))
-        )))))))))) 
+       )))))))))) 
         (nextPhase 
             (or 
                 (is Proposed "Swap Pieces")
                 (is Proposed "Accept Pie Offer and Move")
-            )
+           )
             "Placement"
 )))
 
@@ -91,7 +91,7 @@
 // Defines for Options
 
 (define "Connection" <BoardShape:directionsUsed>)
-(define "BoardUsed" <BoardShape:gridType> )
+(define "BoardUsed" <BoardShape:gridType>)
 
 (define "SquareGrid" (board (square <BoardSize:smallSide>) use:Vertex))
 (define "HexLimp" (board (tri Limping (- <BoardSize:smallSide> 1)) use:Vertex))
@@ -111,7 +111,7 @@
         (piece "Ball" P1)
         (piece "Ball" P2)
         }
-    )
+   )
     (rules
         (meta (no Repeat Positional))
         (start (set Score Each 0))
@@ -128,7 +128,7 @@
                                 (- 
                                     (count Pieces Next in:(sites Around (to) <BoardShape:directionsUsed>))
                                     (count Pieces Mover in:(sites Around (to) <BoardShape:directionsUsed>))
-                    ))))
+                   ))))
                     (then 
                         (and
                             {
@@ -136,36 +136,36 @@
                             (set Var "Last2Move" (mover))
                             (if (not (no Moves Mover)) (moveAgain))
                             }
-            ))))
+           ))))
             (end 
                 (if 
                     (or
                         {
                         (all Passed)
                         }
-                    )
+                   )
                     {
                     (if 
                         (!= (score Mover) (score Next))
                         (byScore)
-                    )
+                   )
                     (if 
                         (and
                             (= (score Mover) (score Next))
                             (= (var "Last2Move") (mover))
-                        )
+                       )
                         (result Mover Loss)
-                    )
+                   )
                     (if 
                         (and
                             (= (score Mover) (score Next))
                             (!= (var "Last2Move") (mover))
-                        )
+                       )
                         (result Mover Loss)
-                    )
+                   )
                     }
                     (byScore)
-        )))
+       )))
         }
 ))
 
@@ -255,7 +255,7 @@ Immediately after placing to a cell with 4 or more oppositely charged neighbors,
     (board Colour InnerVertices (colour DarkGrey))
     (board Colour InnerEdges (colour DarkGrey))
     (show Edges Diagonal <BoardShape:DiagShow> (colour DarkGrey))
-    (board Background image:"Disc" fillColour:(colour 155	160 195) edgeColour:(colour 155	160 195) scaleX:1.2 scaleY:1.15 offsetX:0.021 offsetY:-0.015 )
+    (board Background image:"Disc" fillColour:(colour 155	160 195) edgeColour:(colour 155	160 195) scaleX:1.2 scaleY:1.15 offsetX:0.021 offsetY:-0.015)
     }
 )
 (ai

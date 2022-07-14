@@ -4,9 +4,9 @@
             (add 
                 (piece (mapEntry "Captured" (what at:(to)))) 
                 (to (mapEntry "Where" (what at:(to))))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "NextCannotMove"
@@ -18,7 +18,7 @@
         (from (sites Occupied by:Mover container:"Hand")) 
         (to (sites Empty))
         (then "PromoteDecision")
-    )
+   )
 )
 
 (define "CapturePiece"
@@ -26,8 +26,8 @@
         (add 
             (piece (mapEntry "Captured" (what at:(to)))) 
             (to (mapEntry "Where" (what at:(to))))
-        )
-    )
+       )
+   )
 )
 
 (define "PromoteDecision"
@@ -44,7 +44,7 @@
         #1 
         (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
-    )   	
+   )   	
 )
 
 (define "StepMove"
@@ -53,7 +53,7 @@
         #1
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
-    )   	
+   )   	
 )
 
 (define "GoldMove" ("StepMove" (directions {Forward Backward Rightward Leftward FL FR}) (then "Promote")))
@@ -73,18 +73,18 @@
         (piece "Fuhyo" Each 
             ("StepMove" 
                 Forward 
-                (then "Promote" )
-            )
-        )
+                (then "Promote")
+           )
+       )
         
         // Silver General
-        (piece "Ginsho" Each ("StepMove" (directions {Forward BL BR FL FR}) (then "Promote" )))
+        (piece "Ginsho" Each ("StepMove" (directions {Forward BL BR FL FR}) (then "Promote")))
         
         // Rook
-        (piece "Hisha" Each ("SlideMove" Orthogonal (then "Promote" )))
+        (piece "Hisha" Each ("SlideMove" Orthogonal (then "Promote")))
         
         // Bishop
-        (piece "Kakugyo" Each ("SlideMove" Diagonal (then "Promote" )))
+        (piece "Kakugyo" Each ("SlideMove" Diagonal (then "Promote")))
         
         // Knight
         (piece "Keima" Each 
@@ -108,26 +108,26 @@
                                                 (add 
                                                     (piece (mapEntry "Captured" (what at:(to)))) 
                                                     (to (mapEntry "Where" (what at:(to))))
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                ) 
-                (then "Promote" ) 
-            ) 
-        )
+                                               )
+                                           )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               ) 
+                (then "Promote") 
+           ) 
+       )
         
         // Lance
         (piece "Kyosha" Each
             ("SlideMove" 
                 Forward 
                 (then "Promote")
-            ) 
-        )
+           ) 
+       )
         
         // Gold General
         (piece "Kinsho" Each "GoldMove")
@@ -159,26 +159,26 @@
                     (move 
                         (from (sites Occupied by:Mover container:"Hand" components:{"Kakugyo" "Ginsho" "Hisha" "Kinsho"})) 
                         (to (sites Empty))
-                    ) 
+                   ) 
                     ("PlacePiece") 
                     (forEach Piece) 
                 })
                 ifAfterwards:(not ("IsInCheck" "Osho" Mover))
-            )
-        )
+           )
+       )
         
         (end
             {
             (if (and 
                     ("IsInCheck" "Osho" Next)
                     ("NextCannotMove")
-                ) 
+               ) 
                 (result Mover Win)
-            ) 
+           ) 
             (if (no Moves Next) (result Mover Win)) 
             }
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -190,7 +190,7 @@
         (source "https://en.wikipedia.org/wiki/Kyoto_shogi")
         (credit "Matthew Stephenson")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour White))

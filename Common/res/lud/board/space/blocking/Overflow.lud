@@ -6,19 +6,19 @@
             if:(and
                 (not ("EnoughSpaceInDirection" (to)))
                 (not ("ZeroEmptyInRangeInDirection" (to)))
-            )
-        )
+           )
+       )
         (then
             (forEach Site
                 (sites Direction 
                     from:(last From)
                     (directions Cell from:(last From) to:(last To))
                     distance:(size Stack at:(last From))
-                )
+               )
                 (add (piece "Disc1") (to (site)) stack:True)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "ContainedMove"
@@ -30,7 +30,7 @@
                 (or
                     ("EnoughSpaceInDirection" (to))
                     ("ZeroEmptyInRangeInDirection" (to))
-                )
+               )
                 (all Sites
                     (sites Around (from) NotEmpty)
                     if:(not
@@ -42,26 +42,26 @@
                                         (directions Cell from:(from) to:(to))
                                         stop:(is Empty (to))
                                         distance:(size Stack at:(from))
-                                    )
-                                )
+                                   )
+                               )
                                 (count Sites 
                                     in:(sites Direction
                                         from:(from)
                                         (directions Cell from:(from) to:(site))
                                         stop:(is Empty (to))
                                         distance:(size Stack at:(from))
-                                    )
-                                )
-                            )
+                                   )
+                               )
+                           )
                             (or
                                 ("EnoughSpaceInDirection" (site))
                                 ("ZeroEmptyInRangeInDirection" (site))
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         (then
             (forEach Site
                 (sites Direction
@@ -69,28 +69,28 @@
                     (directions Cell from:(last From) to:(last To))
                     stop:(is Empty (to))
                     distance:(size Stack at:(last From))
-                )
+               )
                 (if
                     (= 
                         ("DistanceToEndSquare") 
                         (count Steps (last From) (site))
-                    )
+                   )
                     (add (piece "Disc1")
                         (to (site)) 
                         count:(- 
                             (size Stack at:(last From))
                             (- ("DistanceToEndSquare") 1)
-                        )
+                       )
                         stack:True
-                    )
+                   )
                     (add (piece "Disc1")
                         (to (site)) 
                         stack:True
-                    )
-                )
-            )
-        )
-    )
+                   )
+               )
+           )
+       )
+   )
 )
 
 (define "ZeroEmptyInRangeInDirection"
@@ -102,10 +102,10 @@
                     from:(from)
                     (directions Cell from:(from) to:#1)
                     distance:(size Stack at:(from))
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 (define "EnoughSpaceInDirection"
@@ -116,9 +116,9 @@
                 from:(from)
                 (directions Cell from:(from) to:#1)
                 distance:(size Stack at:(from))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "DistanceToEndSquare"
@@ -128,8 +128,8 @@
             (directions Cell from:(last From) to:(last To))
             stop:(is Empty (to))
             distance:(size Stack at:(last From))
-        )
-    )
+       )
+   )
 )
 
 (define "UpdateScores"
@@ -139,18 +139,18 @@
                 in:(forEach 
                     (sites Phase 1) 
                     if:(is Occupied (site))
-                )
-            )
-        )
+               )
+           )
+       )
         (set Score P2 
             (count Sites 
                 in:(forEach 
                     (sites Phase 0) 
                     if:(is Occupied (site))
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -173,22 +173,22 @@
                     ("ContainedMove")
                     ("OverflowMove")
                     (then (remove (last From) count:(size Stack at:(last From))))
-                )
+               )
                 ifAfterwards:(= 1 (count Groups))
                 (then 
                     ("UpdateScores")
-                )
-            )
-        )
+               )
+           )
+       )
         (end 
             (if 
                 (= 0
                     (* (score P1) (score P2))
-                )
+               )
                 (byScore)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -234,7 +234,7 @@
         (credit "Michael Amundsen")
         (date "2022")
         }
-    )
+   )
     (graphics {
         (player Colour P1 (colour 250 221 144))
         (player Colour P2 (colour 200 150 75))
@@ -247,6 +247,6 @@
         (bestAgent "Alpha-Beta")
         (heuristics 
             (score)
-        )
-    )
+       )
+   )
 )

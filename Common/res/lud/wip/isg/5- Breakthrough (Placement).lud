@@ -4,10 +4,10 @@
         (to if:(or 
                 (is Empty (to)) 
                 ("IsEnemyAt" (to))
-            ) 
+           ) 
             (apply (remove (to)))
-        )
-    )		
+       )
+   )		
 )
 
 (define "ReachedTarget" (is In (last To) (sites Mover)))
@@ -31,13 +31,13 @@
                     (move
                         (from (handSite Mover))
                         (to (expand (sites Next) steps:2) if:(is Empty (to)))
-                    )
-                )
+                   )
+               )
                 (forEach Piece)
-            )
-        )
+           )
+       )
         (end (if "ReachedTarget" (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------

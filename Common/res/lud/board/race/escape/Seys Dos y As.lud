@@ -10,7 +10,7 @@
             (track "Track1" {24 11..0 12..17} P1 directed:True)
             (track "Track2" {25 11..0 12..17} P2 directed:True)
             }
-        )
+       )
         (dice d:6 num:3)
         (piece "Disc" Each
             (forEach Die 
@@ -23,12 +23,12 @@
                             ("NextSiteFrom" (from) (pips))
                             if:("NoEnemyOrOnlyOne" (to))
                             ("HittingCapture" (handSite Next))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (then ("ReplayNotAllDiceUsed"))
-            )		
-        )
+           )		
+       )
         (hand Each)
     })
     (rules 
@@ -39,11 +39,11 @@
         (play 
             ("RollEachNewTurnMove" 
                 (or (forEach Piece top:True) (forEach Piece container:(mover) top:True))
-            )
-        )
+           )
+       )
         
         (end ("EscapeWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -61,7 +61,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Spain, around 1283.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)

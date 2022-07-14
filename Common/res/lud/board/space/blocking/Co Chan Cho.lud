@@ -4,7 +4,7 @@
         (board 
             (square 2 diagonals:Solid)
             use:Vertex
-        )
+       )
         (piece "Disc" Each
             (move Step 
                 (to 
@@ -16,9 +16,9 @@
                         }) 
                         (is Empty (to))
                     })
-                )
-            )
-        )
+               )
+           )
+       )
     })  
     
     (rules 
@@ -28,7 +28,7 @@
         })
         (play (forEach Piece))
         (end ("NoMoves" Loss))  
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -45,7 +45,7 @@
         (classification "board/space/blocking")
         (origin  "This game was played in Vietnam, from around 1940 to 1941.")
         }
-    )
+   )
     
     (graphics {
         (show Symbol "cross" Edge 0 fillColour:(colour Black) edgeColour:(colour Black) scale:0.2)

@@ -4,8 +4,8 @@
         (forEach
             (sites Occupied by:Next container:"Board") 
             if:(= 1 (size Stack at:(site)))
-        )
-    )
+       )
+   )
 )
 
 (define "IfLine3MoveAgain" 
@@ -13,8 +13,8 @@
         (if 
             (is Line 3 if:(= 1 (size Stack at:(to)))) 
             (moveAgain)
-        )
-    )
+       )
+   )
 )
 
 (define "RemoveDeadPieces" 
@@ -22,12 +22,12 @@
         (forEach 
             (sites Occupied by:#1 container:"Board")
             if:(= (size Stack at:(site)) 2)
-        )
+       )
         (and  
             (remove (site)) 
             (remove (site)) 
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -43,8 +43,8 @@
                 Step 
                 (to if:(is Empty (to))) 
                 "IfLine3MoveAgain" 
-            )
-        ) 
+           )
+       ) 
     })  
     
     (rules 
@@ -65,13 +65,13 @@
                                 (forEach
                                     (sites Occupied by:Next container:"Board") 
                                     if:(= 1 (size Stack at:(site)))
-                                )
+                               )
                                 (sites Empty)
-                            )
-                        )
+                           )
+                       )
                         copy:True
                         "IfLine3MoveAgain" 
-                    )
+                   )
                     (then 
                         (if 
                             (and (not (is Next Mover)) (is Full))	
@@ -80,24 +80,24 @@
                                 ("RemoveDeadPieces" P2)
                                 (set Pending)
                             })
-                        )		
-                    )
-                )
-            ) 
+                       )		
+                   )
+               )
+           ) 
             (nextPhase (is Pending) "Movement")
-        )
+       )
         
         (phase "Movement" 
             (play 
                 (if "SameTurn"
                     "RemoveEnemyPiece"
                     (forEach Piece)
-                )
-            )
+               )
+           )
             (end (if (no Pieces Next in:(sites Board)) (result Mover Win)))
-        )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -115,7 +115,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Malaysia, around 1959.")
         }
-    )
+   )
     
     (graphics {
         (stackType 1 Count)

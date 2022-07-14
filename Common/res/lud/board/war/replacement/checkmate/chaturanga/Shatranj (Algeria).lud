@@ -2,8 +2,8 @@
     (apply 
         (remove 
             (to) 
-        )
-    ) 
+       )
+   ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -13,8 +13,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-        )
-    )
+       )
+   )
 )
 
 (define "NextCanNotMove"
@@ -35,10 +35,10 @@
                 (then
                     (if (is In (last To) (sites Mover "Promotion")) 
                         (promote (last To) (piece (id "Ferz_noCross" Mover)))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (piece "Rook" Each 
             (move
@@ -47,9 +47,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "King_noCross" Each 
             (or
                 (move
@@ -57,20 +57,20 @@
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
-                    )
-                )
+                   )
+               )
                 (if (!= (value Player Mover) (mover))
                     (move
                         Leap 
                         "KnightWalk" 
                         (to 
                             if:(is Empty (to))
-                        )
+                       )
                         (then (set Value Mover (mover)))
-                    )
-                )
-            )	
-        )
+                   )
+               )
+           )	
+       )
         (piece "Elephant" Each 
             (move
                 Slide 
@@ -78,9 +78,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "Knight" Each 
             (move 
                 Leap 
@@ -88,18 +88,18 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "Ferz_noCross" Each 
             (move
                 Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     })  
@@ -119,11 +119,11 @@
                     (if (!= (next) (value Player Next))
                         (if ("IsInCheck" "King_noCross" Next)
                             (set Value Next (next))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         
         (end
             {
@@ -131,14 +131,14 @@
                 (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-                ) 
+               ) 
                 (result Mover Win)
-            ) 
+           ) 
             (if (= (count Pieces Next) 1) (result Mover Win)) 
             ("BlockWin")
             }
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -156,7 +156,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Algeria, around 1901.")
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)

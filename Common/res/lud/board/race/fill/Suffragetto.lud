@@ -34,7 +34,7 @@
     (move 	// standard move without capture
         (from (from) if:(is In (from) #1))
         (to (intersection {(sites Around (from)) (sites Empty) #2 }))
-    )
+   )
 )
 
 // #1 - region
@@ -51,13 +51,13 @@
     (and 
         ("MajorPieceHopCondition")
         (is In (between) (sites Around (from) Diagonal))
-    )
+   )
 )
 (define "MajorPieceHopCondition"
     (and
         ("IsEnemyAt" (between))
         (is In (between) (sites "The Arena"))
-    )
+   )
 )
 
 // #1 - from region
@@ -70,7 +70,7 @@
         (from
             #5
             if:(is In (from) #1)
-        )
+       )
         (between
             if:(not (is Empty (between)))
             (apply 
@@ -78,19 +78,19 @@
                     (if (= ("MinorPiece") (state at: (from)))
                         ("MinorPieceHopCondition")
                         ("MajorPieceHopCondition")
-                    )
+                   )
                     ("Capture" #3)
-                )
-            )
-        )
+               )
+           )
+       )
         (to
             if:(and (
                     (is Empty (to))
                     (is In (to) #2)
-            ))
-        )
+           ))
+       )
         #4
-    )
+   )
 )
 
 // #1 - Name of piece
@@ -106,7 +106,7 @@
             ("MoveHop" ("MiddleOfBoardPlusExtra" #4) ("MiddleOfBoardPlusExtra" #3) #5 (then (moveAgain)))
             ("MoveHop" (sites #3) (sites #3) #5)
         })	// end or
-    )	// end piece
+   )	// end piece
 )
 
 // #1 - Name of piece
@@ -131,7 +131,7 @@
     (and 
         (<= 1 ("NumberOfPiecesInRegionByState" "Prison" #1))
         (<= 1 ("NumberOfPiecesInRegionByState" "Hospital" #1))
-    )
+   )
 )
 
 // #1 - player
@@ -140,11 +140,11 @@
         (if ("CanPieceBeReleasedByState" "MajorPiece")
             ("PiecesInRegion" #1)
             ("PiecesInRegionByState" #1 "MinorPiece")
-        )
+       )
         (if ("CanPieceBeReleasedByState" "MajorPiece")
             ("PiecesInRegionByState" #1 "MajorPiece")
-        )
-    )
+       )
+   )
 )
 
 // #1 - player
@@ -152,14 +152,14 @@
 (define "ReleaseCandidatesByPlayerAndState"
     (if ("CanPieceBeReleasedByState" #2)
         ("PiecesInRegionByState" #1 #2)
-    )
+   )
 )
 
 (define "ReleaseCandidates"
     (if (= (id P1) (id Mover))
         ("ReleaseCandidatesByPlayer" "Prison")
         ("ReleaseCandidatesByPlayer" "Hospital")
-    )
+   )
 )
 
 // #1 - state
@@ -167,7 +167,7 @@
     (if (= (id P1) (id Mover))
         ("ReleaseCandidatesByPlayerAndState" "Prison" #1)
         ("ReleaseCandidatesByPlayerAndState" "Hospital" #1)
-    )
+   )
 )
 
 (define "ReleaseZone"
@@ -176,8 +176,8 @@
         (if (= (id P1) (id Mover))
             (sites "Prison Yard")
             (sites "Hospital Grounds")
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -192,29 +192,29 @@
             (difference
                 (expand (expand (sites {"E17"}) steps:8 E) steps:16 S)
                 (union (sites "House of Commons") (sites "Albert Hall"))
-            )
-        )
+           )
+       )
         (regions "The Free Zone" Shared
             (union {
                 (expand (sites { "P5" })steps:6 N)
                 (expand (sites { "B13" })steps:6 S)
                 (expand (sites { "C17" "D17" "N17" "O17" })steps:16 S)
             })
-        )	
+       )	
         (regions "Hospital Grounds" Shared (expand (sites {"P17"}) steps:5 S))			
         (regions "Prison Yard" Shared (expand (sites {"B1"}) steps:5 N))			
         (regions "Prison" Shared 
             (union
                 (expand (sites {"A1"}) steps:16 N)
                 (expand (sites {"B17"}) steps:3 S)
-            )
-        )			
+           )
+       )			
         (regions "Hospital" Shared 
             (union
                 (expand (sites {"Q1"}) steps:16 N)
                 (expand (sites {"P1"}) steps:3 N)
-            )
-        )
+           )
+       )
         ("PieceCore" "Suffragette" P1 "House of Commons" "Prison Yard" "Hospital")
         ("PieceCore" "Policeman" P2 "Albert Hall" "Hospital Grounds" "Prison")
         ("PieceCore" "Leader" P1 "House of Commons" "Prison Yard" "Hospital")
@@ -236,46 +236,46 @@
                                 (and
                                     (set Var "LastState" -2)
                                     (set Var "ReleaseCountdown" (- (var "ReleaseCountdown") 1))
-                                )
-                            )
-                        )
+                               )
+                           )
+                       )
                         (or
                             (move (from ("ReleaseCandidates")) (to ("ReleaseZone"))
                                 (then
                                     (and
                                         (set Var "LastState" (state at:(last To)))
                                         (set Var "ReleaseCountdown" (- (var "ReleaseCountdown") 1))
-                                    )
-                                )
-                            )
+                                   )
+                               )
+                           )
                             (move Pass
                                 (then
                                     (and
                                         (set Var "LastState" -2)
                                         (set Var "ReleaseCountdown" 0)
-                                    )
-                                )
-                            )
-                        )					
+                                   )
+                               )
+                           )
+                       )					
                         
-                    )
-                )
+                   )
+               )
                 (if (is Decided "Release")
                     (move (from ("ReleaseCandidates")) (to ("ReleaseZone"))
                         (then
                             (and
                                 (set Var "LastState" (state at:(last To)))
                                 (set Var "ReleaseCountdown" 11)
-                            )
-                        )
-                    )
-                )				
+                           )
+                       )
+                   )
+               )				
                 (if (is Proposed "Release")
                     (or
                         (move Vote "Release")
                         (move Vote "No")
-                    )
-                )				
+                   )
+               )				
                 (if "SameTurn"
                     (or
                         (if (= (id P1) (id Mover))
@@ -285,17 +285,17 @@
                                 "Hospital"
                                 (then (moveAgain))
                                 (last To)
-                            )
+                           )
                             ("MoveHop"
                                 ("MiddleOfBoardPlusExtra" "Hospital Grounds")
                                 ("MiddleOfBoardPlusExtra" "Albert Hall")
                                 "Prison"
                                 (then (moveAgain))
                                 (last To)
-                            )
-                        )
+                           )
+                       )
                         (move Pass)
-                    )
+                   )
                     (or
                         (if ("IsExchangePossible")
                             (move
@@ -304,20 +304,20 @@
                                     (do
                                         (note "Release prisoners?" to:Next)
                                         next:(vote "Release")
-                                    )
-                                )
-                            )
-                        )
+                                   )
+                               )
+                           )
+                       )
                         (forEach Piece)
-                    )
-                )
+                   )
+               )
             })
-        )
+       )
         (end {
             (if (= 6 (count Pieces P1 in:(sites "House of Commons"))) (result P1 Win))
             (if (= 6 (count Pieces P2 in:(sites "Albert Hall"))) (result P2 Win))
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------

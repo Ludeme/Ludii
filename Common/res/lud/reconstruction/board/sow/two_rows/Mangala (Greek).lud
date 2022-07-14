@@ -4,7 +4,7 @@
     (equipment { 
         (mancalaBoard 2 [3..40] store:None
             (track "Track" "1,E,N,W" loop:True)
-        )
+       )
         (piece "Seed" Shared)
         (hand Each)
     })  
@@ -13,7 +13,7 @@
         (start (set Count [2..16] to:(sites Board)))
         (play [#])
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -30,7 +30,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Greece, from around 1748 to 1801.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

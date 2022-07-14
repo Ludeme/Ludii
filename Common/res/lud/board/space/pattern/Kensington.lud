@@ -10,35 +10,35 @@
     (= 
         6 
         (count Sites in:"AllVerticesOfCell")
-    )
+   )
 )
 
 (define "SquareFilled"
     (= 
         4 
         (count Sites in:"AllVerticesOfCell")
-    )
+   )
 )
 
 (define "CellFilled"
     (= 
         (count Sites in:(intersection "AllVerticesOfCell" (sites Occupied by:Mover))) 
         (count Sites in:"AllVerticesOfCell")
-    )
+   )
 )
 
 (define "MoveAnEnemyPiece"
     (move 
         (from (sites Occupied by:Next container:"Board")) 
         (to (sites Empty) (apply if:"OneMoreToMove" (moveAgain))) 
-    )
+   )
 )
 
 (define "PlaceAPiece"
     (move 
         (from (handSite Mover)) 
         (to (sites Empty))
-    )
+   )
 )
 
 (define "AllCellOfLastVertex"
@@ -93,22 +93,22 @@
                                             (= "AllVerticesOfCell" (sites "HexNeutral3"))
                                         }) 
                                         "NextPlayerLose"
-                                    )
+                                   )
                                     (and 
                                         (if "SquareFilled"
                                             "TwoPieceToMove" 
-                                        )
+                                       )
                                         (moveAgain)
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        ) 
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       ) 
         (end (if "NextPlayerHasLost" (result Mover Win)))  
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -130,7 +130,7 @@
         (credit "Eric Piette")
         (date "1979")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Red))
@@ -146,6 +146,6 @@
     
     (ai 
         "Kensington_ai"
-    )
+   )
     
 )

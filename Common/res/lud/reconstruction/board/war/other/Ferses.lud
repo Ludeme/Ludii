@@ -5,7 +5,7 @@
         (start [#])
         (play [#]) // Pieces move forward one space diagonally. Pieces may be promoted. 
         (end (if (no Pieces Next) (result Mover Win))) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -22,6 +22,6 @@
         (version "1.3.4")
         (classification "board/war/reconstruction")
         }
-    )
+   )
     
 )

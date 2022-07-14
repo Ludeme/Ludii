@@ -5,8 +5,8 @@
         (or
             (all Sites (sites P1) if:(or (!= 0 (state at:(site))) (is Empty (site))))
             (all Sites (sites P2) if:(or (!= 0 (state at:(site))) (is Empty (site))))
-        )
-    )
+       )
+   )
 )
 
 (define "PiecesOwnedBy" (count Cell at:(handSite #1)))
@@ -19,7 +19,7 @@
     (equipment { 
         (mancalaBoard 2 <Board:size> store:None
             (track "Track" <Board:track> loop:True)
-        )
+       )
         (piece "Seed" Shared)
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
@@ -38,13 +38,13 @@
                             (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 (sites Mover) 
-                            )
-                        )
+                           )
+                       )
                         if:(and 
                             (is Occupied (from)) 
                             (= 0 (state at:(from)))
-                        )
-                    )
+                       )
+                   )
                     (then
                         (sow
                             apply:(if (< 1 (count at:(to)))
@@ -52,8 +52,8 @@
                                     (and
                                         (moveAgain)
                                         (set Var "Replay" (to))
-                                    )
-                                )
+                                   )
+                               )
                                 (if (is In (to) (sites Mover))
                                     (if (!= 3 (count at:("OppositePitTwoRows" (to))))
                                         (if (!= 0 (count at:("OppositePitTwoRows" (to))))
@@ -61,23 +61,23 @@
                                                 (from ("OppositePitTwoRows" (to)))
                                                 (to (handSite Mover))
                                                 count:(count at:("OppositePitTwoRows" (to)))
-                                            )
-                                        )
+                                           )
+                                       )
                                         (and {
                                             (fromTo
                                                 (from ("OppositePitTwoRows" (to)))
                                                 (to (to))
                                                 count:1
-                                            )
+                                           )
                                             (set State at:(to) (mover))
                                             (set State at:("OppositePitTwoRows" (to)) (mover))
                                         })
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
                 }
                 (then
                     (if ("APlayerCanNotMove")
@@ -89,9 +89,9 @@
                                         (from (site))
                                         (to (handSite P1))
                                         count:(count at:(site))
-                                    )
-                                )
-                            )
+                                   )
+                               )
+                           )
                             (forEach Site 
                                 (sites P2)
                                 (if (= 0 (state at:(site)))
@@ -99,9 +99,9 @@
                                         (from (site))
                                         (to (handSite P2))
                                         count:(count at:(site))
-                                    )
-                                )
-                            )
+                                   )
+                               )
+                           )
                             (forEach Site 
                                 (sites Board)
                                 (if (= (state at:(site)) P1)
@@ -109,24 +109,24 @@
                                         (from (site))
                                         (to (handSite P1))
                                         count:(count at:(site))
-                                    )
+                                   )
                                     (if (= (state at:(site)) P2)
                                         (fromTo
                                             (from (site))
                                             (to (handSite P2))
                                             count:(count at:(site))
-                                        )
-                                    )
-                                )
-                            )
+                                       )
+                                   )
+                               )
+                           )
                         })
-                    )
-                )
-            )
-        )	
+                   )
+               )
+           )
+       )	
         
         (end ("MancalaByScoreWhen" ("NoPieceOnBoard")))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -152,7 +152,7 @@
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

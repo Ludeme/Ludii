@@ -2,7 +2,7 @@
     (and 
         ("IsEnemyAt" (between)) 
         (not (= (centrePoint) (between)))
-    )
+   )
 )
 
 (define "FlankFromOrthogonalStep"
@@ -25,11 +25,11 @@
                     (and 
                         (set Pending) 
                         (moveAgain) 
-                    )
-                )
-            ) 
-        )
-    )
+                   )
+               )
+           ) 
+       )
+   )
 )
 
 (define "Custodial"
@@ -40,9 +40,9 @@
             (max 1) 
             if:"EnemyOutsideCentre"
             #2
-        )
+       )
         (to if:("IsFriendAt" (to)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -60,9 +60,9 @@
                 (to if:(is Empty (to)))
                 (then
                     ("Custodial" (from (last To)) "CaptureAndMoveAgain")
-                )
-            )
-        )
+               )
+           )
+       )
     }) 
     
     (rules 
@@ -79,13 +79,13 @@
                             (if 
                                 (or (= (count Moves) 24) (not "SameTurn"))
                                 (moveAgain)
-                            )
-                        )
-                    ) 
-                )
-            ) 
+                           )
+                       )
+                   ) 
+               )
+           ) 
             (nextPhase (= (count Moves) 25) "Movement")
-        )
+       )
         (phase "Movement" 
             (play 
                 (if "SameTurn"
@@ -101,23 +101,23 @@
                                     (and ("IsEnemyAt" (ahead (to) N)) ("IsFriendAt" (ahead (ahead (to) N) N)))  
                                     (and ("IsEnemyAt" (ahead (to) S)) ("IsFriendAt" (ahead (ahead (to) S) S)))  
                                 }) 
-                            )
-                        )
+                           )
+                       )
                         (then
                             ("Custodial" (from (last To)) "CaptureAndMoveAgain")
-                        )
-                    )
+                       )
+                   )
                     (do
                         (forEach Piece) 
                         ifAfterwards:(not (no Moves Next))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         }
         
         (end (if (no Pieces Next) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -136,7 +136,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Somaliland, around 1931.")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
@@ -145,5 +145,5 @@
     })
     (ai
         "Shantarad_ai"
-    )
+   )
 )

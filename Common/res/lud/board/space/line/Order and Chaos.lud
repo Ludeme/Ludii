@@ -16,13 +16,13 @@
                 (from (sites Hand Shared)) 
                 (to (sites Empty))
                 copy:True
-            )
-        )
+           )
+       )
         (end {
             (if (is Line 5) (result P1 Win))
             (if (no Moves Next) (result P2 Win))
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -42,7 +42,7 @@
         (credit "Nicholas Bamber")
         (date "1981")
         }
-    )
+   )
     
     (graphics {
         (player Name P1 "Order")
@@ -54,5 +54,5 @@
     
     (ai
         "Order and Chaos_ai"
-    )
+   )
 )

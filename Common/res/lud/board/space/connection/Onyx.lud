@@ -3,24 +3,24 @@
         if:(and
             (= 4 
                 (count Sites in:(sites Around (site)))
-            )
+           )
             (not (is In (site) (sites Outer)))
-        )
-    )		
+       )
+   )		
 )
 
 (define "AllCornersSquareEmpty" 
     (all Sites
         (sites Around (site))
         if:(is Empty (site))
-    )
+   )
 )
 
 (define "AllCornersSquareOccupied" 
     (all Sites
         (sites Around (site))
         if:(is Occupied (site))
-    )
+   )
 )
 
 (define "NumEnemyCorners" 
@@ -28,8 +28,8 @@
         in:(forEach 
             (sites Around (site)) 
             if:("IsEnemyAt" (site))
-        )
-    )
+       )
+   )
 )
 
 (define "NumEnemyOppositeCorners" 
@@ -39,9 +39,9 @@
             if:(and 
                 (is In (site) (sites Around (last To))) 
                 ("IsEnemyAt" (site))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -53,9 +53,9 @@
             (keep
                 (rotate -45 (subdivide (tiling T33434 7 7) min:4))
                 (poly {{-6.5 1.75} {-6.5 12.75} {4.5 12.75} {4.5 1.75}}) 
-            ) 
+           ) 
             use:Vertex
-        ) 
+       ) 
         (piece "Disc" Each) 
         (regions P1 {(sites Side W) (sites Side E) })
         (regions P2 {(sites Side N) (sites Side S) })
@@ -70,8 +70,8 @@
                 (to
                     (forEach (sites Empty) 
                         if:(if (is In (site) ("MidpointSquares")) ("AllCornersSquareEmpty") True)
-                    )
-                )
+                   )
+               )
                 (then
                     (forEach Site ("MidpointSquares")
                         (if (and { 
@@ -85,15 +85,15 @@
                                 (forEach 
                                     (sites Around (site)) 
                                     if:("IsEnemyAt" (site))
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         (end (if (is Connected Mover) (result Mover Win))) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -122,7 +122,7 @@
         (credit "Eric Piette")
         (date "1995")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Black))

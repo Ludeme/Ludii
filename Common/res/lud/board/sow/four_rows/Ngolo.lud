@@ -15,7 +15,7 @@
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" "18,E,N1,W" loop:True P2)
             }
-        )
+       )
         (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
         (regions "Home" P2 (sites Track "Track2"))                              // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
@@ -26,7 +26,7 @@
         
         (start 
             (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home")))
-        )
+       )
         
         (play 
             (or 
@@ -35,7 +35,7 @@
                     (from 
                         (sites Mover "Home") 
                         if:(< 0 (count at:(from)))
-                    )
+                   )
                     (then 
                         (sow
                             "Track"
@@ -50,36 +50,36 @@
                                         (from ("OppositeOuterPit" (to))) 
                                         (to (to)) 
                                         count:(count at:("OppositeOuterPit" (to)))
-                                    )
+                                   )
                                     (fromTo 
                                         (from ("OppositePit" (to))) 
                                         (to (to)) 
                                         count:(count at:("OppositePit" (to)))
-                                    )
+                                   )
                                     (sow 
                                         (to)
                                         count:(+ (count at:("OppositePit" (to))) (count at:("OppositeOuterPit" (to))))
                                         "Track"
                                         owner:(mover)
-                                    )
+                                   )
                                     }
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (end {
             (if ("NoPieceNext")
                 (result Mover Win)
-            )
+           )
             (if (was Pass)
                 (result Next Win)
-            )
+           )
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -97,7 +97,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Democratic Republic of Congo, around 1971.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -105,6 +105,6 @@
     
     (ai
         "Ngolo_ai"
-    )
+   )
 )
 

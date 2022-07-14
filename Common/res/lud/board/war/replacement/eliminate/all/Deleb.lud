@@ -7,7 +7,7 @@
     (trackSite Move 
         from:#1 
         steps:#2
-    )
+   )
 )
 
 (define "Remember" 
@@ -18,9 +18,9 @@
             (if (is Mover P3)
                 (remember Value "ScoreP3" #1)
                 (remember Value "ScoreP4" #1)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "Forget" 
@@ -31,9 +31,9 @@
             (if (is Mover P3)
                 (forget Value "ScoreP3" #1)
                 (forget Value "ScoreP4" #1)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "ForgetAll" 
@@ -44,9 +44,9 @@
             (if (is Mover P3)
                 (forget Value "ScoreP3" All)
                 (forget Value "ScoreP4" All)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "RememberedValues" 
@@ -57,9 +57,9 @@
             (if (is Mover P3)
                 (values Remembered "ScoreP3")
                 (values Remembered "ScoreP4")
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "MoveWithScore"
@@ -69,8 +69,8 @@
                 if:(or 
                     (= (value) 1)
                     ("ActivatedPiece" (from))
-                )
-            )
+               )
+           )
             (to 
                 ("NextSiteFrom" (from) (value))	
                 if:(and
@@ -81,26 +81,26 @@
                             (count Sites in:(intersection 
                                     (sites Occupied by:Enemy) 
                                 (sites Track Mover from:("NextSiteFrom" (from) 1) to:("NextSiteFrom" (from) (- (value) 1))))
-                            )
-                        )
-                    )
-                )
+                           )
+                       )
+                   )
+               )
                 (apply
                     (and
                         ("Forget" (value))		
                         (if ("IsEnemyAt" (to))
                             (remove (to))
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (then
                 (if (not ("ActivatedPiece" (last To)))
                     ("ActivePiece" (last To))
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 (define "Move"
@@ -109,8 +109,8 @@
             if:(or 
                 (= ("ThrowValue") 1)
                 ("ActivatedPiece" (from))
-            )
-        )
+           )
+       )
         (to 
             ("NextSiteFrom" (from) ("ThrowValue"))	
             if:(and
@@ -121,29 +121,29 @@
                         (count Sites in:(intersection 
                                 (sites Occupied by:Enemy) 
                             (sites Track Mover from:("NextSiteFrom" (from) 1) to:("NextSiteFrom" (from) (- ("ThrowValue") 1))))
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (apply
                 (if ("IsEnemyAt" (to))
                     (remove (to))
-                )
-            )
-        )
+               )
+           )
+       )
         (then
             (if (not ("ActivatedPiece" (last To)))
                 ("ActivePiece" (last To))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "PlayRulesPlayingScore" 
     (if (or (is Mover P1) (is Mover P3)) 
         (forEach Piece ("MoveWithScore") P1) 
         (forEach Piece ("MoveWithScore") P2)
-    )
+   )
 )
 
 (define "ActivatedPiece" 
@@ -163,7 +163,7 @@
             (rectangle 4 <Board:size>)
             <Board:tracks>
             use:Vertex
-        )
+       )
         (dice d:2 from:0 num:4)
         (piece "Marker" P1 ("Move"))
         (piece "Marker" P2 ("Move"))
@@ -186,17 +186,17 @@
                         (if (or 
                                 (= ("ThrowValue") 6)
                                 (= ("ThrowValue") 4)
-                            )
+                           )
                             (moveAgain)
                             (if (= ("ThrowValue") 1)
                                 ("Remember" 1)
-                            )
-                        )
-                    )
-                )
-            )
+                           )
+                       )
+                   )
+               )
+           )
             (nextPhase Mover (= ("ThrowValue") 1) "StageTwo")
-        )
+       )
         
         (phase "StageTwo" 
             (play 
@@ -206,23 +206,23 @@
                         (if (or 
                                 (= 0 ("ThrowThreeDice"))
                                 (= 1 ("ThrowThreeDice"))
-                            )
+                           )
                             (and
                                 (moveAgain)
                                 ("Remember" 1)
-                            )
+                           )
                             (if (= 3 ("ThrowThreeDice"))
                                 (and
                                     (moveAgain)
                                     ("Remember" 4)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             (nextPhase Mover (= ("ThrowThreeDice") 2) "StageThree")
-        )
+       )
         
         (phase "StageThree" 
             (play 
@@ -237,18 +237,18 @@
                                 (and
                                     (moveAgain)
                                     ("Remember" 4)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             {
             (nextPhase Mover (= 0 ("ThrowTwoDice")) "StageOne")
             (nextPhase Mover (= 2 ("ThrowTwoDice")) "StageTwo")
             (nextPhase Mover (= 1 ("ThrowTwoDice")) "PlayingScore")
             }
-        )
+       )
         
         (phase "PlayingScore" 
             (play 
@@ -258,12 +258,12 @@
                     (then 
                         (if (!= 0 (size Array ("RememberedValues"))) 
                             (moveAgain)
-                        )
-                    )
-                )
-            )	
+                       )
+                   )
+               )
+           )	
             (nextPhase Mover (= 0 (size Array ("RememberedValues"))) "Playing")	
-        )
+       )
         
         (phase "Playing" 
             (play 
@@ -272,21 +272,21 @@
                         (if (or (is Mover P1) (is Mover P3)) 
                             (forEach Piece P1) 
                             (forEach Piece P2)
-                        )
+                       )
                         (move Pass)
-                    )
+                   )
                     (then
                         (if (and (!= 2 ("ThrowValue")) (!= 3 ("ThrowValue")))
                             (moveAgain)
-                        )
-                    )
-                )
-            )		
-        )
+                       )
+                   )
+               )
+           )		
+       )
         
         }
         (end (if (no Pieces Enemy) (result TeamMover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -466,7 +466,7 @@
         variations:{"Board Size/10" "Board Size/30" "Board Size/40" "Board Size/50"
         "Board Size/60" "Board Size/70" "Board Size/80" "Board Size/90" "Board Size/100"
         }
-    )*
+   )*
     
 })
 
@@ -486,7 +486,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Somalia, around 1931.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)

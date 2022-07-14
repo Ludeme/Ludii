@@ -5,8 +5,8 @@
         (or
             (all Sites (sites P1) if:(or (!= 0 (state at:(site))) (is Empty (site))))
             (all Sites (sites P2) if:(or (!= 0 (state at:(site))) (is Empty (site))))
-        )
-    )
+       )
+   )
 )
 
 (define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
@@ -19,7 +19,7 @@
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
             (track "Track" "5,W,N,E" loop:True)
-        )
+       )
         (piece "Seed" Shared)
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
@@ -38,9 +38,9 @@
                             (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 (sites Mover) 
-                            )
+                           )
                             if:(and (is Occupied (from)) (= 0 (state at:(from))))
-                        )
+                       )
                         (then
                             (sow
                                 apply:(if (!= 0 (state at:(to)))
@@ -50,29 +50,29 @@
                                                 (from (to))
                                                 (to (handSite Mover))
                                                 count:(min 2 (count at:(to)))
-                                            )
+                                           )
                                             (set State at:(to) (next))
-                                        )
-                                    )
+                                       )
+                                   )
                                     (if (and 
                                             (is In (to) (sites Next))
                                             (= 4 (count at:(to)))
-                                        )
+                                       )
                                         (and
                                             (set State at:(to) (mover))
                                             (set State at:("OppositePitTwoRows" (to)) (mover))
-                                        )
+                                       )
                                         (if (< 1 (count at:(to)))
                                             (and
                                                 (moveAgain)
                                                 (set Var "Replay" (to))
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                           )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
                     }
                     (then
                         (if ("APlayerCanNotMove")
@@ -84,9 +84,9 @@
                                             (from (site))
                                             (to (handSite P1))
                                             count:(count at:(site))
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                                 (forEach Site 
                                     (sites P2)
                                     (if (= 0 (state at:(site)))
@@ -94,9 +94,9 @@
                                             (from (site))
                                             (to (handSite P2))
                                             count:(count at:(site))
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                                 (forEach Site 
                                     (sites Board)
                                     (if (= (state at:(site)) P1)
@@ -105,38 +105,38 @@
                                                 (from (site))
                                                 (to (handSite P1))
                                                 count:(count at:(site))
-                                            )
+                                           )
                                             (set State at:(site) 0)
-                                        )
+                                       )
                                         (if (= (state at:(site)) P2)
                                             (and
                                                 (fromTo
                                                     (from (site))
                                                     (to (handSite P2))
                                                     count:(count at:(site))
-                                                )
+                                               )
                                                 (set State at:(site) 0)
-                                            )
-                                        )
-                                    )
-                                )
+                                           )
+                                       )
+                                   )
+                               )
                             })
-                        )
-                    )
-                )
-            )	
+                       )
+                   )
+               )
+           )	
             
             (end (if ("NoPieceOnBoard")
                     {
                     (if (> 3 (count Cell at:(handSite P1))) (result P2 Win))
                     (if (> 3 (count Cell at:(handSite P2))) (result P1 Win))
                     }
-                )
-            )
+               )
+           )
             
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
             
-        )
+       )
         
         (phase "BetweenRounds"
             (play
@@ -151,41 +151,41 @@
                                     (from (handSite Mover))
                                     (to (handSite Next))
                                     count:1
-                                )
+                               )
                                 (if (= 2 (count Cell at:(handSite Mover)))
                                     (fromTo
                                         (from (handSite Next))
                                         (to (handSite Mover))
                                         count:2
-                                    )
+                                   )
                                     (if (= 3 (count Cell at:(handSite Mover)))
                                         (fromTo
                                             (from (handSite Next))
                                             (to (handSite Mover))
                                             count:1
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             (nextPhase 
                 (and
                     (= 
                         (count Sites in:(forEach (sites P1) if:(is Occupied (site)))) 
                         (count Sites in:(forEach (sites P2) if:(is Occupied (site))))
-                    )
+                   )
                     (or
                         (is Empty (handSite P1))
                         (is Empty (handSite P2))
-                    )
-                )		
+                   )
+               )		
             "Sowing")
-        )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -203,7 +203,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Horn of Africa, around 1971.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

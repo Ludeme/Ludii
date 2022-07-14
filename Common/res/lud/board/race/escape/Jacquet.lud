@@ -16,9 +16,9 @@
             (difference 
                 (sites Board) 
                 "StartPos"
-            )
+           )
             if:(!= (who at:(site)) (mover))
-        )
+       )
         (is Occupied ("Bar" (mover)))
         (< (size Stack at:("StartPos")) 14)
         (not (all Sites (sites Mover "OppositeQuadrant") if:(!= (who at:(site)) (mover))))
@@ -37,7 +37,7 @@
         ("BackgammonBoard" "BackgammonTracksSameDirectionOppositeCornersWithBars") 
         (dice num:2)
         (piece "Disc" Each) 
-        (map {(pair 1 6 ) (pair 2 19)}) // Bar
+        (map {(pair 1 6) (pair 2 19)}) // Bar
         (regions "Home" P1 { 13..18 }) // P1 Home (first quadrant)
         (regions "Home" P2 { 12..7 }) // P2 Home (first quadrant)
         (regions "OppositeQuadrant" P1 { 0..5 }) // Opposite Quadrant of P1
@@ -62,28 +62,28 @@
                             (if (if (!= (site) "StartPos")
                                     True
                                     ("PieceInOpponentQuadrantOrNoPieceInTheBoard")
-                                )
+                               )
                                 (move 
                                     (from (site))
                                     (to ("NextSiteFrom" (site))
                                         if:("NoEnemyOrOnlyOne" (to))
                                         ("HittingCapture" ("Bar" (next))) 
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                   )
+                               )
+                           )
+                       )
+                   )
                     (then ("ReplayNotAllDiceUsed"))
-                )
-            )
-        )
+               )
+           )
+       )
         
         (end 
             (if ("AllPieceEscaped")
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //-------------------------------------------------------------------------
@@ -101,7 +101,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in France, around 1840.")
         }
-    )
+   )
     
     (graphics {
         (board Style backgammon)

@@ -7,11 +7,11 @@
         (forEach Site 
             (sites Occupied by:#1)
             (if
-                (> 3 (count Pieces #1 in:(sites Around (site) "GridDirection" )))
+                (> 3 (count Pieces #1 in:(sites Around (site) "GridDirection")))
                 (set State at:(site) 0)
                 (set State at:(site) 1)
-            )
-        )
+           )
+       )
         next:(do
             (and
                 {
@@ -23,9 +23,9 @@
                         (no Pieces in:(intersection (sites) (sites State 1))) 
                         (remember Value 
                             (count Sites in:(sites))
-                )))
+               )))
                 }
-            )
+           )
             next:(set Var "TopValue" (max (values Remembered))
                 (then
                     (forget Value (max (values Remembered)) 
@@ -33,7 +33,7 @@
                             (set Score #1 (* (var "TopValue") (max (values Remembered)))
                                 (then
                                     (forget Value All)       
-        )))))))
+       )))))))
 ))
 
 (define "AddOrPass"
@@ -43,9 +43,9 @@
             (piece (id "Disc" Mover))
             (to (sites Empty)
                 if:(> 3 (count Pieces Mover in:(sites Around (to) "GridDirection"))) 
-            ) 
+           ) 
             (then (set Var "Added" 1))
-        )
+       )
         (move Pass) // without this there are obscure forced moves...
         }
 ))
@@ -60,7 +60,7 @@
         (board <BoardShape:gridType> use:Vertex)
         (piece "Disc" Each)
         }
-    )
+   )
     (rules
         (play
             (if
@@ -73,14 +73,14 @@
                             (< 2 (count Pieces Mover in:(sites Around (from) "GridDirection"))) 
                             (move Remove (from)
                                 (then (set Var "Added" 0))
-                        ))
+                       ))
                         Mover
-                    )
+                   )
                     }
-                )
+               )
                 "AddOrPass"
                 (then ("Score4" Mover))
-        ))
+       ))
         (end 
             (if
                 (all Passed)
@@ -88,7 +88,7 @@
                 (if
                     (>= (score Mover) (score Next))
                     (result Mover Win)
-                )
+               )
                 }
                 (result Next Win)
 ))))
@@ -139,7 +139,7 @@
         (credit "Dale W. Walton")
         (date "06-04-2022")
         }
-    )
+   )
     (graphics 
         {
         (player Colour P1 (colour 229 92 0))
@@ -152,6 +152,6 @@
         (piece Foreground "Disc" state:1 image:"square.svg" fillColour:(colour 0 0 0 50) scale:0.4)
         //    (show Piece State)
         }
-    )
+   )
     (ai (heuristics (score weight:2)))
 )

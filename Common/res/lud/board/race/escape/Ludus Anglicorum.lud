@@ -11,16 +11,16 @@
         (and 
             ("IsEnemyAt" (to)) 
             ("IsSingletonStack" (to))
-        ) 
+       ) 
         (and
             (if 
                 (not (is In (to) (sites Mover))) 
                 True
                 (is Empty (to))
-            )
+           )
             (not ("IsEnemyAt" (to)))
-        )
-    )
+       )
+   )
 )
 
 (define "AllPieceEscaped" (no Pieces Mover))
@@ -37,9 +37,9 @@
             (track "Track1" {6 0..5 7..12 25..20 18..12} P1 directed:True)
             (track "Track2" {19 12..18 20..25 12..7 5..0} P2 directed:True)
             } 
-        ) 
+       ) 
         (dice num:3)
-        (map {(pair 1 19 ) (pair 2 6)}) // Bar
+        (map {(pair 1 19) (pair 2 6)}) // Bar
         (piece "Disc" Each) 
         (regions P1 { 0..5 }) // P1 Home
         (regions P2 { 13..18 })  // P2 Home
@@ -64,21 +64,21 @@
                                 (to ("NextSiteFrom" (site))
                                     if:("NotEnemyOrOnlyOne")
                                     ("HittingCapture" ("Bar"))
-                                )
-                            )
-                        )
-                    )
+                               )
+                           )
+                       )
+                   )
                     (then ("ReplayNotAllDiceUsed"))
-                )
-            )
-        )
+               )
+           )
+       )
         
         (end 
             (if ("AllPieceEscaped")
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -137,7 +137,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in England, around 1300.")
         }
-    )
+   )
     
     (graphics {
         (board Style backgammon)

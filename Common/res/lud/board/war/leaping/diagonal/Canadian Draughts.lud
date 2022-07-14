@@ -7,12 +7,12 @@
             if:(and 
                 (not (is In (between) (sites ToClear))) 
                 ("IsEnemyAt" (between))
-            )
+           )
             (apply (remove (between) at:EndOfTurn))
-        ) 
+       ) 
         (to if:(is Empty (to))) 
         #2
-    ) 
+   ) 
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -29,13 +29,13 @@
                             (moveAgain)
                             (if "JumpToPromotionZone" 
                                 (move Promote (last To) (piece "DoubleCounter") Mover)
-                            )
-                        ) 
-                    ) 
-                )
-            )
+                           )
+                       ) 
+                   ) 
+               )
+           )
             (max Moves ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn))
-        )
+       )
         (priority {
             (max Moves
                 (or 
@@ -46,31 +46,31 @@
                                     (moveAgain) 
                                     (if "JumpToPromotionZone" 
                                         (move Promote (last To) (piece "DoubleCounter") Mover)
-                                    )
-                                ) 
-                            ) 
-                        ) 
-                    )
+                                   )
+                               ) 
+                           ) 
+                       ) 
+                   )
                     (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))
-                )
-            )
+               )
+           )
             (or  
                 (forEach Piece "Counter" 
                     (move 
                         Step 
                         (directions {FR FL}) 
                         (to if:(is Empty (to)))
-                    )
+                   )
                     (then 
                         (if "JumpToPromotionZone"
                             (move Promote (last To) (piece "DoubleCounter") Mover)
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (forEach Piece "DoubleCounter" (move Slide Diagonal))
-            )
+           )
         })
-    )
+   )
 )
 
 (define "MovesWithCapture"
@@ -83,13 +83,13 @@
                             (moveAgain)
                             (if "JumpToPromotionZone" 
                                 (move Promote (last To) (piece "DoubleCounter") Mover)
-                            )
-                        ) 
-                    ) 
-                )
-            )
+                           )
+                       ) 
+                   ) 
+               )
+           )
             (max Moves ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn))
-        )
+       )
         (max Moves
             (or 
                 (forEach Piece "Counter"
@@ -99,15 +99,15 @@
                                 (moveAgain) 
                                 (if "JumpToPromotionZone" 
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
-                                )
-                            ) 
-                        ) 
-                    ) 
-                )
+                               )
+                           ) 
+                       ) 
+                   ) 
+               )
                 (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "PlayRulesHuff"
@@ -119,13 +119,13 @@
                         (moveAgain)
                         (if "JumpToPromotionZone" 
                             (move Promote (last To) (piece "DoubleCounter") Mover)
-                        )
-                    ) 
-                ) 
-            )
+                       )
+                   ) 
+               ) 
+           )
             ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn)
             (then ("HasCaptured"))
-        )
+       )
         (or {
             (or 
                 (forEach Piece "Counter"
@@ -136,34 +136,34 @@
                                     (moveAgain) 
                                     (if "JumpToPromotionZone" 
                                         (move Promote (last To) (piece "DoubleCounter") Mover)
-                                    )
-                                )
+                                   )
+                               )
                                 ("HasCaptured")
-                            )
-                        ) 
-                    ) 
-                )
+                           )
+                       ) 
+                   ) 
+               )
                 (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))
                 (then ("HasCaptured"))
-            )
+           )
             (forEach Piece "Counter" 
                 (move 
                     Step 
                     (directions {FR FL}) 
                     (to if:(is Empty (to)))
-                )
+               )
                 (then 
                     (and
                         (if "JumpToPromotionZone"
                             (move Promote (last To) (piece "DoubleCounter") Mover)
-                        )
+                       )
                         ("HasNotCaptured")
-                    )
-                )
-            )
+                   )
+               )
+           )
             (forEach Piece "DoubleCounter" (move Slide Diagonal (then ("HasNotCaptured"))))
         })
-    )
+   )
 )
 
 (define "HasCaptured"  (set Value Mover 0))
@@ -173,8 +173,8 @@
     (set Pending 
         (sites From
             ("MovesWithCapture")
-        )
-    )
+       )
+   )
 )
 
 (define "SitesWithPossibleCaptureInPreviousTurn" (sites Pending))
@@ -184,22 +184,22 @@
         Select 
         (from #1
             if:(!= (what at:(from)) 0)
-        )
+       )
         (then 
             (and  {
                 (remove (last To)) 
                 (moveAgain) 
                 (set Value Prev 0)
             })
-        )
-    )
+       )
+   )
 )
 
 (define "ShouldCapturedButMoved" 
     (and 
         (is In (last From) ("SitesWithPossibleCaptureInPreviousTurn"))  
         (is In (last From) (sites Empty))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -217,16 +217,16 @@
     
     (rules 
         (start { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:4) (sites Phase 1)  ))
+            (place "Counter1" (difference (expand (sites Bottom) steps:4) (sites Phase 1) ))
             (place "Counter2" (difference (expand (sites Top) steps:4) (sites Phase 1)))
         })
         
         (play 
             <Rules:rule>
-        )
+       )
         
         (end ("BlockWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -241,15 +241,15 @@
                 (or
                     (if ("ShouldCapturedButMoved") 
                         ("HuffOnePieceOf" (last To))
-                    )
+                   )
                     ("HuffOnePieceOf" ("SitesWithPossibleCaptureInPreviousTurn"))
-                )
-            )
+               )
+           )
             (do 
                 ("RememberSiteWithPossibleCapture") 
                 next:("PlayRulesHuff")
-            )
-        )
+           )
+       )
     >  "The rules are the standard ones.")**   
     }
 )
@@ -289,7 +289,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Canada, around 1875.")
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)
@@ -298,6 +298,6 @@
     
     (ai 
         "Canadian Draughts_ai"
-    )
+   )
     
 )

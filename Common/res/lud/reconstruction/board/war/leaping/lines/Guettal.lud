@@ -9,9 +9,9 @@
                     Step 
                     (directions {Rightward Leftward Forwards} of:All) 
                     (to if:(is Empty (to)))
-                )
+               )
             })		
-        )
+       )
     })
     (rules      
         (start { 
@@ -20,7 +20,7 @@
         })
         (play (forEach Piece))
         (end ("BlockWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -38,6 +38,6 @@
         (credit "Eric Piette")
         (origin  "This game was played in Algeria, around 1921.")
         }
-    )
+   )
     
 )

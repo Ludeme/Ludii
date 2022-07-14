@@ -6,8 +6,8 @@
             (or
                 "StepDiagonalToEmpty"
                 "HopDiagonalCapture"
-            )
-        )
+           )
+       )
         (piece "Hen" P2 N ("StepToEmpty" (directions {FR FL})))
         (hand P1)
     })  
@@ -21,13 +21,13 @@
         (phase "Placement" P1
             (play (move (from (handSite Mover)) (to (difference (sites Empty) (sites Phase 0)))))
             (nextPhase "Movement")
-        )
+       )
         
         (phase "Movement" (play (forEach Piece)))
         }
         
         (end ("NoMovesP1NoPiecesP2")) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -45,7 +45,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in France, around 1668.")
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)
@@ -54,5 +54,5 @@
     
     (ai
         "Jeu de Renard_ai"
-    )
+   )
 )

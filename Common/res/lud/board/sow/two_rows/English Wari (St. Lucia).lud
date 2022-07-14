@@ -9,7 +9,7 @@
                 (< (count at:11) 2) 
                 (< (count at:12) 2)
             })
-        ) 
+       ) 
         (not 
             (and {
                 (< (count at:1) 2) 
@@ -19,8 +19,8 @@
                 (< (count at:5) 2) 
                 (< (count at:6) 2)
             })
-        )
-    )
+       )
+   )
 )
 
 (define "PiecesOwnedBy" (+ (count at:(mapEntry #1)) (count in:(sites #1))))
@@ -32,7 +32,7 @@
     (equipment { 
         (mancalaBoard 2 6
             (track "Track" "1,E,N,W" loop:True)
-        )
+       )
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
@@ -51,12 +51,12 @@
                             (from (last To)) 
                             (to ("NextSiteOnTrack" 1 from:(last To))) 
                             count:(count at:(last To))
-                        ) 
-                    )
-                )
-            ) 
+                       ) 
+                   )
+               )
+           ) 
             (nextPhase (= (next) 1) "Sowing")
-        )
+       )
         (phase "Sowing"   
             (play 
                 (do 
@@ -64,7 +64,7 @@
                         (from 
                             (sites Mover) 
                             if:(> (count at:(from)) 1)
-                        )
+                       )
                         (then 
                             (sow
                                 if:(= (count at:(to)) 4)
@@ -72,20 +72,20 @@
                                     (from (to)) 
                                     (to (mapEntry (mover))) 
                                     count:(count at:(to))
-                                )
+                               )
                                 includeSelf:False
                                 backtracking:True
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     ifAfterwards:"NoMovesNext"
-                )
-            )
-        )
+               )
+           )
+       )
         }
         
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -103,7 +103,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in St. Lucia, around 1932.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -111,6 +111,6 @@
     
     (ai 
         "English Wari (St. Lucia)_ai"
-    )
+   )
     
 )

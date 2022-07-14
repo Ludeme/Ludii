@@ -11,12 +11,12 @@
                     (to if:(or 
                             (is Empty (to)) 
                             ("IsEnemyAt" (to))
-                        ) 
+                       ) 
                         (apply (remove (to)))
-                    )
-                )
+                   )
+               )
             })
-        )
+       )
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
     })  
@@ -29,7 +29,7 @@
         (play (forEach Piece))
         
         (end ("ReachWin" (sites Mover) Mover)) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -69,7 +69,7 @@
         (credit "Eric Piette")
         (date "2000")
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)
@@ -77,6 +77,6 @@
     
     (ai 
         "Breakthrough_ai"
-    )
+   )
     
 )

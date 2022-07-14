@@ -9,8 +9,8 @@
             (from (to)) 
             (to (handSite (who at:(to))))
             count:(count at:(to))
-        )
-    ) 
+       )
+   ) 
 )
 
 (define "SpecialThrow"
@@ -36,11 +36,11 @@
             (move 
                 (from (handSite (mover))) 
                 (to ("StartPoint"))
-            )
-        )
+           )
+       )
         }
         (then (if ("SpecialThrow") (moveAgain)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -61,7 +61,7 @@
             (track "Track1" "0,E5,N5,W,N,E,S,W5,N,End" P1 directed:True)
             (track "Track2" "10,W5,N5,E,N,W,S,E5,N,End" P2 directed:True)
             }
-        )
+       )
         (piece "Pawn" Each
             (if ("IsEndTrack" "SiteToMoveOnTrack")
                 "RemoveAPiece"
@@ -69,18 +69,18 @@
                     (if (if (not ("IsEnemyAt" "SiteToMoveOnTrack"))
                             True
                             (not (is In "SiteToMoveOnTrack" (sites "Protect")))
-                        )
+                       )
                         (move 
                             (from (from) level:(level))
                             (to 
                                 "SiteToMoveOnTrack" 
                                 "CaptureEnemyPiece"
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         ("StickDice" 7)
         (hand Each)
         (regions "Protect" (sites {0 10 5 16 21 23 30 36 46 56 51 42}))
@@ -97,12 +97,12 @@
                     ("Move")
                     (move Pass 
                         (then (if ("SpecialThrow") (moveAgain)))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (end ("EscapeWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -120,7 +120,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, from around 1794 to 1868.")
         }
-    )
+   )
     (graphics {
         (show Symbol "thinCross" "Protect" scale:0.9)
         (piece Scale "Pawn" 0.5)

@@ -28,21 +28,21 @@
                 {11 12} {12 13} {13 14} 
                 {14 15} {15 16} {15 17} 
                 }
-            )
+           )
             use:Vertex
-        )
+       )
         (piece "Cow" P1)
         (piece "Calf" P1    
             (move Step 
                 (to 
                     if:(or ("IsPieceAt" "Cow" P1 (to)) (is Empty (to)))
                     (apply (remove (to)))
-                )
-            )
-        )
+               )
+           )
+       )
         (piece "Human" P2   
             "StepToEmpty"
-        )
+       )
     })
     (rules
         (start {
@@ -55,7 +55,7 @@
             (if (is In (where "Calf" P1) (sites Top)) (result P2 Win))
             (if (= 1 (count Sites in:(sites Occupied by:P1))) (result P1 Win))
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -74,7 +74,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Mongolia, from around 1963 to 1991.")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour VeryDarkGrey))
@@ -91,5 +91,5 @@
     
     (ai
         "Uxrijn Ever_ai"
-    )
+   )
 )

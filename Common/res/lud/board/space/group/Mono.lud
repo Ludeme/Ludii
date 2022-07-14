@@ -10,15 +10,15 @@
                     (forEach Site 
                         (sites)
                         (set State at:(site) 1)
-                    )
-                )
+                   )
+               )
                 (forEach Site 
                     (sites)
                     (set State at:(site) 0)
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 //--------------------------------------
@@ -34,8 +34,8 @@
             (move Add
                 (to (sites Empty))
                 (then ("CountAndMarkOddGroupsMover"))
-            )
-        )
+           )
+       )
         (end
             (if 
                 (is Full) {
@@ -43,19 +43,19 @@
                     (=
                         (count Groups if:(= (id P1) (who at:(to))))
                         (count Groups if:(= (id P2) (who at:(to))))
-                    )
+                   )
                     (byScore)
-                )
+               )
                 (if 
                     True 
                     (byScore {
                         (score P1 (- (count Groups if:(= (id P1) (who at:(to))))))
                         (score P2 (- (count Groups if:(= (id P2) (who at:(to))))))
                     })
-                )
+               )
             })
-        )
-    )
+       )
+   )
 )
 
 //--------------------------------------
@@ -91,7 +91,7 @@
         (credit "Michael Amundsen")
         (date "2022")
         }
-    )
+   )
     (graphics {
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
@@ -103,5 +103,5 @@
     })
     (ai
         (bestAgent "MC-GRAVE")
-    )
+   )
 )

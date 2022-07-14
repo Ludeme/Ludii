@@ -2,8 +2,8 @@
     (apply 
         (if ("IsEnemyAt" (to))
             (remove (to))
-        )
-    ) 
+       )
+   ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -13,8 +13,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-        )
-    )
+       )
+   )
 )
 
 (define "NextCanNotMove"
@@ -40,33 +40,33 @@
                 (move Step
                     (to if:(not ("IsFriendAt" (to)))
                         ("CaptureEnemyToPiece")
-                    )
+                   )
                     (then
                         (if (not ("KingMovedOrCheckedBefore" (last To)))
                             ("RememberKingMovedOrChecked" (last To))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (if (not ("KingMovedOrCheckedBefore" (from)))
                     (or {
                         (move
                             Slide 
                             (between
                                 (exact 2)
-                            )
+                           )
                             (to 
                                 if:("IsEnemyAt" (to)) 
                                 "CaptureEnemyToPiece"
-                            ) 
-                        )
+                           ) 
+                       )
                         (move
                             Leap 
                             "KnightWalk" 
                             (to 
                                 if:(not ("IsFriendAt" (to))) 
                                 "CaptureEnemyToPiece"
-                            ) 
-                        )
+                           ) 
+                       )
                         (if (is In (from) ("KingSites"))
                             (or
                                 (if (and {
@@ -78,9 +78,9 @@
                                         (from)
                                         (to
                                             (ahead (from) steps:2 W)
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                                 (if (and {
                                         (is Empty (ahead (from) steps:2 E))
                                         (= (id "Rook" Mover) (what at:(ahead (from) E))) 
@@ -90,17 +90,17 @@
                                         (from)
                                         (to
                                             (ahead (from) steps:2 E)
-                                        )
-                                    )
-                                )
-                            )
-                        )
+                                       )
+                                   )
+                               )
+                           )
+                       )
                         }
                         (then ("RememberKingMovedOrChecked" (last To)))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (piece "Rook"
             (move
                 Slide 
@@ -108,17 +108,17 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureEnemyToPiece"
-                ) 
+               ) 
                 (then
                     (if (and 
                             (not ("RookMovedBefore" (last To)))
                             (not (is In (last To) ("SitesNextToKing")))
-                        )
+                       )
                         ("RememberRookMoved" (last To))
-                    )
-                )
-            )		
-        )
+                   )
+               )
+           )		
+       )
         (piece "Bishop_noCross"
             (move
                 Slide 
@@ -126,9 +126,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureEnemyToPiece"
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         (piece "Knight"
             (move
                 Leap 
@@ -136,9 +136,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureEnemyToPiece"
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         (piece "Pawn"
             (if (is In (from) (sites Mover "Promotion"))
                 (move
@@ -146,35 +146,35 @@
                     (directions {BR BL}) 
                     (between
                         (exact 3)
-                    )
+                   )
                     (to 
                         if:("IsEnemyAt" (to)) 
                         "CaptureEnemyToPiece"
-                    ) 
+                   ) 
                     (then
                         (promote (last To) (piece "Queen") Mover)
-                    )
-                )
+                   )
+               )
                 (or 
                     "StepForwardToEmpty" 
                     "CaptureForwardDiagonal"
                     (then
                         (if (is In (last To) (intersection (sites Corners) (sites Mover "Promotion")))
                             (promote (last To) (piece "Queen") Mover)
-                        )
-                    )
-                )		
-            )
-        ) 
+                       )
+                   )
+               )		
+           )
+       ) 
         (piece "Queen"
             (move
                 Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureEnemyToPiece"
-                ) 
-            ) 		
-        )
+               ) 
+           ) 		
+       )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     })
@@ -194,22 +194,22 @@
                     (if ("IsInCheck" "King_noCross" Next)
                         (if (not ("KingMovedOrCheckedBefore" (where "King_noCross" Next)))
                             ("RememberKingMovedOrChecked" (where "King_noCross" Next))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         
         (end {
             (if (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-                ) 
+               ) 
                 (result Mover Win)
-            ) 
+           ) 
             (if (= (count Pieces Next) 1) (result Mover Loss)) 
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -228,7 +228,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Java, around 1817.")
         }
-    )
+   )
     
     (graphics {
         (piece Scale "Pawn" 0.825)

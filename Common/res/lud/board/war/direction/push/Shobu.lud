@@ -10,7 +10,7 @@
     (if (is In (last To) (sites "Dark"))
         (sites "Light")
         (sites "Dark")
-    )
+   )
 )
 
 (define "AgressiveMoves" 
@@ -22,7 +22,7 @@
                     (between 
                         (exact "LastDistance")
                         if:(is Empty (between))
-                    )
+                   )
                     (to
                         if:(or 
                             (is Empty (to))
@@ -31,9 +31,9 @@
                                 (or 
                                     (is Empty (ahead (to) "LastDirection"))
                                     (= (ahead (to) "LastDirection") (to))
-                                )
-                            )
-                        )
+                               )
+                           )
+                       )
                         (apply
                             (if ("IsEnemyAt" (to))
                                 (if (= (ahead (to) "LastDirection") (to))
@@ -41,12 +41,12 @@
                                     (fromTo 
                                         (from (to))
                                         (to (ahead (to) "LastDirection"))
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
                 (if (and {
                         (= ("LastDistance") 2) 
                         (is Enemy (who at:(ahead (from) "LastDirection")))
@@ -54,27 +54,27 @@
                         (if (= (from) (ahead (from) steps:3 "LastDirection"))
                             True
                             (is Empty (ahead (from) steps:3 "LastDirection"))
-                        )
+                       )
                     })
                     (move
                         (from (from))
                         (to 
                             (ahead (from) steps:2 "LastDirection")
-                        )
+                       )
                         (then
                             (if (= (ahead (last To) "LastDirection") (last To))
                                 (remove (ahead (last From) "LastDirection"))
                                 (fromTo 
                                     (from (ahead (last From) "LastDirection"))
                                     (to (ahead (last To) "LastDirection"))
-                                )
-                            )	
-                        )
-                    )
-                )
-            )
-        )
-    )
+                               )
+                           )	
+                       )
+                   )
+               )
+           )
+       )
+   )
 )
 
 (define "NextNoPieceInRegion" 
@@ -93,7 +93,7 @@
                 (shift 0 5 (square 4))
                 (shift 5 5 (square 4))
             })
-        )
+       )
         (piece "Ball" Each)
         (regions "BottomDark" (expand origin:(coord "A1") steps:3))
         (regions "TopDark" (expand origin:(coord "A5") steps:3))
@@ -119,22 +119,22 @@
                                 (between 
                                     (max 2)
                                     if:(is Empty (between))
-                                )
-                            )
-                        )
+                               )
+                           )
+                       )
                         (then (moveAgain))
-                    )
+                   )
                     ifAfterwards:(can Move ("AgressiveMoves"))
-                )
-            )
+               )
+           )
             (nextPhase Mover "Agressive")
-        )
+       )
         (phase "Agressive"
             (play 
                 ("AgressiveMoves")
-            )
+           )
             (nextPhase Mover "Passive")
-        )
+       )
         }
         (end 
             (if (or { 
@@ -144,9 +144,9 @@
                     ("NextNoPieceInRegion" (sites "TopLight"))
                 })  
                 (result Mover Win) 
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //-------------------------------------------------------------------------
@@ -165,7 +165,7 @@
         (credit "Eric Piette")
         (date "2019")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Black))
@@ -175,5 +175,5 @@
     })
     (ai
         "Shobu_ai"
-    )
+   )
 )

@@ -6,10 +6,10 @@
                 if:(<= 
                     (row of:(site)) 
                     (row of:(where "Wolf" P1))
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -34,10 +34,10 @@
                 (move 
                     (from (handSite P1)) 
                     (to (intersection (sites Phase 0) (sites Empty)))
-                )
-            )
+               )
+           )
             (nextPhase "Playing")
-        )
+       )
         (phase "Playing" (play (forEach Piece)))	
         }
         
@@ -45,7 +45,7 @@
             (if (and (no Moves P1) (is Mover P1)) (result P2 Win))
             (if ("WolfBeyondSheepRow") (result P1 Win))
         })  
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -64,7 +64,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Germany, around 1853.")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Black))
@@ -75,5 +75,5 @@
     
     (ai
         "Wolf und Schaaf_ai"
-    )
+   )
 )

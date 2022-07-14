@@ -10,9 +10,9 @@
                     (shift 4 0 (rectangle 3 1))
                 })
                 vertices:{{2 1}}
-            )
+           )
             use:Vertex
-        )
+       )
         (hand Each)
         (piece "Seed" Shared)
         (regions P1 (union (sites Bottom) (sites {11})))
@@ -30,16 +30,16 @@
                 (move 
                     (from (sites Hand Mover))
                     (to (sites Mover))
-                )
-            )
+               )
+           )
             (nextPhase Mover (is Empty (handSite Mover)) "Play")
-        )
+       )
         (phase "Play"
             (play [#]) // Players capture holes from the other player Any holes with a single counter on the player's side are vulnerable to capture.
             (end [#])
-        )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -57,7 +57,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Republic of Congo, around 1972.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)

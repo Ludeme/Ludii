@@ -1,4 +1,4 @@
-(define "ColumnSize" 6 )
+(define "ColumnSize" 6)
 
 (define "EmptyTop" (intersection (sites Top) (sites Empty)))
 
@@ -19,7 +19,7 @@
     
     (rules
         <Model:rules>
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -36,15 +36,15 @@
                     (forEach 
                         (sites Board) 
                         if:(< (size Stack at:(site)) "ColumnSize")
-                    ) 
-                )
+                   ) 
+               )
                 stack:True
-            )
-        )
+           )
+       )
         (end (if (is Line 4 byLevel:True) (result Mover Win)))
         >
         ""
-    )
+   )
     (item "2D"         
         <(board (rectangle 6 7))>
         <
@@ -53,17 +53,17 @@
                 Add 
                 (to 
                     ("EmptyTop") 
-                )
+               )
                 (then "Drop")
-            )
-        )
+           )
+       )
         (end {
             (if (is Line 4 Diagonal through:(last To afterConsequence:True)) (result Mover Win))
             (if (is Line 4 Orthogonal through:(last To afterConsequence:True)) (result Mover Loss))
         })
         >
         ""
-    )**
+   )**
 })
 
 (metadata
@@ -81,7 +81,7 @@
         (credit "Eric Piette")
         (date "1974")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Yellow))
@@ -93,6 +93,6 @@
     
     (ai 
         "Connect Four_ai"
-    )
+   )
     
 )

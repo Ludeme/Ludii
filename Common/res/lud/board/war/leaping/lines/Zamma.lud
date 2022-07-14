@@ -1,7 +1,7 @@
 (define "PromoteIfBorderReached"  
     (if (is In (last To) (sites Next))
         (move Promote (last To) (piece "DiscDouble") Mover)
-    )
+   )
 )
 
 (define "HopDisc" 
@@ -10,15 +10,15 @@
         (between 
             if:("IsEnemyAt" (between))
             (apply (remove (between)))
-        ) 
+       ) 
         (to if:(is Empty (to))) 
         (then
             (and 
                 ("PromoteIfBorderReached")
                 ("HasCaptured")
-            )
-        )
-    ) 
+           )
+       )
+   ) 
 )
 
 (define "HopDiscDouble" 
@@ -29,10 +29,10 @@
             after:9
             if:("IsEnemyAt" (between)) 
             (apply (remove (between)))
-        )
+       )
         (to if:(is Empty (to)))
         (then ("HasCaptured"))
-    )
+   )
 )
 
 (define "HasCaptured"  (set Value Mover 0))
@@ -44,7 +44,7 @@
             (or 
                 (forEach Piece "Disc" 
                     ("HopDisc")
-                ) 
+               ) 
                 (forEach Piece "DiscDouble" 
                     (move
                         Hop
@@ -53,13 +53,13 @@
                             after:9
                             if:("IsEnemyAt" (between)) 
                             (apply (remove (between)))
-                        )
+                       )
                         (to if:(is Empty (to)))
-                    )
-                )
-            )
-        )
-    )
+                   )
+               )
+           )
+       )
+   )
 )
 
 (define "SitesWithPossibleCaptureInPreviousTurn" (sites Pending))
@@ -69,22 +69,22 @@
         Select 
         (from #1
             if:(!= (what at:(from)) 0)
-        )
+       )
         (then 
             (and  {
                 (remove (last To)) 
                 (moveAgain) 
                 (set Value Prev 0)
             })
-        )
-    )
+       )
+   )
 )
 
 (define "ShouldCapturedButMoved" 
     (and 
         (is In (last From) ("SitesWithPossibleCaptureInPreviousTurn"))  
         (is In (last From) (sites Empty))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -101,16 +101,16 @@
                     Forwards 
                     (to if:(is Empty (to)))
                     (then ("HasNotCaptured"))
-                )
+               )
                 (then ("PromoteIfBorderReached"))
-            )
-        )
+           )
+       )
         (piece "DiscDouble" Each
             (or
                 ("HopDiscDouble") 
                 (move Slide (then ("HasNotCaptured")))
-            )
-        )
+           )
+       )
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
     })  
@@ -127,19 +127,19 @@
                     (or
                         (if ("ShouldCapturedButMoved") 
                             ("HuffOnePieceOf" (last To))
-                        )
+                       )
                         ("HuffOnePieceOf" ("SitesWithPossibleCaptureInPreviousTurn"))
-                    )
-                )
+                   )
+               )
                 (do 
                     ("RememberSiteWithPossibleCapture") 
                     next:(forEach Piece)
-                )
-            )
-        ) 
+               )
+           )
+       ) 
         
         (end (if (no Moves Mover) (result Next Win))) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -158,7 +158,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in North Africa, around 1950.")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour VeryDarkGrey))
@@ -169,6 +169,6 @@
     
     (ai 
         "Zamma_ai"
-    )
+   )
     
 )

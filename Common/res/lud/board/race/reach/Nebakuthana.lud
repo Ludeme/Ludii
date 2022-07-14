@@ -14,7 +14,7 @@
     (if (or (is Mover P1) (is Mover P2))
         1
         3
-    )
+   )
 )
 
 (define "Move"
@@ -25,27 +25,27 @@
                     (fromTo
                         (from (handSite ("HandTeam")))
                         (to (mapEntry "Start" ("HandTeam")))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (move 
             (from (from))
             (to
                 ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
                 if:True
                 ("HittingCapture" (mapEntry "Start" (who at:(to))))
-            )
+           )
             (then
                 (if (= (last To) (mapEntry "Opposite" Mover))
                     (fromTo
                         (from (last To))
                         (to (mapEntry "Start" Mover))
-                    )
-                )
-            )
-        )
-    )		
+                   )
+               )
+           )
+       )
+   )		
 )
 
 //------------------------------------------------------------------------------
@@ -77,7 +77,7 @@
                 {40 41} {36 41} {39 50} {50 51} 
                 {41 45} {45 46} {45 37} {46 38} {46 50} 
                 }
-            )
+           )
             {
             (track "Track1" "6,7,8,9,10,15,17,19,21,25,29,31,33,35,39,50,49,48,47,46,45,44,43,42,41,36,34,32,30,26,22,20,18,16,12,1,2,3,4,End" P1 directed:True)
             (track "Track2" "6,7,8,9,10,15,17,19,21,25,29,31,33,35,39,50,49,48,47,46,45,44,43,42,41,36,34,32,30,26,22,20,18,16,12,1,2,3,4,End" P2 directed:True)
@@ -85,7 +85,7 @@
             (track "Track4" "5,4,3,2,1,12,16,18,20,22,26,30,32,34,36,41,42,43,44,45,46,47,48,49,50,39,35,33,31,29,25,21,19,17,15,10,9,8,7,End" P4 directed:True)
             }
             use:Vertex
-        )
+       )
         (piece "Stick" P1 ("Move"))
         (piece "Stick" P3 ("Move"))
         ("StickDice" 4)
@@ -109,16 +109,16 @@
                 (if (or (is Mover P1) (is Mover P2))
                     (forEach Piece P1)
                     (forEach Piece P3)
-                )
+               )
                 (then
                     (if ("ReplayThrow")
                         (moveAgain)
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (end ("EscapeTeamWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -151,7 +151,7 @@
         "Start/7" "Start/8" "Start/9" "Start/11" "Start/12"
         "Start/13" "Start/14" "Start/15"
         }
-    )*
+   )*
     
 })
 
@@ -172,7 +172,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in United States, around 1890.")
         }
-    )
+   )
     
     (graphics {
         (board Background image:"disc" edgeColour:(colour Black) scale:0.15)

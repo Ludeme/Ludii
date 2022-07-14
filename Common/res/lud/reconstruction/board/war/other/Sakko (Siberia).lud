@@ -20,11 +20,11 @@
         (play
             (do (roll)
                 next:[#] // Sakko can activate a piece. Replacement capture. // Conversion of the king (but we dunno what happens to the piece landing on it). 
-            )
+           )
             
-        )
+       )
         (end (if (no Pieces Next) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -56,7 +56,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Siberia, from around 1848 to 1898.")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

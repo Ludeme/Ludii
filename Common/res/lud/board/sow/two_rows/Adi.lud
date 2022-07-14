@@ -6,7 +6,7 @@
     (if (is Mover P1)
         (not (is In (from) (values Remembered "P1SowFrom")))
         (not (is In (from) (values Remembered "P2SowFrom")))
-    )
+   )
 )
 
 (define "NextHole" ("NextSiteOnTrack" #2 from:#1 "Track"))
@@ -18,35 +18,35 @@
         "TrackCW"
         from:(mapEntry "RightMost" Mover)
         if:(is Empty (to))
-    )
+   )
 )
 
 (define "ForgetValue" 
     (if (is Mover P1)
         (forget Value "OwnedP1" #1)
         (forget Value "OwnedP2" #1)
-    )
+   )
 )
 
 (define "OwnedHoles" 
     (if (is Mover P1)
         (sites (values Remembered "OwnedP1"))
         (sites (values Remembered "OwnedP2"))
-    )
+   )
 )
 
 (define "RemmemberOwnedHoles" 
     (if (is Mover P1)
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
-    )
+   )
 )
 
 (define "RemmemberNextOwnedHoles" 
     (if (is Next P1)
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
-    )
+   )
 )
 
 (define "NoMoreCapturePossible"
@@ -57,17 +57,17 @@
                     (from 
                         (sites (values Remembered "OwnedP1"))  
                         if:(and (not (is In (from) (values Remembered "P1SowFrom"))) (< 0 (count at:(from))))
-                    )
-                )
+                   )
+               )
                 (move Select 
                     (from 
                         (sites (values Remembered "OwnedP2"))  
                         if:(and (not (is In (from) (values Remembered "P2SowFrom"))) (< 0 (count at:(from))))
-                    )
-                )
-            )
-        )
-    )
+                   )
+               )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -80,7 +80,7 @@
             (track "TrackCCW" "1,E,N,W" loop:True)
             (track "TrackCW" "6,W,N,E" loop:True)
             }
-        )
+       )
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
@@ -103,7 +103,7 @@
                         (from 
                             ("OwnedHoles")  
                             if:(and ("PossibleSowFrom") (< 0 (count at:(from))))
-                        )
+                       )
                         (then 
                             (and {
                                 (sow  
@@ -111,32 +111,32 @@
                                     if:(and 
                                         (is In (to) (sites Next)) 
                                         (= (count at:(to)) 3)
-                                    ) 
+                                   ) 
                                     apply:(fromTo 
                                         (from (to)) 
                                         (to (mapEntry (mover))) 
                                         count:(count at:(to))
-                                    )
+                                   )
                                     backtracking:True 
-                                )
+                               )
                                 (forEach Value 
                                     (array (sites Track from:(last From) to:("NextHole" (last From) (min 12  (count at:(last From))))))
                                     (if (is Mover P1)
                                         (if (is In (value) (values Remembered "P2SowFrom"))
                                             (forget Value "P2SowFrom" (value))
-                                        )
+                                       )
                                         (if (is In (value) (values Remembered "P1SowFrom"))
                                             (forget Value "P1SowFrom" (value))
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                                 (if (is Mover P1)
                                     (remember Value "P1SowFrom" (last From))
                                     (remember Value "P2SowFrom" (last From))
-                                )
+                               )
                             })
-                        )
-                    )
+                       )
+                   )
                     }
                     (then
                         (if ("NoMoreCapturePossible")
@@ -147,18 +147,18 @@
                                             (from (site))
                                             (to (mapEntry P1))
                                             count:(count at:(site))
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                                 (forEach Site (sites P2)
                                     (if (< 0 (count at:(site)))
                                         (fromTo
                                             (from (site))
                                             (to (mapEntry P2))
                                             count:(count at:(site))
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                                 (forget Value "OwnedP1" All)
                                 (forget Value "OwnedP2" All)
                                 (forget Value "P1SowFrom" All)
@@ -167,29 +167,29 @@
                                         (+
                                             (count at:(mapEntry P2))
                                             (count in:(sites P2))
-                                        )
+                                       )
                                         (+ 
                                             (count at:(mapEntry P1))
                                             (count in:(sites P1))
-                                        )
-                                    )
+                                       )
+                                   )
                                     (set NextPlayer (player 1))
                                     (set NextPlayer (player 2))
-                                )
+                               )
                             })
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (end (if ("NoPieceOnBoard")
                     {
                     (if (> 4 (count at:(mapEntry P1))) (result P2 Win))
                     (if (> 4 (count at:(mapEntry P2))) (result P1 Win))
                     }
-                )
-            )
+               )
+           )
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-        )
+       )
         (phase "BetweenRounds"
             (play
                 (if (<= 4 (count at:(mapEntry Mover)))
@@ -209,21 +209,21 @@
                                                     (from (mapEntry Next))
                                                     (to (mapEntry "CorrespondingHoles" (site)))
                                                     count:(count at:(site))
-                                                )
+                                               )
                                                 ("RemmemberNextOwnedHoles" (mapEntry "CorrespondingHoles" (site)))
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                                           )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             (nextPhase (> 4 (count at:(mapEntry Mover))) "Sowing")
-        )
+       )
         }
-    )	
+   )	
 )
 
 //------------------------------------------------------------------------------
@@ -240,7 +240,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in West Africa, around 1906.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

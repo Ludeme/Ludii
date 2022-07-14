@@ -6,11 +6,11 @@
                 (remove
                     ("AlquerqueGraph" 3 3)
                     vertices:{1 3 5 7}
-                )
+               )
                 edges:{{3 0} {0 1} {1 4}}
-            )
+           )
             use:Vertex
-        )
+       )
         (hand Each)
         (piece "Disc" Each "StepToEmpty")
     })  
@@ -23,15 +23,15 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty))
-                )
-            ) 
+               )
+           ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )  
+       )  
         
         (phase "Movement" (play (forEach Piece)))
         }
         (end ("NoMoves" Loss))  
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -49,9 +49,9 @@
         (credit "Eric Piette")
         (origin  "This game was played in Pakistan, around 1926.")
         }
-    )
+   )
     
     (ai
         "Do Guti_ai"
-    )
+   )
 )

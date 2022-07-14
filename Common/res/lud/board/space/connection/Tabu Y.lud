@@ -9,15 +9,15 @@
             (move Add 
                 (to (sites Empty) 
                     if:(not (is In (to) (sites Around (last To))))
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (end 
             (if (is Connected 3 Sides)  
                 (result Mover <Result>) 
-            ) 
-        )
-    )
+           ) 
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -66,8 +66,8 @@
         (credit "Eric Silverman")
         (date "1975")
         }
-    )
+   )
     (ai
         "Tabu Y_ai"
-    )
+   )
 )

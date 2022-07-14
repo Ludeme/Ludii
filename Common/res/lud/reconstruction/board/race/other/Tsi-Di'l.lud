@@ -8,7 +8,7 @@
         (board
             (merge {(rectangle 1 ("Dim")) (rectangle ("Dim") 1) (shift 0 (- "Dim" 1) (rectangle 1 ("Dim"))) (shift (- "Dim" 1) 0 (rectangle ("Dim") 1))})
             use:Edge
-        )
+       )
         (piece "Stick" Each)
         (dice d:2 num:3)
     })
@@ -16,7 +16,7 @@
         (start [#])
         (play [#])
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -47,7 +47,7 @@
     (info
         {
         }
-    )
+   )
     
     (graphics {
         (show Edges (colour Hidden))

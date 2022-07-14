@@ -8,7 +8,7 @@
     (or 
         (all Sites (sites P1) if:(= 0 (count at:(site))))
         (all Sites (sites P2) if:(= 0 (count at:(site))))
-    )
+   )
 )
 
 (define "NoPiecesInP1Side" 
@@ -19,7 +19,7 @@
     (trackSite FirstSite 
         from:(mapEntry "LeftMost" Mover)
         if:(is Empty (to))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -30,7 +30,7 @@
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
             (track "Track" "0,E,N,W" loop:True)
-        )
+       )
         (piece "Seed" Shared)
         (regions P1 (sites Bottom)) 
         (regions P2 (sites Top)) 
@@ -52,9 +52,9 @@
                                 ("SameTurn") 
                                 "LastHoleSowed" 
                                 (sites Mover) 
-                            ) 
+                           ) 
                             if:(> (count at:(from)) 0)
-                        )
+                       )
                         (then 
                             (sow
                                 apply:(if (> (count at:(to)) 1)
@@ -66,15 +66,15 @@
                                                     (from ("OppositePit" (to)))
                                                     (to (handSite Mover))
                                                     count:(count at:("OppositePit" (to)))
-                                                )
+                                               )
                                                 (moveAgain)
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                           )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
                     }
                     (then 
                         (if ("OneRowIsEmpty")
@@ -86,20 +86,20 @@
                                                 (from (site))
                                                 (to (handSite P2))
                                                 count:(count at:(site))
-                                            )
-                                        )
-                                    )
+                                           )
+                                       )
+                                   )
                                     (if (>= 
                                             (count Cell at:(handSite P1))
                                             (+ 
                                                 (count Cell at:(handSite P2))
                                                 (count in:(sites Board))
-                                            )
-                                        )
+                                           )
+                                       )
                                         (set NextPlayer (player 2))
                                         (set NextPlayer (player 1))
-                                    )
-                                )
+                                   )
+                               )
                                 (and
                                     (forEach Site (sites Board)
                                         (if (< 0 (count at:(site)))
@@ -107,35 +107,35 @@
                                                 (from (site))
                                                 (to (handSite P1))
                                                 count:(count at:(site))
-                                            )
-                                        )
-                                    )
+                                           )
+                                       )
+                                   )
                                     (if (>= 
                                             (count Cell at:(handSite P2))
                                             (+ 
                                                 (count Cell at:(handSite P1))
                                                 (count in:(sites Board))
-                                            )
-                                        )
+                                           )
+                                       )
                                         (set NextPlayer (player 1))
                                         (set NextPlayer (player 2))
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             (end (if ("NoPieceOnBoard")
                     {
                     (if (> 2 (count Cell at:(handSite P1))) (result P2 Win))
                     (if (> 2 (count Cell at:(handSite P2))) (result P1 Win))
                     }
-                )
-            )
+               )
+           )
             
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-        )
+       )
         
         (phase "BetweenRounds"
             (play
@@ -144,12 +144,12 @@
                         (from (handSite Mover))
                         (to ("LeftMostEmpty"))
                         count:3
-                    )
+                   )
                     (move
                         (from (handSite Mover))
                         (to ("LeftMostEmpty"))
                         count:1
-                    )
+                   )
                     (then
                         (if (!= 0 (count Cell at:(handSite Mover)))		
                             (moveAgain)
@@ -159,17 +159,17 @@
                                         (from (handSite Next))
                                         (to (mapEntry "CorrespondingHoles" (site)))
                                         count:(count at:(site))
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             (nextPhase (or (is Empty (handSite P1)) (is Empty (handSite P2))) "Sowing")
-        )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -186,7 +186,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Eritrea, around 1971.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

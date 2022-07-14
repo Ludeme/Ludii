@@ -2,7 +2,7 @@
     (move
         Remove
         (sites Occupied by:Next container:"Board") 
-    )
+   )
 )
 
 (define "IfLineMoveAgain" 
@@ -20,8 +20,8 @@
                 (and (is In (last To) (sites {8 9 6})) (all Sites (sites {8 9 6}) if:(= (who at:(site)) Mover)))
             })
             (moveAgain)
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -35,11 +35,11 @@
                 (remove
                     (concentric Square rings:3 joinCorners:True)
                     vertices:{16 11 12 7}
-                )
+               )
                 edges:{{6 7} {7 13} {13 12} {6 12}}
-            )
+           )
             use:Vertex
-        ) 
+       ) 
         (hand Each)
         (piece "Marker" Each (move [#])) // Do not know the movement of the pieces
     })  
@@ -57,11 +57,11 @@
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
                         "IfLineMoveAgain" 
-                    )  
-                )
-            ) 
+                   )  
+               )
+           ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
+       )
         
         (phase "Movement" 
             (play 
@@ -69,14 +69,14 @@
                     "RemoveEnemyPiece"
                     (forEach Piece
                         ("IfLineMoveAgain")		
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         }
         
         (end (if (<= (count Pieces Next) 2) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -94,14 +94,14 @@
         (credit "Eric Piette")
         (origin  "This game was played in Mauritania, around 1952.")
         }
-    )
+   )
     
     (graphics {
         (show Line 
             { {0 3} {3 6} {7 5} {1 4} {5 2} {10 11} {13 16} {16 19} {15 18} {17 14} {14 12} {9 8}
             } 
             (colour Hidden)
-        )
+       )
     })
     
 )

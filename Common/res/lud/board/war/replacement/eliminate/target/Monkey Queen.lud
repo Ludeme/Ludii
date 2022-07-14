@@ -10,15 +10,15 @@
                         (apply 
                             if:("IsEnemyAt" (to))
                             (remove (to) count:(size Stack at:(to)))
-                        )
-                    )
+                       )
+                   )
                     stack:True
                     (then
                         (if (< 1 (size Stack at:(last To)))
                             (set Value Mover (last To))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (if (< 2 (size Stack at:(from))) // Non capturing Queen Move
                     (move Slide
                         stack:True
@@ -27,24 +27,24 @@
                                 (fromTo
                                     (from (last To) level:0)
                                     (to (last From))
-                                )
+                               )
                                 (set Value Mover (last To))
-                            )
-                        )
-                    )
-                )
+                           )
+                       )
+                   )
+               )
                 (if (= 1 (size Stack at:(from))) // Non capturing Baby Monkey Move
                     (move Slide
                         (between 
                             if:(and
                                 (< (count Steps (to) (value Player Next)) (count Steps (from) (value Player Next)))
                                 (is Empty (between))
-                            )
-                        )
-                    )
-                )
+                           )
+                       )
+                   )
+               )
             })
-        )
+       )
     })
     (rules
         (meta (swap))
@@ -58,11 +58,11 @@
                 (or
                     (all Sites (sites Occupied by:Next) if:(= 1 (size Stack at:(site))))
                     (no Moves Next) 
-                )
+               )
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -101,7 +101,7 @@
         (credit "Eric Piette")
         (date "2011")
         }
-    )
+   )
     (graphics {
         (player Colour P2 (colour Brown))
         (board Style Chess)

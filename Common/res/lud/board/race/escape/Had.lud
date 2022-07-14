@@ -10,7 +10,7 @@
             (track "Track1" "0,E,N1,W,N1,E" P1 directed:True)
             (track "Track2" "41,W,S1,E,S1,W" P2 directed:True)
             }
-        )
+       )
         (dice d:4 num:2)
         (piece "Marker" Each 
             (if ("IsOffBoard" ("SiteToMoveOnTrack"))
@@ -20,10 +20,10 @@
                     (to 
                         ("SiteToMoveOnTrack") 
                         if:(is Empty (to)) 
-                    )
-                )
-            )
-        ) 
+                   )
+               )
+           )
+       ) 
     })  
     
     (rules 
@@ -38,9 +38,9 @@
             (if 
                 (no Pieces Mover) 
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -58,7 +58,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Algeria, around 1921.")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
@@ -68,6 +68,6 @@
     
     (ai
         "Had_ai"
-    )
+   )
 )
 

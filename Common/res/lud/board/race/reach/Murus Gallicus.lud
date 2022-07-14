@@ -6,27 +6,27 @@
     (move Hop
         (from if:(and (is Mover (who at:(from)))
                 (= (size Stack at:(from)) 2)
-            )  
-        )
+           )  
+       )
         (between  if:(or 
                 (is Empty (between))
                 (and 
                     (is Mover (who at:(between)))
                     (< (size Stack at:(between)) <Stack:limit>) 
-                )  
-            ) 
+               )  
+           ) 
             (apply (fromTo (from) (to (between))))
-        )
+       )
         
         (to if:(or 
                 (is Empty (to))
                 (and (is Mover (who at:(to)))
                     (< (size Stack at:(to)) <Stack:limit>)
-                )  
-            ) 
-        )
+               )  
+           ) 
+       )
         stack:True
-    )
+   )
 )
 
 // Sacrifice a tower piece in order to remove an adjacent enemy wall/singleton piece.
@@ -34,23 +34,23 @@
     (move Step
         (from if:(and (is Mover (who at:(from)))
                 (= (size Stack at:(from)) 2)
-            )  
-        )
+           )  
+       )
         (to 
             if:(and ("IsEnemyAt" (to)) ("IsSingletonStack" (to)))
             (apply (remove (to)))   // This removes the only enemy piece in the 'to' cell.
-        )
+       )
         stack:True
         (then
             (and
                 (fromTo
                     (from (last To))
                     (to (last From))
-                )
+               )
                 (remove (last To))        
-            ) 
-        )
-    )
+           ) 
+       )
+   )
 )
 // Sacrifice a tower piece or two in order to remove one or two enemy stones 
 // from a 3-stack/catapult.
@@ -58,24 +58,24 @@
     (move Step
         (from if:(and (is Mover (who at:(from)))
                 (= (size Stack at:(from)) 2)
-            )  
-        )
+           )  
+       )
         (to 
             if:(and ("IsEnemyAt" (to)) (= (size Stack at:(to)) 3))
             (apply (remove (to)))   // This removes one enemy piece in the 'to' cell.
-        )
+       )
         stack:True
         (then
             (and {
                 (fromTo
                     (from (last To))
                     (to (last From))
-                )
+               )
                 (remove (last To)) 
                 (moveAgain) 
             }) 
-        )
-    )
+       )
+   )
 )
 
 // Throw a stone left, diagonally left, straight ahead, diagonally right, or right two or three cells regardless
@@ -84,17 +84,17 @@
     (move Hop
         (from if:(and (is Mover (who at:(from)))
                 (= (size Stack at:(from)) 3)
-            )   
-        )                                       
+           )   
+       )                                       
         (difference All Backwards)
         (between (range 1 2) if:True)
         (to if:
             (and
                 (not ("IsEnemyAt" (to)))  
                 (not (is Mover (who at:(to))))  
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 // Throw a stone left, diagonally left, straight ahead, diagonally right, or right two or three cells regardless
@@ -103,20 +103,20 @@
     (move Hop
         (from if:(and (is Mover (who at:(from)))
                 (= (size Stack at:(from)) 3)
-            )   
-        )                                       
+           )   
+       )                                       
         (difference All Backwards)
         (between (range 1 2) if:True)
         (to if:
             ("IsEnemyAt" (to))  
-        )
+       )
         (then
             (and
                 (remove (last To))
                 (remove (last To))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //**************************************************************************************************
@@ -148,11 +148,11 @@
                             (and 
                                 (remove (last To)) 
                                 (remove (last To)) 
-                            )
-                        )                
-                    )                
+                           )
+                       )                
+                   )                
                     (move Pass)
-                )
+               )
                 (forEach Piece "Counter_isometric"
                     (or     
                         {
@@ -163,17 +163,17 @@
                         "ThrowStonetoEmpty"
                         "ThrowStonetoEnemy"
                         }
-                    )
+                   )
                     top:True
-                )
-            )            
-        )
+               )
+           )            
+       )
         
         (end {
             ("BlockWin")
             <End:event>
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -205,20 +205,20 @@
                 (not ("IsEnemyAt" (last To)))
                 (is Mover (who at:(last To)))
                 } 
-            )
+           )
             (result Mover Win)
-        )
+       )
         >    
         "Immediately after reaching goal."    
-    )*    
+   )*    
     (item "Delayed"      
         <
-        (if (= 1 (count Sites in:(intersection (sites Occupied by:Next)  (sites Next)  )     ))
+        (if (= 1 (count Sites in:(intersection (sites Occupied by:Next)  (sites Next) )    ))
             (result Next Win)
-        )
+       )
         >    
         "After opponent's last chance to remove invader."    
-    )    
+   )    
     }
 )
 

@@ -16,19 +16,19 @@
                         (graph
                             vertices:{ { 0 0 } { -0.75 0.55 } { -0.04 1.24 }{ 1 0 } } 
                             edges:{ {0 1} {1 2}  {2 3} {3 0}} 
-                        )
-                    )
+                       )
+                   )
                     (shift 9 5 (rectangle 6 1))
                     (shift 5 5 (rectangle 1 5))
                     (rectangle 1 9)
                     (shift 4 0 (rectangle 6 1))
                 })
-            )
+           )
             {
             (track "Track1" "23,N4,W,N,W,11,7,SW,SE,End" P1 directed:True)
             (track "Track2" "31,S4,W,N,W,11,7,SW,SE,End" P2 directed:True)
             }
-        )
+       )
         (piece "Marker" Each
             (if ("IsEndTrack" "SiteToMoveOnTrack")
                 "RemoveAPiece"
@@ -38,19 +38,19 @@
                             (and 
                                 (not ("IsFriendAt" "SiteToMoveOnTrack")) 
                                 (not (is In "SiteToMoveOnTrack" (sites "Protect")))
-                            )
-                        )
+                           )
+                       )
                         (move 
                             (from)
                             (to 
                                 "SiteToMoveOnTrack" 
                                 ("HittingCapture" (mapEntry "Entry" Next))
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         ("StickDice" 6)
         (hand Each)
         (regions "Protect" (sites {27 19 12 10 1}))
@@ -69,17 +69,17 @@
                             (to 
                                 (mapEntry "Entry" Mover) 
                                 if:(not ("IsEnemyAt" (to)))
-                            )
-                        )
+                           )
+                       )
                         (forEach Piece)
                         (then (moveAgain))
-                    )
+                   )
                     (forEach Piece)
-                )
-            )
-        )
+               )
+           )
+       )
         (end ("EscapeWin"))
-    )
+   )
 )
 
 (metadata 
@@ -95,7 +95,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in South Asia, around 1909.")
         }
-    )
+   )
     (graphics {
         (show Symbol "thinCross" {27 19 12 10})
         (show Symbol "thinCross" 1 rotation:45)
@@ -105,5 +105,5 @@
     })
     (ai
         "Pancha Keliya_ai"
-    )
+   )
 )

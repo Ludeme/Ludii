@@ -10,10 +10,10 @@
                 (and 
                     (addScore Mover 1) 
                     (remove (between)) 
-                )
-            ) 
-        )
-    )
+               )
+           ) 
+       )
+   )
 )
 
 (define "IllegalMove"
@@ -37,10 +37,10 @@
                     (note player:Mover "has moved")
                     (note player:Next "to play")
                 })
-            )
-        )
+           )
+       )
         ifAfterwards:"HasFreedom"
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -61,26 +61,26 @@
                         (union 
                             (sites Empty) 
                             (sites Hidden to:Mover)
-                        )
-                    )
+                       )
+                   )
                     (then 
                         (priority 
                             {
                             (if 
                                 ("NotEmpty")
                                 ("IllegalMove")
-                            )
+                           )
                             
                             ("MadeALegalMove")
                             
                             ("IllegalMove")
                             }
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (move Pass)
-            )
-        )
+           )
+       )
         
         (end
             (if (all Passed)
@@ -88,9 +88,9 @@
                     (score P1 (+ (score P1) (size Territory P1))) 
                     (score P2 (+ (score P2) (size Territory P2)))
                 })
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -121,7 +121,7 @@
         (classification "board/space/territory")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Style Go)
@@ -132,5 +132,5 @@
     
     (ai
         "Phantom Go_ai"
-    )
+   )
 )

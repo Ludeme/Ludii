@@ -15,17 +15,17 @@
                         (sites Around (from)) 
                         of:1
                         (hint)
-                    )
-                )
+                   )
+               )
                 (forAll
                     Hint 
                     (= (what at:(from)) 0)
-                )
+               )
                 (is Sum 3)
             })
-        )
+       )
         (end (if (is Solved) (result P1 Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -43,7 +43,7 @@
         (hint 72 1) (hint 73 1) (hint 75 1)
         >
         ""
-    )   
+   )   
 })
 
 //------------------------------------------------------------------------------
@@ -59,7 +59,7 @@
         (classification "puzzle/deduction")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Grey))

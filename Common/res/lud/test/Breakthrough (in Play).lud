@@ -23,7 +23,7 @@
                         (from (site))
                         Forward
                         (to if:(is Empty (to)))
-                    )
+                   )
                     (move
                         Step
                         (from (site))
@@ -31,16 +31,16 @@
                         (to if:(or
                                 (is Empty (to))
                                 ("IsEnemyAt" (to))
-                            )
+                           )
                             (apply (remove (to)))
-                        )
-                    ) 
+                       )
+                   ) 
                 })
-            )
-        )
+           )
+       )
         
         (end (if "ReachedTarget" (result Mover Win))) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -80,7 +80,7 @@
         (credit "Eric Piette")
         (date "2000")
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)

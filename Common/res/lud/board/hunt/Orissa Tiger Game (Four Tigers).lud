@@ -17,12 +17,12 @@
         (phase "Placement" P1 
             (play (move (from (handSite P1)) (to (sites Empty)) (then (if (< 16 (count Cell at:(handSite P1))) (moveAgain))))) 
             (nextPhase Mover ("HandEmpty" Mover) "Playing") 
-        )
+       )
         (phase "Playing" (play (forEach Piece)))
         }
         
         (end ("NoMovesP2NoPiecesP1"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -40,12 +40,12 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, around 1926.")
         }
-    )
+   )
     (graphics {
         (piece Families {"Abstract" "Themed"})
     })
     
     (ai
         "Orissa Tiger Game (Four Tigers)_ai"
-    )
+   )
 )

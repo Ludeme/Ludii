@@ -5,7 +5,7 @@
 (define "EdgeInCommon" 
     (intersection (sites Incident Edge of:Cell at:(from)) 
         (sites Incident Edge of:Cell at:(to))
-    ) 
+   ) 
 )
 
 (define "NoEdgeBetweenCells"
@@ -19,11 +19,11 @@
                     (difference 
                         "EdgeInCommon"
                         (sites Empty Edge)
-                    )
-                )
-            )
-        )
-    )
+                   )
+               )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -45,17 +45,17 @@
                     (to
                         Cell 
                         (sites Empty Cell)
-                    )
+                   )
                     (then 
                         (and 
                             (if (< (count MovesThisTurn) (- "NumContagionByTurn" 1)) (moveAgain)) 
                             (addScore {P1 P2} {1 -1}) 
-                        ) 
-                    )
-                )
-            )
+                       ) 
+                   )
+               )
+           )
             (nextPhase (not (is Next Mover)) "ContagionGrowth")
-        )
+       )
         
         (phase "ContagionGrowth" P1 
             (play (move 
@@ -64,16 +64,16 @@
                         Cell 
                         (sites Empty Cell) 
                         if:("NoEdgeBetweenCells")
-                    ) 
+                   ) 
                     (then 
                         (and 
                             (if (< (count MovesThisTurn) (- "NumContagionByTurn" 1)) (moveAgain)) 
                             (addScore {P1 P2} {1 -1})
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         
         (phase "Containment" P2
             (play
@@ -82,24 +82,24 @@
                     (to
                         Edge 
                         (sites Empty Edge)
-                    )
+                   )
                     (then 
                         (if 
                             (< (count MovesThisTurn) (- "NumContainmentByTurn" 1)) 
                             (moveAgain)
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         }
         (end 
             {
             (if (> (score P1) (/ (* (count Rows) (count Columns)) 2)) (result P1 Win))
             (if (no Moves P1) (result P2 Win))
             }
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -139,7 +139,7 @@
         (credit "Eric Piette")
         (date "01-05-2019")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Black))
@@ -150,5 +150,5 @@
     
     (ai
         "Contagion_ai"
-    )
+   )
 )

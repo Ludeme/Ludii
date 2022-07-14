@@ -6,7 +6,7 @@
         (subgame "Yavalath" next:2)
         (subgame "Tic-Tac-Toe" next:0)
         }
-    )
+   )
     (end { 
         (if (and (= (count Trials) 3) (> (matchScore P1) (matchScore P2)))  (result P1 Win))
         (if (and (= (count Trials) 3) (< (matchScore P1) (matchScore P2)))  (result P2 Win))

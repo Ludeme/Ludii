@@ -7,7 +7,7 @@
             after:(count Rows)
             if:("IsEnemyAt" (between)) 
             (apply (remove (between)))
-        )
+       )
         (to if:(is Empty (to)))
         (then 
             (if (can Move 
@@ -20,16 +20,16 @@
                             if:(and 
                                 (not (is In (between) (sites ToClear))) 
                                 ("IsEnemyAt" (between))
-                            )
+                           )
                             (apply (remove (between)))
-                        )
+                       )
                         (to if:(is Empty (to)))
-                    )
-                ) 
+                   )
+               ) 
                 (moveAgain)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "HopMan" 
@@ -40,10 +40,10 @@
         (between 
             if:("IsEnemyAt" (between))
             (apply (remove (between)))
-        ) 
+       ) 
         (to if:(is Empty (to))) 
         #2
-    ) 
+   ) 
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -78,14 +78,14 @@
                                     (moveAgain)
                                     (if "JumpToPromotionZone" 
                                         (move Promote (last To) (piece "DoubleCounter") Mover)
-                                    )
-                                ) 
-                            ) 
-                        )
+                                   )
+                               ) 
+                           ) 
+                       )
                         ("PromotedHopOrthogonalSequenceCapture" (from (last To)) (difference Orthogonal OppositeDirection))
-                    )
+                   )
                     (move Pass)
-                )
+               )
                 (or { 
                     (forEach Piece "Counter" 
                         ("HopMan" (from)
@@ -94,31 +94,31 @@
                                     (moveAgain) 
                                     (if "JumpToPromotionZone" 
                                         (move Promote (last To) (piece "DoubleCounter") Mover)
-                                    )
-                                ) 
-                            ) 
-                        ) 
-                    )
+                                   )
+                               ) 
+                           ) 
+                       ) 
+                   )
                     (forEach Piece "DoubleCounter" ("PromotedHopOrthogonalSequenceCapture" (from) Orthogonal))
                     (forEach Piece "Counter" 
                         (move
                             Step 
                             (directions {Forward Rightward Leftward}) 
                             (to if:(is Empty (to)))
-                        )
+                       )
                         (then 
                             (if "JumpToPromotionZone"
                                 (move Promote (last To) (piece "DoubleCounter") Mover)
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (forEach Piece "DoubleCounter" (move Slide Orthogonal))
                 })
-            )
-        ) 
+           )
+       ) 
         
         (end ("BlockWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -139,7 +139,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Comoros, around 2018.")
         }
-    )
+   )
     
     (graphics {
         (piece Families {"Defined" "Isometric"})

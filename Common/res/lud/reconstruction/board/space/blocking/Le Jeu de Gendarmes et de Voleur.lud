@@ -14,9 +14,9 @@
                 {15 35} {14 34} {14 33} {14 32} {13 31} {13 30} {13 29} {12 28}
                 {12 27} {12 26} {11 25} {11 24} {11 23} {10 22} {10 21} {10 20}
                 }
-            )
+           )
             use:Vertex
-        )
+       )
         (piece "Marker" Each ("StepToEmpty"))
     })  
     
@@ -27,7 +27,7 @@
         })
         (play (forEach Piece))
         (end (if (no Moves P1) (result Mover P2)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -45,7 +45,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in France, around 1974.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)

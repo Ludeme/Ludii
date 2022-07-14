@@ -5,9 +5,9 @@
             (remove
                 ("ThreeMenMorrisGraphWithLeftAndRightTriangles")
                 edges:{{6 4} {4 2} {0 4} {4 8}}
-            )
+           )
             use:Vertex
-        )
+       )
         (hand Each)
         (piece "Hound" P1 "StepToEmpty")
         (piece "Hare" P2 "StepToEmpty")
@@ -23,14 +23,14 @@
         (phase "Placement"
             (play (move (from (handSite Mover)) (to (sites Empty))))
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play (forEach Piece))
-        )
+       )
         }
         (end ("BlockWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -49,7 +49,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Estonia, around 1973.")
         }
-    )
+   )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})

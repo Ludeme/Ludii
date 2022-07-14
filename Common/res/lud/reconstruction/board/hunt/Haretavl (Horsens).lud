@@ -7,15 +7,15 @@
                     (merge 
                         (shift 0 4 (rectangle 3 11 diagonals:Alternating))
                         (shift 4 0 (rectangle 11 3 diagonals:Alternating)) 
-                    )
+                   )
                     vertices:{54 55 56 51 53 21 10 32 31 9 35 34 33 36 38 22 23 11 0 1
                     45 47 29 7 44 42 3 25
                     }
-                )
+               )
                 edges:{{14 15} {0 1} {1 20} {3 22} {3 4} {17 18} {17 27} {15 25}}
-            )
+           )
             use:Vertex
-        )
+       )
         (piece "Marker" P1 (move [#]))
         (piece "Marker" P2 (move [#]))
     })  
@@ -24,7 +24,7 @@
         (start [#])
         (play [#])
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -42,7 +42,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Denmark, from around 1848 to 1898.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)

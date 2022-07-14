@@ -3,7 +3,7 @@
         from:(last To) 
         to:(forEach Level at:(last To)) 
         (who at:(last To) level:(to))
-    )		
+   )		
 )
 
 (define "AllActivePlayersInLastStack" 
@@ -26,19 +26,19 @@
                         from:(last To) 
                         to:(forEach Level at:(last To) FromBottom startAt:(+ 1 (level)))
                         (who at:(last To) level:(to))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (who at:(last To) level:(to))
-    )		
+   )		
 )
 
 (define "PlayerInMostRecentPlayedChip"
     (arrayValue 
         ("MostRecentPlayedChip")
         index:#1
-    )
+   )
 )
 
 (define "OwnerMostRecentPlayedChip"
@@ -49,9 +49,9 @@
             (if (is Active ("PlayerInMostRecentPlayedChip" 2))
                 ("PlayerInMostRecentPlayedChip" 2)
                 ("PlayerInMostRecentPlayedChip" 3)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "ACaptureIsMade"
@@ -60,8 +60,8 @@
         (= 
             (who at:(last To) level:(- (size Stack at:(last To)) 1))
             (who at:(last To) level:(- (size Stack at:(last To)) 2))
-        )
-    )	
+       )
+   )	
 )
 
 (define "ACaptureWasMade"
@@ -82,7 +82,7 @@
     (and
         (!= Undefined (var "CanBeDefeated"))
         (not (is Mover (var "CanBeDefeated")))
-    )
+   )
 )
 
 //-------------------------------------------------------------------------
@@ -112,9 +112,9 @@
                                 if:(and 
                                     (!= (site) (handSite Mover 0))
                                     (is Occupied (site))
-                                )
-                            )
-                        )
+                               )
+                           )
+                       )
                         (to (handSite Player (var "CanBeDefeated")))
                         (then
                             (and {
@@ -122,9 +122,9 @@
                                 (set Var "CanBeDefeated" Undefined)		
                                 (set Var "PrevWas" Undefined)
                             })
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (if ("ACaptureWasMade")
                     (forEach Level (last To)
                         (move Remove (last To) level:(level))
@@ -137,26 +137,26 @@
                                             (if (is Mover (who at:(last To) level:(level)))
                                                 (handSite Mover 0)
                                                 (handSite Mover (who at:(last To) level:(level)))
-                                            )
-                                        )
-                                    )
-                                )
+                                           )
+                                       )
+                                   )
+                               )
                                 (moveAgain)
                                 (set Pending)
                                 (set Var "CaptureWasMade" 0)
                             })
-                        )
-                    )
+                       )
+                   )
                     (if (and (not (is Pending)) ("SameTurn"))
                         (if ("AllActivePlayersInLastStack")
                             (move Set NextPlayer (player ("OwnerMostRecentPlayedChip")))
                             (forEach Player
                                 (if (and (is Active (player)) (not (is In (player) ("OwnerInLastStack"))))
                                     (move Set NextPlayer (player (player)))
-                                )
-                            )
+                               )
+                           )
                             (then (set Pending))
-                        )
+                       )
                         (if ("NoChip")
                             (if (= Undefined (var "CanBeDefeated"))
                                 (move Pass 
@@ -164,9 +164,9 @@
                                         (and
                                             (set Var "CanBeDefeated" (mover))
                                             (set Var "PrevWas" (prev))
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                                 (move Pass 
                                     (then 
                                         (and {
@@ -175,12 +175,12 @@
                                             (if (is Active (var "PrevWas"))
                                                 (set NextPlayer (player (var "PrevWas")))
                                                 (set NextPlayer (player (next)))
-                                            )
+                                           )
                                             (set Var "PrevWas" Undefined)
                                         })
-                                    )
-                                )
-                            )
+                                   )
+                               )
+                           )
                             (or {
                                 (move 
                                     (from (sites Hand Mover))
@@ -191,27 +191,27 @@
                                                 (and
                                                     (set Var "CaptureWasMade" 1)
                                                     (set NextPlayer (player (who at:(last To))))
-                                                )
+                                               )
                                                 (and {
                                                     (forEach Level (last To)
                                                         (remove (last To) level:(level))
-                                                    )
+                                                   )
                                                     (moveAgain)
                                                     (set Pending)
                                                 })
-                                            )
+                                           )
                                             (moveAgain)
-                                        )
-                                    )
-                                ) 
+                                       )
+                                   )
+                               ) 
                                 (move Remove
                                     (forEach (sites Hand Mover) 
                                         if:(and 
                                             (!= (site) (handSite Mover 0))
                                             (is Occupied (site))
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                                 (forEach Player 
                                     (if (not (is Mover Player))
                                         (move
@@ -220,24 +220,24 @@
                                                     if:(and 
                                                         (!= (site) (handSite Mover 0))
                                                         (is Occupied (site))
-                                                    )
-                                                )
-                                            )
+                                                   )
+                                               )
+                                           )
                                             (to (handSite Player (who at:(from))))
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                             })
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         
         (end 
             (if (is Mover (var "Defeat")) (result Mover Loss))
-        )
-    )
+       )
+   )
 )
 
 //-------------------------------------------------------------------------
@@ -284,7 +284,7 @@
         (credit "Eric Piette")
         (date "1950")
         }
-    )
+   )
     
     (graphics {
         (no Board)

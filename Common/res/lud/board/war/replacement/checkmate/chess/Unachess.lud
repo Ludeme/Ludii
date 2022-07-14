@@ -8,16 +8,16 @@
             (remove 
                 (to) 
                 (then (set Counter))
-            )
-        )
-    ) 
+           )
+       )
+   ) 
 )
 
 (define "KingNotCheckedAndToEmpty"
     (and 
         (is Empty (to)) 
         (or (not ("IsInCheck" "King" Mover at:(to))) (no Pieces Next "King" in:(sites Board)))
-    )   
+   )   
 )
 
 (define "CaptureForwardDiagonal"
@@ -27,8 +27,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-        )
-    )
+       )
+   )
 )
 
 (define "PlacePawn" 
@@ -37,10 +37,10 @@
             (from (sites Occupied by:#1 container:"Hand" component:"Pawn")) 
             (to 
                 (intersection (sites Empty) (sites #1 "PawnPlacementRows"))
-            )
-        )
+           )
+       )
         <PlacementConditions:PlacementConditions>
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -59,12 +59,12 @@
                     (and
                         (if (is In (last To) (sites Mover "Promotion")) 
                             (moveAgain)
-                        )
+                       )
                         (set Counter)
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (piece "Rook" Each 
             (move
@@ -73,18 +73,18 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "King" Each 
             (move
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndResetCounter"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "Bishop" Each 
             (move
                 Slide 
@@ -92,9 +92,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "Knight" Each 
             (move
                 Leap 
@@ -102,18 +102,18 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndResetCounter"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "Queen" Each 
             (move
                 Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
-                ) 
-            ) 
-        )
+               ) 
+           ) 
+       )
         
         (map "King" {(pair 1 "E1") (pair 2 "E8")})
         (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})
@@ -141,28 +141,28 @@
                             (move 
                                 (from (sites Occupied by:Mover container:"Hand" components:{"King" "Queen" "Rook" "Bishop" "Knight"})) 
                                 (to (sites Empty))
-                            ) 
+                           ) 
                             <PlacementConditions:PlacementConditions>
-                        )
+                       )
                         ("PlacePawn" Mover)
                         (forEach Piece)
                         }
-                    )
+                   )
                     ifAfterwards:(or (not ("IsInCheck" "King" Mover)) (no Pieces Next "King" in:(sites Board)))
-                )
-            )
-        )
+               )
+           )
+       )
         
         (end {
             (if (and 
                     (and ("IsInCheck" "King" Next) (= (count Pieces Mover "King" in:(sites Board)) 1))
                     ("NextCanNotMove")
-                ) 
+               ) 
                 (result Mover Win)
-            ) 
+           ) 
             (if (or (no Moves Mover) (= (counter) 99)) (result Mover Draw)) 
         })
-    )
+   )
 )
 
 (option "Setup" <PlacementConditions> args:{ <PlacementConditions> }
@@ -204,7 +204,7 @@
         (credit "Matthew Stephenson")
         (date "1995")
         }
-    )
+   )
     
     (graphics {
         (show Check "King")

@@ -13,7 +13,7 @@
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" "16,E,N1,W" loop:True P2)
             }		
-        )
+       )
         (piece "Seed" Shared)
         (regions "Home" P1 (sites Track "Track1"))  // P1 Home
         (regions "Home" P2 (sites Track "Track2"))  // P2 home
@@ -35,16 +35,16 @@
                                 (to 
                                     (forEach (sites Mover "Home")
                                         if:(!= (to) (site))
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                   )
+                               )
+                           )
+                       )
+                   )
                     (move Pass)
-                )
-            )
+               )
+           )
             (nextPhase (all Passed) "Sowing")
-        )
+       )
         (phase "Sowing"
             (play
                 (move Select
@@ -53,9 +53,9 @@
                             ("SameTurn") 
                             "LastHoleSowed" 
                             (sites Mover) 
-                        ) 
+                       ) 
                         if:(> (count at:(from)) 0)
-                    )
+                   )
                     (then 
                         (sow
                             "Track"
@@ -66,39 +66,39 @@
                                     (if (and 
                                             (= 0 (count at:("OppositePit" (to))))
                                             (= 0 (count at:("OppositeOuterPit" (to))))
-                                        )
+                                       )
                                         (moveAgain)
                                         (and
                                             (if (!= 0 (count at:("OppositePit" (to))))
                                                 (remove 
                                                     ("OppositePit" (to)) 
                                                     count:(count at:("OppositePit" (to)))
-                                                ) 
-                                            )
+                                               ) 
+                                           )
                                             (if (!= 0 (count at:("OppositeOuterPit" (to))))
                                                 (remove 
                                                     ("OppositeOuterPit" (to)) 
                                                     count:(count at:("OppositeOuterPit" (to)))
-                                                ) 
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )	  
-            )
-        )
+                                               ) 
+                                           )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )	  
+           )
+       )
         }
         
         (end 
             (forEach Player
                 if:(= 0 ("PiecesOwnedBy" Player))
                 (result Player Loss)
-            )		
-        )
-    )
+           )		
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -115,7 +115,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Democratic Republic of Congo, around 1946.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

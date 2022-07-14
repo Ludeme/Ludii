@@ -4,8 +4,8 @@
         (forEach 
             (sites Occupied by:Next container:"Board") 
             if:(not (is Line 3 Orthogonal through:(site)))
-        )
-    )
+       )
+   )
 )
 
 (define "IfLine3MoveAgain" 
@@ -13,8 +13,8 @@
         (if 
             (is Line 3 Orthogonal) 
             (moveAgain)
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -31,16 +31,16 @@
                 (move 
                     (from (from))
                     (to (sites Empty))
-                )
+               )
                 (move 
                     Step 
                     (to if:(is Empty (to))) 
-                )
+               )
                 "IfLine3MoveAgain"
-            )
-        ) 
+           )
+       ) 
         }
-    )  
+   )  
     (rules 
         (start (place "Marker" "Hand" count:12))
         
@@ -54,29 +54,29 @@
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
                         "IfLine3MoveAgain"
-                    )  
-                )
-            ) 
+                   )  
+               )
+           ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
+       )
         
         (phase "Movement" 
             (play 
                 (if "SameTurn"
                     "RemoveEnemyPieceNotInLine3"
                     (forEach Piece)
-                )
-            )
-        )
+               )
+           )
+       )
         }
         
         (end
             (forEach NonMover
                 if:(= 2 (count Pieces Player))
                 (result Player Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -95,13 +95,13 @@
         (credit "Eric Piette")
         (origin  "This game was played in South Africa, from around 1907 to 2002.")
         }
-    )
+   )
     
     (graphics {
         
     })
     (ai
         "Mlabalaba_ai"
-    )
+   )
 )
 

@@ -20,8 +20,8 @@
     (forEach Level (last From) FromTop
         (if (is Friend (who at:(last From) level:(level)))
             ("UnsetCapturingPiece" at:(last From) level:(level))
-        )
-    ) 
+       )
+   ) 
 )
 
 (define "CapturingPiece" (= 1 #1))
@@ -39,27 +39,27 @@
         (and
             (if (is Enemy (who at:(last To) level:(level)))
                 ("SetCapturePiece" at:(last To) level:(level))
-            )
+           )
             (if (is Friend (who at:(last To) level:(level)))
                 ("SetCapturingPiece" at:(last To) level:(level))
-            )
-        )
-    ) 
+           )
+       )
+   ) 
 )
 
 (define "RemoveCapturedPieces" 
     (forEach Level (last From) FromTop
         (if ("CapturedPiece" (state at:(last From) level:(level)))
             (remove (last From) level:(level))
-        )
-    )
+       )
+   )
 )
 
 (define "RebirthCapturingPiece"
     (add
         (piece (id "Stick" Mover))
         (to (handSite Mover))
-    )
+   )
 )
 
 (define "CapturedPiecesFollowCapturingPiece"
@@ -68,9 +68,9 @@
             (fromTo 
                 (from (last From) level:(level))
                 (to (last To))
-            )
-        )
-    )	
+           )
+       )
+   )	
 )
 
 //------------------------------------------------------------------------------
@@ -82,7 +82,7 @@
             (rectangle 1 <Player:size>)
             <Player:tracks> 
             use:Edge
-        )
+       )
         (regions "AllSites" (sites Board Vertex))
         (piece "Stick" Each
             (forEach Value (values Remembered "Throws")
@@ -94,27 +94,27 @@
                                 (to 
                                     (handSite Mover)
                                     (apply (forget Value "Throws" (value)))		
-                                )
-                            )
+                               )
+                           )
                             (move 
                                 (from (from) level:(level)
                                     if:(if (is In (from) (sites Hand Mover))
                                         ("NoPieceOnBoard")
                                         True
-                                    )
-                                )
+                                   )
+                               )
                                 (to 
                                     ("SiteToMoveOnTrack" from:(from) "Track" (value))
                                     (apply (forget Value "Throws" (value)))
-                                )
+                               )
                                 (then 
                                     (if ("AtLeastAnEnemyPieceThere" (last To))
                                         ("CaptureMove")
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                   )
+                               )
+                           )
+                       )
+                   )
                     (if ("CapturingPiece" (state at:(from) level:(level)))
                         (if (= Off ("SiteToMoveOnTrack" from:(from) "CaptureTrack" (value)))
                             (do (forget Value "Throws" (value))
@@ -125,27 +125,27 @@
                                             ("RemoveCapturedPieces")	
                                             ("RebirthCapturingPiece")
                                         })
-                                    )
-                                )
-                            )
+                                   )
+                               )
+                           )
                             (move 
                                 (from (from) level:(level))
                                 (to 
                                     ("SiteToMoveOnTrack" from:(from) "CaptureTrack" (value))
                                     (apply (forget Value "Throws" (value)))
-                                )
+                               )
                                 (then 
                                     (and
                                         ("CapturedPiecesFollowCapturingPiece")
                                         ("UnsetCapturingPieces")
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )		
-        )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )		
+       )
         (dice d:2 from:0 num:4)
         (hand Each)
     })
@@ -166,18 +166,18 @@
                                         (do
                                             (remember Value "Throws" ("ThrowValue"))
                                             ifAfterwards:(can Move (or (forEach Piece container:(mover)) (forEach Piece)))
-                                        )
-                                    )
+                                       )
+                                   )
                                     (moveAgain)
                                     (if ("SameTurn") (set Pending))
                                 })
-                            )
-                        )
-                    )
-                )	
-            )
+                           )
+                       )
+                   )
+               )	
+           )
             (nextPhase (is Pending) "MovePhase")
-        )
+       )
         (phase "MovePhase" 
             (play 
                 (or (forEach Piece) (forEach Piece container:(mover))
@@ -185,24 +185,24 @@
                         (and
                             (if (< 0 (size Array (values Remembered "Throws")))
                                 (moveAgain)
-                            )
+                           )
                             (forEach Site ("FireSites")
                                 (if (is Occupied (site))
                                     (forEach Level (site) FromTop
                                         (remove (site) level:(level))
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             (nextPhase (= 0 (size Array (values Remembered "Throws"))) "ThrowPhase")
-        )
+       )
         }
         
         (end  (if (no Pieces Enemy) (result TeamMover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -237,7 +237,7 @@
         } 
         >
         "The game has 6 players."
-    )   
+   )   
     (item "8" <8> <20>
         <
         (set Team 1 {P1 P2 P3 P4})
@@ -272,7 +272,7 @@
         } 
         >
         "The game has 8 players."
-    )   
+   )   
     (item "10" <10> <25>
         <
         (set Team 1 {P1 P2 P3 P4 P5})
@@ -313,7 +313,7 @@
         } 
         >
         "The game has 10 players."
-    )   
+   )   
     (item "12" <12> <25>
         <
         (set Team 1 {P1 P2 P3 P4 P5 P6})
@@ -360,7 +360,7 @@
         } 
         >
         "The game has 12 players."
-    )   
+   )   
     (item "14" <14> <25>
         <
         (set Team 1 {P1 P2 P3 P4 P5 P6 P7})
@@ -413,7 +413,7 @@
         } 
         >
         "The game has 14 players."
-    )   
+   )   
     (item "16" <16> <30>
         <
         (set Team 1 {P1 P2 P3 P4 P5 P6 P7 P8})
@@ -472,7 +472,7 @@
         } 
         >
         "The game has 16 players."
-    )   
+   )   
 })
 
 //------------------------------------------------------------------------------
@@ -483,7 +483,7 @@
         "Players/6" 
         }
         variations:{"Players/8" "Players/10" "Players/12" "Players/14" "Players/16"}
-    )*
+   )*
     
 })
 
@@ -502,7 +502,7 @@
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (piece Scale "Stick" 0.5)

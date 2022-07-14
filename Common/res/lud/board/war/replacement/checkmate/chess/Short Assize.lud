@@ -4,10 +4,10 @@
             (forEach Level (to)
                 (remove 
                     (to) level:(level)
-                )
-            )
-        )
-    ) 
+               )
+           )
+       )
+   ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -21,11 +21,11 @@
                 (forEach Level (to)
                     (remove 
                         (to) level:(level)
-                    )
-                )
-            )
-        )
-    )
+                   )
+               )
+           )
+       )
+   )
 )
 
 (define "NextCanNotMove"
@@ -45,9 +45,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-                )
-            )
-        )
+               )
+           )
+       )
         (piece "Rook" Each
             (move
                 Slide 
@@ -56,9 +56,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         (piece "Bishop" Each
             (move
                 Hop 
@@ -68,9 +68,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-                )
-            )		
-        )
+               )
+           )		
+       )
         (piece "Knight" Each
             (move
                 Leap 
@@ -79,9 +79,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-                ) 
-            )			
-        )
+               ) 
+           )			
+       )
         (piece "Queen" Each
             (move
                 Step 
@@ -90,24 +90,24 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-                )
-            )		
-        )
+               )
+           )		
+       )
         (piece "Pawn" Each
             (or 
                 (move Step 
                     (from (from) level:(level)) 
                     Forward 
                     (to if:(is Empty (to)))
-                )
+               )
                 "CaptureForwardDiagonal"
                 (then
                     (if (is In (last To) (sites Mover "Promotion")) 
                         (promote (last To) (piece (id "Queen" Mover)))
-                    )
-                )
-            )		
-        )
+                   )
+               )
+           )		
+       )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     })
@@ -128,13 +128,13 @@
             (if (and 
                     ("IsInCheck" "King" Next)
                     ("NextCanNotMove")
-                ) 
+               ) 
                 (result Mover Win)
-            ) 
+           ) 
             ("BlockWin")
             (if (= (count Pieces Next) 1) (result Mover Win)) 
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -153,7 +153,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in England, from around 1496 to 1498.")
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)

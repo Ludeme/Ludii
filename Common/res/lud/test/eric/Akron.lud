@@ -6,7 +6,7 @@
         (regions P1 {(sites Side N) (sites Side S) })
         (regions P2 {(sites Side W) (sites Side E) })
         }
-    )  
+   )  
     (rules 
         (meta {
             (gravity)
@@ -18,15 +18,15 @@
                     Add 
                     (to (sites Empty) 
                         if:(is Flat)
-                    )
-                )
+                   )
+               )
                 (move Remove 
                     (sites Occupied by:All)
-                )
-            )
-        )
+               )
+           )
+       )
         (end (if (is Connected Mover) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------

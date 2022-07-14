@@ -15,9 +15,9 @@
                 (or
                     (= 1 (count Sites in:(intersection ("SwapSites" (to) (from)) (sites Occupied by:Mover top:True))))
                     (= 1 (count Sites in:(intersection ("SwapSites" (to) (from)) (sites Occupied by:Next top:True))))
-                )
+               )
                 }
-        ))
+       ))
         (then
             (and
                 {
@@ -26,11 +26,11 @@
                     (piece (id "Disc" Mover))
                     (to (last From))
                     stack:True
-                )
+               )
                 (forEach Site
                     ("SwapSites" (last To) (last From))
                     (remember Value (site))
-                )
+               )
                 }
 ))))
 (define "SwapSite"  (arrayValue (values Remembered) index:#1))
@@ -48,13 +48,13 @@
                         (piece ("SwapPiece" 0))
                         (to ("SwapSite" 1)
                             (apply (remove (to)))
-                        )
+                       )
                         (then
                             (add
                                 (piece (var "Piece1"))
                                 (to ("SwapSite" 0)
                                     (apply (remove (to)))
-        )))))))
+       )))))))
         (then
             (and
                 {
@@ -73,21 +73,21 @@
         (board (renumber (rotate 90 <Board:type>)) use:Cell)
         (piece "Disc" Each)
         }
-    )
+   )
     (rules
         (start
             {
             (place "Disc1" <Board:bStart>)
             (place "Disc2" <Board:wStart>)
             }
-        )
+       )
         (play
             (priority
                 ("Placement" (sites Empty))
                 ("Placement" (sites Occupied by:Next))
                 (then 
                     ("MakeSwap")
-        )))
+       )))
         (end 
             (if 
                 (!= 0 (+ (score P1) (score P2)))
@@ -105,7 +105,7 @@
             (count Steps Adjacent
                 (step Adjacent
                     (to if:(or (is Empty (to)) (is #1 (who at:(to)))))
-                )
+               )
                 (site)
                 (sites Outer)
 ))))  
@@ -176,7 +176,7 @@
         (credit "Dale Walton")
         (date "16-05-2022")
         }
-    )
+   )
     
     (graphics
         {
@@ -194,5 +194,5 @@
         //   (stackType None)
         (region Colour (forEach (sites Board) if:(= 2 (count Stack at:(site)))) (colour 160 200 170))
         }
-    )
+   )
 )

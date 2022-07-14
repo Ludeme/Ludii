@@ -9,9 +9,9 @@
                     Forwards
                     (to 
                         if:(is Empty (to)) 
-                    )
+                   )
                     stack:True
-                )
+               )
                 (move Step
                     (to 
                         if:("IsEnemyAt" (to)) 
@@ -20,24 +20,24 @@
                                 (if
                                     (= 2 (size Stack at:(to)))
                                     (set Var "NextLoss" 1)
-                                )
+                               )
                                 (remove (to) count:(size Stack at:(to)))
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     stack:True
-                )
+               )
                 (move Step
                     (from if:(= 2 (size Stack at:(from))))
                     Forwards
                     (to 
                         if:(is Mover (who at:(to)))
-                    )
-                )
+                   )
+               )
             })
-        )
+       )
         }
-    )
+   )
     (rules
         (start {
             (place "Disc1" (expand (sites Bottom) steps:(- <Size> 2) Orthogonal))
@@ -47,27 +47,27 @@
         })
         (play
             (forEach Piece top:True)
-        )
+       )
         (end {
             (if 
                 (= 1 (var "NextLoss")) 
                 (result Next Loss)
-            )
+           )
             (if 
                 (or
                     (and
                         (= (id P1) (who at:(- (* <Size> <Size>) 1)))
                         (= 2 (size Stack at:(- (* <Size> <Size>) 1)))
-                    )
+                   )
                     (and
                         (= (id P2) (who at:0))
                         (= 2 (size Stack at:0))
-                    )
-                )
+                   )
+               )
                 (result Mover Win)
-            )
+           )
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -119,7 +119,7 @@
         (credit "Michael Amundsen")
         (date "2022")
         }
-    )
+   )
     (graphics {
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))

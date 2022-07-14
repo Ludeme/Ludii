@@ -23,7 +23,7 @@
         {8 17} {17 26} {26 35} {35 44} 
         {3 13} {13 23} {21 13} {13 5}
         }
-    )        
+   )        
 )
 
 //------------------------------------------------------------------------------
@@ -38,14 +38,14 @@
                     (shift 4 7
                         (rotate 120
                             ("OneSide")
-                        )
-                    )
+                       )
+                   )
                     
                     (shift -4 7
                         (rotate -120
                             ("OneSide")
-                        )
-                    )
+                       )
+                   )
                     
                 })
                 edges:{
@@ -53,38 +53,38 @@
                 {44 81} {43 82} {42 83} {41 84} {40 85}
                 {126 89} {127 88} {128 87} {129 86} {130 85}
                 }
-            )
+           )
             use:Vertex
-        )
+       )
         // General
-        (piece "Jiang" Each ) 
+        (piece "Jiang" Each) 
         
         // Guard
-        (piece "Shi" Each ) 
+        (piece "Shi" Each) 
         
         // Elephant
         (piece "Xiang" Each 
-        ) 
+       ) 
         
         // Horse
         (piece "Ma" Each 
-        )
+       )
         
         // Chariot
         (piece "Ju" Each 
-        )
+       )
         
         // Canon
         (piece "Pao" Each 
-        )
+       )
         
         // Soldier
         (piece "Zu" Each
-        )
+       )
         
         // Fire
         (piece "Huo" Each
-        )
+       )
         
     })
     (rules 
@@ -100,7 +100,7 @@
         })
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -120,7 +120,7 @@
                 (credit "Eric Piette")
                 (origin  "This game was played in China, around 1876.")
                 }
-            )
+           )
             
             (graphics {
                 (show Edges Diagonal Hidden)
@@ -137,4 +137,4 @@
                 (piece Style ExtendedXiangqi)
             })
             
-        )
+       )

@@ -4,14 +4,14 @@
         (board (rotate 90 (hex <Board>))) 
         (piece "Marker" Each) 
         }
-    )  
+   )  
     (rules 
         <Version:playRules>
         (end {
             (if (is Line 4) (result Mover Win))
             (if (is Line 3) (result Mover Loss)) 
         })  
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -51,10 +51,10 @@
         (credit "Eric Piette")
         (date "01-10-2011")
         }
-    )
+   )
     
     (ai 
         "Yavalath_ai"
-    )
+   )
     
 )

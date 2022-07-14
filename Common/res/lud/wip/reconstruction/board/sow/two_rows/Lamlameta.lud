@@ -8,7 +8,7 @@
     (equipment { 
         (mancalaBoard 2 12 store:None
             (track "Track" "0,E,N,W" loop:True)
-        )
+       )
         (piece "Seed" Shared)
         (hand Each)
         (regions P1 (sites Bottom))                     // P1 home
@@ -25,57 +25,57 @@
                     (move Select
                         (from
                             (sites {11 10})
-                        )
+                       )
                         (then
                             (and {
                                 (sow)
                                 (moveAgain)
                                 (set Var "FirstSite" (last From))
                             })
-                        )
-                    )
+                       )
+                   )
                     (if (= (var "FirstSite") ("NextHole" ("LastHoleSowed")))
                         (move Select
                             (from
                                 (sites {("LastHoleSowed")})
-                            )
+                           )
                             (then
                                 (sow)
-                            )
-                        )
+                           )
+                       )
                         (move Select
                             (from
                                 (sites {("NextHole" ("LastHoleSowed"))})
-                            )
+                           )
                             (then
                                 (and 
                                     (sow)
                                     (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             (nextPhase ("NewTurn") "Sowing")
-        )
+       )
         (phase "Sowing"
             (play
                 (move Select
                     (from 
                         (sites Mover)
                         if:(and (is Occupied (from)) (!= 2 (count at:(from))))
-                    )
+                   )
                     (then 
                         (sow
                             skipIf:(= 2 (count at:(to)))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -93,7 +93,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Ethiopia, around 1971.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

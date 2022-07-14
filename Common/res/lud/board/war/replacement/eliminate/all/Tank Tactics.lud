@@ -10,18 +10,18 @@
             (intersection 
                 (sites Occupied by:Enemy container:"Board")
                 (sites Distance from:(from) (range 1 (state at:(from))))
-            )
-        )
+           )
+       )
         (then 
             (and
                 (if	(= (value Piece at:(last To)) 1)
                     (remove (last To))
                     (set Value at:(last To) (- (value Piece at:(last To)) 1))
-                )
+               )
                 "PostActionUpdate"
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "Trade"
@@ -31,15 +31,15 @@
             (intersection 
                 (sites Occupied by:Enemy container:"Board")
                 (sites Distance from:(from) (range 1 (state at:(from))))
-            )
-        )
+           )
+       )
         (then 
             (and
                 (addScore (player (who at:(last To))) 1)
                 "PostActionUpdate"
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "Upgrade"
@@ -50,11 +50,11 @@
             (and
                 (if (< (state at:(last To)) 100)
                     (set State at:(last To) (+ 1 (state at:(last To))))
-                )
+               )
                 "PostActionUpdate"
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "Pass"
@@ -63,9 +63,9 @@
             (addScore
                 Mover
                 1
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "PostActionUpdate"
@@ -74,10 +74,10 @@
             (addScore
                 Mover
                 -1
-            )
+           )
             (moveAgain)
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -101,24 +101,24 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty)) 
-                )  
-            ) 
+               )  
+           ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
+       )
         (phase "Movement" 
             (play 
                 (or 
                     (forEach Piece)
                     "Pass"
-                )
-            )
-        )}
+               )
+           )
+       )}
         (end 
             (forEach NonMover 
                 if:(no Pieces Player) (result Player Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -132,7 +132,7 @@
         (place "Tank2" (handSite P2) state:2 value:3)
         > 
         "2 players."
-    )**
+   )**
     (item "3 Players" 
         <3> 
         <
@@ -141,7 +141,7 @@
         (place "Tank3" (handSite P3) state:2 value:3)
         > 
         "3 players."
-    )
+   )
     (item "12 Players" 
         <12> 
         <
@@ -159,7 +159,7 @@
         (place "Tank12" (handSite P12) state:2 value:3)
         > 
         "12 players."
-    )
+   )
     }
 )
 
@@ -192,7 +192,7 @@
         (author "Luke Muscat and Joe Gatling")
         (credit "Matthew Stephenson")
         }
-    )
+   )
     
     (graphics {
         (show Piece Value CornerLeft offsetImage:true valueOutline:true)

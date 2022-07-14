@@ -1,14 +1,14 @@
 (define "CloserToCentre"
     (>= (count Steps Orthogonal (from) (centrePoint)) 
         (count Steps Orthogonal (to) (centrePoint)) 
-    )
+   )
 )
 
 (define "AllPawnsInInnerRing"
     (all Sites 
         (difference (sites Around (sites Centre)) (sites Centre))
         if:("IsPieceAt" "Pawn" Mover (site))
-    )	
+   )	
 )
 
 (define "CapturePiece"
@@ -17,7 +17,7 @@
         Orthogonal
         (between (max 1) if:("IsEnemyAt" (between)) (apply (set State at:(between) 1)))
         (to if:("IsFriendAt" (to))) 
-    )
+   )
 )
 
 (define "ReleaseCapturePiece"
@@ -28,9 +28,9 @@
             (to (sites #2) if:(is Empty (to)))
             (then
                 (set State at:(last To) 0)
-            )
-        )
-    )	
+           )
+       )
+   )	
 )
 
 //------------------------------------------------------------------------------
@@ -46,20 +46,20 @@
                         ("CloserToCentre")
                         (!= (to) (centrePoint))
                     })
-                )
+               )
                 (then ("CapturePiece"))
-            )
-        ) 
+           )
+       ) 
         (piece "Queen" Each
             (move Step 
                 (to if:(and 
                         (is Empty (to))
                         ("CloserToCentre")
-                    )
-                )
+                   )
+               )
                 (then ("CapturePiece"))
-            )		
-        ) 
+           )		
+       ) 
     })  
     (rules 
         (start {
@@ -75,27 +75,27 @@
                 (do (forEach Piece)
                     ifAfterwards:(not (can Move
                             ("InterveneCapture" Orthogonal)
-                    ))
-                )
+                   ))
+               )
                 
                 }
-            )
-        )
+           )
+       )
         (end 
             (if ("AllPawnsInInnerRing")
                 {
                 (if 
                     ("IsPieceAt" "Queen" Mover (centrePoint))
                     (result Mover Win)
-                )
+               )
                 (if 
                     (not ("IsPieceAt" "Queen" Mover (centrePoint)))
                     (result Mover Loss)
-                )
+               )
                 }
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -136,7 +136,7 @@
         (credit "Eric Piette")
         (date "1842")
         }
-    )
+   )
     (graphics {
         (piece Scale "Pawn" 0.75)
         (board Colour InnerEdges (colour Black))
@@ -146,15 +146,15 @@
             (union 
                 (sites Outer) 
                 (sites {42 53 63 72 73 74 75 67 58 48 37 27 18 17 16 15 23 32 44 55 56 46 35 34})
-            )
+           )
             (colour 255 205 1)
-        )
+       )
         (region Colour 
             (union 
                 (sites Centre) 
                 (sites {41 52 62 71 79 80 81 82 83 76 68 59 49 38 28 19 11 10 9 8 7 14 22 31 24 25 26 36 47 57 66 65 64 54 43 33})
-            )
+           )
             (colour 192 64 64)
-        )
+       )
     })
 )

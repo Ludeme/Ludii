@@ -9,12 +9,12 @@
                 after:1
                 if:(and (= 4 (count Steps (from) (between))) ("IsEnemyAt" (between)))
                 (apply (remove (between)))
-            ) 
+           ) 
             (to if:(is Empty (to))) 
-        )
+       )
         ifAfterwards:(is In (last To) (sites Phase 0))
         #2
-    )
+   )
 )
 
 (define "DiagonalHopCaptureDoubleCounter"
@@ -26,10 +26,10 @@
             before:1
             if:(and (= 2 (count Steps (from) (between))) ("IsEnemyAt" (between)))
             (apply (remove (between)))
-        ) 
+       ) 
         (to if:(is Empty (to))) 
         #2
-    )
+   )
 )
 
 (define "OrthogonalHopCaptureCounter"
@@ -43,12 +43,12 @@
                 after:1
                 if:(and (= 4 (count Steps (from) (between))) ("IsEnemyAt" (between)))
                 (apply (remove (between)))
-            ) 
+           ) 
             (to if:(is Empty (to))) 
-        )
+       )
         ifAfterwards:(is In (last To) (sites Phase 0))
         #2
-    )
+   )
 )
 
 (define "DiagonalHopCaptureCounter"
@@ -60,10 +60,10 @@
             before:1
             if:(and (= 2 (count Steps (from) (between))) ("IsEnemyAt" (between)))
             (apply (remove (between)))
-        ) 
+       ) 
         (to if:(is Empty (to)))
         #2
-    )
+   )
 )
 
 (define "DoubleCounterMoveAgainIfCanCaptureAgain" 
@@ -73,11 +73,11 @@
                 (or 
                     ("DiagonalHopCaptureDoubleCounter" (from (last To))) 
                     ("OrthogonalHopCaptureDoubleCounter" (from (last To)))
-                )
-            )
+               )
+           )
             (moveAgain)
-        )
-    )
+       )
+   )
 )
 
 (define "DoubleCounterMove"
@@ -85,11 +85,11 @@
         (do
             (move Slide)
             ifAfterwards:(is In (last To) (sites Phase 0))
-        )
+       )
         ("DiagonalHopCaptureDoubleCounter" (from) ("DoubleCounterMoveAgainIfCanCaptureAgain"))
         ("OrthogonalHopCaptureDoubleCounter" (from) ("DoubleCounterMoveAgainIfCanCaptureAgain"))
         }
-    )
+   )
 )
 
 (define "CounterMoveAgainIfCanCaptureAgain" 
@@ -102,22 +102,22 @@
                         (or 
                             ("DiagonalHopCaptureDoubleCounter" (from (last To))) 
                             ("OrthogonalHopCaptureDoubleCounter" (from (last To)))
-                        )
-                    )
+                       )
+                   )
                     (moveAgain)
-                )
-            )
+               )
+           )
             (if 
                 (can Move 
                     (or 
                         ("DiagonalHopCaptureCounter" (from (last To))) 
                         ("OrthogonalHopCaptureCounter" (from (last To)))
-                    )
-                )
+                   )
+               )
                 (moveAgain)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "CounterMove"
@@ -129,13 +129,13 @@
             (then 
                 (if ("JumpToPromotionZone") 
                     (move Promote (last To) (piece "DoubleCounter") Mover)
-                )
-            )
-        )
+               )
+           )
+       )
         ("DiagonalHopCaptureCounter" (from) ("CounterMoveAgainIfCanCaptureAgain"))
         ("OrthogonalHopCaptureCounter" (from) ("CounterMoveAgainIfCanCaptureAgain"))
         }
-    )
+   )
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -153,14 +153,14 @@
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-    )  
+   )  
     (rules 
         (start
             { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:3) (sites Phase 1)  ))
+            (place "Counter1" (difference (expand (sites Bottom) steps:3) (sites Phase 1) ))
             (place "Counter2" (difference (expand (sites Top) steps:3) (sites Phase 1)))
             }
-        )
+       )
         
         (play 
             (if ("SameTurn")
@@ -169,20 +169,20 @@
                         (or 
                             ("DiagonalHopCaptureCounter" (from (last To)) ("CounterMoveAgainIfCanCaptureAgain")) 
                             ("OrthogonalHopCaptureCounter" (from (last To)) ("CounterMoveAgainIfCanCaptureAgain"))
-                        )
+                       )
                         (or 
                             ("DiagonalHopCaptureDoubleCounter" (from (last To)) ("DoubleCounterMoveAgainIfCanCaptureAgain")) 
                             ("OrthogonalHopCaptureDoubleCounter" (from (last To)) ("DoubleCounterMoveAgainIfCanCaptureAgain"))
-                        )
-                    )
+                       )
+                   )
                     (move Pass)
-                )
+               )
                 (forEach Piece)
-            )
-        ) 
+           )
+       ) 
         
         (end (if (no Pieces Next) (result Mover Win))) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -201,7 +201,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Holland, around 1805.")
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)
@@ -210,5 +210,5 @@
     
     (ai
         "Maleys_ai"
-    )
+   )
 )

@@ -10,7 +10,7 @@
     (rules
         (play (do (roll) next:(forEach Piece))) // Royal throws grant the player an extra throw. A royal throw is required to pass a barrier or to escape the pit. Pieces may only land on the same spot as another of the player's pieces after the first barrier. If a player's piece lands on a space occupied by an opponent's piece, the opponent's piece is a hit. Hitting a piece gives the player an extra throw.
         (end (if (no Moves Next) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -20,7 +20,7 @@
     (info
         {
         }
-    )
+   )
     
     (graphics {
         (piece Colour "Die" state:0 fillColour:(colour White))

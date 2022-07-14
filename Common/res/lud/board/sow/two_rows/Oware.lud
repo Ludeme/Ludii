@@ -7,7 +7,7 @@
     (equipment { 
         (mancalaBoard 2 6
             (track "Track" "1,E,N,W" loop:True)
-        )
+       )
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
@@ -26,7 +26,7 @@
                             (from 
                                 (sites Mover) 
                                 if:(< 0 (count at:(from)))
-                            )
+                           )
                             (then 
                                 (sow  
                                     if:(and 
@@ -34,26 +34,26 @@
                                         (or 
                                             (= (count at:(to)) 2) 
                                             (= (count at:(to)) 3)
-                                        )
-                                    ) 
+                                       )
+                                   ) 
                                     apply:(fromTo 
                                         (from (to)) 
                                         (to (mapEntry (mover))) 
                                         count:(count at:(to))
-                                    )
+                                   )
                                     includeSelf:False
                                     <Skip>
                                     backtracking:True
-                                )
-                            )
-                        )
+                               )
+                           )
+                       )
                         ifAfterwards:(< 0 (count in:(sites Next)))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         <End:rule>
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -64,13 +64,13 @@
         <
         >     
         ""
-    )
+   )
     (item "12 counters max by hole"  
         <
         skipIf:(>= (count at:(to)) 12)
         >     
         "12 counters max by hole."
-    )
+   )
 })
 
 (option "End Rules" <End> args:{ <rule> }
@@ -83,26 +83,26 @@
                     (score P1 ("PiecesOwnedBy" P1)) 
                     (score P2 ("PiecesOwnedBy" P2))
                 })
-            )
-        )
+           )
+       )
         >     
         "The game ended when a player has no piece on his side or if the two players are agree on the end of the game in case a cycle."
-    )  
+   )  
     (item "25 Counters"  
         <
         (end
             {
             (if (>= (count at:(mapEntry P1)) 25)
                 (result P1 Win)
-            )
+           )
             (if (>= (count at:(mapEntry P2)) 25)
                 (result P2 Win)
-            )
+           )
             }
-        )
+       )
         >     
         "A player wins when he captures 25 (or more) counters."
-    ) 
+   ) 
 })
 
 //------------------------------------------------------------------------------
@@ -139,7 +139,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in West Africa, around 1927.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -147,5 +147,5 @@
     
     (ai 
         "Oware_ai"
-    )
+   )
 )

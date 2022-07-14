@@ -9,7 +9,7 @@
         ("AlquerqueBoard" 8)
         (piece "Marker" Each "StepToEmpty")
         }
-    )  
+   )  
     (rules 
         (start { 
             (place "Marker1" (sites { "A1" })) 
@@ -23,7 +23,7 @@
         })
         (play (forEach Piece))
         (end (if (is Line 3) (result Mover Win)))  
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -37,7 +37,7 @@
         (classification "board/space/line")
         (credit "Cameron Browne")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Cream))

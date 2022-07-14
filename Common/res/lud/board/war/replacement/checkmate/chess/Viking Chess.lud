@@ -7,9 +7,9 @@
         (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
-            )
-        )
-    ) 
+           )
+       )
+   ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -19,8 +19,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -39,12 +39,12 @@
                     (and
                         (if (is In (last To) (sites Mover "Promotion")) 
                             (moveAgain)
-                        )
+                       )
                         (set Counter)
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (piece "Rook" Each 
             (move 
@@ -53,18 +53,18 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "King" Each 
             (move 
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "Bishop" Each 
             (move
                 Slide 
@@ -72,9 +72,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "Knight" Each 
             (move 
                 Leap 
@@ -82,50 +82,50 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "Queen" Each 
             (move
                 Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            ) 
-        )
+               ) 
+           ) 
+       )
         
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Top))
         }
-    )  
+   )  
     (rules 
         (start
             { 
             (place "Pawn1" {"B2" "B3" "C3" "D3" "E3" "E2" "F2" "F1"}) (place "Rook1" {"A1" "A2"}) (place "Knight1" {"C2" "D2"}) (place "Bishop1" {"B1" "E1"}) (place "Queen1" coord:"D1") (place "King1" coord:"C1") 
             (place "Pawn2" {"G1" "G2" "H2" "H3" "I3" "J3" "K3" "K2"}) (place "Rook2" {"L1" "L2"}) (place "Knight2" {"J2" "I2"}) (place "Bishop2" {"K1" "H1"}) (place "Queen2" coord:"I1") (place "King2" coord:"J1") 
             }
-        )
+       )
         
         (play 
             (if "SameTurn"
                 (move Promote (last To) (piece {"Queen" "Knight" "Bishop" "Rook"}) Mover)
                 (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King" Mover)))
-            )
-        )
+           )
+       )
         
         (end
             {
             (if (and 
                     ("IsInCheck" "King" Next)
                     ("NextCanNotMove")
-                ) 
+               ) 
                 (result Mover Win)
-            ) 
+           ) 
             (if (or (no Moves Mover) (= (counter) 100)) (result Mover Draw)) 
             }
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -142,7 +142,7 @@
         (classification "board/war/replacement/checkmate/chess")
         (credit "Matthew Stephenson")
         }
-    )
+   )
     
     (graphics {
         (show Check "King")

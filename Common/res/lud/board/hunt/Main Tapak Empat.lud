@@ -18,15 +18,15 @@
                 (move 
                     (from (handSite P1)) 
                     (to (sites Empty))
-                )
-            ) 
+               )
+           ) 
             (nextPhase ("HandEmpty" P1))
-        )
+       )
         (phase "Movement" (play (forEach Piece)))
         }
         
         (end ("NoMovesP2NoPiecesP1"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -44,7 +44,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Malaysia, around 1919.")
         }
-    )
+   )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})

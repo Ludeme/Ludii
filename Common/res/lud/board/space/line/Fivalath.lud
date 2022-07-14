@@ -5,7 +5,7 @@
         (board (square <Board:size>) use:Vertex) 
         (piece "Ball" Each) 
         }
-    )  
+   )  
     (rules 
         
         (play (move Add (to (sites Empty))))
@@ -15,8 +15,8 @@
             (if (is Line 5 All) (result Mover Win))
             (if (is Line 4 All) (result Mover Loss))
             }
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -54,7 +54,7 @@
         (credit "Eric Silverman")
         (date "2020")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Black))
@@ -64,5 +64,5 @@
     
     (ai
         "Fivalath_ai"
-    )
+   )
 )

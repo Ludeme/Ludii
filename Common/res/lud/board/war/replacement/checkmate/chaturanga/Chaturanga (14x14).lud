@@ -6,8 +6,8 @@
     (apply 
         (if ("IsEnemyAt" (to))
             (remove (to))
-        )
-    ) 
+       )
+   ) 
 )
 
 //------------------------------------------------------------------------------
@@ -22,48 +22,48 @@
                 (to 
                     if:("IsEnemyAt" (to))
                     "CaptureToPiece"
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         (piece "Prince" Each
             (move
                 Slide 
                 (between
                     (max 6)
                     if:(is Empty (between))
-                )
+               )
                 (to 
                     if:("IsEnemyAt" (to))
                     "CaptureToPiece"
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         (piece "Bishop" Each // Minister
             (move
                 Slide 
                 (between
                     (max 6)
                     if:(is Empty (between))
-                )
+               )
                 (to 
                     if:("IsEnemyAt" (to))
                     "CaptureToPiece"
-                ) 
-            )			
-        ) 
+               ) 
+           )			
+       ) 
         (piece "Queen" Each // Military Leader
             (move
                 Slide 
                 (between
                     (max 6)
                     if:(is Empty (between))
-                )
+               )
                 (to 
                     if:("IsEnemyAt" (to))
                     "CaptureToPiece"
-                ) 
-            )			
-        ) 
+               ) 
+           )			
+       ) 
         (piece "Elephant" Each
             (or {
                 (move
@@ -72,20 +72,20 @@
                     (between
                         (max 5)
                         if:(is Empty (between))
-                    )
+                   )
                     (to 
                         if:("IsEnemyAt" (to))
                         "CaptureToPiece"
-                    ) 
-                )
+                   ) 
+               )
                 (move
                     Step 
                     (directions {BR BL})
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
-                    )
-                )
+                   )
+               )
                 (forEach Direction 
                     Forward 
                     (between (range 1 5))
@@ -102,18 +102,18 @@
                                                 (to 
                                                     if:(not ("IsFriendAt" (to)))
                                                     "CaptureToPiece"
-                                                ) 
-                                            )
-                                        )
-                                    )
-                                )
+                                               ) 
+                                           )
+                                       )
+                                   )
+                               )
                             })
-                        )
-                    )
-                )	
+                       )
+                   )
+               )	
                 
             })
-        ) 
+       ) 
         (piece "Rook" Each // Cart
             (move
                 Slide 
@@ -121,9 +121,9 @@
                 (to 
                     if:("IsEnemyAt" (to))
                     "CaptureToPiece"
-                ) 
-            )			
-        ) 
+               ) 
+           )			
+       ) 
         (piece "Horse" Each
             (move
                 Leap 
@@ -131,9 +131,9 @@
                 (to 
                     if:(is Empty (to))
                     "CaptureToPiece"
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         (piece "Wrench" Each // Machinist 
             (or 
                 (move
@@ -142,22 +142,22 @@
                     (between
                         (max 4)
                         if:(is Empty (between))
-                    )
+                   )
                     (to 
                         if:("IsEnemyAt" (to))
                         "CaptureToPiece"
-                    ) 
-                )
+                   ) 
+               )
                 (move
                     Step 
                     (directions {FR FL Backward})
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
-                    )
-                )
-            )		
-        ) 
+                   )
+               )
+           )		
+       ) 
         (piece "Archer" Each
             (or 
                 (move
@@ -166,22 +166,22 @@
                     (between
                         (max 3)
                         if:(is Empty (between))
-                    )
+                   )
                     (to 
                         if:("IsEnemyAt" (to))
                         "CaptureToPiece"
-                    ) 
-                )
+                   ) 
+               )
                 (move
                     Step 
                     (directions {FR FL Backward})
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
-                    )
-                )
-            )			
-        )
+                   )
+               )
+           )			
+       )
         (piece "Spear" Each
             (or 
                 (move
@@ -190,22 +190,22 @@
                     (between
                         (max 2)
                         if:(is Empty (between))
-                    )
+                   )
                     (to 
                         if:("IsEnemyAt" (to))
                         "CaptureToPiece"
-                    ) 
-                )
+                   ) 
+               )
                 (move
                     Step 
                     (directions {FR FL Backward})
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
-                    )
-                )
-            )		
-        )
+                   )
+               )
+           )		
+       )
         (piece "Sword" Each
             (move
                 Step 
@@ -213,9 +213,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-                )
-            )		
-        )
+               )
+           )		
+       )
         (hand Each size:11)
         (regions P1 (expand (sites Bottom) steps:6))
         (regions P2 (expand (sites Top) steps:6))
@@ -238,9 +238,9 @@
         (phase "Placement"
             (play 
                 (move (from (sites Hand Mover) if:(is Occupied (from))) (to (intersection (sites Empty) (sites Mover))))
-            )
+           )
             (nextPhase Mover (all Sites (sites Hand Mover) if:(is Empty (site))) "Play")
-        )
+       )
         
         (phase "Play"
             (play 
@@ -248,20 +248,20 @@
                     (forEach Piece)
                     
                     ifAfterwards:(not ("IsInCheck" "King" Mover))
-                )
-            )
-        )
+               )
+           )
+       )
         
         }      
         (end 
             (if (and 
                     ("IsInCheck" "King" Next)
                     ("NextCanNotMove")
-                ) 
+               ) 
                 (result Mover Win)
-            ) 
-        )
-    )
+           ) 
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -279,7 +279,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, from around 1497 to 1540.")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

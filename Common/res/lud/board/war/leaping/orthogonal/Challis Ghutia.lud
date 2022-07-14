@@ -4,15 +4,15 @@
         (board
             (square 9)
             use:Vertex
-        )
+       )
         (piece "Marker" Each 
             (or 
                 ("HopSequenceCapture")
                 ("StepToEmpty")
-            )
-        )
+           )
+       )
         }
-    )  
+   )  
     (rules 
         (start {
             (place "Marker1" (union (expand (sites Bottom) steps:3) (sites {"F5" "G5" "H5" "I5"})))
@@ -23,15 +23,15 @@
                 (or
                     ("HopSequenceCaptureAgain")	
                     (move Pass)
-                )
+               )
                 (forEach Piece)
-            )
-        )
+           )
+       )
         
         (end 
             (if (no Pieces Next) (result Mover Win))
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -49,7 +49,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, around 1939.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)
@@ -58,5 +58,5 @@
     
     (ai
         "Challis Ghutia_ai"
-    )
+   )
 )

@@ -36,16 +36,16 @@
                     (forEach 
                         (sites Occupied by:Mover)
                         if:(> (state at:(site)) ("LastStateRemove"))
-                    )
-                )
+                   )
+               )
                 (then
                     (and
                         ("StoreStateRemoved")
                         (remove (last To))	
-                    )
-                )		
-            )
-        ) 
+                   )
+               )		
+           )
+       ) 
         
         (end 
             (if 
@@ -54,13 +54,13 @@
                         in:(forEach 
                             (sites Occupied by:Mover) 
                             if:(= 8 (state at:(site)))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (result Mover Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -77,7 +77,7 @@
         (credit "Cameron Browne")
         (date "2021")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour White))
@@ -86,5 +86,5 @@
     })
     (ai
         "Greater Loss_ai"
-    )
+   )
 )

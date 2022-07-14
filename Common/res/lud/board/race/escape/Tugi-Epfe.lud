@@ -4,7 +4,7 @@
     (if (= (value Player Mover) 2)
         ("NextSiteOnTrack" ("ThrowValue") "TrackCCW")
         ("NextSiteOnTrack" ("ThrowValue") "TrackCW")
-    )
+   )
 )
 
 (define "SiteToMoveOnTrackCW" ("NextSiteOnTrack" ("ThrowValue") "TrackCW"))
@@ -19,8 +19,8 @@
         (if 
             ("IsOffBoard" (value Player Mover)) 
             #1
-        )
-    )
+       )
+   )
 )
 
 (define "Goal" 0)
@@ -29,7 +29,7 @@
     (apply 
         if:("IsEnemyAt" (to)) 
         (and (fromTo (from (to)) (to "Goal")) (set Value (player (who at:(to))) Off))
-    ) 
+   ) 
 )
 
 (define "MoveOn" 
@@ -41,19 +41,19 @@
                     (or 
                         (= (value Player Mover) (value Player (who at:#1))) 
                         ("IsOffBoard" (value Player Mover))
-                    ) 
-                )
-            )
+                   ) 
+               )
+           )
             (move 
                 (from (from) level:(level)) 
                 (to 
                     #1 
                     "CaptureEnemyPiece"
-                )
-            )
-        )
+               )
+           )
+       )
         #2
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -73,7 +73,7 @@
             (track "TrackCCW"  {0..9 30..39 29..20 19..10 0} directed:True)
             }
             use:Edge
-        ) 
+       ) 
         (dice d:2 facesByDie:{{0 10} {0 1} {0 1}} num:3) // 10 is the notched stick
         (map "ThrowDiceValue" {
             (pair 0 5) // All flat sides up
@@ -87,16 +87,16 @@
                 (or 
                     ("MoveOn" ("SiteToMoveOnTrackCW") ("RememberSelectedTrack" ("SelectCW")))
                     ("MoveOn" ("SiteToMoveOnTrackCCW") ("RememberSelectedTrack" ("SelectCCW")))
-                )
+               )
                 ("MoveOn" "SiteToMoveOnSelectedTrack")
-            )
-        )
+           )
+       )
         (regions "AllSites" (sites Board))
     })
     (rules 
         (start 
             (place Stack items:{<Player:initHorse>} 0)
-        )
+       )
         (play 
             ("RollMove"
                 (forEach Piece)
@@ -104,12 +104,12 @@
                     (if 
                         (= (last To) ("Goal"))
                         (remove (last To))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (end ("EscapeWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -148,7 +148,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in New Mexico., around 1907.")
         }
-    )
+   )
     
     (graphics {
         (show Symbol "disc" "AllSites" Vertex fillColour:(colour White) edgeColour:(colour Black) scale:0.3)

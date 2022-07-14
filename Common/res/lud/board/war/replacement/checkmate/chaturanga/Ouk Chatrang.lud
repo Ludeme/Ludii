@@ -3,8 +3,8 @@
         (if 
             (= (state at:(last To)) 1) 
             ("PieceHasMoved" (last To))
-        ) 
-    ) 
+       ) 
+   ) 
 )
 
 (define "PieceHasMoved"
@@ -15,8 +15,8 @@
     (apply 
         (remove 
             (to) 
-        )
-    ) 
+       )
+   ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -26,8 +26,8 @@
         (to 
             if:("IsEnemyAt" (to))
             (apply (remove (to)))
-        )
-    )
+       )
+   )
 )
 
 (define "NextCanNotMove"
@@ -48,20 +48,20 @@
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
-                    )
-                )
+                   )
+               )
                 (if (= 1 (state at:(from)))
                     (move
                         Leap 
                         "KnightWalk" 
                         (to 
                             if:(is Empty (to))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 "RememberPieceHasMoved"
-            )
-        )
+           )
+       )
         (piece "Boat" Each 
             (move
                 Slide 
@@ -69,9 +69,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "Ferz_noCross" Each
             (or
                 (move
@@ -80,18 +80,18 @@
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
-                    )
-                )
+                   )
+               )
                 (move
                     Step 
                     Forward
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (piece "Knight" Each
             (move
                 Leap 
@@ -99,9 +99,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         (piece "Fish" Each
             (or 
                 "StepForwardToEmpty" 
@@ -109,10 +109,10 @@
                 (then
                     (if (is In (last To) (sites Mover "Promotion")) 
                         (promote (last To) (piece (id "Queen" Mover)))
-                    )
-                )
-            )		
-        ) 
+                   )
+               )
+           )		
+       ) 
         (piece "Queen" Each
             (or
                 (move
@@ -121,8 +121,8 @@
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
-                    )
-                )
+                   )
+               )
                 (if (= 1 (state at:(from)))
                     (move
                         Hop 
@@ -131,12 +131,12 @@
                         (to 
                             if:(not ("IsFriendAt" (to))) 
                             "CaptureToPiece" 
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 "RememberPieceHasMoved"
-            )		
-        )
+           )		
+       )
         (regions "Promotion" P1 (sites Row 5))
         (regions "Promotion" P2 (sites Row 2))
     })
@@ -153,13 +153,13 @@
             (if (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-                ) 
+               ) 
                 (result Mover Win)
-            ) 
+           ) 
             (if (no Moves Mover) (result Mover Draw)) 
             }
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -177,7 +177,7 @@
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (piece Scale "Pawn" 0.825)

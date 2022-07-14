@@ -7,7 +7,7 @@
     (equipment { 
         (mancalaBoard 2 6
             (track "Track" "1,E,N,W" loop:True)
-        )
+       )
         (regions "Home" P1 (sites Bottom)) 			    // P1 home
         (regions "Home" P2 (sites Top)) 				// P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
@@ -22,7 +22,7 @@
                 (from
                     (sites Mover) 
                     if:(> (count at:(from)) 0)
-                )
+               )
                 (then 
                     (sow
                         if:(is In (count at:(to)) (sites {2 4 6})) 
@@ -30,15 +30,15 @@
                             (from (to)) 
                             (to (mapEntry (mover))) 
                             count:(count at:(to))
-                        ) 
+                       ) 
                         backtracking:True
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -55,7 +55,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Russia? Iran?, from around 1908 to 1923.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -63,6 +63,6 @@
     
     (ai 
         "Das Bohnenspiel_ai"
-    )
+   )
     
 )

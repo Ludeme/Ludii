@@ -5,10 +5,10 @@
                 (expand (sites Bottom) steps:(- <Board:size> 1))
                 if:(all Sites <Board:3dSites>
                     if:(= (mover) (who at:(site)))
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -28,7 +28,7 @@
             (if (is Line <Board:size>) (result Mover Win))
             (if "Line3D" (result Mover Win))
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -39,13 +39,13 @@
         <(union {(sites Row 3) (sites Row 7)})>  
         <(sites {(site) (ahead (site) steps:4 N) (ahead (site) steps:8 N)})>
         "The game is played on a 3x3x3 board."
-    )*  
+   )*  
     (item "4x4x4x4"    
         <4> 
         <(union {(sites Row 4) (sites Row 9) (sites Row 14)})>  
         <(sites {(site) (ahead (site) steps:5 N) (ahead (site) steps:10 N) (ahead (site) steps:15 N)})>
         "The game is played on a 4x4x4 board."
-    )  
+   )  
 })
 
 //------------------------------------------------------------------------------
@@ -64,9 +64,9 @@
         (credit "Ben Ritter")
         (date "23-08-1941")
         }
-    )
+   )
     (graphics (piece Scale "Dot" 0.333))
     (ai
         "3D Tic-Tac-Toe_ai"
-    )
+   )
 )

@@ -16,12 +16,12 @@
                         (if ("IsEnemyAt" (to))
                             (remove 
                                 (to) 
-                            )
-                        )
-                    ) 
-                ) 
-            )		
-        )
+                           )
+                       )
+                   ) 
+               ) 
+           )		
+       )
     })
     
     (rules 
@@ -39,7 +39,7 @@
         })
         (play (forEach Piece))
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -57,7 +57,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in China, from around 1611 to 1628.")
         }
-    )
+   )
     
     (graphics {
         (piece Scale 0.6)

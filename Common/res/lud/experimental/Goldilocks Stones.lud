@@ -5,10 +5,10 @@
         (if 
             (= 3 
                 (count Pieces Mover in:(sites Around (from) Orthogonal)) 
-            )
+           )
             (set State at:(from) 1)
             (set State at:(from) 0)
-        )
+       )
         (then
             (set Score Mover (count Sites in:(intersection (sites Occupied by:Mover) (sites State 1)))) 
 )))
@@ -19,12 +19,12 @@
             (=
                 (* 2 
                     (count Pieces Mover in:(sites Around (from) Orthogonal))
-                )
+               )
                 (count Sites in:(sites Around (from) Orthogonal))
-            )
+           )
             (set State at:(from) 1)
             (set State at:(from) 0)
-        )
+       )
         (then
             (set Score Mover (count Sites in:(intersection (sites Occupied by:Mover) (sites State 1)))) 
 )))
@@ -33,7 +33,7 @@
 // Defines for Options
 
 (define "Connection" <BoardShape:directionsUsed>)
-(define "BoardUsed" <BoardShape:gridType> )
+(define "BoardUsed" <BoardShape:gridType>)
 
 (define "HexLimp" (board (hex Limping (- <BoardSize:smallSide> 1)) use:Cell))
 (define "Hex2Limp" (board (hex  (- <BoardSize:smallSide> 1) (+ <BoardSize:smallSide> 1)) use:Cell))
@@ -45,9 +45,9 @@
             (and 
                 (is Prev Next) 
                 (not (was Pass))
-            )
+           )
             (moveAgain)
-    )) 
+   )) 
 )
 
 //-----------------------------------------------
@@ -58,10 +58,10 @@
     (equipment
         {
         "BoardUsed"
-        (piece "Ball" P1 )
-        (piece "Ball" P2 )
+        (piece "Ball" P1)
+        (piece "Ball" P2)
         }
-    )
+   )
     (rules
         (start (set Score Each 0))
         (play
@@ -72,9 +72,9 @@
                     (to (sites Empty))
                     (then 
                         <Scoring:updateOption>
-                ))
+               ))
                 <TurnType:turnOption>
-        ))
+       ))
         (end 
             (if 
                 (all Passed)
@@ -82,11 +82,11 @@
                 (if 
                     (= (score Mover) (score Next))
                     (result Mover Loss)
-                )
+               )
                 (if 
                     (!= (score Mover) (score Next))
                     (byScore)
-                )
+               )
                 }
 ))))
 
@@ -151,7 +151,7 @@
         (credit "Dale W. Walton")
         (date "14-04-2021")
         }
-    )
+   )
     
     (graphics 
         {
@@ -164,7 +164,7 @@
             state:0
             image:"disc"
             scale:.96
-        )
+       )
         (piece 
             Foreground 
             "Ball"
@@ -172,7 +172,7 @@
             image:"doublecounter"
             fillColour:(colour 0 0 0 0)
             scale:.96
-        )
+       )
         (board Style Graph)
         (board StyleThickness InnerVertices .6)
         (board StyleThickness InnerEdges .25)
@@ -180,9 +180,9 @@
         (board Colour InnerEdges (colour DarkGrey))
         (show Edges Diagonal <BoardShape:DiagShow> (colour DarkGrey))
         }
-    )
+   )
     (ai
         "Goldilocks Stones_ai"
-    )
+   )
 )
 

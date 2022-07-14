@@ -3,7 +3,7 @@
     (move
         Remove
         (sites Occupied by:Next container:"Board") 
-    )
+   )
 )
 
 (define "IfLine3MoveAgain" 
@@ -14,8 +14,8 @@
                 (is Line 3 E exact:True) (is Line 3 W exact:True)  
             })
             (moveAgain)
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -32,10 +32,10 @@
                 Step 
                 (to if:(is Empty (to))) 
                 "IfLine3MoveAgain" 
-            )
-        ) 
+           )
+       ) 
         }
-    )  
+   )  
     (rules 
         (start (place "Marker" "Hand" count:9))
         
@@ -48,11 +48,11 @@
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
                         "IfLine3MoveAgain" 
-                    )  
-                )
-            ) 
+                   )  
+               )
+           ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
+       )
         
         (phase "Movement" 
             (play 
@@ -63,15 +63,15 @@
                         (move 
                             (from (sites Occupied by:Mover))
                             (to (sites Empty))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         }
         
         (end (if (<= (count Pieces Next) 2) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -90,7 +90,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in France, around 1840.")
         }
-    )
+   )
     
     (graphics {
         
@@ -98,5 +98,5 @@
     
     (ai
         "Marelle Triple_ai"
-    )
+   )
 )

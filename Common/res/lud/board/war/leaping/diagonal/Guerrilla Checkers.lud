@@ -6,16 +6,16 @@
                 (to) 
                 Own 
                 Orthogonal 
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "VertexJumped" 
     (intersection 
         (sites Incident Vertex of:Cell at:#1)
         (sites Incident Vertex of:Cell at:#2)
-    )
+   )
 )
 
 (define "RemoveHoppedEnemyOnVertex"
@@ -25,10 +25,10 @@
             (if ("IsEnemyAt" (site))
                 (remove (site)
                     (then (if (can Move "CaptureJump") (moveAgain)))
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 (define "HasAnEnemyToJump"
@@ -36,9 +36,9 @@
         (count Sites in:(forEach 
                 ("VertexJumped" (site) (from))
                 if:("IsEnemyAt" (site))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "CaptureJump"
@@ -50,24 +50,24 @@
                 if:(and 
                     (is Empty Cell (site))
                     ("HasAnEnemyToJump")
-                )
-            )
-        )
+               )
+           )
+       )
         (then
             (forEach Site
                 ("VertexJumped" (last From) (last To))
                 (if ("IsEnemyAt" (site))
                     (remove (site) #1)
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 (define "CaptureJumpAgain"
     ("CaptureJump"
         (then (if (can Move "CaptureJump") (moveAgain)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -85,17 +85,17 @@
                 Diagonal
                 (to Cell if:(is Empty Cell (to)))
                 ("RemoveHoppedEnemyOnVertex")
-            )
-        )
+           )
+       )
         }
-    )
+   )
     (rules
         (start 
             {
             (place "Counter2" Cell {"E3" "D4" "C5" "D6" "E5" "F4"}) 
             (place "Marker1" "Hand1" count:66)
             }
-        )
+       )
         
         phases:{
         (phase "InitGuerrilla" P1 
@@ -105,14 +105,14 @@
                     (to
                         Vertex 
                         (difference (sites Empty Vertex) (sites Outer))
-                    )
+                   )
                     (then 
                         (moveAgain)
-                    )
-                )
-            )
+                   )
+               )
+           )
             (nextPhase (is Next Mover) "GuerrillaMove")
-        )
+       )
         
         (phase "GuerrillaMove" P1 
             (play 
@@ -122,50 +122,50 @@
                         (to
                             Vertex 
                             (difference (sites Around (last To) Orthogonal if:(is Empty (to))) (sites Outer))
-                        )
+                       )
                         (then 
                             (forEach
                                 Site
-                                (forEach (sites Occupied by:P2 on:Cell) if:(= 0 (count Sites in:(intersection (sites Empty)(sites Incident Vertex of:Cell at:(site)))  )))
+                                (forEach (sites Occupied by:P2 on:Cell) if:(= 0 (count Sites in:(intersection (sites Empty)(sites Incident Vertex of:Cell at:(site))) )))
                                 (remove Cell (site))
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (move 
                         (from (handSite Mover)) 
                         (to
                             Vertex 
                             (difference (sites Empty Vertex) (sites Outer))
                             if:"NextToOwnPiece"
-                        )
+                       )
                         (then 
                             (and
                                 (forEach
                                     Site
-                                    (forEach (sites Occupied by:P2 on:Cell) if:(= 0 (count Sites in:(intersection (sites Empty)(sites Incident Vertex of:Cell at:(site)))  )))
+                                    (forEach (sites Occupied by:P2 on:Cell) if:(= 0 (count Sites in:(intersection (sites Empty)(sites Incident Vertex of:Cell at:(site))) )))
                                     (remove Cell (site))
-                                )
+                               )
                                 (moveAgain)
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (phase "CoinMove" P2 
             (play 
                 (if "SameTurn"
                     "CaptureJumpAgain"
                     (forEach Piece)
-                )
-            )
-        )
+               )
+           )
+       )
         
         }
         
         (end ("BlockWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -197,7 +197,7 @@
         (credit "Eric Piette and Matthew Stephenson")
         (date "2010")
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)
@@ -205,5 +205,5 @@
     
     (ai
         "Guerrilla Checkers_ai"
-    )
+   )
 )

@@ -2,7 +2,7 @@
 (define "GroupCount"
     (max 0
         (max
-            (sizes Group "ScoreConnectionDirection" #1 ) 
+            (sizes Group "ScoreConnectionDirection" #1) 
 )))
 
 //---------------------------
@@ -28,7 +28,7 @@
         (and
             (set Score Mover (* <Variant:tieFactor> ("CascadeScore" Mover Next)))
             (set Score Next (* <Variant:tieFactor> ("CascadeScore" Next Mover)))
-        )
+       )
         ("CascadeTie")
 ))
 
@@ -40,13 +40,13 @@
         (+
             (value Piece at:(handSite Mover))
             ("GroupCount" Mover)
-        )
+       )
         (then
             (set Var "NextScore"
                 (+
                     (value Piece at:(handSite Next))
                     ("GroupCount" Next)
-                )
+               )
                 (then 
                     ("CascadeTiebreaker")
 )))))
@@ -66,9 +66,9 @@
                             (add (piece (id "Disc" #2)) (to (handSite #3))
                                 (then
                                     (set Value at:(handSite #3) (+ 1 (value Piece at:(handSite #3))))
-                            ))
+                           ))
                             (set Value at:(handSite #3) (+ 1 (value Piece at:(handSite #3))))
-                )))
+               )))
                 (remove (value))
 ))))
 
@@ -82,12 +82,12 @@
             (and 
                 (is Empty (site))
                 (is In (site) (sites Outer))
-            )
+           )
             (!= Infinity
                 (count Steps
                     (step "ConnectionDirection"
                         (to if:(is Empty (to)))
-                    )
+                   )
                     (site)
                     (difference (sites Outer) (site))
 )))))
@@ -104,7 +104,7 @@
         (piece "Disc" Each)
         (hand Each size:1)
         }
-    )
+   )
     (rules
         (start (set Score Each 0))
         (play
@@ -118,24 +118,24 @@
                                 in:(intersection
                                     (sites Around (to) "ConnectionDirection")
                                     (sites Empty)
-                )))))
+               )))))
                 ifAfterwards:("AllHave1Connection2Edge" 
                     (intersection 
                         (sites Around (last To) "ConnectionDirection")
                         (sites Empty)
-                )) 
+               )) 
                 (then
                     (do
                         ("CapturingAtScoreWhat4Who" 
                             (intersection 
                                 (sites Occupied by:All) 
                                 (sites Around (last To) "ConnectionDirection") 
-                            )
+                           )
                             Next  // which pieces score: Mover, Next, All, None
                             <Variant:bonus2> // who gets their value
-                        )
+                       )
                         next:("Scoring")
-        ))))
+       ))))
         (end 
             (if 
                 (no Moves Next)
@@ -143,11 +143,11 @@
                 (if 
                     (= (score Mover) (score Next))
                     (result Mover Win)
-                )
+               )
                 (if 
                     (!= (score Mover) (score Next))
                     (byScore)
-                )
+               )
                 }
 ))))
 /-----------------------------------------
@@ -155,7 +155,7 @@
 
 (define "ScoreConnectionDirection" <Variant:directionScored>)
 (define "ConnectionDirection" <Variant:directionUsed>)
-(define "BoardUsed" <Variant:gridType> )
+(define "BoardUsed" <Variant:gridType>)
 
 (define "SquareGrid" (board (square <BoardSize:smallSide>) use:Cell))
 (define "SquareDiagonal" (board (square <BoardSize:smallSide>) use:Vertex))
@@ -237,7 +237,7 @@
         (credit "Dale W. Walton")
         (date "06-05-2021")
         }
-    )
+   )
     
     (graphics 
         {
@@ -259,6 +259,6 @@
         (show Piece Value "Disc" Middle)
         (board Background image:"Square-alt1" fillColour:"ColourBackground" edgeColour:(colour 180 180 180 80) scale:<BoardSize:backgroundSize>) 
         }
-    )
+   )
 )
 

@@ -11,15 +11,15 @@
                 (move Add 
                     (piece (mover) state:0) 
                     (to (sites Empty))
-                )
+               )
                 (move Add 
                     (piece (mover) state:1) 
                     (to (sites Empty))
-                )
-            )
-        )
+               )
+           )
+       )
         (end ("NoMoves" <End:result>))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -96,7 +96,7 @@
         (author "Martin Gardner")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Blue))
@@ -104,5 +104,5 @@
     })
     (ai
         "Cram_ai"
-    )
+   )
 )

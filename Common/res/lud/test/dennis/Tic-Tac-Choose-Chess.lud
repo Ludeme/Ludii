@@ -11,7 +11,7 @@
         Hop 
         (between if:(not (is Empty (between))))
         (to if:(is Empty (to)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -42,21 +42,21 @@
                         (then 
                             (if (not ("HandEmpty" P1)) 
                                 (moveAgain)		// We get to nominate for opponent now
-                            )
-                        )
-                    )		
-                )        	
-            )
+                           )
+                       )
+                   )		
+               )        	
+           )
             (nextPhase ("HandEmpty" P1) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play (forEach Piece))
-        )
+       )
         }
         
         (end (if (is Line 3 Mover) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -67,5 +67,5 @@
         {
         (credit "Dennis Soemers")
         }
-    )
+   )
 )

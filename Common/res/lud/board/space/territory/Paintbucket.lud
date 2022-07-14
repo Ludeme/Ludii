@@ -3,8 +3,8 @@
         (to 
             (sites Group at:(last From) Orthogonal)
             (apply (remove (to)))
-        )
-    )
+       )
+   )
 )
 
 (define "FlipGroupAndCountFriendly"
@@ -13,13 +13,13 @@
             (to 
                 (sites Group at:(last From) Orthogonal)
                 (apply (remove (to)))
-            )
-        )
+           )
+       )
         next:(and
             (set Score P1 (count Groups Orthogonal if:(= (id P1) (who at:(to)))))
             (set Score P2 (count Groups Orthogonal if:(= (id P2) (who at:(to)))))
-        )
-    )
+       )
+   )
 )
 
 (define "FlipGroupAndCountEnemy"
@@ -28,13 +28,13 @@
             (to 
                 (sites Group at:(last From) Orthogonal)
                 (apply (remove (to)))
-            )
-        )
+           )
+       )
         next:(and
             (set Score P1 (* -1 (count Groups Orthogonal if:(= (id P2) (who at:(to))))))
             (set Score P2 (* -1 (count Groups Orthogonal if:(= (id P1) (who at:(to))))))
-        )
-    )
+       )
+   )
 )
 
 (define "FlipGroupAndCalculateDifference"
@@ -43,23 +43,23 @@
             (to 
                 (sites Group at:(last From) Orthogonal)
                 (apply (remove (to)))
-            )
-        )
+           )
+       )
         next:(and
             (set Score P1 
                 (-
                     (count Groups Orthogonal if:(= (id P1) (who at:(to))))
                     (count Groups Orthogonal if:(= (id P2) (who at:(to))))
-                )
-            )
+               )
+           )
             (set Score P2 
                 (-
                     (count Groups Orthogonal if:(= (id P2) (who at:(to))))
                     (count Groups Orthogonal if:(= (id P1) (who at:(to))))
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -71,7 +71,7 @@
         (board (square <Board>))
         (tile "Square" Each)
         }
-    )
+   )
     (rules
         (start 
             {
@@ -79,20 +79,20 @@
             (place "Square2" (sites Phase 1))
             <Score:start>
             }
-        )
+       )
         (play
             (move Select
                 (from (sites Occupied by:Next))
                 (then <Score:running>)
-            )
-        )
+           )
+       )
         (end 
             (if 
                 (no Pieces Next) 
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -132,7 +132,7 @@
         (credit "Michael Amundsen")
         (date "2022")
         }
-    )
+   )
     (graphics {
         (player Colour P1 (colour 239 227 179))
         (player Colour P2 (colour 127 127 127))
@@ -141,6 +141,6 @@
         (bestAgent "Alpha-Beta")
         (heuristics 
             (score)
-        )
-    )
+       )
+   )
 )

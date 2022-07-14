@@ -2,8 +2,8 @@
     (apply 
         (remove 
             (to) 
-        )
-    ) 
+       )
+   ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -13,8 +13,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-        )
-    )
+       )
+   )
 )
 
 (define "NextCanNotMove"
@@ -35,20 +35,20 @@
                         (if (= Off (where "Queen" Mover))
                             (promote (last To) (piece "Queen") Mover)
                             (remove (last To))
-                        )
-                    )
-                )
-            )	
-        )
+                       )
+                   )
+               )
+           )	
+       )
         (piece "King_noCross" Each
             (move
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-                )
-            )		
-        )
+               )
+           )		
+       )
         (piece "Queen" Each
             (move
                 Step 
@@ -56,9 +56,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-                )
-            )		
-        )
+               )
+           )		
+       )
         (piece "Knight" Each
             (move
                 Leap 
@@ -66,18 +66,18 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-                ) 
-            )			
-        )
+               ) 
+           )			
+       )
         (piece "Wazir" Each
             (move
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-                )
-            )		
-        )
+               )
+           )		
+       )
         (piece "Rook" Each
             (move
                 Slide 
@@ -85,9 +85,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         (piece "Elephant" Each
             (move 
                 Hop 
@@ -97,11 +97,11 @@
                     if:(or 
                         (is Empty (to)) 
                         (and ("IsEnemyAt" (to)) (!= (what at:(to)) (id "Elephant" Next)))
-                    ) 
+                   ) 
                     "CaptureToPiece"
-                )
-            )		
-        )
+               )
+           )		
+       )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
         (board (square 10))
@@ -128,18 +128,18 @@
             (do
                 (forEach Piece)
                 ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
-            )
-        )
+           )
+       )
         (end { 
             (if (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-                ) 
+               ) 
                 (result Mover Win)
-            ) 
+           ) 
             ("BlockWin")
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -157,7 +157,7 @@
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (piece Scale "Pawn" 0.825)
@@ -167,5 +167,5 @@
     
     (ai
         "Shatranj at-Tamma_ai"
-    )
+   )
 )

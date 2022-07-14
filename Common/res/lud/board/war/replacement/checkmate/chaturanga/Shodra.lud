@@ -7,9 +7,9 @@
         (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
-            )
-        )
-    ) 
+           )
+       )
+   ) 
 )
 
 (define "DoubleStep"
@@ -18,7 +18,7 @@
         Forward 
         (between (exact 2) if:(is Empty (between))) 
         (to if:(is Empty (to))) 
-    )
+   )
 )
 
 (define "CaptureForwardDiagonal"
@@ -28,8 +28,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -45,9 +45,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-                ) 
-            )			
-        )
+               ) 
+           )			
+       )
         (piece "Rook" Each
             (move
                 Slide 
@@ -55,9 +55,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            )			
-        )
+               ) 
+           )			
+       )
         (piece "Camel" Each
             (move Hop Diagonal 
                 (between if:True) 
@@ -65,11 +65,11 @@
                     if:(or 
                         (is Empty (to)) 
                         ("IsEnemyAt" (to))
-                    ) 
+                   ) 
                     (apply (remove (to)))
-                ) 
-            )			
-        )
+               ) 
+           )			
+       )
         (piece "Knight" Each
             (move
                 Leap 
@@ -77,24 +77,24 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-                ) 
-            )			
-        )
+               ) 
+           )			
+       )
         (piece "Pawn" Each
             (or {
                 (if (is In (from) (sites Start (piece (what at:(from)))))
                     "DoubleStep"
-                )
+               )
                 "StepForwardToEmpty" 
                 "CaptureForwardDiagonal"
                 }
                 (then
                     (if (is In (last To) (sites Mover "Promotion")) 
                         (promote (last To) (piece "Dog") Mover)
-                    )
-                )
-            )		
-        ) 
+                   )
+               )
+           )		
+       ) 
         (piece "Dog" Each
             (move
                 Step 
@@ -102,9 +102,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-                ) 
-            )			
-        )
+               ) 
+           )			
+       )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     })
@@ -119,20 +119,20 @@
             (do
                 (forEach Piece)
                 ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
-            )
-        )
+           )
+       )
         (end 
             (if (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-                ) 
+               ) 
                 {
                 (if (no Pieces Next "Pawn") (result Mover Win))
                 (if (!= (count Pieces Next "Pawn") 0) (result Mover Draw))
                 }
-            ) 
-        )
-    )
+           ) 
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -151,7 +151,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Russia, around 1913.")
         }
-    )
+   )
     
     (graphics {
         (piece Scale "Pawn" 0.825)
@@ -161,6 +161,6 @@
     
     (ai
         "Shodra_ai"
-    )
+   )
 )
 

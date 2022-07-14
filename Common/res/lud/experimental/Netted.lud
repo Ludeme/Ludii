@@ -17,31 +17,31 @@
         (or 
             (= #1 (ahead Cell #2 W))
             (= #1 (ahead Cell #2 E))
-        )
+       )
         0
         (if 
             (or 
                 (= #1 (ahead Cell #2 WSW))
                 (= #1 (ahead Cell #2 ENE))
-            )
+           )
             1
             (if 
                 (or 
                     (= #1 (ahead Cell #2 SSW))
                     (= #1 (ahead Cell #2 NNE))
-                )
+               )
                 2
                 (if 
                     (or 
                         (= #1 (ahead Cell #2 S))
                         (= #1 (ahead Cell #2 N))
-                    )
+                   )
                     3
                     (if 
                         (or 
                             (= #1 (ahead Cell #2 SSE))
                             (= #1 (ahead Cell #2 NNW))
-                        )
+                       )
                         4
                         5
 ))))))
@@ -54,7 +54,7 @@
         (intersection
             (sites Incident Edge of:Cell at:(regionSite ("SharedCells" #1 #2) index:0))
             (sites Incident Edge of:Cell at:(regionSite ("SharedCells" #1 #2) index:1))
-        )
+       )
         index:0
 ))
 
@@ -77,14 +77,14 @@
                         in:(intersection 
                             (sites Around Cell (var "SitePlaced") Orthogonal) 
                             (sites Around Cell (to) Orthogonal)
-            ))))
-        )
+           ))))
+       )
         (and
             (add
                 (piece (id "I" Mover))
                 (to Edge ("HalfWayEdge" (var "SitePlaced") (site)))
                 stack:True
-            ) 
+           ) 
             (set State Edge at:("HalfWayEdge" (var "SitePlaced") (site)) ("D" (var "SitePlaced") (site)))
 )))
 
@@ -93,7 +93,7 @@
         (intersection 
             (sites Incident Edge of:Cell at:(var "SitePlaced"))
             (sites Occupied by:Mover component:"I" on:Edge)
-        )
+       )
         (remove Edge (site))
 ))
 
@@ -127,7 +127,7 @@
                 (to
                     if:("NotBlockedBy" #1)
                     //     if:(or (= (to) (var "SitePlaced")) ("NotBlockedBy" #1))
-            ))
+           ))
             #2
             #3
 )))
@@ -142,7 +142,7 @@
             2
             (-
                 (+
-                    (if (is In #3 (sites Outer)) 1 0 )
+                    (if (is In #3 (sites Outer)) 1 0)
                     (count Sites
                         in:(intersection
                             (sites Outer)
@@ -150,7 +150,7 @@
                                 (step Orthogonal (to if:("NotBlockedBy" #2)))
                                 from:#3
                                 (min 1)
-                ))))
+               ))))
                 (+
                     (if (= (id "Ball" #1) (what at:#3)) 1 0)
                     (count Pieces #1 "Ball"
@@ -177,12 +177,12 @@
             (if    
                 (= 2 #2)
                 (trigger "Enmeshed" Next)
-        ))
+       ))
         (if 
             (or
                 (> 0 (where Level (id "I" #4) Cell at:(site))) // no mover marker
                 (>= 1 ("Liberties" #3 #4 (site)))
-            )
+           )
             (remember Value #1 (site) unique:True)
 )))
 
@@ -206,11 +206,11 @@
                         ("IsNotBlockedByBetween" #5
                             (site)
                             #3
-                        )
+                       )
                         (not (= (state at:(site)) #2))
-                    )
+                   )
                     (set State at:(site) #2)
-            ))
+           ))
             (forEach Site
                 (sites (values Remembered #1))
                 (apply
@@ -218,16 +218,16 @@
                         ("IsNotBlockedByBetween" #5
                             (site)
                             #3
-                        )
+                       )
                         (or
                             (>= 0 (where Level (id "I" #5) Cell at:(site)))
                             (< 1 ("Liberties" #4 #5 (site)))
-                        )
-                    )
+                       )
+                   )
                     (forget Value #1 (site))
-            ))
+           ))
             }
-        )
+       )
         
         //sites to restrict (remember)
         (and
@@ -235,20 +235,20 @@
             (forEach Site
                 (sites To (select (from #3)))
                 ("UpdateListOrStatePlayerBlocker" #1 #2 #4 #5)
-            )
+           )
             
             (forEach Site
                 (difference
                     (difference
                         (sites Board)
                         (sites Occupied by:#5 component:"Ball")
-                    )
+                   )
                     (sites (values Remembered #1))
-                )
+               )
                 (if
                     ("IsNotBlockedByBetween" #5 (site) #3)
                     ("UpdateListOrStatePlayerBlocker" #1 #2 #4 #5)
-            ))
+           ))
             
 )))
 
@@ -258,7 +258,7 @@
             (sites Around
                 (var "SitePlaced")
                 All // to pick up special case where piece lies between two new markers.
-        ))
+       ))
         (if
             (and
                 {
@@ -266,7 +266,7 @@
                 (not (is In (value) (values Remembered #1)))
                 (= (- 2 #2) ("Liberties" Next Mover (value)))
                 }
-            ) 
+           ) 
             ("UpdateListStateAroundPlayerBlocker" #1 #2 (value) Next Mover)
 )))
 
@@ -290,20 +290,20 @@
                         in:(intersection
                             (sites Around (between) Orthogonal)
                             (sites Occupied by:Mover component:"Ball")
-                )))
+               )))
                 }
-            )
+           )
             (apply 
                 (and
                     (add 
                         (piece (id "I" Mover))
                         (to
                             (between)
-                        )
+                       )
                         stack:True
-                    )
+                   )
                     (set State Cell at:(between) level:(level) ("D" (var "SitePlaced") (between)))
-        )))
+       )))
         (to if:(= (id "Ball" Mover) (what at:(to))))
 ))
 
@@ -317,15 +317,15 @@
                         in:(intersection
                             (sites Around Cell (to) Orthogonal)
                             (sites Occupied by:Mover component:"Ball" on:Cell)
-            ))))
-        )
+           ))))
+       )
         (and
             (remove Cell (site) level:(where Level (id "I" Mover) Cell at:(site)))
             (if  //workaround
                 (= 2 ("Liberties" Next Mover (site)))
                 (forget Value #1 (site))
                 (remember Value #1 (site) unique:True)
-        ))
+       ))
 ))
 
 //---------------------------
@@ -338,10 +338,10 @@
             (difference 
                 (sites Empty)
                 (sites (values Remembered #1))
-            )
+           )
             (apply
                 (set Var "SitePlaced" (to))
-        ))
+       ))
         stack:True
         (then
             (set State at:(var "SitePlaced") (- 2 ("Liberties" Mover Next (var "SitePlaced")))
@@ -350,7 +350,7 @@
                         (if
                             (= 1 (state at:(var "SitePlaced")))
                             ("UpdateListStateAroundPlayerBlocker" #1 1 (var "SitePlaced") Mover Next)
-                        )
+                       )
                         ("AddOrthogonalMarkers")
 ))))))
 
@@ -361,19 +361,19 @@
             (difference 
                 (sites Board)
                 (sites (values Remembered #1))
-            )
+           )
             if:(and
                 {
                 (<= 0 (where Level (id "I" Mover) Cell at:(to)))
                 (> 0 (where Level (id "I" Next) Cell at:(to)))
                 (> 4 (count Pieces Next "Ball" in:(sites Around (to) Orthogonal))) //rare special case: empty cell isolated from everything
                 }
-            )
+           )
             (apply
                 (and
                     (remove (to) level:(where Level (id "I" Mover) Cell at:(to)))
                     (set Var "SitePlaced" (to))   
-        )))
+       )))
         stack:True
         (then
             (set State at:(var "SitePlaced") (- 2 ("Liberties" Mover Next (var "SitePlaced")))
@@ -382,7 +382,7 @@
                         (if
                             (= 1 (state at:(var "SitePlaced")))
                             ("UpdateListStateAroundPlayerBlocker" #1 1 (var "SitePlaced") Mover Next)
-                        )
+                       )
                         ("AddOrthogonalMarkers")
 ))))))
 
@@ -393,11 +393,11 @@
             (difference 
                 (sites Board)
                 (sites (values Remembered #1))
-            )
+           )
             if:(and
                 (<= 0 (where Level (id "I" Next) Cell at:(to)))
                 (!= 0 ("Liberties" Mover Next (to))) // incase not entered to suicide list yet - eg next to suicide empties on all sides
-            )
+           )
             (apply
                 (and
                     {
@@ -405,7 +405,7 @@
                     (remove (to) level:(where Level (id "I" Mover) Cell at:(to)))
                     (remove (to) level:(where Level (id "I" Next) Cell at:(to)))
                     }
-        )))
+       )))
         stack:True
         (then 
             (set State at:(var "SitePlaced") (- 2 ("Liberties" Mover Next (var "SitePlaced")))
@@ -416,7 +416,7 @@
                             (state at:(var "SitePlaced"))
                             (var "SitePlaced")
                             Mover Next
-                        )
+                       )
                         ("AddOrthogonalMarkers")
 ))))))
 
@@ -449,7 +449,7 @@
         (piece "I" P1 maxState:6)
         (piece "I" P2 maxState:6)
         }
-    )
+   )
     (rules
         (play
             (if 
@@ -463,13 +463,13 @@
                             (= 1 (mover))
                             ("RemoveExcessOrthogonals" "SuicideP2")
                             ("RemoveExcessOrthogonals" "SuicideP1")
-                        )
+                       )
                         ("UpdateStateNext" 1)
                         ("UpdateStateNext" 2)
                         ("AddDiagonalMarkers")
                         ("RemoveExcessDiagonals")
                         }
-        ))))
+       ))))
         (end 
             (if 
                 (or
@@ -478,11 +478,11 @@
                     (is Triggered "Enmeshed" Next)
                     (no Moves Mover)
                     }
-                )
+               )
                 (if     
                     (is Triggered "Enmeshed" Next)
                     (result Mover Win)
-                )
+               )
                 (result Mover Loss)
 ))))
 
@@ -490,7 +490,7 @@
 // Options
 // Defines for Options
 
-(define "BoardUsed" <BoardShape:gridType> )
+(define "BoardUsed" <BoardShape:gridType>)
 
 (define "HexLimp" (board (hex Limping (- <BoardSize:smallSide> 1)))) // use:Edge))
 (define "Hex2Limp" (board (hex  (- <BoardSize:smallSide> 1) (+ <BoardSize:smallSide> 1)))) // use:Edge))

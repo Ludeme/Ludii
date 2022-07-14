@@ -16,7 +16,7 @@
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" <Row:track2> loop:True P2)
             }
-        )
+       )
         (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
         (regions "Home" P2 (sites Track "Track2"))                              // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
@@ -32,14 +32,14 @@
                     (difference (sites P1 "Inner") (sites Right))
                     (difference (sites P2 "Inner") (sites Left))
                 })
-            )
-        )
+           )
+       )
         
         (play 
             (if (and ("SameTurn") (= (var "Replay") Undefined))
                 (move Remove 
                     (sites Next "Home")
-                )
+               )
                 (if ("AllSitesNoMoreThanOne")
                     (move Select
                         (from (sites Mover "Home") if:(and (is Occupied (from)) (is Empty ("NextHole" (from) 1))))
@@ -47,18 +47,18 @@
                             (sow
                                 "Track"
                                 owner:(mover)		
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (move Select
                         (from 
                             (if 
                                 ("SameTurn") 
                                 (sites {(var "Replay") })
                                 (sites Mover "Home") 
-                            ) 
+                           ) 
                             if:(> (count at:(from)) 1)
-                        )
+                       )
                         (then
                             (sow
                                 "Track"
@@ -67,7 +67,7 @@
                                     (if (and 
                                             (is In (to) (sites Mover "Inner"))
                                             (is Occupied ("OppositePit" (to)))
-                                        )
+                                       )
                                         (and
                                             (remove ("OppositePit" (to)))
                                             (if (is Occupied ("OppositeOuterPit" (to)))
@@ -76,28 +76,28 @@
                                                     (set Var "Replay" Undefined)
                                                     (remove ("OppositeOuterPit" (to)))
                                                 })	
-                                            )
-                                        )
+                                           )
+                                       )
                                         (and
                                             (moveAgain)
                                             (set Var "Replay" (to))
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (end
             (forEach NonMover
                 if:("NoPiece")
                 (result Player Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -120,7 +120,7 @@
         "Board Size/10"
         }
         variations:{"Board Size/12" "Board Size/14" "Board Size/16" "Board Size/18" "Board Size/20"}
-    )*
+   )*
     
 })
 
@@ -140,7 +140,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in East Africa, around 1913.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

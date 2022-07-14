@@ -2,7 +2,7 @@
     (or
         (all Sites (sites P1 "Home") if:(= 0 (count at:(site))))
         (all Sites (sites P2 "Home")  if:(= 0 (count at:(site))))
-    )
+   )
 )
 
 (define "PiecesOwnedBy" (count Cell at:(handSite #1)))
@@ -18,7 +18,7 @@
             (track "TrackCCW" "0,E,N,W" loop:True)
             (track "TrackCW" "5,W,N,E" loop:True)
             }
-        )
+       )
         (piece "Seed" Shared)
         (regions "Home" P1 (sites Bottom))                     // P1 home
         (regions "Home" P2 (sites Top))                        // P2 home
@@ -39,9 +39,9 @@
                             (if (and ("SameTurn") (= 1 (var "ContinueSowing")))
                                 "LastHoleSowed" 
                                 (sites Mover "RightHome")
-                            )
+                           )
                             if:(> (count at:(from)) 0)
-                        )
+                       )
                         (then
                             (sow
                                 "TrackCCW"
@@ -56,26 +56,26 @@
                                                     (from (to))
                                                     (to (handSite Mover))
                                                     count:4
-                                                )
+                                               )
                                                 (set Var "ContinueSowing" 0)
-                                            )
-                                        )
+                                           )
+                                       )
                                     })
                                     (set Var "Direction" 0)
-                                )	
-                            )
-                        )
-                    )
-                )
+                               )	
+                           )
+                       )
+                   )
+               )
                 (if (or (>= 0 (var "Direction")) (= 2 (var "Direction")))
                     (move Select
                         (from
                             (if (and ("SameTurn") (= 1 (var "ContinueSowing")))
                                 "LastHoleSowed" 
                                 (sites Mover "LeftHome")
-                            )
+                           )
                             if:(> (count at:(from)) 0)
-                        )
+                       )
                         (then
                             (sow
                                 "TrackCW"
@@ -90,17 +90,17 @@
                                                     (from (to))
                                                     (to (handSite Mover))
                                                     count:4
-                                                )
+                                               )
                                                 (set Var "ContinueSowing" 0)
-                                            )
-                                        )
+                                           )
+                                       )
                                     })
                                     (set Var "Direction" 0)
-                                )	
-                            )
-                        )
-                    )
-                )
+                               )	
+                           )
+                       )
+                   )
+               )
                 (then
                     (if ("OneRowEmpty")
                         (and  
@@ -109,23 +109,23 @@
                                     (from (site))
                                     (to (handSite P1))
                                     count:(count at:(site))
-                                )
-                            )
+                               )
+                           )
                             (forEach Site (sites P2 "Home")
                                 (fromTo
                                     (from (site))
                                     (to (handSite P2))
                                     count:(count at:(site))
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (end ("MancalaByScoreWhen" ("NoPieceOnBoard")))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -143,7 +143,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Horn of Africa, around 1971.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

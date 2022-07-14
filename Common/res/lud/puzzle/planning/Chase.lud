@@ -5,7 +5,7 @@
     (> 
         (count Steps Orthogonal (site) (where (id "Human"))) 
         (count Steps Orthogonal (ahead (site) #1) (where (id "Human")))
-    )
+   )
 )
 
 (define "MoveRobot"
@@ -18,18 +18,18 @@
                 (apply 
                     (if (= (id "Human") (what at:(to)))
                         (remove (to))
-                    )
-                )
-            )
-        )
-    )
+                   )
+               )
+           )
+       )
+   )
 )
 
 (define "GoCloser"
     (if ("CloserToHuman" #1)
         ("MoveRobot" #1)
         #2
-    )
+   )
 )
 
 (define "RobotThreat"
@@ -43,14 +43,14 @@
                             ("GoCloser" W 
                                 ("GoCloser" N 
                                     ("GoCloser" S)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
+   )
 )
 
 (define "KillRobotsIfColliding"
@@ -60,9 +60,9 @@
             (and
                 (remove (site))
                 (add (piece "Rubble0") (to (site)))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "Teleportation"
@@ -70,7 +70,7 @@
         (from (where (id "Human"))) 
         (to (sites Random))  
         (then ("RobotThreat"))
-    )
+   )
 )
 
 (define "SafeTeleportation"
@@ -81,11 +81,11 @@
                 (difference 
                     (sites Empty) 
                     (sites Around (sites Occupied by:Shared))
-                )
-            )
-        ) 
+               )
+           )
+       ) 
         (then ("RobotThreat"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -99,12 +99,12 @@
                 Step 
                 (to 
                     if:(is Empty (to))
-                )
+               )
                 (then
                     ("RobotThreat")
-                )
-            )
-        )
+               )
+           )
+       )
         (piece "Robot" Shared)
         (piece "Rubble" Neutral)
     })  
@@ -115,7 +115,7 @@
             (place Random {"Robot"} count:("NumRobots"))
             (set Score P1 ("NumSafeTeleportation"))
             }
-        )
+       )
         (play
             (or
                 {
@@ -128,23 +128,23 @@
                             (and
                                 (set Score Mover (- (score P1) 1))
                                 ("SafeTeleportation")
-                            )
-                        )
-                    )
-                )
+                           )
+                       )
+                   )
+               )
                 }
                 (then
                     ("KillRobotsIfColliding")
-                )
-            )
-        )
+               )
+           )
+       )
         (end 
             {
             (if (no Pieces Mover) (result Mover Loss))
             (if (no Pieces "Robot") (result Mover Win))
             }
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -287,7 +287,7 @@
         (credit "Eric Piette")
         (date "1970")
         }
-    )
+   )
     
     (graphics {
         (no Sunken)
@@ -297,5 +297,5 @@
     })
     (ai
         "Chase_ai"
-    )
+   )
 )

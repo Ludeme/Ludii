@@ -9,8 +9,8 @@
         (if 
             ("IsEnemyAt" (to))
             (remove (to))
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------
@@ -25,7 +25,7 @@
             (track "Track2" "59,W,S1,E,S1,W,S1,E,S1,W" P2 directed:True)
             }
             use:Vertex
-        )
+       )
         (dice d:2 from:0 num:6)
         (piece "Disc" Each
             (if (not (is Friend (who at:("SiteToMove"))))
@@ -34,13 +34,13 @@
                     (to 
                         ("SiteToMove")
                         ("RemovePiece")
-                    )
-                )
-            )
-        ) 
+                   )
+               )
+           )
+       ) 
         (map {(pair 0 <High:value>) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 1) (pair 6 <High:value>)})
         }
-    )  
+   )  
     
     (rules 
         (start 
@@ -48,7 +48,7 @@
             (place "Disc1" (sites Bottom))
             (place "Disc2" (sites Top))
             }
-        )	
+       )	
         
         (play
             (do 
@@ -57,24 +57,24 @@
                     (or 
                         ("CanMove") 
                         ("AllowToBegin")
-                    )
+                   )
                     (do (set Var (count Pips))
                         next:(forEach 
                             Piece 
                             (then (if (not ("CanMove")) (set Value Mover 1)))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         
         (end 
             (if 
                 (< (count Pieces Next) 3)
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //----------------------------
@@ -109,7 +109,7 @@
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)
@@ -117,5 +117,5 @@
     })
     (ai
         "Awangdu_ai"
-    )
+   )
 )

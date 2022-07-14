@@ -5,12 +5,12 @@
         (board (square 8)) 
         (piece "Marker" Each)
         }
-    )
+   )
     
     (rules 
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
-    )
+   )
 )
 
 (metadata 
@@ -26,7 +26,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Mongolia, from around 1812 to 1859.")
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)

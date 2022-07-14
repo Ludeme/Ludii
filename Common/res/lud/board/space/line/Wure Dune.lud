@@ -8,34 +8,34 @@
             (move 
                 Step All
                 (to if:(is Empty (to))) 
-            )
-        )
+           )
+       )
         }
-    )
+   )
     (rules
         (start 
             {
             (place "Marker" "Hand" count:3) 
             }
-        )
+       )
         
         phases:{
         (phase "Placement"
             (play 
                 (move (from (handSite Mover)) (to (sites Empty))) 
-            )
+           )
             (nextPhase ("HandEmpty" P2) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play 
                 (forEach Piece)
-            )
-        )
+           )
+       )
         }
         
         (end (if (is Line 3 Orthogonal) (result Mover Win)))
-    )	
+   )	
 )
 
 //------------------------------------------------------------------------------
@@ -52,8 +52,8 @@
         (classification "board/space/line")
         (origin  "This game was played in West Africa, around 1955.")
         }
-    )
+   )
     (ai
         "Wure Dune_ai"
-    )
+   )
 )

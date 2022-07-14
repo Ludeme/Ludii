@@ -3,8 +3,8 @@
         (if 
             (is Line 3 Orthogonal exact:True) 
             (moveAgain)
-        )
-    )
+       )
+   )
 )
 
 (define "NoLine3" 
@@ -15,7 +15,7 @@
     (move
         Remove
         (sites Occupied by:Next container:"Board") 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -33,12 +33,12 @@
                 Orthogonal 
                 (to 
                     if:(is Empty (to)) 
-                ) 
+               ) 
                 "IfLine3MoveAgain"
-            )
-        )
+           )
+       )
         }
-    )  
+   )  
     (rules 
         (start (place "Marker" "Hand" count:12))
         
@@ -49,25 +49,25 @@
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
-                    )
+                   )
                     ifAfterwards:"NoLine3"
-                )
-            )
+               )
+           )
             (nextPhase ("HandEmpty" P2) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play         
                 (if "SameTurn"
                     "RemoveEnemyPiece" 
                     (forEach Piece) 
-                )
-            )
+               )
+           )
             
             (end (if (= (count Pieces Next) 2) (result Mover Win)))
-        )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -86,7 +86,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in West Africa, around 1939.")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
@@ -96,6 +96,6 @@
     
     (ai 
         "Dra_ai"
-    )
+   )
     
 )

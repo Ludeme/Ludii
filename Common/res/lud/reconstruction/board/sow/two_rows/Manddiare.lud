@@ -4,10 +4,10 @@
     (equipment { 
         (mancalaBoard 2 <Board:size>
             (track "Track" "1,E,N,W" loop:True)
-        )
+       )
         (piece "Seed" Shared)
         }
-    )  
+   )  
     (rules 
         
         (start [#])
@@ -15,7 +15,7 @@
         (play [#]) // When the final counter of the sowing lands in a hole, making it contain an even number of counters, these are captured.
         
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -47,7 +47,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Mauritania, around 1955.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

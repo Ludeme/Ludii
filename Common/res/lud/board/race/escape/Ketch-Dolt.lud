@@ -6,7 +6,7 @@
     (if (is Mover P1)
         ("IsSingletonStack" ("EnemySite" P2 "Track2"))
         ("IsSingletonStack" ("EnemySite" P1 "Track1"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -19,7 +19,7 @@
             (track "Track1" {26 12..7} P1 directed:True)
             (track "Track2" {27 25..20} P2 directed:True)
             } 
-        )
+       )
         (dice d:6 num:2)
         (piece "Disc" Each
             (or
@@ -30,11 +30,11 @@
                             (do
                                 (if ("RemoveEnemyPiece") (trigger "ShouldCapture" Mover))
                                 next:(move Remove (from))
-                            )
-                        )
+                           )
+                       )
                         (then ("ReplayNotAllDiceUsed"))
-                    )
-                )
+                   )
+               )
                 (forEach Die
                     if:("DieNotUsed")
                     (or
@@ -42,20 +42,20 @@
                             (move 
                                 (from (if (is Mover P1) ("EnemySite" P2 "Track2") ("EnemySite" P1 "Track1")))
                                 (to (handSite Next))
-                            )
-                        )
+                           )
+                       )
                         (move 
                             (from (from))
                             (to 
                                 ("NextSiteFrom" (from) "Track" (pips))
                                 (apply (if ("RemoveEnemyPiece") (trigger "ShouldCapture" Mover)))
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (then ("ReplayNotAllDiceUsed"))
-                )		
-            )
-        )
+               )		
+           )
+       )
         (hand Each)
         (map "Start" {(pair P1 12) (pair P2 25)})
     })
@@ -67,14 +67,14 @@
         (play 
             ("RollEachNewTurnMove"
                 (or (forEach Piece) (forEach Piece container:(mover)))
-            )
-        )
+           )
+       )
         (end {
             (if (is Triggered "ShouldCapture" P1) (result P1 Loss))
             (if (is Triggered "ShouldCapture" P2) (result P2 Loss))
             ("EscapeWin")
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -93,7 +93,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in England, around 1674.")
         }
-    )
+   )
     
     (graphics {
         (board Style backgammon)

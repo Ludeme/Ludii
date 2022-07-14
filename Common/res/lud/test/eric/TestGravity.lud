@@ -4,7 +4,7 @@
         (board (square 4 pyramidal:True) use:Vertex) 
         (piece "Ball" Each) 
         }
-    )  
+   )  
     (rules 
         (meta {
             (gravity)
@@ -16,20 +16,20 @@
                     Add 
                     (to (sites Empty) 
                         if:(is Flat)
-                    )
-                )
+                   )
+               )
                 (move Remove 
                     (sites Occupied by:All)
-                )
-            )
-        )
+               )
+           )
+       )
         (end 
             (if 
                 (no Moves Next) 
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------

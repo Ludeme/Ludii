@@ -5,9 +5,9 @@
         (between 
             if:("IsEnemyAt" (between)) 
             (apply (remove (between)))
-        )
+       )
         (to if:(is Empty (to)))
-    )
+   )
 )
 
 (define "StepToEmptyForwards"
@@ -15,7 +15,7 @@
         Step 
         (directions {Forwards Rightward Leftward} bySite:True)
         (to if:(is Empty (to)))
-    )
+   )
 )
 
 (define "MoveChoice" 
@@ -24,11 +24,11 @@
             (then 
                 (if (is In (last To) (sites Mover)) 
                     (move Promote (last To) (piece "DoubleCounter") Mover)
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (forEach Piece "DoubleCounter" #2)
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -39,9 +39,9 @@
         (board
             (renumber 
                 (splitCrossings (add (regular Star 6) edges:{{0 5} {1 4} {2 3}}))
-            )
+           )
             use:Vertex
-        ) 
+       ) 
         (piece "Counter" Each)  
         (piece "DoubleCounter" Each)
         (regions "Palace1" P1 (sites {"E7"})) 
@@ -59,7 +59,7 @@
                 ("MoveChoice" "HopCaptureForwards" "HopCapture")
                 ("MoveChoice" "StepToEmptyForwards" "StepToEmpty")
             })
-        )
+       )
         
         (end {
             ("BlockWin")
@@ -71,9 +71,9 @@
                     (= 1 (count Pieces P2 "DoubleCounter")) 
                 }) 
                 (result Mover Draw)
-            )
+           )
         }) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -92,7 +92,7 @@
         (credit "Cameron Browne")
         (date "1985")
         }
-    )
+   )
     
     (graphics {
         (show RegionOwner)
@@ -102,5 +102,5 @@
     
     (ai
         "Game of Solomon_ai"
-    )
+   )
 )

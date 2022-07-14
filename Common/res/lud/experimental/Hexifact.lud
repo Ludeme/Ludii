@@ -12,9 +12,9 @@
             (forEach Group "GridDirection" 
                 //     if:(is Mover (who at:(to))) // this appears to be the default, and it ceases to work when the boolean is included.
                 (remember Value (count Sites in:(sites)))
-            )
+           )
             }
-        )
+       )
         next:(set Var "TopValue" (max (values Remembered))
             (then
                 (forget Value (max (values Remembered)) 
@@ -22,7 +22,7 @@
                         (set Score Mover (* (var "TopValue") (max (values Remembered)))
                             (then
                                 (forget Value All)       
-        ))))))
+       ))))))
 ))
 
 (define "PlacementSites"
@@ -41,7 +41,7 @@
         (board <BoardShape:gridType> use:Vertex)
         (piece "Disc" Each)
         }
-    )
+   )
     (rules
         (play
             (or
@@ -52,12 +52,12 @@
                         if:(or
                             ("PlacementSites")
                             (= -1 (counter))
-                    ))
+                   ))
                     (then
                         (forEach Site
                             (sites Occupied by:Mover)
                             (set State at:(site) 0)
-                )))
+               )))
                 (if
                     <Jumping:limits>
                     (do
@@ -68,17 +68,17 @@
                                 (between (range 1 Infinity) if:(is In (between) (sites Occupied by:Next)))
                                 (to if:(is In (to) (sites Empty)))
                                 (then (set State at:(last To) 1))
-                            )
+                           )
                             Mover
-                        )
+                       )
                         ifAfterwards:(all Sites
                             (sites Occupied by:Mover) 
                             if:(> 4 (count Pieces Mover in:(sites Around (site) "GridDirection")))
-                )))
+               )))
                 (move Pass) // without this there are obscure forced moves...
                 }
                 (then ("ScoreMover"))
-        ))
+       ))
         (end 
             (if
                 (all Passed)
@@ -86,7 +86,7 @@
                 (if
                     (>= (score Mover) (score Next))
                     (result Mover Win)
-                )
+               )
                 }
                 (result Next Win)
 ))))

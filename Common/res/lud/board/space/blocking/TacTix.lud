@@ -22,12 +22,12 @@
                                         (and
                                             (is Occupied (ahead (last To) (directions Cell from:(last From) to:(last To)))) 
                                             (!= (last To) (ahead (last To) (directions Cell from:(last From) to:(last To))))
-                                        )
+                                       )
                                         (moveAgain)
-                                    )
-                                )
-                            )
-                        )
+                                   )
+                               )
+                           )
+                       )
                         (move Select
                             (from (last To))
                             (to (ahead (last To) (directions Cell from:(last From) to:(last To))))
@@ -37,24 +37,24 @@
                                     (if  (and
                                             (is Occupied (ahead (last To) (directions Cell from:(last From) to:(last To)))) 
                                             (!= (last To) (ahead (last To) (directions Cell from:(last From) to:(last To))))
-                                        )
+                                       )
                                         (moveAgain)
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                   )
+                               )
+                           )
+                       )
+                   )
                     (move Pass)
-                )
+               )
                 (move Remove
                     (sites Board)
                     (then (if (not (all Sites (sites Around (last To) Orthogonal) if:(is Empty (site)))) (moveAgain)))
-                )
-            )
-        )
+               )
+           )
+       )
         
         (end ("NoMoves" Win))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -79,7 +79,7 @@
         (credit "Eric Piette")
         (date "1949")
         }
-    )
+   )
     
     (graphics {
         (no Sunken)

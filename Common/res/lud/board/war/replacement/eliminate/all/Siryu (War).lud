@@ -12,30 +12,30 @@
     (apply 
         if:("IsEnemyAt" (to)) 
         (remove (to))
-    ) 
+   ) 
 )
 
 (define "PieceMove" 
     (if (or 
             ("ActivatedPiece") 
             (and (= (count Pips) (mapEntry "Sir" (mover))) ("InactivePiece"))
-        )
+       )
         (if (!= "SiteToMoveOnTrack" Off)
             (if (or
                     (is In "SiteToMoveOnTrack" (sites Empty))
                     (is Enemy (who at:"SiteToMoveOnTrack"))
-                )
+               )
                 (move 
                     (from)
                     (to 
                         "SiteToMoveOnTrack" 
                         "CaptureEnemyPiece"
-                    )
-                )
-            )
+                   )
+               )
+           )
             (then ("ActivatePiece"))
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -50,7 +50,7 @@
             (track "Track2" "47,W,S1,E,S1,W,24,E,N1,W,24,E,N1,W,24,E,N1,W,24,E,N1,W,24,E,N1,W,24,E,N1,W,24"  loop:True P2)
             }
             use:Vertex
-        )
+       )
         (piece "Stick" P1 ("PieceMove"))
         (piece "Marker" P2 ("PieceMove"))
         (regions "AllSites" (sites Board))
@@ -69,13 +69,13 @@
                 next:(if (can Move (forEach Piece))
                     (forEach Piece (then (if (= ("ThrowValue") 5) (moveAgain))))
                     (move Pass (then (if (= ("ThrowValue") 5) (moveAgain))))
-                )
-            )
-        )
+               )
+           )
+       )
         (end 
             (if (no Pieces Next) (result Mover Win))
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -93,7 +93,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Algeria, around 1969.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)    
@@ -106,6 +106,6 @@
     
     (ai
         "Siryu (War)_ai"
-    )
+   )
 )
 

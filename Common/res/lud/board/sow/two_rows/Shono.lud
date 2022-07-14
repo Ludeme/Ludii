@@ -9,7 +9,7 @@
     (equipment { 
         (mancalaBoard 2 "Columns"
             (track "Track" "1,E,N,W" loop:True)
-        )
+       )
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
@@ -23,7 +23,7 @@
                 (from 
                     (sites Mover) 
                     if:(< 0 (count at:(from)))
-                )
+               )
                 (then 
                     (sow  
                         if:(and 
@@ -31,22 +31,22 @@
                             (or 
                                 (= (count at:(to)) 2) 
                                 (= (count at:(to)) 3)
-                            )
-                        ) 
+                           )
+                       ) 
                         apply:(fromTo 
                             (from (to)) 
                             (to (mapEntry (mover))) 
                             count:(count at:(to))
-                        )
+                       )
                         includeSelf:False
                         backtracking:True
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-    )	
+   )	
 )
 
 //------------------------------------------------------------------------------
@@ -56,11 +56,11 @@
     (item "Normal"  
         <1>     
         "The seeds have a normal size."
-    )*
+   )*
     (item "Small"  
         <0.8>     
         "The seeds are small."
-    )
+   )
 })
 
 //------------------------------------------------------------------------------
@@ -95,7 +95,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Central Africa, around 1912.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

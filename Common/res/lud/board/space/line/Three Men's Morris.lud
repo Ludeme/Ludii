@@ -12,14 +12,14 @@
         (phase "Placement"
             (play (move (from (handSite Mover)) (to (sites Empty))))
             (nextPhase ("HandEmpty" P2) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play (forEach Piece))
-        )
+       )
         }
         (end (if (is Line 3) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -46,10 +46,10 @@
         (classification "board/space/line")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (ai 
         "Three Men's Morris_ai"
-    )
+   )
     
 )

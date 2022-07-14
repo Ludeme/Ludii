@@ -13,9 +13,9 @@
                 ("SiteToMoveOnTrack" from:(from) #1)
                 if:(not (and (is In (to) (sites "SafeSites")) ("IsEnemyAt" (to))))
                 ("HittingStackCapture" (handSite (who at:(to) level:(level))))
-            )
-        )
-    )		
+           )
+       )
+   )		
 )
 
 //------------------------------------------------------------------------------
@@ -30,7 +30,7 @@
             (track "Track3" "96,52,N,W,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,W1,S7,End" P3 directed:True)
             (track "Track4" "96,27,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W7,End" P4 directed:True)
             }
-        )
+       )
         (hand Each) 
         ("StickDice" 6)
         (piece "Pawn" Each ("Move" ("ThrowValue")))
@@ -56,40 +56,40 @@
                             (move
                                 (from (handSite Mover))
                                 (to (mapEntry "Entry" Mover))
-                            )
-                        )
+                           )
+                       )
                         (forEach Piece ("Move" 1))
                         }
                         (then 
                             (and 
                                 (moveAgain)
                                 (set Var "ExtraOne" 0)
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (or
                         (if (and (is Occupied (handSite Mover)) ("IsSpecialThrow"))
                             (move
                                 (from (handSite Mover))
                                 (to (mapEntry "Entry" Mover))
-                            )
-                        )
+                           )
+                       )
                         (forEach Piece)
-                    )
-                )
+                   )
+               )
                 (then
                     (if (not ("StopThrow")) 
                         (and
                             (if ("IsSpecialThrow") (set Var "ExtraOne" 1))
                             (moveAgain)
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         
         (end ("EscapeTeamWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -108,7 +108,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Sri Lanka, around 1906.")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Red))

@@ -4,7 +4,7 @@
         (board 
             (remove (concentric {1 4}) edges:{{1 0} {0 3}})
             use:Vertex
-        )
+       )
         (hand Each)
         (piece "Disc" Each "StepToEmpty")
     })
@@ -16,15 +16,15 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty))
-                )
-            ) 
+               )
+           ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )  
+       )  
         
         (phase "Movement" (play (forEach Piece)))
         }
         (end ("BlockWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -42,9 +42,9 @@
         (credit "Eric Piette")
         (origin  "This game was played in Mongolia, from around 1963 to 1991.")
         }
-    )
+   )
     
     (ai
         "Dorvon Cag_ai"
-    )
+   )
 )

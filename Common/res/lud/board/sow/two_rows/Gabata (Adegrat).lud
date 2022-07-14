@@ -6,28 +6,28 @@
     (if (is Mover P1)
         (sites (values Remembered "OwnedP1"))
         (sites (values Remembered "OwnedP2"))
-    )
+   )
 )
 
 (define "OneRowIsEmpty"
     (or 
         (all Sites (sites P1) if:(= 0 (count at:(site))))
         (all Sites (sites P2) if:(= 0 (count at:(site))))
-    )
+   )
 )
 
 (define "ForgetValue" 
     (if (is Mover P1)
         (forget Value "OwnedP1" #1)
         (forget Value "OwnedP2" #1)
-    )
+   )
 )
 
 (define "NoOwnedHoles" 
     (if (= #1 P1)
         (= 0 (size Array (values Remembered "OwnedP1")))
         (= 0 (size Array (values Remembered "OwnedP2")))
-    )
+   )
 )
 
 (define "NoPiecesInP1Side" 
@@ -38,14 +38,14 @@
     (trackSite FirstSite 
         from:(mapEntry "LeftMost" Mover)
         if:(is Empty (to))
-    )
+   )
 )
 
 (define "RemmemberOwnedHoles" 
     (if (is Mover P1)
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -56,7 +56,7 @@
     (equipment { 
         (mancalaBoard 2 6 store:None
             (track "Track" "0,E,N,W" loop:True)
-        )
+       )
         (piece "Seed" Shared)
         (regions P1 (sites Bottom)) 
         (regions P2 (sites Top)) 
@@ -81,26 +81,26 @@
                                 ("SameTurn") 
                                 "PlayFromNextHole" 
                                 ("OwnedHoles") 
-                            ) 
+                           ) 
                             if:(> (count at:(from)) 0)
-                        )
+                       )
                         (then 
                             (sow
                                 apply:(if (> (count at:(to)) 1)
                                     (if (>= (count at:("NextHoleFrom" (to) 1)) 1)
                                         (moveAgain)
-                                    )
+                                   )
                                     (if (>= (count at:("NextHoleFrom" (to) 1)) 1)
                                         (fromTo
                                             (from ("NextHoleFrom" (to) 1))
                                             (to (handSite Mover))
                                             count:(count at:("NextHoleFrom" (to) 1))
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )	
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )	
                     }
                     (then 
                         (if ("OneRowIsEmpty")
@@ -112,35 +112,35 @@
                                                 (from (site))
                                                 (to (handSite P2))
                                                 count:(count at:(site))
-                                            )
-                                        )
-                                    )
+                                           )
+                                       )
+                                   )
                                     (forEach Site (sites Board)
                                         (if (< 0 (count at:(site)))
                                             (fromTo
                                                 (from (site))
                                                 (to (handSite P1))
                                                 count:(count at:(site))
-                                            )
-                                        )
-                                    )
-                                )
+                                           )
+                                       )
+                                   )
+                               )
                                 (forget Value "OwnedP1" All)
                                 (forget Value "OwnedP2" All)
                             })
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (end (if ("NoPieceOnBoard")
                     {
                     (if (> 3 (count Cell at:(handSite P1))) (result P2 Win))
                     (if (> 3 (count Cell at:(handSite P2))) (result P1 Win))
                     }
-                )
-            )
+               )
+           )
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-        )
+       )
         
         (phase "BetweenRounds"
             (play
@@ -151,14 +151,14 @@
                         count:3
                         (then
                             ("RemmemberOwnedHoles" (last To))
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase (all Passed) "Sowing")
-        )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -174,7 +174,7 @@
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

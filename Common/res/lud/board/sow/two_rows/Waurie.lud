@@ -7,7 +7,7 @@
     (equipment { 
         (mancalaBoard 2 6
             (track "Track" "0,ESE,E,ENE,WNW,W" loop:True)
-        )
+       )
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (map {(pair P1 LastSite) (pair P2 FirstSite)})  // kalahs (storage pits)
@@ -22,24 +22,24 @@
                 (from 
                     (sites Mover) 
                     if:(> (count at:(from)) 0)
-                )
+               )
                 (then 
                     (sow
                         apply:(if (= (to) (mapEntry Mover))
                             (moveAgain)
-                        )
+                       )
                         skipIf:(= (to) (mapEntry Next))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (end
             (if (all Sites (sites Mover) if:(= 0 (count at:(site))))
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -58,12 +58,12 @@
         (credit "Eric Piette")
         (origin  "This game was played in Cayman Islands, from around 1985 to 1995.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
     })
     (ai
         "Waurie_ai"
-    )
+   )
 )

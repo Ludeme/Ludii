@@ -3,7 +3,7 @@
     (equipment { 
         ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
         (hand P1)
-        (piece "Fox" P1 (or ("HopSequenceCapture") "StepToEmpty" ))
+        (piece "Fox" P1 (or ("HopSequenceCapture") "StepToEmpty"))
         (piece "Hen" P2 N "StepForwardsToEmpty") 
     })  
     (rules 
@@ -18,15 +18,15 @@
                 (move 
                     (from (handSite P1)) 
                     (to (sites Empty))
-                )
-            ) 
+               )
+           ) 
             (nextPhase ("HandEmpty" P1) "Movement")
-        )
+       )
         (phase "Movement" (play (forEach Piece)))
         }
         
         (end ("NoMovesLossAndNoPiecesPlayerLoss" P2))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -44,7 +44,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in France, around 1668.")
         }
-    )
+   )
     
     (graphics {
         (board Style Graph)
@@ -52,9 +52,9 @@
         (player Colour P2 (colour White))
         (piece Families {"Abstract" "Themed"})
         }
-    )
+   )
     
     (ai
         "Jeu du Renard et de la Poule_ai"
-    )
+   )
 )

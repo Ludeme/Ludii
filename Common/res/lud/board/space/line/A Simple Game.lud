@@ -12,7 +12,7 @@
         })
         (play (forEach Piece))
         (end (if (is Line 3 All) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -32,7 +32,7 @@
         (author "Jan Willemson")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal (colour Hidden))

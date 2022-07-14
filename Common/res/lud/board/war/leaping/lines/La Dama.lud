@@ -1,7 +1,7 @@
 (define "PromoteIfCornersReached"  
     (if (is In (last To) (sites Next))
         (move Promote (last To) (piece "DiscDouble") Mover)
-    )
+   )
 )
 
 (define "HopDisc" 
@@ -11,15 +11,15 @@
         (between 
             if:("IsEnemyAt" (between))
             (apply (remove (between)))
-        ) 
+       ) 
         (to if:(is Empty (to))) 
         (then
             (and 
                 ("PromoteIfCornersReached")
                 ("HasCaptured")
-            )
-        )
-    ) 
+           )
+       )
+   ) 
 )
 
 (define "HopDiscDouble" 
@@ -31,10 +31,10 @@
             after:9
             if:("IsEnemyAt" (between)) 
             (apply (remove (between)))
-        )
+       )
         (to if:(is Empty (to)))
         (then ("HasCaptured"))
-    )
+   )
 )
 
 (define "HasCaptured"  (set Value Mover 0))
@@ -46,7 +46,7 @@
             (or 
                 (forEach Piece "Disc" 
                     ("HopDisc")
-                ) 
+               ) 
                 (forEach Piece "DiscDouble" 
                     (move
                         Hop
@@ -56,13 +56,13 @@
                             after:9
                             if:("IsEnemyAt" (between)) 
                             (apply (remove (between)))
-                        )
+                       )
                         (to if:(is Empty (to)))
-                    )
-                )
-            )
-        )
-    )
+                   )
+               )
+           )
+       )
+   )
 )
 
 (define "SitesWithPossibleCaptureInPreviousTurn" (sites Pending))
@@ -72,22 +72,22 @@
         Select 
         (from #1
             if:(!= (what at:(from)) 0)
-        )
+       )
         (then 
             (and  {
                 (remove (last To)) 
                 (moveAgain) 
                 (set Value Prev 0)
             })
-        )
-    )
+       )
+   )
 )
 
 (define "ShouldCapturedButMoved" 
     (and 
         (is In (last From) ("SitesWithPossibleCaptureInPreviousTurn"))  
         (is In (last From) (sites Empty))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -104,16 +104,16 @@
                     (directions {Rightward Leftward Forwards} of:All) 
                     (to if:(is Empty (to)))
                     (then ("HasNotCaptured"))
-                )
+               )
                 (then ("PromoteIfCornersReached"))
-            )		
-        )
+           )		
+       )
         (piece "DiscDouble" Each
             (or
                 ("HopDiscDouble") 
                 (move Slide All (then ("HasNotCaptured")))
-            )		
-        )
+           )		
+       )
         (regions P1 (intersection (sites Corners) (sites Bottom)))
         (regions P2 (intersection (sites Corners) (sites Top)))
     })  
@@ -130,19 +130,19 @@
                     (or
                         (if ("ShouldCapturedButMoved") 
                             ("HuffOnePieceOf" (last To))
-                        )
+                       )
                         ("HuffOnePieceOf" ("SitesWithPossibleCaptureInPreviousTurn"))
-                    )
-                )
+                   )
+               )
                 (do 
                     ("RememberSiteWithPossibleCapture") 
                     next:(forEach Piece)
-                )
-            )
-        ) 
+               )
+           )
+       ) 
         
         (end (if (no Pieces Mover) (result Next Win))) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -168,7 +168,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Canary Islands, from around 1911 to 1994.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)

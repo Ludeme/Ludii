@@ -7,7 +7,7 @@
         (from (handSite Mover)) 
         (to (sites Empty)) 
         (then (moveAgain))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -22,16 +22,16 @@
                     (merge
                         (shift -1 1 (rectangle 1 5))
                         (square 3)
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (piece "Stick" Each
             (or
                 ("StepOrthogonalToEmpty")
                 ("HopOrthogonalCapture")
-            )
-        )
+           )
+       )
         (hand Each)
     })
     (rules 
@@ -44,17 +44,17 @@
             (if (and 
                     ("HaveRemainingSticks") 
                     ("LessThanFourSticksOnBoard") 
-                )
+               )
                 ("ReplaceStick")
                 (forEach Piece)
-            )
-        )
+           )
+       )
         (end
             (if (no Pieces Next)
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -71,7 +71,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Liberia, from around 1879 to 1882.")
         }
-    )
+   )
     
     (graphics {
         (piece Scale "Stick" 0.7)
@@ -81,5 +81,5 @@
     })
     (ai
         "Queah Game_ai"
-    )
+   )
 )

@@ -12,14 +12,14 @@
         (phase "Placement"
             (play (move (from (handSite Mover)) (to (sites Empty))))
             (nextPhase ("HandEmpty" P2) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play (forEach Piece))
-        )
+       )
         }
         (end (if (is Line 3) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -38,6 +38,6 @@
         (credit "Eric Piette")
         (origin  "This game was played in Zimbabwe, around 1964.")
         }
-    )
+   )
     
 )

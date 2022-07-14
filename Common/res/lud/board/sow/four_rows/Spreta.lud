@@ -12,7 +12,7 @@
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" <Board:CCW2> loop:True P2)
             }
-        )
+       )
         (regions "Home" P1 (sites Track "Track1"))                                     // P1 Home
         (regions "Home" P2 (sites Track "Track2"))                                     // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom)))        // P1 inner Home
@@ -31,7 +31,7 @@
                     (difference (sites P1 "Inner") (sites { <Board:thirdHoleInnerP1> <Board:rightMostInnerHoleP1>})) 
                     (difference (sites P2 "Inner") (sites { <Board:thirdHoleInnerP2> <Board:rightMostInnerHoleP2>}))
                 }) 
-            )
+           )
             (set Count 2 to:(sites { <Board:thirdHoleInnerP1> <Board:thirdHoleInnerP2>})) 
             
         })
@@ -43,17 +43,17 @@
                     (from 
                         (sites Mover) 
                         if:(= 2 (count at:(from)))
-                    )	
+                   )	
                     (then
                         (sow
                             "Track"
                             owner:(mover)		
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase Mover "Playing")
-        )
+       )
         (phase "Playing"
             (play 
                 (if (or (= 1 (var "ExtraCapture")) (= 2 (var "ExtraCapture")))
@@ -65,20 +65,20 @@
                                 (and 
                                     (moveAgain)
                                     (set Var "ExtraCapture" 2)
-                                )
+                               )
                                 (set Var "ExtraCapture" 0)
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (priority {
                         (move Select
                             (from 
                                 (if ("SameTurn") 
                                     "LastHoleSowed" 
                                     (sites Mover) 
-                                ) 
+                               ) 
                                 if:(< 1 (count at:(from)))
-                            )
+                           )
                             (then 
                                 (sow
                                     "Track"
@@ -89,29 +89,29 @@
                                             (and {
                                                 (if (> (count at:("OppositePit" (to))) 0) 
                                                     (remove ("OppositePit" (to)) count:(count at:("OppositePit" (to)))) 
-                                                )
+                                               )
                                                 (if (> (count at:("OppositeOuterPit" (to))) 0) 
                                                     (remove ("OppositeOuterPit" (to)) count:(count at:("OppositeOuterPit" (to)))) 
-                                                )
+                                               )
                                                 (set Var "ExtraCapture" 1)
                                                 (moveAgain)
                                             })
-                                        )
-                                    )
-                                )
-                            )
-                        )
+                                       )
+                                   )
+                               )
+                           )
+                       )
                         (move Select
                             (from 
                                 (if ("SameTurn") 
                                     "LastHoleSowed" 
                                     (sites Mover) 
-                                ) 
+                               ) 
                                 if:(and
                                     (= 1 (count at:(from)))
                                     (= 0 (count at:("NextSite" from:(from))))
-                                )
-                            )
+                               )
+                           )
                             (then 
                                 (sow
                                     "Track"
@@ -122,30 +122,30 @@
                                             (and {
                                                 (if (> (count at:("OppositePit" (to))) 0) 
                                                     (remove ("OppositePit" (to)) count:(count at:("OppositePit" (to)))) 
-                                                )
+                                               )
                                                 (if (> (count at:("OppositeOuterPit" (to))) 0) 
                                                     (remove ("OppositeOuterPit" (to)) count:(count at:("OppositeOuterPit" (to)))) 
-                                                )
+                                               )
                                                 (set Var "ExtraCapture" 1)
                                                 (moveAgain)
                                             })
-                                        )
-                                    )
-                                )
-                            )
-                        )
+                                       )
+                                   )
+                               )
+                           )
+                       )
                     })
-                )
-            )
-        )
+               )
+           )
+       )
         }
         
         (end
             (if (all Sites (sites Next "Home") if:(= 0 (count at:(site))))
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -171,7 +171,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Malawi, around 1913.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

@@ -8,7 +8,7 @@
                 (shift 1.5 1 (square 1))
             })
             use:Vertex
-        )
+       )
         (piece "Seed" Shared)
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
@@ -19,7 +19,7 @@
         })
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -37,7 +37,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Algeria, around 1921.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

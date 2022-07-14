@@ -6,7 +6,7 @@
                 from:(forEach
                     (difference (difference (sites Board) (sites Occupied by:#1)) (sites Occupied by:Neutral))    
                     if:("IsControlledBy" #1 (site))
-                )
+               )
                 to:(from) 
                 (if (is Empty (to)) 1 2)
 ))))
@@ -19,7 +19,7 @@
                 in:(difference
                     (sites LineOfSight Piece at:#2 "LoSDirection")
                     (sites Occupied by:Neutral)
-        )))
+       )))
         (* 2
             (count Pieces #1
                 in:(sites LineOfSight Piece at:#2 "LoSDirection")
@@ -47,7 +47,7 @@
         (piece "X" Neutral)
         (piece "Counter" Neutral)
         }
-    )
+   )
     (rules
         (meta (passEnd NoEnd))
         (play
@@ -55,7 +55,7 @@
                 (and
                     (= -1 (var "DoubleTurnPhase"))
                     (= 1 (mover))
-                )
+               )
                 
                 (or
                     (move Pass)
@@ -66,7 +66,7 @@
                             (if
                                 (> 2 (count Pieces in:(sites Occupied by:Neutral)))
                                 (moveAgain)
-                ))))
+               ))))
                 
                 (or
                     {
@@ -74,29 +74,29 @@
                         (to
                             (sites Empty)
                             if:(not ("IsControlledBy" Next (to)))
-                        )
+                       )
                         (then
                             (if
                                 (= -1 (var "DoubleTurnPhase"))
                                 (set Var "DoubleTurnPhase" 1)
                                 ("MoveTwiceThenScore")
-                    )))
+                   )))
                     (move Remove 
                         (forEach
                             (sites Occupied by:Next)
                             if:("IsControlledBy" Mover (site)) 
-                        )
+                       )
                         (then ("MoveTwiceThenScore"))
-                    )
+                   )
                     }
-                )
+               )
                 (then
                     (if
                         (no Moves Next)
                         (and 
                             ("ScoreFor" Mover)
                             ("ScoreFor" Next)  
-        )))))
+       )))))
         
         (end 
             (if 
@@ -108,7 +108,7 @@
 // Defines for Options
 
 (define "LoSDirection" <Grid:connectivity>)
-(define "BoardUsed" <Grid:selected> )
+(define "BoardUsed" <Grid:selected>)
 
 (define "Hex2Limp" (board (dual (hex  (/ <BoardSize:smallSide> 2) (+ 2 (/ <BoardSize:smallSide> 2)))) use:Vertex))
 (define "SquareGrid" (board (square <BoardSize:smallSide>) use:Vertex))
@@ -197,7 +197,7 @@
         (credit "Dale W. Walton")
         (date "14-10-2021")
         }
-    )
+   )
     (graphics 
         {
         (player Colour P1 (colour 120 36 0))
@@ -217,13 +217,13 @@
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
         (show Edges Diagonal <Grid:diagShow> (colour DarkGrey))
-    (board Background fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.3 scaleY:1.3 )// offsetX:0.021 offsetY:-0.015 )   
+    (board Background fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.3 scaleY:1.3)// offsetX:0.021 offsetY:-0.015)   
     (piece Foreground P1 "Counter" image:"DoubleCounter" fillColour:(colour 120 36 0) edgeColour:(colour Black) scale:0.98)
     (piece Foreground P2 "Counter" image:"DoubleCounter" fillColour:(colour Cream) edgeColour:(colour VeryDarkGrey) scale:0.98)
-    (piece Foreground Neutral "X" image:"Cross" fillColour:(colour DarkBlue) edgeColour:(colour DarkBlue) scale:.45 offsetX:.16 offsetY:.2 )
+    (piece Foreground Neutral "X" image:"Cross" fillColour:(colour DarkBlue) edgeColour:(colour DarkBlue) scale:.45 offsetX:.16 offsetY:.2)
     (piece Background P1 "Counter" image:"Counter" fillColour:(colour 0 0 0 75) edgeColour:(colour 0 0 0 0) scale:1.0 offsetX:-.1 offsetY:.2)
     (piece Background P2 "Counter" image:"Counter" fillColour:(colour 0 0 0 75) edgeColour:(colour 0 0 0 0) scale:1.0 offsetX:-.15 offsetY:.3)
-(piece Background Neutral "X" image:"Counter" fillColour:"ColourBackground" edgeColour:(colour 0 0 0 0) scale:1.08 )// offsetX:-.16 offsetY:-.2 )
+(piece Background Neutral "X" image:"Counter" fillColour:"ColourBackground" edgeColour:(colour 0 0 0 0) scale:1.08)// offsetX:-.16 offsetY:-.2)
 
 }
 )

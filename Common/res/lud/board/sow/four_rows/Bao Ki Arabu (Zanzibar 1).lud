@@ -6,9 +6,9 @@
             (if ("SameTurn") 
                 (if #1 "LastHoleSowed") 
                 (sites Mover "Home") 
-            ) 
+           ) 
             if:(> (count at:(from)) 0)
-        )
+       )
         (then 
             (sow
                 #2
@@ -22,23 +22,23 @@
                                     (from ("OppositePit" (to))) 
                                     (to (handSite Mover)) 
                                     count:(count at:("OppositePit" (to)))
-                                ) 
-                            ) 
+                               ) 
+                           ) 
                             (if 
                                 (> (count at:("OppositeOuterPit" (to))) 0) 
                                 (fromTo 
                                     (from ("OppositeOuterPit" (to))) 
                                     (to (handSite Mover)) 
                                     count:(count at:("OppositeOuterPit" (to)))
-                                ) 
-                            ) 
-                        )
-                    )
+                               ) 
+                           ) 
+                       )
+                   )
                     #3
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 (define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1 "Home"))))
@@ -56,7 +56,7 @@
             (track "TrackCW1" "7,W,N1,E" loop:True P1)
             (track "TrackCW2" "24,E,S1,W" loop:True P2)
             }
-        )
+       )
         (regions "Home" P1 (sites Track "TrackCCW1"))                              // P1 Home
         (regions "Home" P2 (sites Track "TrackCCW2"))                              // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
@@ -72,11 +72,11 @@
             (or
                 ("Sow" (is Pending) "TrackCW"  (and (moveAgain) (set Pending)))
                 ("Sow" (not (is Pending)) "TrackCCW" (moveAgain))
-            )
-        )
+           )
+       )
         
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -95,7 +95,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Zanzibar, around 1931.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -103,5 +103,5 @@
     
     (ai
         "Bao Ki Arabu (Zanzibar 1)_ai"
-    )
+   )
 )

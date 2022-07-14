@@ -6,8 +6,8 @@
             (move 
                 (from (from) level:(level)) 
                 (to (mapEntry ("NextSiteOnTrack" (count Pips))))
-            )
-        )
+           )
+       )
         (dice num:1)
         (map { 
             (pair "B1" "C4") (pair "D1" "G2") (pair "H1" "J4") (pair "A3" "B5") (pair "E4" "D5") (pair "H3" "D9") (pair "J8" "J10") (pair "A8" "A10") (pair "J6" "G7")
@@ -21,7 +21,7 @@
         (play ("RollMove" (forEach Piece)))
         
         (end ("ReachWin" (sites {(trackSite EndSite)}) Mover))  
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -40,7 +40,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, from around 1735 to 1899.")
         }
-    )
+   )
     
     (graphics {
         (piece Scale "Pawn" 0.5)
@@ -50,6 +50,6 @@
     
     (ai 
         "Gyan Chaupar_ai"
-    )
+   )
     
 )

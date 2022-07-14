@@ -13,7 +13,7 @@
             (track "Track" "0,E,N,W" loop:True)
             <Board:homeTracks>
             }
-        )
+       )
         <Board:openingRegions>
         (piece "Seed" Shared)
         (hand Each)
@@ -33,10 +33,10 @@
                     (from (sites Mover "OpeningRegion") if:(is Occupied (from)))
                     (to (handSite Mover))
                     count:(count at:(from))
-                )
-            )
+               )
+           )
             (nextPhase (all Sites (union (sites P1 "OpeningRegion") (sites P2 "OpeningRegion")) if:(is Empty (site))) "Sowing")
-        )
+       )
         
         (phase "Sowing"
             (play
@@ -53,17 +53,17 @@
                                             (= 3 (count at:("OppositePitTwoRows" (to))))
                                             (= 5 (count at:("OppositePitTwoRows" (to))))
                                         })
-                                    )
+                                   )
                                     (fromTo
                                         (from ("OppositePitTwoRows" (to)))
                                         (to (handSite Mover))
                                         count:(count at:("OppositePitTwoRows" (to)))
-                                    )
-                                )
+                                   )
+                               )
                                 origin:(< 1 (count at:(from)))
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (if (is Occupied Cell (handSite Mover))
                         (do (set Var "NumToSow" (count Cell at:(handSite Mover)))
                             next:(move
@@ -77,16 +77,16 @@
                                             "TrackSpecialHome"
                                             owner:(mover)
                                             origin:True
-                                        )
+                                       )
                                         (set Var "NumToSow" 0)
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         }
         
         (end (if (all Sites (sites Board) if:(= 0 (count at:(site))))
@@ -94,9 +94,9 @@
                 (if (is Empty (handSite P1)) (result P2 Win))
                 (if (is Empty (handSite P2)) (result P1 Win))
                 }
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -209,7 +209,7 @@
         "Board Size/10"
         }
         variations:{"Board Size/12" "Board Size/14" "Board Size/16" "Board Size/18" "Board Size/20"}
-    )*
+   )*
     
 })
 
@@ -227,7 +227,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Nigeria, around 1921.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

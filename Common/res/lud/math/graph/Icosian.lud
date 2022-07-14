@@ -20,9 +20,9 @@
                 {0 1}   {0 2}   {0 10}  {1 4}   {1 15}  {2 3}   {2 5}   {3 4}   {3 7}   {4 9} {5 6} 
                 {5 11}  {10 11} {11 16} {6 12}  {6 7}   {7 8}   {8 9}   {9 14}  {14 15} {8 13} 
                 {13 12} {12 16} {13 17} {14 17} {16 18} {18 17} {18 19} {10 19} {15 19}}
-            )
+           )
             use:Vertex
-        )           
+       )           
     })  
     
     (rules 
@@ -34,11 +34,11 @@
                     (to
                         Edge 
                         (sites Empty Edge)	 
-                    )
-                )
-            )
+                   )
+               )
+           )
             (nextPhase "PathMaking")  
-        )
+       )
         
         (phase "PathMaking" P1 
             (play 
@@ -49,31 +49,31 @@
                             (to
                                 Edge 
                                 (sites Empty Edge)         
-                            )
-                        )
+                           )
+                       )
                         ifAfterwards:"IncressPath"
-                    )
+                   )
                     (do 
                         (move 
                             Add
                             (to
                                 Edge 
                                 (sites Empty Edge)
-                            )
-                        )
+                           )
+                       )
                         ifAfterwards:"HamiltonianCycle"
-                    )
-                )
-            )	           
-        )
+                   )
+               )
+           )	           
+       )
         }        
         (end 	 	
             (if 
                 (>= (count Moves) (count Sites "Board")) 
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -93,7 +93,7 @@
         (credit "Tahmina Begum")
         (date "1857")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Red))
@@ -104,5 +104,5 @@
     
     (ai
         "Icosian_ai"
-    )
+   )
 )

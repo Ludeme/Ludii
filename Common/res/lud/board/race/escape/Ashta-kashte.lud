@@ -11,10 +11,10 @@
             (fromTo 
                 (from (to))
                 (to (handSite (who at:(to))))
-            )
+           )
             (moveAgain)
-        )
-    ) 
+       )
+   ) 
 )
 
 (define "Goal" 24)
@@ -34,7 +34,7 @@
             <Player:trackP3>
             <Player:trackP4>
             }
-        )
+       )
         (piece "Paddle" Each
             (if (and (is In (from) (sites Board)) ("IsNotOffBoard" "SiteToMoveOnTrack"))
                 (move 
@@ -42,15 +42,15 @@
                     (to 
                         "SiteToMoveOnTrack" 
                         "CaptureEnemyPiece"
-                    )
-                )
+                   )
+               )
                 (then 
                     (if (= "Goal" (last To))
                         (remove (last To))
-                    )
-                )
-            )	
-        )
+                   )
+               )
+           )	
+       )
         (hand Each)
         ("StickDice" 4)
         (map {(pair 1 "G4") (pair 2 "A4") (pair 3 "D1") (pair 4 "D7")})
@@ -73,17 +73,17 @@
                         (move 
                             (from (handSite Mover))
                             (to (mapEntry Mover))
-                        )
-                    )
+                       )
+                   )
                 })
                 (then 
                     (if ("Grace") (moveAgain))
-                )
-            )		
-        )
+               )
+           )		
+       )
         
         (end ("EscapeWin"))
-    )
+   )
 )
 //------------------------------------------------------------------------------
 
@@ -113,7 +113,7 @@
         "Players/2"
         }
         variations:{"Players/3" "Players/4"}
-    )*
+   )*
     
 })
 
@@ -131,7 +131,7 @@
         (classification "board/race/reach")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (stackType 0 Ground)

@@ -5,14 +5,14 @@
     (if (< ("Die1") ("Die2"))
         ("Die1")
         ("Die2")
-    )
+   )
 )
 
 (define "Double1" 
     (and 
         (= 2 (count Pips)) 
         (is AnyDie 1)
-    )
+   )
 )
 
 (define "DoubleOfAnother" 
@@ -23,7 +23,7 @@
     (or 
         (= ("Die1") (- ("Die2") 1))
         (= ("Die1") (+ ("Die2") 1))
-    )
+   )
 )
 
 (define "TrackMove" ("NextSiteOnTrack" #3 #1 #2))
@@ -33,9 +33,9 @@
         (forEach Level (site) 
             (if ("IsFriendAt" (site) level:(level))
                 (move Remove (site) level:(level))
-            )
-        )	
-    )	
+           )
+       )	
+   )	
 )
 
 (define "MoveAPiece" 
@@ -43,7 +43,7 @@
         (from (site) level:(level)) 
         (to ("TrackMove" from:(site) "Track" #1)) 
         #2
-    )	
+   )	
 )
 
 (define "NotReplayMove" (<= (var) 0))
@@ -54,10 +54,10 @@
             (and
                 (moveAgain)
                 (set Var #1)
-            )
+           )
             (set Var 0)
-        )
-    )
+       )
+   )
 )
 
 (define "DoubleOfAnotherMove"
@@ -66,9 +66,9 @@
             (or
                 (if (<= (var) 0) ("MoveAPiece" ("Die1")))
                 ("MoveAPiece" (count Pips) ("ReplayConsequences" 1))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "ConsecutiveNumberMove"
@@ -80,14 +80,14 @@
                         ("MoveAPiece" ("LowerDie"))
                         ("MoveAPiece" (- (count Pips) 1))
                         ("ReplayConsequences" (- (count Pips) 1))
-                    )
-                )
+                   )
+               )
                 (if (!= (var) (count Pips))
                     ("MoveAPiece" (count Pips) ("ReplayConsequences" (count Pips)))
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 (define "NonConsecutiveNumber"
@@ -96,9 +96,9 @@
             (or
                 (if (!= (var) ("Die1")) ("MoveAPiece" ("Die1") ("ReplayConsequences" ("Die1"))))
                 (if (!= (var) ("Die2")) ("MoveAPiece" ("Die2") ("ReplayConsequences" ("Die2"))))
-            )
-        )
-    )	
+           )
+       )
+   )	
 )
 
 (define "Move" 
@@ -109,9 +109,9 @@
             (if ("ConsecutiveNumber")
                 ("ConsecutiveNumberMove")
                 ("NonConsecutiveNumber")
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -125,7 +125,7 @@
             (track "Track1" "1,N,W,S,N,E1,S" P1 directed:True)
             (track "Track2" "14,S,E,N,S,W1,N" P2 directed:True)
             }
-        )
+       )
         (piece "Stick" Each)
         (dice d:6 num:2)
         (regions "Exit" P1 (sites {"B1" "B2"}))
@@ -143,12 +143,12 @@
                 (then
                     (if (and (is In (last To) (sites Mover "Exit")) (not (is In (last From) (sites Mover "Exit"))))
                         (remove (last To) level:(last LevelTo))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (end ("EscapeWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -167,7 +167,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in China, around 1694.")
         }
-    )
+   )
     
     (graphics {
         (stackType FanAlternating)

@@ -2,16 +2,16 @@
     (not
         (all Sites #1 
             if:(not #2)
-        )
-    )
+       )
+   )
 )
 
 (define "Place"
     (move Add
         (to 
             (sites Around (sites Occupied by:Mover) Empty Orthogonal)
-        )
-    )
+       )
+   )
 )
 
 (define "Remove"
@@ -26,15 +26,15 @@
                         (>=
                             11
                             <Size>
-                        )
+                       )
                         (< 0 (count Sites in:(sites Around (site) Own Orthogonal)))
                         True
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (then (forEach Site (sites Group at:(last From) Orthogonal) (remove (site))))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -46,7 +46,7 @@
         (board (square <Size>) use:Vertex)
         (piece "Disc" Each)
         }
-    )
+   )
     (rules
         (start {
             (place "Disc1" 
@@ -57,8 +57,8 @@
                         (!= 0 (% (site) 4))
                         (= 0 (% (row of:(site)) 4))
                     })
-                )
-            )
+               )
+           )
             (place "Disc2" 
                 (forEach 
                     (sites Phase 0) 
@@ -67,22 +67,22 @@
                         (!= 0 (% (site) 4))
                         (= 2 (% (row of:(site)) 4))
                     })
-                )
-            )
+               )
+           )
         })
         (play
             (or
                 ("Place")
                 ("Remove")
-            )
-        )
+           )
+       )
         (end 
             (if 
                 (no Pieces Next) 
                 (result Next Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------

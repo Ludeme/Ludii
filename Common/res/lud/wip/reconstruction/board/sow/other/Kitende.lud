@@ -5,14 +5,14 @@
             (concentric {24}) 
             (track "Track" {0..23} loop:True)
             use:Vertex
-        )
+       )
         (piece "Seed" Shared)
     })
     (rules
         (start (set Count 3 to:(sites Track)))
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -30,7 +30,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Republic of Congo, around 1971.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

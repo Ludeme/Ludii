@@ -5,9 +5,9 @@
             (merge 
                 (shift 0 3 (rectangle 3 9 diagonals:Alternating))
                 (shift 3 0 (rectangle 9 3 diagonals:Alternating)) 
-            )
+           )
             use:Vertex
-        )
+       )
         (piece "Marker" P1 [#])
         (piece "Marker" P2 [#])
     })  
@@ -16,7 +16,7 @@
         (start [#])
         (play [#])
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -34,7 +34,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Italy, from around 1500 to 1599.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)

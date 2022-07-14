@@ -2,7 +2,7 @@
     (and 
         (is In #1 (sites #3))
         (is In #2 (sites #3))
-    )		
+   )		
 )
 
 (define "SameSection" 
@@ -30,35 +30,35 @@
             (if (or 
                     (is In #2 (sites "Section1"))
                     (is In #2 (sites "Section11"))
-                )
+               )
                 1
                 (if (or 
                         (is In #2 (sites "Section2"))
                         (is In #2 (sites "Section10"))
-                    )
+                   )
                     2
                     (if (or 
                             (is In #2 (sites "Section3"))
                             (is In #2 (sites "Section9"))
-                        )
+                       )
                         3
                         (if (or 
                                 (is In #2 (sites "Section4"))
                                 (is In #2 (sites "Section8"))
-                            )
+                           )
                             4
                             (if (or 
                                     (is In #2 (sites "Section5"))
                                     (is In #2 (sites "Section7"))
-                                )
+                               )
                                 5
                                 6
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         // From Section 1
         (if (is In #1 (sites "Section1"))
             (if (is In #2 (sites "Section1"))
@@ -66,35 +66,35 @@
                 (if (or 
                         (is In #2 (sites "Section2"))
                         (is In #2 (sites "Section0"))
-                    )
+                   )
                     1
                     (if (or 
                             (is In #2 (sites "Section3"))
                             (is In #2 (sites "Section11"))
-                        )
+                       )
                         2
                         (if (or 
                                 (is In #2 (sites "Section4"))
                                 (is In #2 (sites "Section10"))
-                            )
+                           )
                             3
                             (if (or 
                                     (is In #2 (sites "Section5"))
                                     (is In #2 (sites "Section9"))
-                                )
+                               )
                                 4
                                 (if (or 
                                         (is In #2 (sites "Section6"))
                                         (is In #2 (sites "Section8"))
-                                    )
+                                   )
                                     5
                                     6
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             // From Section 2
             (if (is In #1 (sites "Section2"))
                 (if (is In #2 (sites "Section2"))
@@ -102,35 +102,35 @@
                     (if (or 
                             (is In #2 (sites "Section3"))
                             (is In #2 (sites "Section1"))
-                        )
+                       )
                         1
                         (if (or 
                                 (is In #2 (sites "Section4"))
                                 (is In #2 (sites "Section0"))
-                            )
+                           )
                             2
                             (if (or 
                                     (is In #2 (sites "Section5"))
                                     (is In #2 (sites "Section11"))
-                                )
+                               )
                                 3
                                 (if (or 
                                         (is In #2 (sites "Section6"))
                                         (is In #2 (sites "Section10"))
-                                    )
+                                   )
                                     4
                                     (if (or 
                                             (is In #2 (sites "Section7"))
                                             (is In #2 (sites "Section9"))
-                                        )
+                                       )
                                         5
                                         6
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
                 // From Section 3
                 (if (is In #1 (sites "Section3"))
                     (if (is In #2 (sites "Section3"))
@@ -138,35 +138,35 @@
                         (if (or 
                                 (is In #2 (sites "Section4"))
                                 (is In #2 (sites "Section2"))
-                            )
+                           )
                             1
                             (if (or 
                                     (is In #2 (sites "Section5"))
                                     (is In #2 (sites "Section1"))
-                                )
+                               )
                                 2
                                 (if (or 
                                         (is In #2 (sites "Section6"))
                                         (is In #2 (sites "Section0"))
-                                    )
+                                   )
                                     3
                                     (if (or 
                                             (is In #2 (sites "Section7"))
                                             (is In #2 (sites "Section11"))
-                                        )
+                                       )
                                         4
                                         (if (or 
                                                 (is In #2 (sites "Section8"))
                                                 (is In #2 (sites "Section10"))
-                                            )
+                                           )
                                             5
                                             6
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
                     // From Section 4
                     (if (is In #1 (sites "Section4"))
                         (if (is In #2 (sites "Section4"))
@@ -174,35 +174,35 @@
                             (if (or 
                                     (is In #2 (sites "Section5"))
                                     (is In #2 (sites "Section3"))
-                                )
+                               )
                                 1
                                 (if (or 
                                         (is In #2 (sites "Section6"))
                                         (is In #2 (sites "Section2"))
-                                    )
+                                   )
                                     2
                                     (if (or 
                                             (is In #2 (sites "Section7"))
                                             (is In #2 (sites "Section1"))
-                                        )
+                                       )
                                         3
                                         (if (or 
                                                 (is In #2 (sites "Section8"))
                                                 (is In #2 (sites "Section0"))
-                                            )
+                                           )
                                             4
                                             (if (or 
                                                     (is In #2 (sites "Section9"))
                                                     (is In #2 (sites "Section11"))
-                                                )
+                                               )
                                                 5
                                                 6
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
+                                           )
+                                       )
+                                   )
+                               )
+                           )
+                       )
                         // From Section 5
                         (if (is In #1 (sites "Section5"))
                             (if (is In #2 (sites "Section5"))
@@ -210,35 +210,35 @@
                                 (if (or 
                                         (is In #2 (sites "Section6"))
                                         (is In #2 (sites "Section4"))
-                                    )
+                                   )
                                     1
                                     (if (or 
                                             (is In #2 (sites "Section7"))
                                             (is In #2 (sites "Section3"))
-                                        )
+                                       )
                                         2
                                         (if (or 
                                                 (is In #2 (sites "Section8"))
                                                 (is In #2 (sites "Section2"))
-                                            )
+                                           )
                                             3
                                             (if (or 
                                                     (is In #2 (sites "Section9"))
                                                     (is In #2 (sites "Section1"))
-                                                )
+                                               )
                                                 4
                                                 (if (or 
                                                         (is In #2 (sites "Section10"))
                                                         (is In #2 (sites "Section0"))
-                                                    )
+                                                   )
                                                     5
                                                     6
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
+                                               )
+                                           )
+                                       )
+                                   )
+                               )
+                           )
                             // From Section 6
                             (if (is In #1 (sites "Section6"))
                                 (if (is In #2 (sites "Section6"))
@@ -246,35 +246,35 @@
                                     (if (or 
                                             (is In #2 (sites "Section7"))
                                             (is In #2 (sites "Section5"))
-                                        )
+                                       )
                                         1
                                         (if (or 
                                                 (is In #2 (sites "Section8"))
                                                 (is In #2 (sites "Section4"))
-                                            )
+                                           )
                                             2
                                             (if (or 
                                                     (is In #2 (sites "Section9"))
                                                     (is In #2 (sites "Section3"))
-                                                )
+                                               )
                                                 3
                                                 (if (or 
                                                         (is In #2 (sites "Section10"))
                                                         (is In #2 (sites "Section2"))
-                                                    )
+                                                   )
                                                     4
                                                     (if (or 
                                                             (is In #2 (sites "Section11"))
                                                             (is In #2 (sites "Section1"))
-                                                        )
+                                                       )
                                                         5
                                                         6
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
+                                                   )
+                                               )
+                                           )
+                                       )
+                                   )
+                               )
                                 // From Section 7
                                 (if (is In #1 (sites "Section7"))
                                     (if (is In #2 (sites "Section7"))
@@ -282,35 +282,35 @@
                                         (if (or 
                                                 (is In #2 (sites "Section8"))
                                                 (is In #2 (sites "Section6"))
-                                            )
+                                           )
                                             1
                                             (if (or 
                                                     (is In #2 (sites "Section9"))
                                                     (is In #2 (sites "Section5"))
-                                                )
+                                               )
                                                 2
                                                 (if (or 
                                                         (is In #2 (sites "Section10"))
                                                         (is In #2 (sites "Section4"))
-                                                    )
+                                                   )
                                                     3
                                                     (if (or 
                                                             (is In #2 (sites "Section11"))
                                                             (is In #2 (sites "Section3"))
-                                                        )
+                                                       )
                                                         4
                                                         (if (or 
                                                                 (is In #2 (sites "Section0"))
                                                                 (is In #2 (sites "Section2"))
-                                                            )
+                                                           )
                                                             5
                                                             6
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
+                                                       )
+                                                   )
+                                               )
+                                           )
+                                       )
+                                   )
                                     // From Section 8
                                     (if (is In #1 (sites "Section8"))
                                         (if (is In #2 (sites "Section8"))
@@ -318,35 +318,35 @@
                                             (if (or 
                                                     (is In #2 (sites "Section9"))
                                                     (is In #2 (sites "Section7"))
-                                                )
+                                               )
                                                 1
                                                 (if (or 
                                                         (is In #2 (sites "Section10"))
                                                         (is In #2 (sites "Section6"))
-                                                    )
+                                                   )
                                                     2
                                                     (if (or 
                                                             (is In #2 (sites "Section11"))
                                                             (is In #2 (sites "Section5"))
-                                                        )
+                                                       )
                                                         3
                                                         (if (or 
                                                                 (is In #2 (sites "Section0"))
                                                                 (is In #2 (sites "Section4"))
-                                                            )
+                                                           )
                                                             4
                                                             (if (or 
                                                                     (is In #2 (sites "Section1"))
                                                                     (is In #2 (sites "Section3"))
-                                                                )
+                                                               )
                                                                 5
                                                                 6
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
+                                                           )
+                                                       )
+                                                   )
+                                               )
+                                           )
+                                       )
                                         // From Section 9
                                         (if (is In #1 (sites "Section9"))
                                             (if (is In #2 (sites "Section9"))
@@ -354,35 +354,35 @@
                                                 (if (or 
                                                         (is In #2 (sites "Section10"))
                                                         (is In #2 (sites "Section8"))
-                                                    )
+                                                   )
                                                     1
                                                     (if (or 
                                                             (is In #2 (sites "Section11"))
                                                             (is In #2 (sites "Section7"))
-                                                        )
+                                                       )
                                                         2
                                                         (if (or 
                                                                 (is In #2 (sites "Section0"))
                                                                 (is In #2 (sites "Section6"))
-                                                            )
+                                                           )
                                                             3
                                                             (if (or 
                                                                     (is In #2 (sites "Section1"))
                                                                     (is In #2 (sites "Section5"))
-                                                                )
+                                                               )
                                                                 4
                                                                 (if (or 
                                                                         (is In #2 (sites "Section2"))
                                                                         (is In #2 (sites "Section4"))
-                                                                    )
+                                                                   )
                                                                     5
                                                                     6
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
+                                                               )
+                                                           )
+                                                       )
+                                                   )
+                                               )
+                                           )
                                             // From Section 10
                                             (if (is In #1 (sites "Section10"))
                                                 (if (is In #2 (sites "Section10"))
@@ -390,81 +390,81 @@
                                                     (if (or 
                                                             (is In #2 (sites "Section11"))
                                                             (is In #2 (sites "Section9"))
-                                                        )
+                                                       )
                                                         1
                                                         (if (or 
                                                                 (is In #2 (sites "Section0"))
                                                                 (is In #2 (sites "Section8"))
-                                                            )
+                                                           )
                                                             2
                                                             (if (or 
                                                                     (is In #2 (sites "Section1"))
                                                                     (is In #2 (sites "Section7"))
-                                                                )
+                                                               )
                                                                 3
                                                                 (if (or 
                                                                         (is In #2 (sites "Section2"))
                                                                         (is In #2 (sites "Section6"))
-                                                                    )
+                                                                   )
                                                                     4
                                                                     (if (or 
                                                                             (is In #2 (sites "Section3"))
                                                                             (is In #2 (sites "Section5"))
-                                                                        )
+                                                                       )
                                                                         5
                                                                         6
-                                                                    )
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
+                                                                   )
+                                                               )
+                                                           )
+                                                       )
+                                                   )
+                                               )
                                                 // From Section 11
                                                 (if (is In #2 (sites "Section11"))
                                                     0
                                                     (if (or 
                                                             (is In #2 (sites "Section0"))
                                                             (is In #2 (sites "Section10"))
-                                                        )
+                                                       )
                                                         1
                                                         (if (or 
                                                                 (is In #2 (sites "Section1"))
                                                                 (is In #2 (sites "Section9"))
-                                                            )
+                                                           )
                                                             2
                                                             (if (or 
                                                                     (is In #2 (sites "Section2"))
                                                                     (is In #2 (sites "Section8"))
-                                                                )
+                                                               )
                                                                 3
                                                                 (if (or 
                                                                         (is In #2 (sites "Section3"))
                                                                         (is In #2 (sites "Section7"))
-                                                                    )
+                                                                   )
                                                                     4
                                                                     (if (or 
                                                                             (is In #2 (sites "Section4"))
                                                                             (is In #2 (sites "Section6"))
-                                                                        )
+                                                                       )
                                                                         5
                                                                         6
-                                                                    )
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )	
-    )		
+                                                                   )
+                                                               )
+                                                           )
+                                                       )
+                                                   )
+                                               )
+                                           )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )	
+   )		
 )
 
 (define "SiteToMoveOnTrack" ("NextSiteOnTrack" (count Pips) #1))
@@ -486,22 +486,22 @@
                                 (if (is In (from) (sites Track "Ring2"))
                                     ("SiteToMoveOnTrack" "Ring2")
                                     ("SiteToMoveOnTrack" "Ring1")
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         (then 
             (if (not ("SameSection" (last From) (last To)))
                 (forEach Site 
                     (sites Occupied by:Enemy)
                     (addScore Mover (mapEntry "Score" ("SectionDistance" (last To) (site))))
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -513,7 +513,7 @@
             (remove
                 (concentric {0 12 24 36 48 60 72 84})
                 cells:{1}
-            )
+           )
             {
             (track "Ring7" {11..2 0 1} loop:True)
             (track "Ring6" {35..14 12 13} loop:True)
@@ -523,7 +523,7 @@
             (track "Ring2" {251..182 180 181} loop:True)
             (track "Ring1" {335..254 252 253} loop:True)
             }
-        )
+       )
         (regions "AllSites" (sites Board))
         (piece "Marker" Each ("MovePiece"))
         (dice d:7 num:1)
@@ -559,31 +559,31 @@
                         (move 
                             (from (handSite Mover))
                             (to (mapEntry "FirstSite" (count Pips)))
-                        )
+                       )
                         (move Pass (then (moveAgain)))
-                    )
-                )
-            )
+                   )
+               )
+           )
             (nextPhase (and (is Mover P7) (is Next P1)) "Playing")
-        )
+       )
         (phase "Playing" 
             (play 
                 (if (is Proposed "End")
                     (or (move Vote "End") (move Vote "No"))
                     ("RollMove"
                         (or (forEach Piece) (move Propose "End"))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         }
         (end 
             (if 
                 (is Decided "End")
                 (byScore)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -601,7 +601,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Spain, around 1283.")
         }
-    )
+   )
     
     (graphics {
         (region Colour 
@@ -615,7 +615,7 @@
                 315 313 311 309 307 305 303 301 299 297 295 293 291 289 287 285 283 281 279 277 275 273 271 269 267 265 263 261 259 257 255 252 335 333 331 329 327 325 323 321 319 317
             }) 
             (colour 223 178 110)
-        )
+       )
         (region Colour 
             (sites {
                 8 6 4 2 1 10
@@ -627,7 +627,7 @@
                 316 314 312 310 308 306 304 302 300 298 296 294 292 290 288 286 284 282 280 278 276 274 272 270 268 266 264 262 260 258 256 254 253 334 332 330 328 326 324 322 320 318
             }) 
             (colour 222 210 65)
-        )
+       )
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
         (board Background image:"disc.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:0.035)
@@ -637,6 +637,6 @@
     
     (ai
         "Los Escaques_ai"
-    )
+   )
 )
 

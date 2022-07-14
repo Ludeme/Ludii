@@ -8,15 +8,15 @@
                 (wedge 3) 
                 (shift 0 6 (rotate 180 (wedge 3))) 
                 } 
-            ) 
+           ) 
             use:Vertex
-        ) 
+       ) 
         (piece "Marker" Each 
             (or 
                 ("HopSequenceCapture") 
                 ("StepToEmpty") 
-            )
-        )
+           )
+       )
     })  
     
     (rules 
@@ -30,13 +30,13 @@
                 (or
                     ("HopSequenceCaptureAgain")	
                     (move Pass)
-                )
+               )
                 (forEach Piece)
-            )
-        )
+           )
+       )
         
         (end ("NoMoves" Loss)) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -54,7 +54,7 @@
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)
@@ -63,6 +63,6 @@
     
     (ai 
         "Hewakam Keliya_ai"
-    )
+   )
     
 )

@@ -8,7 +8,7 @@
     (equipment { 
         (mancalaBoard 2 6
             (track "Track" "1,E,N,W" loop:True)
-        )
+       )
         (piece "Seed" Shared)
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
@@ -23,9 +23,9 @@
                     (if ("SameTurn") 
                         (sites {(var "Replay")})
                         (sites Mover) 
-                    ) 
+                   ) 
                     if:(> (count at:(from)) 0)
-                )
+               )
                 (then
                     (do
                         (set Var "NumSowed" (count at:(last To)))
@@ -34,13 +34,13 @@
                                 (and 
                                     (!= 4 (count at:(to))) 
                                     (< 1 (count at:(to)))
-                                ) 
+                               ) 
                                 (and
                                     (moveAgain)
                                     (set Var "Replay" (to))
-                                )
-                            )
-                        )
+                               )
+                           )
+                       )
                         (then
                             (and
                                 (forEach Site (sites Track from:(last From) to:(trackSite Move from:(last From) "Track" steps:(var "NumSowed")))
@@ -49,19 +49,19 @@
                                             (from (site))
                                             (to (if (is In (to) (sites P1)) (mapEntry P1) (mapEntry P2)))
                                             count:4
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                                 (set Var "NumSowed" 0)
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (end ("MancalaByScoreWhen" (no Moves Next)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -78,7 +78,7 @@
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

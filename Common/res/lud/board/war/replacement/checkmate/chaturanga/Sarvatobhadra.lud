@@ -2,8 +2,8 @@
     (apply 
         (if ("IsEnemyAt" (to))
             (remove (to))
-        )
-    ) 
+       )
+   ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -13,8 +13,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-        )
-    )
+       )
+   )
 )
 
 (define "NextCanNotMove" (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next (forEach Piece)))))))
@@ -23,8 +23,8 @@
     (move Step
         (to if:(not ("IsFriendAt" (to)))
             ("CaptureEnemyToPiece")
-        )
-    )
+       )
+   )
 )
 
 (define "KnightMove" 
@@ -34,8 +34,8 @@
         (to 
             if:(not ("IsFriendAt" (to))) 
             "CaptureEnemyToPiece"
-        ) 
-    )		
+       ) 
+   )		
 )
 
 (define "QueenMove" 
@@ -43,15 +43,15 @@
         Diagonal
         (to if:(not ("IsFriendAt" (to)))
             ("CaptureEnemyToPiece")
-        )
-    ) 		
+       )
+   ) 		
 )
 
 (define "ElephantMove"
     (move Hop Orthogonal 
         (between if:True) 
         (to if:(not ("IsFriendAt" (to))) ("CaptureEnemyToPiece")) 
-    )		
+   )		
 )
 
 (define "RookMove" 
@@ -61,8 +61,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             "CaptureEnemyToPiece"
-        ) 
-    )	
+       ) 
+   )	
 )
 
 //------------------------------------------------------------------------------
@@ -84,10 +84,10 @@
                 (then
                     (if (is In (last To) (sites Top)) 
                         (promote (last To) (piece "Ferz_noCross") Mover)
-                    )
-                )
-            )		
-        )
+                   )
+               )
+           )		
+       )
         (piece "King_noCross" P2
             (or {
                 ("RookMove")
@@ -97,7 +97,7 @@
                 ("QueenMove")
                 ("KingMove")
             })
-        )
+       )
     })
     (rules 
         (start { 
@@ -120,16 +120,16 @@
                                         (if (= (count Pips) 2)
                                             (forEach Piece "Rook")
                                             (forEach Piece "Pawn")
-                                        )
-                                    )
-                            ))
-                        )
-                    )
+                                       )
+                                   )
+                           ))
+                       )
+                   )
                     (forEach Piece)
-                )
+               )
                 ifAfterwards:(not ("IsInCheck" "King_noCross" Mover (forEach Piece Next)))
-            )
-        )
+           )
+       )
         
         (end {
             (if (and {
@@ -138,14 +138,14 @@
                     ("NextCanNotMove")
                 }) 
                 (result P2 Win)
-            )
+           )
             (if
                 (and
                     (is Mover P1)
                     (no Moves P2) 
-                )
+               )
                 (result P1 Win)
-            )
+           )
             (if
                 (and {
                     (is Mover P1)
@@ -153,9 +153,9 @@
                     (no Moves P1)
                 })
                 (result P2 Win)
-            )
+           )
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -173,7 +173,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, from around 1126 to 1138.")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

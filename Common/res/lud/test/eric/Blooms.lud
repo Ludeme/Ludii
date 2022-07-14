@@ -7,8 +7,8 @@
         (if
             (= ("Captured") (state at:(site)))
             (remove (site))
-        )
-    )
+       )
+   )
 )
 
 // #1 - A/B
@@ -26,10 +26,10 @@
                 (and
                     (set State at:(site) ("Captured"))
                     (addScore Mover 1)
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 // #1 - colour string
@@ -72,8 +72,8 @@
                         //)
                     //)
                 //)
-            )
-        )
+           )
+       )
         
         (end
             (if (all Passed)
@@ -81,9 +81,9 @@
                     (score P1 (+ (score P1) (size Territory P1))) 
                     (score P2 (+ (score P2) (size Territory P2)))
                 })
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -108,7 +108,7 @@
         (credit "Nicholas Bamber")
         (origin  "This game was played in China, from around 694CE to 710CE.")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour White))

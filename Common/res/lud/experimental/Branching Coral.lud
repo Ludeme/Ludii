@@ -2,7 +2,7 @@
 (define "GroupCount"
     (max 0
         (max
-            (sizes Group "ScoreConnectionDirection" #1 ) 
+            (sizes Group "ScoreConnectionDirection" #1) 
 )))
 
 //---------------------
@@ -21,13 +21,13 @@
         (+
             (value Piece at:(handSite Mover))
             ("GroupCount" Mover)
-        )
+       )
         (then
             (set Var "NextScore"
                 (+
                     (value Piece at:(handSite Next))
                     ("GroupCount" Next)
-                )
+               )
                 (then 
                     <TieScoring:tiebreaker> 
 )))))
@@ -37,13 +37,13 @@
         (+ 
             ("GroupCount" Mover)
             (count Groups "ScoreConnectionDirection" if:(= (who at:(to)) (mover))) 
-        )
+       )
         (then
             (set Var "NextScore"
                 (+ 
                     ("GroupCount" Next)
                     (count Groups "ScoreConnectionDirection" if:(= (who at:(to)) (next))) 
-                )
+               )
                 (then
                     <TieScoring:tiebreaker> 
 )))))
@@ -53,13 +53,13 @@
         (+ 
             ("GroupCount" Mover)
             (count Groups "ScoreConnectionDirection" if:(= (who at:(to)) (next))) 
-        )
+       )
         (then
             (set Var "NextScore" 
                 (+ 
                     ("GroupCount" Next)
                     (count Groups "ScoreConnectionDirection" if:(= (who at:(to)) (mover))) 
-                )
+               )
                 (then
                     <TieScoring:tiebreaker> 
 )))))
@@ -87,7 +87,7 @@
         (and
             (set Score Mover (- 0 ("CascadeScore" Mover Next)))
             (set Score Next (- 0 ("CascadeScore" Next Mover)))
-        )
+       )
         ("NoTiebreaker")
 ))
 
@@ -107,7 +107,7 @@
                             (add (piece (id "Disc" Next)) (to (handSite Mover))
                                 (then
                                     (set Value at:(handSite Mover) (+ 1 (value Piece at:(handSite Mover))))
-                            ))
+                           ))
                             (set Value at:(handSite Mover) (+ 1 (value Piece at:(handSite Mover))))
 )))))))
 
@@ -126,12 +126,12 @@
             (and 
                 (is Empty (site))
                 (is In (site) (sites Outer))
-            )
+           )
             (!= Infinity
                 (count Steps
                     (step "ConnectionDirection"
                         (to if:(is Empty (to)))
-                    )
+                   )
                     (site)
                     (difference (sites Outer) (site))
 )))))
@@ -148,7 +148,7 @@
         (piece "Disc" Each)
         <Scoring:handType>
         }
-    )
+   )
     (rules
         (start (set Score Each 0))
         (play
@@ -162,21 +162,21 @@
                                 in:(intersection
                                     (sites Around (to) "ConnectionDirection")
                                     (sites Empty)
-                )))))
+               )))))
                 ifAfterwards:("AllHave1Connection2Edge" 
                     (intersection 
                         (sites Around (last To) "ConnectionDirection")
                         (sites Empty)
-                )) 
+               )) 
                 (then
                     (do
                         (<Scoring:captureType> 
                             (intersection 
                                 (sites Occupied by:All) 
                                 (sites Around (last To) "ConnectionDirection") 
-                        ))
+                       ))
                         next:(<Scoring:selScoring>)
-        ))))
+       ))))
         (end 
             (if 
                 (no Moves Next)
@@ -184,11 +184,11 @@
                 (if 
                     (= (score Mover) (score Next))
                     <TieScoring:finalTie>
-                )
+               )
                 (if 
                     (!= (score Mover) (score Next))
                     (byScore)
-                )
+               )
                 }
 ))))
 
@@ -197,7 +197,7 @@
 
 (define "ScoreConnectionDirection" <BoardShape:directionScored>)
 (define "ConnectionDirection" <BoardShape:directionUsed>)
-(define "BoardUsed" <BoardShape:gridType> )
+(define "BoardUsed" <BoardShape:gridType>)
 
 (define "HexLimp" (board (hex Limping (- <BoardSize:smallSide> 1)) use:Cell))
 (define "Hex2Limp" (board (hex  (- <BoardSize:smallSide> 1) (+ <BoardSize:smallSide> 1)) use:Cell))
@@ -338,7 +338,7 @@
         (credit "Dale W. Walton")
         (date "06-05-2021")
         }
-    )
+   )
     
     (graphics 
         {
@@ -358,7 +358,7 @@
         (board Colour OuterEdges (colour Black))
         (show Edges Diagonal <BoardShape:diagShow> (colour DarkGrey))
         (show Piece Value "Disc" Middle)
-        (board Background image:<BoardShape:backgroundImage> fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.2 scaleY:1.15 ) 
+        (board Background image:<BoardShape:backgroundImage> fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.2 scaleY:1.15) 
         }
 ))
 

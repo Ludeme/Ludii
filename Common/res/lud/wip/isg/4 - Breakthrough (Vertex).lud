@@ -4,10 +4,10 @@
         (to if:(or 
                 (is Empty (to)) 
                 ("IsEnemyAt" (to))
-            ) 
+           ) 
             (apply (remove (to)))
-        )
-    )		
+       )
+   )		
 )
 
 (define "ReachedTarget" (is In (last To) (sites Mover)))
@@ -31,7 +31,7 @@
         (play (forEach Piece))
         
         (end (if "ReachedTarget" (result Mover Win))) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------

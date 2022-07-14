@@ -7,7 +7,7 @@
     (equipment { 
         (mancalaBoard 2 6
             (track "Track" "1,E,N,W" loop:True)
-        )
+       )
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
@@ -21,7 +21,7 @@
                 (from 
                     (sites Mover) 
                     if:(< 0 (count at:(from)))
-                )
+               )
                 (then 
                     (sow  
                         if:(and 
@@ -29,20 +29,20 @@
                             (or 
                                 (= (count at:(to)) 2) 
                                 (= (count at:(to)) 3)
-                            )
-                        ) 
+                           )
+                       ) 
                         apply:(fromTo 
                             (from (to)) 
                             (to (mapEntry (mover))) 
                             count:(count at:(to))
-                        )
+                       )
                         backtracking:True
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-    )	
+   )	
 )
 
 //------------------------------------------------------------------------------
@@ -59,7 +59,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in West Africa, from around 1908 to 1909.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -67,5 +67,5 @@
     
     (ai
         "Adidada_ai"
-    )
+   )
 )

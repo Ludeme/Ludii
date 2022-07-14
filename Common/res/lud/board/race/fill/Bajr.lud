@@ -17,7 +17,7 @@
         (play (forEach Piece)) 
         
         (end ("FillWin" (sites (player (mapEntry (mover)))))) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -28,17 +28,17 @@
         <6>
         <1>
         "The board is a square 6x6"
-    )*
+   )*
     (item "8x8"
         <8>
         <2>
         "The board is a square 8x8"
-    )
+   )
     (item "10x10"
         <10>
         <3>
         "The board is a square 10x10"
-    )
+   )
 })
 
 (option "Players" <Players> args:{ <numPlayers> <home> <start> }
@@ -55,7 +55,7 @@
         (place "Counter2" (sites P2))
         >
         "The game involves two players."
-    )*   
+   )*   
     (item "4"    
         <4>
         <  
@@ -72,7 +72,7 @@
         (place "Counter4" (sites P4))
         >
         "The game involves four players."
-    ) 
+   ) 
 })
 
 //------------------------------------------------------------------------------
@@ -83,19 +83,19 @@
         "Board/6x6" "Players/2"
         }
         variations:{"Players/4"}
-    )*
+   )*
     
     (ruleset "Ruleset/Bajr Medium (Observed)" {
         "Board/8x8" "Players/2"
         }
         variations:{"Players/4"}
-    )
+   )
     
     (ruleset "Ruleset/Bajr Large (Observed)" {
         "Board/10x10" "Players/2"
         }
         variations:{"Players/4"}
-    )
+   )
     
 })
 
@@ -121,7 +121,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Mongolia, from around 1963 to 1966.")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
@@ -133,5 +133,5 @@
     
     (ai
         "Bajr_ai"
-    )
+   )
 )

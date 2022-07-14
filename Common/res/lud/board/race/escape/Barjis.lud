@@ -6,8 +6,8 @@
         (to (centrePoint)
             if:(not ("IsFriendAt" (to)))
             ("HittingCapture" (handSite (who at:(to)))) 
-        )
-    )
+       )
+   )
 )
 
 (define "IsSpecialThrow" (is In ("ThrowValue") (array {10 25})))
@@ -24,7 +24,7 @@
             (track "Track3" "96,52,N,W,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,W1,S8" P3 directed:True)
             (track "Track4" "96,27,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W8" P4 directed:True)
             } 
-        )
+       )
         (hand Each) 
         ("StickDice" 6)
         (piece "Pawn" Each
@@ -39,13 +39,13 @@
                             (and 
                                 ("IsEnemyAt" (to))
                                 (not (is In (to) (sites "SafeSites")))	
-                            )
-                        )
+                           )
+                       )
                         ("HittingCapture" (handSite (who at:(to)))) 
-                    )
-                )	
-            )
-        )
+                   )
+               )	
+           )
+       )
         (map "Throw" {(pair 0 6) (pair 1 10) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 25) (pair 6 12)})
         (regions "SafeSites" (sites {60 62 16 48 87 89 37 2}))
     })  
@@ -57,13 +57,13 @@
                     (forEach Piece) 
                     (if (and ("IsSpecialThrow") (is Occupied (handSite Mover)))
                         ("EnterAPiece")
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (end ("EscapeWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -81,7 +81,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Palestine, around 1951.")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Red))

@@ -10,16 +10,16 @@
                         (shift 0 -2 (wedge 3))
                     })
                     vertices:{1 11 21 23 13 3}
-                )
+               )
                 edges:{
                 {0 1} {1 2} {8 9} {9 10} {16 17} {17 18}
                 }
-            )
+           )
             use:Vertex
-        )
+       )
         (piece "Marker" Each (or "HopCapture" "StepToEmpty"))
         }
-    )  
+   )  
     (rules 
         (start {
             (place "Marker1" (union (sites {"A4" "E4"}) (expand (sites Bottom) steps:3)))
@@ -29,8 +29,8 @@
         
         (end 
             (if (no Pieces Next) (result Mover Win))
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -48,7 +48,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, around 1935.")
         }
-    )
+   )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})
@@ -58,5 +58,5 @@
     
     (ai
         "Pam Pait_ai"
-    )
+   )
 )

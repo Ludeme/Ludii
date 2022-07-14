@@ -10,7 +10,7 @@
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
             (track "Track" "0,E,N,W" loop:True)
-        ) 
+       ) 
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (piece "Seed" Shared)
@@ -26,9 +26,9 @@
                     (if ("SameTurn") 
                         "LastHoleSowed" 
                         (sites Mover) 
-                    ) 
+                   ) 
                     if:(> (count at:(from)) 0)
-                )
+               )
                 (then 
                     (sow
                         apply:(if (> (count at:(to)) 1)
@@ -36,29 +36,29 @@
                             (if (and 
                                     (is In (to) (sites Mover)) 
                                     (> (count at:("OppositePit" (to))) 0)
-                                )
+                               )
                                 (and
                                     (fromTo 
                                         (from ("OppositePit" (to))) 
                                         (to (handSite Mover)) 
                                         count:(count at:("OppositePit" (to)))
-                                    ) 
+                                   ) 
                                     (fromTo 
                                         (from (to)) 
                                         (to (handSite Mover)) 
                                         count:(count at:(to))
-                                    )
-                                )
-                            )
-                        )
+                                   )
+                               )
+                           )
+                       )
                         
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -88,7 +88,7 @@
         "Board Size/44" "Board Size/45"  "Board Size/46" 
         "Board Size/47" "Board Size/48" "Board Size/49" "Board Size/50"
         }
-    )*
+   )*
 })
 
 //------------------------------------------------------------------------------
@@ -107,7 +107,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in East Africa, around 1904.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -115,5 +115,5 @@
     
     (ai
         "En Gehe_ai"
-    )
+   )
 )

@@ -2,7 +2,7 @@
     (add 
         (piece "Disc0") 
         (to (last From))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -14,48 +14,48 @@
             (keep 
                 (square 8) 
                 (poly { {-3 4} {4 -3} {11 4} {4 11} })
-            ) 
-        )
+           ) 
+       )
         (piece "Seal" P1 N (or 
                 (move Slide
                     (between 
                         (max 2) 
                         trail:(id "Disc0")
-                    ) 
-                ) 
+                   ) 
+               ) 
                 (move Hop
                     (between if:("IsPieceAt" "Disc0" Neutral (between)))
                     (to if:(is Empty (to))) 
                     (then "LetADiscOnTheFromLocation")
-                )
-            )
-        )
+               )
+           )
+       )
         (piece "Bear" P2 (or {
                 (move Slide
                     (between 
                         (max 2) 
                         trail:(id "Disc0")
-                    ) 
-                ) 
+                   ) 
+               ) 
                 (move Hop
                     (between if:("IsPieceAt" "Disc0" Neutral (between))) 
                     (to if:(is Empty (to))) 
                     (then "LetADiscOnTheFromLocation")
-                )
+               )
                 (move Step
                     (to 
                         if:("IsPieceAt" "Seal1" P1 (to))
                         (apply (remove (to)))
-                    )
+                   )
                     (then 
                         (and 
                             (remove (last To)) 
                             ("LetADiscOnTheFromLocation")
-                        )
-                    )
-                )
+                       )
+                   )
+               )
             })
-        )
+       )
         (piece "Disc" Neutral)
     })
     
@@ -76,15 +76,15 @@
                             (forEach Piece "Bear" 
                                 (step 
                                     (to if:("IsPieceAt" "Seal1" P1 (to)))
-                                )
-                            )
-                    ))
-                ) 
+                               )
+                           )
+                   ))
+               ) 
                 (result P1 Win)
-            )
+           )
             (if (all Passed) (result P1 Win))
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -104,7 +104,7 @@
         (credit "Eric Piette")
         (date "2014")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Black))
@@ -118,6 +118,6 @@
     
     (ai 
         "Go with the Floe_ai"
-    )
+   )
     
 )

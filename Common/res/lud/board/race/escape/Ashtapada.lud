@@ -14,7 +14,7 @@
             (track "Track3" "31,N,W,S,E,N1,W6,N5,E5,S4,W4,N3,E3,S1" 3 directed:True)
             (track "Track4" "32,S,E,N,W,S1,E6,S5,W5,N4,E4,S3,W3,N1" 4 directed:True)
             }
-        )
+       )
         ("StickDice" 4)
         (hand Each)
         (map "DieValue" {(pair 4 8)})
@@ -27,7 +27,7 @@
                     (if (is In "SiteToMoveOnTrack" (sites "Protect"))
                         (not ("IsEnemyAt" "SiteToMoveOnTrack"))
                         True
-                    )
+                   )
                     (move 
                         (from)
                         (to 
@@ -35,12 +35,12 @@
                             (apply 
                                 if:("IsEnemyAt" (to)) 
                                 (fromTo (from (to)) (to (handSite (who at:(to)))))
-                            )
-                        ) 
-                    )
-                )
-            )
-        ) 
+                           )
+                       ) 
+                   )
+               )
+           )
+       ) 
         
     })  
     
@@ -59,18 +59,18 @@
                                         (if (is In "MoveToNextSiteOnTrack" (sites "Protect"))
                                             (not ("IsEnemyAt" "MoveToNextSiteOnTrack"))
                                             True
-                                        )
+                                       )
                                         (move 
                                             (from) 
                                             (to 
                                                 "MoveToNextSiteOnTrack"
                                                 ("HittingCapture" (handSite (who at:(to))))
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
+                                           )
+                                       )
+                                   )
+                               )
+                           )
+                       )
                         (if 
                             (not ("HandEmpty" Mover))
                             (move 
@@ -78,20 +78,20 @@
                                 (to 
                                     (mapEntry "Entry" Mover) 
                                     if:(not ("IsEnemyAt" (to)))
-                                )
-                            )
-                        )
-                    )
+                               )
+                           )
+                       )
+                   )
                     (if (can Move (forEach Piece))
                         (forEach Piece (then (if (= (count Pips) 3) (moveAgain))))
                         (move Pass (then (if (= (count Pips) 3) (moveAgain))))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (end ("EscapeWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -111,7 +111,7 @@
         (map "Exit" {(pair P1 "E3") (pair P2 "D6")})
         >
         "The version of the game played with 2 players."
-    )*   
+   )*   
     (item "4"    
         <4>
         <
@@ -127,7 +127,7 @@
         (map "Exit" {(pair P1 "E3") (pair P2 "D6") (pair P3 "F5") (pair P4 "C4")})
         >
         "The version of the game played with 4 players."
-    ) 
+   ) 
 })
 
 //------------------------------------------------------------------------------
@@ -163,7 +163,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, from around 1200 to 1299.")
         }
-    )
+   )
     
     (graphics {
         (board Colour InnerEdges (colour Black))
@@ -176,6 +176,6 @@
     
     (ai 
         "Ashtapada_ai"
-    )
+   )
     
 )

@@ -10,20 +10,20 @@
                 Add 
                 (to (sites Empty) 
                     if:(is Flat)
-                )
-            )
-        )
+               )
+           )
+       )
         (end {
             (if 
                 (is Line (- (count Rows) (layer of:(last To))) SameLayer) 
                 (result Mover Win)
-            )
+           )
             (if 
                 (is Line (- (- (count Rows) (layer of:(last To))) 1) SameLayer) 
                 (result Mover Loss)
-            )
+           )
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -66,7 +66,7 @@
         (credit "Cameron Browne")
         (date "2012")
         }
-    )
+   )
     
     (graphics {
         (piece Scale "Ball" 1.0)

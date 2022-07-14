@@ -9,9 +9,9 @@
                 (move Hop Orthogonal 
                     (between if:("IsEnemyAt" (between)))
                     (to if:(is (to) Empty))
-                )
-            )
-        )
+               )
+           )
+       )
     })
     (rules
         (start [#])
@@ -20,7 +20,7 @@
             (if (no Pieces P1) (result P2 Win))
             (if (no Moves P2) (result P1 Win))
         }) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -37,6 +37,6 @@
         (classification "board/hunt/reconstruction")
         (origin  "This game was played in Argentina, around 1989.")
         }
-    )
+   )
     
 )

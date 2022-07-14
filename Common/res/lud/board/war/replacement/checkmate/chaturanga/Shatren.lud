@@ -7,16 +7,16 @@
         (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
-            )
-        )
-    ) 
+           )
+       )
+   ) 
 )
 
 (define "KingNotCheckedAndToEmpty"
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King_noCross" Mover at:(to)))
-    )   
+   )   
 )
 
 (define "CaptureForwardDiagonal"
@@ -26,8 +26,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-        )
-    )
+       )
+   )
 )
 
 (define "PromotedPiece" 
@@ -39,10 +39,10 @@
                 (promote (last To) (piece (id "Elephant" Mover)))
                 (if (and (= (column of:(last To)) 3) (< (count Sites in:(sites Occupied by:Mover component:"Queen")) 1))
                     (promote (last To) (piece (id "Queen" Mover)))
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -60,10 +60,10 @@
                 (then
                     (if (is In (last To) (sites Mover "Promotion")) 
                         ("PromotedPiece")
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (piece "Castle" Each 
             (move
@@ -72,9 +72,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "King_noCross" Each 
             (or
                 (move
@@ -82,8 +82,8 @@
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece"
-                    ) 
-                )
+                   ) 
+               )
                 (if (not ("IsInCheck" "King_noCross" Mover))
                     (move
                         Leap 
@@ -91,11 +91,11 @@
                         (to 
                             if:(not ("IsFriendAt" (to))) 
                             "CaptureToPiece"
-                        ) 
-                    )
-                )
-            )
-        )
+                       ) 
+                   )
+               )
+           )
+       )
         (piece "Elephant" Each 
             (move
                 Slide 
@@ -103,9 +103,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "Horse" Each 
             (move
                 Leap 
@@ -113,18 +113,18 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "Queen" Each 
             (move
                 Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            ) 
-        )
+               ) 
+           ) 
+       )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     })  
@@ -140,20 +140,20 @@
             (do 
                 (forEach Piece)
                 ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
-            )
-        )
+           )
+       )
         
         (end
             {
             (if (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-                ) 
+               ) 
                 (result Mover Win)
-            ) 
+           ) 
             }
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -172,7 +172,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Sri Lanka, around 1909.")
         }
-    )
+   )
     
     (graphics {
         (show Check "King_noCross")
@@ -182,5 +182,5 @@
     
     (ai
         "Shatren_ai"
-    )
+   )
 )

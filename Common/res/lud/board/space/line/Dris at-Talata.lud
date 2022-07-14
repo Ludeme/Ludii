@@ -6,11 +6,11 @@
         (hand Each)
         (piece "Marker" Each)
         }
-    )
+   )
     (rules
         (start 
             (place "Marker" "Hand" count:3) 
-        )
+       )
         
         phases:{
         (phase "Placement"
@@ -18,23 +18,23 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty))
-                )
-            )
+               )
+           )
             (nextPhase ("HandEmpty" P2) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play 
                 (move 
                     (from (sites Occupied by:Mover))
                     (to (sites Empty))
-                )
-            )
-        )
+               )
+           )
+       )
         }
         
         (end (if (is Line 3 Orthogonal) (result Mover Win)))
-    )	
+   )	
 )
 
 //------------------------------------------------------------------------------
@@ -53,7 +53,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Egypt, around 1762.")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
@@ -63,5 +63,5 @@
     
     (ai
         "Dris at-Talata_ai"
-    )
+   )
 )

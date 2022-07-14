@@ -8,10 +8,10 @@
             (forEach 
                 (sites Mover "Home") 
                 if:(< 1 (count at:(site)))
-            )
+           )
             if:(= 0 (count at:(site)))
-        )
-    )
+       )
+   )
 )
 
 (define "NextHoleFrom" ("NextSiteOnTrack" 1 from:#1))
@@ -27,7 +27,7 @@
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" <Row:track2> loop:True P2)
             }
-        )
+       )
         (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
         (regions "Home" P2 (sites Track "Track2"))                              // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
@@ -45,31 +45,31 @@
             (if (and 
                     ("SameTurn") 
                     (< 0 (var))
-                )
+               )
                 (move Remove 
                     (forEach
                         (sites Next "Home")
                         if:(< 0 (count at:(site)))
-                    )
+                   )
                     (then 
                         (and
                             (if (> (var) 1)
                                 (moveAgain)
-                            )
+                           )
                             (set Var (- (var) 1))
-                        )
+                       )
                         
-                    )
-                )
+                   )
+               )
                 (if ("HaveHolesWithMoreThanOneCounter") 
                     (move Select
                         (from 
                             (if ("SameTurn") 
                                 "LastHoleSowed" 
                                 (sites Mover "Home") 
-                            ) 
+                           ) 
                             if:(< 1 (count at:(from)))
-                        )
+                       )
                         (then 
                             (sow
                                 "Track"
@@ -86,22 +86,22 @@
                                                         (set Var 2)
                                                         (moveAgain)
                                                     })
-                                                )
-                                            )
-                                        )
-                                    )
-                                ) 
-                            )
-                        )
-                    )
+                                               )
+                                           )
+                                       )
+                                   )
+                               ) 
+                           )
+                       )
+                   )
                     (move Select
                         (from 
                             (sites Mover "Home") 
                             if:(and
                                 (= 1 (count at:(from)))
                                 (= 0 (count at:("NextHoleFrom" (from))))
-                            )
-                        )
+                           )
+                       )
                         (then 
                             (sow
                                 "Track"
@@ -117,24 +117,24 @@
                                                     (set Var 2)
                                                     (moveAgain)
                                                 })
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                                           )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (end
             (forEach NonMover
                 if:("NoPiece")
                 (result Player Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -157,7 +157,7 @@
         "Board Size/10"
         }
         variations:{"Board Size/12" "Board Size/14" "Board Size/16" "Board Size/18" "Board Size/20"}
-    )*
+   )*
     
 })
 
@@ -176,7 +176,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in East Africa, around 1913.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -184,5 +184,5 @@
     
     (ai
         "Msuwa_ai"
-    )
+   )
 )

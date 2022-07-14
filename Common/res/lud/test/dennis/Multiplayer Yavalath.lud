@@ -4,14 +4,14 @@
         (board (rotate 90 (hex 5))) 
         (piece "Marker" Each) 
         }
-    )  
+   )  
     (rules 
         (play <Swap:playRules>)
         (end {
             (if (is Line 4 Mover) (result Mover Win))
             (if (is Line 3 Mover) (result Mover Loss)) 
         })  
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -31,7 +31,7 @@
             (move Add (to (sites Empty))) 
         })> 
         "No swap rule."
-    )*
+   )*
     (item "In-place Previous" 
         <(or {
             (priority {
@@ -44,10 +44,10 @@
                     (not (= (mover) (prev)))			// No swapping if we just got swapped into our current role
                 })
                 (swap Players Mover Prev)		// Mover swaps with previous player
-            )
+           )
         })> 
         "In-place swap with previous."
-    )
+   )
     (item "In-place Any" 
         <(or {
             (priority {
@@ -62,11 +62,11 @@
                 (select 
                     (from (forEach (sites Board) if:(and (< (to) (mover)) (>= (to) 1)))) 		// Select Player index lower than Mover index
                     (then (swap Players Mover (last To)))										// Swap mover with selected index
-                )
-            )
+               )
+           )
         })> 
         "In-place swap with any player with a lower index."
-    )
+   )
     (item "Shift Previous" 
         <(or {
             (priority {
@@ -78,10 +78,10 @@
                     (< (count Moves) (count Players))		// No swapping after everyone's had a move
                 })
                 (shiftPlayers Mover (- (mover) 1))		// Mover ''shift-swaps'' with index 1 lower than his own
-            )
+           )
         })> 
         "Move into previous position, move previous player to last spot, and shift all the players in between."
-    )
+   )
     (item "Shift Any" 
         <(or {
             (priority {
@@ -95,11 +95,11 @@
                 (select 
                     (from (forEach (sites Board) if:(and (< (to) (mover)) (>= (to) 1)))) 		// Select Player index lower than Mover index
                     (then (shiftPlayers Mover (last To)))										// "Shift-swap" mover with selected index
-                )
-            )
+               )
+           )
         })> 
         "Move into any lower-index position, move that player to last spot, and shift all the players in between."
-    )
+   )
     }
 )
 
@@ -116,6 +116,6 @@
         (credit "Eric Piette")
         (date "01-10-2011")
         }
-    )
+   )
     
 )

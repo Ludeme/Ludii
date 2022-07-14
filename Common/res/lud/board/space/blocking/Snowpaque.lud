@@ -4,8 +4,8 @@
             (to) 
             Orthogonal 
             if:(is In (to) (sites Occupied by:Neutral))
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -22,7 +22,7 @@
         (phase "start" P1 
             (play (move Add (piece (id "Marker0")) (to (sites Empty)))) 
             (nextPhase "play")
-        )
+       )
         (phase "play"   
             (play 
                 (move Add 
@@ -30,13 +30,13 @@
                     (to 
                         (sites Empty) 
                         if:(= "NumNeighbour" 1)
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         }
         (end ("NoMoves" Loss))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -55,10 +55,10 @@
         (credit "Eric Piette")
         (date "2015")
         }
-    )
+   )
     
     (ai 
         "Snowpaque_ai"
-    )
+   )
     
 )

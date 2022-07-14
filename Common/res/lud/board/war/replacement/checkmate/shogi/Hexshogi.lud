@@ -4,9 +4,9 @@
             (add 
                 (piece (mapEntry "Captured" (what at:(to)))) 
                 (to (mapEntry "Where" (what at:(to))))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "NextCannotMove"
@@ -17,45 +17,45 @@
                     (move 
                         (from (sites Occupied by:Next container:"Hand" components:{"Kakugyo" "Ginsho" "Hisha" "Kinsho"})) 
                         (to (sites Empty))
-                    ) 
+                   ) 
                     (do 
                         (move 
                             (from (sites Occupied by:Next container:"Hand" component:"Fuhyo")) 
                             (to (difference (sites Empty) (sites Next "LastRank")) 
                                 if:("OnePawnPerColumn" Next)
-                            )
-                        ) 
+                           )
+                       ) 
                         ifAfterwards:(not ("IsInCheck" "Osho" Mover))
-                    )
+                   )
                     ("PlaceLance" Next)
                     ("PlaceKnight" Next) 
                     (forEach Piece Next) 
                 })
                 ifAfterwards:(not ("IsInCheck" "Osho" Next))
-            ) 
-        )
-    )
+           ) 
+       )
+   )
 )
 
 (define "OnePawnPerColumn" 
     (= 
         (count Sites in:(sites Occupied by:#1 container:"Board" component:"Fuhyo")) 
         (count Sites in:(difference (sites Occupied by:#1 container:"Board" component:"Fuhyo") (union (sites Direction from:(to) N) (sites Direction from:(to) S))))
-    )
+   )
 )
 
 (define "PlaceKnight" 
     (move 
         (from (sites Occupied by:#1 container:"Hand" component:"Keima")) 
         (to (difference (sites Empty) (sites #1 "TwoFurthestRank")))
-    )
+   )
 )
 
 (define "PlaceLance" 
     (move 
         (from (sites Occupied by:#1 container:"Hand" component:"Kyosha")) 
         (to (difference (sites Empty) (sites #1 "LastRank")))
-    )
+   )
 )
 
 (define "PlacePawn" 
@@ -64,10 +64,10 @@
             (from (sites Occupied by:#1 container:"Hand" component:"Fuhyo")) 
             (to (difference (sites Empty) (sites #1 "LastRank")) 
                 if:("OnePawnPerColumn" #1)
-            )
-        ) 
+           )
+       ) 
         ifAfterwards:(not (and ("IsInCheck" "Osho" #2) ("NextCannotMove")))
-    )
+   )
 ) 
 
 (define "InPromotionZone"
@@ -91,8 +91,8 @@
         (if 
             (or ("InPromotionZone" (last To)) ("InPromotionZone" (last From))) 
             (moveAgain) 
-        ) 
-    )
+       ) 
+   )
 )
 
 (define "SlideMove"
@@ -101,7 +101,7 @@
         #1 
         (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
-    )   	
+   )   	
 )
 
 (define "StepMove"
@@ -110,7 +110,7 @@
         #1
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
-    )   	
+   )   	
 )
 
 (define "GoldMove"
@@ -119,7 +119,7 @@
         { {F} {F L F} {F R F} {L F} {R F} {L L F} {R R F} {L L L F}}
         rotations:False
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
-    )   	
+   )   	
 )
 
 (define "SilverMove"
@@ -128,7 +128,7 @@
         { {F} {F L F} {F R F} {L F L F} {R F R F} {L L F L F} {R R F R F}}
         rotations:False
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
-    )   	
+   )   	
 )
 
 //------------------------------------------------------------------------------
@@ -151,11 +151,11 @@
                         (if ("InLastRank" (last To)) 
                             ("Promote") 
                             (moveAgain) 
-                        ) 
-                    ) 
-                )
-            )
-        )
+                       ) 
+                   ) 
+               )
+           )
+       )
         
         // Silver General
         (piece "Ginsho" Each "SilverMove")
@@ -179,19 +179,19 @@
                         (add 
                             (piece (mapEntry "Captured" (what at:(to)))) 
                             (to (mapEntry "Where" (what at:(to))))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (then 
                     (if ("InPromotionZone" (last To))
                         (if ("InTwoFurthestRank" (last To)) 
                             "Promote" 
                             (moveAgain) 
-                        ) 
-                    ) 
-                ) 
-            )
-        )
+                       ) 
+                   ) 
+               ) 
+           )
+       )
         
         // Lance
         (piece "Kyosha" Each
@@ -202,11 +202,11 @@
                         (if ("InLastRank" (last To)) 
                             "Promote" 
                             (moveAgain) 
-                        ) 
-                    ) 
-                )
-            ) 
-        )
+                       ) 
+                   ) 
+               )
+           ) 
+       )
         
         // Gold General
         (piece "Kinsho" Each "GoldMove")
@@ -288,35 +288,35 @@
                 (or
                     ("Promote")
                     (move Pass)
-                )
+               )
                 (do 
                     (or {
                         (move 
                             (from (sites Occupied by:Mover container:"Hand" components:{"Kakugyo" "Ginsho" "Hisha" "Kinsho"})) 
                             (to (sites Empty))
-                        ) 
+                       ) 
                         ("PlacePawn" Mover Next)
                         ("PlaceLance" Mover)
                         ("PlaceKnight" Mover) 
                         (forEach Piece) 
                     })
                     ifAfterwards:(not ("IsInCheck" "Osho" Mover))
-                )
-            )
-        )
+               )
+           )
+       )
         
         (end
             {
             (if (and 
                     ("IsInCheck" "Osho" Next)
                     ("NextCannotMove")
-                ) 
+               ) 
                 (result Mover Win)
-            )
+           )
             ("BlockWin")
             }
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -335,7 +335,7 @@
         (credit "Matthew Stephenson")
         (date "1986")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour White))

@@ -20,10 +20,10 @@
                 (fromTo
                     (from (to))
                     (to ("FirstAvailableInHome" Next))
-                )
-            )
-        )
-    ) 
+               )
+           )
+       )
+   ) 
 )
 
 (define "IsInTrack" (is In #1 (sites Track Mover #2)))
@@ -38,9 +38,9 @@
             (fromTo
                 (from (to))
                 (to ("FirstAvailableInHome" Next))
-            )
-        )
-    ) 
+           )
+       )
+   ) 
 )
 
 (define "Move"
@@ -50,23 +50,23 @@
                 (if ("PieceActivated" (from))
                     True
                     ("Sig") 
-                )
+               )
                 (if (not (is Friend (who at:("SiteToMoveOnTrack" "HomeTrack" ("ThrowValue")))))
                     (move 
                         (from)
                         (to 
                             ("SiteToMoveOnTrack" "HomeTrack" ("ThrowValue")) 
                             "CaptureEnemyPiece"
-                        )
+                       )
                         (then
                             (if (and (not ("PieceActivated" (last To)))  ("Sig"))
                                 ("ActivatePiece" (last To))
-                            )
-                        )
-                    )
-                )	
-            )
-        )
+                           )
+                       )
+                   )
+               )	
+           )
+       )
         (if ("IsInTrack" (from) "EnemyTrack")
             (if (not (is Friend (who at:("SiteToMoveOnTrack" "EnemyTrack" ("ThrowValue")))))
                 (move 
@@ -74,11 +74,11 @@
                     (to 
                         ("SiteToMoveOnTrack" "EnemyTrack" ("ThrowValue")) 
                         "CaptureEnemyPiece"
-                    )
-                )
-            )	
-        )
-    )
+                   )
+               )
+           )	
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -98,7 +98,7 @@
             (track "EnemyTrack2" "0,N,E1,S" P2 directed:True)
             }
             use:Vertex
-        )
+       )
         (piece "Stick" Each)
         (regions "AllSites" (sites Board))
         (dice d:2 from:0 num:<Dice:num>)
@@ -122,15 +122,15 @@
                                 (mapEntry "FirstEnemySite" (mover))
                                 if:(not (is Friend (mapEntry "FirstEnemySite" (mover))))
                                 "CaptureEnemyPieceInEntering"
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (forEach Piece ("Move"))
-                )
-            )
-        )
+               )
+           )
+       )
         (end (if (no Pieces Next) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -176,7 +176,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Algeria, around 1964.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)    

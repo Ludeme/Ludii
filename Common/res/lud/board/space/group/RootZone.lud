@@ -12,7 +12,7 @@
                 (or 
                     (move Pass)
                     (move Add (piece "Disc0") (to (sites Board)))
-                )
+               )
                 (or
                     {
                     (if (= 1 (counter))
@@ -21,10 +21,10 @@
                             (then 
                                 (remove (last To) 
                                     (then (add (to (last To))))
-                                )
-                            ) 
-                        )
-                    ) 
+                               )
+                           ) 
+                       )
+                   ) 
                     (move Pass)
                     (move Add
                         (to 
@@ -32,33 +32,33 @@
                                 (union
                                     (sites Outer)                             // place on an edge
                                     (sites Around (sites Occupied by:Mover))  // or next to a friendly piece
-                                )
+                               )
                                 (union { 
                                     (sites Around (sites Occupied by:Enemy))  // but not next to an enemy piece  
                                     (sites Around "SitesTooDense")            // nor next to pieces with too many neighbors
                                     (sites Around (sites Occupied by:Neutral))  // but not next to an enemy piece  
                                 })
-                            )
+                           )
                             if:(and
                                 (is Empty (to))  // place on empty location
                                 (>=              // with a limit on friendly neighbors
                                     <PlaceBy:qtyMax>  
                                     (count Pieces Mover in:(sites Around (to))) 
-                                )
-                            )
-                        )
+                               )
+                           )
+                       )
                         (then "ScoreUpdate")
-                    )
+                   )
                     }
-                )
-            )    
-        )
+               )
+           )    
+       )
         (end 
             (if (all Passed) 
                 (byScore)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 //-------------------------------------------------
 (define "SitesTooDense"
@@ -67,8 +67,8 @@
         if:(<= 
             <NeighborsOf:nbrMax> 
             (count Pieces Mover in:(sites Around (site))) 
-        )
-    )
+       )
+   )
 )
 
 (define "ScoreUpdate"
@@ -78,8 +78,8 @@
             (> (* 2 (size Group at:(last To))) (score Next))
             (set Score Mover (+ 1 (* 2 (size Group at:(last To)))))
             (set Score Mover (* 2 (size Group at:(last To)))) 
-        )
-    )
+       )
+   )
 )
 
 //---------------------------------------
@@ -175,7 +175,7 @@ Play continues until both players pass consecutively, and then the final scores 
         edgeColour:(colour 40 23 11 30) 
         scale:<Board:bgrd> 
         rotation:120
-    )
+   )
     }
 )
 (ai

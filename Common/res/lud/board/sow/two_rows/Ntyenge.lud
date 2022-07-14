@@ -8,7 +8,7 @@
     (equipment { 
         (mancalaBoard 2 8 store:None
             (track "Track" "0,E,N,W" loop:True)		
-        )
+       )
         (piece "Seed" Shared)
         (regions P1 (sites Bottom)) 
         (regions P2 (sites Top)) 
@@ -28,15 +28,15 @@
                                 (from (to))
                                 (to (handSite Mover))
                                 count:(count at:(to))
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (end ("MancalaByScoreWhen" ("NoPieceOnBoard")))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -54,7 +54,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Central Africa, from around 1899 to 1907.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

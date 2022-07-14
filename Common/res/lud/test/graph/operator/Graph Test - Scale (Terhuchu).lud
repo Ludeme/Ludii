@@ -16,17 +16,17 @@
                     (shift  0.09 5.79 (rotate -135 (scale .707 .707 (wedge 3))))
                     (shift  5.09 5.79 (rotate  135 (scale .707 .707 (wedge 3))))
                     } 
-                ) 
-            )
+               ) 
+           )
             use:Vertex
-        ) 
+       ) 
         (piece "Disc" P1) 
         (piece "Cross" P2) 
     })  
     (rules 
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -44,5 +44,5 @@
         (credit "Cameron Browne 31/5/2020")
         (origin  "This game was played in England, from around 1850CE to 1883CE.")
         }
-    )
+   )
 )

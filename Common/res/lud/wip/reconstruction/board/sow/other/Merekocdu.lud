@@ -13,7 +13,7 @@
             <Players:track>
             }
             use:Vertex
-        )
+       )
         (piece "Seed" Shared)
         (hand Each)
     })
@@ -28,26 +28,26 @@
                 (from 
                     ("Home") 
                     if:(> (count at:(from)) 1)
-                )
+               )
                 (then 
                     (sow
                         apply:(if (or 
                                 (= (count at:(to)) 2) 
                                 (= (count at:(to)) 4)
-                            )
+                           )
                             (fromTo 
                                 (from (to)) 
                                 (to (handSite Mover)) 
                                 count:(count at:(to))
-                            ) 
-                        )
+                           ) 
+                       )
                         origin:True
-                    )
-                )
-            )		
-        )
+                   )
+               )
+           )		
+       )
         (end (if (= (count in:(sites Board)) 0) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -65,10 +65,10 @@
         (if (is Mover P1)
             (sites (values Remembered "P1Home"))
             (sites (values Remembered "P2Home"))
-        )
+       )
         >
         "2 players."
-    )**
+   )**
     
     (item "4" 
         <4> 
@@ -87,12 +87,12 @@
                 (if (is Mover P3)
                     (sites (values Remembered "P3Home"))
                     (sites (values Remembered "P4Home"))
-                )
-            )
-        )
+               )
+           )
+       )
         >
         "4 players."
-    )
+   )
     }
 )
 
@@ -112,7 +112,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Azerbaijan, around 1968.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

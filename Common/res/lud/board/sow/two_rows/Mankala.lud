@@ -7,7 +7,7 @@
     (equipment { 
         (mancalaBoard 2 6 store:None
             (track "Track" "0,E,N,W" loop:True)
-        )
+       )
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (piece "Seed" Shared)
@@ -21,7 +21,7 @@
                 (from 
                     (sites Mover) 
                     if:(< 0 (count at:(from)))
-                )
+               )
                 (then 
                     (sow  
                         if:(or {
@@ -33,14 +33,14 @@
                             (from (to)) 
                             (to (handSite Mover)) 
                             count:(count at:(to))
-                        )
+                       )
                         backtracking:True
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (end ("MancalaByScoreWhen" (and (no Moves Next) (no Moves Mover))))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -57,7 +57,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Egypt, around 1762.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -65,5 +65,5 @@
     
     (ai
         "Mankala_ai"
-    )
+   )
 )

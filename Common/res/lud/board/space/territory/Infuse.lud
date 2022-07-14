@@ -3,9 +3,9 @@
         Add
         (to (sites Empty) 
             if:(not (is Within (id "Disc" Mover) in:(sites LineOfSight Piece at:(to))))
-        )
+       )
         (then (addScore Mover 1))
-    )
+   )
 )
 
 (define "StepMoves"
@@ -17,7 +17,7 @@
         ("StepIteration" "S4" 4)
         ("StepIteration" "S5" 5)
         }
-    )
+   )
 )
 
 (define "S1" (intersection (sites Empty) (sites Around (from))))
@@ -32,8 +32,8 @@
         (move
             (from (from))
             (to (#1))
-        )
-    )
+       )
+   )
 )
 (define "BoardUsed" (<BoardShape:gridType> <BoardSize:smallSide>))
 
@@ -63,10 +63,10 @@
     (players 2)
     (equipment
         {
-        (board "BoardUsed" use:Cell )
+        (board "BoardUsed" use:Cell)
         (piece "Disc" Each)
         }
-    )
+   )
     (rules
         (start (set Score Each 0))
         (play
@@ -81,40 +81,40 @@
                                 ifAfterwards:(can Move 
                                     (add
                                         (to (sites Empty) if:(not (is Within (id "Disc" Mover) in:(sites LineOfSight Piece at:(to)))))
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
                 (or
                     {
                     ("PlaceOutOfSight")
                     (forEach Piece ("StepMoves"))
                     (move Pass)
                     }
-                )
-            )
-        )
+               )
+           )
+       )
         (end 
             {
             (if 
                 (and
                     (all Passed)
                     (> (score Mover) (score Next))
-                )
+               )
                 (result Mover Win)
-            )
+           )
             (if 
                 (and
                     (all Passed)
                     (<= (score Mover) (score Next))
-                )
+               )
                 (result  Next Win)
-            )
+           )
             }
-        )
-    )
+       )
+   )
 )      
 
 //---------------------------------------------
@@ -138,8 +138,8 @@
         (credit "Dale W. Walton")
         (date "19-11-2020")
         }
-    )
+   )
     (ai
         "Infuse_ai"
-    )
+   )
 )

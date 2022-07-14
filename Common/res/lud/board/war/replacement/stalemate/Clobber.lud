@@ -5,17 +5,17 @@
         (board (rectangle <Rows> <Columns>)) 
         (piece "Marker" Each <Moves>)
         }
-    )  
+   )  
     (rules 
         (start 
             { 
             (place "Marker1" (sites Phase 1))
             (place "Marker2" (sites Phase 0))
             }
-        )
+       )
         (play (forEach Piece))
         (end ("NoMoves" Loss))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -70,11 +70,11 @@
             (to 
                 if:("IsEnemyAt" (to)) 
                 (apply (remove (to)))
-            )
-        )
+           )
+       )
         > 
         "Pieces must step onto an enemy piece."
-    )*  
+   )*  
     (item 
         "Cannibal" 
         <
@@ -85,13 +85,13 @@
                 if:(or
                     ("IsEnemyAt" (to)) 
                     ("IsFriendAt" (to))
-                )  
+               )  
                 (apply (remove (to)))
-            )
-        )
+           )
+       )
         > 
         "Pieces can step onto any piece."
-    )  
+   )  
     }
 )
 
@@ -110,13 +110,13 @@
         (credit "Cameron Browne 2020-05-14")
         (date "2001")
         }
-    )
+   )
     (graphics 
         {
         (board Style Chess)
         }
-    )
+   )
     (ai
         "Clobber_ai"
-    )
+   )
 )

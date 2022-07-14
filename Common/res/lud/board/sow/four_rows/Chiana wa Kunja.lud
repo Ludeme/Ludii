@@ -4,7 +4,7 @@
     (trackSite FirstSite 
         from:(trackSite FirstSite if:(not (is Mover (who at:(to)))))
         if:(is Mover (who at:(to)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -15,7 +15,7 @@
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
             (track "Track" <Board:track> loop:True)
-        )
+       )
         (piece "Seed" Each)
         (hand Shared)
     })  
@@ -39,11 +39,11 @@
                                         (and 
                                             (remove (site) count:(count at:(site)))
                                             (add (piece (id "Seed" Mover)) (to Cell (handSite Shared)) count:(count at:(site)))
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                                 (set Var "NumSowed" (count at:(last From)))
-                            )
+                           )
                             next:(sow)
                             (then
                                 (and {
@@ -51,23 +51,23 @@
                                         (if (and
                                                 (= 1 (count at:("NextHoleFrom" (last From) "Track" (var "NumSowed"))))
                                                 (= 2 (count at:("NextHoleFrom" (last From) "Track" (- (var "NumSowed") 1))))
-                                            )
+                                           )
                                             (moveAgain)
-                                        )
-                                    )
+                                       )
+                                   )
                                     (if (!= 0 (what Cell at:(handSite Shared)))
                                         (fromTo
                                             (from Cell (handSite Shared))
                                             (to (last From))
                                             count:(count Cell at:(handSite Shared))
-                                        )
-                                    )
+                                       )
+                                   )
                                     (set Var "NumSowed" 0)
                                 })
-                            )
-                        )
-                    )
-                )
+                           )
+                       )
+                   )
+               )
                 (if (and (= 1 (count Pieces Mover)) (is Empty ("NextHoleFrom" (from) "Track" 1)))
                     (move
                         (from ("LeftMost"))
@@ -77,16 +77,16 @@
                                 (and
                                     (remove (to) count:(count at:(to)))
                                     (add (piece (id "Seed" Mover)) (to (to)) count:(count at:(to)))
-                                )	
-                            )	
-                        )
-                    )
-                )
-            )		
-        )
+                               )	
+                           )	
+                       )
+                   )
+               )
+           )		
+       )
         
         (end ("BlockWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -117,7 +117,7 @@
         variations:{"Board Size/6" "Board Size/8" "Board Size/10" "Board Size/12" "Board Size/14" 
         "Board Size/18" "Board Size/20" "Board Size/22" "Board Size/24" "Board Size/26" "Board Size/28" 
         }
-    )*
+   )*
     
 })
 
@@ -137,7 +137,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in East Africa, around 1913.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

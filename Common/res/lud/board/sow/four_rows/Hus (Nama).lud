@@ -13,7 +13,7 @@
             (track "TrackCCW1" "0,E,N1,W" loop:True P1)
             (track "TrackCCW2" <Board:CCW2> loop:True P2)
             }
-        )
+       )
         (regions "Home" P1 (sites Track "TrackCCW1"))                                     // P1 Home
         (regions "Home" P2 (sites Track "TrackCCW2"))                                     // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))        // P1 inner Home
@@ -29,7 +29,7 @@
         
         (start 
             (set Count 2 to:(union {(sites P1 "Outer") (sites P2 "Outer") (sites P1 "HalfRightInner")  (sites P2 "HalfRightInner") })) 
-        )
+       )
         
         phases:{
         (phase "OpeningP1" P1
@@ -43,16 +43,16 @@
                                     (from (last To))
                                     (to (+ (/ ("Columns") 2) 1))
                                     count:2
-                                )
+                               )
                                 (sow
                                     (+ (/ ("Columns") 2) 1)
                                     count:2
                                     "TrackCCW"
                                     owner:(mover)
-                                )
-                            )
-                        )
-                    )
+                               )
+                           )
+                       )
+                   )
                     
                     (move Select
                         (from (+ (/ ("Columns") 2) 2))
@@ -61,14 +61,14 @@
                                 (fromTo
                                     (from (last To))
                                     (to (+ (+ ("Columns") (/ ("Columns") 2)) 1))
-                                )
+                               )
                                 (fromTo
                                     (from (last To))
                                     (to (+ (+ ("Columns") (/ ("Columns") 2)) 2))
-                                )
-                            )
-                        )
-                    )
+                               )
+                           )
+                       )
+                   )
                     
                     (move Select
                         (from (+ ("Columns") (/ ("Columns") 2)))
@@ -77,27 +77,27 @@
                                 (fromTo
                                     (from (last To))
                                     (to (+ (+ ("Columns") (/ ("Columns") 2)) 1))
-                                )
+                               )
                                 (fromTo
                                     (from (last To))
                                     (to (+ (+ ("Columns") (/ ("Columns") 2)) 2))
-                                )
-                            )
-                        )
-                    )
+                               )
+                           )
+                       )
+                   )
                     (move Select
                         (from (- (/ ("Columns") 2) 1))
                         (then
                             (sow
                                 "TrackCCW"
                                 owner:(mover)
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                 })
-            )
+           )
             (nextPhase Mover "Sowing")
-        )
+       )
         
         (phase "OpeningP2" P2
             (play
@@ -110,16 +110,16 @@
                                     (from (last To))
                                     (to (- (- (* 4 ("Columns")) (/ ("Columns") 2)) 2))
                                     count:2
-                                )
+                               )
                                 (sow
                                     (- (- (* 4 ("Columns")) (/ ("Columns") 2)) 2)
                                     count:2
                                     "TrackCCW"
                                     owner:(mover)
-                                )
-                            )
-                        )
-                    )
+                               )
+                           )
+                       )
+                   )
                     (move Select
                         (from (- (- (* 4 ("Columns")) (/ ("Columns") 2)) 3))
                         (then
@@ -127,14 +127,14 @@
                                 (fromTo
                                     (from (last To))
                                     (to (- (- (* 3 ("Columns")) (/ ("Columns") 2)) 2))
-                                )
+                               )
                                 (fromTo
                                     (from (last To))
                                     (to (- (- (* 3 ("Columns")) (/ ("Columns") 2)) 3))
-                                )
-                            )
-                        )
-                    )
+                               )
+                           )
+                       )
+                   )
                     (move Select
                         (from (- (- (* 3 ("Columns")) (/ ("Columns") 2)) 1))
                         (then
@@ -142,27 +142,27 @@
                                 (fromTo
                                     (from (last To))
                                     (to (- (- (* 3 ("Columns")) (/ ("Columns") 2)) 2))
-                                )
+                               )
                                 (fromTo
                                     (from (last To))
                                     (to (- (- (* 3 ("Columns")) (/ ("Columns") 2)) 3))
-                                )
-                            )
-                        )
-                    )
+                               )
+                           )
+                       )
+                   )
                     (move Select
                         (from (- (* 4 ("Columns")) (/ ("Columns") 2)))
                         (then
                             (sow
                                 "TrackCCW"
                                 owner:(mover)
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                 })
-            )
+           )
             (nextPhase Mover "Sowing")
-        )
+       )
         
         (phase "Sowing"
             (play
@@ -171,9 +171,9 @@
                         (if ("SameTurn")
                             (sites {(var "Replay")})
                             (sites Mover "Home")
-                        )
+                       )
                         if:(< 1 (count at:(from)))
-                    )
+                   )
                     (then
                         (sow
                             "TrackCCW"
@@ -186,35 +186,35 @@
                                                 (from ("OppositePit" (to)))
                                                 (to (to))
                                                 count:(count at:("OppositePit" (to)))
-                                            )
+                                           )
                                             (if (is Occupied ("OppositeOuterPit" (to)))
                                                 (and 
                                                     (fromTo
                                                         (from ("OppositeOuterPit" (to)))
                                                         (to (to))
                                                         count:(count at:("OppositeOuterPit" (to)))
-                                                    )
+                                                   )
                                                     (sow
                                                         (to)
                                                         count:(+ (count at:("OppositeOuterPitOuter")) (count at:("OppositePitOuter")))
                                                         "TrackCCW"
                                                         owner:(mover)
-                                                    )
+                                                   )
                                                     
-                                                )
+                                               )
                                                 (sow
                                                     (to)
                                                     count:(count at:("OppositePit" (to)))
                                                     "TrackCCW"
                                                     owner:(mover)	
-                                                )
-                                            )
+                                               )
+                                           )
                                         })
                                         (and
                                             (moveAgain)	
                                             (set Var "Replay" (to))
-                                        )
-                                    )
+                                       )
+                                   )
                                     
                                     (if (is Occupied ("OppositePitOuter"))
                                         (and {
@@ -222,45 +222,45 @@
                                                 (from ("OppositePitOuter"))
                                                 (to (to))
                                                 count:(count at:("OppositePitOuter"))
-                                            )
+                                           )
                                             (if (is Occupied ("OppositeOuterPitOuter"))
                                                 (and
                                                     (fromTo
                                                         (from ("OppositeOuterPitOuter"))
                                                         (to (to))
                                                         count:(count at:("OppositeOuterPitOuter"))
-                                                    )
+                                                   )
                                                     (sow
                                                         (to)
                                                         count:(+ (count at:("OppositeOuterPitOuter")) (count at:("OppositePitOuter")))
                                                         "TrackCCW"
                                                         owner:(mover)	
-                                                    )
-                                                )
+                                                   )
+                                               )
                                                 (sow
                                                     (to)
                                                     count:(count at:("OppositePitOuter"))
                                                     "TrackCCW"
                                                     owner:(mover)	
-                                                )
-                                            )
+                                               )
+                                           )
                                         })
                                         (and
                                             (moveAgain)	
                                             (set Var "Replay" (to))
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             (end "ForEachNonMoverNoMovesLoss")
-        )
+       )
         }
         
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -281,7 +281,7 @@
         "Board Size/16"
         }
         variations:{"Board Size/18" "Board Size/20" "Board Size/22"}
-    )*
+   )*
     
 })
 
@@ -311,7 +311,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Namibia, around 1907.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

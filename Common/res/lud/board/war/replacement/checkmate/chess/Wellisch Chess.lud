@@ -17,7 +17,7 @@
         (= (what at:(to)) (id #1 P2))
         (= (what at:(to)) (id #1 P3))
         }
-    )
+   )
 )
 
 (define "IsToEmpty"
@@ -27,7 +27,7 @@
 (define "IsToEmptyOrEnemy"
     (or "IsToEmpty"
         ("IsEnemyAt" (to))
-    )
+   )
 )
 
 // Source: Chess.lud - NextCanNotMove
@@ -35,14 +35,14 @@
     (not (can Move (do
                 (forEach Piece (next))
                 ifAfterwards:(not ("IsInCheck" "King" Next))
-    )))
+   )))
 )
 
 // Usage: ("P123" <p1_arg> <p2_arg> <p3_arg>)
 (define "P123"
     (if (is Mover P1) #1
         (if (is Mover P2) #2 #3)
-    )
+   )
 )
 
 //----------------------------------------
@@ -58,17 +58,17 @@
             (and
                 (trigger "CapturedEnemyKing" Mover)  // Record winner
                 (remove (to))    // Remove King
-            )
+           )
             (move                // Grab any other piece
                 (from (to))
                 (to (handSite    // Place in an open site
                         (who at:(to))
                         (mapEntry "HandIndex" (what at:(to)))
-                ))
+               ))
                 #1
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "GrabToPieceAndResetCounter"
@@ -82,9 +82,9 @@
         #1
         (to if:("IsEnemyAt" (to))
             (apply "GrabToPieceAndResetCounter")
-        )
+       )
         #2
-    )
+   )
 )
 
 // Usage: ("StepGrabMove" <directions> <then>)
@@ -96,11 +96,11 @@
             (apply
                 (if ("IsEnemyAt" (to))
                     "GrabToPieceAndResetCounter"
-                )
-            )
-        )
+               )
+           )
+       )
         #2
-    )
+   )
 )
 
 //----------------------------------------
@@ -123,8 +123,8 @@
     (then
         (if (= (state at:(last To)) 1)
             "History_SaveMovement"
-        )
-    )
+       )
+   )
 )
 
 //----------------------------------------
@@ -138,7 +138,7 @@
         ("History_HasNeverMoved" "King")
         (not ("IsInCheck" "King" Mover))
         }
-    )
+   )
 )
 
 // Usage: ("KingSideSwap" <king_idx> <rook_idx>)
@@ -148,11 +148,11 @@
             ("History_HasNeverMoved" "RookRight")
             (not ("IsInCheck" "King" Mover at:(mapEntry "RookRight" Mover)))
             }
-        )
+       )
         (move Swap Pieces #1 #2
             (then "History_SaveMovement")
-        )
-    )
+       )
+   )
 )
 
 // Usage: ("QueenSideSwap" <king_idx> <rook_idx>)
@@ -164,15 +164,15 @@
             (not ("IsInCheck" "King" Mover at:(mapEntry "Queen" Mover)))
             (is In (mapEntry "Queen" Mover) (sites Empty))
             }
-        )
+       )
         (and
             {
             (move Swap Pieces #1 #2
                 (then "History_SaveMovement")
-            )
+           )
             }
-        )
-    )
+       )
+   )
 )
 
 (define "Castle_KingSide_P1"  ("KingSideSwap"  3  4))
@@ -202,8 +202,8 @@
         #1
         (to if:("IsEnemyAt" (to))
             (apply ("GrabToPiece" ~))
-        )
-    )
+       )
+   )
 )
 
 (define "PawnGrab"
@@ -216,7 +216,7 @@
         Step
         #1
         (to if:"IsToEmpty")
-    )
+   )
 )
 
 (define "StepOrthoToEmpty"
@@ -235,20 +235,20 @@
     (move
         (from (sites Occupied by:Mover container:"Hand"
                 components:{"Queen" "Rook" "Knight"}
-        ))
+       ))
         (to (last To))
-    )
+   )
 )
 
 (define "PromoteFromHandDelayed"
     (move
         (from (sites Occupied by:Mover container:"Hand"
                 components:{"Queen" "Rook" "Knight"}
-        ))
+       ))
         (to (sites Mover "PromotionZone")
             if:(= (what at:(to)) (id "Pawn" Mover))
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -267,21 +267,21 @@
                         "Castle_KingSide"
                         "Castle_QueenSide"
                         }
-                    )
-                )
+                   )
+               )
                 }
-            )
-        )
+           )
+       )
         (piece "Queen" Each  // Q = R + N
             (or
                 ("SlideGrabMove" Orthogonal ~)  // Rook move
                 ("StepGrabMove"  Diagonal ~)    // Knight move
-            )
-        )
+           )
+       )
         (piece "Rook" Each ("SlideGrabMove" Orthogonal ~))
         (piece "Knight" Each  // Different from other hexagonal chess variants
             ("StepGrabMove" Diagonal ~)
-        )
+       )
         
         (piece "Pawn" Each
             (or {
@@ -292,12 +292,12 @@
                     (and
                         (if (is In (last To) (sites Mover "PromotionZone"))
                             (moveAgain)
-                        )
+                       )
                         (set Counter)
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (map "King"      {(pair 1 "D1") (pair 2 "C8")  (pair 3 "K9")})
         (map "RookLeft"  {(pair 1 "B1") (pair 2 "E10") (pair 3 "K7")})
@@ -313,7 +313,7 @@
             (pair 5 0) (pair 8 1) (pair 11 2)  // P2: Q, R, N
             (pair 6 0) (pair 9 1) (pair 12 2)  // P3: Q, R, N
             }
-        )
+       )
         
         (regions "PromotionZone" P1 (sites Top))
         (regions "PromotionZone" P2 (sites {"K6" "J5" "I4" "H3" "G2" "F1"}))  // Side ESE
@@ -323,7 +323,7 @@
         (regions "Region-Red"    (sites Phase 2))
         (regions "Region-Yellow" (sites Phase 0))
         }
-    )
+   )
     
     (rules
         (start
@@ -347,26 +347,26 @@
             (place "Pawn3"   {"J11" "J10" "J9" "I8" "I7" "J7" "J6"  "J5"})
             (place "Pawn2"   {"A5"  "B6"  "C7" "D7" "E8" "E9" "F10" "G11"})
             }
-        )
+       )
         phases:{
         (phase "Movement"
             (play
                 (if ("SameTurn")
                     (if (not ("HandEmpty" Mover))
                         "PromoteFromHand"
-                    )
+                   )
                     (do
                         // First: Delayed promotion - no captured piece was available earlier.
                         (if (> (count in:(sites Hand Mover)) 0)  
                             "PromoteFromHandDelayed"
-                        )
+                       )
                         next:(do
                             (forEach Piece)
                             ifAfterwards:(not ("IsInCheck" "King" Mover))
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (end
                 {
                 (if (is Triggered "CapturedEnemyKing" P1) (result P1 Win))
@@ -379,10 +379,10 @@
                 
                 (if (= (counter) 100) (result Mover Draw))  // No available moves causes pass
                 }
-            )
-        )
+           )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -424,7 +424,7 @@
         (credit "Jay Coskey, with some small functions drawn from Chess.lud, by Eric Piette")
         (date "1912")
         }
-    )
+   )
     
     (graphics {
         (piece Scale "Pawn" 0.7)
@@ -444,5 +444,5 @@
     })
     (ai
         "Wellisch Chess_ai"
-    )
+   )
 )

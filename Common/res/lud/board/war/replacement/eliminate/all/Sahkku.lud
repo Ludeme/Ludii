@@ -21,16 +21,16 @@
                 })
                 1
                 0	
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "NextSiteFrom" 
     (trackSite Move 
         from:#1 
         steps:#2
-    )
+   )
 )
 
 (define "ActivePiece" (set State at:#1 level:#2 1))
@@ -41,7 +41,7 @@
         (move
             (from (from) level:(level)
                 if:(or ("IsActivated" (from) (level)) ("Sahkku" (value)))
-            )
+           )
             (to ("NextSiteFrom" (from) (value))
                 if:(or {
                     (= (id "Gonagas" Shared) (what at:(to))) 
@@ -56,16 +56,16 @@
                             (set State at:(to) (mover))
                             (if ("IsEnemyAt" (to))
                                 (remove (to))
-                            )
-                        )
+                           )
+                       )
                     })
-                )
-            )
+               )
+           )
             (then
                 (if (!= 0 (size Array (values Remembered "Pips"))) (moveAgain))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "MoveGonagasWithStoredPips" 
@@ -73,7 +73,7 @@
         (move Slide 
             (from (from) level:(level)
                 if:(= (state at:(from) level:(level)) (mover))
-            )
+           )
             Orthogonal
             (between (exact (value)) if:True)
             (to 
@@ -81,22 +81,22 @@
                     if:(or 
                         (is Empty (to))
                         (and ("IsEnemyAt" (to)) ("IsActivated" (to) (topLevel at:(to))))
-                    )
-                )
-            )
+                   )
+               )
+           )
             (then
                 (and {
                     (forEach Level (last To)
                         (if (!= (topLevel at:(last To)) (level))
                             (remove (last To) level:(level))
-                        )
-                    )
+                       )
+                   )
                     (forget Value "Pips" (count Steps (last From) (last To)))
                     (if (!= 1 (size Array (values Remembered "Pips"))) (moveAgain))
                 })
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "DieNotUsed" (!= (pips) 0))
@@ -111,7 +111,7 @@
             (track "Track1" "0,E,N1,W,N1,E,S1,W" loop:True P1)
             (track "Track2" "44,W,S1,E,S1,W,N1,E" loop:True P2)
             }
-        )
+       )
         (dice d:4 from:0 num:3)
         (piece "Marker" Each
             (forEach Die
@@ -119,7 +119,7 @@
                 (move
                     (from (from) level:(level)
                         if:(or ("IsActivated" (from) (level)) ("Sahkku" (pips)))
-                    )
+                   )
                     (to ("NextSiteFrom" (from) (pips))
                         if:(or {
                             (= (id "Gonagas" Shared) (what at:(to))) 
@@ -134,26 +134,26 @@
                                     (set State at:(to) (mover))
                                     (if ("IsEnemyAt" (to))
                                         (remove (to))
-                                    )
-                                )
+                                   )
+                               )
                             })
-                        )
-                    )
+                       )
+                   )
                     (then
                         (if (not (all DiceUsed))
                             (moveAgain)
-                        )
-                    )
-                )
-            )		
-        )
+                       )
+                   )
+               )
+           )		
+       )
         (piece "Gonagas" Shared
             (forEach Die
                 if:("DieNotUsed")
                 (move Slide
                     (from (from) level:(level)
                         if:(= (state at:(from) level:(level)) (mover))
-                    )
+                   )
                     Orthogonal
                     (between (exact (pips)) if:True)
                     (to 
@@ -161,24 +161,24 @@
                             if:(or 
                                 (is Empty (to))
                                 (and ("IsEnemyAt" (to)) ("IsActivated" (to) (topLevel at:(to))))
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (then
                         (and
                             (forEach Level (last To)
                                 (if (!= (topLevel at:(last To)) (level))
                                     (remove (last To) level:(level))
-                                )
-                            )
+                               )
+                           )
                             (if (not (all DiceUsed))
                                 (moveAgain)
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
     })
     (rules 
         (start { 
@@ -193,51 +193,51 @@
                         (roll)
                         (if (and (!= 0 (value Player Mover)) (= 0 (count MovesThisTurn)))
                             (set Value Mover 0)
-                        )
-                    )
+                       )
+                   )
                     next:(move Pass 
                         (then
                             (and
                                 (if ("IsASahkku")
                                     (set Value Mover (+ ("NumberOfSahkku")(value Player Mover)))
-                                )
+                               )
                                 (forEach Die
                                     (if (!= 0 (pips))
                                         (remember Value "Pips" (pips))
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                   )
+                               )
+                           )
+                       )
+                   )
                     (then 
                         (if (or (<= 3 (value Player Mover)) (!= 2 (count MovesThisTurn)))
                             (moveAgain)
                             (and (forget Value "Pips" All) (set Value Mover 0))
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase Mover (<= 3 (value Player Mover)) "PlayingPips")
-        )
+       )
         (phase "PlayingPips"
             (play 
                 (do
                     (if (not ("SameTurn")) (roll))
                     next:(or (forEach Piece "MovePieceWithStoredPips") (forEach Piece "MoveGonagasWithStoredPips" Shared))
-                )
-            )
+               )
+           )
             (nextPhase Mover (= 0 (size Array (values Remembered "Pips"))) "Playing")
-        )
+       )
         (phase "Playing"
             (play 
                 (do (if (not ("SameTurn")) (roll))
                     next:(or (forEach Piece) (forEach Piece Shared))
-                )
-            )
-        )
+               )
+           )
+       )
         }
         (end (if (no Pieces Next) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -256,7 +256,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Sami, from around 1871 to 2001.")
         }
-    )
+   )
     
     (graphics {
         (piece Foreground "Die" state:1 image:"star" fillColour:(colour White) scale:0.2)

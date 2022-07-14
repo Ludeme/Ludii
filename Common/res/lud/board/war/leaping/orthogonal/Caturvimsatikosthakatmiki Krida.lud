@@ -10,16 +10,16 @@
                         if:(and 
                             ("IsEnemyAt" (between)) 
                             (not (is In (between) (union (sites Bottom) (sites Top))))
-                        )
+                       )
                         (apply (remove (between)))
-                    )
+                   )
                     (to if:(is Empty (to)))
-                )
+               )
                 (move
                     Step 
                     Orthogonal 
                     (to if:(is Empty (to)))
-                )
+               )
                 (if (= 1 (state at:(from)))
                     (move 
                         Slide
@@ -27,14 +27,14 @@
                         (between
                             (exact 2)
                             if:(is Empty (between))
-                        )
+                       )
                         (then 
                             (set State at:(last To) 0)
-                        )
-                    )
-                )
+                       )
+                   )
+               )
             })			
-        )
+       )
     })  
     
     (rules 
@@ -44,7 +44,7 @@
         })
         (play (forEach Piece))
         (end (if (< (count Pieces Next) 4) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -61,7 +61,7 @@
         (classification "board/war/leaping/orthogonal/reconstruction")
         (origin  "This game was played in India, around 1871.")
         }
-    )
+   )
     
     (graphics {
         (show Symbol "thinCross" {9 14} scale:0.9)

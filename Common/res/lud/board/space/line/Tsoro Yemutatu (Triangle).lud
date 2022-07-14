@@ -4,7 +4,7 @@
         (board
             (scale 1 2 (wedge 3))
             use:Vertex
-        )
+       )
         (hand Each) 
         (piece "Marker" Each (move (from) (to (sites Empty))))
     })  
@@ -15,14 +15,14 @@
         (phase "Placement"
             (play (move (from (handSite Mover)) (to (sites Empty))))
             (nextPhase ("HandEmpty" P2) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play (forEach Piece))
-        )
+       )
         }
         (end (if (is Line 3) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -40,7 +40,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Zimbabwe, around 1964.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)

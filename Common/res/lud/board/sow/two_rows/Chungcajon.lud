@@ -12,7 +12,7 @@
             (track "Track1" "7,W,WNW,ENE,E" loop:True P1)
             (track "Track2" "8,E,ESE,WSW,W" loop:True P2)
             }
-        )
+       )
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
@@ -28,9 +28,9 @@
                         ("SameTurn") 
                         "LastHoleSowed" 
                         (sites Mover) 
-                    ) 
+                   ) 
                     if:(> (count at:(from)) 0)
-                )
+               )
                 (then 
                     (sow  
                         "Track"
@@ -38,14 +38,14 @@
                         if:(and 
                             (> (count at:(to)) 1)
                             ("NotMoverStore")
-                        ) 
+                       ) 
                         apply:(moveAgain)
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (end ("MancalaByScoreWhen" (all Sites (union (sites P1) (sites P2)) if:(= 0 (count at:(site))))))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -63,7 +63,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Philippines, around 1900.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -71,5 +71,5 @@
     
     (ai
         "Chungcajon_ai"
-    )
+   )
 )

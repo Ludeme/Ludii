@@ -8,7 +8,7 @@
     (and
         (>= 1 (count Pieces All in:(sites P1)))
         (>= 1 (count Pieces All in:(sites P2)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -22,7 +22,7 @@
             (track "TrackCCW" "1,E,N,W" loop:True)
             (track "TrackCW" "4,W,N,E" loop:True)
             }
-        )
+       )
         (regions P1 (difference (expand (sites Left) steps:2) (sites Left)))   // P1 home
         (regions P2 (difference (expand (sites Right) steps:2) (sites Right))) // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)})                         // kalahs (storage pits)
@@ -41,19 +41,19 @@
                             (from (ahead ("LastHole") W))
                             (to (mapEntry Mover))
                             count:(count at:(ahead ("LastHole") W))
-                        )
+                       )
                         (move 
                             (from (ahead ("LastHole") E))
                             (to (mapEntry Mover))
                             count:(count at:(ahead ("LastHole") E))
-                        )
-                    )
+                       )
+                   )
                     (or
                         (move Select
                             (from
                                 (sites Mover)
                                 if:(is Occupied (from))
-                            )
+                           )
                             (then
                                 (sow
                                     "TrackCCW"
@@ -61,39 +61,39 @@
                                         (or
                                             (= 2 (count at:(to)))
                                             (= 4 (count at:(to)))
-                                        )
+                                       )
                                         (and {
                                             (fromTo
                                                 (from (to))
                                                 (to (mapEntry Mover))
                                                 count:(count at:(to))
-                                            )
+                                           )
                                             (if ("WestHoleExist")
                                                 (if 
                                                     (or
                                                         (= 2 (count at:("WestHole")))
                                                         (= 4 (count at:("WestHole")))
-                                                    )
+                                                   )
                                                     (fromTo
                                                         (from ("WestHole"))
                                                         (to (mapEntry Mover))
                                                         count:(count at:("WestHole"))
-                                                    )
-                                                )
-                                            )
+                                                   )
+                                               )
+                                           )
                                             (if ("EastHoleExist")
                                                 (if 
                                                     (or
                                                         (= 2 (count at:("EastHole")))
                                                         (= 4 (count at:("EastHole")))
-                                                    )
+                                                   )
                                                     (fromTo
                                                         (from ("EastHole"))
                                                         (to (mapEntry Mover))
                                                         count:(count at:("EastHole"))
-                                                    )
-                                                )
-                                            )
+                                                   )
+                                               )
+                                           )
                                         })
                                         (if 
                                             (and
@@ -102,31 +102,31 @@
                                                         (or
                                                             (= 2 (count at:("WestHole")))
                                                             (= 4 (count at:("WestHole")))
-                                                        )
+                                                       )
                                                         False
-                                                    )
-                                                )
+                                                   )
+                                               )
                                                 (if ("EastHoleExist")
                                                     (if 
                                                         (or
                                                             (= 2 (count at:("EastHole")))
                                                             (= 4 (count at:("EastHole")))
-                                                        )
+                                                       )
                                                         False
-                                                    )
-                                                )
-                                            )
+                                                   )
+                                               )
+                                           )
                                             (moveAgain)
-                                        )
-                                    )
-                                )
-                            )
-                        )
+                                       )
+                                   )
+                               )
+                           )
+                       )
                         (move Select
                             (from
                                 (sites Mover)
                                 if:(is Occupied (from))
-                            )
+                           )
                             (then
                                 (sow
                                     "TrackCW"
@@ -134,39 +134,39 @@
                                         (or
                                             (= 2 (count at:(to)))
                                             (= 4 (count at:(to)))
-                                        )
+                                       )
                                         (and {
                                             (fromTo
                                                 (from (to))
                                                 (to (mapEntry Mover))
                                                 count:(count at:(to))
-                                            )
+                                           )
                                             (if ("WestHoleExist")
                                                 (if 
                                                     (or
                                                         (= 2 (count at:("WestHole")))
                                                         (= 4 (count at:("WestHole")))
-                                                    )
+                                                   )
                                                     (fromTo
                                                         (from ("WestHole"))
                                                         (to (mapEntry Mover))
                                                         count:(count at:("WestHole"))
-                                                    )
-                                                )
-                                            )
+                                                   )
+                                               )
+                                           )
                                             (if ("EastHoleExist")
                                                 (if 
                                                     (or
                                                         (= 2 (count at:("EastHole")))
                                                         (= 4 (count at:("EastHole")))
-                                                    )
+                                                   )
                                                     (fromTo
                                                         (from ("EastHole"))
                                                         (to (mapEntry Mover))
                                                         count:(count at:("EastHole"))
-                                                    )
-                                                )
-                                            )
+                                                   )
+                                               )
+                                           )
                                         })
                                         (if 
                                             (and
@@ -175,27 +175,27 @@
                                                         (or
                                                             (= 2 (count at:("WestHole")))
                                                             (= 4 (count at:("WestHole")))
-                                                        )
+                                                       )
                                                         False
-                                                    )
-                                                )
+                                                   )
+                                               )
                                                 (if ("EastHoleExist")
                                                     (if 
                                                         (or
                                                             (= 2 (count at:("EastHole")))
                                                             (= 4 (count at:("EastHole")))
-                                                        )
+                                                       )
                                                         False
-                                                    )
-                                                )
-                                            )
+                                                   )
+                                               )
+                                           )
                                             (moveAgain)
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
                     (then
                         (if ("OneSingleCounterPerPlayer")
                             (and  
@@ -204,31 +204,31 @@
                                         (from (site))
                                         (to (mapEntry P1))
                                         count:(count at:(site))
-                                    )
-                                )
+                                   )
+                               )
                                 (forEach Site (sites P2)
                                     (fromTo
                                         (from (site))
                                         (to (mapEntry P2))
                                         count:(count at:(site))
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             
             (end (if ("NoPieceOnBoard")
                     {
                     (if (> 6 (count at:(mapEntry P1))) (result P2 Win))
                     (if (> 6 (count at:(mapEntry P2))) (result P1 Win))
                     }
-                )
-            )
+               )
+           )
             
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-        )
+       )
         
         (phase "BetweenRounds"
             (play
@@ -238,14 +238,14 @@
                             (from (mapEntry Mover))
                             (to (sites Mover) if:(is Empty (to)))
                             count:6
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase (all Passed) "Sowing")
-        )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -261,7 +261,7 @@
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

@@ -6,9 +6,9 @@
             if:(and 
                 ("IsEnemyAt" (to)) 
                 (> (value Piece at:(to)) (value Piece at:(from))) 
-            )
-        )
-    ) 
+           )
+       )
+   ) 
 )
 
 (define "Frozen" (not "NotFrozen"))
@@ -19,8 +19,8 @@
             #1
             Orthogonal 
             if:(= (who at:(to)) #2)
-        )
-    )
+       )
+   )
 )
 
 (define "ProtectedBy" (not ("NotProtectedBy" (from) #1)))
@@ -42,20 +42,20 @@
         (to if:(and (or 
                     "NotFrozen"
                     (and ("Frozen") ("ProtectedBy" Mover))
-                )
+               )
                 (or 
                     (is Empty (to)) 
                     "WillPushAPiece"
-                ) 
-            )
+               ) 
+           )
             (apply // We store the piece pushed to place it somewhere around in the next move.
                 (fromTo 
                     (from (to)) 
                     (to (handSite Mover))
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 (define "AllPieceInATrapAreRemoved" 
@@ -64,10 +64,10 @@
             (or 
                 (and (= (who at:(to)) P1) ("NotProtectedBy" (site) P1))
                 (and (= (who at:(to)) P2) ("NotProtectedBy" (site) P2))
-            )
+           )
             (do (set Pending (value Piece at:(to))) next:(remove (to))) 
-        )
-    )
+       )
+   )
 )
 
 (define "HasToPushAPiece" (is Occupied (handSite Mover)))
@@ -82,10 +82,10 @@
                 (if "NotMyLastMove" 
                     (moveAgain) 
                     (remember State)
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 (define "PullAPiece" 
@@ -99,12 +99,12 @@
                     (if (and (is In (last To) (sites "Traps")) (is Pending))
                         (< (value Piece at:(to)) (value Pending)) // With a lower value of mine.
                         (< (value Piece at:(to)) (value Piece at:(last To))) // With a lower value of mine.
-                    )
-                )
-            )
-        ) 
+                   )
+               )
+           )
+       ) 
         (to (last From)) 
-    )
+   )
 )
 
 (define "FinishMyTurn" (move Pass (then (remember State))))
@@ -116,11 +116,11 @@
                 in:(forEach 
                     (sites Occupied by:#1 component:"Rabbit") 
                     if:(is In (site) (sites #1 "Goal"))
-                )
-            )
-        ) 
+               )
+           )
+       ) 
         (result #1 #2)
-    ) 
+   ) 
 )
 
 (define "NoRabbit" 
@@ -128,9 +128,9 @@
         (and 
             (not ("IsPieceAt" "Rabbit" #1 (handSite #2))) 
             ("NoSites" (sites Occupied by:#1 component:"Rabbit"))
-        ) 
+       ) 
         (result #2 #3)
-    ) 
+   ) 
 )
 
 //------------------------------------------------------------------------------
@@ -154,7 +154,7 @@
         (regions "Goal" P1 (sites Top))
         (regions "Goal" P2 (sites Bottom))
         }
-    )  
+   )  
     (rules 
         (start { 
             (place "Rabbit" "Hand" count:8 value:1)
@@ -172,10 +172,10 @@
                     (from (sites Occupied by:Mover container:(mover)))  // pieces in the hand of P1.
                     (to (forEach (sites Mover "Home") if:(is Empty (site)))) 
                     (then (if (not ("HandEmpty" P1)) (moveAgain))) 
-                ) 
-            ) 
+               ) 
+           ) 
             (nextPhase ("HandEmpty" P1) "PlacementP2")
-        )
+       )
         
         (phase "PlacementP2"
             (play 
@@ -183,10 +183,10 @@
                     (from (sites Occupied by:Mover container:(mover)))  // pieces in the hand of P2.
                     (to (forEach (sites Mover "Home") if:(is Empty (site)))) 
                     (then (if ("HandEmpty" P2) (remember State) (moveAgain))) 
-                ) 
-            ) 
+               ) 
+           ) 
             (nextPhase ("HandEmpty" P2) "Movement")
-        )
+       )
         
         (phase "Movement"  
             (play
@@ -199,9 +199,9 @@
                                     (and 
                                         "SameTurn" 
                                         (is In (last From) (sites Board))
-                                    ) 
+                                   ) 
                                     "PullAPiece"
-                                )
+                               )
                                 (forEach Piece)
                                 (then 
                                     (and
@@ -209,15 +209,15 @@
                                         (if "NotMyLastMove" 
                                             (moveAgain) 
                                             (remember State)
-                                        )
-                                    )
-                                )
-                            )
+                                       )
+                                   )
+                               )
+                           )
                             "FinishMyTurn"
-                        )
-                    )
-                )
-            ) 
+                       )
+                   )
+               )
+           ) 
             
             (end 
                 (if (not (is Next Mover))
@@ -228,11 +228,11 @@
                     ("NoRabbit" P2 P1 Win) 
                     ("NoMoves" Loss)
                     }
-                )
-            )
-        )
+               )
+           )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -251,7 +251,7 @@
         (credit "Eric Piette")
         (date "2003")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Gold))
@@ -264,5 +264,5 @@
     
     (ai
         "Arimaa_ai"
-    )
+   )
 )

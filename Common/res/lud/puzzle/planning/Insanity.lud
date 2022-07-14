@@ -6,9 +6,9 @@
             Forward 
             (between if:("IsFriendAt" (between))) 
             (to if:(is Empty (to))) 
-        ) 
+       ) 
         ("StepForwardToEmpty") 
-    ) 
+   ) 
 )
 
 //------------------------------------------------------------------------------
@@ -31,9 +31,9 @@
             (if 
                 (is Target {2 2 2 2 0 0 1 1 1 1}) 
                 (result P1 Win) 
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -52,7 +52,7 @@
         (credit "Eric Piette")
         (date "1987")
         }
-    )
+   )
     
     (graphics {
         (piece Colour "Marker1" fillColour:(colour Red))
@@ -61,6 +61,6 @@
     
     (ai 
         "Insanity_ai"
-    )
+   )
     
 )

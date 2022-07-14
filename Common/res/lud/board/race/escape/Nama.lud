@@ -6,7 +6,7 @@
     (if (= (from) (handSite Mover))
         ("SiteToMoveOnTrack" from:0 (- ("ThrowValue") 1))
         ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
-    )	
+   )	
 )
 
 (define "SiteHyenaToMove" 
@@ -19,7 +19,7 @@
     (and
         (add (piece "Hyena") (to 0) stack:True)
         (set Var (id Mover))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -30,7 +30,7 @@
         (board 
             (rectangle <Board:size> 1)
             (track "Track" <Board:track> directed:True)
-        )
+       )
         (hand Each)
         (hand Shared)
         (piece "Marker" Each
@@ -39,16 +39,16 @@
                     (then 
                         (if ("IsOffBoard" (where "Hyena" Shared))
                             ("SetHyenaPlayer")
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (move
                     (from (from) level:(level))
                     (to ("SiteToMove"))
                     stack:True
-                )
-            )		
-        )
+               )
+           )		
+       )
         (piece "Hyena" Shared)
         ("StickDice" 4)
         (map "Throw" {(pair 0 0) (pair 1 0) (pair 2 2) (pair 3 0) (pair 4 20) })
@@ -56,7 +56,7 @@
     (rules 
         (start 
             (place "Marker" "Hand")
-        )
+       )
         (play 
             ("RollMove"
                 (if (< 0 ("ThrowValue"))
@@ -67,10 +67,10 @@
                                     (forEach Site (sites Board)
                                         (if (is Occupied (site))
                                             (remove (site) count:(size Stack at:(site)))
-                                        )
-                                    )
-                                )
-                            )
+                                       )
+                                   )
+                               )
+                           )
                             (move
                                 (from (where "Hyena" Shared))
                                 (to ("SiteHyenaToMove"))
@@ -81,17 +81,17 @@
                                             (remove 
                                                 ("SiteToMoveOnTrack" from:(last From) (value)) 
                                                 count:(size Stack at:("SiteToMoveOnTrack" from:(last From) (value)))
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
+                                           )
+                                       )
+                                   )
+                               )
+                           )
+                       )
                         (or (forEach Piece) (forEach Piece container:(mover)))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (end {
             (forEach Player
                 if:(and {
@@ -100,18 +100,18 @@
                     ("IsOffBoard" (where "Hyena" Shared))
                 }) 
                 (result Player Loss)
-            )
+           )
             
             (if 
                 (and (= (id Mover) ("HyenaPlayer")) ("IsOffBoard" (where "Hyena" Shared))) 
                 (result Mover Win)
-            )
+           )
             (forEach Player
                 if:(and (!= (player) ("HyenaPlayer")) (no Pieces of:(player)))
                 (result Player Loss)
-            )
+           )
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -170,7 +170,7 @@
         "Board Size/50" "Board Size/55" "Board Size/60" "Board Size/65" "Board Size/70" "Board Size/75"
         "Board Size/80" "Board Size/85" "Board Size/90" "Board Size/95" 
         }
-    )*
+   )*
     
 })
 
@@ -188,7 +188,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Mali, around 1955.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)

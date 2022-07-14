@@ -17,7 +17,7 @@
             ("CheckEndLine" SSE)
             ("CheckEndLine" NNE)
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -49,14 +49,14 @@
                     if:(and
                         (<= 2 (count Sites in:(sites Around (to) NotEmpty)))
                         (not (is In (what at:(from)) (results from:(last From) to:(sites Around (to)) (what at:(to)))))
-                    )
-                )
+                   )
+               )
                 copy:True
-            )
-        )
+           )
+       )
         
         (end (if ("IsLine4WithEndSameColour") (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -78,7 +78,7 @@
         (credit "Eric Piette")
         (date "1995")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Black))

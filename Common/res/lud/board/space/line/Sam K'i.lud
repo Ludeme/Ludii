@@ -2,7 +2,7 @@
     (move
         Remove
         (sites Occupied by:Next container:"Board") 
-    )
+   )
 )
 
 (define "PlaceOnTop" 
@@ -12,9 +12,9 @@
             (forEach 
                 (sites Occupied by:Next container:"Board")
                 if:(= (size Stack at:(site)) 1)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "IfLine3MoveAgain" 
@@ -22,8 +22,8 @@
         (if 
             (is Line 3 if:(= 1 (size Stack at:(to)))) 
             (moveAgain)
-        )
-    )
+       )
+   )
 )
 
 (define "RemoveDeadPieces" 
@@ -31,9 +31,9 @@
         (forEach 
             (sites Occupied by:#1 container:"Board")
             if:(= (size Stack at:(site)) 2)
-        )
+       )
         (and {(remove (site)) (remove (site)) (add (piece (id "Marker" #1)) (to (site)))})
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -49,8 +49,8 @@
                 Step 
                 (to if:(is Empty (to))) 
                 "IfLine3MoveAgain" 
-            )
-        ) 
+           )
+       ) 
     })  
     (rules 
         (start {
@@ -68,17 +68,17 @@
                             (from (handSite Mover)) 
                             (to (sites Empty)) 
                             "IfLine3MoveAgain" 
-                        )  
-                    )
+                       )  
+                   )
                     (then 
                         (if (and (not (is Next Mover)) (and ("HandEmpty" P1) ("HandEmpty" P2)))
                             (and ("RemoveDeadPieces" P1) ("RemoveDeadPieces" P2))
-                        )
-                    )
-                )
-            ) 
+                       )
+                   )
+               )
+           ) 
             (nextPhase (and (not (is Next Mover)) (and ("HandEmpty" P1) ("HandEmpty" P2))) "Movement")
-        )
+       )
         
         (phase "Movement" 
             (play 
@@ -89,14 +89,14 @@
                         (move 
                             (from (sites Occupied by:Mover))
                             (to (sites Empty))
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (end ("BlockWin"))
-        )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -114,7 +114,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in China, around 1895.")
         }
-    )
+   )
     
     (graphics {
         (stackType 1 Count)

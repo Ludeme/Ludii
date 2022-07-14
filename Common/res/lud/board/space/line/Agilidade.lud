@@ -6,7 +6,7 @@
                         (wedge 2 2)
                         (shift 0 1 (rotate 180 (wedge 2 2)))
                 }))
-            ) 
+           ) 
         use:Vertex) 
         (piece "discFlat" Each)
         (hand Each)
@@ -20,10 +20,10 @@
             (move 
                 (from (handSite Mover)) 
                 (to (sites Board)) 
-            )
-        )
+           )
+       )
         (end (if (is Line 3 byLevel:True) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -41,7 +41,7 @@
         (credit "Fabio Barbero")
         (date "2006")
         }
-    )
+   )
     
     (graphics {
         (stackType 1 Count)

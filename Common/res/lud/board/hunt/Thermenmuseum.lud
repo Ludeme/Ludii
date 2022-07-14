@@ -14,9 +14,9 @@
                 (scale 2 1 (shift 0 2.5 (rectangle 1 3)))
             })
             edges:{{3 7} {5 4} {9 1} {3 1} {1 4} {5 9} {9 7}}
-        )
+       )
         use:Vertex
-    )	
+   )	
 )
 
 //Board 2
@@ -33,9 +33,9 @@
                 (scale 2 1 (shift 0 3 (rectangle 1 3)))
             })
             edges:{{3 7} {5 4} {9 1} {3 1} {1 4} {5 9} {9 7} {9 11}}
-        )
+       )
         use:Vertex
-    )	
+   )	
 )
 
 //Board 3
@@ -53,9 +53,9 @@
                 (scale 2 1 (shift 0 -0.5 (rectangle 1 3)))
             })
             edges:{{3 7} {5 4} {9 1} {3 1} {1 4} {5 9} {9 7} {9 11} {1 14}}
-        )
+       )
         use:Vertex
-    )	
+   )	
 )
 
 //Board 4
@@ -75,9 +75,9 @@
                 (shift 3 2.5 (rectangle 1 2))
             })
             edges:{{9 5} {5 1} {9 11} {12 2} {13 7} {6 3} {6 7}}
-        )
+       )
         use:Vertex
-    )	
+   )	
 )
 
 //Board 5
@@ -98,9 +98,9 @@
                 (scale 2 1 (shift 0 3 (rectangle 1 3)))
             })
             edges:{{9 5} {5 1} {9 11} {12 2} {13 7} {6 3} {6 7} {15 12}}
-        )
+       )
         use:Vertex
-    )
+   )
 )
 
 //Board 6
@@ -122,9 +122,9 @@
                 (scale 2 1 (shift 0 -0.5 (rectangle 1 3)))
             })
             edges:{{9 5} {5 1} {9 11} {12 2} {13 7} {6 3} {6 7} {15 12} {18 2}}
-        )
+       )
         use:Vertex
-    )	
+   )	
 )
 
 //------------------------------------------------------------------------------
@@ -159,14 +159,14 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty))
-                ) 
-            )
+               ) 
+           )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play (forEach Piece))
-        )
+       )
         }
         
         (end {
@@ -175,11 +175,11 @@
                 (or
                     (>= (count Moves) (- (value MoveLimit) 10)) 
                     (>= (count Turns) (- (value TurnLimit) 5)) 
-                )
+               )
                 (result P2 Win)
-            )
+           )
         }) 
-    )		
+   )		
 )
 
 (define "HaretavlRulesStartingPosition"
@@ -194,11 +194,11 @@
                 (or
                     (>= (count Moves) (- (value MoveLimit) 10)) 
                     (>= (count Turns) (- (value TurnLimit) 5)) 
-                )
+               )
                 (result P2 Win)
-            )
+           )
         }) 
-    )		
+   )		
 )
 
 (define "HaretavlRulesStartingPositionSwitchPlayers"
@@ -213,11 +213,11 @@
                 (or
                     (>= (count Moves) (- (value MoveLimit) 10)) 
                     (>= (count Turns) (- (value TurnLimit) 5)) 
-                )
+               )
                 (result P1 Win)
-            )
+           )
         }) 
-    )		
+   )		
 )
 
 //Haretavl equipment and rules in switch players 
@@ -241,14 +241,14 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty))
-                ) 
-            )
+               ) 
+           )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play (forEach Piece))
-        )
+       )
         }
         
         (end {
@@ -257,11 +257,11 @@
                 (or
                     (>= (count Moves) (- (value MoveLimit) 10)) 
                     (>= (count Turns) (- (value TurnLimit) 5)) 
-                )
+               )
                 (result P1 Win)
-            )
+           )
         }) 
-    )		
+   )		
 )
 
 //Haretavl equipment and rules with only 2 dogs.
@@ -285,14 +285,14 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty))
-                ) 
-            )
+               ) 
+           )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play (forEach Piece))
-        )
+       )
         }
         
         (end {
@@ -301,11 +301,11 @@
                 (or
                     (>= (count Moves) (- (value MoveLimit) 10)) 
                     (>= (count Turns) (- (value TurnLimit) 5)) 
-                )
+               )
                 (result P2 Win)
-            )
+           )
         }) 
-    )		
+   )		
 )
 
 //Haretavl equipment and rules in switch players with only 2 dogs.
@@ -329,14 +329,14 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty))
-                ) 
-            )
+               ) 
+           )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play (forEach Piece))
-        )
+       )
         }
         
         (end {
@@ -345,11 +345,11 @@
                 (or
                     (>= (count Moves) (- (value MoveLimit) 10)) 
                     (>= (count Turns) (- (value TurnLimit) 5)) 
-                )
+               )
                 (result P1 Win)
-            )
+           )
         }) 
-    )		
+   )		
 )
 
 //Haretavl equipment and rules with only 3 dogs 2 hares.
@@ -373,14 +373,14 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty))
-                ) 
-            )
+               ) 
+           )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play (forEach Piece))
-        )
+       )
         }
         
         (end {
@@ -389,11 +389,11 @@
                 (or
                     (>= (count Moves) (- (value MoveLimit) 10)) 
                     (>= (count Turns) (- (value TurnLimit) 5)) 
-                )
+               )
                 (result P2 Win)
-            )
+           )
         }) 
-    )		
+   )		
 )
 
 //Haretavl equipment and rules with only 4 dogs 2 hares.
@@ -417,14 +417,14 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty))
-                ) 
-            )
+               ) 
+           )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play (forEach Piece))
-        )
+       )
         }
         
         (end {
@@ -433,11 +433,11 @@
                 (or
                     (>= (count Moves) (- (value MoveLimit) 10)) 
                     (>= (count Turns) (- (value TurnLimit) 5)) 
-                )
+               )
                 (result P2 Win)
-            )
+           )
         }) 
-    )		
+   )		
 )
 
 //Haretavl equipment and rules with only 4 dogs 2 hares, starting position.
@@ -459,11 +459,11 @@
                 (or
                     (>= (count Moves) (- (value MoveLimit) 10)) 
                     (>= (count Turns) (- (value TurnLimit) 5)) 
-                )
+               )
                 (result P2 Win)
-            )
+           )
         }) 
-    )		
+   )		
 )
 
 (define "HaretavlRulesFourDogsTwoHaresStartingPositionSwitchPlayers"
@@ -478,11 +478,11 @@
                 (or
                     (>= (count Moves) (- (value MoveLimit) 10)) 
                     (>= (count Turns) (- (value TurnLimit) 5)) 
-                )
+               )
                 (result P1 Win)
-            )
+           )
         }) 
-    )		
+   )		
 )
 
 //Haretavl equipment and rules with only 4 dogs 2 hares, starting position.
@@ -509,18 +509,18 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty))
-                ) 
-            )
+               ) 
+           )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play (forEach Piece))
-        )
+       )
         }
         
         (end ("BlockWin"))
-    )		
+   )		
 )
 
 //Line game equipment and rules with 3 pieces each.
@@ -540,18 +540,18 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty))
-                ) 
-            )
+               ) 
+           )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play (forEach Piece))
-        )
+       )
         }
         
         (end  (if (is Line 3) (result Mover Win))) 
-    )		
+   )		
 )
 
 // Jeu Militaire
@@ -568,19 +568,19 @@
                 (scale 2 1 (shift 0 2.5 (rectangle 1 3)))
             })
             edges:{{3 7} {5 4} {9 1} {3 1} {1 4} {5 9} {9 7}}
-        )
+       )
         use:Vertex
-    )
+   )
     (piece "Marker" P1 "StepToEmpty")
     (piece "Marker" P2 
         (move Step
             (to if:(and 
                     (is Empty (to))
                     (<= (count Steps (to) 0) (count Steps (from) 0))
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
     (regions "Home" P2 (sites {6 9 5}))
     (regions "Home" P1 (sites {0}))
 )
@@ -601,9 +601,9 @@
                 (shift 3 2.5 (rectangle 1 2))
             })
             edges:{{9 5} {5 1} {9 11} {12 2} {13 7} {6 3} {6 7}}
-        )
+       )
         use:Vertex
-    )	
+   )	
     (piece "Marker" P1 "StepToEmpty")
     (piece "Marker" P2 "StepToEmpty")
     (regions "Home" P2 (sites {8 13 7}))
@@ -623,7 +623,7 @@
             (if (no Moves P1) (result P2 Win))
             (if (is In (where "Marker" P1) (sites P2)) (result P1 Win))
         }) 
-    )		
+   )		
 )
 
 // Jeu Militaire Switched Players
@@ -640,19 +640,19 @@
                 (scale 2 1 (shift 0 2.5 (rectangle 1 3)))
             })
             edges:{{3 7} {5 4} {9 1} {3 1} {1 4} {5 9} {9 7}}
-        )
+       )
         use:Vertex
-    )
+   )
     (piece "Marker" P2 "StepToEmpty")
     (piece "Marker" P1 
         (move Step
             (to if:(and 
                     (is Empty (to))
                     (<= (count Steps (to) 0) (count Steps (from) 0))
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
     (regions "Home" P1 (sites {6 9 5}))
     (regions "Home" P2 (sites {0}))
 )
@@ -673,19 +673,19 @@
                 (shift 3 2.5 (rectangle 1 2))
             })
             edges:{{9 5} {5 1} {9 11} {12 2} {13 7} {6 3} {6 7}}
-        )
+       )
         use:Vertex
-    )	
+   )	
     (piece "Marker" P2 "StepToEmpty")
     (piece "Marker" P1 
         (move Step
             (to if:(and 
                     (is Empty (to))
                     (<= (count Steps (to) 0) (count Steps (from) 0))
-                )
-            )
-        )		
-    )
+               )
+           )
+       )		
+   )
     (regions "Home" P1 (sites {8 13 7}))
     (regions "Home" P2 (sites {0}))
 )
@@ -703,7 +703,7 @@
             (if (no Moves P2) (result P1 Win))
             (if (is In (where "Marker" P2) (sites P1)) (result P2 Win))
         }) 
-    )		
+   )		
 )
 
 //Janes Soppi game equipment and rules.
@@ -725,14 +725,14 @@
         (phase "Placement"
             (play (move (from (handSite Mover)) (to (sites Empty))))
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play (forEach Piece))
-        )
+       )
         }
         (end ("BlockWin"))
-    )		
+   )		
 )
 
 //------------------------------------------------------------------------------
@@ -757,7 +757,7 @@
         ("HaretavlRules")
         >  
         "The board has no extension and joined diagonals. Haretavl rules."
-    )*
+   )*
     
     (item "Haretavl - Top Extension Joined Diagonal" 
         <
@@ -769,7 +769,7 @@
         ("HaretavlRules")
         >  
         "The board has an extension at the top and joined diagonals. Haretavl rules."
-    )
+   )
     
     (item "Haretavl - Both Extension Joined Diagonal" 
         <
@@ -781,7 +781,7 @@
         ("HaretavlRules")
         >  
         "The board has two extensions and joined diagonals. Haretavl rules."
-    )
+   )
     
     (item "Haretavl - No Extension No Joined Diagonal" 
         <
@@ -793,7 +793,7 @@
         ("HaretavlRules")
         >  
         "The board has no extension and no joined diagonals. Haretavl rules."
-    )
+   )
     
     (item "Haretavl - Top Extension No Joined Diagonal" 
         <
@@ -805,7 +805,7 @@
         ("HaretavlRules")
         >  
         "The board has an extension at the top and no joined diagonals. Haretavl rules."
-    )
+   )
     
     (item "Haretavl - Both Extension No Joined Diagonal" 
         <
@@ -817,7 +817,7 @@
         ("HaretavlRules")
         >  
         "The board has two extensions and no joined diagonals. Haretavl rules."
-    )
+   )
     
     //--------------------------Haretavl Rulesets Switch Players ---------------------------------------------------
     
@@ -831,7 +831,7 @@
         ("HaretavlRulesSwitchPlayers")
         >  
         "The board has no extension and joined diagonals. Haretavl rules in switching the players."
-    )
+   )
     
     (item "Haretavl Switch Players - Top Extension Joined Diagonal" 
         <
@@ -843,7 +843,7 @@
         ("HaretavlRulesSwitchPlayers")
         >  
         "The board has an extension at the top and joined diagonals. Haretavl rules in switching the players."
-    )
+   )
     
     (item "Haretavl Switch Players - Both Extension Joined Diagonal" 
         <
@@ -855,7 +855,7 @@
         ("HaretavlRulesSwitchPlayers")
         >  
         "The board has two extensions and joined diagonals. Haretavl rules in switching the players."
-    )
+   )
     
     (item "Haretavl Switch Players - No Extension No Joined Diagonal" 
         <
@@ -867,7 +867,7 @@
         ("HaretavlRulesSwitchPlayers")
         >  
         "The board has no extension and no joined diagonals. Haretavl rules in switching the players."
-    )
+   )
     
     (item "Haretavl Switch Players - Top Extension No Joined Diagonal" 
         <
@@ -879,7 +879,7 @@
         ("HaretavlRulesSwitchPlayers")
         >  
         "The board has an extension at the top and no joined diagonals. Haretavl rules in switching the players."
-    )
+   )
     
     (item "Haretavl Switch Players - Both Extension No Joined Diagonal" 
         <
@@ -891,7 +891,7 @@
         ("HaretavlRulesSwitchPlayers")
         >  
         "The board has two extensions and no joined diagonals. Haretavl rules in switching the players."
-    )
+   )
     
     //--------------------------Haretavl Rulesets Two Dogs ---------------------------------------------------
     
@@ -905,7 +905,7 @@
         ("HaretavlRulesTwoDogs")
         >  
         "The board has no extension and joined diagonals. Haretavl rules with two dogs."
-    )
+   )
     
     (item "Haretavl Two Dogs - Top Extension Joined Diagonal" 
         <
@@ -917,7 +917,7 @@
         ("HaretavlRulesTwoDogs")
         >  
         "The board has an extension at the top and joined diagonals. Haretavl rules with two dogs."
-    )
+   )
     
     (item "Haretavl Two Dogs - Both Extension Joined Diagonal" 
         <
@@ -929,7 +929,7 @@
         ("HaretavlRulesTwoDogs")
         >  
         "The board has two extensions and joined diagonals. Haretavl rules with two dogs."
-    )
+   )
     
     (item "Haretavl Two Dogs - No Extension No Joined Diagonal" 
         <
@@ -941,7 +941,7 @@
         ("HaretavlRulesTwoDogs")
         >  
         "The board has no extension and no joined diagonals. Haretavl rules with two dogs."
-    )
+   )
     
     (item "Haretavl Two Dogs - Top Extension No Joined Diagonal" 
         <
@@ -953,7 +953,7 @@
         ("HaretavlRulesTwoDogs")
         >  
         "The board has an extension at the top and no joined diagonals. Haretavl rules with two dogs."
-    )
+   )
     
     (item "Haretavl Two Dogs - Both Extension No Joined Diagonal" 
         <
@@ -965,7 +965,7 @@
         ("HaretavlRulesTwoDogs")
         >  
         "The board has two extensions and no joined diagonals. Haretavl rules with two dogs."
-    )
+   )
     
     //--------------------------Haretavl Rulesets Switch Players Two Dogs ---------------------------------------------------
     
@@ -979,7 +979,7 @@
         ("HaretavlRulesSwitchPlayersTwoDogs")
         >  
         "The board has no extension and joined diagonals. Haretavl rules in switching the players with two dogs."
-    )
+   )
     
     (item "Haretavl Switch Players Two Dogs - Top Extension Joined Diagonal" 
         <
@@ -991,7 +991,7 @@
         ("HaretavlRulesSwitchPlayersTwoDogs")
         >  
         "The board has an extension at the top and joined diagonals. Haretavl rules in switching the players with two dogs."
-    )
+   )
     
     (item "Haretavl Switch Players Two Dogs - Both Extension Joined Diagonal" 
         <
@@ -1003,7 +1003,7 @@
         ("HaretavlRulesSwitchPlayersTwoDogs")
         >  
         "The board has two extensions and joined diagonals. Haretavl rules in switching the players with two dogs."
-    )
+   )
     
     (item "Haretavl Switch Players Two Dogs - No Extension No Joined Diagonal" 
         <
@@ -1015,7 +1015,7 @@
         ("HaretavlRulesSwitchPlayersTwoDogs")
         >  
         "The board has no extension and no joined diagonals. Haretavl rules in switching the players with two dogs."
-    )
+   )
     
     (item "Haretavl Switch Players Two Dogs - Top Extension No Joined Diagonal" 
         <
@@ -1027,7 +1027,7 @@
         ("HaretavlRulesSwitchPlayersTwoDogs")
         >  
         "The board has an extension at the top and no joined diagonals. Haretavl rules in switching the players with two dogs."
-    )
+   )
     
     (item "Haretavl Switch Players Two Dogs - Both Extension No Joined Diagonal" 
         <
@@ -1039,7 +1039,7 @@
         ("HaretavlRulesSwitchPlayersTwoDogs")
         >  
         "The board has two extensions and no joined diagonals. Haretavl rules in switching the players with two dogs."
-    )
+   )
     
     //--------------------------Haretavl Rulesets Three Dogs Two Hares ---------------------------------------------------
     
@@ -1053,7 +1053,7 @@
         ("HaretavlRulesThreeDogsTwoHares")
         >  
         "The board has no extension and joined diagonals. Haretavl rules with three dogs and two hares."
-    )
+   )
     
     (item "Haretavl Three Dogs Two Hares - Top Extension Joined Diagonal" 
         <
@@ -1065,7 +1065,7 @@
         ("HaretavlRulesThreeDogsTwoHares")
         >  
         "The board has an extension at the top and joined diagonals. Haretavl rules with three dogs and two hares."
-    )
+   )
     
     (item "Haretavl Three Dogs Two Hares - Both Extension Joined Diagonal" 
         <
@@ -1077,7 +1077,7 @@
         ("HaretavlRulesThreeDogsTwoHares")
         >  
         "The board has two extensions and joined diagonals. Haretavl rules with three dogs and two hares."
-    )
+   )
     
     (item "Haretavl Three Dogs Two Hares - No Extension No Joined Diagonal" 
         <
@@ -1089,7 +1089,7 @@
         ("HaretavlRulesThreeDogsTwoHares")
         >  
         "The board has no extension and no joined diagonals. Haretavl rules with three dogs and two hares."
-    )
+   )
     
     (item "Haretavl Three Dogs Two Hares - Top Extension No Joined Diagonal" 
         <
@@ -1101,7 +1101,7 @@
         ("HaretavlRulesThreeDogsTwoHares")
         >  
         "The board has an extension at the top and no joined diagonals. Haretavl rules with three dogs and two hares."
-    )
+   )
     
     (item "Haretavl Three Dogs Two Hares - Both Extension No Joined Diagonal" 
         <
@@ -1113,7 +1113,7 @@
         ("HaretavlRulesThreeDogsTwoHares")
         >  
         "The board has two extensions and no joined diagonals. Haretavl rules with three dogs and two hares."
-    )
+   )
     
     //--------------------------Haretavl Rulesets Four Dogs Two Hares ---------------------------------------------------
     
@@ -1127,7 +1127,7 @@
         ("HaretavlRulesFourDogsTwoHares")
         >  
         "The board has no extension and joined diagonals. Haretavl rules with four dogs and two hares."
-    )
+   )
     
     (item "Haretavl Four Dogs Two Hares - Top Extension Joined Diagonal" 
         <
@@ -1139,7 +1139,7 @@
         ("HaretavlRulesFourDogsTwoHares")
         >  
         "The board has an extension at the top and joined diagonals. Haretavl rules with four dogs and two hares."
-    )
+   )
     
     (item "Haretavl Four Dogs Two Hares - Both Extension Joined Diagonal" 
         <
@@ -1151,7 +1151,7 @@
         ("HaretavlRulesFourDogsTwoHares")
         >  
         "The board has two extensions and joined diagonals. Haretavl rules with four dogs and two hares."
-    )
+   )
     
     (item "Haretavl Four Dogs Two Hares - No Extension No Joined Diagonal" 
         <
@@ -1163,7 +1163,7 @@
         ("HaretavlRulesFourDogsTwoHares")
         >  
         "The board has no extension and no joined diagonals. Haretavl rules with four dogs and two hares."
-    )
+   )
     
     (item "Haretavl Four Dogs Two Hares - Top Extension No Joined Diagonal" 
         <
@@ -1175,7 +1175,7 @@
         ("HaretavlRulesFourDogsTwoHares")
         >  
         "The board has an extension at the top and no joined diagonals. Haretavl rules with four dogs and two hares."
-    )
+   )
     
     (item "Haretavl Four Dogs Two Hares - Both Extension No Joined Diagonal" 
         <
@@ -1187,7 +1187,7 @@
         ("HaretavlRulesFourDogsTwoHares")
         >  
         "The board has two extensions and no joined diagonals.  Haretavl rules with four dogs and two hares."
-    )
+   )
     
     //-------------------------- Blocking Game with 4 pieces each ---------------------------------------------------
     
@@ -1201,7 +1201,7 @@
         ("BlockingGameRulesFourPieces")
         >  
         "The board has no extension and joined diagonals. Blocking game with 4 pieces each."
-    )
+   )
     
     (item "Blocking Game Four pieces - Top Extension Joined Diagonal" 
         <
@@ -1213,7 +1213,7 @@
         ("BlockingGameRulesFourPieces")
         >  
         "The board has an extension at the top and joined diagonals. Blocking game with 4 pieces each."
-    )
+   )
     
     (item "Blocking Game Four pieces - Both Extension Joined Diagonal" 
         <
@@ -1225,7 +1225,7 @@
         ("BlockingGameRulesFourPieces")
         >  
         "The board has two extensions and joined diagonals. Blocking game with 4 pieces each."
-    )
+   )
     
     (item "Blocking Game Four pieces - No Extension No Joined Diagonal" 
         <
@@ -1237,7 +1237,7 @@
         ("BlockingGameRulesFourPieces")
         >  
         "The board has no extension and no joined diagonals. Blocking game with 4 pieces each."
-    )
+   )
     
     (item "Blocking Game Four pieces - Top Extension No Joined Diagonal" 
         <
@@ -1249,7 +1249,7 @@
         ("BlockingGameRulesFourPieces")
         >  
         "The board has an extension at the top and no joined diagonals. Blocking game with 4 pieces each."
-    )
+   )
     
     (item "Blocking Game Four pieces - Both Extension No Joined Diagonal" 
         <
@@ -1261,7 +1261,7 @@
         ("BlockingGameRulesFourPieces")
         >  
         "The board has two extensions and no joined diagonals. Blocking game with 4 pieces each."
-    )
+   )
     
     //-------------------------- Line Game with 4 pieces each ---------------------------------------------------
     
@@ -1275,7 +1275,7 @@
         ("LineGameRulesThreePieces")
         >  
         "The board has no extension and joined diagonals. Line game with 3 pieces each."
-    )
+   )
     
     (item "Line Game Three pieces - Top Extension Joined Diagonal" 
         <
@@ -1287,7 +1287,7 @@
         ("LineGameRulesThreePieces")
         >  
         "The board has an extension at the top and joined diagonals. Line game with 3 pieces each."
-    )
+   )
     
     (item "Line Game Three pieces - Both Extension Joined Diagonal" 
         <
@@ -1299,7 +1299,7 @@
         ("LineGameRulesThreePieces")
         >  
         "The board has two extensions and joined diagonals. Line game with 3 pieces each."
-    )
+   )
     
     (item "Line Game Three pieces - No Extension No Joined Diagonal" 
         <
@@ -1311,7 +1311,7 @@
         ("LineGameRulesThreePieces")
         >  
         "The board has no extension and no joined diagonals. Line game with 3 pieces each."
-    )
+   )
     
     (item "Line Game Three pieces - Top Extension No Joined Diagonal" 
         <
@@ -1323,7 +1323,7 @@
         ("LineGameRulesThreePieces")
         >  
         "The board has an extension at the top and no joined diagonals. Line game with 3 pieces each."
-    )
+   )
     
     (item "Line Game Three pieces - Both Extension No Joined Diagonal" 
         <
@@ -1335,7 +1335,7 @@
         ("LineGameRulesThreePieces")
         >  
         "The board has two extensions and no joined diagonals. Line game with 3 pieces each."
-    )
+   )
     
     //-------------------------- Jeu Militaire ---------------------------------------------------
     
@@ -1348,7 +1348,7 @@
         ("JeuMilitaireRules")
         >  
         "The board has no extension and joined diagonals. Jeu Miliaire rules."
-    )
+   )
     
     (item "Jeu Militaire - No Extension No Joined Diagonal" 
         <
@@ -1359,7 +1359,7 @@
         ("JeuMilitaireRules")
         >  
         "The board has no extension and joined diagonals. Jeu Miliaire rules."
-    )
+   )
     
     //-------------------------- Jeu Militaire Switch Players ---------------------------------------------------
     
@@ -1372,7 +1372,7 @@
         ("JeuMilitaireRulesSwitchedPlayers")
         >  
         "The board has no extension and joined diagonals. Jeu Miliaire rules Switch Players."
-    )
+   )
     
     (item "Jeu Militaire Switch Players - No Extension No Joined Diagonal" 
         <
@@ -1383,7 +1383,7 @@
         ("JeuMilitaireRulesSwitchedPlayers")
         >  
         "The board has no extension and joined diagonals. Jeu Miliaire rules Switch Players."
-    )
+   )
     
     //-------------------------- Janes Soppi ---------------------------------------------------
     
@@ -1397,7 +1397,7 @@
         ("JanesSoppiGameRules")
         >  
         "The board has no extension and joined diagonals. Janes Soppi rules."
-    )
+   )
     
     (item "Janes Soppi - Top Extension Joined Diagonal" 
         <
@@ -1409,7 +1409,7 @@
         ("JanesSoppiGameRules")
         >  
         "The board has an extension at the top and joined diagonals. Janes Soppi rules."
-    )
+   )
     
     (item "Janes Soppi - Both Extension Joined Diagonal" 
         <
@@ -1421,7 +1421,7 @@
         ("JanesSoppiGameRules")
         >  
         "The board has two extensions and joined diagonals. Janes Soppi rules."
-    )
+   )
     
     (item "Janes Soppi - No Extension No Joined Diagonal" 
         <
@@ -1433,7 +1433,7 @@
         ("JanesSoppiGameRules")
         >  
         "The board has no extension and no joined diagonals. Janes Soppi rules."
-    )
+   )
     
     (item "Janes Soppi - Top Extension No Joined Diagonal" 
         <
@@ -1445,7 +1445,7 @@
         ("JanesSoppiGameRules")
         >  
         "The board has an extension at the top and no joined diagonals. Janes Soppi rules."
-    )
+   )
     
     (item "Janes Soppi - Both Extension No Joined Diagonal" 
         <
@@ -1457,7 +1457,7 @@
         ("JanesSoppiGameRules")
         >  
         "The board has two extensions and no joined diagonals. Janes Soppi rules."
-    )
+   )
     
     //--------------------------Haretavl Rulesets Four Dogs Two Hares - Starting Position 1 ---------------------------------------------------
     
@@ -1473,10 +1473,10 @@
                 (place "Dog1" (sites {"A1" "A2" "A3" "A4"}))
                 (place "Hare2" (sites {"C2" "C3"}))
             })
-        )
+       )
         >  
         "The board has no extension and joined diagonals. Haretavl rules with four dogs and two hares starting on the board."
-    )
+   )
     
     (item "Haretavl Four Dogs Two Hares - Top Extension Joined Diagonal - Starting Position 1" 
         <
@@ -1490,10 +1490,10 @@
                 (place "Dog1" (sites {"A1" "A2" "A3" "A4"}))
                 (place "Hare2" (sites {"C2" "C3"}))
             })
-        )
+       )
         >  
         "The board has an extension at the top and joined diagonals. Haretavl rules with four dogs and two hares starting on the board."
-    )
+   )
     
     (item "Haretavl Four Dogs Two Hares - Both Extension Joined Diagonal - Starting Position 1" 
         <
@@ -1507,10 +1507,10 @@
                 (place "Dog1" (sites {"A2" "A3" "A4" "A5"}))
                 (place "Hare2" (sites {"C3" "C4"}))
             })
-        )
+       )
         >  
         "The board has two extensions and joined diagonals. Haretavl rules with four dogs and two hares starting on the board."
-    )
+   )
     
     (item "Haretavl Four Dogs Two Hares - No Extension No Joined Diagonal - Starting Position 1" 
         <
@@ -1524,10 +1524,10 @@
                 (place "Dog1" (sites {"A1" "A2" "A3" "A4"}))
                 (place "Hare2" (sites {"E2" "E3"}))
             })
-        )
+       )
         >  
         "The board has no extension and no joined diagonals. Haretavl rules with four dogs and two hares starting on the board."
-    )
+   )
     
     (item "Haretavl Four Dogs Two Hares - Top Extension No Joined Diagonal - Starting Position 1" 
         <
@@ -1541,10 +1541,10 @@
                 (place "Dog1" (sites {"A1" "A2" "A3" "A4"}))
                 (place "Hare2" (sites {"E2" "E3"}))
             })
-        )
+       )
         >  
         "The board has an extension at the top and no joined diagonals. Haretavl rules with four dogs and two hares starting on the board."
-    )
+   )
     
     (item "Haretavl Four Dogs Two Hares - Both Extension No Joined Diagonal - Starting Position 1" 
         <
@@ -1558,10 +1558,10 @@
                 (place "Dog1" (sites {"A2" "A3" "A4" "A5"}))
                 (place "Hare2" (sites {"E3" "E4"}))
             })
-        )
+       )
         >  
         "The board has two extensions and no joined diagonals.  Haretavl rules with four dogs and two hares starting on the board."
-    )
+   )
     
     //--------------------------Haretavl Rulesets Four Dogs Two Hares - Starting Position 2 ---------------------------------------------------
     
@@ -1577,10 +1577,10 @@
                 (place "Dog1" (sites {"A1" "A2" "A3" "A4"}))
                 (place "Hare2" (sites {"C1" "C4"}))
             })
-        )
+       )
         >  
         "The board has no extension and joined diagonals. Haretavl rules with four dogs and two hares starting on the board."
-    )
+   )
     
     (item "Haretavl Four Dogs Two Hares - Top Extension Joined Diagonal - Starting Position 2" 
         <
@@ -1594,10 +1594,10 @@
                 (place "Dog1" (sites {"A1" "A2" "A3" "A4"}))
                 (place "Hare2" (sites {"C1" "C4"}))
             })
-        )
+       )
         >  
         "The board has an extension at the top and joined diagonals. Haretavl rules with four dogs and two hares starting on the board."
-    )
+   )
     
     (item "Haretavl Four Dogs Two Hares - Both Extension Joined Diagonal - Starting Position 2" 
         <
@@ -1611,10 +1611,10 @@
                 (place "Dog1" (sites {"A2" "A3" "A4" "A5"}))
                 (place "Hare2" (sites {"C2" "C5"}))
             })
-        )
+       )
         >  
         "The board has two extensions and joined diagonals. Haretavl rules with four dogs and two hares starting on the board."
-    )
+   )
     
     (item "Haretavl Four Dogs Two Hares - No Extension No Joined Diagonal - Starting Position 2" 
         <
@@ -1628,10 +1628,10 @@
                 (place "Dog1" (sites {"A1" "A2" "A3" "A4"}))
                 (place "Hare2" (sites {"E1" "E4"}))
             })
-        )
+       )
         >  
         "The board has no extension and no joined diagonals. Haretavl rules with four dogs and two hares starting on the board."
-    )
+   )
     
     (item "Haretavl Four Dogs Two Hares - Top Extension No Joined Diagonal - Starting Position 2" 
         <
@@ -1645,10 +1645,10 @@
                 (place "Dog1" (sites {"A1" "A2" "A3" "A4"}))
                 (place "Hare2" (sites {"E1" "E4"}))
             })
-        )
+       )
         >  
         "The board has an extension at the top and no joined diagonals. Haretavl rules with four dogs and two hares starting on the board."
-    )
+   )
     
     (item "Haretavl Four Dogs Two Hares - Both Extension No Joined Diagonal - Starting Position 2" 
         <
@@ -1662,10 +1662,10 @@
                 (place "Dog1" (sites {"A2" "A3" "A4" "A5"}))
                 (place "Hare2" (sites {"E2" "E5"}))
             })
-        )
+       )
         >  
         "The board has two extensions and no joined diagonals.  Haretavl rules with four dogs and two hares starting on the board."
-    )
+   )
     
     //--------------------------Haretavl Rulesets Four Dogs Two Hares - Starting Position 1 - Switch Players ---------------------------------------------------
     
@@ -1681,10 +1681,10 @@
                 (place "Hare1" (sites {"A2" "A3"}))
                 (place "Dog2" (sites {"C1" "C2" "C3" "C4"}))
             })
-        )
+       )
         >  
         "The board has no extension and joined diagonals. Haretavl rules with four dogs and two hares starting on the board."
-    )
+   )
     
     (item "Haretavl Four Dogs Two Hares - Top Extension Joined Diagonal - Starting Position 1 - Switch Players" 
         <
@@ -1698,10 +1698,10 @@
                 (place "Hare1" (sites {"A2" "A3"}))
                 (place "Dog2" (sites {"C1" "C2" "C3" "C4"}))
             })
-        )
+       )
         >  
         "The board has an extension at the top and joined diagonals. Haretavl rules with four dogs and two hares starting on the board."
-    )
+   )
     
     (item "Haretavl Four Dogs Two Hares - Both Extension Joined Diagonal - Starting Position 1 - Switch Players" 
         <
@@ -1715,10 +1715,10 @@
                 (place "Hare1" (sites {"A3" "A4"}))
                 (place "Dog2" (sites {"C2" "C3" "C4" "C5"}))
             })
-        )
+       )
         >  
         "The board has two extensions and joined diagonals. Haretavl rules with four dogs and two hares starting on the board."
-    )
+   )
     
     (item "Haretavl Four Dogs Two Hares - No Extension No Joined Diagonal - Starting Position 1 - Switch Players" 
         <
@@ -1732,10 +1732,10 @@
                 (place "Hare1" (sites {"A2" "A3"}))
                 (place "Dog2" (sites {"E1" "E2" "E3" "E4"}))
             })
-        )
+       )
         >  
         "The board has no extension and no joined diagonals. Haretavl rules with four dogs and two hares starting on the board."
-    )
+   )
     
     (item "Haretavl Four Dogs Two Hares - Top Extension No Joined Diagonal - Starting Position 1 - Switch Players" 
         <
@@ -1749,10 +1749,10 @@
                 (place "Hare1" (sites {"A2" "A3"}))
                 (place "Dog2" (sites {"E1" "E2" "E3" "E4"}))
             })
-        )
+       )
         >  
         "The board has an extension at the top and no joined diagonals. Haretavl rules with four dogs and two hares starting on the board."
-    )
+   )
     
     (item "Haretavl Four Dogs Two Hares - Both Extension No Joined Diagonal - Starting Position 1 - Switch Players" 
         <
@@ -1766,10 +1766,10 @@
                 (place "Hare1" (sites {"A3" "A4"}))
                 (place "Dog2" (sites {"E2" "E3" "E4" "E5"}))
             })
-        )
+       )
         >  
         "The board has two extensions and no joined diagonals.  Haretavl rules with four dogs and two hares starting on the board."
-    )
+   )
     
     //--------------------------Haretavl Rulesets Four Dogs Two Hares - Starting Position 2 - Switch Players ---------------------------------------------------
     
@@ -1785,10 +1785,10 @@
                 (place "Hare1" (sites {"A1" "A4"}))
                 (place "Dog2" (sites {"C1" "C2" "C3" "C4"}))
             })
-        )
+       )
         >  
         "The board has no extension and joined diagonals. Haretavl rules with four dogs and two hares starting on the board."
-    )
+   )
     
     (item "Haretavl Four Dogs Two Hares - Top Extension Joined Diagonal - Starting Position 2 - Switch Players" 
         <
@@ -1802,10 +1802,10 @@
                 (place "Hare1" (sites {"A1" "A4"}))
                 (place "Dog2" (sites {"C1" "C2" "C3" "C4"}))
             })
-        )
+       )
         >  
         "The board has an extension at the top and joined diagonals. Haretavl rules with four dogs and two hares starting on the board."
-    )
+   )
     
     (item "Haretavl Four Dogs Two Hares - Both Extension Joined Diagonal - Starting Position 2 - Switch Players" 
         <
@@ -1819,10 +1819,10 @@
                 (place "Hare1" (sites {"A2" "A5"}))
                 (place "Dog2" (sites {"C2" "C3" "C4" "C5"}))
             })
-        )
+       )
         >  
         "The board has two extensions and joined diagonals. Haretavl rules with four dogs and two hares starting on the board."
-    )
+   )
     
     (item "Haretavl Four Dogs Two Hares - No Extension No Joined Diagonal - Starting Position 2 - Switch Players" 
         <
@@ -1836,10 +1836,10 @@
                 (place "Hare1" (sites {"A1" "A4"}))
                 (place "Dog2" (sites {"E1" "E2" "E3" "E4"}))
             })
-        )
+       )
         >  
         "The board has no extension and no joined diagonals. Haretavl rules with four dogs and two hares starting on the board."
-    )
+   )
     
     (item "Haretavl Four Dogs Two Hares - Top Extension No Joined Diagonal - Starting Position 2 - Switch Players" 
         <
@@ -1853,10 +1853,10 @@
                 (place "Hare1" (sites {"A1" "A4"}))
                 (place "Dog2" (sites {"E1" "E2" "E3" "E4"}))
             })
-        )
+       )
         >  
         "The board has an extension at the top and no joined diagonals. Haretavl rules with four dogs and two hares starting on the board."
-    )
+   )
     
     (item "Haretavl Four Dogs Two Hares - Both Extension No Joined Diagonal - Starting Position 2 - Switch Players" 
         <
@@ -1870,10 +1870,10 @@
                 (place "Hare1" (sites {"A2" "A5"}))
                 (place "Dog2" (sites {"E2" "E3" "E4" "E5"}))
             })
-        )
+       )
         >  
         "The board has two extensions and no joined diagonals.  Haretavl rules with four dogs and two hares starting on the board."
-    )
+   )
     
     //--------------------------Haretavl Rulesets with starting positions ---------------------------------------------------
     
@@ -1889,10 +1889,10 @@
                 (place "Dog1" (sites {"A4" "B4" "C4"}))
                 (place "Hare2" (sites {"B1"}))
             })	
-        )
+       )
         >  
         "The board has no extension and joined diagonals. Haretavl rules. The pieces start on the board."
-    )*
+   )*
     
     (item "Haretavl - Top Extension Joined Diagonal - Starting Position" 
         <
@@ -1906,10 +1906,10 @@
                 (place "Dog1" (sites {"A5" "B5" "C5"}))
                 (place "Hare2" (sites {"B1"}))
             })			
-        )
+       )
         >  
         "The board has an extension at the top and joined diagonals. Haretavl rules. The pieces start on the board."
-    )
+   )
     
     (item "Haretavl - Both Extension Joined Diagonal - Starting Position" 
         <
@@ -1923,10 +1923,10 @@
                 (place "Dog1" (sites {"A6" "B6" "C6"}))
                 (place "Hare2" (sites {"B1"}))
             })			
-        )
+       )
         >  
         "The board has two extensions and joined diagonals. Haretavl rules. The pieces start on the board."
-    )
+   )
     
     (item "Haretavl - No Extension No Joined Diagonal - Starting Position" 
         <
@@ -1940,10 +1940,10 @@
                 (place "Dog1" (sites {"A4" "C4" "E4"}))
                 (place "Hare2" (sites {"C1"}))
             })			
-        )
+       )
         >  
         "The board has no extension and no joined diagonals. Haretavl rules. The pieces start on the board."
-    )
+   )
     
     (item "Haretavl - Top Extension No Joined Diagonal - Starting Position" 
         <
@@ -1957,10 +1957,10 @@
                 (place "Dog1" (sites {"A5" "C5" "E5"}))
                 (place "Hare2" (sites {"C1"}))
             })			
-        )
+       )
         >  
         "The board has an extension at the top and no joined diagonals. Haretavl rules. The pieces start on the board."
-    )
+   )
     
     (item "Haretavl - Both Extension No Joined Diagonal - Starting Position" 
         <
@@ -1974,10 +1974,10 @@
                 (place "Dog1" (sites {"A6" "C6" "E6"}))
                 (place "Hare2" (sites {"C1"}))
             })			
-        )
+       )
         >  
         "The board has two extensions and no joined diagonals. Haretavl rules. The pieces start on the board."
-    )
+   )
     
     //--------------------------Haretavl Rulesets with starting positions and 3 dogs - 2 hares ---------------------------------------------------
     
@@ -1993,10 +1993,10 @@
                 (place "Dog1" (sites {"A4" "B4" "C4"}))
                 (place "Hare2" (sites {"A1" "C1"}))
             })			
-        )
+       )
         >  
         "The board has no extension and joined diagonals. Haretavl rules. The pieces start on the board. 3 dogs and 2 hares."
-    )
+   )
     
     (item "Haretavl Three Dogs Two Hares - No Extension No Joined Diagonal - Starting Position 1" 
         <
@@ -2010,10 +2010,10 @@
                 (place "Dog1" (sites {"A4" "C4" "E4"}))
                 (place "Hare2" (sites {"A1" "E1"}))
             })			
-        )
+       )
         >  
         "The board has no extension and no joined diagonals. Haretavl rules. The pieces start on the board. 3 dogs and 2 hares."
-    )
+   )
     
     (item "Haretavl Three Dogs Two Hares - No Extension No Joined Diagonal - Starting Position 2" 
         <
@@ -2027,10 +2027,10 @@
                 (place "Dog1" (sites {"A4" "C4" "E4"}))
                 (place "Hare2" (sites {"B1" "D1"}))
             })			
-        )
+       )
         >  
         "The board has no extension and no joined diagonals. Haretavl rules. The pieces start on the board. 3 dogs and 2 hares."
-    )
+   )
     
     (item "Haretavl Three Dogs Two Hares - Both Extensions Joined Diagonal - Starting Position" 
         <
@@ -2044,10 +2044,10 @@
                 (place "Dog1" (sites {"A6" "B6" "C6"}))
                 (place "Hare2" (sites {"A1" "C1"}))
             })			
-        )
+       )
         >  
         "The board has both extension and joined diagonals. Haretavl rules. The pieces start on the board. 3 dogs and 2 hares."
-    )
+   )
     
     (item "Haretavl Three Dogs Two Hares - Both Extensions No Joined Diagonal - Starting Position" 
         <
@@ -2061,10 +2061,10 @@
                 (place "Dog1" (sites {"A6" "C6" "E6"}))
                 (place "Hare2" (sites {"A1" "E1"}))
             })			
-        )
+       )
         >  
         "The board has both extension and no joined diagonals. Haretavl rules. The pieces start on the board. 3 dogs and 2 hares."
-    )
+   )
     
     (item "Haretavl Three Dogs Two Hares - Top Extension Joined Diagonal - Starting Position 1" 
         <
@@ -2078,10 +2078,10 @@
                 (place "Dog1" (sites {"A5" "B5" "C5"}))
                 (place "Hare2" (sites {"A1" "C1"}))
             })			
-        )
+       )
         >  
         "The board has top extension and joined diagonals. Haretavl rules. The pieces start on the board. 3 dogs and 2 hares."
-    )
+   )
     
     (item "Haretavl Three Dogs Two Hares - Top Extension No Joined Diagonal - Starting Position 1" 
         <
@@ -2095,10 +2095,10 @@
                 (place "Dog1" (sites {"A5" "C5" "E5"}))
                 (place "Hare2" (sites {"A1" "E1"}))
             })			
-        )
+       )
         >  
         "The board has top extension and no joined diagonals. Haretavl rules. The pieces start on the board. 3 dogs and 2 hares."
-    )
+   )
     
     (item "Haretavl Three Dogs Two Hares - Top Extension No Joined Diagonal - Starting Position 2" 
         <
@@ -2112,10 +2112,10 @@
                 (place "Dog1" (sites {"A5" "C5" "E5"}))
                 (place "Hare2" (sites {"B1" "D1"}))
             })			
-        )
+       )
         >  
         "The board has top extension and no joined diagonals. Haretavl rules. The pieces start on the board. 3 dogs and 2 hares."
-    )
+   )
     
     (item "Haretavl Three Dogs Two Hares - Top Extension No Joined Diagonal - Starting Position 3" 
         <
@@ -2129,10 +2129,10 @@
                 (place "Dog1" (sites {"A1" "C1" "E1"}))
                 (place "Hare2" (sites {"A5" "E5"}))
             })			
-        )
+       )
         >  
         "The board has top extension and no joined diagonals. Haretavl rules. The pieces start on the board. 3 dogs and 2 hares."
-    )
+   )
     
     (item "Haretavl Three Dogs Two Hares - Top Extension Joined Diagonal - Starting Position 2" 
         <
@@ -2146,10 +2146,10 @@
                 (place "Dog1" (sites {"A1" "B1" "C1"}))
                 (place "Hare2" (sites {"A5" "C5"}))
             })			
-        )
+       )
         >  
         "The board has top extension and joined diagonals. Haretavl rules. The pieces start on the board. 3 dogs and 2 hares."
-    )
+   )
     
     //--------------------------Haretavl Rulesets with starting positions and 2 dogs - 1 hare ---------------------------------------------------
     
@@ -2165,10 +2165,10 @@
                 (place "Dog1" (sites {"A4" "C4"}))
                 (place "Hare2" (sites {"B1"}))
             })			
-        )
+       )
         >  
         "The board has no extension and joined diagonals. Haretavl rules. The pieces start on the board. 2 dogs."
-    )
+   )
     
     (item "Haretavl Two Dogs - No Extension No Joined Diagonal - Starting Position 1" 
         <
@@ -2182,10 +2182,10 @@
                 (place "Dog1" (sites {"A4" "E4"}))
                 (place "Hare2" (sites {"C1"}))
             })			
-        )
+       )
         >  
         "The board has no extension and no joined diagonals. Haretavl rules. The pieces start on the board. 2 dogs."
-    )
+   )
     
     (item "Haretavl Two Dogs - No Extension No Joined Diagonal - Starting Position 2" 
         <
@@ -2199,10 +2199,10 @@
                 (place "Dog1" (sites {"B4" "D4"}))
                 (place "Hare2" (sites {"C1"}))
             })			
-        )
+       )
         >  
         "The board has no extension and no joined diagonals. Haretavl rules. The pieces start on the board. 2 dogs."
-    )
+   )
     
     (item "Haretavl Two Dogs - Both Extension Joined Diagonal - Starting Position" 
         <
@@ -2216,10 +2216,10 @@
                 (place "Dog1" (sites {"A6" "C6"}))
                 (place "Hare2" (sites {"B1"}))
             })			
-        )
+       )
         >  
         "The board has both extension and joined diagonals. Haretavl rules. The pieces start on the board. 2 dogs."
-    )
+   )
     
     (item "Haretavl Two Dogs - Both Extension No Joined Diagonal - Starting Position" 
         <
@@ -2233,10 +2233,10 @@
                 (place "Dog1" (sites {"A6" "E6"}))
                 (place "Hare2" (sites {"C1"}))
             })			
-        )
+       )
         >  
         "The board has both extension and no joined diagonals. Haretavl rules. The pieces start on the board. 2 dogs."
-    )
+   )
     
     (item "Haretavl Two Dogs - Top Extension Joined Diagonal - Starting Position 1" 
         <
@@ -2250,10 +2250,10 @@
                 (place "Dog1" (sites {"A5" "C5"}))
                 (place "Hare2" (sites {"B1"}))
             })			
-        )
+       )
         >  
         "The board has top extension and joined diagonals. Haretavl rules. The pieces start on the board. 2 dogs."
-    )
+   )
     
     (item "Haretavl Two Dogs - Top Extension Joined Diagonal - Starting Position 2" 
         <
@@ -2267,10 +2267,10 @@
                 (place "Dog1" (sites {"A1" "C1"}))
                 (place "Hare2" (sites {"B5"}))
             })			
-        )
+       )
         >  
         "The board has top extension and joined diagonals. Haretavl rules. The pieces start on the board. 2 dogs."
-    )
+   )
     
     (item "Haretavl Two Dogs - Top Extension No Joined Diagonal - Starting Position 1" 
         <
@@ -2284,10 +2284,10 @@
                 (place "Dog1" (sites {"A5" "E5"}))
                 (place "Hare2" (sites {"C1"}))
             })			
-        )
+       )
         >  
         "The board has top extension and no joined diagonals. Haretavl rules. The pieces start on the board. 2 dogs."
-    )
+   )
     
     (item "Haretavl Two Dogs - Top Extension No Joined Diagonal - Starting Position 2" 
         <
@@ -2301,10 +2301,10 @@
                 (place "Dog1" (sites {"A1" "E1"}))
                 (place "Hare2" (sites {"C5"}))
             })			
-        )
+       )
         >  
         "The board has top extension and no joined diagonals. Haretavl rules. The pieces start on the board. 2 dogs."
-    )
+   )
     
     (item "Haretavl Two Dogs - Top Extension No Joined Diagonal - Starting Position 3" 
         <
@@ -2318,10 +2318,10 @@
                 (place "Dog1" (sites {"B1" "D1"}))
                 (place "Hare2" (sites {"C5"}))
             })			
-        )
+       )
         >  
         "The board has top extension and no joined diagonals. Haretavl rules. The pieces start on the board. 2 dogs."
-    )
+   )
     
     //--------------------------Haretavl Switch Rulesets with starting positions ---------------------------------------------------
     
@@ -2337,10 +2337,10 @@
                 (place "Hare1" (sites {"B1"}))
                 (place "Dog2" (sites {"A4" "B4" "C4"}))
             })	
-        )
+       )
         >  
         "The board has no extension and joined diagonals. Haretavl rules. The pieces start on the board."
-    )*
+   )*
     
     (item "Haretavl Switch - Top Extension Joined Diagonal - Starting Position" 
         <
@@ -2354,10 +2354,10 @@
                 (place "Hare1" (sites {"B1"}))
                 (place "Dog2" (sites {"A5" "B5" "C5"}))
             })			
-        )
+       )
         >  
         "The board has an extension at the top and joined diagonals. Haretavl rules. The pieces start on the board."
-    )
+   )
     
     (item "Haretavl Switch - Both Extension Joined Diagonal - Starting Position" 
         <
@@ -2371,10 +2371,10 @@
                 (place "Hare1" (sites {"B1"}))
                 (place "Dog2" (sites {"A6" "B6" "C6"}))
             })			
-        )
+       )
         >  
         "The board has two extensions and joined diagonals. Haretavl rules. The pieces start on the board."
-    )
+   )
     
     (item "Haretavl Switch - No Extension No Joined Diagonal - Starting Position" 
         <
@@ -2388,10 +2388,10 @@
                 (place "Hare1" (sites {"C1"}))
                 (place "Dog2" (sites {"A4" "C4" "E4" }))
             })			
-        )
+       )
         >  
         "The board has no extension and no joined diagonals. Haretavl rules. The pieces start on the board."
-    )
+   )
     
     (item "Haretavl Switch - Top Extension No Joined Diagonal - Starting Position" 
         <
@@ -2405,10 +2405,10 @@
                 (place "Hare1" (sites {"C1"}))
                 (place "Dog2" (sites {"A5" "C5" "E5"}))
             })			
-        )
+       )
         >  
         "The board has an extension at the top and no joined diagonals. Haretavl rules. The pieces start on the board."
-    )
+   )
     
     (item "Haretavl Switch - Both Extension No Joined Diagonal - Starting Position" 
         <
@@ -2422,10 +2422,10 @@
                 (place "Hare1" (sites {"C1"}))
                 (place "Dog2" (sites {"A6" "C6" "E6"}))
             })			
-        )
+       )
         >  
         "The board has two extensions and no joined diagonals. Haretavl rules. The pieces start on the board."
-    )
+   )
     
     //--------------------------Haretavl Switch Rulesets with starting positions and 3 dogs - 2 hares ---------------------------------------------------
     
@@ -2441,10 +2441,10 @@
                 (place "Hare1" (sites {"A1" "C1"}))
                 (place "Dog2" (sites {"A4" "B4" "C4"}))
             })			
-        )
+       )
         >  
         "The board has no extension and joined diagonals. Haretavl rules. The pieces start on the board. 3 dogs and 2 hares."
-    )
+   )
     
     (item "Haretavl Switch Three Dogs Two Hares - No Extension No Joined Diagonal - Starting Position 1" 
         <
@@ -2458,10 +2458,10 @@
                 (place "Hare1" (sites {"A1" "E1"}))
                 (place "Dog2" (sites {"A4" "C4" "E4"}))
             })			
-        )
+       )
         >  
         "The board has no extension and no joined diagonals. Haretavl rules. The pieces start on the board. 3 dogs and 2 hares."
-    )
+   )
     
     (item "Haretavl Switch Three Dogs Two Hares - No Extension No Joined Diagonal - Starting Position 2" 
         <
@@ -2475,10 +2475,10 @@
                 (place "Hare1" (sites {"B1" "D1"}))
                 (place "Dog2" (sites {"A4" "C4" "E4"}))
             })			
-        )
+       )
         >  
         "The board has no extension and no joined diagonals. Haretavl rules. The pieces start on the board. 3 dogs and 2 hares."
-    )
+   )
     
     (item "Haretavl Switch Three Dogs Two Hares - Both Extensions Joined Diagonal - Starting Position" 
         <
@@ -2492,10 +2492,10 @@
                 (place "Hare1" (sites {"A1" "C1"}))
                 (place "Dog2" (sites {"A6" "B6" "C6"}))
             })			
-        )
+       )
         >  
         "The board has both extension and joined diagonals. Haretavl rules. The pieces start on the board. 3 dogs and 2 hares."
-    )
+   )
     
     (item "Haretavl Switch Three Dogs Two Hares - Both Extensions No Joined Diagonal - Starting Position" 
         <
@@ -2509,10 +2509,10 @@
                 (place "Hare1" (sites {"A1" "E1"}))
                 (place "Dog2" (sites {"A6" "C6" "E6"}))
             })			
-        )
+       )
         >  
         "The board has both extension and no joined diagonals. Haretavl rules. The pieces start on the board. 3 dogs and 2 hares."
-    )
+   )
     
     (item "Haretavl Switch Three Dogs Two Hares - Top Extension Joined Diagonal - Starting Position 1" 
         <
@@ -2526,10 +2526,10 @@
                 (place "Hare1" (sites {"A1" "C1"}))
                 (place "Dog2" (sites {"A5" "B5" "C5"}))
             })			
-        )
+       )
         >  
         "The board has top extension and joined diagonals. Haretavl rules. The pieces start on the board. 3 dogs and 2 hares."
-    )
+   )
     
     (item "Haretavl Switch Three Dogs Two Hares - Top Extension No Joined Diagonal - Starting Position 1" 
         <
@@ -2543,10 +2543,10 @@
                 (place "Hare1" (sites {"A1" "E1"}))
                 (place "Dog2" (sites {"A5" "C5" "E5"}))
             })			
-        )
+       )
         >  
         "The board has top extension and no joined diagonals. Haretavl rules. The pieces start on the board. 3 dogs and 2 hares."
-    )
+   )
     
     (item "Haretavl Switch Three Dogs Two Hares - Top Extension No Joined Diagonal - Starting Position 2" 
         <
@@ -2560,10 +2560,10 @@
                 (place "Hare1" (sites {"B1" "D1"}))
                 (place "Dog2" (sites {"A5" "C5" "E5"}))
             })			
-        )
+       )
         >  
         "The board has top extension and no joined diagonals. Haretavl rules. The pieces start on the board. 3 dogs and 2 hares."
-    )
+   )
     
     (item "Haretavl Switch Three Dogs Two Hares - Top Extension No Joined Diagonal - Starting Position 3" 
         <
@@ -2577,10 +2577,10 @@
                 (place "Hare1" (sites {"A5" "E5"}))
                 (place "Dog2" (sites {"A1" "C1" "E1"}))
             })			
-        )
+       )
         >  
         "The board has top extension and no joined diagonals. Haretavl rules. The pieces start on the board. 3 dogs and 2 hares."
-    )
+   )
     
     (item "Haretavl Switch Three Dogs Two Hares - Top Extension Joined Diagonal - Starting Position 2" 
         <
@@ -2594,10 +2594,10 @@
                 (place "Hare1" (sites {"A5" "C5"}))
                 (place "Dog2" (sites {"A1" "B1" "C1"}))
             })			
-        )
+       )
         >  
         "The board has top extension and joined diagonals. Haretavl rules. The pieces start on the board. 3 dogs and 2 hares."
-    )
+   )
     
     //--------------------------Haretavl Switch Rulesets with starting positions and 2 dogs - 1 hare ---------------------------------------------------
     
@@ -2613,10 +2613,10 @@
                 (place "Hare1" (sites {"B1"}))
                 (place "Dog2" (sites {"A4" "B4" "C4"}))
             })			
-        )
+       )
         >  
         "The board has no extension and joined diagonals. Haretavl rules. The pieces start on the board. 2 dogs."
-    )
+   )
     
     (item "Haretavl Switch Two Dogs - No Extension No Joined Diagonal - Starting Position 1" 
         <
@@ -2630,10 +2630,10 @@
                 (place "Hare1" (sites {"C1"}))
                 (place "Dog2" (sites {"A4" "C4" "E4"}))
             })			
-        )
+       )
         >  
         "The board has no extension and no joined diagonals. Haretavl rules. The pieces start on the board. 2 dogs."
-    )
+   )
     
     (item "Haretavl Switch Two Dogs - No Extension No Joined Diagonal - Starting Position 2" 
         <
@@ -2647,10 +2647,10 @@
                 (place "Hare1" (sites {"C1"}))
                 (place "Dog2" (sites {"B4" "D4"}))
             })			
-        )
+       )
         >  
         "The board has no extension and no joined diagonals. Haretavl rules. The pieces start on the board. 2 dogs."
-    )
+   )
     
     (item "Haretavl Switch Two Dogs - Both Extension Joined Diagonal - Starting Position" 
         <
@@ -2664,10 +2664,10 @@
                 (place "Hare1" (sites {"B1"}))
                 (place "Dog2" (sites {"A6" "C6"}))
             })			
-        )
+       )
         >  
         "The board has both extension and joined diagonals. Haretavl rules. The pieces start on the board. 2 dogs."
-    )
+   )
     
     (item "Haretavl Switch Two Dogs - Both Extension No Joined Diagonal - Starting Position" 
         <
@@ -2681,10 +2681,10 @@
                 (place "Hare1" (sites {"C1"}))
                 (place "Dog2" (sites {"A6" "E6"}))
             })			
-        )
+       )
         >  
         "The board has both extension and no joined diagonals. Haretavl rules. The pieces start on the board. 2 dogs."
-    )
+   )
     
     (item "Haretavl Switch Two Dogs - Top Extension Joined Diagonal - Starting Position 1" 
         <
@@ -2698,10 +2698,10 @@
                 (place "Hare1" (sites {"B1"}))
                 (place "Dog2" (sites {"A5" "C5"}))
             })			
-        )
+       )
         >  
         "The board has top extension and joined diagonals. Haretavl rules. The pieces start on the board. 2 dogs."
-    )
+   )
     
     (item "Haretavl Switch Two Dogs - Top Extension Joined Diagonal - Starting Position 2" 
         <
@@ -2715,10 +2715,10 @@
                 (place "Hare1" (sites {"B5"}))
                 (place "Dog2" (sites {"A1" "C1"}))
             })			
-        )
+       )
         >  
         "The board has top extension and joined diagonals. Haretavl rules. The pieces start on the board. 2 dogs."
-    )
+   )
     
     (item "Haretavl Switch Two Dogs - Top Extension No Joined Diagonal - Starting Position 1" 
         <
@@ -2732,10 +2732,10 @@
                 (place "Hare1" (sites {"C1"}))
                 (place "Dog2" (sites {"A5" "E5"}))
             })			
-        )
+       )
         >  
         "The board has top extension and no joined diagonals. Haretavl rules. The pieces start on the board. 2 dogs."
-    )
+   )
     
     (item "Haretavl Switch Two Dogs - Top Extension No Joined Diagonal - Starting Position 2" 
         <
@@ -2749,10 +2749,10 @@
                 (place "Hare1" (sites {"C5"}))
                 (place "Dog2" (sites {"A1" "E1"}))
             })			
-        )
+       )
         >  
         "The board has top extension and no joined diagonals. Haretavl rules. The pieces start on the board. 2 dogs."
-    )
+   )
     
     (item "Haretavl Switch Two Dogs - Top Extension No Joined Diagonal - Starting Position 3" 
         <
@@ -2766,10 +2766,10 @@
                 (place "Dog2" (sites {"B1" "D1"}))
                 (place "Hare1" (sites {"C5"}))
             })			
-        )
+       )
         >  
         "The board has top extension and no joined diagonals. Haretavl rules. The pieces start on the board. 2 dogs."
-    )
+   )
     
 })
 
@@ -3615,7 +3615,7 @@
         (classification "board/hunt")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)

@@ -4,16 +4,16 @@
         (board 
             (rectangle 5 3)
             use:Vertex
-        )
+       )
         (piece "Marker" Each 
             (or
                 (move Step 
                     (directions {Forward FR FL})
                     (to if:(is Empty (to)))
-                )
+               )
                 ("HopOrthogonalCapture")
-            )
-        )
+           )
+       )
     })
     (rules
         (start {
@@ -22,9 +22,9 @@
         })
         (play 
             (forEach Piece)
-        )
+       )
         (end (if (no Pieces Next) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -41,7 +41,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Mongolia, from around 1963 to 1966.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)
@@ -49,5 +49,5 @@
     })
     (ai
         "Xarajlt_ai"
-    )
+   )
 )

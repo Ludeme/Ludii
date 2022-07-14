@@ -4,10 +4,10 @@
     (equipment { 
         (mancalaBoard 2 <Board:size> store:None
             (track "Track" "0,E,N,W" loop:True)
-        )
+       )
         (piece "Seed" Shared)
         }
-    )  
+   )  
     (rules 
         
         (start (set Count 3 to:(sites Track)))
@@ -17,9 +17,9 @@
         (end
             (if  (no Moves Next)
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -45,7 +45,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Benin, from around 1891 to 1894.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

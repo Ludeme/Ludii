@@ -13,7 +13,7 @@
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" "24,E,N1,W" loop:True P2)
             }
-        )
+       )
         (regions "Home" P1 (sites Track "Track1"))  // P1 Home
         (regions "Home" P2 (sites Track "Track2"))  // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
@@ -25,7 +25,7 @@
         
         (start 
             (set Count 4 to:(union (sites P1 "Home") (sites P2 "Home")))
-        )
+       )
         
         (play
             (move Select
@@ -43,22 +43,22 @@
                                 (from ("OppositePit" (to))) 
                                 (to (handSite Mover)) 
                                 count:(count at:("OppositePit" (to)))
-                            )
+                           )
                             (if  (> (count at:("OppositeOuterPit" (to))) 0) 
                                 (fromTo 
                                     (from ("OppositeOuterPit" (to))) 
                                     (to (handSite Mover)) 
                                     count:(count at:("OppositeOuterPit" (to)))
-                                )
-                            )
-                        )
-                    )
-                )
-            )	  
-        )
+                               )
+                           )
+                       )
+                   )
+               )
+           )	  
+       )
         
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -76,7 +76,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in South Africa, from around 1934 to 2002.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

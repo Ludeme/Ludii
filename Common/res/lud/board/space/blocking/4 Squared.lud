@@ -4,33 +4,33 @@
             if:(and
                 (not ("IsFriendAt" (to)))
                 ("IsFriendAt" (ahead (coord #2) #1))
-            )
+           )
             (apply 
                 (if ("IsEnemyAt" (to))
                     (remove (to))
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 (define "HopMove"
     (move Hop #1
         (between
             if:True
-        )
+       )
         (to
             if:(and
                 (not ("IsFriendAt" (to)))
                 ("IsFriendAt" (ahead (coord #2) steps:2 #1))
-            )
+           )
             (apply 
                 (if ("IsEnemyAt" (to))
                     (remove (to))
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -46,7 +46,7 @@
                 (shift 5 5 (square 5))
             })
             use:Vertex
-        )
+       )
         (piece "Ball" Each
             (if (is In (from) (sites "SW"))
                 (or {
@@ -124,11 +124,11 @@
                                 ("HopMove" NW "H8")
                                 ("HopMove" N "H8")
                             })
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         (hand Each)
         (regions "SW" (expand origin:(coord "C3") steps:2 All))
         (regions "SE" (expand origin:(coord "H3") steps:2 All))
@@ -144,12 +144,12 @@
                     (move
                         (from (handSite Mover))
                         (to (sites Empty))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (end ("BlockWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -182,7 +182,7 @@
         (credit "Eric Piette")
         (date "2009")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal (colour Hidden))

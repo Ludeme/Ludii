@@ -11,7 +11,7 @@
     (equipment { 
         (mancalaBoard 2 "Columns"
             (track "Track" "1,E,N,W" loop:True)
-        )
+       )
         (regions "Home" P1 (sites Bottom))                     // P1 home
         (regions "Home" P2 (sites Top))                        // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
@@ -30,17 +30,17 @@
                             (to ("NextHole")
                                 (apply
                                     (set Var "NumCounters" (- (var "NumCounters") (value)))
-                                )
-                            ) 
+                               )
+                           ) 
                             count:(value)
                             (then
                                 (if (< 0 (var "NumCounters"))
                                     (moveAgain)
                                     (set Value Mover (+ 1 (value Player Mover)))
-                                )
-                            )
-                        )
-                    )
+                               )
+                           )
+                       )
+                   )
                     (move Select
                         (from (sites Mover "Home") if:(> (count at:(from)) 0))
                         (then 
@@ -49,12 +49,12 @@
                                 (remove (last To) count:(count at:(last To)))
                                 (set Var "NumCounters" (count at:(last To)))
                             })
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase Mover (= (value Player Mover) 1) "Sowing")
-        )
+       )
         
         (phase "Sowing"
             (play 
@@ -67,29 +67,29 @@
                                     if:(or 
                                         (= (count at:(to)) 2) 
                                         (= (count at:(to)) 3)
-                                    ) 
+                                   ) 
                                     apply:(fromTo 
                                         (from (to)) 
                                         (to (mapEntry (mover))) 
                                         count:(count at:(to))
-                                    )
+                                   )
                                     includeSelf:False
                                     backtracking:True
-                                )
-                            )
-                        )
+                               )
+                           )
+                       )
                         (move Select
                             (from (sites Mover "Home") if:(= (count at:(from)) 1))
                             (then (sow))
-                        )
-                    )
+                       )
+                   )
                     ifAfterwards:(< 0 (count in:(sites Next "Home")))
-                )
-            )
-        )
+               )
+           )
+       )
         }
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-    )	
+   )	
 )
 
 //------------------------------------------------------------------------------
@@ -107,7 +107,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Sierra Leone, from around 1924 to 1925.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

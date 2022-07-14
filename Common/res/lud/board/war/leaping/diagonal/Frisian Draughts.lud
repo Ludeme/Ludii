@@ -10,12 +10,12 @@
                     after:1
                     if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
                     (apply (remove (between) at:EndOfTurn))
-                ) 
+               ) 
                 (to if:(is Empty (to))) 
                 #2
-            )
+           )
             ifAfterwards:(is In (last To) (sites Phase 0))
-        )
+       )
         
         (move
             Hop 
@@ -24,11 +24,11 @@
             (between
                 if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
                 (apply (remove (between) at:EndOfTurn))
-            ) 
+           ) 
             (to if:(is Empty (to))) 
             #2
-        )
-    )
+       )
+   )
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -44,7 +44,7 @@
                 #2
                 if:("IsEnemyAt" (between))
                 (apply (remove (between) #3))
-            )
+           )
             (to if:(is Empty (to)))
             (then	
                 (and
@@ -59,25 +59,25 @@
                                         if:(and
                                             (not (is In (between) (sites ToClear)))
                                             ("IsEnemyAt" (between))
-                                        )
-                                    )
+                                       )
+                                   )
                                     (to if:(is Empty (to)))
-                                )
+                               )
                                 ifAfterwards:(is In (last To) (sites Phase 0))
-                            )
-                        )
+                           )
+                       )
                         (moveAgain)
-                    )
+                   )
                     (forEach Site (sites Occupied by:Mover)
                         (if (!= 0 (state at:(site)))
                             (set State at:(site) 0)
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         ifAfterwards:(is In (last To) (sites Phase 0))
-    )
+   )
 )
 
 (define "HopFrisianSequenceCaptureAgain"
@@ -90,7 +90,7 @@
                 #2
                 if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
                 (apply (remove (between) #3))
-            )
+           )
             (to if:(is Empty (to)))
             (then
                 (and
@@ -105,25 +105,25 @@
                                         if:(and
                                             (not (is In (between) (sites ToClear)))
                                             ("IsEnemyAt" (between))
-                                        )
-                                    )
+                                       )
+                                   )
                                     (to if:(is Empty (to)))
-                                )
+                               )
                                 ifAfterwards:(is In (last To) (sites Phase 0))
-                            )
-                        )
+                           )
+                       )
                         (moveAgain)
-                    )
+                   )
                     (forEach Site (sites Occupied by:Mover)
                         (if (!= 0 (state at:(site)))
                             (set State at:(site) 0)
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         ifAfterwards:(is In (last To) (sites Phase 0))
-    )
+   )
 )
 
 (define "CounterSimpleMove" 
@@ -131,7 +131,7 @@
         Step 
         (directions {FR FL}) 
         (to if:(is Empty (to)))
-    )		
+   )		
 )
 
 (define "TwoKingsMoverOneKingEnemy" 
@@ -173,21 +173,21 @@
                                         (moveAgain)
                                         (if "JumpToPromotionZone" 
                                             (move Promote (last To) (piece "DoubleCounter") Mover (then (set Value at:(last To) 19)))
-                                        )
-                                    ) 
+                                       )
+                                   ) 
                                     (forEach Site (sites Occupied by:Mover)
                                         (if (!= 0 (state at:(site)))
                                             (set State at:(site) 0)
-                                        )
-                                    )
-                                )
-                            ) 
-                        )
-                    )
+                                       )
+                                   )
+                               )
+                           ) 
+                       )
+                   )
                     (max Moves withValue:True
                         ("HopFrisianSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn) 
-                    )
-                )
+                   )
+               )
                 (priority {
                     (max Moves withValue:True
                         (or { 
@@ -200,19 +200,19 @@
                                                 (moveAgain) 
                                                 (if "JumpToPromotionZone" 
                                                     (move Promote (last To) (piece "DoubleCounter") Mover (then (set Value at:(last To) 19)))
-                                                )
-                                            )
+                                               )
+                                           )
                                             (forEach Site (sites Occupied by:Mover)
                                                 (if (!= 0 (state at:(site)))
                                                     (set State at:(site) 0)
-                                                )
-                                            )
-                                        )
-                                    ) 
-                                ) 
-                            )
+                                               )
+                                           )
+                                       )
+                                   ) 
+                               ) 
+                           )
                         })
-                    )
+                   )
                     (or  
                         (forEach Piece "Counter" 
                             ("CounterSimpleMove")
@@ -220,22 +220,22 @@
                                 (and
                                     (if "JumpToPromotionZone"
                                         (move Promote (last To) (piece "DoubleCounter") Mover (then (set Value at:(last To) 19)))
-                                    )
+                                   )
                                     (forEach Site (sites Occupied by:Mover)
                                         (if (!= 0 (state at:(site)))
                                             (set State at:(site) 0)
-                                        )
-                                    )
-                                )
-                            )
-                        )
+                                       )
+                                   )
+                               )
+                           )
+                       )
                         (forEach Piece "DoubleCounter" 
                             (if (if (> 2 (state at:(from))) 
                                     True
                                     (not (can Move (forEach Piece "Counter" ("CounterSimpleMove"))))
-                                )
+                               )
                                 (move Slide Diagonal)
-                            )
+                           )
                             (then
                                 (if (!= Off (where "Counter" Mover))
                                     (and
@@ -243,33 +243,33 @@
                                         (forEach Site (sites Occupied by:Mover)
                                             (if (and (!= (site) (last To)) (!= 0 (state at:(site))))
                                                 (set State at:(site) 0)
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                           )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
                 })
                 (then
                     (and
                         (if (and ("TwoKingsMoverOneKingEnemy") (= Undefined (value Player Mover)))
                             (set Value Mover 0)
-                        )
+                       )
                         (if (and (not ("SameTurn")) (!= Undefined (value Player Mover)))
                             (set Value Mover (+ 1 (value Player Mover)))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         
         (end {
             ("BlockWin")
             (if (= 7 (value Player Mover)) (result Mover Draw))
         })
         
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -308,7 +308,7 @@
         (credit "A. Sambruni and Eric Piette")
         (origin  "This game was played in Netherlands, around 1725.")
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)

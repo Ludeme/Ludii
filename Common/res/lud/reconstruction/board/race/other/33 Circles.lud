@@ -3,14 +3,14 @@
     (equipment { 
         (board (rectangle 3 11)   
             use:Vertex
-        )
+       )
         (piece "Disc" Each (move [#]))
     })
     (rules
         (start [#])
         (play [#])
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -28,7 +28,7 @@
         (classification "board/race/reconstruction")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)

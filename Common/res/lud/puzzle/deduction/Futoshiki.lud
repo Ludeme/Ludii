@@ -5,20 +5,20 @@
             (square <Challenge:size>) 
             (values Vertex (range 1 <Challenge:size>)) 
             use:Vertex
-        ) 
+       ) 
         <Challenge:hints>
         (regions {Columns Rows})
     })  
     (rules 
-        (start <Challenge:start> )
+        (start <Challenge:start>)
         (play 
             (satisfy {
                 (forAll Hint (< (from) (to)))
                 (all Different)
             })
-        )
+       )
         (end (if (is Solved) (result P1 Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -38,7 +38,7 @@
             (hint {24 23})
             }
             Vertex
-        )
+       )
         >
         <
         (set 
@@ -48,10 +48,10 @@
             {15 4}
             {19 2} 
             }
-        )
+       )
         >
         ""
-    )   
+   )   
     (item "2" 
         <5>
         <
@@ -67,7 +67,7 @@
             (hint {17 16})
             }
             Vertex
-        )
+       )
         >
         <
         (set 
@@ -76,10 +76,10 @@
             {16 2}
             {18 4}
             }
-        )
+       )
         >
         ""
-    ) 
+   ) 
 })
 
 //------------------------------------------------------------------------------
@@ -97,7 +97,7 @@
         (credit "Eric Piette")
         (date "2001")
         }
-    )
+   )
     (graphics {
         (board Style Futoshiki)
         (no Sunken)

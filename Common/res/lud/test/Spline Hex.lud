@@ -4,23 +4,23 @@
         (board (hex <Board> pyramidal:True) use:Vertex) 
         (piece "Marker" Each) 
         }
-    )  
+   )  
     (rules 
         (play 
             (move 
                 Add 
                 (to (sites Empty) 
                     if:(is Flat)
-                )
-            )
-        )
+               )
+           )
+       )
         (end 
             (if 
                 (is Line (- (count Rows) (layer of:(last To))) SameLayer) 
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -59,7 +59,7 @@
         (credit "Eric Piette")
         (date "2011")
         }
-    )
+   )
     
     (graphics {
         (piece Scale "Marker" 1.0)

@@ -23,7 +23,7 @@
                         (sites LargePiece at:(last To))
                         (remember Value (site))
                         (then (remove (last To)))
-                    )
+                   )
                     next:(do
                         (forEach
                             Value
@@ -32,14 +32,14 @@
                                 (piece (id #3 Mover))
                                 (to (value))
                                 (then (set State at:(last To) 0))
-                            )
-                        )
+                           )
+                       )
                         next:(forget Value All)
-                    )
-                )
-            )
-        )
-    )
+                   )
+               )
+           )
+       )
+   )
 )
 
 // #1 - then clause
@@ -48,9 +48,9 @@
         (then
             (set Hidden at:(last From) False to:Mover
                 #1
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "CheckForVictory"
@@ -58,15 +58,15 @@
         (and
             (>= (count Turns) 10)
             (= 0 (count Sites in:(intersection (sites Hidden to:Mover) (sites Occupied by:Next))))
-        )
+       )
         (set Var (id Mover)
             (then
                 (forEach Site (sites Board)
                     (set Hidden at:(site) False to:Next)	
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 // #1 - P1/P2
@@ -74,7 +74,7 @@
     (if 
         (= (id #1) (var))
         (result #1 Win)
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -113,7 +113,7 @@
         (phase "Setup"
             (play (forEach Piece container:(mover)))
             (nextPhase (>= (count Turns) 10) "Playing")
-        )
+       )
         (phase "Playing"
             (play
                 (move
@@ -123,18 +123,18 @@
                         ("ClearShotSpace"
                             (then
                                 ("CheckForVictory")
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         }
         (end {
             ("DeclareVictory" P1)
             ("DeclareVictory" P2)
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -157,7 +157,7 @@
         (credit "Nicholas Bamber")
         (date "1931")
         }
-    )
+   )
     
     (graphics {
         (piece Rename piece:"Carrier" state:0 "square")

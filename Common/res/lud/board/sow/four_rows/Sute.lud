@@ -15,7 +15,7 @@
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" "16,E,N1,W" loop:True P2)
             }
-        )
+       )
         (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
         (regions "Home" P2 (sites Track "Track2"))                              // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
@@ -31,10 +31,10 @@
                     (union 
                         (intersection (sites Right) (sites Row 1))
                         (intersection (sites Left) (sites Row 2))
-                    )
-                ) 
-            ) 
-        )
+                   )
+               ) 
+           ) 
+       )
         
         (play 
             (move Select
@@ -43,27 +43,27 @@
                     if:(and 
                         (> (count at:(from)) 0)
                         (= 0 (count at:("NextHoleFrom" (from))))
-                    )
-                )
+                   )
+               )
                 (then 
                     (sow
                         "Track"
                         owner:(mover)
                         apply:(if (and (= (count at:("OppositePit" (to))) 0) (is In (to) (sites Mover "Inner")))
                             (remove ("OppositeOuterPit" (to)))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         
         (end
             (forEach NonMover
                 if:("NoPiece")
                 (result Player Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -81,7 +81,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Malawi, around 1913.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -89,5 +89,5 @@
     
     (ai
         "Sute_ai"
-    )
+   )
 )

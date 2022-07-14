@@ -5,8 +5,8 @@
         if:(if (is Empty (site))
             (is Empty (+ (site) "Columns"))
             (is Occupied (+ (site) "Columns"))
-        )
-    )
+       )
+   )
 )
 
 (define "NoCounters" (all Sites (sites #1) if:(= 0 (count at:(site)))))
@@ -20,7 +20,7 @@
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
             (track "Track" "0,E,N,W" loop:True)
-        )
+       )
         (piece "Seed" Shared)
         (hand Each)
         (regions P1 (sites Bottom))                     // P1 home
@@ -40,25 +40,25 @@
                                 (from (handSite P1))
                                 (to (sites Board))
                                 count:(value)
-                            )
-                        )
+                           )
+                       )
                         (forEach Site (sites Board)
                             (if (is Occupied (site))
                                 (move
                                     (from (site))
                                     (to (sites Board) if:(!= (to) (from)))
-                                )
-                            )
-                        )
+                               )
+                           )
+                       )
                         (then (moveAgain))
-                    )
+                   )
                     (if (and (is Empty (handSite P1)) ("CorrespondingHolesHaveSeeds"))
                         (move Pass)
-                    )
+                   )
                 })
-            )
+           )
             (nextPhase (was Pass) "Opening2")
-        )
+       )
         
         (phase "Opening2"
             (play
@@ -66,10 +66,10 @@
                     (move Pass (then (moveAgain)))
                     (move Swap Players P1 P2)
                     (then (set Pending))
-                )
-            )
+               )
+           )
             (nextPhase "Sowing")
-        )
+       )
         
         (phase "Sowing"
             (play
@@ -77,16 +77,16 @@
                     (move
                         (from (sites Mover) if:(is Occupied (from)))
                         (to (mapEntry "LeftMost" Next))
-                    )
+                   )
                     (move Select
                         (from 
                             (if 
                                 (and (not (is Pending)) ("SameTurn"))
                                 (sites {(var "Replay") })
                                 (sites Mover) 
-                            ) 
+                           ) 
                             if:(is Occupied (from))
-                        )
+                       )
                         (then
                             (sow
                                 if:True
@@ -94,56 +94,56 @@
                                     (and
                                         (moveAgain)
                                         (set Var "Replay" (to))
-                                    )
+                                   )
                                     (and
                                         (fromTo
                                             (from (to))
                                             (to (handSite Mover))
                                             count:(count at:(to))
-                                        )
+                                       )
                                         (if (is Occupied ("OppositePitTwoRows" (to)))
                                             (fromTo
                                                 (from ("OppositePitTwoRows"  (to)))
                                                 (to (handSite Mover))
                                                 count:(count at:("OppositePitTwoRows"  (to)))
-                                            )
-                                        )
-                                    )
-                                )
+                                           )
+                                       )
+                                   )
+                               )
                                 backtracking:(and (is Occupied (to)) (is Even (count at:(to))))
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (then
                         (if ("EmptyBoard")
                             (and
                                 (if (< (count Cell at:(handSite P1)) (count Cell at:(handSite P2)))
                                     (addScore P2 (- (count Cell at:(handSite P2)) (count Cell at:(handSite P1))))
                                     (addScore P1 (- (count Cell at:(handSite P1)) (count Cell at:(handSite P2))))
-                                )
+                               )
                                 (if (is Occupied Cell (handSite P2))
                                     (fromTo
                                         (from (handSite P2))
                                         (to (handSite P1))
                                         count:(count Cell at:(handSite P2))
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             (nextPhase ("EmptyBoard") "Opening1")
-        )
+       )
         }
         
         (end
             (forEach Player
                 if:(<= 60 (score Player))
                 (result Player Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -161,7 +161,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Egypt, around 1836.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

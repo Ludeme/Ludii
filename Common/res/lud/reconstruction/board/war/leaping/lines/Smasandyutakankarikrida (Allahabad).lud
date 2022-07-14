@@ -14,9 +14,9 @@
                 (shift  5.35 5.85 (scale 0.5 (rotate 135 (wedge 3))))
                 (shift  0.65 5.85 (scale 0.5 (rotate -135 (wedge 3))))
                 } 
-            ) 
+           ) 
             use:Vertex
-        )
+       )
         (piece "Disc" P1 (move [#])) 
         (piece "Disc" P2 (move [#])) 
     })  
@@ -24,7 +24,7 @@
         (start [#])
         (play [#])
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -41,7 +41,7 @@
         (classification "board/war/leaping/lines/reconstruction")
         (origin  "This game was played in India, around 1871.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)

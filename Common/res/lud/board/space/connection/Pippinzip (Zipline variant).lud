@@ -6,7 +6,7 @@
     (or
         (is Connected Orthogonal {(sites Side N) (sites Side S)})
         (is Connected Orthogonal {(sites Side E) (sites Side W)})
-    )
+   )
 )
 
 (define "IsPlayingPhase" (= 1 (var)))
@@ -33,9 +33,9 @@
                             (piece (id "Disc" P2)) 
                             (to (sites Empty))
                             (then (if (< (count MovesThisTurn) 2) (moveAgain)))
-                        )
+                       )
                         "Skip"
-                    )
+                   )
                     (if (= (count MovesThisTurn) 0)
                         (move Pass
                             (then
@@ -44,21 +44,21 @@
                                     (swap Players P1 P2
                                         (then
                                             (note "Player 1 is now White. Player 2 is now Black." to:All)
-                                        )
-                                    )
+                                       )
+                                   )
                                     (note "Player 1 is now Black. Player 2 is now White." to:All)
                                     (then
                                         (do (set NextPlayer (player 1))
                                             next:(set Var 1) // (var) represents the phase here
-                                        )
-                                    )
-                                )
-                            )
-                    ))
-                )
-            )
+                                       )
+                                   )
+                               )
+                           )
+                   ))
+               )
+           )
             (nextPhase ("IsPlayingPhase") "Playing")
-        )
+       )
         (phase "Playing"
             (play
                 (or 
@@ -67,20 +67,20 @@
                             (if 
                                 (= 0 (count MovesThisTurn)) 
                                 (moveAgain)
-                            )
-                        )
-                    ) 
+                           )
+                       )
+                   ) 
                     (move Add (to (sites Empty) if:(= (id P2) (mover))))
-                )
-            )
-        )
+               )
+           )
+       )
         }
         (end {
             (if (and (not ("IsPlayingPhase")) ("WhiteVC")) (result Mover Win))
             (if (and {(= (id P1) (mover)) ("BlackVC")}) (result P1 Win))
             (if (and {(= (id P2) (mover)) ("WhiteVC")}) (result P2 Win)) 
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -123,7 +123,7 @@
         (credit "Eric Silverman")
         (date "2020")
         }
-    )
+   )
     
     (graphics {
         (board Style Go)
@@ -132,7 +132,7 @@
     })   
     (ai
         "Pippinzip (Zipline variant)_ai"
-    )
+   )
 )
 
 )

@@ -4,17 +4,17 @@
             (and 
                 ("OpponentHas" E W)
                 ("OpponentHas" NNW SSE)
-            )
+           )
             (and
                 ("OpponentHas" E W)
                 ("OpponentHas" NNE SSW)
-            )
+           )
             (and
                 ("OpponentHas" NNW SSE)
                 ("OpponentHas" NNE SSW)
-            )
+           )
         })
-    )
+   )
 )
 
 (define "OpponentHas"
@@ -31,18 +31,18 @@
                                     #1
                                     stop:(= (mover) (who at:(to)))
                                     stopIncluded:True
-                                ) 
-                            )
-                        )
-                    )
+                               ) 
+                           )
+                       )
+                   )
                     (sites Direction
                         from:(to)
                         #1 
                         stop:(= (mover) (who at:(to)))
-                    )
+                   )
                     (sites Board)
-                )
-            )
+               )
+           )
             (count Sites
                 in:(if
                     (< 0 
@@ -54,19 +54,19 @@
                                     #2
                                     stop:(= (mover) (who at:(to)))
                                     stopIncluded:True
-                                ) 
-                            )
-                        )
-                    )
+                               ) 
+                           )
+                       )
+                   )
                     (sites Direction
                         from:(to)
                         #2
                         stop:(= (mover) (who at:(to)))
-                    )
+                   )
                     (sites Board)
-                )
-            )
-        )
+               )
+           )
+       )
         (min
             (count Sites
                 in:(if
@@ -79,18 +79,18 @@
                                     #1
                                     stop:(= (next) (who at:(to)))
                                     stopIncluded:True
-                                ) 
-                            )
-                        )
-                    )
+                               ) 
+                           )
+                       )
+                   )
                     (sites Direction
                         from:(to)
                         #1 
                         stop:(= (next) (who at:(to)))
-                    )
+                   )
                     (sites Board)
-                )
-            )
+               )
+           )
             (count Sites
                 in:(if
                     (< 0 
@@ -102,20 +102,20 @@
                                     #2
                                     stop:(= (next) (who at:(to)))
                                     stopIncluded:True
-                                ) 
-                            )
-                        )
-                    )
+                               ) 
+                           )
+                       )
+                   )
                     (sites Direction
                         from:(to)
                         #2
                         stop:(= (next) (who at:(to)))
-                    )
+                   )
                     (sites Board)
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -127,7 +127,7 @@
         (board (hex <Board>))
         (piece "Disc" Each)
         }
-    )
+   )
     (rules
         (meta (swap))
         (play
@@ -135,16 +135,16 @@
                 (to
                     (sites Empty)
                     if:("Placeable")
-                )
-            )
-        )
+               )
+           )
+       )
         (end 
             (if 
                 (no Moves Next) 
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -174,8 +174,8 @@
         (credit "Michael Amundsen")
         (date "2021")
         }
-    )
+   )
     (ai
         "Mity_ai"
-    )
+   )
 )

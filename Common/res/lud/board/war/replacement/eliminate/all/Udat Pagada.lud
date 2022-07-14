@@ -14,18 +14,18 @@
                         (merge 
                             (shift 0 8 (rectangle 4 20)) 
                             (shift 8 0 (rectangle 20 4))
-                        )
+                       )
                         (poly {{8 8} {8 11} {11 11} {11 8}})
-                    )
+                   )
                     cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9 } }
-                )
+               )
                 vertices:{{9.5 4} {15 4} {15 9.5} {15 15} {9.5 15} {4 15} {4 9.5} {4 4}}
-            )
+           )
             {
             (track "Track" {144..151} loop:True)
             }
             use:Vertex
-        )
+       )
         (dice d:2 from:0 num:7)
         (piece "Pawn" Each
             (move 
@@ -35,12 +35,12 @@
                         (if ("IsEnemyAt" (to))
                             (forEach Level (to) FromTop
                                 (remove (to) level:(level))
-                            )
-                        )
-                    )
-                )
-            )		
-        )
+                           )
+                       )
+                   )
+               )
+           )		
+       )
         (hand Each)
         (map "Throw" {(pair 0 7) (pair 1 10) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 25) (pair 6 <ThrowSix:value>) (pair 7 14)})
         (map "Entry" {(pair P1 144) (pair P2 148)})
@@ -62,19 +62,19 @@
                                     (if ("IsEnemyAt" (to))
                                         (forEach Level (to) FromTop
                                             (remove (to) level:(level))
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
                     (forEach Piece)
-                )
-            )
-        )
+               )
+           )
+       )
         
         (end  (if (no Pieces Next) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -119,7 +119,7 @@
             (credit "Eric Piette")
             (origin  "This game was played in India, around 1905.")
             }
-        )
+       )
         
         (graphics {
             (board Style Board)
@@ -131,4 +131,4 @@
             (board Colour OuterEdges (colour Black))
         })
         
-    )
+   )

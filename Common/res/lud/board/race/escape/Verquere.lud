@@ -16,7 +16,7 @@
                 (if ("IsEndTrack" ("NextSiteFrom" (from) (pips)))
                     (if ("AllPiecesInFinalQuadrant")
                         (move Remove (from))
-                    )
+                   )
                     (move 
                         (from (from))
                         (to 
@@ -26,15 +26,15 @@
                                 (if (not (is In (to) (sites Mover "StartingSide")))
                                     True
                                     (is Empty (to))
-                                )
-                            )
+                               )
+                           )
                             ("HittingCapture" (mapEntry "Bar" Next))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (then ("ReplayNotAllDiceUsed"))
-            )		
-        )
+           )		
+       )
         (regions "FinalQuadrant" P1 (sites {7..12}))
         (regions "FinalQuadrant" P2 (sites {13..18}))
         (regions "StartingSide" P1 (sites {25..20 18..13}))
@@ -49,11 +49,11 @@
         (play 
             ("RollEachNewTurnMove"
                 (forEach Piece top:True)
-            )		
-        )
+           )		
+       )
         
         (end ("EscapeWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -72,7 +72,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Netherlands, around 1725.")
         }
-    )
+   )
     
     (graphics {
         (board Style backgammon)

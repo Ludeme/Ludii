@@ -34,20 +34,20 @@
                         (difference 
                             (sites Hand Shared) 
                             (sites Empty 1)
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase "Place")
-        )
+       )
         (phase "Place" 
             (play
                 (move 
                     (from Cell (last From))
                     (to (sites Empty))
                     (then (moveAgain))
-                )
-            )
+               )
+           )
             (end { 
                 // Shape line (what)
                 (if (is Line 4 All whats:{(id "Disc" P1) (id "Disc" P2)}) (result Mover Win))
@@ -66,9 +66,9 @@
                 (if (is Line 4 All whats:{(id "Disc" P1) (id "Disc" P2) (id "Square" P1) (id "Square" P2)} if:(= 1 (value Piece at:(to)))) (result Mover Win))
             })
             (nextPhase "Select")
-        )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -88,7 +88,7 @@
         (credit "Eric Piette")
         (date "1991")
         }
-    )
+   )
     
     (graphics {
         (piece Scale "Disc" 0.7)
@@ -104,5 +104,5 @@
     
     (ai
         "Quarto_ai"
-    )
+   )
 )

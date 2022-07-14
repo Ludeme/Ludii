@@ -13,7 +13,7 @@
         (phase "Opening"
             (play (forEach Piece))
             (nextPhase "Main")
-        )
+       )
         (phase "Main"
             (play
                 (priority {
@@ -21,16 +21,16 @@
                         (move Slide 
                             (from (from) if:(is In (from) (sites Around (last To) All)))
                             (directions Forwards of:All)
-                        )
-                    )
+                       )
+                   )
                     (forEach Piece)
                 })	
-            )
-        )
+           )
+       )
         }
         
         (end ("BlockWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -54,7 +54,7 @@
         (credit "Eric Piette")
         (date "2001")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal (colour Hidden))

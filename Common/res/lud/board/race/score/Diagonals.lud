@@ -22,19 +22,19 @@
                         (if (not (is In (last To) (sites {"A8" "H1"})))
                             (if (all Sites ("DiagonalNESW") if:(is Occupied (site)))
                                 (addScore Mover (count Sites in:(forEach ("DiagonalNESW") if:("IsFriendAt" (site)))))
-                            )
-                        )
+                           )
+                       )
                         (if (not (is In (last To) (sites {"A1" "H8"})))
                             (if (all Sites ("DiagonalSENW") if:(is Occupied (site)))
                                 (addScore Mover (count Sites in:(forEach ("DiagonalSENW") if:("IsFriendAt" (site)))))
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         (end (if (is Full) (byScore))) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -56,7 +56,7 @@
         (classification "board/race/score")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal (colour Hidden))

@@ -9,12 +9,12 @@
                 (between 
                     if:("IsFriendAt" (between)) 
                     (apply (remove (between)))
-                )
+               )
                 (to if:(is Empty (to)))
-            )
-        )
+           )
+       )
         }
-    )  
+   )  
     (rules 
         (start { 
             (place "Marker" (difference (sites Board) (sites <Variant:noPieceSite>)))
@@ -22,7 +22,7 @@
         
         (play (forEach Piece))
         (end (if <Variant:end> (result P1 Win)))  
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -34,9 +34,9 @@
             (merge 
                 (shift 0 2 (rectangle 3 7)) 
                 (shift 2 0 (rectangle 7 3))
-            ) 
+           ) 
             use:Vertex
-        )>
+       )>
         <{"D4"}>
         <(and (is Friend (who at:(centrePoint))) (= 1 (count Pieces All)))>    
     "The game is played on the English board.")   
@@ -45,13 +45,13 @@
             (keep 
                 (square 7) 
                 (poly { {-2 3.5} {3.5 -2} {7.5 3.5} {3.5 7.5} })
-            ) 
+           ) 
             use:Vertex
-        )>
+       )>
         <{"D6"}>
         <(= 1 (count Pieces All))>   
         "The game is played on the european board."
-    )
+   )
 })
 
 //------------------------------------------------------------------------------
@@ -62,13 +62,13 @@
         {
         "Known Variants/European"
         }
-    )
+   )
     
     (ruleset "Ruleset/English (Described)" 
         {
         "Known Variants/English"
         }
-    )
+   )
     
 })
 
@@ -92,7 +92,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Europe, around 1687.")
         }
-    )
+   )
     
     (graphics {
         (board Style Graph)
@@ -103,7 +103,7 @@
     
     (ai 
         "Peg Solitaire_ai"
-    )
+   )
     
 )
 

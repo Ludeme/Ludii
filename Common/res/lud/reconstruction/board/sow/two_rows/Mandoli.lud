@@ -8,7 +8,7 @@
     (equipment { 
         (mancalaBoard 2 6 store:None
             [(track "Track" "0,E,N,W" loop:True) | (track "Track" "5,W,N,E" loop:True) ] //  Unknown which direction the sowing occurs.
-        )
+       )
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (piece "Seed" Shared)
@@ -22,23 +22,23 @@
                 (from 
                     (sites Mover) 
                     if:(< 0 (count at:(from)))
-                )
+               )
                 (then 
                     (sow  
                         if:(and 
                             (is In (to) (sites Next)) 
                             (is Even (count at:(to))) 
-                        ) 
+                       ) 
                         apply:(fromTo 
                             (from (to)) 
                             (to (handSite (mover))) 
                             count:(count at:(to))
-                        )
+                       )
                         backtracking:True
-                    )
-                )
-            )		
-        ) 
+                   )
+               )
+           )		
+       ) 
         
         (end
             (if (no Moves Mover)
@@ -46,9 +46,9 @@
                     (score P1 ("PiecesOwnedBy" P1)) 
                     (score P2 ("PiecesOwnedBy" P2))
                 })
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -65,7 +65,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Greece, around 1810.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

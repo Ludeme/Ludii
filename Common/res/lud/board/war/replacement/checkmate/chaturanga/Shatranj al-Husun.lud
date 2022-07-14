@@ -7,9 +7,9 @@
         (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
-            )
-        )
-    ) 
+           )
+       )
+   ) 
 )
 
 (define "DoubleStep"
@@ -18,7 +18,7 @@
         Forward 
         (between (exact 2) if:(is Empty (between))) 
         (to if:(is Empty (to))) 
-    )
+   )
 )
 
 (define "CaptureForwardDiagonal"
@@ -28,8 +28,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -45,16 +45,16 @@
                 (shift -1 10 (square 1))
                 (shift 10 10 (square 1))
             })
-        )
+       )
         (piece "King" Each
             (move
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         (piece "Queen" Each
             (move
                 Step 
@@ -62,9 +62,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         (piece "Rook" Each
             (move
                 Slide 
@@ -72,9 +72,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         (piece "Knight" Each
             (move
                 Leap 
@@ -82,9 +82,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         (piece "Elephant" Each
             (move Hop Diagonal 
                 (between if:True) 
@@ -92,11 +92,11 @@
                     if:(or 
                         (is Empty (to)) 
                         (and ("IsEnemyAt" (to)) (!= (what at:(to)) (id "Elephant" Next)))
-                    ) 
+                   ) 
                     (apply (remove (to)))
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         (piece "Bishop" Each
             (move
                 Slide 
@@ -104,24 +104,24 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         (piece "Pawn" Each
             (or {
                 (if (is In (from) (sites Start (piece (what at:(from)))))
                     "DoubleStep"
-                )
+               )
                 "StepForwardToEmpty" 
                 "CaptureForwardDiagonal"
                 }
                 (then
                     (if (is In (last To) (sites Mover "Promotion")) 
                         (promote (last To) (piece "Queen") Mover)
-                    )
-                )
-            )		
-        )
+                   )
+               )
+           )		
+       )
         (regions "Promotion" P1 (sites Row 10))
         (regions "Promotion" P2 (sites Row 1))
         (regions "OppositeExtraSquares" P1 (sites Top))
@@ -138,21 +138,21 @@
             (do
                 (forEach Piece)
                 ifAfterwards:(not ("IsInCheck" "King" Mover))
-            )
-        )
+           )
+       )
         (end { 
             (if (is In (where "King" Mover) (sites Mover "OppositeExtraSquares"))
                 (result Mover Draw)
-            )
+           )
             (if (and 
                     ("IsInCheck" "King" Next)
                     ("NextCanNotMove")
-                ) 
+               ) 
                 (result Mover Win)
-            ) 
+           ) 
             ("BlockWin")
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -172,7 +172,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Persia, around 1352.")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
@@ -182,6 +182,6 @@
     
     (ai
         "Shatranj al-Husun_ai"
-    )
+   )
 )
 

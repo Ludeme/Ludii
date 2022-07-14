@@ -18,11 +18,11 @@
                         (move 
                             (from) 
                             (to "SiteToMoveOnTrack")
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
     })
     (rules 
         (start {
@@ -39,13 +39,13 @@
                     (forEach Piece 
                         top:True
                         (then ("ReplayNotAllDiceUsed"))
-                    )
+                   )
                     (move Pass (then (set Pending)))
-                )
-            )
-        )
+               )
+           )
+       )
         (end ("EscapeWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -63,7 +63,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Spain, around 1283.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)

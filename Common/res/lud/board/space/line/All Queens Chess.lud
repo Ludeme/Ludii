@@ -4,7 +4,7 @@
         (board (square 5)) 
         (piece "Queen" Each (move Slide))
         }
-    )  
+   )  
     (rules 
         (start
             { 
@@ -14,20 +14,20 @@
                     (intersection (sites Left) (sites Row (/ (count Rows) 2)))
                     (difference (sites Top) (sites Phase 0)) 
                 }) 
-            )
+           )
             (place "Queen2" 
                 (union { 
                     (difference (sites Bottom) (sites Phase 0)) 
                     (intersection (sites Right) (sites Row (/ (count Rows) 2)))
                     (difference (sites Top) (sites Phase 1)) 
                 }) 
-            )
+           )
             }
-        )
+       )
         
         (play (forEach Piece))
         (end (if (is Line 4) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -48,7 +48,7 @@
         (credit "Eric Piette")
         (date "2008")
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)
@@ -56,6 +56,6 @@
     
     (ai 
         "All Queens Chess_ai"
-    )
+   )
     
 )

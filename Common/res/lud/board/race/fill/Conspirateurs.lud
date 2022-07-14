@@ -4,7 +4,7 @@
         (between if:(is Occupied (between)))
         (to if:("IsEmptyAndNotVisited" (to)))
         #2
-    )
+   )
 )
 
 (define "HopSequence" 
@@ -15,11 +15,11 @@
                 (and 
                     (not (is In (last To) (sites "Sanctuaries")))  
                     (can Move ("Hop" (last To)))
-                ) 
+               ) 
                 (moveAgain) 
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "GoalReached" ("AllOwnedPiecesIn" (sites "Sanctuaries")))
@@ -47,31 +47,31 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (forEach (sites "Secret Meeting Place") if:(is Empty (site))))
-                )
-            ) 
+               )
+           ) 
             (nextPhase (and ("HandEmpty" P1) ("HandEmpty" P2)) "Movement")
-        )
+       )
         (phase "Movement"  
             (play 
                 (if "SameTurn"
                     (or 
                         ("HopSequence" (last To)) 
                         (move Pass)
-                    )
+                   )
                     (forEach Piece (if (not (is In (from) (sites "Sanctuaries"))) 
                             (or 
                                 ("HopSequence" (from)) 
                                 "StepToEmpty"
-                            )
-                        )
-                    )
-                )
-            )
+                           )
+                       )
+                   )
+               )
+           )
             (end (if "GoalReached" (result Mover Win)))
-        ) 
+       ) 
         }
         
-    )
+   )
 )
 
 (metadata
@@ -87,7 +87,7 @@
         (classification "board/race/reach")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (region Colour "Secret Meeting Place" (colour 150 150 150))
@@ -99,6 +99,6 @@
     
     (ai 
         "Conspirateurs_ai"
-    )
+   )
     
 )

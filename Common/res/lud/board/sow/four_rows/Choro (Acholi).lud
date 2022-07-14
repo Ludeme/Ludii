@@ -15,7 +15,7 @@
             (track "TrackCW1" "7,W,N1,E" loop:True P1)
             (track "TrackCW2" "24,E,S1,W" loop:True P2)
             }
-        )
+       )
         (regions "Home" P1 (sites Track "TrackCCW1"))                              // P1 Home
         (regions "Home" P2 (sites Track "TrackCCW2"))                              // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
@@ -38,12 +38,12 @@
                         (if ("SameTurn")
                             (sites {(var "Replay")})
                             (sites Mover "Outer") 
-                        )
+                       )
                         if:(if ("SameTurn")
                             (< 0 (count at:(from)))
                             (< 1 (count at:(from)))
-                        )
-                    )
+                       )
+                   )
                     (then 
                         (sow
                             "TrackCCW"
@@ -51,7 +51,7 @@
                             apply:(and 
                                 (if (and (!= 1 (value Player Mover)) (is In (to) (sites Mover "Inner"))) 
                                     (set Value Mover 1)
-                                )
+                               )
                                 (if (< 1 (count at:(to)))
                                     (and
                                         (moveAgain)
@@ -66,37 +66,37 @@
                                                         (from ("OppositePit" (to)))
                                                         (to (last From))
                                                         count:(count at:("OppositePit" (to)))
-                                                    )
+                                                   )
                                                     (fromTo
                                                         (from ("OppositeOuterPit" (to)))
                                                         (to (last From))
                                                         count:(count at:("OppositeOuterPit" (to)))
-                                                    )
+                                                   )
                                                     (set Var "Replay" (from))
                                                 })
                                                 (set Var "Replay" (to))
-                                            )
+                                           )
                                             (if (is Occupied ("OuterPhaseOppositePit"))
                                                 (and
                                                     (fromTo
                                                         (from ("OuterPhaseOppositePit"))
                                                         (to (last From))
                                                         count:(count at:("OuterPhaseOppositePit"))
-                                                    )
+                                                   )
                                                     (set Var "Replay" (from))
-                                                )
+                                               )
                                                 (set Var "Replay" (to))
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                                           )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             (nextPhase Mover (= 1 (count at:(last To afterConsequence:True))) "MainPhase")
-        )
+       )
         
         (phase "MainPhase"
             (play
@@ -106,18 +106,18 @@
                             (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 (sites {(mapEntry "LeftMostOuter" Mover) (mapEntry "SecondLeftInner" Mover)}) 
-                            )
+                           )
                             if:(and {
                                 if:(if ("SameTurn")
                                     (< 0 (count at:(from)))
                                     (< 1 (count at:(from)))
-                                )
+                               )
                                 (is In (from) (sites {(mapEntry "LeftMostOuter" Mover) (mapEntry "SecondLeftInner" Mover)}))
                                 (is In ("NextHole" (from) "TrackCW" (count at:(from))) (sites Mover "Inner"))
                                 (is Occupied ("OppositePit" ("NextHole" (from) "TrackCW" (count at:(from)))))
                                 (is Occupied ("OppositeOuterPit" ("NextHole" (from) "TrackCW" (count at:(from)))))
                             })
-                        )
+                       )
                         (then 
                             (sow
                                 "TrackCW"
@@ -136,32 +136,32 @@
                                                     (from ("OppositePit" (to)))
                                                     (to (last From))
                                                     count:(count at:("OppositePit" (to)))
-                                                )
+                                               )
                                                 (fromTo
                                                     (from ("OppositeOuterPit" (to)))
                                                     (to (last From))
                                                     count:(count at:("OppositeOuterPit" (to)))
-                                                )
+                                               )
                                                 (set Var "Replay" (from))
                                             })
                                             (set Var "Replay" (to))
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
                     (move Select
                         (from 
                             (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 (sites Mover) 
-                            )
+                           )
                             if:(if ("SameTurn")
                                 (< 0 (count at:(from)))
                                 (< 1 (count at:(from)))
-                            )
-                        )
+                           )
+                       )
                         (then 
                             (sow
                                 "TrackCCW"
@@ -180,28 +180,28 @@
                                                     (from ("OppositePit" (to)))
                                                     (to (last From))
                                                     count:(count at:("OppositePit" (to)))
-                                                )
+                                               )
                                                 (fromTo
                                                     (from ("OppositeOuterPit" (to)))
                                                     (to (last From))
                                                     count:(count at:("OppositeOuterPit" (to)))
-                                                )
+                                               )
                                                 (set Var "Replay" (from))
                                             })
                                             (set Var "Replay" (to))
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         }
         
         (end ("BlockWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -229,7 +229,7 @@
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

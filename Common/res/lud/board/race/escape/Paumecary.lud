@@ -10,7 +10,7 @@
             (track "Track1" {24..18 End} P1 directed:True)
             (track "Track2" {25 23..18 End} P2 directed:True)
             }
-        )
+       )
         (dice d:6 num:2)
         (piece "Disc" Each
             (or
@@ -23,23 +23,23 @@
                             ("NextSiteFrom" (from) (pips))
                             if:("NoEnemyOrOnlyOne" (to))
                             ("HittingCapture" (handSite Next))
-                        )
-                    )
+                       )
+                   )
                     (then ("ReplayNotAllDiceUsed"))
-                )
+               )
                 (if (is Empty (handSite Mover))
                     (forEach Die 
                         replayDouble:True 
                         if:(and
                             ("DieNotUsed")
                             ("IsEndTrack" ("NextSiteFrom" (from) (pips)))
-                        )
+                       )
                         (move Remove (from))
                         (then ("ReplayNotAllDiceUsed"))
-                    )
-                )
-            )		
-        )
+                   )
+               )
+           )		
+       )
         (hand Each)
     })
     (rules 
@@ -50,10 +50,10 @@
         (play 
             ("RollEachNewTurnMove"
                 (or (forEach Piece) (forEach Piece container:(mover)))
-            )
-        )
+           )
+       )
         (end ("EscapeWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -71,7 +71,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in England, from around 1300 to 1399.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)

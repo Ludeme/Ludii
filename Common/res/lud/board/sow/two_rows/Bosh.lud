@@ -6,14 +6,14 @@
     (if (is Mover P1)
         (sites (values Remembered "OwnedP1"))
         (sites (values Remembered "OwnedP2"))
-    )
+   )
 )
 
 (define "OneRowIsEmpty"
     (or 
         (no Pieces All in:(sites P1))
         (no Pieces All in:(sites P2))
-    )
+   )
 )
 
 (define "OnlyOnFilledHoles"
@@ -24,14 +24,14 @@
     (if (is Mover P1)
         (forget Value "OwnedP1" #1)
         (forget Value "OwnedP2" #1)
-    )
+   )
 )
 
 (define "NoOwnedHoles" 
     (if (= #1 P1)
         (= 0 (size Array (values Remembered "OwnedP1")))
         (= 0 (size Array (values Remembered "OwnedP2")))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -41,7 +41,7 @@
     (equipment { 
         (mancalaBoard 2 5 store:None
             (track "Track" "0,E,N,W" loop:True)
-        )
+       )
         (regions P1 (sites Bottom))  // P1 home
         (regions P2 (sites Top))     // P2 home
         (piece "Seed" Shared)
@@ -65,30 +65,30 @@
                                 ("SameTurn") 
                                 "PlayFromNextHole" 
                                 ("OwnedHoles") 
-                            ) 
+                           ) 
                             if:(> (count at:(from)) 0)
-                        )
+                       )
                         (then 
                             (sow
                                 apply:(if 
                                     (and 
                                         (= (count at:("NextHoleFrom" (to) 1)) 0) 
                                         (> (count at:("NextHoleFrom" (to) 2)) 0)
-                                    )
+                                   )
                                     (fromTo 
                                         (from ("NextHoleFrom" (to) 2)) 
                                         (to (handSite Mover)) 
                                         count:(count at:("NextHoleFrom" (to) 2))
-                                    )
+                                   )
                                     (if
                                         (> (count at:("NextHoleFrom" (to) 1)) 0) 
                                         (moveAgain)
-                                    )
-                                )
+                                   )
+                               )
                                 skipIf:("OnlyOnFilledHoles")
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     }
                     (then 
                         (if ("OneRowIsEmpty")
@@ -98,22 +98,22 @@
                                         (from (site))
                                         (to (handSite P1))
                                         count:(count at:(site))
-                                    )
-                                )
+                                   )
+                               )
                                 (forEach Site (sites P2)
                                     (fromTo
                                         (from (site))
                                         (to (handSite P2))
                                         count:(count at:(site))
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-        )
+       )
         (phase "BetweenRounds"
             (play
                 (if (<= 4 (count Cell at:(handSite Mover)))
@@ -121,29 +121,29 @@
                         (from (handSite Mover))
                         (to (intersection (sites Empty) (sites Mover)))
                         count:4
-                    )
+                   )
                     (move Pass
                         (then
                             (forEach Site ("OwnedHoles")
                                 (if (is Empty (site))
                                     ("ForgetValue" (site))
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             (end (if (all Passed)
                     {
                     (if ("NoOwnedHoles" 1) (result P2 Win))
                     (if ("NoOwnedHoles" 2) (result P1 Win))
                     }
-                )
-            )
+               )
+           )
             (nextPhase (all Passed) "Sowing")
-        )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -161,7 +161,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Horn of Africa, around 1931.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

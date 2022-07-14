@@ -11,25 +11,25 @@
     (or
         ("PieceFullStacked" #1) 
         ("PieceHalfStacked" #1)
-    )
+   )
 )
 
 (define "UnstackFull" 
     (forEach Level (last To)
         (set State at:(last To) level:(level) 2)
-    )
+   )
 )
 
 (define "UnstackHalf" 
     (forEach Level (last To)
         (set State at:(last To) level:(level) 1)
-    )
+   )
 )
 
 (define "Stack" 
     (forEach Level (last To)
         (set State at:(last To) level:(level) 0)
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -42,7 +42,7 @@
             (track "Track1" {7..12} P1 directed:True)
             (track "Track2" {18..13} P2 directed:True)
             } 
-        ) 
+       ) 
         (dice d:6 num:2)
         (piece "Disc" Each
             (forEach Die 
@@ -53,11 +53,11 @@
                         (from) 
                         (to 
                             "SiteToMoveOnTrack" 
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         (map "StartTrack" {(pair P1 7) (pair P2 18)})
     })
     (rules 
@@ -80,29 +80,29 @@
                                         (and 
                                             (if (= 3 (size Stack at:(last To))) ("UnstackHalf") ("UnstackFull"))
                                             ("ReplayNotAllDiceUsed")
-                                        )
-                                    )
-                                )
-                            )
+                                       )
+                                   )
+                               )
+                           )
                             (if ("PieceHalfStacked" "SiteToSelect")
                                 (move Select (from ("SiteToSelect"))
                                     (then 
                                         (and 
                                             ("UnstackFull")
                                             ("ReplayNotAllDiceUsed")
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             (nextPhase Mover 
                 (all Sites (sites Occupied by:Mover) if:(not ("PieceStacked" (site)))) 
                 "Stacking"
-            )
-        )
+           )
+       )
         (phase "Stacking" 
             (play 
                 ("RollEachNewTurnMove"
@@ -116,40 +116,40 @@
                                             (if (= 3 (size Stack at:(last To))) ("UnstackHalf") ("Stack"))
                                             ("ReplayNotAllDiceUsed")
                                         })
-                                    )
-                                )
-                            )
+                                   )
+                               )
+                           )
                             (if ("PieceHalfStacked" "SiteToSelect")
                                 (move Select (from ("SiteToSelect"))
                                     (then 
                                         (and 
                                             ("Stack")
                                             ("ReplayNotAllDiceUsed")
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             (nextPhase Mover 
                 (all Sites (sites Occupied by:Mover) if:(not ("PieceUnstacked" (site)))) 
                 "BearingOff"
-            )
-        )
+           )
+       )
         (phase "BearingOff" 
             (play 
                 (do 
                     (if (or (all DiceEqual) (not "SameTurn")) (roll)) 
                     next:(forEach Piece top:True)
                     (then ("ReplayNotAllDiceUsed"))
-                )
-            )
+               )
+           )
             (end ("EscapeWin"))
-        )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -168,7 +168,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Southwest Asia, around 1974.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)

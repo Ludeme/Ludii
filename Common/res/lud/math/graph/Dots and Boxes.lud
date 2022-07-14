@@ -7,8 +7,8 @@
         (intersection 
             (sites Incident Edge of:Cell at:(site)) 
             (sites Empty Edge) 
-        ) 
-    ) 
+       ) 
+   ) 
 )
 
 (define "CaptureTheCell" 
@@ -16,14 +16,14 @@
         (to
             Cell 
             (site) 
-        )
+       )
         (then 
             (and 
                 (addScore Mover 1) 
                 (moveAgain)
-            )
-        )
-    ) 
+           )
+       )
+   ) 
 )
 
 (define "HalfBoardSize" (/ (count Cells) 2))
@@ -43,13 +43,13 @@
                         "CellOfLastEdge" 
                         (if "NoFreeEdge"
                             "CaptureTheCell"
-                        )
-                    )
-                )
-            )
-        ) 
+                       )
+                   )
+               )
+           )
+       ) 
         (end (if (> (score Mover) "HalfBoardSize") (result Mover <Result>))) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -134,7 +134,7 @@
         (credit "Eric Piette")
         (date "1889")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Red))
@@ -144,5 +144,5 @@
     })
     (ai
         "Dots and Boxes_ai"
-    )
+   )
 )

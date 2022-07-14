@@ -5,17 +5,17 @@
         (board (rect <Rows> <Columns>)) 
         (piece "Marker" Each <Moves>)
         }
-    )  
+   )  
     (rules 
         (start 
             { 
             (place "Marker1" (sites Phase 1))
             (place "Marker2" (sites Phase 0))
             }
-        )
+       )
         (play (forEach Piece))
         (end ("NoMoves" Loss))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -76,11 +76,11 @@
             (to 
                 if:("IsEnemyAt" (to)) 
                 (apply (remove (to)))
-            )
-        )
+           )
+       )
         > 
         "Pieces must step onto an enemy piece."
-    )*  
+   )*  
     (item 
         "Cannibal" 
         <
@@ -90,13 +90,13 @@
                 if:(or
                     ("IsEnemyAt" (to)) 
                     ("IsFriendAt" (to))
-                )  
+               )  
                 (apply (remove (to)))
-            )
-        )
+           )
+       )
         > 
         "Pieces can step onto any piece."
-    )  
+   )  
     }
 )
 
@@ -113,10 +113,10 @@
         (credit "Cameron Browne 14/5/2020")
         (author "Michael H. Albert, J.P. Grossman and Richard Nowakowski (2001).")
         }
-    )
+   )
     (graphics 
         {
         (board Style Chess)
         }
-    )
+   )
 )

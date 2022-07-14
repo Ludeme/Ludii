@@ -7,7 +7,7 @@
     (equipment { 
         (mancalaBoard 2 5 store:None
             (track "Track" "0,E,N,W" loop:True)
-        )
+       )
         (piece "Seed" Shared)
         (hand Each)
         (regions P1 (sites Bottom))      // P1 home
@@ -26,17 +26,17 @@
                     (from (mapEntry "Fourth" Mover))
                     (to (mapEntry Mover))
                     count:4
-                )
-            )
+               )
+           )
             (nextPhase Mover "Sowing")
-        )
+       )
         (phase "Sowing"
             (play
                 (if 
                     (and
                         (<= 13 (count at:(mapEntry Mover)))
                         (!= 1 (value Player Mover))
-                    )
+                   )
                     (or {
                         (move Select
                             (from (mapEntry Mover))
@@ -46,12 +46,12 @@
                                         skipIf:(or
                                             (= (to) (mapEntry P1))
                                             (= (to) (mapEntry P2))
-                                        )
-                                    )
+                                       )
+                                   )
                                     (set Value Mover 1)
-                                )
-                            )
-                        )
+                               )
+                           )
+                       )
                         }
                         (then
                             (forEach Site (difference (sites Next) (mapEntry Next))
@@ -59,44 +59,44 @@
                                     (or 
                                         (= 2 (count at:(site)))
                                         (= 3 (count at:(site)))
-                                    )
+                                   )
                                     (fromTo 
                                         (from (site))
                                         (to (mapEntry Mover))
                                         count:(count at:(site))
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                   )
+                               )
+                           )
+                       )
+                   )
                     (move Select
                         (from
                             (difference (sites Mover) (mapEntry Mover))
                             if:(is Occupied (from))
-                        )
+                       )
                         (then
                             (sow
                                 apply:(if 
                                     (or
                                         (= 2 (count at:(to)))
                                         (= 3 (count at:(to)))
-                                    )
+                                   )
                                     (fromTo
                                         (from (to))
                                         (to (mapEntry Mover))
                                         count:(count at:(to))
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         }
         
         (end ("MancalaByScoreWhen" (no Moves Next)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -112,7 +112,7 @@
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

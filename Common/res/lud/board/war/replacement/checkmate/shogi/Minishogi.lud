@@ -6,22 +6,22 @@
                     (move 
                         (from (sites Occupied by:Next container:"Hand" components:{"Kakugyo" "Ginsho" "Hisha" "Kinsho"})) 
                         (to (sites Empty))
-                    ) 
+                   ) 
                     (do 
                         (move 
-                            (from (sites Occupied by:Next container:"Hand" component:"Fuhyo" )) 
+                            (from (sites Occupied by:Next container:"Hand" component:"Fuhyo")) 
                             (to (difference (sites Empty) (sites Next "Promotion"))
                                 if:("OnePawnPerColumn" Next)
-                            ) 
-                        ) 
+                           ) 
+                       ) 
                         ifAfterwards:(not ("IsInCheck" "Osho" Mover))
-                    )
+                   )
                     (forEach Piece Next) 
                 })
                 ifAfterwards:(not ("IsInCheck" "Osho" Next))
-            ) 
-        )
-    )
+           ) 
+       )
+   )
 )
 
 (define "CapturePiece"
@@ -30,16 +30,16 @@
             (add 
                 (piece (mapEntry "Captured" (what at:(to)))) 
                 (to (mapEntry "Where" (what at:(to))))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "OnePawnPerColumn" 
     (= 
         (count Sites in:(sites Occupied by:#1 container:"Board" component:"Fuhyo")) 
         (count Sites in:(difference (sites Occupied by:#1 container:"Board" component:"Fuhyo") (sites Column (column of:(to)))))
-    )
+   )
 )
 
 (define "InPromotionZone"
@@ -55,8 +55,8 @@
         (if 
             ("InPromotionZone" (last To)) 
             "Promote"
-        )
-    )
+       )
+   )
 )
 
 (define "CanPromote"
@@ -64,8 +64,8 @@
         (if 
             (or ("InPromotionZone" (last To)) ("InPromotionZone" (last From))) 
             (moveAgain) 
-        ) 
-    )
+       ) 
+   )
 )
 
 (define "SlideMove"
@@ -74,7 +74,7 @@
         #1 
         (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
-    )   	
+   )   	
 )
 
 (define "StepMove"
@@ -83,7 +83,7 @@
         #1
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
-    )   	
+   )   	
 )
 
 (define "GoldMove" ("StepMove" (directions {Forward Backward Rightward Leftward FL FR})))
@@ -171,34 +171,34 @@
                 (or
                     ("Promote")
                     (move Pass)
-                )
+               )
                 (do 
                     (or {
                         (move 
                             (from (sites Occupied by:Mover container:"Hand" components:{"Kakugyo" "Ginsho" "Hisha" "Kinsho"})) 
                             (to (sites Empty))
-                        ) 
+                       ) 
                         (do 
                             (move 
-                                (from (sites Occupied by:Mover container:"Hand" component:"Fuhyo" )) 
+                                (from (sites Occupied by:Mover container:"Hand" component:"Fuhyo")) 
                                 (to (difference (sites Empty) (sites Mover "Promotion"))
                                     if:("OnePawnPerColumn" Mover)
-                                ) 
-                            ) 
+                               ) 
+                           ) 
                             ifAfterwards:(not (and ("IsInCheck" "Osho" Next) ("NextCannotMove")))
-                        )
+                       )
                         (forEach Piece) 
                     })
                     ifAfterwards:(not ("IsInCheck" "Osho" Mover))
-                )
-            )
-        )
+               )
+           )
+       )
         
         (end {
             (if (and ("IsInCheck" "Osho" Next) ("NextCannotMove")) (result Mover Win)) 
             ("BlockWin")
         })
-    )
+   )
 )
 
 (metadata
@@ -215,7 +215,7 @@
         (credit "Eric Piette")
         (origin  "This game is from Japan, on 1970.")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour White))
@@ -234,6 +234,6 @@
     
     (ai 
         "Minishogi_ai"
-    )
+   )
     
 )

@@ -19,7 +19,7 @@
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" <Board:track2> loop:True P2)
             }
-        )
+       )
         (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
         (regions "Home" P2 (sites Track "Track2"))                              // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
@@ -38,18 +38,18 @@
                     (sites P1 "Outer")
                     (sites P2 "Outer") 
                 }) 
-            ) 
-        )
+           ) 
+       )
         
         (play 
             (move Select
                 (from 
                     (if ("SameTurn") 
-                        (if "MoveAgainAfterCapture" "PlayFromNextHole" "LastHoleSowed" ) 
+                        (if "MoveAgainAfterCapture" "PlayFromNextHole" "LastHoleSowed") 
                         (sites Mover "Home") 
-                    ) 
+                   ) 
                     if:(> (count at:(from)) <Sow:numSeed>)
-                )
+               )
                 (then 
                     (sow
                         "Track"
@@ -66,35 +66,35 @@
                                         (from (to)) 
                                         (to (handSite Mover)) 
                                         count:(count at:(to))
-                                    ) 
+                                   ) 
                                     (fromTo 
                                         (from ("OppositePit" (to))) 
                                         (to (handSite Mover)) 
                                         count:(count at:("OppositePit" (to)))
-                                    ) 
+                                   ) 
                                     (fromTo 
                                         (from ("OppositeOuterPit" (to))) 
                                         (to (handSite Mover)) 
                                         count:(count at:("OppositeOuterPit" (to)))
-                                    )
+                                   )
                                     (if (> (count at:"NextHole") 1)
                                         (and
                                             (set Pending "NextHole") // We store the next hole to play in the pending value.
                                             (moveAgain)
-                                        )
-                                    )
+                                       )
+                                   )
                                     }
-                                )
+                               )
                                 (moveAgain)
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -127,7 +127,7 @@
         variations:{"Board Size/14" "Board Size/16" "Board Size/18" 
         "Board Size/20" "Board Size/22"  "Board Size/24" 
         }
-    )*
+   )*
     
     (ruleset "Ruleset/Wagner (Observed)" {
         "Play Rules/Sowing with 2 or more seeds" "Board Size/12"
@@ -135,7 +135,7 @@
         variations:{"Board Size/14" "Board Size/16" "Board Size/18" 
         "Board Size/20" "Board Size/22"  "Board Size/24" 
         }
-    )
+   )
     
 })
 
@@ -160,7 +160,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Southwest Africa, from around 1916 to 1923.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -168,5 +168,5 @@
     
     (ai
         "Hus (Damara)_ai"
-    )
+   )
 )

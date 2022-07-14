@@ -8,14 +8,14 @@
                 (shift -2 4 (rotate 180 (wedge 5)))
             })
             use:Vertex
-        )
+       )
         (piece "Disc" Each (move [#]))
     })
     (rules
         (start [#])
         (play [#])
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -25,7 +25,7 @@
     (info
         {
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)

@@ -6,9 +6,9 @@
             (fromTo 
                 (from (sites Occupied by:P1)) 
                 (to (sites LineOfSight Farthest at:(from) SameDirection))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -38,11 +38,11 @@
                 (and
                     (is In (where (id "Ball1")) (sites "Exit1"))
                     (is In (where (id "Ball2")) (sites "Exit2"))
-                )
+               )
                 (result Mover Win)
-            )
+           )
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -60,7 +60,7 @@
         <149>
         <170>
         "Default setup"
-    )* 
+   )* 
     }
 )
 
@@ -79,7 +79,7 @@
         (author "László Nagy")
         (credit "Matthew Stephenson")
         }
-    )
+   )
     
     (graphics {
         (piece Colour "Ball1" fillColour:(colour Red))

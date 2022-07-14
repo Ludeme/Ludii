@@ -16,27 +16,27 @@
                         (sites To (hop Orthogonal (between if:True) (to if:True))) 
                         Orthogonal
                         if:(not ("IsFriendAt" (to)))
-                    )
+                   )
                     if:(= 2 (count Steps (from) (to)))
-                )
-            )
-        )
+               )
+           )
+       )
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
         }
-    )  
+   )  
     (rules 
         (start
             { 
             (place "Knight1" (expand (sites Bottom)))
             (place "Knight2" (expand (sites Top)))
             }
-        )
+       )
         
         (play (forEach Piece))
         
         (end (if "RegionReached" (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -46,7 +46,7 @@
     (info
         {
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)

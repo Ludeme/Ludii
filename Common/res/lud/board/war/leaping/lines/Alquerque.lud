@@ -14,7 +14,7 @@
         <Play>
         
         (end ("NoMoves" Loss))  
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -29,12 +29,12 @@
                 (or 
                     ("HopCapture") 
                     ("StepToEmpty")
-                )
-            )
-        )
+               )
+           )
+       )
         > 
         "No force capture, no sequence."
-    )* 
+   )* 
     
     (item "No force capture sequence allowed" 
         <
@@ -43,19 +43,19 @@
                 (or
                     ("HopSequenceCaptureAgain")	
                     (move Pass)
-                )
+               )
                 (forEach Piece 
                     "Counter" 
                     (or 
                         ("HopSequenceCapture") 
                         ("StepToEmpty")
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         > 
         "No force capture, sequence allowed."
-    )
+   )
     
     (item "Force capture in sequence and huff rule" 
         <
@@ -70,7 +70,7 @@
                 (between 
                     if:("IsEnemyAt" (between))
                     (apply (remove (between)))
-                ) 
+               ) 
                 (to if:(is Empty (to))) 
                 (then
                     (and
@@ -80,49 +80,49 @@
                                     (between 
                                         if:("IsEnemyAt" (between))
                                         (apply (remove (between)))
-                                    )
+                                   )
                                     (to if:(is Empty (to)))
-                                )
-                            ) 
+                               )
+                           ) 
                             (moveAgain)
-                        )
+                       )
                         ("HasCaptured")
-                    )
-                )
-            ) 
-        )
+                   )
+               )
+           ) 
+       )
         
         (define "RememberSiteWithPossibleCapture"  
             (set Pending 
                 (sites From
                     (forEach Piece "Counter" 
                         ("HopCounter")
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (define "SitesWithPossibleCaptureInPreviousTurn" (sites Pending))
         (define "HuffOnePieceOf" 
             (move
                 Select 
                 (from #1
                     if:(!= (what at:(from)) 0)
-                )
+               )
                 (then 
                     (and  {
                         (remove (last To)) 
                         (moveAgain) 
                         (set Value Prev 0)
                     })
-                )
-            )
-        )
+               )
+           )
+       )
         (define "ShouldCapturedButMoved" 
             (and 
                 (is In (last From) ("SitesWithPossibleCaptureInPreviousTurn"))  
                 (is In (last From) (sites Empty))
-            )
-        )
+           )
+       )
         
         (define "MoveOrCapture" 
             (do 
@@ -134,11 +134,11 @@
                             Step
                             (to if:(is Empty (to)))
                             (then ("HasNotCaptured"))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         
         (play 
             (or
@@ -146,10 +146,10 @@
                     (or
                         (if ("ShouldCapturedButMoved") 
                             ("HuffOnePieceOf" (last To))
-                        )
+                       )
                         ("HuffOnePieceOf" ("SitesWithPossibleCaptureInPreviousTurn"))
-                    )
-                )
+                   )
+               )
                 (if ("SameTurn")
                     (if ("HasHuffed")
                         ("MoveOrCapture")
@@ -159,20 +159,20 @@
                             (between 
                                 if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
-                            ) 
+                           ) 
                             (to if:(is Empty (to))) 
                             (then
                                 ("HasCaptured")
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     ("MoveOrCapture")
-                )
-            )
-        )
+               )
+           )
+       )
         > 
         "Force capture in sequence and huff rule."
-    )
+   )
     }
 )
 
@@ -219,7 +219,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Islamic World, from around 1221 to 1674.")
         }
-    )
+   )
     
     (graphics {
         
@@ -227,6 +227,6 @@
     
     (ai 
         "Alquerque_ai"
-    )
+   )
     
 )

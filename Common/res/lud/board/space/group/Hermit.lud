@@ -6,9 +6,9 @@
         (- 
             (- (count Groups Orthogonal #1) (count Groups Orthogonal #1 min:5))
             (- (count Groups Orthogonal #1) (count Groups Orthogonal #1 min:3))          
-        )
+       )
         } 
-    )
+   )
 )
 
 //*************************************************************
@@ -36,26 +36,26 @@
                     (= 3 (size Group at:(last To) Orthogonal))
                     (= 5 (size Group at:(last To) Orthogonal))
                     }
-                )
+               )
                 (then
                     (addScore Mover (- ("CombinedGroupCounts" if:(= (who at:(to)) (mover)))  (score Mover)))
-                )         
-            )
-        )
+               )         
+           )
+       )
         (end
             (if (all Passed) 
                 {
                 (if (> ("CombinedGroupCounts" if:(= (who at:(to)) P1))
                         ("CombinedGroupCounts" if:(= (who at:(to)) P2))
-                ) (result P1 Win))
+               ) (result P1 Win))
                 (if (< ("CombinedGroupCounts" if:(= (who at:(to)) P1))
                         ("CombinedGroupCounts" if:(= (who at:(to)) P2))
-                ) (result P2 Win))
+               ) (result P2 Win))
                 }
                 (result Mover Win)
-            )  
-        )
-    )
+           )  
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -123,7 +123,7 @@
         (credit "Phil Leduc")
         (date "2020")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour "#f0ffff"))

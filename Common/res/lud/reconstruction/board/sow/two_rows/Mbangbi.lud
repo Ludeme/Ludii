@@ -7,7 +7,7 @@
     (equipment { 
         (mancalaBoard 2 5
             (track "Track" <Track> loop:True)
-        )
+       )
         (regions P1 (sites {1..5}))
         (regions P2 (sites {6..10}))
         (map {(pair 1 0) (pair 2 11)})
@@ -20,7 +20,7 @@
         (play [#]) // When sowing, if the final counter makes two or four counters, these are taken.
         
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -48,7 +48,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Cameroon, around 1938.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

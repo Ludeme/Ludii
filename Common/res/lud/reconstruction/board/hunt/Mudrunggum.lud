@@ -8,9 +8,9 @@
                 (wedge 3) 
                 (shift 0 6 (rotate 180 (wedge 3))) 
                 } 
-            ) 
+           ) 
             use:Vertex
-        )
+       )
         (piece "Tiger" P1 (move [#]))
         (piece "Sheep" P2 (move [#]))
     })  
@@ -22,7 +22,7 @@
         })
         (play [#])
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -40,7 +40,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, around 1832.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)

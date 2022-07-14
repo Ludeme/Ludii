@@ -18,11 +18,11 @@
                         (to 
                             "SiteToMoveOnTrack" 
                             ("HittingCapture" (handSite Next))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         (hand Each)
     })
     (rules 
@@ -36,9 +36,9 @@
                     (forEach Piece top:True) 
                     (forEach Piece container:(mover) top:True)
                     (then ("ReplayNotAllDiceUsed"))
-                )
-            )
-        )
+               )
+           )
+       )
         (end {
             (if (and {
                     (= 2 (size Stack at:<End:site1>))
@@ -50,15 +50,15 @@
                     (= 0 (count Sites in:(difference (sites Occupied by:Mover) (sites <End:sites>))))
                 })
                 (result Mover Win)
-            )
+           )
             (if (and 
                     (< 2 (size Stack at:12))
                     (< 2 (size Stack at:0))
-                )
+               )
                 (result Mover Draw)
-            )
+           )
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -88,7 +88,7 @@
             (credit "Eric Piette")
             (origin  "This game was played in Spain, around 1283.")
             }
-        )
+       )
         
         (graphics {
             (show Edges Hidden)
@@ -98,5 +98,5 @@
             (stackType 2 Count)
         })
         
-    )
+   )
     

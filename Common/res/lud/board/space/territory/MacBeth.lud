@@ -7,11 +7,11 @@
                 (allCombinations 
                     (add (piece "Disc0" state:(mover)) (to (site))) 
                     (flip (between)) 
-                )
-            )
-        )
+               )
+           )
+       )
         (to if:(is Friend (state at:(to))))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -23,11 +23,11 @@
             (remove
                 (hex 6)
                 cells:{7 9 11 22 24 26 28 41 43 45 47 49 62 64 66 68 79 81 83}
-            )
-        )
+           )
+       )
         (piece "Disc" Neutral (flips 1 2))
         }
-    )  
+   )  
     (rules 
         
         <Rules:start> 
@@ -44,25 +44,25 @@
                                 (set Score 
                                     P1 
                                     (count Sites in:(sites State 1))
-                                )
+                               )
                                 (set Score 
                                     P2 
                                     (count Sites in:(sites State 2))
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         }
         
         (end
             (if (all Passed)
                 (byScore)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -77,7 +77,7 @@
         >
         <>
         "The pieces are placed on the board."
-    )  
+   )  
     
     (item "Reversi Mode" 
         <>
@@ -89,20 +89,20 @@
                     (piece
                         "Disc0" 
                         state:(mover)
-                    )
+                   )
                     (to 
                         (intersection 
                             (sites Empty) 
                             (sites Centre)
-                        )
-                    )
-                )
-            ) 
+                       )
+                   )
+               )
+           ) 
             (nextPhase Mover (>= (count Moves) 5) "Playing")
-        )
+       )
         >
         "The pieces are placed on the board."
-    )**
+   )**
     
 })
 
@@ -121,7 +121,7 @@
         (author "Christian Freeling (used with permission)")
         (credit "Eric Silverman")
         }
-    )
+   )
     
     (graphics {
         (piece Colour state:1 fillColour:(colour Black))
@@ -137,5 +137,5 @@
     
     (ai
         "MacBeth_ai"
-    )
+   )
 )

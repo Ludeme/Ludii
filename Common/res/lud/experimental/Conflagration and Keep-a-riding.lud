@@ -55,7 +55,7 @@
                     (is Next (who at:(between)))
                     (is Empty (between))
                     }
-            ))
+           ))
             (to <Board:area> if:(is Mover (who at:(to))))
 )))
 //--------------------------------------------------------
@@ -69,7 +69,7 @@
                 (to (sites LineOfSight Piece at:(from))
                     if:(is Next (who at:(to)))
                     (apply (remove (to))) 
-            ))
+           ))
             (<Game:option>)
 )))
 
@@ -82,7 +82,7 @@
                 (to (sites LineOfSight Piece at:(from))
                     if:(is Next (who at:(to)))
                     (apply (remove (to))) 
-            ))
+           ))
 )))
 
 (define "PriorityCaptureOverMoveByPiece"
@@ -93,7 +93,7 @@
                 (to (sites LineOfSight Piece at:(from))
                     if:(is Next (who at:(to)))
                     (apply (remove (to))) 
-            ))
+           ))
             (<Game:option>)
 )))
 
@@ -101,7 +101,7 @@
     (do
         (set Var "OriginGroupSize" (size Group at:(from))
             (then (set Var "From" (from)))
-        )
+       )
         next:(move 
             (from (from))
             (to
@@ -121,12 +121,12 @@
         (board (hex Hexagon <Board:side>) use:Cell)
         (piece "Disc" Each)
         }
-    )
+   )
     (rules
         (start {<Board:white> <Board:black>})
         (play
             <Game:structure>
-        )
+       )
         (end 
             <Game:winCondition>
 )))
@@ -148,16 +148,16 @@
             ("IsSingleGroupOf" Mover)
             ("IsSingleGroupOf" Next)
             }
-        )
+       )
         {
         (if 
             ("IsSingleGroupOf" Mover)
             (result Mover Win)
-        )
+       )
         (if 
             ("IsSingleGroupOf" Next)
             (result Next Win)
-        )
+       )
         ("Last2MoveEnd")
         }
 ))
@@ -175,28 +175,28 @@
         <"Shakattrition"> <"Last2MoveEnd"> 
         <"Motorbike"> 
         "Keep-a-riding"
-    )
+   )
     
     (item "Conflagration, Win when extinguished or contained, Step to group or Slide-capture" 
         <"MoveOrLOSCapture"> 
         <"Shakattrition"> <"AMSEnd"> 
         <"Fire"> 
         "Conflagration Standard version"
-    )***
+   )***
     
     (item "Conflagration, Firestorm Variant (longer), Step to group (else Slide-capture)"
         <"PriorityMoveOverCaptureByPiece"> 
         <"Shakattrition"> <"AMSEnd"> 
         <"Fire"> 
         "Conflagration, Firestorm Variant (longer)"
-    )
+   )
     
     (item "Conflagration, Backfire Variant (shorter), Slide-caputure (else step to group)"
         <"PriorityCaptureOverMoveByPiece"> 
         <"Shakattrition"> <"AMSEnd"> 
         <"Fire"> 
         "Conflagration, Backfire Variant"
-    )  
+   )  
     }
 )
 
@@ -271,7 +271,7 @@
         (credit "Dale W. Walton")
         (date "14-10-2021")
         }
-    )
+   )
     
     (graphics 
         {
@@ -282,7 +282,7 @@
         (piece Colour P2 strokeColour:(colour DarkGrey))
         (piece Background "Disc" image:"Disc" fillColour:(colour 0 0 0 75) edgeColour:(colour 0 0 0 0) scale:0.95 offsetX:-1 offsetY:2)
         (piece Foreground "Disc1" image:<Game:token> fillColour:(colour VeryLightGrey) edgeColour:(colour DarkGrey) scale:0.70)
-        (piece Foreground "Disc2" image:<Game:token> fillColour:(colour 255 255 255 60) edgeColour:(colour 255 255 255 120) scale:0.70 )
+        (piece Foreground "Disc2" image:<Game:token> fillColour:(colour 255 255 255 60) edgeColour:(colour 255 255 255 120) scale:0.70)
         (board Colour Phase0 (colour 245 242 222))
         (board StyleThickness InnerEdges 1.6)
         (board StyleThickness OuterEdges 1.6)
@@ -295,6 +295,6 @@
         (region Colour (sites Outer) (colour 212 206 190))
         
         }
-    )
+   )
 )
 

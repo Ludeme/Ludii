@@ -6,8 +6,8 @@
             (or 
                 ("HopCapture")
                 ("StepToEmpty")
-            )
-        )
+           )
+       )
     })  
     (rules 
         (start { 
@@ -17,10 +17,10 @@
         
         (play 
             (forEach Piece)
-        )
+       )
         
         (end (if (no Pieces Next) (result Next Loss)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -41,7 +41,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in South Asia, around 1919.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)
@@ -49,5 +49,5 @@
     
     (ai
         "Bara Guti_ai"
-    )
+   )
 )

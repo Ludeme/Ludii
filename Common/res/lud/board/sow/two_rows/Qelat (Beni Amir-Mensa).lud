@@ -11,7 +11,7 @@
             (track "TrackCCW" "0,E,N,W" loop:True)
             (track "TrackCW" "5,W,N,E" loop:True)
             }
-        )
+       )
         (piece "Seed" Shared)
         (regions "Left"  P1 (intersection (expand (sites Left) steps:2) (sites Bottom)))  // P1 home left
         (regions "Left"  P2 (intersection (expand (sites Right) steps:2) (sites Top)))    // P2 home left
@@ -34,10 +34,10 @@
                                     (= 0 (state at:(to)))
                                 })
                                 (set State at:(to) (mover))
-                            )
-                        )
-                    )
-                )
+                           )
+                       )
+                   )
+               )
                 (move Select
                     (from (sites Mover "Right") if:(and (= 0 (state at:(from))) (is Occupied (from))))
                     (then
@@ -49,15 +49,15 @@
                                     (= 0 (state at:(to)))
                                 })
                                 (set State at:(to) (mover))
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (end ("MancalaByScoreWhen" (and (no Moves P1) (no Moves P2))))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -74,7 +74,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Horn of Africa, around 1971.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

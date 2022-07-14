@@ -10,7 +10,7 @@
             {
             (track "Track" "1,E,N,W" loop:True)
             }
-        )
+       )
         (piece "Seed" Shared)
         (hand Each)
         (regions P1 (sites Bottom))                     // P1 home
@@ -26,7 +26,7 @@
                 (from 
                     (sites Mover)
                     if:(> (count at:(from)) 0)		
-                )
+               )
                 (then
                     (sow
                         apply:(if (= 6 (count at:(to)))
@@ -34,15 +34,15 @@
                                 (from (to))
                                 (to (mapEntry Mover))
                                 count:6
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -59,7 +59,7 @@
         (classification "board/sow/two rows")
         (origin  "This game was played in Ghana, from around 1914 to 1927.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

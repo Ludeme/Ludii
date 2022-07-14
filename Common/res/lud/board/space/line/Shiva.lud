@@ -16,20 +16,20 @@
                             (if (= (value Player Mover) Off)
                                 (set Value Mover 1)
                                 (set Value Mover (+ (value Player Mover) 1))
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         }
-    )
+   )
     (rules
         (start 
             {
             (place "Marker" "Hand" count:12) 
             }
-        )
+       )
         
         phases:{
         (phase "Placement"
@@ -37,23 +37,23 @@
                 (do 
                     (move (from (handSite Mover)) (to (sites Empty))) 
                     ifAfterwards:(not (is Line 3 Orthogonal))
-                )
-            )
+               )
+           )
             (nextPhase (and ("HandEmpty" P1) ("HandEmpty" P2)) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play 
                 (do 
                     (forEach Piece)
                     ifAfterwards:(not (is Line 4 Orthogonal))
-                )
-            )
-        )
+               )
+           )
+       )
         }
         
         (end (if (= (value Player Mover) 3) (result Mover Win)))
-    )	
+   )	
 )
 
 //------------------------------------------------------------------------------
@@ -81,7 +81,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Nigeria, around 1951.")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
@@ -90,5 +90,5 @@
     })
     (ai
         "Shiva_ai"
-    )
+   )
 )

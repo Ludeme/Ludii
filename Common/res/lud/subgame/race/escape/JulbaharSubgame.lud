@@ -6,7 +6,7 @@
     (trackSite Move 
         from:#1 
         steps:(pips)
-    )
+   )
 )
 
 (define "DieNotUsed" (!= (pips) 0))
@@ -15,7 +15,7 @@
     (move
         Remove
         (site) 
-    )		
+   )		
 )
 
 (define "DieNotUsedAndNoEscapeAndNotOffTheTrack" 
@@ -32,8 +32,8 @@
         (to 
             ("NextSiteFrom" #1) 
             if:("NotAnEnemy") 
-        )
-    )
+       )
+   )
 )
 
 (define "MoveAPieceIf" 
@@ -41,7 +41,7 @@
         replayDouble:True 
         if:#1
         ("MoveAPiece" #2)
-    )		
+   )		
 )
 
 (define "AllPieceEscaped" (= 0 (size Stack in:(sites Occupied by:Mover))))
@@ -50,35 +50,35 @@
     (and 
         (!= (what at:(site)) 0) 
         (!= ("NextSiteFrom" (site)) Off)
-    )
+   )
 )
 
 (define "NotEmptyAndOneSpaceAfterEnd" 
     (and 
         (!= (what at:(site)) 0) 
         (= ("NextSiteFrom" (site)) End)
-    )
+   )
 )
 
 (define "NotEmptyAndOffBoard" 
     (and 
         (!= (what at:(site)) 0) 
         (= ("NextSiteFrom" (site)) Off)
-    )
+   )
 )
 
 (define "SetScoreOf" 
     (score 
         #1
         (+ (score #1) (size Stack in:(sites Occupied by:#2)))
-    )
+   )
 )
 
 (define "AllPieceLastQuadrant" 
     (= 
         (count Sites in:(difference (sites Occupied by:Mover) (sites Mover "Home"))) 
         0
-    ) 
+   ) 
 )
 
 (define "Move"
@@ -90,21 +90,21 @@
             (or {
                 (if "NotEmptyAndOneSpaceAfterEnd"
                     ("RemoveAPiece")	
-                )
+               )
                 (if (and "AllPieceLastQuadrant" "NotEmptyAndOffBoard")
                     ("RemoveAPiece")	
-                )
+               )
                 (if ("NotEmptyAndNotOffTheBoard") 
                     ("MoveAPiece" (site))
-                )
+               )
             })
             (then 
                 (if (not (all DiceUsed))
                     (moveAgain)
-                )
-            )
-        )
-    )		
+               )
+           )
+       )
+   )		
 )
 
 //-----------------------------------------------------------------------------
@@ -118,7 +118,7 @@
             (track "Track2" {25..20 18..13 0..5 7..12 End} P2 directed:True)
             } 
             use:Vertex
-        ) 
+       ) 
         (dice num:2)
         (regions "Home" P1 { 20..25 }) 
         (regions "Home" P2 { 7..12 }) 
@@ -139,9 +139,9 @@
                 (if (can Move ("Move"))
                     ("Move")
                     (move Pass (then (addScore Next 5)))
-                )
-            )
-        )
+               )
+           )
+       )
         
         (end 
             (if ("AllPieceEscaped") 
@@ -149,9 +149,9 @@
                     ("SetScoreOf" P1 P2)
                     ("SetScoreOf" P2 P1)
                 })
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //-------------------------------------------------------------------------
@@ -163,7 +163,7 @@
         (version "1.1.0")
         (classification "")
         }
-    )
+   )
     
     (graphics {
         (board Style backgammon)

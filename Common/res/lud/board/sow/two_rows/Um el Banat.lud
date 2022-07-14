@@ -2,7 +2,7 @@
     (if (is Mover P1)
         (sites (values Remembered "OwnedP1"))
         (sites (values Remembered "OwnedP2"))
-    )
+   )
 )
 
 (define "OnlyPiecesInMarked" 
@@ -17,21 +17,21 @@
     (+ 
         (count Cell at:(handSite #1))
         (count in:("SitesMarkedBy" #1))
-    )
+   )
 )
 
 (define "LeftMostEmpty" 
     (trackSite FirstSite 
         from:(mapEntry "LeftMost" Mover)
         if:(is Empty (to))
-    )
+   )
 )
 
 (define "RemmemberOwnedHoles" 
     (if (is Mover P1)
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -42,7 +42,7 @@
     (equipment { 
         (mancalaBoard 2 6 store:None
             (track "Track" "0,E,N,W" loop:True)
-        )
+       )
         (regions "Home" P1 (sites Bottom)) 
         (regions "Home" P2 (sites Top)) 
         (piece "Seed" Shared)
@@ -65,9 +65,9 @@
                             (if (and ("SameTurn") (= 1 (var "ContinueSowing")))
                                 ("LastHoleSowed") 
                                 ("OwnedHoles") 
-                            )
+                           )
                             if:(and (< 0 (count at:(from))) (= 0 (state at:(from))))
-                        )
+                       )
                         (then
                             (sow
                                 apply:
@@ -77,7 +77,7 @@
                                             (from (to))
                                             (to (handSite Mover))
                                             count:(min 2 (count at:(to)))
-                                        )
+                                       )
                                         (moveAgain)
                                         (set Var "ContinueSowing" 0)
                                     })
@@ -87,19 +87,19 @@
                                             (and
                                                 (moveAgain)
                                                 (set Var "ContinueSowing" 1)
-                                            )
+                                           )
                                             (if (and (= 4 (count at:(to))) (not (is In (sites Mover "Home"))))
                                                 (and
                                                     (set State at:(to) (mover))
                                                     (set Var "ContinueSowing" 0)
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                               )
+                                           )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
                     }
                     (then
                         (if ("OnlyPiecesInMarked")
@@ -109,36 +109,36 @@
                                         (from (site))
                                         (to (handSite P1))
                                         count:(count at:(site))
-                                    )
-                                )
+                                   )
+                               )
                                 (forEach Site ("SitesMarkedBy" 2)
                                     (fromTo
                                         (from (site))
                                         (to (handSite P2))
                                         count:(count at:(site))
-                                    )
-                                )
+                                   )
+                               )
                                 (forget Value "OwnedP1" All)
                                 (forget Value "OwnedP2" All)
                                 (if (>= ("NumCapturedPieces" 1) ("NumCapturedPieces" 2))
                                     (set NextPlayer (player 1))
                                     (set NextPlayer (player 2))
-                                )
+                               )
                             })
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (end (if ("NoPieceOnBoard")
                     {
                     (if (= 0 (count Cell at:(handSite P1))) (result P2 Win))
                     (if (= 0 (count Cell at:(handSite P2))) (result P1 Win))
                     }
-                )
-            )
+               )
+           )
             
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-        )
+       )
         
         (phase "BetweenRounds"
             (play
@@ -158,30 +158,30 @@
                                                 (from (handSite Mover))
                                                 (to ("LeftMostEmpty"))
                                                 count:3
-                                            )
+                                           )
                                             (fromTo 
                                                 (from (handSite Next))
                                                 (to ("LeftMostEmpty"))
                                                 count:1
-                                            )
+                                           )
                                             ("RemmemberOwnedHoles" ("LeftMostEmpty"))
                                         })
                                         (fromTo 
                                             (from (handSite Mover))
                                             (to (handSite Next))
                                             count:(count Cell at:(handSite Mover))
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                             })
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase (and (is Empty (handSite P1)) (is Empty (handSite P2))) "Sowing")
-        )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -198,7 +198,7 @@
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

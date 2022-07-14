@@ -23,24 +23,24 @@
                             (is Empty ("SiteToMoveOnTrack"))
                             (and 
                                 ("IsFriendAt" "SiteToMoveOnTrack")
-                                (if (is In (to) (sites Mover "StartingQuadrant" )) (not ("IsSingletonStack" "SiteToMoveOnTrack")) True)
-                            )
+                                (if (is In (to) (sites Mover "StartingQuadrant")) (not ("IsSingletonStack" "SiteToMoveOnTrack")) True)
+                           )
                             (and 
                                 ("IsEnemyAt" "SiteToMoveOnTrack")
                                 ("IsSingletonStack" "SiteToMoveOnTrack")
-                            )
+                           )
                         })
                         (move 
                             (from) 
                             (to 
                                 "SiteToMoveOnTrack" 
                                 ("HittingCapture" (handSite (who at:(to))))
-                            )
-                        )
-                    )
-                )	
-            )
-        )
+                           )
+                       )
+                   )
+               )	
+           )
+       )
     })
     (rules 
         (start {
@@ -53,14 +53,14 @@
                     (forEach Piece top:True) 
                     (forEach Piece container:(mover) top:True)
                     (then ("ReplayNotAllDiceUsed"))
-                )
-            )
-        )     
+               )
+           )
+       )     
         (end {
             ("EscapeWin")
             (if (and (no Moves P1) (no Moves P2)) (result Mover Draw))
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -78,7 +78,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Spain, around 1283.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)

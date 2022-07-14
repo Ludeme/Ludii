@@ -8,8 +8,8 @@
                 Step 
                 All
                 (to if:(is Empty (to)))
-            )
-        )
+           )
+       )
     })  
     (rules 
         (start (place "Marker" "Hand" count:3))
@@ -20,17 +20,17 @@
                 (move 
                     (from (handSite Mover)) 
                     (to <To>)
-                ) 
-            )
+               ) 
+           )
             (nextPhase ("HandEmpty" P2) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play (forEach Piece))
-        )
+       )
         }
         (end (if (is Line 3 All) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -91,9 +91,9 @@
         (credit "Eric Piette")
         (origin  "This game was played in Southwest United States, around 1907.")
         }
-    )
+   )
     
     (ai
         "Picaria_ai"
-    )
+   )
 )

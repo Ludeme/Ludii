@@ -6,9 +6,9 @@
             (max 1) 
             if:(= (what at:(between)) (id #1)) 
             (apply (remove (between)))
-        )
+       )
         (to if:"FriendOrCentreOrFortress") 
-    )
+   )
 )
 
 (define "CaptureJarl" (apply (trigger "Surrounded" P2)))
@@ -42,29 +42,29 @@
                             Orthogonal 
                             (between (max 1) if:(= (what at:(between)) (id "Jarl2")) "CaptureJarl")
                             (to if:"FriendOrCentreOrFortress")
-                        )
+                       )
                         }
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (piece "Thrall" P2 
             (move
                 Slide
                 Orthogonal 
                 (between if:"EmptyButNotCentreOrFortress")
                 (then ("Custodial" "Thrall1")) 
-            ) 
-        ) 
+           ) 
+       ) 
         (piece "Jarl" P2 
             (move
                 Slide
                 Orthogonal 
                 (then ("Custodial" "Thrall1")) 
-            ) 
-        ) 
+           ) 
+       ) 
         }
-    )  
+   )  
     (rules 
         (start
             { 
@@ -72,7 +72,7 @@
             (place "Thrall2" {"F3" "F4" "F5" "C6" "D6" "E6" "G6" "H6" "I6" "F7" "F8" "F9"})
             (place "Jarl2" (centrePoint))
             }
-        )
+       )
         
         (play (forEach Piece)) 
         
@@ -81,8 +81,8 @@
             (if (is Within (id "Jarl2") in:(sites Outer)) (result P2 Win))
             (if "JarlWasCaptured"  (result P1 Win))
             }
-        )
-    )
+       )
+   )
 )
 
 //--------------------------------------------------------------------------
@@ -126,7 +126,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Wales, from around 1587 to 1857.")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Black))
@@ -137,6 +137,6 @@
     
     (ai 
         "Tawlbwrdd_ai"
-    )
+   )
     
 )

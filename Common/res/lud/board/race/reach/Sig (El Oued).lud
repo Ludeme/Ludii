@@ -36,13 +36,13 @@
                             (from (site) level:(level))
                             (to
                                 ("Start")
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    )		
+                           )
+                       )
+                   )
+               )
+           )
+       )
+   )		
 )
 
 (define "NextSite" ("NextSiteOnTrack" 1 from:#1 #2))
@@ -55,15 +55,15 @@
             (if ("NewTurn")
                 True
                 (= 1 (var "SpecialSig"))
-            )
+           )
         })
         (move
             (from (from) level:(level))
             (to
                 #2
-            )
-        )
-    )	
+           )
+       )
+   )	
 )
 
 (define "EnterToMinaret" ("SigMove" ("EnterMinaret") ("Minaret")))
@@ -86,20 +86,20 @@
                 (from (from) level:(level))
                 (to
                     ("SiteToMoveOnTrack" "FirstTrack" #1)
-                )
-            )
+               )
+           )
             ("CaptureMove" "FirstTrack")
-        )
+       )
         (if (is In (from) (sites Track "SecondTrack"))
             (move
                 (from (from) level:(level))
                 (to
                     ("SiteToMoveOnTrack" "SecondTrack" #1)
-                )
+               )
                 
                 ("CaptureMove" "SecondTrack")
-            )
-        )
+           )
+       )
         ("ExitStart")
         ("EnterToMinaret")
         ("ExitFromMinaret")
@@ -125,24 +125,24 @@
                     (shift 4 5 (rectangle 3 1))
                     (scale 2 1 (shift 1.5 8 (rectangle 3 1)))
                 })
-            )
+           )
             {
             (track "FirstTrack"  "0,E,N1,W,N1,E1" directed:True)
             (track "SecondTrack" "13,E,N1,W,N1,E" directed:True)
             }
-        )
+       )
         (dice d:2 from:0 num:6)
         (piece "Father" Each ("Move" (if (= 1 (var "SpecialSig")) (+ 1 ("ThrowValue")) ("ThrowValue"))))
         (piece "Djinn" Each  
             (if (= ("Mecca") (where "Father" Mover))
                 ("Move" (* 2 (if (= 1 (var "SpecialSig")) (+ 1 ("ThrowValue")) ("ThrowValue"))) ("GoToStep1Djinn"))
-            )
-        )
+           )
+       )
         (piece "Mother" Each 
             (if (= ("Mecca") (where "Djinn" Mover))
                 ("Move" (if (= 1 (var "SpecialSig")) (+ 1 ("ThrowValue")) ("ThrowValue")))
-            )
-        )
+           )
+       )
         (map "Throw" {(pair 0 12) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 1) (pair 6 6)})
         (map "ExtraThrow" {(pair 0 3) (pair 1 1) (pair 2 0) (pair 3 0) (pair 4 0) (pair 5 1) (pair 6 1)})
     })
@@ -157,28 +157,28 @@
                             (if (= 3 ("ExtraThrowValue"))
                                 (if (<= (var) 0)
                                     (set Var 2)
-                                )
-                            )
+                               )
+                           )
                             (if (!= (mover) (prev))
                                 (and 
                                     (moveAgain)
                                     (if (!= 1 ("ThrowValue")) (set Var "SpecialSig" 1))
-                                )
-                            )
-                        )
+                               )
+                           )
+                       )
                         (if (> (var) 0)
                             (and {
                                 (set Var (- (var) 1))
                                 (moveAgain)
                             })
                             (set Var "SpecialSig" 0)
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         (end (if ("AllPiecesInMecca") (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -342,7 +342,7 @@
         "Players/4"
         }
         variations:{"Players/2" "Players/3" "Players/5" "Players/6" "Players/7" "Players/8"}
-    )*
+   )*
     
 })
 
@@ -360,7 +360,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Algeria, around 1964.")
         }
-    )
+   )
     
     (graphics {
         (show Symbol "disc" ("Minaret") scale:0.5)

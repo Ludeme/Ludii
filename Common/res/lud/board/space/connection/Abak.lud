@@ -3,8 +3,8 @@
         in:(intersection 
             (sites Around #1) 
             (sites Occupied by:All)    
-        )
-    )
+       )
+   )
 )
 
 (define "RegularRegions"
@@ -37,7 +37,7 @@
         (phase "Placement"
             (play (move Add (to (intersection (sites "CentreRing") (sites Empty)))))
             (nextPhase (= (count Pieces All) <Players>) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play 
@@ -47,23 +47,23 @@
                         (forEach Site (sites Occupied by:All)  
                             (if (<= 4 ("Nbors" (to)))
                                 (remove (to)) 
-                            )
+                           )
                             (then 
                                 (forEach Site (sites Occupied by:All)  
                                     (if (= 0 ("Nbors" (to)))
                                         (remove (to)) 
-                                    )
-                                )
-                            )
-                        )
-                    )
-                ) 
-            )
-        )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               ) 
+           )
+       )
         }
         
         (end (if (is Connected {(sites "CentreRing") (sites "OuterGoals")}) (result Mover Win))) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -112,7 +112,7 @@
         (credit "Matthew Stephenson and Eric Piette")
         (origin  "This game is from Le Mans (France), on 2015.")
         }
-    )
+   )
     
     (graphics {
         (region Colour "CentreRing" (colour 195 82 20))
@@ -126,5 +126,5 @@
     
     (ai
         "Abak_ai"
-    )
+   )
 )

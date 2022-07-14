@@ -8,7 +8,7 @@
     (equipment { 
         (mancalaBoard 2 <Board:size> store:None
             (track "Track" "0,E,N,W" loop:True)
-        )
+       )
         (piece "Seed" Shared)
         (regions P1 (sites Bottom))  // P1 home
         (regions P2 (sites Top))     // P2 home
@@ -23,7 +23,7 @@
                 (from 
                     (sites Mover) 
                     if:(> (count at:(from)) 1)
-                )
+               )
                 (then 
                     (sow 
                         apply:(if (or (= 2 (count at:(to))) (= 3 (count at:(to))))
@@ -32,34 +32,34 @@
                                     (from (to)) 
                                     (to (handSite Mover)) 
                                     count:(count at:(to))
-                                )
+                               )
                                 (if (!= (to) (ahead (to) E))
                                     (if (or (= 2 (count at:(ahead (to) E))) (= 3 (count at:(ahead (to) E))))
                                         (fromTo 
                                             (from (ahead (to) E)) 
                                             (to (handSite Mover)) 
                                             count:(count at:(ahead (to) E))
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                                 (if (!= (to) (ahead (to) W))
                                     (if (or (= 2 (count at:(ahead (to) W))) (= 3 (count at:(ahead (to) W))))
                                         (fromTo 
                                             (from (ahead (to) W)) 
                                             (to (handSite Mover)) 
                                             count:(count at:(ahead (to) W))
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                             })
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         
         (end ("MancalaByScoreWhen" (and (no Moves P1) (no Moves P2))))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -83,7 +83,7 @@
         variations:{"Board Size/4" "Board Size/5" 
         "Board Size/6" "Board Size/7" 
         }
-    )*
+   )*
 })
 
 //------------------------------------------------------------------------------
@@ -100,13 +100,13 @@
         (credit "Eric Piette")
         (origin  "This game was played in Mali, around 1938.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
     })
     (ai
         "I_ai"
-    )
+   )
 )
 

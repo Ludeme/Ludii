@@ -7,7 +7,7 @@
     (and
         (= 1 (count Sites in:(sites Occupied by:#1 top:False)))
         (is In (centrePoint) (sites Occupied by:#1 top:False))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -20,7 +20,7 @@
             (track "Track1" "2,E,N,W,S,E1,N3,E2,S2,W1,N1" P1 directed:True)
             (track "Track2" "22,W,S,E,N,W1,S3,W2,N2,E1,S1" P2 directed:True)
             }
-        )
+       )
         (piece "Marker" Each
             (move 
                 (from (from) level:(level))
@@ -34,15 +34,15 @@
                                     (fromTo
                                         (from (to) level:(level))
                                         (to (handSite (who at:(to) level:(level))))
-                                    )
-                                )
+                                   )
+                               )
                                 (moveAgain)
-                            )
-                        )
-                    )
-                )
-            )		
-        )
+                           )
+                       )
+                   )
+               )
+           )		
+       )
         (hand Each)
         ("StickDice" 4)
         (map "Throw" {(pair 0 8) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})
@@ -61,15 +61,15 @@
                         (move 
                             (from (handSite Mover))
                             (to (mapEntry "Entry" (mover)))
-                        )
-                    )
+                       )
+                   )
                     (forEach Piece)
-                )
+               )
                 (then (if ("IsSpecialThrow") (moveAgain)))
-            )
-        )
+           )
+       )
         (end (if ("AllPiecesOnCentre" Mover) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -87,7 +87,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Sri Lanka, around 1909.")
         }
-    )
+   )
     
     (graphics {
         (show Symbol "thinCross" {2 10 12 14 22} scale:0.9)

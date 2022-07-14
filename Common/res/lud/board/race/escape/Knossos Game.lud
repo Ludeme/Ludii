@@ -4,8 +4,8 @@
         (if (= 1 (count Pips)) 
             2
             3
-        )
-    )
+       )
+   )
 )
 
 (define "SiteToMoveOnTrack" ("NextSiteOnTrack" ("ThrowValue") #1))
@@ -20,16 +20,16 @@
         (if (and 
                 ("IsNotOffBoard" ("SiteToMoveOnTrack" #1)) 
                 (not ("IsFriendAt" ("SiteToMoveOnTrack" #1)))
-            )
+           )
             (move 
                 (from) 
                 (to 
                     ("SiteToMoveOnTrack" #1) 
                     "CaptureEnemyPiece"
-                )
-            )
-        )
-    )	
+               )
+           )
+       )
+   )	
 )
 
 (define "SiteAfterBridge" 10)
@@ -60,7 +60,7 @@
             (track "TrackTop2" "10,13,11,End")
             }
             use:Vertex
-        )
+       )
         ("StickDice" 2)
         (piece "RoundPawn" Each
             (or {
@@ -71,7 +71,7 @@
                 (if (is Mover P1)
                     ("MoveOnTrack" "TrackTop1")
                     ("MoveOnTrack" "TrackTop2")
-                )
+               )
                 (if (and {
                         (not ("IsFriendAt" ("SiteAfterBridge")))
                         (= 3 ("ThrowValue"))
@@ -80,18 +80,18 @@
                     (if (or 
                             (can Move ("MoveOnTrack" "TrackCross1")) 
                             (can Move ("MoveOnTrack" "TrackCross2"))
-                        )
+                       )
                         (move 
                             (from) 
                             (to 
                                 ("SiteAfterBridge") 
                                 "CaptureEnemyPiece"
-                            )
-                        )
-                    )
-                )
+                           )
+                       )
+                   )
+               )
             })
-        )
+       )
         (hand Each)
         (regions "TopSites" (sites {10..13}))
     })
@@ -102,7 +102,7 @@
                 (or 
                     (forEach Piece) 
                     (forEach Piece container:(mover))
-                )
+               )
                 (then 
                     (if (no Pieces Mover)
                         (and
@@ -112,25 +112,25 @@
                                     (forEach Site 
                                         (sites Occupied by:All container:"Board")
                                         (remove (site))
-                                    )
+                                   )
                                     (if (!= 0 (who at:(handSite P1)))
                                         (remove (handSite P1))
-                                    )
+                                   )
                                     (if (!= 0 (who at:(handSite P2)))
                                         (remove (handSite P2))
-                                    )
+                                   )
                                     (add (piece (id "RoundPawn" P1)) (to (handSite P1)) count:2)
                                     (add (piece (id "RoundPawn" P2)) (to (handSite P2)) count:2)
                                 })
-                            )
-                        )
+                           )
+                       )
                         (if (= 3 ("ThrowValue")) (moveAgain))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (end (if (= (score Mover) 3) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -174,7 +174,7 @@
         (classification "board/race/escape")
         (origin  "This game was played in Crete, from around 1700BCE to 1501BCE.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)
@@ -406,5 +406,5 @@
     
     (ai
         "Knossos Game_ai"
-    )
+   )
 )

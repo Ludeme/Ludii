@@ -8,18 +8,18 @@
                     (wedge 4)
                     (shift 0 3 (rotate 180 (wedge 4)))
                     }
-                )
+               )
                 vertices:{{0 3} {6 3}}
                 edges:{{7 19} {19 18} {0 19} {0 20} {20 16} {20 9}}
-            )
+           )
             use:Vertex
-        )
+       )
         (piece "Counter" Each 
             (or 
                 ("HopCapture")
                 ("StepToEmpty")
-            )
-        )
+           )
+       )
     })  
     
     (rules 
@@ -31,7 +31,7 @@
         (play (forEach Piece))
         
         (end ("NoMoves" Loss))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -50,7 +50,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, from around 1904 to 1923.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)
@@ -59,6 +59,6 @@
     
     (ai 
         "Dash Guti_ai"
-    )
+   )
     
 )

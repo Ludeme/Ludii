@@ -7,7 +7,7 @@
     (equipment { 
         (mancalaBoard 2 <Column:size> store:None
             (track "Track" "0,E,N,W" loop:True)
-        )
+       )
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (piece "Seed" Shared)
@@ -20,26 +20,26 @@
                 (from 
                     (sites Mover) 
                     if:(> (count at:(from)) 0)
-                )
+               )
                 (then 
                     (sow
                         if:(or 
                             (= (count at:(to)) 1) 
                             (= (count at:(to)) 3)
-                        )
+                       )
                         apply:(fromTo 
                             (from (to)) 
                             (to (handSite Mover)) 
                             count:(count at:(to))
-                        )
+                       )
                         backtracking:True
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (end ("MancalaByScoreWhen" (= (count in:(sites Track)) 0)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -58,13 +58,13 @@
         {
         "Board Size/7"
         }
-    )
+   )
     
     (ruleset "Ruleset/Six Holes (Observed)" 
         {
         "Board Size/6"
         }
-    )
+   )
     
 })
 
@@ -87,7 +87,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Turkey, around 1979.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -95,6 +95,6 @@
     
     (ai
         "Mangala (Turkey)_ai"
-    )
+   )
 )
 

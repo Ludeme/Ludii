@@ -4,11 +4,11 @@
         (board (rectangle 1 <Size:board>)) 
         (piece "Marker" Neutral)
         }
-    )  
+   )  
     (rules
         (start     		
             <Size:piles>
-        ) 
+       ) 
         
         (play 
             (if "SameTurn"
@@ -20,11 +20,11 @@
                             (if (= (count at:(last To)) 1)
                                 (remove (last To))
                                 (and (set Count at:(last To) (- (count at:(last To)) 1)) (moveAgain)) 
-                            )
-                        ) 
-                    )
+                           )
+                       ) 
+                   )
                     (move Pass)
-                )
+               )
                 (move
                     Select
                     (from (sites Occupied by:Neutral))
@@ -32,13 +32,13 @@
                         (if (= (count at:(last To)) 1)
                             (remove (last To))
                             (and (set Count at:(last To) (- (count at:(last To)) 1)) (moveAgain)) 
-                        )
-                    ) 
-                )
-            )
-        ) 
+                       )
+                   ) 
+               )
+           )
+       ) 
         (end (if (no Moves Next) (result <Result> Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -57,7 +57,7 @@
         (set Count 2 at:1)
         }>                                                      
         "The game involves 3 piles."
-    )   
+   )   
     (item "5"    <5> 
         <{
         (set Count 3 to:(sites {0 4}))
@@ -155,7 +155,7 @@
         variations:{"Number Piles/3" "Number Piles/7" "Number Piles/9" "Number Piles/11"
         "Number Piles/13" "Number Piles/15" "Number Piles/17"
         }
-    )*
+   )*
     
 })
 
@@ -172,12 +172,12 @@
         (credit "Eric Piette")
         (origin  "This game was played in Europe?, from around 1496 to 1517.")
         }
-    )
+   )
     
     (graphics {
         (no Board)
     })
     (ai
         "Nim_ai"
-    )
+   )
 )

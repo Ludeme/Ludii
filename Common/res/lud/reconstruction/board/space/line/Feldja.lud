@@ -2,7 +2,7 @@
     (move
         Remove
         (sites Occupied by:Next container:"Board") 
-    )
+   )
 )
 
 (define "IfLine3MoveAgain" 
@@ -10,8 +10,8 @@
         (if 
             (is Line 3 Orthogonal exact:True) 
             (moveAgain)
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -23,7 +23,7 @@
         (hand Each)
         (piece "Marker" Each 
             [#] // Probably stepping or sliding.... That's the most obvious....
-        )
+       )
     })  
     (rules 
         (start (place "Marker" "Hand" count:12))
@@ -37,11 +37,11 @@
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
                         "IfLine3MoveAgain" 
-                    )  
-                )
-            ) 
+                   )  
+               )
+           ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
+       )
         
         (phase "Movement" 
             (play 
@@ -52,15 +52,15 @@
                         (move 
                             (from (sites Occupied by:Mover))
                             (to (sites Empty))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         }
         
         (end (if (<= (count Pieces Next) 2) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -78,6 +78,6 @@
         (credit "Eric Piette")
         (origin  "This game was played in Algeria, around 1921.")
         }
-    )
+   )
     
 )

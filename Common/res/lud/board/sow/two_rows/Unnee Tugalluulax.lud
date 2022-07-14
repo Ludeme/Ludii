@@ -7,7 +7,7 @@
     (equipment { 
         (mancalaBoard 2 6 store:None
             (track "Track" "5,W,N,E" loop:True)
-        )
+       )
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (piece "Seed" Shared)
@@ -21,7 +21,7 @@
                 (from 
                     (sites Mover) 
                     if:(< 0 (count at:(from)))
-                )
+               )
                 (then 
                     (sow 
                         if:(= (count at:(to)) 4)
@@ -29,13 +29,13 @@
                             (from (to)) 
                             (to (handSite Mover)) 
                             count:(count at:(to))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         (end ("MancalaByScoreWhen" <End:cond>))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -52,7 +52,7 @@
         (or 
             (no Moves Mover) 
             (is Cycle)
-        )
+       )
         > 
     "The game ends if no moves or a repeating state is detected.")**
     }
@@ -92,12 +92,12 @@
         (credit "Eric Piette")
         (origin  "This game was played in Mongolia, around 1974.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
     })
     (ai
         "Unnee Tugalluulax_ai"
-    )
+   )
 )

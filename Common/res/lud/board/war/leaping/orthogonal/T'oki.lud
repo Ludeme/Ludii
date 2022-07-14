@@ -11,19 +11,19 @@
                         (range 1 (count Rows))
                         if:("IsEnemyAt" (between)) 
                         (apply (remove (between)))
-                    )
+                   )
                     (to 
                         if:(or 
                             (and 
                                 (is In (to) (sites Outer)) 
                                 ("IsEnemyAt" (to))
-                            ) 
+                           ) 
                             (is Empty (to))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         (hand Each)
     })
     (rules 
@@ -36,12 +36,12 @@
                     (from (handSite Mover)) 
                     (to (sites Empty)) 
                     count:2
-                )  
+               )  
                 (forEach Piece)
-            )
-        )
+           )
+       )
         (end (if (and ("HandEmpty" Next) (no Pieces Next)) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -60,7 +60,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Mali, around 1955.")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
@@ -69,6 +69,6 @@
     })
     (ai
         "T'oki_ai"
-    )
+   )
 )
 

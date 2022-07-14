@@ -2,8 +2,8 @@
     (apply 
         (if ("IsEnemyAt" (to))
             (remove (to))
-        )
-    ) 
+       )
+   ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -13,8 +13,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-        )
-    )
+       )
+   )
 )
 
 (define "NextCanNotMove"
@@ -31,9 +31,9 @@
             (move Step
                 (to if:(not ("IsFriendAt" (to)))
                     ("CaptureEnemyToPiece")
-                )
-            )
-        )
+               )
+           )
+       )
         (piece "Rook"
             (move
                 Slide 
@@ -41,17 +41,17 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureEnemyToPiece"
-                ) 
-            )	
-        )
+               ) 
+           )	
+       )
         (piece "Elephant"
             (move Hop Orthogonal 
                 (between (exact 1) if:True) 
                 (to if:(not ("IsFriendAt" (to)))
                     ("CaptureEnemyToPiece")
-                )
-            )
-        )
+               )
+           )
+       )
         (piece "Knight"
             (move
                 Leap 
@@ -59,22 +59,22 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureEnemyToPiece"
-                ) 
-            )	
-        )
+               ) 
+           )	
+       )
         (piece "Pawn"
             (or 
                 "StepForwardToEmpty" 
                 "CaptureForwardDiagonal"
-            )
-        ) 
+           )
+       ) 
         (piece "Queen"
             (move Step Diagonal
                 (to if:(not ("IsFriendAt" (to)))
                     ("CaptureEnemyToPiece")
-                )
-            )
-        )
+               )
+           )
+       )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     })
@@ -90,19 +90,19 @@
             (do
                 (forEach Piece)
                 ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
-            )
-        )
+           )
+       )
         
         (end {
             (if (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-                ) 
+               ) 
                 (result Mover Win)
-            ) 
+           ) 
             (if (= (count Pieces Next) 1) (result Mover Loss)) 
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -121,7 +121,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, from around 840 to 1140.")
         }
-    )
+   )
     
     (graphics {
         (piece Scale "Pawn" 0.825)

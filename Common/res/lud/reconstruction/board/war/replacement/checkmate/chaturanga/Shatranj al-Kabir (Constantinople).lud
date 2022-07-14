@@ -2,8 +2,8 @@
     (apply 
         (if ("IsEnemyAt" (to))
             (remove (to))
-        )
-    ) 
+       )
+   ) 
 )
 (define "CaptureForwardDiagonal"
     (move
@@ -12,8 +12,8 @@
         (to 
             if:("EnemyNotImmumned") 
             (apply (remove (to)))
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -29,10 +29,10 @@
                 (then
                     (if (is In (last To) (sites Mover "Promotion")) 
                         (moveAgain)
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (piece "Rook" Each 
             (move
@@ -41,18 +41,18 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "King_noCross" Each 
             (move
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-                )
-            )
-        )
+               )
+           )
+       )
         (piece "Bishop_noCross" Each 
             (move 
                 Hop 
@@ -62,11 +62,11 @@
                     if:(or 
                         (is Empty (to)) 
                         ("IsEnemyAt" (to))
-                    ) 
+                   ) 
                     "CaptureToPiece"
-                )
-            )
-        )
+               )
+           )
+       )
         (piece "Knight" Each 
             (move 
                 Leap 
@@ -74,9 +74,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "Ferz_noCross" Each 
             (move
                 Step 
@@ -84,9 +84,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-                )
-            )
-        )
+               )
+           )
+       )
         
         (piece "Rhino" Each // Karkaddan in the desc
             (or
@@ -96,18 +96,18 @@
                     (to 
                         if:("IsEnemyAt" (to))
                         "CaptureToPiece"
-                    ) 
-                )	
+                   ) 
+               )	
                 (move
                     Leap 
                     "KnightWalk" 
                     (to 
                         if:(is Empty (to))
                         "CaptureToPiece"
-                    ) 
-                )
-            )
-        )
+                   ) 
+               )
+           )
+       )
         (piece "Gazelle" Each // Ahu in the desc
             (move
                 Leap 
@@ -115,9 +115,9 @@
                 (to 
                     if:(is Empty (to))
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         
         (piece "Amazon" Each
             (forEach Direction 
@@ -136,16 +136,16 @@
                                             (to 
                                                 if:("IsEnemyAt" (to))
                                                 "CaptureToPiece"
-                                            ) 
-                                        )
-                                    )
-                                )
-                            )
+                                           ) 
+                                       )
+                                   )
+                               )
+                           )
                         })
-                    )
-                )
-            )		
-        )
+                   )
+               )
+           )		
+       )
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
     })
@@ -164,7 +164,7 @@
         })
         (play [#])
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -183,7 +183,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Southwest Asia, from around 1352 to 1657.")
         }
-    )
+   )
     
     (graphics {
         (piece Scale "Pawn" 0.825)

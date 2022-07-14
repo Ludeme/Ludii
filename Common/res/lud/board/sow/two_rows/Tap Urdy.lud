@@ -8,7 +8,7 @@
     (or
         (all Sites (sites P1) if:(= 0 (count at:(site))))
         (all Sites (sites P2)  if:(= 0 (count at:(site))))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -18,7 +18,7 @@
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
             (track "Track" "5,W,N,E" loop:True)
-        )
+       )
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (hand Each)
@@ -35,9 +35,9 @@
                         ("SameTurn") 
                         ("LastHoleSowed") 
                         (sites Next) 
-                    )  
+                   )  
                     if:(< 0 (count at:(from)))
-                )
+               )
                 (then 
                     (sow  
                         apply:(if (and (!= (count at:("NextHoleFrom" (to) 1)) 0) (> (count at:(to)) 1))
@@ -47,16 +47,16 @@
                                     (from ("NextHoleFrom" (to) 2)) 
                                     (to (handSite (mover))) 
                                     count:(count at:("NextHoleFrom" (to) 2))
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (end ("MancalaByScoreWhen" ("OneRowIsEmpty")))
-    )	
+   )	
 )
 
 //------------------------------------------------------------------------------
@@ -73,7 +73,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Turkmenistan, around 1931.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -81,5 +81,5 @@
     
     (ai
         "Tap Urdy_ai"
-    )
+   )
 )

@@ -13,7 +13,7 @@
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" "16,E,N1,W" loop:True P2)
             }
-        )
+       )
         (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
         (regions "Home" P2 (sites Track "Track2"))                              // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
@@ -31,9 +31,9 @@
                     (if ("SameTurn") 
                         "LastHoleSowed" 
                         (sites Mover "Home") 
-                    ) 
+                   ) 
                     if:(> (count at:(from)) 0)
-                )
+               )
                 (then 
                     (sow
                         "Track"
@@ -46,27 +46,27 @@
                                             (from ("OppositePit" (to))) 
                                             (to (handSite Mover)) 
                                             count:(count at:("OppositePit" (to)))
-                                        ) 
+                                       ) 
                                         (if 
                                             (> (count at:("OppositeOuterPit" (to))) 0) 
                                             (fromTo 
                                                 (from ("OppositeOuterPit" (to))) 
                                                 (to (handSite Mover)) 
                                                 count:(count at:("OppositeOuterPit" (to)))
-                                            ) 
-                                        ) 
-                                    ) 
-                                ) 
-                            )
+                                           ) 
+                                       ) 
+                                   ) 
+                               ) 
+                           )
                             (moveAgain)
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -85,7 +85,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Zanzibar, around 1931.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -93,5 +93,5 @@
     
     (ai
         "Bao Ki Arabu (Zanzibar 2)_ai"
-    )
+   )
 )

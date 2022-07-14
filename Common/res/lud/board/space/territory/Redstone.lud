@@ -2,33 +2,33 @@
     (not
         (all Sites #1 
             if:(not #2)
-        )
-    )
+       )
+   )
 )
 
 (define "PlaceRed"
     (do
         (move Add (piece "Disc0")
             (to (sites Empty))
-        )
+       )
         ifAfterwards:(or
             ("SomeSite"
                 (sites Around (last To) Enemy Orthogonal)
                 (= 0 
                     (count Liberties at:(site) Orthogonal
                         if:(is Next (who at:(to)))
-                    )
-                )
-            )
+                   )
+               )
+           )
             ("SomeSite"
                 (sites Around (last To) Own Orthogonal)
                 (= 0 
                     (count Liberties at:(site) Orthogonal
                         if:(is Mover (who at:(to)))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (then
             (and
                 (forEach Site
@@ -37,32 +37,32 @@
                         (= 0 
                             (count Liberties at:(site) Orthogonal
                                 if:(is Next (who at:(to)))
-                            )
-                        )
+                           )
+                       )
                         (remove (sites Group at:(site) Orthogonal if:(is Next (who at:(to)))))
-                    )
-                )
+                   )
+               )
                 (forEach Site
                     (sites Around (last To) Own Orthogonal)
                     (if
                         (= 0 
                             (count Liberties at:(site) Orthogonal
                                 if:(is Mover (who at:(to)))
-                            )
-                        )
+                           )
+                       )
                         (remove (sites Group at:(site) Orthogonal if:(is Mover (who at:(to)))))
-                    )
-                )
-            )
-        )
-    )
+                   )
+               )
+           )
+       )
+   )
 )
 
 (define "PlaceNonRed"
     (do
         (move Add 
             (to (sites Empty))
-        )
+       )
         ifAfterwards:(not
             (or
                 ("SomeSite"
@@ -70,20 +70,20 @@
                     (= 0 
                         (count Liberties at:(site) Orthogonal
                             if:(is Next (who at:(to)))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 ("SomeSite"
                     (sites Around (last To) Own Orthogonal includeSelf:True)
                     (= 0 
                         (count Liberties at:(site) Orthogonal
                             if:(is Mover (who at:(to)))
-                        )
-                    )
-                )
-            )
-        )
-    )
+                       )
+                   )
+               )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -96,26 +96,26 @@
         (piece "Disc" Each)
         (piece "Disc" Neutral)
         }
-    )
+   )
     (rules
         (meta (swap))
         (play
             (or
                 ("PlaceRed")
                 ("PlaceNonRed")
-            )
-        )
+           )
+       )
         (end {
             (if 
                 (and (> (count Moves) 2) (no Pieces Next))
                 (result Next Loss)
-            )
+           )
             (if 
                 (and {(> (count Moves) 2) (no Pieces Mover) (not (no Pieces Next))})
                 (result Mover Loss)
-            )
+           )
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -180,7 +180,7 @@
         (credit "Michael Amundsen")
         (date "2012")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Black))

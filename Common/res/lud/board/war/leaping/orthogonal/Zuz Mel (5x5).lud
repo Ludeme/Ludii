@@ -6,8 +6,8 @@
             (or 
                 ("HopOrthogonalSequenceCapture")
                 (move Slide Orthogonal)
-            )
-        )
+           )
+       )
     })
     (rules
         
@@ -21,13 +21,13 @@
                 (or
                     ("HopSequenceCaptureAgain")
                     (move Pass)
-                )
+               )
                 (forEach Piece)
-            )
-        )
+           )
+       )
         
         (end (if (no Pieces Next) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -45,7 +45,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Algeria, around 1964.")
         }
-    )
+   )
     
     (graphics {
         (board Colour InnerEdges (colour Black))

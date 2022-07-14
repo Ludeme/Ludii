@@ -2,7 +2,7 @@
     (trackSite FirstSite 
         from:(trackSite FirstSite if:(not (is Mover (who at:(to)))))
         if:(is Mover (who at:(to)))
-    )
+   )
 )
 (define "NextHoleFrom" ("NextSiteOnTrack" #3 from:#1 #2))
 
@@ -18,7 +18,7 @@
             (track "TrackCorner" "0,6,27,21" loop:True)
             (track "ReverseTrack" "6,W,21,E" loop:True)
             }  		
-        )
+       )
         (piece "Seed" Each)
     })  
     (rules 
@@ -37,38 +37,38 @@
                             (and
                                 (remove (to) count:(count at:(to)))
                                 (add (piece (id "Seed" Mover)) (to (to)) count:(count at:(to)))
-                            )	
-                        )	
-                    )
-                )
+                           )	
+                       )	
+                   )
+               )
                 (move Select 
                     (from 
                         ("LeftMost") 
-                    )
+                   )
                     (then 
                         (sow
                             sowEffect:(if (and (!= (mover) (what at:(to))) (is Occupied (to)))
                                 (and
                                     (remove (to) count:(count at:(to)))
                                     (add (piece (id "Seed" Mover)) (to (to)) count:(count at:(to)))
-                                )
-                            )
+                               )
+                           )
                             apply:(if (and (= 1 (count at:("NextHoleFrom" (to) "ReverseTrack" 1))) (= 1 (count at:(to))))
                                 (moveAgain)
-                            )
-                        )
-                    )
-                )
-            )		
-        )
+                           )
+                       )
+                   )
+               )
+           )		
+       )
         
         (end
             (forEach NonMover
                 if:(no Pieces Player)
                 (result Player Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -85,7 +85,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Deocratic Republic of Congo, from around 1955 to 1960.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

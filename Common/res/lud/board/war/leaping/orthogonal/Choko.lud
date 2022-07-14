@@ -4,7 +4,7 @@
         (board (square 5) use:Vertex)
         (piece "Stick" Each
             (or "StepOrthogonalToEmpty" "HopOrthogonalCapture")
-        )
+       )
         (hand Each)
         (regions "AllSites" (sites Board))
     })
@@ -16,13 +16,13 @@
                 (or
                     (if (not ("HandEmpty" Mover))
                         (move (from (handSite Mover)) (to (sites Empty)) (then (set Pending)))
-                    )
+                   )
                     (forEach Piece)
-                )
-            )
-        )
+               )
+           )
+       )
         (end (if (no Pieces Next) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -40,7 +40,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Senegambia, around 1909.")
         }
-    )
+   )
     
     (graphics {
         (piece Scale "Stick1" 0.4)
@@ -52,5 +52,5 @@
     
     (ai
         "Choko_ai"
-    )
+   )
 )

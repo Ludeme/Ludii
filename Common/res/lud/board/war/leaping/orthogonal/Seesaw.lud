@@ -3,43 +3,43 @@
         (to 
             (sites Around
                 (sites Occupied by:Mover component:"Hex" top:False)
-            )
+           )
             if:(is Empty (to))
-        )
+       )
         (then
             (add (piece (id "Disc" Mover))
                 (to (last To))
                 stack:True
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "Step"
     (do
         (if (= 0 (count MovesThisTurn))
             ("ResetMoveCount")
-        )
+       )
         next:(move
             (from
                 if:(= 
                     (* 
                         (from)  
                         (if (< 0 (count MovesThisTurn)) 1 0)
-                    )
+                   )
                     (* 
                         (last To)  
                         (if (< 0 (count MovesThisTurn)) 1 0)
-                    )
-                )
-            )
+                   )
+               )
+           )
             (to 
                 ("EmptyInRange")
-            )
+           )
             count:("StackSize" (from))
             stack:True
-        )
-    )
+       )
+   )
 )
 
 (define "ResetMoveCount"
@@ -51,9 +51,9 @@
         (-
             (var)
             ("StepsTaken")
-        )
+       )
         #1
-    )
+   )
 )
 
 (define "Capture"
@@ -61,30 +61,30 @@
         (if 
             (= 0 (count MovesThisTurn))
             ("ResetMoveCount")
-        )
+       )
         next:(move 
             (from
                 if:(= 
                     (* 
                         (from)  
                         (if (< 0 (count MovesThisTurn)) 1 0)
-                    )
+                   )
                     (* 
                         (last To)  
                         (if (< 0 (count MovesThisTurn)) 1 0)
-                    )
-                )
-            )
+                   )
+               )
+           )
             (to
                 ("CaptureRange")
                 (apply 
                     (remove (to) count:("StackSize" (to)))
-                )
-            )
+               )
+           )
             count:("StackSize" (from))
             stack:True
-        )
-    )
+       )
+   )
 )
 
 (define "StackSize"
@@ -94,13 +94,13 @@
             (= 
                 (id "Disc" Next) 
                 (what at:(to) level:(level))
-            )
+           )
             (= 
                 (id "Disc" Mover) 
                 (what at:(to) level:(level))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "EmptyInRange"
@@ -111,22 +111,22 @@
                 Forwards
                 (to
                     if:(= 0 ("StackSize" (to)))
-                )
-            )
+               )
+           )
             from:(from)
             (range 1 (var))
-        )
+       )
         (sites Distance
             (step
                 Backwards
                 (to
                     if:(= 0 ("StackSize" (to)))
-                )
-            )
+               )
+           )
             from:(from)
             (range 1 (var))
-        )
-    )
+       )
+   )
 )
 
 (define "StepsTaken"
@@ -136,12 +136,12 @@
                 if:(or 
                     (= (last To) (to)) 
                     (= 0 ("StackSize" (to)))
-                )
-            )
-        )
+               )
+           )
+       )
         (last From)
         (last To)
-    )
+   )
     
 )
 
@@ -154,9 +154,9 @@
                 (- 
                     3
                     (% ("StackSize" #1) 2)
-                )
-            )
-        )
+               )
+           )
+       )
         (*
             (who at:#1 level:0)
             (count Stack
@@ -165,15 +165,15 @@
                     (= 
                         (id "Hex" Next) 
                         (what at:(to) level:(level))
-                    )
+                   )
                     (= 
                         (id "Hex" Mover) 
                         (what at:(to) level:(level))
-                    )
-                )
-            )
-        )
-    )
+                   )
+               )
+           )
+       )
+   )
 )
 
 (define "Promote"
@@ -182,8 +182,8 @@
         (add (piece (id "Disc" Mover))
             (to (last To))
             stack:True
-        )
-    )
+       )
+   )
 )
 
 (define "Reachable"
@@ -191,11 +191,11 @@
         (step
             (to 
                 if:(= 0 ("StackSize" (to)))
-            )
-        )
+           )
+       )
         from:(from)
         (range 1 (- #1 1))
-    )
+   )
 )
 
 (define "CaptureRange"
@@ -207,16 +207,16 @@
                     ("Reachable" (var))
                     (sites Around 
                         (sites Occupied by:Enemy component:"Disc")
-                    )
-                )
-            )
+                   )
+               )
+           )
             (sites Occupied by:Enemy component:"Disc")
-        )
+       )
         (intersection
             (sites Around (from)) 
             (sites Occupied by:Enemy component:"Disc")
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -229,7 +229,7 @@
         (piece "Disc" Each)
         (tile "Hex" Each)
         }
-    )
+   )
     (rules
         (start {
             (place Stack "Hex1" 0)
@@ -243,8 +243,8 @@
                     (forEach Piece "Disc" 
                         ("Capture")
                         top:True
-                    )
-                )
+                   )
+               )
                 (forEach Piece "Disc" 
                     ("Capture")
                     top:True
@@ -255,43 +255,43 @@
                                     (< 0 (var))
                                     (moveAgain)
                                     ("Promote")
-                                )
-                            )
-                        )
-                    )
-                )
+                               )
+                           )
+                       )
+                   )
+               )
                 (if
                     (< 0 (count MovesThisTurn))
                     (or
                         (forEach Piece "Disc" 
                             ("Step")
                             top:True
-                        )
+                       )
                         (move Pass)
                         (then ("Promote"))
-                    )
+                   )
                     (or
                         (forEach Piece "Disc" 
                             ("Step")
                             top:True
                             (then ("Promote"))
-                        )
+                       )
                         ("Deploy")
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (end 
             (if 
                 (= 0
                     (count Sites
                         in:(sites Occupied by:Next component:"Disc")
-                    )
-                )
+                   )
+               )
                 (result Next Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -342,7 +342,7 @@
         (credit "Alek Erickson and Michael Amundsen")
         (date "2021")
         }
-    )
+   )
     (graphics {
         (player Colour P1 (colour Cream))
         (player Colour P2 (colour Grey))

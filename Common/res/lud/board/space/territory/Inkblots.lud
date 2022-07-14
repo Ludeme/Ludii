@@ -6,7 +6,7 @@
         (tile "Triangle" Each) 
         (tile "Triangle" Neutral) 
         }
-    )
+   )
     (rules
         (meta (swap))
         (start (place Random {"Triangle1" "Triangle2" "Triangle0"}))
@@ -18,12 +18,12 @@
                             (intersection
                                 (expand (sites Occupied by:Next) Orthogonal)
                                 (sites Empty)
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (end 
             (if (no Moves Next) 
@@ -31,10 +31,10 @@
                     (score P1 (count Pieces P1)) 
                     (score P2 (count Pieces P2))
                 })
-            )
-        )
+           )
+       )
         
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -76,12 +76,12 @@
         (credit "Designer: Mihaw Zapawa. Implemented by Alek Erickson")
         (date "2020")
         }
-    )
+   )
     
     (graphics {
         (player Colour Neutral (colour Blue))
     })
     (ai
         "Inkblots_ai"
-    )
+   )
 )

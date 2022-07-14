@@ -6,16 +6,16 @@
             (add
                 (square 5) 
                 edges:{{0 6} {6 12} {12 18} {18 24} {20 16} {16 12} {8 4} {12 8}}
-            )
+           )
             use:Vertex
-        ) 
+       ) 
         (hand Each)
         (piece "Marker" Each
             (or
                 ("StepToEmpty")
                 ("HopOrthogonalCapture")
-            )
-        ) 
+           )
+       ) 
     })  
     (rules 
         (start {
@@ -24,7 +24,7 @@
         })
         (play (forEach Piece))
         (end (if (no Pieces Next) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -42,7 +42,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, around 1911.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal (colour Hidden))

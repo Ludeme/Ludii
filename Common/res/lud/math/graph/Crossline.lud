@@ -16,7 +16,7 @@
                 {4 6} {4 7} {4 8} {4 9}
                 {5 7} {5 8} {5 9} {6 8} {6 9}
                 {7 9}}
-            )
+           )
         use:Edge)  
         (piece "Marker" Each)   
         (piece "Disc" Shared)
@@ -25,42 +25,42 @@
     (rules 
         (start
             (set Shared Edge (sites {0..9}))                        
-        ) 
+       ) 
         phases:{
         (phase "Init" P1 
             (play 
                 (move Add  
                     (to Edge (sites Empty Edge))	                    	
-                )
-            )
+               )
+           )
             (nextPhase "Cross")  
-        )
+       )
         
         (phase "Cross" P1 
             (play
                 (do 
                     (move Add 
                         (to Edge (sites Empty Edge))            				
-                    )
+                   )
                     ifAfterwards:"CrossLine"
-                )
-            )	           
-        )
+               )
+           )	           
+       )
         (phase "Continue" P2 
             (play
                 (do 
                     (move Add 
                         (to Edge (sites Empty Edge))            				
-                    )
+                   )
                     ifAfterwards:"CrossLine"
-                )
-            )	           
-        )
+               )
+           )	           
+       )
         
         } 
         
         (end ("BlockWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -79,7 +79,7 @@
         (credit "Tahmina Begum 22-06-2020")
         (date "10-2009")
         }
-    )
+   )
     
     (graphics {         
         (player Colour P1 (colour Red))
@@ -92,6 +92,6 @@
     
     (ai
         "Crossline_ai"
-    )
+   )
 )
 

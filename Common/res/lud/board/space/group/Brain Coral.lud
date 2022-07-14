@@ -1,9 +1,9 @@
 (define "GroupCount"
     (max 0
         (max
-            (sizes Group "ScoreConnectionDirection" #1 ) 
-        )
-    )
+            (sizes Group "ScoreConnectionDirection" #1) 
+       )
+   )
 )
 
 //---------------------
@@ -15,10 +15,10 @@
             (set Var "NextScore"  ("GroupCount" Next)
                 (then
                     <TieScoring:tiebreaker> 
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 (define "BonusMover"
@@ -26,19 +26,19 @@
         (+ 
             ("GroupCount" Mover)
             (count Groups "ScoreConnectionDirection" if:(= (who at:(to)) (mover))) 
-        )
+       )
         (then
             (set Var "NextScore"
                 (+ 
                     ("GroupCount" Next)
                     (count Groups "ScoreConnectionDirection" if:(= (who at:(to)) (next))) 
-                )
+               )
                 (then
                     <TieScoring:tiebreaker> 
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 (define "BonusOpponent"
@@ -46,19 +46,19 @@
         (+ 
             ("GroupCount" Mover)
             (count Groups "ScoreConnectionDirection" if:(= (who at:(to)) (next))) 
-        )
+       )
         (then
             (set Var "NextScore" 
                 (+ 
                     ("GroupCount" Next)
                     (count Groups "ScoreConnectionDirection" if:(= (who at:(to)) (mover))) 
-                )
+               )
                 (then
                     <TieScoring:tiebreaker> 
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 //---------------------------
@@ -70,16 +70,16 @@
             (difference
                 (sizes Group "ScoreConnectionDirection" #1)
                 (sizes Group "ScoreConnectionDirection" #2)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "NoTiebreaker"
     (and
         (set Score Mover (var "MoverScore")) 
         (set Score Next  (var "NextScore")) 
-    )
+   )
 )
 
 (define "CascadeTiebreaker"
@@ -88,9 +88,9 @@
         (and
             (set Score Mover (* -1 ("CascadeScore" Mover Next)))
             (set Score Next (* -1 ("CascadeScore" Next Mover)))
-        )
+       )
         ("NoTiebreaker")
-    )
+   )
 )
 
 //----------------------------
@@ -101,18 +101,18 @@
             (and 
                 (is Empty (site))
                 (is In (site) (sites Outer))
-            )
+           )
             (!= Infinity
                 (count Steps
                     (step "ConnectionDirection"
                         (to if:(is Empty (to)))
-                    )
+                   )
                     (site)
                     (difference (sites Outer) (site))
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 //-----------------------------------------------
@@ -132,20 +132,20 @@
                 (move Add (to (sites Empty)))
                 ifAfterwards:("AllHave1Connection2Edge" (sites Around (last To) "ConnectionDirection" includeSelf:True)) 
                 (then <Scoring:selScoring>)   
-        ))
+       ))
         (end 
             (if (no Moves Next) {
                 (if 
                     (= (score Mover) (score Next))
                     <TieScoring:finalTie>
-                )
+               )
                 (if 
                     (!= (score Mover) (score Next))
                     (byScore)
-                )
+               )
             })
-        )
-    )
+       )
+   )
 )
 
 //-------------------------------------------------
@@ -153,7 +153,7 @@
 
 (define "ScoreConnectionDirection" <BoardShape:directionScored>)
 (define "ConnectionDirection" <BoardShape:directionUsed>)
-(define "BoardUsed" <BoardShape:gridType> )
+(define "BoardUsed" <BoardShape:gridType>)
 
 (define "HexLimp" (board (hex Limping (- <BoardSize:smallSide> 1)) use:Cell))
 (define "Hex2Limp" (board (hex  (- <BoardSize:smallSide> 1) (+ <BoardSize:smallSide> 1)) use:Cell))
@@ -208,17 +208,17 @@
     (item "Mover Bonus scoring"
         <"BonusMover"> 
         "Scoring Option: Score the size of your largest group, then score an additional point for every group you have on the board."
-    )**
+   )**
     
     (item "Opponent Bonus scoring"
         <"BonusOpponent">
         "Scoring Option: Score the size of your largest group, then score an additional point for every opponent's group on the board."
-    )
+   )
     
     (item "Largest group only"
         <"GroupScore">
         "Scoring Option: No bonus. Score a point only for each piece in your largest group"
-    )
+   )
     
     }
 )
@@ -232,7 +232,7 @@
     
     (item "B: Last to place"
         <("NoTiebreaker")>  <(result Mover Win)> 
-    "Tiebreaker is last to place wins." )
+    "Tiebreaker is last to place wins.")
     
     }
 )
@@ -300,7 +300,7 @@
         (credit "Dale W. Walton")
         (date "06-05-2021")
         }
-    )
+   )
     
     (graphics 
         {
@@ -320,7 +320,7 @@
         (board Colour OuterEdges (colour Black))
         (show Edges Diagonal <BoardShape:diagShow> (colour DarkGrey))
         (show Piece Value "Disc" Middle)
-        (board Background image:<BoardShape:backgroundImage> fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.2 scaleY:1.15 ) 
+        (board Background image:<BoardShape:backgroundImage> fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.2 scaleY:1.15) 
         }
-    )   
+   )   
 )

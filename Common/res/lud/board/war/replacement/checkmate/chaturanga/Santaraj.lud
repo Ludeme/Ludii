@@ -4,8 +4,8 @@
     (apply 
         (if ("IsEnemyAt" (to))
             (remove (to))
-        )
-    ) 
+       )
+   ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -15,8 +15,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-        )
-    )
+       )
+   )
 )
 
 (define "NextCanNotMove"
@@ -34,9 +34,9 @@
             (move Step
                 (to if:(not ("IsFriendAt" (to)))
                     ("CaptureEnemyToPiece")
-                )
-            )		
-        )
+               )
+           )		
+       )
         (piece "Castle" Each
             (move
                 Slide 
@@ -44,18 +44,18 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureEnemyToPiece"
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         (piece "Ferz_noCross" Each
             (move Hop Diagonal 
                 (between (exact 2) if:True) 
                 (to
                     if:(not ("IsFriendAt" (to))) 
                     ("CaptureEnemyToPiece")
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         (piece "Knight" Each
             (move
                 Leap 
@@ -63,9 +63,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureEnemyToPiece"
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         (piece "Pawn" Each
             (or 
                 "StepForwardToEmpty" 
@@ -73,18 +73,18 @@
                 (then
                     (if (is In (last To) (sites Mover "Promotion"))
                         (promote (last To) (piece "Queen") Mover)
-                    )
-                )
-            )		
-        ) 
+                   )
+               )
+           )		
+       ) 
         (piece "Queen" Each
             (move Step
                 Diagonal
                 (to if:(not ("IsFriendAt" (to)))
                     ("CaptureEnemyToPiece")
-                )
-            )		
-        )
+               )
+           )		
+       )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     })
@@ -104,31 +104,31 @@
                         (and
                             (> (count Pieces P1) 1) 
                             (> (count Pieces P2) 1) 
-                        )	
+                       )	
                         (set Counter)
-                    )
-                )
-            )		
-        )
+                   )
+               )
+           )		
+       )
         (end {
             (if (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-                ) 
+               ) 
                 (result Mover Win)
-            ) 
+           ) 
             (if 
                 (and 
                     (or
                         (= (count Pieces P1) 1) 
                         (= (count Pieces P2) 1) 
-                    )	
+                   )	
                     (= (counter) 20)
-                ) 
+               ) 
                 (result Mover Draw)
-            ) 
+           ) 
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -147,7 +147,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Ethiopia., from around 1892 to 1971.")
         }
-    )
+   )
     
     (graphics {
         (piece Scale "Pawn" 0.825)

@@ -10,15 +10,15 @@
                 (remove 
                     (concentric {60}) // Be careful we are not sure of the number of stones for that game.
                     vertices:{57..59}
-                )
+               )
                 edges:{{55 56}}
-            )
+           )
             {
             (track "TrackCW" {56 55 53 51 49 47 45 43 41 39 37 35 33 31 29 27 25 23 21 19 17 15 13 11 9 7 5 3 1 0 2  6 8 10 12 14 16 18 20 22 24 26 28 30 32 34 36 38 40 42 44 46 48 50 52 54} loop:True)
             (track "TrackCCW" {56 54 52 50 48 46 44 42 40 38 36 34 32 30 28 26 24 22 20 18 16 14 12 10 8 6 4 2 0 1 3 5 7 9 11 13 15 17 19 21 23 25 27 29 31 33 35 37 39 41 43 45 47 49 51 53 55} loop:True)
             }
             use:Edge
-        )
+       )
         (dice d:2 from:0 num:3)
         (map "Throw" {(pair 0 10) (pair 1 2) (pair 2 3) (pair 3 5)})
         (piece "Stick" Each)
@@ -32,10 +32,10 @@
         (play 
             (do (roll)
                 [#]
-            )
-        )
+           )
+       )
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -53,7 +53,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Arizona, around 1898.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)

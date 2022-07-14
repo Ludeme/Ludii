@@ -4,7 +4,7 @@
         (board 
             (complete (regular Star 6))
             use:Edge
-        )         
+       )         
     })    
     (rules 
         (play 
@@ -13,16 +13,16 @@
                 (to
                     Edge 
                     (sites Empty Edge)
-                )
-            )
-        ) 
+               )
+           )
+       ) 
         (end 
             (if 
                 (is Path Edge Mover length:(exact 3) closed:True) 
                 (result Mover Loss)
-            )
-        ) 
-    )
+           )
+       ) 
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -39,7 +39,7 @@
         (credit "Tahmina Begum")
         (date "1969")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Red))
@@ -50,5 +50,5 @@
     })    
     (ai
         "Sim_ai"
-    )
+   )
 )

@@ -68,7 +68,7 @@
                     (= 0 (value))
                     (id "SquareOrtho" Mover) 
                     (id "SquareDiag" Mover)
-            )) 
+           )) 
             #2 
             stack:True 
             (then
@@ -82,11 +82,11 @@
                         (forEach Site
                             (sites Around (last To) Orthogonal)
                             (remember Value (site))
-                        )
+                       )
                         (forEach Site
                             (sites Around (last To) Diagonal)
                             (remember Value (site))
-                    ))
+                   ))
                     }
 )))))
 
@@ -108,11 +108,11 @@
                             (forEach Site
                                 (sites Distance (step #1 (to (sites Board))) from:(last To) <TriangleAhead:typeA>)  
                                 (remember Value (site))
-                            ) 
+                           ) 
                             (forEach Site
                                 <TriangleTails:typeB> 
                                 (remember Value (site))
-        ))))))
+       ))))))
         ifAfterwards:(< 0 (size Array (values Remembered)))    // use remember to work around bug for (is Pending)
 ))
 
@@ -147,7 +147,7 @@
         (piece "TriangleE" Each)
         (piece "TriangleW" Each)
         }
-    )
+   )
     (rules
         ("SetupHands")
         (play
@@ -162,7 +162,7 @@
                     ("AddTriangle" S "TriangleS" ("ToSitesAllowedFor" "TriangleN" 3) NW NE)
                     ("AddTriangle" W "TriangleW" ("ToSitesAllowedFor" "TriangleN" 3) NE SE)
                     }
-                )
+               )
                 (or
                     {
                     ("AddDisc" "Disc" ("EmptySite4" "Disc"))
@@ -172,25 +172,25 @@
                     ("AddTriangle" S "TriangleS" ("EmptySite4" "TriangleN") NW NE)
                     ("AddTriangle" W "TriangleW" ("EmptySite4" "TriangleN") NE SE)
                     }
-                )
+               )
                 (then 
                     (and
                         {
                         (<Control:majorityOrTop> (mover))
                         (<Control:majorityOrTop> (next))
                         } 
-            )))
+           )))
             
-        )
+       )
         (end
             (if
                 (or
                     {
-                    (>= (score Mover) 300 )
-                    (>= (score Next) 300 )
+                    (>= (score Mover) 300)
+                    (>= (score Next) 300)
                     (no Moves Next)
                     }
-                )
+               )
                 (byScore)
 ))))
 // -------------------
@@ -208,9 +208,9 @@
                             (if (= #1 (who at:(site) level:1)) 1 0)
                             (if (= #1 (who at:(site) level:2)) 1 0)
                             }
-                        )
+                       )
                         (/ (+ 1 (topLevel at:(site))) 2)
-                    )
+                   )
                     (addScore (player #1) (^ 10 (topLevel at:(site))))  
 )))))
 
@@ -233,8 +233,8 @@
 
 (define "RayTails"
     (union
-        (sites Distance (step (directions { #2 }) (to (sites Board))) from:(last To) #1 ) 
-        (sites Distance (step (directions { #3 }) (to (sites Board))) from:(last To) #1 ) 
+        (sites Distance (step (directions { #2 }) (to (sites Board))) from:(last To) #1) 
+        (sites Distance (step (directions { #3 }) (to (sites Board))) from:(last To) #1) 
 ))
 
 (define "KnightTails"
@@ -244,7 +244,7 @@
             (ahead (ahead (ahead (last To) #2) #1) #2)
             (ahead (ahead (ahead (last To) #3) #1) #3)
             }
-        )
+       )
         (sites Around (last To)) // to reject the cases where the off-board sites are relocated by (ahead)
 ))
 
@@ -326,7 +326,7 @@
         (credit "Dale W. Walton")
         (date "2014")
         }
-    )
+   )
     
     (graphics
         {
@@ -348,6 +348,6 @@
         (hand Placement P2 scale:.8 offsetX:0.95 offsetY:0.10 vertical:True)
         (hand Placement P1 scale:.8 offsetX:0.05 offsetY:0.10 vertical:True)
         }
-    )
+   )
     (ai (heuristics (score weight:1)))
 )

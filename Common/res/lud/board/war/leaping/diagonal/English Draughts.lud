@@ -6,10 +6,10 @@
         (between 
             if:("IsEnemyAt" (between)) 
             (apply (remove (between)))
-        ) 
+       ) 
         (to if:(is Empty (to))) 
         #2
-    ) 
+   ) 
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -30,7 +30,7 @@
     })  
     (rules 
         (start { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ))
+            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1) ))
             (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1)))
         })
         
@@ -42,11 +42,11 @@
                             (if "JumpToPromotionZone" 
                                 (move Promote (last To) (piece "DoubleCounter") Mover)
                                 (if (can Move ("HopMan" (last To))) (moveAgain)) 
-                            ) 
-                        ) 
-                    )
+                           ) 
+                       ) 
+                   )
                     ("HopDiagonalSequenceCaptureAgain")
-                )
+               )
                 (priority {
                     (or  
                         (forEach Piece "Counter" 
@@ -55,12 +55,12 @@
                                     (if "JumpToPromotionZone"
                                         (move Promote (last To) (piece "DoubleCounter") Mover) 
                                         (if (can Move ("HopMan" (last To))) (moveAgain)) 
-                                    ) 
-                                ) 
-                            ) 
-                        )
+                                   ) 
+                               ) 
+                           ) 
+                       )
                         (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture"))
-                    )
+                   )
                     
                     (or  
                         (forEach Piece "Counter" 
@@ -68,21 +68,21 @@
                                 Step 
                                 (directions {FR FL}) 
                                 (to if:(is Empty (to)))
-                            ) 
+                           ) 
                             (then 
                                 (if "JumpToPromotionZone"
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
-                                )
-                            )
-                        )
+                               )
+                           )
+                       )
                         (forEach Piece "DoubleCounter" "StepDiagonalToEmpty")
-                    )
+                   )
                 })
-            )
-        ) 
+           )
+       ) 
         
         (end ("BlockWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -101,7 +101,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in France, around 1534.")
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)
@@ -110,6 +110,6 @@
     
     (ai 
         "English Draughts_ai"
-    )
+   )
     
 )

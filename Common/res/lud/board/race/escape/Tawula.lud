@@ -13,20 +13,20 @@
     (and 
         (is Empty (to)) 
         (is In (to) (sites Mover "OnePieceMax"))
-    )
+   )
 )
 
 (define "CaptureEnemyPiece" 
     (if ("IsEnemyAt" (to)) 
         (move (from (to)) (to ("BarSite" Next)))
-    )
+   )
 )
 
 (define "OneEnemyPiece" 
     (and
         ("IsSingletonStack" (to))
         ("IsEnemyAt" (to))
-    )	
+   )	
 )
 
 (define "EmptyOrFriednIfNotSpecialRegion"
@@ -35,8 +35,8 @@
         (or
             ("IsFriendAt" (to))
             (is Empty (to)) 
-        )
-    )	
+       )
+   )	
 )
 
 //------------------------------------------------------------------------------
@@ -52,8 +52,8 @@
                     (and 
                         (= (from) (mapEntry "StartTrack" Mover))
                         ("HandEmpty" Mover)
-                    )
-                )
+                   )
+               )
                 (forEach Die 
                     if:("DieNotUsed")
                     (if ("IsOffBoard" "SiteToMoveOnTrack")
@@ -66,16 +66,16 @@
                                     (or
                                         ("EmptySiteIfOneSpecialRegion")
                                         ("EmptyOrFriednIfNotSpecialRegion")
-                                    )
+                                   )
                                     ("OneEnemyPiece")
-                                )
+                               )
                                 (apply ("CaptureEnemyPiece"))
-                            )
-                        )
-                    )
-                )	
-            )
-        )
+                           )
+                       )
+                   )
+               )	
+           )
+       )
         (hand Each)
         (map "Bar" {(pair P1 6) (pair P2 19)})
         (map "StartTrack" {(pair P1 25) (pair P2 0)})
@@ -106,14 +106,14 @@
                                         (or
                                             ("EmptySiteIfOneSpecialRegion")
                                             ("EmptyOrFriednIfNotSpecialRegion")
-                                        )
+                                       )
                                         ("OneEnemyPiece")
-                                    )
+                                   )
                                     (apply ("CaptureEnemyPiece"))
-                                )
-                            )
-                        )
-                    )
+                               )
+                           )
+                       )
+                   )
                     // Enter a new piece
                     (if (not ("HandEmpty" Mover))
                         (forEach Die 
@@ -125,18 +125,18 @@
                                     if:(or 
                                         (is Empty (to))
                                         ("OneEnemyPiece")
-                                    )
+                                   )
                                     (apply ("CaptureEnemyPiece"))
-                                )
-                            )
-                        )
-                    )
+                               )
+                           )
+                       )
+                   )
                     (then ("ReplayNotAllDiceUsed"))
-                )
-            )
-        )
+               )
+           )
+       )
         (end ("EscapeWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -156,7 +156,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Southwest Asia, from around 1845 to 1951.")
         }
-    )
+   )
     
     (graphics {
         (board Style backgammon)

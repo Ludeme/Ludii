@@ -6,12 +6,12 @@
         (hand Each)
         (piece "Marker" Each)
         }
-    )  
+   )  
     (rules 
         (start (place "Marker" "Hand" count:3))
         (play (move (from (handSite Mover)) (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -27,9 +27,9 @@
         (classification "board/space/line")
         (credit "Matthew Stephenson")
         }
-    )
+   )
     
     (ai
         "Alquerque de Tres_ai"
-    )
+   )
 )

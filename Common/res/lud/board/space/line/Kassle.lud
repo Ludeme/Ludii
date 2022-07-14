@@ -7,26 +7,26 @@
                 (forEach Site
                     (sites Row (row of:(last From)))
                     (remove (site))
-                )
+               )
                 (forEach Site
                     (sites Row (row of:(last From)))
                     (if (!= (ahead (site) W) (site))
                         (add
                             (piece (what at:(site)))
                             (to (ahead (site) W))
-                        )
+                       )
                         (add
                             (piece (what at:(site)))
                             (to (coord row:(row of:(last From)) column:(- (count Columns) 1)))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 // Keep in memory for one move the shift left and right of that row.
                 (set Pending (+ (last From) (last To))) 
                 (set Pending (+ (coord row:(row of:(last From)) column:0) (ahead (coord row:(row of:(last From)) column:0) E)))
             })
-        )
-    )	
+       )
+   )	
 )
 
 (define "ShiftRight"
@@ -38,26 +38,26 @@
                 (forEach Site
                     (sites Row (row of:(last From)))
                     (remove (site))
-                )
+               )
                 (forEach Site
                     (sites Row (row of:(last From)))
                     (if (!= (ahead (site) E) (site))
                         (add
                             (piece (what at:(site)))
                             (to (ahead (site) E))
-                        )
+                       )
                         (add
                             (piece (what at:(site)))
                             (to (coord row:(row of:(last From)) column:0))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 // Keep in memory for one move the shift left and right of that row.
                 (set Pending (+ (last From) (last To)))
                 (set Pending (+ (coord row:(row of:(last From)) column:(- (count Columns) 1)) (ahead (coord row:(row of:(last From)) column:(- (count Columns) 1)) W)))
             })
-        )
-    )	
+       )
+   )	
 )
 
 (define "ShiftUp"
@@ -69,26 +69,26 @@
                 (forEach Site
                     (sites Column (column of:(last From)))
                     (remove (site))
-                )
+               )
                 (forEach Site
                     (sites Column (column of:(last From)))
                     (if (!= (ahead (site) N) (site))
                         (add
                             (piece (what at:(site)))
                             (to (ahead (site) N))
-                        )
+                       )
                         (add
                             (piece (what at:(site)))
                             (to (coord row:0 column:(column of:(last From))))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 // Keep in memory for one move the shift up and down of that column.
                 (set Pending (+ (last From) (last To)))
                 (set Pending (+ (coord row:(- (count Rows) 1) column:(column of:(last To))) (ahead (coord row:(- (count Rows) 1) column:(column of:(last To))) S)))
             })
-        )
-    )	
+       )
+   )	
 )
 
 (define "ShiftDown"
@@ -100,26 +100,26 @@
                 (forEach Site
                     (sites Column (column of:(last From)))
                     (remove (site))
-                )
+               )
                 (forEach Site
                     (sites Column (column of:(last From)))
                     (if (!= (ahead (site) S) (site))
                         (add
                             (piece (what at:(site)))
                             (to (ahead (site) S))
-                        )
+                       )
                         (add
                             (piece (what at:(site)))
                             (to (coord row:(- (count Rows) 1) column:(column of:(last From))))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 // Keep in memory for one move the shift up and down of that column.
                 (set Pending (+ (last From) (last To)))
                 (set Pending (+ (coord row:(- (count Rows) 1) column:0) (ahead (coord row:(- (count Rows) 1) column:0) N)))
             })
-        )
-    )	
+       )
+   )	
 )
 
 (define "IsLine"
@@ -127,8 +127,8 @@
         (all Sites
             (sites Occupied by:#1)
             if:(not (is Line 5 through:(site)))
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -148,20 +148,20 @@
                 ("ShiftUp")
                 ("ShiftDown")
             })
-        )
+       )
         (end {
             (if (and ("IsLine" P1) ("IsLine" P2)) 
                 (result Mover Win)
-            )
+           )
             (if ("IsLine" P1) 
                 (result P1 Win)
-            )
+           )
             
             (if ("IsLine" P2) 
                 (result P2 Win)
-            )
+           )
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -186,7 +186,7 @@
         (credit "Eric Piette")
         (date "1985")
         }
-    )
+   )
     
     (graphics {
         (player Colour P2 (colour Red))

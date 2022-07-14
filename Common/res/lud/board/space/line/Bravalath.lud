@@ -8,7 +8,7 @@
         (boardless <Tiling:type>) 
         (tile <Tiling:tile> Each <Tiling:numSides>) 
         }
-    )  
+   )  
     
     (rules 
         (start {
@@ -23,16 +23,16 @@
                     (sites Playable) 
                     if:(<= 1 
                         (count Sites in:(sites Around (to) NotEmpty)) 
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (end {
             (if (is Line 4) (result Mover Win))
             (if (is Line 3) (result Mover Loss)) 
         })  
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -58,12 +58,12 @@
         (credit "Cameron Browne (8/12/2020)")
         (date "2020")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour 250 240 127))
     })
     (ai
         "Bravalath_ai"
-    )
+   )
 )

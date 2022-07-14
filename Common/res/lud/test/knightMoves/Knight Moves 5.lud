@@ -15,31 +15,31 @@
                     (forEach 
                         (sites Around 
                             (sites Around (from)) 
-                        )
+                       )
                         if:(and { 
                             (not ("IsFriendAt" (site)))
                             (= 3 (count Steps Orthogonal (from) (site)))
                         })
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
         }
-    )  
+   )  
     (rules 
         (start
             { 
             (place "Knight1" (expand (sites Bottom)))
             (place "Knight2" (expand (sites Top)))
             }
-        )
+       )
         
         (play (forEach Piece))
         
         (end (if "RegionReached" (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -49,7 +49,7 @@
     (info
         {
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)

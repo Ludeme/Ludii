@@ -9,14 +9,14 @@
     (rules
         (start
             <Version:start>
-        )  
+       )  
         
         (play          
             <Version:play>
-        )
+       )
         
         (end ("BlockWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -36,10 +36,10 @@
             {11 12} {12 13} {13 14} {10 15} {11 16} {12 17} {13 18} {14 19} 
             {15 16} {15 20} {16 21} {20 21} {16 17} {17 22} {21 22} {17 18} 
             {18 23} {22 23} {18 19} {19 24} {23 24}}
-        )
+       )
         >             
         "The game is played on the Graph1."
-    )* 
+   )* 
     
     (item "Graph2"             
         <
@@ -56,10 +56,10 @@
             {30 27} {27 35} {31 27} {27 28} {24 33} {2 3} {30 35} {34 31} {10 18} {28 34} 
             {6 20} {27 24} {21 17} {23 31} {9 25} {20 31} {15 30} {32 22} {23 25} {19 26}
             {18 19} {0 16} {9 1} {1 11} {2 15} {5 11} {4 19} {12 21} {17 8}}
-        )
+       )
         >                      
         "The game is played on the Graph2."
-    ) 
+   ) 
 })
 
 //------------------------------------------------------------------------------
@@ -81,14 +81,14 @@
                         (forEach Site
                             (sites Incident Edge of:Vertex at:(last To))
                             (remove Edge (to))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         >    
         "The players play on LastEdge version."
-    )*  
+   )*  
     (item "LastEdgeR-B"
         <
         {
@@ -105,14 +105,14 @@
                         (forEach Site
                             (sites Incident Edge of:Vertex at:(last To))
                             (remove Edge (to))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         >        
         "The players play on LastEdgeR-B version."
-    )   
+   )   
     (item "LastEdgeR-G-B"
         <
         {
@@ -130,14 +130,14 @@
                         (forEach Site
                             (sites Incident Edge of:Vertex at:(last To))
                             (remove Edge (to))
-                        )
-                    )
-                )
-            )
-        )	
+                       )
+                   )
+               )
+           )
+       )	
         >        
         "The players play on LastEdgeR-G-B version."
-    )   
+   )   
 })
 
 //------------------------------------------------------------------------------
@@ -155,7 +155,7 @@
         (credit "Tahmina Begum")
         (date "16-06-2020")
         }
-    )
+   )
     
     (graphics {
         (player Colour Shared (colour Green))
@@ -168,5 +168,5 @@
     
     (ai
         "LastEdge_ai"
-    )
+   )
 )

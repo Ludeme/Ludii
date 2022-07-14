@@ -15,7 +15,7 @@
 (define "CaptureMove"
     (if ("IsEnemyAt" (to))
         (remove (to))
-    )
+   )
 )
 
 (define "NeverGoInEnemyHome"
@@ -36,7 +36,7 @@
     (and
         (= 0 (count Sites in:(difference (sites Occupied by:All) ("MiddleSites"))))
         (= 0 (count Sites in:(forEach (sites Occupied by:All) if:(< (state at:(site)) 2))))
-    )
+   )
 )
 
 (define "Move"
@@ -49,23 +49,23 @@
                             ("ActivatedPiece" (from))
                             True
                             ("ActivatedThrow")
-                        )
-                    )
+                       )
+                   )
                     (to 
                         ("SiteToMoveOnTrack" "Track" ("ThrowValue"))	
                         if:(if (is In (to) ("MiddleSites"))
                             (or (is Empty (to)) (and ("IsEnemyAt" (to)) ("PieceCanBeCapture")))
                             (is Empty (to))
-                        )
+                       )
                         (apply ("CaptureMove"))
-                    )
+                   )
                     (then
                         (if (not ("ActivatedPiece" (last To)))
                             ("ActivePiece" (last To))
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (if (or (= ("ThrowValue") 8) (> (var) 0))
                 (move
                     (from (from))
@@ -74,36 +74,36 @@
                         if:(if (is In (to) ("MiddleSites"))
                             (or (is Empty (to)) (and ("IsEnemyAt" (to)) ("PieceCanBeCapture")))
                             (is Empty (to))
-                        )
+                       )
                         (apply ("CaptureMove"))
-                    )
+                   )
                     (then
                         (and
                             (if (not ("ActivatedPiece" (last To)))
                                 ("ActivePiece" (last To))
-                            )
+                           )
                             (if (> (var) 0)
                                 (and
                                     (if (> (var) 1)
                                         (moveAgain)
-                                    )
+                                   )
                                     (set Var (- (var) 1))
-                                )
+                               )
                                 (and
                                     (set Var (- ("ThrowValue") 1))
                                     (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             (then
                 (if (is In (last To) (if (is In (mover) (players Team1)) (sites Top) (sites Bottom)))
                     (set State at:(last To) 2)
-                )
-            )
-        )
+               )
+           )
+       )
         (if ("MoveBackOnMiddleSites" (from))
             (move
                 (from (from))
@@ -112,15 +112,15 @@
                     if:(if (is In (to) ("MiddleSites"))
                         (not ("IsFriendAt" (to)))
                         (is Empty (to))
-                    )
+                   )
                     (apply ("CaptureMove"))
-                )
+               )
                 (then
                     (if (is In (last To) ("MiddleSites"))
                         (set State at:(last To) 3)
-                    )
-                )
-            )
+                   )
+               )
+           )
             (if ("MoveOnLoop" (from))
                 (move
                     (from (from))
@@ -129,13 +129,13 @@
                         if:(if (is In (to) ("MiddleSites"))
                             (not ("IsFriendAt" (to)))
                             (is Empty (to))
-                        )
+                       )
                         (apply ("CaptureMove"))
-                    )
-                )
-            )
-        )
-    )
+                   )
+               )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -147,7 +147,7 @@
             (rectangle 4 <Board:size>)
             <Board:track>
             use:Vertex
-        )
+       )
         (dice d:2 from:0 num:8)
         (piece "Marker" P1 ("Move"))
         (piece "Stick" P2 ("Move"))
@@ -159,7 +159,7 @@
             (place "Stick2" (sites Top))
             <Players:start>
             }
-        )
+       )
         phases:{
         (phase "MovingPhase"
             (play
@@ -167,30 +167,30 @@
                     next:(if (is In (mover) (players Team1))
                         (forEach Piece P1)
                         (forEach Piece P2)
-                    )
+                   )
                     (then
                         (if ("IsSpecialThrow")
                             (moveAgain)
-                        )
-                    )
-                )
-            )	
+                       )
+                   )
+               )
+           )	
             (nextPhase ("AllPiecesOutOfHomeAndCanNotBeCaptured") "RemovingPhase")
-        )
+       )
         (phase "RemovingPhase"
             (play
                 (do (roll)
                     next:(if (= ("ThrowValue") 4) 
                         (move Remove
                             (sites Occupied by:Enemy)
-                        )
-                    )
-                )
-            )	
-        )
+                       )
+                   )
+               )
+           )	
+       )
         }
         (end  (if (no Pieces Enemy) (result TeamMover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -502,7 +502,7 @@
         "Board Size/21" "Board Size/22" "Board Size/23" "Board Size/24" "Board Size/25"
         "Board Size/26" "Board Size/27" "Board Size/28" "Board Size/29" "Board Size/30"
         }
-    )*
+   )*
     
 })
 
@@ -521,7 +521,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Mauritania, around 1955.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)

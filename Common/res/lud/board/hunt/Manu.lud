@@ -18,15 +18,15 @@
                 (move 
                     (from (handSite P1)) 
                     (to (sites Empty))
-                )
-            ) 
+               )
+           ) 
             (nextPhase ("HandEmpty" P1) "Movement")
-        )
+       )
         (phase "Movement" (play (forEach Piece)))
         }
         
         (end ("NoMovesLossAndNoPiecesPlayerLoss" P2))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -44,16 +44,16 @@
         (credit "Eric Piette")
         (origin  "This game was played in Hawaii, around 1899.")
         }
-    )
+   )
     
     (graphics {
         (board Style Graph)
         (player Colour P1 (colour VeryDarkGrey))
         (player Colour P2 (colour White))
         }
-    )
+   )
     
     (ai
         "Manu_ai"
-    )
+   )
 )

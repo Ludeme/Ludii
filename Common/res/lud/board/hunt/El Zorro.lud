@@ -2,7 +2,7 @@
     (players {(player N) (player S)})  
     (equipment { 
         ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
-        (piece "Fox" P1 (or ("HopCapture") "StepToEmpty" ))
+        (piece "Fox" P1 (or ("HopCapture") "StepToEmpty"))
         (piece "Hen" P2 ("StepToEmpty" (directions {Rightward Leftward Forwards}))) 
     })  
     (rules 
@@ -17,10 +17,10 @@
             (if
                 (all Sites (expand (sites Bottom) steps:2) if:(= (who at:(site)) P2))
                 (result P2 Win)
-            )
+           )
             (if (no Pieces P2) (result P1 Win))
         }) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -38,7 +38,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Canary Islands, from around 1923 to 1994.")
         }
-    )
+   )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})

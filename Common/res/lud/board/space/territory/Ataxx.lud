@@ -7,33 +7,33 @@
                     (from) 
                     (to (sites Around (from)) if:(is Empty (to))) 
                     copy:True
-                )
+               )
                 (move 
                     (from) 
                     (to 
                         (difference 
                             (expand origin:(from) steps:2) 
                             (expand origin:(from))
-                        ) 
+                       ) 
                         if:(is Empty (to))
-                    )
-                )
+                   )
+               )
                 (then
                     (forEach Site 
                         (intersection 
                             (sites Around (last To)) 
                             (sites Occupied by:Next)
-                        )
+                       )
                         (and 
                             (remove (site)) 
                             (add (piece (id "Marker" Mover)) (to (site))) 
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         }
-    )  
+   )  
     (rules 
         (start {
             (set Score Each 2)
@@ -45,20 +45,20 @@
                     (and 
                         (set Score P1 (count Sites in:(sites Occupied by:P1)))	    
                         (set Score P2 (count Sites in:(sites Occupied by:P2)))
-                    )
-                )	
-            )
-        )
+                   )
+               )	
+           )
+       )
         
         (end
             (if (or 
                     ("NoSites" (sites Occupied by:Next)) 
                     (is Full)
-                )
+               )
                 (byScore)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (metadata
@@ -77,7 +77,7 @@
         (credit "Eric Piette")
         (date "1990")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Red))
@@ -86,6 +86,6 @@
     
     (ai 
         "Ataxx_ai"
-    )
+   )
     
 )

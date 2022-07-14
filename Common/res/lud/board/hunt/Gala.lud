@@ -12,7 +12,7 @@
                 (intersection (sites Outer) (sites Row (row of:(centrePoint))))
                 (intersection (sites Outer) (sites Column (column of:(centrePoint))))
             })
-        )
+       )
         (piece "Marker" Each ("StepOrthogonalToEmpty"))
     })
     (rules 
@@ -27,25 +27,25 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (intersection (sites Empty) (sites Mover))) 
-                )  
-            ) 
+               )  
+           ) 
             (nextPhase (and ("HandEmpty" P1) ("HandEmpty" P2)) "Movement")
-        )
+       )
         
         (phase "Movement" 
             (play 
                 (forEach Piece
                     (then ("CustodialCapture"))
-                )
-            )
+               )
+           )
             
             (end {
                 (if (no Moves P1) (result P2 Win))
                 (if (< (count Pieces P2) 2) (result P1 Win))
             })
-        )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -62,7 +62,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Sulawesi, around 1859.")
         }
-    )
+   )
     
     (graphics {
         (show Symbol "thinCross" "MarkedCells")
@@ -73,5 +73,5 @@
     
     (ai
         "Gala_ai"
-    )
+   )
 )

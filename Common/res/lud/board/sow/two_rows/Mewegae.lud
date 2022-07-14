@@ -2,28 +2,28 @@
     (if (is Mover P1)
         (sites (values Remembered "OwnedP1"))
         (sites (values Remembered "OwnedP2"))
-    )
+   )
 )
 
 (define "RemmemberOwnedHoles" 
     (if (is Mover P1)
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
-    )
+   )
 )
 
 (define "CanCaptureHoles" 
     (if (is Mover P1)
         (sites (values Remembered "CanCaptureP1"))
         (sites (values Remembered "CanCaptureP2"))
-    )
+   )
 )
 
 (define "RemmemberCanCaptureHoles" 
     (if (is Mover P1)
         (remember Value "CanCaptureP1" #1)
         (remember Value "CanCaptureP2" #1)
-    )
+   )
 )
 
 (define "OnlyPiecesInMarked" 
@@ -35,14 +35,14 @@
         "TrackCW"
         from:(mapEntry "RightMost" Mover)
         if:(is Empty (to))
-    )
+   )
 )
 
 (define "RememberOwnedHolesRandom" 
     (if (< 50 (value Random (range 1 100)))
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
-    )
+   )
 )
 
 (define "SitesMarkedBy" 
@@ -60,7 +60,7 @@
             (track "TrackCCW" "0,E,N,W" loop:True)
             (track "TrackCW" "5,W,N,E" loop:True)
             }
-        )
+       )
         (piece "Seed" Shared)
         (hand Each)
         (regions P1 (sites Bottom))                     // P1 home
@@ -84,23 +84,23 @@
                             (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 ("OwnedHoles") 
-                            )
+                           )
                             if:(and (< 0 (count at:(from))) (= 0 (state at:(from))))
-                        )
+                       )
                         (then
                             (sow
                                 "TrackCCW"
                                 apply:(if (and 
                                         (= 0 (state at:(to))) 
                                         (= 4 (count at:(to)))
-                                    )
+                                   )
                                     (set State at:(to) (mover))
                                     (if (< 1 (count at:(to)))
                                         (if (= 0 (state at:(to)))
                                             (and
                                                 (moveAgain)
                                                 (set Var "Replay" (to))
-                                            )
+                                           )
                                             (if (!= (mover) (state at:(to)))
                                                 (if (is In (to) ("CanCaptureHoles"))
                                                     (and
@@ -108,18 +108,18 @@
                                                             (from (to))
                                                             (to (handSite Mover))
                                                             count:1
-                                                        )
+                                                       )
                                                         (set State at:(to) (state at:(to)))
-                                                    )
+                                                   )
                                                     ("RemmemberCanCaptureHoles" (to))
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                               )
+                                           )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
                     }
                     (then
                         (if ("OnlyPiecesInMarked")
@@ -129,36 +129,36 @@
                                         (from (site))
                                         (to (handSite P1))
                                         count:(count at:(site))
-                                    )
-                                )
+                                   )
+                               )
                                 (forEach Site ("SitesMarkedBy" 2)
                                     (fromTo
                                         (from (site))
                                         (to (handSite P2))
                                         count:(count at:(site))
-                                    )
-                                )
+                                   )
+                               )
                                 (forget Value "OwnedP1" All)
                                 (forget Value "OwnedP2" All)
                                 (forget Value "CanCaptureP1" All)
                                 (forget Value "CanCaptureP2" All)
                                 (set Var "Round" (+ 1 (var "Round")))
                             })
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             
             (end (if ("NoPieceOnBoard")
                     {
                     (if (>= 1 (count Cell at:(handSite P1))) (result P2 Win))
                     (if (>= 1 (count Cell at:(handSite P2))) (result P1 Win))
                     }
-                )
-            )
+               )
+           )
             
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-        )
+       )
         
         (phase "BetweenRounds"
             (play
@@ -178,12 +178,12 @@
                                                 (from (handSite Mover))
                                                 (to ("RightMostEmpty"))
                                                 count:3
-                                            )
+                                           )
                                             (fromTo 
                                                 (from (handSite Next))
                                                 (to ("RightMostEmpty"))
                                                 count:1
-                                            )
+                                           )
                                             ("RemmemberOwnedHoles" ("RightMostEmpty"))
                                         })
                                         (if (= 2 (count Cell at:(handSite Mover)))
@@ -192,20 +192,20 @@
                                                     (from (handSite Mover))
                                                     (to ("RightMostEmpty"))
                                                     count:2
-                                                )
+                                               )
                                                 (fromTo 
                                                     (from (handSite Next))
                                                     (to ("RightMostEmpty"))
                                                     count:2
-                                                )
+                                               )
                                                 ("RememberOwnedHolesRandom" ("RightMostEmpty"))
                                             })
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                             })
-                        )
-                    )
+                       )
+                   )
                     (then
                         (if (and (is Empty (handSite P1)) (is Empty (handSite P2))) 
                             (and
@@ -213,17 +213,17 @@
                                     (is Even (var "Round"))
                                     (set NextPlayer (player 2))
                                     (set NextPlayer (player 1))
-                                )
+                               )
                                 (set Pending)
-                            )
-                        )
-                    )
-                )
-            )
+                           )
+                       )
+                   )
+               )
+           )
             (nextPhase (and (is Empty (handSite P1)) (is Empty (handSite P2))) "Sowing")
-        )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -241,7 +241,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Horn of Africa, around 1971.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

@@ -6,8 +6,8 @@
             (or
                 ("StepToEmpty")
                 ("HopCapture")
-            )
-        )
+           )
+       )
     })  
     
     (rules 
@@ -17,8 +17,8 @@
         
         (end 
             (if (no Pieces Next) (result Mover Win))
-        )  
-    )
+       )  
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -32,7 +32,7 @@
             (place "Marker1" (union (sites Bottom) (sites {"B2" "C2" "D2"})))
             (place "Marker2" (union (sites Top) (sites {"B4" "C4" "D4"})))
             }
-        )
+       )
         >     
     "Each player has 8 pieces.")   
     (item "10 pieces" 
@@ -42,7 +42,7 @@
             (place "Marker1" (expand (sites Bottom)))
             (place "Marker2" (expand (sites Top)))
             }
-        )
+       )
         >   
     "Each player has 10 pieces.")**   
 })
@@ -81,7 +81,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, around 1921.")
         }
-    )
+   )
     
     (graphics {
         
@@ -89,5 +89,5 @@
     
     (ai
         "Terhuchu (Small)_ai"
-    )
+   )
 )

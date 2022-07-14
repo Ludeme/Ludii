@@ -4,40 +4,40 @@
         (board (square 8)) 
         (piece "Knight" P1)
         }
-    )  
+   )  
     (rules 
         phases:{    
         (phase "Placement" 
             (play (add to:(sites Empty))) 
             (nextPhase "Movement")
-        )
+       )
         (phase "Movement" 
             (play 
                 (leap 
                     (from (last To)
-                    ) 
+                   ) 
                     (sites Walk (last To) "KnightWalk") 
                     (to if:(is Empty (to))
                         (apply 
                             (add site:(last To))
-                        )
-                    )                    
-                ) 
-            )
-        )
+                       )
+                   )                    
+               ) 
+           )
+       )
         }
         
         (end {
             (if 
                 (>= (count Moves) (count Sites "Board")) 
                 (result P1 Win) 
-            )
+           )
             (if 
                 (no Moves P1) 
                 (result P1 Loss) 
-            )  
+           )  
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -61,6 +61,6 @@
     
     (ai 
         //"Knight's Tour_ai"
-    )
+   )
     
 )

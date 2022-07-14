@@ -18,7 +18,7 @@
                     (is Next (who at:(between)))
                     (is Empty (between))
                     }
-            ))
+           ))
             (to <Board:area> if:(is Mover (who at:(to))))
 )))
 
@@ -37,7 +37,7 @@
     (do
         (set Var "OriginGroupSize" (size Group at:(from))
             (then (set Var "From" (from)))
-        )
+       )
         next:(move 
             (from (from))
             (to
@@ -52,9 +52,9 @@
                         (<=
                             (var "OriginGroupSize")
                             ("DestinationGroupSize")
-                    ))
+                   ))
                     }
-                )
+               )
                 (apply 
                     (remove (to))
 )))))
@@ -82,12 +82,12 @@
         (board (hex Hexagon <Board:side>) use:Cell)
         (piece "Disc" Each)
         }
-    )
+   )
     (rules
         (start {<Board:white> <Board:black>})
         (play
             <Game:structure>
-        )
+       )
         (end 
             <Game:winCondition>
 )))
@@ -108,14 +108,14 @@
         <"AdvancedSquishSlide"> <"AMSEnd"> 
         <"Oldman"> 
         "Don't Mosey - Misere. A piece must slide toward a friendly piece, either to reach a location where it forms a group larger than where it started, or to reach an opponent's piece, which is then removed. Last to move Loses"
-    )
+   )
     
     (item "The Last Scavenger (last to move wins)" 
         <"MoveByDirection"> 
         <"AdvancedSquishSlide"> <"Last2MoveEnd"> 
         <"Crab"> 
         "The Last Scavenger. A piece must slide toward a friendly piece, either to reach a location where it forms a group larger than where it started, or to reach an opponent's piece, which is then removed. Last to move wins."
-    )***
+   )***
     
     }
 )
@@ -181,7 +181,7 @@
         (credit "Dale W. Walton")
         (date "12-10-2021")
         }
-    )
+   )
     
     (graphics 
         {
@@ -192,7 +192,7 @@
         (piece Colour P2 strokeColour:(colour DarkGrey))
         (piece Background "Disc" image:"Disc" fillColour:(colour 0 0 0 75) edgeColour:(colour 0 0 0 0) scale:0.95 offsetX:-1 offsetY:2)
         (piece Foreground "Disc1" image:<Game:token> fillColour:(colour VeryLightGrey) edgeColour:(colour DarkGrey) scale:0.70)
-        (piece Foreground "Disc2" image:<Game:token> fillColour:(colour 255 255 255 60) edgeColour:(colour 255 255 255 120) scale:0.70 )
+        (piece Foreground "Disc2" image:<Game:token> fillColour:(colour 255 255 255 60) edgeColour:(colour 255 255 255 120) scale:0.70)
         (board Colour Phase0 (colour 245 242 222))
         (board StyleThickness InnerEdges 1.6)
         (board StyleThickness OuterEdges 1.6)
@@ -205,5 +205,5 @@
         (region Colour (sites Outer) (colour 212 206 190))
         
         }
-    )
+   )
 )

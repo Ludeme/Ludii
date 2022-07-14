@@ -7,7 +7,7 @@
 (define "InnerPitsWithPossibleCapture"
     (forEach (difference (sites Mover "Inner") (sites Empty))
         if:(not (is Empty ("OppositePit" (site))))
-    )		
+   )		
 )
 
 (define "NextHole" ("NextSiteOnTrack" 1 from:#1 "TrackCCW"))
@@ -25,7 +25,7 @@
             (track "TrackCCW1" "0,E,N1,W" loop:True P1)
             (track "TrackCCW2" "14,E,N1,W" loop:True P2)
             }
-        )
+       )
         (regions "Home" P1 (sites Track "TrackCCW1"))                                     // P1 Home
         (regions "Home" P2 (sites Track "TrackCCW2"))                                     // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))        // P1 inner Home
@@ -49,31 +49,31 @@
                             (fromTo 
                                 (from ("OppositePit" (last To)))
                                 (to ("InnerPit" (last To)))
-                            )
+                           )
                             (if (not (is Empty ("OppositeOuterPit" (last To))))
                                 (fromTo 
                                     (from ("OppositeOuterPit" (last To)))
                                     (to ("InnerPit" (last To)))
-                                )
-                            )
+                               )
+                           )
                             (moveAgain)
                             }
                             (then
                                 (if (!= 0 (count Sites in:(("InnerPitsWithPossibleCapture"))))
                                     (set Pending 1)
-                                )
-                            )
-                        )
-                    )
-                )
+                               )
+                           )
+                       )
+                   )
+               )
                 (move Select
                     (from 
                         (if (and (is In 2 (sites Pending)) ("SameTurn")) 
                             (sites {("NextHole" "LastHole")})
                             (sites Mover "Home") 
-                        )
+                       )
                         if:(> (count at:(from)) 0)
-                    )
+                   )
                     (then 
                         (sow
                             "TrackCCW"
@@ -85,32 +85,32 @@
                                             (fromTo 
                                                 (from ("OppositePit" ("NextHole" (to))))
                                                 (to ("InnerPit" ("NextHole" (to))))
-                                            )
+                                           )
                                             (if (not (is Empty ("OppositeOuterPit" ("NextHole" (to)))))
                                                 (fromTo 
                                                     (from ("OppositeOuterPit" ("NextHole" (to))))
                                                     (to ("InnerPit" ("NextHole" (to))))
-                                                )
-                                            )		
-                                        )
-                                    )
+                                               )
+                                           )		
+                                       )
+                                   )
                                     (moveAgain)
                                     (set Pending 2)
                                 })
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (end 
             (forEach Player
                 if:("EmptyOuterRow" Player)
                 (result Player Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -120,7 +120,7 @@
     (item "3 Seeds per hole" 
         <(set Count 3 to:(union (sites P1 "Outer") (sites P2 "Outer")))>   
         "At the initial state 3 seeds are in each outer hole."
-    )**
+   )**
     (item "Starting Position 1" 
         <
         (set Count 15 to:(sites {"G1" "A4"}))  
@@ -176,7 +176,7 @@
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -184,5 +184,5 @@
     
     (ai
         "Kisolo_ai"
-    )
+   )
 )

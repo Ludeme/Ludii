@@ -7,13 +7,13 @@
                     (remove 
                         (scale 1 2 (wedge 3)) 
                         vertices:{2}
-                    )
+                   )
                     vertices:{{2 1.333}}
                     edges:{{4 6} {6 0} {1 6} {6 2}}
-                )
-            )
+               )
+           )
             use:Vertex
-        )
+       )
         (hand Each) 
         (piece "Goat" P1
             (move Step 
@@ -21,10 +21,10 @@
                     if:(or 
                         (is Empty (to))
                         (and (= (to) (centrePoint)) ("IsFriendAt" (to)))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (piece "Tiger" P2
             (or {
                 ("StepToEmpty")
@@ -32,12 +32,12 @@
                 // Special captures from a site to another.
                 (if (and {(= (from) 2) ("IsEnemyAt" (centrePoint)) (is Empty 1)})
                     (move (from 2) (to 1) (then (remove (centrePoint))))
-                )
+               )
                 (if (and {(= (from) 1) ("IsEnemyAt" (centrePoint)) (is Empty 2)})
                     (move (from 1) (to 2) (then (remove (centrePoint))))
-                )
+               )
             })
-        )
+       )
     })  
     (rules 
         (start {
@@ -51,7 +51,7 @@
             (if (no Moves P2) (result P1 Win))
             (if (= 3 (count Pieces P1)) (result P2 Win))
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -69,7 +69,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, around 1929.")
         }
-    )
+   )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})

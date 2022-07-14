@@ -17,14 +17,14 @@
                 (move 
                     (from (handSite P1)) 
                     (to (sites Empty))
-                )
-            ) 
+               )
+           ) 
             (nextPhase ("HandEmpty" P1))
-        )
+       )
         (phase "Movement" (play (forEach Piece)))
         }
         (end ("NoMovesLossAndLessNumPiecesPlayerLoss" P1 <Num:tigers>))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -70,7 +70,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Nepal, from around 1933 to 1986.")
         }
-    )
+   )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})
@@ -78,6 +78,6 @@
     
     (ai 
         "Baghchal_ai"
-    )
+   )
     
 )

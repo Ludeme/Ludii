@@ -17,10 +17,10 @@
         (then 
             (if (= "SumFingers" (amount #1))
                 (addScore #1 1)
-            )
+           )
             applyAfterAllMoves:True
-        )
-    )
+       )
+   )
 )
 
 //-------------------------------------------------------------------------
@@ -52,9 +52,9 @@
                     (move Bet P2 (range 0 ("MaxFingers")) (then (set Pot (+ (pot) (amount P2)))))
                     <Players:betP3>
                 })
-            )
+           )
             (nextPhase "Hand")
-        )
+       )
         
         (phase "Hand" 
             (play 
@@ -63,9 +63,9 @@
                     ("ShowHand" P2)
                     <Players:showHandP3>
                 })
-            )
+           )
             (nextPhase "Observe")
-        )
+       )
         
         (phase "Observe" 
             (play 
@@ -77,11 +77,11 @@
                             (remove 1)
                             <Players:removeP3>
                         })
-                    )
-                )
-            )
+                   )
+               )
+           )
             (nextPhase "Bet")
-        )
+       )
         }
         
         (end 
@@ -92,9 +92,9 @@
                     <Players:endP3>
                 }) 
                 (byScore)
-            )
-        ) 
-    )
+           )
+       ) 
+   )
 )
 
 //-------------------------------------------------------------------------
@@ -107,8 +107,8 @@
             (union 
                 (square 1) 
                 (shift 0 2 (square 1))
-            )
-        )>
+           )
+       )>
         <(+ (state at:0) (state at:1))>
         <>
         <>
@@ -126,8 +126,8 @@
                 (shift -1 2 (square 1)) 
                 (shift 1 2 (square 1))
                 }
-            )
-        )>
+           )
+       )>
         <(+ {(state at:0) (state at:1) (state at:2)})>
         <("InitHand" "Hand03" P3)>
         <(move Bet P3 (range 0 ("MaxFingers")) (then (set Pot (+ (pot) (amount P3)))))>
@@ -152,7 +152,7 @@
         (classification "math/hand")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour HumanLight))

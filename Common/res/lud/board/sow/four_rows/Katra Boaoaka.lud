@@ -13,7 +13,7 @@
             (track "TrackCW1" "7,W,N1,E" loop:True P1)
             (track "TrackCW2" "24,E,S1,W" loop:True P2)
             }
-        )
+       )
         (regions "Home" P1 (sites Track "TrackCCW1"))                              // P1 Home
         (regions "Home" P2 (sites Track "TrackCCW2"))                              // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
@@ -34,9 +34,9 @@
                                 ("SameTurn") 
                                 (sites {(var "Replay")})
                                 (sites Mover "Home") 
-                            ) 
+                           ) 
                             if:(> (count at:(from)) 0)
-                        )
+                       )
                         (then
                             (and
                                 (sow
@@ -47,8 +47,8 @@
                                             (and
                                                 (moveAgain)
                                                 (set Var "Replay" (to))
-                                            )
-                                        )
+                                           )
+                                       )
                                         (if (is In (to) (sites Mover "Inner"))
                                             (if (not 
                                                     (and { 
@@ -56,38 +56,38 @@
                                                         (= 1 (count at:("OppositePit" (to))))
                                                         (= 1 (count at:("OppositeOuterPit" (to))))
                                                     })
-                                                )
+                                               )
                                                 (if (or (is Occupied ("OppositePit" (to))) (is Occupied ("OppositeOuterPit" (to))))
                                                     (and {
                                                         (fromTo
                                                             (from ("OppositePit" (to)))
                                                             (to (to))
                                                             count:(count at:("OppositePit" (to)))
-                                                        )	
+                                                       )	
                                                         (fromTo
                                                             (from ("OppositeOuterPit" (to)))
                                                             (to (to))
                                                             count:(count at:("OppositeOuterPit" (to)))
-                                                        )
+                                                       )
                                                         (if (= 1 (count at:(to)))
                                                             (and
                                                                 (moveAgain)
                                                                 (set Var "Replay" (to))
-                                                            )
-                                                        )
+                                                           )
+                                                       )
                                                     })
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
+                                               )
+                                           )
+                                       )
+                                   )
+                               )
                                 (if (!= (value Player Mover) 1)
                                     (set Value Mover 1)
-                                )
-                            )
-                        )
-                    )
-                )
+                               )
+                           )
+                       )
+                   )
+               )
                 
                 (if (!= (value Player Mover) 1)
                     (move Select
@@ -96,9 +96,9 @@
                                 ("SameTurn") 
                                 (sites {(var "Replay")})
                                 (sites Mover "Home") 
-                            ) 
+                           ) 
                             if:(> (count at:(from)) 0)
-                        )
+                       )
                         (then
                             (and
                                 (sow
@@ -109,8 +109,8 @@
                                             (and
                                                 (moveAgain)
                                                 (set Var "Replay" (to))
-                                            )
-                                        )
+                                           )
+                                       )
                                         (if (is In (to) (sites Mover "Inner"))
                                             (if (not 
                                                     (and { 
@@ -118,42 +118,42 @@
                                                         (= 1 (count at:("OppositePit" (to))))
                                                         (= 1 (count at:("OppositeOuterPit" (to))))
                                                     })
-                                                )
+                                               )
                                                 (if (or (is Occupied ("OppositePit" (to))) (is Occupied ("OppositeOuterPit" (to))))
                                                     (and {
                                                         (fromTo
                                                             (from ("OppositePit" (to)))
                                                             (to (to))
                                                             count:(count at:("OppositePit" (to)))
-                                                        )	
+                                                       )	
                                                         (fromTo
                                                             (from ("OppositeOuterPit" (to)))
                                                             (to (to))
                                                             count:(count at:("OppositeOuterPit" (to)))
-                                                        )
+                                                       )
                                                         (if (= 1 (count at:(to)))
                                                             (and
                                                                 (moveAgain)
                                                                 (set Var "Replay" (to))
-                                                            )
-                                                        )
+                                                           )
+                                                       )
                                                     })
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
+                                               )
+                                           )
+                                       )
+                                   )
+                               )
                                 (if (!= (value Player Mover) 2)
                                     (set Value Mover 2)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         (end "ForEachNonMoverNoMovesLoss")
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -171,7 +171,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Madagascar, from around 1926 to 1927.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

@@ -19,18 +19,18 @@
                             (forEach 
                                 (sites Hand Mover) 
                                 if:(is Occupied (site))
-                            )
-                        ) 
+                           )
+                       ) 
                         (to (sites LineOfPlay)) 
                         (then 
                             (and
                                 (set Hidden What at:(last To) False to:P1)
                                 (set Hidden What at:(last To) False to:P2)
-                            )
-                        )
-                    ) 
+                           )
+                       )
+                   ) 
                     ifAfterwards:(is PipsMatch)
-                )
+               )
                 (move Pass 
                     (then 
                         (if 
@@ -40,17 +40,17 @@
                                 (set Hidden What (sites Hand Mover) to:Next)
                                 (moveAgain)
                             })
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 }
-            )
-        )
+           )
+       )
         (end {
             (if ("HandEmpty" Mover) (result Mover Win)) 
             (if (all Passed) (result Mover Draw)) 
         })  
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -67,9 +67,9 @@
         (classification "dominoes")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (ai 
         "Block_ai"
-    )
+   )
 )

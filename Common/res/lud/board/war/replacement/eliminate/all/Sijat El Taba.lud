@@ -3,12 +3,12 @@
         (intersection
             (sites #1)
             (expand (sites Left) steps:2)
-        )
+       )
         (intersection 
             (sites #1)
             (expand (sites Right) steps:2)
-        )
-    )
+       )
+   )
 )
 
 (define "ThrowValue" (mapEntry (count Pips)))
@@ -18,28 +18,28 @@
     (trackSite 
         Move 
         steps:(+ (value Player Mover) ("ThrowValue"))
-    )
+   )
 )
 
 (define "CaptureEnemyPiece" 
     (apply 
         if:("IsEnemyAt" (to)) 
         (remove (to) (then (addScore Mover 1)))
-    ) 
+   ) 
 )
 
 (define "CapturesAreImpossible" 
     (and
         (= (count Sites in:(difference (sites Occupied by:P1) (sites Top))) 0) 
         (= (count Sites in:(difference (sites Occupied by:P2) (sites Bottom))) 0) 
-    )
+   )
 )
 
 (define "TabuleThrowOne" 
     (if (> (value Player Mover) 0)
         (set Value Mover (+ 1 (value Player Mover)))
         (set Value Mover 1)
-    )
+   )
 )
 
 (define "ReinitTabule" (set Value Mover 0))
@@ -53,7 +53,7 @@
         Select 
         (from (sites Occupied by:Mover) if:("InactivedPiece")) 
         (then (and ("ActivePiece") (moveAgain)))
-    )
+   )
 )
 
 //-------------------------------------------------
@@ -65,7 +65,7 @@
             {    
             <Row:track>
             }
-        )
+       )
         (piece "Marker" Each
             (if (= (state at:(from)) 1) 
                 (or
@@ -73,16 +73,16 @@
                         (if (or
                                 (is In "SiteToMoveOnTrack" (sites Empty))
                                 (is Enemy (who at:"SiteToMoveOnTrack"))
-                            )
+                           )
                             (move 
                                 (from)
                                 (to 
                                     "SiteToMoveOnTrack" 
                                     "CaptureEnemyPiece"
-                                )
-                            )
-                        )
-                    )
+                               )
+                           )
+                       )
+                   )
                     (if (!= "SiteToCaptureWithTabOnTrack" Off)
                         (if (is Enemy (who at:"SiteToCaptureWithTabOnTrack"))
                             (move 
@@ -90,14 +90,14 @@
                                 (to 
                                     "SiteToCaptureWithTabOnTrack" 
                                     "CaptureEnemyPiece"
-                                )
+                               )
                                 (then ("ReinitTabule"))
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         (dice d:2 from:0 num:3)
         (map {(pair 1 1) (pair 2 2) (pair 3 4) (pair 0 6)})
     })
@@ -117,20 +117,20 @@
                                 (and 
                                     ("TabuleThrowOne")
                                     (moveAgain)
-                                )
-                            )
-                        )
+                               )
+                           )
+                       )
                         ("ActiveInactivedPiece")
-                    )
+                   )
                     (if (= (mapEntry (count Pips)) 2)
                         (forEach Piece)
                         (forEach Piece (then (moveAgain)))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (end (if ("CapturesAreImpossible") (byScore)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -162,7 +162,7 @@
         "Board Size/6x10"
         }
         variations:{"Board Size/4x10"}
-    )*
+   )*
     
 })
 
@@ -181,7 +181,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Sudan, around 1925.")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
@@ -190,5 +190,5 @@
     })
     (ai
         "Sijat El Taba_ai"
-    )
+   )
 )

@@ -1,8 +1,8 @@
 (define "Nbors" (count Sites in:(intersection
             (sites Around #1)
             (sites Occupied by:#2)   
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -14,7 +14,7 @@
         (board (hex Triangle <Board>))
         (piece "Marker" Each)
         }
-    )
+   )
     
     (rules
         (meta (swap))
@@ -27,11 +27,11 @@
                     (to (sites Empty)) 
                     (then 
                         (set Var (last To))
-                    )
-                )
-            )
+                   )
+               )
+           )
             (nextPhase)
-        )
+       )
         
         (phase "Play"
             (play
@@ -40,10 +40,10 @@
                     (to (sites LineOfSight Empty at:(var)))
                     (then
                         (set Var (last To))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         }
         
         (end
@@ -54,10 +54,10 @@
                     (score P1 (+ (if (is Mover P1) 1 0) ("Nbors" (last To) P1)))
                     (score P2 (+ (if (is Mover P2) 1 0) ("Nbors" (last To) P2)))
                     }
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -100,8 +100,8 @@
         (publisher "Alek Erickson")
         (credit "Alek Erickson")
         }
-    )
+   )
     (ai
         "Trike_ai"
-    )
+   )
 )

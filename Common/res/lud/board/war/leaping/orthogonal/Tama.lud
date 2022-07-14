@@ -10,10 +10,10 @@
         (between 
             if:("IsEnemyAt" (between))
             (apply (remove (between)))
-        ) 
+       ) 
         (to if:(is Empty (to))) 
         #2
-    ) 
+   ) 
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -32,7 +32,7 @@
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-    )  
+   )  
     (rules 
         (start { 
             (place "Counter1" (union (sites Row 1) (sites Row 2)))
@@ -49,13 +49,13 @@
                                     (moveAgain)
                                     (if "JumpToPromotionZone" 
                                         (move Promote (last To) (piece "DoubleCounter") Mover)
-                                    )
-                                ) 
-                            ) 
-                        )
-                    )
+                                   )
+                               ) 
+                           ) 
+                       )
+                   )
                     (max Moves ("PromotedHopOrthogonalSequenceCapture" (from (last To)) (difference Orthogonal OppositeDirection)))
-                )
+               )
                 (priority 
                     {
                     (max Moves
@@ -67,38 +67,38 @@
                                             (moveAgain) 
                                             (if "JumpToPromotionZone" 
                                                 (move Promote (last To) (piece "DoubleCounter") Mover)
-                                            )
-                                        ) 
-                                    ) 
-                                ) 
-                            )
+                                           )
+                                       ) 
+                                   ) 
+                               ) 
+                           )
                             (forEach Piece "DoubleCounter" ("PromotedHopOrthogonalSequenceCapture" (from) Orthogonal))
                             }
-                        )
-                    )
+                       )
+                   )
                     (or 
                         (forEach Piece "Counter" 
                             (move
                                 Step 
                                 (directions {Forwards Rightward Leftward}) 
                                 (to if:(is Empty (to)))
-                            )
+                           )
                             (then 
                                 (if "JumpToPromotionZone"
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
-                                )
-                            )
-                        )
-                        (forEach Piece "DoubleCounter" <Variant:promotedMove> )
-                    )
+                               )
+                           )
+                       )
+                        (forEach Piece "DoubleCounter" <Variant:promotedMove>)
+                   )
                     }
                     
-                )
-            )
-        ) 
+               )
+           )
+       ) 
         
         <Variant:endRule> 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -114,7 +114,7 @@
             (between 
                 if:("IsEnemyAt" (between))
                 (apply (remove (between)))
-            ) 
+           ) 
             (to if:(is Empty (to))) 
             (then 
                 (if (can Move 
@@ -124,20 +124,20 @@
                             (between 
                                 if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
-                            )
+                           )
                             (to if:(is Empty (to)))
-                        )
-                    ) 
+                       )
+                   ) 
                     (moveAgain)
-                )
-            )
-        ) 
+               )
+           )
+       ) 
         >    
         < 
         (move
             Step 
             (to if:(is Empty (to)))
-        )
+       )
         >
         <(end (if (no Pieces Next) (result Mover Win))) >
     "The rules come from Schmidt.")*
@@ -152,7 +152,7 @@
                 after:(count Rows)
                 if:("IsEnemyAt" (between)) 
                 (apply (remove (between)))
-            )
+           )
             (to if:(is Empty (to)))
             (then 
                 (if (can Move 
@@ -165,16 +165,16 @@
                                 if:(and 
                                     (not (is In (between) (sites ToClear))) 
                                     ("IsEnemyAt" (between))
-                                )
+                               )
                                 (apply (remove (between)))
-                            )
+                           )
                             (to if:(is Empty (to)))
-                        )
-                    ) 
+                       )
+                   ) 
                     (moveAgain)
-                )
-            )
-        )	
+               )
+           )
+       )	
         > 
         < (move Slide All)>
         <(end ("BlockWin"))>
@@ -216,7 +216,7 @@
         (credit "A. Sambruni")
         (origin  "This game was played in Armenia, around 1934.")
         }
-    )
+   )
     
     (graphics {
         (piece Families {"Defined" "Isometric"})

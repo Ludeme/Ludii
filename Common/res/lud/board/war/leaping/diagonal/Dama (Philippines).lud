@@ -6,10 +6,10 @@
         (between 
             if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
             (apply (remove (between)))
-        ) 
+       ) 
         (to if:(is Empty (to))) 
         #2
-    ) 
+   ) 
 )
 
 (define "HopDiscDouble" 
@@ -21,7 +21,7 @@
             after:(count Rows)
             if:("IsEnemyAt" (between)) 
             (apply (remove (between)))
-        )
+       )
         (to if:(is Empty (to)))
         (then 
             (if (can Move 
@@ -34,16 +34,16 @@
                             if:(and 
                                 (not (is In (between) (sites ToClear))) 
                                 ("IsEnemyAt" (between))
-                            )
+                           )
                             (apply (remove (between)))
-                        )
+                       )
                         (to if:(is Empty (to)))
-                    )
-                ) 
+                   )
+               ) 
                 (moveAgain)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Disc" Mover)))
@@ -63,23 +63,23 @@
                     (shift -2 2 (rectangle 1 8))
                     (shift 1 -1 (rectangle 7 2))
                 })
-            )
+           )
             use:Vertex
-        ) 
+       ) 
         (piece "Disc" P1 N)
         (piece "Disc" P2 S) 
         (piece "DiscDouble" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-    )  
+   )  
     (rules 
         (start
             { 
             (place "Disc1" (expand (sites Bottom) steps:2))
             (place "Disc2" (expand (sites Top) steps:2))
             }
-        )
+       )
         
         (play 
             (if "SameTurn"
@@ -91,14 +91,14 @@
                                     (moveAgain)
                                     (if "JumpToPromotionZone" 
                                         (move Promote (last To) (piece "DiscDouble") Mover)
-                                    )
-                                ) 
-                            ) 
-                        )
+                                   )
+                               ) 
+                           ) 
+                       )
                         ("HopDiscDouble" (last To) SameDirection)
-                    )
+                   )
                     (move Pass)
-                )
+               )
                 (or {
                     (forEach Piece "Disc"
                         ("HopDisc" (from) 
@@ -107,31 +107,31 @@
                                     (moveAgain) 
                                     (if "JumpToPromotionZone" 
                                         (move Promote (last To) (piece "DiscDouble") Mover)
-                                    )
-                                ) 
-                            ) 
-                        ) 
-                    )
+                                   )
+                               ) 
+                           ) 
+                       ) 
+                   )
                     (forEach Piece "DiscDouble" ("HopDiscDouble"))
                     (forEach Piece "Disc" 
                         (move
                             Step 
                             (directions {FR FL}) 
                             (to if:(is Empty (to)))
-                        )
+                       )
                         (then 
                             (if "JumpToPromotionZone"
                                 (move Promote (last To) (piece "DiscDouble") Mover)
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (forEach Piece "DiscDouble" (move Slide))
                 })
-            )
-        ) 
+           )
+       ) 
         
         (end ("BlockWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -150,7 +150,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Philippines, around 1892.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)
@@ -159,6 +159,6 @@
     
     (ai
         "Dama (Philippines)_ai"
-    )
+   )
 )
 

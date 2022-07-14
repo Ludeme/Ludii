@@ -18,26 +18,26 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty))
-                ) 
-            )
+               ) 
+           )
             {
             (nextPhase P1 ("HandEmpty" P1) "MovementP1")
             (nextPhase P2 ("HandEmpty" P2) "MovementP2")
             }
-        )
+       )
         
         (phase "MovementP1" P1
             (play <Move:leopard>) 
-        )
+       )
         
         (phase "MovementP2" P2
             (play (forEach Piece))
-        )
+       )
         
         }
         
         (end ("NoMoves" Loss))  
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -52,12 +52,12 @@
             ("HopSequenceCaptureAgain")
             (priority {
                 (forEach Piece "Leopard" ("HopSequenceCapture")) 
-                (forEach Piece "Leopard" "StepToEmpty" )
+                (forEach Piece "Leopard" "StepToEmpty")
             })
-        )
+       )
         > 
         "The leopard can jump a sequence of pieces to capture. It is also forced to capture."
-    ) 
+   ) 
     }
 )
 
@@ -77,7 +77,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in South Asia, around 1909.")
         }
-    )
+   )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})
@@ -86,6 +86,6 @@
     
     (ai 
         "Diviyan Keliya_ai"
-    )
+   )
     
 )

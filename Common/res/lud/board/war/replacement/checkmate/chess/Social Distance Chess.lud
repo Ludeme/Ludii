@@ -19,8 +19,8 @@
         (if 
             (= (state at:(last To)) 1) 
             "PieceHasMoved"
-        ) 
-    ) 
+       ) 
+   ) 
 )
 
 (define "CaptureToPieceAndResetCounter"
@@ -29,16 +29,16 @@
             (remove 
                 (to) 
                 (then (set Counter))
-            )
-        )
-    ) 
+           )
+       )
+   ) 
 )
 
 (define "KingNotCheckedAndToEmpty"
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )   
+   )   
 )
 
 (define "DoCastle"
@@ -49,9 +49,9 @@
         (between 
             (exact #3) 
             if:#4
-        ) 
+       ) 
         #5
-    )
+   )
 )
 
 (define "SmallCastling"
@@ -65,7 +65,7 @@
 (define "SetEnPassantLocation"
     (then 
         (set Pending (ahead (last To) Backward))
-    )
+   )
 )
 
 (define "DoubleStep"
@@ -75,14 +75,14 @@
         (between (exact 2) if:(is Empty (between))) 
         (to if:(is Empty (to))) 
         "SetEnPassantLocation"
-    )
+   )
 )
 
 (define "InLocationEnPassant"
     (and 
         (is Pending) 
         (= (to) (value Pending)) 
-    )
+   )
 )
 
 (define "EnPassant"
@@ -93,9 +93,9 @@
         (then 
             (remove 
                 (ahead (last To) Backward)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "CaptureForwardDiagonal"
@@ -105,8 +105,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -120,7 +120,7 @@
             (or {
                 (if (is In (from) (sites Start (piece (what at:(from)))))
                     "DoubleStep"
-                )
+               )
                 "StepForwardToEmpty" 
                 "CaptureForwardDiagonal"
                 "EnPassant"
@@ -129,12 +129,12 @@
                     (and
                         (if (is In (last To) (sites Mover "Promotion")) 
                             (moveAgain)
-                        )
+                       )
                         (set Counter)
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (piece "Rook" Each 
             (move
@@ -143,20 +143,20 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
-                ) 
+               ) 
                 "RememberPieceHasMoved"
-            )
-        )
+           )
+       )
         (piece "King" Each 
             (move
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndResetCounter"
-                ) 
+               ) 
                 "RememberPieceHasMoved"
-            )
-        )
+           )
+       )
         (piece "Bishop" Each 
             (move
                 Slide 
@@ -164,9 +164,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "Knight" Each 
             (move
                 Leap 
@@ -174,18 +174,18 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndResetCounter"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "Queen" Each 
             (move
                 Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
-                ) 
-            ) 
-        )
+               ) 
+           ) 
+       )
         
         (map "King" {(pair 1 "I1") (pair 2 "I8")})
         (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})
@@ -193,7 +193,7 @@
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
         }
-    )  
+   )  
     (rules 
         (start
             { 
@@ -210,7 +210,7 @@
             (place "Queen2" {"G8"}) 
             (place "King2" {"I8"} state:1) 
             }
-        )
+       )
         
         (play 
             (if "SameTurn"
@@ -227,35 +227,35 @@
                                 (if (and 
                                         ("HasNeverMoved" "RookLeft")
                                         (can Move ("DoCastle" "RookLeft" E 3 (is Empty (to))))
-                                    )
+                                   )
                                     "BigCastling"
-                                )
+                               )
                                 (if (and 
                                         ("HasNeverMoved" "RookRight")
                                         (can Move ("DoCastle" "RookRight" W 2 (is Empty (to))))
-                                    )
+                                   )
                                     "SmallCastling"
-                                )
-                            )
-                        )
-                    )
+                               )
+                           )
+                       )
+                   )
                     ifAfterwards:(not ("IsInCheck" "King" Mover))
-                )
-            )
-        )
+               )
+           )
+       )
         
         (end
             {
             (if (and 
                     ("IsInCheck" "King" Next)
                     ("NextCanNotMove")
-                ) 
+               ) 
                 (result Mover Win)
-            ) 
+           ) 
             (if (or (no Moves Mover) (= (counter) 100)) (result Mover Draw)) 
             }
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -273,7 +273,7 @@
         (credit "Cameron Browne and Eric Piette")
         (origin  "This game is from Maastricht, the Netherlands, on 25-03-2020.")
         }
-    )
+   )
     
     (graphics {
         (show Check "King")
@@ -284,6 +284,6 @@
     
     (ai 
         "Social Distance Chess_ai"
-    )
+   )
     
 )

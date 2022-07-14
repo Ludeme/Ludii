@@ -11,14 +11,14 @@
                 {0 1.5} {10 1.5} {0.33 3.5}  {9.66 3.5}
                 {1 6} {9 6} {2 8} {8 8}
                 }
-            )
+           )
             use:Vertex
-        )
+       )
     })
     (rules
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -36,7 +36,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Ecuador, from around 1964 to 1965.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)

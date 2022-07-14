@@ -9,7 +9,7 @@
     (equipment { 
         (mancalaBoard 2 "Column" store:None
             (track "Track" "0,E,N,W" loop:True)
-        )
+       )
         (regions P1 (sites Bottom)) // P1 home
         (regions P2 (sites Top))    // P2 home
         (piece "Seed" Shared)
@@ -31,20 +31,20 @@
                                 (from (to)) 
                                 (to (handSite Mover)) 
                                 count:1
-                            )
-                        )
-                    )
-                )		
-            )
+                           )
+                       )
+                   )
+               )		
+           )
             (nextPhase "Play")
-        )
+       )
         (phase "Play"
             (play 
                 (move Select 
                     (from 
                         (sites Mover) 
                         if:(< 0 (count at:(from)))
-                    )
+                   )
                     (then 
                         (sow  
                             if:(= (count at:(to)) 1)
@@ -52,16 +52,16 @@
                                 (from (to)) 
                                 (to (handSite Mover)) 
                                 count:1
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         }
         
         (end ("MancalaByScoreWhen" (all Sites (sites Board) if:(is Empty (site)))))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -112,7 +112,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Tunisia, around 1988.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

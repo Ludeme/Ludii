@@ -8,14 +8,14 @@
                 (shift 2 0 (scale 1 2 (square 2)))
                 (shift 2 3 (scale 1 2 (square 2)))
             })
-        )
+       )
         (piece "Disc" Each (move [#])) 
     })
     (rules
         (start [#])
         (play [#])
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -31,7 +31,7 @@
         (version "1.3.4")
         (classification "board/race/reconstruction")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)

@@ -5,16 +5,16 @@
             (add 
                 (square 4) 
                 vertices:{ { 3.75 4.25 } } 
-            ) 
+           ) 
             use:Vertex
-        ) 
+       ) 
         (piece "Disc" P1) 
         (piece "Cross" P2) 
     })  
     (rules 
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -32,5 +32,5 @@
         (credit "Cameron Browne 31/5/2020")
         (origin  "This game was played in England, from around 1850CE to 1883CE.")
         }
-    )
+   )
 )

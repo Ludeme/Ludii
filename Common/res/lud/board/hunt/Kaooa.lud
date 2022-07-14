@@ -4,7 +4,7 @@
         (board 
             (splitCrossings (regular Star 5))
             use:Vertex
-        )
+       )
         (hand Each) 
         (piece "Marker" P1 (or ("HopSequenceCapture") "StepToEmpty")) 
         (piece "Marker" P2 "StepToEmpty") 
@@ -21,17 +21,17 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty))
-                ) 
-            )
+               ) 
+           )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play (forEach Piece))
             (end ("NoMoves" Loss))
-        )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -62,7 +62,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, around 1924.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)
@@ -70,6 +70,6 @@
     
     (ai 
         "Kaooa_ai"
-    )
+   )
     
 )

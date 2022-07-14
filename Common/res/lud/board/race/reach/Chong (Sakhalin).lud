@@ -15,7 +15,7 @@
     (apply 
         if:("IsEnemyAt" (to)) 
         (remove (to))
-    ) 
+   ) 
 )
 
 //------------------------------------------------------------------------------
@@ -29,7 +29,7 @@
             (track "Track1" "0,E,N1,W,N1,E" P1 directed:True)
             (track "Track2" <Board:track2> P2 directed:True)
             }
-        )
+       )
         (dice d:6 num:4)
         (piece "Marker" Each
             (move
@@ -42,13 +42,13 @@
                             (if (not ("IsPieceAt" "King" Next (to)))
                                 True
                                 (= 1 (abs (- (to) (from))))
-                            )
-                        )
+                           )
+                       )
                     })
                     ("CaptureEnemyPiece")
-                )
-            )
-        )
+               )
+           )
+       )
         (piece "King" Each
             (if (= 1 (pips))
                 (if (<= 2 (count Pieces Mover))
@@ -64,21 +64,21 @@
                                         (if (not ("IsPieceAt" "King" Next (to)))
                                             True
                                             (= 1 (abs (- (to) (from))))
-                                        )
-                                    )
+                                       )
+                                   )
                                 })
                                 ("CaptureEnemyPiece")
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (firstMoveOnTrack "Track" Mover
                         (if (and (> (site) (from)) (is Mover (who at:(site))))
                             (move Swap Pieces (from) (site))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
     })
     (rules 
         (start { 
@@ -95,24 +95,24 @@
                         (if (is Mover P1)
                             (if (is Mover (who at:(- (where "King" Mover) ("NumDiceAtOne"))))
                                 (move Swap Pieces (where "King" Mover) (- (where "King" Mover) ("NumDiceAtOne")))
-                            )
+                           )
                             (if (is Mover (who at:(+ (where "King" Mover) ("NumDiceAtOne"))))
                                 (move Swap Pieces (where "King" Mover) (+ (where "King" Mover) ("NumDiceAtOne")))
-                            )
+                           )
                             (then
                                 (fromTo
                                     (from (last From))
                                     (to ("SiteToMoveOnTrack" from:(last From) (- ("SumPips") ("NumDiceAtOne")))
                                         ("CaptureEnemyPiece")
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             (nextPhase Mover (not (was Pass)) "Playing")
-        )
+       )
         (phase "Playing"
             (play
                 ("RollEachNewTurnMove"
@@ -120,17 +120,17 @@
                         if:("DieNotUsed")
                         (forEach Piece)
                         (then ("ReplayNotAllDiceUsed"))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         }
         
         (end {
             (if (= (who at:0) P2) (result P2 Win))
             (if (= (who at:(- (count Sites in:(sites Board)) 1)) P1) (result P1 Win))
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -162,7 +162,7 @@
     (info
         {
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

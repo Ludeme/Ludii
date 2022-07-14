@@ -9,7 +9,7 @@
         (start [#]) // 9 pieces per player.
         (play [#]) // Maybe the line has to be used to capture like in nine men morris?
         (end (if [(is Line 3) | #] (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -29,6 +29,6 @@
         (credit "Eric Piette")
         (origin  "This game was played in Southwest Asia, around 1694.")
         }
-    )
+   )
     
 )

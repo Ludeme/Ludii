@@ -6,8 +6,8 @@
             (or 
                 ("HopCapture")
                 ("StepToEmpty")
-            )
-        )
+           )
+       )
     })  
     
     (rules 
@@ -18,13 +18,13 @@
         
         (play 
             (forEach Piece)
-        )
+       )
         
         (end {
             (if (no Pieces P1) (result P2 Win))
             (if (no Pieces P2) (result P1 Win))
         }) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -42,7 +42,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in South Asia., around 1925.")
         }
-    )
+   )
     
     (graphics {
         (player Colour P2 (colour Red))
@@ -51,5 +51,5 @@
     
     (ai
         "Ratti-Chitti-Bakri_ai"
-    )
+   )
 )

@@ -4,14 +4,14 @@
         Orthogonal
         (between (range 1 3) if:(is Empty (between)))
         (to if:("IsEnemyAt" (to)) #2)
-    ) 	
+   ) 	
 )
 
 (define "Move"
     (move 
         (from 
             (from)
-        ) 
+       ) 
         (to 
             (intersection
                 (sites To
@@ -20,17 +20,17 @@
                         (forEach Site
                             (sites To ("SlideStep" ~  (apply if:(is Empty (to)))))
                             ("SlideStep" (site))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (sites Distance Orthogonal from:(from) (exact (value Piece at:(from))))
-            )
+           )
             if:(not ("IsFriendAt" (to))) 
             (apply 
                 (set Value at:(from) (value Random (range 1 #1)))
-            ) 
-        )
-    )
+           ) 
+       )
+   )
 )
 
 (define "NextCanNotMove"
@@ -46,11 +46,11 @@
         
         (piece "Pawn" Each 
             ("Move" 4)
-        )
+       )
         
         (piece "King" Each 
             ("Move" 2)
-        )
+       )
     })  
     (rules 
         (start { 
@@ -74,18 +74,18 @@
         
         (play 
             <CheckmateRule:Move>
-        )
+       )
         
         (end
             (if 
                 (or
                     <CheckmateRule:Ending>
                     (<= (count Pieces Next) 2)
-                )
+               )
                 (result Mover Win)
-            ) 
-        )
-    )
+           ) 
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -106,13 +106,13 @@
         (do 
             (forEach Piece)
             ifAfterwards:(not ("IsInCheck" "King" Mover))
-        )
+       )
         >
         <
         (and 
             ("IsInCheck" "King" Next)
             ("NextCanNotMove")
-        ) 
+       ) 
         >
     "1979 version. Same as 1976 version but the Shogun cannot be captured and must instead be put in checkmate.")
 })
@@ -133,7 +133,7 @@
         (credit "Matthew Stephenson and Eric Piette")
         (date "1976")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour White))

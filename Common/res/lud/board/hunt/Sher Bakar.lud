@@ -5,14 +5,14 @@
         (piece "Goat" P1 
             (move Step 
                 (to if:(or (and (is In (to) (sites "StartingSitesGoats")) ("IsFriendAt" (to))) (is Empty (to))))
-            )
-        )
+           )
+       )
         (piece "Tiger" P2
             (or
                 ("StepToEmpty")
                 ("HopSequenceCapture")
-            )
-        )
+           )
+       )
         (regions "StartingSitesGoats" (sites {"B2" "D2" "D4" "B4"}))
     })
     (rules 
@@ -28,14 +28,14 @@
                 (or
                     (move Pass)
                     ("HopSequenceCaptureAgain")
-                )
+               )
                 (forEach Piece top:True)
-            )
+           )
             
-        )
+       )
         
         (end ("NoMovesP2NoPiecesP1"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -54,7 +54,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in South Asia, around 1922.")
         }
-    )
+   )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})

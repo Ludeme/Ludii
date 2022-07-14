@@ -14,18 +14,18 @@
                     (from (sites Occupied by:Shared component:"Square"))
                     (then
                         (promote (last To) (piece {"Triangle"}) Shared)
-                    )
-                )
+                   )
+               )
                 (move Select
                     (from (sites Occupied by:Shared component:"Triangle"))
                     (then
                         (promote (last To) (piece {"Disc"}) Shared)
-                    )
-                )
+                   )
+               )
             })
-        )
+       )
         (end (if (is Line 3) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -57,7 +57,7 @@
         (credit "Eric Piette")
         (date "1985")
         }
-    )
+   )
     
     (graphics {
         (piece Colour Shared "Square" fillColour:(colour Red))

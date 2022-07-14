@@ -5,7 +5,7 @@
         (mancalaBoard 4 8 store:None)
         (piece "Seed" Shared)
         }
-    )  
+   )  
     (rules 
         
         (play (forEach Piece))
@@ -13,9 +13,9 @@
         (end
             (if  (no Moves Next)
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -31,7 +31,7 @@
         (classification "board/sow/four rows/reconstruction")
         (origin  "This game was played in Madagascar., from around 1648 to 1658.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

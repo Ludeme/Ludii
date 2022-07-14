@@ -21,7 +21,7 @@
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" <Row:track2> loop:True P2)
             }
-        )
+       )
         (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
         (regions "Home" P2 (sites Track "Track2"))                              // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
@@ -35,25 +35,25 @@
         (start {
             (place "Seed" (intersection (sites Top) (sites Left)) counts:{3} state:2)
             (place "Seed" (intersection (sites Bottom) (sites Right)) counts:{3} state:1)
-            (set Count 2 to:(union (difference (sites Top) (sites Left)) (difference (sites Bottom ) (sites Right))))
+            (set Count 2 to:(union (difference (sites Top) (sites Left)) (difference (sites Bottom) (sites Right))))
         })
         
         (play 
             (or
                 (if (and (!= 0 (state at:(var))) ("SameTurn"))
                     (move Pass)
-                )
+               )
                 (move Select
                     (from 
                         (if ("SameTurn")
                             "LastHoleSowed" 
                             (sites Mover "Home") 
-                        ) 
+                       ) 
                         if:(if "AHoleHasMoreThanOneCounter"
                             (> (count at:(from)) 1)
                             (and (= (count at:(from)) 1) (= 0 (count at:("NextHoleFrom" (from) Mover)))) 
-                        )
-                    )
+                       )
+                   )
                     (then 
                         (and
                             (sow
@@ -67,32 +67,32 @@
                                                 (if 
                                                     (> (count at:("OppositeOuterPit" (to))) 0) 
                                                     (remove ("OppositeOuterPit" (to))) 
-                                                ) 
-                                            ) 
-                                        ) 
-                                    )
+                                               ) 
+                                           ) 
+                                       ) 
+                                   )
                                     (and
                                         (moveAgain)
                                         (set Var (to))
-                                    )
-                                )
-                            )
+                                   )
+                               )
+                           )
                             (forEach Site (sites Board)
                                 (if (!= 0 (state at:(site))) (set State at:(site) (state at:(site))))
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (end
             (forEach NonMover
                 if:("NoPiece")
                 (result Player Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -127,7 +127,7 @@
         variations:{"Board Size/6" "Board Size/7" "Board Size/9" "Board Size/10" "Board Size/11"
         "Board Size/12" "Board Size/13" "Board Size/14" "Board Size/15" "Board Size/16" "Board Size/17"
         "Board Size/18" "Board Size/19" "Board Size/20" "Board Size/21"}
-    )*
+   )*
 })
 
 //------------------------------------------------------------------------------
@@ -146,7 +146,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Zimbabwe, around 1964.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -155,5 +155,5 @@
     
     (ai
         "Musoro Tsoro_ai"
-    )
+   )
 )

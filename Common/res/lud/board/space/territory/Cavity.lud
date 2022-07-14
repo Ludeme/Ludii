@@ -6,10 +6,10 @@
             if:(is #1 (who at:(between))) 
             (apply             
                 (remove (between)) 
-            ) 
-        )
+           ) 
+       )
         #2
-    )
+   )
 )
 
 (define "ReachesRegion"
@@ -22,13 +22,13 @@
                     if:(or
                         (is Empty (to))
                         (is In (to) #2)
-                    )
-                )
-            )
+                   )
+               )
+           )
             #1
             #2
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -40,7 +40,7 @@
         (board <Board> use:Vertex) 
         (piece "Marker" Each)
         }
-    )
+   )
     (rules 
         (meta (swap))
         phases:{
@@ -50,10 +50,10 @@
                 (and
                     (= 1 (count Sites in:(sites Occupied by:P1)))
                     (= 1 (count Sites in:(sites Occupied by:P2)))
-                )
+               )
                 "Play"
-            )
-        )
+           )
+       )
         (phase "Play"
             (play 
                 (move 
@@ -63,18 +63,18 @@
                         if:("ReachesRegion" 
                             (to)
                             (sites Occupied by:Mover)
-                        )
-                    )
+                       )
+                   )
                     (then 
                         (if 
                             (can Move ("CaptureSurroundedGroup" Enemy))
                             ("CaptureSurroundedGroup" Enemy)
                             ("CaptureSurroundedGroup" Mover)
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         }
         
         (end {
@@ -82,18 +82,18 @@
                 (and
                     (< 2 (count Moves))
                     (no Pieces Next) 
-                )
+               )
                 (result Next Loss)
-            )
+           )
             (if 
                 (and
                     (< 2 (count Moves))
                     (no Pieces Mover) 
-                )
+               )
                 (result Mover Loss)
-            )
+           )
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -145,7 +145,7 @@
         (credit "Michael Amundsen")
         (date "2022")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Black))

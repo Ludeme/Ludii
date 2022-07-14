@@ -6,10 +6,10 @@
         (between 
             if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
             (apply (remove (between)))
-        ) 
+       ) 
         (to if:(is Empty (to))) 
         #2
-    ) 
+   ) 
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -28,14 +28,14 @@
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-    )  
+   )  
     (rules 
         (start
             { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ))
+            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1) ))
             (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1)))
             }
-        )
+       )
         
         (play 
             (if "SameTurn"
@@ -47,16 +47,16 @@
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
                                     (if (can Move ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows)))
                                         (moveAgain) 
-                                    )
-                                )
+                                   )
+                               )
                                 (if (can Move ("HopCounter" (last To))) 
                                     (moveAgain) 
-                                )
-                            )
-                        ) 
-                    )
+                               )
+                           )
+                       ) 
+                   )
                     ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows))
-                )
+               )
                 (priority {
                     (or 
                         (forEach Piece "Counter"
@@ -67,38 +67,38 @@
                                             (move Promote (last To) (piece "DoubleCounter") Mover)
                                             (if (can Move ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows)))
                                                 (moveAgain) 
-                                            )
-                                        )
+                                           )
+                                       )
                                         (if (can Move ("HopCounter" (last To))) 
                                             (moveAgain) 
-                                        )
-                                    )
-                                ) 
-                            ) 
-                        )
+                                       )
+                                   )
+                               ) 
+                           ) 
+                       )
                         (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture" before:(count Rows) after:(count Rows)))
-                    )
+                   )
                     (or  
                         (forEach Piece "Counter" 
                             (move
                                 Step 
                                 (directions {FR FL}) 
                                 (to if:(is Empty (to)))
-                            )
+                           )
                             (then 
                                 (if "JumpToPromotionZone"
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
-                                )
-                            )
-                        )
+                               )
+                           )
+                       )
                         (forEach Piece "DoubleCounter" (move Slide Diagonal))
-                    )
+                   )
                 })
-            )
-        ) 
+           )
+       ) 
         
         (end (if (no Pieces Next) (result Mover Win))) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -118,7 +118,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Russia, around 1827.")
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)
@@ -127,5 +127,5 @@
     
     (ai
         "Shashki_ai"
-    )
+   )
 )

@@ -4,14 +4,14 @@
     (equipment { 
         (mancalaBoard 2 6 
             (track "Track" "1,E,N,W" loop:True)
-        )
+       )
         (piece "Seed" Shared)
     })  
     (rules 
         (start (set Count 4 to:(sites Track)))
         (play [#])
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -27,7 +27,7 @@
         (classification "board/sow/two rows/reconstruction")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

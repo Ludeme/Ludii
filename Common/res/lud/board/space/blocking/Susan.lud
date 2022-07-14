@@ -5,11 +5,11 @@
         (between 
             if:(is #1 (who at:(between))) 
             (apply #2)
-        ) 
+       ) 
         (to 
             if:(not (is Empty (to)))
-        )
-    )
+       )
+   )
 )
 
 (define "ThreeSlideInARow" (= (counter) 5))
@@ -32,16 +32,16 @@
                 (move Add 
                     (to (sites Empty)) 
                     (then (set Counter)) // To know this move was not a slide.
-                )
+               )
                 (forEach Piece)
                 (then 
                     (priority 
                         ("SurroundedOf" Friend (trigger "Surrounded" (mover)))
                         ("SurroundedOf" Enemy (trigger "Surrounded" (next)))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (end {
             (if "ThreeSlideInARow" (result Mover Draw))
@@ -49,7 +49,7 @@
             (if ("SurroundedOver" P1) (result P2 Win)) 
             (if ("SurroundedOver" P2) (result P1 Win)) 
         })  
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -68,10 +68,10 @@
         (credit "Eric Piette")
         (date "1991")
         }
-    )
+   )
     
     (ai 
         "Susan_ai"
-    )
+   )
     
 )

@@ -27,19 +27,19 @@
                                         from:(sites Group at:(last To))
                                         to:(from)
                                         (- (* 32 #1))
-                                ))
+                               ))
                                 (max
                                     (results
                                         from:(sites Group at:(last To))
                                         to:(from)
                                         (- (#2))
-                            )))
-                    ))
+                           )))
+                   ))
                     (results
                         from:(sites)
                         to:(from)
                         (value Piece at:(from))
-        ))))
+       ))))
         #3
 ))
 
@@ -53,7 +53,7 @@
             (and
                 ("IsSameSizeAsSelectedBug") 
                 ("IsBugAdjacentToSelectedBug") 
-            )
+           )
             (priority // Remove and grow again if matches any rotation - Otherwise do nothing
                 {
                 ("IfThisRotationDo" ("DRow") ("DCol") #1) 
@@ -108,12 +108,12 @@
         (forEach Site 
             (sites Group at:(last To))
             (set State at:(site) 0)
-        )
+       )
         (priority
             (do 
                 ("RecordTheGrowingBugsShapeVectorsAsValues") 
                 next:("IfBugsMatchDo" ("MarkTheSelectedBugsAsEdible") ("ThenMarkTheGrowingBudAsEdible")) 
-            )
+           )
             ("RecordTheGrowingBugsShapeVectorsAsValues") 
 )))
 
@@ -138,7 +138,7 @@
                 (forEach Site
                     (sites Group at:(last To))
                     (set State at:(site) 0)
-                )
+               )
                 (moveAgain)
                 }
 ))))
@@ -173,7 +173,7 @@
         (to (sites Empty)
             if:(and ("PlacementDoesntMergeBugs") ("BugNot2Big"))
             #1
-        )
+       )
         #2
 )) 
 
@@ -187,7 +187,7 @@
     (move Add
         (to (sites Empty)
             if:(and ("IsNext2BugThatAte") ("PlacementDoesntMergeBugs"))
-        )
+       )
         #1
 )) 
 
@@ -207,12 +207,12 @@
             if:(and 
                 (is Mover (who at:(to)))
                 (= 1 (state at:(to)))
-            )
+           )
             (move Select
                 (from (max (array (sites))))
                 (then
                     ("EatAllNeighboringBugsAndGrow")
-        )))
+       )))
         ifAfterwards:("BugCanStillGrow") 
 ))
 
@@ -224,7 +224,7 @@
         (board <Board:type> use:Cell)
         (piece "Hex" Each maxValue:1023) // 32rows * 32columns for recording vectors
         }
-    )
+   )
     (rules
         (play
             (if
@@ -233,24 +233,24 @@
                     (> 1 ("SizeLargestBug"))
                     (move Add (to (sites Board)))
                     ("RequiredGrowth" (apply (set Var "Last2Grow" (mover))) (then ("FindWhatThereIsToEat")))
-                )
+               )
                 (if
                     (= 0 (size Array (values Remembered)))
                     ("PlayerChoosesAHungryBug")
                     ("BonusGrowth" (then ("FindWhatThereIsToEat")))
-                )
+               )
                 (then ("Score"))
-        ))
+       ))
         (end
             (if
                 (and
                     (no Moves Mover)
                     (not ("SameTurn"))
-                ) 
+               ) 
                 (if
                     (= (var "Last2Grow") (mover))
                     (result Mover Loss)
-                )
+               )
                 (result Mover Win)
 ))))   
 
@@ -261,7 +261,7 @@
         (set Score Mover 0)
         (set Score Next 
             (count Sites
-                in:(sites To ("RequiredGrowth" ~ ~ ))
+                in:(sites To ("RequiredGrowth" ~ ~))
 ))))
 
 //---------------
@@ -286,7 +286,7 @@
         {
         
         }
-    )
+   )
     
     (graphics
         {
@@ -309,12 +309,12 @@
                         (is Mover (who at:(to))) 
                         (= 1 (state at:(to)))
                         }
-                    )
+                   )
                     (select (from (max (array (sites)))))
-            ))
+           ))
             (colour 72 144 160 190)
-        )
+       )
         (show Score AtEnd)
         }
-    )
+   )
 )

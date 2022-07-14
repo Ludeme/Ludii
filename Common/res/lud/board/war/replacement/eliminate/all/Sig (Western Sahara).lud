@@ -10,7 +10,7 @@
     (apply 
         if:("IsEnemyAt" (to)) 
         (remove (to))
-    ) 
+   ) 
 )
 
 (define "NoFriendPieceInBetween" 
@@ -26,19 +26,19 @@
                 (or
                     (is Empty (to))
                     (and (not (is In (to) (sites Next "Home"))) ("IsEnemyAt" (to)))
-                )
+               )
                 ("NoFriendPieceInBetween" #1)
-            )
+           )
             "CaptureEnemyPiece"
-        )
-    )		
+       )
+   )		
 )
 
 (define "AllPiecesInOpponentHome"
     (and
         (= 0 (count Sites in:(difference (sites Occupied by:Team1) (sites P2 "Home"))))
         (= 0 (count Sites in:(difference (sites Occupied by:Team2) (sites P1 "Home"))))
-    )
+   )
 )
 
 (define "PiecesOwnedBy" (count Sites in:(sites Occupied by:#1)))
@@ -56,7 +56,7 @@
             (track "Track4"  <Board:trackTeam2> P4 directed:True)
             }
             use:Vertex
-        )
+       )
         (piece "Stick" Each)
         (regions "AllSites" (sites Board))
         (dice d:2 from:0 num:8)
@@ -78,21 +78,21 @@
                 next:(if (or (is Mover P1) (is Mover P3))
                     (forEach Site (sites Occupied by:Team1) ("Move" Team1))
                     (forEach Site (sites Occupied by:Team2) ("Move" Team2))
-                )
+               )
                 (then 
                     (if ("SpecialThrows")
                         (moveAgain)
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (end (if ("AllPiecesInOpponentHome") {
                 (if (= ("PiecesOwnedBy" Team1) ("PiecesOwnedBy" Team2)) (result Mover Draw))
                 (if (< ("PiecesOwnedBy" Team1) ("PiecesOwnedBy" Team2)) (result Team2 Win))
                 (if (> ("PiecesOwnedBy" Team1) ("PiecesOwnedBy" Team2)) (result Team1 Win))
             })
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -118,7 +118,7 @@
         variations:{
         "Board Size/21" "Board Size/22" "Board Size/23" "Board Size/24" "Board Size/25"
         }
-    )*
+   )*
 })
 
 //------------------------------------------------------------------------------
@@ -136,7 +136,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Western Sahara, around 1993.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)    

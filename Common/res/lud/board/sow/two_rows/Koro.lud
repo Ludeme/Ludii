@@ -3,14 +3,14 @@
     (all Sites
         (difference (sites #1) (mapEntry "Hogon" #1))
         if:(>= 1 (count at:(site)))
-    )
+   )
 )
 
 (define "NoOwnedHoleWithMoreThanOneSeed" 
     (all Sites
         (sites #1)
         if:(>= 1 (count at:(site)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -21,7 +21,7 @@
     (equipment { 
         (mancalaBoard 2 <Row:size> store:None
             (track "Track" "0,E,N,W" loop:True)
-        )
+       )
         (piece "Seed" Shared)
         (hand Each)
         (map "Hogon" {<Row:hogon>})
@@ -37,9 +37,9 @@
                 (move Select
                     (from
                         (mapEntry "Hogon" Mover)
-                    )
+                   )
                     (then (sow))
-                )
+               )
                 (if ("NoOwnedHoleWithMoreThanOneSeedExceptHogon" Mover)
                     (if ("IsOlderPlayer")
                         (move Pass)
@@ -50,37 +50,37 @@
                                         (fromTo
                                             (from (site))
                                             (to (mapEntry "Hogon" Mover))
-                                        )
-                                    )
-                                )
-                            )
+                                       )
+                                   )
+                               )
+                           )
                             next:(move Select
                                 (from
                                     (mapEntry "Hogon" Mover)
                                     if:(< 1 (count at:(from)))
-                                )
+                               )
                                 (then (sow))
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (move Select
                         (from
                             (difference (sites Mover) (mapEntry "Hogon" Mover))
                             if:(< 1 (count at:(from)))
-                        )
+                       )
                         (then (sow))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (end 
             (forEach Player
                 if:("NoOwnedHoleWithMoreThanOneSeed" Player)
                 (result Player Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -140,7 +140,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Mali, around 1938.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

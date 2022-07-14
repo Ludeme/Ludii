@@ -18,17 +18,17 @@
                 (to 
                     #1 
                     ("HittingCapture" (handSite (who at:(to)))) 
-                )
-            )
-        )
-    )	
+               )
+           )
+       )
+   )	
 )
 
 (define "UseDie" 
     (forEach Die 
         if:("DieNotUsed")
         #1
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -54,18 +54,18 @@
                             (moveAgain)
                             (if (and (all DiceUsed) (= (value Player Mover) 1))
                                 (set Value Mover Undefined)
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (end {
             ("EscapeWin")
             (if (and (no Moves P1) (no Moves P2)) (result Mover Draw))
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -89,7 +89,7 @@
         })
         > 
         "14 pieces start in the first quadrant and the last one in the last quadrant in the opposite sites."
-    )
+   )
     }
 )
 
@@ -109,9 +109,9 @@
                     ("PieceMove" "SiteToMoveOnTrackAtSix")
                     }
                     (then (if (not (all DiceUsed)) (and (moveAgain) (set Value Mover 1))))
-                )
-            )
-        )
+               )
+           )
+       )
         >
     "The game involves 2 dice and the value of the third one is selected by the player.")
     (item "3 Dice" <3> 
@@ -152,7 +152,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Spain, around 1283.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)

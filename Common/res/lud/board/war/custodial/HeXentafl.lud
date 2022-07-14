@@ -6,9 +6,9 @@
             (max 1) 
             if:(and (!= (between) ("Throne")) ("IsEnemyAt" (between)))
             (apply (remove (between)))
-        )
+       )
         (to if:("IsFriendAt" (to))) 
-    )
+   )
 )
 
 (define "PiecesSurroundingAreNotAdjacent"
@@ -23,12 +23,12 @@
                             (site) 
                             Own 
                             if:(is In (to) (sites Around (between) Own))
-                        )
-                    )
-                )
-            )
-        )
-    )
+                       )
+                   )
+               )
+           )
+       )
+   )
 )
 
 (define "SurroundCorners"
@@ -41,12 +41,12 @@
                 ("IsEnemyAt" (between))
                 ("PiecesSurroundingAreNotAdjacent")
                 }
-            )
+           )
             (apply (remove (between)))
-        )
+       )
         (to if:("IsFriendAt" (to)))
         except:1
-    )
+   )
 )
 
 (define "SurroundThrone"
@@ -59,12 +59,12 @@
                 (= (what at:(between)) (id "Jarl" P1))
                 ("PiecesSurroundingAreNotAdjacent")
                 }
-            )
+           )
             (apply (remove (between)))
-        )
+       )
         (to if:("IsFriendAt" (to)))
         except:3
-    )
+   )
 )
 
 (define "JarlWasCaptured" (= (where "Jarl" P1) Off))
@@ -81,20 +81,20 @@
             (move Slide 
                 (between if:(and (!= (between) ("Throne")) (is Empty (between))))
                 (then (and ("SurroundCorners") ("Custodial")))
-            )
-        )
+           )
+       )
         (piece "Thrall" P2 
             (move Slide 
                 (between if:(and (!= (between) ("Throne")) (is Empty (between))))
                 (then (and {("SurroundThrone") ("SurroundCorners") ("Custodial") }))
-            )
-        )
+           )
+       )
         (piece "Jarl" P1 
             (move 
                 <Board:kingMove> 
                 (then (and ("SurroundCorners") ("Custodial")))
-            )
-        )
+           )
+       )
         (regions "Fortresses" (sites Corners))
     })
     (rules 
@@ -108,8 +108,8 @@
             (if (is Within (id "Jarl1") in:(sites "Fortresses")) (result P1 Win))
             (if "JarlWasCaptured"  (result P2 Win))
             }
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -124,7 +124,7 @@
         >       
         <Step (to if:(is Empty (to)))>
         "The game is played on a 4x4 hex board."
-    )*   
+   )*   
     (item "5x5"   
         <5> 
         <
@@ -133,7 +133,7 @@
         > 
         <Slide>
         "The game is played on a 5x5 hex board. The King can slide."
-    )   
+   )   
 })
 
 //-----------------------------------------------------------------
@@ -166,7 +166,7 @@
         (credit "Eric Piette")
         (date "2019")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Black))
@@ -178,5 +178,5 @@
     })
     (ai
         "HeXentafl_ai"
-    )
+   )
 )

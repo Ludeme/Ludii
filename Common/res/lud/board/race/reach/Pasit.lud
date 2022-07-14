@@ -7,7 +7,7 @@
     (and
         (= 1 (count Sites in:(sites Occupied by:#1 top:False)))
         (is In (centrePoint) (sites Occupied by:#1 top:False))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -22,7 +22,7 @@
             (track "Track3" "53,N,W,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,W1,S8" P3 directed:True)
             (track "Track4" "11,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W8" P4 directed:True)
             }
-        )
+       )
         (hand Each) 
         ("StickDice" 6)
         (piece "Pawn" Each
@@ -30,7 +30,7 @@
                 (move 
                     (from (from) level:(level))
                     (to (centrePoint))
-                )
+               )
                 (move 
                     (from (from) level:(level))
                     (to
@@ -42,14 +42,14 @@
                                     (fromTo
                                         (from (to) level:(level))
                                         (to (handSite (who at:(to) level:(level))))
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         (map "Throw" {(pair 0 6) (pair 1 10) (pair 2 2) (pair 3 3) (pair 4 5) (pair 5 25) (pair 6 12)})
         (map "Entry" {(pair P1 8) (pair P2 42) (pair P3 53) (pair P4 11)})
         (regions "SafeSites" (sites {63 65 15 47 84 86 38 3}))
@@ -70,19 +70,19 @@
                         (move
                             (from (handSite Mover))
                             (to (mapEntry "Entry" Mover))
-                        )
+                       )
                         (move Pass)
                         (then
                             (and
                                 (if (!= 1 (value Player Mover)) (moveAgain))
                                 (set Value Mover (+ 1 (value Player Mover)))
-                            )
-                        )
-                    )
-                )
-            )	
+                           )
+                       )
+                   )
+               )
+           )	
             (nextPhase Mover (= 2 (value Player Mover)) "Moving")
-        )
+       )
         (phase "Moving" 
             (play 
                 ("RollMove"
@@ -91,17 +91,17 @@
                             (move
                                 (from (handSite Mover))
                                 (to (mapEntry "Entry" Mover))
-                            )
-                        )
+                           )
+                       )
                         (forEach Piece)
-                    )
-                )
-            )		
-        )
+                   )
+               )
+           )		
+       )
         }
         
         (end (if ("AllPiecesOnCentre" Mover) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -120,7 +120,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Myanmar, around 1882.")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Red))

@@ -17,7 +17,7 @@
             (track "Track1" "22,0,4,S,E1,N" P1 directed:True)
             (track "Track2" "23,21,16,S,W1,N" P2 directed:True)
             }
-        )
+       )
         (dice d:2 from:0 num:5)
         (hand Each)
         (piece "Marker" Each (move [#]))
@@ -28,10 +28,10 @@
         (play 
             (do (roll) 
                 next:[#]
-            )
-        )
+           )
+       )
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -49,7 +49,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, from around 1912 to 1995.")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

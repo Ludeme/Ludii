@@ -6,10 +6,10 @@
         (between 
             if:("IsEnemyAt" (between))
             (apply (remove (between)))
-        )
+       )
         (to if:(is Empty (to)))
         #3
-    )
+   )
 )
 
 (define "HopSequence" ("Hop" #1 #2 (then (if (can Move ("Hop" (last To) SameDirection)) (moveAgain)))))
@@ -37,36 +37,36 @@
                         (union 
                             (sites Corners) 
                             (sites Centre)
-                        ) 
+                       ) 
                         (sites Phase 1)
-                    ) 
-                )
-            ) 
+                   ) 
+               )
+           ) 
             (nextPhase Mover "Movement")
-        )
+       )
         (phase "OpeningP2" P2 
             (play 
                 (move
                     Remove
                     (sites Around (last To) Own) 
-                )
-            ) 
+               )
+           ) 
             (nextPhase Mover "Movement")
-        )
+       )
         (phase "Movement" (play 
                 (if "SameTurn"
                     (or
                         ("HopSequence" (last To) SameDirection)
                         (move Pass)
-                    )
+                   )
                     (forEach Piece "Marker" ("HopSequence" (from) Orthogonal)) 
-                )
-            )
-        )
+               )
+           )
+       )
         }
         
         (end ("NoMoves" Loss))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -247,7 +247,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Hawaii, from around 1779 to 1924.")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Black))
@@ -259,6 +259,6 @@
     
     (ai 
         "Konane_ai"
-    )
+   )
     
 )

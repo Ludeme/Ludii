@@ -15,11 +15,11 @@
             (if (is Even (count Moves))
                 (forEach Piece)
                 (move Shoot (piece "Dot0"))
-            )
-        )
+           )
+       )
         
         (end (if (no Moves Next)  (result Mover Win)))  
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -37,7 +37,7 @@
         (credit "Eric Piette")
         (origin  "This game is from Argentina, on 1988.")
         }
-    )
+   )
     
     (graphics {
         (piece Scale "Dot" 0.333)
@@ -46,6 +46,6 @@
     
     (ai 
         "Amazons_ai"
-    )
+   )
     
 )

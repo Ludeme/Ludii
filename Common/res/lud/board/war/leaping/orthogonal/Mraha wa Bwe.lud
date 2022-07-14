@@ -6,10 +6,10 @@
         (between 
             if:("IsEnemyAt" (between))
             (apply (remove (between)))
-        ) 
+       ) 
         (to if:(is Empty (to))) 
         #2
-    ) 
+   ) 
 )
 
 //------------------------------------------------------------------------------
@@ -32,10 +32,10 @@
                     (from (handSite Mover))
                     (to (difference (sites Empty) (sites Centre)))
                     (then (if ("NewTurn") (moveAgain)))
-                )
-            )
+               )
+           )
             (nextPhase Mover (is Empty (handSite Mover)) "Play")
-        )
+       )
         (phase "Play"
             (play 
                 (if "SameTurn"
@@ -44,36 +44,36 @@
                             (then 
                                 (if (can Move ("HopCounter" (last To))) 
                                     (moveAgain)
-                                ) 
-                            ) 
-                        )
+                               ) 
+                           ) 
+                       )
                         (move Pass)
-                    )
+                   )
                     (or 
                         (forEach Piece "Counter"
                             ("HopCounter" (from) 
                                 (then 
                                     (if (can Move ("HopCounter" (last To))) 
                                         (moveAgain) 
-                                    ) 
-                                ) 
-                            ) 
-                        )
+                                   ) 
+                               ) 
+                           ) 
+                       )
                         (forEach Piece "Counter" 
                             (move
                                 Step 
                                 Orthogonal 
                                 (to if:(is Empty (to)))
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         }
         
         (end (if (no Moves Mover) (result Mover Loss))) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -91,7 +91,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Comoros, around 2018.")
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)

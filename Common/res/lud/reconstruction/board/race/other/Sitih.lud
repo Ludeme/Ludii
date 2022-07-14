@@ -4,7 +4,7 @@
         (board
             (concentric {40})
             use:Edge
-        )
+       )
         (piece "Marker" Each)
         (dice d:2 from:0 num:3)
         (map "Throw" {(pair 0 10) (pair 1 2) (pair 2 3) (pair 3 5)})
@@ -14,10 +14,10 @@
         (play 
             (do (roll)
                 next:[#]
-            )
-        )
+           )
+       )
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -56,7 +56,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Arizona, around 1907.")
         }
-    )
+   )
     
     (graphics {
         (show Edges (colour Hidden))

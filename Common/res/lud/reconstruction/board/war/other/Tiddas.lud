@@ -8,14 +8,14 @@
                 (shift 1 -1 (rectangle 5 1))
             }) 
             use:Vertex
-        )
+       )
         (piece "Marker" Each (move [#])) // "Pieces move vertically or horizontally. Replacement capture." NEED CONCEPT
     })  
     (rules 
         (start [#]) // 11 pieces.
         (play [#])
         (end (if (no Pieces Next) (result Mover Win)))  
-    )
+   )
 )
 
 //-------------------------------------------------------------------------
@@ -33,7 +33,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Morocco, around 1908.")
         }
-    )
+   )
     
     (graphics {
         (board Style Graph)

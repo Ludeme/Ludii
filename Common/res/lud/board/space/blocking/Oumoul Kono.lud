@@ -4,7 +4,7 @@
         (board 
             (square 2 diagonals:Solid)
             use:Vertex
-        )
+       )
         (piece "Disc" Each
             (move Step 
                 (to 
@@ -16,9 +16,9 @@
                         }) 
                         (is Empty (to))
                     })
-                )
-            )
-        )
+               )
+           )
+       )
     })  
     
     (rules 
@@ -28,7 +28,7 @@
         })
         (play (forEach Piece))
         (end ("NoMoves" Loss))  
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -46,7 +46,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Korea, around 1895.")
         }
-    )
+   )
     
     (graphics {
         (show Symbol "disc" Edge 7 edgeColour:(colour Black) scale:0.4)
@@ -55,5 +55,5 @@
     
     (ai
         "Oumoul Kono_ai"
-    )
+   )
 )

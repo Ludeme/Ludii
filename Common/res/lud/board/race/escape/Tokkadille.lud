@@ -11,8 +11,8 @@
         (and
             (<= 1 (count Pieces Mover in:(sites {("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die1")) })))
             (<= 1 (count Pieces Mover in:(sites {("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")) })))	
-        )
-    )
+       )
+   )
 )
 
 (define "CanMove2PiecesFromHucke" 
@@ -22,9 +22,9 @@
             (and 
                 (not ("IsEnemyAt" ("NextSiteFrom" ("HuckeSite") "Track" ("Die1"))))
                 (not ("IsEnemyAt" ("NextSiteFrom" ("HuckeSite") "Track" ("Die2"))))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "UpdateScore"
@@ -38,32 +38,32 @@
                         ("IsSingletonStack" ("NextSiteFrom" (site) "Track" ("Die1")))
                     })
                     (addScore Mover 1)
-                )
+               )
                 (if	(and { 
                         (is In ("NextSiteFrom" (site) "Track" ("Die2")) (sites Mover "BeforeHucke"))
                         ("IsEnemyAt" ("NextSiteFrom" (site) "Track" ("Die2")))
                         ("IsSingletonStack" ("NextSiteFrom" (site) "Track" ("Die2")))
                     })
                     (addScore Mover 1)
-                )
-            )
+               )
+           )
             (if (!= (site) ("HuckeSite"))
                 (and 
                     (if 
                         (and 
                             ("IsEnemyAt" ("NextSiteFrom" (site) "Track" ("Die1")))
                             ("IsSingletonStack" ("NextSiteFrom" (site) "Track" ("Die1")))
-                        )
+                       )
                         (addScore Mover 1)
-                    )
+                   )
                     (if
                         (and 
                             ("IsEnemyAt" ("NextSiteFrom" (site) "Track" ("Die2")))
                             ("IsSingletonStack" ("NextSiteFrom" (site) "Track" ("Die2")))
-                        )
+                       )
                         (addScore Mover 1)
-                    )
-                )
+                   )
+               )
                 (if (and { 
                         (= 1 ("Die1"))
                         (= 1 ("Die2"))
@@ -71,10 +71,10 @@
                         ("IsSingletonStack" ("NextSiteFrom" (site) "Track" ("Die1")))
                     })
                     (addScore Mover 1)
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -89,7 +89,7 @@
             (track "ReverseHuckeTrack1" {0..5 7} P1 directed:True)
             (track "ReverseHuckeTrack2" {13..18 20} P2 directed:True)
             } 
-        ) 
+       ) 
         (dice d:6 num:2)
         (piece "Disc" Each
             (if (is In (from) (sites Mover "BeforeHucke"))
@@ -102,11 +102,11 @@
                             if:(and 
                                 (is In (to) (sites Mover "BeforeHucke")) 
                                 (not ("IsEnemyAt" (to)))
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (then ("ReplayNotAllDiceUsed"))
-                )
+               )
                 (if (!= (from) ("HuckeSite"))
                     (forEach Die 
                         if:("DieNotUsed")
@@ -117,14 +117,14 @@
                                 (to 
                                     ("NextSiteFrom" (from) "Track" (pips))
                                     if:(not ("IsEnemyAt" (to)))
-                                )
-                            )
-                        )
+                               )
+                           )
+                       )
                         (then ("ReplayNotAllDiceUsed"))
-                    )	
-                )
-            )
-        ) 
+                   )	
+               )
+           )
+       ) 
         (regions "BeforeHucke" P1 (sites {12..7 5..1}))
         (regions "BeforeHucke" P2 (sites {25..20 18..14}))
         (map "Hucke" {(pair P1 0) (pair P2 13)})
@@ -148,18 +148,18 @@
                                             (from ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die1")))
                                             (to ("HuckeSite"))
                                             (then (if (= 0 (count MovesThisTurn)) (and (moveAgain) (set Var "MovingToHucke" 26)) (set Var "MovingToHucke" 0)))
-                                        )
-                                    )
+                                       )
+                                   )
                                     (if (and (!= 27 (var "MovingToHucke")) ("IsFriendAt" ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2"))))
                                         (move 
                                             (from ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")))
                                             (to ("HuckeSite"))
                                             (then (if (= 0 (count MovesThisTurn)) (and (moveAgain) (set Var "MovingToHucke" 27)) (set Var "MovingToHucke" 0)))
-                                        )
-                                    )
-                                )
-                            )
-                        )
+                                       )
+                                   )
+                               )
+                           )
+                       )
                         
                         (if (>= 0 (var "MovingToHucke"))
                             (if (or (< 0 (var "MovingFromHucke")) ("CanMove2PiecesFromHucke"))
@@ -169,27 +169,27 @@
                                             (from ("HuckeSite"))
                                             (to ("NextSiteFrom" ("HuckeSite") "Track" ("Die1")))
                                             (then (if (= 0 (count MovesThisTurn)) (and (moveAgain) (set Var "MovingFromHucke" 26)) (set Var "MovingFromHucke" 0)))
-                                        )
-                                    )
+                                       )
+                                   )
                                     (if (and (!= 27 (var "MovingFromHucke")) (not ("IsEnemyAt" ("NextSiteFrom" ("HuckeSite") "Track" ("Die2")))))
                                         (move 
                                             (from ("HuckeSite"))
                                             (to ("NextSiteFrom" ("HuckeSite") "Track" ("Die2")))
                                             (then (if (= 0 (count MovesThisTurn)) (and (moveAgain) (set Var "MovingFromHucke" 27)) (set Var "MovingFromHucke" 0)))
-                                        )
-                                    )
-                                )
-                            )
-                        )
+                                       )
+                                   )
+                               )
+                           )
+                       )
                     })
-                )
+               )
                 (then
                     (if (no Pieces Mover) (addScore Mover 2))
-                )
-            )
-        )
+               )
+           )
+       )
         (end (if (<= 12 (score Mover)) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -208,7 +208,7 @@
         "Start Rules/15"
         }
         variations:{"Start Rules/16"}
-    )*
+   )*
     
 })
 
@@ -227,7 +227,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Germany, around 1853.")
         }
-    )
+   )
     
     (graphics {
         (board Style backgammon)

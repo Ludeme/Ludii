@@ -2,21 +2,21 @@
     (if (is Mover P1)
         (sites (values Remembered "OwnedP1"))
         (sites (values Remembered "OwnedP2"))
-    )
+   )
 )
 
 (define "RemmemberOwnedHoles" 
     (if (is Mover P1)
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
-    )
+   )
 )
 
 (define "RemmemberOpponentOwnedHoles" 
     (if (is Mover P2)
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
-    )
+   )
 )
 
 (define "NextHole" ("NextSiteOnTrack" #3 from:#1 #2))
@@ -27,7 +27,7 @@
         "TrackCCW"
         from:(mapEntry Mover)
         if:(and (not (is In (to) (sites "EndHoles"))) (is Empty (to)))
-    )
+   )
 )
 
 (define "NextLeftMostEmpty" 
@@ -35,21 +35,21 @@
         "TrackCCW"
         from:("LeftMostEmpty")
         if:(and {(not (is In (to) (sites "EndHoles"))) (is Empty (to)) (!= (("LeftMostEmpty") (to)))})
-    )
+   )
 )
 
 (define "NoPieceOnOwnedHoles" 
     (if (= 1 #1)
         (no Pieces All in:(sites (values Remembered "OwnedP1")))
         (no Pieces All in:(sites (values Remembered "OwnedP2")))
-    )
+   )
 )
 
 (define "NumOwnedHoles" 
     (if (= 1 #1)
         (count Sites in:(sites (values Remembered "OwnedP1")))
         (count Sites in:(sites (values Remembered "OwnedP2")))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -63,7 +63,7 @@
             (track "TrackCCW" "0,1,E,11,10,W" loop:True)
             (track "TrackCW" "0,6,E,11,5,W" loop:True)
             }
-        )
+       )
         (piece "Seed" Shared)
         (piece "Ball" Shared)
         (hand Each size:2)
@@ -92,9 +92,9 @@
                                 (if ("SameTurn")
                                     (sites {(var "Replay")})
                                     ("OwnedHoles") 
-                                )
+                               )
                                 if:(!= 0 (size Stack at:(from)))
-                            )
+                           )
                             (then
                                 (and {
                                     (forEach Value min:1 max:(size Stack at:(last From))
@@ -102,8 +102,8 @@
                                             (from (last From) level:(- (size Stack at:(last From)) (value)))
                                             (to ("NextHole" (last From) "TrackCCW" (value)))
                                             stack:True
-                                        )
-                                    )
+                                       )
+                                   )
                                     (if (or (is In ("NextHole" (last From) "TrackCCW" (+ 1 (size Stack at:(last From)))) (sites "EndHoles")) (>= (size Stack at:(last From)) 10))
                                         (set Var "Direction" 0)
                                         (if (!= 0 (size Stack at:("NextHole" (last From) "TrackCCW" (+ 1 (size Stack at:(last From))))))
@@ -120,30 +120,30 @@
                                                             (fromTo
                                                                 (from ("NextHole" (last From) "TrackCCW" (+ 2 (size Stack at:(last From)))) level:(level))
                                                                 (to (handSite Mover))
-                                                            )
+                                                           )
                                                             (fromTo
                                                                 (from ("NextHole" (last From) "TrackCCW" (+ 2 (size Stack at:(last From)))) level:(level))
                                                                 (to (handSite Mover 1))
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
+                                                           )
+                                                       )
+                                                   )
+                                               )
+                                           )
+                                       )
+                                   )
                                 })
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (if (!= (var "Direction") 1)
                         (move Select
                             (from 
                                 (if ("SameTurn")
                                     (sites {(var "Replay")})
                                     ("OwnedHoles") 
-                                ) 
+                               ) 
                                 if:(!= 0 (size Stack at:(from)))
-                            )
+                           )
                             (then
                                 (and
                                     (forEach Value min:1 max:(size Stack at:(last From))
@@ -151,8 +151,8 @@
                                             (from (last From) level:(- (size Stack at:(last From)) (value)))
                                             (to ("NextHole" (last From) "TrackCW" (value)))
                                             stack:True
-                                        )
-                                    )
+                                       )
+                                   )
                                     (if (or (is In ("NextHole" (last From) "TrackCW" (+ 1 (size Stack at:(last From)))) (sites "EndHoles")) (>= (size Stack at:(last From)) 10))
                                         (set Var "Direction" 0)
                                         (if (!= 0 (size Stack at: ("NextHole" (last From) "TrackCW" (+ 1 (size Stack at:(last From))))))
@@ -169,21 +169,21 @@
                                                             (fromTo
                                                                 (from ("NextHole" (last From) "TrackCW" (+ 2 (size Stack at:(last From)))) level:(level))
                                                                 (to (handSite Mover))
-                                                            )
+                                                           )
                                                             (fromTo
                                                                 (from ("NextHole" (last From) "TrackCW" (+ 2 (size Stack at:(last From)))) level:(level))
                                                                 (to (handSite Mover 1))
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                                           )
+                                                       )
+                                                   )
+                                               )
+                                           )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
                     }
                     (then
                         (if (= 2 ("NumBigPiecesCaptured"))
@@ -198,21 +198,21 @@
                                                         (from (site) level:(level))
                                                         (to (handSite P1))
                                                         stack:True
-                                                    )
-                                                )
-                                            )
+                                                   )
+                                               )
+                                           )
                                             (forEach Level (site) FromTop
                                                 (if (< (level) (/ (size Stack at:(site)) 2))
                                                     (fromTo
                                                         (from (site) level:(level))
                                                         (to (handSite P2))
                                                         stack:True
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
+                                                   )
+                                               )
+                                           )
+                                       )
+                                   )
+                               )
                                 (forEach Site
                                     (union (difference (sites (values Remembered "OwnedP1")) (sites (values Remembered "OwnedP2"))) (sites {(mapEntry P1)}))
                                     (if (is Occupied (site))
@@ -221,10 +221,10 @@
                                                 (from (site) level:(level))
                                                 (to (handSite P1))
                                                 stack:True
-                                            )
-                                        )
-                                    )
-                                )
+                                           )
+                                       )
+                                   )
+                               )
                                 (forEach Site
                                     (union (difference (sites (values Remembered "OwnedP2")) (sites (values Remembered "OwnedP1"))) (sites {(mapEntry P2)}))
                                     (if (is Occupied (site))
@@ -233,10 +233,10 @@
                                                 (from (site) level:(level))
                                                 (to (handSite P2))
                                                 stack:True
-                                            )
-                                        )
-                                    )
-                                )
+                                           )
+                                       )
+                                   )
+                               )
                                 (forget Value "OwnedP1" All)
                                 (forget Value "OwnedP2" All)
                             })
@@ -247,37 +247,37 @@
                                             (from Cell (handSite P1) level:(- (size Stack Cell at:(handSite P1)) (value)))
                                             (to (regionSite (sites (values Remembered "OwnedP1")) index:(- (value) 1)))
                                             stack:True
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                                 (if (and ("NoPieceOnOwnedHoles" P2) (>= (size Stack Cell at:(handSite P2)) ("NumOwnedHoles" P2)))
                                     (forEach Value min:1 max:("NumOwnedHoles" P2)
                                         (fromTo
                                             (from Cell (handSite P2) level:(- (size Stack Cell at:(handSite P2)) (value)))
                                             (to (regionSite (sites (values Remembered "OwnedP2")) index:(- (value) 1)))
                                             stack:True
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             
             (end (if ("NoPieceOnBoard")
                     {
                     (if (>= 9 (size Stack Cell at:(handSite P1))) // 9 captured seeds are not enough to fill enough holes.
                         (result P2 Win)
-                    )
+                   )
                     (if (>= 9 (size Stack Cell at:(handSite P2))) // 9 captured seeds are not enough to fill enough holes.
                         (result P1 Win)
-                    )
+                   )
                     }
-                )
-            )
+               )
+           )
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-        )
+       )
         
         (phase "BetweenRounds"
             (play
@@ -292,8 +292,8 @@
                                         (from Cell (last From) level:(- (size Stack Cell at:(last From)) (value)))
                                         (to (last To))
                                         stack:True
-                                    )
-                                )
+                                   )
+                               )
                                 ("RemmemberOwnedHoles" (last To))
                                 (if (<= 10 (count Cell at:(handSite Mover)))
                                     (moveAgain)
@@ -304,23 +304,23 @@
                                                     (from Cell (handSite Mover) level:(- (- (size Stack Cell at:(handSite Mover)) 5) (value)))
                                                     (to ("NextLeftMostEmpty"))
                                                     stack:True
-                                                )
-                                            )
+                                               )
+                                           )
                                             (forEach Value min:1 max:(- 5 (- (count Cell at:(handSite Mover)) 5))
                                                 (fromTo
                                                     (from Cell (handSite Next) level:(- (size Stack Cell at:(handSite Next)) (value)))
                                                     (to ("NextLeftMostEmpty"))
                                                     stack:True
-                                                )
-                                            )
+                                               )
+                                           )
                                             ("RemmemberOwnedHoles" ("NextLeftMostEmpty"))
                                             ("RemmemberOpponentOwnedHoles" ("NextLeftMostEmpty"))
                                         })
-                                    )
-                                )
+                                   )
+                               )
                             })
-                        )
-                    )
+                       )
+                   )
                     (then
                         (if (and (is Empty Cell (handSite P1)) (is Empty Cell (handSite P2))) 
                             (if (= (size Stack Cell at:(handSite P1 1)) 2)
@@ -329,48 +329,48 @@
                                         (from Cell (handSite P1 1) level:1)
                                         (to (mapEntry P1))
                                         stack:True
-                                    )
+                                   )
                                     (fromTo
                                         (from Cell (handSite P1 1) level:0)
                                         (to (mapEntry P2))
                                         stack:True
-                                    )
-                                )
+                                   )
+                               )
                                 (if (= (size Stack Cell at:(handSite P2 1)) 2)
                                     (and
                                         (fromTo
                                             (from Cell (handSite P2 1) level:1)
                                             (to (mapEntry P1))
                                             stack:True
-                                        )
+                                       )
                                         (fromTo
                                             (from Cell (handSite P2 1) level:0)
                                             (to (mapEntry P2))
                                             stack:True
-                                        )
-                                    )
+                                       )
+                                   )
                                     (and
                                         (fromTo
                                             (from Cell (handSite P1 1) level:0)
                                             (to (mapEntry P1))
                                             stack:True
-                                        )
+                                       )
                                         (fromTo
                                             (from Cell (handSite P2 1) level:0)
                                             (to (mapEntry P2))
                                             stack:True
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             (nextPhase (and (is Empty Cell (handSite P1)) (is Empty Cell (handSite P2))) "Sowing")
-        )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -419,7 +419,7 @@
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

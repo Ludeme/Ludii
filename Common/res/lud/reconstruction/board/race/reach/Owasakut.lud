@@ -6,12 +6,12 @@
                 (remove 
                     (concentric {33})
                     vertices:{32 11 10}
-                )
+               )
                 edges:{{28 29} {11 9} {8 10}}
-            )
+           )
             [#]
             use:Edge
-        )
+       )
         (piece "Stick" Each (move [#]))
         (dice d:2 from:0 num:3)
         (map "Throw" {(pair 0 5) (pair 1 2) (pair 2 3) (pair 3 10)})
@@ -20,7 +20,7 @@
         (start [#])
         (play [#])
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -59,7 +59,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in New Mexico, around 1907.")
         }
-    )
+   )
     
     (graphics {
         (show Edges (colour Hidden))

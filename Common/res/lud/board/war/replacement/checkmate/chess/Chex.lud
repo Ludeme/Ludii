@@ -6,8 +6,8 @@
     (apply 
         (remove 
             (to) 
-        )
-    ) 
+       )
+   ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -17,8 +17,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -35,7 +35,7 @@
                 "StepForwardToEmpty" 
                 "CaptureForwardDiagonal"
             })
-        )
+       )
         
         (tile "Rook" Each numSides:4
             (move 
@@ -44,18 +44,18 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (tile "King" Each numSides:4
             (move
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (tile "Bishop" Each numSides:4
             (move
                 Slide 
@@ -63,9 +63,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (tile "Knight" Each numSides:4
             (move
                 Leap 
@@ -73,18 +73,18 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (tile "Queen" Each numSides:4
             (move
                 Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            ) 
-        )
+               ) 
+           ) 
+       )
     })  
     
     (rules 
@@ -95,29 +95,29 @@
                 (count "Bishop1" 2) (count "Queen1" 1) (count "King1" 1) 
                 } 
                 (handSite 1) 
-            )
+           )
             (place Random 
                 { 
                 (count "Pawn2" 8) (count "Rook2" 2) (count "Knight2" 2)
                 (count "Bishop2" 2) (count "Queen2" 1) (count "King2" 1) 
                 } 
                 (handSite 2) 
-            )
+           )
             (forEach Value min:0 max:(topLevel at:(handSite 1)) 
                 (set Hidden What at:(handSite 1) level:(value) to:P1)		
-            )
+           )
             
             (forEach Value min:0 max:(topLevel at:(handSite 1)) 
                 (set Hidden What at:(handSite 1) level:(value) to:P2)		
-            )
+           )
             
             (forEach Value min:0 max:(topLevel at:(handSite 2)) 
                 (set Hidden What at:(handSite 2) level:(value) to:P1)		
-            )
+           )
             
             (forEach Value min:0 max:(topLevel at:(handSite 2)) 
                 (set Hidden What at:(handSite 2) level:(value) to:P2)		
-            )
+           )
         })    
         (play 
             (if "SameTurn"
@@ -125,16 +125,16 @@
                     (move 
                         (from (handSite (mover))) 
                         (to (centrePoint))
-                    )
+                   )
                     (do (move 
                             (from (handSite (mover))) 
                             (to 
                                 (sites Around (union (sites Occupied by:P1 container:"Board") (sites Occupied by:P2 container:"Board")) Empty)
-                            )
-                        ) 
+                           )
+                       ) 
                         ifAfterwards:(not ("IsInCheck" "King" Mover))
-                    )
-                )
+                   )
+               )
                 (or 
                     (if (!= (what at:(handSite (mover))) 0) 
                         (move
@@ -146,16 +146,16 @@
                                     (set Hidden What at:(last To) level:(topLevel at:(last To)) False to:P1)
                                     (set Hidden What at:(last To) level:(topLevel at:(last To)) False to:P2)
                                 })
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (do 
                         (forEach Piece) 
                         ifAfterwards:(and (= 1 (count Groups)) (not ("IsInCheck" "King" Mover)))
-                    )
-                )
-            )	
-        )
+                   )
+               )
+           )	
+       )
         
         (end
             {
@@ -164,8 +164,8 @@
                     (not 
                         (can Move 
                             (if (!= (what at:(handSite (mover))) 0) (move Select (from (handSite (mover)))))
-                        )
-                    )
+                       )
+                   )
                     (not (= (where "King" Next) Off))
                     ("IsInCheck" "King" Next)
                     (not 
@@ -175,14 +175,14 @@
                                 ifAfterwards:(and 
                                     (= 1 (count Groups)) 
                                     (not ("IsInCheck" "King" Next))
-                                )
-                            ) 
-                        )
-                    )
+                               )
+                           ) 
+                       )
+                   )
                     }
-                ) 
+               ) 
                 (result Mover Win)
-            )
+           )
             (if (and { 
                     "SameTurn"
                     ("IsInCheck" "King" Mover) 
@@ -197,22 +197,22 @@
                                             (union 
                                                 (sites Occupied by:P1 container:"Board") 
                                                 (sites Occupied by:P2 container:"Board")
-                                            ) 
+                                           ) 
                                             Empty
-                                        )
-                                    )
-                                ) 
+                                       )
+                                   )
+                               ) 
                                 ifAfterwards:(not ("IsInCheck" "King" Mover))
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                 })
                 (result Next Win)
-            )
+           )
             (if (no Moves Mover) (result Mover Draw)) 
             }
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -235,7 +235,7 @@
         (credit "Eric Piette")
         (date "1982")
         }
-    )
+   )
     
     (graphics {
         (show Check "King")
@@ -250,6 +250,6 @@
     
     (ai 
         "Chex_ai"
-    )
+   )
     
 )

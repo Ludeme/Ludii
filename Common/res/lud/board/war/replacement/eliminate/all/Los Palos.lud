@@ -6,8 +6,8 @@
         (if (= (state at:(from)) 1)
             (trackSite Move "TrackLeft" steps:("ThrowValue"))
             (trackSite Move "TrackRight" steps:("ThrowValue"))
-        )
-    )
+       )
+   )
 )
 
 (define "UpdateState" 
@@ -15,8 +15,8 @@
         (if (or (is Mover P1) (is Mover P2))
             (set State at:(last To) 2)
             (set State at:(last To) 1)
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -30,52 +30,52 @@
                     (graph 
                         vertices:{ {0 0} {1.3 -1} {2 0} {1.1 0.6} }
                         edges:{{0 1} {1 2} {2 3} {3 0}}
-                    )
-                )
+                   )
+               )
                 (shift 10.4 -2.4
                     (graph 
                         vertices:{ {0 0} {0.9 -1.3} {2 -0.7} {1 0.4} }
                         edges:{{0 1} {1 2} {2 3} {3 0}}
-                    )
-                )
+                   )
+               )
                 (shift 10.1 -1.1
                     (graph 
                         vertices:{ {0 0} {0.3 -1.3} {1.3 -0.9} {1 0.2} }
                         edges:{{0 1} {1 2} {2 3} {3 0}}
-                    )
-                )
+                   )
+               )
                 (shift 10 0 
                     (graph 
                         vertices:{ {0 0} {0.1 -1.1} {1.1 -0.9} {1 0} }
                         edges:{{0 1} {1 2} {2 3} {3 0}}
-                    )
-                )
+                   )
+               )
                 (shift 11 1.87 
                     (graph 
                         vertices:{ {0 0} {0.5 0.5} {0 1} }
                         edges:{{0 1} {1 2} {2 0}}
-                    )
-                )
+                   )
+               )
                 (shift 10 1.87 
                     (graph 
                         vertices:{ {0 0} {-0.5 0.5} {0 1} }
                         edges:{{0 1} {1 2} {2 0}}
-                    )
-                )
+                   )
+               )
                 (shift 10 1.87 (square 1))
                 (shift 10 1 (tri 1))
                 (shift 1 2 
                     (graph 
                         vertices:{ {1 0} {-0.5 0.87} {0 0} }
                         edges:{{0 1} {1 2} {2 0}}
-                    )
-                )
+                   )
+               )
                 (shift 0 2 
                     (graph 
                         vertices:{ {-1 0} {0.5 0.87} {0 0} }
                         edges:{{0 1} {1 2} {2 0}}
-                    )
-                )
+                   )
+               )
                 (shift 0 2 (tri 1))
                 (shift 0 1 (square 1))
                 (rectangle 1 11)
@@ -89,7 +89,7 @@
             (track "TrackRight" "14,E,W" directed:True) // Local state = 2
             (track "TrackLeft"  "4,W,E"  directed:True) // Local state = 1
             }
-        )
+       )
         (dice d:2 from:0 num:5)
         (piece "Marker" Each
             (move
@@ -99,17 +99,17 @@
                     if:(or 
                         (and (not (is In (to) (sites "SafeSites"))) ("IsEnemyAt" (to)))
                         (is Empty (to))
-                    )
+                   )
                     (apply (if ("IsEnemyAt" (to))
                             (remove (to))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (then 
                     ("UpdateState")
-                )
-            )
-        )
+               )
+           )
+       )
         (map "Throw" {(pair 0 5) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 5)})
         (map "EntryPoint" {(pair 1 20) (pair 2 11) (pair 3 6) (pair 4 0)})
         (regions "SafeSites" (sites {4 14 23}))
@@ -127,10 +127,10 @@
         (play 
             (do 
                 (roll) next:(forEach Piece)
-            )
-        )
+           )
+       )
         (end  (if (no Pieces Enemy) (result TeamMover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -149,7 +149,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Mexico, from around 1943 to 1953.")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

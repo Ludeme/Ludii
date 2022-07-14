@@ -8,9 +8,9 @@
             (remove 
                 (to) 
                 (then (set Counter))
-            )
-        )
-    ) 
+           )
+       )
+   ) 
 )
 
 //------------------------------------------------------------------------------
@@ -27,18 +27,18 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "King" Each 
             (move 
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndResetCounter"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "Bishop" Each 
             (move
                 Slide 
@@ -46,9 +46,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "Knight" Each 
             (move 
                 Leap 
@@ -56,27 +56,27 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndResetCounter"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "Queen" Each 
             (move
                 Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
-                ) 
-            ) 
-        )
+               ) 
+           ) 
+       )
         }
-    )  
+   )  
     (rules 
         (start
             { 
             (place "Rook1" {"H1" "H4"}) (place "Knight1" {"G1" "G4"}) (place "Bishop1" {"G2" "G3"}) (place "Queen1" coord:"H3") (place "King1" coord:"H2") 
             (place "Rook2" {"A1" "A4"}) (place "Knight2" {"B1" "B4"}) (place "Bishop2" {"B2" "B3"}) (place "Queen2" coord:"A3") (place "King2" coord:"A2") 
             }
-        )
+       )
         
         (play (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King" Mover))))
         
@@ -85,13 +85,13 @@
             (if (and 
                     ("IsInCheck" "King" Next)
                     ("NextCanNotMove")
-                ) 
+               ) 
                 (result Mover Win)
-            ) 
+           ) 
             (if (or (no Moves Mover) (= (counter) 100)) (result Mover Draw)) 
             }
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -108,7 +108,7 @@
         (classification "board/war/replacement/checkmate/chess")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (show Check "King")
@@ -119,6 +119,6 @@
     
     (ai 
         "Half Chess_ai"
-    )
+   )
     
 )

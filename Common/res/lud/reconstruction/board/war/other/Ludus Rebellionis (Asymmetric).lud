@@ -10,11 +10,11 @@
         (start {
             (place "King1" coord:"H8")
             (place "Queen1" coord:"B8")
-            (place "Pawn2" (difference (expand (sites Bottom) steps:3) (sites Phase 1)  ))
+            (place "Pawn2" (difference (expand (sites Bottom) steps:3) (sites Phase 1) ))
         })
         (play [#])
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -42,7 +42,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Italy, from around 1500 to 1599.")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

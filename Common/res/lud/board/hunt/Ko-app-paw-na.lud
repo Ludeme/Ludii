@@ -18,13 +18,13 @@
             (if 
                 (= (sites P1) (sites Occupied by:P1)) 
                 (result P1 Win)
-            )
+           )
             (if 
                 (= (count Pieces P1) 11) 
                 (result P2 Win)
-            )
+           )
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -43,7 +43,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Southwest United States, around 1907.")
         }
-    )
+   )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})
@@ -52,6 +52,6 @@
     
     (ai 
         "Ko-app-paw-na_ai"
-    )
+   )
     
 )

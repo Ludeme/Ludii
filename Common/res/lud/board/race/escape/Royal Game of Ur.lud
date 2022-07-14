@@ -13,11 +13,11 @@
                 (hole
                     (rectangle 3 8) 
                     (poly { {4 0} {4 1} {6 1} {6 0}})
-                )
+               )
                 (poly { {4 2} {4 3} {6 3} {6 2}})
-            )
+           )
             {<Track>}
-        )
+       )
         ("StickDice" 4)
         (hand Each)
         (regions "Replay" (sites {"A1" "A3" "D2" "G1" "G3"}))
@@ -27,12 +27,12 @@
                 "RemoveAPiece"
                 (if ("IsNotOffBoard" "SiteToMoveOnTrack") 	 			
                     <Rosette:move>
-                )
-            )
-        )
+               )
+           )
+       )
         
         }
-    )  
+   )  
     
     (rules 
         (start { 	
@@ -43,7 +43,7 @@
         (play ("RollMove" (if (!= (count Pips) 0) (or (forEach Piece) (forEach Piece container:(mover))))))
         
         (end ("EscapeWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -55,25 +55,25 @@
         <(track "Track1" "20,3,W,N1,E,S1,W,End" P1 directed:True)
         (track "Track2" "21,17,W,S1,E,N1,W,End" P2 directed:True)>                          
         "The pieces follow the track described by Finkel."
-    )*   
+   )*   
     
     (item "Track Murray"    
         <(track "Track1" "20,3,W,N1,E6,S,E,N,W,S1,W,S1,E,End" P1 directed:True)
         (track "Track2" "21,17,W,S1,E6,N,E,S,W,N1,W,N1,E,End" P2 directed:True)> 
         "The pieces follow a track describing by Murray."
-    )
+   )
     
     (item "Track Long Road"    
         <(track "Track1" "20,3,W,N1,E6,N,E,S,W,End" P1 directed:True)
         (track "Track2" "21,17,W,S1,E6,S,E,N,W,End" P2 directed:True)> 
         "The pieces follow a longer track than the description of Finkel."
-    ) 
+   ) 
     
     (item "Wikipedia Loop"    
         <(track "Track1" "20,0,E,N1,E3,S,E,N,W,S1,W,End" P1 directed:True)
         (track "Track2" "21,14,E,S1,E3,N,E,S,W,N1,W,End" P2 directed:True)> 
         "The pieces follow a track describing a loop described in Wikipedia."
-    ) 
+   ) 
     
     }
 )
@@ -87,17 +87,17 @@
                 (and 
                     (not ("IsFriendAt" "SiteToMoveOnTrack")) 
                     (not (is In "SiteToMoveOnTrack" (sites "Replay")))
-                )
-            )
+               )
+           )
             (move 
                 (from)
                 (to 
                     "SiteToMoveOnTrack" 
                     ("HittingCapture" (handSite Next))
-                )
+               )
                 (then ("ReplayInMovingOn" (sites "Replay")))
-            )
-        )
+           )
+       )
         >                          
     "The rosettes are protecting the pieces and allow them to replay.")*   
     
@@ -109,12 +109,12 @@
                 (to 
                     "SiteToMoveOnTrack" 
                     ("HittingCapture" (handSite Next))
-                )
-            )
-        )
+               )
+           )
+       )
         > 
         "Nothing special happens on the rosettes."
-    )
+   )
     }
 )
 
@@ -158,7 +158,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Mesopotamia, from around 3000BCE to 1900BCE.")
         }
-    )
+   )
     
     (graphics {
         (show Symbol "flower" "Replay" scale:0.9)

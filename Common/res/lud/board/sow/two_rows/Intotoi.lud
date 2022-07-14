@@ -12,7 +12,7 @@
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
             (track "Track" "0,E,N,W" loop:True)
-        )
+       )
         (piece "Seed" Shared)
         (hand Each)
         (regions P1 (sites Bottom))                    // P1 home
@@ -29,10 +29,10 @@
                 (move Select
                     (from 10)
                     (then (sow count:2))
-                )
-            )
+               )
+           )
             (nextPhase "Opening2")
-        )
+       )
         
         (phase "Opening2"
             (play
@@ -41,33 +41,33 @@
                         (from 
                             (sites {"PlayFromLastHole"})
                             if:(> (count at:(from)) 0)
-                        )
+                       )
                         (then 
                             (sow
                                 apply:(if (!= 1 (count at:(to)))
                                     (moveAgain)
-                                )		
-                            )
-                        )
-                    )
+                               )		
+                           )
+                       )
+                   )
                     (move Select
                         (from 
                             (sites {13 15})
                             if:(> (count at:(from)) 0)
-                        )
+                       )
                         (then 
                             (sow
                                 count:2
                                 apply:(if (!= 1 (count at:(to)))
                                     (moveAgain)
-                                )		
-                            )
-                        )
-                    )
-                )
-            )
+                               )		
+                           )
+                       )
+                   )
+               )
+           )
             (nextPhase (not (is Next Mover)) "Play")
-        )
+       )
         
         (phase "Play"
             (play 
@@ -79,17 +79,17 @@
                                     (from 
                                         (sites Mover)
                                         if:(> (count at:(from)) 0)
-                                    )
+                                   )
                                     (then (sow))
-                                )
+                               )
                                 ifAfterwards:(or
                                     (and (= 1 (count at:("PlayFromLastHole"))) (is In ("PlayFromLastHole") (sites Mover)))
                                     (is In ("PlayFromLastHole") (sites Next))
-                                )
-                            )
-                        )
+                               )
+                           )
+                       )
                         if:(> (count at:(from)) 0)
-                    )
+                   )
                     (then 
                         (sow
                             apply:(if (= 1 (count at:(to)))
@@ -98,16 +98,16 @@
                                         (from ("OppositePit" (to))) 
                                         (to (handSite Mover)) 
                                         count:(count at:("OppositePit" (to)))
-                                    )
-                                )
+                                   )
+                               )
                                 (moveAgain)
-                            )		
-                        )
-                    )
-                )
-            )
+                           )		
+                       )
+                   )
+               )
+           )
             (nextPhase Mover (is Next Mover) "Replay")
-        )
+       )
         
         (phase "Replay"
             (play 
@@ -115,7 +115,7 @@
                     (from 
                         (sites {"PlayFromLastHole"})
                         if:(> (count at:(from)) 0)
-                    )
+                   )
                     (then 
                         (sow
                             apply:(if (= 1 (count at:(to)))
@@ -124,20 +124,20 @@
                                         (from ("OppositePit" (to))) 
                                         (to (handSite Mover)) 
                                         count:(count at:("OppositePit" (to)))
-                                    )
-                                )
+                                   )
+                               )
                                 (moveAgain)
-                            )		
-                        )
-                    )
-                )
-            )
+                           )		
+                       )
+                   )
+               )
+           )
             (nextPhase Mover (not (is Next Mover)) "Play")
-        )
+       )
         }
         
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -154,13 +154,13 @@
         (credit "Eric Piette")
         (origin  "This game was played in Kenya, around 1951.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
     })
     (ai
         "Intotoi_ai"
-    )
+   )
 )
 

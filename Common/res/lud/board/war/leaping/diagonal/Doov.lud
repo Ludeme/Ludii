@@ -6,10 +6,10 @@
         (between 
             if:("IsEnemyAt" (between)) 
             (apply (remove (between)))
-        ) 
+       ) 
         (to if:(is Empty (to))) 
         #2
-    ) 
+   ) 
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -30,7 +30,7 @@
     })  
     (rules 
         (start { 
-            (place "Counter1" (difference (expand (sites Bottom)) (sites Phase 1)  ))
+            (place "Counter1" (difference (expand (sites Bottom)) (sites Phase 1) ))
             (place "Counter2" (difference (expand (sites Top)) (sites Phase 1)))
         })
         
@@ -41,11 +41,11 @@
                         ("HopMan" (from) 
                             (then 
                                 (if "JumpToPromotionZone" (promote (last To) (piece "DoubleCounter") Mover)) 
-                            ) 
-                        ) 
-                    )
+                           ) 
+                       ) 
+                   )
                     (forEach Piece "DoubleCounter" ("HopDiagonalCapture"))
-                )
+               )
                 
                 (or  
                     (forEach Piece "Counter" 
@@ -53,20 +53,20 @@
                             Step 
                             (directions {FR FL}) 
                             (to if:(is Empty (to)))
-                        ) 
+                       ) 
                         (then 
                             (if "JumpToPromotionZone"
                                 (promote (last To) (piece "DoubleCounter") Mover)
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (forEach Piece "DoubleCounter" "StepDiagonalToEmpty")
-                )
-            )
-        ) 
+               )
+           )
+       ) 
         
         (end ("BlockWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -85,7 +85,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Mongolia, from around 1963 to 1966.")
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)
@@ -94,5 +94,5 @@
     
     (ai
         "Doov_ai"
-    )
+   )
 )

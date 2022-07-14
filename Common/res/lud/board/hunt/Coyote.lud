@@ -8,9 +8,9 @@
                 (if ("SameTurn") 
                     (move Pass) 
                     ("StepToEmpty")
-                ) 
-            ) 
-        )
+               ) 
+           ) 
+       )
     })
     
     (rules 
@@ -22,7 +22,7 @@
         (play (forEach Piece)) 
         
         (end ("NoMovesLossAndLessNumPiecesPlayerLoss" P1 9))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -68,7 +68,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Mexico? Spain?, around 1898.")
         }
-    )
+   )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})
@@ -77,6 +77,6 @@
     
     (ai 
         "Coyote_ai"
-    )
+   )
     
 )

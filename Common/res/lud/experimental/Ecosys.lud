@@ -12,7 +12,7 @@
                 (if 
                     (>= (value Piece at:(site)) (score Mover))
                     (sites Around (site) <Board:directions>)
-            )) 
+           )) 
 ))) 
 
 (define "SetNewGroupValue"
@@ -28,7 +28,7 @@
         (<Board:type>)
         (piece "Disc" Each)
         }
-    )
+   )
     (rules
         (start (set Score Each 0))
         (play
@@ -38,7 +38,7 @@
                     (and
                         ("SetNewGroupValue")
                         (set Score Mover (size Array (sizes Group <Board:directions> Mover))) 
-        ))))
+       ))))
         (end 
             (if 
                 (no Moves Next)
@@ -121,7 +121,7 @@
         (credit "Dale Walton")
         (date "2022")
         }
-    )
+   )
     (<Board:graphics>)
 )
 

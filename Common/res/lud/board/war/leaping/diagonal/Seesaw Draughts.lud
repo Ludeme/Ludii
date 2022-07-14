@@ -5,7 +5,7 @@
         (to if:(is Empty (to)))
         stack:True
         (then ("Promote" (last To)))
-    )
+   )
 )
 
 (define "Capture"
@@ -15,19 +15,19 @@
                 (* 
                     (from)  
                     (if (< 0 (count MovesThisTurn)) 1 0)
-                )
+               )
                 (* 
                     (last To)  
                     (if (< 0 (count MovesThisTurn)) 1 0)
-                )
-            )
-        )
+               )
+           )
+       )
         (to
             (sites Direction
                 from:(from)
                 Diagonal
                 distance:(+ 1 (size Stack at:(from)))
-            )
+           )
             if:(and {
                 (is Empty (to))
                 (= 
@@ -36,27 +36,27 @@
                         in:(intersection
                             (sites Occupied by:Enemy)
                             (sites Between from:(from) to:(to))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (= 
                     0 
                     (count Sites
                         in:(intersection
                             (sites Occupied by:Mover)
                             (sites Between from:(from) to:(to))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (= 1 (count Steps (to) ("HoppedPiece")))
                 (not (is In ("HoppedPiece") (values Remembered)))
             })
             (apply
                 (remember Value
                     ("HoppedPiece")
-                )
-            )
-        )
+               )
+           )
+       )
         count:(size Stack at:(from))
         stack:True
         (then
@@ -67,15 +67,15 @@
                     (forEach Site
                         (sites (values Remembered))
                         (remove (site) count:(size Stack at:(site)))
-                    )
+                   )
                     next:(and 
                         ("Promote" (last To))
                         (forget Value All)
-                    )
-                )
-            )
-        )
-    )
+                   )
+               )
+           )
+       )
+   )
 )
 
 (define "CanCaptureFrom"
@@ -87,7 +87,7 @@
                     from:(from)
                     (difference Diagonal (directions Cell from:(last To) to:(last From)))
                     distance:(+ 1 (size Stack at:(from)))
-                )
+               )
                 if:(and {
                     (is Empty (to))
                     (= 
@@ -96,24 +96,24 @@
                             in:(intersection
                                 (sites Occupied by:Enemy)
                                 (sites Between from:(from) to:(to))
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (= 
                         0 
                         (count Sites
                             in:(intersection
                                 (sites Occupied by:Mover)
                                 (sites Between from:(from) to:(to))
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (= 1 (count Steps (to) ("HoppedPiece")))
                     (not (is In ("HoppedPiece") (values Remembered)))
                 })
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "HoppedPiece"
@@ -122,9 +122,9 @@
             (intersection
                 (sites Occupied by:Enemy)
                 (sites Between from:(from) to:(to))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "ConditionalDirection"
@@ -132,7 +132,7 @@
         (is Odd (size Stack at:(from)))
         (directions {FL FR})
         (directions {BL BR})
-    )
+   )
 )
 
 (define "Promotes"
@@ -140,19 +140,19 @@
         (and 
             (is Odd (size Stack at:#1))
             (is In #1 (sites (player (+ 1 (% (mover) 2)))))
-        )
+       )
         (and 
             (is Even (size Stack at:#1))
             (is In #1 (sites (player (mover))))
-        )
-    )
+       )
+   )
 )
 
 (define "Promote"
     (if
         ("Promotes" #1)
         (add (to #1) stack:True)
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -167,7 +167,7 @@
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-    )
+   )
     (rules
         (start { 
             (place "Disc1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)))
@@ -178,20 +178,20 @@
                 (forEach Piece "Disc"
                     ("Capture")
                     top:True
-                )
+               )
                 (forEach Piece "Disc"
                     ("Step")
                     top:True
-                )
-            )
-        )
+               )
+           )
+       )
         (end 
             (if 
                 (no Moves Next) 
                 (result Next Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------

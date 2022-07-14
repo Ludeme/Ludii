@@ -10,15 +10,15 @@
                 (and 
                     (addScore Mover 1) 
                     (remove (between)) 
-                )
-            ) 
-        )
-    )
+               )
+           ) 
+       )
+   )
 )
 //------------------------------------------------------------------------------
 
 (define "Connection" <BoardShape:directionsUsed>)
-(define "BoardUsed" <BoardShape:gridType> )
+(define "BoardUsed" <BoardShape:gridType>)
 (define "HexHex" (board (tri Hexagon <BoardSize:numberOfVertices>) use:Vertex))
 
 //------------------------------------------------------------------------------
@@ -31,11 +31,11 @@
         (piece "Ball" P1)
         (piece "Ball" P2)
         }
-    )	
+   )	
     (rules 
         (meta
             (no Repeat)
-        )
+       )
         (play 
             (or
                 (do
@@ -44,22 +44,22 @@
                         (to (sites Empty))
                         (then 
                             "CaptureSurroundedPiece"
-                        )
-                    )
+                       )
+                   )
                     ifAfterwards:"HasFreedom"
-                )
+               )
                 (move Pass)
-            )
-        )        
+           )
+       )        
         (end
             (if (all Passed)
                 (byScore {
                     (score P1 (+ (score P1) (size Territory P1))) 
                     (score P2 (+ (score P2) (size Territory P2)))
                 })
-            )
-        )
-    )	
+           )
+       )
+   )	
     
 )
 
@@ -100,7 +100,7 @@
         (credit "Helge Kosuch")
         (date "2021")
         }
-    )
+   )
     
     (graphics 
         {       
@@ -115,5 +115,5 @@
         (board Colour OuterEdges (colour Black))
         (show Edges Diagonal <BoardShape:DiagShow> (colour Black))
         }
-    )
+   )
 )

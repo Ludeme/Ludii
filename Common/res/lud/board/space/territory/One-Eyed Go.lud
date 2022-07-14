@@ -10,10 +10,10 @@
                 (and 
                     (addScore Mover 1) 
                     (remove (between)) 
-                )
-            ) 
-        )
-    )
+               )
+           ) 
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -25,12 +25,12 @@
         (board <Board> use:Vertex) 
         (piece "Marker" Each)
         }
-    )
+   )
     
     (rules 
         //        (meta
             //            (no Repeat)
-        //        )
+        //       )
         (play 
             (or
                 (do
@@ -38,15 +38,15 @@
                         Add
                         (to (sites Empty))
                         
-                    )
+                   )
                     ifAfterwards:"HasFreedom"
                     (then 
                         "CaptureSurroundedPiece"
-                    )
-                )
+                   )
+               )
                 (move Pass)
-            )
-        )
+           )
+       )
         
         (end
             (if (all Passed)
@@ -54,9 +54,9 @@
                     (score P1 (+ (score P1) (size Territory P1))) 
                     (score P2 (+ (score P2) (size Territory P2)))
                 })
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -84,7 +84,7 @@
         (credit "Eric Piette")
         (date "2013")
         }
-    )
+   )
     
     (graphics {
         (board Style Go)
@@ -94,5 +94,5 @@
     
     (ai
         "One-Eyed Go_ai"
-    )
+   )
 )

@@ -6,10 +6,10 @@
             if:(and 
                 (is In (from) (sites Occupied by:Mover)) 
                 (is Empty (to))
-            )
-        ) 
+           )
+       ) 
         stack:True
-    )
+   )
 )
 
 (define "Hop" 
@@ -21,12 +21,12 @@
             #3
             if:("IsEnemyAt" (between)) 
             (apply (fromTo (from (between)) (to)))
-        )
+       )
         (to if:(and 
                 (is In (from) (sites Occupied by:Mover)) 
                 (is Empty (to))
-            )
-        )
+           )
+       )
         stack:True 
         (then 
             (if 
@@ -39,19 +39,19 @@
                             #3
                             if:(and (not (is In (between) (last Between))) ("IsEnemyAt" (between))) 
                             (apply (fromTo (from (between)) (to)))
-                        )     	
+                       )     	
                         (to if:(and 
                                 (is In (from) (sites Occupied by:Mover)) 
                                 (is Empty (to))
-                            )
-                        )
+                           )
+                       )
                         stack:True
-                    )
-                ) 
+                   )
+               ) 
                 (moveAgain) 
-            ) 
-        )
-    ) 
+           ) 
+       )
+   ) 
 )
 
 (define "IsUnpromoted" (= (what at:(last To) level:(topLevel at:(last To))) (id "Counter" Mover)))
@@ -72,7 +72,7 @@
     
     (rules 
         (start { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ))
+            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1) ))
             (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1)))
         })
         
@@ -87,8 +87,8 @@
                         (to if:(and 
                                 (is In (from) (sites Occupied by:Mover)) 
                                 (is Empty (to))
-                            )
-                        )
+                           )
+                       )
                         stack:True 
                         (then 
                             (if "JumpToPromotionZone" (promote (last To) (piece "CounterStar") Mover)
@@ -100,20 +100,20 @@
                                             (between 
                                                 if:("IsEnemyAt" (between)) 
                                                 (apply (fromTo (from (between)) (to)))
-                                            ) 		
+                                           ) 		
                                             (to if:(and 
                                                     (is In (from) (sites Occupied by:Mover)) 
                                                     (is Empty (to))
-                                                )
-                                            )
+                                               )
+                                           )
                                             stack:True
-                                        )
-                                    ) 
+                                       )
+                                   ) 
                                     (moveAgain) 
-                                )
-                            ) 
-                        )
-                    ) 
+                               )
+                           ) 
+                       )
+                   ) 
                     (move
                         Hop
                         (from (last To)) 
@@ -123,12 +123,12 @@
                             after:(count Rows)
                             if:(and (not (is In (between) (last Between))) ("IsEnemyAt" (between)))
                             (apply (fromTo (from (between)) (to)))
-                        ) 
+                       ) 
                         (to if:(and 
                                 (is In (from) (sites Occupied by:Mover)) 
                                 (is Empty (to))
-                            )
-                        ) 
+                           )
+                       ) 
                         stack:True 
                         (then 
                             (if 
@@ -141,20 +141,20 @@
                                             after:(count Rows)
                                             if:(and (not (is In (between) (last Between))) ("IsEnemyAt" (between)))
                                             (apply (fromTo (from (between)) (to)))
-                                        ) 
+                                       ) 
                                         (to if:(and 
                                                 (is In (from) (sites Occupied by:Mover)) 
                                                 (is Empty (to))
-                                            )
-                                        )  
+                                           )
+                                       )  
                                         stack:True
-                                    )
-                                ) 
+                                   )
+                               ) 
                                 (moveAgain) 
-                            ) 
-                        )
-                    ) 
-                )
+                           ) 
+                       )
+                   ) 
+               )
                 (priority {
                     (or { 
                         (forEach Piece "Counter" ("Hop" (directions {FR FL})) top:True (then (if "JumpToPromotionZone" (promote (last To) (piece "CounterStar") Mover))))
@@ -166,11 +166,11 @@
                         (forEach Piece "CounterStar" (move Slide Diagonal stack:True) top:True)
                     })
                 })
-            )
-        ) 
+           )
+       ) 
         
         (end ("BlockWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -189,7 +189,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Russia, around 1875.")
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)

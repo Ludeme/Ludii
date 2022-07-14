@@ -9,14 +9,14 @@
             (range 1 9)
             if:#1
             (apply (remove (between)))
-        )           
+       )           
         (to 
             if:(and 
                 (is Empty (to)) 
                 ("NumCapturedPiecesIsOdd")
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //-------------------------------------------------------------------------------
@@ -31,7 +31,7 @@
                 ("StepToEmpty")
                 ("BigHop" ("IsEnemyAt" (between))) 
             })
-        ) 
+       ) 
         (piece "human" P2 "StepToEmpty") 
     })  
     (rules 
@@ -45,7 +45,7 @@
         (phase "PlacementTiger" P1
             (play (move (from (handSite P1)) (to (sites {"C3" "C7"})) (then (moveAgain))))
             (nextPhase Mover "MoveHuman")
-        )
+       )
         
         (phase "MoveHuman" P1
             (play 
@@ -55,29 +55,29 @@
                     (then 
                         (if (< 6 (count Sites in:(intersection (expand (sites Centre)) (sites Occupied by:Next))))
                             (moveAgain)
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase Mover (= 6 (count Sites in:(intersection (expand (sites Centre)) (sites Occupied by:Next)))) "Movement")
-        )
+       )
         
         (phase "PlacementHuman" P2
             (play 
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty))
-                ) 
-            )
+               ) 
+           )
             (nextPhase ("HandEmpty" P2) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play (forEach Piece))
             (end ("NoMovesP1NoPiecesP2"))
-        )
+       )
         }
-    )
+   )
 )
 
 //-------------------------------------------------------------------------------
@@ -95,7 +95,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Singapore, around 1889.")
         }
-    )
+   )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})
@@ -104,5 +104,5 @@
     
     (ai
         "Rimau-Rimau (One Tiger)_ai"
-    )
+   )
 )

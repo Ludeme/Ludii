@@ -6,8 +6,8 @@
             (or
                 (move Step (to [#])) // A step move but we do not know the condition
                 (move [#]) // A capture move
-            )
-        )
+           )
+       )
     })
     (rules
         (start {
@@ -16,7 +16,7 @@
         })
         (play [#])
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -33,7 +33,7 @@
         (classification "board/war/reconstruction")
         (origin  "This game was played in Samoa, around 1899.")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

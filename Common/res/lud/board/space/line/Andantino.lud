@@ -22,16 +22,16 @@
                     (sites Playable) 
                     if:(<= 2 
                         (count Sites in:(sites Around (to) NotEmpty)) 
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (end {
             (if (or (is Loop surround:Next) (is Line 5)) (result Mover Win))
             (if (= (count Moves) (* (count Players) "NumTiles")) (result Mover Draw))
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -59,7 +59,7 @@
         (credit "Eric Piette")
         (date "1995")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour LightGrey))
@@ -67,5 +67,5 @@
     
     (ai
         "Andantino_ai"
-    )
+   )
 )

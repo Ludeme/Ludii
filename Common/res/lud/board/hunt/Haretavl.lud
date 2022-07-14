@@ -19,16 +19,16 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty))
-                ) 
-            )
+               ) 
+           )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
+       )
         
         (phase "Movement" (play (forEach Piece)))
         }
         
         <End:rule>
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -42,7 +42,7 @@
         }) 
         >  
         "The game has an ending condition only for P1."
-    )*
+   )*
     
     (item "Cond for P1 and P2" 
         <
@@ -52,13 +52,13 @@
                 (or
                     (>= (count Moves) (- (value MoveLimit) 10)) 
                     (>= (count Turns) (- (value TurnLimit) 5)) 
-                )
+               )
                 (result P2 Win)
-            )
+           )
         }) 
         >  
         "The game has an ending condition for each player."
-    )
+   )
 })
 
 //------------------------------------------------------------------------------
@@ -96,7 +96,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Scandinavia, from around 1833 to 1886.")
         }
-    )
+   )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})
@@ -105,5 +105,5 @@
     
     (ai
         "Haretavl_ai"
-    )
+   )
 )

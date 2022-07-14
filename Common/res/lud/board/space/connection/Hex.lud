@@ -10,7 +10,7 @@
         <Meta:rule>
         (play (move Add (to (sites Empty))))
         (end (if (is Connected Mover) (result Mover <Result>))) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -60,7 +60,7 @@
         (credit "Eric Piette")
         (date "1942")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Red))
@@ -71,6 +71,6 @@
     
     (ai 
         "Hex_ai"
-    )
+   )
     
 )

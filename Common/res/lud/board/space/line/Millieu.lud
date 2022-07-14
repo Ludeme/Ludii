@@ -14,13 +14,13 @@
                     (difference
                         (sites {("ColumnAt" (from)) (+ ("ColumnAt" (from)) 9) (+ ("ColumnAt" (from)) 18) })
                         (from)
-                    )
+                   )
                     (sites Empty)
-                )
+               )
                 if:(or
                     (= (site) (+ ("ColumnAt" (from)) 9))
                     (= (from) (+ ("ColumnAt" (from)) 9))
-            ))
+           ))
             (to)
 )))
 
@@ -33,13 +33,13 @@
                     (difference
                         (sites {("ColumnAt" (from)) (+ ("ColumnAt" (from)) 9) (+ ("ColumnAt" (from)) 18) })
                         (from)
-                    )
+                   )
                     (sites Empty)
-                )
+               )
                 if:(or
                     (is Empty (+ ("ColumnAt" (from)) 9))
                     (= (from) (+ ("ColumnAt" (from)) 9))
-            ))
+           ))
             (to)
 )))
 
@@ -55,7 +55,7 @@
             (!= (what at:#1) (what at:(+ {#1 #2 #2})))
             (!= (what at:(+ {#1 #2})) (what at:(+ {#1 #2 #2})))
             }
-        )
+       )
         (and 
             {
             (= (what at:#1) (what at:(+ {#1 #2})))
@@ -86,7 +86,7 @@
                 (set Pending (+ ("RowAt" #1) 1))
                 (set Pending (+ ("RowAt" #1) 2))
                 }
-        ))
+       ))
         (if 
             ("IsMill" ("FileAt" #1) 3)
             (and
@@ -95,7 +95,7 @@
                 (set Pending (+ ("FileAt" #1) 3))
                 (set Pending (+ ("FileAt" #1) 6))
                 }
-        ))
+       ))
         (if 
             ("IsMill" ("ColumnAt" #1) 9)
             (and
@@ -104,7 +104,7 @@
                 (set Pending (+ ("ColumnAt" #1) 9))
                 (set Pending (+ ("ColumnAt" #1) 18))
                 }
-        ))
+       ))
         }
 ))
 
@@ -115,7 +115,7 @@
     (move
         (from (sites Hand Mover)) 
         (to (sites Board) if:(is Empty (to)))
-    )
+   )
 )
 
 (define "FirstAction"
@@ -127,7 +127,7 @@
                 (or
                     (< 0 (count Pieces in:(sites Around (to))))
                     (< 0 (count Pieces in:("AdjacentOccupiedUpDown" (to))))
-        )))
+       )))
         (then
             (and
                 (set Var "LastMove1" (last To))
@@ -140,12 +140,12 @@
             (union
                 (sites Around (var "LastMove1"))
                 ("AdjacentOccupiedUpDown" (var "LastMove1"))
-        ))
+       ))
         (to
             (union
                 (sites LineOfSight Empty Vertex at:(from))
                 ("EmptySlideSitesUpDown" (from))
-        ))
+       ))
         (then (set Var "LastMove2" (last To)))
 ))
 
@@ -154,12 +154,12 @@
         (move
             (from
                 (sites Pending)
-            )
+           )
             (to
                 (sites Hand Mover)
                 if:(is Empty (to))
-            )
-        )
+           )
+       )
         ifAfterwards:(all Sites
             (sites {(var "LastMove1") (var "LastMove2") }) 
             if:(not (is Empty (site))) // not allowed to remove the pieces moved to make the mill
@@ -174,7 +174,7 @@
             (if 
                 (or ("Check4Mill" (var "LastMove1")) ("Check4Mill" (var "LastMove2")))
                 (moveAgain)
-            )
+           )
             }  
 )))
 
@@ -191,7 +191,7 @@
         (piece "Square" Shared maxState:3)
         (piece "Hex" Shared maxState:3)
         }
-    )
+   )
     (rules
         (start
             {
@@ -217,7 +217,7 @@
             
             (set Score Each 9)
             }
-        )
+       )
         (play
             (if
                 (> 0 (counter))
@@ -232,9 +232,9 @@
                         ("SlideAdjacent")  // After placement the move continues with a compulsary slide of an adjacent piece
                         ("DestroyEachMillsByCapturingAStaticPiece")
                         ("ThenIfMillsAddSites2PendingAndMoveAgain")
-                ))
+               ))
                 (then (set Score Mover (count Pieces in:(sites Hand Mover))))
-        ))
+       ))
         (end
             (if
                 (no Moves Mover)
@@ -284,7 +284,7 @@
         (credit "Dale Walton")
         (date "22-02-2022")
         }
-    )
+   )
     
     (graphics
         {
@@ -302,13 +302,13 @@
         (piece Background "Square" image:"square-alt1.svg"  scaleX:.76 scaleY:.76)
         (piece Foreground "Square" state:3 image:"square-alt1.svg"
             fillColour:(colour Red) scaleX:.72 scaleY:.72
-        )
+       )
         (piece Foreground "Square" state:1 image:"square-alt1.svg"
             fillColour:(colour DarkBrown) scaleX:.72 scaleY:.72
-        )
+       )
         (piece Foreground "Square" state:2 image:"square-alt1.svg"
             fillColour:(colour Cream) scaleX:.72 scaleY:.72
-        ) 
+       ) 
         
         (hand Placement P2 scale:0.8 offsetX:0.85 offsetY:0.10 vertical:True)
         (hand Placement P1 scale:0.8 offsetX:0.15 offsetY:0.10 vertical:True)

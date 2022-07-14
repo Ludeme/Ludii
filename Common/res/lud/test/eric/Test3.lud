@@ -5,7 +5,7 @@
         <Board> 
         (piece "Marker" Each)
         }
-    )
+   )
     
     (rules 
         <Pie>
@@ -19,28 +19,28 @@
                             <Board:direction>
                             (to)
                             (sites Perimeter)
-                        )
+                       )
                         (count Sites 
                             in:(intersection
                                 (sites LineOfSight
                                     at:(to)
                                     <Board:direction>
-                                )
+                               )
                                 (sites Occupied by:Mover)
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (end 
             (if 
                 (is Occupied (centrePoint)) 
                 (result Next Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //-------------------------------------------------------------------------
@@ -71,7 +71,7 @@
         (version "1.3.1")
         (credit "Michael Amundsen")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Black))
@@ -85,13 +85,13 @@
             (show Symbol "dot" Vertex {24} 
                 edgeColour:(colour 178 151 100) 
                 scale:0.18
-            )
-        )
+           )
+       )
         (useFor "Board/Square 9x9" 
             (show Symbol "dot" Vertex {20 24 56 60 40} 
                 edgeColour:(colour 178 151 100) 
                 scale:0.18
-            )
-        )
+           )
+       )
     })
 )

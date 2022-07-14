@@ -16,14 +16,14 @@
                         (remove
                             (scale 1 2 (tri 4))
                             vertices:{1 2 5}
-                        )
+                       )
                         edges:{{2 3} {0 1}}
-                    )
+                   )
                 })
                 edges:{{2 4} {8 10} {5 1} {7 11} {9 3} {0 6} {3 14} {15 0} {9 16} {17 6}}
-            )
+           )
             use:Vertex
-        )
+       )
         (piece "Tiger" P1 (move [#]))
         (piece "Goat" P2 (move [#]))
     })  
@@ -35,7 +35,7 @@
         })
         (play [#])
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -52,7 +52,7 @@
         (classification "board/hunt/reconstruction")
         (origin  "This game was played in India, from around 1398 to 2003.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)

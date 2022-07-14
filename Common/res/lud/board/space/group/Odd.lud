@@ -2,7 +2,7 @@
     (+ 
         (count Groups if:(= (who at:(to)) P1) min:<Group>) 
         (count Groups if:(= (who at:(to)) P2) min:<Group>)
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -24,8 +24,8 @@
                 (from (sites Hand Shared)) 
                 (to (sites Empty))
                 copy:True
-            )
-        )
+           )
+       )
         (end 
             (if (is Full) 
                 (if 
@@ -33,14 +33,14 @@
                         (+ 
                             (count Groups if:(= (who at:(to)) P1) min:<Group>) 
                             (count Groups if:(= (who at:(to)) P2) min:<Group>)
-                        )
-                    ) 
+                       )
+                   ) 
                     (result P1 Win)
-                )
+               )
                 (result P2 Win)
-            ) 
-        )
-    )
+           ) 
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -97,12 +97,12 @@
         (credit "Eric Piette")
         (date "2007")
         }
-    )
+   )
     
     (graphics {
         (show Score All "GroupCount" " groups")
     })
     (ai
         "Odd_ai"
-    )
+   )
 )

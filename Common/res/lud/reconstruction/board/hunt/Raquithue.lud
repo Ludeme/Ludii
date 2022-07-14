@@ -8,9 +8,9 @@
                     (shift 1 4.5 (rectangle 4 5))
                 })
                 edges:{{24 30}}
-            )
+           )
             use:Vertex
-        )
+       )
         (piece "Lion" P1 (move [#])) // Pieces move along the lines of the board.
         (piece "Dog" P2 (move [#])) // Pieces move along the lines of the board.
     })  
@@ -22,7 +22,7 @@
         })
         (play [#])
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -39,7 +39,7 @@
         (classification "board/hunt/reconstruction")
         (origin  "This game was played in Argentina, around 1989.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)

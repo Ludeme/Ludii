@@ -4,12 +4,12 @@
         { 
         (board (square 8)) 
         }
-    )
+   )
     
     (rules 
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -27,7 +27,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Egypt, around 1683.")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

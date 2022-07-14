@@ -6,8 +6,8 @@
             (or 
                 ("HopSequenceCapture")
                 ("StepToEmpty")
-            )
-        )
+           )
+       )
     })  
     
     (rules 
@@ -21,16 +21,16 @@
                 (or
                     ("HopSequenceCaptureAgain")	
                     (move Pass)
-                )
+               )
                 (forEach Piece)
-            )
-        )
+           )
+       )
         
         (end {
             (if (no Pieces P1) (result P2 Win))
             (if (no Pieces P2) (result P1 Win))
         }) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -49,12 +49,12 @@
         (credit "Eric Piette")
         (origin  "This game was played in Sumatra, around 1906.")
         }
-    )
+   )
     
     (graphics {
         
     })
     (ai
         "Meurimueng-rimueng Peuet Ploh_ai"
-    )
+   )
 )

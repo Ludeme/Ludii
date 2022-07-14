@@ -5,14 +5,14 @@
             if:(or 
                 (= (between) (from)) 
                 (is Empty (between))
-            )
-        ) 
+           )
+       ) 
         (to 
             if:("IsEnemyAt" (to)) 
             (apply if:False (remove (to)))
-        )
+       )
         (then (set Counter))
-    )
+   )
 )
 
 (define "NoCaptureProposal" 101)
@@ -28,10 +28,10 @@
             (or {
                 (step All
                     (to if:(is Empty (to)))
-                )
+               )
                 ("SlideToCapture")						
             })
-        )
+       )
     })  
     (rules 
         (start {
@@ -44,21 +44,21 @@
                 (or 
                     (if (>= (counter) "NoCaptureProposal") 
                         (propose "End" (then (vote "End")))
-                    )
+                   )
                     (forEach Piece)
-                )
-            )
-        ) 
+               )
+           )
+       ) 
         (end {
             (if (is Decided "End")
                 (byScore {
                     (score P1 (count Pieces P1)) 
                     (score P2 (count Pieces P2))
                 })
-            )
+           )
             (if (no Pieces Next) (result Mover Win)) 
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -69,55 +69,55 @@
         <(expand (sites Bottom))>
         <(expand (sites Top))>
         "The game is played on the Awithlaknan Mosona board."
-    )*   
+   )*   
     (item "Middle Line"             
         <(square 7) loops:3>
         <(expand (sites Bottom))>
         <(expand (sites Top))>
         "The game is played on the Kolowis Awithlaknannai board."
-    )     
+   )     
     (item "Experimental 6x9"             
         <(rectangle 6 9)>
         <(expand (sites Bottom))>
         <(expand (sites Top))>
         "The game is played on an experimental 6x9 board."
-    )     
+   )     
     (item "Experimental 9x6 (A)"             
         <(rectangle 9 6)>
         <(expand (sites Bottom))>
         <(expand (sites Top))>
         "The game is played on an experimental 9x6 board."
-    )     
+   )     
     (item "Experimental 9x6 (B)"             
         <(rectangle 9 6)>
         <(expand (sites Bottom) steps:2)>
         <(expand (sites Top) steps:2)>
         "The game is played on an experimental 9x6 board."
-    )     
+   )     
     (item "Experimental 12x8"             
         <(rectangle 12 8) loops:3 from:2>
         <(difference (expand (sites Bottom) steps:4) (sites Bottom))>
         <(difference (expand (sites Top) steps:4) (sites Top))>
         "The game is played on an experimental 12x8 board."
-    )     
+   )     
     (item "Ja-Jeon-Geo-Gonu (A)"             
         <(square 4)>
         <{"A3" "B3" "A4" "B4"}>
         <{"C1" "D1" "C2" "D2"}>
         "Small 4x4 version of the game."
-    )     
+   )     
     (item "Ja-Jeon-Geo-Gonu (B)"             
         <(square 4)>
         <{"C4" "B3" "A4" "D3"}>
         <{"B1" "D1" "B2" "D2"}>
         "Small 4x4 version of the game (variant start)."
-    )   
+   )   
     (item "Giant"             
         <(square 36)>
         <(expand (sites Bottom))>
         <(expand (sites Top))>
         "The game is played on a big board."
-    )   
+   )   
 })
 
 //------------------------------------------------------------------------------
@@ -134,7 +134,7 @@
         (credit "Eric Piette")
         (date "01-01-1970")
         }
-    )
+   )
     
     (graphics {
         (board Style Surakarta) 

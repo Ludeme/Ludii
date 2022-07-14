@@ -4,7 +4,7 @@
         (board 
             (square 7)
             use:Vertex
-        )
+       )
         (piece "Marker" Each
             (or {
                 (move Step (directions {Forward Rightward Leftward}) (to if:(is Empty (to))))
@@ -12,7 +12,7 @@
                     (between
                         if:("IsEnemyAt" (between)) 
                         (apply (remove (between)))
-                    )
+                   )
                     (to if:(is Empty (to)))
                     (then 
                         (if (can Move 
@@ -21,16 +21,16 @@
                                     (directions {Forward Rightward Leftward})
                                     (between 
                                         if:("IsEnemyAt" (between))
-                                    )
+                                   )
                                     (to if:(is Empty (to)))
-                                )
-                            ) 
+                               )
+                           ) 
                             (moveAgain)
-                        )
-                    )
-                )
+                       )
+                   )
+               )
             })
-        ) 
+       ) 
     })  
     (rules 
         (start {
@@ -46,7 +46,7 @@
                         (between 
                             if:("IsEnemyAt" (between))
                             (apply (remove (between)))
-                        )
+                       )
                         (to if:(is Empty (to)))
                         (then 
                             (if (can Move 
@@ -55,21 +55,21 @@
                                         (directions {Forward Rightward Leftward})
                                         (between 
                                             if:("IsEnemyAt" (between))
-                                        )
+                                       )
                                         (to if:(is Empty (to)))
-                                    )
-                                ) 
+                                   )
+                               ) 
                                 (moveAgain)
-                            )
-                        )
-                    )	
+                           )
+                       )
+                   )	
                     (move Pass)
-                )
+               )
                 (forEach Piece)
-            )
-        )
+           )
+       )
         (end ("BlockWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -86,7 +86,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Sweden, from around 1873 to 1933.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)

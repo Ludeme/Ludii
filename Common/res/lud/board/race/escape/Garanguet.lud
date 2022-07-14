@@ -21,25 +21,25 @@
             (if (< (value Player Mover) 0)
                 (set Value Mover 1)
                 (set Value Mover (+ 1 (value Player Mover)))
-            )
-        )
+           )
+       )
         (set Value Mover 0)
-    )
+   )
 )
 
 (define "UpdateCounterDoublePlay" 
     (and 
         (if (< (count MovesThisTurn) 4)
             (moveAgain) 
-        )
+       )
         (if (< (value Player Mover) 3)
             (if (< (value Player Mover) 0)
                 (set Value Mover 1)
                 (set Value Mover (+ 1 (value Player Mover)))
-            )
+           )
             (set Value Mover 0)
-        )
-    )
+       )
+   )
 )
 
 (define "TwoDiceEqualLastLower"
@@ -56,8 +56,8 @@
         (if (and (= (face 26) (face 28)) (> (face 26) (face 27)))
             (face 26)
             (face 27)
-        )
-    )
+       )
+   )
 )
 
 (define "LowerValue"
@@ -66,8 +66,8 @@
         (if (and (= (face 26) (face 28)) (> (face 26) (face 27)))
             (face 27)
             (face 26)
-        )
-    )
+       )
+   )
 )
 
 (define "CanStillPlayDouble" 
@@ -75,8 +75,8 @@
         (and 
             (= (value Player Mover) 0) 
             (!= (count MovesThisTurn) 0)
-        )
-    )	
+       )
+   )	
 )
 
 (define "CanStillLowerDie" 
@@ -86,13 +86,13 @@
             (and 
                 (= (count MovesThisTurn) 0) 
                 (< (value Player Mover) 0)
-            )
-        )
+           )
+       )
         (and 
             (!= (count MovesThisTurn) 0) 
             (= (value Player Mover) 0)
-        )
-    )	
+       )
+   )	
 )
 
 (define "CaptureToBar" ("HittingCapture" ("Bar" (next))))
@@ -107,11 +107,11 @@
                 (to #1
                     if:("NoEnemyOrOnlyOne" (to))
                     ("CaptureToBar")
-                )
-            )
-        )
+               )
+           )
+       )
         #2
-    )		
+   )		
 )
 
 //-----------------------------------------------------------------------------
@@ -122,7 +122,7 @@
         ("BackgammonBoard" ("BackgammonTracksWithBar"))
         (dice num:3)
         (piece "Disc" Each) 
-        (map {(pair 1 6 ) (pair 2 19)}) // Bar
+        (map {(pair 1 6) (pair 2 19)}) // Bar
         (regions "Home" P1 { 7..12 }) // P1 Home (first quadrant)
         (regions "Home" P2 { 20..25 }) // P2 Home (first quadrant)
     })
@@ -141,7 +141,7 @@
                         (or
                             (if ("CanStillPlayDouble")
                                 ("Move" ("NextSiteFromDistDouble" (site)) (then ("UpdateCounterDoublePlay")))
-                            )
+                           )
                             (if ("CanStillLowerDie")
                                 ("Move" ("NextSiteFromDistLower" (site)) 
                                     (then 
@@ -149,26 +149,26 @@
                                             (< (count MovesThisTurn) 4) // Can play again, 5 moves are awaiting.
                                             (moveAgain) 
                                             (set Value Mover 0) // Reset the value for triple and double.
-                                        )
-                                    )		
-                                )
-                            )
-                        )
+                                       )
+                                   )		
+                               )
+                           )
+                       )
                         (forEach Die
                             if:("DieNotUsed")
                             ("Move" ("NextSiteFrom" (site)) (then ("ReplayNotAllDiceUsed")))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         
         (end 
             (if ("AllPieceEscaped")
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //-------------------------------------------------------------------------
@@ -186,7 +186,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in France, around 1840.")
         }
-    )
+   )
     
     (graphics {
         (board Style backgammon)

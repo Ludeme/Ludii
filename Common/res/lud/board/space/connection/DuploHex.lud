@@ -8,21 +8,21 @@
                 (to if:(or 
                         (= (what at:(to)) (id "Ring1"))
                         (= (what at:(to)) (id "Ring2"))
-                    )
-                )
-                (then (promote (last To) (piece "DoubleCounter") Mover ))
-            )
-        )
+                   )
+               )
+                (then (promote (last To) (piece "DoubleCounter") Mover))
+           )
+       )
         (piece "Ring" Each
             (move Step 
                 (to if:(or 
                         (= (what at:(to)) (id "Disc1"))
                         (= (what at:(to)) (id "Disc2"))
-                    )
-                )
-                (then (promote (last To) (piece "DoubleCounter") Mover ))
-            )
-        )
+                   )
+               )
+                (then (promote (last To) (piece "DoubleCounter") Mover))
+           )
+       )
         (hand Each size:2)
         
         (regions P1 {(sites Side NE) (sites Side SW) })
@@ -45,22 +45,22 @@
                             (from (handSite Mover 0))
                             (to (sites Empty))
                             (then (moveAgain))
-                        )
+                       )
                         (forEach Piece "Disc")
-                    )
+                   )
                     (or
                         (move 
                             (from (handSite Mover 1)) 
                             (to (sites Empty))
-                        )
+                       )
                         (forEach Piece "Ring")
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         }
         (end (if (is Connected Mover) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -88,7 +88,7 @@
         (credit "Fabio Barbero")
         (date "2015")
         }
-    )
+   )
     
     (graphics {
         (piece Families {"Defined" "Isometric"})
@@ -99,5 +99,5 @@
     
     (ai
         "DuploHex_ai"
-    )
+   )
 )

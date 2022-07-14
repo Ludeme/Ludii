@@ -3,7 +3,7 @@
     (equipment { 
         (board 
             (hex Diamond <Board>)
-        ) 
+       ) 
         (piece "Marker" Each)
         (regions P1 {(sites Side NE) (sites Side SW) })
         (regions P2 {(sites Side NW) (sites Side SE) })
@@ -15,7 +15,7 @@
         (phase "Opening" P1 
             (play (move Add (to (sites Empty))))
             (nextPhase "Playing")
-        )
+       )
         (phase "Playing" 
             (play 
                 (move Add (to (sites Empty))
@@ -23,14 +23,14 @@
                         (if 
                             (= 0 (count MovesThisTurn)) 
                             (moveAgain)
-                        )
-                    )
-                ) 
-            )
-        )
+                       )
+                   )
+               ) 
+           )
+       )
         }
         (end (if (is Connected Mover) (result Mover <Result>))) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -84,7 +84,7 @@
         (credit "Eric Piette")
         (date "2020")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Red))
@@ -96,5 +96,5 @@
     
     (ai
         "Esa Hex_ai"
-    )
+   )
 )

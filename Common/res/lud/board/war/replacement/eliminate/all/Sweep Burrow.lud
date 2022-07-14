@@ -21,13 +21,13 @@
                                 (= 7 (var))
                                 ("NorthWest" ~ ~)
                                 ("SouthWest" ~ ~)
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    )
+                           )
+                       )
+                   )
+               )
+           )
+       )
+   )
 )
 
 (define "NextEnemies"
@@ -53,13 +53,13 @@
                                 (= 7 (var))
                                 ("ReachableFrom" (last To) N W)
                                 ("ReachableFrom" (last To) S W)
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    )
+                           )
+                       )
+                   )
+               )
+           )
+       )
+   )
 )
 
 (define "ReachableFrom"
@@ -73,13 +73,13 @@
                         (step 
                             (directions {#2 #3})
                             (to if:(is Empty (to)))
-                        )
+                       )
                         from:#1
                         (range 1 Infinity)
-                    )
-                )
+                   )
+               )
                 #2
-            )
+           )
             (expand
                 (union
                     (sites {#1})
@@ -87,15 +87,15 @@
                         (step 
                             (directions {#2 #3})
                             (to if:(is Empty (to)))
-                        )
+                       )
                         from:#1
                         (range 1 Infinity)
-                    )
-                )
+                   )
+               )
                 #3
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "ReachableCardinalFrom"
@@ -106,36 +106,36 @@
             #2
             stop:(is Occupied (to))
             stopIncluded:True
-        )
-    )
+       )
+   )
 )
 
 (define "EastOf"
     (>
         (column of:#1)
         (column of:#2)
-    )
+   )
 )
 
 (define "WestOf"
     (<
         (column of:#1)
         (column of:#2)
-    )
+   )
 )
 
 (define "NorthOf"
     (>
         (row of:#1)
         (row of:#2)
-    )
+   )
 )
 
 (define "SouthOf"
     (<
         (row of:#1)
         (row of:#2)
-    )
+   )
 )
 
 (define "Reachable"
@@ -149,13 +149,13 @@
                         (step 
                             (directions {#1 #2})
                             (to if:(is Empty (to)))
-                        )
+                       )
                         from:(from)
                         (range 1 Infinity)
-                    )
-                )
+                   )
+               )
                 #1
-            )
+           )
             (expand
                 (union
                     (sites {(from)})
@@ -163,15 +163,15 @@
                         (step 
                             (directions {#1 #2})
                             (to if:(is Empty (to)))
-                        )
+                       )
                         from:(from)
                         (range 1 Infinity)
-                    )
-                )
+                   )
+               )
                 #2
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "NorthEast"
@@ -181,20 +181,20 @@
                 (* 
                     (from)  
                     (if (< 0 (count MovesThisTurn)) 1 0)
-                )
+               )
                 (* 
                     (last To)  
                     (if (< 0 (count MovesThisTurn)) 1 0)
-                )
-            )
-        )
+               )
+           )
+       )
         (to
             ("Reachable" N E)
             #1
             (apply (remove (to)))
-        )
+       )
         #2
-    )
+   )
 )
 
 (define "SouthEast"
@@ -204,20 +204,20 @@
                 (* 
                     (from)  
                     (if (< 0 (count MovesThisTurn)) 1 0)
-                )
+               )
                 (* 
                     (last To)  
                     (if (< 0 (count MovesThisTurn)) 1 0)
-                )
-            )
-        )
+               )
+           )
+       )
         (to
             ("Reachable" S E)
             #1
             (apply (remove (to)))
-        )
+       )
         #2
-    )
+   )
 )
 
 (define "NorthWest"
@@ -227,20 +227,20 @@
                 (* 
                     (from)  
                     (if (< 0 (count MovesThisTurn)) 1 0)
-                )
+               )
                 (* 
                     (last To)  
                     (if (< 0 (count MovesThisTurn)) 1 0)
-                )
-            )
-        )
+               )
+           )
+       )
         (to
             ("Reachable" N W)
             #1
             (apply (remove (to)))
-        )
+       )
         #2
-    )
+   )
 )
 
 (define "SouthWest"
@@ -250,20 +250,20 @@
                 (* 
                     (from)  
                     (if (< 0 (count MovesThisTurn)) 1 0)
-                )
+               )
                 (* 
                     (last To)  
                     (if (< 0 (count MovesThisTurn)) 1 0)
-                )
-            )
-        )
+               )
+           )
+       )
         (to
             ("Reachable" S W)
             #1
             (apply (remove (to)))
-        )
+       )
         #2
-    )
+   )
 )
 
 (define "Cardinal"
@@ -273,25 +273,25 @@
                 (* 
                     (from)  
                     (if (< 0 (count MovesThisTurn)) 1 0)
-                )
+               )
                 (* 
                     (last To)  
                     (if (< 0 (count MovesThisTurn)) 1 0)
-                )
-            )
-        )
+               )
+           )
+       )
         (to
             (sites Direction
                 from:(from)
                 #1
                 stop:(is Occupied (to))
                 stopIncluded:True
-            )
+           )
             if:(= (next) (who at:(to)))
             (apply (remove (to)))
-        )
+       )
         #2
-    )
+   )
     
 )
 
@@ -308,56 +308,56 @@
                 (or {
                     ("Cardinal" N
                         (then (set Var 1))
-                    )
+                   )
                     ("Cardinal" E
                         (then (set Var 2))
-                    )
+                   )
                     ("Cardinal" S
                         (then (set Var 3))
-                    )
+                   )
                     ("Cardinal" W
                         (then (set Var 4))
-                    )
+                   )
                     ("NorthEast"
                         if:(and 
                             ("NorthOf" (to) (from))
                             ("EastOf" (to) (from))
-                        )
+                       )
                         (then (set Var 5))
-                    )
+                   )
                     ("SouthEast"
                         if:(and 
                             ("SouthOf" (to) (from))
                             ("EastOf" (to) (from))
-                        )
+                       )
                         (then (set Var 6))
-                    )
+                   )
                     ("NorthWest"
                         if:(and 
                             ("NorthOf" (to) (from))
                             ("WestOf" (to) (from))
-                        )
+                       )
                         (then (set Var 7))
-                    )
+                   )
                     ("SouthWest"
                         if:(and 
                             ("SouthOf" (to) (from))
                             ("WestOf" (to) (from))
-                        )
+                       )
                         (then (set Var 8))
-                    )
+                   )
                 })
                 ("Continue")
                 (then 
                     (if
                         (< 0 (count Sites in:("NextEnemies")))
                         (moveAgain)
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         }
-    )
+   )
     (rules
         (start {
             (place "Disc1" 
@@ -367,15 +367,15 @@
                         (and
                             (is Even (row of:(site)))
                             (> 2 (% (site) 4))
-                        )
+                       )
                         (and
                             (is Odd (row of:(site)))
                             (< 1 (% (site) 4))
-                        )
+                       )
                         
-                    )
-                )
-            )
+                   )
+               )
+           )
             (place "Disc2" 
                 (forEach 
                     (sites Board) 
@@ -383,15 +383,15 @@
                         (and
                             (is Odd (row of:(site)))
                             (> 2 (% (site) 4))
-                        )
+                       )
                         (and
                             (is Even (row of:(site)))
                             (< 1 (% (site) 4))
-                        )
+                       )
                         
-                    )
-                )
-            )
+                   )
+               )
+           )
             
         })
         (play  (forEach Piece))
@@ -399,9 +399,9 @@
             (if 
                 (no Pieces Next) 
                 (result Next Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -424,6 +424,6 @@
         (credit "Michael Amundsen")
         (date "2021")
         }
-    )
+   )
     
 )

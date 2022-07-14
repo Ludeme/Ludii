@@ -8,15 +8,15 @@
                 (wedge 3) 
                 (shift 0 6 (rotate 180 (wedge 3))) 
                 } 
-            ) 
+           ) 
             use:Vertex
-        )
+       )
         (piece "Marker" Each 
             (or 
                 ("HopCapture")
                 ("StepToEmpty")
-            )
-        )
+           )
+       )
     })  
     (rules 
         (start { 
@@ -26,10 +26,10 @@
         
         (play 
             (forEach Piece)
-        )
+       )
         
         (end (if (no Pieces Next) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -47,7 +47,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Singapore, around 1889.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)
@@ -56,6 +56,6 @@
     
     (ai
         "Dam (Singapore)_ai"
-    )
+   )
 )
 

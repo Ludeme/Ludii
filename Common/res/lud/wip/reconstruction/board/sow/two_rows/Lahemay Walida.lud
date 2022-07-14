@@ -4,11 +4,11 @@
     (equipment { 
         (mancalaBoard 2 6 store:None
             (track "TrackCCW" "0,E,N,W" loop:True)
-        )
+       )
         (piece "Seed" Shared)
         (hand Each)
         }
-    )  
+   )  
     (rules 
         
         (start (set Count 4 to:(sites Track)))
@@ -18,9 +18,9 @@
         (end
             (if  (no Moves Next)
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -38,7 +38,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Horn of Africa, around 1971.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

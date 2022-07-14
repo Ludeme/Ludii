@@ -13,7 +13,7 @@
             (track "Track2" [#] P1 directed:True)
             }
             use:Vertex
-        )
+       )
         <Dice:dice>
         (piece "Disc" Each
             (move
@@ -22,18 +22,18 @@
                     if:(or 
                         (not ("IsEnemyAt" (to))) 
                         (and ("IsEnemyAt" (to)) (= 1 (size Stack at:(to))))
-                    )
+                   )
                     (apply 
                         (if ("IsEnemyAt" (to)) 
                             (fromTo
                                 (from (to))
                                 (to (mapEntry Next))
-                            )
-                        )	
-                    )
-                )
-            )
-        )
+                           )
+                       )	
+                   )
+               )
+           )
+       )
     })  
     (rules 
         (start {
@@ -57,14 +57,14 @@
                         (then 
                             (if (not (all DiceUsed))
                                 (moveAgain)
-                            )
-                        )
-                    )
-                )
-            )		
-        )
+                           )
+                       )
+                   )
+               )
+           )		
+       )
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -116,7 +116,7 @@
         (classification "board/race/escape/reconstruction")
         (origin  "This game was played in India, from around 1126 to 1138.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)

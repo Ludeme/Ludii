@@ -8,24 +8,24 @@
                 (merge
                     (shift .5 .5 (scale 1.42 (circle {1 8})))
                     (square 2)
-                )
-            )
+               )
+           )
             use:Vertex
-        )
+       )
         (piece "Hare" P1 "StepToEmpty") 
         (piece "Dog" P2 "StepToEmpty") 
         (hand Each)
         }
-    )  
+   )  
     (rules 
         (start 
             { 
             (place "Hare1" (handSite P1) count:1)
             (place "Dog2" (handSite P2) count:3)
             }
-        )
+       )
         <Play>
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -41,20 +41,20 @@
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty))
-                    ) 
-                )
-            )
+                   ) 
+               )
+           )
             (nextPhase ("HandEmpty" P2) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play (forEach Piece))
             (end ("NoMoves" Loss))
-        )
+       )
         }
         >
         "The First player moves only when all the pieces are placed."
-    )*   
+   )*   
     (item "White moves only when his piece is placed"    
         <
         phases:{
@@ -63,18 +63,18 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty))
-                ) 
-            )
+               ) 
+           )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
+       )
         (phase "Movement"
             (play (forEach Piece))
-        )
+       )
         }
         (end ("NoMoves" Loss)) 
         > 
         "The First player can move after placing his piece."
-    ) 
+   ) 
     }
 )
 
@@ -91,7 +91,7 @@
         (classification "board/hunt")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})

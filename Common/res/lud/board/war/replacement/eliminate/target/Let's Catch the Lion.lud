@@ -6,10 +6,10 @@
                 (add 
                     (piece (mapEntry "Captured" (what at:(to)))) 
                     (to (mapEntry "Where" (what at:(to))))
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 (define "StepMove"
@@ -18,7 +18,7 @@
         #1
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
-    )   	
+   )   	
 )
 
 (define "InLastRank"
@@ -43,10 +43,10 @@
                 (then 
                     (if ("InLastRank" (last To)) 
                         ("Promote") 
-                    )
-                )
-            )		
-        )
+                   )
+               )
+           )		
+       )
         (tile "Chicken" Each ("StepMove" (directions {Forward Backward Rightward Leftward FL FR})))
         (tile "Lion" Each ("StepMove" Adjacent))
         (map "Captured" { 
@@ -79,23 +79,23 @@
                 (move 
                     (from (sites Occupied by:Mover container:"Hand" components:{"Giraffe" "Chick" "Elephant"})) 
                     (to (sites Empty))
-                ) 
+               ) 
                 (forEach Piece) 
-            )
-        )
+           )
+       )
         (end { 
             (if (is Cycle)
                 (result Mover Draw)
-            )
+           )
             (if 
                 (or 
                     (= (where "Lion" Next) Off) 
                     (is In (where "Lion" Mover) (sites Mover "LastRank"))
-                ) 
+               ) 
                 (result Mover Win)
-            )
+           )
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -126,7 +126,7 @@
         (credit "Eric Piette")
         (date "2008")
         }
-    )
+   )
     
     (graphics {
         (board Style Graph)
@@ -146,5 +146,5 @@
     
     (ai
         "Let's Catch the Lion_ai"
-    )
+   )
 )

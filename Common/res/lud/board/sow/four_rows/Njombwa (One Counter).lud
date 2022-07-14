@@ -5,14 +5,14 @@
     (if (is Mover P1)
         (intersection (sites Mover "Outer") (sites Right))
         (intersection (sites Mover "Outer") (sites Left))
-    )
+   )
 )
 
 (define "SecondToRightInnerRow"
     (if (is Mover P1)
         (intersection (sites Mover "Inner") (difference (expand (sites Right)) (sites Right)))
         (intersection (sites Mover "Inner") (difference (expand (sites Left)) (sites Left)))
-    )
+   )
 )
 
 (define "AllSitesNoMoreThanOne"
@@ -30,7 +30,7 @@
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" <Row:track2> loop:True P2)
             }
-        )
+       )
         (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
         (regions "Home" P2 (sites Track "Track2"))                              // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
@@ -43,7 +43,7 @@
         
         (start 
             (set Count 1 to:(sites Board)) 
-        )
+       )
         
         phases:{
         (phase "Opening1"
@@ -54,21 +54,21 @@
                             ("SameTurn") 
                             "LastHoleSowed" 
                             ("RightMostHole")
-                        ) 
+                       ) 
                         if:(> (count at:(from)) 0)
-                    )
+                   )
                     (then
                         (sow
                             "Track"
                             owner:(mover)
                             apply:(if (and (not (is In ("NextHole" (to) 1) ("RightMostHole"))) (< 1 (count at:(to)))) (moveAgain))
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             
             (nextPhase Mover (not (is Next Mover)) "Opening2")
-        )
+       )
         
         (phase "Opening2"
             (play
@@ -76,26 +76,26 @@
                     (from
                         (sites Mover "Home")
                         if:(is In ("NextHole" (from) 1) ("RightMostHole"))
-                    )
+                   )
                     (to
                         ("RightMostHole")	
-                    )
+                   )
                     count:2
-                )
-            )
+               )
+           )
             
             (nextPhase Mover "Opening3")
-        )
+       )
         
         (phase "Opening3"
             (play
                 (move Remove
                     ("SecondToRightInnerRow")
-                )
-            )
+               )
+           )
             
             (nextPhase Mover "Sowing")
-        )
+       )
         (phase "Sowing"
             (play
                 (if ("AllSitesNoMoreThanOne")
@@ -105,18 +105,18 @@
                             (sow
                                 "Track"
                                 owner:(mover)		
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (move Select
                         (from 
                             (if 
                                 ("SameTurn") 
                                 "LastHoleSowed"
                                 (sites Mover "Home") 
-                            ) 
+                           ) 
                             if:(> (count at:(from)) 1)
-                        )
+                       )
                         (then
                             (sow
                                 "Track"
@@ -126,30 +126,30 @@
                                     (if (and 
                                             (is In (to) (sites Mover "Inner"))
                                             (is Occupied ("OppositePit" (to)))
-                                        )
+                                       )
                                         (and
                                             (remove ("OppositePit" (to)))
                                             (if (is Occupied ("OppositeOuterPit" (to)))
                                                 (remove ("OppositeOuterPit" (to)))
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )		
-            )
-        )
+                                           )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )		
+           )
+       )
         }
         
         (end
             (forEach NonMover
                 if:("NoPiece")
                 (result Player Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -169,7 +169,7 @@
         "Board Size/8"
         }
         variations:{"Board Size/9" "Board Size/10"}
-    )*
+   )*
     
 })
 
@@ -188,7 +188,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in East Africa, around 1913.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

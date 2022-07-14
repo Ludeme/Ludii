@@ -4,13 +4,13 @@
             (forEach Site (sites Occupied by:#1)
                 (if (> (size Group from:(site) #1) (value Player #1))
                     (set Value #1 (size Group from:(site) #1))
-                )
+               )
                 (then
                     (set Score #1 (value Player #1))
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 (game "Crash"
@@ -24,25 +24,25 @@
         (phase "Adding"
             (play
                 (move Add (to (sites Empty)) (then ("ScoreAll" Mover)))
-            )
+           )
             (nextPhase (= 0 (count Sites in:(sites Empty))) "Removing")
-        )
+       )
         (phase "Removing"
             (play
                 (move Remove (sites Occupied by:Mover)
                     (then
                         (if (= 0 (count Sites in:(sites Empty)))
                             (trigger "End" Shared)
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         }
         (end
             (if (is Triggered "End" Shared)
                 (byScore)
-            )
-        )
-    )
+           )
+       )
+   )
 )

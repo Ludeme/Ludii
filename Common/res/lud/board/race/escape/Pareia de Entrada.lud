@@ -21,12 +21,12 @@
                             (to 
                                 "SiteToMoveOnTrack" 
                                 ("HittingCapture" (handSite Next))
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
     })
     (rules 
         (start {
@@ -40,13 +40,13 @@
                         (and
                             ("ReplayNotAllDiceUsed")
                             (if (and (all DiceUsed) (all DiceEqual)) (and (set Pending) (moveAgain)))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         (end ("EscapeWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -65,7 +65,7 @@
         "Dice/3"
         }
         variations:{"Dice/2"}
-    )*
+   )*
 })
 
 //------------------------------------------------------------------------------
@@ -84,7 +84,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Spain, around 1283.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)

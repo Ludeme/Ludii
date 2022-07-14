@@ -2,7 +2,7 @@
     (move
         Remove
         (sites Occupied by:Next container:"Board") 
-    )
+   )
 )
 
 (define "IfLine3MoveAgain" 
@@ -10,8 +10,8 @@
         (if 
             (is Line 3) 
             (moveAgain)
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -27,14 +27,14 @@
                 (move
                     (from (from))
                     (to (sites Empty))
-                )
+               )
                 (move 
                     Step 
                     (to if:(is Empty (to))) 
-                )
+               )
                 "IfLine3MoveAgain" 
-            )
-        ) 
+           )
+       ) 
     })  
     (rules 
         (start (place "Marker" "Hand" count:12))
@@ -48,29 +48,29 @@
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
                         "IfLine3MoveAgain" 
-                    )  
-                )
-            ) 
+                   )  
+               )
+           ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
+       )
         
         (phase "Movement" 
             (play 
                 (if "SameTurn"
                     "RemoveEnemyPiece"
                     (forEach Piece)
-                )
-            )
-        )
+               )
+           )
+       )
         }
         
         (end
             (forEach NonMover
                 if:(no Pieces Player)
                 (result Player Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -88,7 +88,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Zambia, around 1956.")
         }
-    )
+   )
     
 )
 

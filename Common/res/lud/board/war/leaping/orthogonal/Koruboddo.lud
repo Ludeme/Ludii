@@ -6,8 +6,8 @@
             (or 
                 ("HopOrthogonalSequenceCapture")
                 ("StepOrthogonalToEmpty")
-            )
-        )
+           )
+       )
     })  
     (rules 
         (start { 
@@ -20,13 +20,13 @@
                 (or
                     ("HopOrthogonalSequenceCaptureAgain")
                     (move Pass)
-                )
+               )
                 (forEach Piece)
-            )
-        )
+           )
+       )
         
         (end (if (no Pieces Next) (result Next Loss)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -45,7 +45,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Horn of Africa, around 1931.")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
@@ -55,5 +55,5 @@
     
     (ai
         "Koruboddo_ai"
-    )
+   )
 )

@@ -7,8 +7,8 @@
             (or
                 ("StepToEmpty")
                 ("HopSequenceCapture")
-            )
-        )
+           )
+       )
         (hand P1)
     })  
     
@@ -22,12 +22,12 @@
         (phase "Placement" P1 
             (play (move (from (handSite P1)) (to (sites Empty))))
             (nextPhase Mover ("HandEmpty" Mover) "Moving")
-        )
+       )
         (phase "Moving" (play (forEach Piece)))
         }
         
         (end ("NoMovesP2NoPiecesP1"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -45,7 +45,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, around 1921.")
         }
-    )
+   )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})
@@ -53,5 +53,5 @@
     
     (ai
         "Sumi Naga Game (Hunt)_ai"
-    )
+   )
 )

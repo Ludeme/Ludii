@@ -5,20 +5,20 @@
         (board 
             (square 8) 
             {(track "Track1" "0,E4,N2,W2,S2,E6" P1 directed:True)}
-        )
+       )
         (piece "Marker" P1
             (if (not (= (trackSite Move steps:2) Off))  	 			
                 (fromTo 
                     (from)
                     (to 
                         (trackSite Move steps:2)
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         }
-    )  
+   )  
     
     (rules 
         (start 
@@ -26,10 +26,10 @@
             (place "Marker" 0)
             (place "Marker" 2)
             }
-        )	
+       )	
         
         (play (forEach Piece))
         
         (end (if (no Pieces Mover) (result Mover Win)))
-    )
+   )
 )

@@ -22,7 +22,7 @@
         (phase "Opening"
             (play (move Add (to (sites Empty))))
             (nextPhase "General")
-        )
+       )
         (phase "General"
             (play 
                 (do
@@ -30,18 +30,18 @@
                         (to (sites Empty))
                         (then
                             (if ("NewTurn") (moveAgain))
-                        )
-                    )
+                       )
+                   )
                     ifAfterwards:(and
                         (not ("MoreThan4InARow"))
                         (!= 1 ("NumSimultaneousFourInARow"))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         }
         (end (if (<= 2 ("NumSimultaneousFourInARow")) (result Mover Win)))  
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -85,6 +85,6 @@
         (credit "Eric Piette")
         (date "2017")
         }
-    )
+   )
     
 )

@@ -7,13 +7,13 @@
     (or
         (and (= 0 ("Die1")) (= 1 ("Die2")))
         (and (= 1 ("Die1")) (= 0 ("Die2")))
-    )
+   )
 )
 (define "Sonal" 
     (or
         (and (= 0 ("Die1")) (= 4 ("Die2")))
         (and (= 4 ("Die1")) (= 0 ("Die2")))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -28,7 +28,7 @@
             (track "Track3" "96,52,N,W,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,W1,S7,End" P3 directed:True)
             (track "Track4" "96,27,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W7,End" P4 directed:True)
             }
-        )
+       )
         (hand Each) 
         (dice d:4 faces:{0 1 2 4} num:2)
         (piece "Pawn" Each
@@ -46,21 +46,21 @@
                                         (fromTo
                                             (from (to) level:(level))
                                             (to (centrePoint))
-                                        )
-                                    )
+                                       )
+                                   )
                                     (forEach Level (to) FromTop
                                         (fromTo
                                             (from (to) level:(level))
                                             (to (handSite (who at:(to) level:(level))))
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )		
-        )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )		
+       )
         (map "Start" {(pair P1 9) (pair P2 26) (pair P3 52) (pair P4 27)})
     })  
     (rules 
@@ -80,31 +80,31 @@
                                 (or
                                     (and (= Undefined (value Player Mover)) ("Tayam"))
                                     (and (= 1 (value Player Mover)) (or ("IsSpecialThrow") ("Sonal")))
-                                )
-                            )
+                               )
+                           )
                             (move
                                 (from (handSite Mover))
                                 (to (mapEntry "Start" Mover))
                                 (then
                                     (if (= Undefined (value Player Mover))
                                         (set Value Mover 1)
-                                    )
-                                )
-                            )
-                        )
+                                   )
+                               )
+                           )
+                       )
                         (forEach Piece)
-                    )
-                )
+                   )
+               )
                 (then
                     (if (and (not (no Pieces Mover)) (or ("IsSpecialThrow") ("Sonal")))	
                         (moveAgain)
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (end ("EscapeWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -121,7 +121,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Sri Lanka, around 1909.")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Red))

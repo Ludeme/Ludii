@@ -6,10 +6,10 @@
         (between 
             if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
             (apply (remove (between) at:EndOfTurn))
-        ) 
+       ) 
         (to if:(is Empty (to))) 
         #2
-    ) 
+   ) 
 )
 
 (define "HopDoubleCounter" 
@@ -21,7 +21,7 @@
             #3
             if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
             (apply (remove (between) #4))
-        )
+       )
         (to if:(is Empty (to)))
         (then 
             (if (can Move 
@@ -34,19 +34,19 @@
                             if:(and 
                                 (not (is In (between) (sites ToClear))) 
                                 ("IsEnemyAt" (between))
-                            )
+                           )
                             (apply (remove (between) #4))
-                        )
+                       )
                         (to if:(is Empty (to)))
-                    )
-                ) 
+                   )
+               ) 
                 (moveAgain)
                 (if "JumpToPromotionZone" 
                     (move Promote (last To) (piece "Counterstar") Mover)
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -71,7 +71,7 @@
     
     (rules 
         (start { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:3) (union (sites Bottom) (sites Phase 1))  ))
+            (place "Counter1" (difference (expand (sites Bottom) steps:3) (union (sites Bottom) (sites Phase 1)) ))
             (place "Counter2" (difference (expand (sites Top) steps:3) (union (sites Top) (sites Phase 1))))
             (place "DoubleCounter1" (difference (sites Bottom) (sites Phase 1)))
             (place "DoubleCounter2" (difference (sites Top) (sites Phase 1)))
@@ -87,16 +87,16 @@
                                     (moveAgain)
                                     (if "JumpToPromotionZone" 
                                         (move Promote (last To) (piece "DoubleCounter") Mover)
-                                    )
-                                ) 
-                            ) 
-                        )
-                    )
+                                   )
+                               ) 
+                           ) 
+                       )
+                   )
                     (if ("IsQueen")
                         (max Moves ("HopDoubleCounter" (from (last To)) before:(count Rows) after:(count Rows) at:EndOfTurn))
                         (max Moves ("HopSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn))
-                    )
-                )
+                   )
+               )
                 (priority {
                     (max Moves
                         (or {
@@ -107,44 +107,44 @@
                                             (moveAgain) 
                                             (if "JumpToPromotionZone" 
                                                 (move Promote (last To) (piece "DoubleCounter") Mover)
-                                            )
-                                        ) 
-                                    ) 
-                                ) 
-                            )
+                                           )
+                                       ) 
+                                   ) 
+                               ) 
+                           )
                             (forEach Piece "DoubleCounter" ("HopDoubleCounter" (from) before:(count Rows) after:(count Rows) at:EndOfTurn))
                             (forEach Piece "Counterstar" ("HopSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))
                             }
-                        )
-                    )
+                       )
+                   )
                     (or {
                         (forEach Piece "Counter" 
                             (move
                                 Step 
                                 (directions {FR FL}) 
                                 (to if:(is Empty (to)))
-                            )
+                           )
                             (then 
                                 (if "JumpToPromotionZone"
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
-                                )
-                            )
-                        )
+                               )
+                           )
+                       )
                         (forEach Piece "DoubleCounter" (move Slide Diagonal)
                             (then 
                                 (if "JumpToPromotionZone" 
                                     (move Promote (last To) (piece "Counterstar") Mover)
-                                )
-                            ) 
-                        )
+                               )
+                           ) 
+                       )
                         (forEach Piece "Counterstar" (move Slide))
                     })
                 })
-            )
-        ) 
+           )
+       ) 
         
         (end ("BlockWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -162,7 +162,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Holland, around 1805.")
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)
@@ -171,5 +171,5 @@
     
     (ai
         "Unnamed Dutch Draughts Game_ai"
-    )
+   )
 )

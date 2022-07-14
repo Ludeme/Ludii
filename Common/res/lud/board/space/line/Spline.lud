@@ -10,16 +10,16 @@
                 Add 
                 (to (sites Empty) 
                     if:(is Flat)
-                )
-            )
-        )
+               )
+           )
+       )
         (end 
             (if 
                 (is Line (- (count Rows) (layer of:(last To))) SameLayer) 
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -59,7 +59,7 @@
         (credit "Eric Piette")
         (date "2011")
         }
-    )
+   )
     
     (graphics {
         (piece Scale "Ball" 1.0)
@@ -68,5 +68,5 @@
     
     (ai
         "Spline_ai"
-    )
+   )
 )

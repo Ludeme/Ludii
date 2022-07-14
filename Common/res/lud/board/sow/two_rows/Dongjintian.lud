@@ -7,45 +7,45 @@
             (from ("NextHoleFrom" (to) #1 2))
             (to (handSite Mover))
             count:(count at:("NextHoleFrom" (to) #1 2))
-        )
+       )
         (if 
             (and
                 (is Empty ("NextHoleFrom" (to) #1 3))	
                 (is Occupied ("NextHoleFrom" (to) #1 4))		
-            )
+           )
             (and
                 (fromTo 
                     (from ("NextHoleFrom" (to) #1 4))
                     (to (handSite Mover))
                     count:(count at:("NextHoleFrom" (to) #1 4))
-                )
+               )
                 (if 
                     (and
                         (is Empty ("NextHoleFrom" (to) #1 5))	
                         (is Occupied ("NextHoleFrom" (to) #1 6))		
-                    )
+                   )
                     (and
                         (fromTo 
                             (from ("NextHoleFrom" (to) #1 6))
                             (to (handSite Mover))
                             count:(count at:("NextHoleFrom" (to) #1 6))
-                        )
+                       )
                         (if 
                             (and
                                 (is Empty ("NextHoleFrom" (to) #1 7))	
                                 (is Occupied ("NextHoleFrom" (to) #1 8))		
-                            )
+                           )
                             (fromTo 
                                 (from ("NextHoleFrom" (to) #1 8))
                                 (to (handSite Mover))
                                 count:(count at:("NextHoleFrom" (to) #1 8))
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    )
+                           )
+                       )
+                   )
+               )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -59,7 +59,7 @@
             (track "TrackCCW" "0,E,N,W" loop:True)
             (track "TrackCW" "4,W,N,E" loop:True)
             }
-        )
+       )
         (piece "Seed" Shared)
         (hand Each)
         (regions P1 (sites Bottom))                     // P1 home
@@ -78,9 +78,9 @@
                                 ("SameTurn") 
                                 (sites {("NextHoleFrom" "LastHoleSowed" "TrackCCW" 1) })
                                 (sites Mover) 
-                            ) 
+                           ) 
                             if:(is Occupied (from))
-                        )
+                       )
                         (then
                             (sow
                                 "TrackCCW"
@@ -88,22 +88,22 @@
                                     (and
                                         (moveAgain)
                                         (set Var "Direction" 1)
-                                    )
+                                   )
                                     (if 
                                         (and
                                             (is Empty ("NextHoleFrom" (to) "TrackCCW" 1))	
                                             (is Occupied ("NextHoleFrom" (to) "TrackCCW" 2))		
-                                        )
+                                       )
                                         (and
                                             ("CaptureMove" "TrackCCW")	
                                             (set Var "Direction" 0)
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
                 (if (or (>= 0 (var "Direction")) (= (var "Direction") 2))
                     (move Select
                         (from 
@@ -111,9 +111,9 @@
                                 ("SameTurn") 
                                 (sites {("NextHoleFrom" "LastHoleSowed" "TrackCW" 1) })
                                 (sites Mover) 
-                            ) 
+                           ) 
                             if:(is Occupied (from))
-                        )
+                       )
                         (then
                             (sow
                                 "TrackCW"
@@ -121,27 +121,27 @@
                                     (and
                                         (moveAgain)
                                         (set Var "Direction" 2)
-                                    )
+                                   )
                                     (if 
                                         (and
                                             (is Empty ("NextHoleFrom" (to) "TrackCW" 1))	
                                             (is Occupied ("NextHoleFrom" (to) "TrackCW" 2))		
-                                        )
+                                       )
                                         (and
                                             ("CaptureMove" "TrackCW")	
                                             (set Var "Direction" 0)
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (end ("MancalaByScoreWhen" (<= (count Pieces All in:(sites Board)) 1)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -158,7 +158,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in China, around 1994.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

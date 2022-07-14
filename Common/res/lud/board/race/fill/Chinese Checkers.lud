@@ -12,11 +12,11 @@
                 (or
                     (not ("FromIsOnTheRegionToFill" #1))
                     ("ToIsOnTheRegionToFill" (to)) 
-                )
-            )
-        )
+               )
+           )
+       )
         #2		
-    )
+   )
 ) 
 
 (define "HopSequence" ("Hop" #1 (then (if (can Move ("Hop" (last To))) (moveAgain)))))
@@ -48,27 +48,27 @@
                                     (or
                                         (not ("FromIsOnTheRegionToFill" (from)))
                                         ("ToIsOnTheRegionToFill" (to))
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            ) 
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           ) 
             (nextPhase (is Mover (next)) "MultiJump")
-        ) 
+       ) 
         (phase "MultiJump" (play 
                 (or 
                     ("HopSequence" (last To)) 
                     (move Pass)
-                )
-            ) 
+               )
+           ) 
             (nextPhase (not (is Mover (next))) "Movement")
-        ) 
+       ) 
         }
         
         (end ("FillWin" (sites (player (mapEntry (mover))))))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -88,7 +88,7 @@
         })
         >
         "Two players occupy home regions on opposite sides, four home regions are empty."
-    ) 
+   ) 
     
     (item "2 (b)"    
         <2> 
@@ -99,14 +99,14 @@
                 (expand origin:(coord row:(* ("Dim") 3) column:(* ("Dim") 4)) steps:(- ("Dim") 1))
                 (expand origin:(coord row:(* ("Dim") 3) column:("Dim")) steps:(- ("Dim") 1))
             })
-        )
+       )
         (regions "Home" P2 
             (union {
                 (expand origin:(coord row:("Dim") column:(* ("Dim") 3)) steps:(- ("Dim") 1))
                 (expand origin:(coord row:(* ("Dim") 4) column:(* ("Dim") 3)) steps:(- ("Dim") 1))
                 (expand origin:(coord row:("Dim") column:0) steps:(- ("Dim") 1))
             })
-        )
+       )
         (map {(pair 1 2) (pair 2 1) })
         >
         <
@@ -116,7 +116,7 @@
         })
         >
         "Two players occupy three regions each, alternating around board, i.e. all six home regions start full."
-    )  
+   )  
     
     (item "3"       
         <3> 
@@ -137,7 +137,7 @@
         })
         >
         "Three players occupy home regions equally spaced around board, three home regions are empty."
-    )   
+   )   
     
     (item "4"        
         <4>  
@@ -157,7 +157,7 @@
         })
         >
         "Four players occupy home regions, two opposite home regions are empty."
-    )   
+   )   
     
     (item "5"       
         <5>    
@@ -180,7 +180,7 @@
         })
         >
         "Five players occupy home regions, one is empty."
-    )   
+   )   
     
     (item "6"       
         <6>  
@@ -204,7 +204,7 @@
         })
         >
         "Six players occupy home regions (standard game)."
-    )**   
+   )**   
 })
 
 (option "Board Size" <Board> args:{ <size> } {
@@ -233,7 +233,7 @@
         (classification "board/race/fill")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Colour InnerEdges (colour 120 190 240))
@@ -250,6 +250,6 @@
     
     (ai 
         "Chinese Checkers_ai"
-    )
+   )
     
 )

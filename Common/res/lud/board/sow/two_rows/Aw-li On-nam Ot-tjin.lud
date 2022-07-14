@@ -11,7 +11,7 @@
     (equipment { 
         (mancalaBoard 2 9
             (track "Track" "1,E,N,W" loop:True)
-        )
+       )
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
@@ -26,7 +26,7 @@
                 (from 
                     (sites Mover) 
                     if:(> (count at:(from)) 1)
-                )
+               )
                 (then 
                     (sow 
                         if:(= (count at:(to)) <Counters:num>)
@@ -34,11 +34,11 @@
                             (from (to)) 
                             (to (mapEntry (mover))) 
                             count:(count at:(to))
-                        ) 
-                    )
-                )
-            )
-        )
+                       ) 
+                   )
+               )
+           )
+       )
         
         (end
             (if (no Moves Mover) {
@@ -48,16 +48,16 @@
                         (score P1 ("KalahCount" P1)) 
                         (score P2 "PiecesOwnedByP1")
                     })
-                )
+               )
                 (if (is Mover P2) 
                     (byScore {
                         (score P1 "PiecesOwnedByP2") 
                         (score P2 ("KalahCount" P2))
                     })
-                )
+               )
             })
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -78,25 +78,25 @@
         {
         "Start Rules/2 Counters"
         }
-    )
+   )
     
     (ruleset "Ruleset/Three Counters (Observed)" 
         {
         "Start Rules/3 Counters"
         }
-    )*
+   )*
     
     (ruleset "Ruleset/Four Counters (Observed)" 
         {
         "Start Rules/4 Counters"
         }
-    )
+   )
     
     (ruleset "Ruleset/Five Counters (Observed)" 
         {
         "Start Rules/5 Counters"
         }
-    )
+   )
     
 })
 
@@ -126,7 +126,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Borneo, from around 1913 to 1917.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -134,7 +134,7 @@
     
     (ai 
         "Aw-li On-nam Ot-tjin_ai"
-    )
+   )
     
 )
 

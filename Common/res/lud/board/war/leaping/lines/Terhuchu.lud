@@ -20,18 +20,18 @@
                 (shift  5.35 5.85 (scale 0.5 (rotate 135 (wedge 3))))
                 (shift  0.65 5.85 (scale 0.5 (rotate -135 (wedge 3))))
                 } 
-            ) 
+           ) 
             use:Vertex
-        )
+       )
         (piece "Marker" Each 
             (or {
                 ("HopCapture")
                 ("StepToEmpty")
                 (if (not (is In (from) "SitesNotInTriangle"))
                     ("WithinTrianglePieceCanMoveDistanceTwo")
-                )
+               )
             })
-        )
+       )
     })  
     (rules 
         (start { 
@@ -42,7 +42,7 @@
         (play (forEach Piece))
         
         (end ("NoMoves" Loss))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -61,7 +61,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in South Asia, around 1921.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)
@@ -70,6 +70,6 @@
     
     (ai 
         "Terhuchu_ai"
-    )
+   )
     
 )

@@ -8,15 +8,15 @@
                 (wedge 3) 
                 (shift 0 6 (rotate 180 (wedge 3))) 
                 } 
-            ) 
+           ) 
             use:Vertex
-        )
+       )
         (piece "Marker" Each 
             (or 
                 ("HopSequenceCapture")
                 ("StepToEmpty")
-            )
-        )
+           )
+       )
     })  
     (rules 
         (start { 
@@ -28,13 +28,13 @@
                 (or
                     ("HopSequenceCaptureAgain")	
                     (move Pass)
-                )
+               )
                 (forEach Piece)
-            )
-        )
+           )
+       )
         
         (end ("NoMoves" Loss))
-    )	
+   )	
 )
 
 //------------------------------------------------------------------------------
@@ -53,7 +53,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Malaysia, from around 1886 to 1895.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)
@@ -62,6 +62,6 @@
     
     (ai
         "Dam Hariman_ai"
-    )
+   )
 )
 

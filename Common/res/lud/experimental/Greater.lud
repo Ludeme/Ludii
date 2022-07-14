@@ -36,16 +36,16 @@
                     (forEach 
                         (sites Occupied by:Mover)
                         if:(> (state at:(site)) ("LastStateRemove"))
-                    )
-                )
+                   )
+               )
                 (then
                     (and
                         ("StoreStateRemoved")
                         (remove (last To))	
-                    )
-                )		
-            )
-        ) 
+                   )
+               )		
+           )
+       ) 
         
         (end 
             (if 
@@ -54,9 +54,9 @@
                     (score P1 (- (count Pieces P1))) 
                     (score P2 (- (count Pieces P2)))
                 })
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -73,7 +73,7 @@
         (credit "Cameron Browne and Eric Piette")
         (date "2021")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour White))
@@ -82,5 +82,5 @@
     })
     (ai
         "Greater_ai"
-    )
+   )
 )

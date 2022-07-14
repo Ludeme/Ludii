@@ -6,10 +6,10 @@
                 (merge
                     (shift .5 .5 (scale 0.707 (concentric {1 8})))
                     (square 2)
-                )
-            )
+               )
+           )
             use:Vertex
-        )
+       )
         (piece "Hare" P1 "StepToEmpty") 
         (piece "Dog" P2 "StepToEmpty") 
         (hand Each)
@@ -20,7 +20,7 @@
             (place "Dog2" (handSite P2) count:3)
         })
         <Play>
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -36,20 +36,20 @@
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty))
-                    ) 
-                )
-            )
+                   ) 
+               )
+           )
             (nextPhase ("HandEmpty" P2) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play (forEach Piece))
             (end ("NoMoves" Loss))
-        )
+       )
         }
         >
         "The First player moves only when all the pieces are placed."
-    )*  
+   )*  
     (item "White moves only when all placed and winning conditions for each player" 
         <
         phases:{
@@ -59,11 +59,11 @@
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty))
-                    ) 
-                )
-            )
+                   ) 
+               )
+           )
             (nextPhase ("HandEmpty" P2) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play (forEach Piece))
@@ -73,15 +73,15 @@
                     (or
                         (>= (count Moves) (- (value MoveLimit) 10)) 
                         (>= (count Turns) (- (value TurnLimit) 5)) 
-                    )
+                   )
                     (result P1 Win)
-                )
+               )
             }) 
-        )
+       )
         }
         >
         "The First player moves only when all the pieces are placed. The game has an ending condition for each player."
-    )
+   )
     (item "White moves only when his piece is placed"    
         <
         phases:{
@@ -90,16 +90,16 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty))
-                ) 
-            )
+               ) 
+           )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
+       )
         (phase "Movement" (play (forEach Piece)))
         }
         (end ("NoMoves" Loss)) 
         > 
         "The First player can move after placing his piece."
-    ) 
+   ) 
     }
 )
 
@@ -137,7 +137,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Scandinavia, around 1860.")
         }
-    )
+   )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})
@@ -145,6 +145,6 @@
     
     (ai 
         "Hyvn aetter Hare_ai"
-    )
+   )
     
 )

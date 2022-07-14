@@ -8,9 +8,9 @@
                 (shift 1.5 0.5 (rotate -90 (wedge 2))) 
                 (shift -1.5 0.5 (rotate 90 (wedge 2))) 
                 }
-            )
+           )
             use:Vertex
-        )
+       )
         (piece "Hare" P1 (move [#])) // Missing knowledge on the movements of the pieces.
         (piece "Dog" P2 (move [#])) // Missing knowledge on the movements of the pieces.
     })  
@@ -22,7 +22,7 @@
         })
         (play (forEach Piece))
         (end (if (no Moves P1) (result P2 Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -40,7 +40,7 @@
         (classification "board/hunt/reconstruction")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)

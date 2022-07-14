@@ -14,7 +14,7 @@
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
             (track "Track" "0,E,N,W" loop:True)
-        )
+       )
         (piece "Seed" Shared)
         (regions P1 (sites Bottom)) 
         (regions P2 (sites Top)) 
@@ -25,8 +25,8 @@
         (start 
             (set Count 4 
                 to:(sites {"C1" "E1" "G1" "I1" "K1" "L2" "J2" "H2" "F2" "D2" "B2"}) 
-            ) 
-        )
+           ) 
+       )
         
         phases:{
         (phase "Opening"
@@ -35,10 +35,10 @@
                     (from 6)
                     (to 18)
                     count:4
-                )
-            )
+               )
+           )
             (nextPhase "Sowing")
-        )
+       )
         (phase "Sowing"
             (play 
                 (move Select
@@ -46,7 +46,7 @@
                         (if ("SameTurn") 
                             "LastHoleSowed" 
                             (sites Mover) 
-                        ) 
+                       ) 
                         if:(if ("SameTurn") 
                             True
                             (and
@@ -54,10 +54,10 @@
                                 (if (is In ("NextHoleFrom" (from) (count at:(from))) (sites Next))
                                     True
                                     (is Empty ("NextHoleFrom" (from) (count at:(from))))
-                                )
-                            )
-                        )
-                    )
+                               )
+                           )
+                       )
+                   )
                     (then 
                         (sow
                             apply:(if (and (is In (to) (sites Mover)) (<= (count at:(to)) 1))
@@ -66,26 +66,26 @@
                                         (from ("OppositePit" (to)))
                                         (to (handSite Mover))
                                         count:(count at:("OppositePit" (to)))
-                                    )
-                                )
+                                   )
+                               )
                                 (if (> (count at:(to)) 1)
                                     (moveAgain)
-                                )
-                            )
-                        )
+                               )
+                           )
+                       )
                         
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         }
         
         (end (forEach Player
                 if:("NoPiecesInPlayerSide" Player)
                 (result Player Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -102,7 +102,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Ethiopia, around 1971.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

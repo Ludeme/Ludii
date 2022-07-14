@@ -14,7 +14,7 @@
             (forEach NonMover if:(is Blocked Player) (result Player <Result:nonMover>))
             (if (is Connected Mover) (result Mover <Result:mover>))
         }) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -50,10 +50,10 @@
                     //                    (not (= (mover) (prev)))			// No swapping if we just got swapped into our current role
                 //                })
                 //                (swap Players Mover Prev)		// Mover swaps with previous player
-            //            )
+            //           )
         //        })> 
         //        "In-place swap with previous."
-    //    )
+    //   )
     //    (item "In-place Any" 
         //        <(or {
             //            (move Add (to (sites Empty)))					// Can always just move normally
@@ -65,11 +65,11 @@
                 //                (select 
                     //                    (from (forEach (sites Board) if:(and (< (to) (mover)) (>= (to) 1)))) 		// Select Player index lower than Mover index
                     //                    (then (swap Players Mover (last To)))										// Swap mover with selected index
-                //                )
-            //            )
+                //               )
+            //           )
         //        })> 
         //        "In-place swap with any player with a lower index."
-    //    )
+    //   )
     //    (item "Shift Previous" 
         //        <(or {
             //            (move Add (to (sites Empty)))					// Can always just move normally
@@ -78,10 +78,10 @@
                     //                    (< (count Moves) (count Players))		// No swapping after everyone's had a move
                 //                })
                 //                (shiftPlayers Mover (- (mover) 1))		// Mover ''shift-swaps'' with index 1 lower than his own
-            //            )
+            //           )
         //        })> 
         //        "Move into previous position, move previous player to last spot, and shift all the players in between."
-    //    )
+    //   )
     //    (item "Shift Any" 
         //        <(or {
             //            (move Add (to (sites Empty)))					// Can always just move normally
@@ -92,11 +92,11 @@
                 //                (select 
                     //                    (from (forEach (sites Board) if:(and (< (to) (mover)) (>= (to) 1)))) 		// Select Player index lower than Mover index
                     //                    (then (shiftPlayers Mover (last To)))										// "Shift-swap" mover with selected index
-                //                )
-            //            )
+                //               )
+            //           )
         //        })> 
         //        "Move into any lower-index position, move that player to last spot, and shift all the players in between."
-    //    )
+    //   )
     //    }
 //)
 
@@ -114,7 +114,7 @@
         (author "Thomas Sibley")
         (date "01-01-1975")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Cream))
@@ -127,5 +127,5 @@
     
     (ai
         "Three-Player Hex_ai"
-    )
+   )
 )

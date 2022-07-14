@@ -5,11 +5,11 @@
                 if:(>
                     (count Pieces Mover in:(sites LineOfSight at:(site)))
                     0
-                )
-            )
-        )
+               )
+           )
+       )
         #1
-    )
+   )
 )
 
 (define "Remove"
@@ -27,16 +27,16 @@
                                     from:(site)
                                     stop:(is Occupied (to))
                                     stopIncluded:True
-                                )
-                            )
+                               )
+                           )
                             (sites)
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (remove (sites))
-        )
-    ) 
+       )
+   ) 
 )
 
 (game "Meridians"
@@ -59,29 +59,29 @@
                                     (>
                                         (count Pieces Mover in:(sites LineOfSight at:(site)))
                                         0
-                                    )
+                                   )
                                     (= 
                                         (count Sites in:(sites Around (site) Own))
                                         0 
-                                    )
-                                )
-                            )
+                                   )
+                               )
+                           )
                             (sites Empty)
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase (= 4 (count Moves)) "Play")
-        )
+       )
         (phase "Play"
             (play
                 (if
                     (can Move ("Move" ~))
                     ("Move" (then ("Remove")))
                     (move Pass (then ("Remove")))
-                )
-            )
-        )
+               )
+           )
+       )
         }
         (end 
             (if 
@@ -90,16 +90,16 @@
                     (or
                         (= 0
                             (count Sites in:(sites Occupied by:P1))
-                        )
+                       )
                         (= 0
                             (count Sites in:(sites Occupied by:P2))
-                        )
-                    ) 
-                )
+                       )
+                   ) 
+               )
                 (result Mover Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -143,7 +143,7 @@
         (credit "Michael Amundsen")
         (date "2021")
         }
-    )
+   )
     
     (graphics {
         (region Colour (sites Board) (colour 0 0 0 0))

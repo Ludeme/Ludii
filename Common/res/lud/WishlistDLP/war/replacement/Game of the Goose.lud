@@ -23,9 +23,9 @@
                 {4 4}
                 {7 6}
                 }
-            )
+           )
             use:Vertex
-        )
+       )
         // (dice num:2)
     })  
     
@@ -40,15 +40,15 @@
             //            (do 
                 //                (if (not "SameTurn") (roll))
                 //                next:(forEach Piece)
-            //            )
-        )
+            //           )
+       )
         
         (end {
             (if (no Moves Mover) (result Mover Win))
             //(if (= (last To) (trackSite EndSite)) (result Mover Win))
             //(if (is In (last To) (sites "Death")) (result Mover Loss))
         })  
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -75,7 +75,7 @@
         (classification "war/replacement/WishlistDLP")
         (origin  "This game was played in Italy, around 1453.")
         }
-    )
+   )
     
     (graphics {
         // (piece Scale "Goose" 0.5)

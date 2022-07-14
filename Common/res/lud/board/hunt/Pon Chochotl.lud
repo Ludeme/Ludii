@@ -8,9 +8,9 @@
                 (if ("SameTurn") 
                     (move Pass) 
                     ("StepToEmpty")
-                ) 
-            ) 
-        )
+               ) 
+           ) 
+       )
     })  
     (rules 
         (start { 
@@ -21,7 +21,7 @@
         (play (forEach Piece)) 
         
         (end ("NoMovesLossAndLessNumPiecesPlayerLoss" P1 9))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -67,7 +67,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Southwest United States, around 1907.")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Yellow))
@@ -76,6 +76,6 @@
     
     (ai 
         "Pon Chochotl_ai"
-    )
+   )
     
 )

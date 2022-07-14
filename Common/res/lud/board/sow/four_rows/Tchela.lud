@@ -13,7 +13,7 @@
             <Board:board>
             <Board:tracks>
             use:Vertex
-        )
+       )
         (piece "Seed" Shared)
         (regions "HomeNotExtented" P1 (sites Track "TrackCCW1")) // P1 Home
         (regions "HomeNotExtented" P2 (sites Track "TrackCCW2")) // P2 home
@@ -34,21 +34,21 @@
                         (if (< (value Player Mover) 0)
                             (sites Mover "HomeNotExtented")
                             (sites {("NextSite" (value Player Mover) "TrackCCW" 2)})
-                        )
-                    )
+                       )
+                   )
                     (then 
                         (and
                             (sow
                                 "TrackCCW"
                                 owner:(mover)
-                            )
+                           )
                             (set Value Mover (last To))
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase Mover (= 0 (count at:("NextSite" (value Player Mover) "TrackCCW" 2))) "OpeningPair")
-        )
+       )
         
         (phase "OpeningPair"
             (play
@@ -58,13 +58,13 @@
                         (sow
                             "TrackCCW"
                             owner:(mover)
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             
             (nextPhase Mover "Playing")
-        )
+       )
         
         (phase "Playing"
             (play
@@ -75,9 +75,9 @@
                                 ("SameTurn") 
                                 "LastHoleSowed" 
                                 (sites Mover "HomeNotExtented") 
-                            )  
+                           )  
                             if:(< 0 (count at:(from)))
-                        )
+                       )
                         (then 
                             (sow
                                 "TrackCCW"
@@ -87,26 +87,26 @@
                                     (if (and 
                                             (is In (to) (sites Mover "Inner")) 
                                             (> (count at:"OppositePit") 0)
-                                        )
+                                       )
                                         (and
                                             (fromTo 
                                                 (from "OppositePit") 
                                                 (to (mapEntry Mover)) 
-                                                count:(count at:"OppositePit" )
-                                            ) 
+                                                count:(count at:"OppositePit")
+                                           ) 
                                             (if (> (count at:"OppositePit") 0)
                                                 (fromTo 
                                                     (from ("OppositeOuterPit")) 
                                                     (to (mapEntry Mover)) 
                                                     count:(count at:("OppositeOuterPit"))
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                               )
+                                           )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
                     (do
                         (move Select
                             (from 
@@ -114,9 +114,9 @@
                                     ("SameTurn") 
                                     "LastHoleSowed" 
                                     (sites Mover "Home") 
-                                )  
+                               )  
                                 if:(< 0 (count at:(from)))
-                            )
+                           )
                             (then 
                                 (sow
                                     "TrackExtendedCCW"
@@ -127,35 +127,35 @@
                                             (if (and 
                                                     (is In (to) (sites Mover "Inner")) 
                                                     (> (count at:"OppositePit") 0)
-                                                )
+                                               )
                                                 (and
                                                     (fromTo 
                                                         (from "OppositePit") 
                                                         (to (mapEntry Mover)) 
-                                                        count:(count at:"OppositePit" )
-                                                    ) 
+                                                        count:(count at:"OppositePit")
+                                                   ) 
                                                     (if (> (count at:"OppositePit") 0)
                                                         (fromTo 
                                                             (from ("OppositeOuterPit")) 
                                                             (to (mapEntry Mover)) 
                                                             count:(count at:("OppositeOuterPit"))
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
+                                                       )
+                                                   )
+                                               )
+                                           )
+                                       )
+                                   )
+                               )
+                           )
+                       )
                         ifAfterwards:(<= (count at:(mapEntry "ExtraStore" Mover)) 1)
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         }
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -191,9 +191,9 @@
                 to:(difference 
                     (sites Board)
                     (sites {24..27})
-                )
-            )
-        )
+               )
+           )
+       )
         >
     "The game is played on a 4x6 board.")   
     (item "4x8"   
@@ -225,9 +225,9 @@
                 to:(difference 
                     (sites Board)
                     (sites {32..35})
-                )
-            )
-        )
+               )
+           )
+       )
         >
     "The game is played on a 4x8 board.")*   
 })
@@ -265,7 +265,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Angola, around 1995.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

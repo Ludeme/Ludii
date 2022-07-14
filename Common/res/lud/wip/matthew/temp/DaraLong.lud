@@ -9,19 +9,19 @@
         (hand Each)
         (piece "Marker" Each)
         }
-    )
+   )
     (rules
         (start 
             {
             (place "Marker" "Hand" count:12) 
             }
-        )
+       )
         
         phases:{
         (phase "Placement"
             <Rules>
             (nextPhase ("HandEmpty" P2) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play 
@@ -29,7 +29,7 @@
                     (move
                         Remove
                         (sites Occupied by:Next container:"Board") 
-                    )
+                   )
                     (do 
                         (forEach Site (sites Occupied by:Mover) 
                             (move 
@@ -40,19 +40,19 @@
                                     (if 
                                         (is Line 3) 
                                         (moveAgain)
-                                    )
-                                )
-                            )
-                        )
+                                   )
+                               )
+                           )
+                       )
                         ifAfterwards:(not (is Line 4 Orthogonal))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         }
         
         (end (if (<= (count Pieces Next) 2) (result Mover Win)))
-    )	
+   )	
 )
 
 //------------------------------------------------------------------------------

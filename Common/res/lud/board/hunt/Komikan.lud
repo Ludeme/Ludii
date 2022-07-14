@@ -11,22 +11,22 @@
                     edges:{ {0 1} {0 2} {0 3} {1 4} {1 5} {1 2} {2 6} {2 3} {3 7} {3 8} {4 9} {4 5} {5 10} {5 6}
                     {6 11} {6 7} {7 12} {7 8} {8 13} {9 10} {10 11} {11 12} {12 13}
                     }
-                )
-            )
+               )
+           )
             use:Vertex
-        )
+       )
         (piece "MountainLion" P1 
             (if "SameTurn" 
                 (or 
                     (move Pass) 
                     ("HopSequenceCaptureAgain")
-                ) 
+               ) 
                 (or 
                     ("HopSequenceCapture") 
                     "StepToEmpty"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "Dog" P2 N <Moves:dog>) 
     })  
     (rules 
@@ -42,7 +42,7 @@
             (if (no Moves P1) (result P2 Win))
             (if (no Moves P2) (result Mover Draw))
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -89,7 +89,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in South America, from around 1918 to 1919.")
         }
-    )
+   )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})
@@ -98,6 +98,6 @@
     
     (ai 
         "Komikan_ai"
-    )
+   )
     
 )

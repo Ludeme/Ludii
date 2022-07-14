@@ -13,18 +13,18 @@
                     (if (or (= 0 ("BlankDie1")) (= 0 ("BlankDie2")))
                         2
                         35
-                    )
+                   )
                     (if (or (= 0 ("BlankDie1")) (= 0 ("BlankDie2")))
                         3
                         (if (= 0 ("StripedDie"))
                             20
                             15
-                        )
-                    )
-                )
-            )
-        )
-    )
+                       )
+                   )
+               )
+           )
+       )
+   )
 )
 
 (define "SiteToMoveOnTrack" ("NextSiteOnTrack" #2 #1))
@@ -51,13 +51,13 @@
                     (shift 4 4 (rectangle 6 1))
                 })
                 vertices:{{1 1} {1 8} {8 1} {8 8} {4.5 4.5}}
-            )
+           )
             {
             (track "Track1" "69,5,N,W,N,W,S,65,11,E,N,W,67,41,S,E,N,66,8,W,S,E,64,26,N4,E3,68,56" P1 directed:True)
             (track "Track2" "70,14,S,E,S,E,N,66,8,W,S,E,64,26,N,W,S,65,11,E,N,W,67,41,S4,W3,68,56" P2 directed:True)
             }
             use:Vertex
-        )
+       )
         ("StickDice" 4)
         (piece "Marker" Each
             (if ("IsOffBoard" ("SiteToMoveOnTrack" from:(from) ("ThrowValue")))
@@ -68,18 +68,18 @@
                         ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
                         if:True
                         ("HittingStackCapture" (handSite (who at:(to) level:(level))))
-                    )
+                   )
                     (then
                         (if (is In (last To) (sites "RemoveSites"))
                             (fromTo
                                 (from (last To))
                                 (to (handSite (mover)))
-                            )
-                        )
-                    )
-                )
-            )		
-        )
+                           )
+                       )
+                   )
+               )
+           )		
+       )
         (hand Each)
         (regions "RemoveSites" (sites {51 56}))
     })
@@ -93,11 +93,11 @@
                 (or
                     (forEach Piece)
                     (forEach Piece container:(mover))
-                )
-            )
-        )
+               )
+           )
+       )
         (end ("EscapeWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -116,7 +116,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Mexico, around 1944.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)

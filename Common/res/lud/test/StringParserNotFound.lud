@@ -5,17 +5,17 @@
                 (sites Mover)
                 (sites Around
                     (sites Occupied by:Mover component:"Hex" top:False)
-                )
-            )
+               )
+           )
             if:(is Empty (to))
-        )
+       )
         (then
             (add (piece (id "Disc" Mover))
                 (to (last To))
                 stack:True
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "Step"
@@ -24,7 +24,7 @@
         (to "EmptyInRange")
         count:("StackSize" (from))
         stack:True
-    )
+   )
 )
 
 (define "Capture"
@@ -38,15 +38,15 @@
                         (and
                             (set Var "MovesLeft" ("StackSize" (from)))
                             (set Var "CapturedThisTurn" 0)
-                        )
-                    )
+                       )
+                   )
                     (remove (to) count:("StackSize" (to)))
-                )
-            )
-        )
+               )
+           )
+       )
         count:("StackSize" (from))
         stack:True
-    )
+   )
 )
 
 (define "StackSize"
@@ -56,13 +56,13 @@
             (= 
                 (id "Disc" Next) 
                 (what at:(to) level:(level))
-            )
+           )
             (= 
                 (id "Disc" Mover) 
                 (what at:(to) level:(level))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "EmptyInRange"
@@ -72,14 +72,14 @@
                 (is Odd ("StackSize" (from)))
                 Forwards
                 Backwards
-            ) 
+           ) 
             (to 
                 if:(= 0 ("StackSize" (to)))
-            )
-        )
+           )
+       )
         from:(from)
         (range 1 ("StackSize" (from)))
-    )
+   )
 )
 
 (define "StepsTaken"
@@ -89,12 +89,12 @@
                 //        if:(or 
                     //            (= (last To) (to)) 
                     //            (= 0 ("StackSize" (to)))
-                //        )
-            //    )
+                //       )
+            //   )
         //)
         (last From)
         (last To)
-    )
+   )
     
 )
 
@@ -107,9 +107,9 @@
                 (- 
                     3
                     (% ("StackSize" #1) 2)
-                )
-            )
-        )
+               )
+           )
+       )
         (*
             (who at:#1 level:0)
             (count Stack
@@ -118,15 +118,15 @@
                     (= 
                         (id "Hex" Next) 
                         (what at:(to) level:(level))
-                    )
+                   )
                     (= 
                         (id "Hex" Mover) 
                         (what at:(to) level:(level))
-                    )
-                )
-            )
-        )
-    )
+                   )
+               )
+           )
+       )
+   )
 )
 
 (define "Reachable"
@@ -134,11 +134,11 @@
         (step
             (to 
                 if:(= 0 ("StackSize" (to)))
-            )
-        )
+           )
+       )
         from:(from)
         (range 1 #1)
-    )
+   )
 )
 
 (define "CaptureRange"
@@ -150,16 +150,16 @@
                     ("Reachable" ("StackSize" (from)))
                     (sites Around 
                         (sites Occupied by:Enemy component:"Disc")
-                    )
-                )
-            )
+                   )
+               )
+           )
             (sites Occupied by:Enemy component:"Disc")
-        )
+       )
         (intersection
             (sites Around (from)) 
             (sites Occupied by:Enemy component:"Disc")
-        )
-    )
+       )
+   )
 )
 
 (game "StringParserNotFound"
@@ -172,7 +172,7 @@
         (regions P1 (sites {0}))
         (regions P2 (sites {(* <Board> (* 3 (- <Board> 1)))}))
         }
-    )
+   )
     (rules
         (play
             (if
@@ -180,19 +180,19 @@
                     (forEach Piece "Disc" 
                         ("Capture")
                         top:True
-                    )
-                )
+                   )
+               )
                 (forEach Piece "Disc" 
                     ("Capture")
                     top:True
-                )
+               )
                 (or
                     ("Deploy")
                     (forEach Piece "Disc" 
                         ("Step")
                         top:True
-                    )
-                )
+                   )
+               )
                 (then
                     (and
                         (if
@@ -200,20 +200,20 @@
                             (add (piece (id "Disc" Mover))
                                 (to (last To))
                                 stack:True
-                            )
-                        )
+                           )
+                       )
                         (set Score Mover ("StepsTaken"))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (end 
             (if 
                 (no Moves Next) 
                 (result Next Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (option "Board Size" <Board> args:{ <size> }

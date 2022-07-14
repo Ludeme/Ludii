@@ -9,7 +9,7 @@
         (start (place "Marker" "Hand" count:3))
         (play (move (from (handSite Mover)) (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -28,5 +28,5 @@
         (credit "Eric Piette")
         (origin  "This game was played in Republic of Congo, around 1972.")
         }
-    )
+   )
 )

@@ -16,14 +16,14 @@
                                 (if (is In (last To) (sites "SubGame7"))
                                     (is In (to) (sites "SubGame7"))
                                     (is In (to) (sites "SubGame8"))
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
+   )
 )
 
 //-------------------------------------------------------------------------
@@ -36,9 +36,9 @@
             (union 
                 (square 9) 
                 (scale 3 (square 3))
-            )
+           )
             use:Cell
-        )  
+       )  
         
         (piece "Disc"       P1) 
         (piece "DiscLarge"  P1) 
@@ -70,7 +70,7 @@
             87 87 87 88 88 88 89 89 89  
             87 87 87 88 88 88 89 89 89  
             } 
-        )
+       )
         (map
             "SubToSub"
             {0..80}
@@ -85,9 +85,9 @@
             3 4 5 3 4 5 3 4 5
             6 7 8 6 7 8 6 7 8 
             } 
-        )
+       )
         }
-    )  
+   )  
     (rules 
         (play 
             (priority
@@ -116,21 +116,21 @@
                                                         (sites "SubGame7")
                                                         (if (= 8 (mapEntry "SubToSub" (last To))) 
                                                             (sites "SubGame8")
-                                                        ) 
-                                                    ) 
-                                                ) 
-                                            ) 
-                                        ) 
-                                    ) 
-                                ) 
-                            ) 
-                        )
+                                                       ) 
+                                                   ) 
+                                               ) 
+                                           ) 
+                                       ) 
+                                   ) 
+                               ) 
+                           ) 
+                       )
                         if:(and 
                             (is Empty (to)) 
                             (is Empty (mapEntry "SubToSuper" (to)))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 
                 // Move at any empty cell whose supergame is undecided
                 (move Add 
@@ -138,26 +138,26 @@
                     (to 
                         (intersection (sites "SubGames") (sites Empty))
                         if:(and (is Empty (to)) (is Empty (mapEntry "SubToSuper" (to))))
-                    )
-                )
+                   )
+               )
                 }
                 (then 
                     (if (is Line 3 if:("CheckLineRightSubGame"))  // add a piece in the supergame                                    
                         (add 
                             (piece (if (= (mover) P1) (id "DiscLarge1") (id "CrossLarge2")))
                             (to (mapEntry "SubToSuper" (last To)))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         (end 
             (if 
                 (is Line 3 throughAny:(sites "SuperGame") Mover) 
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -174,7 +174,7 @@
         (classification "board/space/line")
         (credit "Cameron Browne 16/5/2020")
         }
-    )
+   )
     (graphics 
         {
         (board Style UltimateTicTacToe)
@@ -183,8 +183,8 @@
         (piece Scale "DiscLarge"  2.5)
         (piece Scale "CrossLarge" 2.6)
         }
-    )
+   )
     (ai
         "Ultimate Tic-Tac-Toe_ai"
-    )
+   )
 )

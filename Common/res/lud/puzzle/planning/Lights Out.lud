@@ -14,16 +14,16 @@
                         (if (is Occupied (site))
                             (remove (site))
                             (add (piece "Light") (to (site)))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         (end { 
             (if (all Sites (sites Board) if:(is Empty (site))) (result Mover Win))
             (if (= 98 (counter)) (result Mover Loss))
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -42,7 +42,7 @@
         (credit "Eric Piette")
         (date "1995")
         }
-    )
+   )
     
     (graphics {
         (piece Colour "Light" fillColour:(colour Yellow))

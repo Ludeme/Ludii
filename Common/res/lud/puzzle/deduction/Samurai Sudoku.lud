@@ -10,7 +10,7 @@
                 (shift 6 6 (square 9)) 
             })
             (values Cell (range 1 9))
-        ) 
+       ) 
         // Bottom left 9x9 square.
         (regions {0..8})
         (regions {9..17})
@@ -156,7 +156,7 @@
         (start <Challenge>)
         (play (satisfy (all Different)))
         (end (if (is Solved) (result P1 Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -186,7 +186,7 @@
             {351 8}
         })>
         ""
-    )   
+   )   
 })
 
 //------------------------------------------------------------------------------
@@ -202,7 +202,7 @@
         (classification "puzzle/deduction")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (show Line {
@@ -212,6 +212,6 @@
             {230 339} {260 269} {360 369} {290 299} {390 399}
             } 
             (colour Black) scale:2
-        )
+       )
     })
 )

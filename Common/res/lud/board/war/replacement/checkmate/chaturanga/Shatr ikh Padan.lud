@@ -7,9 +7,9 @@
         (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
-            )
-        )
-    ) 
+           )
+       )
+   ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -19,8 +19,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -35,8 +35,8 @@
                 "StepForwardToEmpty" 
                 "CaptureForwardDiagonal"
                 }
-            )
-        )
+           )
+       )
         
         (piece "King_noCross" Each 
             (move
@@ -44,9 +44,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
     })  
     (rules 
         (start { 
@@ -60,18 +60,18 @@
             (do 
                 (forEach Piece)
                 ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
-            )
-        )
+           )
+       )
         
         (end {
             (if (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-                ) 
+               ) 
                 (result Mover Win)
-            ) 
+           ) 
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -89,7 +89,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, around 1901.")
         }
-    )
+   )
     
     (graphics {
         (show Check "King_noCross")

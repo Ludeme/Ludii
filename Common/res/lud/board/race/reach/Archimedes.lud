@@ -4,9 +4,9 @@
             in:(forEach 
                 (sites LineOfSight at:(site))
                 if:(= (who at:(site)) Mover)
-            )
-        )
-    )		
+           )
+       )
+   )		
 )
 
 (define "CapturingPortNotAttacked"
@@ -15,16 +15,16 @@
             in:(forEach 
                 (sites LineOfSight at:(if (is Mover P1) (mapEntry "Port" P2) (mapEntry "Port" P1)))
                 if:(if (is Mover P1) (= (who at:(site)) P1) (= (who at:(site)) P2)) 
-            )
-        )
-    )	
+           )
+       )
+   )	
 )
 
 (define "CanMoveANewShip"
     (not (all Sites 
             (difference (expand origin:(mapEntry "Port" P1)) (mapEntry "Port" Mover))
             if:(is Occupied (site))
-    ))	
+   ))	
 )
 
 //------------------------------------------------------------------------------
@@ -55,11 +55,11 @@
                                     (fromTo
                                         (from (site))
                                         (to (handSite Next))
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                   )
+                               )
+                           )
+                       )
+                   )
                     (if
                         (and {
                             (is Occupied (handSite Mover))
@@ -67,20 +67,20 @@
                             ("CanMoveANewShip")
                         })
                         (move (from (handSite Mover)) (to (mapEntry "Port" Mover)) (then (moveAgain)))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (end 
             (if 
                 (and
                     ("IsFriendAt" (if (is Mover P1) (mapEntry "Port" P2) (mapEntry "Port" P1)))
                     ("CapturingPortNotAttacked")
-                )
+               )
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -114,7 +114,7 @@
         (credit "Eric Piette")
         (date "1988")
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)

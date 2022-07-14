@@ -13,7 +13,7 @@
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" <Board:track2> loop:True P2)
             }
-        )
+       )
         (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
         (regions "Home" P2 (sites Track "Track2"))                              // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
@@ -30,7 +30,7 @@
                 (from 
                     (sites Mover "Home") 
                     if:(> (count at:(from)) 0)
-                )
+               )
                 (then 
                     (sow
                         "Track"
@@ -38,20 +38,20 @@
                         apply:(if (and 
                                 (= (count at:(to)) 1)
                                 (> (count at:("OppositePit" (to))) 0) 
-                            )
+                           )
                             (fromTo 
                                 (from ("OppositePit" (to))) 
                                 (to (handSite Mover)) 
                                 count:(count at:("OppositePit" (to)))
-                            ) 
-                        )
-                    )
-                )
-            )		
-        )
+                           ) 
+                       )
+                   )
+               )
+           )		
+       )
         
         (end ("MancalaByScoreWhen" (no Moves Next)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -82,7 +82,7 @@
         "Board Size/6" "Board Size/8" "Board Size/10" "Board Size/12" "Board Size/14"
         "Board Size/18" "Board Size/20" "Board Size/22" "Board Size/24" "Board Size/26" "Board Size/28"
         }
-    )*
+   )*
 })
 
 //------------------------------------------------------------------------------
@@ -100,7 +100,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in East Africa, around 1913.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -108,5 +108,5 @@
     
     (ai
         "Chiana wa Bwalo_ai"
-    )
+   )
 )

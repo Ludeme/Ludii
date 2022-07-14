@@ -5,9 +5,9 @@
             (graph
                 vertices:{ {2 0} {5 0} {0 2} {0 5} {7 2} {7 5} {2 7} {5 7}}
                 edges:{ {0 1} {0 2} {0 7} {1 4} {1 6} {2 3} {2 5} {3 4} {3 6} {4 5} {5 7} {6 7}}
-            )
+           )
             use:Vertex
-        ) 
+       ) 
         (piece "Marker" Each ("StepToEmpty"))          
     })  
     
@@ -17,16 +17,16 @@
             (set P1 Vertex (sites {0 5 6}))
             (set P2 Vertex (sites {1 2 7}))
             }
-        )
+       )
         
         (play (forEach Piece)) 
         
         (end 
             (if (= 1 (count Groups if:(= (who at:(to)) (mover)))) 
                 (result Mover Win) 
-            )                  
-        )
-    )
+           )                  
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -46,7 +46,7 @@
         (credit "Tahmina Begum")
         (date "25-04-2020")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)
@@ -56,6 +56,6 @@
     
     (ai
         "Wagner_ai"
-    )
+   )
 )
 

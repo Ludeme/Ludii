@@ -1,7 +1,7 @@
 (define "EdgeInCommon" 
     (intersection (sites Incident Edge of:Cell at:#1) 
         (sites Incident Edge of:Cell at:#2)
-    ) 
+   ) 
 )
 
 (define "NoEdgeBetweenCells"
@@ -18,12 +18,12 @@
                 if:(and 
                     (is Empty (to)) 
                     ("NoEdgeBetweenCells" (from) (to))
-                )
-            )
-        )
+               )
+           )
+       )
         (where "Pawn" #1)
         (sites #1)
-    )	
+   )	
 )
 
 (define "NumPlayers" <Players:num>)
@@ -42,9 +42,9 @@
                         if:(and 
                             (is Empty (to)) 
                             ("NoEdgeBetweenCells" (from) (to))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (move Hop
                     Orthogonal
                     (between if:("IsEnemyAt" (between)))
@@ -53,10 +53,10 @@
                             ("NoEdgeBetweenCells" (from) (between))
                             ("NoEdgeBetweenCells" (between) (to))
                         })
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (piece "Rectangle" Shared)
         (hand Each)
         <Players:regions>
@@ -70,15 +70,15 @@
                         (move 
                             (from (handSite Mover)) 
                             (to Edge (difference (sites Empty Edge) (sites Outer Edge)))
-                        )
-                    )
+                       )
+                   )
                     ifAfterwards:<Players:pathRule>
-                )
+               )
                 (forEach Piece)
-            )
-        )
+           )
+       )
         (end (if "ReachedTarget" (result Mover Win))) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -151,7 +151,7 @@
         (credit "Eric Piette")
         (date "1997")
         }
-    )
+   )
     
     (graphics {
         (player Colour Shared (colour Yellow))
@@ -169,5 +169,5 @@
     })
     (ai
         "Quoridor_ai"
-    )
+   )
 )

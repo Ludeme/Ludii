@@ -6,7 +6,7 @@
         (hand Each)
         (piece "Marker" Each "StepToEmpty") 
         }
-    )  
+   )  
     (rules 
         (start (place "Marker" "Hand" count:3))
         
@@ -16,18 +16,18 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty))
-                ) 
-            )
+               ) 
+           )
             (nextPhase ("HandEmpty" P2) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play (forEach Piece))
-        )
+       )
         }
         
         (end (if (is Line 3 through:(centrePoint) what:(mover)) (result Mover Win))) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -51,6 +51,6 @@
         {
         (credit "Cameron Browne 18/9/2020")
         }
-    )
+   )
     
 )

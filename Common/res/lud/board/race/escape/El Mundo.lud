@@ -18,7 +18,7 @@
             (track "Track4" {27 11 9 7 5 3 1 0 2 4 6 8 10 12 14 16 18 20 22} P4 directed:True)
             }
             use:Vertex
-        )
+       )
         (dice d:7 num:3)
         (regions "Mundo" P1 {23 21 19 17 15 13})
         (regions "Mundo" P2 {11 9 7 5 3 1})
@@ -35,12 +35,12 @@
                             ("NextSiteFrom" (from))
                             if:("NoEnemyOrOnlyOne" (to))
                             ("HittingCapture" (handSite (who at:(to))))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (then ("ReplayNotAllDiceUsed"))
-            )		
-        )
+           )		
+       )
         (map "Entry" {(pair P1 0) (pair P2 6) (pair P3 12) (pair P4 18)})
         (hand Each)
         (regions "FinalQuadrant" P1 (sites {13 15 17 19 21 23}))
@@ -58,10 +58,10 @@
         (play 
             ("RollEachNewTurnMove"
                 (or (forEach Piece top:True) (forEach Piece container:(mover) top:True))
-            )
-        )
+           )
+       )
         (end ("EscapeWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -79,7 +79,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Spain., around 1283.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)

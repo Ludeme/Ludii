@@ -6,7 +6,7 @@
     (if (= ("NextSiteOnTrack" 1 #1) (mapEntry Mover))
         ("NextSiteOnTrack" 2 #1)
         ("NextSiteOnTrack" 1 #1)
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -20,7 +20,7 @@
             (track "Track1" "11,10,W,S,E" loop:True P1)
             (track "Track2" "0,1,E,N,W" loop:True P2)
             }
-        )
+       )
         (piece "Seed" Shared)
         (regions "Home" P1 (sites Bottom))
         (regions "Home" P2 (sites Top))
@@ -38,9 +38,9 @@
                             ("SameTurn") 
                             "LastHoleSowed" 
                             (sites Mover "Home") 
-                        ) 
+                       ) 
                         if:(< 0 (count at:(from)))
-                    )
+                   )
                     (then 
                         (sow
                             "Track"
@@ -53,23 +53,23 @@
                                             (from ("OppositePit" (to)))
                                             (to (mapEntry Mover))
                                             count:(count at:("OppositePit" (to)))
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             (end (if (all Passed)
                     {
                     (if (> 6 (count at:(mapEntry P1))) (result P2 Win))
                     (if (> 6 (count at:(mapEntry P2))) (result P1 Win))
                     }
-                )
-            )
+               )
+           )
             (nextPhase (all Passed) "BetweenRounds")
-        )
+       )
         (phase "BetweenRounds"
             (play
                 (if (<= 6 (count at:(mapEntry Mover)))
@@ -77,13 +77,13 @@
                         (from (mapEntry Mover))
                         (to (intersection (sites Empty) (sites Mover "Home")))
                         count:6
-                    )
-                )
-            )
+                   )
+               )
+           )
             (nextPhase (all Passed) "Sowing")
-        )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -100,7 +100,7 @@
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

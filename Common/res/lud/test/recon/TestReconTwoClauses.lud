@@ -8,7 +8,7 @@
     (rules 
         (play (move Add (to (sites Empty))))
         (end (if (is Line [ 3 | 4 | 5 ]) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -27,10 +27,10 @@
         (credit "Eric Piette")
         (origin  "This game was played in England, from around 1850 to 1883.")
         }
-    )
+   )
     
     (ai 
         "Tic-Tac-Toe_ai"
-    )
+   )
     
 )

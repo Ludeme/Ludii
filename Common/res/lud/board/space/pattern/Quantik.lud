@@ -2,21 +2,21 @@
     (all Sites 
         (sites Row (row of:(to))) 
         if:(!= (what at:(site)) (mapEntry (what at:(from))))
-    )
+   )
 )
 
 (define "NotSameColumn"
     (all Sites 
         (sites Column (column of:(to))) 
         if:(!= (what at:(site)) (mapEntry (what at:(from))))
-    )
+   )
 )
 
 (define "NotSameRegion"
     (all Sites 
         (sites #1)
         if:(!= (what at:(site)) (mapEntry (what at:(from))))
-    )
+   )
 )
 
 (define "NotSameSquare"
@@ -27,9 +27,9 @@
             (if (is In (to) (sites "TopLeft")) 
                 ("NotSameRegion" "TopLeft")
                 ("NotSameRegion" "TopRight")
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "AllDifferent"
@@ -78,9 +78,9 @@
                         "NotSameColumn"
                         "NotSameSquare"
                     })
-                )
-            )
-        )
+               )
+           )
+       )
         (end 
             (if 
                 (or {
@@ -99,9 +99,9 @@
                     (no Moves Next) 
                 })
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -121,7 +121,7 @@
         (credit "Eric Piette")
         (date "2019")
         }
-    )
+   )
     
     (graphics {
         (show Symbol "Disc" (sites Board) fillColour:(colour Black) edgeColour:(colour White) scale:0.6) 
@@ -141,5 +141,5 @@
     
     (ai
         "Quantik_ai"
-    )
+   )
 )

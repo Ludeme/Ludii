@@ -8,20 +8,20 @@
                 (and
                     (if ("IsEnemyAt" (between))
                         (remove (between)) 
-                    )
+                   )
                     (set State at:(between) (mover))
-                )
-            ) 
-        )
-    )
+               )
+           ) 
+       )
+   )
 )
 
 (define "RemovePreviousTerritoryTaken"
     (forEach Site (sites Empty)
         (if (!= 0 (state at:(site)))
             (set State at:(site) 0)
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -46,19 +46,19 @@
                     (and
                         ("RemovePreviousTerritoryTaken")
                         ("CaptureSurroundedPiece")
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (end
             (if (and (no Moves P1) (no Moves P2))
                 (byScore {
                     (score P1 (+ (count Pieces P1) (size Territory P1))) 
                     (score P2 (+ (count Pieces P2) (size Territory P2)))
                 })
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -76,7 +76,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Tibet, from around 1879 to 1959.")
         }
-    )
+   )
     
     (graphics {
         (board Style Board)

@@ -4,7 +4,7 @@
     (trackSite FirstSite 
         from:(trackSite FirstSite if:(not (is Mover (who at:(to)))))
         if:(is Mover (who at:(to)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -28,18 +28,18 @@
                     Select 
                     (from 
                         ("LeftMost") 
-                    )
+                   )
                     (then
                         (sow
                             sowEffect:(if (and (!= (mover) (what at:(to))) (is Occupied (to)))
                                 (and
                                     (remove (to) count:(count at:(to)))
                                     (add (piece (id "Seed" Mover)) (to (to)) count:(count at:(to)))
-                                )
-                            )		
-                        )
-                    )
-                )
+                               )
+                           )		
+                       )
+                   )
+               )
                 (move
                     (from ("LeftMost"))
                     (to 
@@ -48,20 +48,20 @@
                             (and
                                 (remove (to) count:(count at:(to)))
                                 (add (piece (id "Seed" Mover)) (to (to)) count:(count at:(to)))
-                            )	
-                        )	
-                    )
-                )
-            )
-        )
+                           )	
+                       )	
+                   )
+               )
+           )
+       )
         
         (end 
             (forEach NonMover 
                 if:(no Pieces Player) 
                 (result Player Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -83,7 +83,7 @@
             { 
             (track "Track" "0,E,N,W,S2" loop:True)
             }
-        )
+       )
         > 
         <
         (start {
@@ -94,7 +94,7 @@
         })
         >   
         "The board is a 4x8."
-    )**
+   )**
     
     (item "Circular" 
         <
@@ -104,7 +104,7 @@
             (track "Track" "0,2,4,6,8,10,12,14,16,18,19,17,15,13,11,9,7,5,3,1" loop:True)
             }
             use:Vertex
-        )
+       )
         > 
         <
         (start {
@@ -115,7 +115,7 @@
         })
         >   
         "The board is circular."
-    )
+   )
     
     }
 )
@@ -128,13 +128,13 @@
         "Start Rules/4" "Board/4x8"
         }
         variations:{"Start Rules/1" "Start Rules/2" "Start Rules/3"}
-    )*
+   )*
     
     (ruleset "Ruleset/Circular Board (Observed)" {
         "Start Rules/4" "Board/Circular"
         }
         variations:{"Start Rules/1" "Start Rules/2" "Start Rules/3"}
-    )
+   )
     
 })
 
@@ -157,7 +157,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Angola, around 1995.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

@@ -6,7 +6,7 @@
     (trackSite Move 
         from:#1 
         steps:(pips)
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -26,7 +26,7 @@
             (track "Track2" {11..6 5..0 12..17 18..23 End} P2 directed:True)
             }
             use:Vertex
-        )
+       )
         (dice d:6 num:3)
         (piece "Disc" Each
             (move
@@ -36,26 +36,26 @@
                         (or 
                             (is Empty (to))
                             (and ("IsEnemyAt" (to)) (= 1 (size Stack at:(to))))
-                        )
+                       )
                         (or 
                             (not ("IsEnemyAt" (to))) 
                             (and ("IsEnemyAt" (to)) (= 1 (size Stack at:(to))))
-                        )
-                    )
+                       )
+                   )
                     (apply 
                         (if ("IsEnemyAt" (to)) 
                             (fromTo
                                 (from (to))
                                 (to (mapEntry Next))
-                            )
-                        )	
-                    )
-                )
-            )	
-        )
+                           )
+                       )	
+                   )
+               )
+           )	
+       )
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-        (map {(pair 1 23 ) (pair 2 11)}) // starting point
+        (map {(pair 1 23) (pair 2 11)}) // starting point
     })
     (rules
         (start {
@@ -71,14 +71,14 @@
                         (then 
                             (if (not (all DiceUsed))
                                 (moveAgain)
-                            )
-                        )
-                    )
-                )
-            )		
-        )
+                           )
+                       )
+                   )
+               )
+           )		
+       )
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -97,7 +97,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Spain, around 1283.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)

@@ -10,7 +10,7 @@
     (if (= 0 (count Pips))
         8
         (count Pips)
-    )
+   )
 )
 
 (define "StartPos" (mapEntry "Start" (mover)))
@@ -24,7 +24,7 @@
 (define "ForgetAllUselessThrows" 
     (forEach Value (values Remembered)
         (forget Value (value))
-    )
+   )
 )
 
 (define "SiteToMoveOnTrack" ("NextSiteOnTrack" #1))
@@ -41,9 +41,9 @@
             (if  (= #1 P3)
                 (id "Counter" P3)
                 (id "Counter" P4)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "AllPieceInCentre" 
@@ -59,18 +59,18 @@
                         (if 
                             ("ReplayThrow") 
                             ("GetAnotherThrow")
-                        )
+                       )
                         (if (not ("NoPieceInTheBoard"))
                             (remember Value "Throw")
                             (if (or (= ("Throw") 1) (is In 1 (values Remembered)))
                                 (remember Value "Throw")
-                            )
-                        )
+                           )
+                       )
                         (moveAgain)
                     })
-                )
-            )
-        )
+               )
+           )
+       )
         (or 
             (forEach Value (values Remembered)
                 (or 
@@ -79,17 +79,17 @@
                             (from (handSite Mover))
                             (to ("StartPos")
                                 (apply if:True (forget Value (value)))
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (forEach Piece)
                     (then 
                         (if (!= 0 (size Array (values Remembered))) 
                             (moveAgain)
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (if 
                 (and {
                     (= (size Stack at:("OppositeStartPos")) 2)
@@ -105,14 +105,14 @@
                                 (piece (id "DoubleCounter" Mover)) 
                                 (to ("OppositeStartPos"))
                                 (then (set Value at:("OppositeStartPos") 2))
-                            )
+                           )
                             (moveAgain)
                         })
-                    )
-                )
-            )
-        )
-    )	
+                   )
+               )
+           )
+       )
+   )	
 )
 
 //------------------------------------------------------------------------------
@@ -127,7 +127,7 @@
             (track "Track3" "22,W,S,E,N,W1,S3,W2,N2,E1,S1" P3 directed:True)
             (track "Track4" "10,S,E,N,W,S1,E3,S2,W2,N1,E1" P4 directed:True)
             }
-        )
+       )
         (hand Each)
         (regions "MarkedCells" 
             (union {
@@ -135,7 +135,7 @@
                 (intersection (sites Outer) (sites Row (row of:(centrePoint))))
                 (intersection (sites Outer) (sites Column (column of:(centrePoint))))
             })
-        )
+       )
         (piece "Counter" Each
             (or
                 (if ("IsNotOffBoard" ("SiteToMoveOnTrack" (value)))
@@ -160,19 +160,19 @@
                                                     (and
                                                         (set Pending)
                                                         (moveAgain)
-                                                    )
-                                                )
-                                            )	
+                                                   )
+                                               )
+                                           )	
                                             count:(size Stack at:(to))
                                             stack:True
-                                        )
-                                    )
+                                       )
+                                   )
                                     (forget Value (value))
-                                )
-                            )
-                        )
-                    )
-                )
+                               )
+                           )
+                       )
+                   )
+               )
                 (if (and (= 1 (value)) ("AllPieceInCentre"))
                     (move 
                         (from (from) level:(level))
@@ -180,15 +180,15 @@
                             (handSite Mover)
                             (apply if:True
                                 (forget Value (value))
-                            )
-                        )
+                           )
+                       )
                         (then 
                             (remove (last To))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         (piece "DoubleCounter" Each // The twin piece
             (if (and (> (/ (value) 2) 0) ("IsNotOffBoard" ("SiteToMoveOnTrack" (/ (value) 2))))
                 (move 
@@ -210,15 +210,15 @@
                                             (to (handSite (who at:(to)))) 
                                             count:2 
                                             stack:True
-                                        )
+                                       )
                                         (set Pending)
                                         (moveAgain)
                                     })
-                                )
+                               )
                                 (forget Value (value))
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (then 
                         (if (= (centrePoint) (last To))
                             (and
@@ -228,13 +228,13 @@
                                     (to ((last To))) 
                                     count:2 
                                     stack:True
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        ) 
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       ) 
         ("StickDice" 4)
         (map "Start" {(pair P1 2) (pair P2 14) (pair P3 22) (pair P4 10)})
         (map "OppositeStart" {(pair P1 22) (pair P2 10) (pair P3 2) (pair P4 14)})
@@ -250,11 +250,11 @@
             (if (can Move ("Move"))
                 ("Move")
                 (move Pass (then "ForgetAllUselessThrows"))
-            )
-        )
+           )
+       )
         
         (end ("EscapeWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -271,7 +271,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, around 1956.")
         }
-    )
+   )
     
     (graphics {
         (show Symbol "thinCross" "MarkedCells")

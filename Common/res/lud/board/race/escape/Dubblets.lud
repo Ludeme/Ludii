@@ -10,19 +10,19 @@
     (or
         ("PieceFullStacked" #1) 
         ("PieceHalfStacked" #1)
-    )
+   )
 )
 
 (define "UnstackFull" 
     (forEach Level (last To)
         (set State at:(last To) level:(level) 2)
-    )
+   )
 )
 
 (define "UnstackHalf" 
     (forEach Level (last To)
         (set State at:(last To) level:(level) 1)
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -35,7 +35,7 @@
             (track "Track1" {0..5} P1 directed:True)
             (track "Track2" {12..17} P2 directed:True)
             }	
-        )
+       )
         (dice d:6 num:2)
         (piece "Disc" Each
             (forEach Die 
@@ -45,10 +45,10 @@
                     (move 
                         (from) 
                         (to ("NextSiteOnTrack" (pips)))
-                    )
-                )
-            )		
-        )
+                   )
+               )
+           )		
+       )
         (hand Each)
         (map "StartTrack" {(pair P1 0) (pair P2 12)})
     })
@@ -70,22 +70,22 @@
                                     (move Select
                                         (from (site))
                                         (then (if (= 3 (size Stack at:(last To))) ("UnstackHalf") ("UnstackFull")))
-                                    )
+                                   )
                                     (if ("PieceHalfStacked" (site))
                                         (move Select
                                             (from (site))
                                             (then ("UnstackFull"))
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                                 (then
                                     (and
                                         (if (< 1 (var "Double")) (moveAgain))
                                         (set Var "Double" (- (var "Double") 1))
-                                    )
-                                )
-                            )
-                        )
+                                   )
+                               )
+                           )
+                       )
                         (forEach Die 
                             if:("DieNotUsed")
                             (or
@@ -95,27 +95,27 @@
                                             (and 
                                                 (if (= 3 (size Stack at:(last To))) ("UnstackHalf") ("UnstackFull"))
                                                 ("ReplayNotAllDiceUsed")
-                                            )
-                                        )
-                                    )
-                                )
+                                           )
+                                       )
+                                   )
+                               )
                                 (if ("PieceHalfStacked" "SiteToSelect")
                                     (move Select (from ("SiteToSelect"))
                                         (then 
                                             (and 
                                                 ("UnstackFull")
                                                 ("ReplayNotAllDiceUsed")
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )    
+                                           )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )    
             (nextPhase Mover (all Sites (sites Occupied by:Mover) if:(not ("PieceStacked" (site)))) "BearingOff")
-        )
+       )
         (phase "BearingOff" 
             (play 
                 (do 
@@ -128,19 +128,19 @@
                                     (and
                                         (if (< 1 (var "Double")) (moveAgain))
                                         (set Var "Double" (- (var "Double") 1))
-                                    )
-                                )
-                            )
-                        )
+                                   )
+                               )
+                           )
+                       )
                         (forEach Piece top:True)
-                    )
+                   )
                     (then ("ReplayNotAllDiceUsed"))
-                )
-            )
+               )
+           )
             (end ("EscapeWin"))
-        )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -159,7 +159,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in England, around 1674.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)

@@ -6,10 +6,10 @@
                 (remove
                     (square 8)
                     vertices:{40}
-                )
+               )
                 cells:{{47 39 30 31 32 40 49 48}}
-            )
-        )
+           )
+       )
         (dice d:[#] num:2)
         (piece "Disc" Each (move [#])) 
     })
@@ -17,7 +17,7 @@
         (start [#])
         (play [#])
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -35,7 +35,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in China, from around 1644 to 1911.")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

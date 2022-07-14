@@ -4,7 +4,7 @@
         (between 
             if:(and ("IsEnemyAt" (between)) (>= (value Piece at:(from)) (value Piece at:(between))))
             (apply (remove (between)))
-        )
+       )
         (to if:(is Empty (to)))
         (then 
             (if (can Move 
@@ -13,14 +13,14 @@
                         (between 
                             if:(and ("IsEnemyAt" (between)) (>= (value Piece at:(from)) (value Piece at:(between))))
                             (apply (remove (between)))
-                        )
+                       )
                         (to if:(is Empty (to)))
-                    )
-                ) 
+                   )
+               ) 
                 (moveAgain)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "OnlyKings" 
@@ -38,8 +38,8 @@
             from:(sites Occupied by:#1)
             to:(sites Occupied by:#1)
             (value Piece at:(to))
-        )
-    )
+       )
+   )
 )
 
 (define "OneSinglePiece" (= 1 (count Pieces #1)))
@@ -68,10 +68,10 @@
                 (<
                     (count Steps (to) (regionSite (sites Occupied by:Next) index:0))
                     (count Steps (from) (regionSite (sites Occupied by:Next) index:0))
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -84,20 +84,20 @@
             (or
                 ("StepToEmpty")
                 ("HopSequenceCapture")
-            )
-        )
+           )
+       )
         (piece "Prince" Each
             (or
                 ("StepToEmpty")
                 ("HopSequenceCapture")
-            )		
-        )
+           )		
+       )
         (piece "King" Each
             (or
                 ("StepToEmpty")
                 ("HopSequenceCapture")
-            )		
-        )
+           )		
+       )
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
     })
@@ -116,26 +116,26 @@
                 (or
                     ("HopSequenceCapture" 
                         (from (last To)) 
-                    )
+                   )
                     (move Pass)
-                )
+               )
                 (if ("OneSinglePieceSameRank")
                     (forEach Piece
                         (priority
                             ("HopCapture")
                             ("StepToEmptyToward")
-                        )
-                    )
+                       )
+                   )
                     (forEach Piece)
-                )
-            )
-        ) 
+               )
+           )
+       ) 
         (end {
             (if (no Pieces Next) (result Mover Win))	
             (if ("SingleEnemyHigherPieceBlocked") (result Mover Win))
             (if ("OnlyKings" Next) (result Mover Draw))	
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -153,7 +153,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Sweden, around 1921.")
         }
-    )
+   )
     
     (graphics {
         (piece Scale "King" 1.4)
@@ -165,5 +165,5 @@
     
     (ai
         "Dablot Prejjesne_ai"
-    )
+   )
 )

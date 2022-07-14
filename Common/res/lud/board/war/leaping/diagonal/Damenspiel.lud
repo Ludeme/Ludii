@@ -6,7 +6,7 @@
             #2
             if:("IsEnemyAt" (between)) 
             (apply (remove (between) #3))
-        )
+       )
         (to if:(is Empty (to)))
         (then 
             (if "JumpToPromotionZone"
@@ -18,15 +18,15 @@
                             (between 
                                 if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
-                            )
+                           )
                             (to if:(is Empty (to)))
-                        )
-                    ) 
+                       )
+                   ) 
                     (moveAgain)
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 (define "HopDiagonalDoubleCounter" 
@@ -38,7 +38,7 @@
             after:(count Rows)
             if:("IsEnemyAt" (between)) 
             (apply (remove (between)))
-        )
+       )
         (to if:(is Empty (to)))
         (then 
             (if (can Move 
@@ -51,14 +51,14 @@
                             after:(count Rows)
                             if:("IsEnemyAt" (between)) 
                             (apply (remove (between)))
-                        )
+                       )
                         (to if:(is Empty (to)))
-                    )
-                ) 
+                   )
+               ) 
                 (moveAgain)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -76,14 +76,14 @@
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-    )  
+   )  
     (rules 
         (start
             { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 0)  ))
+            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 0) ))
             (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 0)))
             }
-        )
+       )
         
         (play 
             (if	("SameTurn")
@@ -94,7 +94,7 @@
                         (between 
                             if:("IsEnemyAt" (between))
                             (apply (remove (between)))
-                        )
+                       )
                         (to if:(is Empty (to)))
                         (then 
                             (if "JumpToPromotionZone"
@@ -106,15 +106,15 @@
                                             (between 
                                                 if:("IsEnemyAt" (between))
                                                 (apply (remove (between)))
-                                            )
+                                           )
                                             (to if:(is Empty (to)))
-                                        )
-                                    ) 
+                                       )
+                                   ) 
                                     (moveAgain)
-                                )
-                            )
-                        )
-                    )
+                               )
+                           )
+                       )
+                   )
                     (move Hop 
                         (from (last To)) 
                         Diagonal
@@ -124,7 +124,7 @@
                             after:(count Rows)
                             if:("IsEnemyAt" (between)) 
                             (apply (remove (between)))
-                        )
+                       )
                         (to if:(is Empty (to)))
                         (then 
                             (if (can Move 
@@ -137,20 +137,20 @@
                                             after:(count Rows)
                                             if:("IsEnemyAt" (between)) 
                                             (apply (remove (between)))
-                                        )
+                                       )
                                         (to if:(is Empty (to)))
-                                    )
-                                ) 
+                                   )
+                               ) 
                                 (moveAgain)
-                            )
-                        )
-                    )
-                )
+                           )
+                       )
+                   )
+               )
                 (priority {
                     (or
                         (forEach Piece "Counter" "HopDiagonalCounter")
                         (forEach Piece "DoubleCounter" "HopDiagonalDoubleCounter")
-                    )
+                   )
                     (or
                         (forEach Piece "Counter" 
                             (move Step 
@@ -159,21 +159,21 @@
                                 (then 
                                     (if "JumpToPromotionZone"
                                         (promote (last To) (piece "DoubleCounter") Mover)
-                                    )
-                                )
-                            )
-                        )
+                                   )
+                               )
+                           )
+                       )
                         (forEach Piece "DoubleCounter"
                             (move Slide Diagonal)
-                        )
-                    )
+                       )
+                   )
                 })
-            )
+           )
             
-        ) 
+       ) 
         
         (end (if (no Pieces Next) (result Mover Win))) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -191,7 +191,7 @@
         (classification "board/war/leaping/diagonal")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 250 221 144))
@@ -202,5 +202,5 @@
     
     (ai
         "Damenspiel_ai"
-    )
+   )
 )

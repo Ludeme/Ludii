@@ -4,14 +4,14 @@
         (board <Board>)
         (piece "Marker" Each) 
         }
-    )  
+   )  
     (rules 
         (play (move Add (to (sites Empty))))
         (end {
             (if (is Line 4) (result Mover Win))
             (if (is Line 3) (result Mover Loss)) 
         })  
-    )
+   )
 )
 
 //------------------------------------------------------------------------------

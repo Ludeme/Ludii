@@ -2,21 +2,21 @@
     (>= 
         (value Piece at:(from))
         (value Piece at:(to))
-    )
+   )
 )
 
 (define "ZuMovingOnJiang"
     (and
         (= (what at:(from)) (id "Zu" Mover))
         (= (what at:(to)) (id "Jiang" Next))
-    )
+   )
 )
 
 (define "JiangMovingOnZu"
     (and
         (= (what at:(from)) (id "Jiang" Mover))
         (= (what at:(to)) (id "Zu" Next))
-    )
+   )
 )
 
 (define "StepMove" 
@@ -34,14 +34,14 @@
                         (and
                             ("HigherValue")
                             (not ("JiangMovingOnZu"))
-                        )
-                    )
+                       )
+                   )
                     }
-                )
-            ) 
+               )
+           ) 
             (apply (remove (to)))
-        ) 
-    )
+       ) 
+   )
 )
 
 (define "RevealAPiece"
@@ -57,9 +57,9 @@
                 (set Hidden Who at:(last To) False to:P2)
                 #1
                 }
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -109,22 +109,22 @@
             (play 
                 ("RevealAPiece" 
                     (set NextPlayer (player (who at:(last To))))
-                )
-            )
+               )
+           )
             (nextPhase Mover "Play")
-        )
+       )
         (phase "Play" 
             (play 
                 (or
                     (forEach Piece)
                     ("RevealAPiece")
-                )
-            )
-        )
+               )
+           )
+       )
         }
         
         (end ("BlockWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -162,7 +162,7 @@
         (credit "Eric Piette")
         (date "1970")
         }
-    )
+   )
     (graphics {
         (board Colour Phase0 (colour 255 230 130))
         (board Colour InnerEdges (colour 100 75 50))
@@ -175,5 +175,5 @@
     
     (ai
         "Banqi_ai"
-    )
+   )
 )

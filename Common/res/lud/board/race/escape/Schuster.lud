@@ -8,7 +8,7 @@
             ("IsEmptyOrSingletonStack" (to))
         }) 
         (not ("IsEnemyAt" (to)))
-    )
+   )
 )
 
 (define "AllPiecesInFinalQuadrant" ("AllOwnedPiecesIn" (sites Mover "FinalQuadrant")))
@@ -33,7 +33,7 @@
             (= 3 (size Stack at:14))
             (= 3 (size Stack at:15))
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -49,26 +49,26 @@
                 (if ("IsEndTrack" ("NextSiteFrom" (from) (pips)))
                     (if ("AllPiecesInFinalQuadrant")
                         (move Remove (from))
-                    )
+                   )
                     (move 
                         (from (from))
                         (to 
                             ("NextSiteFrom" (from) (pips))
                             if:("NotEnemyOrOnlyOne")
                             ("HittingCapture" (mapEntry "Bar" Next))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (then 
                     (and
                         ("ReplayNotAllDiceUsed")
                         (if ("SpecialWin")
                             (addScore Mover 2)
-                        )
-                    )
-                )
-            )		
-        )
+                       )
+                   )
+               )
+           )		
+       )
         (regions "FinalQuadrant" P1 (sites {20..25}))
         (regions "FinalQuadrant" P2 (sites {7..12}))
         (regions "OppositeSide" P1 (sites {25..20 18..13}))
@@ -86,7 +86,7 @@
             (if ("SpecialWin") (result Mover Win))
             ("EscapeWin")
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -105,11 +105,11 @@
             (credit "Eric Piette")
             (origin  "This game was played in Sweden, around 1839.")
             }
-        )
+       )
         
         (graphics {
             (board Style backgammon)
             (stackType Backgammon limit:3)
         })
         
-    )
+   )

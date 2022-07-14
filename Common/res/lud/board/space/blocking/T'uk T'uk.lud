@@ -11,7 +11,7 @@
         })
         (play (forEach Piece))
         (end ("BlockWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -33,7 +33,7 @@
         "Board Size/6"
         }
         variations:{"Board Size/8" "Board Size/10" "Board Size/12"}
-    )*
+   )*
     
 })
 
@@ -53,7 +53,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in West Africa, around 1955.")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
@@ -61,6 +61,6 @@
     
     (ai
         "T'uk T'uk_ai"
-    )
+   )
 )
 

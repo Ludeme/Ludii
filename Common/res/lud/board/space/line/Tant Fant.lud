@@ -11,7 +11,7 @@
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-    )  
+   )  
     (rules 
         (start { 
             (place "Marker1" (sites P1)) 
@@ -24,11 +24,11 @@
                 (and 
                     "NotAllPieceInHome"
                     (is Line 3)
-                ) 
+               ) 
                 (result Mover Win)
-            )
-        )  
-    )
+           )
+       )  
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -46,10 +46,10 @@
         (credit "Eric Piette")
         (origin  "This game was played in South Asia, from around 1863 to 1933.")
         }
-    )
+   )
     
     (ai 
         "Tant Fant_ai"
-    )
+   )
     
 )

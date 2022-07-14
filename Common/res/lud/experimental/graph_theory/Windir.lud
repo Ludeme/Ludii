@@ -5,7 +5,7 @@
         (board <Board:type> use:Edge)
         (piece "Marker" Neutral) 
         }
-    )    
+   )    
     
     (rules     	
         
@@ -13,8 +13,8 @@
         
         (end 
             (if (is RegularGraph Neutral) (result Mover Loss))
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -27,7 +27,7 @@
         > 
         
         "The game is played on the Graph1."
-    )* 
+   )* 
     
     (item "Graph2"             
         <
@@ -35,7 +35,7 @@
         > 
         
         "The game is played on the Graph2."
-    )** 
+   )** 
     
     (item "Graph3"             
         <
@@ -43,7 +43,7 @@
         > 
         
         "The game is played on the Graph3."
-    )     
+   )     
 })
 
 (option "Version" <Version> args:{ <play> }
@@ -53,25 +53,25 @@
         (play
             (move Add (piece "Marker0")
                 (to Edge (sites Empty Edge))	            
-            ) 
-        ) 
+           ) 
+       ) 
         >    
         "The players play on Addition version."
-    )*  
+   )*  
     (item "Deletion"
         <
         (start
             (set Neutral Edge (sites Board Edge))   
-        )
+       )
         (play
             (move
                 Remove
                 (sites Occupied by:Neutral on:Edge)
-            )
-        )
+           )
+       )
         >        
         "The players play on Deletion version."
-    )  
+   )  
 })
 
 //------------------------------------------------------------------------------
@@ -91,7 +91,7 @@
         (credit "Tahmina Begum 26-05-2020")
         (date "26-05-2020")
         }
-    )
+   )
     
     (graphics {
         (player Colour Neutral (colour 0 127 255))
@@ -102,5 +102,5 @@
     
     (ai
         "Windir_ai"
-    )
+   )
 )

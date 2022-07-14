@@ -2,7 +2,7 @@
     (if (= (state at:(from)) 2)
         ("NextSiteOnTrack" ("ThrowValue") "TrackCCW")
         ("NextSiteOnTrack" ("ThrowValue")"TrackCW")
-    )
+   )
 )
 
 (define "SiteToMoveOnTrackCW" ("NextSiteOnTrack" ("ThrowValue") "TrackCW"))
@@ -14,7 +14,7 @@
     (apply 
         if:("IsEnemyAt" (to))
         (and (set State at:(to) 0) (fromTo (from (to)) (to (handSite Next))))
-    ) 
+   ) 
 )
 
 (define "RemoveAPiece" (move Remove (from)))
@@ -29,12 +29,12 @@
                     (to 
                         #1 
                         "CaptureEnemyPiece"
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         #2
-    )
+   )
 )
 
 (define "RememberSelectedTrack"
@@ -43,10 +43,10 @@
             (and 
                 (= (state at:(last To)) 0) 
                 (is In (last To) (sites "AllSitesDifferentThanArc"))
-            ) 
+           ) 
             (set State at:(last To) #1)
-        )
-    )
+       )
+   )
 )
 
 (define "PieceAlreadyEntered" (!= (from) (handSite Mover)))
@@ -54,7 +54,7 @@
     (and 
         (= (from) (handSite Mover)) 
         (all Sites (sites Mover "Arc") if:(!= (who at:(site)) Mover))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -71,7 +71,7 @@
             <Players:track3>
             <Players:track4>
             }
-        )
+       )
         (regions "AllSites" (sites Board))
         (regions "Arc" P1 (sites {1..5}))
         (regions "Arc" P2 (sites {41..45}))
@@ -81,22 +81,22 @@
             (difference 
                 (sites Board) 
                 (union {(sites P1 "Arc") (sites P2 "Arc") (sites {0 32})})
-            )
-        )
+           )
+       )
         (dice d:2 facesByDie:{{0 4} {0 6} {0 14} {0 15}} num:4)
         (piece "Marker" Each
             (if (= (state at:(from)) 0)
                 (if (or ("PieceAlreadyEntered")
                         ("PieceCanEnterOnlyIfNoPieceOnArc")
-                    )
+                   )
                     (or
                         ("MoveOn" "SiteToMoveOnTrackCW" ("RememberSelectedTrack" 1))
                         ("MoveOn" "SiteToMoveOnTrackCCW" ("RememberSelectedTrack" 2))
-                    )
-                )
+                   )
+               )
                 ("MoveOn" "SiteToMoveOnSelectedTrack")
-            )
-        )
+           )
+       )
         (hand Each)
         (map "Throw" {
             (pair 0 10) (pair 39 5) (pair 24 3) (pair 25 3) (pair 35 3) (pair 33 3)
@@ -107,7 +107,7 @@
         (start (place "Marker" "Hand" count:<Num:piece>))
         (play ("RollMove" (or (forEach Piece) (forEach Piece container:(mover)))))
         (end ("EscapeWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -159,7 +159,7 @@
         "Players/2" "Start Rules/2"
         }
         variations:{"Players/3" "Players/4" "Start Rules/1"}
-    )*
+   )*
     
 })
 
@@ -181,7 +181,7 @@
         (classification "board/race/escape")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)
@@ -195,5 +195,5 @@
     
     (ai
         "Ghingskoot_ai"
-    )
+   )
 )

@@ -9,8 +9,8 @@
                 57 45 70 34 58 82 46 71 69 81 56 44 68 92 55 80
                 120 121 122 124 125 126 112 113 114 117 118 119 103 104 110 111
                 }
-            )
-        )
+           )
+       )
         (piece "Pawn" Each)
         (piece "King" P2)
         (regions "GoalKing" (difference (sites Corners) (expand (sites Centre) steps:4)))
@@ -30,37 +30,37 @@
                             (between if:("IsEnemyAt" (between)))
                             (to if:(and (not (is In (to) (sites "GoalKing"))) (is Empty (to)))
                                 (apply (remove (between)))
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (forEach Piece "King"
                         (move Hop
                             (between if:("IsEnemyAt" (between)))
                             (to if:(is Empty (to)))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (or
                     (forEach Piece "Pawn"
                         (move Step
                             (to if:(and (not (is In (to) (sites "GoalKing"))) (is Empty (to)))
                                 (apply (remove (between)))
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (forEach Piece "King"
                         (move Step
                             (to if:(is Empty (to)))
-                        )
-                    )
-                )	
+                       )
+                   )
+               )	
             })
-        )
+       )
         (end { 
             (if (= Off (where "King" P2)) (result P1 Win))
             (if (is In (where "King" P2) (sites "GoalKing")) (result P2 Win))
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -80,7 +80,7 @@
         (credit "Eric Piette")
         (date "2002")
         }
-    )
+   )
     
     (graphics {
         (piece Colour "King2" fillColour:(colour Yellow))

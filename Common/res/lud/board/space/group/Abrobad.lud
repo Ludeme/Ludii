@@ -4,9 +4,9 @@
             (from)
             (to (sites LineOfSight Farthest at:(from))
                 if:(is Empty (to))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "Hopping"       
@@ -15,21 +15,21 @@
             (move Hop 
                 (between if:(not (is Empty (between))))
                 (to if:(is Empty (to)))
-            )
+           )
             ("StepToEmpty")
-        )
-    )
+       )
+   )
 )
 
 (define "Sliding"       
     (forEach Piece 
         (move Slide)
-    )
+   )
 )
 (define "Stepping"       
     (forEach Piece 
         ("StepToEmpty")
-    )
+   )
 )
 
 (define "Jumping"
@@ -38,11 +38,11 @@
             (between
                 (range 0 18)      // upper limit at least 2 times board order.
                 if:(not (is Empty (between)))
-            )
+           )
             (to if:(is Empty (to)))
             
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------
@@ -60,14 +60,14 @@
                     (to 
                         (sites Empty)
                         if:(= 0 (count Sites in:(sites Around (to) Own)))
-                    ) 
-                ) 
+                   ) 
+               ) 
                 (or
                     <Movement:type>
                     (move Propose "Conclude"
                         (then
                             (if 
-                                (is Proposed "Conclude" )
+                                (is Proposed "Conclude")
                                 (add 
                                     (piece (next)) 
                                     (to (sites Empty)) 
@@ -75,26 +75,26 @@
                                         (and 
                                             (set Score Mover (count Groups if:(= (who at:(to)) (mover)))) 
                                             (set Score Next (count Groups if:(= (who at:(to)) (next))))
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                ) 
-            )     
-        )    
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               ) 
+           )     
+       )    
         (end 
             (if 
                 (is Proposed "Conclude") 
                 (if 
                     (<= (score Mover) (score Next))
                     (result Mover Win)
-                )
+               )
                 (result Next Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //---------------------------------------
@@ -116,23 +116,23 @@
     {
     (item "Step or jump to first empty"  <"Jumping">
         "Movement: Pieces step or jump once, to the first empty position in that direction."
-    )**
+   )**
     
     (item "Step or hop to empty" <"Hopping"> 
         "Movement: Pieces step or hop once, to the first empty position in that direction."
-    ) 
+   ) 
     
     (item "Adjacent step" <"Stepping">
         "Movement: Pieces step to an adjacent empty position."
-    )
+   )
     
     (item "Any unobstructed slide"  <"Sliding"> 
         "Movement: Pieces slide along a grid direction any distance across empty positions."
-    )
+   )
     
     (item "Maximal slide"  <"Shooting">
         "Movement: Pieces slide across empty positions as far as they can in any given direction." 
-    )
+   )
     }
 )
 
@@ -165,7 +165,7 @@
         (credit "Dale W. Walton")
         (date "18-11-2019")
         }
-    )
+   )
     (graphics 
         {
         (piece Scale "Hex" 1.05)
@@ -178,8 +178,8 @@
         (board StyleThickness InnerEdges 0.5)
         (board Background image:"square.svg" fillColour:(colour 136 161 252) edgeColour:(colour 136 161 252) scale:1.2)
         }
-    )
+   )
     (ai
         "Abrobad_ai"
-    )
+   )
 )

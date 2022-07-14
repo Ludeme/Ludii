@@ -5,7 +5,7 @@
         (mancalaBoard 4 6 store:None)
         (piece "Seed" Shared)
         }
-    )  
+   )  
     (rules 
         
         (start (set Count 6 to:(sites Board)))
@@ -15,9 +15,9 @@
         (end
             (if  (no Moves Next)
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -34,7 +34,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in South Africa, around 1971.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

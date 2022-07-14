@@ -10,11 +10,11 @@
                     ("NextSiteFrom" (mapEntry "Bar" Mover) (pips))
                     if:(< (size Stack at:(to)) 2)
                     ("HittingCapture" (mapEntry "Bar" Next))
-                )
-            )
+               )
+           )
             (then ("ReplayNotAllDiceUsed"))
-        )
-    )
+       )
+   )
 )
 
 (define "AllPiecesInFinalQuadrant" ("AllOwnedPiecesIn" (sites Mover "FinalQuadrant")))
@@ -35,19 +35,19 @@
                 (if ("IsEndTrack" ("NextSiteFrom" (from) (pips)))
                     (if ("AllPiecesInFinalQuadrant")
                         (move Remove (from))
-                    )
+                   )
                     (move 
                         (from (from))
                         (to 
                             ("NextSiteFrom" (from) (pips))
                             if:("NoEnemyOrOnlyOne" (to))
                             ("HittingCapture" (mapEntry "Bar" Next))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (then ("ReplayNotAllDiceUsed"))
-            )
-        )
+           )
+       )
     })
     (rules 
         (start {
@@ -65,12 +65,12 @@
                 (then
                     (if (no Pieces Mover)
                         (if (no Pieces Enemy in:(sites Mover "FinalQuadrant")) (addScore Mover 1) (addScore Mover 2))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (end ("EscapeWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -89,7 +89,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Persia, around 1879.")
         }
-    )
+   )
     
     (graphics {
         (board Style backgammon)

@@ -11,7 +11,7 @@
             (track "Track1" "0,E,N1,W" loop:True P1)
             <Board:track2>
             }
-        )
+       )
         (piece "Seed" Shared)
         (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
         (regions "Home" P2 (sites Track "Track2"))                              // P2 home
@@ -28,13 +28,13 @@
                     (difference (sites P1 "Home") (sites Left)) 
                     (difference (sites P2 "Home") (sites Right)) 
                 }) 
-            ) 
+           ) 
             (set Count (- (- (* 4 "Columns") 2) (* 2  (- "Columns" 1))) 
                 to:(union 
                     (intersection (sites Left) (sites P1 "Outer"))
                     (intersection (sites Right) (sites P2 "Outer"))
-                )
-            )
+               )
+           )
         })
         
         (play 
@@ -44,9 +44,9 @@
                     (if ("SameTurn") 
                         ("LastHoleSowed")
                         (sites Mover "Home") 
-                    ) 
+                   ) 
                     if:(> (count at:(from)) 1)
-                )
+               )
                 (then 
                     (sow
                         "Track"
@@ -62,31 +62,31 @@
                                     (from ("OppositePit" (to))) 
                                     (to (to)) 
                                     count:(count at:("OppositePit" (to)))
-                                ) 
+                               ) 
                                 (if (> (count at:("OppositeOuterPit" (to))) 0)
                                     (fromTo 
                                         (from ("OppositeOuterPit" (to))) 
                                         (to (to)) 
                                         count:(count at:("OppositeOuterPit" (to)))
-                                    )
-                                )
+                                   )
+                               )
                                 (sow 
                                     (to)
                                     count:(+ (count at:("OppositePit" (to))) (count at:("OppositeOuterPit" (to))))
                                     "Track"
                                     owner:(mover)
-                                )
+                               )
                                 }
-                            )
+                           )
                             (if (> (count at:(to)) 1) (moveAgain))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         
         (end ("BlockWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -116,7 +116,7 @@
         "Board Size/7" "Board Size/8" "Board Size/9" "Board Size/10" "Board Size/11" 
         "Board Size/12" "Board Size/13" "Board Size/14" "Board Size/15" "Board Size/16"
         }
-    )*
+   )*
 })
 
 //------------------------------------------------------------------------------
@@ -133,7 +133,7 @@
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -141,6 +141,6 @@
     
     (ai
         "Muvalavala (Quioco)_ai"
-    )
+   )
 )
 

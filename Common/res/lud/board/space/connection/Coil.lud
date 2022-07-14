@@ -16,13 +16,13 @@
             (- (/ (- (* {3 #1 #1}) #1) 2) 1) 
             (+ 1 (- (* {3 #1 #1}) (* 4 #1))) 
             }
-        )
+       )
         (place "Disc2" 
             {(- #1 1) 
             (+ 1 (/ (- (* {3 #1 #1}) (* 5 #1)) 2)) 
             (- (* {3 #1 #1}) (* 3 #1)) 
             }
-        )
+       )
         }
 ))
 
@@ -38,13 +38,13 @@
             (- (/ (+ (* {3 #1 #1}) #1) 2) 1) 
             (- (* 3 (* #1 #1)) #1) 
             }
-        )
+       )
         (place "Disc2" 
             { #1
             (/ (- (* {3 #1 #1}) (* 3 #1)) 2)
             (- (* 3 (* #1 #1)) 1) 
             }
-        )
+       )
         }
 ))
 
@@ -67,9 +67,9 @@
                             (piece (id "Disc" P2)) 
                             (to (sites Empty) if:"NonAdjacent")
                             (then (if (< (count MovesThisTurn) 2) (moveAgain)))
-                        )
+                       )
                         "Skip"
-                    )
+                   )
                     (if (= (count MovesThisTurn) 0)
                         (move Pass
                             (then
@@ -77,31 +77,31 @@
                                     (swap Players P1 P2
                                         (then
                                             (note "Player 1 is now Black. Player 2 is now White." to:All)
-                                        )
-                                    )
+                                       )
+                                   )
                                     (note "Player 1 remains White. Player 2 remains Black." to:All)
                                     (then
                                         (do
                                             (set NextPlayer (player 1))
                                             next:(set Var 1) // (var) represents the phase here
-                                        )
-                                    )
-                                )
-                            )
-                    ))
-                )
-            )
+                                       )
+                                   )
+                               )
+                           )
+                   ))
+               )
+           )
             (nextPhase ("IsPlayingPhase") "Playing")
-        )
+       )
         (phase "Playing" (play (move Add (to (sites Empty)))))
         }
         (end 
             (forEach Player
                 if:(and {("IsPlayingPhase") (= (id Player) (mover)) ("BlackVC")})
                 (result Player Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -139,7 +139,7 @@
         (credit "Eric Silverman")
         (date "2009")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
@@ -149,5 +149,5 @@
     
     (ai
         "Coil_ai"
-    )
+   )
 )

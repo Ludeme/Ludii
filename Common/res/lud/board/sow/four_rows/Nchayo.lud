@@ -9,7 +9,7 @@
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
             <Board:tracks>	
-        )
+       )
         (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
         (regions "Home" P2 (sites Track "Track2"))                              // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
@@ -26,9 +26,9 @@
                     (if ("SameTurn")
                         ("LastHoleSowed")
                         (sites Mover "Home")
-                    )
+                   )
                     if:(is Occupied (from))
-                )
+               )
                 (then
                     (sow
                         "Track"
@@ -42,25 +42,25 @@
                                             (from ("OppositePit" (to)))
                                             (to (handSite Mover))
                                             count:(count at:("OppositePit" (to)))
-                                        )	
+                                       )	
                                         (if (is Occupied ("OppositeOuterPit" (to)))
                                             (fromTo 
                                                 (from ("OppositeOuterPit" (to)))
                                                 (to (handSite Mover))
                                                 count:(count at:("OppositeOuterPit" (to)))
-                                            )	
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                                           )	
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (end ("MancalaByScoreWhen" (no Moves Next)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -93,7 +93,7 @@
         "Board Size/5"
         }
         variations:{"Board Size/8"}
-    )*
+   )*
     
 })
 
@@ -111,7 +111,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in East Africa, around 1966.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

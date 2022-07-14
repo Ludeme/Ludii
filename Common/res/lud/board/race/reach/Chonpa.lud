@@ -16,8 +16,8 @@
         (if (= ("Die2") ("Die3"))
             ("Die2")
             ("Die3")
-        )
-    )
+       )
+   )
 )
 
 (define "NotDoubleValue"
@@ -26,15 +26,15 @@
         (if (= ("Die2") ("Die3"))
             ("Die1")
             ("Die2")
-        )
-    )
+       )
+   )
 )
 
 (define "AllPiecesOnCentre"
     (and
         (= 1 (count Sites in:(sites Occupied by:#1 top:False)))
         (is In (centrePoint) (sites Occupied by:#1 top:False))
-    )
+   )
 )
 
 (define "TrackMove" ("NextSiteOnTrack" #3 #1 #2))
@@ -51,12 +51,12 @@
         (move 
             (from (from) level:(level)
                 if:(!= 0 (what at:(from) level:(level)))
-            )
+           )
             (to 
                 (if (= 0 (state at:(from) level:(level)))
                     ("TrackMove" from:(from) #1 (pips))
                     ("TrackMove" from:(from) #2 (pips))
-                )
+               )
                 if:(if (= 0 (state at:(from) level:(level))) 
                     (if (not ("MovedPair")) True (or "Triple" (= (pips) ("NotDoubleValue"))))
                     (and { 
@@ -67,9 +67,9 @@
                         (if (= (count MovesThisTurn) 0)
                             True
                             (or ("Triple") (!= ("PreviousPipsUsed") ("DoubleValue")))
-                        )
+                       )
                     })
-                )
+               )
                 (apply 
                     (and
                         (if (= 1 (state at:(from)))
@@ -84,39 +84,39 @@
                                             (from (site) level:(level))
                                             (to 
                                                 ("TrackMove" from:(site) #2 (pips))
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
+                                           )
+                                       )
+                                   )
+                               )
+                           )
+                       )
                         ("StorePreviousPipsUsed" (pips))
-                    )
-                )
-            )
+                   )
+               )
+           )
             (then 
                 (if 
                     (and 
                         (not ("MovedPair"))
                         (if (= 1 (state at:(last To) level:(last LevelTo))) 
                             (< (count MovesThisTurn) 1)
-                            (< (count MovesThisTurn ) 2)
-                        )
-                    )
+                            (< (count MovesThisTurn) 2)
+                       )
+                   )
                     (and
                         (moveAgain)
                         (if (= 1 (state at:(last To) level:(last LevelTo))) 
                             ("StoreMovePair" 1)
-                        )
-                    )
+                       )
+                   )
                     (and
                         ("StoreMovePair" 0)
                         ("StorePreviousPipsUsed" 0)
-                    )
-                )
-            )
-        )
-    )		
+                   )
+               )
+           )
+       )
+   )		
 )
 
 (define "Move" 
@@ -128,11 +128,11 @@
                 (if (is Mover P4)
                     (forEach Piece ("PieceMove" "TrackNormal2" "TrackPaired2") P2)
                     (forEach Piece ("PieceMove" "TrackNormal4" "TrackPaired4") P4)
-                )
-            )
-        )
+               )
+           )
+       )
         (forEach Piece)
-    )		
+   )		
 )
 
 //------------------------------------------------------------------------------
@@ -151,7 +151,7 @@
             (track "TrackNormal4" "31,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W8"  P4 directed:True)
             (track "TrackPaired4" "17,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W8"  P4 directed:True)
             }
-        )
+       )
         (dice d:4 faces:{1 2 5 6} num:3)
         (piece "Pawn" Each ("PieceMove" "TrackNormal" "TrackPaired"))
     })  
@@ -181,15 +181,15 @@
                         (then (and
                                 ("StoreMovePair" 0)
                                 ("StorePreviousPipsUsed" 0)
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (end (if ("AllPiecesOnCentre" TeamMover) (result TeamMover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -208,7 +208,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, from around 1904 to 1905.")
         }
-    )
+   )
     
     (graphics {
         (stackType 0 site:96 Ring)

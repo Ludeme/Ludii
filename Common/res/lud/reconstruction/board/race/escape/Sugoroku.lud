@@ -9,7 +9,7 @@
                 (shift 7 6 (rectangle 1 6))
             })
             use:Vertex
-        )
+       )
         (dice d:6 num:2)
         (piece "Disc" Each (move [#]))
         (hand Each)
@@ -18,7 +18,7 @@
         (start (place "Disc" "Hand" count:15))
         (play [#])
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -37,7 +37,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Japan, from around 710 to 1599.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)

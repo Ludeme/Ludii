@@ -15,8 +15,8 @@
         (if 
             (= (state at:(last To)) 1) 
             ("PieceHasMoved" (last To))
-        ) 
-    ) 
+       ) 
+   ) 
 )
 
 (define "CaptureToPiece"
@@ -24,9 +24,9 @@
         (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
-            )
-        )
-    ) 
+           )
+       )
+   ) 
 )
 
 (define "DoubleStep"
@@ -35,7 +35,7 @@
         Forward 
         (between (exact 2) if:(is Empty (between))) 
         (to if:(is Empty (to))) 
-    )
+   )
 )
 
 (define "CaptureForwardDiagonal"
@@ -45,8 +45,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -60,12 +60,12 @@
             (or {
                 (if (is In (from) (sites Start (piece (what at:(from)))))
                     "DoubleStep"
-                )
+               )
                 "StepForwardToEmpty" 
                 "CaptureForwardDiagonal"
                 }
-            )
-        )
+           )
+       )
         
         (piece "Rook" Each 
             (move
@@ -74,18 +74,18 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "King" Each 
             (move
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "Bishop" Each 
             (move
                 Slide 
@@ -93,9 +93,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "Knight" Each 
             (move
                 Leap 
@@ -103,18 +103,18 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "Queen" Each 
             (move
                 Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            ) 
-        )
+               ) 
+           ) 
+       )
         
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
@@ -131,19 +131,19 @@
             (do 
                 (forEach Piece)
                 ifAfterwards:(not ("IsInCheck" "King" Mover))
-            )
-        )
+           )
+       )
         
         (end {
             (if (and 
                     ("IsInCheck" "King" Next)
                     ("NextCanNotMove")
-                ) 
+               ) 
                 (result Mover Win)
-            )
+           )
             (if (= 1 (count Pieces Next)) (result Mover Draw))
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -163,7 +163,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Tibet, around 1775.")
         }
-    )
+   )
     
     (graphics {
         (piece Scale "Pawn" 0.825)

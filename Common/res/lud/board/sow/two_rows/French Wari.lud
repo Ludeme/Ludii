@@ -10,7 +10,7 @@
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
             (track "Track" "0,E,N,W" loop:True)
-        )
+       )
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (piece "Seed" Shared)
@@ -27,9 +27,9 @@
                         ("SameTurn") 
                         "LastHoleSowed" 
                         (sites Mover) 
-                    ) 
+                   ) 
                     if:(> (count at:(from)) 0)
-                )
+               )
                 (then 
                     (sow
                         apply:(if (> (count at:(to)) 1)
@@ -39,16 +39,16 @@
                                     (from ("OppositePitTwoRows" (to))) 
                                     (to (handSite Mover)) 
                                     count:(count at:("OppositePitTwoRows" (to)))
-                                ) 
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                               ) 
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -66,7 +66,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Barbados, around 1932.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -74,5 +74,5 @@
     
     (ai
         "French Wari_ai"
-    )
+   )
 )

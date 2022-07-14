@@ -21,7 +21,7 @@
             <Player:trackP3>
             <Player:trackP4>
             }
-        )
+       )
         ("StickDice" <Num:dice>)
         (piece "Paddle" Each
             (if ("IsNotOffBoard" "SiteToMoveOnTrack")
@@ -30,15 +30,15 @@
                     (to 
                         "SiteToMoveOnTrack" 
                         ("HittingCapture" ("StartingPoint" (who at:(to))))
-                    )
-                )
+                   )
+               )
                 (then 
                     (if (= "Goal" (last To))
                         (remove (last To))
-                    )
-                )
-            )		
-        )
+                   )
+               )
+           )		
+       )
         (map {(pair 1 "C1") (pair 2 "C5") (pair 3 "E3") (pair 4 "A3")})
     })  
     (rules 
@@ -52,11 +52,11 @@
         (play 
             ("RollMove"
                 (if (!= 0 ("ThrowValue")) (forEach Piece) (move Pass))
-            )
-        )
+           )
+       )
         
         (end ("EscapeWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -94,7 +94,7 @@
         "Players/4" "Start Rules/2" "Dice/4"
         }
         variations:{"Players/2" "Start Rules/1" "Dice/5"}
-    )*
+   )*
 })
 
 //------------------------------------------------------------------------------
@@ -112,7 +112,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, around 1898.")
         }
-    )
+   )
     
     (graphics {
         (stackType 0 Ground)

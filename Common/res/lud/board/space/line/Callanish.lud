@@ -6,8 +6,8 @@
         (and
             ("IsEnemyAt" (to))
             (= 0 (topLevel at:(to)))
-        )
-    )
+       )
+   )
 )
 
 // #1 - site
@@ -19,8 +19,8 @@
             // Cannot use "KnightWalk" macro because it does not work in the "Missing Corners" option.
             { { F F R F } { F F L F } { F R F F } { F L F F } }
             (to if:("CanPlaceKnight"))
-        )
-    )
+       )
+   )
 )
 
 (define "IsWeAreOnTop"
@@ -34,18 +34,18 @@
             if:(and 
                 ("IsWeAreOnTop")
                 (<= 2 (count Sites in:("PossibleKnightSites" (from))))
-            )
-        )
+           )
+       )
         (then
             (do
                 (set Var "CondemnedSite" (last From))
                 next:(do
                     (set State at:(var "CondemnedSite") ("CondemnedState"))
                     next:(moveAgain)
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 (define "MoveFirstKnight"
@@ -54,17 +54,17 @@
             (do
                 (set Pending)
                 next:(moveAgain)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "MoveSecondKnight"
     (move Add (to ("PossibleKnightSites" (var "CondemnedSite"))) stack:True
         (then 
             (remove (var "CondemnedSite"))
-        )
-    )
+       )
+   )
 )
 
 // #1 - "Row"/"Column"
@@ -73,7 +73,7 @@
     (intersection
         (sites #1 #2)
         (sites Occupied by:Next container:"Board")
-    )
+   )
 )
 
 // #1 - "Row"/"Column"
@@ -90,27 +90,27 @@
         (board <Board:BoardDef>) 
         (piece "Disc" Each
             ("MoveCondemnPiece")
-        ) 
+       ) 
     })  
     (rules 
         phases: {
         (phase "Opening"
             (play
                 (move Add (to (sites Empty)))
-            )
+           )
             (nextPhase (>= (count Turns) 2) "Playing")
-        )
+       )
         (phase "Playing"
             (play 
                 (if "SameTurn"
                     (if (is Pending)
                         ("MoveSecondKnight")
                         ("MoveFirstKnight")
-                    )
+                   )
                     (forEach Piece)
-                )
-            )
-        )
+               )
+           )
+       )
         }
         (end {
             (if
@@ -134,12 +134,12 @@
                         (<= <Board:MainWinC> ("OpponentCount" Column 6))
                         <Board:ExtraCols>
                     })
-                )
+               )
                 (result Mover Loss)
-            )
+           )
             (if (no Moves Mover) (result Mover Loss))
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -173,7 +173,7 @@
         (credit "Nicholas Bamber")
         (date "2014")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

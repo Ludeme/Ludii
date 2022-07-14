@@ -5,7 +5,7 @@
         (board (skew .5 (scale 1 .5 (square 4))))
         (piece "discFlat" Each)
         }
-    ) 
+   ) 
     (rules
         (play 
             (move 
@@ -14,13 +14,13 @@
                     (forEach 
                         (sites Board) 
                         if:(< (size Stack at:(site)) 4)
-                    )
-                ) 
+                   )
+               ) 
                 stack:True
-            )
-        )
+           )
+       )
         (end (if (is Line 4 byLevel:True) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -38,8 +38,8 @@
         (credit "Cameron Browne 26/6/2020")
         (date "1967")
         }
-    )
+   )
     (ai
         "Score Four_ai"
-    )
+   )
 )

@@ -15,8 +15,8 @@
         (if (!= 0 (count in:(sites Mover "Middle")))
             (sites Mover "Middle")
             (sites Mover "Inner")
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -27,7 +27,7 @@
     (equipment { 
         (mancalaBoard 6 "Columns" store:None
             <Row:tracks>	
-        )
+       )
         (piece "Seed" Shared)
         (regions "Home" P1 (sites Track "TrackCCW1"))   // P1 Home
         (regions "Home" P2 (sites Track "TrackCCW2"))   // P2 home
@@ -50,9 +50,9 @@
                             (if ("SameTurn") 
                                 "LastHoleSowed" 
                                 ("OuterMostRowWithPieces") 
-                            ) 
+                           ) 
                             if:(> (count at:(from)) 0)
-                        )
+                       )
                         (then
                             (sow
                                 "TrackCCW"
@@ -61,7 +61,7 @@
                                     (and {
                                         (if (<= (value Player Mover) 0)
                                             (set Value Mover 1)
-                                        )
+                                       )
                                         (moveAgain)
                                         (if (is In (to) (sites Mover "Inner"))
                                             (if (!= 0 (count at:("OppositePit" (to))))
@@ -69,39 +69,39 @@
                                                     (from ("OppositePit" (to)))
                                                     (to (to))
                                                     count:(count at:("OppositePit" (to)))
-                                                )
+                                               )
                                                 (if (!= 0 (count at:("OppositeMiddlePit" (to))))
                                                     (fromTo
                                                         (from ("OppositeMiddlePit" (to)))
                                                         (to (to))
                                                         count:(count at:("OppositeMiddlePit" (to)))
-                                                    )
+                                                   )
                                                     (if (!= 0 (count at:("OppositeOuterPit" (to))))
                                                         (fromTo
                                                             (from ("OppositeOuterPit" (to)))
                                                             (to (to))
                                                             count:(count at:("OppositeOuterPit" (to)))
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
+                                                       )
+                                                   )
+                                               )
+                                           )
+                                       )
                                     })
                                     (set Value Mover 0)
-                                )
-                            )
-                        )
-                    )
-                )
+                               )
+                           )
+                       )
+                   )
+               )
                 (if (or (= (value Player Mover) 2) (<= (value Player Mover) 0))
                     (move Select
                         (from 
                             (if ("SameTurn") 
                                 "LastHoleSowed" 
                                 ("OuterMostRowWithPieces") 
-                            ) 
+                           ) 
                             if:(> (count at:(from)) 0)
-                        )
+                       )
                         (then 
                             (sow
                                 "TrackCW"
@@ -110,7 +110,7 @@
                                     (and {
                                         (if (<= (value Player Mover) 0)
                                             (set Value Mover 2)
-                                        )
+                                       )
                                         (moveAgain)
                                         (if (is In (to) (sites Mover "Inner"))
                                             (if (!= 0 (count at:("OppositePit" (to))))
@@ -118,44 +118,44 @@
                                                     (from ("OppositePit" (to)))
                                                     (to (to))
                                                     count:(count at:("OppositePit" (to)))
-                                                )
+                                               )
                                                 (if (!= 0 (count at:("OppositeMiddlePit" (to))))
                                                     (fromTo
                                                         (from ("OppositeMiddlePit" (to)))
                                                         (to (to))
                                                         count:(count at:("OppositeMiddlePit" (to)))
-                                                    )
+                                                   )
                                                     (if (!= 0 (count at:("OppositeOuterPit" (to))))
                                                         (fromTo
                                                             (from ("OppositeOuterPit" (to)))
                                                             (to (to))
                                                             count:(count at:("OppositeOuterPit" (to)))
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
+                                                       )
+                                                   )
+                                               )
+                                           )
+                                       )
                                     })
                                     (set Value Mover 0)
-                                )
-                            )
-                        )
-                    )
-                )
+                               )
+                           )
+                       )
+                   )
+               )
                 (if ("OneSingePieceInTheOuter")
                     (move
                         (from 
                             (sites Mover "Outer")
                             if:(> (count at:(from)) 0)
-                        )
+                       )
                         (to
                             (if (is Mover P1)
                                 (ahead (from) N)
                                 (ahead (from) S)
-                            )
-                        )
-                    )
-                )
+                           )
+                       )
+                   )
+               )
                 (if ("OneSingePieceInTheMiddle")
                     (move
                         (from 
@@ -163,14 +163,14 @@
                             if:(and 
                                 (> (count at:(from)) 0)
                                 (< 1 (count in:(sites Column (column of:(from)))))
-                            )
-                        )
+                           )
+                       )
                         (to
                             (if (is Mover P1)
                                 (ahead (from) N)
                                 (ahead (from) S)
-                            )
-                        )
+                           )
+                       )
                         (then 
                             (and
                                 (if (!= 0 (count at:("OppositePit" (last To))))
@@ -178,37 +178,37 @@
                                         (from ("OppositePit" (last To)))
                                         (to (last To))
                                         count:(count at:("OppositePit"  (last To)))
-                                    )
+                                   )
                                     (if (!= 0 (count at:("OppositeMiddlePit"  (last To))))
                                         (fromTo
                                             (from ("OppositeMiddlePit"  (last To)))
                                             (to (last To))
                                             count:(count at:("OppositeMiddlePit"  (last To)))
-                                        )
+                                       )
                                         (if (!= 0 (count at:("OppositeOuterPit"  (last To))))
                                             (fromTo
                                                 (from ("OppositeOuterPit"  (last To)))
                                                 (to (last To))
                                                 count:(count at:("OppositeOuterPit" (last To)))
-                                            )
-                                        )
-                                    )
-                                )
+                                           )
+                                       )
+                                   )
+                               )
                                 (moveAgain)
-                            )
-                        )
-                    )
-                )
+                           )
+                       )
+                   )
+               )
             })
-        )
+       )
         
         (end
             (forEach NonMover
                 if:("NoPiece")
                 (result Player Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -247,7 +247,7 @@
         "Board Size/6"
         }
         variations:{"Board Size/3"}
-    )*
+   )*
     
 })
 
@@ -266,7 +266,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Madagascar, around 1998.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -274,5 +274,5 @@
     
     (ai
         "Katro_ai"
-    )
+   )
 )

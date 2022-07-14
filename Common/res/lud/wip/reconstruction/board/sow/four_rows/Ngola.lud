@@ -7,7 +7,7 @@
             (track "TrackCCW1" "0,E,N1,W" loop:True P1)
             (track "TrackCCW2" "16,E,N1,W" loop:True P2)
             }		
-        )
+       )
         (piece "Seed" Shared)
     })  
     (rules 
@@ -19,9 +19,9 @@
         (end
             (if  (no Moves Next)
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -38,7 +38,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Republic of Congo, around 1971.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

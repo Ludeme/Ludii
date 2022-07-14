@@ -3,7 +3,7 @@
         ("OntoEmptyOrIceberg")
         (from)
         (sites Occupied by:Neutral)
-    )
+   )
 )
 
 (define "NearestIcebergs"
@@ -13,8 +13,8 @@
             ("OntoEmptyOrIceberg")
             from:(from)
             (exact ("DistanceToNearestIceberg"))
-        )
-    )
+       )
+   )
 )
 
 (define "OntoEmptyOrIceberg"
@@ -23,9 +23,9 @@
             if:(or
                 (= (id Neutral) (who at:(to)))
                 (is Empty (to))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -42,37 +42,37 @@
                         (or
                             (= (id Neutral) (who at:(to)))
                             (is Empty (to))
-                        )
+                       )
                         (= 1
                             (-
                                 (count Steps
                                     ("OntoEmptyOrIceberg")
                                     (from)
                                     ("NearestIcebergs")
-                                )
+                               )
                                 (count Steps
                                     ("OntoEmptyOrIceberg")
                                     (to)
                                     ("NearestIcebergs")
-                                )
-                            )
-                        )
-                    )
+                               )
+                           )
+                       )
+                   )
                     (apply 
                         (if
                             (is Occupied (to))
                             (and
                                 (remove (to))
                                 (addScore Mover 1)
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         (piece "Disc" Neutral)
         }
-    )
+   )
     (rules
         (start {
             (place "Disc0" (difference (sites Board) (sites Corners)))
@@ -88,23 +88,23 @@
         })
         (play
             (forEach Piece Mover)
-        )
+       )
         (end 
             (if 
                 (or
                     (<
                         (/ (- (count Sites in:(sites Board)) 6) 2)
                         (score P1)
-                    )
+                   )
                     (<
                         (/ (- (count Sites in:(sites Board)) 6) 2)
                         (score P2)
-                    )
-                )
+                   )
+               )
                 (byScore)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -153,7 +153,7 @@
         (credit "Michael Amundsen")
         (date "2021")
         }
-    )
+   )
     
     (graphics {
         (player Colour Neutral (colour White))

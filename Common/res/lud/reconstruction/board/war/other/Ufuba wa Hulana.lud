@@ -14,20 +14,20 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty)) 
-                )
-            ) 
+               )
+           ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
+       )
         
         (phase "Movement" 
             (play 
                 (forEach Piece)
-            )
-        )
+           )
+       )
         }
         
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -46,7 +46,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Comoros, around 1694.")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

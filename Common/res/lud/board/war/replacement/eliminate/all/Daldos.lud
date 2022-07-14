@@ -2,25 +2,25 @@
     (if (or
             (= (state at:(from)) 1) 
             (and (= (state at:(from)) 0) (= 1 (pips)))
-        )
+       )
         (move
             Slide
             #1 
             (between 
                 (exact (pips))
                 if:(is Empty (between))
-            ) 
+           ) 
             (to 
                 if:("IsEnemyAt" (to)) 
                 (apply if:(not ("IsFriendAt" (to))) (remove (to)))
-            )
+           )
             (then
                 (if (= (state at:(last To)) 0)
                     (set State at:(last To) 1)
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -39,7 +39,7 @@
             (track "Track2" {33..48 32..16 0..15 32..16} loop:True P2)
             }
             use:Vertex
-        )
+       )
         (regions "AllSites" (sites Board))
         (dice d:4 num:2)
         (piece "Minus" P1 ("MoveAPiece" "Track1"))
@@ -54,7 +54,7 @@
             (do 
                 (if (not "SameTurn") 
                     (roll) 
-                )
+               )
                 next:(forEach Die 
                     replayDouble:(and (= (face 36) 1) (= (face 37) 1))
                     (forEach Piece
@@ -62,15 +62,15 @@
                             (if (not (all DiceUsed))
                                 (if (can Move (forEach Die (forEach Piece)))
                                     (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         (end (if (no Pieces Next) (result Mover Win)))
-    )
+   )
 )
 //------------------------------------------------------------------------------
 
@@ -112,7 +112,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Scandinavia, from around 1831 to 1927.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)  
@@ -123,6 +123,6 @@
     
     (ai
         "Daldos_ai"
-    )
+   )
 )
 

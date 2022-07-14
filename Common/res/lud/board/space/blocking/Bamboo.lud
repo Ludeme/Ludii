@@ -15,14 +15,14 @@
                             from:(sites Occupied by:Mover)
                             to:1 
                             (* 1 (size Group at:(from)))
-                        )
-                    )
+                       )
+                   )
                     (count Groups if:(= (who at:(to)) (mover)))
-                )
-            )
-        )
+               )
+           )
+       )
         (end ("NoMoves" <Result>))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -56,8 +56,8 @@
         (credit "Michael Amundsen")
         (date "2021")
         }
-    )
+   )
     (ai
         "Bamboo_ai"
-    )
+   )
 )

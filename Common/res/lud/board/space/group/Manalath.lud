@@ -16,7 +16,7 @@
                     (from (sites Hand Shared)) 
                     (to (sites Empty)) 
                     copy:True
-                )
+               )
                 ifAfterwards:(< (size Group at:(last To)) 6)
                 (then
                     (forEach Site (sites Occupied by:Mover container:"Board")
@@ -24,17 +24,17 @@
                             (set Var "Group5" 1)
                             (if (= (size Group at:(site)) 4)
                                 (set Var "Group4" 1)
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         (end {
             (if (= (var "Group4") 1) (result Mover Loss)) 
             (if (= (var "Group5") 1) (result Mover Win)) 
         })  
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -62,9 +62,9 @@
         (credit "Eric Piette")
         (date "2012")
         }
-    )
+   )
     
     (ai
         "Manalath_ai"
-    )
+   )
 )

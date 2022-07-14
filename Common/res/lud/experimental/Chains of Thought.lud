@@ -10,14 +10,14 @@
                     (sites Group
                         at:(last To) "GridDirection"
                         if:(is In (to) (sites Occupied by:Mover))
-                    ) 
+                   ) 
                     "GridDirection"
                     if:(is Next (who at:(to)))
-                )
+               )
                 if:(>
                     (size Group at:(last To) "GridDirection" if:(is Mover (who at:(to))))
                     (size Group at:(site) "GridDirection" if:(is Next (who at:(to))))
-            ))
+           ))
             // check for secondary removals
             (then 
                 (forEach Value
@@ -29,9 +29,9 @@
                                     from:(sites Around (value) "GridDirection") 
                                     "GridDirection"
                                     if:(is Mover (who at:(to)))
-                            ))
+                           ))
                             (size Group at:(value) "GridDirection" if:(is Next (who at:(to))))
-                        )
+                       )
                         (remove (value))
 ))))))
 
@@ -39,7 +39,7 @@
     (and
         
         // no adjacent mover
-        (not (is In (to) (sites Around (sites Occupied by:Mover) "GridDirection" ))) 
+        (not (is In (to) (sites Around (sites Occupied by:Mover) "GridDirection"))) 
         
         // No adjacent enemy group > 1 
         (no Pieces Next
@@ -58,7 +58,7 @@
                         from:(sites Around (to) "GridDirection")
                         "GridDirection"
                         if:(is Mover (who at:(to)))
-            )))
+           )))
             (count Pieces 
                 in:(sites Group
                     from:(sites Around (to) "GridDirection")
@@ -98,7 +98,7 @@
                             (difference
                                 (sizes Group "GridDirection" Mover)
                                 (var "LargestMover") 
-                        ))
+                       ))
                         (then
                             (set Var "LargestUnique" 
                                 (if
@@ -106,11 +106,11 @@
                                         (>
                                             (var "LargestMover")
                                             (var "LargestNext")
-                                        )
+                                       )
                                         (>
                                             (var "LargestMover")
                                             (var "SecondLargestMover")
-                                    ))
+                                   ))
                                     (var "LargestMover")
                                     0
 )))))))))
@@ -122,7 +122,7 @@
             if:(=
                 (size Group at:(site) "GridDirection")
                 (var "LargestUnique")
-        ))
+       ))
         "GridDirection"
 ))
 
@@ -130,15 +130,15 @@
     (difference
         (intersection
             (sites Empty)
-            (sites Around (difference (sites Occupied by:Mover) (from)) "GridDirection" ) // adjacent mover
-        )
+            (sites Around (difference (sites Occupied by:Mover) (from)) "GridDirection") // adjacent mover
+       )
         ("SitesAroundLargestChainIfOFMover")
 ))
 
 (define "MergerSites"
     (intersection
         (sites Empty)
-        (sites Around (difference (sites Occupied by:Mover) (from)) "GridDirection" ) // adjacent mover
+        (sites Around (difference (sites Occupied by:Mover) (from)) "GridDirection") // adjacent mover
 ))
 
 (define "GridDirection" <BoardShape:directionsUsed>)
@@ -150,31 +150,31 @@
     (equipment
         {
         (board <BoardShape:gridType> use:Vertex)
-        (piece "Disc" Each )
+        (piece "Disc" Each)
         }
-    )
+   )
     (rules
         (play
             (or
                 (move Add
                     (to (sites Empty)
                         if:(<Variant:placement>)
-                    )
+                   )
                     <GameOption:capture>
-                )
+               )
                 (do
                     (and
                         {
                         (set Var "GroupCount" (count Groups "GridDirection" if:(is Mover (who at:(to)))))
                         <Movement:precheck>  // "FindSizeOfGroupIfLargerThanAny"
                         }
-                    )
+                   )
                     next:(forEach Piece 
                         (move Step "GridDirection"
                             (to  
                                 if:(is In (to)
                                     <Movement:limits> // "MergerSites" or "RestrictededMergerSites"
-                    ))))
+                   ))))
                     ifAfterwards:(and
                         {
                         // Reduces the number of groups, by merger
@@ -188,13 +188,13 @@
                                     from:(sites Around (last To) "GridDirection" if:(is Next (who at:(to)))) 
                                     to:(from)
                                     (size Group at:(to) "GridDirection" if:(is Next (who at:(to))))
-                        )))
+                       )))
                         } 
-                    ) 
+                   ) 
                     <GameOption:capture>
-                )
+               )
                 <GameGoal:scoring>
-        ))
+       ))
         (end 
             (if (no Moves Next) <GameGoal:goal>)
 )))

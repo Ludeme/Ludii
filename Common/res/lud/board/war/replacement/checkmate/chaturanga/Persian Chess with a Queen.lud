@@ -7,9 +7,9 @@
         (if ("IsEnemyAt" (to))
             (remove 
                 (to)
-            )
-        )
-    ) 
+           )
+       )
+   ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -21,10 +21,10 @@
             (apply 
                 (remove 
                     (to)
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 (define "NextCanNotMove"
@@ -44,20 +44,20 @@
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
-                    )
+                   )
                     (then 
                         (if (and
                                 (= 1 (state at:(last To)))
                                 (= (last To) (mapEntry "AheadKing" Mover))
-                            )
+                           )
                             (set State at:(last To) 2)
                             (if 
                                 (!= (state at:(last To)) 0) 
                                 ("PieceHasMoved" (last To))
-                            ) 	
-                        )
-                    )
-                )
+                           ) 	
+                       )
+                   )
+               )
                 (if (and {
                         (= 1 (state at:(from)))
                         (= 1 (state at:(mapEntry "RookRight" Mover)))
@@ -70,10 +70,10 @@
                             (if 
                                 (!= (state at:(last To)) 0) 
                                 ("PieceHasMoved" (last To))
-                            ) 		
-                        )
-                    )
-                )
+                           ) 		
+                       )
+                   )
+               )
                 (if (and {
                         (= 1 (state at:(from)))
                         (= 1 (state at:(mapEntry "RookLeft" Mover)))
@@ -86,10 +86,10 @@
                             (if 
                                 (!= (state at:(last To)) 0) 
                                 ("PieceHasMoved" (last To))
-                            )
-                        )
-                    )
-                )
+                           )
+                       )
+                   )
+               )
                 (if (and {
                         (= 2 (state at:(from)))
                         (= 2 (state at:(regionSite (sites Start (piece (id "King" Mover))) index:0)))
@@ -99,9 +99,9 @@
                         (to (mapEntry "KnightKingLeftBackward" Mover))
                         (then
                             ("PieceHasMoved" (last To))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (if (and {
                         (= 2 (state at:(from)))
                         (= 3 (state at:(regionSite (sites Start (piece (id "King" Mover))) index:0)))
@@ -111,12 +111,12 @@
                         (to (mapEntry "KnightKingRightBackward" Mover))
                         (then
                             ("PieceHasMoved" (last To))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 }
-            )
-        )
+           )
+       )
         (piece "Rook" Each
             (move
                 Slide 
@@ -124,22 +124,22 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
+               ) 
                 (then 
                     (if 
                         (= (state at:(last To)) 1) 
                         (if (and
                                 (is In (last To) (sites Start (piece (id "King" Mover))))
                                 (= 2 (state at:(where "King" Mover)))
-                            )
+                           )
                             (if (= (last From) (mapEntry "RookLeft" Mover)) (set State at:(last To) 2) (set State at:(last To) 3))
                             ("PieceHasMoved" (last To))
-                        )
-                    ) 
-                ) 
-            )	
+                       )
+                   ) 
+               ) 
+           )	
             maxState:3
-        )
+       )
         (piece "Bishop_noCross" Each
             (move
                 Slide 
@@ -147,9 +147,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            )	
-        )
+               ) 
+           )	
+       )
         (piece "Knight" Each
             (move
                 Leap 
@@ -157,27 +157,27 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-                ) 
-            )			
-        )
+               ) 
+           )			
+       )
         (piece "Ferz_noCross" Each
             (move
                 Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            )	
-        )
+               ) 
+           )	
+       )
         (piece "Pawn" Each
             (or 
                 (move Step 
                     Forward 
                     (to if:(is Empty (to)))
-                )
+               )
                 "CaptureForwardDiagonal"
-            )		
-        )
+           )		
+       )
         (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})
         (map "RookRight" {(pair 1 "H1") (pair 2 "H8")})
         (map "AheadKing" {(pair 1 "E2") (pair 2 "E7")})
@@ -197,18 +197,18 @@
         (play 
             (do (forEach Piece) 
                 ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
-            )
-        )
+           )
+       )
         
         (end 
             (if (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-                ) 
+               ) 
                 (result Mover Win)
-            ) 
-        )
-    )
+           ) 
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -227,7 +227,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Uzbekistan, around 1877.")
         }
-    )
+   )
     
     (graphics {
         (piece Scale "Pawn" 0.825)

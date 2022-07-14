@@ -21,11 +21,11 @@
                             (from) 
                             (to "MoveTo")
                             (then ("ReplayInMovingOn" (sites "Replay")))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         
         // Connected sites.
         (map {(pair 5 19) (pair 7 9) (pair 34 48) (pair 36 38) })
@@ -38,7 +38,7 @@
         
         (play ("RollMove" (or (forEach Piece) (forEach Piece container:(mover)))))
         (end ("EscapeWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -57,7 +57,7 @@
         {
         "Variant/Carnarvon and Carter"
         }
-    )
+   )
     
     (ruleset "Ruleset/Labyrinth (Incomplete)" {
         
@@ -172,7 +172,7 @@
         (classification "board/race/escape")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Grey))
@@ -182,7 +182,7 @@
     
     (ai 
         "58 Holes_ai"
-    )
+   )
     
 )
 

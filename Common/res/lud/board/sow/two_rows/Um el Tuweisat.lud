@@ -3,23 +3,23 @@
         (from 
             #1 
             if:(> (count at:(from)) 1)
-        )
+       )
         (then 
             (sow
                 #2
                 if:(and 
                     (= (count at:(to)) 2) 
                     (is In (to) (sites Next))
-                )
+               )
                 apply:(fromTo 
                     (from (to)) 
                     (to (handSite Mover)) 
                     count:(count at:(to))
-                ) 
+               ) 
                 backtracking:True
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
@@ -34,7 +34,7 @@
             (track "TrackCCW" "0,E,N,W" loop:True)
             (track "TrackCW" "2,W,N,E" loop:True)
             }
-        )
+       )
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (map "RightHole" {(pair P1 2) (pair P2 3)})
@@ -54,10 +54,10 @@
                 ("Sow" (mapEntry "CenterHole" (mover)) "TrackCCW")
                 ("Sow" (mapEntry "CenterHole" (mover)) "TrackCW")
             })
-        )
+       )
         
         (end ("MancalaByScoreWhen" (and (no Moves P1) (no Moves P2))))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -75,7 +75,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Sudan, around 1925.")
         }
-    )
+   )
     
     (graphics { 
         (board Style Mancala)
@@ -83,5 +83,5 @@
     
     (ai
         "Um el Tuweisat_ai"
-    )
+   )
 )

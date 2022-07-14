@@ -4,13 +4,13 @@
     (or
         (all Sites (sites Bottom) if:(= 0 (count at:(site))))
         (all Sites (sites Top)  if:(= 0 (count at:(site))))
-    )
+   )
 )
 (define "LeftMostEmpty" 
     (trackSite FirstSite 
         from:(mapEntry "LeftMost" Mover)
         if:(is Empty (to))
-    )
+   )
 )
 (define "NextHoleFrom" ("NextSiteOnTrack" #2 from:#1))
 
@@ -22,7 +22,7 @@
     (equipment { 
         (mancalaBoard 2 7 store:None
             (track "Track" "0,E,N,W" loop:True)
-        )
+       )
         (piece "Seed" Shared)
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
@@ -44,9 +44,9 @@
                             (if ("SameTurn") 
                                 (sites {(var "Replay")})
                                 (sites Mover) 
-                            ) 
+                           ) 
                             if:(and (is Occupied (from)) (is In (from) ("PlayableSites")))
-                        )
+                       )
                         (then
                             (do
                                 (set Var "NumSowed" (count at:(last To)))
@@ -55,23 +55,23 @@
                                         (and 
                                             (!= 4 (count at:(to))) 
                                             (< 1 (count at:(to)))
-                                        ) 
+                                       ) 
                                         (and
                                             (moveAgain)
                                             (set Var "Replay" (to))
-                                        )
+                                       )
                                         (if (= 1 (count at:(to)))
                                             (if (is Occupied ("NextHoleFrom" (to) 1))
                                                 (fromTo
                                                     (from ("NextHoleFrom" (to) 1))
                                                     (to (handSite Mover))
                                                     count:(count at:("NextHoleFrom" (to) 1))
-                                                )
-                                            )
-                                        )
-                                    )
+                                               )
+                                           )
+                                       )
+                                   )
                                     skipIf:(not (is In (to) ("PlayableSites")))
-                                )
+                               )
                                 (then
                                     (and
                                         (forEach Site (sites Track from:(last From) to:(trackSite Move from:(last From) "Track" steps:(var "NumSowed")))
@@ -80,15 +80,15 @@
                                                     (from (site))
                                                     (to (if (is In (to) (sites P1)) (handSite P1) (handSite P2)))
                                                     count:4
-                                                )
-                                            )
-                                        )
+                                               )
+                                           )
+                                       )
                                         (set Var "NumSowed" 0)
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                   )
+                               )
+                           )
+                       )
+                   )
                     }
                     (then
                         (if ("OneRowIsEmpty")
@@ -98,33 +98,33 @@
                                         (from (site))
                                         (to (handSite P1))
                                         count:(count at:(site))
-                                    )
-                                )
+                                   )
+                               )
                                 (forEach Site (sites P2)
                                     (fromTo
                                         (from (site))
                                         (to (handSite P2))
                                         count:(count at:(site))
-                                    )
-                                )
+                                   )
+                               )
                                 (forget Value "Playable" All)
                             })
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             
             (end (if ("NoPieceOnBoard")
                     {
                     (if (> 6 (count Cell at:(handSite P1))) (result P2 Win))
                     (if (> 6 (count Cell at:(handSite P2))) (result P1 Win))
                     }
-                )
-            )
+               )
+           )
             
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
             
-        )
+       )
         
         (phase "BetweenRounds"
             (play
@@ -135,14 +135,14 @@
                         count:6
                         (then
                             (remember Value "Playable" (last To))
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase (all Passed) "Sowing")
-        )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -159,7 +159,7 @@
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

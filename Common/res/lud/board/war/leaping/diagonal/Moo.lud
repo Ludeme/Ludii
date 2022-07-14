@@ -7,10 +7,10 @@
         (between 
             if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
             (apply (remove (between) at:EndOfTurn))
-        ) 
+       ) 
         (to if:(is Empty (to))) 
         #2
-    ) 
+   ) 
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -27,7 +27,7 @@
             after:(count Rows)
             if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between))) 
             (apply (remove (between)))
-        )
+       )
         (to if:(is Empty (to)))
         (then 
             (if (can Move 
@@ -41,16 +41,16 @@
                             if:(and
                                 (not (is In (between) (sites ToClear))) 
                                 ("IsEnemyAt" (between))
-                            )
+                           )
                             (apply (remove (between)))
-                        )
+                       )
                         (to if:(is Empty (to)))
-                    )
-                ) 
+                   )
+               ) 
                 (moveAgain)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "HopKing" 
@@ -63,7 +63,7 @@
             after:(count Rows)
             if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between))) 
             (apply (remove (between)))
-        )
+       )
         (to if:(is Empty (to)))
         (then 
             (if (can Move 
@@ -77,16 +77,16 @@
                             if:(and
                                 (not (is In (between) (sites ToClear))) 
                                 ("IsEnemyAt" (between))
-                            )
+                           )
                             (apply (remove (between)))
-                        )
+                       )
                         (to if:(is Empty (to)))
-                    )
-                ) 
+                   )
+               ) 
                 (moveAgain)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -102,14 +102,14 @@
         (regions P2 (sites Top))
         (regions "MarkedCell" (sites Phase 0))
         }
-    )  
+   )  
     (rules 
         (start
             { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ))
+            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1) ))
             (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1)))
             }
-        )
+       )
         
         (play 
             (if "SameTurn"
@@ -121,14 +121,14 @@
                                     (moveAgain)
                                     (if "JumpToPromotionZone" 
                                         (move Promote (last To) (piece "DoubleCounter") Mover)
-                                    )
-                                ) 
-                            ) 
-                        )
+                                   )
+                               ) 
+                           ) 
+                       )
                         ("HopKingAgain")
-                    )
+                   )
                     (move Pass)
-                )
+               )
                 (or 
                     (forEach Piece "Counter"
                         (or
@@ -138,34 +138,34 @@
                                         (moveAgain) 
                                         (if "JumpToPromotionZone" 
                                             (move Promote (last To) (piece "DoubleCounter") Mover)
-                                        )
-                                    ) 
-                                ) 
-                            )
+                                       )
+                                   ) 
+                               ) 
+                           )
                             (move
                                 Step 
                                 (directions {FR FL}) 
                                 (to if:(is Empty (to)))
-                            )
+                           )
                             (then 
                                 (if "JumpToPromotionZone"
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
-                                )
-                            )
-                        )
-                    )
+                               )
+                           )
+                       )
+                   )
                     (forEach Piece "DoubleCounter" 
                         (or
                             ("HopKing")
                             (move Slide Diagonal)
-                        )
-                    )
-                )
-            )
-        ) 
+                       )
+                   )
+               )
+           )
+       ) 
         
         (end (if (no Pieces Next) (result Mover Win))) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -184,7 +184,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Hawai'i, around 1865.")
         }
-    )
+   )
     
     (graphics {
         (piece Families {"Defined" "Isometric"})
@@ -196,5 +196,5 @@
     
     (ai
         "Moo_ai"
-    )
+   )
 )

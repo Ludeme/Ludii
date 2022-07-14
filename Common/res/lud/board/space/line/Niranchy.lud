@@ -9,10 +9,10 @@
             (move 
                 Step 
                 (to if:(is Empty (to))) 
-            )
-        ) 
+           )
+       ) 
         }
-    )  
+   )  
     (rules 
         (start (place "Marker" "Hand" count:12))
         
@@ -23,16 +23,16 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty)) 
-                )  
-            ) 
+               )  
+           ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
+       )
         
         (phase "Movement" 
             (play 
                 (forEach Piece)
-            )
-        )
+           )
+       )
         }
         
         (end
@@ -40,8 +40,8 @@
             (if (no Moves <Players:player1>) (result <Players:player2> Win))
             (if (is Line 3 <Players:player1>) (result <Players:player1> Win))
             }
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -68,13 +68,13 @@
         (credit "Matthew Stephenson")
         (origin  "This game was played in Sri Lanka, around 1873.")
         }
-    )
+   )
     
     (graphics {
         
     })
     (ai
         "Niranchy_ai"
-    )
+   )
 )
 

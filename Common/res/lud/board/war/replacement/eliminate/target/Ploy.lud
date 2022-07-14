@@ -9,10 +9,10 @@
             (to 
                 if:("IsEnemyAt" (to)) 
                 (apply "RemovePiece")
-            )
-        )
+           )
+       )
         (move Set Rotation)  
-    ) 
+   ) 
 )
 
 (define "StepOrChangeDirection"
@@ -23,11 +23,11 @@
             (to 
                 if:(not ("IsFriendAt" (to))) 
                 (apply "RemovePiece")
-            )
+           )
             #2
-        ) 
+       ) 
         (move Set Rotation)  
-    ) 
+   ) 
 )
 
 (define "CaptureCommandeOf" (trigger "CommanderCaptured" #1))
@@ -64,12 +64,12 @@
                 (or 
                     (move Set Rotation (to (last To))) 
                     (move Pass)
-                )
+               )
                 (forEach Piece <Version:consequence>)
-            )
-        )
+           )
+       )
         <Version:endRules>
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -98,13 +98,13 @@
                 (or 
                     (= (where "Commander" Next) Off) 
                     (= (count Pieces Next) 1)
-                ) 
+               ) 
                 (result Mover Win)
-            )
-        )
+           )
+       )
         >
         "The two players version of Ploy."
-    )** 
+   )** 
     
     (item "4 Players"
         <4>
@@ -152,7 +152,7 @@
                 (if (= (count Pieces P3) 1) (and ("CaptureCommandeOf" P3) (remove (where "Commander" P3))))
                 (if (= (count Pieces P4) 1) (and ("CaptureCommandeOf" P4) (remove (where "Commander" P4))))
             })
-        )
+       )
         >
         <
         (end {
@@ -163,7 +163,7 @@
         })
         >
         "The four players version with no team of Ploy."
-    )
+   )
     
     (item "4 Players With Team"
         <4>
@@ -219,10 +219,10 @@
             (if (and ("CommanderOfWasCapture" P2) ("CommanderOfWasCapture" P4))  (result Team1 Win))
             (if (and ("CommanderOfWasCapture" P1) ("CommanderOfWasCapture" P3))  (result Team2 Win))
             }
-        )
+       )
         >
         "The four players version with no team of Ploy."
-    )
+   )
 })
 
 //------------------------------------------------------------------------------
@@ -242,7 +242,7 @@
         (credit "Eric Piette")
         (date "1970")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Green))
@@ -258,6 +258,6 @@
     
     (ai 
         "Ploy_ai"
-    )
+   )
     
 )

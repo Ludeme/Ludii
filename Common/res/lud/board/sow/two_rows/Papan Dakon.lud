@@ -4,7 +4,7 @@
     (trackSite FirstSite 
         from:(mapEntry "RightMost" Mover)
         if:(is Empty (to))
-    )
+   )
 )
 (define "PlayableSites" (sites (values Remembered "Playable")))
 (define "NoPieceOnBoard" (all Sites (union (sites Top) (sites Bottom)) if:(is Empty (site))))
@@ -20,7 +20,7 @@
             (track "Track1" "0,8,E,S,W" loop:True P1)
             (track "Track2" "15,7,W,N,E" loop:True P2)
             }
-        )
+       )
         (piece "Seed" Shared)
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
@@ -42,20 +42,20 @@
                             (if ("SameTurn") 
                                 "LastHoleSowed" 
                                 (sites Mover) 
-                            ) 
+                           ) 
                             if:(and (> (count at:(from)) 0) (is In (from) ("PlayableSites")))
-                        )
+                       )
                         (then
                             (sow
                                 "Track"
                                 owner:(mover)
                                 apply:(if (and (!= (to) (mapEntry Mover)) (< 1 (count at:(to))))
                                     (moveAgain)
-                                )
+                               )
                                 skipIf:(if (!= (to) (mapEntry Mover)) (not (is In (to) ("PlayableSites"))))
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (if (and (is In (last To afterConsequence:True) (sites Mover)) ("SameTurn"))
                         (if (is In (last To afterConsequence:True) ("PlayableSites"))
                             (move
@@ -67,24 +67,24 @@
                                         (from (last To))
                                         (to (mapEntry Mover))
                                         count:(count at:(last To))
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                   )
+                               )
+                           )
+                       )
+                   )
                     (then (if ("NoPieceOnBoard") (forget Value "Playable" All)))
-                )
-            )
+               )
+           )
             
             (end (if ("NoPieceOnBoard")
                     {
                     (if (> 7 (count at:(mapEntry P1))) (result P2 Win))
                     (if (> 7 (count at:(mapEntry P2))) (result P1 Win))
                     }
-                )
-            )
+               )
+           )
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-        )
+       )
         
         (phase "BetweenRounds"
             (play
@@ -95,14 +95,14 @@
                             (to "RightMostEmpty")
                             count:7
                             (then (remember Value "Playable" (last To)))
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase (all Passed) "Sowing")
-        )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -118,7 +118,7 @@
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

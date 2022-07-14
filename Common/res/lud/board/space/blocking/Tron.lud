@@ -10,17 +10,17 @@
                         (if 
                             (not (is Empty (to))) 
                             (trigger "Collision" (mover))
-                        )
-                    )
-                ) 
+                       )
+                   )
+               ) 
                 (then 
                     (add 
                         (piece (id "Square" Mover)) 
                         (to (last From)) 
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (piece "Square" Each)
     })  
     (rules 
@@ -32,7 +32,7 @@
         (play (forEach Piece))
         
         (end (if (is Triggered "Collision" Mover) (result Next Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -50,7 +50,7 @@
         (credit "Eric Piette")
         (date "2008")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Blue))
@@ -62,6 +62,6 @@
     
     (ai 
         "Tron_ai"
-    )
+   )
     
 )

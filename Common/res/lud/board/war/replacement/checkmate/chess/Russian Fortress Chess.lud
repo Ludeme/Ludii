@@ -3,9 +3,9 @@
         (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
-            )
-        )
-    ) 
+           )
+       )
+   ) 
 )
 
 (define "DoubleStep"
@@ -14,7 +14,7 @@
         Forward 
         (between (exact 2) if:(is Empty (between))) 
         (to if:(is Empty (to))) 
-    )
+   )
 )
 
 (define "CanNotMove"
@@ -27,10 +27,10 @@
             (and 
                 ("IsInCheck" "King" #1)
                 ("CanNotMove" #1 #2)
-            )
+           )
             (remove (where (id "King" #1)))
-        )
-    )		
+       )
+   )		
 )
 
 (define "EdgesOfVertex" 
@@ -40,20 +40,20 @@
 (define "VerticesInCommon" 
     (intersection (sites Incident Vertex of:Cell at:#1) 
         (sites Incident Vertex of:Cell at:#2)
-    ) 
+   ) 
 )
 
 (define "EdgeInCommon" 
     (intersection (sites Incident Edge of:Cell at:#1) 
         (sites Incident Edge of:Cell at:#2)
-    ) 
+   ) 
 )
 
 (define "NoEdgeBetweenCells"
     (all Sites
         ("EdgeInCommon" #1 #2)
         if:(is Empty Edge (site))
-    )
+   )
 )
 
 (define "EdgeBetweenCells"
@@ -61,8 +61,8 @@
         (all Sites
             ("EdgeInCommon" #1 #2)
             if:(is Empty Edge (site))
-        )
-    )
+       )
+   )
 )
 
 (define "DirectionBetweenSites" (directions from:#1 to:#2))
@@ -71,7 +71,7 @@
     (all Sites
         (sites Between (directions Cell from:#1 to:#2) from:#1 fromIncluded:True to:#2)
         if:(not ("EdgeBetweenCells" (site) (ahead (site) (directions Cell from:#1 to:#2))))
-    )
+   )
 )
 
 (define "NoVertexUsedByWallBetweenCells"
@@ -80,8 +80,8 @@
         if:(all Sites
             ("EdgesOfVertex" (site))
             if:(is Empty Edge (site))
-        )
-    )
+       )
+   )
 )
 
 (define "VertexUsedByWallBetweenCells"
@@ -92,7 +92,7 @@
     (all Sites
         (sites Between (directions Cell from:#1 to:#2) from:#1 fromIncluded:True to:#2)
         if:(not ("VertexUsedByWallBetweenCells" (site) (ahead (site) (directions Cell from:#1 to:#2))))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -108,7 +108,7 @@
                 (shift 0 12 (square 4))
                 (shift 12 12 (square 4))
             })
-        )
+       )
         (piece "Disc" Shared)
         (piece "King" Each
             (if (is Active (who at:(from)))
@@ -117,17 +117,17 @@
                         Orthogonal
                         (to if:(and (not ("IsFriendAt" (to))) ("NoEdgeBetweenCells" (from) (to)))
                             ("CaptureToPiece")
-                        )
-                    )
+                       )
+                   )
                     (move Step
                         Diagonal
                         (to if:(and (not ("IsFriendAt" (to))) ("NoVertexUsedByWallBetweenCells" (from) (to)))
                             ("CaptureToPiece")
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         (piece "Queen" Each
             (if (is Active (who at:(from)))
                 (or
@@ -141,11 +141,11 @@
                                 (if ("IsEnemyAt" (to))
                                     (remove 
                                         (to) 
-                                    )
-                                )
-                            ) 
-                        ) 
-                    )	
+                                   )
+                               )
+                           ) 
+                       ) 
+                   )	
                     (move
                         Slide 
                         Diagonal
@@ -156,14 +156,14 @@
                                 (if ("IsEnemyAt" (to))
                                     (remove 
                                         (to) 
-                                    )
-                                )
-                            )
-                        ) 
-                    )
-                )
-            )
-        )
+                                   )
+                               )
+                           )
+                       ) 
+                   )
+               )
+           )
+       )
         (piece "Knight" Each
             (if (is Active (who at:(from)))
                 (move 
@@ -174,31 +174,31 @@
                                 (sites Around 
                                     (forEach (sites Around (from) Diagonal)
                                         if:("NoVertexUsedByWallBetweenCells" (from) (site))
-                                    )
+                                   )
                                     Orthogonal
                                     if:(and ("NoEdgeBetweenCells" (from) (to)) (not ("IsFriendAt" (to))))
-                                )
+                               )
                                 (sites Distance Orthogonal from:(from) (exact 3))
-                            )
+                           )
                             (intersection
                                 (sites Around 
                                     (forEach (sites Around (from) Orthogonal)
                                         if:("NoEdgeBetweenCells" (from) (site))
-                                    )
+                                   )
                                     Diagonal
                                     if:(and ("NoVertexUsedByWallBetweenCells" (from) (to)) (not ("IsFriendAt" (to))))
-                                )
+                               )
                                 (sites Distance Orthogonal from:(from) (exact 3))
-                            )
-                        )
+                           )
+                       )
                         (apply 
                             if:("IsEnemyAt" (to))
                             (remove (to))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         (piece "Bishop" Each
             (if (is Active (who at:(from)))
                 (move
@@ -211,13 +211,13 @@
                             (if ("IsEnemyAt" (to))
                                 (remove 
                                     (to) 
-                                )
-                            )
-                        )
-                    ) 
-                )	
-            )
-        )
+                               )
+                           )
+                       )
+                   ) 
+               )	
+           )
+       )
         (piece "Rook" Each
             (if (is Active (who at:(from)))
                 (move
@@ -230,38 +230,38 @@
                             (if ("IsEnemyAt" (to))
                                 (remove 
                                     (to) 
-                                )
-                            )
-                        ) 
-                    ) 
-                )	
-            )
-        )
+                               )
+                           )
+                       ) 
+                   ) 
+               )	
+           )
+       )
         (piece "Pawn" Each
             (if (is Active (who at:(from)))
                 (or { 
                     (if (is In (from) (sites Start (piece (what at:(from)))))
                         "DoubleStep"
-                    )
+                   )
                     (move Step
                         Forward
                         (to if:(and (is Empty (to)) ("NoEdgeBetweenCells" (from) (to))))
-                    )
+                   )
                     (move Step
                         (directions {FR FL})
                         (to if:(and ("IsEnemyAt" (to)) ("NoVertexUsedByWallBetweenCells" (from) (to)))
                             (apply (remove (to)))
-                        )
-                    )
+                       )
+                   )
                     }
                     (then
                         (if (is In (last To) (sites Mover "Promotion")) 
                             (moveAgain)
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         (hand Each size:3)
         (regions "ExtraSquare" P1 (expand origin:181 steps:3))
         (regions "ExtraSquare" P2 (expand origin:191 steps:3))
@@ -305,12 +305,12 @@
                         (move
                             (from (site))
                             (to (intersection (sites Empty) (sites Mover "ExtraSquare")))
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase Mover (no Pieces Mover in:(sites Hand Mover)) "Playing")
-        )
+       )
         (phase "Playing"
             (play
                 (if "SameTurn"
@@ -323,22 +323,22 @@
                             ("RemoveKingIfCheckmate" P3 3)
                             ("RemoveKingIfCheckmate" P4 4)
                         }) 
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         }
         (end {
             (forEach NonMover
                 if:(= (where "King" Player) Off) 
                 (result Player Loss)
-            )	
+           )	
             (if (and {(not (is Active P1)) (not (is Active P3)) (is Active P2) }) (result P2 Win))
             (if (and {(not (is Active P1)) (not (is Active P3)) (is Active P4) }) (result P4 Win))
             (if (and {(not (is Active P2)) (not (is Active P4)) (is Active P1) }) (result P1 Win))
             (if (and {(not (is Active P2)) (not (is Active P4)) (is Active P3) }) (result P3 Win))
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -356,7 +356,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Russia, from around 1800 to 1850.")
         }
-    )
+   )
     
     (graphics {
         (piece Scale "Pawn" 0.825)

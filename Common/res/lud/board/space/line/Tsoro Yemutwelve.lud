@@ -4,8 +4,8 @@
         (forEach 
             (sites Occupied by:Next container:"Board") 
             if:(not (is Line 3 Orthogonal through:(site)))
-        )
-    )
+       )
+   )
 )
 
 (define "RemoveEnemyPiece" 
@@ -14,8 +14,8 @@
         (move
             Remove
             (sites Occupied by:Next container:"Board") 
-        )
-    )
+       )
+   )
 )
 
 (define "IfLine3MoveAgain" 
@@ -23,8 +23,8 @@
         (if 
             (is Line 3 Orthogonal exact:True) 
             (moveAgain)
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -41,10 +41,10 @@
                 Step 
                 (to if:(is Empty (to))) 
                 "IfLine3MoveAgain" 
-            )
-        ) 
+           )
+       ) 
         }
-    )  
+   )  
     (rules 
         (start (place "Marker" "Hand" count:12))
         
@@ -57,11 +57,11 @@
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
                         "IfLine3MoveAgain" 
-                    )  
-                )
-            ) 
+                   )  
+               )
+           ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
+       )
         
         (phase "Movement" 
             (play 
@@ -72,15 +72,15 @@
                         (move 
                             (from (sites Occupied by:Mover))
                             (to (sites Empty))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         }
         
         (end (if (<= (count Pieces Next) 2) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -98,6 +98,6 @@
         (credit "Eric Piette")
         (origin  "This game was played in Zimbabwe, around 1964.")
         }
-    )
+   )
     
 )

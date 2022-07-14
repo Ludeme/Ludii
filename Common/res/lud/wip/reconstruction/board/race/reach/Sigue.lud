@@ -14,7 +14,7 @@
         })
         (play (do (roll) next:(forEach Piece))) // The rules are currently really unclear, need more from Walter
         (end (if (no Moves Next) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -25,17 +25,17 @@
         <2>  
         <(set Team 1 {P1}) (set Team 2 {P2})>
         "The game has 2 players."
-    )   
+   )   
     (item "4" 
         <4>  
         <(set Team 1 {P1 P3}) (set Team 2 {P2 P4})>
         "The game has 4 players."
-    )  
+   )  
     (item "6" 
         <6>  
         <(set Team 1 {P1 P3 P5}) (set Team 2 {P2 P4 P6})>
         "The game has 6 players."
-    )*  
+   )*  
 })
 
 //------------------------------------------------------------------------------
@@ -53,7 +53,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Senegal, around 1826.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)    

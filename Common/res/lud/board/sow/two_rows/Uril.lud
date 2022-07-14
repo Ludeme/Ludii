@@ -7,7 +7,7 @@
     (equipment { 
         (mancalaBoard 2 6
             (track "Track" "1,E,N,W" loop:True)
-        )
+       )
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
@@ -22,7 +22,7 @@
                     (from 
                         (sites Mover) 
                         if:(< 0 (count at:(from)))
-                    )
+                   )
                     (then 
                         (sow  
                             if:(and 
@@ -30,28 +30,28 @@
                                 (or 
                                     (= (count at:(to)) 2) 
                                     (= (count at:(to)) 3)
-                                )
-                            ) 
+                               )
+                           ) 
                             apply:(fromTo 
                                 (from (to)) 
                                 (to (mapEntry (mover))) 
                                 count:(count at:(to))
-                            )
+                           )
                             includeSelf:False
                             backtracking:True
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 ifAfterwards:(< 0 (count in:(sites Next)))
-            )
-        )
+           )
+       )
         (end
             (forEach Player
                 if:(>= (count at:(mapEntry Player)) 25)
                 (result Player Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -69,12 +69,12 @@
         (credit "Eric Piette")
         (origin  "This game was played in Cabo Verde, from around 2006 to 2017.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
     })
     (ai
         "Uril_ai"
-    )
+   )
 )

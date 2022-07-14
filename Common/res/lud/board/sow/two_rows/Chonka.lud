@@ -14,7 +14,7 @@
             (track "Track1" <Track:directionP1> loop:True P1)
             (track "Track2" <Track:directionP2> loop:True P2)
             }
-        )
+       )
         (piece "Seed" Shared) 
         (regions P1 (sites Bottom))                    // P1 home
         (regions P2 (sites Top))                       // P2 home   
@@ -31,9 +31,9 @@
                         ("SameTurn") 
                         "LastHoleSowed" 
                         (sites Mover) 
-                    ) 
+                   ) 
                     if:(> (count at:(from)) 0)
-                )
+               )
                 (then 
                     (sow
                         apply:(if (!= (to) (mapEntry Mover))
@@ -44,27 +44,27 @@
                                         (from ("OppositePitTwoRows" (to))) 
                                         (to (mapEntry Mover)) 
                                         count:(count at:("OppositePitTwoRows" (to)))
-                                    ) 
+                                   ) 
                                     (fromTo 
                                         (from (to)) 
                                         (to (mapEntry Mover)) 
                                         count:(count at:(to))
-                                    )
-                                )
-                            )
-                        )
+                                   )
+                               )
+                           )
+                       )
                         
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (end
             (if (<= ("GoalNumCapturedCounters") (count at:(mapEntry Mover)))
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -83,7 +83,7 @@
         "Direction/CCW"
         }
         variations:{"Direction/CW"}
-    )*
+   )*
     
 })
 
@@ -103,7 +103,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Sri Lanka., around 1909.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

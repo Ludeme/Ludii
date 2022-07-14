@@ -6,22 +6,22 @@
             (or 
                 ("HopRotationalCapture") 
                 ("StepRotationalToEmpty") 
-            )
-        )
+           )
+       )
     })  
     
     (rules 
         (start {
-            (place "Counter1" (sites {2..5 10..13 18..21})  )
+            (place "Counter1" (sites {2..5 10..13 18..21}) )
             (place "Counter2" (sites {1 9 17 6..8 14..16 22..24}))
         })
         
         (play 
             (forEach Piece)
-        )
+       )
         
         (end (if (no Pieces Next) (result Next Loss)))  
-    )
+   )
 ) 
 
 //------------------------------------------------------------------------------
@@ -39,7 +39,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, around 1935.")
         }
-    )
+   )
     
     (graphics {
         
@@ -47,5 +47,5 @@
     
     (ai
         "Bara Guti (Bihar)_ai"
-    )
+   )
 )

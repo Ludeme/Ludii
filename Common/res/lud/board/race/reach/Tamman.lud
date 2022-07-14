@@ -19,12 +19,12 @@
                         (shift 4 4 (square 2))
                     })
                     edges:{{2 9} {5 12} {8 15} {6 18} {8 20} {15 27} {17 29} {20 27} {23 30} {26 33} {7 19} {16 28}}
-                )
+               )
             })
             {
             <Players:tracks>
             }
-        )
+       )
         ("StickDice" 4)
         (piece "Marker" Each
             (move 
@@ -42,17 +42,17 @@
                                                 (from (site) level:(level))
                                                 (to 
                                                     (mapEntry "Entry" (who at:(site) level:(level)))
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )	
-        )
+                                               )
+                                           )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )	
+       )
         (regions "SafeSites" (sites {2 6 14 20}))
         (map "Throw" {(pair 0 8) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})
         <Players:entries>
@@ -65,12 +65,12 @@
                 (then
                     (if (and ("Throw4") (not ("SameTurn")))
                         (moveAgain)
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (end (if ("AllPiecesInCenter") (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -89,7 +89,7 @@
         >
         <(map "Entry" {(pair P1 2) (pair P2 20)})>
         "The game is played with 2 players."
-    )   
+   )   
     (item "3" <3> 
         <
         (start {
@@ -105,7 +105,7 @@
         >
         <(map "Entry" {(pair P1 2) (pair P2 6) (pair P3 20)})>
         "The game is played with 3 players."
-    )   
+   )   
     (item "4" <4> 
         <
         (start {
@@ -123,7 +123,7 @@
         >
         <(map "Entry" {(pair P1 2) (pair P2 6) (pair P3 20) (pair P4 14)})>
         "The game is played with 4 players."
-    )*   
+   )*   
 })
 
 //------------------------------------------------------------------------------
@@ -133,7 +133,7 @@
         "Players/4"
         }
         variations:{"Players/2" "Players/3"}
-    )*
+   )*
 })
 
 //------------------------------------------------------------------------------
@@ -151,7 +151,7 @@
         (classification "board/race/reach")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (stackType site:8 Ring)

@@ -12,9 +12,9 @@
                 {0 2} {0 3} {3 2} {3 4} {1 4} {4 5} {1 5} {3 7} {4 8}
                 {6 7} {7 8} {8 9} {6 10} {11 9} {10 7} {11 8}
                 }
-            )
+           )
             use:Vertex
-        )
+       )
         (hand Each)
         (piece "Marker"
             Each
@@ -22,10 +22,10 @@
                 Step
                 (to if:(is Empty (to)))
                 (then (if (is Line 3) (forEach Piece)))
-            )
-        )
+           )
+       )
         }
-    )
+   )
     (rules
         (start (place "Marker" "Hand" count:4))
         phases:{
@@ -37,20 +37,20 @@
                     (move
                         Remove
                         (sites Occupied by:Next container:"Board")
-                    )
+                   )
                     (move
                         (from (handSite Mover))
                         (to (sites Empty))
                         (then (if (is Line 3) (moveAgain)))
-                    )
-                )
-            )
+                   )
+               )
+           )
             (nextPhase
                 Mover
                 (= 0 (count in:(sites Hand Mover)))
                 "Movement"
-            )
-        )
+           )
+       )
         (phase
             "Movement"
             (play
@@ -59,12 +59,12 @@
                     (move
                         Remove
                         (sites Occupied by:Next container:"Board")
-                    )
+                   )
                     (forEach Piece)
-                )
-            )
-        )
+               )
+           )
+       )
         }
         (end (if (<= (count Pieces Next) 2) (result Mover Win)))
-    )
+   )
 )

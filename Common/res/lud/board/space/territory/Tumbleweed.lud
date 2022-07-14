@@ -8,42 +8,42 @@
         if:(>
             (count Sites in:(intersection (sites Occupied by:Mover) (sites LineOfSight at:(site))))
             (size Stack at:(site))
-        )
-    )
+       )
+   )
 )
 
 (define "TerritoryP1"
     (+ 
         (count Sites 
             in:(sites Occupied by:P1)
-        )
+       )
         (count Sites
             in:(forEach
                 (sites Empty)
                 if:(>
                     (count Sites in:(intersection (sites Occupied by:P1) (sites LineOfSight at:(site))))
                     (count Sites in:(intersection (sites Occupied by:P2) (sites LineOfSight at:(site))))
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 (define "TerritoryP2"
     (+ 
         (count Sites 
             in:(sites Occupied by:P2)
-        )
+       )
         (count Sites
             in:(forEach
                 (sites Empty)
                 if:(>
                     (count Sites in:(intersection (sites Occupied by:P2) (sites LineOfSight at:(site))))
                     (count Sites in:(intersection (sites Occupied by:P1) (sites LineOfSight at:(site))))
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -56,13 +56,13 @@
         (piece "Disc" Each)
         (piece "Disc" Neutral)
         }
-    )
+   )
     (rules
         (start 
             {
             (place Stack "Disc0" (centrePoint) count:2)
             }
-        )
+       )
         phases:{
         (phase "Opening" 
             (play
@@ -75,26 +75,26 @@
                                 (if (= 1 (who at:(last From)))
                                     (do (swap Players 1 2) next:(set NextPlayer (player 1)))
                                     (pass)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             (nextPhase (= 3 (count Moves)) "Play")
-        )
+       )
         (phase "Play"
             (play
                 (or 
                     (move Select (from "PlayableSites")
                         (then
                             (add (to (last From)) count:(- "FriendlyInSight" ((size Stack at:(last From)))) stack:True)
-                        )
-                    )
+                       )
+                   )
                     (move Pass)
-                )
-            )
-        )
+               )
+           )
+       )
         }
         (end
             (if
@@ -104,10 +104,10 @@
                     (score P1 "TerritoryP1")
                     (score P2 "TerritoryP2")
                     }
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -148,7 +148,7 @@
         (credit "Designer: Mike Zapawa. Implemented by Michael Amundsen and Alek Erickson")
         (date "2020")
         }
-    )
+   )
     
     (graphics {
         (player Colour Neutral (colour Blue))

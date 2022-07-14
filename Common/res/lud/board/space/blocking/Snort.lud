@@ -10,11 +10,11 @@
             (move Add
                 (to 
                     (difference (sites Empty) (sites Around (sites Occupied by:Next) Orthogonal))
-                )
-            )
-        )
+               )
+           )
+       )
         (end (if (no Moves Next) (result P1 Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -34,7 +34,7 @@
         (credit "Eric Piette")
         (date "1970")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour White))

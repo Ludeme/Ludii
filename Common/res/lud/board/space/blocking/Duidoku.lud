@@ -16,14 +16,14 @@
                                 (if (is In (to) (sites "Square7"))
                                     (all Sites (sites "Square7") if:(!= (id #1 Neutral) (what at:(site))))
                                     (all Sites (sites "Square8") if:(!= (id #1 Neutral) (what at:(site))))
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
+   )
 )
 
 (define "AddPiece"
@@ -35,8 +35,8 @@
                 (all Sites (sites Column (column of:(to))) if:(!= (id #1 Neutral) (what at:(site))))
                 ("CheckLineRightSubGame" #1)
             })
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -77,12 +77,12 @@
                 ("AddPiece" "8")
                 ("AddPiece" "9")
             })
-        )
+       )
         (end { 
             (if (all Sites (sites Board) if:(is Occupied (site))) (result Mover Draw))
             ("BlockWin")
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -100,7 +100,7 @@
         (credit "Eric Piette")
         (date "2008")
         }
-    )
+   )
     (graphics {
         (board Style Sudoku)
         (player Colour Neutral (colour 0 0 0 0))

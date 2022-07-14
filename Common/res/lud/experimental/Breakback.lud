@@ -15,12 +15,12 @@
                     (to if:(or 
                             (is Empty (to)) 
                             ("IsEnemyAt" (to))
-                        ) 
+                       ) 
                         (apply (remove (to)))
-                    )
-                )
+                   )
+               )
             })
-        )
+       )
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
     })  
@@ -34,11 +34,11 @@
             (priority	
                 (forEach Piece ("StepBackwardToEmpty"))
                 (forEach Piece)
-            )
-        )
+           )
+       )
         
         (end (if "ReachedTarget" (result Mover Win))) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -78,7 +78,7 @@
         (credit "Eric Piette")
         (date "13-03-2021")
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)
@@ -86,5 +86,5 @@
     
     (ai
         "Breakback_ai"
-    )
+   )
 )

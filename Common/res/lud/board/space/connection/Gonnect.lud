@@ -17,16 +17,16 @@
                 (move Add
                     (to (sites Empty))
                     (then ("EncloseCapture" Orthogonal))
-                )
+               )
                 ifAfterwards:("HasFreedom" Orthogonal)
-            )
-        )
+           )
+       )
         
         (end {
             (if (is Connected Mover) (result Mover Win))
             ("BlockWin")
         }) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -55,7 +55,7 @@
         (credit "Eric Piette")
         (date "2000")
         }
-    )
+   )
     
     (graphics {
         (board Style Go)
@@ -65,6 +65,6 @@
     
     (ai 
         "Gonnect_ai"
-    )
+   )
     
 )

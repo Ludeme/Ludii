@@ -10,7 +10,7 @@
         (board (square 1)) 
         (piece "Marker" Neutral)
         }
-    )  
+   )  
     (rules
         (start (set Count <Size:pile> at:0)) 
         
@@ -25,12 +25,12 @@
                                 (if (= (count at:(last To)) 1)
                                     (remove (last To))
                                     (and (set Count at:(last To) (- (count at:(last To)) 1)) (moveAgain)) 
-                                )
-                            ) 
-                        )
-                    )
+                               )
+                           ) 
+                       )
+                   )
                     (move Pass (then (set Value Mover (- ("NumRemove") 1))))
-                )
+               )
                 (move
                     Select
                     (from (sites Occupied by:Neutral))
@@ -40,14 +40,14 @@
                             (and 
                                 (set Count at:(last To) (- (count at:(last To)) 1)) 
                                 (moveAgain)
-                            ) 
-                        )
-                    ) 
-                )
-            )
-        ) 
+                           ) 
+                       )
+                   ) 
+               )
+           )
+       ) 
         (end (if (no Moves Next) (result <Result> Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -99,12 +99,12 @@
         (credit "Eric Piette")
         (date "1963")
         }
-    )
+   )
     
     (graphics {
         (no Board)
     })
     (ai
         "Fibonacci Nim_ai"
-    )
+   )
 )

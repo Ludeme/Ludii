@@ -22,7 +22,7 @@
             (track "TrackCW2" "29,27,28,12,E,30,33,34" loop:True P2)
             }
             use:Vertex
-        )
+       )
         (piece "Seed" Shared)
         (map "Opposite" {
             (pair 29 35) (pair 35 29) (pair 24 30) (pair 30 24) 
@@ -44,9 +44,9 @@
                                     (if ("SameTurn")
                                         (sites {(var "Replay")})
                                         (sites Mover)
-                                    )
+                                   )
                                     if:(and (if ("SameTurn") True (= 1 (count at:(from)))) (is Occupied (from)))
-                                )
+                               )
                                 (then 
                                     (sow
                                         "TrackCCW"
@@ -57,8 +57,8 @@
                                                     (remove
                                                         (mapEntry "Opposite" (to))
                                                         count:1
-                                                    )
-                                                )
+                                                   )
+                                               )
                                                 (set Var "Direction" 0)
                                                 (set Var "NumCapture" 0)
                                             })
@@ -68,20 +68,20 @@
                                                 (set Var "Direction" 1)
                                                 (set Var "NumCapture" 1)
                                             })
-                                        )
-                                    )
-                                )
-                            )
-                        )
+                                       )
+                                   )
+                               )
+                           )
+                       )
                         (if (!= (var "Direction") 1)
                             (move Select
                                 (from
                                     (if ("SameTurn")
                                         (sites {(var "Replay")})
                                         (sites Mover)
-                                    )
+                                   )
                                     if:(and (if ("SameTurn") True (= 1 (count at:(from)))) (is Occupied (from)))
-                                )
+                               )
                                 (then 
                                     (sow
                                         "TrackCW"
@@ -92,8 +92,8 @@
                                                     (remove
                                                         (mapEntry "Opposite" (to))
                                                         count:1
-                                                    )
-                                                )
+                                                   )
+                                               )
                                                 (set Var "Direction" 0)
                                                 (set Var "NumCapture" 0)
                                             })
@@ -103,13 +103,13 @@
                                                 (set Var "Direction" 2)
                                                 (set Var "NumCapture" 1)
                                             })
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
                 
                 (if (!= 1 (var "NumCapture"))
                     (or
@@ -119,9 +119,9 @@
                                     (if ("SameTurn")
                                         (sites {(var "Replay")})
                                         (sites Mover)
-                                    )
+                                   )
                                     if:(and (if ("SameTurn") True (< 1 (count at:(from)))) (is Occupied (from)))
-                                )
+                               )
                                 (then 
                                     (sow
                                         "TrackCCW"
@@ -132,8 +132,8 @@
                                                     (remove
                                                         (mapEntry "Opposite" (to))
                                                         count:(count at:(to))
-                                                    )
-                                                )
+                                                   )
+                                               )
                                                 (set Var "Direction" 0)
                                                 (set Var "NumCapture" 0)
                                             })
@@ -143,20 +143,20 @@
                                                 (set Var "Direction" 1)
                                                 (set Var "NumCapture" 2)
                                             })
-                                        )
-                                    )
-                                )
-                            )
-                        )
+                                       )
+                                   )
+                               )
+                           )
+                       )
                         (if (!= (var "Direction") 1)
                             (move Select
                                 (from
                                     (if ("SameTurn")
                                         (sites {(var "Replay")})
                                         (sites Mover)
-                                    )
+                                   )
                                     if:(and (if ("SameTurn") True (< 1 (count at:(from)))) (is Occupied (from)))
-                                )
+                               )
                                 (then 
                                     (sow
                                         "TrackCW"
@@ -167,8 +167,8 @@
                                                     (remove
                                                         (mapEntry "Opposite" (to))
                                                         count:(count at:(to))
-                                                    )
-                                                )
+                                                   )
+                                               )
                                                 (set Var "Direction" 0)
                                                 (set Var "NumCapture" 1)
                                             })
@@ -178,22 +178,22 @@
                                                 (set Var "Direction" 2)
                                                 (set Var "NumCapture" 2)
                                             })
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         (end
             (forEach NonMover
                 if:("NoPiece" Player)
                 (result Player Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -210,7 +210,7 @@
         (classification "board/sow")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

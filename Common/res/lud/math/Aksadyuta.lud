@@ -10,7 +10,7 @@
     (equipment {
         (board
             (square 1)
-        )
+       )
         (piece "Bean" Shared)
         (hand Each)
     })
@@ -21,8 +21,8 @@
                 (from (sites Board))
                 (to (handSite Mover))
                 count:(value Random (range 1 (count at:0)))
-            )
-        )
+           )
+       )
         (end {
             (if (is Mover P2) {
                 (if (and ("Krta" (handSite P1)) (not ("Krta" (handSite P2)))) (result P1 Win))
@@ -40,7 +40,7 @@
                 (if (and ("Treta" (handSite P1))  ("Treta" (handSite P2))) (result Mover Draw))
             })
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -84,7 +84,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, from around 1000BCE to 901BCE.")
         }
-    )
+   )
     
     (graphics {
         (player Colour Shared (colour Brown))
@@ -93,5 +93,5 @@
     
     (ai
         "Aksadyuta_ai"
-    )
+   )
 )

@@ -5,12 +5,12 @@
             (sites Direction
                 from:(from)
                 stop:(< 0 (who at:(to)))
-            )
+           )
             if:(< 
                 (count Steps (from) (centrePoint))
                 (count Steps (to) (centrePoint))
-            )
-        ) 
+           )
+       ) 
         copy:True
         (then 
             (do
@@ -21,35 +21,35 @@
                         (count Steps
                             (last To)
                             (centrePoint)
-                        ) 
+                       ) 
                         (count Steps 
                             (last From) 
                             (centrePoint)
-                        )
-                    )
+                       )
+                   )
                     stack:True
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 (define "MoveWholeStack"
     (move
         (from 
             if:#1
-        )
+       )
         (to 
             (sites Direction
                 from:(from)
                 stop:(< 0 (who at:(to)))
-            )
+           )
             if:(< 
                 (count Steps (from) (centrePoint))
                 (count Steps (to) (centrePoint))
-            )
+           )
             (apply (remove (to)))
-        )
+       )
         count:(size Stack at:(from))
         stack:True
         (then 
@@ -60,18 +60,18 @@
                         (count Steps
                             (last To)
                             (centrePoint)
-                        ) 
+                       ) 
                         (count Steps 
                             (last From) 
                             (centrePoint)
-                        )
-                    )
+                       )
+                   )
                     stack:True
-                )
+               )
                 (add (piece "Disc0") (to (last From)))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "MoveStackPart"
@@ -79,14 +79,14 @@
         (move
             (from 
                 if:#1
-            )
+           )
             (to 
                 (sites Direction
                     from:(from)
                     stop:(< 0 (who at:(to)))
-                )
+               )
                 (apply (remove (to)))
-            )
+           )
             count:(value)
             stack:True
             (then
@@ -94,25 +94,25 @@
                     (< 
                         (count Steps (last From) (centrePoint))
                         (count Steps (last To) (centrePoint))
-                    )
+                   )
                     (add 
                         (to (last To)) 
                         count:(- 
                             (count Steps
                                 (last To)
                                 (centrePoint)
-                            ) 
+                           ) 
                             (count Steps 
                                 (last From) 
                                 (centrePoint)
-                            )
-                        )
+                           )
+                       )
                         stack:True
-                    )
-                )
-            )
-        )
-    )
+                   )
+               )
+           )
+       )
+   )
 )
 
 (define "MoveStack"
@@ -121,15 +121,15 @@
             ("MoveZeroStack")
             Neutral 
             top:True
-        )
+       )
         (forEach Piece 
             (or
                 ("MoveWholeStack" ~) 
                 ("MoveStackPart" (< 1 (size Stack at:(from)))) 
-            )
+           )
             Mover 
             top:True
-        )
+       )
     })
     
 )
@@ -140,7 +140,7 @@
         #1
         stop:(= (mover) (who at:(to)))
         stopIncluded:True
-    )
+   )
 )
 
 (define "LessThan"
@@ -154,25 +154,25 @@
                 in:(intersection 
                     ("CaptureDirection" #1) 
                     (sites Occupied by:Mover)
-                )
-            )
-        )
+               )
+           )
+       )
         (= 1 
             (count Sites 
                 in:(intersection 
                     ("CaptureDirection" #1) 
                     (sites Occupied by:Next)
-                )
-            )
-        )
+               )
+           )
+       )
         (= (next) 
             (who 
                 at:(ahead (last To) 
                     steps:(/ (count Sites in:("CaptureDirection" #1)) 2) 
                     #1
-                )
-            )
-        )
+               )
+           )
+       )
         (is Even (count Sites in:("CaptureDirection" #1)))
         (= (mover) (who at:(last To)))
         
@@ -182,24 +182,24 @@
                 at:(ahead (last To) 
                     steps:(/ (count Sites in:("CaptureDirection" #1)) 2) 
                     #1
-                )
-            )
-        )
+               )
+           )
+       )
         
         (<Rule>    //= //< 
             (size Stack 
                 at:(ahead (last To) 
                     steps:(count Sites in:("CaptureDirection" #1)) 
                     #1
-                )
-            )
+               )
+           )
             (size Stack 
                 at:(ahead (last To) 
                     steps:(/ (count Sites in:("CaptureDirection" #1)) 2) 
                     #1
-                )
-            )
-        )
+               )
+           )
+       )
         
     })
 )
@@ -221,8 +221,8 @@
             (last To) 
             steps:(/ (count Sites in:("CaptureDirection" #1)) 2) 
             #1
-        )
-    )
+       )
+   )
 )
 
 (define "RememberAllCapturables"
@@ -230,27 +230,27 @@
         (if
             ("Capturable" NNW)
             ("Remember" NNW)
-        )
+       )
         (if
             ("Capturable" W)
             ("Remember" W)
-        )
+       )
         (if
             ("Capturable" SSW)
             ("Remember" SSW)
-        )
+       )
         (if
             ("Capturable" SSE)
             ("Remember" SSE)
-        )
+       )
         (if
             ("Capturable" E)
             ("Remember" E)
-        )
+       )
         (if
             ("Capturable" NNE)
             ("Remember" NNE)
-        )
+       )
     })
 )
 
@@ -260,12 +260,12 @@
             ("MoveWholeStack" (is In (from) (sites (values Remembered)))) 
             Next 
             top:True
-        )
+       )
         (forEach Piece 
             ("MoveStackPart" (is In (from) (sites (values Remembered)))) 
             Next 
             top:True
-        )
+       )
     })
 )
 
@@ -279,7 +279,7 @@
         (piece "Disc" Each)
         (piece "Disc" Neutral)
         }
-    )
+   )
     (rules
         (start {
             (place "Disc0" (sites Board))
@@ -292,19 +292,19 @@
                         (and
                             (set Var 0)
                             ("Capture")
-                        )
+                       )
                         ("MoveStack")
-                    )
+                   )
                     ifAfterwards:("CapturableInAnyDirection")
-                )
+               )
                 (if
                     (= 1 (var))
                     (do
                         (set Var 0)
                         next:("Capture")
-                    )
+                   )
                     ("MoveStack")
-                )
+               )
                 (then
                     (and
                         (forget Value All)
@@ -315,20 +315,20 @@
                                 (and
                                     (set Var 1)
                                     (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         (end
             (if 
                 (no Moves Next)
                 (result Next Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //-----
@@ -354,7 +354,7 @@
     (info {
         (description 
             "A tactical game of battling stacks growing into existence."
-        )
+       )
         (rules
             "Ex nihilo is a game for 2 players played with stackable pieces of two colors on a hexagonal arrangement of hexagonal cells (a hex-hex board). The board starts out empty. The game is over as soon as one player is unable to make a move. The other player is then the winner.
             
@@ -377,7 +377,7 @@
             
             Obligatory chaining of captures:
             If, after a capture, the newly captured stack can capture a stack by making just one move, you must make that move. This must continue until you capture a stack that is not in a position to capture."
-        )
+       )
         (version "1.1.7")
         (classification "experimental")
         (publisher "Michael Amundsen")
@@ -388,7 +388,7 @@
         (piece Colour Neutral
             fillColour:(colour LightGrey)
             strokeColour:(colour 0 0 0 0)
-        )
+       )
     })
 )
 

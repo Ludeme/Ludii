@@ -3,7 +3,7 @@
     (equipment { 
         (board 
             (<Board:type> <BoardSize>)
-        ) 
+       ) 
         (piece "Marker" Each)
         (regions P1 { <Board:regionsP1> })
         (regions P2 { <Board:regionsP2> })
@@ -12,7 +12,7 @@
         <Meta:rule>
         (play (move Add (to (sites Empty))))
         (end (if (is Connected <Connection:type> Mover) (result Mover <Result>))) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -85,7 +85,7 @@
         (credit "Eric Piette")
         (date "12-10-2020")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Red))
@@ -97,5 +97,5 @@
     
     (ai
         "Diagonal Hex_ai"
-    )
+   )
 )

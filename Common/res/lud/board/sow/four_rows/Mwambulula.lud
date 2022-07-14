@@ -17,7 +17,7 @@
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" "16,E,N1,W" loop:True P2)
             }
-        )
+       )
         (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
         (regions "Home" P2 (sites Track "Track2"))                              // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
@@ -36,10 +36,10 @@
                     (from (sites Mover "Inner") if:(is Occupied (from)))
                     (to Cell (handSite Mover))
                     count:2
-                )
-            )
+               )
+           )
             (nextPhase Mover "NoSeedsInInner" "Sowing")
-        )
+       )
         
         (phase "Sowing"
             (play
@@ -50,9 +50,9 @@
                                 ("SameTurn") 
                                 "LastHoleSowed" 
                                 (sites Mover "Home") 
-                            ) 
+                           ) 
                             if:(> (count at:(from)) 0)
-                        )
+                       )
                         (then
                             (sow
                                 "Track"
@@ -65,51 +65,51 @@
                                                     (from ("OppositePitInner"))
                                                     (to (last From))
                                                     count:(count at:("OppositePitInner"))
-                                                )
+                                               )
                                                 (if (is Occupied ("OppositeOuterPitInner"))
                                                     (fromTo
                                                         (from ("OppositeOuterPitInner"))
                                                         (to (last From))
                                                         count:(count at:("OppositeOuterPitInner"))
-                                                    )
-                                                )
+                                                   )
+                                               )
                                                 (sow
                                                     (last From)
                                                     count:(+ (count at:("OppositePitInner")) (count at:("OppositeOuterPitInner")))
                                                     "Track"
                                                     owner:(mover)
-                                                )
+                                               )
                                             })
                                             (moveAgain)
-                                        )
+                                       )
                                         (if (is Occupied ("OppositeOuterPit" (to)))
                                             (and {
                                                 (fromTo
                                                     (from ("OppositeOuterPit" (to)))
                                                     (to (last From))
                                                     count:(count at:("OppositeOuterPit" (to)))
-                                                )
+                                               )
                                                 (if (is Occupied ("OppositeOuterPitOuter"))
                                                     (fromTo
                                                         (from ("OppositeOuterPitOuter"))
                                                         (to (last From))
                                                         count:(count at:("OppositeOuterPitOuter"))
-                                                    )
-                                                )
+                                                   )
+                                               )
                                                 (sow
                                                     (last From)
                                                     count:(+ (count at:("OppositeOuterPit" (to))) (count at:("OppositeOuterPitOuter")))
                                                     "Track"
                                                     owner:(mover)
-                                                )
+                                               )
                                             })
                                             (moveAgain)
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
                     (if (and (not ("SameTurn")) (is Occupied Cell (handSite Mover)))
                         (move Select
                             (from Cell (handSite Mover))
@@ -118,17 +118,17 @@
                                     (fromTo
                                         (from Cell (handSite Mover))
                                         (to (site))
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         }
         (end "ForEachNonMoverNoMovesLoss")
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -145,7 +145,7 @@
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

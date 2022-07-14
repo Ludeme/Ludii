@@ -10,7 +10,7 @@
             before:(count Rows)
             if:("IsEnemyAt" (between)) 
             (apply (remove (between)))
-        )
+       )
         (to if:(is Empty (to)))
         (then 
             (if (can Move 
@@ -22,16 +22,16 @@
                             if:(and 
                                 (not (is In (between) (sites ToClear))) 
                                 ("IsEnemyAt" (between))
-                            )
+                           )
                             (apply (remove (between)))
-                        )
+                       )
                         (to if:(is Empty (to)))
-                    )
-                ) 
+                   )
+               ) 
                 (moveAgain)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "DoubleCounterHop" ("HopDistance" Diagonal))
@@ -39,7 +39,7 @@
     ("HopDistance" 
         (from (last To)) 
         (if (is In (last To) (sites Outer)) (difference Diagonal OppositeDirection) SameDirection)
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -54,14 +54,14 @@
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-    )  
+   )  
     (rules 
         (start
             { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:4) (sites Phase 0)  ))
+            (place "Counter1" (difference (expand (sites Bottom) steps:4) (sites Phase 0) ))
             (place "Counter2" (difference (expand (sites Top) steps:4) (sites Phase 0)))
             }
-        )
+       )
         
         (play 
             (if "SameTurn"
@@ -69,9 +69,9 @@
                     (if "IsUnpromoted"
                         ("HopDiagonalSequenceCaptureAgain")
                         ("DoubleCounterHopAgain") // do the promoted move here
-                    )
+                   )
                     (move Pass)
-                )
+               )
                 (or 
                     (forEach Piece "Counter" 
                         (or
@@ -80,29 +80,29 @@
                                 Step 
                                 Diagonal
                                 (to if:(is Empty (to)))
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (forEach Piece "DoubleCounter"
                         (or
                             ("DoubleCounterHop")
                             (move
                                 Slide 
                                 (directions Diagonal) 
-                            ) 
-                        )
-                    )
-                )
+                           ) 
+                       )
+                   )
+               )
                 (then 
                     (if (and "IsUnpromoted" "JumpToPromotionZone")
                         (move Promote (last To) (piece "DoubleCounter") Mover)
-                    )
-                )	
-            )
-        ) 
+                   )
+               )	
+           )
+       ) 
         
         (end ("BlockWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -119,7 +119,7 @@
         (classification "board/war/leaping/diagonal")
         (credit "Matthew Stephenson and Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)
@@ -128,5 +128,5 @@
     
     (ai
         "Dam_ai"
-    )
+   )
 )

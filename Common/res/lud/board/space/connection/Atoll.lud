@@ -5,8 +5,8 @@
             (remove
                 (rotate 90 (hex Rectangle 13 12))
                 cells:{138 139 148 149 0 1 10 11 69 80}
-            )
-        )
+           )
+       )
         (piece "Marker" Each)
     })
     (rules
@@ -21,19 +21,19 @@
                 (if (or 
                         (is Connected {(sites {132..135}) (sites {4..7})}) 
                         (is Connected {(sites {131 120 108 97 85}) (sites {54 42 31 19 8})}) 
-                    )
+                   )
                     (result Mover Win)
-                )
+               )
                 (if (or 
                         (is Connected {(sites {121 109 98 86 75}) (sites {64 53 41 30 18})}) 
                         (is Connected {(sites {136..139}) (sites {0..3})}) 
-                    )
+                   )
                     (result Mover Win)
-                )
+               )
                 }
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -57,6 +57,6 @@
         (credit "Eric Piette")
         (date "01-2008")
         }
-    )
+   )
     
 )

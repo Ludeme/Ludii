@@ -10,10 +10,10 @@
             (move Add 
                 (piece (mover) state:0) 
                 (to (sites Empty))
-            )
-        )
+           )
+       )
         (end ("NoMoves" <End:result>))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -85,7 +85,7 @@
         (classification "board/space/blocking")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Blue))
@@ -93,5 +93,5 @@
     })
     (ai
         "Domineering_ai"
-    )
+   )
 )

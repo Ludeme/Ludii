@@ -15,10 +15,10 @@
                 (or
                     ("SurroundedDirections" N S W E)
                     ("SurroundedDirections" NE SE SW NW)
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -30,9 +30,9 @@
             (add
                 (square 7)
                 edges:{{16 24} {24 32} {30 24} {24 18}}
-            )
+           )
             use:Vertex
-        )
+       )
         (piece "Marker" Each
             (move Step 
                 (to if:(is Empty (to)))
@@ -41,11 +41,11 @@
                         (and
                             (set Value Mover "HowManySquareSurroundedEmptyPoint")
                             (moveAgain)
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         (hand Each)
     })
     
@@ -56,11 +56,11 @@
         (phase "FirstPlacement" P1
             (play (move (from (handSite Mover)) (to (sites Centre))))
             (nextPhase "Placement")	
-        )
+       )
         (phase "Placement" 
             (play (move (from (handSite Mover)) (to (sites Empty))))
             (nextPhase Mover ("HandEmpty" Mover) "Playing")	
-        )
+       )
         (phase "Playing" 
             (play
                 (if ("SameTurn")
@@ -72,19 +72,19 @@
                                 (and 
                                     (moveAgain)
                                     (set Value Mover (- (value Player Mover) 1))
-                                )
+                               )
                                 (set Value Mover 0)
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (forEach Piece)
-                )
-            )
-        )
+               )
+           )
+       )
         }
         
         (end (if (no Pieces Next) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -102,7 +102,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Xinjiang, from around 1992 to 1997.")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Black))
@@ -113,5 +113,5 @@
     
     (ai
         "Fang_ai"
-    )
+   )
 )

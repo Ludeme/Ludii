@@ -6,11 +6,11 @@
         (piece "Cross" P2) 
         (piece "Y" P3) 
         }
-    )  
+   )  
     (rules 
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -28,7 +28,7 @@
         (author "Ken Mask")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics
         {
@@ -36,10 +36,10 @@
         (player Name P2 "X")
         (player Name P3 "Y")
         }
-    )
+   )
     
     (ai 
         "Tic-Tac-Mo_ai"
-    )
+   )
     
 )

@@ -11,7 +11,7 @@
                         in:(intersection 
                             (sites Empty) 
                             (sites Around (site) includeSelf:True)
-            ))))
+           ))))
             (remove (site))
 )))
 
@@ -20,7 +20,7 @@
         Add
         (to (sites Empty) 
             if:(not "TooClose")
-        )
+       )
         (then 
             (do ("Capture") next:("UpdateScore"))
 )))
@@ -40,7 +40,7 @@
                 (is Empty (to))
                 (< (count Pieces Mover in:(sites Around (from)))
                     (- (count Pieces Mover in:(sites Around (to))) 1)
-        )))
+       )))
         (then 
             (do ("Capture") next:("UpdateScore"))
 )))
@@ -52,7 +52,7 @@
                 (is Empty (to))
                 (> (count Pieces Next in:(sites Around (from)))
                     (count Pieces Next in:(sites Around (to)))
-        )))
+       )))
         (then 
             (do ("Capture") next:("UpdateScore"))
 )))
@@ -65,29 +65,29 @@
                         from:(sites Occupied by:Mover)
                         to:(sites Around (from) if:(is Mover (who at:(to))))
                         1
-                    )
-                )
+                   )
+               )
                 2
-            )
-        )
+           )
+       )
         (set Score Next 
             (/ 
                 (+ (results 
                         from:(sites Occupied by:Next)
                         to:(sites Around (from) if:(is Next (who at:(to))))
                         1
-                    )
-                )
+                   )
+               )
                 2
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "Goats"
     (piece Foreground P1 "Disc" image:"mountainGoat-alt3" fillColour:(colour 255 255 255))
     (piece Colour P1 "Disc" fillColour:(colour 255 255 255 120) strokeColour:(colour 62 72 55))
-    (piece Foreground P2 "Disc" image:"mountainGoat-alt3" fillColour:(colour 60 60 60 ))
+    (piece Foreground P2 "Disc" image:"mountainGoat-alt3" fillColour:(colour 60 60 60))
     (piece Colour P2 "Disc" fillColour:(colour 0 0 0 110) strokeColour:(colour 40 48 36))
     (piece Rotate P2 degrees:180)
 )
@@ -95,7 +95,7 @@
 (define "GoatsNeg"
     (piece Foreground P1 "Disc" image:"mountainGoat-alt3" fillColour:(colour 255 255 255))
     (piece Colour P1 "Disc" fillColour:(colour 255 255 255 120) strokeColour:(colour 62 72 55))
-    (piece Foreground P2 "Disc" image:"mountainGoat-alt3" fillColour:(colour 30 30 30 ) edgeColour:(colour 240 240 240))
+    (piece Foreground P2 "Disc" image:"mountainGoat-alt3" fillColour:(colour 30 30 30) edgeColour:(colour 240 240 240))
     (piece Colour P2 "Disc" fillColour:(colour 0 0 0 110) strokeColour:(colour 40 48 36))
     (piece Rotate P2 degrees:180)
 )
@@ -106,11 +106,11 @@
     (players 2)
     (equipment
         {
-        (board <BoardSize:gridType> use:Cell )
+        (board <BoardSize:gridType> use:Cell)
         (piece "Disc" P1)
         (piece "Disc" P2)
         }
-    )
+   )
     (rules
         (start (set Score Each 0))
         (play
@@ -125,27 +125,27 @@
                             (and 
                                 (not (was Pass))
                                 (not (can Move ("Move2Friends")))
-                            ) 
+                           ) 
                             ("MoveFromEnemies")
-                )))
+               )))
                 }
-        ))
+       ))
         (end 
             {
             (if 
                 (and
                     (all Passed)
                     (> (score Mover) (score Next))
-                )
+               )
                 (result Mover Win)
-            )
+           )
             (if 
                 (and
                     (all Passed)
                     (<= (score Mover) (score Next))
-                )
+               )
                 (result  Next Win)
-            )
+           )
             }
 )))
 
@@ -241,7 +241,7 @@
         (credit "Dale W. Walton")
         (date "19-11-2020")
         }
-    )
+   )
     (graphics
         {
         (board Colour Phase0 (colour 124 145 111))
@@ -250,8 +250,8 @@
         (board StyleThickness OuterEdges 2.0)
         <Goat:defs>
         }
-    )
+   )
     (ai
         "Goats Wintering_ai"
-    )
+   )
 )

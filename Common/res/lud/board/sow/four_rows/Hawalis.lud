@@ -16,10 +16,10 @@
                     (from ("OppositePit" (to))) 
                     (to (handSite Mover)) 
                     count:(count at:("OppositePit" (to)))
-                ) 
-            )
-        )
-    )
+               ) 
+           )
+       )
+   )
 )
 
 (define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1 "Home"))))
@@ -35,7 +35,7 @@
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" "14,E,N1,W" loop:True P2)
             }
-        )
+       )
         (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
         (regions "Home" P2 (sites Track "Track2"))                              // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
@@ -51,11 +51,11 @@
             (priority
                 ("Sow" (> (count at:(from)) 1))
                 ("Sow" (= (count at:(from)) 1))
-            )
-        )
+           )
+       )
         
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -73,7 +73,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Oman? Zanzibar?, around 2003.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -81,5 +81,5 @@
     
     (ai
         "Hawalis_ai"
-    )
+   )
 )

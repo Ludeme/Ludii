@@ -2,7 +2,7 @@
     (and 
         (not (is Mover (next))) 
         (no Moves Next)
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -27,23 +27,23 @@
                     (move 
                         (from (sites Occupied by:Neutral)) 
                         (to (sites Empty))
-                    )
-                )
+                   )
+               )
                 (move
                     (from (sites Occupied by:Mover)) 
                     (to (union (sites Empty) (sites Occupied by:Mover))) 
                     (then (moveAgain))
-                )
-            )
-        )
+               )
+           )
+       )
         
         (end 
             (if 
                 "CanNotMoveALPiece"  
                 (result Mover Win) 
-            ) 
-        ) 
-    )  
+           ) 
+       ) 
+   )  
 )
 
 //------------------------------------------------------------------------------
@@ -61,7 +61,7 @@
         (credit "Eric Piette")
         (date "01-01-1967")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Blue))
@@ -70,6 +70,6 @@
     
     (ai 
         "L Game_ai"
-    )
+   )
     
 )

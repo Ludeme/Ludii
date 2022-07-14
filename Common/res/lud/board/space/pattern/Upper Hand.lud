@@ -17,7 +17,7 @@
     (and 
         (= 0 (count Sites in:(intersection (sites Empty) (#2))))
         (<= 3 (count Sites in:(intersection (sites Occupied by:#1) (#2))))
-    )
+   )
 )
 
 (define "AddOnTopSquare" (add (piece (id "Ball" #1)) (to (ahead (site) #2) if:(is Flat))))
@@ -26,7 +26,7 @@
     (and
         (not (is Empty (site)))
         (is Empty (ahead (site) #1))
-    )
+   )
 )
 
 (define "AddOnTopSquareIfLegal" 
@@ -34,23 +34,23 @@
         (if (and ("TopExistAndEmptySite" UNE) ("PossibleSquareFromBottomLeft"))
             (if ("EnoughOwnedInSquare" #1 "SquareFromBottomLeft")
                 ("AddOnTopSquare" #1 UNE)
-            )
-        )
+           )
+       )
         (if (and ("TopExistAndEmptySite" USE) ("PossibleSquareFromTopLeft"))
             (if ("EnoughOwnedInSquare" #1 "SquareFromTopLeft")
                 ("AddOnTopSquare" #1 USE)
-            )
-        )
+           )
+       )
         (if (and ("TopExistAndEmptySite" USW) ("PossibleSquareFromTopRight"))
             (if ("EnoughOwnedInSquare" #1 "SquareFromTopRight")
                 ("AddOnTopSquare" #1 USW)
-            )
-        )
+           )
+       )
         (if (and ("TopExistAndEmptySite" UNE) ("PossibleSquareFromBottomRight"))
             (if ("EnoughOwnedInSquare" #1 "SquareFromBottomRight")
                 ("AddOnTopSquare" #1 UNE)
-            )
-        )
+           )
+       )
     })		
 )
 
@@ -61,11 +61,11 @@
                     (or 
                         ("AddOnTopSquareIfLegal" P1)
                         ("AddOnTopSquareIfLegal" P2)
-                    )
-                )
-            )
-        )
-    )		
+                   )
+               )
+           )
+       )
+   )		
 )
 
 (define "PutOnTop" 
@@ -76,9 +76,9 @@
             (and 
                 ("AddOnTopSquareIfLegal" P1)
                 ("AddOnTopSquareIfLegal" P2)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -93,23 +93,23 @@
     (rules 
         (start 
             (place "Ball0" (centrePoint))
-        )
+       )
         (play 
             (move 
                 Add 
                 (to (sites Empty) 
                     if:(is Flat)
-                )
+               )
                 (then ("PutOnTop"))
-            )
-        )
+           )
+       )
         (end 
             (if 
                 (<= 27 (count Sites in:(sites Occupied by:Mover))) 
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -132,7 +132,7 @@
         (credit "Eric Piette")
         (date "1992")
         }
-    )
+   )
     
     (graphics {
         (piece Scale "Ball" 1.0)
@@ -143,5 +143,5 @@
     })
     (ai
         "Upper Hand_ai"
-    )
+   )
 )

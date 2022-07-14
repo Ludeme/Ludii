@@ -5,12 +5,12 @@
         (between 
             if:(is Next (who at:(between)))
             (apply (remove (between)))
-        )
+       )
         (to if:(and 
                 (or (= 3 (count Steps Vertex All (last To) (to))) (= 4 (count Steps Vertex All (last To) (to)))) 
         (is Mover (who at:(to)))))
         (then (addScore Mover 1))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -22,7 +22,7 @@
         (board <Board> use:Vertex) 
         (piece "Ball" Each) 
         }
-    )  
+   )  
     (rules 
         (start {
             (set Score Each 0)
@@ -33,8 +33,8 @@
             (if (is Line 5 All) (result Mover Win))
             (if (> (score Mover) 14) (result Mover Win))
             }
-        )  
-    )
+       )  
+   )
 )
 
 //-------------------------------------------------------------------------
@@ -53,24 +53,24 @@
         (phase "Opening"
             (play (move Add (to (sites "J10"))))
             (nextPhase "General")
-        )
+       )
         (phase "General"
             (play 
                 (move Add (to (sites Empty))
                     (then "Custodial")
-                )
-            )
-        )
+               )
+           )
+       )
         }
         >
         "Open at the centre point."
-    )*
+   )*
     (item "Freestyle" 
         <
         (play (move Add (to (sites Empty))))
         > 
         "Open anywhere."
-    )
+   )
     }
 )
 
@@ -90,7 +90,7 @@
         (credit "Eric Silverman")
         (date "1983")
         }
-    )
+   )
     
     (graphics {
         (board Style Go)
@@ -100,5 +100,5 @@
     
     (ai
         "Keryo-Pente_ai"
-    )
+   )
 ) 

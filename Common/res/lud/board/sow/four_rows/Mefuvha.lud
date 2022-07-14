@@ -7,12 +7,12 @@
         (difference 
             (expand (intersection (sites Row 1) (sites Left)) steps:2 E)  
             (expand (intersection (sites Row 1) (sites Left)) steps:1 E)  
-        )
+       )
         (difference 
             (expand (intersection (sites Row 2) (sites Right)) steps:2 W)  
             (expand (intersection (sites Row 2) (sites Right)) steps:1 W)  
-        )
-    )
+       )
+   )
 )
 
 (define "Sow" 
@@ -29,29 +29,29 @@
                             (from (to)) 
                             (to (handSite Mover)) 
                             count:(count at:(to)) 
-                        )
+                       )
                         (if (> (count at:("OppositePit" (to))) 0)
                             (fromTo 
                                 (from ("OppositePit" (to))) 
                                 (to (handSite Mover)) 
                                 count:(count at:("OppositePit" (to)))
-                            ) 
-                        ) 
+                           ) 
+                       ) 
                         (if (> (count at:("OppositeOuterPit" (to))) 0)
                             (fromTo 
                                 (from ("OppositeOuterPit" (to))) 
                                 (to (handSite Mover)) 
                                 count:(count at:("OppositeOuterPit" (to)))
-                            ) 
-                        )
+                           ) 
+                       )
                         (set Pending) // We indicate we can capture again in pending the next state.
                         (moveAgain)
                         }
-                    )
-                )
-            )
-        )
-    )
+                   )
+               )
+           )
+       )
+   )
 )
 
 (define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1 "Home"))))
@@ -67,7 +67,7 @@
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" <Board:track2> loop:True P2)
             }
-        )
+       )
         (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
         (regions "Home" P2 (sites Track "Track2"))                              // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
@@ -84,15 +84,15 @@
                     (union
                         (expand (intersection (sites Row 1) (sites Left)) steps:1 E)  
                         (expand (intersection (sites Row 2) (sites Right)) steps:1 W) 
-                    )
-                ) 
-            ) 
+                   )
+               ) 
+           ) 
             (set Count 1 
                 to:(union
                     (difference (expand (intersection (sites Row 1) (sites Left)) steps:1 E) (sites Left))  
                     (difference (expand (intersection (sites Row 2) (sites Right)) steps:1 W) (sites Right))
-                )
-            )
+               )
+           )
         })
         
         (play 
@@ -104,9 +104,9 @@
                             (from (last From)) 
                             (to (handSite Mover)) 
                             count:(count at:(last From)) 
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (priority
                     (move Select 
                         (from 
@@ -116,28 +116,28 @@
                                     (< (count Turns) 3) 
                                     "StylizedMove" 
                                     (sites Mover "Home") 
-                                ) 
-                            ) 
+                               ) 
+                           ) 
                             if:(> (count at:(from)) 1)
-                        )
+                       )
                         "Sow"
-                    )
+                   )
                     (move Select 
                         (from 
                             (if ("SameTurn") 
                                 "LastHoleSowed" 
                                 (sites Mover "Home") 
-                            )
+                           )
                             if:(= (count at:(from)) 1)
-                        )
+                       )
                         "Sow"
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -167,7 +167,7 @@
         }
         variations:{"Board Size/6" "Board Size/8" "Board Size/10" "Board Size/12" "Board Size/14" 
         "Board Size/18" "Board Size/20" "Board Size/22" "Board Size/24" "Board Size/26" "Board Size/28" }
-    )*
+   )*
     
 })
 
@@ -186,7 +186,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in South Africa, around 1931.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -194,5 +194,5 @@
     
     (ai
         "Mefuvha_ai"
-    )
+   )
 )

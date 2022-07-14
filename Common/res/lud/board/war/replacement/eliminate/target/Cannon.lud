@@ -6,7 +6,7 @@
     (move Step
         (directions Forwards of:All)
         (to if:(is Empty (to)))
-    )	
+   )	
 )
 
 (define "StepCapture"
@@ -15,8 +15,8 @@
         (to 
             if:("IsEnemyAt" (to))
             (apply (remove (to)))
-        )
-    )
+       )
+   )
 )
 
 (define "EnemyAround"
@@ -24,8 +24,8 @@
         (all Sites
             (sites Around (from) All)
             if:(not ("IsEnemyAt" (site)))
-        )		
-    )
+       )		
+   )
 )
 
 (define "RetreatMove"
@@ -34,10 +34,10 @@
             (directions Backwards of:All)
             (between 
                 if:(is Empty (between))
-            )
+           )
             (to if:(is Empty (to)))
-        )
-    )	
+       )
+   )	
 )
 
 //-------------------------------------------------------------------------
@@ -50,11 +50,11 @@
         (between 
             (exact 2)
             if:(= (id "Pawn" Mover) (what at:(between)))
-        )
+       )
         (to 
             if:(is Empty (to))
-        )
-    )	
+       )
+   )	
 )
 
 (define "AheadSite" (ahead (from) #1 (directions Vertex from:(from) to:(to))))
@@ -63,7 +63,7 @@
     (and
         (= (id "Pawn" Mover) (what at:(to)))
         (= (id "Pawn" Mover) (what at:("AheadSite" steps:2)))	
-    )
+   )
 )
 
 (define "CannonShoot"
@@ -80,13 +80,13 @@
                 (if (and
                         (is Empty ("AheadSite" steps:4))
                         (is Enemy (who at:("AheadSite" steps:5)))
-                    )
+                   )
                     (move Remove ("AheadSite" steps:5))
-                )
-            )
+               )
+           )
             
-        )
-    )
+       )
+   )
 )
 
 //-------------------------------------------------------------------------
@@ -103,7 +103,7 @@
                 ("CannonMove")
                 ("CannonShoot")
             })
-        )
+       )
         (piece "Town" Each)
         (hand Each)
         (regions "Home" P1 (sites Bottom))
@@ -123,10 +123,10 @@
                 (move
                     (from (handSite Mover))
                     (to (difference (sites Mover "Home") (sites Corners)))
-                )
-            )
+               )
+           )
             (nextPhase Mover "Moving")
-        )
+       )
         
         (phase "Moving" 
             (play (forEach Piece))
@@ -134,13 +134,13 @@
                 (if (or 
                         (= Off (where "Town" Next)) 
                         (no Moves Next)
-                    ) 
+                   ) 
                     (result Mover Win)
-                )
-            )
-        )
+               )
+           )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -171,7 +171,7 @@
         (credit "Eric Piette")
         (date "2003")
         }
-    )
+   )
     
     (graphics {
         (board Style Board)

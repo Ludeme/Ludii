@@ -14,17 +14,17 @@
                                 if:(and 
                                     ("IsEnemyAt" (between)) 
                                     (is In (between) (sites Corners))
-                                )
+                               )
                                 (apply (remove (between)))
-                            ) 
+                           ) 
                             (to 
                                 if:("IsFriendAt" (to))
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         (hand Each)
         (regions "HalfBoard" P1 (expand (sites Bottom) steps:3))
         (regions "HalfBoard" P2 (expand (sites Top) steps:3))
@@ -40,31 +40,31 @@
                 (move 
                     (from (handSite P1)) 
                     (to (centrePoint))
-                )
-            )
+               )
+           )
             (nextPhase "Placement")
-        )
+       )
         (phase "Placement" P2
             (play 
                 (if (not ("HandEmpty" Mover))
                     (move 
                         (from (handSite Mover)) 
                         (to (intersection (sites Empty) (sites Mover)))
-                    )
+                   )
                     (move Pass)
-                )
-            )
+               )
+           )
             (nextPhase (and ("HandEmpty" P1) ("HandEmpty" P2)) "Playing")
-        )
+       )
         (phase "Playing" 
             (play (forEach Piece))
             (end { 
                 (if (no Moves P2) (result P1 Win))
                 (if (< (count Pieces P1) 2) (result P2 Win))
             })
-        )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -82,7 +82,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Indonesia, around 1874.")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Black))
@@ -95,5 +95,5 @@
     
     (ai
         "Gala (Buginese)_ai"
-    )
+   )
 )

@@ -8,9 +8,9 @@
             (if (is Prev P3)
                 ("NextSite" from:(where "Marker" Prev) "Track3")
                 ("NextSite" from:(where "Marker" Prev) "Track4")
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "TakeBall"
@@ -18,18 +18,18 @@
         (and
             (remove 32)
             (add (piece (id "Ball" #1)) (to 32))
-        )
+       )
         (if ("IsPieceAt" "Ball" Shared 33)
             (and
                 (remove 33)
                 (add (piece (id "Ball" #1)) (to 33))
-            )
+           )
             (and
                 (remove 34)
                 (add (piece (id "Ball" #1)) (to 34))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "Centre" (sites {0..3}))
@@ -53,7 +53,7 @@
             (track "Track4" {31 27 23 19 15 11 7 3} P4 directed:True)
             }
             use:Vertex
-        )
+       )
         (piece "Marker" Each)
         (piece "Stick" Shared)
         (piece "Ball" Each)
@@ -76,10 +76,10 @@
                     (piece (id "Stick" Shared))
                     (to Cell (sites Hand Mover))
                     (then (set Hidden Cell at:(last To) to:Next))
-                )
-            )
+               )
+           )
             (nextPhase "Guessing")
-        )
+       )
         
         (phase "Guessing"
             (play
@@ -92,30 +92,30 @@
                                     (fromTo 
                                         (from (where "Marker" Prev))
                                         (to ("NextSitePrev"))
-                                    )
+                                   )
                                     (if (not (is In ("NextSitePrev") ("Centre")))
                                         (set NextPlayer (player (prev)))
                                         ("TakeBall" Prev)
-                                    )
-                                )
+                                   )
+                               )
                                 (and {
                                     (moveAgain)
                                     (fromTo 
                                         (from (where "Marker" Mover))
                                         (to ("NextSite" from:(where "Marker" Mover)))
-                                    )
+                                   )
                                     (if (is In ("NextSite" from:(where "Marker" Mover)) ("Centre"))
                                         ("TakeBall" Mover)
-                                    )
+                                   )
                                 })
-                            )
+                           )
                             (remove Cell (sites Hand Prev))
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase "Hiding")
-        )
+       )
         }
         
         (end  
@@ -126,9 +126,9 @@
                 (if (and (is Active P3) (is In (where "Marker" P3) ("Centre"))) (result P3 Win))
                 (if (and (is Active P4) (is In (where "Marker" P4) ("Centre"))) (result P4 Win))
                 }
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -147,7 +147,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Benin, around 1955.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)

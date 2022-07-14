@@ -7,11 +7,11 @@
                 (allCombinations 
                     (add (piece "Disc0" state:(mover)) (to (site))) 
                     (flip (between)) 
-                )
-            )
-        )
+               )
+           )
+       )
         (to if:(is Friend (state at:(to))))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -22,7 +22,7 @@
         (board (square <Board:size>))
         (piece "Disc" Neutral (flips 1 2))
         }
-    )  
+   )  
     (rules 
         
         <Rules:start> 
@@ -39,25 +39,25 @@
                                 (set Score 
                                     P1 
                                     (count Sites in:(sites State 1))
-                                )
+                               )
                                 (set Score 
                                     P2 
                                     (count Sites in:(sites State 2))
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         }
         
         (end
             (if (all Passed)
                 (byScore)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -72,7 +72,7 @@
         >
         <>
         "The pieces are placed on the board."
-    )**   
+   )**   
     
     (item "Not Fixed Start" 
         <>
@@ -84,20 +84,20 @@
                     (piece
                         "Disc0" 
                         state:(mover)
-                    )
+                   )
                     (to 
                         (intersection 
                             (sites Empty) 
                             (sites Centre)
-                        )
-                    )
-                )
-            ) 
+                       )
+                   )
+               )
+           ) 
             (nextPhase Mover (>= (count Moves) 3) "Playing")
-        )
+       )
         >
         "The pieces are placed on the board."
-    )
+   )
     
 })
 
@@ -132,7 +132,7 @@
         (classification "board/space/territory")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (piece Colour state:1 fillColour:(colour Black))
@@ -159,6 +159,6 @@
     
     (ai 
         "Reversi_ai"
-    )
+   )
     
 )

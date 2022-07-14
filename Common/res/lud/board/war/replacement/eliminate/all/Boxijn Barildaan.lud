@@ -9,20 +9,20 @@
                 (if (< (count MovesThisTurn) 2)
                     (is Empty (to))
                     (is In (to) (union (sites Occupied by:Next) (sites Empty)))
-                )
-            )
+               )
+           )
             (apply (if ("IsEnemyAt" (to)) (remove (to))))
-        )
+       )
         (then 
             (if (= 2 (count Sites in:(forEach  (sites Board) if:(= 1 (state at:(site))))))
                 (forEach Site (sites Board) (if (= 1 (state at:(site))) (set State at:(site) 0)))
                 (and
                     (set State at:(last From) 1)
                     (moveAgain)
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -36,7 +36,7 @@
                 (shift 0 1 (rectangle 2 4))
             })
             use:Vertex
-        )
+       )
         (piece "Marker" Each ("StepMove"))
     })
     (rules
@@ -48,10 +48,10 @@
             (if ("SameTurn")
                 ("StepMove" (from (last To)))
                 (forEach Piece)
-            )
-        )
+           )
+       )
         (end (if (no Pieces Next) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -69,7 +69,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Mongolia, from around 1963 to 1966.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)
@@ -77,5 +77,5 @@
     })
     (ai
         "Boxijn Barildaan_ai"
-    )
+   )
 )

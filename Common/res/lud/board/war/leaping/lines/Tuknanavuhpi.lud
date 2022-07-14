@@ -6,8 +6,8 @@
             (or 
                 ("HopCapture")
                 ("StepToEmpty")
-            )
-        )
+           )
+       )
     })  
     
     (rules 
@@ -19,7 +19,7 @@
         (play (forEach Piece))
         
         (end ("NoMoves" Loss))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -37,7 +37,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Arizona, around 1901.")
         }
-    )
+   )
     
     (graphics {
         
@@ -45,6 +45,6 @@
     
     (ai 
         "Tuknanavuhpi_ai"
-    )
+   )
     
 )

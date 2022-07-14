@@ -6,8 +6,8 @@
             (or 
                 ("HopSequenceCapture")
                 ("StepToEmpty")
-            )
-        )
+           )
+       )
     })  
     (rules 
         <Start:rules>
@@ -17,13 +17,13 @@
                 (or
                     ("HopSequenceCaptureAgain")	
                     (move Pass)
-                )
+               )
                 (forEach Piece)
-            )
-        )
+           )
+       )
         
         (end ("NoMoves" Loss))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -38,9 +38,9 @@
                 (wedge 3) 
                 (shift 0 6 (rotate 180 (wedge 3))) 
                 } 
-            ) 
+           ) 
             use:Vertex
-        )>  
+       )>  
         <        
         (start { 
             (place "Marker1" (union {(sites Row 0) (sites Row 1) (sites Row 2) (sites Row 3)}))
@@ -56,9 +56,9 @@
                 (shift -1 -1  (wedge 4))
                 (shift -1 6 (rotate 180 (wedge 4))) 
                 } 
-            ) 
+           ) 
             use:Vertex
-        )>  
+       )>  
         <
         (start { 
             (place "Marker1" (union {(sites Row 0) (sites Row 1) (sites Row 2) (sites Row 3) (sites Row 4)}))
@@ -76,13 +76,13 @@
         {
         "Start/Sixteen Pieces"
         }
-    )*
+   )*
     
     (ruleset "Ruleset/Nineteen Pieces (Described)"
         {
         "Start/Nineteen Pieces"
         }
-    )
+   )
     
 })
 
@@ -107,7 +107,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in South Asia, from around 1832 to 1933.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)
@@ -116,7 +116,7 @@
     
     (ai 
         "Mogul Putt'han_ai"
-    )
+   )
     
 )
 

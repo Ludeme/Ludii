@@ -7,11 +7,11 @@
                 (allCombinations 
                     (add (piece "Ball0" state:(mover)) (to (site))) 
                     (set State at:(between) (mover))
-                )
-            )
-        )
+               )
+           )
+       )
         (to if:(is Friend (state at:(to))))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -37,27 +37,27 @@
                     (sites Empty)
                     (append 
                         "ReverseBoundedPieces" 
-                    )
-                )
+                   )
+               )
                 (move Add (piece "Ball0" state:(mover))
                     (to (sites Around (sites Occupied by:Neutral) Empty))
-                )
+               )
                 (then
                     (forEach Player 
                         (set Score Player 
                             (count Sites in:(sites State (player)))
-                        )	
-                    )
-                )
-            )
-        )
+                       )	
+                   )
+               )
+           )
+       )
         
         (end
             (if (all Passed)
                 (byScore)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -85,7 +85,7 @@
         (credit "Eric Piette")
         (date "1997")
         }
-    )
+   )
     
     (graphics {
         (piece Colour state:1 fillColour:(colour Red))

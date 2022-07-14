@@ -6,7 +6,7 @@
     (if (is Mover P1)
         (intersection (sites Right) (sites Row 1))
         (intersection (sites Left) (sites Row 2))
-    )	
+   )	
 )
 
 (define "NextSite" ("NextSiteOnTrack" 1 #1))
@@ -22,7 +22,7 @@
             (track "TrackCCW1" "0,E,N1,W" loop:True P1)
             (track "TrackCCW2" <Board:CCW2> loop:True P2)
             }
-        )
+       )
         (regions "Home" P1 (sites Track "TrackCCW1"))                        // P1 Home
         (regions "Home" P2 (sites Track "TrackCCW2"))                        // P2 home
         (regions "Inner" P1 (sites Row 1))                                   // P1 Inner Home
@@ -35,7 +35,7 @@
         
         (start 
             (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home")))
-        )
+       )
         
         phases:{
         (phase "Opening1"
@@ -47,12 +47,12 @@
                             "TrackCCW"
                             owner:(mover)
                             apply:(set Value Mover ("NextSite" from:(to)))
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase Mover "Opening2")
-        )
+       )
         (phase "Opening2"
             (play
                 (move Select
@@ -64,31 +64,31 @@
                             apply:(if (= (count at:("NextSite" from:(to))) 0) 
                                 (set Value Mover Off)
                                 (set Value Mover ("NextSite" from:(to)))
-                            )
-                        )
-                    )
-                )
-            )
+                           )
+                       )
+                   )
+               )
+           )
             (nextPhase Mover ("IsOffBoard" (value Player Mover)) "Opening3")
-        )
+       )
         (phase "Opening3"
             (play
                 (move
                     (from (forEach (sites Mover "Inner") if:(!= 0 (count at:(site)))))
                     (to (forEach (sites Mover "Outer") if:(= 0 (count at:(site)))))
                     count:2
-                )
-            )
+               )
+           )
             (nextPhase Mover "Opening4")
-        )
+       )
         (phase "Opening4"
             (play (move Remove (sites Next "Home")))
             (nextPhase Mover "Opening5")
-        )
+       )
         (phase "Opening5"
             (play (move Remove (sites Next "Home")))
             (nextPhase Mover "Playing")
-        )
+       )
         (phase "Playing"
             (play
                 (move Select 
@@ -96,9 +96,9 @@
                         (if ("SameTurn") 
                             "LastHoleSowed" 
                             (sites Mover "Home") 
-                        ) 
+                       ) 
                         if:(> (count at:(from)) 0)
-                    )
+                   )
                     (then 
                         (sow
                             "TrackCCW"
@@ -111,26 +111,26 @@
                                             (if 
                                                 (> (count at:("OppositeOuterPit" (to))) 0) 
                                                 (remove ("OppositeOuterPit" (to))) 
-                                            ) 
-                                        ) 
-                                    ) 
-                                )
+                                           ) 
+                                       ) 
+                                   ) 
+                               )
                                 (moveAgain)
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         }
         
         (end 
             (forEach Player
                 if:(= 0 ("PiecesOwnedBy" Player))
                 (result Player Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -150,7 +150,7 @@
         "Board Size/6"
         }
         variations:{"Board Size/9" "Board Size/12" "Board Size/15"}
-    )*
+   )*
 })
 
 //------------------------------------------------------------------------------
@@ -167,7 +167,7 @@
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -175,6 +175,6 @@
     
     (ai
         "Nchuwa_ai"
-    )
+   )
 )
 

@@ -14,10 +14,10 @@
             (if (<= 50 (value Random (range 1 100)))
                 ("LegalMoves")
                 (random ("LegalMoves") num:1)
-            )
-        )
+           )
+       )
         (end (if (is Line 3) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -35,6 +35,6 @@
         (credit "Eric Piette")
         (origin  "This game was played in England, from around 1850 to 1883.")
         }
-    )
+   )
     
 )

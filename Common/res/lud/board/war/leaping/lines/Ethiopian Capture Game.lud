@@ -6,8 +6,8 @@
             (or 
                 ("HopCapture") 
                 ("StepToEmpty")
-            )
-        )
+           )
+       )
     })
     (rules 
         (start { 
@@ -16,7 +16,7 @@
         })
         (play (forEach Piece))
         (end (if (<= (count Pieces Next) 5) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -34,13 +34,13 @@
         (credit "Eric Piette")
         (origin  "This game was played in Ethiopia, around 1935.")
         }
-    )
+   )
     
     (graphics {
         
     })
     (ai
         "Ethiopian Capture Game_ai"
-    )
+   )
 )
 

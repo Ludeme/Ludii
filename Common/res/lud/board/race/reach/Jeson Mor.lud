@@ -2,8 +2,8 @@
     (apply
         (if ("IsEnemyAt" (to))
             (remove (to))
-        )
-    ) 
+       )
+   ) 
 )
 
 //------------------------------------------------------------------------------
@@ -18,9 +18,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndCheckVictory"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
     })  
     (rules 
         (start {
@@ -32,7 +32,7 @@
             (if (no Pieces Next) (result Mover Win))
             (if (is In <End:rule> (sites Centre)) (result Mover Win))
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -58,7 +58,7 @@
         (credit "Nicholas Bamber")
         (origin  "This game was played in Mongolia, from around 1963 to 1966.")
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)
@@ -66,5 +66,5 @@
     
     (ai
         "Jeson Mor_ai"
-    )
+   )
 )

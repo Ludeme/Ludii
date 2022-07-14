@@ -11,8 +11,8 @@
                 (shift 2 2 (square 1))
                 (shift 0 2 (square 1))
                 }
-            )
-        )
+           )
+       )
         (deck  {
             (card Seven rank:0 value:0 trumpRank:0 trumpValue:0) 
             (card Eight rank:1 value:0 trumpRank:1 trumpValue:0)
@@ -43,32 +43,32 @@
                             (difference 
                                 {1 2 3 4} // Need to be improved with a IntArrayFunction in entry... But compiler breaks for it...
                                 (card Suit at:(handSite All))
-                            )
-                        )
+                           )
+                       )
                         (then 
                             (and 
                                 //(deal Cards 3 beginWith:(mover))
                                 (deal Cards 3)
                                 (set NextPlayer 1) 
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (move Pass)
-                )
-            )
+               )
+           )
             (nextPhase (not (was Pass)) "PlayCard")
-        )
+       )
         (phase "PlayCard"
             (play 
                 (playCard 
                     (then (set Visible (last To)))
-                )
-            )
-        )
+               )
+           )
+       )
         }
         
         (end (if (no Moves Next) (result Mover Win)))
-    )
+   )
 )
 
 (metadata
@@ -78,10 +78,10 @@
     
     (graphics {
         (no Board)
-        (stackType P1 Fan )
-        (stackType P2 Fan )
-        (stackType P3 Fan )
-        (stackType P4 Fan ) 
+        (stackType P1 Fan)
+        (stackType P2 Fan)
+        (stackType P3 Fan)
+        (stackType P4 Fan) 
     })
     
 )

@@ -13,10 +13,10 @@
             (if (is Even (count Moves))
                 (forEach Piece)
                 (move Add (piece "Square0") (to (sites Empty)))
-            )
-        )
+           )
+       )
         (end ("BlockWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -42,8 +42,8 @@
         (credit "Fabio Barbero")
         (date "1972")
         }
-    )
+   )
     (ai
         "Isolation_ai"
-    )
+   )
 )

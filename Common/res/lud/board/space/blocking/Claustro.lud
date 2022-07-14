@@ -1,7 +1,7 @@
 // Defines for Options
 
 (define "Connection" <BoardShape:directionsUsed>)
-(define "BoardUsed" <BoardShape:gridType> )
+(define "BoardUsed" <BoardShape:gridType>)
 
 (define "SquareGrid" (board (square <BoardSize:smallSide>) use:Vertex))
 (define "HexLimp" (board (tri Limping (- <BoardSize:smallSide> 1)) use:Vertex))
@@ -31,38 +31,38 @@
                         (- 
                             (count Pieces Next in:(sites Around (to) <BoardShape:directionsUsed>))
                             (count Pieces Mover in:(sites Around (to) <BoardShape:directionsUsed>))
-                )))
+               )))
                 (then 
                     (if 
                         (not
                             (all Sites 
                                 (sites Occupied by:Mover) 
                                 if:(can Move (step (from (site)) <BoardShape:directionsWin> (to if:(is Empty (to)))))
-                        ))
+                       ))
                         (trigger "End" Mover)
                         (if 
                             (not
                                 (all Sites 
                                     (sites Occupied by:Next) 
                                     if:(can Move (step (from (site)) <BoardShape:directionsWin> (to if:(is Empty (to)))))
-                            ))
+                           ))
                             (trigger "End" Next)
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         (end 
             (if 
                 (or (is Triggered "End" Mover) (is Triggered "End" Next))
                 (if 
                     (is Triggered "End" Mover)
                     (result Mover Loss)
-                )
+               )
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //-------------------------------------------------
@@ -112,7 +112,7 @@
         (credit "Dale W. Walton")
         (date "26-03-2021")
         }
-    )
+   )
     (graphics 
         {
         (player Colour P1 (colour 229 92 0))
@@ -125,8 +125,8 @@
         (board Colour InnerEdges (colour DarkGrey))
         (show Edges Diagonal <BoardShape:DiagShow> (colour DarkGrey))
         }
-    )
+   )
     (ai
         "Claustro_ai"
-    )
+   )
 )

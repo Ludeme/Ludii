@@ -8,11 +8,11 @@
                         (concentric {1 4 4 12})
                     })
                     edges:{{8 5} {5 6} {6 7} {7 8}}
-                )
+               )
                 edges:{{12 5} {5 10} {9 8} {8 19} {18 7} {7 16} {15 6} {6 13}}
-            )
+           )
             use:Vertex
-        )
+       )
         (piece "Hare" P1 ("StepToEmpty"))
         (piece "Dog" P2 ("StepToEmpty"))
     })  
@@ -24,7 +24,7 @@
         })
         (play (forEach Piece))
         (end (if (no Moves P1) (result Mover P2)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -43,7 +43,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in France, around 1917.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)

@@ -11,7 +11,7 @@
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" "16,E,N1,W" loop:True P2)
             }
-        )
+       )
         (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
         (regions "Home" P2 (sites Track "Track2"))                              // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
@@ -23,7 +23,7 @@
         
         (start 
             (set Count 4 to:(union (sites P1 "Inner") (sites P2 "Inner")))
-        )
+       )
         
         (play 
             (move Select
@@ -31,9 +31,9 @@
                     (if ("SameTurn") 
                         "LastHoleSowed" 
                         (sites Mover "Home") 
-                    ) 
+                   ) 
                     if:(< 1 (count at:(from)))
-                )
+               )
                 (then 
                     (sow
                         "Track"
@@ -44,27 +44,27 @@
                                 (if (and
                                         (!= (count at:("OppositePit" (to))) 0) 
                                         (is In (to) (sites Mover "Inner"))	
-                                    )
+                                   )
                                     (fromTo 
                                         (from ("OppositePit" (to))) 
                                         (to (to)) 
                                         count:(count at:("OppositePit" (to)))
-                                    )
-                                )
-                            )
-                        )
+                                   )
+                               )
+                           )
+                       )
                         origin:True
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (end 
             (if (and (!= (next) (mover)) (no Moves Next))
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -82,7 +82,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Republic of Congo, around 1971.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -90,6 +90,6 @@
     
     (ai
         "Kisolo (Lali)_ai"
-    )
+   )
 )
 

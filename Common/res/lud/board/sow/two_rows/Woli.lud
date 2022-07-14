@@ -7,7 +7,7 @@
     (equipment { 
         (mancalaBoard 2 6 store:None
             (track "Track" "0,E,N,W" loop:True)
-        )
+       )
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (piece "Seed" Shared)
@@ -26,7 +26,7 @@
                             (from 
                                 (sites Mover) 
                                 if:(< 0 (count at:(from)))
-                            )
+                           )
                             (then 
                                 (sow  
                                     if:(and 
@@ -34,25 +34,25 @@
                                         (or 
                                             (= (count at:(to)) 2) 
                                             (= (count at:(to)) 3)
-                                        )
-                                    ) 
+                                       )
+                                   ) 
                                     apply:(fromTo 
                                         (from (to)) 
                                         (to (handSite Mover)) 
                                         count:(count at:(to))
-                                    )
+                                   )
                                     includeSelf:False
                                     backtracking:True
-                                )
-                            )
-                        )
+                               )
+                           )
+                       )
                         ifAfterwards:(< 0 (count in:(sites Next)))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (end ("MancalaByScoreWhen" (or (no Moves Mover) (is Decided "End"))))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -69,12 +69,12 @@
         (credit "Eric Piette")
         (origin  "This game was played in West Africa, around 1955.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
     })
     (ai
         "Woli_ai"
-    )
+   )
 )

@@ -5,22 +5,22 @@
         (board <Board:type> use:Edge)  
         (piece "Marker" Neutral) 
         }
-    )    
+   )    
     (rules
         (start
             <Board:start>
-        )
+       )
         
         (play
             (move
                 Remove
                 (sites Occupied by:Neutral on:Edge)
-            )
-        )
+           )
+       )
         (end       
             (if (is Tree Neutral) (result Mover Win))
-        )        
-    )
+       )        
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -37,7 +37,7 @@
         }
         >       
         "The game is played on the Graph1."
-    )* 
+   )* 
     
     (item "Graph2"             
         <
@@ -47,7 +47,7 @@
             edges:{{0 1} {0 2} {0 10} {1 4} {1 15} {2 3} {2 5} {3 4} {3 7} {4 9} {5 6} {5 11}
             {10 11} {11 16} {6 12} {6 7} {7 8} {8 9} {9 14} {14 15} {8 13} {13 12} {12 16} {13 17}
             {14 17} {16 18} {18 17} {18 19} {10 19} {15 19}}
-        )
+       )
         > 
         <
         {
@@ -55,7 +55,7 @@
         }
         >        
         "The game is played on the Graph2."
-    ) 
+   ) 
     
     (item "Graph3"             
         <
@@ -67,7 +67,7 @@
         }
         >      
         "The game is played on the Graph3."
-    )    
+   )    
     
 })
 
@@ -86,7 +86,7 @@
         (credit "Tahmina Begum 25-05-2020")
         (date "25-05-2020")
         }
-    )
+   )
     
     (graphics {
         (player Colour Neutral (colour Green))
@@ -99,5 +99,5 @@
     
     (ai
         "Nedilmarth_ai"
-    )
+   )
 )

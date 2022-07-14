@@ -7,8 +7,8 @@
             (or
                 ("StepToEmpty")
                 ("HopSequenceCapture")
-            )
-        )
+           )
+       )
     })  
     
     (rules 
@@ -22,14 +22,14 @@
                 (or
                     (move Pass)
                     ("HopSequenceCaptureAgain")
-                )
+               )
                 (forEach Piece top:True)
-            )
+           )
             
-        )
+       )
         
         (end ("NoMovesP2NoPiecesP1"))  
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -47,7 +47,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, around 1926.")
         }
-    )
+   )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})

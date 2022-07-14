@@ -3,7 +3,7 @@
     (equipment { 
         (board <Board:type> use:Vertex)
         (hand P2) 
-        (piece "Tiger" P1 (or "HopCapture" "StepToEmpty" )) 
+        (piece "Tiger" P1 (or "HopCapture" "StepToEmpty")) 
         (piece "Dog" P2 "StepToEmpty") 
     })  
     (rules 
@@ -18,17 +18,17 @@
                 (move 
                     (from (handSite P2)) 
                     (to (sites Empty))
-                )
-            ) 
+               )
+           ) 
             (nextPhase ("HandEmpty" P2) "Movement")
-        )
+       )
         (phase "Movement"     
             (play (forEach Piece))
             
             (end ("NoMovesLossAndLessNumPiecesPlayerLoss" P2 7))
-        )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -42,26 +42,26 @@
                 (merge
                     (shift 0 2 (scale 8 2 (rectangle 3 2)))
                     (scale 1 2 (wedge 5 4)) 
-                )
+               )
                 edges:{ {0 1} {2 3} {4 5}}
-            )
+           )
             edges:{ {0 15} {18 1} {2 11} {14 3} {4 7} {10 5} }
-        )
+       )
         >
         <{"H5" "G4" "I4"}>
         "Played on the normal board."
-    )*   
+   )*   
     (item "Large"    
         <(scale 1.4 1
             (remove
                 (scale 1 2 (wedge 5 8)) 
                 edges:{{0 1} {0 2} {0 7} {0 8}}
                 vertices:{32 31 26 25}
-            )
-        )>
+           )
+       )>
         <{"M4" "O4" "N5"}>
         "Played on a larger Board."
-    ) 
+   ) 
 })
 
 //------------------------------------------------------------------------------
@@ -80,7 +80,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in South Asia, around 1909.")
         }
-    )
+   )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})
@@ -89,6 +89,6 @@
     
     (ai 
         "Demala Diviyan Keliya_ai"
-    )
+   )
     
 )

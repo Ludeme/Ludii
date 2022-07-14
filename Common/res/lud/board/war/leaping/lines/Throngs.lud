@@ -15,7 +15,7 @@
         (union
             ("AStep" "S7" (exact 0))
             (values Remembered "S7")  // These are to make sure that something is always yielded
-        )
+       )
         (remember Value "S6" (value) unique:True)
         (then ("Yields5"))
 )) 
@@ -28,7 +28,7 @@
             ("AStep" "S6" (exact 0))
             (values Remembered "S6")
             }
-        )
+       )
         (remember Value "S5" (value) unique:True)
         (then ("Yields4"))
 )) 
@@ -42,7 +42,7 @@
             ("AStep" "S5" (exact 0))
             (values Remembered "S5")
             }
-        )
+       )
         (remember Value "S4" (value) unique:True)
         (then ("Yields3"))
 )) 
@@ -57,7 +57,7 @@
             ("AStep" "S4" (exact 0))
             (values Remembered "S4")
             }
-        )
+       )
         (remember Value "S3" (value) unique:True)
         (then ("Yields2"))
 )) 
@@ -73,7 +73,7 @@
             ("AStep" "S3" (exact 0))
             (values Remembered "S3")
             }
-        )
+       )
         (remember Value "S2" (value) unique:True)
         (then ("Yields1"))
 )) 
@@ -90,7 +90,7 @@
             ("AStep" "S2" (exact 0))
             (values Remembered "S2")
             }
-        )
+       )
         (remember Value "S1" (value) unique:True)
         (then ("Yields0"))
 ))  
@@ -108,7 +108,7 @@
             ("AStep" "S1" (exact 0))
             (values Remembered "S1")          
             }
-        )
+       )
         (remember Value "S0" (value) unique:True)
 )) 
 
@@ -138,7 +138,7 @@
                             (if 
                                 (= 1 (var "PowerLeft")) 
                                 (remember Value "S1" (var "LastTo") unique:True (then ("Yields0")))
-        ))))))
+       ))))))
         #1 // Handles the "then" clauses passed into the define.
 ))
 
@@ -159,7 +159,7 @@
                 (and
                     (= 0 ("InfluenceAt" (to)))
                     (= 0 (count Sites in:(difference (sites Around (to)) (sites Occupied by:All))))
-        )))  
+       )))  
         (then 
             (and
                 (set Var "PowerLeft" 0)
@@ -180,7 +180,7 @@
         (to 
             (sites Empty) 
             if:(le 2 ("InfluenceAt" (to)))
-        )
+       )
         (then 
             (do
                 (and
@@ -190,7 +190,7 @@
                     (set State at:(last To) (- ("InfluenceAt" (last To)) 2))
                     (set Value Mover 0)
                     }
-                )
+               )
                 next:("FindDestinations"  //remove the last two characters to restore the included then conditions
                     (then 
                         (if 
@@ -214,7 +214,7 @@
                                 (set Var "PowerLeft" (- ("InfluenceAt" (last To)) 4))
                                 (set State at:(last To) (- ("InfluenceAt" (last To)) 4))
                                 }
-        ))))))
+       ))))))
         (then
             ("FindDestinations"
                 (then 
@@ -240,13 +240,13 @@
                                     (set State at:(last To) ("InfluenceAt" (last To))) 
                                     (set Var "PowerLeft" ("InfluenceAt" (last To))) 
                                     }
-            ))))))
+           ))))))
             Mover
             (then 
                 ("FindDestinations" 
                     (then 
                         (forget Value "S0" (var "LastTo"))
-        ))))
+       ))))
         ifAfterwards:("CanMoveElsewhere")
 )) 
 // Continuation of the moves based on remaining influence
@@ -259,7 +259,7 @@
                 (add
                     (to 
                         (last To)
-                    )     
+                   )     
                     (then 
                         (set Var "PowerLeft" 0)
 ))))))
@@ -298,10 +298,10 @@
                                 (or
                                     (< 0 (count Pieces #1 in:(sites Around (from)))) 
                                     (< 2 (count Sites in:(sites Around (from) if:(is Empty (to)))))
-                                ) 
+                               ) 
                                 1
                                 0
-                            )
+                           )
                             (if
                                 (or
                                     (< 1 (count Pieces #1 in:(sites Around (from))))
@@ -309,10 +309,10 @@
                                         (-
                                             (count Pieces #2 in:(sites Around (from)))
                                             (count Pieces #1 in:(sites Around (from)))
-                                )))
+                               )))
                                 1
                                 0
-                ))))
+               ))))
                 (+ // Sum of Empty sites that after adding 2 pieces, can only be taken by #1
                     // special test of empty edges where placing a piece in the interior links the empty edge to another piece at distance 2.
                     (results 
@@ -328,26 +328,26 @@
                                     (= 
                                         0
                                         (count Sites in:(sites Around (from) if:(and (is Empty (to)) ("IsEdge" (to)))))
-                                    )
+                                   )
                                     }
-                                )
+                               )
                                 1 
                                 0
-                            )
+                           )
                             // If secure for you, but not if opponent could secure by placing there and adjacent
                             (if
                                 (or
                                     (and
                                         (< 3 (count Pieces #1 in:(sites Around (from))))
                                         (no Pieces #2 in:(sites Around (sites Around (from) if:(is Empty (to)))))
-                                    )
+                                   )
                                     (and
                                         (< 2 (count Pieces #1 in:(sites Around (from))))
                                         (> 1 (count Pieces #2 in:(sites Around (from))))
-                                ))
+                               ))
                                 1
                                 0
-            )))))
+           )))))
             // enemy sites that the enemy never can secure
             (+
                 (results 
@@ -357,10 +357,10 @@
                         (< 
                             (+ 2 (count Sites in:(sites Around (from))))
                             (* 2 (count Pieces #1 in:(sites Around (from))))
-                        )
+                       )
                         1  
                         0
-            )))
+           )))
             
 )))
 
@@ -375,12 +375,12 @@
                 (or
                     ("MoveFriendly")
                     (move Pass)
-            ))
+           ))
             ("CaptureThenMove") 
             ("AddThenMove")
             ("AddOnly")
             }
-        )
+       )
         (then 
             (if 
                 (lt 0 (var "PowerLeft"))
@@ -403,7 +403,7 @@
     (phase "FirstTurn" 
         (play
             ("TheMove" 1 (set NextPlayer (player (mover))))
-        )
+       )
         (nextPhase (= 1 (var "MovePhase")) "SecondTurn")
 ))
 
@@ -411,7 +411,7 @@
     (phase "SecondTurn" 
         (play
             ("TheMove" 2 (set NextPlayer (player (next))))
-        )
+       )
         (nextPhase (= 2 (var "MovePhase")) "FirstTurn")
 ))
 
@@ -448,40 +448,40 @@
                             (< 0 (counter)) 
                             (set NextPlayer (player (next)))
                             (moveAgain)
-                ))) 
+               ))) 
                 (or 
                     (move Propose "Accept Pie Offer and Move" 
                         (then (set NextPlayer (player (mover))))
-                    )
+                   )
                     (move Propose "Swap Pieces" 
                         (then 
                             (do 
                                 (forEach Site 
                                     (sites Occupied by:P1) 
                                     (remember Value (site)) 
-                                ) 
+                               ) 
                                 next:(forEach Site 
                                     (sites Occupied by:P2)
                                     (and
                                         (remove (site))
                                         (add (piece "Ball1") (to (site)) stack:False)
-                                    )
+                                   )
                                     (then
                                         (forEach Value (values Remembered)
                                             (and
                                                 (remove (value))
                                                 (add (piece "Ball2") (to (value)) stack:False)
-                                            )
+                                           )
                                             (then 
                                                 (and 
                                                     (forget Value All)
                                                     (set NextPlayer (player (next)))
-        ))))))))))) 
+       ))))))))))) 
         (nextPhase 
             (or 
                 (is Proposed "Swap Pieces")
                 (is Proposed "Accept Pie Offer and Move")
-            )
+           )
             "FirstTurn"
 )))
 
@@ -497,7 +497,7 @@
         (piece "Ball" P1)
         (piece "Ball" P2)
         }
-    )
+   )
     (rules 
         (meta (passEnd NoEnd))
         <Variants:starting>
@@ -514,9 +514,9 @@
                     (<
                         (count Sites in:(sites Board))
                         (* 2 (- (score Next) ("SafetyFigure")))
-                ))
+               ))
                 (byScore)   
-    )))
+   )))
 )
 
 // Structure of play for the game: Start options
@@ -548,7 +548,7 @@
     (board 
         (remove (tri Hexagon 7) 
             vertices:{2 3 4 15 23 24 33 57 69 70 71 80 81 82 83 91 92 93 94 101 102 103 111 112 115 116 119 120 121 122 123 124 125 126}
-        )
+       )
         use:Vertex
 ))
 
@@ -556,7 +556,7 @@
     (board
         (remove (tri Limping  5 6)
             vertices:{0 1 5 6 29 30 39 48 64 70 71 74}
-        ) 
+       ) 
         use:Vertex
 ))
 (define  "RaggedHex87"
@@ -564,7 +564,7 @@
         (trim
             (remove (tri Limping 6 7)  
                 vertices:{0 1 2 6 7 8 15 33 44 45 55 56 67 77 87 95 96 102 103 104 107}
-        )) 
+       )) 
         use:Vertex
 ))
 
@@ -572,7 +572,7 @@
     (board
         (remove (tri {8 9 8 12 6})  
             vertices:{0 1 2 3 7 8 9 10 11 18 19 20 30 54 68 69 82 83 84 98 99 100 113 114 128 141 154 165 166 175 176 177 183 184 185 186 187 190 191}
-        ) 
+       ) 
         use:Vertex
 ))
 
@@ -689,7 +689,7 @@
         (credit "Dale W. Walton 2020-11-11")
         (date "18-11-2019")
         }
-    )
+   )
     
     (graphics {
         (board Style Graph)
@@ -700,19 +700,19 @@
         (piece Scale P2 "Ball" 0.93)
         (piece Colour P1 "Ball" state:0 fillColour:(colour 90 90 90) secondaryColour:(colour 0 0 0 0))
         (piece Colour P2 "Ball" state:0 fillColour:(colour White) secondaryColour:(colour 0 0 0 0))
-        (piece Colour P1 "Ball" state:1 fillColour:(colour 40 40 40 80 ) secondaryColour:(colour 0 0 0))
+        (piece Colour P1 "Ball" state:1 fillColour:(colour 40 40 40 80) secondaryColour:(colour 0 0 0))
         (piece Colour P2 "Ball" state:1 fillColour:(colour 255 255 255 110) secondaryColour:(colour 0 0 0))
-        (piece Colour P1 "Ball" state:2 fillColour:(colour 40 40 40 80 ) secondaryColour:(colour 0 0 0))
+        (piece Colour P1 "Ball" state:2 fillColour:(colour 40 40 40 80) secondaryColour:(colour 0 0 0))
         (piece Colour P2 "Ball" state:2 fillColour:(colour 255 255 255 110) secondaryColour:(colour 0 0 0))
-        (piece Colour P1 "Ball" state:3 fillColour:(colour 40 40 40 80 ) secondaryColour:(colour 0 0 0))
+        (piece Colour P1 "Ball" state:3 fillColour:(colour 40 40 40 80) secondaryColour:(colour 0 0 0))
         (piece Colour P2 "Ball" state:3 fillColour:(colour 255 255 255 110) secondaryColour:(colour 0 0 0))
-        (piece Colour P1 "Ball" state:4 fillColour:(colour 40 40 40 80 ) secondaryColour:(colour 0 0 0))
+        (piece Colour P1 "Ball" state:4 fillColour:(colour 40 40 40 80) secondaryColour:(colour 0 0 0))
         (piece Colour P2 "Ball" state:4 fillColour:(colour 255 255 255 110) secondaryColour:(colour 0 0 0))
-        (piece Colour P1 "Ball" state:5 fillColour:(colour 40 40 40 80 ) secondaryColour:(colour 0 0 0))
+        (piece Colour P1 "Ball" state:5 fillColour:(colour 40 40 40 80) secondaryColour:(colour 0 0 0))
         (piece Colour P2 "Ball" state:5 fillColour:(colour 255 255 255 110) secondaryColour:(colour 0 0 0))
-        (piece Colour P1 "Ball" state:6 fillColour:(colour 40 40 40 80 ) secondaryColour:(colour 0 0 0))
+        (piece Colour P1 "Ball" state:6 fillColour:(colour 40 40 40 80) secondaryColour:(colour 0 0 0))
         (piece Colour P2 "Ball" state:6 fillColour:(colour 255 255 255 110) secondaryColour:(colour 0 0 0))
-        (piece Colour P1 "Ball" state:7 fillColour:(colour 40 40 40 80 ) secondaryColour:(colour 0 0 0))
+        (piece Colour P1 "Ball" state:7 fillColour:(colour 40 40 40 80) secondaryColour:(colour 0 0 0))
         (piece Colour P2 "Ball" state:7 fillColour:(colour 255 255 255 110) secondaryColour:(colour 0 0 0))
         (board Background image:"Disc.svg" fillColour:(colour 230 230 230) edgeColour:(colour 230 230 230) scale:1.26 rotation:150 offsetX:-.01 offsetY:<Board:centering>)
         (board StyleThickness InnerEdges 1.75)
@@ -728,7 +728,7 @@
     
     (ai
         "Throngs_ai"
-    )
+   )
     
 )
 

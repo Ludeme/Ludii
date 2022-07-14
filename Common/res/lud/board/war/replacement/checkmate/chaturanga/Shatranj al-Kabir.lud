@@ -6,8 +6,8 @@
     (apply 
         (if ("IsEnemyAt" (to))
             (remove (to))
-        )
-    ) 
+       )
+   ) 
 )
 
 (define "EnemyNotImmumned" 
@@ -17,8 +17,8 @@
                 (= (what at:(to)) (id "Pawn" Next))
                 (is In (to) (sites Mover))
             })
-        )
-    )
+       )
+   )
 )
 
 (define "CaptureForwardDiagonal"
@@ -28,8 +28,8 @@
         (to 
             if:("EnemyNotImmumned") 
             (apply (remove (to)))
-        )
-    )
+       )
+   )
 )
 
 (define "NotSpecialPawn" 
@@ -50,7 +50,7 @@
     (and 
         (is In (last To) (sites Next))
         (= 2 (state at:(last To)))
-    )
+   )
 )
 
 (define "ThirdPromotionOfSpecialPawn" 
@@ -61,8 +61,8 @@
             (sites Board) 
             (if (= (if (is Mover P1) 11 12) (value Piece at:(site)))
                 (set Value at:(site) "ValueOfPawnKingPower")
-            )
-        )
+           )
+       )
     })
 )
 
@@ -72,8 +72,8 @@
         if:(if (is Mover P1)
             (and (is Enemy (who at:(ahead (site) NE))) (is Enemy (who at:(ahead (site) NW))))
             (and (is Enemy (who at:(ahead (site) SE))) (is Enemy (who at:(ahead (site) SW))))
-        )
-    )
+       )
+   )
 )
 
 (define "SiteWithSpecialPawnAndFirstPromotion" 
@@ -82,15 +82,15 @@
         if:(and 
             (= (what at:(site)) (id "Pawn" Mover)) 
             (<= (value Piece at:(site)) 2)
-        )
-    )
+       )
+   )
 )
 
 (define "MakePawnReadyForSecondPromotion" 
     (and
         (set Value at:(last To) (if (is Mover P1) 11 12))
         (set State at:(last To) 1)
-    )
+   )
 )
 
 (define "SiteWithSpecialPawnAndSecondPromotion" 
@@ -101,14 +101,14 @@
             (or (= (value Piece at:(site)) 11) (= (value Piece at:(site)) 12))
             (= (state at:(site)) 1)
         })
-    )
+   )
 )
 
 (define "ToEmptyInitSiteShahPawn" 
     (to 
         (mapEntry "InitShahPawn" Mover)
         if:(is Empty (to))
-    )
+   )
 )
 
 (define "MakePawnReadyForThirdPromotion" 
@@ -119,7 +119,7 @@
     (difference 
         (sites Occupied by:Mover container:"Board")
         (sites Occupied by:Mover container:"Board" component:"King_noCross")
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -133,7 +133,7 @@
                 (shift 11 1 (square 1))
                 (shift -1 9 (square 1))
             })
-        )
+       )
         (piece "Pawn" Each
             (if (= "ValueOfPawnKingPower" (value Piece at:(from)))
                 (move
@@ -141,8 +141,8 @@
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece"
-                    ) 
-                )
+                   ) 
+               )
                 (or
                     "StepForwardToEmpty" 
                     "CaptureForwardDiagonal"	
@@ -151,12 +151,12 @@
                             ("PromoteToAssignedPiece")
                             (if ("HasToDoThirdPromotion")
                                 ("ThirdPromotionOfSpecialPawn")
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (piece "Wazir" Each
             (move Hop Orthogonal 
@@ -165,11 +165,11 @@
                     if:(or 
                         (is Empty (to)) 
                         ("EnemyNotImmumned")
-                    ) 
+                   ) 
                     (apply (remove (to)))
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         
         (piece "Knight_rotated" Each
             (move
@@ -178,9 +178,9 @@
                 (to 
                     if:(or (is Empty (to)) ("EnemyNotImmumned")) 
                     "CaptureToPiece"
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         
         (piece "Elephant" Each
             (move Hop Diagonal 
@@ -189,11 +189,11 @@
                     if:(or 
                         (is Empty (to)) 
                         ("EnemyNotImmumned")
-                    ) 
+                   ) 
                     (apply (remove (to)))
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         
         (piece "Queen" Each
             (move
@@ -202,9 +202,9 @@
                 (to 
                     if:(or (is Empty (to)) ("EnemyNotImmumned")) 
                     "CaptureToPiece"
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         
         (piece "King_noCross" Each
             (move
@@ -219,14 +219,14 @@
                                 (and 
                                     (= (to) (mapEntry "ExtraSquare" Next))
                                     (< (value Piece at:(to)) 23)
-                                )
-                            )
-                        )
-                    ) 
+                               )
+                           )
+                       )
+                   ) 
                     "CaptureToPiece"
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         
         (piece "Amazon" Each
             (move
@@ -235,9 +235,9 @@
                 (to 
                     if:(or (is Empty (to)) ("EnemyNotImmumned")) 
                     "CaptureToPiece"
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         
         (piece "Giraffe" Each
             (forEach Direction 
@@ -256,16 +256,16 @@
                                             (to 
                                                 if:("EnemyNotImmumned")
                                                 "CaptureToPiece"
-                                            ) 
-                                        )
-                                    )
-                                )
-                            )
+                                           ) 
+                                       )
+                                   )
+                               )
+                           )
                         })
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (piece "Bishop_noCross" Each
             (move
                 Slide 
@@ -274,9 +274,9 @@
                 (to 
                     if:("EnemyNotImmumned")
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         
         (piece "Knight" Each
             (move
@@ -285,9 +285,9 @@
                 (to 
                     if:(or (is Empty (to)) ("EnemyNotImmumned")) 
                     "CaptureToPiece"
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         
         (piece "Rook" Each
             (move
@@ -296,9 +296,9 @@
                 (to 
                     if:("EnemyNotImmumned") 
                     "CaptureToPiece"
-                ) 
-            )		
-        )
+               ) 
+           )		
+       )
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         (map "InitShahPawn" {(pair P1 "G3") (pair P2 "G9")})
@@ -346,44 +346,44 @@
                         (from ("SiteWithSpecialPawnAndFirstPromotion"))
                         (to ("SitePawnCanCaptureTwice"))
                         (then ("MakePawnReadyForSecondPromotion"))
-                    )
+                   )
                     (move // To move a Baidaq al-Bayadiq in the second promotion to the starting Shah's Baidaq.
                         (from ("SiteWithSpecialPawnAndSecondPromotion"))
                         ("ToEmptyInitSiteShahPawn")
                         (then ("MakePawnReadyForThirdPromotion"))
-                    )
+                   )
                     (if (and (!= (value Player Mover) 1)
                             ("IsInCheck" "King_noCross" Mover)	
-                        )
+                       )
                         (forEach Site ("AnyOwnedSitesOnBoardExceptKing")
                             (move Swap Pieces (where "King_noCross" Mover) (site) (then (set Value Mover 1)))
-                        )
-                    )
+                       )
+                   )
                     (forEach Piece)
                 })
                 ifAfterwards:(and (not ("NextCanNotMove")) (not ("IsInCheck" "King_noCross" Mover)))
-            )
-        )
+           )
+       )
         (end {    
             (if  
                 (no Moves Next)
                 (result Mover Win)
-            )
+           )
             (if (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-                ) 
+               ) 
                 (result Mover Win)
-            )
+           )
             (if 
                 (or 
                     (= (what at:(mapEntry "ExtraSquare" P1)) (id "King_noCross" P2))
                     (= (what at:(mapEntry "ExtraSquare" P2)) (id "King_noCross" P1))
-                )
+               )
                 (result Mover Draw)
-            )
+           )
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -402,7 +402,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Southwest Asia, from around 1352 to 1657.")
         }
-    )
+   )
     
     (graphics {
         (piece Scale "Pawn" 0.825)
@@ -411,6 +411,6 @@
     
     (ai
         "Shatranj al-Kabir_ai"
-    )
+   )
 )
 

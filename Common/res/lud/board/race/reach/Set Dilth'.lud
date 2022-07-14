@@ -15,7 +15,7 @@
             ("SiteToMoveOnTrack" ("ThrowValue"))
             if:True
             ("HittingCapture" (mapEntry "Start" (who at:(to))))
-        )
+       )
         (then
             (forEach Site (sites Track Mover "Track" from:("NextSite" (last From) "Track") to:(last To))
                 (if ("IsEnemyAt" (site))
@@ -23,12 +23,12 @@
                         (move
                             (from (site) level:(level))
                             (to (mapEntry "Start" (who at:(site) level:(level))))
-                        )
-                    )
-                )
-            )
-        )
-    )
+                       )
+                   )
+               )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -38,7 +38,7 @@
     (equipment {
         ("FortyStonesWithFourGapsBoard"
             <Player:track>
-        )
+       )
         (regions "AllSites" (sites Board))
         (map "Throw" {(pair 0 10) (pair 1 2) (pair 2 3) (pair 3 5)})
         (map "Start" {(pair 1 37) (pair 2 38) (pair 3 39) (pair 4 36)})
@@ -57,16 +57,16 @@
                             (then 
                                 (if (= (score Mover) 3) 
                                     (remove (last To))
-                                )
-                            )
-                        )
+                               )
+                           )
+                       )
                         next:(if (and (!= 3 (score Mover)) (= 10 ("ThrowValue"))) (moveAgain))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (end (if (>= (score Mover) 4) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -137,7 +137,7 @@
         "Players/4"
         }
         variations:{"Players/2" "Players/3"}
-    )*
+   )*
     
 })
 

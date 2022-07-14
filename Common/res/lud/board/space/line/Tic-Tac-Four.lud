@@ -7,11 +7,11 @@
         (piece "Y" P3) 
         (piece "Z" P4) 
         }
-    )  
+   )  
     (rules 
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -29,7 +29,7 @@
         (credit "Matthew Stephenson")
         (date "2020")
         }
-    )
+   )
     
     (graphics
         {
@@ -38,10 +38,10 @@
         (player Name P3 "Y")
         (player Name P4 "Z")
         }
-    )
+   )
     
     (ai 
         "Tic-Tac-Four_ai"
-    )
+   )
     
 )

@@ -11,22 +11,22 @@
                             in:(intersection 
                                 (sites Around (to) Orthogonal)
                                 (sites Around (from) Orthogonal)
-                            )
-                        )
-                    )
-                )
-            )
+                           )
+                       )
+                   )
+               )
+           )
             (to)
-        )
-    )
+       )
+   )
 )
 
 (define "HasCrosscuts"
     (< 0 
         (count Sites
             in:("CrosscutSites" #1)
-        )
-    )
+       )
+   )
 )
 
 (define "Place"
@@ -37,20 +37,20 @@
                 (and
                     (not ("SameTurn"))
                     ("HasCrosscuts" (last To))
-                )
+               )
                 (set Var "LT" (last To) (then (moveAgain)))
                 (set Var "LT" -1)   
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "Choose2Resolve"
     (forEach Site (sites Occupied by:Mover)
         (do (set Var "LT" (site)) 
             next:("ResolveTheValue" (var "LT"))
-        )
-    )
+       )
+   )
 )
 
 (define "ResolveTheValue"
@@ -58,33 +58,33 @@
         (intersection 
             (sites Around #1 Orthogonal)
             (sites Around ("CrosscutSites" #1) Orthogonal)
-        )
+       )
         (move 
             (from #1) 
             (to (site)
                 if:(!= (last From) (to)) 
                 (apply (remove (site)))
-            )
+           )
             (then
                 (and
                     (add 
                         (piece (id "Ball" Next))
                         (to (var "LT"))
-                    )    
+                   )    
                     (set Var "LT" (last To) 
                         (then
                             (if 
                                 ("HasCrosscuts" (var "LT"))
                                 (set NextPlayer (player (mover)))
                                 (set Var "LT" -1)
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 //-----------------------------------------------
@@ -105,21 +105,21 @@
                 (or
                     ("Place")
                     ("Choose2Resolve")
-                )
+               )
                 (if 
                     (<= 0 (var "LT"))
                     ("ResolveTheValue" (var "LT"))
                     ("Place")
-                ) 
-            )
-        ) 
+               ) 
+           )
+       ) 
         (end {
             (if 
                 (is Connected Orthogonal Mover) 
                 (result Mover Win)
-            )
+           )
         })
-    )
+   )
 )
 
 //-------------------------------------------------
@@ -164,10 +164,10 @@
         (credit "Dale W. Walton")
         (date "2020")
         }
-    )
+   )
     (graphics
         {
         (board Style Go)
         }
-    )
+   )
 )

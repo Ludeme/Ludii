@@ -6,7 +6,7 @@
         (from 
             (sites Mover) 
             if:(> (count at:(from)) 0)
-        )
+       )
         (then 
             (sow
                 #1
@@ -20,13 +20,13 @@
                     (then (and 
                             (if (= "NumCaptureDone" 1) (set Value Mover 2)) 
                             (if (= "NumCaptureDone" Off) (set Value Mover 1))
-                        ) 
-                    )
-                )
+                       ) 
+                   )
+               )
                 origin:True
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "PiecesOwnedBy" (+ (count at:(mapEntry #1)) (count in:(sites #1))))
@@ -41,13 +41,13 @@
             (track "TrackCCW" "1,E,N,W" loop:True)
             (track "TrackCW"  "6,E,S,W" loop:True)
             }
-        )
+       )
         (regions P1 (sites Bottom))                    // P1 home
         (regions P2 (sites Top))                       // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
         (piece "Seed" Shared)
         }
-    )  
+   )  
     (rules 
         
         (start (set Count 10 to:(sites Track)))
@@ -60,9 +60,9 @@
                     (score P1 ("PiecesOwnedBy" P2)) 
                     (score P2 ("PiecesOwnedBy" P1))
                 })
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -74,13 +74,13 @@
         <1>
         <>
         "The first capture must be of one counter."
-    )   
+   )   
     (item "First capture = 3, Second Capture = 1"   
         <2> 
         <3>
         <(and (= "NumCaptureDone" 1) (= (count at:(to)) 1))>
         "The first capture must be of three counters, the second of one counter."
-    )*
+   )*
 })
 
 //------------------------------------------------------------------------------
@@ -91,13 +91,13 @@
         {
         "Play Rules/First capture = 3, Second Capture = 1"
         }
-    )
+   )
     
     (ruleset "Ruleset/Murray (Observed)" 
         {
         "Play Rules/First capture = 1"
         }
-    )
+   )
     
 })
 
@@ -118,7 +118,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in West Africa, around 1951.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -126,7 +126,7 @@
     
     (ai 
         "Ako Okwe_ai"
-    )
+   )
     
 )
 

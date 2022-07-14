@@ -10,12 +10,12 @@
             if:(and 
                 (not (is In (between) (sites ToClear))) 
                 ("IsEnemyAt" (between))
-            )
+           )
             (apply (remove (between) at:EndOfTurn))
-        ) 
+       ) 
         (to if:(is Empty (to))) 
         #3
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -32,15 +32,15 @@
             (intersection
                 (difference (sites Top) (sites Corners)) 
                 (sites Phase 0)
-            )
-        )
+           )
+       )
         (regions "RunnerGoalPink" Neutral
             (intersection
                 (difference (sites Top) (sites Corners)) (sites Phase 1)
-            )
-        )
+           )
+       )
         }
-    )  
+   )  
     
     (rules 
         (start { 
@@ -58,43 +58,43 @@
                                 (then
                                     (if (can Move ("HopCounter" (last To) Forward))
                                         (moveAgain)
-                                    )
-                                )
-                            ) 
-                        )
+                                   )
+                               )
+                           ) 
+                       )
                         (forEach Piece "DoubleCounter"
                             ("HopCounter" (from) Backward
                                 (then
                                     (if (can Move ("HopCounter" (last To) Backward))
                                         (moveAgain)
-                                    )
-                                )
-                            ) 
-                        )
-                    )
-                )
+                                   )
+                               )
+                           ) 
+                       )
+                   )
+               )
                 (or  
                     (forEach Piece "Counter" 
                         (move Step 
                             (directions Forward)
                             (to if:(is Empty (to)))
-                        )
-                    )
+                       )
+                   )
                     (forEach Piece "DoubleCounter"
                         (move Step 
                             (directions Backward)
                             (to if:(is Empty (to)))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
             })
-        )
+       )
         
         (end {
             (if (no Moves Next) (result Next Loss))
             (if (is In (last To) (sites Mover)) (result Mover Win))
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -142,7 +142,7 @@
         (credit "Phil Leduc")
         (origin  "This game is from Rhode Island, USA, on 31-01-2001.")
         }
-    )
+   )
     
     (graphics {
         (board Colour InnerEdges (colour GunMetal))
@@ -159,5 +159,5 @@
     
     (ai
         "Gauntlet_ai"
-    )
+   )
 )

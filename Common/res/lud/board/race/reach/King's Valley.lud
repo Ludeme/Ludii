@@ -18,7 +18,7 @@
         })
         (play (forEach Piece))
         (end (if (is In (where "King" Mover) (sites Centre)) (result Mover Win)))
-    )
+   )
 )
 
 //-------------------------------------------------------------------------
@@ -39,7 +39,7 @@
         (credit "Eric Piette")
         (date "2006")
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)
@@ -51,5 +51,5 @@
     
     (ai
         "King's Valley_ai"
-    )
+   )
 )

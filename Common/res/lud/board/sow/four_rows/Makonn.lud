@@ -12,7 +12,7 @@
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" "20,E,N1,W" loop:True P2)
             }
-        )
+       )
         (regions "Home" P1 (sites Track "Track1"))                                     // P1 Home
         (regions "Home" P2 (sites Track "Track2"))                                     // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
@@ -45,19 +45,19 @@
                                             (remove ("OppositePit" (last To)))
                                             (if (is Occupied ("OppositeOuterPit" (last To))) 
                                                 (remove ("OppositeOuterPit" (last To)))
-                                            )
+                                           )
                                         })
-                                    )
-                                )
+                                   )
+                               )
                                 (moveAgain)
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (move Pass)
-                )
-            )
+               )
+           )
             (nextPhase Mover (was Pass) "Sowing")
-        )
+       )
         
         (phase "Sowing" 
             (play
@@ -66,15 +66,15 @@
                         (if ("SameTurn")
                             (sites {(var "Replay")})
                             (sites Mover "Home") 
-                        )
+                       )
                         if:(if ("SameTurn")
                             True
                             (if ("OnlyHoleWithSingleCounters")
                                 (is Occupied (from))
                                 (< 1 (count at:(from)))
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (then
                         (sow
                             "Track"
@@ -83,26 +83,26 @@
                                 (and
                                     (set Var "Replay" (to))
                                     (moveAgain)
-                                )
+                               )
                                 (if (is Occupied ("OppositePit" (to)))
                                     (and 
                                         (remove ("OppositePit" (to)))
                                         (if (is Occupied ("OppositeOuterPit" (to))) 
                                             (remove ("OppositeOuterPit" (to)))
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         }
         
         (end (if (all Sites (sites Next "Home") if:(= 0 (count at:(site)))) (result Next Loss)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -120,7 +120,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Seychelles, around 2007.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

@@ -3,10 +3,10 @@
         (sites From
             (forEach Piece "Marker" 
                 ("HopCapture")
-            )
-        )
+           )
+       )
         (remember Value "From" (site))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -36,20 +36,20 @@
                                     (and
                                         (forEach Site (sites (values Remembered "From"))
                                             (remove (site))
-                                        )
+                                       )
                                         (if (is In (last From) (sites (values Remembered "From")))
                                             (remove (last To))
-                                        )
-                                    )
-                                )
-                            )
+                                       )
+                                   )
+                               )
+                           )
                             (forget Value All)
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (forEach Piece)
-            )
-        )
+           )
+       )
         
         (end {
             (if (no Pieces P2) (result P1 Win))
@@ -57,11 +57,11 @@
                 (or
                     (or (no Pieces P1) (no Moves P1))
                     (all Sites (expand (sites Top) steps:2) if:(= (who at:(site)) P2))
-                )
+               )
                 (result P2 Win)
-            )
+           )
         }) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -80,7 +80,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Europe, around 1891.")
         }
-    )
+   )
     
     (graphics {
         (region Colour Edge {70 71 65 66 67 68 69 63 64 58 59 60 61 62 40 41} regionSiteType:Edge (colour Red))
@@ -88,5 +88,5 @@
     
     (ai
         "Asalto_ai"
-    )
+   )
 )

@@ -7,7 +7,7 @@
     (rules 
         (play (satisfy (all Different)))
         (end (if (is Solved) (result P1 Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -63,7 +63,7 @@
         (classification "puzzle/deduction")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

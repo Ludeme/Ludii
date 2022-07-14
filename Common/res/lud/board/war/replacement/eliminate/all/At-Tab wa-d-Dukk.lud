@@ -6,7 +6,7 @@
     (apply 
         if:("IsEnemyAt" (to)) 
         (remove (to) (then (addScore Mover 1)))
-    ) 
+   ) 
 )
 
 (define "ActivatePiece" (set State at:(last To) 0))
@@ -27,9 +27,9 @@
         (to 
             "SiteToMoveOnTrack" 
             "CaptureEnemyPiece"
-        )
+       )
         count:#1
-    )
+   )
 )
 
 (define "KingMove" ("Move" (count at:(from))))
@@ -38,14 +38,14 @@
     (move 
         (from)
         (to  "SiteToMoveOnTrack")
-    )		
+   )		
 )
 
 (define "AllPieceInOpponentHome" 
     (and
         (= (count Sites in:(difference (sites Occupied by:P1) (sites P2))) 0)
         (= (count Sites in:(difference (sites Occupied by:P2) (sites P1))) 0)
-    )		
+   )		
 )
 
 //------------------------------------------------------------------------------
@@ -59,7 +59,7 @@
             (track "Track1" "0,E,N1,W,N1,E,N1,W" P1 directed:True)
             (track "Track2" "51,W,S1,E,S1,W,S1,E" P2 directed:True)
             }
-        )
+       )
         (dice d:2 from:0 num:4)
         (map {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})
         (piece "Marker" Each
@@ -70,30 +70,30 @@
                             (and
                                 ("InOpponentHome")
                                 ("OpponentPieceAtHome")
-                            )
-                        )
+                           )
+                       )
                         (if (or
                                 (is In "SiteToMoveOnTrack" (sites Empty))
                                 (is Enemy (who at:"SiteToMoveOnTrack"))
-                            )
+                           )
                             (or 
                                 (if ("ThrowEqualSizeKingMinusOne")
                                     ("UncoupledKing")
-                                )
+                               )
                                 ("KingMove")
-                            )
+                           )
                             (if (and 
                                     (is In "SiteToMoveOnTrack" (sites "CentralRows"))
                                     (is Friend (who at:"SiteToMoveOnTrack"))
-                                )
+                               )
                                 ("CreateAKing")
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (then ("ActivatePiece"))
-                )
-            )
-        )
+               )
+           )
+       )
         (regions "AnotherThrow" (sites {1 4 6}))
         (regions "CentralRows" (union (sites Row 1) (sites Row 2)))
         (regions P1 (sites Bottom))
@@ -110,15 +110,15 @@
                 next:(if (can Move (forEach Piece))
                     (forEach Piece (then (if (is In ("ThrowValue") (sites "AnotherThrow")) (moveAgain))))
                     (move Pass (then (if (is In ("ThrowValue") (sites "AnotherThrow")) (moveAgain))))
-                )
-            )
-        )
+               )
+           )
+       )
         (end 
             (if (or ("AllPieceInOpponentHome") (no Pieces Mover))
                 (byScore)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -140,7 +140,7 @@
         "Board Size/13"
         }
         variations:{"Board Size/19" "Board Size/21" "Board Size/29"}
-    )*
+   )*
     
 })
 
@@ -160,7 +160,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Southwest Asia, from around 1248 to 1762.")
         }
-    )
+   )
     
     (graphics {
         (piece Colour "Die" state:0 fillColour:(colour Yellow))
@@ -171,5 +171,5 @@
     
     (ai
         "At-Tab wa-d-Dukk_ai"
-    )
+   )
 )

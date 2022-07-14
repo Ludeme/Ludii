@@ -19,19 +19,19 @@
                             after:2
                             if:("IsEnemyAt" (between))
                             (apply (remove (between)))
-                        ) 
+                       ) 
                         (to if:(is Empty (to))) 
-                    )
+                   )
                     ifAfterwards:(is In (last To) (sites Phase 0))
-                )
+               )
                 }
                 (then 
                     (if "JumpToPromotionZone"
                         (promote (last To) (piece "DoubleCounter") Mover)
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (piece "DoubleCounter" Each
             (or
                 (move Slide)
@@ -41,11 +41,11 @@
                         after:(count Rows)
                         if:("IsEnemyAt" (between)) 
                         (apply (remove (between)))
-                    )
+                   )
                     (to if:(is Empty (to)))
-                )
-            )
-        )
+               )
+           )
+       )
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
     })  
@@ -59,7 +59,7 @@
         (play (forEach Piece)) 
         
         (end (if (no Pieces Next) (result Mover Win))) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -78,7 +78,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Denmark, around 1802.")
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)
@@ -87,5 +87,5 @@
     
     (ai
         "Makvoer_ai"
-    )
+   )
 )

@@ -3,7 +3,7 @@
     (if (is In ("ThrowValue") (sites {1 10 15 20}))
         1	
         ("ThrowValue")
-    )
+   )
 )
 (define "SiteToMoveOnTrack" ("NextSiteOnTrack" #2 #1))
 
@@ -24,32 +24,32 @@
                         (graph
                             vertices:{ { 0 0 } { 0 1 } { 2 3 } {2 0 } } 
                             edges:{ {0 1} {1 2}  {2 3} {3 0}} 
-                        )
-                    )
+                       )
+                   )
                     (shift 2 7
                         (graph
                             vertices:{ { 0 0 } { 0 2 } { 4.5 2 } {2.5 0 } } 
                             edges:{ {0 1} {1 2}  {2 3} {3 0}} 
-                        )
-                    )
+                       )
+                   )
                     (shift 0 7
                         (graph
                             vertices:{ { 0 0 } { 0 2 } { -2.5 2 } {-4.5 0 } } 
                             edges:{ {0 1} {1 2}  {2 3} {3 0}} 
-                        )
-                    )
+                       )
+                   )
                     (shift -2.5 10
                         (graph
                             vertices:{ { 0 0 } { 0 -1 } { -2 -3 } {-2 0 } } 
                             edges:{ {0 1} {1 2}  {2 3} {3 0}} 
-                        )
-                    )
+                       )
+                   )
                 })
                 edges:{{2 3}}
-            )
+           )
             <Players:tracks>
             use:Vertex
-        )
+       )
         (dice d:2 facesByDie:{{0 1} {0 1} {0 15} {0 20}} num:4)
         (piece "Marker" Each
             (if ("IsEndTrack" ("SiteToMoveOnTrack" from:(from) 1))
@@ -60,7 +60,7 @@
                         (= 20 ("ThrowValue"))
                     })
                     (move Remove (from) level:(level))
-                )
+               )
                 (if ("IsEndTrack" ("SiteToMoveOnTrack" from:(from) 2))
                     (or
                         (if (or { 
@@ -69,34 +69,34 @@
                                 (= 5 ("ThrowValue"))
                             })
                             (move Remove (from) level:(level))
-                        )
+                       )
                         (if (is In ("ThrowValue") (sites {1 10 15 20}))
                             (move 
                                 (from (from) level:(level))	
                                 (to ("SiteToMoveOnTrack" from:(from) 1))
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (if (is In (from) (sites Mover "EndTrack"))
                         (move 
                             (from (from) level:(level))
                             (to
                                 ("SiteToMoveOnTrack" from:(from) ("ThrowValueEndTrack"))
                                 if:True
-                            )
-                        )
+                           )
+                       )
                         (move 
                             (from (from) level:(level))
                             (to
                                 ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
                                 if:(not (and (is In (to) (sites "SafeSites")) ("IsEnemyAt" (to))))
                                 ("HittingStackCapture" (handSite (who at:(to) level:(level))))
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         (hand Each)
         (map "Throw" {(pair 0 10) (pair 37 5) (pair 1 1) (pair 15 15) (pair 20 20) (pair 2 2) (pair 16 2) (pair 21 2) (pair 35 2) (pair 17 3) (pair 22 3) (pair 36 3)})
         <Players:entries>
@@ -116,10 +116,10 @@
                                 (and
                                     (moveAgain)
                                     (set Value Mover 0)
-                                )
-                            )
-                        )
-                    )
+                               )
+                           )
+                       )
+                   )
                     (forEach Piece
                         (then
                             (if (and (< Undefined (value Player Mover)) (> 3 (value Player Mover)))
@@ -127,20 +127,20 @@
                                     (and
                                         (moveAgain)
                                         (set Value Mover (+ 1 (value Player Mover)))
-                                    )
+                                   )
                                     (set Value Mover (+ 1 (value Player Mover)))
-                                )
-                            )
-                        )
-                    )
+                               )
+                           )
+                       )
+                   )
                     (if (no Pieces Mover)
                         <Players:playingTeamPieces>
-                    )
+                   )
                 })
-            )
-        )
+           )
+       )
         (end ("EscapeTeamWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -172,7 +172,7 @@
         (if (is Mover P1) 
             (forEach Piece P1)
             (forEach Piece P2)
-        )
+       )
         >
     "The game is played with 2 players.") 
     (item "4"  <4>  
@@ -207,7 +207,7 @@
         (if (or (is Mover P1) (is Mover P3))
             (or (forEach Piece P1) (forEach Piece P3))
             (or (forEach Piece P2) (forEach Piece P4))
-        )
+       )
         >
     "The game is played with 4 players.")  
     (item "6"  <6>  
@@ -248,7 +248,7 @@
         (if (or {(is Mover P1) (is Mover P3) (is Mover P5) })
             (or {(forEach Piece P1) (forEach Piece P3) (forEach Piece P5)})
             (or {(forEach Piece P2) (forEach Piece P4) (forEach Piece P6)})
-        )
+       )
         >
     "The game is played with 6 players.")*   
 })
@@ -261,7 +261,7 @@
         "Players/6"
         }
         variations:{"Players/2" "Players/4"}
-    )*
+   )*
     
 })
 
@@ -281,7 +281,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Mexico, around 1924.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)

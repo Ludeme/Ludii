@@ -23,15 +23,15 @@
                 {155 144 140 151}
                 {133 134 143 147}
                 }
-            )
-        )
+           )
+       )
         (piece "Disc" Each (move [#]))
     })
     (rules
         (start [#])
         (play [#])
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -49,7 +49,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Sri Lanka, around 1942.")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
@@ -64,7 +64,7 @@
             {17 6} {18 5}
             }
             scale:2
-        )
+       )
         
         (show Symbol "disc" Cell 51 edgeColour:(colour Black) scale:3 offsetX:-0.5 offsetY:3.5)
         (show Symbol "disc" Cell 44 edgeColour:(colour Black) scale:3 offsetX:0.5 offsetY:3.5)

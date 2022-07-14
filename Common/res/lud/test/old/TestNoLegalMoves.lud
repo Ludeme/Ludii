@@ -6,7 +6,7 @@
     (players {(player N) (player S)}) 
     (equipment { 
         (board (<Tiling:type> <Board:size>)) 
-        (piece "Pawn" Each )
+        (piece "Pawn" Each)
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
     })  
@@ -19,7 +19,7 @@
         (play (forEach Piece))
         
         (end (if "RegionReached" (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------

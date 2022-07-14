@@ -8,7 +8,7 @@
     (or
         ("Sohatara")
         (is In ("ThrowValue") (sites {1 5}))
-    )
+   )
 )
 
 (define "RemoveAPiece" (move Remove (from)))
@@ -24,18 +24,18 @@
                     (and 
                         ("IsEnemyAt" ("NextSiteOnTrack" #1))
                         (not (is In ("NextSiteOnTrack" #1) (sites "SafeSites")))
-                    )
-                )
+                   )
+               )
                 (move 
                     (from)
                     (to 
                         ("NextSiteOnTrack" #1) 
                         "CaptureEnemyPiece"
-                    )
-                )
-            )
-        )
-    )			
+                   )
+               )
+           )
+       )
+   )			
 )
 
 (define "PlayingSohatara" (is Pending))
@@ -56,9 +56,9 @@
                             (shift 3.5 -3.5 (rotate 90 (rectangle 3 4)))
                         })
                         vertices:{{5.5 1.5}}
-                    )
+                   )
                     edges:{{4 76} {35 76} {19 76} {20 76}}
-                )
+               )
                 (shift 3 3 (square 1))
                 (shift 7 3 (square 1))
                 (shift 3 -1 (square 1))
@@ -70,7 +70,7 @@
             (track "Track3" "17,39,N,W1,S3,W1,S1,W,S,E3,S1,E1,S,E,N3,E,N1,E,N,W3,N,W1,N,W1,S3,End" P3 directed:True)
             (track "Track4" "21,26,E,N1,W3,N1,W1,N,W,S3,W1,S1,W,S,E3,S1,E1,S,E,N3,E1,N1,E,N1,W3,End" P4 directed:True)
             } 
-        )
+       )
         (piece "Marker" Each ("Move" ("ThrowValue")))
         (hand Each)
         ("StickDice" 6)
@@ -92,9 +92,9 @@
                             (to 
                                 (mapEntry (mover))
                                 if:(is Empty (mapEntry (mover)))
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (if (or ("PlayingSohatara") ("Sohatara"))
                         (forEach Die 
                             if:("DieNotUsed")
@@ -104,22 +104,22 @@
                                     (and
                                         (set Pending)
                                         (moveAgain)
-                                    )
-                                )
-                            )
-                        )
+                                   )
+                               )
+                           )
+                       )
                         (forEach Piece)
-                    )
-                )
+                   )
+               )
                 (then 
                     (if ("SpecialThrows")
                         (moveAgain)
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (end ("EscapeTeamWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -139,7 +139,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Sri Lanka, around 1909.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)

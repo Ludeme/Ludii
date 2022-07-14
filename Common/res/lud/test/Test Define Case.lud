@@ -3,7 +3,7 @@
         Around 
         (to) 
         if:(not (is In (to) (sites Empty)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -14,7 +14,7 @@
         (board (hex 5)) 
         (piece "Marker" Neutral) 
         }
-    )  
+   )  
     
     (rules 
         
@@ -22,7 +22,7 @@
         (phase "start" P1 
             (play (move Add (to (sites Empty)))) 
             (nextPhase "play")
-        )
+       )
         
         (phase "play"     
             (play 
@@ -36,16 +36,16 @@
                                 (is Empty (to))  
                                 // not adjacent to any other piece except the last one placed.
                                 ("NoSites" (difference ("adjacentNotEmptySites") (last To)))
-                            ) 
-                        )
-                    )
-                )
-            )
-        )
+                           ) 
+                       )
+                   )
+               )
+           )
+       )
         }
         
         (end ("NoMoves" Loss))  
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -62,5 +62,5 @@
         (credit "Eric Piette")
         (date "2002")
         }
-    )
+   )
 )

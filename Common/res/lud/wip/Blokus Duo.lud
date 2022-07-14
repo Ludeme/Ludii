@@ -57,50 +57,50 @@
                     (move 
                         (from (sites Occupied by:Mover container:(mover))) 
                         (to (sites Empty))
-                    )
+                   )
                     ifAfterwards:(or (not (is Empty (coord "E10"))) (not (is Empty (coord "J5"))))
-                )
-            ) 
+               )
+           ) 
             (nextPhase Mover "Playing")
-        )
+       )
         (phase "Opening" P2
             (play 
                 (do
                     (move 
                         (from (sites Occupied by:Mover container:(mover))) 
                         (to (sites Empty))
-                    )
+                   )
                     ifAfterwards:(and (not (is Empty (coord "E10"))) (not (is Empty (coord "J5"))))
-                )
-            ) 
+               )
+           ) 
             (nextPhase Mover "Playing")
-        )
+       )
         (phase "Playing" 
             (play 
                 (do
                     (move 
                         (from (sites Occupied by:Mover container:(mover))) 
                         (to (sites Empty))
-                    )
+                   )
                     ifAfterwards:(and
                         (= 0 (count Sites in:(intersection (sites LargePiece at:(last To))
                             (sites Around (difference (sites Occupied by:Mover container:"Board") (sites LargePiece at:(last To))) Orthogonal)))
-                        )
+                       )
                         (= 1 (count Sites in:(intersection (sites LargePiece at:(last To))
                             (sites Around (difference (sites Occupied by:Mover container:"Board") (sites LargePiece at:(last To))) Diagonal)))
-                        )
-                    ) 
-                )
-            )
-        )
+                       )
+                   ) 
+               )
+           )
+       )
         }
         (end 
             (if 
                 (and (no Moves P1) (no Moves P2)) 
                 (byScore {(score P1 (- 0 (size LargePiece in:(sites Occupied by:P1 container:1)))) (score P2 (- 0 (size LargePiece in:(sites Occupied by:P2 container:2))))})
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -110,7 +110,7 @@
     (info
         {
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour VeryLightGrey))

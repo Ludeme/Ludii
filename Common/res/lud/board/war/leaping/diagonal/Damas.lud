@@ -6,10 +6,10 @@
         (between 
             if:("IsEnemyAt" (between))
             (apply (remove (between)))
-        ) 
+       ) 
         (to if:(is Empty (to))) 
         #2
-    ) 
+   ) 
 )
 
 (define "HopDoubleCounter" 
@@ -22,10 +22,10 @@
             after:9
             if:("IsEnemyAt" (between)) 
             (apply (remove (between)))
-        )
+       )
         (to if:(is Empty (to)))
         #2
-    )
+   )
 )
 
 (define "SitesWithPossibleCaptureInPreviousTurn" (sites Pending))
@@ -43,28 +43,28 @@
                                         (move Promote (last To) (piece "DoubleCounter") Mover)
                                         (if (can Move ("HopDoubleCounter" (from (last To)))) 
                                             (moveAgain) 
-                                        ) 
-                                    )
+                                       ) 
+                                   )
                                     (if (can Move ("HopCounter" (from (last To)))) 
                                         (moveAgain) 
-                                    ) 
-                                )
-                            )
-                        )
-                    )
+                                   ) 
+                               )
+                           )
+                       )
+                   )
                     (forEach Piece "DoubleCounter"
                         ("HopDoubleCounter" (from) 
                             (then 
                                 (if (can Move ("HopDoubleCounter" (from (last To)))) 
                                     (moveAgain) 
-                                ) 
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    )
+                               ) 
+                           )
+                       )
+                   )
+               )
+           )
+       )
+   )
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -83,14 +83,14 @@
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-    )  
+   )  
     (rules 
         (start
             { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ))
+            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1) ))
             (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1)))
             }
-        )
+       )
         
         (play 
             (if ("SameTurn")
@@ -103,25 +103,25 @@
                                         (move Promote (last To) (piece "DoubleCounter") Mover)
                                         (if (can Move ("HopDoubleCounter" (from (last To)))) 
                                             (moveAgain) 
-                                        ) 
-                                    )
+                                       ) 
+                                   )
                                     (if (can Move ("HopCounter" (from (last To)))) 
                                         (moveAgain) 
-                                    ) 
-                                )
-                            )
-                        )
-                    )
+                                   ) 
+                               )
+                           )
+                       )
+                   )
                     (max Moves 
                         ("HopDoubleCounter" (from (last To))
                             (then 
                                 (if (can Move ("HopDoubleCounter" (from (last To)))) 
                                     (moveAgain) 
-                                ) 
-                            )	
-                        ) 
-                    )
-                )
+                               ) 
+                           )	
+                       ) 
+                   )
+               )
                 
                 (do 
                     ("RememberSiteWithPossibleCapture") 
@@ -138,17 +138,17 @@
                                                     (move Promote (last To) (piece "DoubleCounter") Mover)
                                                     (if (can Move ("HopDoubleCounter" (from (last To)))) 
                                                         (moveAgain) 
-                                                    ) 
-                                                )
+                                                   ) 
+                                               )
                                                 (if (can Move ("HopCounter" (from (last To)))) 
                                                     (moveAgain) 
-                                                ) 
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
+                                               ) 
+                                           )
+                                       )
+                                   )
+                               )
+                           )
+                       )
                         (forEach Piece "DoubleCounter"
                             (max Moves 
                                 ("HopDoubleCounter" (from) 
@@ -157,12 +157,12 @@
                                             "StoreCapturingPiece"
                                             (if (can Move ("HopDoubleCounter" (from (last To)))) 
                                                 (moveAgain) 
-                                            ) 
-                                        )
-                                    )	
-                                )
-                            )
-                        )
+                                           ) 
+                                       )
+                                   )	
+                               )
+                           )
+                       )
                         // Non Captures moves.
                         (forEach Piece "Counter"
                             (move
@@ -172,34 +172,34 @@
                                 (then
                                     (if (is In (last To) (sites Next))
                                         (move Promote (last To) (piece "DoubleCounter") Mover)
-                                    )
-                                )
-                            )
-                        )
+                                   )
+                               )
+                           )
+                       )
                         (forEach Piece "DoubleCounter"
                             (move Slide Diagonal)
-                        )
+                       )
                         }
-                    )
+                   )
                     (then
                         (and
                             (if (and (!= ("LastCapturingPiece") (last To))  (not (is In (last To) ("SitesWithPossibleCaptureInPreviousTurn"))))
                                 (remove ("SitesWithPossibleCaptureInPreviousTurn"))
-                            )
+                           )
                             (if (and (!= ("LastCapturingPiece") (last To)) (is In (last From) ("SitesWithPossibleCaptureInPreviousTurn")))
                                 (remove (last To))
-                            )
-                        )
-                    )
-                )
-            )
-        ) 
+                           )
+                       )
+                   )
+               )
+           )
+       ) 
         
         (end { 
             (if (no Moves P1) (result P2 Win))
             (if (no Moves P2) (result P1 Win))
         }) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -218,7 +218,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Spain, around 1547.")
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)
@@ -227,5 +227,5 @@
     
     (ai
         "Damas_ai"
-    )
+   )
 )

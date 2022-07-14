@@ -9,7 +9,7 @@
     (equipment { 
         (mancalaBoard 2 6
             (track "Track" "1,E,N,W" loop:True)
-        )
+       )
         (piece "Seed" Shared)
         (regions "Home" P1 (sites Bottom)) 
         (regions "Home" P2 (sites Top)) 
@@ -25,15 +25,15 @@
                     (if ("SameTurn") 
                         "LastHoleSowed" 
                         (sites Mover) 
-                    ) 
+                   ) 
                     if:(or 
                         (< 1 (count at:(from)))
                         (and 
                             (= 1 (count at:(from)))
                             (is Empty ("NextHoleFrom" (from) "Track" 1))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (then
                     (sow
                         if:True
@@ -42,22 +42,22 @@
                                 (from (to))
                                 (to (mapEntry Mover))
                                 count:(count at:(to))
-                            )
+                           )
                             (if (< 1 (count at:(to)))
                                 (if (is Occupied ("NextHoleFrom" (to) "Track" 1))
                                     (moveAgain)
-                                )
-                            )
-                        )
+                               )
+                           )
+                       )
                         includeSelf:False
                         backtracking:(= 4 (count at:(to)))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (end ("MancalaByScoreWhen" (no Moves Next)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -75,7 +75,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Haiti, around 1952.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

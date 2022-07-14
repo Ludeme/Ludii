@@ -5,10 +5,10 @@
         (between 
             if:(is Next (who at:(between)))
             (apply (remove (between)))
-        )
+       )
         (to if:(and (= 3 (count Steps Vertex All (last To) (to))) (is Mover (who at:(to)))))
         (then (addScore Mover 1))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -20,7 +20,7 @@
         (board <Board> use:Vertex) 
         (piece "Ball" Each) 
         }
-    )  
+   )  
     (rules 
         (start {
             (set Score Each 0)
@@ -32,8 +32,8 @@
             (if (> (score Mover) 9) (result Mover Win))
             //(if (is Full) (result Draw))
             }
-        )  
-    )
+       )  
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -52,48 +52,48 @@
         (phase "Opening"
             (play (move Add (to (sites "J10"))))
             (nextPhase "General")
-        )
+       )
         (phase "General"
             (play 
                 (move Add (to (sites Empty))
                     (then "Custodial")
-                )
-            )
-        )
+               )
+           )
+       )
         }
         >
         "Open at the centre point."
-    )*
+   )*
     (item "Freestyle" 
         <
         (play (move Add (to (sites Empty))))
         > 
         "Open anywhere."
-    )
+   )
     (item "Pro Pente" 
         <
         phases:{
         (phase "First Move"
             (play (move Add (to (sites "J10"))))
             (nextPhase "Second Move")
-        )
+       )
         (phase "Second Move"
             (play (move Add (to (sites Empty))))
             (nextPhase "Third Move")
-        )
+       )
         (phase "Third Move"
             (play (move Add (to (intersection
                             (sites Empty)
             (sites Distance All from:(coord "J10") (range 3 15))))))
             (nextPhase "General")
-        )
+       )
         (phase "General"
             (play (move Add (to (sites Empty))))
-        )
+       )
         }
         > 
         "White's second move must be 3 points away from the centre."
-    )
+   )
     }
 )
 
@@ -113,7 +113,7 @@
         (credit "Eric Silverman")
         (date "1977")
         }
-    )
+   )
     
     (graphics {
         (board Style Go)
@@ -123,5 +123,5 @@
     
     (ai
         "Pente_ai"
-    )
+   )
 ) 

@@ -4,9 +4,9 @@
             (range 1 9)
             if:#1
             (apply (remove (between)))
-        )
+       )
         (to if:(is Empty (to)))
-    )
+   )
 )
 
 //-------------------------------------------------------------------------------
@@ -21,7 +21,7 @@
                 ("StepToEmpty")
                 ("BigHop" ("IsEnemyAt" (between))) 
             })
-        ) 
+       ) 
         (piece "Sheep" P2 "StepToEmpty") 
     })  
     (rules 
@@ -41,10 +41,10 @@
                 (and 
                     (not ("HandEmpty" P2)) 
                     (< (count Sites in:(sites Occupied by:P2 container:"Board")) 8)
-                ) 
+               ) 
                 "Placement"
-            )
-        )
+           )
+       )
         
         (phase "Placement"
             (play 
@@ -52,18 +52,18 @@
                     (from (handSite Mover)) 
                     (to (sites Empty))
                     (then (moveAgain))
-                ) 
-            )
+               ) 
+           )
             (nextPhase 
                 (or 
                     ("HandEmpty" P2) 
                     (= (count Sites in:(sites Occupied by:P2 container:"Board")) 8)
-                ) 
+               ) 
                 "Movement"
-            )
-        )
+           )
+       )
         }
-    )
+   )
 )
 
 //-------------------------------------------------------------------------------
@@ -81,7 +81,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Sumatra, around 1906.")
         }
-    )
+   )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})

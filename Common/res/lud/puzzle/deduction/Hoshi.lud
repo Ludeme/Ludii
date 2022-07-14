@@ -11,7 +11,7 @@
                 (shift -2 -0.87 (rotate 180 (tri 3)))
             })
             (values Cell (range 1 9))
-        )
+       )
         (regions {0 3 1 4 2 5 7 6 8})
         (regions {17 16 14 15 11 13 10 12 9})
         (regions {18 19 20 21 22 23 24 25 26})
@@ -43,9 +43,9 @@
             (satisfy {
                 (all Different)
             })
-        )
+       )
         (end (if (is Solved) (result P1 Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -59,7 +59,7 @@
             {32 6} {28 2} {29 8} {42 9} {41 6} {36 5} {42 9}
         })>
         ""
-    )   
+   )   
 })
 
 //------------------------------------------------------------------------------
@@ -75,7 +75,7 @@
         (classification "puzzle/deduction")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Colour OuterVertices (colour Hidden))

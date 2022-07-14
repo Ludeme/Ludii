@@ -6,7 +6,7 @@
     (trackSite Move 
         from:#1 
         steps:(pips)
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -26,7 +26,7 @@
             (track "Track2" {25 23..18 17..12 0..5 6..11} P2 directed:True)
             } 
             use:Vertex
-        )
+       )
         (dice [#])
         (piece "Disc" Each
             (move
@@ -35,10 +35,10 @@
                     if:(or (not ("IsEnemyAt" (to))) (and ("IsEnemyAt" (to)) (= 1 (size Stack at:(to)))))
                     (apply 
                         (if ("IsEnemyAt" (to)) (remove (to)))	
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (hand Each)
     })
     (rules
@@ -59,14 +59,14 @@
                             (then 
                                 (if (not (all DiceUsed))
                                     (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             (nextPhase Mover (is Empty (handSite Mover)) "Playing")
-        )
+       )
         
         (phase "Playing" 
             (play
@@ -78,15 +78,15 @@
                         (then 
                             (if (not (all DiceUsed))
                                 (moveAgain)
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         }
         (end (if (> ("NumPieces") (count Pieces Next)) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -106,7 +106,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Thailand, around 1836.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)

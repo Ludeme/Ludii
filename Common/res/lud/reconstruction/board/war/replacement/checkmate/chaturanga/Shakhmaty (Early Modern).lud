@@ -3,9 +3,9 @@
         (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
-            )
-        )
-    ) 
+           )
+       )
+   ) 
 )
 
 //------------------------------------------------------------------------------
@@ -22,18 +22,18 @@
                     (to 
                         if:("IsEnemyAt" (to)) 
                         "CaptureToPiece"
-                    ) 
-                ) 
+                   ) 
+               ) 
                 (move
                     Leap 
                     "KnightWalk" 
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece"
-                    ) 
-                )
-            )
-        )
+                   ) 
+               )
+           )
+       )
         (piece "Knight" Each (move [#]))
         (piece "Pawn" Each (move [#]))
         (piece "Rook" Each (move [#]))
@@ -43,7 +43,7 @@
         (start [#])
         (play [#])
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -53,7 +53,7 @@
     (info
         {
         }
-    )
+   )
     
     (graphics {
         (show Check "King")

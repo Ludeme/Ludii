@@ -14,10 +14,10 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (difference (sites Empty) (sites Centre)))
-                ) 
-            )
+               ) 
+           )
             (nextPhase Mover "PlacementAdjacent")
-        )
+       )
         
         (phase "PlacementAdjacent"
             (play 
@@ -25,19 +25,19 @@
                     (from (handSite Mover)) 
                     (to (difference (sites Empty) (sites Centre))
                         if:(is In (to) (sites Around (sites Occupied by:Mover)))
-                    )
-                ) 
-            )
+                   )
+               ) 
+           )
             (nextPhase ("HandEmpty" P2) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play (forEach Piece))
-        )
+       )
         }
         
         (end (if (is Line 3 through:(centrePoint) what:(mover)) (result Mover Win))) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -55,6 +55,6 @@
         (credit "Eric Piette")
         (origin  "This game was played in Australia, from around 1953 to 1954.")
         }
-    )
+   )
     
 )

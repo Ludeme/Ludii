@@ -4,7 +4,7 @@
         Orthogonal
         (between (max 1) if:(= (what at:(between)) (id #1)) (apply (remove (between))))
         (to if:"FriendOrCentreOrFortress") 
-    )
+   )
 )
 
 (define "EmptyButNotCentreOrFortress"
@@ -40,32 +40,32 @@
                                 <Capture:distance>
                                 if:(= (what at:(between)) (id "Jarl2")) 
                                 "JarlIsCaptured"
-                            )
+                           )
                             (to 
                                 if:"FriendOrCentreOrFortress"
-                            )
-                        )
+                           )
+                       )
                     })
-                )
-            )
-        )
+               )
+           )
+       )
         (piece "Thrall" P2 
             (move
                 Slide
                 Orthogonal 
                 (between if:"EmptyButNotCentreOrFortress") 
                 (then ("Custodial" "Thrall1")) 
-            ) 
-        ) 
+           ) 
+       ) 
         (piece "Jarl" P2 
             (move
                 Slide
                 Orthogonal 
                 (then ("Custodial" "Thrall1")) 
-            ) 
-        ) 
+           ) 
+       ) 
         }
-    )  
+   )  
     (rules 
         (start
             { 
@@ -73,7 +73,7 @@
             (place "Thrall2" {"F4" "E5" "F5" "G5" "D6" "E6" "G6" "H6" "E7" "F7" "G7" "F8"})
             (place "Jarl2" (centrePoint))
             }
-        )
+       )
         
         (play (forEach Piece)) 
         
@@ -82,8 +82,8 @@
             (if (is Within (id "Jarl2") in:(sites "Fortresses")) (result P2 Win))
             (if "JarlWasCaptured"  (result P1 Win))
             }
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -102,13 +102,13 @@
         {
         "Play Rules/Fetlar Common"
         }
-    )
+   )
     
     (ruleset "Ruleset/Copenhagen (Suggested)" 
         {
         
         }
-    )
+   )
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         
@@ -144,7 +144,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Scandinavia, from around 790 to 1413.")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Black))
@@ -155,7 +155,7 @@
     
     (ai 
         "Hnefatafl_ai"
-    )
+   )
     
 )
 

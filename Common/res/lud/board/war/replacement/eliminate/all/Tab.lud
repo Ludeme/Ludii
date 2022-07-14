@@ -12,7 +12,7 @@
     (apply 
         if:("IsEnemyAt" (to)) 
         (remove (to) count:(count at:(to)))
-    ) 
+   ) 
 )
 
 (define "CountPiecesInHome"
@@ -33,10 +33,10 @@
                 (to 
                     ("SiteToMoveOnTrack" "HomeTrack" ("ThrowValue")) 
                     "CaptureEnemyPiece"
-                )
+               )
                 count:(count at:(site))
-            )
-        )
+           )
+       )
         
         (if ("IsInTrack" (site) "MiddleTrack")
             (move 
@@ -44,10 +44,10 @@
                 (to 
                     ("SiteToMoveOnTrack" "MiddleTrack" ("ThrowValue")) 
                     "CaptureEnemyPiece"
-                )
+               )
                 count:(count at:(site))
-            )
-        )
+           )
+       )
         
         (if ("IsInTrack" (site) "EnemyTrack")
             (if (if
@@ -56,23 +56,23 @@
                     (and 
                         (!= 0 ("CountPiecesInHome" Next))
                         ("PieceDidNotGoToEnemyHome" (site)) 
-                    )
-                )
+                   )
+               )
                 (move 
                     (from (site))
                     (to 
                         ("SiteToMoveOnTrack" "EnemyTrack" ("ThrowValue")) 
                         "CaptureEnemyPiece"
-                    )
+                   )
                     count:(count at:(site))
                     (then 
                         (if (and (is In (last To) (sites Next "Home"))  ("PieceDidNotGoToEnemyHome" (last To)))
                             ("PieceGoesToEnemyHome" (last To))
-                        )		
-                    )
-                )
-            )
-        )
+                       )		
+                   )
+               )
+           )
+       )
     })
 )
 
@@ -91,7 +91,7 @@
             (track "EnemyTrack2" <Board:EnemyTrack2> P2 directed:True)
             }
             use:Vertex
-        )
+       )
         (piece "Stick" Each)
         (regions "AllSites" (sites Board))
         (dice d:2 from:0 num:4)
@@ -113,30 +113,30 @@
                     (then 
                         (if ("Tab")
                             (moveAgain)
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase ("Tab") "Play")
-        )
+       )
         (phase "Play"
             (play
                 (do 
                     (roll) 
                     next:(forEach Site (sites Occupied by:Mover)
                         ("Move")
-                    )
+                   )
                     (then 
                         (if ("SpecialThrows")
                             (moveAgain)
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         }
         (end (if (no Pieces Next) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -161,7 +161,7 @@
         variations:{
         "Board size/9" "Board size/11" "Board size/13" "Board size/15"
         }
-    )*
+   )*
     
 })
 
@@ -180,7 +180,7 @@
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)    

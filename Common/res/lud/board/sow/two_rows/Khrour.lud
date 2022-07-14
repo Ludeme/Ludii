@@ -9,7 +9,7 @@
     (equipment { 
         (mancalaBoard 2 <Board:size> store:None
             (track "Track" "0,E,N,W" loop:True)
-        )
+       )
         (piece "Seed" Shared)
         (hand Each)
         (regions P1 (sites Bottom))                     // P1 home
@@ -30,7 +30,7 @@
                         (from 
                             (sites Mover)
                             if:(and (is Occupied (from)) (is In (from) ("PlayableSites")))
-                        )
+                       )
                         (then
                             (sow
                                 apply:(if
@@ -42,16 +42,16 @@
                                             (= 8 (count at:(to)))
                                         })
                                         (is In (to) ("PlayableSites"))
-                                    )
+                                   )
                                     (fromTo
                                         (from (to))
                                         (to (handSite Mover))
                                         count:(count at:(to))
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                   )
+                               )
+                           )
+                       )
+                   )
                     }
                     (then
                         (if ("NoPieceOnBoard")
@@ -59,22 +59,22 @@
                             (forEach Site (difference (sites Board) ("PlayableSites"))
                                 (if (<= <Board:init> (count at:(site)))
                                     (remember Value "Playable" (site))
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             (end (if ("NoPieceOnBoard")
                     {
                     (if (= 0 (count Cell at:(handSite P1))) (result P2 Win))
                     (if (= 0 (count Cell at:(handSite P2))) (result P1 Win))
                     }
-                )
-            )
+               )
+           )
             
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-        )
+       )
         
         (phase "BetweenRounds"
             (play
@@ -85,19 +85,19 @@
                             (to (sites Mover) if:(is Empty (to)))
                             count:<Board:init>
                             (then (remember Value "Playable" (last To)))
-                        )
+                       )
                         (move
                             (from (handSite Mover))
                             (to (sites Mover) if:(is Empty (to)))
                             count:(count Cell at:(handSite Mover))
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase (all Passed) "Sowing")
-        )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -118,7 +118,7 @@
         "Board Size/2"
         }
         variations:{"Board Size/3" "Board Size/4" "Board Size/6"}
-    )*
+   )*
     
 })
 
@@ -138,7 +138,7 @@
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

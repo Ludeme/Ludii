@@ -23,8 +23,8 @@
             ("NextSiteFrom" #1) 
             if:("NoEnemyOrOnlyOne" (to)) 
             ("HittingCapture" (mapEntry Next))
-        )
-    )
+       )
+   )
 )
 
 (define "MoveAPieceIf" 
@@ -32,7 +32,7 @@
         replayDouble:True 
         if:#1
         ("MoveAPiece" #2)
-    )		
+   )		
 )
 
 (define "AllPieceEscaped" (no Pieces Mover))
@@ -45,7 +45,7 @@
     (and 
         (is Occupied (site)) 
         ("IsNotOffBoard" ("NextSiteFrom" (site)))
-    )
+   )
 )
 
 (define "SetScoreOf" 
@@ -56,17 +56,17 @@
                 (= ("NumPiece" #2) 15) 
                 2 
                 1
-            ) 
+           ) 
             0
-        )
-    )
+       )
+   )
 )
 
 (define "HaveAPieceAndCanEscape" 
     (and 
         ("IsFriendAt" (site)) 
         (< (trackSite Move from:(site) steps:(pips)) 0)
-    )
+   )
 )
 
 //-----------------------------------------------------------------------------
@@ -78,7 +78,7 @@
         (dice num:2)
         (regions P1 { 20..25 }) // P1 Home
         (regions P2 { 7..12 })  // P2 Home
-        (map {(pair 1 6 ) (pair 2 19)}) // Bar
+        (map {(pair 1 6) (pair 2 19)}) // Bar
         (piece "Disc" Each ("MoveAPieceIf" "DieNotUsedAndNoEscapeAndNotOffTheTrack" (from))) 
     })
     
@@ -102,16 +102,16 @@
                                 (if ("CanEscape")
                                     ("RemoveAPiece")
                                     ("MoveAPiece" (site))
-                                )
-                            )
+                               )
+                           )
                             noMoveYet:(firstMoveOnTrack "Track" Mover
                                 (if "HaveAPieceAndCanEscape"
                                     "RemoveAPiece"
-                                )
-                            )
+                               )
+                           )
                             (then ("ReplayNotAllDiceUsed"))
-                        )
-                    )
+                       )
+                   )
                     (max Distance "Track" Mover
                         (if "BarEmpty"
                             (forEach Piece top:True)
@@ -122,17 +122,17 @@
                                             (if "BarEmpty"
                                                 (forEach Piece top:True)
                                                 ("MoveAPieceIf" ("DieNotUsed") ("Bar"))
-                                            )
-                                        )
+                                           )
+                                       )
                                         (moveAgain)
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (end 
             (if ("AllPieceEscaped")
@@ -140,9 +140,9 @@
                     ("SetScoreOf" P1 P2)
                     ("SetScoreOf" P2 P1)
                 })
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //-------------------------------------------------------------------------
@@ -159,7 +159,7 @@
             (classification "board/race/escape")
             (credit "Eric Piette")
             }
-        )
+       )
         (graphics {
             (board Style backgammon)
             (stackType Backgammon)
@@ -167,5 +167,5 @@
         
         (ai
             "Portes_ai"
-        )
-    )
+       )
+   )

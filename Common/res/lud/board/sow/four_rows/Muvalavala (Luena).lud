@@ -7,9 +7,9 @@
                 (if ("SameTurn") 
                     "LastHoleSowed" 
                     (sites Mover #1) 
-                ) 
+               ) 
                 if:(> (count at:(from)) 0)
-            )
+           )
             (then 
                 (sow
                     "Track"
@@ -22,24 +22,24 @@
                                         (from ("OppositePit" (to))) 
                                         (to (handSite Mover)) 
                                         count:(count at:("OppositePit" (to)))
-                                    ) 
+                                   ) 
                                     (if 
                                         (> (count at:("OppositeOuterPit" (to))) 0) 
                                         (fromTo 
                                             (from ("OppositeOuterPit" (to))) 
                                             (to (handSite Mover)) 
                                             count:(count at:("OppositeOuterPit" (to)))
-                                        ) 
-                                    ) 
-                                ) 
-                            ) 
-                        )
+                                       ) 
+                                   ) 
+                               ) 
+                           ) 
+                       )
                         (moveAgain)
-                    )
-                )
-            )
-        )
-    )
+                   )
+               )
+           )
+       )
+   )
 )
 
 (define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
@@ -55,7 +55,7 @@
             (track "Track1" <Board:track1> loop:True P1)
             (track "Track2" <Board:track2> loop:True P2)
             }
-        )
+       )
         (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
         (regions "Home" P2 (sites Track "Track2"))                              // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
@@ -71,13 +71,13 @@
         (phase "Opening" 			  	
             ("PlayFrom" "Inner")
             (nextPhase (>= (count Turns) 2) "Playing")
-        )
+       )
         (phase "Playing"  
             ("PlayFrom" "Home")
-        )
+       )
         }
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -108,7 +108,7 @@
         "Board Size/7" "Board Size/8" "Board Size/9" "Board Size/10" "Board Size/11" 
         "Board Size/12" "Board Size/13" "Board Size/14" "Board Size/15" "Board Size/16"
         }
-    )*
+   )*
 })
 
 //------------------------------------------------------------------------------
@@ -126,7 +126,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Southwest Africa, around 1995.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -134,5 +134,5 @@
     
     (ai
         "Muvalavala (Luena)_ai"
-    )
+   )
 )

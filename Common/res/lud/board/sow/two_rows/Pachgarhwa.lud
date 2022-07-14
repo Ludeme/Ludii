@@ -13,7 +13,7 @@
     (equipment { 
         (mancalaBoard 2 5 store:None
             (track "Track" "0,E,N,W" loop:True)
-        )
+       )
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (piece "Seed" Shared)
@@ -27,9 +27,9 @@
                     (if ("SameTurn") 
                         "LastHoleSowed" 
                         (sites Mover) 
-                    ) 
+                   ) 
                     if:(> (count at:(from)) 0)
-                )
+               )
                 (then 
                     (sow
                         if:True
@@ -40,7 +40,7 @@
                                     (from ("NextHole")) 
                                     (to (handSite Mover)) 
                                     count:(count at:("NextHole"))
-                                )
+                               )
                                 (moveAgain)
                             })
                             (if (not (is Empty ("NextNextHole")))
@@ -48,16 +48,16 @@
                                     (from ("NextNextHole")) 
                                     (to (handSite Mover)) 
                                     count:(count at:("NextNextHole"))
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (end ("MancalaByScoreWhen" (= 1 (count in:(sites Board)))))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -75,7 +75,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, from around 1904 to 1905.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -83,5 +83,5 @@
     
     (ai
         "Pachgarhwa_ai"
-    )
+   )
 )

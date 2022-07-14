@@ -10,7 +10,7 @@
         "TrackCW"
         from:(mapEntry "RightMost" Mover)
         if:(and (is In (to) (sites Mover)) (is Occupied (to)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -24,7 +24,7 @@
             (track "TrackCCW" "0,E,N,W" loop:True)
             (track "TrackCW" "5,W,N,E" loop:True)
             }
-        )
+       )
         (piece "Seed" Shared)
         (hand Each)
         (regions P1 (sites Bottom))                     // P1 home
@@ -44,35 +44,35 @@
                                 (from (handSite P1))
                                 (to (sites Board))
                                 count:(value)
-                            )
-                        )
+                           )
+                       )
                         (forEach Site (sites Board)
                             (if (is Occupied (site))
                                 (move
                                     (from (site))
                                     (to (sites Board) if:(!= (to) (from)))
-                                )
-                            )
-                        )
+                               )
+                           )
+                       )
                         (then (moveAgain))
-                    )
+                   )
                     (if (and (is Empty (handSite P1)) ("FourInEach"))
                         (move Pass)
-                    )
+                   )
                 })
-            )
+           )
             (nextPhase (was Pass) "Opening2")
-        )
+       )
         
         (phase "Opening2"
             (play
                 (or 
                     (move Pass (then (and (set Pending) (moveAgain))))
                     (move Swap Players P1 P2 (then (and (set NextPlayer (player 1)) (set Pending))))
-                )
-            )
+               )
+           )
             (nextPhase "Sowing")
-        )
+       )
         
         (phase "Sowing"
             (play
@@ -80,16 +80,16 @@
                     (move
                         (from (sites Mover) if:(is Occupied (from)))
                         (to ("RightMostNotEmpty"))
-                    )
+                   )
                     (move Select
                         (from 
                             (if 
                                 (and (not (is Pending)) ("SameTurn"))
                                 (sites {(var "Replay") })
                                 (sites Mover) 
-                            ) 
+                           ) 
                             if:(is Occupied (from))
-                        )
+                       )
                         (then
                             (sow
                                 "TrackCCW"
@@ -98,65 +98,65 @@
                                     (and
                                         (moveAgain)
                                         (set Var "Replay" (to))
-                                    )
+                                   )
                                     (and
                                         (fromTo
                                             (from (to))
                                             (to (handSite Mover))
                                             count:(count at:(to))
-                                        )
+                                       )
                                         (if (is Occupied ("OppositePitTwoRows" (to)))
                                             (fromTo
                                                 (from ("OppositePitTwoRows" (to)))
                                                 (to (handSite Mover))
                                                 count:(count at:("OppositePitTwoRows" (to)))
-                                            )
-                                        )
-                                    )
-                                )
+                                           )
+                                       )
+                                   )
+                               )
                                 backtracking:(and (is Occupied (to)) (is Even (count at:(to))))
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (then
                         (if ("EmptyBoardOrOne")
                             (and {
                                 (if (< (count Cell at:(handSite P1)) (count Cell at:(handSite P2)))
                                     (addScore P2 (- (count Cell at:(handSite P2)) (count Cell at:(handSite P1))))
                                     (addScore P1 (- (count Cell at:(handSite P1)) (count Cell at:(handSite P2))))
-                                )
+                               )
                                 (if (is Occupied Cell (handSite P2))
                                     (fromTo
                                         (from (handSite P2))
                                         (to (handSite P1))
                                         count:(count Cell at:(handSite P2))
-                                    )
-                                )
+                                   )
+                               )
                                 (forEach Site (sites Board)
                                     (if (is Occupied (site))
                                         (fromTo
                                             (from (site))
                                             (to Cell (handSite P1))
                                             count:(count at:(site))
-                                        )
-                                    )	
-                                )	
+                                       )
+                                   )	
+                               )	
                             })
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase ("EmptyBoardOrOne") "Opening1")
-        )
+       )
         }
         
         (end
             (forEach Player
                 if:(<= 60 (score Player))
                 (result Player Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -174,7 +174,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Egypt, around 1860.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

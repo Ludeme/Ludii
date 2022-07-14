@@ -16,9 +16,9 @@
             (difference 
                 (sites Board) 
                 "StartPos"
-            )
+           )
             if:(!= (who at:(site)) (mover))
-        )
+       )
         (is Occupied ("Bar" (mover)))
         (< (size Stack at:("StartPos")) 14)
         (not (all Sites (sites Mover "OppositeQuadrant") if:(!= (who at:(site)) (mover))))
@@ -30,8 +30,8 @@
         in:(forEach 
             (intersection (sites Occupied by:Mover) (sites Mover "Home")) 
             if:(>= (size Stack at:(site)) 2) 
-        )
-    )
+       )
+   )
 )
 
 (define "AllPieceInOpponentSide" ("AllOwnedPiecesIn" (sites Mover "OppositeQuadrant")))
@@ -48,10 +48,10 @@
                 (= ("NumPiece" #2) 15) 
                 2 
                 1
-            ) 
+           ) 
             0
-        )
-    )
+       )
+   )
 )
 
 (define "UpdateCounterDoublePlay" 
@@ -61,10 +61,10 @@
             (if (< (value Player Mover) 0)
                 (set Value Mover 1)
                 (set Value Mover (+ 1 (value Player Mover)))
-            )
-        )
+           )
+       )
         (set Value Mover 0)
-    )
+   )
 )
 
 //-----------------------------------------------------------------------------
@@ -75,7 +75,7 @@
         ("BackgammonBoard" "BackgammonTracksSameDirectionOppositeCornersWithBars") 
         (dice num:2)
         (piece "Disc" Each) 
-        (map {(pair 1 6 ) (pair 2 19)}) // Bar
+        (map {(pair 1 6) (pair 2 19)}) // Bar
         (regions "Home" P1 { 13..18 }) // P1 Home (first quadrant)
         (regions "Home" P2 { 12..7 }) // P2 Home (first quadrant)
         (regions "OppositeQuadrant" P1 { 0..5 }) // Opposite Quadrant of P1
@@ -101,19 +101,19 @@
                                         (and 
                                             (= (site) "StartPos")
                                             ("PieceInOpponentQuadrantOrNoPieceInTheBoard")
-                                        )
-                                    )
+                                       )
+                                   )
                                     (move 
                                         (from (site))
                                         (to ("NextSiteFromDistDoubleDice" (site))
                                             if:("NoEnemyOrOnlyOne" (to))
                                             ("HittingCapture" ("Bar" (next))) 
-                                        )
-                                    )
-                                )
-                            )
+                                       )
+                                   )
+                               )
+                           )
                             (then ("UpdateCounterDoublePlay"))
-                        )
+                       )
                         (forEach Die
                             if:("DieNotUsed")
                             (forEach Site
@@ -125,25 +125,25 @@
                                             (and 
                                                 (= (site) "StartPos")
                                                 ("PieceInOpponentQuadrantOrNoPieceInTheBoard")
-                                            )
-                                        )
+                                           )
+                                       )
                                         (move 
                                             (from (site))
                                             (to ("NextSiteFrom" (site))
                                                 if:("NoEnemyOrOnlyOne" (to))
                                                 ("HittingCapture" ("Bar" (next))) 
-                                            )
-                                        )
-                                    )
-                                )
-                            )
+                                           )
+                                       )
+                                   )
+                               )
+                           )
                             (then ("ReplayNotAllDiceUsed"))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 ifAfterwards:(<= ("NumSitesInFirstQuadrantWithMoreThan2Pieces") 2)
-            )
-        )
+           )
+       )
         
         (end {
             (if ("AllPieceEscaped")
@@ -151,9 +151,9 @@
                     ("SetScoreOf" P1 P2)
                     ("SetScoreOf" P2 P1)
                 })
-            )
+           )
         })
-    )
+   )
 )
 
 //-------------------------------------------------------------------------
@@ -171,7 +171,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in France, around 1840.")
         }
-    )
+   )
     
     (graphics {
         (board Style backgammon)

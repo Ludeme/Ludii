@@ -10,16 +10,16 @@
                         (max
                             2
                             (- (/ 2 1) (* (+ {3 4 495}) (^ 2 (^ 0 1))))
-                        )
+                       )
                         4
-                    )
+                   )
                     sites:(^ (^ 4 3) 2)
-                )
-            )
-        )
+               )
+           )
+       )
         (piece "Marker" Each)
         }
-    )
+   )
     (rules
         (meta (swap))
         (play (move Add (to (sites Empty))))
@@ -28,6 +28,6 @@
             (if (is Line 4) (result Mover Win))
             (if (is Line 3) (result Mover Loss))
             }
-        )
-    )
+       )
+   )
 )

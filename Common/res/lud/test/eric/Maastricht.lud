@@ -10,38 +10,38 @@
         (from 
             (from)
             if:(> (state at:(from)) 1)	
-        ) 
+       ) 
         (to 
             (sites Distance 
                 (step
                     Orthogonal
                     (to 
                         if:(#1)
-                    )
-                ) 
+                   )
+               ) 
                 from:(from) 
                 (range 1 (- #2 1))
-            )
+           )
             if:(is Empty (to)) 
             (apply 
                 (set State at:(from) #3)
-            ) 
-        )
-    )
+           ) 
+       )
+   )
 )
 
 (define "HumanMove"
     (or
         ("Move" (is In (to) "HumanMoveSpots") (state at:(from)) 1)
         ("Move" (is In (to) "RestrictedHumanMoveSpots") 2 1)				// Mountain move, 1 depth
-    )
+   )
 )
 
 (define "VehicleMove"
     (or
         ("Move" (is In (to) "VehicleMoveSpots") (state at:(from)) #1)
         ("Move" (is In (to) "RestrictedVehicleMoveSpots") 2 #1)				// Forest/Shallow water move, 1 depth
-    )
+   )
 )
 
 (define "AircraftMove"
@@ -95,14 +95,14 @@
     (union 
         (sites "Mountain") 
         (difference (sites Board) (union (sites "ShallowWater") (sites "DeepWater"))) 
-    )
+   )
 )
 
 (define "BoatMoveSpots"
     (difference 
         (union (sites Empty) (sites Occupied by:Friend container:"Board")) 
         ("ForbiddenSpotsBoat")
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -124,21 +124,21 @@
     (if ("GroundAttackFrom")
         (is In (to) (union (sites Occupied by:Enemy container:"Board" components:{"Soldier" "Motorbike" "Tank" "Speeder" "Shooter" "Launcher" "Antiair" "Battleship" "Artillery" "Base" "Town" "Factory" "Dock" "Airport" "Cruiser" "Submarine"}) (sites Occupied by:Neutral container:"Board")))
         (is In (to) (union (sites Occupied by:Enemy container:"Board") (sites Occupied by:Neutral container:"Board"))) 
-    )
+   )
 )
 
 (define "BoatAttackCheck"
     (if ("BoatAttackFrom")
         (is In (to) (sites Occupied by:Enemy container:"Board" components:{"Submarine" "Battleship" "Cruiser"}))
         (is In (to) (union (sites Occupied by:Enemy container:"Board") (sites Occupied by:Neutral container:"Board"))) 
-    )
+   )
 )
 
 (define "AircraftAttackCheck"
     (if ("AircraftAttackFrom")
         (is In (to) (sites Occupied by:Enemy container:"Board" components:{"Fighter" "Helicopter" "Bomber"}))
         (is In (to) (union (sites Occupied by:Enemy container:"Board") (sites Occupied by:Neutral container:"Board"))) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -152,21 +152,21 @@
     (if ("CounterAttackCheckFrom" #1 #2 #5)
         (is In (#3) (union (sites Occupied #4 components:{"Soldier" "Motorbike" "Tank" "Speeder" "Shooter" "Launcher" "Antiair" "Battleship" "Artillery" "Base" "Town" "Factory" "Dock" "Airport" "Cruiser" "Submarine"}) (sites Occupied by:Neutral container:"Board")))
         (is In (#3) (union (sites Occupied #4) (sites Occupied by:Neutral container:"Board"))) 
-    )
+   )
 )
 
 (define "BoatCounterAttackCheck"
     (if ("CounterAttackCheckFrom" #1 #2 #5)
         (is In (#3) (sites Occupied #4 components:{"Submarine" "Battleship" "Cruiser"}))
         (is In (#3) (union (sites Occupied #4) (sites Occupied by:Neutral container:"Board"))) 
-    )
+   )
 )
 
 (define "AircraftCounterAttackCheck"
     (if ("CounterAttackCheckFrom" #1 #2 #5)
         (is In (#3) (sites Occupied #4 components:{"Fighter" "Helicopter" "Bomber"}))
         (is In (#3) (union (sites Occupied #4) (sites Occupied by:Neutral container:"Board"))) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -177,7 +177,7 @@
         (from
             (from)
             if:(> (state at:(from)) 0)
-        )
+       )
         (to
             (sites Distance Orthogonal from:(from) (range #1 #2))
             if:(and {
@@ -186,13 +186,13 @@
                 ("BoatAttackCheck")
                 <FogOfWar:AttackCheck>
             })
-        )
+       )
         (then 
             (do
                 (and 
                     (set Value at:(last To) (max 0 (- (value Piece at:(last To)) ("AttackerDamage" (last From) (last To) False))))
                     (set State at:(last From) 0)
-                )
+               )
                 next:(if (and (= 8 (state at:(last To))) (!= (mover) (who at:(last To))))  	// state = 8, means its a building
                     // Attacking a building
                     "AttackBuilding"
@@ -210,14 +210,14 @@
                             (if (<= (- (value Piece at:(last From)) ("AttackerDamage" (last To) (last From) True)) 0)							
                                 (remove (last From))
                                 (set Value at:(last From) (- (value Piece at:(last From)) ("AttackerDamage" (last To) (last From) True)))			
-                            ) 
+                           ) 
                             (set Value at:(last From) (value Piece at:(last From)))
-                        )
-                    ) 
-                )
-            )
-        )
-    )
+                       )
+                   ) 
+               )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -230,32 +230,32 @@
 (define "AttackerDamage"
     (/
         (*
-            (if (is In (#2) "AircraftSites" )
-                ("DamageMultiply" (* (value Piece at:(#1)) 4) #1 )									// Planes are never affected by terrain									
+            (if (is In (#2) "AircraftSites")
+                ("DamageMultiply" (* (value Piece at:(#1)) 4) #1)									// Planes are never affected by terrain									
                 (if (and
                         (is In (#2) "HumanSites")
                         (is In (#1) (sites Occupied by:All component:"Shooter"))					// Shooter does double damage against humans
-                    )
+                   )
                     (if (is In (#2) (sites "Forest"))
-                        ("DamageMultiply" (* (value Piece at:(#1)) 6) #1 )							// (Shooter does 150% damage against humans in forests)
+                        ("DamageMultiply" (* (value Piece at:(#1)) 6) #1)							// (Shooter does 150% damage against humans in forests)
                         (if (is In (#2) (union (sites "ShallowWater") (sites "DeepWater")))
-                            ("DamageMultiply" (* (value Piece at:(#1)) 10) #1 )						// (Shooter does 250% damage against humans in water)
-                            ("DamageMultiply" (* (value Piece at:(#1)) 8) #1 )						// (Shooter does 200% damage against humans on land)
-                        )
-                    )
+                            ("DamageMultiply" (* (value Piece at:(#1)) 10) #1)						// (Shooter does 250% damage against humans in water)
+                            ("DamageMultiply" (* (value Piece at:(#1)) 8) #1)						// (Shooter does 200% damage against humans on land)
+                       )
+                   )
                     (if (is In (#2) (sites "Forest"))
-                        ("DamageMultiply" (* (value Piece at:(#1)) 3) #1 )							// 75% damage to units in forests
+                        ("DamageMultiply" (* (value Piece at:(#1)) 3) #1)							// 75% damage to units in forests
                         (if (is In (#2) (union (sites "ShallowWater") (sites "DeepWater")))
-                            ("DamageMultiply" (* (value Piece at:(#1)) 5) #1 )						// 125% damage to units in water
-                            ("DamageMultiply" (* (value Piece at:(#1)) 4) #1 )						// 100% damage to units on land
-                        )
-                    )
-                )
-            )
+                            ("DamageMultiply" (* (value Piece at:(#1)) 5) #1)						// 125% damage to units in water
+                            ("DamageMultiply" (* (value Piece at:(#1)) 4) #1)						// 100% damage to units on land
+                       )
+                   )
+               )
+           )
             ("DoctrineMultiply" #1 #2 #3) 
-        ) 
+       ) 
         128000				// (4x4x4x5x100x4)
-    )
+   )
 )
 
 (define "DamageMultiply"
@@ -272,7 +272,7 @@
             (set Value at:(last To) 50)
         })
         (set Value at:(last To) (value Piece at:(last To)))
-    )  
+   )  
 )
 
 (define "CloseCombatAttack"
@@ -291,25 +291,25 @@
 // #3 If this is a counter Attack (boolean)
 (define "DoctrineMultiply"
     (* {
-        (if (is In (#1) "HumanSites" ) 
+        (if (is In (#1) "HumanSites") 
             ("GetDoctrineValue" (who at:(#1)) 1) 
-            (if (is In (#1) "DirectVehicleSites" ) 
+            (if (is In (#1) "DirectVehicleSites") 
                 ("GetDoctrineValue" (who at:(#1)) 2) 
-                (if (is In (#1) "RangedVehicleSites" ) 
+                (if (is In (#1) "RangedVehicleSites") 
                     ("GetDoctrineValue" (who at:(#1)) 3) 
-                    (if (is In (#1) "AircraftSites" ) 
+                    (if (is In (#1) "AircraftSites") 
                         ("GetDoctrineValue" (who at:(#1)) 4) 
-                        (if (is In (#1) "BoatSites" ) 
+                        (if (is In (#1) "BoatSites") 
                             ("GetDoctrineValue" (who at:(#1)) 5) 
                             4
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         (if (and (= 8 (state at:(#2))) (!= (mover) (who at:(#2)))) 			// state = 8, means its a building
             ("GetDoctrineValue" (who at:(#1)) 6) 5 
-        )
+       )
         (if (> (who at:(#2)) 0) ("GetDoctrineValue" (who at:(#2)) 8) 4)
         (if #3 ("GetDoctrineValue" (who at:(#1)) 10) ("GetDoctrineValue" (who at:(#1)) 9))
         (value Random (range ("GetDoctrineValue" (who at:(#1)) 11) ("GetDoctrineValue" (who at:(#1)) 12)))
@@ -327,31 +327,31 @@
             if:(and
                 (> (state at:(from)) 0)
                 (< (value Piece at:(from)) (mapEntry "MaxHealth" (what at:(from))))
-            )
-        )
+           )
+       )
         (to 
             (sites Around (from) Orthogonal
                 if:(is In (to) "MoverBuildingSites") 		
-            )
-        )
+           )
+       )
         (then 
             (and {
                 (set Value at:(last From) 
                     (min 
                         (mapEntry "MaxHealth" (what at:(last From))) 
                         (- (+ (value Piece at:(last From)) (value Piece at:(last To))) 1)
-                    )
-                )
+                   )
+               )
                 (set Value at:(last To) 
                     (max 
                         (- (value Piece at:(last To)) (- (mapEntry "MaxHealth" (what at:(last From))) (value Piece at:(last From))))
                         1
-                    )
-                )
+                   )
+               )
                 (set State at:(last From) 0)
             })
-        )
-    )
+       )
+   )
 )
 
 (define "HealMoveUnit"
@@ -360,15 +360,15 @@
         (from
             (from)
             if:(> (state at:(from)) 0)
-        )
+       )
         (to 
             (sites Around (from) Orthogonal
                 if:(and
                     (= (what at:(from)) (what at:(to)))
                     (< (value Piece at:(to)) (mapEntry "MaxHealth" (what at:(to))))
-                )		
-            )
-        )
+               )		
+           )
+       )
         (then 
             (and {
                 (if (<= (+ (value Piece at:(last To)) (value Piece at:(last From))) (mapEntry "MaxHealth" (what at:(last From))))
@@ -377,30 +377,30 @@
                             (min 
                                 (mapEntry "MaxHealth" (what at:(last From))) 
                                 (+ (value Piece at:(last From)) (value Piece at:(last To)))
-                            )
-                        )
+                           )
+                       )
                         (remove (last From))
-                    )
+                   )
                     (and
                         (set Value at:(last To) 
                             (min 
                                 (mapEntry "MaxHealth" (what at:(last From))) 
                                 (- (+ (value Piece at:(last From)) (value Piece at:(last To))) 1)
-                            )
-                        )
+                           )
+                       )
                         (set Value at:(last From) 
                             (max 
                                 (- (value Piece at:(last To)) (- (mapEntry "MaxHealth" (what at:(last From))) (value Piece at:(last From))))
                                 1
-                            )
-                        )
-                    )
-                )
+                           )
+                       )
+                   )
+               )
                 (set State at:(last From) 0)
                 (set State at:(last To) 0)
             })
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -415,8 +415,8 @@
                 if:(and 
                     (is Empty (to))
                     (<= (/ (* (count at:(site)) ("GetDoctrineValue" (mover) 7)) 4) (score Mover))
-                )
-            )
+               )
+           )
             copy:True
             (then 
                 (and
@@ -424,14 +424,14 @@
                     (addScore 
                         Mover 
                         (- (/  (* (count at:(last From)) ("GetDoctrineValue" (mover) 7)) 4))
-                    )	
+                   )	
                     (take Control of:All by:Mover at:(last To))
                     (set State at:(last To) 0)
                     }
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 (define "BuyHumanMove" 
@@ -439,8 +439,8 @@
         (difference 
             (sites Around (sites Occupied by:Mover component:"Town") Orthogonal)
             "ForbiddenSpotsHuman"
-        )
-    )
+       )
+   )
 )
 
 (define "BuyVehicleMove" 
@@ -448,14 +448,14 @@
         (difference 
             (sites Around (sites Occupied by:Mover component:"Factory") Orthogonal)
             "ForbiddenSpotsVehicle"
-        )
-    )
+       )
+   )
 )
 
 (define "BuyAircraftMove" 
     ("BuyMove" components:{"Helicopter" "Fighter" "Bomber"} 
         (sites Around (sites Occupied by:Mover component:"Airport") Orthogonal)
-    )
+   )
 )
 
 (define "BuyBoatMove" 
@@ -463,8 +463,8 @@
         (difference 
             (sites Around (sites Occupied by:Mover component:"Dock") Orthogonal)
             "ForbiddenSpotsBoat"
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -512,13 +512,13 @@
             (> (count Active) 2)
             (= (where "Base" #1) Off)
         }) 
-        (forEach Site (sites Occupied by:#1 )
+        (forEach Site (sites Occupied by:#1)
             (if (is In (site) (sites Occupied by:#1 components:{"Town" "Base" "Factory" "Dock" "Airport"}))
                 (take Control of:All by:Neutral at:(site))
                 (remove (site))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -547,10 +547,10 @@
                 (if (= #1 4)
                     (mapEntry  <Doctrine4:doctrine> #2)
                     0
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -747,13 +747,13 @@
 (define "HideSites"
     (forEach Site (intersection (difference (sites Board) ("VisibilityRangeSites")) (difference (sites Board) (sites Hidden What to:#1)))
         (set Hidden {What State Value} at:(site) True to:#1)
-    )
+   )
 )
 
 (define "ShowSites"
     (forEach Site (intersection ("VisibilityRangeSites") (sites Hidden What to:#1))
         (set Hidden {What State Value} at:(site) False to:#1)
-    )
+   )
 )
 
 (define "FogOfWarEachMove"
@@ -860,24 +860,24 @@
             <Scenario:teams>
             (set Score Each <Scenario:startingMoney>)
             
-            (place "Soldier0" (handSite Shared 0) count:30 state:1 value:30 )
-            (place "Motorbike0" (handSite Shared 1) count:50 state:1 value:40 )
+            (place "Soldier0" (handSite Shared 0) count:30 state:1 value:30)
+            (place "Motorbike0" (handSite Shared 1) count:50 state:1 value:40)
             
-            (place "Speeder0" (handSite Shared 2) count:60 state:1 value:60 )
-            (place "Shooter0" (handSite Shared 3) count:80 state:1 value:60 )
-            (place "Tank0" (handSite Shared 4) count:100 state:1 value:80 )
+            (place "Speeder0" (handSite Shared 2) count:60 state:1 value:60)
+            (place "Shooter0" (handSite Shared 3) count:80 state:1 value:60)
+            (place "Tank0" (handSite Shared 4) count:100 state:1 value:80)
             
-            (place "Antiair0" (handSite Shared 5) count:80 state:1 value:50 )
-            (place "Launcher0" (handSite Shared 6) count:80 state:1 value:50 )
-            (place "Artillery0" (handSite Shared 7) count:100 state:1 value:40 )
+            (place "Antiair0" (handSite Shared 5) count:80 state:1 value:50)
+            (place "Launcher0" (handSite Shared 6) count:80 state:1 value:50)
+            (place "Artillery0" (handSite Shared 7) count:100 state:1 value:40)
             
-            (place "Helicopter0" (handSite Shared 8) count:60 state:1 value:40 )
-            (place "Fighter0" (handSite Shared 9) count:100 state:1 value:100 )
-            (place "Bomber0" (handSite Shared 10) count:120 state:1 value:100 )
+            (place "Helicopter0" (handSite Shared 8) count:60 state:1 value:40)
+            (place "Fighter0" (handSite Shared 9) count:100 state:1 value:100)
+            (place "Bomber0" (handSite Shared 10) count:120 state:1 value:100)
             
-            (place "Cruiser0" (handSite Shared 11) count:60 state:1 value:70 )
-            (place "Submarine0" (handSite Shared 12) count:100 state:1 value:100 ) 
-            (place "Battleship0" (handSite Shared 13) count:120 state:1 value:120 ) 
+            (place "Cruiser0" (handSite Shared 11) count:60 state:1 value:70)
+            (place "Submarine0" (handSite Shared 12) count:100 state:1 value:100) 
+            (place "Battleship0" (handSite Shared 13) count:120 state:1 value:120) 
             
             <FogOfWar:EachMove>
         })
@@ -895,18 +895,18 @@
                         (and {
                             (forEach Player
                                 ("RemovePiecesIfPlayerHasLost" Player)
-                            )
+                           )
                             (moveAgain)
                             (and {<FogOfWar:EachMove>})
                         })
-                    )
-                )
+                   )
+               )
                 (move Pass
                     (then
                         (and {
                             (forEach Site (sites Occupied by:Mover container:"Board")
                                 (set State at:(site) (mapEntry "Movement" (what at:(site))))
-                            )
+                           )
                             (set Score 
                                 Mover
                                 (+ {
@@ -914,23 +914,23 @@
                                     (* (count Sites in:(sites Occupied by:Mover component:"Town")) 10) 
                                     (score Mover) 
                                 })
-                            )
+                           )
                             (forEach Site (sites Occupied by:Mover components:{"Town" "Base" "Factory" "Dock" "Airport"})
                                 (set Value at:(site) (min (mapEntry "MaxHealth" (what at:(site))) (+ (value Piece at:(site)) 10)))
-                            )
+                           )
                             (and {<FogOfWar:EachMove>})
                         })
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (end 
             (forEach NonMover 
                 if:(= (where "Base" Player) Off) (result Player Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -1001,7 +1001,7 @@
         (show Symbol "mountain" (sites "Mountain"))
         >                
         "Scenario - Maastricht"
-    )**
+   )**
     
     }
 )
@@ -1309,7 +1309,7 @@
         (author "Matthew Stephenson")
         (credit "Matthew Stephenson and Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Red))

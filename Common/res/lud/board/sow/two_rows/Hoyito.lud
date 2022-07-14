@@ -8,7 +8,7 @@
     (equipment { 
         (mancalaBoard 2 <Board> store:None
             (track "Track" "0,E,N,W" loop:True)
-        )
+       )
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (piece "Seed" Shared)
@@ -25,9 +25,9 @@
                         ("SameTurn") 
                         "LastHoleSowed" 
                         (sites Mover) 
-                    ) 
+                   ) 
                     if:(> (count at:(from)) 0)
-                )
+               )
                 (then 
                     (sow
                         apply:(if (= (count at:(to)) 4)
@@ -38,26 +38,26 @@
                                             (from (site))
                                             (to (handSite Mover)) 
                                             count:(count at:(site))
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                                 (fromTo 
                                     (from (to)) 
                                     (to (handSite Mover)) 
                                     count:(count at:(to))
-                                )
-                            )
+                               )
+                           )
                             (if (< (count at:(to)) 1)
                                 (moveAgain)
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -82,7 +82,7 @@
         variations:{"Board Size/7" "Board Size/8" "Board Size/9" 
         "Board Size/10" "Board Size/11"  "Board Size/12" 
         }
-    )*
+   )*
 })
 
 //------------------------------------------------------------------------------
@@ -99,15 +99,15 @@
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
         }
-    )
+   )
     
     (ai
         "Hoyito_ai"
-    )
+   )
 )
 

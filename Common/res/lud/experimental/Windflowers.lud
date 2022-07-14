@@ -6,7 +6,7 @@
         (do
             (forEach Player
                 (remember Value "Scores" #1)
-            )
+           )
             next:(do
                 (forEach Player
                     (if
@@ -14,20 +14,20 @@
                         (and
                             (remember Value "Tied" (player))
                             (set Score Player #1)
-                        )
+                       )
                         (set Score Player #1)   
-                ))
+               ))
                 next:(do
                     (forEach Value
                         (values Remembered "Tied")
                         (forEach
                             (players All if:(is In (player) (values Remembered "Tied")))
                             (addScore (player (player)) <TType:selTiebreaker>) // can be "CascadeWins" "CascadeLoses" "StoneCount" "GroupCount"
-                    ))
+                   ))
                     next:(forget Value "Scores" All 
                         (then
                             (forget Value "Tied" All)
-        )))))
+       )))))
         (forEach Player (set Score Player #1))
 ))
 
@@ -63,8 +63,8 @@
 
 (define "LessQtyAroundSiteThanAnother"  
     (>
-        (max 0 (count Pieces of:#1 in:(sites Around (site) "ConnectionDirection" )))
-        (max 0 (count Pieces of:(mover) in:(sites Around (site) "ConnectionDirection" )))
+        (max 0 (count Pieces of:#1 in:(sites Around (site) "ConnectionDirection")))
+        (max 0 (count Pieces of:(mover) in:(sites Around (site) "ConnectionDirection")))
 ))
 
 (define "Anemone" 
@@ -76,13 +76,13 @@
             (difference
                 (difference (sites Board) (sites Empty))
                 (sites Occupied by:Mover)
-            )
+           )
             (if
                 ("LessQtyAroundSiteThanAnother" (who at:(site)))
                 (move Remove (site)
                     (then
                         (claim (to (last To)))
-        ))))
+       ))))
         }
         (then <SType:selScoring>)  
 ))
@@ -97,19 +97,19 @@
         "BoardUsed"
         (piece "Ball" Each)
         }
-    )
+   )
     (rules
         (start
             (set Score Each 0)
-        )
+       )
         (play
             "Anemone" 
-        )
+       )
         (end 
             (if 
                 (all Passed)
                 (byScore)
-            )              
+           )              
 )))
 
 //-------------------------------------------------
@@ -117,7 +117,7 @@
 
 (define "ScoreConnection" <BoardShape:directionScored>)
 (define "ConnectionDirection" <BoardShape:directionUsed>)
-(define "BoardUsed" <BoardShape:gridType> )
+(define "BoardUsed" <BoardShape:gridType>)
 
 (define "HexLimp" (board (hex Limping (- <BoardSize:smallSide> 1)) use:Cell))
 (define "Hex2Limp" (board (hex  (- <BoardSize:smallSide> 1) (+ <BoardSize:smallSide> 1)) use:Cell))
@@ -241,7 +241,7 @@
         (credit "Dale W. Walton")
         (date "25-05-2021")
         }
-    )
+   )
     
     (graphics 
         {
@@ -249,7 +249,7 @@
         (player Colour P2 (colour Cream))
         (player Colour P3 (colour BabyBlue))
         (player Colour P4 (colour Gold))
-        (piece Scale "Ball" 0.92 )
+        (piece Scale "Ball" 0.92)
         (piece Background "Ball" image:"Disc" fillColour:(colour 0 0 0 140) edgeColour:(colour 0 0 0 0)) 
         (board Colour Phase0 "ColourBackground")
         (board StyleThickness InnerEdges 0.4)
@@ -264,6 +264,6 @@
         
         (board Background image:<BoardShape:backgroundImage> fillColour:"ColourBackground" edgeColour:(colour 180 180 180 80)  scale:<BoardSize:backgroundSize>) 
         }
-    )
+   )
 )
 

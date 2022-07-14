@@ -4,7 +4,7 @@
     (if (is Mover P1)
         (sites (values Remembered "NumToCaptureP1"))
         (sites (values Remembered "NumToCaptureP2"))
-    )
+   )
 )
 
 (define "UpdateNumToCapture" 
@@ -18,10 +18,10 @@
                     (if (is In 5 ("NumToCapture")) 
                         (remember Value "NumToCaptureP1" 1)
                         (remember Value "NumToCaptureP1" 5)
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (and
             (forget Value "NumToCaptureP2" All)
             (if (is In <ToCapture:num> ("NumToCapture")) 
@@ -31,11 +31,11 @@
                     (if (is In 5 ("NumToCapture")) 
                         (remember Value "NumToCaptureP2" 1)
                         (remember Value "NumToCaptureP2" 5)
-                    )
-                )
-            )
-        )
-    )
+                   )
+               )
+           )
+       )
+   )
 )
 
 (define "NumCountersToCapture"
@@ -46,9 +46,9 @@
             (if (is In 3 ("NumToCapture")) 
                 4
                 6
-            )
-        )
-    )		
+           )
+       )
+   )		
 )
 
 (define "UpdateNumCaptureTwo"
@@ -62,7 +62,7 @@
     (equipment { 
         (mancalaBoard 3 "Columns" store:None
             (track "Track" "0,N,E,S,W2" loop:True)
-        )
+       )
         (piece "Seed" Shared)
         (regions P1 (union (sites {4}) (sites Bottom)))                     // P1 home
         (regions P2 (union (sites {7}) (sites Top)))                        // P2 home
@@ -83,7 +83,7 @@
                 (from 
                     (sites Mover) 
                     if:(< 1 (count at:(from)))
-                )
+               )
                 (then 
                     (sow  
                         if:(= (count at:(to)) ("NumCountersToCapture")) 
@@ -92,20 +92,20 @@
                                 (from (to)) 
                                 (to (mapEntry (mover))) 
                                 count:(count at:(to))
-                            )
+                           )
                             (if	(< (value Player Mover) <Sequence:length>) 
                                 ("UpdateNumCaptureTwo")
                                 ("UpdateNumToCapture")
-                            )
-                        )
+                           )
+                       )
                         origin:True
-                    )
-                )
-            )		
-        )
+                   )
+               )
+           )		
+       )
         
         (end ("MancalaByScoreWhen" (no Moves Next)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -171,7 +171,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Nigeria, around 1948.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

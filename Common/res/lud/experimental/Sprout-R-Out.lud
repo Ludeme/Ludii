@@ -9,9 +9,9 @@
                         (difference
                             (sites Occupied by:#1)
                             (sites)
-                        )
+                       )
                         Orthogonal
-        ))))
+       ))))
 ))
 
 //---------------------------------------
@@ -20,10 +20,10 @@
     (equipment
         {
         (board (trim <Board:type>) use:Cell)
-        (piece "Ball" Each )
+        (piece "Ball" Each)
         (piece "Ball" Neutral)
         }
-    )
+   )
     (rules
         (play
             (if
@@ -32,13 +32,13 @@
                     (to
                         (sites Empty)
                         (apply (set State at:(to) 1))
-                ))
+               ))
                 (forEach Group
                     Orthogonal
                     if:(and
                         (= (next) (who at:(to)))
                         (= 1 (state at:(to)))
-                    )
+                   )
                     (move Add
                         (to
                             ("PlayableGroupSites" Next (to))
@@ -46,7 +46,7 @@
                                 (forEach Site 
                                     (sites)
                                     (set State at:(site) 0)
-                        )))
+                       )))
                         (then
                             (if 
                                 (!= 0
@@ -54,13 +54,13 @@
                                         in:(intersection
                                             (sites Occupied by:Next) 
                                             (sites State 1)
-                                )))
+                               )))
                                 (moveAgain)
                                 (do
                                     (forEach Site 
                                         (sites State 2)
                                         (remove (site))
-                                    )
+                                   )
                                     next:(do
                                         (forEach Group
                                             Orthogonal
@@ -69,20 +69,20 @@
                                                 (= 0
                                                     (count Sites
                                                         in:("PlayableGroupSites" Mover (to))
-                                                ))
+                                               ))
                                                 (forEach Site (sites)
                                                     (set State at:(site) 2)
-                                                ) 
+                                               ) 
                                                 (forEach Site (sites)
                                                     (set State at:(site) 1)
-                                        )))
+                                       )))
                                         next:(set Value Mover (score Mover)
                                             (then
                                                 (set Score Mover
                                                     (+ 
                                                         (count Sites
                                                             in:(sites State 1)
-                                                        )
+                                                       )
                                                         (count Sites
                                                             in:(forEach
                                                                 (sites Empty)
@@ -91,21 +91,21 @@
                                                                         (step (to if:(not (is Mover (who at:(to))))))
                                                                         (site)
                                                                         (sites Occupied by:Next)
-                                                    )))))
+                                                   )))))
                                                     (then
                                                         (if
                                                             (and
                                                                 (= (score Mover) (value Player Mover))
                                                                 (= (score Next) (value Player Next))
-                                                            )
+                                                           )
                                                             (trigger "End" Mover)
-        )))))))))))))
+       )))))))))))))
         (end 
             (if
                 (and  
                     (is Triggered "End" Mover)
                     (is Triggered "End" Next)
-                )
+               )
                 (byScore)
 ))))
 
@@ -123,12 +123,12 @@
     (item "Cairo 1" 
         <(remove (dual (tiling T33434 5)) cells: {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 20 21 24 27 28 29 35 36 39 40 44 45 46 47 53 54 55 59 60 64 65 71 72 76 79 85 90 93 94 95 96 97 98 99})> 
         "Using an order 1 Cairo board with 48 cells"
-    )
+   )
     
     (item "Cairo 2"
         <(remove (dual (tiling T33434 9)) cells: {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 50 51 54 55 60 65 66 67 77 78 83 84 90 91 92 93 103 104 105 111 112 113 119 120 121 122 123 133 134 135 136 137 143 144 145 146 151 152 153 154 155 156 157 167 168 169 170 171 172 173 178 179 180 181 186 187 188 189 190 191 201 202 203 204 205 210 211 212 218 219 220 221 231 232 233 239 240 246 247 257 258 264 269 279 288 291 292 295 296 297 298 299 300 301 302 303 304 305 306 307 308 309 310 311 312 313 314 315 316 317 318 319 320 321 322 323})>  
         "Using an order 2 Cairo board with 160 cells"
-    )
+   )
     }
 )
 
@@ -175,7 +175,7 @@
         (credit "Dale W. Walton")
         (date "21-08-2021")
         }
-    )
+   )
     
     (define "ColourP1" (colour Black))
     (define "ColourP2" (colour 252 255 234 #1))

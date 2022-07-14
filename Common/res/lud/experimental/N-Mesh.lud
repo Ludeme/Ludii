@@ -11,7 +11,7 @@
             (difference
                 (sites Incident Edge of:Cell at:(regionSite ("SharedCells" #1 #2) index:0))
                 (sites Incident Edge of:Cell at:(regionSite ("SharedCells" #1 #2) index:1))
-        ))
+       ))
         index:0
 ))
 
@@ -22,7 +22,7 @@
             (difference
                 (sites Incident Edge of:Cell at:#1)
                 (sites Incident Edge of:Cell at:#2)
-        ))
+       ))
         index:0
 ))
 
@@ -46,19 +46,19 @@
                         {{ F F #2 F }} 
                         (to Cell (sites Occupied by:Mover)
                             if:("NeedsConnection")
-                )))
+               )))
                 ("HalfWayEdge" (to) (last To))
-            )   
+           )   
             (add
                 (piece (id "I" Mover))
                 (to
                     Edge
                     (value)
                     (apply (set Var "ToEdge" (value))) 
-                )
+               )
                 stack:True
                 (then (set State Edge at:(var "ToEdge") (+ #1 ("EdgeOrientationInteger" (var "ToEdge")))))
-        ))
+       ))
 ))
 
 (define "RemoveConnector"
@@ -68,12 +68,12 @@
             (sites Around Cell (last To) Orthogonal)
             (apply if:(is Mover (who at:(site)))
                 (remove Edge ("BetweenEdge" (site) (last To)) count:2)
-        ))
+       ))
         (forEach Site // edge friend break not needed at edge around placement
             (sites Incident Edge of:Cell at:(last To)) 
             (apply if:(= (mover) (who Edge at:(site)))
                 (remove Edge (site) count:2)
-        ))
+       ))
         }
 ))
 
@@ -87,13 +87,13 @@
                 in:(intersection
                     (sites Around Cell (to))
                     (sites Around Cell (last To))
-        )))
+       )))
         (> 2
             (count Pieces All
                 in:(intersection
                     (sites Around Cell (to) Adjacent)
                     (sites Around Cell (last To) Adjacent)
-        )))
+       )))
         }
 ))
 
@@ -115,7 +115,7 @@
         (and
             (!= 0 (count Pieces of:("Opponent" #3) in:("Twist" #2 #1 #1)))
             (!= 0 (count Pieces of:("Opponent" #3) in:("Twist" #1 #2 #2)))
-        )
+       )
         (and
             (!= 0 (count Pieces of:("Opponent" #3) in:("Twist" #2 #1 #2)))
             (!= 0 (count Pieces of:("Opponent" #3) in:("Twist" #1 #2 #1)))
@@ -132,7 +132,7 @@
         (and
             (is #1 (who at:(from)))       
             (is #1 (who at:(to))) 
-        )  
+       )  
         (not ("Break" (from) (to) #1))
         }
 ))
@@ -156,10 +156,10 @@
                             (or
                                 (is Empty (to))
                                 (is #2 (who at:(to)))       
-                            )
+                           )
                             ("NotCrossingConnector" #2)  
                             //       }
-                )))
+               )))
                 (#1) 
                 (difference ("Liberties" #2) #1)
 ))))
@@ -169,7 +169,7 @@
         (do
             "CheckMoverLoss"
             next:(set Score Mover (- 0 (count Pieces Cell Mover in:(sites State Cell 1))))
-        )
+       )
         (do
             "CheckOpponentLoss"
             next:(set Score Next (- 0 (count Pieces Cell Next in:(sites State Cell 1))))
@@ -187,7 +187,7 @@
                 (if
                     ("IsDeadSiteValueofPlayer" (value) Mover)
                     (set State at:(value) 1)
-            ))
+           ))
             }
 ))) 
 
@@ -211,8 +211,8 @@
         (then 
             (and 
                 {
-                ("AddConnector" 1  L )
-                ("AddConnector" 2  R )
+                ("AddConnector" 1  L)
+                ("AddConnector" 2  R)
                 ("RemoveConnector")
                 ("Scoring")
                 }
@@ -232,7 +232,7 @@
         (piece "I" P1 maxState:5)
         (piece "I" P2 maxState:5)
         }
-    )
+   )
     (rules
         (play
             (or
@@ -242,24 +242,24 @@
                         (to
                             (sites Occupied by:Next)
                             (apply (remove (to)))
-                )))
+               )))
                 ("Add2EmptyWithConsequenses")
-        ))
+       ))
         (end 
             (if 
                 (or
                     (is Triggered "Enmeshed" Mover)
                     (is Triggered "Enmeshed" Next)
-                )
+               )
                 { 
                 (if
                     (= (score Mover) (score Next))
                     (result Next Win)
-                )
+               )
                 (if
                     (!= (score Mover) (score Next))
                     (byScore)
-                ) 
+               ) 
                 }
                 (byScore)
 ))))
@@ -282,9 +282,9 @@
                     (*
                         (- 7 <BoardSize:smallSide>)
                         (/ (site) <BoardSize:smallSide>)
-                    )
+                   )
                     }
-                )
+               )
                 5
 ))))
 
@@ -387,7 +387,7 @@
         (credit "Dale W. Walton")
         (date "17-09-2021")
         }
-    )
+   )
     
     (graphics 
         {
@@ -435,6 +435,6 @@
         (region Colour "Marked" (colour Grey))
         //    (show Piece State "I")
         }
-    )
+   )
     
 )

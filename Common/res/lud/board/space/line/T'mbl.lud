@@ -11,7 +11,7 @@
         })
         (play (forEach Piece))
         (end (if (and (is In (centrePoint) (sites Occupied by:Mover)) (is Line 3)) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -29,6 +29,6 @@
         (credit "Eric Piette")
         (origin  "This game was played in Algeria, around 1964.")
         }
-    )
+   )
     
 )

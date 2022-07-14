@@ -6,7 +6,7 @@
         (regions P1 {(sites Side NE) (sites Side SW) })
         (regions P2 {(sites Side NW) (sites Side SE) })
         }
-    )  
+   )  
     (rules 
         // (meta (swap))
         
@@ -16,11 +16,11 @@
                     (sites Empty) 
                     (then 
                         (propose "Swap")
-                    )
-                )
-            ) 
+                   )
+               )
+           ) 
             (nextPhase Mover "Playing")
-        )
+       )
         
         (phase "OpeningP2" P2
             (play 
@@ -29,20 +29,20 @@
                     (vote "Swap" 
                         (then 
                             (swap Players P1 P2)
-                        )
-                    )
-                )
-            ) 
+                       )
+                   )
+               )
+           ) 
             (nextPhase Mover "Playing")
-        )
+       )
         
         (phase "Playing" 
             (play (add to:(sites Empty))) 
-        )
+       )
         }
         
         (end (if (is Connected Mover) (result Mover <Result:type>))) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------

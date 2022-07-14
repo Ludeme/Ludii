@@ -13,10 +13,10 @@
                     (if 
                         (!= (count MovesThisTurn) (- (count Players) 1)) 
                         (moveAgain)
-                    )
-                )
-            )
-        ) 
+                   )
+               )
+           )
+       ) 
         
         (end
             (if (and {
@@ -25,12 +25,12 @@
                     (> 
                         (pow (count Players) 2) 
                         (count Sites in:(sites Empty))
-                    )
+                   )
                 })
                 (byScore <Version:endScore>)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -52,19 +52,19 @@
         <2> 
         <{(score P1 (* (sizes Group P1))) (score P2 (* (sizes Group P2)))}>  
         "The version of the game played with 2 players."
-    )*  
+   )*  
     
     (item "3"  
         <3> 
         <{(score P1 (* (sizes Group P1))) (score P2 (* (sizes Group P2))) (score P3 (* (sizes Group P3)))}>  
         "The version of the game played with 3 players."
-    ) 
+   ) 
     
     (item "4"  
         <4> 
         <{(score P1 (* (sizes Group P1))) (score P2 (* (sizes Group P2))) (score P3 (* (sizes Group P3))) (score P4 (* (sizes Group P4)))}>  
         "The version of the game played with 4 players."
-    ) 
+   ) 
     
 })
 
@@ -87,10 +87,10 @@
         (credit "Eric Piette")
         (date "2010")
         }
-    )
+   )
     
     (ai 
         "Omega_ai"
-    )
+   )
     
 )

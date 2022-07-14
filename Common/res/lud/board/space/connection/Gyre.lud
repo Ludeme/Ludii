@@ -14,14 +14,14 @@
                         in:(union
                             (sites Outer)
                             (sites {(centrePoint)})
-                        )
-                    )
+                       )
+                   )
                     (max
                         (results
                             from:(difference
                                 (sites Board)
                                 (sites Group at:(last To))
-                            )
+                           )
                             to:2 
                             (* (to)
                                 (count Sites
@@ -29,25 +29,25 @@
                                         (union
                                             (sites Outer)
                                             (sites {(centrePoint)})
-                                        )
+                                       )
                                         (sites Group at:(from)
                                             if:(not
                                                 (is In
                                                     (to)
                                                     (sites Group at:(last To))
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )   
-                        )
-                    )
-                )
+                                               )
+                                           )
+                                       )
+                                   )
+                               )
+                           )   
+                       )
+                   )
+               )
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //-------------------------------------------------------------------------
@@ -78,5 +78,5 @@
         (credit "Michael Amundsen")
         (date "2015")
         }
-    )
+   )
 )

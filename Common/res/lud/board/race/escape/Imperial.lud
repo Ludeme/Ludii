@@ -17,7 +17,7 @@
     (equipment { 
         ("BackgammonBoard" ("BackgammonTracksWithBar")) 
         (dice num:3)
-        (map {(pair 1 19 ) (pair 2 6)}) // Bar
+        (map {(pair 1 19) (pair 2 6)}) // Bar
         (piece "Disc" Each) 
     })
     
@@ -44,21 +44,21 @@
                                 (to ("NextSiteFrom" (site))
                                     if:("NoEnemyOrOnlyOne" (to))
                                     ("HittingCapture" ("Bar")) 
-                                )
-                            )
-                        )
-                    )
+                               )
+                           )
+                       )
+                   )
                     (then ("ReplayNotAllDiceUsed"))
-                )
-            )
-        )
+               )
+           )
+       )
         
         (end 
             (if ("AllPieceEscaped")
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //-------------------------------------------------------------------------
@@ -77,7 +77,7 @@
         (author "Eric Piette")
         (origin  "This game was played in England, from around 1300 to 1350.")
         }
-    )
+   )
     
     (graphics {
         (board Style backgammon)

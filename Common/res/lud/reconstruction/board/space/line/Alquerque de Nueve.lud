@@ -2,7 +2,7 @@
     (move
         Remove
         (sites Occupied by:Next container:"Board") 
-    )
+   )
 )
 
 (define "IfLine3MoveAgain" 
@@ -10,8 +10,8 @@
         (if 
             (is Line 3 Orthogonal exact:True) 
             (moveAgain)
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -32,11 +32,11 @@
                 "RemoveEnemyPiece"
                 (do (roll)
                     next:(if [#] ("IfLine3MoveAgain"))
-                )
-            )
-        )
+               )
+           )
+       )
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -54,6 +54,6 @@
         (credit "Eric Piette")
         (origin  "This game was played in Spain, around 1283.")
         }
-    )
+   )
     
 )

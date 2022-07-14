@@ -17,7 +17,7 @@
             (track "TrackCCW" "0,E,N,W" loop:True)
             (track "TrackCW" "7,W,N,E" loop:True)
             }
-        )
+       )
         (piece "Seed" Shared)
         (regions P1 (sites Bottom)) 
         (regions P2 (sites Top)) 
@@ -38,10 +38,10 @@
                     (from (sites Mover "RightMost") if:(is Occupied (from)))
                     (to (mapEntry "RightMost" Mover))
                     count:(count at:(from))
-                )
-            )
+               )
+           )
             (nextPhase Mover (all Sites (sites Mover "RightMost") if:(is Empty (site))) "Sowing")
-        )
+       )
         (phase "Sowing"
             (play 
                 (or {
@@ -60,26 +60,26 @@
                                                 if:(or
                                                     (= 1 (count at:("OppositePitTwoRows" (to))))
                                                     (= 3 (count at:("OppositePitTwoRows" (to))))
-                                                )
+                                               )
                                                 apply:(if (or
                                                         (= 1 (count at:("OppositePitTwoRows" (to))))
                                                         (= 3 (count at:("OppositePitTwoRows" (to))))
-                                                    )
+                                                   )
                                                     (fromTo
                                                         (from ("OppositePitTwoRows" (to)))
                                                         (to (handSite Mover))
                                                         count:(count at:("OppositePitTwoRows" (to)))
-                                                    )
-                                                )
+                                                   )
+                                               )
                                                 forward:True
-                                            )	
+                                           )	
                                             (set Var "NumToSow" 0)
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
                     (if (is Occupied Cell (handSite Mover))
                         (forEach Value min:1 max:(count Cell at:(handSite Mover))
                             (do (set Var "NumToSow" (value))
@@ -88,8 +88,8 @@
                                         if:(or
                                             (= 1 (count at:("OppositePitTwoRows" ("NextHoleFrom" (mapEntry "LeftMost" Mover) "TrackCW" (value)))))
                                             (= 3 (count at:("OppositePitTwoRows" ("NextHoleFrom" (mapEntry "LeftMost" Mover) "TrackCW" (value)))))
-                                        )
-                                    )
+                                       )
+                                   )
                                     (to (mapEntry "LeftMost" Mover))
                                     count:(value)
                                     (then
@@ -100,52 +100,52 @@
                                                 if:(or
                                                     (= 1 (count at:("OppositePitTwoRows" (to))))
                                                     (= 3 (count at:("OppositePitTwoRows" (to))))
-                                                )
+                                               )
                                                 apply:(if (or
                                                         (= 1 (count at:("OppositePitTwoRows" (to))))
                                                         (= 3 (count at:("OppositePitTwoRows" (to))))
-                                                    )
+                                                   )
                                                     (fromTo
                                                         (from ("OppositePitTwoRows" (to)))
                                                         (to (handSite Mover))
                                                         count:(count at:("OppositePitTwoRows" (to)))
-                                                    )
-                                                )
+                                                   )
+                                               )
                                                 forward:True
-                                            )	
+                                           )	
                                             (set Var "NumToSow" 0)
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
                     (move Select
                         (from 
                             (sites Mover) 
                             if:(< 0 (count at:(from)))
-                        )
+                       )
                         (then 
                             (sow
                                 "TrackCCW"
                                 if:(or
                                     (= 1 (count at:("OppositePitTwoRows" (to))))
                                     (= 3 (count at:("OppositePitTwoRows" (to))))
-                                )
+                               )
                                 apply:(if (or
                                         (= 1 (count at:("OppositePitTwoRows" (to))))
                                         (= 3 (count at:("OppositePitTwoRows" (to))))
-                                    )
+                                   )
                                     (fromTo
                                         (from ("OppositePitTwoRows" (to)))
                                         (to (handSite Mover))
                                         count:(count at:("OppositePitTwoRows" (to)))
-                                    )
-                                )
+                                   )
+                               )
                                 forward:True
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (move Select
                         (from 
                             (sites Mover) 
@@ -154,43 +154,43 @@
                                 (or
                                     (= 1 (count at:("OppositePitTwoRows" ("NextHoleFrom" (from) "TrackCW" (count at:(from))))))
                                     (= 3 (count at:("OppositePitTwoRows" ("NextHoleFrom" (from) "TrackCW" (count at:(from))))))
-                                )
-                            )
-                        )
+                               )
+                           )
+                       )
                         (then 
                             (sow
                                 "TrackCW"
                                 if:(or
                                     (= 1 (count at:("OppositePitTwoRows" (to))))
                                     (= 3 (count at:("OppositePitTwoRows" (to))))
-                                )
+                               )
                                 apply:(if (or
                                         (= 1 (count at:("OppositePitTwoRows" (to))))
                                         (= 3 (count at:("OppositePitTwoRows" (to))))
-                                    )
+                                   )
                                     (fromTo
                                         (from ("OppositePitTwoRows" (to)))
                                         (to (handSite Mover))
                                         count:(count at:("OppositePitTwoRows" (to)))
-                                    )
-                                )
+                                   )
+                               )
                                 forward:True
-                            )
+                           )
                             
-                        )
-                    )
+                       )
+                   )
                 })
-            )
-        )
+           )
+       )
         }
         
         (end 
             (forEach Player
                 if:("NoPiecesInPlayerSide" Player)
                 (result Player Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -207,7 +207,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Nigeria, around 1951.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

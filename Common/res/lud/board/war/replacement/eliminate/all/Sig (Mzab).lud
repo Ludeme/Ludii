@@ -12,14 +12,14 @@
     (apply 
         if:("IsEnemyAt" (to)) 
         (remove (to))
-    ) 
+   ) 
 )
 
 (define "AllPieceInOpponentHome" 
     (and
         (= (count Sites in:(difference (sites Occupied by:P1) (sites P2))) 0)
         (= (count Sites in:(difference (sites Occupied by:P2) (sites P1))) 0)
-    )		
+   )		
 )
 
 //------------------------------------------------------------------------------
@@ -34,29 +34,29 @@
             (track "Track2" <Board:trackP2> P2 directed:True)
             }
             use:Vertex
-        )
+       )
         (piece "Stick" Each
             (if (or 
                     ("ActivatedPiece") 
                     (and (or (= 1 ("ThrowValue")) (= 6 ("ThrowValue"))) ("InactivePiece"))
-                )
+               )
                 (if (!= "SiteToMoveOnTrack" Off)
                     (if (or
                             (is In "SiteToMoveOnTrack" (sites Empty))
                             (is Enemy (who at:"SiteToMoveOnTrack"))
-                        )
+                       )
                         (move 
                             (from)
                             (to 
                                 "SiteToMoveOnTrack" 
                                 "CaptureEnemyPiece"
-                            )
-                        )
-                    )
+                           )
+                       )
+                   )
                     (then ("ActivatePiece"))
-                )
-            )
-        )
+               )
+           )
+       )
         (regions "AllSites" (sites Board))
         (dice d:2 from:0 num:6)
         (map {(pair 0 6) (pair 1 0) (pair 2 2) (pair 3 1) (pair 4 1) (pair 5 0) (pair 6 6)})
@@ -71,15 +71,15 @@
         (play 
             (do (roll) 
                 next:(forEach Piece)
-            )
-        )
+           )
+       )
         (end {
             (if (no Pieces Next) (result Mover Win))
             (if ("AllPieceInOpponentHome")
                 (result Mover Draw)
-            )
+           )
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -115,7 +115,7 @@
         variations:{"Board Size/5" "Board Size/6" "Board Size/7" "Board Size/8" "Board Size/9" "Board Size/10" "Board Size/11" "Board Size/12" "Board Size/13"
         "Board Size/14" "Board Size/15" "Board Size/16" "Board Size/17" "Board Size/18" "Board Size/19"
         }
-    )*
+   )*
     
 })
 
@@ -134,7 +134,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Morocco, around 1927.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)    
@@ -146,6 +146,6 @@
     
     (ai
         "Sig (Mzab)_ai"
-    )
+   )
 )
 

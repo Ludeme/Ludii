@@ -7,23 +7,23 @@
                     (remove
                         (square 3 diagonals:Solid) 
                         vertices:{8 9 3 4}
-                    )
+                   )
                     edges:{{7 4} {4 1} {3 4} {4 5}}
-                )
+               )
                 edges:{{6 4} {4 8} {4 2} {4 0}}
-            )
+           )
             use:Vertex
-        ) 
+       ) 
         (piece "Marker" Each)
         (hand Each)
     })
     (rules 
         (start 
             (place "Marker" "Hand" count:3)
-        )
+       )
         (play (move (from (handSite Mover)) (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -41,7 +41,7 @@
         (classification "board/space/line")
         (origin  "This game was played in Republic of Congo, around 1971.")
         }
-    )
+   )
     
     (graphics {
         
@@ -49,6 +49,6 @@
     
     (ai
         "Nzengue (Small)_ai"
-    )
+   )
 )
 

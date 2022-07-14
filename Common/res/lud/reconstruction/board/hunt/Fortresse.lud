@@ -5,10 +5,10 @@
             (merge 
                 (shift 0 2 (rectangle 3 7 diagonals:Alternating))
                 (shift 2 0 (rectangle 7 3 diagonals:Alternating)) 
-            )
+           )
             use:Vertex
-        )
-        (piece "Marker" P1 (or ("HopCapture") "StepToEmpty" ))
+       )
+        (piece "Marker" P1 (or ("HopCapture") "StepToEmpty"))
         (piece "Marker" P2 "StepToEmpty") 
     })  
     (rules 
@@ -25,11 +25,11 @@
                 (or
                     (or (no Pieces P1) (no Moves P1))
                     (= 0 (count Sites in:(difference (expand (sites Top) steps:2) (sites Occupied by:P2)))) 
-                )
+               )
                 (result P2 Win)
-            )
+           )
         }) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -48,7 +48,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Switzerland, around 1917.")
         }
-    )
+   )
     
     (graphics {
         

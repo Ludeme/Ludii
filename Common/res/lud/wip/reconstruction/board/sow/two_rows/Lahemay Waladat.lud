@@ -6,28 +6,28 @@
     (if (is Mover P1)
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
-    )
+   )
 )
 
 (define "OwnedHoles" 
     (if (is Mover P1)
         (sites (values Remembered "OwnedP1"))
         (sites (values Remembered "OwnedP2"))
-    )
+   )
 )
 
 (define "RememberOwnedHolesRandom" 
     (if (< 50 (value Random (range 1 100)))
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
-    )
+   )
 )
 
 (define "LeftMostEmpty" 
     (trackSite FirstSite "Track"
         from:(mapEntry "LeftMost" Mover)
         if:(is Empty (to))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -38,7 +38,7 @@
     (equipment { 
         (mancalaBoard 2 6 store:None
             (track "TrackCCW" "0,E,N,W" loop:True)
-        )
+       )
         (piece "Seed" Shared)
         (hand Each)
         (regions P1 (sites Bottom))                     // P1 home
@@ -62,9 +62,9 @@
                             (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 ("OwnedHoles")
-                            )
+                           )
                             if:(is Occupied (from))
-                        )
+                       )
                         (then
                             (do
                                 (set Var "NumSowed" (count at:(last To)))
@@ -73,9 +73,9 @@
                                         (and
                                             (moveAgain)
                                             (set Var "Replay" (to))
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                                 (then // No need of the Jen rule, because the capture is automatic in Ludii, so no errors are possible.
                                     (and
                                         (forEach Site (sites Track from:(last From) to:(trackSite Move from:(last From) "Track" steps:(- (var "NumSowed") 1)))
@@ -84,15 +84,15 @@
                                                     (from (site))
                                                     (to (if (is In (site) (sites (values Remembered "OwnedP1"))) (handSite P1) (handSite P2)))
                                                     count:4
-                                                )
-                                            )
-                                        )
+                                               )
+                                           )
+                                       )
                                         (set Var "NumSowed" 0)
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                   )
+                               )
+                           )
+                       )
+                   )
                     }
                     (then
                         (if (or ("NoPieceOnOwnedHolesP1") ("NoPieceOnOwnedHolesP2")) // Be careful here, that's not said in the rules we know, that's why it is a recons one.
@@ -103,34 +103,34 @@
                                             (from (site))
                                             (to (handSite P1))
                                             count:(count at:(site))
-                                        )
-                                    )
+                                       )
+                                   )
                                     (forEach Site (sites Board)
                                         (fromTo
                                             (from (site))
                                             (to (handSite P2))
                                             count:(count at:(site))
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                                 (forget Value "OwnedP1" All)
                                 (forget Value "OwnedP2" All)
                             })
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             
             (end (if ("NoPieceOnBoard")
                     {
                     (if (= 0 (count Cell at:(handSite P1))) (result P2 Win))
                     (if (= 0 (count Cell at:(handSite P2))) (result P1 Win))
                     }
-                )
-            )
+               )
+           )
             
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-        )
+       )
         
         (phase "BetweenRounds"
             (play
@@ -150,12 +150,12 @@
                                                 (from (handSite Mover))
                                                 (to ("LeftMostEmpty"))
                                                 count:3
-                                            )
+                                           )
                                             (fromTo 
                                                 (from (handSite Next))
                                                 (to ("LeftMostEmpty"))
                                                 count:1
-                                            )
+                                           )
                                             ("RemmemberOwnedHoles" ("LeftMostEmpty"))
                                         })
                                         (if (= 2 (count Cell at:(handSite Mover)))
@@ -164,27 +164,27 @@
                                                     (from (handSite Mover))
                                                     (to ("LeftMostEmpty"))
                                                     count:2
-                                                )
+                                               )
                                                 (fromTo 
                                                     (from (handSite Next))
                                                     (to ("LeftMostEmpty"))
                                                     count:2
-                                                )
+                                               )
                                                 ("RememberOwnedHolesRandom" ("LeftMostEmpty"))
                                             })
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                             })
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase (and (is Empty (handSite P1)) (is Empty (handSite P2))) "Sowing")
-        )
+       )
         
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -201,7 +201,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Horn of Africa, around 1971.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

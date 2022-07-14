@@ -12,7 +12,7 @@
                 (shift -1.98 5.35 (rotate -90 (scale 0.66 (wedge 3))))
             })
             use:Vertex
-        )
+       )
         (piece "Deer" P1 (and ("StepToEmpty") ("HopCapture")))
         (piece "Dog" P2 ("StepToEmpty"))
         (hand P2)
@@ -29,7 +29,7 @@
             (if (no Pieces P2) (result P1 Win))
             (if (no Moves P1) (result P2 Win))
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -48,7 +48,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Mongolia, from around 1988 to 1991.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)

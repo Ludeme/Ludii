@@ -6,7 +6,7 @@
             (or
                 ("TurnPass")
                 ("PlaceHex")
-            )
+           )
             (or
                 {
                 ("TurnPass")
@@ -14,7 +14,7 @@
                 ("PlaceDisc")
                 ("DiscStep")
                 }
-        ))
+       ))
         #1
         #2
         }
@@ -29,7 +29,7 @@
 (define "PriorityHops"  // Friendly Hops allowed 
     (priority
         ("NonMoverHops")
-        ("NonpriorityMoves" ("MoverHops") ~ )
+        ("NonpriorityMoves" ("MoverHops") ~)
 ))   
 
 (define "MoverHops"
@@ -46,7 +46,7 @@
         (if 
             (is Pending)
             (#1 (from (last To)) #2)
-        )
+       )
         (do (forget Value All) 
             next:(#1 (from) #2)
 )))
@@ -98,7 +98,7 @@
                 (% 
                     (+ {<NumberPlayers:inGame> (var "FirstNoPlace") (- (player)) -1})
                     <NumberPlayers:inGame>
-        )))
+       )))
         (propose "End")
 ))
 
@@ -110,20 +110,20 @@
             (if
                 (= (next) (var "FirstNoPlace"))
                 ("FinalizeScores")
-            )
-        )
+           )
+       )
         next:(move Pass)
 ))
 
 (define "NoMorph"  // argument where from, who's pieces
     (or
-        ("GeneralHop" #1 #2 "Hex" "Hex" "ValueHex" "ValueHex" )
+        ("GeneralHop" #1 #2 "Hex" "Hex" "ValueHex" "ValueHex")
         ("GeneralHop" #1 #2 "Disc" "Disc" "ValueDisc"  "ValueDisc")
 ))
 
 (define "Morph"  // argument where from, who's pieces
     (or
-        ("GeneralHop" #1 #2 "Disc" "Hex" "ValueDisc" "ValueHex" )
+        ("GeneralHop" #1 #2 "Disc" "Hex" "ValueDisc" "ValueHex")
         ("GeneralHop" #1 #2 "Hex" "Disc" "ValueHex"  "ValueDisc")
 ))
 
@@ -138,16 +138,16 @@
                         (intersection
                             #2
                             (sites Occupied by:All component:#3) 
-                        )
+                       )
                         (sites (values Remembered))
-                ))
+               ))
                 (apply 
                     (and 
                         (addScore (player (who at:(between))) (- #5))
                         (set Pending (between))
-            )))
+           )))
             (to if:(is Empty (to)))
-        )
+       )
         (then
             (and
                 {
@@ -202,12 +202,12 @@
                 (intersection
                     <Multi:suicide>
                     (sites Occupied by:All component:"Disc")
-                )
+               )
                 (select 
                     (from 
                         (sites Distance from:(site) (exact 2))
                         if:(is Empty (from))
-                    )
+                   )
                     (to
                         (sites Between from:(from) to:(site))
 ))))))
@@ -239,8 +239,8 @@
             from:(site)
             to:(forEach 
                 (sites LineOfSight Piece at:(from) Orthogonal) 
-                if:(or (is Mover (who at:(site))) (is In (site) <Multi:influence> ))
-            )
+                if:(or (is Mover (who at:(site))) (is In (site) <Multi:influence>))
+           )
             (count Steps Orthogonal (from) (to))
 )))
 
@@ -261,15 +261,15 @@
     (equipment
         {
         (board (hex <Board:size>) use:Cell)
-        (piece "Disc" Each )
-        (piece "Hex"  Each )
+        (piece "Disc" Each)
+        (piece "Hex"  Each)
         }
-    )
+   )
     (rules  
         (start (set Score Each 0)) 
         (play
             <ChosenHop:prioritySetting>
-        )
+       )
         (end 
             (if 
                 (is Proposed "End")
@@ -308,10 +308,10 @@
 
 (option "Hopping" <ChosenHop> args: { <prioritySetting> }
     {
-    (item "Mandatory - Can hop own"    <("PriorityHops")>     "An adjacent Enemy must be hopped, a friend can be." ) // default Hops-a-Daisy?
+    (item "Mandatory - Can hop own"    <("PriorityHops")>     "An adjacent Enemy must be hopped, a friend can be.") // default Hops-a-Daisy?
     (item "Mandatory - Cannot hop own" <("PriorityHopsOnly")> "An adjacent Enemy must be hopped, Friends cannot be")****  // default Equiversi
     (item "Optional - Can hop own"     <("NonpriorityMoves" ("MoverHops") ("NonMoverHops"))> "Hopping is Optional")
-    (item "Optional - Cannot hop own"     <("NonpriorityMoves" ("NonMoverHops") ~ )> "Hopping is Optional")
+    (item "Optional - Cannot hop own"     <("NonpriorityMoves" ("NonMoverHops") ~)> "Hopping is Optional")
     }
 )
 
@@ -417,10 +417,10 @@
         (credit "Dale W. Walton")
         (date "26-12-2020")
         }
-    )
+   )
     (ai
         "Hops-a-Daisy Generalized_ai"
-    )
+   )
 )
 
 (graphics 

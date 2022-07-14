@@ -6,7 +6,7 @@
     (= 
         4 
         (count Sites in:(forEach ("AllVerticesOfCell") if:(is Mover (who at:(site)))))
-    )
+   )
 )
 
 (define "IsATriangle"
@@ -25,7 +25,7 @@
     (and
         (remove (site))
         (add (piece (id "Disc" Neutral)) (to (site)))
-    )	
+   )	
 )
 
 (define "TrianglesWithCaptures"
@@ -35,7 +35,7 @@
             ("TwoFriendPieces")
             ("OneEnemyPiece")
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -46,7 +46,7 @@
         (board 
             (rotate 90 (tiling T33434 3))
             use:Vertex
-        ) 
+       ) 
         (piece "Disc" Each 
             (move Step (to if:(is Empty (to)))
                 (then
@@ -61,15 +61,15 @@
                                     (forEach Site
                                         (forEach (sites Incident Vertex of:Cell at:(site)) if:(is Next (who at:(site))))
                                         ("ReplaceEnemyPieceByNeutral")
-                                    )
+                                   )
                                     (set Counter)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        ) 
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       ) 
         (piece "Disc" Neutral)
         (hand Each)
         (regions P1 {(sites Side W) (sites Side E) })
@@ -90,30 +90,30 @@
                         (and
                             (forEach Site (sites Incident Cell of:Vertex at:(last To))
                                 (if ("SquareFilled") (trigger "Win" Mover))
-                            )
+                           )
                             (set Counter)
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase Mover (is Empty (handSite Mover)) "Movement")
-        )
+       )
         (phase "Movement"
             (play 
                 (or
                     (forEach Piece)
                     (move Remove (sites Occupied by:Neutral))
-                )
-            )
-        )
+               )
+           )
+       )
         }
         (end { 
             (if (is Triggered "Win" Mover)
                 (result Mover Win)
-            )
+           )
             (if (or (no Moves Mover) (= (counter) 49)) (result Mover Draw)) 
         }) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------

@@ -11,7 +11,7 @@
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" "16,E,N1,W" loop:True P2)
             }
-        )
+       )
         (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
         (regions "Home" P2 (sites Track "Track2"))                              // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
@@ -24,8 +24,8 @@
     (rules 
         
         (start 
-            (set Count 2 to:(sites Board )) 
-        )
+            (set Count 2 to:(sites Board)) 
+       )
         
         phases:{
         (phase "Opening1"
@@ -41,19 +41,19 @@
                                     (from ("OppositePit" (last From)))
                                     (to (mapEntry "RightOuter" Mover))
                                     count:2
-                                )
+                               )
                                 (fromTo 
                                     (from ("OppositeOuterPit" (last From)))
                                     (to (mapEntry "RightOuter" Mover))
                                     count:2
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             (nextPhase Mover "Opening2")
-        )
+       )
         (phase "Opening2"
             (play
                 (move Select
@@ -67,19 +67,19 @@
                                     (from ("OppositePit" (last From)))
                                     (to (mapEntry "RightOuter" Mover))
                                     count:2
-                                )
+                               )
                                 (fromTo 
                                     (from ("OppositeOuterPit" (last From)))
                                     (to (mapEntry "RightOuter" Mover))
                                     count:2
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             (nextPhase Mover "Opening3")
-        )
+       )
         (phase "Opening3"
             (play
                 (move Select
@@ -88,22 +88,22 @@
                             ("SameTurn") 
                             "LastHoleSowed" 
                             (sites {(mapEntry "RightOuter" Mover)}) 
-                        ) 
+                       ) 
                         
-                    )
+                   )
                     (then
                         (sow
                             "Track"
                             owner:(mover)
                             apply:(if (< 1 (count at:(to)))
                                 (moveAgain)
-                            )
-                        )
-                    )
-                )
-            )
+                           )
+                       )
+                   )
+               )
+           )
             (nextPhase Mover (not (is Next Prev)) "Sowing")
-        )
+       )
         
         (phase "Sowing"
             (play
@@ -113,9 +113,9 @@
                             ("SameTurn") 
                             "LastHoleSowed" 
                             (sites Mover) 
-                        ) 
+                       ) 
                         if:(> (count at:(from)) 1)
-                    )
+                   )
                     (then
                         (sow
                             "Track"
@@ -132,32 +132,32 @@
                                         (from ("OppositeOuterPit" (to)))
                                         (to (last From))
                                         count:(count at:("OppositeOuterPit" (to)))
-                                    )
+                                   )
                                     (fromTo
                                         (from ("OppositePit" (to)))
                                         (to (last From))
                                         count:(count at:("OppositePit" (to)))
-                                    )
+                                   )
                                     (sow
                                         (last From)
                                         count:(+ (count at:("OppositePit" (to))) (count at:("OppositeOuterPit" (to))))
                                         "Track"
                                         owner:(mover)	
-                                    )
+                                   )
                                 })
                                 (if (< 1 (count at:(to)))
                                     (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         }
         
         (end ("ForEachPlayerNoMovesLoss"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -177,7 +177,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in South Sudan, around 1939.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

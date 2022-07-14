@@ -6,7 +6,7 @@
 (define "SitesWithEnemyFacingAway"
     (forEach (sites Occupied by:Enemy container:"Board" components:{"TinSoldier" "RiderOutline" "Bishop"})
         if:(not (= (% (+ (rotation at:(site)) 4) 8) (rotation at:(#1))))
-    )
+   )
 )
 
 // Sites that a piece can stand on
@@ -29,13 +29,13 @@
     (union {
         (forEach (sites Occupied by:All container:"Board" components:{"Triangle"})
             if:(= (value Piece at:(site)) 0)
-        )
+       )
         (forEach (sites Occupied by:P1 container:"Board" components:{"CannonOutline" "RegimentalOutline" "WagonOutline"})
             if:(= 0 (count Sites in:(intersection (sites Around (site) Orthogonal) (sites Occupied by:P1 container:"Board" components:{"TinSoldier" "Bishop"}))))
-        )
+       )
         (forEach (sites Occupied by:P2 container:"Board" components:{"CannonOutline" "RegimentalOutline" "WagonOutline"})
             if:(= 0 (count Sites in:(intersection (sites Around (site) Orthogonal) (sites Occupied by:P2 container:"Board" components:{"TinSoldier" "Bishop"}))))
-        )
+       )
         
     })
 )
@@ -43,7 +43,7 @@
 (define "PanningMove"
     (if (= (state at:(from)) 1)
         (move Set Rotation {0 2 4 6} previous:False next:False)
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -57,20 +57,20 @@
                 (and
                     (not (is In (site) ("AttackedSites" Mover)))
                     (= (value Piece at:(site)) (id Mover))
-                )
+               )
                 (set Value at:(site) 0)
-            )
-        )
+           )
+       )
         (forEach Site (sites Occupied by:All container:"Board" components:{"Triangle"})
             (if 
                 (and
                     (is In (site) ("AttackedSites" Mover))
                     (= (value Piece at:(site)) 0)
-                )
+               )
                 (set Value at:(site) (id Mover))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 // Entrenchment sites that protect against attacks against site #1 from site #2 
@@ -79,8 +79,8 @@
         if:(and
             (= (% (+ (rotation at:(site)) 4) 8) (rotation at:(#2)))
             (= (value Piece at:(site)) (who at:(#1)))
-        )
-    )
+       )
+   )
 )
 
 // Checks if site #1 is protected by an entrenchment against attacks from site #2
@@ -95,18 +95,18 @@
         (from (from) if:(= (state at:(from)) 1))
         (to
             (difference (intersection (sites Around (from)) "SitesCanStandOn") ("AttackedSites" Enemy))
-        )
+       )
         (then 
             (and {
                 (add 
                     (piece "Triangle0") 
                     (to (last To)) 
-                )
+               )
                 (set Rotation (to (last To)) {#1} previous:False next:False)
                 (set Value at:(last To) (id Mover))
             })
-        )
-    )
+       )
+   )
 )
 
 (define "DemolishEntrenchmentMove"
@@ -117,16 +117,16 @@
             (intersection 
                 (sites Occupied by:All container:"Board" components:{"Triangle"})
                 (sites Around (from))
-            )
+           )
             if:(and
                 (= (value Piece at:(to)) (id Mover))
                 (not (is In (to) ("AttackedSites" Enemy)))
-            )
-        )
+           )
+       )
         (then 
             (remove (last To))
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -142,11 +142,11 @@
                 (sites Around (from))
                 "UnoccupiedUnits"
             })
-        )
+       )
         (then 
             (remove (last To))
-        )
-    )
+       )
+   )
 )
 
 (define "DemolishBridgeMove"
@@ -157,13 +157,13 @@
             (intersection 
                 "RegionBridge"
                 (sites Around (from))
-            )
+           )
             if:(not (is In (to) ("AttackedSites" Enemy)))
-        )
+       )
         (then 
             (forget Value "Bridges" (last To))
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -178,7 +178,7 @@
                 (< 0 (value Piece at:(from)))
                 (< 0 (count Sites in:(intersection (sites Around (from) Orthogonal) (sites Occupied by:Mover container:"Board" components:{"TinSoldier" "Bishop"}))))
             })
-        )
+       )
         (to
             (forEach 
                 (union 
@@ -187,24 +187,24 @@
                         (sites Group
                             from:(forEach (sites Around (from))
                                 if:(is In (site) "RegionBridge")
-                            )
+                           )
                             if:(is In (to) "RegionBridge")
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 if:(and {
                     (is In (site) (difference (sites "WaterRegion") "RegionBridge"))
                     (not (is In (site) ("AttackedSites" Enemy)))
                 })
-            )
-        )
+           )
+       )
         (then 
             (and {
                 (remember Value "Bridges" (last To))
                 (set Value at:(last From) (- (value Piece at:(last From)) 1))
             })
-        )
-    )
+       )
+   )
 )
 
 (define "DeconstructBridge"
@@ -216,7 +216,7 @@
                 (> 4 (value Piece at:(from)))
                 (< 0 (count Sites in:(intersection (sites Around (from) Orthogonal) (sites Occupied by:Mover container:"Board" components:{"TinSoldier" "Bishop"}))))
             })
-        )
+       )
         (to
             (forEach
                 (union 
@@ -225,25 +225,25 @@
                         (sites Group
                             from:(forEach (sites Around (from))
                                 if:(is In (site) "RegionBridge")
-                            )
+                           )
                             if:(is In (to) "RegionBridge")
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 if:(and {
                     (is In (site) "RegionBridge")
                     (is In (site) (union (sites Empty) ("UnoccupiedUnits")))
                 })
-            )
-        )
+           )
+       )
         (then 
             (and {
                 (forget Value "Bridges" (last To))
                 (set Value at:(last From) (+ (value Piece at:(last From)) 1))
                 (remove (last To))
             })
-        )
-    )
+       )
+   )
 )
 
 (define "BuildBridgeGround"
@@ -255,17 +255,17 @@
                 (< 0 (value Piece at:(from)))
                 (< 0 (count Sites in:(intersection (sites Around (from) Orthogonal) (sites Occupied by:Mover container:"Board" components:{"TinSoldier" "Bishop"}))))
             })
-        )
+       )
         (to
             (intersection (sites Around (from)) (difference (sites Empty) (sites "WaterRegion")))
-        )
+       )
         (then 
             (and {
                 (add (piece "Square0")  (to (last To)))
                 (set Value at:(last From) (- (value Piece at:(last From)) 1))
             })
-        )
-    )
+       )
+   )
 )
 
 (define "DeconstructBridgeGround"
@@ -277,17 +277,17 @@
                 (> 4 (value Piece at:(from)))
                 (< 0 (count Sites in:(intersection (sites Around (from) Orthogonal) (sites Occupied by:Mover container:"Board" components:{"TinSoldier" "Bishop"}))))
             })
-        )
+       )
         (to
             (intersection (sites Around (from)) (sites Occupied by:Neutral container:"Board" components:{"Square"}))
-        )
+       )
         (then 
             (and {
                 (set Value at:(last From) (+ (value Piece at:(last From)) 1))
                 (remove (last To))
             })
-        )
-    )
+       )
+   )
 )
 
 (define "BurnBridgeMove"
@@ -298,12 +298,12 @@
             (intersection 
                 "RegionBridge"
                 (sites Around (from))
-            )
-        )
+           )
+       )
         (then 
             ("SetFireRegion" (last To) Mover)
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -313,7 +313,7 @@
     (if (= (id #1) 1)
         (forEach Site "RegionFire1" (remove (site)))
         (forEach Site "RegionFire2" (remove (site)))
-    )
+   )
 )
 
 // #1 = fire site, #2 = mover
@@ -321,7 +321,7 @@
     (if (= (id #2) 1)
         (remember Value "Fires1" #1)
         (remember Value "Fires2" #1)
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -340,23 +340,23 @@
                 (is In (between) "SitesCanStandOn")
                 (is In (between) (sites "TownRegion")) 
             })
-        )
+       )
         (to
             if:False
             (apply
                 if:(if (!= (what at:(to)) 0) 
                     (not (is In (to) (sites "TownRegion")))
                     True
-                )
-            )
-        )
+               )
+           )
+       )
         (then
             (and
                 (set Var "FromArtillerySite" (last From))
                 (set Var "ToArtillerySite" (last To))
-            )
-        )
-    ) 
+           )
+       )
+   ) 
     
     // Move with capture
     (move
@@ -366,8 +366,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-        )
-    )
+       )
+   )
     
     // Shoot (normal)
     (move 
@@ -377,16 +377,16 @@
             (intersection 
                 ("SitesWithEnemyFacingAway" from)
                 (expand origin:(ahead (from)) Orthogonal)
-            )
+           )
             if:(or 
                 (not ("IsSiteProtectedByEntrenchment" (to) (from)))  
                 (is In (to) (sites Occupied by:Mover container:"Board" components:{"RiderOutline"}))
-            )
-        )
+           )
+       )
         (then 
             (remove (last To))
-        )
-    )
+       )
+   )
     
     // Shoot (from entrenchment)
     (move 
@@ -396,13 +396,13 @@
             (intersection 
                 (sites Occupied by:Enemy container:"Board" components:{"TinSoldier" "RiderOutline" "Bishop"})
                 (expand origin:(ahead (from)) Orthogonal)
-            )
+           )
             if:("IsSiteProtectedByEntrenchment" (from) (to))
-        )
+       )
         (then 
             (remove (last To))
-        )
-    )
+       )
+   )
     
     // Shoot (outnumber the enemy)
     (move 
@@ -411,22 +411,22 @@
             if:(and
                 (= (state at:(from)) 1)	
                 (is In (ahead (from)) (sites Occupied by:Mover container:"Board" components:{"TinSoldier" "Bishop"}))
-            )
-        )
+           )
+       )
         (to
             (intersection 
                 (expand origin:(ahead (from)) Orthogonal)
                 (sites Occupied by:Enemy container:"Board" components:{"TinSoldier" "RiderOutline" "Bishop"})
-            )
+           )
             if:(or 
                 (not ("IsSiteProtectedByEntrenchment" (to) (from)))  
                 (is In (to) (sites Occupied by:Mover container:"Board" components:{"RiderOutline"}))
-            )
-        )
+           )
+       )
         (then 
             (remove (last To))
-        )
-    )
+       )
+   )
     
     // Build entrenchments
     ("BuildEntrenchmentMove" 0)
@@ -458,17 +458,17 @@
                 (is In (between) "SitesCanStandOn")
                 (is In (between) (sites "TownRegion")) 
             })
-        )
+       )
         (to
             if:False
             (apply
                 if:(if (!= (what at:(to)) 0) 
                     (not (is In (to) (sites "TownRegion")))
                     True
-                )
-            )
-        )
-    ) 
+               )
+           )
+       )
+   ) 
     
     // Move with capture (against just infantry)
     (move
@@ -482,18 +482,18 @@
                 (is In (between) (sites Occupied by:Enemy container:"Board" components:{"TinSoldier" "Bishop"}))
             })
             (apply (remove (between)))
-        )
+       )
         (to
             if:(and
                 (< 0 (count Sites in:(intersection (sites Around (to) Orthogonal) (sites Occupied by:Enemy container:"Board"))))
                 (is In (to) (sites Occupied by:Enemy container:"Board" components:{"TinSoldier" "Bishop"})) 	
-            )
+           )
             (apply
                 if:(and (not (is In (to) (sites "TownRegion"))) (is In (to) (sites Occupied by:Enemy container:"Board")))
                 (remove (to))
-            )
-        )
-    ) 
+           )
+       )
+   ) 
     
     // Move with capture (against cavalry and infantry)
     (move
@@ -510,19 +510,19 @@
             (apply 
                 if:(is In (between) (sites Occupied by:Enemy container:"Board" components:{"TinSoldier" "RiderOutline" "Bishop"}))
                 (remove (between))
-            )
-        )
+           )
+       )
         (to
             if:(and
                 (< 0 (count Sites in:(intersection (sites Around (to) Orthogonal) (sites Occupied by:Enemy container:"Board"))))
                 (is In (to) (sites Occupied by:Enemy container:"Board" components:{"TinSoldier" "RiderOutline" "Bishop"})) 	
-            )
+           )
             (apply
                 if:(and (not (is In (to) (sites "TownRegion"))) (is In (to) (sites Occupied by:Enemy container:"Board")))
                 (remove (to))
-            )
-        )
-    ) 
+           )
+       )
+   ) 
     
     "PanningMove"
     "DemolishEntrenchmentMove"
@@ -544,25 +544,25 @@
                 (= (state at:(from)) 3)
                 (is In (from) (sites Around (var "FromArtillerySite") Orthogonal))
             })
-        )
+       )
         Orthogonal
         (between 
             (range 1 #1)
             if:(is In (between) "SitesCanStandOn")
-        )
+       )
         (to
             if:False
             (apply
                 if:(is In (to) (sites Around (var "ToArtillerySite") Orthogonal))
-            )
-        )
+           )
+       )
         (then
             (and
                 (set Var "FromArtillerySite" -1)
                 (set Var "ToArtillerySite" -1)
-            )
-        )
-    ) 
+           )
+       )
+   ) 
 )
 
 // Can attack all pieces if behind an entrenchment
@@ -574,27 +574,27 @@
                 (= (state at:(from)) 1)
                 (< 0 (count Sites in:(intersection (sites Around (from) Orthogonal) (sites Occupied by:Mover container:"Board" components:{"TinSoldier" "Bishop"}))))
             })
-        )
+       )
         (to
             (intersection 
                 (union
                     (sites Occupied by:Enemy container:"Board" components:{"TinSoldier" "RiderOutline" "Bishop" "CannonOutline" "RegimentalOutline" "WagonOutline"})
                     (sites Occupied by:All container:"Board" components:{"Triangle"})
-                )
+               )
                 #1
-            )
+           )
             if:(and
                 (or 
                     (not ("IsSiteProtectedByEntrenchment" (to) (from)))  
                     (is In (to) (sites Occupied by:Mover container:"Board" components:{"RiderOutline"}))
-                )
+               )
                 ("IsSiteProtectedByEntrenchment" (from) (to))   
-            )
-        )
+           )
+       )
         (then 
             (remove (last To))
-        )
-    )
+       )
+   )
 )
 
 // Can attack all pieces
@@ -606,24 +606,24 @@
                 (= (state at:(from)) 1)
                 (< 0 (count Sites in:(intersection (sites Around (from) Orthogonal) (sites Occupied by:Mover container:"Board" components:{"TinSoldier" "Bishop"}))))
             })
-        )
+       )
         (to
             (intersection 
                 (union
                     (sites Occupied by:Enemy container:"Board" components:{"TinSoldier" "RiderOutline" "Bishop" "CannonOutline" "RegimentalOutline" "WagonOutline"})
                     (sites Occupied by:All container:"Board" components:{"Triangle"})
-                )
+               )
                 #1
-            )
+           )
             if:(or 
                 (not ("IsSiteProtectedByEntrenchment" (to) (from)))  
                 (is In (to) (sites Occupied by:Mover container:"Board" components:{"RiderOutline"}))
-            )
-        )
+           )
+       )
         (then 
             (remove (last To))
-        )
-    )
+       )
+   )
 )
 
 // Cannot attack the CannonOutline
@@ -635,24 +635,24 @@
                 (= (state at:(from)) 1)
                 (< 0 (count Sites in:(intersection (sites Around (from) Orthogonal) (sites Occupied by:Mover container:"Board" components:{"TinSoldier" "Bishop"}))))
             })
-        )
+       )
         (to
             (intersection 
                 (union
                     (sites Occupied by:Enemy container:"Board" components:{"TinSoldier" "RiderOutline" "Bishop" "RegimentalOutline" "WagonOutline"})
                     (sites Occupied by:All container:"Board" components:{"Triangle"})
-                )
+               )
                 #1
-            )
+           )
             if:(or 
                 (not ("IsSiteProtectedByEntrenchment" (to) (from)))  
                 (is In (to) (sites Occupied by:Mover container:"Board" components:{"RiderOutline"}))
-            )
-        )
+           )
+       )
         (then 
             (remove (last To))
-        )
-    )
+       )
+   )
 )
 
 (define "ArtilleryShootBridge"
@@ -663,18 +663,18 @@
                 (= (state at:(from)) 1)
                 (< 0 (count Sites in:(intersection (sites Around (from) Orthogonal) (sites Occupied by:Mover container:"Board" components:{"TinSoldier" "Bishop"}))))
             })
-        )
+       )
         (to
             (intersection 
                 "RegionBridge"
                 #1
-            )
+           )
             if:(not ("IsSiteProtectedByEntrenchment" (to) (from)))  
-        )
+       )
         (then 
             (forget Value "Bridges" (last To))
-        )
-    )
+       )
+   )
 )
 
 (define "ArtilleryBurnBridge"
@@ -685,28 +685,28 @@
                 (= (state at:(from)) 1)
                 (< 0 (count Sites in:(intersection (sites Around (from) Orthogonal) (sites Occupied by:Mover container:"Board" components:{"TinSoldier" "Bishop"}))))
             })
-        )
+       )
         (to
             (intersection 
                 "RegionBridge"
                 #1
-            )
+           )
             if:(not ("IsSiteProtectedByEntrenchment" (to) (from)))  
-        )
+       )
         (then 
             // (add (piece (id "Fire" Mover)) (to (last To)))
             ("SetFireRegion" (last To) Mover)
-        )
-    )
+       )
+   )
 )
 
 (define "ArtilleryPanning"
     (if (and
             (= (state at:(from)) 1)
             (< 0 (count Sites in:(intersection (sites Around (from) Orthogonal) (sites Occupied by:Mover container:"Board" components:{"TinSoldier" "Bishop"}))))
-        )
+       )
         (move Set Rotation {0 2 4 6} previous:False next:False)
-    )
+   )
 )
 
 (define "DemolishArtilleryMove"
@@ -717,13 +717,13 @@
             (intersection 
                 (sites Occupied by:All container:"Board" components:{"CannonOutline" "RegimentalOutline"})
                 (sites Around (from) Orthogonal)
-            )
+           )
             if:(> (state at:(to)) 0)
-        )
+       )
         (then 
             (remove (last To))
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -745,11 +745,11 @@
                 (and
                     (remember Value "Bridges" (site))
                     (remove (site))
-                )
-            )
+               )
+           )
         }) 
         (pass)
-    )
+   )
 )
 
 (define "FireSpreadMoves"
@@ -761,13 +761,13 @@
             (and {
                 (forEach Site (intersection (sites Around (last From)) "RegionBridge")
                     (remember Value "FireTemp" (site))
-                )
+               )
                 //(forget Value #2 (last From))
                 //(forget Value "Bridges" (last From))
                 (moveAgain)
             })
-        )
-    )
+       )
+   )
     (move Pass
         (then
             (and {
@@ -775,18 +775,18 @@
                     (and
                         (forget Value #2 (site))
                         (forget Value "Bridges" (site))
-                    )
-                )
+                   )
+               )
                 (forEach Site (sites "FireTemp")
                     (and
                         (remember Value #2 (site))
                         (forget Value "FireTemp" (site))
-                    )
-                )
+                   )
+               )
                 (moveAgain)
             })
-        )
-    )
+       )
+   )
 )
 
 (define "PlacementMove"
@@ -796,12 +796,12 @@
             (intersection 
                 (sites Mover "Home") 
                 (difference (sites Empty) (sites "WaterRegion"))
-            )
-        ) 
+           )
+       ) 
         (then
             (set Rotation (to (last To)) #1 previous:False next:False)
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -828,7 +828,7 @@
             })
             maxState:100
             maxValue:10000
-        )
+       )
         
         (piece "RegimentalOutline" Each
             (or {
@@ -838,32 +838,32 @@
                 ("ArtilleryShootBridge" (expand origin:(ahead (from)) Orthogonal))
                 "ArtilleryPanning"
             })
-        )
+       )
         
         (piece "TinSoldier" Each
             (or {
                 "InfantryMoves"
             })
-        )
+       )
         
         (piece "Bishop" Each
             (or {
                 "InfantryMoves"
                 (if (= (state at:(from)) 1)
                     (move Promote (from) (piece {"RiderOutline"}) Mover)
-                )
+               )
             })
             maxState:100
-        )
+       )
         
         (piece "RiderOutline" Each 
             (or {
                 "CavalryMoves"
                 (if (= (state at:(from)) 1)
                     (move Promote (from) (piece {"Bishop"}) Mover)
-                )
+               )
             })
-        )
+       )
         
         (piece "WagonOutline" Each 
             (or {
@@ -874,7 +874,7 @@
                 "DeconstructBridgeGround"
                 "ArtilleryPanning"
             })
-        )
+       )
         
         (regions "WaterRegion" (sites {343 344 345 346 347 348 349 350 301 302 303 254 205 156 107 58 9 10 59 255 256 399 448 497 
                 498 547 596 645 694 695 744 793 842 841 840 839 838 837 836 835 834 833 882 883 884 933 934 885 886 935 887 891 940 
@@ -942,9 +942,9 @@
                     ("PlacementMove" 4)
                     ("PlacementMove" 6)
                 }) 
-            )
+           )
             (nextPhase (= 20 (count in:(sites Hand P2))) "BridgePlacement")
-        )
+       )
         (phase "BridgePlacement" 
             (play 
                 (or
@@ -957,11 +957,11 @@
                                 (sites "WaterRegion") 
                                 (sites Empty)
                             })
-                        ) 
+                       ) 
                         (then 
                             "EndBridgePlacementCheck"
-                        )
-                    )
+                       )
+                   )
                     // Add bridge to bridge wagon
                     (move 
                         Select
@@ -970,33 +970,33 @@
                             (intersection 
                                 (sites Mover "Home") 
                                 (sites Occupied by:Mover container:"Board" components:{"WagonOutline"})
-                            )
+                           )
                             if:(< (value Piece at:(to)) 4)
-                        ) 
+                       ) 
                         (then 
                             (do
                                 (and
                                     (set Value at:(last To) (+ (value Piece at:(last To)) 1))
                                     (set Count at:(last From) (- (count at:(last From)) 1))
-                                )
+                               )
                                 next:"EndBridgePlacementCheck"
-                            )
-                        )
-                    )
-                )
-            ) 
+                           )
+                       )
+                   )
+               )
+           ) 
             (nextPhase ("HandEmpty" P2) "FireSpread")
-        )
+       )
         (phase "FireSpread" 
             (play 
                 (if (= (id Mover) 1)
                     (or ("FireSpreadMoves" "RegionFire1" "Fires1"))
                     (or ("FireSpreadMoves" "RegionFire2" "Fires2"))
-                )
+               )
                 
-            )
+           )
             (nextPhase (was Pass) "Movement")
-        )
+       )
         (phase "Movement" 
             (play 
                 (or
@@ -1008,17 +1008,17 @@
                                     (if 
                                         (= (state at:(site)) 3)
                                         (set State at:(site) 1)
-                                    )
-                                )
+                                   )
+                               )
                                 "SetOccupiedEntrenchments"
                                 (moveAgain)
                             })
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase (was Pass) "Actions")
-        )
+       )
         (phase "Actions" 
             (play 
                 (or
@@ -1028,22 +1028,22 @@
                             (and {
                                 (forEach Site (sites Occupied by:Mover container:"Board")
                                     (set State at:(site) 3)
-                                )
+                               )
                                 "SetOccupiedEntrenchments"
                                 ("CheckFireSites" Mover)
                             })
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase (was Pass) "FireSpread")
-        )
+       )
         }
         (end {
             (if (is In 1323 (sites Occupied by:P2 container:"Board")) (result P2 Win))
             (if (is In 293 (sites Occupied by:P1 container:"Board")) (result P1 Win))
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -1059,7 +1059,7 @@
         (classification "board/war/replacement/eliminate/target")
         (credit "Matthew Stephenson")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 208 240 192))

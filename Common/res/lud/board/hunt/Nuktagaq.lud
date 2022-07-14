@@ -5,9 +5,9 @@
             (remove
                 ("CrossGraph" 3 7 diagonals:Alternating)
                 edges:{{17 10} {9 10} {10 11}}
-            )
+           )
             use:Vertex
-        )
+       )
         (hand P1)
         (piece "Marker" P1 (or ("HopCapture") "StepToEmpty"))
         (piece "Marker" P2 "StepToEmpty") 
@@ -21,7 +21,7 @@
         (play (forEach Piece))
         
         (end ("NoMovesLossAndNoPiecesPlayerLoss" P2))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -39,14 +39,14 @@
         (credit "Eric Piette")
         (origin  "This game was played in Canada, around 1937.")
         }
-    )
+   )
     
     (graphics {
         (board Style Graph)
         }
-    )
+   )
     
     (ai
         "Nuktagaq_ai"
-    )
+   )
 )

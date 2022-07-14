@@ -5,7 +5,7 @@
 (define "CaptureMove"
     (if ("IsEnemyAt" (to))
         (remove (to))
-    )
+   )
 )
 (define "CanEnterKiust" (= (var "Kiust") 1))
 
@@ -21,19 +21,19 @@
                     (if ("IsEnemyAt" (to))
                         (= 2 ("ThrowValue"))
                         (is Empty (to))
-                    )
+                   )
                     (if (is In (to) (sites Next "Home"))
                         (= 1 (var "Kiust"))
                         True
-                    )
+                   )
                     (if (or (and (= 2 ("ThrowValue")) ("IsEnemyAt" (to))) (= 3 ("ThrowValue")))
                         True
                         (all Sites (sites Track from:("NextHole" (from) "LoopTrack" 1) to:("NextHole" (from) "LoopTrack" (- ("ThrowValue") 1))) if:(not ("IsEnemyAt" (site))))
-                    )
+                   )
                 })
                 (apply ("CaptureMove"))
-            )
-        )
+           )
+       )
         (move
             (from (from))
             (to 
@@ -43,21 +43,21 @@
                         (if ("IsEnemyAt" (to))
                             (= 2 ("ThrowValue"))
                             (is Empty (to))
-                        )
+                       )
                         (is Empty (to))
-                    )
+                   )
                     (if (is In (to) (sites Next "Home"))
                         (= 1 (var "Kiust"))
                         True
-                    )
+                   )
                     (if (or (and (= 2 ("ThrowValue")) ("IsEnemyAt" (to))) (= 3 ("ThrowValue")))
                         True
                         (all Sites (sites Track from:("NextHole" (from) "Track" 1) to:("NextHole" (from) "Track" (- ("ThrowValue") 1))) if:(not ("IsEnemyAt" (site))))
-                    )
+                   )
                 })
                 (apply ("CaptureMove"))
-            )
-        )
+           )
+       )
         (then
             (and
                 (if (= (count Pips) 4)
@@ -66,13 +66,13 @@
                         (if (<= (value Player Mover) 0)
                             (set Value Mover 3)
                             (set Value Mover (- (value Player Mover) 1))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (set Var "Kiust" 0)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -93,7 +93,7 @@
             (track "LoopTrack2" "24,N,W1,S" loop:True P2)
             }
             use:Vertex
-        )
+       )
         (dice d:2 from:0 num:4)
         (piece "Marker" Each ("Move"))
         (map "Throw" {(pair 0 0) (pair 3 6) (pair 2 3) (pair 1 2) (pair 4 6)})
@@ -112,11 +112,11 @@
                 next:(if (= 0 ("ThrowValue"))
                     (move Pass (then (and (moveAgain) (set Var "Kiust" 1))))
                     (forEach Piece)
-                )
-            )
-        )
+               )
+           )
+       )
         (end (if (no Pieces Enemy) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -134,7 +134,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Macedonia, around 1923.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)

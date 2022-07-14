@@ -10,7 +10,7 @@
     (apply 
         if:("IsEnemyAt" (to)) 
         (remove (to))
-    ) 
+   ) 
 )
 
 (define "ActivatePiece" (set State at:#1 1))
@@ -29,7 +29,7 @@
             (if ("PieceActivated" (from))
                 True
                 ("Tab") 
-            )
+           )
             #1
         })
         (if (is In (from) (sites Mover "Home"))
@@ -39,25 +39,25 @@
                     (to 
                         ("SiteToMoveOnTrack" "Track" ("ThrowValue")) 
                         "CaptureEnemyPiece"
-                    )
+                   )
                     (then
                         (if (and (not ("PieceActivated" (last To))) (= 1 ("ThrowValue")))
                             ("ActivatePiece" (last To))
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (if (not (is Friend (who at:("SiteToMoveOnTrack" "MiddleTrack" ("ThrowValue")))))
                 (move 
                     (from)
                     (to 
                         ("SiteToMoveOnTrack" "MiddleTrack" ("ThrowValue")) 
                         "CaptureEnemyPiece"
-                    )
-                )
-            )
-        )
-    )
+                   )
+               )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -72,7 +72,7 @@
             (track "Track2" "87,W,S1,E" P2 directed:True)
             (track "MiddleTrack" "44,E,S1,W" loop:True)
             }
-        )
+       )
         (dice d:2 from:0 num:4)
         (piece "Marker" Each)
         (piece "King" Each)
@@ -96,16 +96,16 @@
                         (forEach Piece ("Move"))
                     })
                     (forEach Piece ("Move"))
-                )
+               )
                 (then 
                     (if ("SpecialThrows")
                         (moveAgain)
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         (end (if (no Pieces Next) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -124,7 +124,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Levant, around 1694.")
         }
-    )
+   )
     
     (graphics {
         (piece Colour "Die" state:0 fillColour:(colour Black))

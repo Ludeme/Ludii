@@ -6,7 +6,7 @@
     (intersection
         (sites Incident Vertex of:Cell at:(site))
         (sites "Holes")
-    )
+   )
 )
 
 (define "NumHolesCells" 
@@ -18,8 +18,8 @@
         in:(intersection
             ("AllHolesOfCell")
             (sites Occupied by:Mover on:Vertex)
-        )
-    )		
+       )
+   )		
 )
 
 (define "MajorityOfEmptyCell" 
@@ -27,12 +27,12 @@
         (>=
             (+ ("NumOwnedHolesCells") (if (= (mover) (who Vertex at:(centrePoint Vertex))) 1 0))
             3
-        )
+       )
         (>=
             ("NumOwnedHolesCells")
             (if (is Even ("NumHolesCells")) (/ ("NumHolesCells") 2) (+ (/ ("NumHolesCells") 2) 1))
-        )
-    )
+       )
+   )
 )
 
 (define "CaptureTheCell" 
@@ -41,8 +41,8 @@
         (to
             Cell 
             (site) 
-        )
-    ) 
+       )
+   ) 
 )
 
 //------------------------------------------------------------------------------
@@ -57,13 +57,13 @@
                         (merge 
                             (rotate 45 (dual (square 12 diagonals:Concentric)))
                             (shift 3 3 (scale 6 (square 1)))
-                        )
-                    )
+                       )
+                   )
                     (poly { {3 3} {3 9} {9 9} {9 3} })
-                )
+               )
                 vertices:{{6 6}}
-            )
-        )
+           )
+       )
         (piece "Marker" Each)
         (piece "Rectangle" Each)
         (regions "Holes"  (union (difference (sites Board Vertex) (sites Outer Vertex)) (sites Corners Vertex)))
@@ -79,24 +79,24 @@
                         "CellOfLastVertex" 
                         (if "MajorityOfEmptyCell"
                             "CaptureTheCell"
-                        )
+                       )
                         (then
                             (forEach Site (forEach ("CellOfLastVertex") if:(is Mover (who Cell at:(site))))
                                 (if (is Connected at:(site) Mover)
                                     (trigger "Connected" Mover)
-                                )
-                            )		
-                        )
-                    )
-                )		
-            )
-        )
+                               )
+                           )		
+                       )
+                   )
+               )		
+           )
+       )
         
         (end {
             (if (is Triggered "Connected" Mover) (result Mover Win))
             (if (<= 52 (count Moves)) (result Mover Draw))
         }) 
-    )
+   )
 )
 //------------------------------------------------------------------------------
 
@@ -122,7 +122,7 @@
         (credit "Eric Piette and Cameron Browne")
         (date "2002")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)

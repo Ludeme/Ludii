@@ -8,8 +8,8 @@
             (move
                 Step 
                 (to if:(is Empty (to))) 
-            )
-        ) 
+           )
+       ) 
     })
     
     (rules 
@@ -21,25 +21,25 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty)) 
-                )  
-            ) 
+               )  
+           ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
+       )
         
         (phase "Movement" 
             (play 
                 (forEach Piece)
-            )
-        )
+           )
+       )
         }
         
         (end 
             (if 
                 (is Line 3)
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -57,7 +57,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Horn of Africa, around 1931.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)
@@ -65,6 +65,6 @@
     })
     (ai
         "Djara-Badakh_ai"
-    )
+   )
 )
 

@@ -19,7 +19,7 @@
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" <Board:track2> loop:True P2)
             }
-        )
+       )
         (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
         (regions "Home" P2 (sites Track "Track2"))                              // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
@@ -39,11 +39,11 @@
             (move Select 
                 (from 
                     (if ("SameTurn") 
-                        (if "MoveAgainAfterCapture" "PlayFromNextHole" "LastHoleSowed" ) 
+                        (if "MoveAgainAfterCapture" "PlayFromNextHole" "LastHoleSowed") 
                         (sites Mover "Home") 
-                    ) 
+                   ) 
                     if:(> (count at:(from)) 1)
-                )
+               )
                 (then 
                     (sow
                         "Track"
@@ -52,43 +52,43 @@
                             (if (and 
                                     (is In (to) (sites Mover "Inner")) 
                                     (> (count at:("OppositePit" (to))) 0) 
-                                )
+                               )
                                 (and {
                                     (fromTo 
                                         (from (to)) 
                                         (to (handSite Mover)) 
                                         count:(count at:(to))
-                                    ) 
+                                   ) 
                                     (fromTo 
                                         (from ("OppositePit" (to))) 
                                         (to (handSite Mover)) 
                                         count:(count at:("OppositePit" (to)))
-                                    ) 
+                                   ) 
                                     (if 
                                         (> (count at:("OppositeOuterPit" (to))) 0) 
                                         (fromTo 
                                             (from ("OppositeOuterPit" (to))) 
                                             (to (handSite Mover)) 
                                             count:(count at:("OppositeOuterPit" (to)))
-                                        )
-                                    )
+                                       )
+                                   )
                                     (if (> (count at:"NextHole") 1)
                                         (and
                                             (set Pending "NextHole") // We store the next hole to play in the pending value.
                                             (moveAgain)
-                                        )
-                                    )
+                                       )
+                                   )
                                 })
                                 (moveAgain)
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -115,7 +115,7 @@
         }
         variations:{"Board Size/13"  "Board Size/14" "Board Size/15" "Board Size/16"
         "Board Size/17" "Board Size/18" "Board Size/19" "Board Size/20"}
-    )*
+   )*
     
 })
 
@@ -134,7 +134,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Southwest Africa, around 1995.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
@@ -142,5 +142,5 @@
     
     (ai
         "Owela (Benguela)_ai"
-    )
+   )
 )

@@ -4,11 +4,11 @@
             (union
                 (sites Around (sites Occupied by:Mover) SSW)
                 (sites Around (sites Occupied by:Mover) SSE)
-            )
+           )
             if:(is Empty (to))
-        )
+       )
         #1
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -32,9 +32,9 @@
                 (or 
                     ("PlaceStone" (then (if ("NewTurn") (moveAgain))))
                     (if ("SameTurn") (move Pass))
-                )
-            )
-        )
+               )
+           )
+       )
         }
         (end 
             (if 
@@ -43,9 +43,9 @@
                     (score P1 (count Sites in:(forEach (sites Bottom) if:(= (who at:(site)) P1))))
                     (score P2 (count Sites in:(forEach (sites Bottom) if:(= (who at:(site)) P2))))
                 })
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -68,7 +68,7 @@
         (credit "Eric Piette")
         (date "2001")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Red))

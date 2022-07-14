@@ -9,7 +9,7 @@
     (rules
         (play (forEach Piece)) // When a player moves beyond the stone that is opposite the starting position, they may send the opponent's horse back to start when they land on it.
         (end (if (no Moves Next) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -27,7 +27,7 @@
         (classification "board/race/reconstruction")
         (origin  "This game was played in New Mexico, around 1898.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)

@@ -7,7 +7,7 @@
         Hop 
         (between if:("IsEnemyAt" (between)))
         (to if:(is Empty (to)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -32,15 +32,15 @@
         (phase "Placement"
             (play (move ("FromHand") (to (sites Empty))))
             (nextPhase ("HandEmpty" P2) "Movement")
-        )
+       )
         
         (phase "Movement"
             (play (forEach Piece))
-        )
+       )
         }
         
         (end (if (is Line 3 Mover) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -57,8 +57,8 @@
         (author "Michael Waitsman")
         (credit "Cameron Browne")
         }
-    )
+   )
     (ai
         "Tic-Tac-Chess_ai"
-    )
+   )
 )

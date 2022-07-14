@@ -10,18 +10,18 @@
                 {4 12} {12 20} {20 28} {28 36} {36 46} {46 56} {56 66} {66 76} 
                 {76 68} {68 60} {60 52} {52 44} {44 34} {34 24} {24 14} {14 4} 
                 }
-            )
+           )
             use:Vertex
-        )
+       )
         (piece "Marker" Each
             (or 
                 ("HopCapture")
                 ("StepToEmpty")
-            )
-        )
+           )
+       )
         (hand P2)
         }
-    )  
+   )  
     (rules 
         (start {
             (place "Marker1" (difference (expand (sites Bottom) steps:4) (sites {36..40})))
@@ -31,8 +31,8 @@
         
         (end 
             (if (no Pieces Next) (result Mover Win))
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -50,7 +50,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in India, around 1934.")
         }
-    )
+   )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})
@@ -61,5 +61,5 @@
     
     (ai
         "Ram Tir_ai"
-    )
+   )
 )

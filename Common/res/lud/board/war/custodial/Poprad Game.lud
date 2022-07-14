@@ -31,12 +31,12 @@
                                 (max 1)
                                 if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
-                            )
+                           )
                             (to if:("IsFriendAt" (to)))
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (hand Each)
         })
         (rules
@@ -50,20 +50,20 @@
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
                             (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (nextPhase Mover (is Empty (handSite Mover)) "Capture")
-            )
+           )
             (phase "Capture"
                 (play (forEach Piece))	
-            )
+           )
             }
             (end (if (<= (count Pieces Next) 1) (result Mover Win)))
-        )
+       )
         >
         "Kharebga rules applied to a 17x17 board."
-    )
+   )
     
     //---------------------------------
     
@@ -81,12 +81,12 @@
                                 (max 1)
                                 if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
-                            )
+                           )
                             (to if:("IsFriendAt" (to)))
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (hand Each)
         })
         (rules
@@ -100,20 +100,20 @@
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
                             (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (nextPhase Mover (is Empty (handSite Mover)) "Capture")
-            )
+           )
             (phase "Capture"
                 (play (forEach Piece))	
-            )
+           )
             }
             (end (if (<= (count Pieces Next) 1) (result Mover Win)))
-        )
+       )
         >
         "Seega rules applied to a 17x17 board."
-    )
+   )
     
     //---------------------------------
     
@@ -131,12 +131,12 @@
                                 (max 1)
                                 if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
-                            )
+                           )
                             (to if:("IsFriendAt" (to)))
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (hand Each)
         })
         (rules
@@ -150,20 +150,20 @@
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
                             (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (nextPhase Mover (is Empty (handSite Mover)) "Capture")
-            )
+           )
             (phase "Capture"
                 (play (forEach Piece))	
-            )
+           )
             }
             (end (if (<= (count Pieces Next) 1) (result Mover Win)))
-        )
+       )
         >
         "Kharebga rules applied to a 17x18 board."
-    )
+   )
     
     //---------------------------------
     
@@ -181,12 +181,12 @@
                                 (max 1)
                                 if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
-                            )
+                           )
                             (to if:("IsFriendAt" (to)))
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (hand Each)
         })
         (rules
@@ -200,20 +200,20 @@
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
                             (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (nextPhase Mover (is Empty (handSite Mover)) "Capture")
-            )
+           )
             (phase "Capture"
                 (play (forEach Piece))	
-            )
+           )
             }
             (end (if (<= (count Pieces Next) 1) (result Mover Win)))
-        )
+       )
         >
         "Seega rules applied to a 17x18 board."
-    )
+   )
     
     //---------------------------------
     
@@ -234,10 +234,10 @@
                     (max 1) 
                     if:(= (what at:(between)) (id #1)) 
                     (apply (remove (between)))
-                )
+               )
                 (to if:("FriendOrCentre")) 
-            )
-        )
+           )
+       )
         
         (equipment { 
             (board (square 17)) 
@@ -256,9 +256,9 @@
                                 (between 
                                     if:"JarlAndExpandedCentre" 
                                     "CaptureJarl"
-                                )
+                               )
                                 (to if:"FriendOrCentre")
-                            )
+                           )
                             (custodial 
                                 (from (last To)) 
                                 Orthogonal 
@@ -266,13 +266,13 @@
                                     (max 1) 
                                     if:"JarlButNotTheExpandedCentre" 
                                     "CaptureJarl" 
-                                )
+                               )
                                 (to if:("IsFriendAt" (to)))
-                            )
+                           )
                         })
-                    )
-                )
-            )
+                   )
+               )
+           )
             
             (piece "Thrall" P2 
                 (move
@@ -280,8 +280,8 @@
                     Orthogonal 
                     (between if:(and (!= (between) ("Castle")) (is Empty (between))))
                     (then ("Custodial" "Thrall1")) 
-                ) 
-            ) 
+               ) 
+           ) 
             
             (piece "Jarl" P2 
                 (move
@@ -289,15 +289,15 @@
                     Orthogonal 
                     (between if:(and (!= (between) ("Castle")) (is Empty (between))))
                     (then ("Custodial" "Thrall1")) 
-                )
-            )
+               )
+           )
             
             (regions "OrthogonalSitesCentre" 
                 (difference
                     (expand origin:("Castle") Orthogonal) 
                     ("Castle")
-                )
-            )
+               )
+           )
         })  
         (rules 
             (start { 
@@ -312,10 +312,10 @@
                 (if (is In (where "Jarl" P2) (sites Outer)) (result P2 Win))
                 (if "JarlWasCaptured" (result P1 Win))
             })
-        )
+       )
         >
         "Tablut rules applied to a 17x17 board."
-    )
+   )
     
     //---------------------------------
     
@@ -336,10 +336,10 @@
                     (max 1) 
                     if:(= (what at:(between)) (id #1)) 
                     (apply (remove (between)))
-                )
+               )
                 (to if:("FriendOrCentre")) 
-            )
-        )
+           )
+       )
         
         (equipment { 
             (board (square 17)) 
@@ -358,9 +358,9 @@
                                 (between 
                                     if:"JarlAndExpandedCentre" 
                                     "CaptureJarl"
-                                )
+                               )
                                 (to if:"FriendOrCentre")
-                            )
+                           )
                             (custodial 
                                 (from (last To)) 
                                 Orthogonal 
@@ -368,13 +368,13 @@
                                     (max 1) 
                                     if:"JarlButNotTheExpandedCentre" 
                                     "CaptureJarl" 
-                                )
+                               )
                                 (to if:("IsFriendAt" (to)))
-                            )
+                           )
                         })
-                    )
-                )
-            )
+                   )
+               )
+           )
             
             (piece "Thrall" P2 
                 (move
@@ -382,8 +382,8 @@
                     Orthogonal 
                     (between if:(and (!= (between) ("Castle")) (is Empty (between))))
                     (then ("Custodial" "Thrall1")) 
-                ) 
-            ) 
+               ) 
+           ) 
             
             (piece "Jarl" P2 
                 (move
@@ -391,15 +391,15 @@
                     Orthogonal 
                     (between if:(and (!= (between) ("Castle")) (is Empty (between))))
                     (then ("Custodial" "Thrall1")) 
-                )
-            )
+               )
+           )
             
             (regions "OrthogonalSitesCentre" 
                 (difference
                     (expand origin:("Castle") Orthogonal) 
                     ("Castle")
-                )
-            )
+               )
+           )
         })  
         (rules 
             (start { 
@@ -416,10 +416,10 @@
                 (if (is In (where "Jarl" P2) (sites Outer)) (result P2 Win))
                 (if "JarlWasCaptured" (result P1 Win))
             })
-        )
+       )
         >
         "Tablut rules applied to a 17x17 board with more pieces."
-    )
+   )
     
 })
 
@@ -491,7 +491,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Slovakia, around 375.")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

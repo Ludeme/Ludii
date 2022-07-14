@@ -3,7 +3,7 @@
     (trackSite FirstSite 
         from:(trackSite FirstSite if:(not (is Mover (who at:(to)))))
         if:(is Mover (who at:(to)))
-    )
+   )
 )
 (define "NextHoleFrom" ("NextSiteOnTrack" #2 from:#1))
 
@@ -15,7 +15,7 @@
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
             <Board:track>
-        )
+       )
         (piece "Seed" Each)
         <Board:regions>
     })  
@@ -39,14 +39,14 @@
                                     (and
                                         (remove (to) count:(count at:(to)))
                                         (add (piece (id "Seed" Mover)) (to (to)) count:(count at:(to)))
-                                    )
-                                )
+                                   )
+                               )
                                 apply:(if (= 2 (count at:(to)))
                                     (moveAgain)
-                                )
-                            )
-                        )
-                    )
+                               )
+                           )
+                       )
+                   )
                     (if (not ("SameTurn"))
                         (move
                             (from ("RightMost"))
@@ -56,14 +56,14 @@
                                         (and
                                             (remove (to) count:(count at:(to)))
                                             (add (piece (id "Seed" Mover)) (to (to)) count:(count at:(to)))
-                                        )	
-                                    )
-                                )
-                            )
+                                       )	
+                                   )
+                               )
+                           )
                             count:(count at:("RightMost"))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (move
                     (from ("RightMost"))
                     (to 
@@ -72,20 +72,20 @@
                             (and
                                 (remove (to) count:(count at:(to)))
                                 (add (piece (id "Seed" Mover)) (to (to)) count:(count at:(to)))
-                            )	
-                        )	
-                    )
-                )
-            )
-        )
+                           )	
+                       )	
+                   )
+               )
+           )
+       )
         
         (end 
             (forEach NonMover 
                 if:(no Pieces Player) 
                 (result Player Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -165,7 +165,7 @@
         "Board Size/10"
         }
         variations:{"Board Size/4" "Board Size/6" "Board Size/8" "Board Size/12" "Board Size/14" "Board Size/16"}
-    )*
+   )*
     
 })
 
@@ -184,7 +184,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Angola, around 1995.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

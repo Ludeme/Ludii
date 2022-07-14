@@ -4,8 +4,8 @@
         (fromTo 
             (from (to)) 
             (to (handSite (next)))
-        )
-    )
+       )
+   )
 )
 
 (define "NotEnemyOrOnlyOne"    
@@ -13,9 +13,9 @@
         (and 
             ("IsEnemyAt" (to)) 
             (= (topLevel at:(to)) 0)
-        ) 
+       ) 
         (not ("IsEnemyAt" (to)))
-    )
+   )
 )
 
 (define "BarEmpty" (= (what at:"Bar") 0))
@@ -24,7 +24,7 @@
     (trackSite Move 
         from:#1 
         steps:(pips)
-    )
+   )
 )
 
 (define "Bar" (handSite (mover)))
@@ -36,15 +36,15 @@
         (difference 
             (sites Occupied by:Mover) 
             (sites Mover)
-        )
-    )
+       )
+   )
 )
 
 (define "RemoveAPiece" 
     (select 
         (from (site)) 
         (then (remove (last To)))
-    )		
+   )		
 )
 
 (define "DieNotUsedAndNoEscapeAndNotOffTheTrack" 
@@ -62,8 +62,8 @@
             ("NextSiteFrom" #1) 
             if:("NotEnemyOrOnlyOne") 
             ("IfEnemyBlotIt")
-        )
-    )
+       )
+   )
 )
 
 (define "MoveAPieceFromBar" 
@@ -73,7 +73,7 @@
     //        0 //("NextSiteFrom" (mapEntry (mover)))  //#1) 
     //      if:("NotEnemyOrOnlyOne") 
     //    ("IfEnemyBlotIt")
-//   )
+//  )
 (to (sites Empty)) 
 )
 )
@@ -83,7 +83,7 @@
         replayDouble:True 
         if:#1
         ("MoveAPiece" #2)
-    )		
+   )		
 )
 
 (define "MoveAPieceFromBarIf" 
@@ -91,7 +91,7 @@
         //   replayDouble:True 
         // if:#1
         ("MoveAPieceFromBar" #2)
-    //  )		
+    // )		
 )
 
 (define "AllPieceEscaped" (= 0 (count Pieces Mover)))
@@ -104,7 +104,7 @@
     (and 
         (!= (what at:(site)) 0) 
         (!= ("NextSiteFrom" (site)) Off)
-    )
+   )
 )
 
 (define "SetScoreOf" 
@@ -115,17 +115,17 @@
                 (= ("NumPiece" #2) 15) 
                 2 
                 1
-            ) 
+           ) 
             0
-        )
-    )
+       )
+   )
 )
 
 (define "HaveAPieceAndCanEscape" 
     (and 
         ("IsFriendAt" (site)) 
         (< (trackSite Move from:(site) steps:(pips)) 0)
-    )
+   )
 )
 
 //-----------------------------------------------------------------------------
@@ -139,10 +139,10 @@
             (track "Track2" {19 25..20 18..13 0..5 7..12 End} P2 directed:True)
             } 
             use:Vertex
-        ) 
+       ) 
         (hand Each)
         (dice num:2)
-        (map {(pair 1 6 ) (pair 2 19)}) // Bar
+        (map {(pair 1 6) (pair 2 19)}) // Bar
         (regions P1 { 20..25 }) // P1 Home
         (regions P2 { 7..12 })  // P2 Home
         (piece "Disc" Each ("MoveAPieceIf" "DieNotUsedAndNoEscapeAndNotOffTheTrack" (from))) 
@@ -169,20 +169,20 @@
                                 (if ("CanEspace")
                                     ("RemoveAPiece")
                                     ("MoveAPiece" (site))
-                                )
-                            )
+                               )
+                           )
                             noMoveYet:(firstMoveOnTrack "Track" Mover
                                 (if "HaveAPieceAndCanEscape"
                                     "RemoveAPiece"
-                                )
-                            )
+                               )
+                           )
                             (then 
                                 (if (not (all DiceUsed))
                                     (moveAgain)
-                                )
-                            )
-                        )
-                    )
+                               )
+                           )
+                       )
+                   )
                     (max Distance "Track" Mover
                         (if "BarEmpty"
                             (forEach Piece top:True)
@@ -193,24 +193,24 @@
                                             (if "BarEmpty"
                                                 (forEach Piece top:True)
                                                 ("MoveAPieceFromBarIf" ("DieNotUsed") ("Bar"))
-                                            )
-                                        )
+                                           )
+                                       )
                                         (moveAgain)
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (end 
             (if ("AllPieceEscaped")
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //-------------------------------------------------------------------------
@@ -230,4 +230,4 @@
             (stackType Backgammon)
         })
         
-    )
+   )

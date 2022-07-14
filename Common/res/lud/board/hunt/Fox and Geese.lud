@@ -18,15 +18,15 @@
                 (move 
                     (from (handSite P1)) 
                     (to (sites Empty))
-                )
-            ) 
+               )
+           ) 
             (nextPhase ("HandEmpty" P1) "Movement")
-        )
+       )
         (phase "Movement" (play (forEach Piece)))
         }
         
         (end ("NoMovesLossAndNoPiecesPlayerLoss" P2))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -74,7 +74,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Europe, from around 1633 to 1801.")
         }
-    )
+   )
     
     (graphics {
         (board Style Graph)
@@ -85,6 +85,6 @@
     
     (ai 
         "Fox and Geese_ai"
-    )
+   )
     
 )

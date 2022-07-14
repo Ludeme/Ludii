@@ -12,12 +12,12 @@
                 (to 
                     ("NextSiteFrom" (mapEntry "Entry" Mover) (- (pips) 1))
                     if:(is Empty (to))
-                )
-            )
+               )
+           )
             
             (then ("ReplayNotAllDiceUsed"))
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -34,7 +34,7 @@
                 (if ("IsEndTrack" ("NextSiteFrom" (from) (pips)))
                     (if ("AllPiecesInFinalQuadrant")
                         (move Remove (from))
-                    )
+                   )
                     (move 
                         (from (from))
                         (to 
@@ -44,19 +44,19 @@
                                 (if (not (is In (to) (sites Mover "StartingSide")))
                                     True
                                     (> 2 (size Stack at:(to)))
-                                )
+                               )
                                 (if (not (is In (to) (sites Mover "AfterPenultimate")))
                                     True
                                     (>= 10 (count Pieces in:(sites {(handSite Mover) (mapEntry "Entry" Mover)})))
-                                )
+                               )
                             })
                             ("HittingCapture" (handSite Next))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (then ("ReplayNotAllDiceUsed"))
-            )		
-        )
+           )		
+       )
         (hand Each)
         (regions "FinalQuadrant" P1 (sites {18..23}))
         (regions "FinalQuadrant" P2 (sites {0..5}))
@@ -76,14 +76,14 @@
                 (or
                     ("EnterPieces")
                     (forEach Piece top:True)
-                )
+               )
                 (then
                     (if (no Pieces Mover) (set Score Mover 2))
-                )
-            )		
-        )
+               )
+           )		
+       )
         (end ("EscapeWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -101,7 +101,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Iceland, from around 1862 to 1888.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)

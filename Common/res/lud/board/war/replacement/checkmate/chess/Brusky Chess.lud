@@ -11,9 +11,9 @@
         (if ("IsEnemyAt" (to))
             (remove (to)
                 (then (set Counter))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 // Usage: ("Directions" <p1_directions> <p2_directions>)
@@ -32,7 +32,7 @@
 (define "IsToEmptyOrEnemy"
     (or "IsToEmpty"
         ("IsEnemyAt" (to))
-    )
+   )
 )
 
 // Source: Chess.lud - NextCanNotMove
@@ -40,7 +40,7 @@
     (not (can Move (do
                 (forEach Piece Next)
                 ifAfterwards:(not ("IsInCheck" "King" Next))
-    )))
+   )))
 )
 
 // Usage: ("P12" <player1_arg> <player2_arg>)
@@ -55,9 +55,9 @@
         #1
         (to if:("IsEnemyAt" (to))
             "CaptureToPieceAndResetCounter"
-        )
+       )
         #2
-    )
+   )
 )
 
 //----------------------------------------
@@ -80,8 +80,8 @@
     (then
         (if (= (state at:(last To)) 1)
             "History_SaveMovement"
-        )
-    )
+       )
+   )
 )
 
 //----------------------------------------
@@ -95,9 +95,9 @@
         #1
         (to if:"IsToEmptyOrEnemy"
             "CaptureToPieceAndResetCounter"
-        )
+       )
         #2
-    )
+   )
 )
 
 //----------------------------------------
@@ -109,7 +109,7 @@
     (and
         "IsToEmpty"
         (not ("IsInCheck" "King" Mover at:(to)))
-    )
+   )
 )
 
 (define "Castle_PreCheck"
@@ -119,7 +119,7 @@
         ("History_HasNeverMoved" "King")
         (not ("IsInCheck" "King" Mover))
         }
-    )
+   )
 )
 
 // Usage: ("Castle_Base" <piece_key> <slide_dir> <slide_spaces> <condition> <then>)
@@ -132,9 +132,9 @@
         (between
             (exact #3)
             if:#4
-        )
+       )
         #5
-    )
+   )
 )
 
 // Usage: ("Castle_KingRook" <king_dir> <king_spaces> <rook_side> <rook_dir> <rook_spaces>)
@@ -145,7 +145,7 @@
         #2
         "IsToEmptyAndNotInCheck"
         (then (and ("History_SaveMovement") ("Castle_Base" #3 #4 #5 True)))
-    )
+   )
 )
 
 // Usage: ("Castle" <king_dir> <king_spaces> <rook_side> <rook_dir> <rook_spaces>)
@@ -154,9 +154,9 @@
     (if (and
             ("History_HasNeverMoved" #3)
             (can Move ("Castle_Base" #3 #4 #5 "IsToEmpty"))
-        )
+       )
         ("Castle_KingRook" #1 #2 #3 #4 #5)
-    )
+   )
 )
 
 (define "Castle_KingSide"  ("Castle" E 2 "RookRight" W 2))
@@ -174,7 +174,7 @@
     (and
         (is In (ahead (from) steps:1 #1) (sites Empty))
         (is In (ahead (from) steps:1 #2) (sites Empty))
-    )
+   )
 )
 
 (define "IsPawnUnblocked"
@@ -195,8 +195,8 @@
                 (set Pending (ahead (last To) #2))
                 (set Var (last To))
                 }
-        ))
-    )
+       ))
+   )
 )
 
 // Usage: ("PawnCapture_Base" <directions>)
@@ -206,8 +206,8 @@
         #1
         (to if:("IsEnemyAt" (to))
             (apply (remove (to)))
-        )
-    )
+       )
+   )
 )
 
 (define "PawnCapture_Forward"
@@ -225,7 +225,7 @@
     ("P12"
         (or ("PawnHop" #1 #2) ("PawnHop" #3 #4))
         (or ("PawnHop" #5 #6) ("PawnHop" #7 #8))
-    )
+   )
 )
 
 (define "PawnStep_Double"
@@ -238,7 +238,7 @@
         Step
         #1
         (to if:"IsToEmpty")
-    )
+   )
 )
 
 (define "StepOrthoToEmpty"
@@ -259,7 +259,7 @@
         #1
         (to if:"IsEnPassantCapture")
         (then (remove (var)))
-    )
+   )
 )
 
 (define "EnPassant_Diag"
@@ -270,7 +270,7 @@
     (and
         (is Pending)
         (= (to) (value Pending))
-    )
+   )
 )
 
 //----------------------------------------
@@ -292,8 +292,8 @@
             (remove
                 (hex Rectangle 8 13)
                 cells:{0 1 13 25 75 88 11 12 24 37 62 74 86 87 98 99}
-            )
-        )
+           )
+       )
         
         (piece "King" Each
             (or {
@@ -303,11 +303,11 @@
                         "Castle_KingSide"
                         "Castle_QueenSide"
                         }
-                    )
-                )
+                   )
+               )
                 }
-            )
-        )
+           )
+       )
         (piece "Queen"  Each ("SlideCaptureMove" All ~))
         (piece "Rook"   Each ("SlideCaptureMove" Orthogonal "History_SaveMovementChange"))
         (piece "Bishop" Each ("SlideCaptureMove" Diagonal ~))
@@ -317,9 +317,9 @@
                 "KnightWalk"
                 (to if:"IsToEmptyOrEnemy"
                     "CaptureToPieceAndResetCounter"
-                )
-            )
-        )
+               )
+           )
+       )
         
         (piece "Pawn" Each
             (or {
@@ -328,20 +328,20 @@
                 (if "IsFromInStartCell"
                     (or "PawnCapture_Forward"  // Only available from Start
                         (if "IsPawnUnblocked" "PawnStep_Double")
-                    )
+                   )
                     "EnPassant_Diag"  // Can never move e.p. from Start
-                )
+               )
                 }
                 (then
                     (and
                         (if (is In (last To) (sites Mover "PromotionZone"))
                             (moveAgain)
-                        )
+                       )
                         (set Counter)
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (map "King"      {(pair 1 "F1") (pair 2 "I8")})
         (map "RookLeft"  {(pair 1 "A1") (pair 2 "D8")})
@@ -354,7 +354,7 @@
         (regions "Region-Light"  (sites Phase 1))
         (regions "Region-Medium" (sites Phase 0))
         }
-    )
+   )
     
     (rules
         (start
@@ -374,7 +374,7 @@
             (place "Pawn1" (sites Row 1))
             (place "Pawn2" (sites Row 6))
             }
-        )
+       )
         phases:{
         (phase "Movement"
             (play
@@ -382,28 +382,28 @@
                     ("PromoteTo" (piece {"Queen" "Rook" "Bishop" "Knight"}))
                     (do (forEach Piece)
                         ifAfterwards:(not ("IsInCheck" "King" Mover))
-                    )
-                )
-            )
+                   )
+               )
+           )
             (end
                 {
                 (if (and
                         ("IsInCheck" "King" Next)
                         ("NextCannotMove")
-                    )
+                   )
                     (result Mover Win)
-                )
+               )
                 (if (or
                         (no Moves Mover)
                         (= (counter) 100)
-                    )
+                   )
                     (result Mover Draw)
-                )
+               )
                 }
-            )
-        )
+           )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -434,7 +434,7 @@
         (credit "Jay Coskey, with some small functions drawn from Chess.lud, by Eric Piette")
         (date "1966")
         }
-    )
+   )
     
     (graphics {
         (piece Scale "Pawn" 0.7)
@@ -452,5 +452,5 @@
     
     (ai
         "Brusky Chess_ai"
-    )
+   )
 )

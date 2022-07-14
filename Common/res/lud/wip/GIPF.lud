@@ -20,19 +20,19 @@
                     (from (last To))
                     (then
                         (push (from (last To)) N) 
-                    )
-                )
+                   )
+               )
                 (move
                     (from (handSite Mover))
                     (to (sites Outer))
                     (then (moveAgain))
-                )
-            )
-        )
+               )
+           )
+       )
         (end 
             (if (no Pieces Mover) (result Mover Loss))
-        )
-    )
+       )
+   )
 )
 
 (metadata 
@@ -41,7 +41,7 @@
         {
         (version "0.9.5")
         }
-    )
+   )
     
     (graphics {
         (show Edges Outer Hidden)

@@ -8,11 +8,11 @@
                 (allCombinations 
                     (add (piece "Disc0" state:(mover)) (to (last To))) 
                     (flip (between)) 
-                )
-            )
-        )
+               )
+           )
+       )
         (to if:(= (state at:(to)) (state at:(last To))))
-    )
+   )
 )
 
 (define "HorizontalLine"
@@ -21,9 +21,9 @@
                 if:(or
                     (all Sites (sites Row (row of:(site))) if:(= 1 (state at:(site))))
                     (all Sites (sites Row (row of:(site))) if:(= 2 (state at:(site))))
-                )
-            )
-    ))
+               )
+           )
+   ))
 )
 
 (define "VerticalLine"
@@ -32,9 +32,9 @@
                 if:(or
                     (all Sites (sites Column (column of:(site))) if:(= 1 (state at:(site))))
                     (all Sites (sites Column (column of:(site))) if:(= 2 (state at:(site))))
-                )
-            )
-    ))
+               )
+           )
+   ))
 )
 
 //------------------------------------------------------------------------------
@@ -45,7 +45,7 @@
         (board (square 8))
         (piece "Disc" Neutral (flips 1 2))
         }
-    )  
+   )  
     (rules 
         
         (start {
@@ -59,23 +59,23 @@
                 (then
                     (flip (last To)
                         (then ("ReverseBoundedPieces"))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (end {
             (if (and ("HorizontalLine") ("VerticalLine"))
                 (result Mover Loss)
-            )
+           )
             (if ("HorizontalLine")
                 (result P1 Win)
-            )
+           )
             (if ("VerticalLine")
                 (result P2 Win)
-            )
+           )
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -98,7 +98,7 @@
         (credit "Eric Piette")
         (date "2000")
         }
-    )
+   )
     
     (graphics {
         (piece Colour state:1 fillColour:(colour White))

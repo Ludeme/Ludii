@@ -2,7 +2,7 @@
     (and
         (not (is In (to) (sites Top)))
         (not (is In (to) (sites Bottom)))
-    )
+   )
 )
 
 //-------------------------------------------------------------------------
@@ -18,24 +18,24 @@
                     (and
                         "ToCenter"
                         (not ("IsFriendAt" (to)))
-                    )
+                   )
                     (apply
                         (if ("IsEnemyAt" (to))
                             (remove (to))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         (piece "Dog" P2
             (move Slide
                 (between if:(and
                         "ToCenter"
                         (is Empty (to))
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
     })
     (rules
         (start {
@@ -48,7 +48,7 @@
             ("ReachWin" (sites Top) P1)
             ("BlockWin")
         })
-    )
+   )
 )
 
 //-------------------------------------------------------------------------
@@ -68,7 +68,7 @@
         (credit "Noé Falzon")
         (date "1975")
         }
-    )
+   )
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
@@ -80,5 +80,5 @@
     })
     (ai
         "Bison_ai"
-    )
+   )
 )

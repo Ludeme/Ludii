@@ -4,12 +4,12 @@
         (board
             (square 9)
             use:Vertex
-        )
+       )
         (piece "Marker" Each 
             (or
                 (if (= 1 (+ (count Cell at:(handSite Mover)) (count Pieces Mover)))
                     ("HopCapture")
-                )
+               )
                 (move Slide
                     (then 
                         (custodial 
@@ -23,16 +23,16 @@
                                         (fromTo 
                                             (from (handSite Mover))
                                             (to (between))
-                                        )
-                                    )
-                                )
-                            )
+                                       )
+                                   )
+                               )
+                           )
                             (to if:("IsFriendAt" (to)))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         (hand Each)
     })
     (rules 
@@ -43,7 +43,7 @@
         })
         (play (forEach Piece))
         (end ("BlockWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -61,7 +61,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Tibet, around 1926.")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Black))
@@ -72,5 +72,5 @@
     
     (ai
         "Gundru_ai"
-    )
+   )
 )

@@ -7,7 +7,7 @@
             (track "Track2" {19 25..20 18..13 0..5 7..12 End} P2 directed:True)
             } 
             use:Vertex
-        ) 
+       ) 
         (piece "Marker" Each [#])
         (dice d:6 num:3)
     })
@@ -16,10 +16,10 @@
         (play 
             (do (roll)
                 next:[#] // Two pieces on a space block an opponent from moving to that spot.
-            )
-        )
+           )
+       )
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -29,7 +29,7 @@
     (info
         {
         }
-    )
+   )
     
     (graphics {
         (board Style backgammon)

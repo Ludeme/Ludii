@@ -2,15 +2,15 @@
     (move Add
         (to 
             (sites Around (sites Occupied by:Mover) Empty Orthogonal)
-        )
-    )
+       )
+   )
 )
 
 (define "Remove"
     (move Select
         (from (sites Occupied by:Enemy))
         (then (forEach Site (sites Group at:(last From) Orthogonal) (remove (site))))
-    )
+   )
 )
 
 //-------------------------------------------------------------------------
@@ -30,13 +30,13 @@
             (or
                 ("Place")
                 ("Remove")
-            )
-        )
+           )
+       )
         (end {
             ("SingleGroupWin" P1 Orthogonal)
             ("SingleGroupWin" P2 Orthogonal)
         })
-    )
+   )
 )
 
 //-------------------------------------------------------------------------
@@ -69,7 +69,7 @@
         (credit "Michael Amundsen")
         (date "2020")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Red))

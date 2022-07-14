@@ -13,15 +13,15 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty))
-                )
-            ) 
+               )
+           ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )  
+       )  
         
         (phase "Movement" (play (forEach Piece)))
         }
         (end ("BlockWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -33,20 +33,20 @@
         (board 
             (remove (rotate 45 (concentric {1 4})) edges:{{1 4}})
             use:Vertex
-        )
+       )
         > 
         "The board is a circle."
-    )*
+   )*
     
     (item "Square"     
         <
         (board 
             (remove (square 2 diagonals:Solid) edges:{{0 3}})
             use:Vertex
-        )
+       )
         > 
         "The board is a square."
-    )
+   )
     }
 )
 
@@ -83,11 +83,11 @@
         (credit "Eric Piette")
         (origin  "This game was played in Mongolia, from around 1963 to 1991.")
         }
-    )
+   )
     (graphics {
         (useFor "Ruleset/Temeen Tavag (Observed)" (board Background image:"disc.svg" edgeColour:(colour 90 90 90) scale:0.5 offsetX:-0.6))
     })
     (ai
         "Temeen Tavag_ai"
-    )
+   )
 )

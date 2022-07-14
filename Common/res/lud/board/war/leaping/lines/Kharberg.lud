@@ -1,7 +1,7 @@
 (define "PromoteIfBorderReached"  
     (if (is In (last To) (sites Next))
         (move Promote (last To) (piece "DoubleCounter") Mover)
-    )
+   )
 )
 
 (define "Hop" 
@@ -10,15 +10,15 @@
         (between 
             if:("IsEnemyAt" (between))
             (apply (remove (between)))
-        ) 
+       ) 
         (to if:(is Empty (to))) 
         (then
             (and 
                 ("PromoteIfBorderReached")
                 ("HasCaptured")
-            )
-        )
-    ) 
+           )
+       )
+   ) 
 )
 
 (define "HasCaptured"  (set Value Mover 0))
@@ -30,13 +30,13 @@
             (or 
                 (forEach Piece "Counter" 
                     ("Hop")
-                ) 
+               ) 
                 (forEach Piece "DoubleCounter" 
                     ("Hop")
-                )
-            )
-        )
-    )
+               )
+           )
+       )
+   )
 )
 
 (define "SitesWithPossibleCaptureInPreviousTurn" (sites Pending))
@@ -45,7 +45,7 @@
     (and 
         (is In (last From) ("SitesWithPossibleCaptureInPreviousTurn"))  
         (is In (last From) (sites Empty))
-    )
+   )
 )
 
 (define "HuffOnePieceOf" 
@@ -53,15 +53,15 @@
         Select 
         (from #1
             if:(!= (what at:(from)) 0)
-        )
+       )
         (then 
             (and  {
                 (remove (last To)) 
                 (moveAgain) 
                 (set Value Prev 0)
             })
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -79,16 +79,16 @@
                     Step 
                     (to if:(is Empty (to)))
                     (then ("HasNotCaptured"))
-                )
+               )
                 (then ("PromoteIfBorderReached"))
-            )
-        )
+           )
+       )
         (piece "DoubleCounter" Each
             (or
                 ("Hop") 
                 (move Slide (then ("HasNotCaptured")))
-            )
-        )
+           )
+       )
     })
     (rules 
         (start { 
@@ -101,18 +101,18 @@
                     (or
                         (if ("ShouldCapturedButMoved") 
                             ("HuffOnePieceOf" (last To))
-                        )
+                       )
                         ("HuffOnePieceOf" ("SitesWithPossibleCaptureInPreviousTurn"))
-                    )
-                )
+                   )
+               )
                 (do 
                     ("RememberSiteWithPossibleCapture") 
                     next:(forEach Piece)
-                )
-            )
-        )
+               )
+           )
+       )
         (end ("BlockWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -131,7 +131,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Sahara, around 1950.")
         }
-    )
+   )
     
     (graphics {
         
@@ -139,6 +139,6 @@
     
     (ai
         "Kharberg_ai"
-    )
+   )
 )
 

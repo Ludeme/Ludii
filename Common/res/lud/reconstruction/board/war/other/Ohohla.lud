@@ -4,7 +4,7 @@
         (board 
             (splitCrossings (regular Star 5))
             use:Vertex
-        )
+       )
         (piece "Disc" P1 (move [#])) 
         (piece "Disc" P2 (move [#])) 
     })  
@@ -12,7 +12,7 @@
         (start [#]) 
         (play [#])
         (end [#])
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -30,7 +30,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Arizona, around 1907.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)

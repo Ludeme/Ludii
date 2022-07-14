@@ -7,8 +7,8 @@
                 (to if:("IsEnemyAt" (to))
                     (apply
                         (remove (to))
-                    )
-                )
+                   )
+               )
                 (then
                     (forEach Site
                         (sites Around (last To))
@@ -16,12 +16,12 @@
                             (and
                                 (remove (site))
                                 (add (piece (id "Ball" Mover)) (to (site)))
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
     })
     (rules
         (start {
@@ -38,9 +38,9 @@
                     (score P1 (count Pieces P1))
                     (score P2 (count Pieces P2))
                 })
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -61,7 +61,7 @@
         (credit "Eric Piette")
         (date "2002")
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)

@@ -25,11 +25,11 @@
                             ("NextSiteOnTrack" (pips)) 
                             if:"StackSizeLessThan2"
                             (apply (if ("IsEnemyAt" (to)) (remove (to))))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         (map "StartTrack" {(pair P1 0) (pair P2 12)})
     })
     (rules 
@@ -51,26 +51,26 @@
                                         ("Unstack")
                                         ("ReplayNotAllDiceUsed")
                                     })
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             (nextPhase Mover (all Sites (sites Occupied by:Mover) if:(not ("PieceStacked" (site)))) "BearingOff")
-        )
+       )
         (phase "BearingOff"
             (play 
                 ("RollEachNewTurnMove"
                     (forEach Piece top:True)
                     (then (if (and (not (was Pass)) (not (all DiceUsed))) (moveAgain)))
-                )
-            )
-        )
+               )
+           )
+       )
         }
         
         (end ("EscapeWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -89,7 +89,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Spain, around 1283.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Hidden)

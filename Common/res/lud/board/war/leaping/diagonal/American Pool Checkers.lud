@@ -6,10 +6,10 @@
         (between 
             if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
             (apply (remove (between) at:EndOfTurn))
-        ) 
+       ) 
         (to if:(is Empty (to))) 
         #2
-    ) 
+   ) 
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -30,7 +30,7 @@
     })
     (rules 
         (start { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ))
+            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1) ))
             (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1)))
         })
         (play 
@@ -42,12 +42,12 @@
                                 (moveAgain)
                                 (if "JumpToPromotionZone" 
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
-                                )
-                            ) 
-                        ) 
-                    )
+                               )
+                           ) 
+                       ) 
+                   )
                     (max Moves ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn))
-                )
+               )
                 (priority {
                     (or 
                         (forEach Piece "Counter"
@@ -57,35 +57,35 @@
                                         (moveAgain) 
                                         (if "JumpToPromotionZone" 
                                             (move Promote (last To) (piece "DoubleCounter") Mover)
-                                        )
-                                    ) 
-                                ) 
-                            ) 
-                        )
+                                       )
+                                   ) 
+                               ) 
+                           ) 
+                       )
                         (max Moves 
                             (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))
-                        )
-                    )
+                       )
+                   )
                     (or  
                         (forEach Piece "Counter" 
                             (move
                                 Step 
                                 (directions {FR FL}) 
                                 (to if:(is Empty (to)))
-                            )
+                           )
                             (then 
                                 (if "JumpToPromotionZone"
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
-                                )
-                            )
-                        )
+                               )
+                           )
+                       )
                         (forEach Piece "DoubleCounter" (move Slide Diagonal))
-                    )
+                   )
                 })
-            )
-        ) 
+           )
+       ) 
         (end ("BlockWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -104,7 +104,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in United States of America, around 1947.")
         }
-    )
+   )
     
     (graphics {
         (piece Families {"Defined" "Isometric"})
@@ -116,6 +116,6 @@
     
     (ai
         "American Pool Checkers_ai"
-    )
+   )
 )
 

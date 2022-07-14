@@ -4,7 +4,7 @@
         (board 
             (rotate 90 ("ThreeMenMorrisGraphWithLeftAndRightTriangles"))
             use:Vertex
-        )
+       )
         <Version:hand>
         
         (piece "Pawn" P1 ("StepToEmpty" <Army>))
@@ -28,9 +28,9 @@
                     //            		(min (results from:(sites Occupied by:P2) to:0 (row of:(from))))
                 //            	) 
                 //            	(result P1 Win)
-            //            )
+            //           )
         }) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -60,7 +60,7 @@
         >
         <(play (forEach Piece))>           
         "The game is played according to the rules of Lucas with the pieces already on the board."
-    )**
+   )**
     
     (item "Martin Gardner"     
         <(hand P1)> 
@@ -77,15 +77,15 @@
                 (move 
                     (from (handSite P1)) 
                     (to (sites Empty))
-                )
-            ) 
+               )
+           ) 
             (nextPhase "Movement")
-        )
+       )
         (phase "Movement" (play (forEach Piece)))
         }
         >
         "The game is played according to the rules of Martin Gardner. The army can be placed anywhere."
-    )  
+   )  
     
     (item "Martin Gardner (improved)"     
         <(hand P1)> 
@@ -102,15 +102,15 @@
                 (move 
                     (from (handSite P1)) 
                     (to (difference (sites Empty) (sites {"B2"})))
-                )
-            ) 
+               )
+           ) 
             (nextPhase "Movement")
-        )
+       )
         (phase "Movement" (play (forEach Piece)))
         }
         >
         "The game is played according to the rules of Martin Gardner with a slightly difference. The army can be placed anywhere except in the middle of the towers."
-    )   
+   )   
 })
 
 (option "Move Limit" <Move> args:{ <limit> }
@@ -153,7 +153,7 @@
         (classification "board/hunt")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Black))

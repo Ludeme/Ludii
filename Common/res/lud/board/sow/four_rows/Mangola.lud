@@ -8,7 +8,7 @@
         "TrackCW"
         from:#1
         if:(is Empty (to))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -24,7 +24,7 @@
             (track "TrackCW1" "7,W,N1,E" loop:True P1)
             (track "TrackCW2" "23,W,N1,E" loop:True P2)
             }
-        )
+       )
         (regions "Home" P1 (sites Track "TrackCCW1"))                                    // P1 Home
         (regions "Home" P2 (sites Track "TrackCCW2"))                                    // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))       // P1 inner Home
@@ -40,7 +40,7 @@
         
         (start 
             (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home")))
-        )
+       )
         
         phases:{
         (phase "Opening1"
@@ -50,21 +50,21 @@
                         (if ("SameTurn") 
                             "PlayFromNextLastHole" 
                             (sites Mover "LeftMost") 
-                        ) 
+                       ) 
                         if:(> (count at:(from)) 0)
-                    )
+                   )
                     (then 
                         (sow
                             numPerHole:2
                             "TrackCCW"
                             owner:(mover)
                             apply:(if (is Occupied ("NextHoleFrom" (to) "TrackCCW" 1)) (moveAgain))
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase Mover (not (is Next Mover)) "Opening2")
-        )
+       )
         (phase "Opening2"
             (play
                 (move Select
@@ -72,9 +72,9 @@
                         (if ("SameTurn") 
                             (sites {(var "Replay") })
                             (sites Mover "EndHoles") 
-                        ) 
+                       ) 
                         if:(> (count at:(from)) 1)
-                    )
+                   )
                     (then 
                         (sow
                             "TrackCCW"
@@ -94,34 +94,34 @@
                                                 (from ("OppositeOuterPit" (to)))
                                                 (to ("NextHoleFrom" ("FirstEmptyHole" (to)) "TrackCCW" 1))
                                                 count:(count at:("OppositeOuterPit" (to)))
-                                            )
+                                           )
                                             (fromTo
                                                 (from ("OppositePit" (to)))
                                                 (to ("NextHoleFrom" ("FirstEmptyHole" (to)) "TrackCCW" 1))
                                                 count:(count at:("OppositePit" (to)))
-                                            )
+                                           )
                                             (sow
                                                 ("NextHoleFrom" ("FirstEmptyHole" (to)) "TrackCCW" 1)
                                                 count:(+ (count at:("OppositePit" (to))) (count at:("OppositeOuterPit" (to))))
                                                 "TrackCCW"
                                                 owner:(mover)	
-                                            )
+                                           )
                                         })		
-                                    )
+                                   )
                                 })
                                 (fromTo
                                     (from (to))
                                     (to ("NextHoleFrom" (to) "TrackCCW" 1))
                                     count:1
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             
             (nextPhase Mover (not (is Next Mover)) "Sowing")
-        )
+       )
         
         (phase "Sowing"
             (play
@@ -131,9 +131,9 @@
                             ("SameTurn") 
                             (sites {(var "Replay")})
                             (sites Mover "Home") 
-                        ) 
+                       ) 
                         if:(> (count at:(from)) 1)
-                    )
+                   )
                     (then 
                         (sow
                             "TrackCCW"
@@ -153,36 +153,36 @@
                                                 (from ("OppositeOuterPit" (to)))
                                                 (to ("NextHoleFrom" ("FirstEmptyHole" (to)) "TrackCCW" 1))
                                                 count:(count at:("OppositeOuterPit" (to)))
-                                            )
+                                           )
                                             (fromTo
                                                 (from ("OppositePit" (to)))
                                                 (to ("NextHoleFrom" ("FirstEmptyHole" (to)) "TrackCCW" 1))
                                                 count:(count at:("OppositePit" (to)))
-                                            )
+                                           )
                                             (sow
                                                 ("NextHoleFrom" ("FirstEmptyHole" (to)) "TrackCCW" 1)
                                                 count:(+ (count at:("OppositePit" (to))) (count at:("OppositeOuterPit" (to))))
                                                 "TrackCCW"
                                                 owner:(mover)	
-                                            )
+                                           )
                                         })		
-                                    )
+                                   )
                                 })
                                 (fromTo
                                     (from (to))
                                     (to ("NextHoleFrom" (to) "TrackCCW" 1))
                                     count:1
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             
-        )
+       )
         }
         (end ("ForEachPlayerNoMovesLoss"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -199,7 +199,7 @@
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

@@ -18,13 +18,13 @@
                 (from (sites Hand Shared)) 
                 (to (sites Empty))
                 copy:True
-            )
-        ) 
+           )
+       ) 
         (end {
             (if (is Connected Mover) (result Mover <Result:mover>))
             (if (is Connected Next) (result Next <Result:next>))
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -72,7 +72,7 @@
         (credit "Eric Piette")
         (date "2003")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Blue))
@@ -84,6 +84,6 @@
     
     (ai 
         "Chameleon_ai"
-    )
+   )
     
 )

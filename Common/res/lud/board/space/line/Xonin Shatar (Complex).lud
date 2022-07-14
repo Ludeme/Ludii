@@ -4,8 +4,8 @@
         (forEach 
             (sites Occupied by:Next container:"Board") 
             if:(not (is Line 3 Orthogonal through:(site)))
-        )
-    )
+       )
+   )
 )
 
 (define "IfLine3MoveAgain" 
@@ -13,8 +13,8 @@
         (if 
             (is Line 3) 
             (moveAgain)
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -33,7 +33,7 @@
                         (scale 4 (remove (square 3) edges:{{1 4} {3 4} {4 7} {4 5}}))
                     })
                     vertices:{4}
-                )
+               )
                 edges:{
                 {17 19} {17 20} {20 22} {22 19}
                 {17 9} {19 11} {22 14} {12 20}
@@ -42,19 +42,19 @@
                 {9 1} {11 3} {6 14} {4 12}
                 {0 8} {5 13} {7 15} {10 2}
                 }
-            )
+           )
             use:Vertex
-        ) 
+       ) 
         (hand Each)
         (piece "Marker" Each 
             (move 
                 Step 
                 (to if:(is Empty (to))) 
                 "IfLine3MoveAgain" 
-            )
-        ) 
+           )
+       ) 
         }
-    )  
+   )  
     (rules 
         (start (place "Marker" "Hand" count:12))
         
@@ -67,24 +67,24 @@
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
                         "IfLine3MoveAgain" 
-                    )  
-                )
-            ) 
+                   )  
+               )
+           ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
+       )
         
         (phase "Movement" 
             (play 
                 (if "SameTurn"
                     "RemoveEnemyPieceNotInLine3"
                     (forEach Piece)
-                )
-            )
-        )
+               )
+           )
+       )
         }
         
         (end (if (no Pieces Next) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -102,7 +102,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Mongolia, from around 1963 to 1966.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)
@@ -110,6 +110,6 @@
     })
     (ai
         "Xonin Shatar (Complex)_ai"
-    )
+   )
 )
 

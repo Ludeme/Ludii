@@ -2,8 +2,8 @@
     (move Slide #1
         (to
             (apply if:(all Sites (sites Around (to)) if:(!= (what at:(site)) (id #2 Next))))
-        )
-    )	
+       )
+   )	
 )
 (define "MouseMove" ("SlideMove" Orthogonal "Lion"))
 (define "ElephantMove" ("SlideMove" All "Mouse"))
@@ -43,10 +43,10 @@
                 })
                 (forEach Piece)
             })
-        )
+       )
         
         (end (if ("ThreePiecesInWater") (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -78,7 +78,7 @@
         (credit "Eric Piette")
         (date "2007")
         }
-    )
+   )
     
     (graphics {
         (board Checkered)

@@ -8,15 +8,15 @@
                 (wedge 3) 
                 (shift 0 6 (rotate 180 (wedge 3))) 
                 } 
-            ) 
+           ) 
             use:Vertex
-        )
+       )
         (piece "Marker" Each 
             (or 
                 ("HopSequenceCapture")
                 ("StepToEmpty")
-            )
-        )
+           )
+       )
     })  
     (rules 
         (start { 
@@ -29,13 +29,13 @@
                 (or
                     ("HopSequenceCaptureAgain")	
                     (move Pass)
-                )
+               )
                 (forEach Piece)
-            )
-        )
+           )
+       )
         
         (end (if (no Pieces Next) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -54,7 +54,7 @@
         (credit "Matthew Stephenson")
         (origin  "This game was played in South Asia., from around 1904 to 1905.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)
@@ -63,6 +63,6 @@
     
     (ai
         "Ahtarah Guti_ai"
-    )
+   )
 )
 

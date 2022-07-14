@@ -8,28 +8,28 @@
     (if (is Mover P1)
         (sites (values Remembered "OwnedP1"))
         (sites (values Remembered "OwnedP2"))
-    )
+   )
 )
 
 (define "RemmemberOwnedHoles" 
     (if (is Mover P1)
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
-    )
+   )
 )
 
 (define "RememberOwnedHolesRandom" 
     (if (< 50 (value Random (range 1 100)))
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
-    )
+   )
 )
 
 (define "RightMostEmpty" 
     (trackSite FirstSite "TrackCW"
         from:(mapEntry "RightMost" Mover)
         if:(is Empty (to))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -43,7 +43,7 @@
             (track "TrackCCW" "0,E,N,W" loop:True)
             (track "TrackCW" "5,W,N,E" loop:True)
             }
-        )
+       )
         (piece "Seed" Shared)
         (hand Each)
         (map "RightMost" {(pair P1 5) (pair P2 6)})
@@ -55,7 +55,7 @@
         (start {
             (set RememberValue "OwnedP1" (sites Bottom))
             (set RememberValue "OwnedP2" (sites Top))
-            (set Count 4 to:(sites Track "TrackCCW" )) 
+            (set Count 4 to:(sites Track "TrackCCW")) 
         })
         
         phases:{
@@ -66,8 +66,8 @@
                         (if ("SameTurn")
                             (var "Replay")
                             5
-                        )
-                    )
+                       )
+                   )
                     (then
                         (sow
                             numPerHole:4
@@ -77,14 +77,14 @@
                                 (if (is Occupied ("NextHole" (to) 1))
                                     (set Var "Replay" ("NextHole" (to) 1))
                                     (set Var "Replay" Undefined)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             (nextPhase (= Undefined (var "Replay")) "Opening2")
-        )
+       )
         (phase "Opening2"
             (play
                 (move Select 
@@ -92,8 +92,8 @@
                         (if (and ("SameTurn") (!= Undefined (var "Replay")))
                             (var "Replay")
                             4
-                        )
-                    )
+                       )
+                   )
                     (then
                         (sow
                             "TrackCCW"
@@ -101,22 +101,22 @@
                                 (and
                                     (moveAgain)
                                     (set Var "Replay" (to))
-                                )
+                               )
                                 (if (is Occupied ("OppositePitTwoRows" (to)))
                                     (fromTo
                                         (from ("OppositePitTwoRows" (to)))
                                         (to (handSite Mover))
                                         count:(count at:("OppositePitTwoRows" (to)))
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             
             (nextPhase (not (is Next Prev)) "Sowing")
-        )
+       )
         
         (phase "Sowing"
             (play
@@ -126,9 +126,9 @@
                             (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 ("OwnedHoles") 
-                            )
+                           )
                             if:(is Occupied (from))
-                        )
+                       )
                         (then
                             (sow
                                 "TrackCCW"
@@ -136,18 +136,18 @@
                                     (and
                                         (moveAgain)
                                         (set Var "Replay" (to))
-                                    )
+                                   )
                                     (if (is Occupied ("OppositePitTwoRows" (to)))
                                         (fromTo
                                             (from ("OppositePitTwoRows" (to)))
                                             (to (handSite Mover))
                                             count:(count at:("OppositePitTwoRows" (to)))
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
                     }
                     (then
                         (if ("OneOrLessPieceOnBoard")
@@ -157,32 +157,32 @@
                                         (from (site))
                                         (to (handSite P1))
                                         count:(count at:(site))
-                                    )
-                                )
+                                   )
+                               )
                                 (forEach Site (sites P2)
                                     (fromTo
                                         (from (site))
                                         (to (handSite P2))
                                         count:(count at:(site))
-                                    )
-                                )
+                                   )
+                               )
                                 (forget Value "OwnedP1" All)
                                 (forget Value "OwnedP2" All)
                             })
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (end (if ("NoPieceOnBoard")
                     {
                     (if (= 0 (count Cell at:(handSite P1))) (result P2 Win))
                     (if (= 0 (count Cell at:(handSite P2))) (result P1 Win))
                     }
-                )
-            )
+               )
+           )
             
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-        )
+       )
         
         (phase "BetweenRounds"
             (play
@@ -200,12 +200,12 @@
                                             (from (handSite Mover))
                                             (to ("RightMostEmpty"))
                                             count:3
-                                        )
+                                       )
                                         (fromTo 
                                             (from (handSite Next))
                                             (to ("RightMostEmpty"))
                                             count:1
-                                        )
+                                       )
                                         ("RemmemberOwnedHoles" ("RightMostEmpty"))
                                     })
                                     (if (= 2 (count Cell at:(handSite Mover)))
@@ -214,25 +214,25 @@
                                                 (from (handSite Mover))
                                                 (to ("RightMostEmpty"))
                                                 count:2
-                                            )
+                                           )
                                             (fromTo 
                                                 (from (handSite Next))
                                                 (to ("RightMostEmpty"))
                                                 count:2
-                                            )
+                                           )
                                             ("RememberOwnedHolesRandom" ("RightMostEmpty"))
                                         })
-                                    )
-                                )
+                                   )
+                               )
                             })
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase (and (is Empty (handSite P1)) (is Empty (handSite P2))) "Sowing")
-        )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -250,7 +250,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Ethiopia, around 1971.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

@@ -6,9 +6,9 @@
             if:("IsEnemyAt" (between)) 
             (apply             
                 (remove (between)) 
-            ) 
-        )
-    )
+           ) 
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -22,7 +22,7 @@
     (rules  
         (meta
             (no Repeat)
-        )
+       )
         (play         
             (or
                 (move 
@@ -30,20 +30,20 @@
                     (to (sites Empty))
                     (then 
                         "CaptureSurroundedPiece"
-                    )
-                )
+                   )
+               )
                 (move Pass)
-            )
-        )
+           )
+       )
         (end
             (if (all Passed)
                 (byScore {
                     (score P1 (+ (count Pieces P1)  (size Territory P1))) 
                     (score P2 (+ (count Pieces P2) (size Territory P2)))
                 })
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -63,7 +63,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in China, from around 500 to 599.")
         }
-    )
+   )
     
     (graphics {
         (board Style Go)
@@ -72,5 +72,5 @@
     })
     (ai
         "Weiqi_ai"
-    )
+   )
 )

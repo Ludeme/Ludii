@@ -5,21 +5,21 @@
             (and
                 ("IsEnemyAt" (ahead (to) W))
                 ("IsFriendAt" (ahead (to) steps:2 W))
-            )
+           )
             (and
                 ("IsEnemyAt" (ahead (to) E))
                 ("IsFriendAt" (ahead (to) steps:2 E))
-            )
+           )
             (and
                 ("IsEnemyAt" (ahead (to) N))
                 ("IsFriendAt" (ahead (to) steps:2 N))
-            )
+           )
             (and
                 ("IsEnemyAt" (ahead (to) S))
                 ("IsFriendAt" (ahead (to) steps:2 S))
-            )
+           )
         })
-    )	
+   )	
 )
 
 (define "CanCaptureAgain"
@@ -28,8 +28,8 @@
             (from (last To))
             Orthogonal 
             (to if:("IsConfigurationToCustodialAgain"))
-        )
-    )	
+       )
+   )	
 )
 
 //------------------------------------------------------------------------------
@@ -48,17 +48,17 @@
                             (max 1)
                             if:("IsEnemyAt" (between))
                             (apply (remove (between)))
-                        )
+                       )
                         (to if:("IsFriendAt" (to)))
                         (then
                             (if ("CanCaptureAgain")	
                                 (moveAgain)
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         (hand Each)
     })
     (rules
@@ -74,18 +74,18 @@
                             (intersection 
                                 (sites Empty)
                                 (sites Around (centrePoint) Orthogonal)
-                            )
+                           )
                             (difference (sites Board) (centrePoint)) 
-                        )
+                       )
                         if:(is Empty (to))
-                    )
+                   )
                     (then
                         (if (not ("SameTurn")) (moveAgain))
-                    )
-                )
-            )
+                   )
+               )
+           )
             (nextPhase Mover (is Empty (handSite Mover)) "Capture")
-        )
+       )
         (phase "Capture"
             (play 
                 (if ("SameTurn")
@@ -102,25 +102,25 @@
                                         (max 1)
                                         if:("IsEnemyAt" (between))
                                         (apply (remove (between)))
-                                    )
+                                   )
                                     (to if:("IsFriendAt" (to)))
                                     (then
                                         (if ("CanCaptureAgain")	
                                             (moveAgain)
-                                        )
-                                    )
-                                )
-                            )
-                        )
+                                       )
+                                   )
+                               )
+                           )
+                       )
                         (move Pass)
-                    )
+                   )
                     (forEach Piece) 
-                )
-            )	
-        )
+               )
+           )	
+       )
         }
         (end ("BlockWin"))
-    )	
+   )	
 )
 
 //--------------------------------------
@@ -142,7 +142,7 @@
         (classification "board/war/custodial")
         (origin  "This game was played in Tunisia, around 1944.")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

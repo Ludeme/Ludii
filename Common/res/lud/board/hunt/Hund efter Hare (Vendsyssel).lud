@@ -14,9 +14,9 @@
                 {6 2} {2 10} {10 3} {3 8} {7 3}
                 {3 11}
                 }
-            )
+           )
             use:Vertex
-        )
+       )
         (piece "Hare" P1 "StepToEmpty")
         (piece "Dog" P2 "StepToEmpty")
     })
@@ -27,7 +27,7 @@
         })
         (play (forEach Piece))
         <End:rule>
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -41,7 +41,7 @@
         }) 
         >  
         "The game has an ending condition only for P2."
-    )*
+   )*
     
     (item "Cond for P1 and P2" 
         <
@@ -51,13 +51,13 @@
                 (or
                     (>= (count Moves) (- (value MoveLimit) 10)) 
                     (>= (count Turns) (- (value TurnLimit) 5)) 
-                )
+               )
                 (result P1 Win)
-            )
+           )
         }) 
         >  
         "The game has an ending condition for each player."
-    )
+   )
 })
 
 //------------------------------------------------------------------------------
@@ -93,7 +93,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Denmark, from around 1898 to 1972.")
         }
-    )
+   )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})
@@ -103,5 +103,5 @@
     
     (ai
         "Hund efter Hare (Vendsyssel)_ai"
-    )
+   )
 )

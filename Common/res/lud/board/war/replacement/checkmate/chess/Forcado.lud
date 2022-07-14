@@ -3,9 +3,9 @@
         (if ("IsEnemyAt" (to)) 
             (remove 
                 (to) 
-            )
-        )
-    ) 
+           )
+       )
+   ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -15,8 +15,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-        )
-    )
+       )
+   )
 )
 
 (define "NextCanNotMove"
@@ -30,8 +30,8 @@
         (to 
             if:(and ("IsEnemyAt" (to)) (= (what at:(to)) #1))
             "CaptureToPiece"
-        ) 
-    )	
+       ) 
+   )	
 )
 
 (define "RookOnlyCapture" 
@@ -45,11 +45,11 @@
                 (if ("IsEnemyAt" (to)) 
                     (remove 
                         (to) 
-                    )
-                )
-            ) 
-        ) 
-    )	
+                   )
+               )
+           ) 
+       ) 
+   )	
 )
 
 (define "PawnOnlyCapture" 
@@ -59,8 +59,8 @@
         (to 
             if:(and ("IsEnemyAt" (to)) (= (what at:(to)) #1))
             (apply (remove (to)))
-        )
-    )	
+       )
+   )	
 )
 
 (define "BishopOnlyCapture" 
@@ -71,8 +71,8 @@
         (to 
             if:(and ("IsEnemyAt" (to)) (= (what at:(to)) #1))
             "CaptureToPiece"
-        )
-    )	
+       )
+   )	
 )
 
 (define "QueenOnlyCapture" 
@@ -82,8 +82,8 @@
         (to 
             if:(and ("IsEnemyAt" (to)) (= (what at:(to)) #1))
             "CaptureToPiece" 
-        )
-    )
+       )
+   )
 )
 
 (define "KingOnlyCapture" 
@@ -92,8 +92,8 @@
         (to 
             if:(and ("IsEnemyAt" (to)) (= (what at:(to)) #1))
             "CaptureToPiece" 
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -110,10 +110,10 @@
                 (then
                     (if (is In (last To) (sites Mover "Promotion")) 
                         (promote (last To) (piece "Ferz_noCross") Mover)
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (piece "Rook" Each 
             (move
@@ -122,18 +122,18 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "King_noCross" Each 
             (move
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-                )
-            )
-        )
+               )
+           )
+       )
         (piece "Bishop_noCross" Each 
             (move 
                 Hop 
@@ -143,11 +143,11 @@
                     if:(or 
                         (is Empty (to)) 
                         ("IsEnemyAt" (to))
-                    ) 
+                   ) 
                     "CaptureToPiece"
-                )
-            )
-        )
+               )
+           )
+       )
         (piece "Knight" Each 
             (move 
                 Leap 
@@ -155,9 +155,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-                ) 
-            )
-        )
+               ) 
+           )
+       )
         (piece "Ferz_noCross" Each 
             (move
                 Step 
@@ -165,9 +165,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-                )
-            )
-        )
+               )
+           )
+       )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     })  
@@ -179,7 +179,7 @@
             (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Bishop_noCross1" {"C1" "F1"}) (place "Ferz_noCross1" coord:"D1") (place "King_noCross1" coord:"E1") 
             (place "Rook2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Bishop_noCross2" {"C8" "F8"}) (place "Ferz_noCross2" coord:"D8") (place "King_noCross2" coord:"E8") 
             }
-        )
+       )
         
         (play 
             
@@ -223,7 +223,7 @@
                 
             })
             
-        )
+       )
         
         (end
             (if 
@@ -231,13 +231,13 @@
                     (and 
                         ("IsInCheck" "King_noCross" Next)
                         ("NextCanNotMove")
-                    )
+                   )
                     (no Moves Next)
-                )
+               )
                 (result Mover Win)
-            ) 
-        )
-    )
+           ) 
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -257,7 +257,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Spain, around 1283.")
         }
-    )
+   )
     
     (graphics {
         (piece Scale "Pawn" 0.825)

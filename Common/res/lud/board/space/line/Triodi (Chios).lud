@@ -4,15 +4,15 @@
             (and
                 (= (next) (who at:(ahead (from) N))) 
                 (= (next) (who at:(ahead (from) S)))
-            )
-        )
+           )
+       )
         (if (and (!= (ahead (from) E) (from)) (!= (ahead (from) W) (from)))
             (and
                 (= (next) (who at:(ahead (from) E))) 
                 (= (next) (who at:(ahead (from) W)))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -30,11 +30,11 @@
                 (move
                     Step 
                     (to if:(is Empty (to))) 
-                )
-            )
-        ) 
+               )
+           )
+       ) 
         }
-    )  
+   )  
     (rules 
         (start (place "Marker" "Hand" count:3))
         
@@ -44,16 +44,16 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty)) 
-                )  
-            ) 
+               )  
+           ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
+       )
         
         (phase "Movement" (play (forEach Piece)))
         }
         
         (end (if (is Line 3) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -71,7 +71,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Greece, around 1949.")
         }
-    )
+   )
     
     (graphics {
         
@@ -80,5 +80,5 @@
     
     (ai
         "Triodi (Chios)_ai"
-    )
+   )
 )

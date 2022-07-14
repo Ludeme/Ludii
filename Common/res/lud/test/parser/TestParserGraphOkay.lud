@@ -5,13 +5,13 @@
             (graph
                 vertices:{ {0 0} {0 1} {1 1} }
                 edges:{ {0 1} {0 2} {1 2} }
-            )
-        )         
+           )
+       )         
     })    
     (rules 
         (play (add to:(sites Empty)))
         (end (if (is Line 3) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -27,7 +27,7 @@
         (credit "Tahmina Begum")
         (date "1969")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Red))

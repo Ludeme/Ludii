@@ -17,7 +17,7 @@
             (track "TrackCCW1" {1 2 3 9 8 7} loop:True P1) 
             (track "TrackCCW2" {4 5 6 12 11 10} loop:True P2) 
             }
-        )
+       )
         (regions "Home" P1 (sites Track "TrackCCW1"))          // P1 home
         (regions "Home" P2 (sites Track "TrackCCW2"))          // P2 home
         (regions "TwoHolesClosestNotCentre" P1 (sites {1 3}))
@@ -52,31 +52,31 @@
                         (move 
                             (from 
                                 (sites Next "Home")
-                            )
+                           )
                             (to (sites Next "Home") if:(!= (from) (to)))
                             count:1
                             (then
                                 (moveAgain)
-                            )
-                        )
+                           )
+                       )
                         (move 
                             (from 
                                 (var "Replay")
-                            )
+                           )
                             (to (sites Next "Home") if:(< 1 (count at:(to))))
                             count:1
                             (then
                                 (if (is Occupied (last From))
                                     (moveAgain)
-                                )
-                            )
-                        )
-                    )
+                               )
+                           )
+                       )
+                   )
                     (move Select
                         (from 
                             (sites Mover "Home")
                             if:(is Occupied (from))
-                        )
+                       )
                         (then
                             (sow
                                 "TrackCCW"
@@ -85,19 +85,19 @@
                                     (and
                                         (moveAgain)
                                         (set Var "Replay" (to))
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             (end
                 (if ("NoSeedInHome" Mover) (result Mover Win))
-            )
-        )
+           )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -112,73 +112,73 @@
                     (from 
                         (sites Mover "TwoHolesClosestNotCentre")
                         if:(is Occupied (from))
-                    )
+                   )
                     (to (mapEntry "CentreFurtherRow" Mover))
                     count:(count at:(from))
-                )
-            )
+               )
+           )
             (nextPhase Mover (all Sites (sites Mover "TwoHolesClosestNotCentre") if:(is Empty (site))) "Opening2")
-        )
+       )
         (phase "Opening2"
             (play 
                 (move Select
                     (from 
                         ("NextHoleFrom" (mapEntry "CentreFurtherRow" Mover) "TrackCCW" 1)
-                    )
+                   )
                     (then 
                         (sow
                             "TrackCCW"
                             owner:(mover)
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase Mover "Opening3")
-        )
+       )
         (phase "Opening3"
             (play 
                 (move Select
                     (from 
                         (mapEntry "CentreFurtherRow" Mover) 
-                    )
+                   )
                     (then 
                         (sow
                             "TrackCCW"
                             owner:(mover)
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase Mover "Opening4")
-        )
+       )
         (phase "Opening4"
             (play 
                 (move 
                     (from 
                         (sites Mover "ClosestRow")
                         if:(is Occupied (from))
-                    )
+                   )
                     (to (mapEntry "Store" Mover))
                     count:(count at:(from))
-                )
-            )
+               )
+           )
             
             (nextPhase Mover (all Sites (sites Mover "ClosestRow") if:(is Empty (site))) "Opening5")
-        )
+       )
         
         (phase "Opening5"
             (play 
                 (move 
                     (from 
                         (mapEntry "Store" Mover)
-                    )
+                   )
                     (to (sites Mover "Home") if:(< 1 (count at:(to))))
                     count:1
-                )
-            )
+               )
+           )
             
             (nextPhase Mover (is Empty (mapEntry "Store" Mover)) "Sowing")
-        )
+       )
         >  
     "The opening rules of the variant Lontu Holo.")*  
     
@@ -190,70 +190,70 @@
                     (from 
                         (sites Mover "TwoHolesClosestNotCentre")
                         if:(= 4 (count at:(from)))
-                    )
+                   )
                     (to (mapEntry "CentreClosestRow" Mover))
                     count:2
-                )
-            )
+               )
+           )
             (nextPhase Mover (all Sites (sites Mover "TwoHolesClosestNotCentre") if:(= 2 (count at:(site)))) "Opening2")
-        )
+       )
         (phase "Opening2"
             (play 
                 (move 
                     (from 
                         (sites Mover "TwoHolesFurtherNotCentre")
                         if:(= 4 (count at:(from)))
-                    )
+                   )
                     (to (mapEntry "CentreFurtherRow" Mover))
                     count:2
-                )
-            )
+               )
+           )
             (nextPhase Mover (all Sites (sites Mover "TwoHolesFurtherNotCentre") if:(= 2 (count at:(site)))) "Opening3")
-        )
+       )
         (phase "Opening3"
             (play 
                 (move Select
                     (from 
                         (sites {(mapEntry "CentreClosestRow" Mover) (mapEntry "CentreFurtherRow" Mover) })
-                    )
+                   )
                     (then 
                         (sow
                             "TrackCCW"
                             owner:(mover)
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase Mover "Opening4")
-        )
+       )
         (phase "Opening4"
             (play 
                 (move 
                     (from 
                         (sites Mover "LeftMostHoles")
                         if:(is Occupied (from))
-                    )
+                   )
                     (to (mapEntry "Store" Mover))
                     count:(count at:(from))
-                )
-            )
+               )
+           )
             
             (nextPhase Mover (all Sites (sites Mover "LeftMostHoles") if:(is Empty (site))) "Opening5")
-        )
+       )
         
         (phase "Opening5"
             (play 
                 (move 
                     (from 
                         (mapEntry "Store" Mover)
-                    )
+                   )
                     (to (sites Mover "Home") if:(< 1 (count at:(to))))
                     count:1
-                )
-            )
+               )
+           )
             
             (nextPhase (and (is Empty (mapEntry "Store" P1)) (is Empty (mapEntry "Store" P2))) "Sowing")
-        )
+       )
         >  
     "The opening rules of the variant Alternate Opening 1.")
     
@@ -265,13 +265,13 @@
                     (from 
                         (sites {(mapEntry "CentreClosestRow" Mover) (mapEntry "RightClosestRow" Mover)})
                         if:(= 4 (count at:(from)))
-                    )
+                   )
                     (to (mapEntry "LeftClosestRow" Mover))
                     count:2
-                )
-            )
+               )
+           )
             (nextPhase Mover (all Sites (sites {(mapEntry "CentreClosestRow" Mover) (mapEntry "RightClosestRow" Mover)}) if:(= 2 (count at:(site)))) "Opening2")
-        )
+       )
         
         (phase "Opening2"
             (play 
@@ -279,74 +279,74 @@
                     (from 
                         (sites {(mapEntry "CentreFurtherRow" Mover) (mapEntry "RightFurtherRow" Mover)})
                         if:(= 4 (count at:(from)))
-                    )
+                   )
                     (to (mapEntry "LeftFurtherRow" Mover))
                     count:2
-                )
-            )
+               )
+           )
             (nextPhase Mover (all Sites (sites {(mapEntry "CentreFurtherRow" Mover) (mapEntry "RightFurtherRow" Mover)}) if:(= 2 (count at:(site)))) "Opening3")
-        )
+       )
         (phase "Opening3"
             (play 
                 (move Select
                     (from 
                         (mapEntry "LeftClosestRow" Mover)
-                    )
+                   )
                     (then 
                         (sow
                             "TrackCCW"
                             owner:(mover)
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase Mover "Opening4")
-        )
+       )
         
         (phase "Opening4"
             (play 
                 (move Select
                     (from 
                         (mapEntry "CentreClosestRow" Mover)
-                    )
+                   )
                     (then 
                         (sow
                             "TrackCCW"
                             owner:(mover)
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase Mover "Opening5")
-        )
+       )
         (phase "Opening5"
             (play 
                 (move 
                     (from 
                         (sites Mover "Home")
                         if:(= 4 (count at:(from)))
-                    )
+                   )
                     (to (mapEntry "Store" Mover))
                     count:(count at:(from))
-                )
-            )
+               )
+           )
             
             (nextPhase Mover (all Sites (sites Mover "Home") if:(!= 4 (count at:(site)))) "Opening6")
-        )
+       )
         
         (phase "Opening6"
             (play 
                 (move 
                     (from 
                         (mapEntry "Store" Mover)
-                    )
+                   )
                     (to (sites Mover "Home") if:(< 1 (count at:(to))))
                     count:1
-                )
-            )
+               )
+           )
             
             (nextPhase (and (is Empty (mapEntry "Store" P1)) (is Empty (mapEntry "Store" P2))) "Sowing")
-        )
+       )
         >  
     "The opening rules of the variant Alternate Opening 2.") 
     
@@ -357,52 +357,52 @@
                 (move 
                     (from 
                         (mapEntry "RightClosestRow" Mover)
-                    )
+                   )
                     (to (mapEntry "CentreFurtherRow" Mover))
                     count:3
-                )
-            )
+               )
+           )
             (nextPhase Mover "Opening2")
-        )
+       )
         
         (phase "Opening2"
             (play 
                 (move 
                     (from 
                         (mapEntry "RightFurtherRow" Mover)
-                    )
+                   )
                     (to (mapEntry "CentreFurtherRow" Mover))
                     count:1
-                )
-            )
+               )
+           )
             (nextPhase Mover "Opening3")
-        )
+       )
         
         (phase "Opening3"
             (play 
                 (move 
                     (from 
                         (mapEntry "LeftFurtherRow" Mover)
-                    )
+                   )
                     (to (mapEntry "CentreClosestRow" Mover))
                     count:3
-                )
-            )
+               )
+           )
             (nextPhase Mover "Opening4")
-        )
+       )
         
         (phase "Opening4"
             (play 
                 (move 
                     (from 
                         (mapEntry "LeftClosestRow" Mover)
-                    )
+                   )
                     (to (mapEntry "CentreClosestRow" Mover))
                     count:1
-                )
-            )
+               )
+           )
             (nextPhase Mover "Opening5")
-        )
+       )
         
         (phase "Opening5"
             (play 
@@ -410,45 +410,45 @@
                     (from 
                         (sites Mover "Home")
                         if:(= 1 (count at:(from)))
-                    )
+                   )
                     (then 
                         (sow
                             "TrackCCW"
                             owner:(mover)
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase Mover (all Sites (sites Mover "Home") if:(!= 1 (count at:(site)))) "Opening6")
-        )
+       )
         (phase "Opening6"
             (play 
                 (move 
                     (from 
                         (sites Mover "Home")
                         if:(= 4 (count at:(from)))
-                    )
+                   )
                     (to (mapEntry "Store" Mover))
                     count:(count at:(from))
-                )
-            )
+               )
+           )
             
             (nextPhase Mover (all Sites (sites Mover "Home") if:(!= 4 (count at:(site)))) "Opening7")
-        )
+       )
         
         (phase "Opening7"
             (play 
                 (move 
                     (from 
                         (mapEntry "Store" Mover)
-                    )
+                   )
                     (to (sites Mover "Home") if:(< 1 (count at:(to))))
                     count:1
-                )
-            )
+               )
+           )
             
             (nextPhase (and (is Empty (mapEntry "Store" P1)) (is Empty (mapEntry "Store" P2))) "Sowing")
-        )
+       )
         >  
     "The opening rules of the variant Alternate Opening 3.") 
 })
@@ -500,7 +500,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Suriname, around 1930.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

@@ -5,7 +5,7 @@
         (hand Each size:21)
         (dominoes)
         }
-    )  
+   )  
     (rules 
         (start {
             (place "Domino03" 242 state:1) 
@@ -18,9 +18,9 @@
                         (from (sites Occupied by:All container:(mover))) 
                         (to (sites LineOfPlay)) 
                         (then (set Hidden at:(last To) to:All))
-                    ) 
+                   ) 
                     ifAfterwards:(is PipsMatch)
-                )
+               )
                 (move Pass 
                     (then 
                         (if 
@@ -28,16 +28,16 @@
                             (and 
                                 (take Domino)
                                 (moveAgain)
-                            )
-                        )
-                    )
-                )
+                           )
+                       )
+                   )
+               )
                 }
-            )
-        )
+           )
+       )
         (end {
             (if ("HandEmpty" Mover) (result Mover Win)) 
             (if (all Passed) (result Mover Draw)) 
         })  
-    )
+   )
 )

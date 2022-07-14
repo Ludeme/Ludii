@@ -14,24 +14,24 @@
     (rules 
         (meta
             (no Repeat)
-        )
+       )
         (play 
             (move 
                 Add
                 (to (sites Empty))
                 (then 
                     "RemoveSurrounded"
-                )
-            )
-        )
+               )
+           )
+       )
         
         (end {
             (if
                 (>= (score Mover) <CapThreshold>)
                 (result Mover Win)
-            )
+           )
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -82,7 +82,7 @@
         (credit "Eric Silverman")
         (date "2021")
         }
-    )
+   )
     
     (graphics {
         (board Style Go)
@@ -91,5 +91,5 @@
     })
     (ai
         "BlooGo_ai"
-    )
+   )
 )

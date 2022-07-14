@@ -6,8 +6,8 @@
             (or 
                 ("HopSequenceCapture")
                 ("StepToEmpty")
-            )
-        )
+           )
+       )
         (hand Each)
     })  
     (rules 
@@ -19,25 +19,25 @@
                 (move 
                     (from (handSite Mover))
                     (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
-                )
-            )
+               )
+           )
             (nextPhase Mover (is Empty (handSite Mover)) "Move")
-        )
+       )
         (phase "Move"
             (play 
                 (if "SameTurn"
                     (or
                         ("HopSequenceCaptureAgain")
                         (move Pass)
-                    )
+                   )
                     (forEach Piece)
-                )
-            )
+               )
+           )
             (end (if (no Pieces Next) (result Next Loss)))
-        )
+       )
         }
         
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -55,7 +55,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Algeria, around 1964.")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

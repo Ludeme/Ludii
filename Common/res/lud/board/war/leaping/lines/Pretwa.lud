@@ -6,13 +6,13 @@
             (or 
                 ("HopRotationalSequenceCapture") 
                 ("StepRotationalToEmpty") 
-            )
-        )
+           )
+       )
     })  
     
     (rules 
         (start {
-            (place "Counter1" (sites {2..4 8..10 14..16})  )
+            (place "Counter1" (sites {2..4 8..10 14..16}) )
             (place "Counter2" (sites {1 6 5 7 12 11 13 18 17}))
         })
         
@@ -21,13 +21,13 @@
                 (or
                     ("HopRotationalSequenceCaptureAgain")	
                     (move Pass)
-                )
+               )
                 (forEach Piece)
-            )
-        )
+           )
+       )
         
         (end <End>)  
-    )
+   )
 ) 
 
 //------------------------------------------------------------------------------
@@ -53,7 +53,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in South Asia, around 1951.")
         }
-    )
+   )
     
     (graphics {
         
@@ -61,6 +61,6 @@
     
     (ai 
         "Pretwa_ai"
-    )
+   )
     
 )

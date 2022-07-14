@@ -25,8 +25,8 @@
             ("NextSiteFrom" #1) 
             if:("NoEnemyOrOnlyOne" (to)) 
             ("IfEnemyBlotIt")
-        )
-    )
+       )
+   )
 )
 
 (define "MoveAPieceIf" 
@@ -34,7 +34,7 @@
         replayDouble:True 
         if:#1
         ("MoveAPiece" #2)
-    )		
+   )		
 )
 
 (define "AllPieceEscaped" (no Pieces Mover))
@@ -47,7 +47,7 @@
     (and 
         (is Occupied (site)) 
         ("IsNotOffBoard" ("NextSiteFrom" (site)))
-    )
+   )
 )
 
 (define "SetScoreOf" 
@@ -58,17 +58,17 @@
                 (= ("NumPiece" #2) 15) 
                 2 
                 1
-            ) 
+           ) 
             0
-        )
-    )
+       )
+   )
 )
 
 (define "HaveAPieceAndCanEscape" 
     (and 
         ("IsFriendAt" (site)) 
         (< ("NextSiteOnTrack" (pips) from:(site)) 0)
-    )
+   )
 )
 
 //-----------------------------------------------------------------------------
@@ -80,7 +80,7 @@
         (dice num:2)
         (regions P1 { 20..25 }) // P1 Home
         (regions P2 { 7..12 })  // P2 Home
-        (map {(pair 1 6 ) (pair 2 19)}) // Bar
+        (map {(pair 1 6) (pair 2 19)}) // Bar
         (piece "Disc" Each ("MoveAPieceIf" "DieNotUsedAndNoEscapeAndNotOffTheTrack" (from))) 
     })
     
@@ -104,16 +104,16 @@
                                 (if ("CanEscape")
                                     ("RemoveAPiece")
                                     ("MoveAPiece" (site))
-                                )
-                            )
+                               )
+                           )
                             noMoveYet:(firstMoveOnTrack "Track" Mover
                                 (if "HaveAPieceAndCanEscape"
                                     "RemoveAPiece"
-                                )
-                            )
+                               )
+                           )
                             (then ("ReplayNotAllDiceUsed"))
-                        )
-                    )
+                       )
+                   )
                     (if "BarEmpty"
                         (forEach Piece top:True)
                         ("MoveAPieceIf" ("DieNotUsed") ("Bar"))
@@ -123,23 +123,23 @@
                                         (if "BarEmpty"
                                             (forEach Piece top:True)
                                             ("MoveAPieceIf" ("DieNotUsed") ("Bar"))
-                                        )
-                                    )
+                                       )
+                                   )
                                     (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (end 
             (if ("AllPieceEscaped")
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //-------------------------------------------------------------------------
@@ -158,11 +158,11 @@
             (credit "Eric Piette")
             (origin  "This game was played in Southwest Asia, around 1974.")
             }
-        )
+       )
         
         (graphics {
             (board Style backgammon)
             (stackType Backgammon)
         })
         
-    )
+   )

@@ -17,13 +17,13 @@
             (do
                 (move Add
                     (to (sites Empty))
-                )
+               )
                 ifAfterwards:"IsNotCut"
-            )
-        )
+           )
+       )
         
         (end (if (is Connected All Mover) (result Mover Win))) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -52,7 +52,7 @@
         (credit "Alek Erickson")
         (date "2007")
         }
-    )
+   )
     
     (graphics {
         (board Style Go)
@@ -61,5 +61,5 @@
     })   
     (ai
         "Crossway_ai"
-    )
+   )
 )

@@ -8,7 +8,7 @@
     (all Sites 
         (intersection (sites Mover "Home") (sites Mover "ThreeLeftMost")) 
         if:(or (= 2 (count at:(site))) (= 3 (count at:(site))))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -18,7 +18,7 @@
     (equipment { 
         (mancalaBoard 3 "Columns" store:None
             (track "Track" "0,E,N1,W2,17,W,S1,E2" loop:True)
-        )
+       )
         (piece "Seed" Shared)
         (hand Each)
         (regions "Home" P1 (union (intersection (sites Row 1) (expand (sites Right) steps:2)) (sites Bottom))) // P1 home
@@ -37,9 +37,9 @@
                         (if ("SameTurn")
                             (sites {(var "Replay")})
                             (sites Mover)
-                        )
+                       )
                         if:(< 3 (count at:(site)))
-                    )
+                   )
                     (then
                         (do (set Var "NumSowed" (count at:(last From)))
                             next:(sow
@@ -54,26 +54,26 @@
                                         (and
                                             (moveAgain)
                                             (set Var "Replay" (to))
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                                 skipIf:(and
                                     (= 3 (count at:(to)))
                                     (is In (to) (sites Next))
-                                )
-                            )
-                        )
-                    )
-                )
+                               )
+                           )
+                       )
+                   )
+               )
                 (if ("OnlyHolesWithTwoOrThree")
                     (move Select
                         (from 
                             (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 (sites Mover)
-                            )
+                           )
                             if:(= 2 (count at:(site)))
-                        )
+                       )
                         (then
                             (do (set Var "NumSowed" (count at:(last From)))
                                 next:(sow
@@ -88,34 +88,34 @@
                                             (and
                                                 (moveAgain)
                                                 (set Var "Replay" (to))
-                                            )
-                                        )
-                                    )
+                                           )
+                                       )
+                                   )
                                     skipIf:(and
                                         (= 3 (count at:(to)))
                                         (is In (to) (sites Next))
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
                 (move Select
                     (from 
                         (if ("SameTurn")
                             (sites {(var "Replay")})
                             (sites Mover)
-                        )
+                       )
                         if:(and (is Occupied (from))
                             (if ("SameTurn")
                                 True
                                 (if (is In (to) (sites Mover "ThreeLeftMost"))
                                     (< 3 (count at:(to)))
                                     True
-                                )
-                            )
-                        )
-                    )
+                               )
+                           )
+                       )
+                   )
                     (then
                         (do (set Var "NumSowed" (count at:(last From)))
                             next:(sow
@@ -130,25 +130,25 @@
                                         (and
                                             (moveAgain)
                                             (set Var "Replay" (to))
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                                 skipIf:(and
                                     (= 3 (count at:(to)))
                                     (is In (to) (sites Next))
-                                )
-                            )
-                        )
-                    )
-                )
+                               )
+                           )
+                       )
+                   )
+               )
                 (move Select
                     (from 
                         (if ("SameTurn")
                             (sites {(var "Replay")})
                             (sites Mover "ThreeLeftMost")
-                        )
+                       )
                         if:(and (= 1 (count at:(from))) (is Occupied (from)))
-                    )
+                   )
                     (then
                         (do (set Var "NumSowed" (count at:(last From)))
                             next:(sow
@@ -163,25 +163,25 @@
                                         (and
                                             (moveAgain)
                                             (set Var "Replay" (to))
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                                 skipIf:(and
                                     (= 3 (count at:(to)))
                                     (is In (to) (sites Next))
-                                )
-                            )
-                        )
-                    )
-                )
+                               )
+                           )
+                       )
+                   )
+               )
                 (move Select
                     (from 
                         (if ("SameTurn")
                             (sites {(var "Replay")})
                             (sites Mover "ThreeLeftMost")
-                        )
+                       )
                         if:(and (= 2 (count at:(from))) (is Occupied (from)))
-                    )
+                   )
                     (then
                         (do (set Var "NumSowed" (count at:(last From)))
                             next:(sow
@@ -196,25 +196,25 @@
                                         (and
                                             (moveAgain)
                                             (set Var "Replay" (to))
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                                 skipIf:(and
                                     (= 3 (count at:(to)))
                                     (is In (to) (sites Next))
-                                )
-                            )
-                        )
-                    )
-                )
+                               )
+                           )
+                       )
+                   )
+               )
                 (move Select
                     (from 
                         (if ("SameTurn")
                             (sites {(var "Replay")})
                             (sites Mover "ThreeLeftMost")
-                        )
+                       )
                         if:(and (= 3 (count at:(from))) (is Occupied (from)))
-                    )
+                   )
                     (then
                         (do (set Var "NumSowed" (count at:(last From)))
                             next:(sow
@@ -229,22 +229,22 @@
                                         (and
                                             (moveAgain)
                                             (set Var "Replay" (to))
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                                 skipIf:(and
                                     (= 3 (count at:(to)))
                                     (is In (to) (sites Next))
-                                )
-                            )
-                        )
-                    )
-                )
+                               )
+                           )
+                       )
+                   )
+               )
             })
-        )
+       )
         
         (end ("BlockWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -262,7 +262,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Horn of Africa, around 1971.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

@@ -11,9 +11,9 @@
         (if ("IsEnemyAt" (to))
             (remove (to)
                 (then (set Counter))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 // Usage: ("Directions" <p1_directions> <p2_directions>)
@@ -28,7 +28,7 @@
 (define "IsToEmptyOrEnemy"
     (or "IsToEmpty"
         ("IsEnemyAt" (to))
-    )
+   )
 )
 
 // Source: Chess.lud - NextCanNotMove
@@ -36,7 +36,7 @@
     (not (can Move (do
                 (forEach Piece Next)
                 ifAfterwards:(not ("IsInCheck" "King" Next))
-    )))
+   )))
 )
 
 // Usage: ("P12" <player1_arg> <player2_arg>)
@@ -51,9 +51,9 @@
         #1
         (to if:("IsEnemyAt" (to))
             "CaptureToPieceAndResetCounter"
-        )
+       )
         #2
-    )
+   )
 )
 
 //----------------------------------------
@@ -67,9 +67,9 @@
         #1
         (to if:"IsToEmptyOrEnemy"
             "CaptureToPieceAndResetCounter"
-        )
+       )
         #2
-    )
+   )
 )
 
 //----------------------------------------
@@ -94,8 +94,8 @@
                 (set Pending (ahead (last To) #2))
                 (set Var (last To))
                 }
-        ))
-    )
+       ))
+   )
 )
 
 (define "PawnCapture_Ortho"
@@ -113,8 +113,8 @@
         #1
         (to if:("IsEnemyAt" (to))
             (apply (remove (to)))
-        )
-    )
+       )
+   )
 )
 
 //----------------------------------------
@@ -131,7 +131,7 @@
         #1
         (to if:"IsEnPassantCapture")
         (then (remove (var)))
-    )
+   )
 )
 
 (define "EnPassant_Ortho"
@@ -142,7 +142,7 @@
     (and
         (is Pending)
         (= (to) (value Pending))
-    )
+   )
 )
 
 //----------------------------------------
@@ -170,9 +170,9 @@
                 "KnightWalk"
                 (to if:"IsToEmptyOrEnemy"
                     "CaptureToPieceAndResetCounter"
-                )
-            )
-        )
+               )
+           )
+       )
         
         (piece "Pawn" Each
             (or {
@@ -185,12 +185,12 @@
                     (and
                         (if (is In (last To) (sites Mover "PromotionZone"))
                             (moveAgain)
-                        )
+                       )
                         (set Counter)
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (regions "PromotionZone" P1 (union (sites Side NW) (sites Side NE)))
         (regions "PromotionZone" P2 (union (sites Side SW) (sites Side SE)))
@@ -199,7 +199,7 @@
         (regions "Region-Light"  (sites Phase 2))
         (regions "Region-Medium" (sites Phase 1))
         }
-    )
+   )
     
     (rules
         (start
@@ -219,7 +219,7 @@
             (place "Pawn1" <Placement:Pawn1>)
             (place "Pawn2" <Placement:Pawn2>)
             }
-        )
+       )
         
         phases:{
         (phase "Movement"
@@ -228,28 +228,28 @@
                     ("PromoteTo" (piece {"Queen" "Rook" "Bishop" "Knight"}))
                     (do (forEach Piece)
                         ifAfterwards:(not ("IsInCheck" "King" Mover))
-                    )
-                )
-            )
+                   )
+               )
+           )
             (end
                 {
                 (if (and
                         ("IsInCheck" "King" Next)
                         ("NextCannotMove")
-                    )
+                   )
                     (result Mover Win)
-                )
+               )
                 (if (or
                         (no Moves Mover)
                         (= (counter) 100)
-                    )
+                   )
                     (result Mover Draw)
-                )
+               )
                 }
-            )
-        )
+           )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -260,17 +260,17 @@
         < {"A5" "B5" "C5" "D5" "E5" "E4" "E3" "E2" "E1"} >
         < {"G11" "G10" "G9" "G8" "G7" "H7" "I7" "J7" "K7"} >
         "Pawns in the starting position chosen by Władysław Gliński in 1936"
-    )*
+   )*
     (item "3 Pawns shifted one space"
         < {"A5" "B5" "C5" "C4" "D4" "D3" "E3" "E2" "E1"} >
         < {"G11" "G10" "G9" "H9" "I9" "I8" "I7" "J7" "K7"} >
         "Glinski Chess with 3 Pawns shifted one space toward the board's edge"
-    )
+   )
     (item "5 Pawns shifted one space"
         < {"A5" "B5" "B4" "C4" "D4" "D3" "D2" "E2" "E1"} >
         < {"G11" "G10" "H10" "H9" "I9" "I8" "J8" "J7" "K7"} >
         "Glinski Chess with 5 Pawns shifted one space toward the board's edge"
-    )
+   )
     }
 )
 
@@ -303,7 +303,7 @@
         (credit "Jay Coskey, with some small functions drawn from Chess.lud, by Eric Piette")
         (date "1936")
         }
-    )
+   )
     
     (graphics {
         (piece Scale "Pawn" 0.7)
@@ -321,5 +321,5 @@
     
     (ai
         "Glinski Chess_ai"
-    )
+   )
 )

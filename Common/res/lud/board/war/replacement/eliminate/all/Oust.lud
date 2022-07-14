@@ -2,14 +2,14 @@
     (= 
         0
         (count Sites in:(sites Around (to) Own))
-    )
+   )
 )
 
 (define "FriendlyAdjacent"
     (< 
         0
         (count Sites in:(sites Around (to) Own))
-    )
+   )
 )
 
 (define "Captures"
@@ -19,15 +19,15 @@
             if:(>
                 (size Group at:(last To))
                 (size Group at:(site))
-            )	
-        )
+           )	
+       )
         (< 
             0
             (count Sites 
                 in:(sites Around (sites Group at:(last To)) Enemy)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "RemoveGroups"
@@ -35,13 +35,13 @@
         (sites Around
             (sites Group at:(last To))
             Enemy
-        )
+       )
         (remove
             (sites Group
                 at:(site)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -53,31 +53,31 @@
         (board <Board>)
         (piece "Disc" Each)
         }
-    )
+   )
     (rules
         (play
             (or
                 (move Add
                     (to (sites Empty)
                         if:"NoFriendlyAdjacent"
-                    )
-                )
+                   )
+               )
                 (do
                     (move Add
                         (to (sites Empty)
                             if:"FriendlyAdjacent"
-                        )
-                    )
+                       )
+                   )
                     ifAfterwards:"Captures"
                     (then
                         (and
                             ("RemoveGroups")
                             (moveAgain)
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         (end
             (if
                 (and 
@@ -86,13 +86,13 @@
                         0
                         (count Sites
                             in:(sites Occupied by:Enemy)
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -120,7 +120,7 @@
         (credit "Michael Amundsen")
         (date "2007")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Red))
@@ -128,15 +128,15 @@
         (piece Colour P1 
             fillColour:(colour Red) 
             strokeColour:(colour 0 0 0 0)
-        )
+       )
         (piece Colour P2 
             fillColour:(colour DarkBlue) 
             strokeColour:(colour 0 0 0 0)
-        )
+       )
         (show Symbol "disc" Cell (sites Board)
             fillColour:(colour VeryLightGrey) 
             edgeColour:(colour Black) 
-        )
+       )
         (region Colour (sites Board) (colour 0 0 0 0))
         (board Colour InnerEdges (colour 0 0 0 0))
         (board Colour OuterEdges (colour 0 0 0 0))
@@ -144,6 +144,6 @@
     
     (ai
         "Oust_ai"
-    )
+   )
 )
 

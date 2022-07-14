@@ -3,7 +3,7 @@
         (move Step 
             (from (from) level:(level))
             (to if:(is In (to) (sites Outer)))
-        )
+       )
         (move Step (from) (to if:(is In (to) (sites Outer))) stack:True)
     })
 )
@@ -16,7 +16,7 @@
         (board (rectangle 4 3))
         (piece "Cross" Each
             ("MoveWithinBoard")
-        )
+       )
     })
     (rules
         (start {
@@ -28,10 +28,10 @@
         
         (play 
             (forEach Piece)
-        )
+       )
         
         (end (if (no Moves Next) (result Mover Win)))
-    )
+   )
 )
 
 //-------------------------------------------------------------------------
@@ -46,7 +46,7 @@
         (classification "board/test")
         (credit "Nicholas Bamber")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Yellow))
@@ -54,7 +54,7 @@
         (piece ExtendName P1 "_yellow")
         (piece ExtendName P2 "_blue")
         }
-    )
+   )
     
 )
 

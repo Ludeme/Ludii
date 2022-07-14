@@ -3,7 +3,7 @@
     (equipment {
         (board
             <Board:type>
-        )
+       )
         (piece "Pawn" Each (move Step (directions {<Direction>} of:All bySite:True) (to if:(is Empty (to)))))
     })
     (rules
@@ -12,16 +12,16 @@
         })
         (play
             (forEach Piece)
-        )
+       )
         (end
             (if (no Moves Next)
                 (byScore {
                     (score P1 (count Pieces P1))
                     (score P2 (count Pieces P2))
                 })
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------

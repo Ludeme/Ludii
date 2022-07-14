@@ -3,14 +3,14 @@
 (define "LeftMostCounters"
     (all Sites (difference (sites Mover "Home") (mapEntry "LeftMost" Mover))
         if:(> (count at:(mapEntry Mover)) (count at:(site)))
-    )
+   )
 )
 
 (define "HoleOnLeft"
     (if (is Mover P1)
         (ahead (site) W)
         (ahead (site) E)
-    )
+   )
 )
 
 (define "EqualOrLessThanLeftHole"
@@ -18,8 +18,8 @@
         if:(if (= (site) ("HoleOnLeft"))
             True
             (<= (count at:(site)) (count at:("HoleOnLeft")))
-        )
-    )
+       )
+   )
 )
 
 (define "MaximumOfTwoHolesInInner"
@@ -27,9 +27,9 @@
         (count Sites 
             in:(forEach (sites Mover "Inner") 
                 if:(= 1 (count at:(site)))
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "NextHole" ("NextSiteOnTrack" #2 from:#1 "TrackCCW"))
@@ -51,7 +51,7 @@
             (track "TrackCCW1" "0,E,N1,W" loop:True P1)
             (track "TrackCCW2" "14,E,N1,W" loop:True P2)
             }
-        )
+       )
         (regions "Home" P1 (sites Track "TrackCCW1"))   // P1 Home
         (regions "Home" P2 (sites Track "TrackCCW2"))   // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))        // P1 Inner Home
@@ -66,7 +66,7 @@
         
         (start 
             (set Count 3 to:(union (sites P1 "Outer") (sites P2 "Outer")))
-        )
+       )
         
         phases:{
         (phase "Rearrangement"
@@ -75,14 +75,14 @@
                     (move 
                         (from (sites Mover "Home") if:(is Occupied (from)))
                         (to (difference (sites Mover) (from)))
-                    )
+                   )
                     (if (and {("LeftMostCounters") ("EqualOrLessThanLeftHole") ("MaximumOfTwoHolesInInner") })
                         (move Pass)
-                    )
-                )
-            )
+                   )
+               )
+           )
             (nextPhase (all Passed) "InitialPhase")
-        )
+       )
         
         (phase "InitialPhase"
             (play
@@ -92,9 +92,9 @@
                             ("SameTurn") 
                             "LastHoleSowed" 
                             (sites Mover "Home") 
-                        ) 
+                       ) 
                         if:(is Occupied (from))
-                    )
+                   )
                     (then
                         (sow
                             "TrackCCW"
@@ -108,25 +108,25 @@
                                                 (from ("OppositePit" (to)))
                                                 (to (handSite Mover))
                                                 count:(count at:("OppositePit" (to)))
-                                            )
+                                           )
                                             (if (is Occupied ("OppositeOuterPit" (to)))
                                                 (fromTo
                                                     (from ("OppositeOuterPit" (to)))
                                                     (to (handSite Mover))
                                                     count:(count at:("OppositeOuterPit" (to)))
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                                               )
+                                           )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
             
             (nextPhase Mover ("OneCounterInEachHole") "MainPhase")
-        )
+       )
         
         (phase "MainPhase"
             (play
@@ -136,12 +136,12 @@
                             ("SameTurn") 
                             "LastHoleSowed" 
                             (sites Mover "Home") 
-                        ) 
+                       ) 
                         if:(if (< 1 (count at:(from)))
                             True
                             (if (= 1 (count at:(from))) (is Empty ("NextHole" (from) 1)))
-                        )
-                    )
+                       )
+                   )
                     (then
                         (sow
                             "TrackCCW"
@@ -155,32 +155,32 @@
                                                 (from ("OppositePit" (to)))
                                                 (to (handSite Mover))
                                                 count:(count at:("OppositePit" (to)))
-                                            )
+                                           )
                                             (if (is Occupied ("OppositeOuterPit" (to)))
                                                 (fromTo
                                                     (from ("OppositeOuterPit" (to)))
                                                     (to (handSite Mover))
                                                     count:(count at:("OppositeOuterPit" (to)))
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                                               )
+                                           )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         }
         
         (end
             (forEach NonMover
                 if:("NoPiece")
                 (result Player Loss)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -197,7 +197,7 @@
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

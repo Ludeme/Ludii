@@ -8,7 +8,7 @@
     (equipment { 
         (mancalaBoard 2 3 store:None
             (track "Track" "0,E,N,W" loop:True)
-        )
+       )
         (piece "Seed" Shared)
         (hand Each)
     })  
@@ -21,7 +21,7 @@
                 (from 
                     (sites Board) 
                     if:(> (count at:(from)) 0)
-                )
+               )
                 (then 
                     (sow origin:True
                         (then
@@ -35,17 +35,17 @@
                                         (from (site)) 
                                         (to (handSite Mover)) 
                                         count:(count at:(site))
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                                   )
+                               )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (end ("MancalaByScoreWhen" (= 0 (count Sites in:(forEach (sites Board) if:(< 1 (count at:(site))))))))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -62,13 +62,13 @@
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
     })
     (ai
         "Kapana Bona_ai"
-    )
+   )
 )
 

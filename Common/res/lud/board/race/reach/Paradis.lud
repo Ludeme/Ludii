@@ -10,7 +10,7 @@
             (concentric {<Player:num> <Player:num> <Player:num> <Player:num> <Player:num> <Player:num> <Player:num> <Player:num> <Player:num> <Player:num>})
             <Player:tracks>
             use:Vertex
-        )
+       )
         ("StickDice" 2)
         (piece "Marker" Each
             (move
@@ -20,13 +20,13 @@
                         (if (or
                                 (and (= 1 ("ThrowValue")) (= (mapEntry "Center" Mover) (to)))
                                 (and (= 2 ("ThrowValue")) (or (= (mapEntry "Center" Mover) (to)) (= (mapEntry "Center" Mover) ("SiteToMoveOnTrack" 1))))
-                            )
+                           )
                             (addScore Mover 1)
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         (map "Throw" {(pair 0 2) (pair 1 0) (pair 2 1)})
         <Player:center>
     })
@@ -35,10 +35,10 @@
         (play 
             ("RollMove"
                 (if (!= ("ThrowValue") 0) (forEach Piece))
-            )
-        )
+           )
+       )
         (end (if (= (score Mover) 3) (result Mover Win)))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -177,7 +177,7 @@
         variations:{"Players/2" "Players/4"
         "Players/6" "Players/10"
         }
-    )*
+   )*
     
 })
 
@@ -196,7 +196,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Mali, around 1955.")
         }
-    )
+   )
     
     (graphics {
         (hand Placement Shared scale:0.2 offsetX:0.05 offsetY:0.95)

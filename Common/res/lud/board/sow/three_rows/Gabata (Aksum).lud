@@ -4,21 +4,21 @@
     (if (is Mover P1)
         (sites (values Remembered "OwnedP1"))
         (sites (values Remembered "OwnedP2"))
-    )
+   )
 )
 
 (define "OpponentOwnedHoles" 
     (if (is Mover P1)
         (sites (values Remembered "OwnedP2"))
         (sites (values Remembered "OwnedP1"))
-    )
+   )
 )
 
 (define "RemmemberOwnedHoles" 
     (if (is Mover P1)
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
-    )
+   )
 )
 
 (define "OnlyPiecesInMarked" 
@@ -29,14 +29,14 @@
     (trackSite FirstSite 
         from:(mapEntry "LeftMost" Mover)
         if:(is Empty (to))
-    )
+   )
 )
 
 (define "RememberOwnedHolesRandom" 
     (if (< 50 (value Random (range 1 100)))
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
-    )
+   )
 )
 
 (define "SitesMarkedBy" 
@@ -50,7 +50,7 @@
     (equipment { 
         (mancalaBoard 3 "Columns" store:None
             (track "Track" "0,E,N1,W2,17,W,S1,E2" loop:True)
-        )
+       )
         (piece "Seed" Shared)
         (hand Each)
         (regions P1 (union (sites Bottom) (intersection (sites Row 1) (expand (sites Right) steps:2)))) // P1 home
@@ -74,7 +74,7 @@
                             (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 ("OwnedHoles") 
-                            )
+                           )
                             if:(and {
                                 (if (!= (from) (mapEntry "LeftMost" Mover))
                                     True
@@ -83,13 +83,13 @@
                                         (or 
                                             (< 3 (count at:(from)))
                                             (no Pieces All in:(forEach (difference ("OwnedHoles") (mapEntry "LeftMost" Mover)) if:(= 0 (state at:(site)))))
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                                 (< 0 (count at:(from))) 
                                 (= 0 (state at:(from)))
                             })
-                        )
+                       )
                         (then
                             (sow
                                 apply:(if (and { 
@@ -110,16 +110,16 @@
                                                         (from (to))
                                                         (to (handSite Mover))
                                                         count:(min 2 (count at:(to)))
-                                                    )
+                                                   )
                                                     (set State at:(to) (state at:(to)))
                                                 })
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
+                                           )
+                                       )
+                                   )
+                               )
+                           )
+                       )
+                   )
                     }
                     (then
                         (if ("OnlyPiecesInMarked")
@@ -129,33 +129,33 @@
                                         (from (site))
                                         (to (handSite P1))
                                         count:(count at:(site))
-                                    )
-                                )
+                                   )
+                               )
                                 (forEach Site ("SitesMarkedBy" 2)
                                     (fromTo
                                         (from (site))
                                         (to (handSite P2))
                                         count:(count at:(site))
-                                    )
-                                )
+                                   )
+                               )
                                 (forget Value "OwnedP1" All)
                                 (forget Value "OwnedP2" All)
                             })
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             
             (end (if ("NoPieceOnBoard")
                     {
                     (if (>= 1 (count Cell at:(handSite P1))) (result P2 Win))
                     (if (>= 1 (count Cell at:(handSite P2))) (result P1 Win))
                     }
-                )
-            )
+               )
+           )
             
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-        )
+       )
         
         (phase "BetweenRounds"
             (play
@@ -175,25 +175,25 @@
                                                 (from (handSite Mover))
                                                 (to ("LeftMostEmpty"))
                                                 count:2
-                                            )
+                                           )
                                             (fromTo 
                                                 (from (handSite Next))
                                                 (to ("LeftMostEmpty"))
                                                 count:1
-                                            )
+                                           )
                                             ("RemmemberOwnedHoles" ("LeftMostEmpty"))
                                         })
-                                    )
-                                )
+                                   )
+                               )
                             })
-                        )
-                    )
-                )
-            )
+                       )
+                   )
+               )
+           )
             (nextPhase (and (is Empty (handSite P1)) (is Empty (handSite P2))) "Sowing")
-        )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -210,7 +210,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Ethiopia, around 1977.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

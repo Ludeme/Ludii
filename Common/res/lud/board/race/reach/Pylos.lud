@@ -2,7 +2,7 @@
     (if (!= (from) (ahead (from) #1))
         (is Empty (ahead (from) #1))
         True
-    )
+   )
 )
 
 (define "NothingOnTop" 
@@ -30,46 +30,46 @@
                     (from (sites Occupied by:Mover) if:("NothingOnTop"))
                     (to (handSite Mover))
                     (then (if (= (var) 1) (and (set Var 0) (moveAgain))))
-                )
+               )
                 (or
                     (do
                         (move 
                             (from
                                 (sites Occupied by:Mover)
                                 if:("NothingOnTop")
-                            )
+                           )
                             (to 
                                 (sites Empty) 
                                 if:(and 
                                     (is Flat)
                                     (< (layer of:(from)) (layer of:(to)))
-                                )
-                            )
-                        )
+                               )
+                           )
+                       )
                         ifAfterwards:(is Flat (last To))
-                    )
+                   )
                     (move 
                         (from (sites Occupied by:Mover container:(mover))) 
                         (to (sites Empty) 
                             if:(is Flat)
-                        )
-                    )
+                       )
+                   )
                     (then
                         (if (is Pattern {F R F R F} whats:{(id "Ball" Mover)}) 
                             (and (set Var 1) (moveAgain))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         
         (end 
             (if 
                 (= (layer of:(last To)) 3) 
                 (result Mover Win)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -90,7 +90,7 @@
         (credit "Eric Piette")
         (date "1993")
         }
-    )
+   )
     
     (graphics {
         (piece Scale "Ball" 1.0)
@@ -99,5 +99,5 @@
     
     (ai
         "Pylos_ai"
-    )
+   )
 )

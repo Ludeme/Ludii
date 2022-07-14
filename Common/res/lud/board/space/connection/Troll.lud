@@ -20,13 +20,13 @@
                         (difference 
                             (sites Empty)
                             (union (sites Left) (sites Right))
-                        )
+                       )
                         (difference 
                             (sites Empty)
                             (union (sites Top) (sites Bottom))
-                        )
-                    )
-                )
+                       )
+                   )
+               )
                 (then
                     (custodial 
                         (from (last To)) 
@@ -36,20 +36,20 @@
                                 (and
                                     (remove (between))
                                     (add (piece (id "Ball" Mover)) (to (between)))
-                                )
-                            )
-                        )
+                               )
+                           )
+                       )
                         (to if:("IsFriendAt" (to))) 
-                    )
-                )
-            )
-        )
+                   )
+               )
+           )
+       )
         
         (end {
             (if ("ConnectedEdges" P1) (result P1 Win))
             (if ("ConnectedEdges" P2) (result P2 Win))
         }) 
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -76,7 +76,7 @@
         (credit "Eric Piette")
         (date "1993")
         }
-    )
+   )
     
     (graphics {
         (board Colour Phase0 (colour 254 194 17))

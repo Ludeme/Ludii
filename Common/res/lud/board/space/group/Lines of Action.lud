@@ -12,12 +12,12 @@
         (between 
             (exact (- #2 1))
             if:(not ("IsEnemyAt" (between)))
-        )
+       )
         (to 
             if:(not ("IsFriendAt" (to)))
             (apply (if ("IsEnemyAt" (to)) (remove (to))))
-        )
-    )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -34,7 +34,7 @@
                 ("MoveTo" (directions {NE SW}) "DistInNESW")
                 ("MoveTo" (directions {NW SE}) "DistInNWSE")
             })
-        )
+       )
     })  
     
     (rules 
@@ -50,7 +50,7 @@
             (if (= 1 (count Groups if:(= (who at:(to)) P1))) (result P1 Win)) 
             (if (= 1 (count Groups if:(= (who at:(to)) P2))) (result P2 Win)) 
         })  
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -77,7 +77,7 @@
         (credit "Eric Piette")
         (date "1988")
         }
-    )
+   )
     
     (graphics {
         (board Style Chess)
@@ -87,6 +87,6 @@
     
     (ai 
         "Lines of Action_ai"
-    )
+   )
     
 )

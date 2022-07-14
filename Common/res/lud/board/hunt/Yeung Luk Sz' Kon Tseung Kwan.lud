@@ -5,9 +5,9 @@
             (merge
                 (rectangle 9 5)
                 (shift 1 8 (scale 0.5 (wedge 3)))
-            )
+           )
             use:Vertex
-        )
+       )
         <Variant:pieceMoves>
     })  
     (rules 
@@ -19,7 +19,7 @@
         (play (forEach Piece)) 
         
         <Variant:endRules>
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -33,8 +33,8 @@
             (or 
                 ("HopCapture") 
                 ("StepToEmpty")
-            ) 
-        ) 
+           ) 
+       ) 
         > 
         <
         (end  {
@@ -43,7 +43,7 @@
         })
         > 
         "P1 wins in blocking P2 to move. P2 wins in capturing by hopping all the pieces of P1."
-    ) 
+   ) 
     (item "Murray"     
         <
         (piece "Marker" P1 
@@ -51,17 +51,17 @@
                 ~
                 (then 
                     ("CustodialCapture")
-                )
-            )
-        )
+               )
+           )
+       )
         (piece "Marker" P2 
             ("StepToEmpty"
                 ~
                 (then 
                     ("InterveneCapture")
-                )
-            )
-        ) 
+               )
+           )
+       ) 
         > 
         <
         (end  {
@@ -106,7 +106,7 @@
         (classification "board/hunt")
         (origin  "This game was played in China, around 1694.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)
@@ -114,5 +114,5 @@
     
     (ai
         "Yeung Luk Sz' Kon Tseung Kwan_ai"
-    )
+   )
 )

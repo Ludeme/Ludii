@@ -9,7 +9,7 @@
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
             (track "Track" "5,W,N,E" loop:True)
-        )
+       )
         (piece "Seed" Shared)
         (hand Each)
         (regions P1 (sites Bottom))                     // P1 home
@@ -37,20 +37,20 @@
                                                     (from ("OppositePit" (to)))
                                                     (to (handSite Mover))
                                                     count:(count at:("OppositePit" (to)))
-                                                )
-                                            )
-                                        )
-                                    )	
+                                               )
+                                           )
+                                       )
+                                   )	
                                     includeSelf:False
-                                )
-                            )
-                        )
+                               )
+                           )
+                       )
                         (do
                             (move Select
                                 (from 
                                     (sites Mover) 
                                     if:(is Occupied (from))
-                                )
+                               )
                                 (then
                                     (sow
                                         apply:(if (< 1 (count at:(to)))
@@ -61,23 +61,23 @@
                                                         (from ("OppositePit" (to)))
                                                         (to (handSite Mover))
                                                         count:(count at:("OppositePit" (to)))
-                                                    )
-                                                )
-                                            )
-                                        )	
+                                                   )
+                                               )
+                                           )
+                                       )	
                                         includeSelf:False
-                                    )
-                                )
-                            )
+                                   )
+                               )
+                           )
                             ifAfterwards:(if (is Mover P1) (< 0 (count in:(sites P2))) (< 0 (count in:(sites P1))))
-                        )
-                    )
-                )
-            )
-        )
+                       )
+                   )
+               )
+           )
+       )
         
         (end ("MancalaByScoreWhen" (or (no Moves Mover) (is Decided "End"))))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -95,7 +95,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Benin, around 1955.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)

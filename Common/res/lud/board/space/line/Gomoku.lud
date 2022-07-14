@@ -5,11 +5,11 @@
         (board <Board> use:Vertex) 
         (piece "Marker" Each) 
         }
-    )  
+   )  
     (rules 
         <Play> 
         (end (if (is Line 5 All <Exact>) (result Mover Win)))  
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -30,21 +30,21 @@
         (play (move Add (to (sites Empty))))
         > 
         "Open anywhere."
-    )*
+   )*
     (item "Open-Outer" 
         <
         phases:{
         (phase "Opening"
             (play (move Add (to (expand (sites Outer)))))
             (nextPhase "General")
-        )
+       )
         (phase "General"
             (play (move Add (to (sites Empty))))
-        )
+       )
         }
         > 
         "Cannot open on outer two rows or columns."
-    )
+   )
     }
 )
 
@@ -53,11 +53,11 @@
     (item "Standard"    
         <exact:True>  
         "Win with a line of exactly five stones."
-    )*
+   )*
     (item "Free-style"  
         <>         
         "Win with a line of five or more stones."
-    )
+   )
     }
 )
 
@@ -77,7 +77,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Japan, around 1905.")
         }
-    )
+   )
     
     (graphics {
         (board Style Go)
@@ -87,6 +87,6 @@
     
     (ai 
         "Gomoku_ai"
-    )
+   )
     
 )

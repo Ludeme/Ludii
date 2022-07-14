@@ -7,8 +7,8 @@
             (or 
                 ("HopCapture") 
                 ("StepToEmpty")
-            ) 
-        ) 
+           ) 
+       ) 
     })  
     (rules 
         (start { 
@@ -19,7 +19,7 @@
         (play (forEach Piece)) 
         
         (end ("NoMovesP2NoPiecesP1"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -33,18 +33,18 @@
                 (merge
                     (scale 2 (square 5 diagonals:Alternating))
                     (shift 2 -2 (wedge 3))
-                )
+               )
                 vertices:{ {3 -2} {5 -2}}
                 edges:{{25 31} {25 29} {27 29} {27 32}}
-            )
+           )
             use:Vertex
-        )
+       )
         > 
         <
         "StepToEmpty"
         > 
         ""
-    ) 
+   ) 
     (item "Tsuboi"     
         <
         (board
@@ -52,20 +52,20 @@
                 (merge
                     (scale 2 (square 5 diagonals:Alternating))
                     (shift 2 -2 (wedge 3))
-                )
+               )
                 vertices:{ {3 -2} {5 -2}}
                 edges:{{25 31} {27 32}}
-            )
+           )
             use:Vertex
-        )
+       )
         > 
         <
         (move Step 
             (to if:(and (is Empty (to)) (not (is In (to) (expand (sites Bottom) steps:2)))))
-        )
+       )
         > 
         "The triangle has no diagonal and only P2 can enter in the triangle."
-    )  
+   )  
 })
 
 //------------------------------------------------------------------------------
@@ -103,7 +103,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Japan, from around 1700 to 1951.")
         }
-    )
+   )
     
     (graphics {
         (show Edges Diagonal Hidden)
@@ -112,5 +112,5 @@
     
     (ai
         "Juroku Musashi_ai"
-    )
+   )
 )

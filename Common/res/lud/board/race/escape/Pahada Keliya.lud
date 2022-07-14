@@ -8,9 +8,9 @@
             (if (is Mover P2)
                 (sites P4 "RightCentral")
                 (sites P2 "RightCentral")
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "ValueAlly" 
@@ -21,9 +21,9 @@
             (if (is Mover P2)
                 (value Player P4)
                 (value Player P2)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "SetValueAlly" 
@@ -34,9 +34,9 @@
             (if (is Mover P2)
                 (set Value P4 #1)
                 (set Value P2 #1)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 (define "Centre" 96)
@@ -49,9 +49,9 @@
             (if (= #1 3)
                 (id "Pawn" P3)
                 (id "Pawn" P4)
-            )
-        )
-    )
+           )
+       )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -66,7 +66,7 @@
             (track "Track3" "96,52,N,W,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,W1,S7,End" P3 directed:True)
             (track "Track4" "96,27,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W7,End" P4 directed:True)
             }
-        )
+       )
         (dice d:4 faces:{1 3 4 6} num:2)
         (piece "Pawn" Each
             (forEach Die 
@@ -82,35 +82,35 @@
                                 (if (or (is In (from) (sites Mover "CentralRow")) (= (from) ("Centre")))
                                     True
                                     (<= 1 (value Player Mover))
-                                )
-                            )
+                               )
+                           )
                             (apply
                                 (if ("IsEnemyAt" (to))
                                     (forEach Level (to) FromTop
                                         (and {
                                             (if (= 1 (state at:(to) level:(level)))
                                                 ("SetValueAlly" (- ("ValueAlly") 1))
-                                            )
+                                           )
                                             (remove (to) level:(level))
                                             (add (piece ("PawnPiece" (who at:(to) level:(level)))) (to (centrePoint)))
                                         })
-                                    )
-                                )
-                            )
-                        )
+                                   )
+                               )
+                           )
+                       )
                         (then
                             (if (and (= 0 (state at:(last To) level:(last LevelTo))) (is In (last To) ("RightCentralAlly")))
                                 (and
                                     (set State at:(last To) 1)
                                     ("SetValueAlly" (+ 1 ("ValueAlly")))
-                                )
-                            )
-                        )
-                    )
-                )	
+                               )
+                           )
+                       )
+                   )
+               )	
                 (then ("ReplayNotAllDiceUsed"))
-            )
-        )
+           )
+       )
         (regions "CentralRow" P1 (sites Direction from:55 N included:True distance:7))
         (regions "CentralRow" P2 (sites Direction from:19 E included:True distance:7))
         (regions "CentralRow" P3 (sites Direction from:94 S included:True distance:7))
@@ -137,11 +137,11 @@
         (play 
             ("RollEachNewTurnMove"
                 (forEach Piece)
-            )
-        )
+           )
+       )
         
         (end ("EscapeTeamWin"))
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -159,7 +159,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Sri Lanka, around 1909.")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour Red))

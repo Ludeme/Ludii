@@ -2,7 +2,7 @@
     (if (= (column of:(where "Jiang" P1)) (column of:(where "Jiang" P2)))
         (not ("NoSites" (forEach (sites Direction from:(where "Jiang" P1) N stop:(= (to) (where "Jiang" P2))) if:(not (is Empty (site))))))
         True
-    )
+   )
 )
 
 (define "EnemyCannotMove"
@@ -17,10 +17,10 @@
             if:(and 
                 (is In (to) (sites Mover "Palace")) 
                 (not ("IsFriendAt" (to)))
-            ) 
+           ) 
             (apply (remove (to)))
-        )
-    ) 
+       )
+   ) 
 ) 
 
 (define "HorseMove" 
@@ -39,14 +39,14 @@
                                 (apply 
                                     if:("IsEnemyAt" (to))
                                     (remove (to))
-                                )
-                            )
-                        )
-                    )
-                ) 
-            )
-        )
-    ) 
+                               )
+                           )
+                       )
+                   )
+               ) 
+           )
+       )
+   ) 
 ) 
 
 (define "CanonMove" 
@@ -58,16 +58,16 @@
                 before:(count Rows)  
                 after:(count Rows)  
                 if:(not (is Empty (between)))
-            )
+           )
             (to 
                 if:(is Empty (to)) 
                 (apply 
                     if:("IsEnemyAt" (to)) 
                     (remove (to))
-                )
-            )  
-        ) 
-    ) 
+               )
+           )  
+       ) 
+   ) 
 ) 
 
 (define "ChariotMove" 
@@ -77,8 +77,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-        )
-    ) 
+       )
+   ) 
 ) 
 
 //------------------------------------------------------------------------------
@@ -105,13 +105,13 @@
                         (is In (between) (sites Mover "Home")) 
                         (is Empty (between)) 
                     })
-                )
+               )
                 (to 
                     if:("IsEnemyAt" (to)) 
                     (apply (remove (to)))
-                ) 
-            )
-        ) 
+               ) 
+           )
+       ) 
         
         // Horse
         (piece "Ma" Each "HorseMove")
@@ -121,8 +121,8 @@
             (if (is Mover P2) 
                 "ChariotMove" 
                 (or { "ChariotMove" "HorseMove" "CanonMove" })
-            ) 
-        )
+           ) 
+       )
         
         // Canon
         (piece "Pao" Each "CanonMove") 
@@ -135,13 +135,13 @@
                     (is In (from) (sites Mover "Home")) 
                     Forward 
                     (directions {Forward Rightward Leftward})
-                ) 
+               ) 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     (apply (remove (to)))
-                )
-            )
-        )
+               )
+           )
+       )
         
         (regions "PalaceP1" P1 { 3..5 12..14 21..23 })
         (regions "PalaceP2" P2 { 66..68 75..77 84..86 })
@@ -160,20 +160,20 @@
                 ifAfterwards:(and 
                     ("JiangSameColumnWithNoPieceBetween")
                     (not ("IsInCheck" "Jiang" Mover))
-                )
-            )
-        )
+               )
+           )
+       )
         
         (end {
             (if (and 
                     ("IsInCheck" "Jiang" Next)
                     ("EnemyCannotMove")
-                ) 
+               ) 
                 (result Mover Win)
-            ) 
+           ) 
             ("BlockWin")
         })
-    )
+   )
 )
 
 (metadata
@@ -190,7 +190,7 @@
         (credit "Eric Piette")
         (origin  "This game was played in Manchuria, from around 1869 to 1912.")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour White))
@@ -202,6 +202,6 @@
     
     (ai 
         "Manzhouqi_ai"
-    )
+   )
     
 )

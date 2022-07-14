@@ -13,7 +13,7 @@
         (place "2Dot1" (handSite P1 6))
         (place "2Dot1" (handSite P1 7))
         
-        (place "1Dot1" (handSite P1 9 ))
+        (place "1Dot1" (handSite P1 9))
         (place "1Dot1" (handSite P1 10))
         (place "1Dot1" (handSite P1 11))
         (place "1Dot1" (handSite P1 12))
@@ -28,7 +28,7 @@
         (place "2Dot2" (handSite P2 6))
         (place "2Dot2" (handSite P2 7))
         
-        (place "1Dot2" (handSite P2 9 ))
+        (place "1Dot2" (handSite P2 9))
         (place "1Dot2" (handSite P2 10))
         (place "1Dot2" (handSite P2 11))
         (place "1Dot2" (handSite P2 12))
@@ -50,7 +50,7 @@
                     (is Within (id "2Dot" Mover) in:(sites))
                     (is Within (id "3Dot" Mover) in:(sites))
                     }
-                )
+               )
                 // Score for mover's double runs
                 (forEach Site (sites)
                     (and
@@ -58,9 +58,9 @@
                             (if (is Within (id "3Dot" Mover) at:(site))
                                 3
                                 (if (is Within (id "2Dot" Mover) at:(site)) 1 -1)
-                        ))
+                       ))
                         (set State at:(site) 1)
-        ))))
+       ))))
         
         // Also check for opponent's runs
         (forEach Group "Connection" if:(is In (to) (sites Occupied by:Next))
@@ -72,16 +72,16 @@
                     (is Within (id "2Dot" Next) in:(sites))
                     (is Within (id "3Dot" Next) in:(sites))
                     }
-                )
+               )
                 (forEach Site (sites)
                     (and
                         (addScore Next
                             (if (is Within (id "3Dot" Next) at:(site))
                                 6
                                 (if (is Within (id "2Dot" Next) at:(site)) 2 -2)
-                        ))
+                       ))
                         (set State at:(site) 1)
-                ))
+               ))
 ))))
 
 //-----------------------------------------
@@ -93,15 +93,15 @@
         (or
             (is Within (id "1Dot" P1) in:(difference (sites Around (#1) "Connection") (#2)))
             (is Within (id "1Dot" P2) in:(difference (sites Around (#1) "Connection")  (#2)))
-        )
+       )
         (or
             (is Within (id "2Dot" P1) in:(difference (sites Around (#1) "Connection")  (#2)))
             (is Within (id "2Dot" P2) in:(difference (sites Around (#1) "Connection")  (#2)))
-        ) 
+       ) 
         (or   
             (is Within (id "3Dot" P1) in:(difference (sites Around (#1) "Connection") (#2)))
             (is Within (id "3Dot" P2) in:(difference (sites Around (#1) "Connection") (#2)))
-        )
+       )
         }
 ))
 //-----------------------------------------------------
@@ -115,7 +115,7 @@
                 (< 0 (count Pieces Mover #1 in:(sites Hand Mover)))
                 (not
                     ("IntolerableSite" (to) (to))
-        )))
+       )))
         (then 
             (and
                 {
@@ -125,7 +125,7 @@
                     (if 
                         ("IntolerableSite" (site) (site))
                         (remove (site))
-                ))
+               ))
                 (forEach Site (sites Occupied by:Mover) (set State at:(site) 0)) // clear move limits
                 }
 ))))
@@ -142,9 +142,9 @@
                     (is Empty (to)) 
                     (not
                         ("IntolerableSite" (to) (from))
-                    )
+                   )
                     }
-            ))
+           ))
             (then
                 (and
                     (forEach Site 
@@ -152,16 +152,16 @@
                         (if 
                             ("IntolerableSite" (site) (site))
                             (remove (site))
-                    )) 
+                   )) 
                     (set State at:(last To) 2) // freeze piece 
-        )))
+       )))
 ))
 
 //-------------------------------------------------
 // Defines for Options
 
 (define "Connection" <BoardShape:directionsUsed>)
-(define "BoardUsed" <BoardShape:gridType> )
+(define "BoardUsed" <BoardShape:gridType>)
 
 (define "SquareGrid" (square <BoardSize:smallSide>))
 (define "HexLimp" (trim (tri Limping (- <BoardSize:smallSide> 1))))
@@ -188,7 +188,7 @@
         (piece "2Dot" Each)
         (piece "3Dot" Each)
         }
-    )
+   )
     (rules
         ("SetupHands")
         (play
@@ -202,21 +202,21 @@
                         ("AddPiece" "2Dot")
                         ("AddPiece" "3Dot")
                         }
-                    )
+                   )
                     ("StepPiece")
                     (do (forEach Site (sites State 0) (set State at:(site) 1))
                         next:("Stalemate")
-                    )
+                   )
                     (move Pass
                         (then
                             (forEach Site (sites State 0) (set State at:(site) 1)) 
-                    ))
+                   ))
                     }
                     (then 
                         ("ScoreWinCondition")
-                ))
+               ))
                 ("Stalemate")
-        ))
+       ))
         (end 
             (if 
                 (!= 0 (count Sites in:(sites State 1)))
@@ -322,9 +322,9 @@ A double-run belong to the opponent is scored by the opponent, and has twice the
     (player Colour P1 (colour 229 92 0))
     (player Colour P2 (colour Cream))
     (piece Families {"salta"})
-    (piece Rename piece:"1Dot" "Salta1Dot.svg" )
-    (piece Rename piece:"2Dot" "Salta2Dot.svg" )
-    (piece Rename piece:"3Dot" "Salta3Dot.svg" )
+    (piece Rename piece:"1Dot" "Salta1Dot.svg")
+    (piece Rename piece:"2Dot" "Salta2Dot.svg")
+    (piece Rename piece:"3Dot" "Salta3Dot.svg")
     (piece Colour P1 state:0 fillColour:(colour 229 92 0) strokeColour:(colour Black))
     (piece Colour P2 state:0 fillColour:(colour 255 238 170) strokeColour:(colour Black))
     (piece Colour P1 state:1 fillColour:(colour 229 92 0 80) strokeColour:(colour  0 0 0 150))

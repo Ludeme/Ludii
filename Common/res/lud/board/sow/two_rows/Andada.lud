@@ -10,7 +10,7 @@
     (all Sites 
         (sites Board) 
         if:(<= (count at:(site)) 1)
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -21,7 +21,7 @@
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
             (track "Track" <Board:trackDirection> loop:True)
-        )
+       )
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (piece "Seed" Shared)
@@ -39,15 +39,15 @@
                         (if ("SameTurn") 
                             (sites {("NextHole" ("PlayFromLastHole"))})
                             (sites Mover) 
-                        )
+                       )
                         if:(> (count at:(from)) 0)
-                    )
+                   )
                     (then (sow (then (if (not (is Empty ("NextHole" ("PlayFromLastHole")))) (moveAgain)))))
-                )	
-            )
+               )	
+           )
             
             (nextPhase (is Mover P2) "Playing")
-        )
+       )
         
         (phase "Playing"
             (play 
@@ -56,9 +56,9 @@
                         (if ("SameTurn") 
                             (sites {"PlayFromLastHole"})
                             (sites Mover) 
-                        )
+                       )
                         if:(> (count at:(from)) 0)
-                    )
+                   )
                     (then 
                         (sow
                             apply:(if (= 1 (count at:(to)))
@@ -68,31 +68,31 @@
                                             (from (to)) 
                                             (to (handSite Mover)) 
                                             count:(count at:(to))
-                                        )
-                                    )
+                                       )
+                                   )
                                     (if (and (is Occupied ("OppositePit" (to))) (is In (to) (sites Mover)))
                                         (fromTo 
                                             (from ("OppositePit" (to))) 
                                             (to (handSite Mover)) 
                                             count:(count at:("OppositePit" (to)))
-                                        )
-                                    )
-                                )
+                                       )
+                                   )
+                               )
                                 (moveAgain)
-                            )
-                        )		
-                    )
-                )		
-            )
+                           )
+                       )		
+                   )
+               )		
+           )
             (end
                 (forEach Player
                     if:("NoCounters" Player)
                     (result Player Loss)
-                )
-            )
-        )
+               )
+           )
+       )
         }
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -122,7 +122,7 @@
         "Board Size/12 CW" "Board Size/15 CCW" "Board Size/15 CW" "Board Size/18 CCW" "Board Size/18 CW"
         "Board Size/21 CCW" "Board Size/21 CW" "Board Size/24 CCW" "Board Size/24 CW"
         }
-    )*
+   )*
     
 })
 
@@ -140,12 +140,12 @@
         (credit "Eric Piette")
         (origin  "This game was played in Eritrea, around 1977.")
         }
-    )
+   )
     
     (graphics {
         (board Style Mancala)
     })
     (ai
         "Andada_ai"
-    )
+   )
 )

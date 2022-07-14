@@ -4,7 +4,7 @@
         (board (rectangle 1 3)) 
         <Version:pieces>
         }
-    )  
+   )  
     (rules
         (start {
             <Version:start>
@@ -20,24 +20,24 @@
                             (< 
                                 (what at:(from) level:(topLevel at:(from))) 
                                 (what at:(to) level:(topLevel at:(to)))
-                            )
-                        )
-                    )
-                )
-            )
-        )
+                           )
+                       )
+                   )
+               )
+           )
+       )
         
         (end {
             (if 
                 (is Target {<Version:order>} 2) 
                 (result P1 Win) 
-            )
+           )
             (if 
                 (= (count Moves) <Version:limit>) 
                 (result P1 Loss) 
-            )
+           )
         })
-    )
+   )
 )
 
 //------------------------------------------------------------------------------
@@ -55,7 +55,7 @@
         <2 1>
         <3>
         ""
-    )
+   )
     
     (item "3x3 (7 moves)"   
         <
@@ -69,7 +69,7 @@
         <3 2 1>
         <7>
         ""
-    )**
+   )**
     
     (item "4x4 (15 moves)"   
         <
@@ -84,7 +84,7 @@
         <4 3 2 1>
         <15>
         ""
-    )
+   )
     
     (item "5x5 (31 moves)"   
         <
@@ -100,7 +100,7 @@
         <5 4 3 2 1>
         <31>
         ""
-    )
+   )
     
     (item "6x6 (63 moves)"   
         <
@@ -117,7 +117,7 @@
         <6 5 4 3 2 1>
         <63>
         ""
-    )
+   )
     
     (item "7x7 (127 moves)"   
         <
@@ -135,7 +135,7 @@
         <7 6 5 4 3 2 1>
         <127>
         ""
-    )
+   )
     
     (item "8x8 (255 moves)"   
         <
@@ -154,7 +154,7 @@
         <8 7 6 5 4 3 2 1>
         <255>
         ""
-    )
+   )
     
     (item "9x9 (511 moves)"   
         <
@@ -174,7 +174,7 @@
         <9 8 7 6 5 4 3 2 1>
         <511>
         ""
-    )
+   )
     
     }
 )
@@ -193,7 +193,7 @@
         (credit "Eric Piette")
         (date "1883")
         }
-    )
+   )
     
     (graphics {
         (player Colour P1 (colour HumanLight))
