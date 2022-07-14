@@ -85,7 +85,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "Castello"  
+(game "Castello" 
     (players 2) 
     (equipment { 
         (board (rectangle 15 21)) 
@@ -116,7 +116,7 @@
         (regions "RightPart" (expand (sites Right) steps:6))
         (regions "Middle" (expand (sites Centre)))
         }
-    )  
+    ) 
     (rules 
         (start {
             (place "Pawn1" (expand (sites Left)))
@@ -158,7 +158,7 @@
                 ) 
                 (result Mover Win)
             )
-        })  
+        }) 
     )
 )
 

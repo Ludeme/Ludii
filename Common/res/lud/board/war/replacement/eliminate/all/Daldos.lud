@@ -75,7 +75,7 @@
 //------------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <name> } {
-    (item "Ostergaard and Gaston"    <>   "")   
+    (item "Ostergaard and Gaston"  <>  "")  
 })
 
 //------------------------------------------------------------------------------
@@ -110,12 +110,12 @@
         (version "1.3.4")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
-        (origin  "This game was played in Scandinavia, from around 1831 to 1927.")
+        (origin "This game was played in Scandinavia, from around 1831 to 1927.")
         }
     )
     
     (graphics {
-        (show Edges Hidden)  
+        (show Edges Hidden) 
         (show Symbol "disc" "AllSites" Vertex fillColour:(colour Grey) edgeColour:(colour Black) scale:0.5)
         (piece Foreground "Die" state:0 image:"A" fillColour:(colour White) scale:0.2)
         

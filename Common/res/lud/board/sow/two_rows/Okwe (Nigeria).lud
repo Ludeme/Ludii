@@ -4,8 +4,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Okwe (Nigeria)"  
-    (players 2)  
+(game "Okwe (Nigeria)" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
@@ -20,7 +20,7 @@
         (map "LeftMost" {(pair P1 0) (pair P2 (- (* ("Columns") 2) 1))})
         (regions "Home" P1 (sites Bottom))
         (regions "Home" P2 (sites Top))
-    })  
+    }) 
     (rules 
         
         <Board:start>	
@@ -103,7 +103,7 @@
 
 (option "Board Size" <Board> args:{ <size> <start> <homeTracks> <openingRegions>}
     {
-    (item "10"   <10>  
+    (item "10"  <10> 
         <
         (start {
             (set Count 5 to:((sites {0 1 4 19..18 15})))
@@ -119,7 +119,7 @@
         (regions "OpeningRegion" P2 (sites {2..4}))
         >
     "Each row has 10 holes.")*
-    (item "12"   <12>  
+    (item "12"  <12> 
         <
         (start {
             (set Count 5 to:((sites {0..2 5 23..21 18})))
@@ -134,8 +134,8 @@
         (regions "OpeningRegion" P1 (sites {17..20}))
         (regions "OpeningRegion" P2 (sites {5..3}))
         >
-    "Each row has 12 holes.")  
-    (item "14"   <14> 
+    "Each row has 12 holes.") 
+    (item "14"  <14> 
         <
         (start {
             (set Count 5 to:((sites {0..3 6 27..24 21})))
@@ -150,8 +150,8 @@
         (regions "OpeningRegion" P1 (sites {20..23}))
         (regions "OpeningRegion" P2 (sites {6..4}))
         >
-    "Each row has 14 holes.")  
-    (item "16"   <16>  
+    "Each row has 14 holes.") 
+    (item "16"  <16> 
         <
         (start {
             (set Count 5 to:((sites {0..4 7 31..27 24})))
@@ -166,8 +166,8 @@
         (regions "OpeningRegion" P1 (sites {23..26}))
         (regions "OpeningRegion" P2 (sites {7..5}))
         >
-    "Each row has 16 holes.")  
-    (item "18"   <18>  
+    "Each row has 16 holes.") 
+    (item "18"  <18> 
         <
         (start {
             (set Count 5 to:((sites {0..5 8 35..30 27})))
@@ -182,8 +182,8 @@
         (regions "OpeningRegion" P1 (sites {26..29}))
         (regions "OpeningRegion" P2 (sites {6..8}))
         >
-    "Each row has 18 holes.")   
-    (item "20"   <20>  
+    "Each row has 18 holes.")  
+    (item "20"  <20> 
         <
         (start {
             (set Count 5 to:((sites {0..6 9 39..33 30})))
@@ -215,7 +215,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Okwe is the name for several mancala-style board games played in Nigeria. This version is a two-row board game played by the Igbo, Edo, Umon, Ibibio, and Owerri people during the early twentieth century.")
@@ -225,7 +225,7 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Nigeria, around 1921.")
+        (origin "This game was played in Nigeria, around 1921.")
         }
     )
     

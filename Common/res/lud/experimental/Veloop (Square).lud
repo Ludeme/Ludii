@@ -6,7 +6,7 @@
 
 (define "Placement"
     (move Select
-        (from  #1 if:(> 2 (count Stack at:(from))))
+        (from #1 if:(> 2 (count Stack at:(from))))
         (to <Board:placementVector>
             if:(and
                 {
@@ -21,7 +21,7 @@
         (then
             (and
                 {
-                //     (remove (last From))
+                //   (remove (last From))
                 (add
                     (piece (id "Disc" Mover))
                     (to (last From))
@@ -33,7 +33,7 @@
                 )
                 }
 ))))
-(define "SwapSite"  (arrayValue (values Remembered) index:#1))
+(define "SwapSite" (arrayValue (values Remembered) index:#1))
 (define "SwapPiece" (what at:("SwapSite" #1) level:(topLevel at:("SwapSite" #1))))
 
 (define "MakeSwap"
@@ -108,7 +108,7 @@
                 )
                 (site)
                 (sites Outer)
-))))  
+)))) 
 
 //--------------------------------------
 
@@ -144,25 +144,25 @@
             
             The game, when played by competitive players, typically needs only a limited space. This is enforced with a minimal board. The board, in turn, affects play by providing greater security for pieces along the edges, and by forcing the board to reach densities that limit move choices.
             
-            This area restriction is offset by a soft phase change that allows placement over existing opponent's pieces when no placement to an empty site would allow swapping. This phase greatly increases the opportunity for game-ending moves by opening up many move choices, but it also allows cycles. To ensure the game is finite, any given site may only be over-placed once.  (On a physical board this would be tracked by stacking, in this implementation, it is tracked by shading the site.)
+            This area restriction is offset by a soft phase change that allows placement over existing opponent's pieces when no placement to an empty site would allow swapping. This phase greatly increases the opportunity for game-ending moves by opening up many move choices, but it also allows cycles. To ensure the game is finite, any given site may only be over-placed once. (On a physical board this would be tracked by stacking, in this implementation, it is tracked by shading the site.)
             
             If there are no moves left for either player, the game is a draw. However, on all but the smallest board sizes offered here, games typically end with a winner, even before the piece replacement phase is reached. 
             
-        The larger size boards additionally minimize the edge effects and the transition to the replacement phase.  Playing on even larger boards, does not affect play very much.")
+        The larger size boards additionally minimize the edge effects and the transition to the replacement phase. Playing on even larger boards, does not affect play very much.")
         (rules "Goal: Form an orthogonally connected path of friendly stones that surrounds at least one non-friendly stone.
             
             Set-up:
             Two stones, one of each colour, are placed next to each other adjacent to the center of the board. 
             Then Black starts by taking one turn. After that players take DOUBLE turns in alternation.
             
-            Play:  
+            Play: 
             Each turn has two parts, and both parts must be completed: A PLACEMENT and a SWAP.
             
             -- The PLACEMENT is made a knight's leap away from a selected stone of the same color.
             
             -- The SWAP is done by exchanging the contents of the 2 squares that lie between the selected stone and the placed stone. For a SWAP to be valid, the contents of these squares must be different, i.e.: two stones of different color, or an empty space and a stone. 
             
-            If a turn cannot be completed with a placement to an empty position, the placement must be made by replacing an opponent's stone. The removed stone may be of either color. The diagonal placement and swap rules must still be followed.  Once a site has been used for replacement, that site cannot be used again.
+            If a turn cannot be completed with a placement to an empty position, the placement must be made by replacing an opponent's stone. The removed stone may be of either color. The diagonal placement and swap rules must still be followed. Once a site has been used for replacement, that site cannot be used again.
             
             Voluntary passing is not allowed. If both players must pass consecutively, the game ends in a draw.
             
@@ -191,7 +191,7 @@
         (player Colour P1 (colour Black))
         (player Colour P2 (colour LightOrange))
         (stackType Default .4)
-        //   (stackType None)
+        //  (stackType None)
         (region Colour (forEach (sites Board) if:(= 2 (count Stack at:(site)))) (colour 160 200 170))
         }
     )

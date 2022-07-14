@@ -1,7 +1,7 @@
 // Defines for Options
 
 (define "Connection" <BoardShape:directionsUsed>)
-(define "BoardUsed" <BoardShape:gridType> )
+(define "BoardUsed" <BoardShape:gridType>)
 
 (define "SquareGrid" (board (square <BoardSize:smallSide>) use:Vertex))
 (define "HexLimp" (board (tri Limping (- <BoardSize:smallSide> 1)) use:Vertex))
@@ -16,13 +16,11 @@
 
 (game "Claustro"
     (players 2)
-    (equipment
-        {
+    (equipment {
         "BoardUsed"
         (piece "Ball" P1)
         (piece "Ball" P2)
-        }
-    )
+    })
     (rules
         (start (set Score Each 0))
         (play
@@ -62,7 +60,10 @@
                     (result Mover Loss)
                 )
                 (result Mover Win)
-))))
+            )
+        )
+    )
+)
 
 //-------------------------------------------------
 // Options
@@ -76,7 +77,7 @@
     (item "Hex Limping Omni influence" <"HexLimpCell"> <All> <Hidden> <Orthogonal> "Hex N / N-1 Cell Grid plus diagonal influence on placement")
     (item "Hex Grid" <"HexHex"> <Orthogonal> <Hidden> <Orthogonal> "Hex Grid - Standard")
     (item "Hex Omni influence" <"HexCell"> <All> <Hidden> <Orthogonal> "Hex Cell Grid plus diagonal influence on placement")
-    //  (item "Icosahedron" <"Icosahedron"> <Orthogonal> <Hidden> <Orthogonal> "Icosahedron")
+    // (item "Icosahedron" <"Icosahedron"> <Orthogonal> <Hidden> <Orthogonal> "Icosahedron")
     (item "Square Omni" <"SquareGrid"> <All> <ThinDashed> <All> "Square Omni-Grid")
     (item "Square Omni-influence" <"SquareGrid"> <All> <ThinDashed> <Orthogonal> "Square Omni-Grid plus diagonal influence on placement")
     (item "Square grid" <"SquareGrid"> <Orthogonal> <Hidden> <Orthogonal> "Square Grid")
@@ -114,7 +115,6 @@
     )
     (graphics 
         {
-        
         (player Colour P1 (colour 229 92 0))
         (player Colour P2 (colour Cream))
         (piece Scale 0.96)

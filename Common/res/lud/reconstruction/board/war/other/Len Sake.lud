@@ -43,8 +43,8 @@
     })
     (rules
         (start {
-            (place Stack "Disc1"  (handSite P1) count:"NumPieces")
-            (place Stack "Disc2"  (handSite P2) count:"NumPieces")
+            (place Stack "Disc1" (handSite P1) count:"NumPieces")
+            (place Stack "Disc2" (handSite P2) count:"NumPieces")
         })
         phases:{
         (phase "Entering"
@@ -104,7 +104,7 @@
         (version "1.3.2")
         (classification "board/race/escape/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Thailand, around 1836.")
+        (origin "This game was played in Thailand, around 1836.")
         }
     )
     

@@ -21,7 +21,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )   
+    )  
 )
 
 (define "DecideToCastle"
@@ -132,8 +132,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Reach Chess"  
-    (players {(player N) (player S)})  
+(game "Reach Chess" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -162,7 +162,7 @@
         (map "RookRight" {(pair 1 "H1") (pair 2 "H8")})
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Pawn1" (sites Row 1))
@@ -211,5 +211,5 @@
         (piece Scale "Pawn" 0.825)
         (piece Families {"Defined" "Microsoft" "Pragmata" "Symbola"})
         (board Style Chess)
-    })    
+    })  
 )

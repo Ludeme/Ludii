@@ -26,7 +26,7 @@
 //------------------------------------------------------------------------------
 
 (game "Currierspiel"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment {
         (board (rectangle 8 12))
         (regions "StartingPawnRookQueen" P1 (sites {"A2" "G2" "L2"}))
@@ -124,7 +124,7 @@
             )
         )
         (piece "Pawn" Each
-            (or  
+            (or 
                 "StepForwardToEmpty" 
                 "CaptureForwardDiagonal"
             )
@@ -150,12 +150,12 @@
                     )
                 )
             )
-            (nextPhase Mover  (= 0 (count Sites in:(intersection (sites Occupied by:Mover) (sites Mover)))) "Playing")
+            (nextPhase Mover (= 0 (count Sites in:(intersection (sites Occupied by:Mover) (sites Mover)))) "Playing")
         )
         (phase "Playing" 
             (play 
                 (do 
-                    (forEach Piece)  
+                    (forEach Piece) 
                     ifAfterwards:(not ("IsInCheck" "King" Mover))
                 )
             )
@@ -188,7 +188,7 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chess")
         (credit "Eric Piette")
-        (origin  "This game was played in Germany, from around 1202 to 1616.")
+        (origin "This game was played in Germany, from around 1202 to 1616.")
         }
     )
     

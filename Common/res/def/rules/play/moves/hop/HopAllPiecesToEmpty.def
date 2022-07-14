@@ -1,0 +1,16 @@
+// Defines a hop move in all the directions specified (by default Adjacent) over any occupied site to an empty site.
+// #1 = The from site.
+// #2 = Directions of the hop.
+// #3 = The range of the hop.
+// #4 = The consequences.
+// @example ("HopAllPiecesToEmpty")
+
+(define "HopAllPiecesToEmpty"
+    (move Hop 
+        #1
+        #2
+        (between #3 if:(is Occupied (between))) 
+        (to if:(is Empty (to))) 
+        #4
+    )
+)

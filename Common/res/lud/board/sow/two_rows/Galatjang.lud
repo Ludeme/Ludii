@@ -26,8 +26,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Galatjang"  
-    (players 2)  
+(game "Galatjang" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns"
@@ -37,10 +37,10 @@
             }
         )
         (piece "Seed" Shared)
-        (regions "Home" P1 (sites Bottom))              // P1 Home
-        (regions "Home" P2 (sites Top))                 // P2 home
-        (map {(pair P1 LastSite) (pair P2 FirstSite)})  // kalahs (storage pits)
-    })  
+        (regions "Home" P1 (sites Bottom))       // P1 Home
+        (regions "Home" P2 (sites Top))         // P2 home
+        (map {(pair P1 LastSite) (pair P2 FirstSite)}) // kalahs (storage pits)
+    }) 
     (rules 
         
         (start {
@@ -134,7 +134,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Galatjan is a two-row mancala-style board game from the island of Celebes in Indonesia. It was played by the Macassar people in the middle of the nineteenth century. Kaudern states that it is played throughout Indonesia. It was customary to play this game during times of mourning.")
@@ -144,7 +144,7 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Indonesia, around 1859.")
+        (origin "This game was played in Indonesia, around 1859.")
         }
     )
     

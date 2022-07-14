@@ -2,8 +2,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Kapana Bona"  
-    (players 2)  
+(game "Kapana Bona" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 3 store:None
@@ -11,7 +11,7 @@
         )
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start (set Count 8 to:(sites Track)))
@@ -50,7 +50,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Kapana Bona is a two-row mancala-style board game played by the Gourounsi people in West Africa. Instead of being played on a board, the counters are placed in heaps on the ground.")

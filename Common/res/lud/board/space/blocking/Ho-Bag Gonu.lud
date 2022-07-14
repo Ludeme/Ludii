@@ -19,8 +19,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Ho-Bag Gonu"  
-    (players 2)  
+(game "Ho-Bag Gonu" 
+    (players 2) 
     (equipment { 
         (board 
             (add
@@ -37,8 +37,7 @@
         )
         
         (piece "Disc" Each 
-            (move
-                Step 
+            (move Step 
                 (to if:(or 
                         "MoveInTheEnemyHome"
                         "MoveSomewhereElseButInOurHome"
@@ -48,15 +47,12 @@
         ) 
         (regions "Home" P1 (sites {"A1" "C1" "E1"}))
         (regions "Home" P2 (sites {"A5" "C5" "E5"}))
-        }
-    )  
+    }) 
     (rules 
-        (start 
-            {
+        (start {
             (place "Disc1" (sites P1))
             (place "Disc2" (sites P2))
-            }
-        )
+        })
         (play (forEach Piece))
         (end ("NoMoves" Loss))
     )
@@ -81,10 +77,6 @@
         (credit "Eric Piette")
         }
     )
-    
-    (graphics {
-        
-    })
     
     (ai 
         "Ho-Bag Gonu_ai"

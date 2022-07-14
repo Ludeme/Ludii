@@ -12,7 +12,7 @@
 //------------------------------------------------------------------------------
 
 (game "Sonka"
-    (players 2)  
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns"
@@ -24,8 +24,8 @@
         (piece "Seed" Shared)
         (regions "Home" P1 (sites Bottom))
         (regions "Home" P2 (sites Top))
-        (map {(pair P1 LastSite) (pair P2 FirstSite)})  // kalahs (storage pits)
-    })  
+        (map {(pair P1 LastSite) (pair P2 FirstSite)}) // kalahs (storage pits)
+    }) 
     (rules 
         (start (set Count 6 to:(union (sites Bottom) (sites Top))))
         
@@ -88,7 +88,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Sonka is a two-row mancala-style board game played by the Iloko people of the Philippines.")

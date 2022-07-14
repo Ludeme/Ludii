@@ -265,17 +265,13 @@
 
 (game "Ex Nihilo"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (hex <Board>))
         (piece "Disc" Each)
         (piece "Disc" Neutral)
-        }
-    )
+    })
     (rules
-        (start {
-            (place "Disc0" (sites Board))
-        })
+        (start (place "Disc0" (sites Board)))
         (play
             (priority
                 (do
@@ -314,12 +310,7 @@
                 )
             )
         )
-        (end
-            (if 
-                (no Moves Next)
-                (result Next Loss)
-            )
-        )
+        (end ("NoMoves" Loss))
     )
 )
 
@@ -327,9 +318,9 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "4"    <4>  "A base 4 board is currently selected")
-    (item "5"    <5>  "A base 5 board is currently selected")* 
-    (item "6"    <6>  "A base 6 board is currently selected") 
+    (item "4"  <4> "A base 4 board is currently selected")
+    (item "5"  <5> "A base 5 board is currently selected")* 
+    (item "6"  <6> "A base 6 board is currently selected") 
     }
 )
 

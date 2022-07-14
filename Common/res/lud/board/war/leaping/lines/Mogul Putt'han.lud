@@ -1,5 +1,5 @@
-(game "Mogul Putt'han"  
-    (players 2)  
+(game "Mogul Putt'han" 
+    (players 2) 
     (equipment { 
         <Start:board>
         (piece "Marker" Each 
@@ -8,7 +8,7 @@
                 ("StepToEmpty")
             )
         )
-    })  
+    }) 
     (rules 
         <Start:rules>
         
@@ -30,7 +30,7 @@
 
 (option "Start" <Start> args:{ <board> <rules>}
     {
-    (item "Sixteen Pieces"    
+    (item "Sixteen Pieces"  
         <(board 
             (merge 
                 { 
@@ -40,32 +40,32 @@
                 } 
             ) 
             use:Vertex
-        )>  
-        <        
+        )> 
+        <    
         (start { 
             (place "Marker1" (union {(sites Row 0) (sites Row 1) (sites Row 2) (sites Row 3)}))
             (place "Marker2" (union {(sites Row 5) (sites Row 6) (sites Row 7) (sites Row 8)}))
         })
-        >   
-    "The game is played with sixteen pieces.")**   
-    (item "Nineteen Pieces"    
+        >  
+    "The game is played with sixteen pieces.")**  
+    (item "Nineteen Pieces"  
         <(board 
             (merge 
                 { 
                 (shift 0 2 (square 5 diagonals:Alternating)) 
-                (shift -1 -1  (wedge 4))
+                (shift -1 -1 (wedge 4))
                 (shift -1 6 (rotate 180 (wedge 4))) 
                 } 
             ) 
             use:Vertex
-        )>  
+        )> 
         <
         (start { 
             (place "Marker1" (union {(sites Row 0) (sites Row 1) (sites Row 2) (sites Row 3) (sites Row 4)}))
             (place "Marker2" (union {(sites Row 6) (sites Row 7) (sites Row 8) (sites Row 9) (sites Row 10)}))
         })
-        >  
-    "The game is played with nineteen pieces.")   
+        > 
+    "The game is played with nineteen pieces.")  
 })
 
 //------------------------------------------------------------------------------
@@ -105,7 +105,7 @@
         (version "1.3.4")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in South Asia, from around 1832 to 1933.")
+        (origin "This game was played in South Asia, from around 1832 to 1933.")
         }
     )
     

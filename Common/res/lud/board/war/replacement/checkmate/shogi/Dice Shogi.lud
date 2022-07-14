@@ -45,7 +45,7 @@
         #1 
         (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
-    )   	
+    )  	
 )
 
 (define "StepMove"
@@ -54,7 +54,7 @@
         #1
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
-    )   	
+    )  	
 )
 
 (define "PlaceAPiece"
@@ -65,12 +65,12 @@
         ) 
         (do 
             (move 
-                (from (sites Occupied by:#1 container:"Hand" component:"Fuhyo" )) 
+                (from (sites Occupied by:#1 container:"Hand" component:"Fuhyo")) 
                 (to (difference (sites Empty) (sites #1 "Promotion"))) 
             ) 
             ifAfterwards:(not ("IsInCheck" "Osho" #2 (forEach Piece #1)))
         )
-    })   	
+    })  	
 )
 
 (define "CorrectColumn"
@@ -81,8 +81,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Dice Shogi"  
-    (players {(player N) (player S)})  
+(game "Dice Shogi" 
+    (players {(player N) (player S)}) 
     
     (equipment { 
         (board (square 5))
@@ -143,7 +143,7 @@
         })
         (map "Promoted" { 
             (pair (id "Fuhyo" P1) (id "Tokin" P1)) (pair (id "Fuhyo" P2) (id "Tokin" P2)) 
-            (pair (id "Ginsho" P1) (id "Narigin" P1)) (pair (id "Ginsho" P2) (id "Narigin" P2))  
+            (pair (id "Ginsho" P1) (id "Narigin" P1)) (pair (id "Ginsho" P2) (id "Narigin" P2)) 
             (pair (id "Hisha" P1) (id "Ryuo" P1)) (pair (id "Hisha" P2) (id "Ryuo" P2)) 
             (pair (id "Kakugyo" P1) (id "Ryuma" P1)) (pair (id "Kakugyo" P2) (id "Ryuma" P2)) 
         })

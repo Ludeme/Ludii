@@ -11,8 +11,8 @@
 
 //-------------------------------------------------------------------------------
 
-(game "Merimueng-rimueng-do"  
-    (players 2)  
+(game "Merimueng-rimueng-do" 
+    (players 2) 
     (equipment { 
         (board
             (scale 1.4 1 
@@ -34,7 +34,7 @@
             })
         ) 
         (piece "Sheep" P2 "StepToEmpty") 
-    })  
+    }) 
     (rules 
         (start {
             (place "Tiger1" (handSite P1) count:5)
@@ -56,7 +56,7 @@
             (play (forEach Piece))
             (end {
                 ("NoMoves" Loss)
-                (if (no Pieces P2)  (result P1 Win))
+                (if (no Pieces P2) (result P1 Win))
             })
         )
         }
@@ -74,7 +74,7 @@
         (version "0.9.3")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in Indonesia, around 1906CE.")
+        (origin "This game was played in Indonesia, around 1906CE.")
         }
     )
     

@@ -21,7 +21,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )   
+    )  
 )
 
 (define "DecideToCastle"
@@ -132,8 +132,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Chess"  
-    (players {(player N) (player S)})  
+(game "Chess" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -162,7 +162,7 @@
         (map "RookRight" {(pair 1 "H1") (pair 2 "H8")})
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Pawn1" (sites Row 1))
@@ -205,7 +205,7 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chess")
         (credit "Eric Piette")
-        (origin  "This game was played in Europe, from around 1475 to 2022.")
+        (origin "This game was played in Europe, from around 1475 to 2022.")
         }
     )
     

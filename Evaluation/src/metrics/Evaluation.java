@@ -104,7 +104,6 @@ public class Evaluation
 		reconstructionMetrics.add(new Balance());
 		reconstructionMetrics.add(new Completion());
 		reconstructionMetrics.add(new Drawishness());
-		reconstructionMetrics.add(new OutcomeUniformity());
 		
 		reconstructionMetrics.add(new PieceNumber(MultiMetricValue.Average, Concept.PieceNumberAverage));
 		reconstructionMetrics.add(new BoardSitesOccupied(MultiMetricValue.Average, Concept.BoardSitesOccupiedAverage));

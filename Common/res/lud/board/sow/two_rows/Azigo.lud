@@ -2,8 +2,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Azigo"  
-    (players 2)  
+(game "Azigo" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 20 store:None
@@ -20,7 +20,7 @@
         (regions "OpeningRegion" P2 (sites {28..31}))
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-    })  
+    }) 
     (rules 
         
         (start {
@@ -138,7 +138,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Azigo is a two-row mancala-style board game played by the Igbo people of Nigeria. ")
@@ -148,7 +148,7 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Nigeria, around 1951.")
+        (origin "This game was played in Nigeria, around 1951.")
         }
     )
     

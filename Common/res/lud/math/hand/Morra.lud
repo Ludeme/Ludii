@@ -25,8 +25,8 @@
 
 //-------------------------------------------------------------------------
 
-(game "Morra"  
-    (players <Players:num>)  
+(game "Morra" 
+    (players <Players:num>) 
     
     (mode Simultaneous) 
     
@@ -35,7 +35,7 @@
         (hand Each size:6) 
         (hand Shared)
         (piece "Hand0" Each)
-    })  
+    }) 
     
     (rules 
         (start { 
@@ -101,7 +101,7 @@
 
 (option "Players" <Players> args:{ <num> <board> <sumFingers> <initP3> <betP3> <showHandP3> <removeP3> <endP3>}
     {
-    (item "2"  
+    (item "2" 
         <2>
         <(board 
             (union 
@@ -117,7 +117,7 @@
         <>
     "The game is played with 2 players.")* 
     
-    (item "3"  
+    (item "3" 
         <3> 
         <(board 
             (union 
@@ -134,7 +134,7 @@
         <("ShowHand" P3)>
         <(remove 2)>
         <(= (score P3) 3)>
-    "The game is played with 3 players.")   
+    "The game is played with 3 players.")  
 })
 
 //-------------------------------------------------------------------------

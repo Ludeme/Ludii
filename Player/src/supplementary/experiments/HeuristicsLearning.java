@@ -78,7 +78,7 @@ public class HeuristicsLearning
 	private final float thinkingTime = 0.3f;
 	
 	/** Path of the directory with the files: */
-	private static final String repository = "/data/learning/";
+	private static final String repository = "/home/cyprien/Documents/M1/Internship/data/learning/";
 	
 	private final String trainDataFile = "training.arff";
 	private final String testDataFile = "testing.arff";
@@ -93,7 +93,7 @@ public class HeuristicsLearning
 	private final float scoreWin = 20f;
 	
 	/** Number of playouts before the weights are updated */
-	private final int numPlayoutsPerIteration = 10;
+	private final int numPlayoutsPerIteration = 6;
 	
 	/** Threhshold of the heuristics weights (under it thy are not saved) */
 	private final float heuristicWeightsThreshold = 0.001f;

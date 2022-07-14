@@ -146,7 +146,7 @@
 //------------------------------------------------------------------------------
 
 (game "Frisian Draughts" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (square <Tag:boardSize>)) 
         (piece "Counter" P1 N)
@@ -154,7 +154,7 @@
         (piece "DoubleCounter" Each maxState:128)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-    })  
+    }) 
     
     (rules 
         (start { 
@@ -213,7 +213,7 @@
                             )
                         })
                     )
-                    (or  
+                    (or 
                         (forEach Piece "Counter" 
                             ("CounterSimpleMove")
                             (then 
@@ -275,8 +275,8 @@
 //------------------------------------------------------------------------------
 
 (option "Variant" <Tag> args:{ <boardSize> <pieceNumber> }{
-    (item "Frisian"		<10>	<4>     "Standard Frisian draughts")**
-    (item "Frysk!"		<10>	<1>     "Frisian draughts starting with 5 pieces")
+    (item "Frisian"		<10>	<4>   "Standard Frisian draughts")**
+    (item "Frysk!"		<10>	<1>   "Frisian draughts starting with 5 pieces")
     (item "12x12"		<12>	<5>		"Frisian draughts played on a 12x12 board")
     (item "8x8"			<8>		<3>		"Frisian draughts played on a 8x8 board")
     (item "8x8 2rows"	<8>		<2>		"Frisian draughts played on a 8x8 board, starting with 2 rows of pieces")
@@ -306,7 +306,7 @@
         (version "1.3.4")
         (classification "board/war/leaping/diagonal")
         (credit "A. Sambruni and Eric Piette")
-        (origin  "This game was played in Netherlands, around 1725.")
+        (origin "This game was played in Netherlands, around 1725.")
         }
     )
     

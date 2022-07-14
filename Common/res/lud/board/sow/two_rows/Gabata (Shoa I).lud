@@ -39,8 +39,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Gabata (Shoa I)"  
-    (players 2)  
+(game "Gabata (Shoa I)" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 <Board:size> store:None
@@ -51,10 +51,10 @@
         )
         (piece "Seed" Shared)
         (hand Each)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
         (map "RightMost" {(pair P1 5) (pair P2 6)})
-    })  
+    }) 
     (rules 
         
         (start {
@@ -216,9 +216,9 @@
 
 (option "Board Size" <Board> args:{ <size> <trackCW> <opening>}
     {
-    (item "5"   <5> <"4,W,N,E"> <> "Each row has 5 holes.")   
-    (item "6"   <6> <"5,W,N,E"> <> "Each row has 6 holes.")*    
-    (item "6 With Opening"  <6> <"5,W,N,E"> 
+    (item "5"  <5> <"4,W,N,E"> <> "Each row has 5 holes.")  
+    (item "6"  <6> <"5,W,N,E"> <> "Each row has 6 holes.")*  
+    (item "6 With Opening" <6> <"5,W,N,E"> 
         <
         (phase "Opening" 
             (play
@@ -252,8 +252,8 @@
             (nextPhase (= (last From) 4) "Sowing")
         )
         >
-    "Each row has 6 holes.")*   
-    (item "7"   <7> <"6,W,N,E"> 
+    "Each row has 6 holes.")*  
+    (item "7"  <7> <"6,W,N,E"> 
         <>
     "Each row has 7 holes.")
 })
@@ -282,7 +282,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Gabata is a name applied to many two-or three-row mancala-style board games played in the Horn of Africa. This one is the most commonly played, and has been attested in Ethiopia since the early twentieth century, but is likely to be much older.")

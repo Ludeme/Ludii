@@ -24,7 +24,7 @@
         (piece "Marker" Each 
             [#] // Probably stepping or sliding.... That's the most obvious....
         )
-    })  
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:12))
         
@@ -37,7 +37,7 @@
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
                         "IfLine3MoveAgain" 
-                    )  
+                    ) 
                 )
             ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
@@ -76,7 +76,7 @@
         (version "1.3.4")
         (classification "board/space/line/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Algeria, around 1921.")
+        (origin "This game was played in Algeria, around 1921.")
         }
     )
     

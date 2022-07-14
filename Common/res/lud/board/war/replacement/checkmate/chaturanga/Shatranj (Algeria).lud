@@ -23,8 +23,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Shatranj (Algeria)"  
-    (players {(player N) (player S)})  
+(game "Shatranj (Algeria)" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -102,7 +102,7 @@
         )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Pawn1" (sites Row 1))
@@ -154,7 +154,7 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in Algeria, around 1901.")
+        (origin "This game was played in Algeria, around 1901.")
         }
     )
     

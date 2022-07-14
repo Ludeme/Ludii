@@ -46,8 +46,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Onyx"  
-    (players 2)  
+(game "Onyx" 
+    (players 2) 
     (equipment { 
         (board 
             (keep
@@ -59,7 +59,7 @@
         (piece "Disc" Each) 
         (regions P1 {(sites Side W) (sites Side E) })
         (regions P2 {(sites Side N) (sites Side S) })
-    })  
+    }) 
     (rules
         (start {
             (place "Disc1" (sites {15 24 119 128}))

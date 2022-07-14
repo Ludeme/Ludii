@@ -44,7 +44,7 @@ public class EvaluateUBFM
 	private static EvaluateUBFM evaluateUBFM = null;
 	
 	/** Number of trials that will be played to compare the agents: */
-	private static int numTrialsPerComparison = 100;
+	private static int numTrialsPerComparison = 2;
 	
 	/** Time for the AI to think in the simulations (seconds): */
 	private static double thinkingTime = 1;
@@ -98,13 +98,13 @@ public class EvaluateUBFM
 						{
 							try
 							{
-								final UBFM UBFM_AI = new BiasedUBFM();
-								UBFM_AI.setSelectionPolicy(UBFM.SelectionPolicy.SAFEST);
+								final AI UBFM_AI = new NaiveActionBasedSelection();
+//								UBFM_AI.setSelectionPolicy(UBFM.SelectionPolicy.SAFEST);
 								
 								final AI alphaBetaAI = MCTS.createUCT();
 								
-								UBFM_AI.debugDisplay = false;
-								UBFM_AI.savingSearchTreeDescription = false;
+//								UBFM_AI.debugDisplay = false;
+//								UBFM_AI.savingSearchTreeDescription = false;
 								
 								final Float[] agentScores = new Float[]{0f,0f};
 								

@@ -1,9 +1,9 @@
 (game "Chuki (Java)"
-    (players 2)  
-    (equipment [#])  // probably 12x10 lines 
+    (players 2) 
+    (equipment [#]) // probably 12x10 lines 
     (rules
         (start [#]) // Pieces are starting on the board and 60 pieces per player. Pieces move in all directions.
-        (play [#]) //  Players capture one, three, or five of the opponent's pieces at a time, and continue their turn until they are unable to do so
+        (play [#]) // Players capture one, three, or five of the opponent's pieces at a time, and continue their turn until they are unable to do so
         (end (if (no Pieces Next) (result Mover Win)))
     )
 )

@@ -39,13 +39,13 @@
 
 //------------------------------------------------------------------------------
 
-(game "Minefield"  
-    (players 2)  
+(game "Minefield" 
+    (players 2) 
     (equipment { 
         (board (square 8))
         (piece "Disc" Neutral (flips 1 2))
         }
-    )  
+    ) 
     (rules 
         
         (start {

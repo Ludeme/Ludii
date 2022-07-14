@@ -10,14 +10,12 @@
                 (to
                     (sites Empty)
                     if:(or 
-                        (= 0
-                            (count Sites
-                                in:(sites Around
-                                    (to)
-                                    NotEmpty
-                                    Orthogonal
-                                )
+                        (all Sites
+                            (sites Around
+                                (to)
+                                Orthogonal
                             )
+                            if:(is Empty (site))
                         )
                         (= 1
                             (count Sites
@@ -30,14 +28,9 @@
                         )
                     )
                 )
-            )        
+            )    
         )
-        (end 
-            (if 
-                (no Moves Next) 
-                (result Next Win)
-            )
-        )
+        (end ("NoMoves" Win))
     )
 )
 
@@ -45,8 +38,8 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "6"    <6>  "A 6x6 board is currently selected")* 
-    (item "8"    <8>  "A 8x8 board is currently selected")
+    (item "6"  <6> "A 6x6 board is currently selected")* 
+    (item "8"  <8> "A 8x8 board is currently selected")
     }
 )
 

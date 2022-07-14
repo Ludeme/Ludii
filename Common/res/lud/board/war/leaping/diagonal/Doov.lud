@@ -19,7 +19,7 @@
 //------------------------------------------------------------------------------
 
 (game "Doov" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (square 8)) 
         (piece "Counter" P1 N)
@@ -27,16 +27,16 @@
         (piece "DoubleCounter" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-    })  
+    }) 
     (rules 
         (start { 
-            (place "Counter1" (difference (expand (sites Bottom)) (sites Phase 1)  ))
+            (place "Counter1" (difference (expand (sites Bottom)) (sites Phase 1) ))
             (place "Counter2" (difference (expand (sites Top)) (sites Phase 1)))
         })
         
         (play 
             (or 
-                (or  
+                (or 
                     (forEach Piece "Counter" 
                         ("HopMan" (from) 
                             (then 
@@ -47,7 +47,7 @@
                     (forEach Piece "DoubleCounter" ("HopDiagonalCapture"))
                 )
                 
-                (or  
+                (or 
                     (forEach Piece "Counter" 
                         (move
                             Step 
@@ -83,7 +83,7 @@
         (version "1.3.4")
         (classification "board/war/leaping/diagonal")
         (credit "Eric Piette")
-        (origin  "This game was played in Mongolia, from around 1963 to 1966.")
+        (origin "This game was played in Mongolia, from around 1963 to 1966.")
         }
     )
     

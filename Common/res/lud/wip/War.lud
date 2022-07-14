@@ -42,9 +42,9 @@
 
 //------------------------------------------------------------------------------
 
-(game "War"  
-    (players 2)  
-    (mode Simultaneous)  
+(game "War" 
+    (players 2) 
+    (mode Simultaneous) 
     (equipment { 
         (board 
             (union 
@@ -71,7 +71,7 @@
                                 ("TakeCards" P1)
                                 (if ("CardOfP2isHigher")
                                     ("TakeCards" P2)
-                                    ("PlayACardOfEachDeck")  // Else the cards have the same value
+                                    ("PlayACardOfEachDeck") // Else the cards have the same value
                                 )
                             )
                             ("MaskedCards")
@@ -85,7 +85,7 @@
             (if 
                 ("P1HasNoCard")
                 (result P2 Win) 
-            )   
+            )  
             (if 
                 ("P2HasNoCard")
                 (result P1 Win) 
@@ -106,7 +106,7 @@
         (version "1.0.0")
         (classification "card")
         (credit "Eric Piette")
-        (origin  "This game was played in Unknown, around 1827CE.")
+        (origin "This game was played in Unknown, around 1827CE.")
         }
     )
     (graphics (no Board))

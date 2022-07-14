@@ -10,13 +10,12 @@
 
 //------------------------------------------------------------------------------
 
-(game "Snowpaque"  
-    (players 2)  
+(game "Snowpaque" 
+    (players 2) 
     (equipment { 
         (board (hex 5)) 
         (piece "Marker" Neutral) 
-        }
-    )  
+    }) 
     (rules 
         
         phases:{
@@ -24,10 +23,9 @@
             (play (move Add (piece (id "Marker0")) (to (sites Empty)))) 
             (nextPhase "play")
         )
-        (phase "play"   
+        (phase "play"  
             (play 
-                (move 
-                    Add 
+                (move Add 
                     (piece "Marker0") 
                     (to 
                         (sites Empty) 

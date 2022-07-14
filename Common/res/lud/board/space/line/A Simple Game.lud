@@ -2,7 +2,7 @@
     (players 2)
     (equipment {
         (board (square 4) use:Vertex)
-        (piece "Ball" Each (move Step Orthogonal (to if:(is Empty (to)))))
+        (piece "Ball" Each ("StepToEmpty" Orthogonal))
         (hand Each)
     })
     (rules
@@ -11,7 +11,7 @@
             (place "Ball2" (intersection (sites Phase 1) (union (sites Top) (sites Bottom))))
         })
         (play (forEach Piece))
-        (end (if (is Line 3 All) (result Mover Win)))
+        (end ("Line3Win" All))
     )
 )
 

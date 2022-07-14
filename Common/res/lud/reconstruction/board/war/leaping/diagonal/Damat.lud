@@ -19,7 +19,7 @@
 //------------------------------------------------------------------------------
 
 (game "Damat"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (square 12))
         (piece "Counter" P1 N)
@@ -27,7 +27,7 @@
         (piece "DoubleCounter" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-    })  
+    }) 
     
     (rules 
         (start { 
@@ -82,7 +82,7 @@
         (version "1.3.4")
         (classification "board/war/leaping/diagonal/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Malaysia, around 1959.")
+        (origin "This game was played in Malaysia, around 1959.")
         }
     )
     

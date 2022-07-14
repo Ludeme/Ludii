@@ -17,7 +17,7 @@
 
 (option "Suggested Variants" <Version> args:{ <version> }
     {
-    (item "17x17 (Kharebga Rules)"      
+    (item "17x17 (Kharebga Rules)"   
         <
         (equipment {
             (board (square 17))
@@ -67,7 +67,7 @@
     
     //---------------------------------
     
-    (item "17x17 (Seega Rules)"      
+    (item "17x17 (Seega Rules)"   
         <
         (equipment {
             (board (square 17))
@@ -117,7 +117,7 @@
     
     //---------------------------------
     
-    (item "17x18 (Kharebga Rules)"      
+    (item "17x18 (Kharebga Rules)"   
         <
         (equipment {
             (board (rectangle 17 18))
@@ -167,7 +167,7 @@
     
     //---------------------------------
     
-    (item "17x18 (Seega Rules)"      
+    (item "17x18 (Seega Rules)"   
         <
         (equipment {
             (board (rectangle 17 18))
@@ -217,7 +217,7 @@
     
     //---------------------------------
     
-    (item "17x17 (Tablut Rules)"      
+    (item "17x17 (Tablut Rules)"   
         <
         (define "Castle" (centrePoint))
         (define "JarlWasCaptured" (is Triggered "Surrounded" P2))
@@ -298,7 +298,7 @@
                     ("Castle")
                 )
             )
-        })  
+        }) 
         (rules 
             (start { 
                 (place "Thrall1" {"A9" "A10" "A8" "B9" "I17" "H17" "J17" "I16" "Q9" "Q10" "Q8" "P9" "I1" "H1" "J1" "I2"})
@@ -319,7 +319,7 @@
     
     //---------------------------------
     
-    (item "17x17 More Pieces (Tablut Rules)"      
+    (item "17x17 More Pieces (Tablut Rules)"   
         <
         (define "Castle" (centrePoint))
         (define "JarlWasCaptured" (is Triggered "Surrounded" P2))
@@ -400,7 +400,7 @@
                     ("Castle")
                 )
             )
-        })  
+        }) 
         (rules 
             (start { 
                 (place "Thrall1" {"A9" "A10" "A8" "B9" "I17" "H17" "J17" "I16" "Q9" "Q10" "Q8" "P9" "I1" "H1" "J1" "I2"})
@@ -489,7 +489,7 @@
         (version "1.3.4")
         (classification "board/war/custodial")
         (credit "Eric Piette")
-        (origin  "This game was played in Slovakia, around 375.")
+        (origin "This game was played in Slovakia, around 375.")
         }
     )
     

@@ -7,19 +7,14 @@
 
 //------------------------------------------------------------------------------
 
-(game "Product"  
-    (players 2)  
+(game "Product" 
+    (players 2) 
     (equipment { 
         (board (hex 5))
         (piece "Marker" Each) 
-    })  
+    }) 
     (rules 
-        (play 
-            (move 
-                Add 
-                (to (sites Empty)) 
-            )
-        ) 
+        (play (move Add (to (sites Empty)))) 
         
         (end
             (if (is Full)

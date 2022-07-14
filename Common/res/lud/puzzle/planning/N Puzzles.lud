@@ -1,9 +1,9 @@
-(game "N Puzzles"  
-    (players 1)  
+(game "N Puzzles" 
+    (players 1) 
     (equipment { 
         (board (square <Version:boardSize>)) 
         <Version:pieces>
-    })  
+    }) 
     
     (rules
         (start {
@@ -24,7 +24,7 @@
 
 (option "Board Size" <Version> args:{ <boardSize> <pieces> <random> <order>}
     {
-    (item "2x2"   
+    (item "2x2"  
         <2>
         <
         (piece "1" P1 "StepOrthogonalToEmpty")
@@ -36,7 +36,7 @@
         ""
     )
     
-    (item "3x3"   
+    (item "3x3"  
         <3>
         <
         (piece "1" P1 "StepOrthogonalToEmpty")
@@ -53,7 +53,7 @@
         ""
     )**
     
-    (item "4x4"   
+    (item "4x4"  
         <4>
         <
         (piece "1" P1 "StepOrthogonalToEmpty")
@@ -77,7 +77,7 @@
         ""
     )
     
-    (item "5x5"   
+    (item "5x5"  
         <5>
         <
         (piece "1" P1 "StepOrthogonalToEmpty")

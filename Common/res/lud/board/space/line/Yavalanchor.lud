@@ -1,11 +1,11 @@
-(game "Yavalanchor"  
+(game "Yavalanchor" 
     (players 2) 
     (equipment { 
         (board (rotate 90 (hex 5))) 
         (piece "Marker" Each)
         (piece "Marker" Shared)
         (hand Shared)
-    })  
+    }) 
     
     (rules 
         (meta (swap))
@@ -37,7 +37,7 @@
                     (is Line 5 whats:{(id "Marker1") (id "Marker")})
                 ) 
                 (result P1 Win)
-            )  
+            ) 
             (if (and 
                     (or 
                         (= (what at:(last To)) (id "Marker2")) 

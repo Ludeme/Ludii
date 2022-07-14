@@ -6,7 +6,7 @@
 
 (define "Bar" (mapEntry (mover)))
 
-(define "NotEnemyOrOnlyOne"   
+(define "NotEnemyOrOnlyOne"  
     (or 
         (and 
             ("IsEnemyAt" (to)) 
@@ -29,20 +29,20 @@
 
 //-----------------------------------------------------------------------------
 
-(game "Ludus Lombardorum"  
-    (players 2)  
+(game "Ludus Lombardorum" 
+    (players 2) 
     (equipment { 
-        ("BackgammonBoard"  
+        ("BackgammonBoard" 
             {
             (track "Track1" {6 0..5 18..12} P1 directed:True)
             (track "Track2" {19 12..18 5..0} P2 directed:True)
             } 
         ) 
         (dice num:3)
-        (map {(pair 1 19 ) (pair 2 6)}) // Bar
+        (map {(pair 1 19) (pair 2 6)}) // Bar
         (piece "Disc" Each) 
         (regions P1 { 0..5 }) // P1 Home
-        (regions P2 { 13..18 })  // P2 Home
+        (regions P2 { 13..18 }) // P2 Home
     })
     
     (rules
@@ -94,7 +94,7 @@
         (version "1.3.4")
         (classification "board/race/escape")
         (credit "Eric Piette")
-        (origin  "This game was played in England, from around 1300 to 1350.")
+        (origin "This game was played in England, from around 1300 to 1350.")
         }
     )
     

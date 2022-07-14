@@ -28,7 +28,7 @@
                         )
                     )
                 })
-                (if (< 1 (count at:( to)))
+                (if (< 1 (count at:(to)))
                     (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
                         (and {
                             (moveAgain)
@@ -39,7 +39,7 @@
                     )
                 )
             )
-            (if (< 1 (count at:( to)))
+            (if (< 1 (count at:(to)))
                 (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
                     (and {
                         (moveAgain)
@@ -60,8 +60,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Bao Kiswahili (East Africa)"  
-    (players 2)  
+(game "Bao Kiswahili (East Africa)" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 8 store:None
@@ -74,16 +74,16 @@
         )
         (piece "Seed" Shared)
         (hand Each)
-        (regions "Home" P1 (expand (sites Bottom)))  // P1 Home
-        (regions "Home" P2 (expand (sites Top)))     // P2 Home
-        (regions "Inner" P1 (sites Row 1))           // P1 Inner
-        (regions "Inner" P2 (sites Row 2))           // P2 Inner
-        (regions "SquaresHoles" (sites {12 19}))     // Square Holes
+        (regions "Home" P1 (expand (sites Bottom))) // P1 Home
+        (regions "Home" P2 (expand (sites Top)))   // P2 Home
+        (regions "Inner" P1 (sites Row 1))      // P1 Inner
+        (regions "Inner" P2 (sites Row 2))      // P2 Inner
+        (regions "SquaresHoles" (sites {12 19}))   // Square Holes
         (map "LeftMostInner" {(pair P1 8) (pair P2 23)})
         (map "RightMostInner" {(pair P1 15) (pair P2 16)})
         (map "AdjacentLeftMostInner" {(pair P1 9) (pair P2 22)})
         (map "AdjacentRightMostInner" {(pair P1 14) (pair P2 17)})
-    })  
+    }) 
     (rules 
         (start {
             (set Count 22 at:(handSite P1))
@@ -229,7 +229,7 @@
                                                         )
                                                     )
                                                 })
-                                                (if (< 1 (count at:( to)))
+                                                (if (< 1 (count at:(to)))
                                                     (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
                                                         (and {
                                                             (moveAgain)
@@ -240,7 +240,7 @@
                                                     )
                                                 )
                                             )
-                                            (if (< 1 (count at:( to)))
+                                            (if (< 1 (count at:(to)))
                                                 (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
                                                     (and {
                                                         (moveAgain)
@@ -278,7 +278,7 @@
                                                         )
                                                     )
                                                 })
-                                                (if (< 1 (count at:( to)))
+                                                (if (< 1 (count at:(to)))
                                                     (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
                                                         (and {
                                                             (moveAgain)
@@ -289,7 +289,7 @@
                                                     )
                                                 )
                                             )
-                                            (if (< 1 (count at:( to)))
+                                            (if (< 1 (count at:(to)))
                                                 (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
                                                     (and {
                                                         (moveAgain)
@@ -330,7 +330,7 @@
                                                         )
                                                     )
                                                 })
-                                                (if (< 1 (count at:( to)))
+                                                (if (< 1 (count at:(to)))
                                                     (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
                                                         (and {
                                                             (moveAgain)
@@ -341,7 +341,7 @@
                                                     )
                                                 )
                                             )
-                                            (if (< 1 (count at:( to)))
+                                            (if (< 1 (count at:(to)))
                                                 (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
                                                     (and {
                                                         (moveAgain)
@@ -380,7 +380,7 @@
                                                         )
                                                     )
                                                 })
-                                                (if (< 1 (count at:( to)))
+                                                (if (< 1 (count at:(to)))
                                                     (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
                                                         (and {
                                                             (moveAgain)
@@ -391,7 +391,7 @@
                                                     )
                                                 )
                                             )
-                                            (if (< 1 (count at:( to)))
+                                            (if (< 1 (count at:(to)))
                                                 (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
                                                     (and {
                                                         (moveAgain)
@@ -422,7 +422,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Bao Kiswahili is a four-row mancala-style game popular throughout East Africa. It is widely known as one of the more complex and difficult-to-master games in the world.")

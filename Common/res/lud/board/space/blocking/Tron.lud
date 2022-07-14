@@ -1,10 +1,9 @@
-(game "Tron"  
-    (players 2)  
+(game "Tron" 
+    (players 2) 
     (equipment { 
         (board (square 10)) 
         (piece "King" Each 
-            (move
-                Step 
+            (move Step 
                 Orthogonal 
                 (to 
                     (apply 
@@ -23,14 +22,12 @@
             )
         )
         (piece "Square" Each)
-    })  
+    }) 
     (rules 
-        (start
-            { 
+        (start { 
             (place "King1" coord:"E5")
             (place "King2" coord:"F6")
-            }
-        )
+        })
         
         (play (forEach Piece))
         

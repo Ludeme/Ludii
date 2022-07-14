@@ -23,8 +23,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Tawlbwrdd"  
-    (players 2)  
+(game "Tawlbwrdd" 
+    (players 2) 
     (equipment { 
         (board (square 11)) 
         (regions "Fortresses" (sites Corners))
@@ -64,7 +64,7 @@
             ) 
         ) 
         }
-    )  
+    ) 
     (rules 
         (start
             { 
@@ -79,7 +79,7 @@
         (end
             {
             (if (is Within (id "Jarl2") in:(sites Outer)) (result P2 Win))
-            (if "JarlWasCaptured"  (result P1 Win))
+            (if "JarlWasCaptured" (result P1 Win))
             }
         )
     )
@@ -89,7 +89,7 @@
 
 (option "Variant" <Variant> args:{ <type> }
     {
-    (item "Cyningstan"   <>       "The rules are describing with the Cyningstan ruleset.")   
+    (item "Cyningstan"  <>    "The rules are describing with the Cyningstan ruleset.")  
 })
 
 //------------------------------------------------------------------------------
@@ -124,7 +124,7 @@
         (version "1.3.4")
         (classification "board/war/custodial")
         (credit "Eric Piette")
-        (origin  "This game was played in Wales, from around 1587 to 1857.")
+        (origin "This game was played in Wales, from around 1587 to 1857.")
         }
     )
     

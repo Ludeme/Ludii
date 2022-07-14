@@ -37,7 +37,7 @@
 //------------------------------------------------------------------------------
 
 (game "Um el Banat"
-    (players 2)  
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 6 store:None
@@ -48,7 +48,7 @@
         (piece "Seed" Shared)
         (hand Each)
         (map "LeftMost" {(pair P1 0) (pair P2 11)})
-    })  
+    }) 
     (rules 
         (start { 
             (set Count 4 to:(sites Track)) 
@@ -186,7 +186,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Um el Banât is a two-row mancala-style board game played among the Kababish of people of Sudan.")

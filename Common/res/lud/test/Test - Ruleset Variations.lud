@@ -4,14 +4,14 @@
 
 //------------------------------------------------------------------------------
 
-(game "Test - Ruleset Variations"  
-    (players <Players:numPlayers>)  
+(game "Test - Ruleset Variations" 
+    (players <Players:numPlayers>) 
     (equipment { 
         (board (square <Board:size>)) 
         (piece "Counter" Each "StepToEmpty")
         <Players:home>
         }
-    )  
+    ) 
     (rules 
         (start { 
             <Players:start>
@@ -48,7 +48,7 @@
     {
     (item "2" 
         <2>
-        <  
+        < 
         (regions "Home" P1 (expand (intersection (sites Bottom) (sites Left)) steps:"SizeStart" Orthogonal))
         (regions "Home" P2 (expand (intersection (sites Top) (sites Right)) steps:"SizeStart" Orthogonal))
         (map {(pair P1 P2) (pair P2 P1)})
@@ -58,10 +58,10 @@
         (place "Counter2" (sites P2))
         >
         "The game involves two players."
-    )*   
-    (item "4"    
+    )*  
+    (item "4"  
         <4>
-        <  
+        < 
         (regions "Home" P1 (expand (intersection (sites Bottom) (sites Left)) steps:"SizeStart" Orthogonal))
         (regions "Home" P2 (expand (intersection (sites Top) (sites Right)) steps:"SizeStart" Orthogonal))
         (regions "Home" P3 (expand (intersection (sites Top) (sites Left)) steps:"SizeStart" Orthogonal))
@@ -113,7 +113,7 @@
         (version "1.1.13")
         (classification "board/race/fill")
         (credit "Eric Piette")
-        (origin  "This game was played in Mongolia, from around 1963CE to 1966CE.")
+        (origin "This game was played in Mongolia, from around 1963CE to 1966CE.")
         }
     )
     

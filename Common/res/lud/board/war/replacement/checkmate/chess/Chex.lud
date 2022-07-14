@@ -23,8 +23,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Chex"  
-    (players {(player N) (player S)})  
+(game "Chex" 
+    (players {(player N) (player S)}) 
     
     (equipment { 
         (boardless Square) 
@@ -85,7 +85,7 @@
                 ) 
             ) 
         )
-    })  
+    }) 
     
     (rules 
         (start {
@@ -118,7 +118,7 @@
             (forEach Value min:0 max:(topLevel at:(handSite 2)) 
                 (set Hidden What at:(handSite 2) level:(value) to:P2)		
             )
-        })    
+        })  
         (play 
             (if "SameTurn"
                 (if (= (count Moves) 1)

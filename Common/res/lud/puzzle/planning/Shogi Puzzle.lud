@@ -47,7 +47,7 @@
         #1 
         (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
-    )   	
+    )  	
 )
 
 (define "StepMove"
@@ -56,7 +56,7 @@
         #1
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
-    )   	
+    )  	
 )
 
 (define "GoldMove" ("StepMove" (directions {Forward Backward Rightward Leftward FL FR})))
@@ -78,14 +78,14 @@
 
 (define "PlaceAKnight" 
     (move 
-        (from (sites Occupied by:Mover container:"Hand" component:"Keima" )) 
+        (from (sites Occupied by:Mover container:"Hand" component:"Keima")) 
         (to (difference (sites Empty) (sites Mover "TwoFurthestRank")))
     )
 )
 
 (define "PlaceALance" 
     (move 
-        (from (sites Occupied by:Mover container:"Hand" component:"Kyosha" )) 
+        (from (sites Occupied by:Mover container:"Hand" component:"Kyosha")) 
         (to (difference (sites Empty) (sites Mover "LastRank")))
     )
 )
@@ -104,7 +104,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "Shogi Puzzle"  
+(game "Shogi Puzzle" 
     (players {(player N) (player S)}) 
     
     (equipment { 
@@ -253,7 +253,7 @@
 
 (option "Challenge" <challenge> args:{ <start> <limit> }
     {
-    (item "1 (1 Move)"   
+    (item "1 (1 Move)"  
         <(place "Kinsho1" {"G7"}) (place "Kinsho1" 86)
         (place "Osho2" coord:"G9") >
         <1> 

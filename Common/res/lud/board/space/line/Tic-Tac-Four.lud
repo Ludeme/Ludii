@@ -1,5 +1,5 @@
-(game "Tic-Tac-Four"  
-    (players 4)  
+(game "Tic-Tac-Four" 
+    (players 4) 
     (equipment { 
         (board (square 5)) 
         (piece "Disc" P1) 
@@ -7,10 +7,10 @@
         (piece "Y" P3) 
         (piece "Z" P4) 
         }
-    )  
+    ) 
     (rules 
         (play (move Add (to (sites Empty))))
-        (end (if (is Line 3) (result Mover Win)))
+        (end ("Line3Win"))
     )
 )
 

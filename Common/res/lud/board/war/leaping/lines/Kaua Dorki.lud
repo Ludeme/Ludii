@@ -1,5 +1,5 @@
-(game "Kaua Dorki"  
-    (players 2)  
+(game "Kaua Dorki" 
+    (players 2) 
     (equipment { 
         (board
             (merge {
@@ -16,7 +16,7 @@
             )
         )
         }
-    )  
+    ) 
     (rules 
         (start {
             (place "Marker1" (expand (union (sites Bottom) (sites {"A3"}))))
@@ -45,7 +45,7 @@
         (version "1.3.4")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1938.")
+        (origin "This game was played in India, around 1938.")
         }
     )
     

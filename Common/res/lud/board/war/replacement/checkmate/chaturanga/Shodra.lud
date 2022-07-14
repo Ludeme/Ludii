@@ -35,7 +35,7 @@
 //------------------------------------------------------------------------------
 
 (game "Shodra"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment {
         (board (square 8))
         (hand Each size:5)
@@ -109,7 +109,7 @@
         (regions "Promotion" P2 (sites Bottom))
     })
     (rules 
-        (start {   
+        (start {  
             (place "Pawn1" (sites Row 1))
             (place "Pawn2" (sites Row 6))
             (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Camel1" {"C1" "F1"}) (place "Dog1" coord:"D1") (place "King_noCross1" coord:"E1") 
@@ -149,7 +149,7 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in Russia, around 1913.")
+        (origin "This game was played in Russia, around 1913.")
         }
     )
     

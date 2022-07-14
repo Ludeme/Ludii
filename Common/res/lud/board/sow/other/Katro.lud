@@ -21,23 +21,23 @@
 
 //------------------------------------------------------------------------------
 
-(game "Katro"  
-    (players 2)  
+(game "Katro" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 6 "Columns" store:None
             <Row:tracks>	
         )
         (piece "Seed" Shared)
-        (regions "Home" P1 (sites Track "TrackCCW1"))   // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))   // P2 home
-        (regions "Inner" P1 (sites Row 2))              // P1 inner Home
-        (regions "Inner" P2 (sites Row 3))              // P2 inner Home
-        (regions "Middle" P1 (sites Row 1))             // P1 inner Home
-        (regions "Middle" P2 (sites Row 4))             // P2 inner Home
-        (regions "Outer" P1 (sites Bottom))             // P1 inner Home
-        (regions "Outer" P2 (sites Top))                // P2 inner Home
-    })  
+        (regions "Home" P1 (sites Track "TrackCCW1"))  // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))  // P2 home
+        (regions "Inner" P1 (sites Row 2))       // P1 inner Home
+        (regions "Inner" P2 (sites Row 3))       // P2 inner Home
+        (regions "Middle" P1 (sites Row 1))       // P1 inner Home
+        (regions "Middle" P2 (sites Row 4))       // P2 inner Home
+        (regions "Outer" P1 (sites Bottom))       // P1 inner Home
+        (regions "Outer" P2 (sites Top))        // P2 inner Home
+    }) 
     (rules 
         
         (start (set Count 2 to:(sites Board)))
@@ -177,17 +177,17 @@
                                     (fromTo
                                         (from ("OppositePit" (last To)))
                                         (to (last To))
-                                        count:(count at:("OppositePit"  (last To)))
+                                        count:(count at:("OppositePit" (last To)))
                                     )
-                                    (if (!= 0 (count at:("OppositeMiddlePit"  (last To))))
+                                    (if (!= 0 (count at:("OppositeMiddlePit" (last To))))
                                         (fromTo
-                                            (from ("OppositeMiddlePit"  (last To)))
+                                            (from ("OppositeMiddlePit" (last To)))
                                             (to (last To))
-                                            count:(count at:("OppositeMiddlePit"  (last To)))
+                                            count:(count at:("OppositeMiddlePit" (last To)))
                                         )
-                                        (if (!= 0 (count at:("OppositeOuterPit"  (last To))))
+                                        (if (!= 0 (count at:("OppositeOuterPit" (last To))))
                                             (fromTo
-                                                (from ("OppositeOuterPit"  (last To)))
+                                                (from ("OppositeOuterPit" (last To)))
                                                 (to (last To))
                                                 count:(count at:("OppositeOuterPit" (last To)))
                                             )
@@ -215,8 +215,8 @@
 
 (option "Board Size" <Row> args:{ <size> <tracks>}
     {
-    (item "3"   
-        <3>  
+    (item "3"  
+        <3> 
         <
         {
         (track "TrackCCW1" "0,E,N1,W,N1,E" loop:True P1)
@@ -225,9 +225,9 @@
         (track "TrackCCW2" "11,W,N1,E,N1,W" loop:True P2)
         }
         >
-    "3 Holes per row.")   
-    (item "6"   
-        <6>  
+    "3 Holes per row.")  
+    (item "6"  
+        <6> 
         <
         {
         (track "TrackCCW1" "0,E,N1,W,N1,E" loop:True P1)
@@ -236,7 +236,7 @@
         (track "TrackCCW2" "23,W,N1,E,N1,W" loop:True P2)
         }
         >
-    "6 Holes per row.")**   
+    "6 Holes per row.")**  
 })
 
 //------------------------------------------------------------------------------
@@ -264,7 +264,7 @@
         (version "1.3.4")
         (classification "board/sow")
         (credit "Eric Piette")
-        (origin  "This game was played in Madagascar, around 1998.")
+        (origin "This game was played in Madagascar, around 1998.")
         }
     )
     

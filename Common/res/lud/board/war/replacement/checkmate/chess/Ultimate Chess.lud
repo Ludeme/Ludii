@@ -38,7 +38,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )   
+    )  
 )
 
 (define "DoCastle"
@@ -201,8 +201,8 @@
 )
 //------------------------------------------------------------------------------
 
-(game "Ultimate Chess"  
-    (players {(player N) (player S)})  
+(game "Ultimate Chess" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 9)) 
         (piece "Pawn" Each ("PawnMove"))
@@ -218,7 +218,7 @@
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
         }
-    )  
+    ) 
     (rules 
         (start
             { 

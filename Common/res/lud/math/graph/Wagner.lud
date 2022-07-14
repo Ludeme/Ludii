@@ -1,5 +1,5 @@
-(game "Wagner"  
-    (players 2)  
+(game "Wagner" 
+    (players 2) 
     (equipment { 
         (board 
             (graph
@@ -8,8 +8,8 @@
             )
             use:Vertex
         ) 
-        (piece "Marker" Each ("StepToEmpty"))          
-    })  
+        (piece "Marker" Each ("StepToEmpty"))     
+    }) 
     
     (rules
         (start 
@@ -24,7 +24,7 @@
         (end 
             (if (= 1 (count Groups if:(= (who at:(to)) (mover)))) 
                 (result Mover Win) 
-            )                  
+            )         
         )
     )
 )
@@ -35,7 +35,7 @@
     
     (info
         {
-        (description "Wagner is a two-player graph theory game based on the Wagner graph, which is a Mobius ladder with 8 vertices. In this graph, the diameter and the radius are both equal to 2.  
+        (description "Wagner is a two-player graph theory game based on the Wagner graph, which is a Mobius ladder with 8 vertices. In this graph, the diameter and the radius are both equal to 2. 
         ")
         (rules "Wagner is a non-capturing game. Initially, each player places a stone at any vertex (not the centre) to maintain the graph colouring rules (i.e., no two friendly pieces are adjacent to each other). Each turn a player moves a friendly stone to an adjacent empty site. The goal is to make all the friendly pieces into a single group. 
         ")

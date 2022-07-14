@@ -2,7 +2,7 @@
     (move
         Hop 
         (from #1) 
-        (directions {FR FL})  
+        (directions {FR FL}) 
         (between 
             if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
             (apply (remove (between)))
@@ -53,7 +53,7 @@
 //------------------------------------------------------------------------------
 
 (game "Dama (Philippines)" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board 
             (rotate 45
@@ -72,7 +72,7 @@
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-    )  
+    ) 
     (rules 
         (start
             { 
@@ -148,7 +148,7 @@
         (version "1.3.4")
         (classification "board/war/leaping/diagonal")
         (credit "Eric Piette")
-        (origin  "This game was played in Philippines, around 1892.")
+        (origin "This game was played in Philippines, around 1892.")
         }
     )
     

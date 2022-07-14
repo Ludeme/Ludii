@@ -1,21 +1,19 @@
-(game "Do Guti"  
-    (players 2)  
+(game "Do Guti" 
+    (players 2) 
     (equipment { 
         (board 
-            (remove
-                (add 
-                    (square 2)
-                    vertices:{{0.5 0.5}}
-                    edges:{{0 4} {1 4} {2 4} {3 4}}
+            (add
+                (remove
+                    ("AlquerqueGraph" 3 3)
+                    vertices:{1 3 5 7}
                 )
-                edges:{{2 3}}
+                edges:{{3 0} {0 1} {1 4}}
             )
             use:Vertex
         )
         (hand Each)
         (piece "Disc" Each "StepToEmpty")
-        }
-    )  
+    }) 
     
     (rules 
         (start (place "Disc" "Hand" count:2))
@@ -28,13 +26,11 @@
                 )
             ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )  
+        ) 
         
-        (phase "Movement" 
-            (play (forEach Piece))
-        )
+        (phase "Movement" (play (forEach Piece)))
         }
-        (end ("NoMoves" Loss))  
+        (end ("NoMoves" Loss)) 
     )
 )
 
@@ -51,13 +47,9 @@
         (version "1.3.4")
         (classification "board/space/blocking")
         (credit "Eric Piette")
-        (origin  "This game was played in Pakistan, around 1926.")
+        (origin "This game was played in Pakistan, around 1926.")
         }
     )
-    
-    (graphics {
-        
-    })
     
     (ai
         "Do Guti_ai"

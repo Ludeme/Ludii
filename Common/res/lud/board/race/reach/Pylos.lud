@@ -14,13 +14,13 @@
     })		
 )
 
-(game "Pylos"  
-    (players 2)  
+(game "Pylos" 
+    (players 2) 
     (equipment { 
         (board (square 4 pyramidal:True) use:Vertex) 
         (piece "Ball" Each) 
         (hand Each)
-    })  
+    }) 
     (rules 
         (start (place "Ball" "Hand" count:15))
         

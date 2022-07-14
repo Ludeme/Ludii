@@ -1,13 +1,13 @@
 (game "Takuzu" 
-    (players 1)  
-    (equipment  { 
+    (players 1) 
+    (equipment { 
         (board (square <Challenge:size>) (values Cell (range 0 1))) 
         (regions {Columns Rows})
-    })  
+    }) 
     (rules 
         (start (set { <Challenge:start> }))
         (play 
-            (satisfy  {
+            (satisfy {
                 (not (is Line 3 Orthogonal))
                 (is Unique)
                 (is Sum (/ (count Rows) 2))
@@ -23,11 +23,11 @@
     {
     (item "Janko.at #1" 
         <10>
-        <{0 1}  {1 1}  {4 1}  {11 1} {18 1} {25 0} {26 0} 
+        <{0 1} {1 1} {4 1} {11 1} {18 1} {25 0} {26 0} 
         {29 0} {34 1} {37 0} {51 1} {52 0} {59 1} {65 1} 
         {67 1} {71 1} {86 0} {87 0} {92 0} {96 0}>
         ""
-    )   
+    )  
 })
 
 //------------------------------------------------------------------------------

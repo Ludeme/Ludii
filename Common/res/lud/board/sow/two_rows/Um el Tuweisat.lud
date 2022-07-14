@@ -26,8 +26,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Um el Tuweisat"  
-    (players 2)  
+(game "Um el Tuweisat" 
+    (players 2) 
     (equipment { 
         (mancalaBoard 2 3 store:None
             {
@@ -35,14 +35,14 @@
             (track "TrackCW" "2,W,N,E" loop:True)
             }
         )
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
         (map "RightHole" {(pair P1 2) (pair P2 3)})
         (map "CenterHole" {(pair P1 1) (pair P2 4)})
         (map "LeftHole" {(pair P1 0) (pair P2 5)})
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start (set Count 3 to:(sites Track)))
@@ -73,7 +73,7 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Sudan, around 1925.")
+        (origin "This game was played in Sudan, around 1925.")
         }
     )
     

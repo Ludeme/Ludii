@@ -2,24 +2,15 @@
     (players {(player N) (player S)})
     (equipment {
         (board (rotate 30 (hex 4)))
-        (piece "Disc" Each
-            (move Step Forwards (to if:(is Empty (to))))
-        )
+        (piece "Disc" Each ("StepToEmpty" Forwards))
     })
     (rules
         (start {
             (place "Disc1" {0 1 2 3 4 5 6 7 9 10 11 15 16})
             (place "Disc2" {20 21 25 26 27 29 30 31 32 33 34 35 36 })
         })
-        (play
-            (forEach Piece)
-        )
-        (end 
-            (if 
-                (no Moves Mover) 
-                (result Mover Win)
-            )
-        )
+        (play (forEach Piece))
+        (end ("MisereBlockWin"))
     )
 )
 

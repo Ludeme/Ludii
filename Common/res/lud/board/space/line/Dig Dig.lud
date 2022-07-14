@@ -1,17 +1,15 @@
 (define "RemoveEnemyPiece" 
-    (move
-        Remove
+    (move Remove
         (forEach
             (sites Occupied by:Next container:"Board") 
-            if:(= 1 (size Stack at:(site)))
+            if:("IsSingletonStack" (site))
         )
     )
 )
 
 (define "IfLine3MoveAgain" 
     (then 
-        (if 
-            (is Line 3 if:(= 1 (size Stack at:(to)))) 
+        (if (is Line 3 if:("IsSingletonStack" (to))) 
             (moveAgain)
         )
     )
@@ -23,7 +21,7 @@
             (sites Occupied by:#1 container:"Board")
             if:(= (size Stack at:(site)) 2)
         )
-        (and  
+        (and 
             (remove (site)) 
             (remove (site)) 
         )
@@ -38,14 +36,8 @@
     (equipment { 
         (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
         (hand Each)
-        (piece "Marker" Each 
-            (move 
-                Step 
-                (to if:(is Empty (to))) 
-                "IfLine3MoveAgain" 
-            )
-        ) 
-    })  
+        (piece "Marker" Each ("StepToEmpty" ~ "IfLine3MoveAgain")) 
+    }) 
     
     (rules 
         (start {
@@ -94,7 +86,7 @@
                     (forEach Piece)
                 )
             )
-            (end (if (no Pieces Next in:(sites Board)) (result Mover Win)))
+            (end (if (all Sites (sites Occupied by:Next) if:(not (is In (site) (sites Board)))) (result Mover Win)))
         )
         }
     )
@@ -113,14 +105,13 @@
         (version "1.3.4")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in Malaysia, around 1959.")
+        (origin "This game was played in Malaysia, around 1959.")
         }
     )
     
     (graphics {
         (stackType 1 Count)
         (stackType 2 Count)
-        
     })
     
 )

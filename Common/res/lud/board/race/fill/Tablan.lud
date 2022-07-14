@@ -2,7 +2,7 @@
 
 (define "IsSpecialThrow" (is In ("ThrowValue") (sites {2 8 12})))
 
-(define "ThrowToActivate" (= 2 ("ThrowValue" )))
+(define "ThrowToActivate" (= 2 ("ThrowValue")))
 
 (define "SiteToMoveOnTrack" ("NextSiteOnTrack" #1))
 
@@ -99,7 +99,7 @@
         (dice d:2 from:0 num:4)
     })
     (rules 
-        (start {  
+        (start { 
             (place "Stick1" (sites Bottom))
             (place "Stick2" (sites Top))
         })
@@ -141,12 +141,12 @@
         (version "1.3.4")
         (classification "board/race/fill")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1979.")
+        (origin "This game was played in India, around 1979.")
         }
     )
     
     (graphics {
-        (show Edges Hidden)    
+        (show Edges Hidden)  
         (show Symbol "disc" Vertex (sites Board) fillColour:(colour White) edgeColour:(colour Black) scale:1)
         (piece Colour "Die" state:1 fillColour:(colour Black))
         (piece Scale "Stick" 0.5)

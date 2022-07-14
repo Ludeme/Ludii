@@ -27,9 +27,9 @@
 (game "Chomp" 
     (players 2)
     (equipment { 
-        (board (rectangle <Rows:num> <Columns:num>))  
+        (board (rectangle <Rows:num> <Columns:num>)) 
         (piece "Chocolate" Shared)
-    })    
+    })  
     (rules 
         (start (place "Chocolate" (sites Board)))
         (play ("EatChocolate")) 
@@ -46,53 +46,53 @@
 
 (option "Rows" <Rows> args:{ <num> }
     {
-    (item  "1"  <1> "The board has 1 row.")  
-    (item  "2"  <2> "The board has 2 rows.")  
-    (item  "3"  <3> "The board has 3 rows.")  
-    (item  "4"  <4> "The board has 4 rows.")*  
-    (item  "5"  <5> "The board has 5 rows.")  
-    (item  "6"  <6> "The board has 6 rows.")  
-    (item  "7"  <7> "The board has 7 rows.")  
-    (item  "8"  <8> "The board has 8 rows.")  
-    (item  "9"  <9> "The board has 9 rows.")  
-    (item "10" <10> "The board has 10 rows.")  
-    (item "11" <11> "The board has 11 rows.")  
-    (item "12" <12> "The board has 12 rows.")  
-    (item "13" <13> "The board has 13 rows.")  
-    (item "14" <14> "The board has 14 rows.")  
-    (item "15" <15> "The board has 15 rows.")  
-    (item "16" <16> "The board has 16 rows.")  
-    (item "17" <17> "The board has 17 rows.")  
-    (item "18" <18> "The board has 18 rows.")  
-    (item "19" <19> "The board has 19 rows.")  
+    (item "1" <1> "The board has 1 row.") 
+    (item "2" <2> "The board has 2 rows.") 
+    (item "3" <3> "The board has 3 rows.") 
+    (item "4" <4> "The board has 4 rows.")* 
+    (item "5" <5> "The board has 5 rows.") 
+    (item "6" <6> "The board has 6 rows.") 
+    (item "7" <7> "The board has 7 rows.") 
+    (item "8" <8> "The board has 8 rows.") 
+    (item "9" <9> "The board has 9 rows.") 
+    (item "10" <10> "The board has 10 rows.") 
+    (item "11" <11> "The board has 11 rows.") 
+    (item "12" <12> "The board has 12 rows.") 
+    (item "13" <13> "The board has 13 rows.") 
+    (item "14" <14> "The board has 14 rows.") 
+    (item "15" <15> "The board has 15 rows.") 
+    (item "16" <16> "The board has 16 rows.") 
+    (item "17" <17> "The board has 17 rows.") 
+    (item "18" <18> "The board has 18 rows.") 
+    (item "19" <19> "The board has 19 rows.") 
     }
 )
 (option "Columns" <Columns> args:{ <num> }
     {
-    (item  "2"  <2> "The board has 2 columns.")  
-    (item  "3"  <3> "The board has 3 columns.")  
-    (item  "4"  <4> "The board has 4 columns.")  
-    (item  "5"  <5> "The board has 5 columns.")*  
-    (item  "6"  <6> "The board has 6 columns.")  
-    (item  "7"  <7> "The board has 7 columns.")  
-    (item  "8"  <8> "The board has 8 columns.")  
-    (item  "9"  <9> "The board has 9 columns.")  
-    (item "10" <10> "The board has 10 columns.")  
-    (item "11" <11> "The board has 11 columns.")  
-    (item "12" <11> "The board has 12 columns.")  
-    (item "13" <11> "The board has 13 columns.")  
-    (item "14" <14> "The board has 14 columns.")  
-    (item "15" <14> "The board has 15 columns.")  
-    (item "16" <14> "The board has 16 columns.")  
-    (item "17" <14> "The board has 17 columns.")  
-    (item "18" <14> "The board has 18 columns.")  
-    (item "19" <19> "The board has 19 columns.")  
+    (item "2" <2> "The board has 2 columns.") 
+    (item "3" <3> "The board has 3 columns.") 
+    (item "4" <4> "The board has 4 columns.") 
+    (item "5" <5> "The board has 5 columns.")* 
+    (item "6" <6> "The board has 6 columns.") 
+    (item "7" <7> "The board has 7 columns.") 
+    (item "8" <8> "The board has 8 columns.") 
+    (item "9" <9> "The board has 9 columns.") 
+    (item "10" <10> "The board has 10 columns.") 
+    (item "11" <11> "The board has 11 columns.") 
+    (item "12" <11> "The board has 12 columns.") 
+    (item "13" <11> "The board has 13 columns.") 
+    (item "14" <14> "The board has 14 columns.") 
+    (item "15" <14> "The board has 15 columns.") 
+    (item "16" <14> "The board has 16 columns.") 
+    (item "17" <14> "The board has 17 columns.") 
+    (item "18" <14> "The board has 18 columns.") 
+    (item "19" <19> "The board has 19 columns.") 
     }
 )
 
 //------------------------------------------------------------------------------
 
-(metadata    
+(metadata  
     (info
         {
         (description "Chomp is a two-player strategy game played on a rectangular grid made up of smaller square cells, which can be thought of as the blocks of a chocolate bar.")
@@ -111,7 +111,7 @@
         (player Colour Shared (colour 102 61 20))
         (piece Scale "Chocolate" 1.1)
         (no Board)
-    })    
+    })  
     (ai
         "Chomp_ai"
     )

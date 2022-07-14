@@ -1,0 +1,11 @@
+// Checks if the next player has no legal moves and the next player loses and checks if a specific player has less or equal than a number of pieces to lose. This ludemeplex can be used only in an ending condition.
+// #1 = The owner of the pieces.
+// #2 = The number of pieces.
+// @example ("NoMovesLossAndLessNumPiecesPlayerLoss" P1 3)
+
+(define "NoMovesLossAndLessNumPiecesPlayerLoss"
+    {
+    ("NoMoves" Loss)
+    (if (<= (count Pieces #1) #2) (result #1 Loss))
+    }
+)

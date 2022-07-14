@@ -50,8 +50,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Gabata (Adegrat)"  
-    (players 2)  
+(game "Gabata (Adegrat)" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 6 store:None
@@ -62,7 +62,7 @@
         (regions P2 (sites Top)) 
         (hand Each)
         (map "LeftMost" {(pair P1 0) (pair P2 11)})
-    })  
+    }) 
     (rules 
         
         (start { 
@@ -163,7 +163,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Gabata is a word that applies to many mancala-style games throughout the Horn of Africa. This game is a two-row version played in the Adegrat area of Ethiopia.")

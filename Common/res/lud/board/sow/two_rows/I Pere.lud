@@ -2,19 +2,19 @@
 
 //------------------------------------------------------------------------------
 
-(game "I Pere"  
-    (players 2)  
+(game "I Pere" 
+    (players 2) 
     (equipment { 
         (mancalaBoard 2 5 store:None
             (track "Track" "0,E,N,W" loop:True)
         )
         (piece "Seed" Shared)
         (hand Each)
-        (regions P1 (sites Bottom))      // P1 home
-        (regions P2 (sites Top))         // P2 home
-        (map {(pair P1 4) (pair P2 5)})  // kalahs (storage pits)
-        (map "Fourth" {(pair P1 3) (pair P2 6)})  // fourth hole
-    })  
+        (regions P1 (sites Bottom))   // P1 home
+        (regions P2 (sites Top))     // P2 home
+        (map {(pair P1 4) (pair P2 5)}) // kalahs (storage pits)
+        (map "Fourth" {(pair P1 3) (pair P2 6)}) // fourth hole
+    }) 
     (rules 
         
         (start (set Count 4 to:(sites Track)))
@@ -101,7 +101,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "I Pere is a two-row mancala-style game board from West Africa. It is similar to other two-row games from the region, and was documented in the early twentieth century.")

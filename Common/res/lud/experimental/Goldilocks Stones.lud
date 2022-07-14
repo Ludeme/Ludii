@@ -33,10 +33,10 @@
 // Defines for Options
 
 (define "Connection" <BoardShape:directionsUsed>)
-(define "BoardUsed" <BoardShape:gridType> )
+(define "BoardUsed" <BoardShape:gridType>)
 
 (define "HexLimp" (board (hex Limping (- <BoardSize:smallSide> 1)) use:Cell))
-(define "Hex2Limp" (board (hex  (- <BoardSize:smallSide> 1) (+ <BoardSize:smallSide> 1)) use:Cell))
+(define "Hex2Limp" (board (hex (- <BoardSize:smallSide> 1) (+ <BoardSize:smallSide> 1)) use:Cell))
 (define "HexCell" (board (hex Hexagon <BoardSize:smallSide>) use:Cell))
 
 (define "DoubleMove"
@@ -58,8 +58,8 @@
     (equipment
         {
         "BoardUsed"
-        (piece "Ball" P1 )
-        (piece "Ball" P2 )
+        (piece "Ball" P1)
+        (piece "Ball" P2)
         }
     )
     (rules

@@ -1,36 +1,26 @@
-(game "Madelinette"  
-    (players 2)  
+(game "Madelinette" 
+    (players 2) 
     (equipment { 
         (board 
-            (add 
-                (merge
-                    {
-                    (rotate -90 (wedge 2))
-                    (shift 1 0 (rotate 90 (wedge 2)))
-                    }
+            (add
+                (remove 
+                    ("AlquerqueGraph" 3 3)
+                    vertices:{7 1} 
                 )
-                edges:{ {3 4} } 
-            ) 
+                edges:{{0 1}}
+            )
             use:Vertex
         ) 
-        (piece "Counter" Each 
-            (move
-                Step 
-                (to if:(is Empty (to)))
-            )
-        )
-        }
-    )  
+        (piece "Counter" Each ("StepToEmpty"))
+    }) 
     
     (rules 
         (start {
             (place "Counter1" (sites {"A1" "C2" "A3"}))
             (place "Counter2" (sites {"C1" "A2" "C3"}))
         })
-        
         (play (forEach Piece)) 
-        
-        (end ("NoMoves" Loss))  
+        (end ("NoMoves" Loss)) 
     )
 )
 
@@ -49,10 +39,6 @@
         (credit "Eric Piette")
         }
     )
-    
-    (graphics {
-        
-    })
     
     (ai 
         "Madelinette_ai"

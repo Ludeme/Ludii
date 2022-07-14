@@ -55,13 +55,13 @@
             (or
                 (move Select 
                     (from 
-                        (sites (values Remembered "OwnedP1"))  
+                        (sites (values Remembered "OwnedP1")) 
                         if:(and (not (is In (from) (values Remembered "P1SowFrom"))) (< 0 (count at:(from))))
                     )
                 )
                 (move Select 
                     (from 
-                        (sites (values Remembered "OwnedP2"))  
+                        (sites (values Remembered "OwnedP2")) 
                         if:(and (not (is In (from) (values Remembered "P2SowFrom"))) (< 0 (count at:(from))))
                     )
                 )
@@ -73,7 +73,7 @@
 //------------------------------------------------------------------------------
 
 (game "Adi"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (mancalaBoard 2 "Columns"
             {
@@ -81,13 +81,13 @@
             (track "TrackCW" "6,W,N,E" loop:True)
             }
         )
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
         (piece "Seed" Shared)
         (map "RightMost" {(pair P1 6) (pair P2 7)})
         (map "CorrespondingHoles" {(pair 1 12) (pair 2 11) (pair 3 10) (pair 4 9) (pair 5 8) (pair 6 7) (pair 7 6) (pair 8 5) (pair 9 4) (pair 10 3) (pair 11 2) (pair 12 1)})
-    })  
+    }) 
     
     (rules 
         (start {
@@ -101,12 +101,12 @@
                 (or {
                     (move Select 
                         (from 
-                            ("OwnedHoles")  
+                            ("OwnedHoles") 
                             if:(and ("PossibleSowFrom") (< 0 (count at:(from))))
                         )
                         (then 
                             (and {
-                                (sow  
+                                (sow 
                                     "TrackCCW"
                                     if:(and 
                                         (is In (to) (sites Next)) 
@@ -120,7 +120,7 @@
                                     backtracking:True 
                                 )
                                 (forEach Value 
-                                    (array (sites Track from:(last From) to:("NextHole" (last From) (min 12  (count at:(last From))))))
+                                    (array (sites Track from:(last From) to:("NextHole" (last From) (min 12 (count at:(last From))))))
                                     (if (is Mover P1)
                                         (if (is In (value) (values Remembered "P2SowFrom"))
                                             (forget Value "P2SowFrom" (value))
@@ -238,7 +238,7 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in West Africa, around 1906.")
+        (origin "This game was played in West Africa, around 1906.")
         }
     )
     

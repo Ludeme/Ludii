@@ -2,17 +2,17 @@
 
 //------------------------------------------------------------------------------
 
-(game "Waurie"  
-    (players 2)  
+(game "Waurie" 
+    (players 2) 
     (equipment { 
         (mancalaBoard 2 6
             (track "Track" "0,ESE,E,ENE,WNW,W" loop:True)
         )
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-        (map {(pair P1 LastSite) (pair P2 FirstSite)})  // kalahs (storage pits)
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+        (map {(pair P1 LastSite) (pair P2 FirstSite)}) // kalahs (storage pits)
         (piece "Seed" Shared)
-    })  
+    }) 
     (rules 
         
         (start (set Count 4 to:(union (sites P1) (sites P2))))
@@ -56,7 +56,7 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Cayman Islands, from around 1985 to 1995.")
+        (origin "This game was played in Cayman Islands, from around 1985 to 1995.")
         }
     )
     

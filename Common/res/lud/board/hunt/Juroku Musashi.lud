@@ -1,5 +1,5 @@
-(game "Juroku Musashi"  
-    (players 2)  
+(game "Juroku Musashi" 
+    (players 2) 
     (equipment { 
         <Variant:board>
         (piece "Marker" P1 <Variant:p1Moves>)
@@ -9,7 +9,7 @@
                 ("StepToEmpty")
             ) 
         ) 
-    })  
+    }) 
     (rules 
         (start { 
             (place "Marker1" (difference (sites Outer) (expand (sites Bottom))))
@@ -18,10 +18,7 @@
         
         (play (forEach Piece)) 
         
-        (end  {
-            (if (no Pieces P1) (result P2 Win))
-            (if (no Moves P2) (result P1 Win))
-        })
+        (end ("NoMovesP2NoPiecesP1"))
     )
 )
 
@@ -29,7 +26,7 @@
 
 (option "Variant" <Variant> args:{ <board> <p1Moves> }
     {
-    (item "Described"     
+    (item "Described"   
         <
         (board
             (add
@@ -48,7 +45,7 @@
         > 
         ""
     ) 
-    (item "Tsuboi"     
+    (item "Tsuboi"   
         <
         (board
             (add
@@ -68,7 +65,7 @@
         )
         > 
         "The triangle has no diagonal and only P2 can enter in the triangle."
-    )  
+    ) 
 })
 
 //------------------------------------------------------------------------------
@@ -104,7 +101,7 @@
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in Japan, from around 1700 to 1951.")
+        (origin "This game was played in Japan, from around 1700 to 1951.")
         }
     )
     

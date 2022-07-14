@@ -32,7 +32,7 @@
             use:Vertex
         )
         (piece "Cow" P1)
-        (piece "Calf" P1    
+        (piece "Calf" P1  
             (move Step 
                 (to 
                     if:(or ("IsPieceAt" "Cow" P1 (to)) (is Empty (to)))
@@ -40,7 +40,7 @@
                 )
             )
         )
-        (piece "Human" P2   
+        (piece "Human" P2  
             "StepToEmpty"
         )
     })
@@ -66,13 +66,13 @@
         {
         (description "Üxrijn Ever is a game played in Mongolia. The game is thought to be a representation of cattle herding practices. One player plays as a cow and a calf, the other as two children. The calf attempts to reach its mother, which remains at the start, while the children try to force the calf into the pasture, at the opposite end of the board.")
         (aliases {"Üxrijn Ever" "Ever Bukh"})
-        (rules "Two arcs which meet, in the shape of a horn, curving to the left. Nine points along the left side, and eight along the right, with one at the apex. Zig-zag lines connect points  on either side of the board, connecting the first on the left to the first on the right, the first on the right to the second on the left, the second on the left to the second on the right, and so on. One player plays as the cow and the calf (black). The cow begins on the first point on the left, the calf on the second point on the right. The other player plays as two children (white), which begin on the second point on the left and the first point on the right. Players alternate turns moving a piece to an empty adjacent spot along the lines on the board. The cow never moves from its position. The calf plays first. The calf wins when it reaches the cow; the children win when they force the calf onto the apex of the board (the pasture).")
+        (rules "Two arcs which meet, in the shape of a horn, curving to the left. Nine points along the left side, and eight along the right, with one at the apex. Zig-zag lines connect points on either side of the board, connecting the first on the left to the first on the right, the first on the right to the second on the left, the second on the left to the second on the right, and so on. One player plays as the cow and the calf (black). The cow begins on the first point on the left, the calf on the second point on the right. The other player plays as two children (white), which begin on the second point on the left and the first point on the right. Players alternate turns moving a piece to an empty adjacent spot along the lines on the board. The cow never moves from its position. The calf plays first. The calf wins when it reaches the cow; the children win when they force the calf onto the apex of the board (the pasture).")
         (source "Popova 1974: 20-21.")
         (id "1015")
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in Mongolia, from around 1963 to 1991.")
+        (origin "This game was played in Mongolia, from around 1963 to 1991.")
         }
     )
     

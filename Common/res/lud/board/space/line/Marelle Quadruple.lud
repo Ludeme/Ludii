@@ -1,12 +1,12 @@
 (game "Marelle Quadruple"
-    (players 2)  
+    (players 2) 
     (equipment 
         {
         ("AlquerqueBoard" 5 5)
         (hand Each)
         (piece "Marker" Each "StepToEmpty")
         }
-    )  
+    ) 
     (rules 
         (start (place "Marker" "Hand" count:5))
         
@@ -37,7 +37,7 @@
         (version "1.3.4")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in France, around 1840.")
+        (origin "This game was played in France, around 1840.")
         }
     )
     

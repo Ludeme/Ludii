@@ -1,6 +1,6 @@
-(game "Rock-Paper-Scissors"  
-    (players 2)  
-    (mode Simultaneous)  
+(game "Rock-Paper-Scissors" 
+    (players 2) 
+    (mode Simultaneous) 
     (equipment { 
         (board 
             (union 
@@ -13,7 +13,7 @@
         (piece "Paper" Each)
         (piece "Scissors" Each)
         }
-    )  
+    ) 
     (rules 
         
         (start { 

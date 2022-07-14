@@ -71,22 +71,22 @@
 
 //-----------------------------------------------------------------------------
 
-(game "Portes"  
-    (players 2)  
+(game "Portes" 
+    (players 2) 
     (equipment { 
         ("BackgammonBoard" ("BackgammonTracksWithBar" End)) 
         (dice num:2)
         (regions P1 { 20..25 }) // P1 Home
-        (regions P2 { 7..12 })  // P2 Home
-        (map {(pair 1 6 ) (pair 2 19)}) // Bar
+        (regions P2 { 7..12 }) // P2 Home
+        (map {(pair 1 6) (pair 2 19)}) // Bar
         (piece "Disc" Each ("MoveAPieceIf" "DieNotUsedAndNoEscapeAndNotOffTheTrack" (from))) 
     })
     
     (rules
         (start { 
-            (place Stack "Disc1"  0 count:5) (place Stack "Disc1" 12 count:2) 
+            (place Stack "Disc1" 0 count:5) (place Stack "Disc1" 12 count:2) 
             (place Stack "Disc1" 17 count:3) (place Stack "Disc1" 20 count:5)
-            (place Stack "Disc2"  4 count:3) (place Stack "Disc2"  7 count:5) 
+            (place Stack "Disc2" 4 count:3) (place Stack "Disc2" 7 count:5) 
             (place Stack "Disc2" 13 count:5) (place Stack "Disc2" 25 count:2)
         })
         

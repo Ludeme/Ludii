@@ -22,7 +22,7 @@
             (place "Marker" "Hand" count:3)
         )
         (play (move (from (handSite Mover)) (to (sites Empty))))
-        (end (if (is Line 3) (result Mover Win)))
+        (end ("Line3Win"))
     )
 )
 
@@ -39,7 +39,7 @@
         (id "1356")
         (version "1.3.4")
         (classification "board/space/line")
-        (origin  "This game was played in Republic of Congo, around 1971.")
+        (origin "This game was played in Republic of Congo, around 1971.")
         }
     )
     

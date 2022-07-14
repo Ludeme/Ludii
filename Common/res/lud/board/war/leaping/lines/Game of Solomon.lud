@@ -19,7 +19,7 @@
 )
 
 (define "MoveChoice" 
-    (or  
+    (or 
         (forEach Piece "Counter" #1
             (then 
                 (if (is In (last To) (sites Mover)) 
@@ -33,8 +33,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Game of Solomon"  
-    (players {(player N) (player S)})  
+(game "Game of Solomon" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board
             (renumber 
@@ -42,11 +42,11 @@
             )
             use:Vertex
         ) 
-        (piece "Counter" Each)  
+        (piece "Counter" Each) 
         (piece "DoubleCounter" Each)
         (regions "Palace1" P1 (sites {"E7"})) 
         (regions "Palace2" P2 (sites {"E1"})) 
-    })  
+    }) 
     
     (rules 
         (start {
@@ -98,7 +98,7 @@
         (show RegionOwner)
         (show Edges Diagonal Hidden)
         
-    })      
+    })   
     
     (ai
         "Game of Solomon_ai"

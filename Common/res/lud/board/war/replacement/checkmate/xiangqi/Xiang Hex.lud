@@ -26,7 +26,7 @@
 //------------------------------------------------------------------------------
 
 (game "Xiang Hex" 
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (renumber Cell (rotate 90 (remove (hex Rectangle 9 11) cells:{0 1 11 21 63 74 85 84 94 93 83 73 31 20 9 10}))))
         
@@ -103,7 +103,7 @@
                     Orthogonal 
                     (between 
                         before:(count Rows) 
-                        after:(count Rows)  
+                        after:(count Rows) 
                         if:(not (is Empty (between)))
                     )
                     (to 
@@ -112,7 +112,7 @@
                             if:("IsEnemyAt" (to)) 
                             (remove (to))
                         )
-                    )  
+                    ) 
                 ) 
             )
         )
@@ -137,7 +137,7 @@
         (regions "PalaceP2" P2 { 66 70 71 74 76 77 78 })
         (regions "Home" P1 (forEach (sites Board) if:(< (site) 37)))
         (regions "Home" P2 (forEach (sites Board) if:(> (site) 41)))
-    })  
+    }) 
     
     (rules 
         (start { 

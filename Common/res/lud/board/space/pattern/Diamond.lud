@@ -40,8 +40,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Diamond"  
-    (players 2)  
+(game "Diamond" 
+    (players 2) 
     (equipment { 
         (board 
             (rotate 90 (tiling T33434 3))
@@ -74,7 +74,7 @@
         (hand Each)
         (regions P1 {(sites Side W) (sites Side E) })
         (regions P2 {(sites Side N) (sites Side S) })
-    })  
+    }) 
     (rules
         (meta (swap))
         

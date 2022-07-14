@@ -4,7 +4,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "58 Holes"  
+(game "58 Holes" 
     (players 2) 
     (equipment { 
         "HoundsAndJackalsBoard"
@@ -15,7 +15,7 @@
         (piece "Marker" Each
             (if (= "MoveTo" (trackSite EndSite))
                 "RemovePiece"
-                (if ("IsNotOffBoard" "MoveTo")  	 			
+                (if ("IsNotOffBoard" "MoveTo") 	 			
                     (if (is Empty "MoveTo")
                         (move 
                             (from) 
@@ -29,7 +29,7 @@
         
         // Connected sites.
         (map {(pair 5 19) (pair 7 9) (pair 34 48) (pair 36 38) })
-    })  
+    }) 
     (rules 
         (start {
             (place "Marker1" (handSite P1) count:5)
@@ -45,7 +45,7 @@
 
 (option "Variant" <Variant> args:{ <carnarvon> }
     {
-    (item  "Carnarvon and Carter"  <> "Rules from Carnarvon and Carter.")* 
+    (item "Carnarvon and Carter" <> "Rules from Carnarvon and Carter.")* 
     }
 )
 

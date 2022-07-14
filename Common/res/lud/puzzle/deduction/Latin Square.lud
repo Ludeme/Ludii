@@ -1,9 +1,9 @@
-(game "Latin Square"  
-    (players 1)  
+(game "Latin Square" 
+    (players 1) 
     (equipment { 
         (board (square <Size>) (values Cell (range 1 <Size>))) 
         (regions {Columns Rows})
-    })  
+    }) 
     (rules 
         (play (satisfy (all Different)))
         (end (if (is Solved) (result P1 Win)))
@@ -12,9 +12,9 @@
 
 //------------------------------------------------------------------------------
 
-(option "Board Size" <Size> args:{ <size>  }
+(option "Board Size" <Size> args:{ <size> }
     {
-    (item "2x2" <2> "")  
+    (item "2x2" <2> "") 
     (item "3x3" <3> "")
     (item "4x4" <4> "")
     (item "5x5" <5> "")**

@@ -8,23 +8,23 @@
         (mancalaBoard 2 6
             (track "Track" "1,E,N,W" loop:True)
         )
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
         (piece "Seed" Shared)
-    })  
+    }) 
     
     (rules 
-        (start (set Count 4 to:(sites Track)))		  
+        (start (set Count 4 to:(sites Track)))		 
         (play 
-            (do  
+            (do 
                 (move Select 
                     (from 
                         (sites Mover) 
                         if:(< 0 (count at:(from)))
                     )
                     (then 
-                        (sow  
+                        (sow 
                             if:(and 
                                 (is In (to) (sites Next)) 
                                 (or 
@@ -67,7 +67,7 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Cabo Verde, from around 2006 to 2017.")
+        (origin "This game was played in Cabo Verde, from around 2006 to 2017.")
         }
     )
     

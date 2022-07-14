@@ -58,7 +58,7 @@
                 if:(<= (count Pieces Player) 2)
                 (result Player Loss)
             )
-            (if (is Line 3 All) (result Mover Win))
+            ("Line3Win" All)
         }) 
     )
 )

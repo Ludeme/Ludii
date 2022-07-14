@@ -16,7 +16,7 @@
 )
 
 (define "CanMove2PiecesFromHucke" 
-    (if (and (and (!= ("Die1") 1) (!= ("Die2") 1)) (<= 2 (count Pieces Mover in:(sites {  ("HuckeSite") }))))
+    (if (and (and (!= ("Die1") 1) (!= ("Die2") 1)) (<= 2 (count Pieces Mover in:(sites { ("HuckeSite") }))))
         (if (= ("Die1") ("Die2"))
             (not ("IsEnemyAt" ("NextSiteFrom" ("HuckeSite") "Track" ("Die2"))))
             (and 
@@ -196,8 +196,8 @@
 
 (option "Start Rules" <Pieces> args:{ <num> }
     {
-    (item "15"  <15>  "Each player has 15 pieces.")   
-    (item "16"  <16>  "Each player has 16 pieces.")   
+    (item "15" <15> "Each player has 15 pieces.")  
+    (item "16" <16> "Each player has 16 pieces.")  
 })
 
 //------------------------------------------------------------------------------
@@ -225,7 +225,7 @@
         (version "1.3.4")
         (classification "board/race/escape")
         (credit "Eric Piette")
-        (origin  "This game was played in Germany, around 1853.")
+        (origin "This game was played in Germany, around 1853.")
         }
     )
     

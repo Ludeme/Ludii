@@ -165,8 +165,8 @@
                 (move Hop 
                     Orthogonal 
                     (between 
-                        before:(count Rows)  
-                        after:(count Rows)  
+                        before:(count Rows) 
+                        after:(count Rows) 
                         if:("IsFriendAt" (between))
                     )
                     (to 
@@ -175,7 +175,7 @@
                             if:("EnemyNotKing" (to)) 
                             ("RemoveEnemyPiece")
                         )
-                    )  
+                    ) 
                 ) 
             )
         )
@@ -284,7 +284,7 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/xiangqi")
         (credit "Eric Piette")
-        (origin  "This game was played in China, from around 1039 to 1647.")
+        (origin "This game was played in China, from around 1039 to 1647.")
         }
     )
     

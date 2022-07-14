@@ -12,20 +12,20 @@
 
 //------------------------------------------------------------------------------
 
-(game "Tic-Tac-Chess"  
-    (players 2)  
+(game "Tic-Tac-Chess" 
+    (players 2) 
     (equipment { 
         (board (square 3)) 
         (hand Each size:3)
         (piece "Queen" Each (or ("HopOpponent") (move Slide All)))
-        (piece "King"  Each (or ("HopOpponent") ("StepToEmpty")))
-        (piece "Rook"  Each (or ("HopOpponent") (move Slide Orthogonal)))
-    })  
+        (piece "King" Each (or ("HopOpponent") ("StepToEmpty")))
+        (piece "Rook" Each (or ("HopOpponent") (move Slide Orthogonal)))
+    }) 
     (rules 
         (start { 
             (place "Queen" "Hand")
-            (place "King"  "Hand")
-            (place "Rook"  "Hand")
+            (place "King" "Hand")
+            (place "Rook" "Hand")
         })
         
         phases:{
@@ -39,7 +39,7 @@
         )
         }
         
-        (end (if (is Line 3 Mover) (result Mover Win)))
+        (end ("Line3Win" Mover))
     )
 )
 

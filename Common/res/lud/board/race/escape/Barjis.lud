@@ -14,8 +14,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Barjis"  
-    (players 4)  
+(game "Barjis" 
+    (players 4) 
     (equipment { 
         ("PachisiBoard" 
             {
@@ -48,7 +48,7 @@
         )
         (map "Throw" {(pair 0 6) (pair 1 10) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 25) (pair 6 12)})
         (regions "SafeSites" (sites {60 62 16 48 87 89 37 2}))
-    })  
+    }) 
     (rules 
         (start (place "Pawn" "Hand" count:4))
         (play 
@@ -79,7 +79,7 @@
         (version "1.3.4")
         (classification "board/race/escape")
         (credit "Eric Piette")
-        (origin  "This game was played in Palestine, around 1951.")
+        (origin "This game was played in Palestine, around 1951.")
         }
     )
     

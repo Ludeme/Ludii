@@ -7,7 +7,7 @@
         (if ("IsEnemyAt" (ahead (last To) ("Direction" (last To))))
             (moveAgain)
         )
-    )    
+    )  
 )
 
 (define "Slide" 
@@ -16,7 +16,7 @@
         (between (exact #1))
         (to if:(is Empty (to)))
         #2
-    )    
+    )  
 )
 
 (define "MoveThree"
@@ -52,7 +52,7 @@
 //------------------------------------------------------------------------------
 
 (game "Squadro"
-    (players {(player E) (player S)})  
+    (players {(player E) (player S)}) 
     (equipment {
         (board 
             (remove 
@@ -94,7 +94,7 @@
         })
         
         (play 
-            (if ("SameTurn")    
+            (if ("SameTurn")  
                 (move Hop
                     (from (last To))
                     (between 

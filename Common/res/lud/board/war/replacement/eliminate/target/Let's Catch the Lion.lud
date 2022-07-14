@@ -18,7 +18,7 @@
         #1
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
-    )   	
+    )  	
 )
 
 (define "InLastRank"
@@ -32,7 +32,7 @@
 //------------------------------------------------------------------------------
 
 (game "Let's Catch the Lion"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment {
         (board (rectangle 4 3))
         (tile "Giraffe" Each ("StepMove" Orthogonal))
@@ -75,7 +75,7 @@
             (place "Elephant1" coord:"A1") (place "Elephant2" coord:"C4")
         })
         (play 
-            (or  
+            (or 
                 (move 
                     (from (sites Occupied by:Mover container:"Hand" components:{"Giraffe" "Chick" "Elephant"})) 
                     (to (sites Empty))

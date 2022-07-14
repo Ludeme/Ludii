@@ -3,7 +3,7 @@
 //------------------------------------------------------------------------------
 
 (game "Epelle"
-    (players 2)  
+    (players 2) 
     (equipment 
         { 
         ("AlquerqueBoard" 3)
@@ -11,7 +11,7 @@
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-    )  
+    ) 
     (rules 
         (start { 
             (place "Marker1" (sites P1)) 
@@ -27,7 +27,7 @@
                 ) 
                 (result Mover Win)
             )
-        )  
+        ) 
     )
 )
 
@@ -44,7 +44,7 @@
         (version "1.3.4")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in Nigeria, around 1951.")
+        (origin "This game was played in Nigeria, around 1951.")
         }
     )
     

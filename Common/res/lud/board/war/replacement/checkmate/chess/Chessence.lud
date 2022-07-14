@@ -15,8 +15,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Chessence"  
-    (players 2)  
+(game "Chessence" 
+    (players 2) 
     (equipment { 
         (board (rectangle 9 6)) 
         (piece "Pawn" Each
@@ -76,7 +76,7 @@
         (regions "BlackenedSquares" (sites {"A2" "B3" "B5" "C6" "D4" "E5" "E7" "F8"}))
         (regions "PawnStart" P1 (sites {"E1" "E2" "F2" "D2" "D3" "E3"}))
         (regions "PawnStart" P2 (sites {"B9" "B8" "A8" "C8" "C7" "B7"}))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Pawn" "Hand" count:3)
@@ -102,7 +102,7 @@
         )
         
         (end {
-            (if  (and 
+            (if (and 
                     ("IsInCheck" "King" Next)
                     ("NextCanNotMove")
                 )

@@ -10,13 +10,12 @@
 
 //------------------------------------------------------------------------------
 
-(game "Quantum Leap"  
+(game "Quantum Leap" 
     (players 2) 
     (equipment { 
         (board (hex 5))
         (piece "Marker" Each 
-            (move
-                Hop 
+            (move Hop 
                 Orthogonal 
                 (between 
                     (exact (- "DistanceToMove" 1))
@@ -28,7 +27,7 @@
                 )
             )
         )
-    })  
+    }) 
     (rules 
         (start {
             (place "Marker2" (centrePoint))
@@ -51,11 +50,9 @@
             )
             (nextPhase "Play")		
         )
-        (phase "Play"
-            (play (forEach Piece))		
-        )
+        (phase "Play" (play (forEach Piece)))
         }
-        (end ("NoMoves" Loss))  
+        (end ("NoMoves" Loss)) 
     )
 )
 

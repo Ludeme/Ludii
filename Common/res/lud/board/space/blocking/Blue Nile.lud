@@ -1,6 +1,5 @@
 (define "AdjacentNotEmptySites"
-    (sites 
-        Around 
+    (sites Around 
         (to) 
         if:(not (is In (to) (sites Empty)))
     )
@@ -9,12 +8,11 @@
 //------------------------------------------------------------------------------
 
 (game "Blue Nile" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (hex 5)) 
         (piece "Marker" Neutral) 
-        }
-    )  
+    }) 
     
     (rules 
         
@@ -24,16 +22,15 @@
             (nextPhase "play")
         )
         
-        (phase "play"     
+        (phase "play"   
             (play 
-                (move 
-                    Add 
+                (move Add 
                     (piece "Marker0") 
                     (to 
                         (sites Around 
                             (last To) 
                             if:(and 
-                                (is Empty (to))  
+                                (is Empty (to)) 
                                 // not adjacent to any other piece except the last one placed.
                                 ("NoSites" (difference ("AdjacentNotEmptySites") (last To)))
                             ) 
@@ -44,7 +41,7 @@
         )
         }
         
-        (end ("NoMoves" Loss))  
+        (end ("NoMoves" Loss)) 
     )
 )
 

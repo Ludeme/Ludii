@@ -17,42 +17,38 @@
 
 //-----------------------------------------------------------------------------------
 
-(game "Pippinzip (Zipline variant)"  
-    (players 2)  
+(game "Pippinzip (Zipline variant)" 
+    (players 2) 
     (equipment { 
         (board (square <Board:size>) use:Vertex) 
         (piece "Disc" Each) 
-    })  
+    }) 
     (rules 
-        phases: {
+        phases:{
         (phase "Opening"
             (play
                 (or
-                    
                     (or
-                        (move 
-                            Add (piece (id "Disc" P2)) (to (sites Empty))
-                        (then (if (< (count MovesThisTurn) 2) (moveAgain))))
+                        (move Add 
+                            (piece (id "Disc" P2)) 
+                            (to (sites Empty))
+                            (then (if (< (count MovesThisTurn) 2) (moveAgain)))
+                        )
                         "Skip"
                     )
                     (if (= (count MovesThisTurn) 0)
-                        (move
-                            Pass
+                        (move Pass
                             (then
                                 (if
                                     (is Mover P1)
-                                    (swap
-                                        Players
-                                        P1
-                                        P2
+                                    (swap Players P1 P2
                                         (then
                                             (note "Player 1 is now White. Player 2 is now Black." to:All)
                                         )
                                     )
                                     (note "Player 1 is now Black. Player 2 is now White." to:All)
                                     (then
-                                        (do
-                                            (set NextPlayer (player 1))
+                                        (do (set NextPlayer (player 1))
                                             next:(set Var 1) // (var) represents the phase here
                                         )
                                     )
@@ -90,22 +86,22 @@
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> }
-    {   
-    (item "5"    <5>  "Played on a size 5 board.")   
-    (item "6"    <6>  "Played on a size 6 board.")   
-    (item "7"    <7>  "Played on a size 7 board.")   
-    (item "8"    <8>  "Played on a size 8 board.")   
-    (item "9"    <9>  "Played on a size 9 board.")   
-    (item "10"  <10>  "Played on a size 10 board.")   
-    (item "11"  <11>  "Played on a size 11 board.")   
-    (item "12"  <12>  "Played on a size 12 board.")   
-    (item "13"  <13>  "Played on a size 13 board.")**   
-    (item "14"  <14>  "Played on a size 14 board.")   
-    (item "15"  <15>  "Played on a size 15 board.")   
-    (item "16"  <16>  "Played on a size 16 board.")   
-    (item "17"  <17>  "Played on a size 17 board.")   
-    (item "18"  <18>  "Played on a size 18 board.")   
-    (item "19"  <19>  "Played on a size 19 board.")   
+    {  
+    (item "5"  <5> "Played on a size 5 board.")  
+    (item "6"  <6> "Played on a size 6 board.")  
+    (item "7"  <7> "Played on a size 7 board.")  
+    (item "8"  <8> "Played on a size 8 board.")  
+    (item "9"  <9> "Played on a size 9 board.")  
+    (item "10" <10> "Played on a size 10 board.")  
+    (item "11" <11> "Played on a size 11 board.")  
+    (item "12" <12> "Played on a size 12 board.")  
+    (item "13" <13> "Played on a size 13 board.")**  
+    (item "14" <14> "Played on a size 14 board.")  
+    (item "15" <15> "Played on a size 15 board.")  
+    (item "16" <16> "Played on a size 16 board.")  
+    (item "17" <17> "Played on a size 17 board.")  
+    (item "18" <18> "Played on a size 18 board.")  
+    (item "19" <19> "Played on a size 19 board.")  
     }
 )
 
@@ -115,10 +111,10 @@
     
     (info
         {
-        (description "Pippinzip is a square-board connection game for two players.  This is the 'Zipline' variant, and these rules are 'Freestyle', where there are no restrictions on the placement of Black's stones.  The game starts with a chicken ballot phase similar to Unlur, in which players both place 1-3 White stones per turn until one decides to pass their turn and take White.  Subsequently, White places one stone per turn, and Black places two stones per turn.  The Black player ('Pip') wins if they connect any two sides of the board with a single orthogonally-connected group of stones.  The White player ('Zip') wins if they connect all four sides of the board with a single group connected both orthogonally and diagonally.")
-        (rules "This game is played on a square grid board of any size, though 13x13 or 19x19 are recommended. Then the players take it in turns to place 1-3 White stones each turn until one decides to pass; that player then becomes White, and the other becomes Black.  After that, Black places two stones per turn on any empty point, while White places just one White stone per turn.  If Black connects any two sides of the board with a single orthogonally-connected group, they win; White wins if they connect all four sides with a group connected either orthogonally or diagonally.
+        (description "Pippinzip is a square-board connection game for two players. This is the 'Zipline' variant, and these rules are 'Freestyle', where there are no restrictions on the placement of Black's stones. The game starts with a chicken ballot phase similar to Unlur, in which players both place 1-3 White stones per turn until one decides to pass their turn and take White. Subsequently, White places one stone per turn, and Black places two stones per turn. The Black player ('Pip') wins if they connect any two sides of the board with a single orthogonally-connected group of stones. The White player ('Zip') wins if they connect all four sides of the board with a single group connected both orthogonally and diagonally.")
+        (rules "This game is played on a square grid board of any size, though 13x13 or 19x19 are recommended. Then the players take it in turns to place 1-3 White stones each turn until one decides to pass; that player then becomes White, and the other becomes Black. After that, Black places two stones per turn on any empty point, while White places just one White stone per turn. If Black connects any two sides of the board with a single orthogonally-connected group, they win; White wins if they connect all four sides with a group connected either orthogonally or diagonally.
             
-        During the initial chicken ballot phase, you may add stones by clicking on available spaces, or skip the rest of your placements (by choosing the Next Player action).  Alternatively, you may Pass at the start of your turn to take White.  After that, play continues with White playing one stone and Black playing two, until one player forms a connection (draws are impossible).")
+        During the initial chicken ballot phase, you may add stones by clicking on available spaces, or skip the rest of your placements (by choosing the Next Player action). Alternatively, you may Pass at the start of your turn to take White. After that, play continues with White playing one stone and Black playing two, until one player forms a connection (draws are impossible).")
         (id "1405")
         (source "<a href=\"https://boardgamegeek.com/boardgame/298409/pippinzip\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
         (version "1.3.4")
@@ -133,7 +129,7 @@
         (board Style Go)
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
-    })   
+    })  
     (ai
         "Pippinzip (Zipline variant)_ai"
     )

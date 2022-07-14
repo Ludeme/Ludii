@@ -79,8 +79,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Fischer Random Chess"  
-    (players {(player N) (player S)})  
+(game "Fischer Random Chess" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -156,7 +156,7 @@
         )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Rook1" (sites Random (difference (sites Bottom) (expand (sites Right)))) state:1)
@@ -240,13 +240,13 @@
                                                         (if (< (column of:(where "King" Mover)) (column of:(coord "C1")))
                                                             E
                                                             W
-                                                        )  
+                                                        ) 
                                                         (between 
-                                                            (exact (count Steps (coord "C1") (where "King" Mover)))  
+                                                            (exact (count Steps (coord "C1") (where "King" Mover))) 
                                                             if:(and 
                                                                 (or (is Empty (to)) (= (to) (site)))
                                                                 (not ("IsInCheck" "King" Mover at:(to)))
-                                                            )   
+                                                            )  
                                                         ) 
                                                         (to 
                                                             if:True
@@ -309,13 +309,13 @@
                                                         (if (< (column of:(where "King" Mover)) (column of:(coord "G1")))
                                                             E
                                                             W
-                                                        )  
+                                                        ) 
                                                         (between 
-                                                            (exact (count Steps (coord "G1") (where "King" Mover)))  
+                                                            (exact (count Steps (coord "G1") (where "King" Mover))) 
                                                             if:(and 
                                                                 (or (is Empty (to)) (= (to) (site)))
                                                                 (not ("IsInCheck" "King" Mover at:(to)))
-                                                            )   
+                                                            )  
                                                         ) 
                                                         (to 
                                                             if:True
@@ -385,13 +385,13 @@
                                                         (if (< (column of:(where "King" Mover)) (column of:(coord "G8")))
                                                             E
                                                             W
-                                                        )  
+                                                        ) 
                                                         (between 
-                                                            (exact (count Steps (coord "G8") (where "King" Mover)))  
+                                                            (exact (count Steps (coord "G8") (where "King" Mover))) 
                                                             if:(and 
                                                                 (or (is Empty (to)) (= (to) (site)))
                                                                 (not ("IsInCheck" "King" Mover at:(to)))
-                                                            )   
+                                                            )  
                                                         ) 
                                                         (to 
                                                             if:True
@@ -454,13 +454,13 @@
                                                         (if (< (column of:(where "King" Mover)) (column of:(coord "C8")))
                                                             E
                                                             W
-                                                        )  
+                                                        ) 
                                                         (between 
-                                                            (exact (count Steps (coord "C8") (where "King" Mover)))  
+                                                            (exact (count Steps (coord "C8") (where "King" Mover))) 
                                                             if:(and 
                                                                 (or (is Empty (to)) (= (to) (site)))
                                                                 (not ("IsInCheck" "King" Mover at:(to)))
-                                                            )   
+                                                            )  
                                                         ) 
                                                         (to 
                                                             if:True

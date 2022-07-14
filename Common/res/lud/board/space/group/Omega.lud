@@ -1,13 +1,12 @@
-(game "Omega"  
-    (players <Version:numPlayers>)  
+(game "Omega" 
+    (players <Version:numPlayers>) 
     (equipment { 
         (board (hex <Board>))
         (piece "Marker" Each) 
-    })  
+    }) 
     (rules 
         (play 
-            (move 
-                Add 
+            (move Add 
                 (piece (+ 1 (% (count Moves) (count Players)))) 
                 (to (sites Empty)) 
                 (then 
@@ -41,35 +40,36 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "4x4"    <4>    "The game is played on a 4x4 board")  
-    (item "5x5"    <5>    "The game is played on a 5x5 board")*   
-    (item "6x6"    <6>    "The game is played on a 6x6 board")   
-    (item "7x7"    <7>    "The game is played on a 7x7 board")   
-    (item "8x8"    <8>    "The game is played on a 8x8 board")   
-    (item "9x9"    <9>    "The game is played on a 9x9 board")   
-    (item "10x10"  <10>   "The game is played on a 10x10 board")   
+    (item "4x4"  <4>  "The game is played on a 4x4 board") 
+    (item "5x5"  <5>  "The game is played on a 5x5 board")*  
+    (item "6x6"  <6>  "The game is played on a 6x6 board")  
+    (item "7x7"  <7>  "The game is played on a 7x7 board")  
+    (item "8x8"  <8>  "The game is played on a 8x8 board")  
+    (item "9x9"  <9>  "The game is played on a 9x9 board")  
+    (item "10x10" <10>  "The game is played on a 10x10 board")  
 })
 
 (option "Players" <Version> args:{ <numPlayers> <gameScore> <endScore>}
     {
-    (item "2"  
+    (item "2" 
         <2> 
     	<(and (set Score P1 (* (sizes Group P1))) (set Score P2 (* (sizes Group P2))))>  
-        <{(score P1 (* (sizes Group P1))) (score P2 (* (sizes Group P2)))}>  
+        <{(score P1 (* (sizes Group P1))) (score P2 (* (sizes Group P2)))}> 
         "The version of the game played with 2 players."
-    )*  
+    )* 
     
-    (item "3"  
+    (item "3" 
         <3> 
 	<(and {(set Score P1 (* (sizes Group P1))) (set Score P2 (* (sizes Group P2))) (set Score P3 (* (sizes Group P3)))})>  
         <{(score P1 (* (sizes Group P1))) (score P2 (* (sizes Group P2))) (score P3 (* (sizes Group P3)))}>  
         "The version of the game played with 3 players."
     ) 
     
-    (item "4"  
+    (item "4" 
         <4> 
 	<(and {(set Score P1 (* (sizes Group P1))) (set Score P2 (* (sizes Group P2))) (set Score P3 (* (sizes Group P3))) (set Score P4 (* (sizes Group P4)))})>  
         <{(score P1 (* (sizes Group P1))) (score P2 (* (sizes Group P2))) (score P3 (* (sizes Group P3))) (score P4 (* (sizes Group P4)))}>  
+
         "The version of the game played with 4 players."
     ) 
     

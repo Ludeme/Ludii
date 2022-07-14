@@ -12,8 +12,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Pasit"  
-    (players 4)  
+(game "Pasit" 
+    (players 4) 
     (equipment { 
         ("PachisiBoard"
             {
@@ -53,7 +53,7 @@
         (map "Throw" {(pair 0 6) (pair 1 10) (pair 2 2) (pair 3 3) (pair 4 5) (pair 5 25) (pair 6 12)})
         (map "Entry" {(pair P1 8) (pair P2 42) (pair P3 53) (pair P4 11)})
         (regions "SafeSites" (sites {63 65 15 47 84 86 38 3}))
-    })  
+    }) 
     (rules 
         (start {
             (place Stack "Pawn1" (handSite P1) count:4)
@@ -118,7 +118,7 @@
         (version "1.3.4")
         (classification "board/race/reach")
         (credit "Eric Piette")
-        (origin  "This game was played in Myanmar, around 1882.")
+        (origin "This game was played in Myanmar, around 1882.")
         }
     )
     

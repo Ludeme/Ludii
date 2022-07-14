@@ -56,8 +56,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Ceelkoqyuqkoqiji"  
-    (players 2)  
+(game "Ceelkoqyuqkoqiji" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns" largeStack:True
@@ -67,11 +67,11 @@
         (piece "Ball" P1)
         (piece "Ball" P2)
         (hand Each size:2)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-        (map {(pair P1 LastSite) (pair P2 FirstSite)})  // kalahs (storage pits)
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+        (map {(pair P1 LastSite) (pair P2 FirstSite)}) // kalahs (storage pits)
         (regions "EndHoles" (sites {0 (+ 1 (* 2 ("Columns")))}))
-    })  
+    }) 
     (rules 
         
         (start {
@@ -383,7 +383,7 @@
 
 (option "Board Size" <Row> args:{ <size> <tracks> <conditionBetweenRounds>}
     {
-    (item "5"   <5>  
+    (item "5"  <5> 
         <
         {
         (track "TrackCCW" "0,1,E,11,10,W" loop:True)
@@ -393,8 +393,8 @@
         <
         (or (= 8 (count Cell at:(handSite Mover))) (= 9 (count Cell at:(handSite Mover))))
         >
-    "Each row has 5 holes.")*   
-    (item "7"   <7>  
+    "Each row has 5 holes.")*  
+    (item "7"  <7> 
         <
         {
         (track "TrackCCW" "0,1,E,15,14,W" loop:True)
@@ -404,13 +404,13 @@
         <
         (or {(= 13 (count Cell at:(handSite Mover))) (= 12 (count Cell at:(handSite Mover))) (= 11 (count Cell at:(handSite Mover)))})
         >
-    "Each row has 7 holes.")   
+    "Each row has 7 holes.")  
 })
 
 (option "Play Rules" <Row> args:{ <size> }
     {
-    (item "5"   <5>  "The price of the largest stone is .")   
-    (item "7"   <7>  "The price of the largest stone is 7.")*  
+    (item "5"  <5> "The price of the largest stone is .")  
+    (item "7"  <7> "The price of the largest stone is 7.")* 
 })
 
 //------------------------------------------------------------------------------
@@ -432,7 +432,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Ceelkoqyuqkoqiji is a two-row mancala-style board game documented in Yunnan Province, China by Vernon Eagle. It was described to him by He Hao, Li Qiulan, and Wang Qiaoxin.")

@@ -5,8 +5,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Ovalhu"  
-    (players 2)  
+(game "Ovalhu" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns"
@@ -16,10 +16,10 @@
             }
         )
         (piece "Seed" Shared)
-        (map {(pair P1 LastSite) (pair P2 FirstSite)})  // kalahs (storage pits)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-    })  
+        (map {(pair P1 LastSite) (pair P2 FirstSite)}) // kalahs (storage pits)
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+    }) 
     (rules 
         
         (start {
@@ -106,7 +106,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Ovalhu is a two-row mancala-style board game played in the Maldives.")
@@ -116,7 +116,7 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Maldives, around 2000.")
+        (origin "This game was played in Maldives, around 2000.")
         }
     )
     

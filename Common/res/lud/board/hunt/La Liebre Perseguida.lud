@@ -5,7 +5,7 @@
 //------------------------------------------------------------------------------
 
 (game "La Liebre Perseguida"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board 
             (rotate 90 ("ThreeMenMorrisGraphWithLeftAndRightTriangles"))
@@ -22,7 +22,7 @@
         )
         (regions "Home" P2 (sites {"B1" "C2" "A2"}))
         (regions "Home" P1 (sites {"B2"}))
-    })  
+    }) 
     
     (rules 
         (start {
@@ -50,7 +50,7 @@
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in Spain, from around 1901 to 1904.")
+        (origin "This game was played in Spain, from around 1901 to 1904.")
         }
     )
     

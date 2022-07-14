@@ -1,14 +1,14 @@
-(game "Sudoku Mine"  
-    (players 1)  
+(game "Sudoku Mine" 
+    (players 1) 
     (equipment { 
         (board (square <Challenge:size>) (values Cell (range 0 1)))
         (hints { <Challenge:hints> })
         (regions {Columns Rows})
         (piece "Bomb" P1)
-    })  
+    }) 
     (rules 
         (play 
-            (satisfy  {
+            (satisfy {
                 (forAll
                     Hint 
                     (is Count 
@@ -43,7 +43,7 @@
         (hint 72 1) (hint 73 1) (hint 75 1)
         >
         ""
-    )   
+    )  
 })
 
 //------------------------------------------------------------------------------

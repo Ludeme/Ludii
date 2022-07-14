@@ -1,5 +1,5 @@
 (define "MoveOfThePiece" 
-    (or  
+    (or 
         (move
             Hop
             (from) 
@@ -13,13 +13,13 @@
 
 //------------------------------------------------------------------------------
 
-(game "Insanity"  
-    (players 1)  
+(game "Insanity" 
+    (players 1) 
     (equipment { 
         (board (rectangle 1 10)) 
         (piece "Marker1" P1 E "MoveOfThePiece") 
         (piece "Marker2" P1 W "MoveOfThePiece") 
-    })  
+    }) 
     (rules
         (start {
             (place "Marker1" (expand (sites Left) steps:3))

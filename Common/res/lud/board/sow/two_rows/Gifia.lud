@@ -13,8 +13,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Gifia"  
-    (players 2)  
+(game "Gifia" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 4
@@ -23,11 +23,11 @@
             (track "TrackCW" "4,W,N,E" loop:True)
             }
         )
-        (regions P1 (difference (expand (sites Left) steps:2) (sites Left)))   // P1 home
+        (regions P1 (difference (expand (sites Left) steps:2) (sites Left)))  // P1 home
         (regions P2 (difference (expand (sites Right) steps:2) (sites Right))) // P2 home
-        (map {(pair P1 FirstSite) (pair P2 LastSite)})                         // kalahs (storage pits)
+        (map {(pair P1 FirstSite) (pair P2 LastSite)})             // kalahs (storage pits)
         (piece "Seed" Shared)
-    })  
+    }) 
     (rules 
         
         (start (set Count 6 to:(sites Track)))
@@ -198,7 +198,7 @@
                     )
                     (then
                         (if ("OneSingleCounterPerPlayer")
-                            (and  
+                            (and 
                                 (forEach Site (sites P1)
                                     (fromTo
                                         (from (site))
@@ -250,7 +250,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Gifia is a two-row mancala-style board game that was played in the early twentieth century in Nigeria. ")

@@ -92,7 +92,7 @@
 //------------------------------------------------------------------------------
 
 (game "Moo" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (square 8)) 
         (piece "Counter" P1 N)
@@ -102,11 +102,11 @@
         (regions P2 (sites Top))
         (regions "MarkedCell" (sites Phase 0))
         }
-    )  
+    ) 
     (rules 
         (start
             { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ))
+            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1) ))
             (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1)))
             }
         )
@@ -182,7 +182,7 @@
         (version "1.3.4")
         (classification "board/war/leaping/diagonal")
         (credit "Eric Piette")
-        (origin  "This game was played in Hawai'i, around 1865.")
+        (origin "This game was played in Hawai'i, around 1865.")
         }
     )
     

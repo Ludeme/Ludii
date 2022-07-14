@@ -55,8 +55,8 @@
         (move Hop 
             Orthogonal 
             (between 
-                before:(count Rows)  
-                after:(count Rows)  
+                before:(count Rows) 
+                after:(count Rows) 
                 if:(not (is Empty (between)))
             )
             (to 
@@ -65,7 +65,7 @@
                     if:("IsEnemyAt" (to)) 
                     (remove (to))
                 )
-            )  
+            ) 
         ) 
     ) 
 ) 
@@ -83,7 +83,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "Manzhouqi"  
+(game "Manzhouqi" 
     (players {(player N) (player S)}) 
     (equipment { 
         (board (rectangle 10 9) use:Vertex)
@@ -147,7 +147,7 @@
         (regions "PalaceP2" P2 { 66..68 75..77 84..86 })
         (regions "Home" P1 (expand (sites Bottom) steps:4))
         (regions "Home" P2 (expand (sites Top) steps:4))
-    })  
+    }) 
     
     (rules 
         (start { 
@@ -188,7 +188,7 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/xiangqi")
         (credit "Eric Piette")
-        (origin  "This game was played in Manchuria, from around 1869 to 1912.")
+        (origin "This game was played in Manchuria, from around 1869 to 1912.")
         }
     )
     

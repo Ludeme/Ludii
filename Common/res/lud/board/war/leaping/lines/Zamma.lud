@@ -1,4 +1,4 @@
-(define "PromoteIfBorderReached"  
+(define "PromoteIfBorderReached" 
     (if (is In (last To) (sites Next))
         (move Promote (last To) (piece "DiscDouble") Mover)
     )
@@ -35,10 +35,10 @@
     )
 )
 
-(define "HasCaptured"  (set Value Mover 0))
+(define "HasCaptured" (set Value Mover 0))
 (define "HasNotCaptured" (set Value Mover 1))
-(define "DidNotCaptured"  (= (value Player Prev) 1))
-(define "RememberSiteWithPossibleCapture"  
+(define "DidNotCaptured" (= (value Player Prev) 1))
+(define "RememberSiteWithPossibleCapture" 
     (set Pending 
         (sites From
             (or 
@@ -71,7 +71,7 @@
             if:(!= (what at:(from)) 0)
         )
         (then 
-            (and  {
+            (and {
                 (remove (last To)) 
                 (moveAgain) 
                 (set Value Prev 0)
@@ -82,14 +82,14 @@
 
 (define "ShouldCapturedButMoved" 
     (and 
-        (is In (last From) ("SitesWithPossibleCaptureInPreviousTurn"))  
+        (is In (last From) ("SitesWithPossibleCaptureInPreviousTurn")) 
         (is In (last From) (sites Empty))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Zamma"  
+(game "Zamma" 
     (players {(player N) (player S)})
     (equipment { 
         ("AlquerqueBoard" 9 9)
@@ -113,7 +113,7 @@
         )
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-    })  
+    }) 
     
     (rules 
         (start { 
@@ -156,7 +156,7 @@
         (version "1.3.4")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in North Africa, around 1950.")
+        (origin "This game was played in North Africa, around 1950.")
         }
     )
     

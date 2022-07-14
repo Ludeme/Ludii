@@ -1,10 +1,10 @@
-(game "Graph Test - Tiling3464 (Custom Triangle)"  
-    (players 2)  
+(game "Graph Test - Tiling3464 (Custom Triangle)" 
+    (players 2) 
     (equipment { 
         (board (tiling T3464 { 1 9 })) 
         (piece "Disc" P1) 
         (piece "Cross" P2) 
-    })  
+    }) 
     (rules 
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
@@ -24,7 +24,7 @@
         (version "0.9.3")
         (classification "board/space/line")
         (credit "Cameron Browne 31/5/2020")
-        (origin  "This game was played in England, from around 1850CE to 1883CE.")
+        (origin "This game was played in England, from around 1850CE to 1883CE.")
         }
     )
 )

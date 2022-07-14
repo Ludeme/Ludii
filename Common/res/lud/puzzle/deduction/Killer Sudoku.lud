@@ -1,11 +1,11 @@
 (game "Killer Sudoku"
-    (players 1)  
+    (players 1) 
     (equipment { 
         (board (square 9) (values Cell (range 1 9))) 
         <Challenge>
         (regions {Columns Rows SubGrids})
         (regions "RegionHint" HintRegions)
-    })  
+    }) 
     (rules 
         (play
             (satisfy {
@@ -19,7 +19,7 @@
 
 //------------------------------------------------------------------------------
 
-(option "Challenge" <Challenge> args:{ <hints>  }
+(option "Challenge" <Challenge> args:{ <hints> }
     {
     (item "Wikipedia" 
         <
@@ -57,7 +57,7 @@
             }
         )>
         ""
-    )   
+    )  
 })
 
 //------------------------------------------------------------------------------

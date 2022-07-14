@@ -1,12 +1,12 @@
-(game "Okwe (Igbo)"  
-    (players 2)  
+(game "Okwe (Igbo)" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 6 store:None [#])
         (piece "Seed" Shared)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-    })  
+    }) 
     (rules 
         
         (start [#])
@@ -19,7 +19,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Okwe is a name used for mancala-style board games in West Arica. This game was played by the Edo people, using seeds as counters.")
@@ -28,7 +28,7 @@
         (id "227")
         (version "1.3.2")
         (classification "board/sow/two rows/reconstruction")
-        (origin  "This game was played in Nigeria, around 1926.")
+        (origin "This game was played in Nigeria, around 1926.")
         }
     )
     

@@ -19,8 +19,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "SurakartaSquareTest"  
-    (players 2)  
+(game "SurakartaSquareTest" 
+    (players 2) 
     (equipment { 
         (surakartaBoard (square 5) loops:1 from:2) 
         
@@ -30,7 +30,7 @@
                 ("SlideToCapture")						
             })
         )
-    })  
+    }) 
     (rules 
         (start {
             (place "Marker1" (expand (sites Bottom)))

@@ -9,7 +9,7 @@
                     ) 
                     (do 
                         (move 
-                            (from (sites Occupied by:Next container:"Hand" component:"Fuhyo" )) 
+                            (from (sites Occupied by:Next container:"Hand" component:"Fuhyo")) 
                             (to (difference (sites Empty) (sites Next "Promotion"))
                                 if:("OnePawnPerColumn" Next)
                             ) 
@@ -74,7 +74,7 @@
         #1 
         (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
-    )   	
+    )  	
 )
 
 (define "StepMove"
@@ -83,15 +83,15 @@
         #1
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
-    )   	
+    )  	
 )
 
 (define "GoldMove" ("StepMove" (directions {Forward Backward Rightward Leftward FL FR})))
 
 //------------------------------------------------------------------------------
 
-(game "Minishogi"  
-    (players {(player N) (player S)})  
+(game "Minishogi" 
+    (players {(player N) (player S)}) 
     
     (equipment { 
         (board (square 5))
@@ -152,7 +152,7 @@
         })
         (map "Promoted" { 
             (pair (id "Fuhyo" P1) (id "Tokin" P1)) (pair (id "Fuhyo" P2) (id "Tokin" P2)) 
-            (pair (id "Ginsho" P1) (id "Narigin" P1)) (pair (id "Ginsho" P2) (id "Narigin" P2))  
+            (pair (id "Ginsho" P1) (id "Narigin" P1)) (pair (id "Ginsho" P2) (id "Narigin" P2)) 
             (pair (id "Hisha" P1) (id "Ryuo" P1)) (pair (id "Hisha" P2) (id "Ryuo" P2)) 
             (pair (id "Kakugyo" P1) (id "Ryuma" P1)) (pair (id "Kakugyo" P2) (id "Ryuma" P2)) 
         })
@@ -180,7 +180,7 @@
                         ) 
                         (do 
                             (move 
-                                (from (sites Occupied by:Mover container:"Hand" component:"Fuhyo" )) 
+                                (from (sites Occupied by:Mover container:"Hand" component:"Fuhyo")) 
                                 (to (difference (sites Empty) (sites Mover "Promotion"))
                                     if:("OnePawnPerColumn" Mover)
                                 ) 
@@ -213,7 +213,7 @@
         (classification "board/war/replacement/checkmate/shogi")
         (author "Shigenobu Kusumoto")
         (credit "Eric Piette")
-        (origin  "This game is from Japan, on 1970.")
+        (origin "This game is from Japan, on 1970.")
         }
     )
     

@@ -114,7 +114,7 @@
 
 //----------------------------------------------------------------
 
-(game "Grande Acedrex"  
+(game "Grande Acedrex" 
     (players {(player N) (player S)})
     (equipment {
         (board (square 12))
@@ -153,10 +153,10 @@
                 (from)
                 (to
                     (union {
-                        ("RhinoMovement" N (directions  {NE NW})) 
-                        ("RhinoMovement" W (directions  {NW SW})) 
-                        ("RhinoMovement" S (directions  {SW SE})) 
-                        ("RhinoMovement" E (directions  {SE NE})) 
+                        ("RhinoMovement" N (directions {NE NW})) 
+                        ("RhinoMovement" W (directions {NW SW})) 
+                        ("RhinoMovement" S (directions {SW SE})) 
+                        ("RhinoMovement" E (directions {SE NE})) 
                     })
                     (apply 
                         if:("IsEnemyAt" (to))
@@ -204,12 +204,12 @@
             (place "Pawn2" (sites Row 8)) (place "Rook2" (sites {"A12" "L12"}))
             (place "Lion2" (sites {"B12" "K12"})) (place "Rhino2" (sites {"C12" "J12"}))
             (place "Giraffe2" (sites {"D12" "I12"})) (place "Crocodile2" (sites {"E12" "H12"}))
-            (place "Eagle2" coord:"F12")  (place "King2" coord:"G12" state:1)
+            (place "Eagle2" coord:"F12") (place "King2" coord:"G12" state:1)
         })
         (play
             <Variant:movement>
         )
-        (end             
+        (end       
             (if (and 
                     ("IsInCheck" "King" Next (forEach Piece))
                     ("NextCanNotMove")
@@ -240,7 +240,7 @@
             ifAfterwards:(not ("IsInCheck" "King" Mover))
         )
         > 
-    "The rules of Alfonso X without dice.")*   
+    "The rules of Alfonso X without dice.")*  
     (item "With Dice" 
         <
         (dice d:8 num:1) 
@@ -275,7 +275,7 @@
             ifAfterwards:(not ("IsInCheck" "King" Mover (forEach Piece)))
         )
         > 
-    "The rules of Alfonso X with a die.")   
+    "The rules of Alfonso X with a die.")  
 })
 
 //------------------------------------------------

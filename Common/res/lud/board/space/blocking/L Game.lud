@@ -7,25 +7,21 @@
 
 //------------------------------------------------------------------------------
 
-(game "L Game"  
-    (players 2)  
-    (equipment 
-        { 
+(game "L Game" 
+    (players 2) 
+    (equipment { 
         (board (square 4)) 
         (piece "Dot" Neutral) 
         (tile "L" Each "LWalk") 
-        }
-    )  
+    }) 
     (rules 
-        (start 
-            { 
+        (start { 
             (place "Dot0" {"A4" "D1"})
             (place "L1" coord:"C1" state:0)
             (place "L2" coord:"B4" state:2)
-            }
-        )
+        })
         (play
-            (if "SameTurn"
+            (if ("SameTurn")
                 (or
                     (move Pass)
                     (move 
@@ -43,11 +39,11 @@
         
         (end 
             (if 
-                "CanNotMoveALPiece"  
+                "CanNotMoveALPiece" 
                 (result Mover Win) 
             ) 
         ) 
-    )  
+    ) 
 )
 
 //------------------------------------------------------------------------------

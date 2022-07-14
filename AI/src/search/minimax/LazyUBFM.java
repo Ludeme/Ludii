@@ -57,6 +57,10 @@ public class LazyUBFM extends UBFM
 	float actionLogitComputations;
 	float estimatedActionLogitMean;
 	
+	/** For the AI visualisation data: */
+	float maxRegisteredValue;
+	float minRegisteredValue;
+	
 	//-------------------------------------------------------------------------
 	
 	/** Variables not actually used for the reasoning: */
@@ -157,7 +161,6 @@ public class LazyUBFM extends UBFM
 		final long stopTime
 	)
 	{
-
 		final State state = context.state();
 		final int mover = state.playerToAgent(state.mover());
 		final Game game = context.game();
@@ -165,7 +168,7 @@ public class LazyUBFM extends UBFM
 		final float heuristicScore = getContextValue(context, maximisingPlayer, nodeHashes, mover);
 		
 		if (savingSearchTreeDescription)
-			searchTreeOutput.append("("+stringOfnodeHashes(nodeHashes)+","+Float.toString(heuristicScore)+","+((mover==maximisingPlayer)? 1:2)+"),\n");
+			searchTreeOutput.append("("+stringOfNodeHashes(nodeHashes)+","+Float.toString(heuristicScore)+","+((mover==maximisingPlayer)? 1:2)+"),\n");
 		
 		final int numLegalMoves = legalMoves.size();
 		final FVector moveScores = new FVector(numLegalMoves);
@@ -262,8 +265,12 @@ public class LazyUBFM extends UBFM
 		}
 		
 		if (firstTurn)
+		{
 			// Uses the classical UBFM approach on the first turn.
-			return super.estimateMoveValues(legalMoves, context, maximisingPlayer, nodeHashes, depth, stopTime);
+			final FVector res = super.estimateMoveValues(legalMoves, context, maximisingPlayer, nodeHashes, depth, stopTime);
+		
+			return res;
+		}
 		else
 		{
 			final int sign = (maximisingPlayer == mover)? 1 : -1 ;
@@ -276,8 +283,12 @@ public class LazyUBFM extends UBFM
 						System.out.printf("action score is %.6g and heuristicScore is %.6g ",moveScores.get(i),heuristicScore);
 				
 				// (*2 because the maximal gap is half of the range)
-				moveScores.set(i, (actionEvaluationWeight * (moveScores.get(i)-estimatedActionLogitMean) * sign * estimatedHeuristicScoresRange * 2)  /  estimatedActionLogitRange);
-				moveScores.set(i,moveScores.get(i)  +  heuristicScore);
+				float actionScore = (actionEvaluationWeight * (moveScores.get(i)-estimatedActionLogitMean) * sign * estimatedHeuristicScoresRange * 2)  /  estimatedActionLogitRange;
+				
+				moveScores.set(i, heuristicScore + actionScore);
+				
+				maxRegisteredValue = Math.max(heuristicScore + actionScore, maxRegisteredValue);
+				minRegisteredValue = Math.min(heuristicScore + actionScore, minRegisteredValue);
 				
 				if (debugDisplay)
 					if (r<0.05)
@@ -317,6 +328,8 @@ public class LazyUBFM extends UBFM
 		actionLogitSum = 0;
 		maxActionLogit = Float.NEGATIVE_INFINITY;
 		minActionLogit = Float.POSITIVE_INFINITY;
+		maxRegisteredValue = Float.NEGATIVE_INFINITY;
+		minRegisteredValue = Float.POSITIVE_INFINITY;
 		
 		return;
 	}
@@ -408,6 +421,32 @@ public class LazyUBFM extends UBFM
 			return false;
 		
 		return ((game.metadata().ai().features() != null) || (game.metadata().ai().trainedFeatureTrees() != null));
+	}
+	
+	//-------------------------------------------------------------------------
+
+	/**
+	 * Converts a score into a value estimate in [-1, 1]. Useful for visualisations.
+	 * 
+	 * @param score
+	 * @param alpha 
+	 * @param beta 
+	 * @return Value estimate in [-1, 1] from unbounded (heuristic) score.
+	 */
+	public double scoreToValueEst(final float score, final float alpha, final float beta)
+	{
+		if (score <= alpha+10)
+			return -1.0;
+		
+		if (score >= beta-10)
+			return 1.0;
+		
+		minRegisteredValue = Math.min(minRegisteredValue, minHeuristicEval);
+		maxRegisteredValue = Math.max(maxRegisteredValue, maxHeuristicEval);
+
+		// Map to range [-0.8, 0.8] based on most extreme heuristic evaluations
+		// observed so far.
+		return -0.8 + (0.8 - -0.8) * ((score - minRegisteredValue) / (maxRegisteredValue - minRegisteredValue));
 	}
 	
 	//-------------------------------------------------------------------------

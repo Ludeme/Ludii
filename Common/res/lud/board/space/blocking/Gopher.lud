@@ -34,12 +34,7 @@
                 )
             )
         )
-        (end 
-            (if 
-                (no Moves Next) 
-                (result Next Loss)
-            )
-        )
+        (end ("NoMoves" Loss))
     )
 )
 

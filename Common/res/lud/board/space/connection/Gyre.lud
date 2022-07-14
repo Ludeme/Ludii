@@ -1,18 +1,12 @@
 (game "Gyre"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (hex <Board>))
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
         (meta (swap))
-        (play
-            (move Add
-                (to (sites Empty))
-            )        
-        )
+        (play (move Add (to (sites Empty))))
         (end 
             (if 
                 (>=
@@ -46,7 +40,7 @@
                                         )
                                     )
                                 )
-                            )   
+                            )  
                         )
                     )
                 )
@@ -60,11 +54,11 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "5"    <5>  "A size 5 board is currently selected")
-    (item "6"    <6>  "A size 6 board is currently selected")
-    (item "7"    <7>  "A size 7 board is currently selected")*
-    (item "8"    <8>  "A size 8 board is currently selected")
-    (item "9"    <9>  "A size 9 board is currently selected")
+    (item "5"  <5> "A size 5 board is currently selected")
+    (item "6"  <6> "A size 6 board is currently selected")
+    (item "7"  <7> "A size 7 board is currently selected")*
+    (item "8"  <8> "A size 8 board is currently selected")
+    (item "9"  <9> "A size 9 board is currently selected")
     }
 )
 

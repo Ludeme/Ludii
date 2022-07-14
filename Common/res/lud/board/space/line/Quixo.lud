@@ -61,8 +61,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Quixo"  
-    (players 2)  
+(game "Quixo" 
+    (players 2) 
     (equipment { 
         (board (square 5)) 
         (piece "Disc" P1) 
@@ -70,7 +70,7 @@
         (piece "Square" Neutral)
         (hand Each)
         }
-    )  
+    ) 
     
     (rules 
         (start (place "Square0" (sites Board)))
@@ -87,7 +87,7 @@
         )
         (end {
             (if (is Line 5 throughAny:(sites LastTo) what:(next)) (result Next Win))
-            (if (is Line 5 throughAny:(sites LastTo)  what:(mover)) (result Mover Win))
+            (if (is Line 5 throughAny:(sites LastTo) what:(mover)) (result Mover Win))
             }
         )
     )

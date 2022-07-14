@@ -1,22 +1,22 @@
-(game "Two-Colour"  
+(game "Two-Colour" 
     (players 2) 
     (equipment { 
         (board <Board:type> use:Vertex)
-        (piece "Marker" Each)   
-    })  
+        (piece "Marker" Each)  
+    }) 
     (rules 
-        (play             
+        (play       
             (or
                 (move
                     Add
-                    (to (sites Empty))   
+                    (to (sites Empty))  
                     (then 
-                        (if (= 1 (size Group at:(last To)))  
-                            (addScore Mover 1)     
+                        (if (= 1 (size Group at:(last To))) 
+                            (addScore Mover 1)   
                         )
-                    )                    
+                    )          
                 )
-                (move Pass)	           
+                (move Pass)	      
             )
         )
         (end
@@ -31,13 +31,13 @@
 
 (option "Board" <Board> args:{ <type> <start> }
     {
-    (item "Graph1"             
+    (item "Graph1"       
         <
         (graph
             vertices:{
             {6 0} {3 1} {5 1} {8 1} {4 4} {7 4} {10 4} {0 6} {5 6} {8 6} {10 6}
             {12 6} {2 7} {4 7} {7 7} {10 8} {14 8} {3 10} {7 10} {1 11} {4 12} 
-            {7 12} {10 11} {10 13} {12 12} {3 5} {6 7}}                 
+            {7 12} {10 11} {10 13} {12 12} {3 5} {6 7}}         
             edges:{
             {0 2} {1 4} {2 4} {4 8} {5 8} {8 14} {8 13} {13 17} {12 17} 
             {12 7} {17 19} {17 20} {13 18} {18 21} {18 22} {22 23} {22 24} {22 15} 
@@ -45,10 +45,10 @@
             {19 20} {13 21} {23 24} {9 10} {15 16} {7 1} {14 9} {5 6} {2 6} {25 3}
             {5 25} {7 26} {20 25} {24 23} {26 7} {26 9} {26 17} {14 23} {14 24} {14 16} }
         )
-        >        
+        >    
         ""
-    )   
-    (item "Graph2"             
+    )  
+    (item "Graph2"       
         <
         (graph
             vertices:{ 
@@ -64,11 +64,11 @@
             {16 17} {17 22} {21 22} {17 18} {18 23} {22 23} {18 19} {18 24} 
             {19 23} {19 24} {23 24}}
         )
-        >        
+        >    
         ""
-    )**    
+    )**  
     
-    (item "Graph3"             
+    (item "Graph3"       
         <
         (graph
             vertices:{ 
@@ -79,14 +79,14 @@
             {5 11} {10 11} {11 16} {6 12} {6 7} {7 8} {8 9} {9 14} {14 15} {8 13} 
             {13 12} {12 16} {13 17} {14 17} {16 18} {18 17} {18 19} {10 19} {15 19}}
         )
-        >        
+        >    
         ""
-    )      
+    )   
 })
 
 //------------------------------------------------------------------------------
 
-(metadata    
+(metadata  
     (info
         {
         (description "Two-Colour is a 2-player graph theory game. It can be played on any graph. 
@@ -107,7 +107,7 @@
         (player Colour P2 (colour Blue))
         (show Edges Diagonal Hidden)
         
-    })    
+    })  
     (ai
         "Two-Colour_ai"
     )

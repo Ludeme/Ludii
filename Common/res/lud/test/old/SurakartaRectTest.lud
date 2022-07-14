@@ -19,8 +19,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "SurakartaRectTest"  
-    (players 2)  
+(game "SurakartaRectTest" 
+    (players 2) 
     (equipment { 
         (surakartaBoard (rect 5 7)) 
         
@@ -30,7 +30,7 @@
                 ("SlideToCapture")						
             })
         )
-    })  
+    }) 
     (rules 
         (start {
             (place "Marker1" (expand (sites Bottom)))

@@ -23,14 +23,14 @@
 
 //------------------------------------------------------------------------------
 
-(game "Grasshopper"  
-    (players 2)  
+(game "Grasshopper" 
+    (players 2) 
     (equipment { 
         (board <Board:size>) 
         (piece "Counter" Each)
         <Board:home>
         (map {(pair P1 P2) (pair P2 P1)})
-    })  
+    }) 
     (rules 
         (start { 
             (place "Counter1" (sites P1))
@@ -38,7 +38,7 @@
         })
         
         phases:{
-        (phase "Movement"  
+        (phase "Movement" 
             (play 
                 (forEach Piece 
                     (or 
@@ -80,15 +80,15 @@
     {
     (item "8x8" 
         <(square 8)>
-        <  
+        < 
         (regions "Home" P1 (expand origin:(coord "A1") steps:3 Orthogonal))
         (regions "Home" P2 (expand origin:(coord "H8") steps:3 Orthogonal))
         >
         "The game is played on a board 8x8."
-    )*   
-    (item "10x10"    
+    )*  
+    (item "10x10"  
         <(square 10)>
-        <  
+        < 
         (regions "Home" P1 (expand origin:(coord "A1") steps:4 Orthogonal))
         (regions "Home" P2 (expand origin:(coord "J10") steps:4 Orthogonal))
         >

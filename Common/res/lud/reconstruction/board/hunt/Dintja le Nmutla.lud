@@ -1,10 +1,10 @@
 (game "Dintja le Nmutla"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment {
         (board [#]) // The board is a grid of vertical and horizontal lines
         (piece "Hound" P1 (move [#])) // Move only forward.
         (piece "Rabbit" P2 (move [#])) // Move forward and backward.
-    })  
+    }) 
     (rules
         (start [#])
         (play [#])

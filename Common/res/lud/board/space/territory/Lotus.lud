@@ -6,7 +6,7 @@
         Orthogonal 
         (between 
             if:("IsEnemyAt" (between)) 
-            (apply             
+            (apply       
                 (and 
                     (remove (between)) 
                     (add (to (between))) 
@@ -18,13 +18,13 @@
 
 //------------------------------------------------------------------------------
 
-(game "Lotus"  
+(game "Lotus" 
     (players 2) 
     (equipment { 
         (board (rotate 90 (tiling T3464 2)) use:Vertex)
         (piece "Marker" Each)
         }
-    )  
+    ) 
     
     (rules 
         (play 

@@ -1,6 +1,6 @@
 
 (game "TestHaretavl"
-    (players 2)  
+    (players 2) 
     (equipment 
         {
         (board
@@ -16,7 +16,7 @@
         (piece "Dog" P2 "StepToEmpty") 
         (hand Each)
         }
-    )  
+    ) 
     (rules 
         (start 
             { 
@@ -54,8 +54,8 @@
         }
         >
         "The First player moves only when all the pieces are placed."
-    )*   
-    (item "White moves only when his piece is placed"    
+    )*  
+    (item "White moves only when his piece is placed"  
         <
         phases:{
         (phase "Placement"

@@ -16,13 +16,13 @@
 
 //------------------------------------------------------------------------------
 
-(game "Reversi Competition"  
-    (players 2)  
+(game "Reversi Competition" 
+    (players 2) 
     (equipment { 
         (board (square <Board:size>))
         (piece "Disc" Neutral (flips 1 2))
         }
-    )  
+    ) 
     (rules 
         
         <Rules:start> 
@@ -64,15 +64,15 @@
 
 (option "Start Rules" <Rules> args:{ <start> <play> }
     {
-    (item "Fixed Start"      
-        <   (start { 
+    (item "Fixed Start"   
+        <  (start { 
             (place "Disc0" (difference (sites Centre) (sites Phase 1)) state:1)
             (place "Disc0" (difference (sites Centre) (sites Phase 0)) state:2)
         })
         >
         <>
         "The pieces are placed on the board."
-    )**   
+    )**  
     
     (item "Not Fixed Start" 
         <>
@@ -108,14 +108,14 @@
     (item "4x4" <4> "The board is a square board of size 4x4.") 
     (item "6x6" <6> "The board is a square board of size 6x6.")**
     (item "8x8" <8> "The board is a square board of size 8x8.")
-    (item "10x10" <10> "The board is a square board of size 10x10.")  
-    (item "12x12" <12> "The board is a square board of size 12x12.")  
-    (item "14x14" <14> "The board is a square board of size 14x14.")  
-    (item "16x16" <16> "The board is a square board of size 16x16.")  
-    (item "18x18" <18> "The board is a square board of size 18x18.")  
-    (item "20x20" <20> "The board is a square board of size 20x20.")  
-    (item "22x22" <22> "The board is a square board of size 22x22.")  
-    (item "24x24" <24> "The board is a square board of size 24x24.")  
+    (item "10x10" <10> "The board is a square board of size 10x10.") 
+    (item "12x12" <12> "The board is a square board of size 12x12.") 
+    (item "14x14" <14> "The board is a square board of size 14x14.") 
+    (item "16x16" <16> "The board is a square board of size 16x16.") 
+    (item "18x18" <18> "The board is a square board of size 18x18.") 
+    (item "20x20" <20> "The board is a square board of size 20x20.") 
+    (item "22x22" <22> "The board is a square board of size 22x22.") 
+    (item "24x24" <24> "The board is a square board of size 24x24.") 
 })
 
 //------------------------------------------------------------------------------

@@ -1,5 +1,5 @@
-(game "Dajam"  
-    (players 4)  
+(game "Dajam" 
+    (players 4) 
     (equipment { 
         (board 
             (add
@@ -17,7 +17,7 @@
         (hand Each) 
         (dice d:2 from:0 num:[#])
         (piece "Pawn" Each) 
-    })  
+    }) 
     (rules 
         (start [#])
         (play [#]) // The number of mouths up equals the value of the throw; no mouths up = 12

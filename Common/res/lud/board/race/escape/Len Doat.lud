@@ -63,7 +63,7 @@
                 (shift 0 3.5 (rectangle 3 5))
                 (shift 7.5 3.5 (rectangle 3 5))
             })
-            {    
+            {  
             (track "Track1" "20,E,N,W,14,W,S,E,44,W,S,E,45,E,N,W,15,E,N1,W,End" P1 directed:True)
             (track "Track2" "39,W,S,E,45,E,N,W,15,E,N,W,14,W,S,E,44,W,S1,E,End" P2 directed:True)
             }
@@ -73,7 +73,7 @@
         (piece "Marker" Each
             (if ("IsEndTrack" "SiteToMoveOnTrack")
                 "RemoveAPiece"
-                (if ("IsNotOffBoard" "SiteToMoveOnTrack")  	 			
+                (if ("IsNotOffBoard" "SiteToMoveOnTrack") 	 			
                     (if (if
                             (not ("IsEnemyAt" "SiteToMoveOnTrack"))
                             True
@@ -135,7 +135,7 @@
         (version "1.3.4")
         (classification "board/race/escape")
         (credit "Eric Piette")
-        (origin  "This game was played in THailand, around 1836.")
+        (origin "This game was played in THailand, around 1836.")
         }
     )
     

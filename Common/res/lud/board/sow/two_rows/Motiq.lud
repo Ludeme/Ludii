@@ -3,7 +3,7 @@
 (define "OneRowIsEmpty"
     (or
         (all Sites (sites P1) if:(= 0 (count at:(site))))
-        (all Sites (sites P2)  if:(= 0 (count at:(site))))
+        (all Sites (sites P2) if:(= 0 (count at:(site))))
     )
 )
 (define "OwnedHoles" 
@@ -22,8 +22,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Motiq"  
-    (players 2)  
+(game "Motiq" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 7 store:None
@@ -33,7 +33,7 @@
         (regions "Home" P2 (sites Top)) 
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     (rules 
         (start {
             (set Count 4 to:(sites Track)) 
@@ -143,7 +143,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Motiq is a two-row mancala-style board game played by the Kédang people on the island of Lembata in Indonesia. ")

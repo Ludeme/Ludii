@@ -1,5 +1,5 @@
 (game "Shanzak Kammar"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board 
             (add
@@ -11,7 +11,7 @@
         (piece "Marker" Each (or "StepToEmpty" "HopCapture"))
         (regions "Goal" P1 (expand (sites Top)))
         (regions "Goal" P2 (expand (sites Bottom)))
-    })  
+    }) 
     (rules 
         (start {
             (place "Marker1" (expand (sites Bottom) steps:3))
@@ -38,7 +38,7 @@
         (version "1.3.4")
         (classification "board/race/fill")
         (credit "Eric Piette")
-        (origin  "This game was played in Central Asia, around 1893.")
+        (origin "This game was played in Central Asia, around 1893.")
         }
     )
     

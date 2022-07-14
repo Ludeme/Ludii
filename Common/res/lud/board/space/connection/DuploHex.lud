@@ -10,18 +10,17 @@
                         (= (what at:(to)) (id "Ring2"))
                     )
                 )
-                (then (promote (last To) (piece "DoubleCounter") Mover ))
+                (then (promote (last To) (piece "DoubleCounter") Mover))
             )
         )
         (piece "Ring" Each
             (move Step 
-                (to if:
-                    (or 
+                (to if:(or 
                         (= (what at:(to)) (id "Disc1"))
                         (= (what at:(to)) (id "Disc2"))
                     )
                 )
-                (then (promote (last To) (piece "DoubleCounter") Mover ))
+                (then (promote (last To) (piece "DoubleCounter") Mover))
             )
         )
         (hand Each size:2)

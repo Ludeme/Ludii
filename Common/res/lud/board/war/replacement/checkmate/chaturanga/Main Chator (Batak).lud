@@ -43,7 +43,7 @@
 //------------------------------------------------------------------------------
 
 (game "Main Chator (Batak)"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment {
         (board (square 8))
         (piece "King_noCross"
@@ -181,7 +181,7 @@
         )
     })
     (rules 
-        (start {   
+        (start {  
             (place "Pawn1" (sites Row 1))
             (place "Pawn2" (sites Row 6))
             (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Bishop_noCross1" {"C1" "F1"}) (place "Queen1" coord:"E1") (place "King_noCross1" coord:"D1") 
@@ -214,13 +214,13 @@
     (info
         {
         (description "Main Chator is a replacement capture game played throughout Malaysia and Indonesia. This version is played by the Batak people of Sumatra, which has a unique potential first move for the king piece. ")
-        (rules "8x8 board, with diagonals in every square. Pieces have special moves, as follows: Raja (king), moves one square in any direction, but on the first move, it may jump two squares or move as a knight, with the exception that it cannot jump two squares diagonally; Mantri (minister), moves orthogonally or diagonally any number of spaces; Gajah (x2); move diagonally any distance; Kuda (horse) x2, moves orthogonally one space then diagonal one space from there, jumping over any intervening pieces; Ter/Chemor (chariot) x2, moves orthogonally any distance; Bídaq (pawn) x8: moves one square forward or one square forward diagonally to capture. May move two spaces forward orthogonally if it is that piece's first move. Upon reaching the opposite edge of the board, the Bídaq moves in the opposite direction, reversing again if it reaches the opposite edge.  The Mantri is placed to the right of the Raja at the beginning of play. Castling occurs in two moves, the rook moving to the king and then the king jumping over the rook. Pieces are captured by moving onto a space occupied by an opponent's piece. If the Raja can be captured on its next turn, it is in check. The Raja cannot be in check at the end of its turn. When this is unavoidable, it is checkmate and the opponent wins. A stalemate is considered a draw.")
+        (rules "8x8 board, with diagonals in every square. Pieces have special moves, as follows: Raja (king), moves one square in any direction, but on the first move, it may jump two squares or move as a knight, with the exception that it cannot jump two squares diagonally; Mantri (minister), moves orthogonally or diagonally any number of spaces; Gajah (x2); move diagonally any distance; Kuda (horse) x2, moves orthogonally one space then diagonal one space from there, jumping over any intervening pieces; Ter/Chemor (chariot) x2, moves orthogonally any distance; Bídaq (pawn) x8: moves one square forward or one square forward diagonally to capture. May move two spaces forward orthogonally if it is that piece's first move. Upon reaching the opposite edge of the board, the Bídaq moves in the opposite direction, reversing again if it reaches the opposite edge. The Mantri is placed to the right of the Raja at the beginning of play. Castling occurs in two moves, the rook moving to the king and then the king jumping over the rook. Pieces are captured by moving onto a space occupied by an opponent's piece. If the Raja can be captured on its next turn, it is in check. The Raja cannot be in check at the end of its turn. When this is unavoidable, it is checkmate and the opponent wins. A stalemate is considered a draw.")
         (source "von Oefele 1904.")
         (id "1467")
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in Indonesia, around 1904.")
+        (origin "This game was played in Indonesia, around 1904.")
         }
     )
     

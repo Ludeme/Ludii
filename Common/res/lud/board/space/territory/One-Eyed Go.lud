@@ -6,7 +6,7 @@
         Orthogonal 
         (between 
             if:("IsEnemyAt" (between)) 
-            (apply             
+            (apply       
                 (and 
                     (addScore Mover 1) 
                     (remove (between)) 
@@ -18,7 +18,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "One-Eyed Go"  
+(game "One-Eyed Go" 
     (players 2) 
     (equipment 
         { 
@@ -28,9 +28,9 @@
     )
     
     (rules 
-        //        (meta
-            //            (no Repeat)
-        //        )
+        //    (meta
+            //      (no Repeat)
+        //    )
         (play 
             (or
                 (do
@@ -63,10 +63,10 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "9x9"      <(square 9)>     "The game is played on a 9x9 board")   
-    (item "13x13"    <(square 13)>    "The game is played on a 13x13 board")   
-    (item "15x15"    <(square 15)>    "The game is played on a 15x15 board")   
-    (item "19x19"    <(square 19)>    "The game is played on a 19x19 board")**   
+    (item "9x9"   <(square 9)>   "The game is played on a 9x9 board")  
+    (item "13x13"  <(square 13)>  "The game is played on a 13x13 board")  
+    (item "15x15"  <(square 15)>  "The game is played on a 15x15 board")  
+    (item "19x19"  <(square 19)>  "The game is played on a 19x19 board")**  
 })
 
 //------------------------------------------------------------------------------

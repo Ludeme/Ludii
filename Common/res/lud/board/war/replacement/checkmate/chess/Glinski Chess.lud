@@ -119,8 +119,8 @@
 
 //----------------------------------------
 // Pawn Movement: En passant
-//   - Save skipped-over spaces in Pending
-//   - Save location of last-moved Pawn in Var.
+//  - Save skipped-over spaces in Pending
+//  - Save location of last-moved Pawn in Var.
 // Note: Counter is reset in (piece "Pawn" ...).
 //----------------------------------------
 
@@ -162,9 +162,9 @@
         {
         (board (rotate 90 (hex 6)))
         
-        (piece "King"   Each ("KingCaptureStep"  All ~))
-        (piece "Queen"  Each ("SlideCaptureMove" All ~))
-        (piece "Rook"   Each ("SlideCaptureMove" Orthogonal ~))
+        (piece "King"  Each ("KingCaptureStep" All ~))
+        (piece "Queen" Each ("SlideCaptureMove" All ~))
+        (piece "Rook"  Each ("SlideCaptureMove" Orthogonal ~))
         (piece "Bishop" Each ("SlideCaptureMove" Diagonal ~))
         (piece "Knight" Each (move Leap
                 "KnightWalk"
@@ -195,8 +195,8 @@
         (regions "PromotionZone" P1 (union (sites Side NW) (sites Side NE)))
         (regions "PromotionZone" P2 (union (sites Side SW) (sites Side SE)))
         
-        (regions "Region-Dark"   (sites Phase 0))
-        (regions "Region-Light"  (sites Phase 2))
+        (regions "Region-Dark"  (sites Phase 0))
+        (regions "Region-Light" (sites Phase 2))
         (regions "Region-Medium" (sites Phase 1))
         }
     )
@@ -314,8 +314,8 @@
         (piece Scale "Rook" 0.8)
         (board Style Chess)
         
-        (region Colour "Region-Dark"   (colour "#b5651d"))
-        (region Colour "Region-Light"  (colour "#fff8dc"))
+        (region Colour "Region-Dark"  (colour "#b5651d"))
+        (region Colour "Region-Light" (colour "#fff8dc"))
         (region Colour "Region-Medium" (colour "#daae7c"))
     })
     

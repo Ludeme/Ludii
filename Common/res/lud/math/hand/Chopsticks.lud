@@ -1,12 +1,12 @@
 (game "Chopsticks"
-    (players 2)  
+    (players 2) 
     (equipment 
         { 
         (board (square 2))
         (piece "Hand" Each)
         (piece "HandFlip" Each)
         }
-    )  
+    ) 
     (rules 
         (start { 
             (place "HandFlip1" coord:"A1" state:1) 

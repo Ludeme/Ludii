@@ -1,10 +1,10 @@
-(game "Wolf and Sheep"  
-    (players 2)  
+(game "Wolf and Sheep" 
+    (players 2) 
     (equipment { 
         (board (square 8)) 
         (piece "Sheep" P1 N ("StepToEmpty" (directions {FR FL}))) 
         (piece "Wolf" P2 "StepDiagonalToEmpty")
-    })  
+    }) 
     (rules 
         (start { 
             (place "Wolf2" {"D8"})
@@ -16,7 +16,7 @@
         (end {
             (if (and (no Moves P2) (is Mover P2)) (result P1 Win))
             (if (is In (where "Wolf" P2) (sites Bottom)) (result P2 Win))
-        })  
+        }) 
     )
 )
 

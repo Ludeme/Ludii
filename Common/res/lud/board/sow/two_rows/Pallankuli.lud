@@ -3,7 +3,7 @@
 (define "OneRowIsEmpty"
     (or
         (all Sites (sites Bottom) if:(= 0 (count at:(site))))
-        (all Sites (sites Top)  if:(= 0 (count at:(site))))
+        (all Sites (sites Top) if:(= 0 (count at:(site))))
     )
 )
 (define "LeftMostEmpty" 
@@ -16,19 +16,19 @@
 
 //------------------------------------------------------------------------------
 
-(game "Pallankuli"  
-    (players 2)  
+(game "Pallankuli" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 7 store:None
             (track "Track" "0,E,N,W" loop:True)
         )
         (piece "Seed" Shared)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
         (map "LeftMost" {(pair P1 0) (pair P2 13)})
         (hand Each)
-    })  
+    }) 
     (rules 
         (start { 
             (set Count 6 to:(sites Track)) 
@@ -147,7 +147,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Pallankuli is a two-row mancala-style board game played primarily by women in South India. Men do play the game, but typically gambled when playing.")

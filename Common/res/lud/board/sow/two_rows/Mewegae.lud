@@ -51,8 +51,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Mewegae"  
-    (players 2)  
+(game "Mewegae" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 6 store:None
@@ -63,10 +63,10 @@
         )
         (piece "Seed" Shared)
         (hand Each)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
         (map "RightMost" {(pair P1 5) (pair P2 6)})
-    })  
+    }) 
     (rules 
         
         (start {
@@ -228,7 +228,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Mewegae is a two-row mancala-style board game played in Eritrea. It contains a simultaneous opening move that is common in games from Eritrea and Ethiopia.")
@@ -239,7 +239,7 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Horn of Africa, around 1971.")
+        (origin "This game was played in Horn of Africa, around 1971.")
         }
     )
     

@@ -12,7 +12,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King_noCross" Mover at:(to)))
-    )   
+    )  
 )
 
 (define "DoubleStep"
@@ -58,8 +58,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Chatrang"  
-    (players {(player N) (player S) (player N) (player S)})  
+(game "Chatrang" 
+    (players {(player N) (player S) (player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -112,7 +112,7 @@
                 ) 
             )
         )
-    })  
+    }) 
     (rules 
         
         (start { 
@@ -174,7 +174,7 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in Pakistan, around 1900.")
+        (origin "This game was played in Pakistan, around 1900.")
         }
     )
     

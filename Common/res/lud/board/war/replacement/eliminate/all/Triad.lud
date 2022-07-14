@@ -22,7 +22,7 @@
 )
 //------------------------------------------------------------------------------
 
-(game "Triad"  
+(game "Triad" 
     (players 3) 
     (equipment { 
         (board (hex 5)) 
@@ -54,7 +54,7 @@
         )
         (map "PlayerPhase" {(pair 1 1) (pair 0 2) (pair 2 3)})
         }
-    )  
+    ) 
     (rules
         (start {
             (place "Marker1" (expand origin:(coord "A5") steps:2))

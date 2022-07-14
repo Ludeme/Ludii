@@ -11,15 +11,23 @@
                             in:(intersection 
                                 (sites Around (to) Orthogonal)
                                 (sites Around (from) Orthogonal)
-            )))))
+                            )
+                        )
+                    )
+                )
+            )
             (to)
-)))
+        )
+    )
+)
 
 (define "HasCrosscuts"
     (< 0 
         (count Sites
             in:("CrosscutSites" #1)
-)))
+        )
+    )
+)
 
 (define "Place"
     (move Add 
@@ -31,14 +39,19 @@
                     ("HasCrosscuts" (last To))
                 )
                 (set Var "LT" (last To) (then (moveAgain)))
-                (set Var "LT" -1)   
-))))
+                (set Var "LT" -1)  
+            )
+        )
+    )
+)
 
 (define "Choose2Resolve"
     (forEach Site (sites Occupied by:Mover)
         (do (set Var "LT" (site)) 
             next:("ResolveTheValue" (var "LT"))
-)))
+        )
+    )
+)
 
 (define "ResolveTheValue"
     (forEach Site
@@ -57,35 +70,38 @@
                     (add 
                         (piece (id "Ball" Next))
                         (to (var "LT"))
-                    )    
+                    )  
                     (set Var "LT" (last To) 
                         (then
                             (if 
                                 ("HasCrosscuts" (var "LT"))
                                 (set NextPlayer (player (mover)))
                                 (set Var "LT" -1)
-                    )))
+                            )
+                        )
+                    )
                     
-)))))
+                )
+            )
+        )
+    )
+)
 
 //-----------------------------------------------
 // Main routine
 
 (game "Resolve"
     (players 2)
-    (equipment
-        {
+    (equipment {
         "SquareGrid"
         (regions P1 {(sites Side N) (sites Side S) }) 
         (regions P2 {(sites Side W) (sites Side E) })
         (piece "Ball" P1)
         (piece "Ball" P2)
-        }
-    )
+    })
     (rules
         (play
-            (if
-                (not ("SameTurn"))
+            (if ("NewTurn")
                 (or
                     ("Place")
                     ("Choose2Resolve")
@@ -94,15 +110,17 @@
                     (<= 0 (var "LT"))
                     ("ResolveTheValue" (var "LT"))
                     ("Place")
-        ))) 
-        (end 
-            {
+                ) 
+            )
+        ) 
+        (end {
             (if 
                 (is Connected Orthogonal Mover) 
                 (result Mover Win)
             )
-            }
-)))
+        })
+    )
+)
 
 //-------------------------------------------------
 // Defines for Options
@@ -130,7 +148,7 @@
     (info
         {
         (description "A square connection game where crosscuts are resolved by swapping stones. Resolve was designed by Alek Erickson in July 2020. The rules were finalized through critical playtesting session with Dale Walton and Luis Bolaños Mures. The game was partly inspired by the swap mechanic from Michael Zapala's Slyde. The original idea for swapping stones to resolve crosscuts can be traced to Phil Leduc's Thruway and Bill Taylor's Swapway as early as 2008, but the notion of a resolving stone where a single stone gets serially swapped to fix cuts in Resolve is novel.")
-        (rules "Resolve is a connection game for two players: a player with Black stones who wins by connecting the East/West sides, and a player with White stones who wins by connecting the North/South sides. Players take turns placing and swapping stones on the intersections of a square grid which is initially empty. Passing is forbidden. Same-colored stones with orthogonal adjacency are connected. The game is over when a player wins by connecting their designated sides of the board with a single group of connected stones of their color, at any time during their turn or their opponent's turn. Cutting stones are any four stones in a generic crosscut configuration.  
+        (rules "Resolve is a connection game for two players: a player with Black stones who wins by connecting the East/West sides, and a player with White stones who wins by connecting the North/South sides. Players take turns placing and swapping stones on the intersections of a square grid which is initially empty. Passing is forbidden. Same-colored stones with orthogonal adjacency are connected. The game is over when a player wins by connecting their designated sides of the board with a single group of connected stones of their color, at any time during their turn or their opponent's turn. Cutting stones are any four stones in a generic crosscut configuration. 
             
             OX
             XO

@@ -19,7 +19,7 @@
 //------------------------------------------------------------------------------
 
 (game "Pleasant Draughts" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (square 8)) 
         (piece "Counter" P1 N)
@@ -28,11 +28,11 @@
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-    )  
+    ) 
     (rules 
         (start
             { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ))
+            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1) ))
             (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1)))
             }
         )
@@ -53,7 +53,7 @@
                     )
                     (move Pass)
                 )
-                (or  
+                (or 
                     (forEach Piece "Counter" 
                         (or
                             ("HopMan" (from) 
@@ -105,7 +105,7 @@
         (version "1.3.4")
         (classification "board/war/leaping/diagonal")
         (credit "Eric Piette")
-        (origin  "This game was played in England, around 1605.")
+        (origin "This game was played in England, around 1605.")
         }
     )
     

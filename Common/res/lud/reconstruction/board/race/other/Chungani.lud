@@ -1,12 +1,12 @@
 (game "Chungani"
-    (players 2)  
+    (players 2) 
     (equipment { 
-        (board (rectangle 1 5) [#]  
+        (board (rectangle 1 5) [#] 
             use:Vertex
         )
         (piece "Bean" Each (move [#]))
         (dice [#])
-    })  
+    }) 
     
     (rules 
         (start [#])
@@ -29,7 +29,7 @@
         (version "1.3.2")
         (classification "board/race/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in South America, from around 1595 to 1653.")
+        (origin "This game was played in South America, from around 1595 to 1653.")
         }
     )
     

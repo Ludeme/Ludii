@@ -25,8 +25,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Viking Chess"  
-    (players {(player N) (player N)})   
+(game "Viking Chess" 
+    (players {(player N) (player N)})  
     (equipment { 
         (board (rectangle 7 12)) 
         
@@ -98,7 +98,7 @@
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Top))
         }
-    )  
+    ) 
     (rules 
         (start
             { 

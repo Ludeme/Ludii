@@ -1,9 +1,9 @@
-(game "First Attack"  
-    (players 2)  
+(game "First Attack" 
+    (players 2) 
     (equipment { 
         (board (square 8))
         (piece "Ball" Shared) 
-    })  
+    }) 
     (rules 
         (play 
             (move Add
@@ -15,11 +15,7 @@
             )
         ) 
         
-        (end 
-            (if (no Moves Next)
-                (result Mover Win)
-            )
-        )
+        (end ("BlockWin"))
     )
 )
 

@@ -1,16 +1,14 @@
 (game "RootZone" 
     (players 2)
-    (equipment
-        {
-        (board (tri <Board:size>)  use:Vertex)
-        (piece "Disc" Each )
+    (equipment {
+        (board (tri <Board:size>) use:Vertex)
+        (piece "Disc" Each)
         (piece "Disc" Neutral)
-        }
-    )
+    })
     (rules 
         (play
-            (if    // want to add that if p1 mover one p2 piece in play option to swap players
-                (= -1 (counter))    
+            (if  // want to add that if p1 mover one p2 piece in play option to swap players
+                (= -1 (counter))  
                 (or 
                     (move Pass)
                     (move Add (piece "Disc0") (to (sites Board)))
@@ -18,8 +16,7 @@
                 (or
                     {
                     (if (= 1 (counter))
-                        (move 
-                            Select 
+                        (move Select 
                             (from (sites Occupied by:Enemy)) 
                             (then 
                                 (remove (last To) 
@@ -33,21 +30,19 @@
                         (to 
                             (difference
                                 (union
-                                    (sites Outer)                             // place on an edge
-                                    (sites Around (sites Occupied by:Mover))  // or next to a friendly piece
+                                    (sites Outer)               // place on an edge
+                                    (sites Around (sites Occupied by:Mover)) // or next to a friendly piece
                                 )
-                                (union
-                                    { 
-                                    (sites Around (sites Occupied by:Enemy))  // but not next to an enemy piece  
-                                    (sites Around "SitesTooDense")            // nor next to pieces with too many neighbors
-                                    (sites Around (sites Occupied by:Neutral))  // but not next to an enemy piece  
-                                    }
-                                )
+                                (union { 
+                                    (sites Around (sites Occupied by:Enemy)) // but not next to an enemy piece 
+                                    (sites Around "SitesTooDense")      // nor next to pieces with too many neighbors
+                                    (sites Around (sites Occupied by:Neutral)) // but not next to an enemy piece 
+                                })
                             )
                             if:(and
-                                (is Empty (to))  // place on empty location
-                                (>=              // with a limit on friendly neighbors
-                                    <PlaceBy:qtyMax>  
+                                (is Empty (to)) // place on empty location
+                                (>=       // with a limit on friendly neighbors
+                                    <PlaceBy:qtyMax> 
                                     (count Pieces Mover in:(sites Around (to))) 
                                 )
                             )
@@ -56,11 +51,10 @@
                     )
                     }
                 )
-            )    
+            )  
         )
         (end 
-            (if 
-                (all Passed) 
+            (if (all Passed) 
                 (byScore)
             )
         )
@@ -92,11 +86,11 @@
 
 (option "Board Size" <Board> args:{ <size> <bgrd> <ctr> } 
     {
-    (item "Hex  2-4" <{2 4 2 4 2}> <5.5> <12>  "Board & size: Hexhex with edges alternating 2 and 4")
-    (item "Hex  4-6" <{4 6 4 7 4}> <10.3> <50> "Board & size: Hexhex with edges alternating 4 and 6")***
-    (item "Hex  6-8" <{6 8 6 10 5}> <14> <112> "Board & size: Hexhex with edges alternating 6 and 8") // bug workaround
-    (item "Hex  8-10" <{8 10 9 13 6}> <19> <198> "Board & size: Hexhex with edges alternating 8 and 10") // bug workaround
-    (item "Hex  10-12" <{10 12 11 17 6}> <23> <288> "Board & size: Hexhex with edges alternating 10 and 12") // bug workaround
+    (item "Hex 2-4" <{2 4 2 4 2}> <5.5> <12> "Board & size: Hexhex with edges alternating 2 and 4")
+    (item "Hex 4-6" <{4 6 4 7 4}> <10.3> <50> "Board & size: Hexhex with edges alternating 4 and 6")***
+    (item "Hex 6-8" <{6 8 6 10 5}> <14> <112> "Board & size: Hexhex with edges alternating 6 and 8") // bug workaround
+    (item "Hex 8-10" <{8 10 9 13 6}> <19> <198> "Board & size: Hexhex with edges alternating 8 and 10") // bug workaround
+    (item "Hex 10-12" <{10 12 11 17 6}> <23> <288> "Board & size: Hexhex with edges alternating 10 and 12") // bug workaround
     }
 )
 

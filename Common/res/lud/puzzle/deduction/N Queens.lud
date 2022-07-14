@@ -1,6 +1,6 @@
 (game "N Queens"
-    (players 1)  
-    (equipment  { 
+    (players 1) 
+    (equipment { 
         (board (square <Size>) (values Cell (range 0 1)))
         (regions {AllDirections})
     })
@@ -20,11 +20,11 @@
 
 (option "Board Size" <Size> args:{ <size> }
     {
-    (item "4x4"    <4>    "The puzzle is played on a 4x4 board")   
-    (item "5x5"    <5>    "The puzzle is played on a 5x5 board")   
-    (item "6x6"    <6>    "The puzzle is played on a 6x6 board")   
-    (item "7x7"    <7>    "The puzzle is played on a 7x7 board")  
-    (item "8x8"    <8>    "The puzzle is played on a 8x8 board")**  
+    (item "4x4"  <4>  "The puzzle is played on a 4x4 board")  
+    (item "5x5"  <5>  "The puzzle is played on a 5x5 board")  
+    (item "6x6"  <6>  "The puzzle is played on a 6x6 board")  
+    (item "7x7"  <7>  "The puzzle is played on a 7x7 board") 
+    (item "8x8"  <8>  "The puzzle is played on a 8x8 board")** 
 })
 
 //------------------------------------------------------------------------------

@@ -1,0 +1,7 @@
+// If the mover has 3 pieces aligned, the mover is winning. This ludemeplex can be used only in an ending condition.
+// #1 = Directions of the line (by default Adjacent).
+// @example ("Line3Win")
+
+(define "Line3Win"
+    (if (is Line 3 #1) (result Mover Win))
+)

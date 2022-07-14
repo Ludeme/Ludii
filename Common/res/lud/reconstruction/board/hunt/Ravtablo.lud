@@ -1,5 +1,5 @@
-(game "Ravtablo"  
-    (players 2)  
+(game "Ravtablo" 
+    (players 2) 
     (equipment { 
         (board 
             (rectangle 9 5 diagonals:Alternating)
@@ -7,7 +7,7 @@
         )
         (piece "Marker" P1 (move [#]))
         (piece "Marker" P2 (move [#]))
-    })  
+    }) 
     (rules 
         (start [#])
         (play [#])

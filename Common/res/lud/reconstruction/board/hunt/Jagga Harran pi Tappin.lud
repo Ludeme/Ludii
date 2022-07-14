@@ -1,5 +1,5 @@
 (game "Jagga Harran pi Tappin"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board 
             (merge 
@@ -13,7 +13,7 @@
         )
         (piece "Hare" P1 (move [#])) // Missing knowledge on the movements of the pieces.
         (piece "Dog" P2 (move [#])) // Missing knowledge on the movements of the pieces.
-    })  
+    }) 
     
     (rules 
         (start {

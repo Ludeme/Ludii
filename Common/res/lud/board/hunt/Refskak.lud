@@ -11,10 +11,7 @@
             (place "Lamb1" (union (expand (sites Bottom) steps:2) (sites {"A3" "B3" "F3" "G3"})))
         })
         (play (forEach Piece))
-        (end {
-            ("NoMoves" Loss)
-            (if (<= (count Pieces P1) 6) (result P2 Win))
-        })
+        (end ("NoMovesLossAndLessNumPiecesPlayerLoss" P1 6))
     )
 )
 
@@ -31,7 +28,7 @@
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in Iceland, from around 1862 to 1889.")
+        (origin "This game was played in Iceland, from around 1862 to 1889.")
         }
     )
     

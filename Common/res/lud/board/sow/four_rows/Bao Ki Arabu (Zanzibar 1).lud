@@ -45,8 +45,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Bao Ki Arabu (Zanzibar 1)"  
-    (players 2)  
+(game "Bao Ki Arabu (Zanzibar 1)" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -57,20 +57,20 @@
             (track "TrackCW2" "24,E,S1,W" loop:True P2)
             }
         )
-        (regions "Home" P1 (sites Track "TrackCCW1"))                              // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))                              // P2 home
+        (regions "Home" P1 (sites Track "TrackCCW1"))               // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))               // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))   // P2 inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))  // P2 inner Home
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start (set Count 3 to:(sites Board)))
         
         (play 
             (or
-                ("Sow" (is Pending) "TrackCW"  (and (moveAgain) (set Pending)))
+                ("Sow" (is Pending) "TrackCW" (and (moveAgain) (set Pending)))
                 ("Sow" (not (is Pending)) "TrackCCW" (moveAgain))
             )
         )
@@ -93,7 +93,7 @@
         (version "1.3.4")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Zanzibar, around 1931.")
+        (origin "This game was played in Zanzibar, around 1931.")
         }
     )
     

@@ -6,7 +6,7 @@
         (count Steps
             (step Orthogonal (to if:(not (= (id #1) (who at:(to))))))
             (site)
-            (difference (sites Outer) <Board:inner>)   
+            (difference (sites Outer) <Board:inner>)  
 )))
 
 (define "RawTerritoryOf"
@@ -76,7 +76,7 @@
                         (min ("Coordinates" #1 (row of:(to))))
 ))))))
 
-(define "RCHX" //region count - Hex  
+(define "RCHX" //region count - Hex 
     (size Array
         (array
             (forEach
@@ -122,11 +122,11 @@
                     (var "SitesMoverAroundFrom")
                     (count Sites in:(sites Around (last To) Orthogonal if:(is Mover (who at:(to)))))
                 )
-                (and   
+                (and  
                     (=
                         (var "SitesMoverAroundFrom")
                         (count Sites in:(sites Around (last To) Orthogonal if:(is Mover (who at:(to)))))
-                    )   
+                    )  
                     (>
                         (count Sites in:(sites Around (last From) Orthogonal if:(is Next (who at:(to)))))
                         (count Sites in:(sites Around (last To) Orthogonal if:(is Next (who at:(to)))))
@@ -166,7 +166,7 @@
             (place "<Board:shape>1" (handSite P1 0) value:0)
             (place "<Board:shape>2" (handSite P2 0) value:0)
             (place "<Board:shape>0" (handSite P1 1) value:0) 
-            (place "<Board:shape>0" (handSite P2 1) value:0)     
+            (place "<Board:shape>0" (handSite P2 1) value:0)   
         })
         (play
             (or
@@ -258,7 +258,7 @@
             The score is the product of warren complexity and free-space. The actual calculation depends on the board grid: see 'Options', below.
             
             Play:
-            The player of the light stones starts by moving a single stone.  
+            The player of the light stones starts by moving a single stone. 
             Thereafter play alternates with each play performing two stone-moves on his turn.
             
             Each stone move is in one of the 6 grid directions, either
@@ -290,8 +290,8 @@
         (piece Colour P1 strokeColour:(colour VeryDarkGrey))
         (piece Colour P2 strokeColour:(colour DarkGrey))
         (piece Background "Ball" image:"Disc" fillColour:(colour 0 0 0 75) edgeColour:(colour 0 0 0 0) scale:0.95 offsetX:1 offsetY:1.5)
-        (piece Foreground P2 "Ball" image:"Hare-alt2" fillColour:(colour 0 0 0 150) edgeColour:(colour 240 180 150 180) scale:0.7 )
-        (piece Foreground P1 "Ball" image:"Hare-alt2" fillColour:(colour 255 255 255 150) edgeColour:(colour 120 90 75 180) scale:0.7 )
+        (piece Foreground P2 "Ball" image:"Hare-alt2" fillColour:(colour 0 0 0 150) edgeColour:(colour 240 180 150 180) scale:0.7)
+        (piece Foreground P1 "Ball" image:"Hare-alt2" fillColour:(colour 255 255 255 150) edgeColour:(colour 120 90 75 180) scale:0.7)
         (board Colour Phase0 (colour 250 250 230 90))
         (board StyleThickness InnerEdges 1.2)
         (board StyleThickness OuterEdges 1.6)
@@ -302,11 +302,11 @@
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
         (region Colour (sites Outer) (colour 200 250 230 90))
-        (region Colour ("RawTerritoryOf" P1) (colour 240 180 150 90))       
-        (region Colour ("RawTerritoryOf" P2) (colour 70 0 0 90))       
-        (piece Colour P1 "<Board:shape>" fillColour:(colour 240 180 150 90))  
-        (piece Colour P2 "<Board:shape>" fillColour:(colour 70 0 0 150))       
-        (piece Colour Neutral "<Board:shape>" fillColour:(colour White) strokeColour:(colour DarkGrey))       
+        (region Colour ("RawTerritoryOf" P1) (colour 240 180 150 90))    
+        (region Colour ("RawTerritoryOf" P2) (colour 70 0 0 90))    
+        (piece Colour P1 "<Board:shape>" fillColour:(colour 240 180 150 90)) 
+        (piece Colour P2 "<Board:shape>" fillColour:(colour 70 0 0 150))    
+        (piece Colour Neutral "<Board:shape>" fillColour:(colour White) strokeColour:(colour DarkGrey))    
         (show Piece Value "<Board:shape>" Middle scale:0.70 offsetX:.25 offsetY:.25)
         }
     )

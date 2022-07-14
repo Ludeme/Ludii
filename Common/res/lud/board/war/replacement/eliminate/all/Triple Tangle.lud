@@ -215,12 +215,12 @@
 
 //------------------------------------------------------------------------------
 
-(game "Triple Tangle"  
+(game "Triple Tangle" 
     (players <Players:num>) 
     (equipment { 
         (board (tiling T3464 1) use:Vertex)
         (piece "Disc" Each)
-    })  
+    }) 
     
     (rules 
         <Players:start>
@@ -246,7 +246,7 @@
                     (forEach Piece on:Cell 
                         (or {
                             ("MoveCellToEmptyCellOverEdge")
-                            ("MoveCellToEnemyCellOverEmptyEdge" )
+                            ("MoveCellToEnemyCellOverEmptyEdge")
                             ("MoveCellToEmptyCellOverVertex")
                             ("MoveCellToEdge")
                             ("MoveCellToVertex")
@@ -265,7 +265,7 @@
 
 (option "Players" <Players> args:{ <num> <start> <removeLastPiece> <end>} {
     (item "2"
-        <2>  
+        <2> 
         <
         (start {
             (place "Disc1" (sites {4 5 0 1}))
@@ -282,7 +282,7 @@
     )*
     
     (item "3"
-        <3>  
+        <3> 
         <
         (start {
             (place "Disc1" (sites {2 4 6 8}))

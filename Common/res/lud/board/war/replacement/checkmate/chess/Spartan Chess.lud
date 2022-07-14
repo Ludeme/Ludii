@@ -1,4 +1,4 @@
-//----------------------- Kings  -------------------------------------------------------
+//----------------------- Kings -------------------------------------------------------
 
 // #1 - P1 or P2
 (define "SitesKings"
@@ -62,7 +62,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )   
+    )  
 )
 
 // This macro defines one piece move of a castling manouvre
@@ -205,8 +205,8 @@
 
 //----------------------- Core -------------------------------------------------------
 
-(game "Spartan Chess"  
-    (players {(player N) (player S)})  
+(game "Spartan Chess" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -215,7 +215,7 @@
                 (if (is In (from) (sites Start (piece (what at:(from)))))
                     ("PawnDoubleMove" Forward (between if:(is Empty (between))))
                 )
-                ("PawnMove" Forward ) 
+                ("PawnMove" Forward) 
                 ("PawnCapture" ("PawnDirections"))
                 }
                 ("PawnPromotion")
@@ -239,7 +239,7 @@
         (piece "General" P2
             (or
                 ("SlideMove" Orthogonal)
-                ("StepMove" Diagonal ) 
+                ("StepMove" Diagonal) 
             )
         )
         (piece "Warlord" P2
@@ -250,7 +250,7 @@
         )
         (piece "Lieutenant" P2
             (or {
-                ("StepMove" Diagonal ) 
+                ("StepMove" Diagonal) 
                 ("HopMove" Diagonal)
                 (move
                     Step 
@@ -263,7 +263,7 @@
         )
         (piece "Captain" P2
             (or
-                ("StepMove" Orthogonal ) 
+                ("StepMove" Orthogonal) 
                 ("HopMove" Orthogonal)
             )
         )
@@ -284,7 +284,7 @@
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
         }
-    )  
+    ) 
     (rules 
         (start
             { 
@@ -305,7 +305,7 @@
         
         (play 
             (if "SameTurn"
-                (if (= (mover)  (id P1))
+                (if (= (mover) (id P1))
                     (move Promote (last To) (piece {"Queen" "Knight" "Bishop" "Rook"}) Mover)
                     (if (= 1 ("CountSpartanKings"))
                         (move Promote (last To) (piece {"King" "Captain" "General" "Warlord" "Lieutenant"}) Mover)

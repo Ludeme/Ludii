@@ -1,5 +1,5 @@
-(game "Hat Diviyan Keliya"  
-    (players 2)  
+(game "Hat Diviyan Keliya" 
+    (players 2) 
     (equipment { 
         (board 
             <Board:type>
@@ -8,10 +8,10 @@
         (hand Each) 
         (piece "Tiger" P1 (or "HopCapture" "StepToEmpty")) 
         (piece "Leopard" P2 "StepToEmpty") 
-    })  
+    }) 
     
     (rules 
-        (start  {
+        (start {
             (place "Tiger1" (handSite P1) count:<Board:initTiger>)
             (place "Leopard2" (handSite P2) count:<Board:initLeopard>)
         })
@@ -29,13 +29,7 @@
         
         (phase "Movement"
             (play (forEach Piece))
-            (end {
-                ("NoMoves" Loss)
-                (if 
-                    (= (count Pieces P2) <Board:leopardGoal>) 
-                    (result P1 Win)
-                )
-            })
+            (end ("NoMovesLossAndLessNumPiecesPlayerLoss" P2 <Board:leopardGoal>))
         )
         }
     )
@@ -51,8 +45,8 @@
         <7>
         <3>
         "Played on the board described in Ludovici and Parker."
-    )*   
-    (item "Large"    
+    )*  
+    (item "Large"  
         <(scale 1 2 (wedge 5))>
         <2>
         <8>
@@ -75,7 +69,7 @@
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in South Asia, around 1873.")
+        (origin "This game was played in South Asia, around 1873.")
         }
     )
     

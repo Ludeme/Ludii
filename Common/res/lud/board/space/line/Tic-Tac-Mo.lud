@@ -1,15 +1,15 @@
-(game "Tic-Tac-Mo"  
-    (players 3)  
+(game "Tic-Tac-Mo" 
+    (players 3) 
     (equipment { 
         (board (rectangle 3 5)) 
         (piece "Disc" P1) 
         (piece "Cross" P2) 
         (piece "Y" P3) 
         }
-    )  
+    ) 
     (rules 
         (play (move Add (to (sites Empty))))
-        (end (if (is Line 3) (result Mover Win)))
+        (end ("Line3Win"))
     )
 )
 

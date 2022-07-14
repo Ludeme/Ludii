@@ -1,5 +1,5 @@
-(game "Pulijudamu (Three Tigers)"  
-    (players 2)  
+(game "Pulijudamu (Three Tigers)" 
+    (players 2) 
     (equipment { 
         (board 	
             (add
@@ -16,11 +16,11 @@
             use:Vertex
         ) 
         (hand Each) 
-        (piece "Goat" P2  (move [#])
+        (piece "Goat" P2 (move [#])
         )
         (piece "Tiger" P1 (move [#])
         )
-    })  
+    }) 
     (rules 
         
         (start [#]) // 3 tigers and 18 goats.

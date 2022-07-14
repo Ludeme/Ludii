@@ -9,12 +9,12 @@
 //------------------------------------------------------------------------------
 
 (game "Test Define Case" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (hex 5)) 
         (piece "Marker" Neutral) 
         }
-    )  
+    ) 
     
     (rules 
         
@@ -24,7 +24,7 @@
             (nextPhase "play")
         )
         
-        (phase "play"     
+        (phase "play"   
             (play 
                 (move 
                     Add 
@@ -33,7 +33,7 @@
                         (sites Around 
                             (last To) 
                             if:(and 
-                                (is Empty (to))  
+                                (is Empty (to)) 
                                 // not adjacent to any other piece except the last one placed.
                                 ("NoSites" (difference ("adjacentNotEmptySites") (last To)))
                             ) 
@@ -44,7 +44,7 @@
         )
         }
         
-        (end ("NoMoves" Loss))  
+        (end ("NoMoves" Loss)) 
     )
 )
 

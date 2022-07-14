@@ -3,21 +3,10 @@
     (equipment {
         (board (square 7))
         (piece "Marker" Each
-            (move Step 
-                Orthogonal
-                (to if:(is Empty (to)))
+            ("StepToEmpty" Orthogonal
                 (then 
                     (and
-                        (custodial 
-                            (from (last To))
-                            Orthogonal
-                            (between 
-                                (max 1)
-                                if:("IsEnemyAt" (between))
-                                (apply (remove (between)))
-                            )
-                            (to if:("IsFriendAt" (to)))
-                        )
+                        ("CustodialCapture" Orthogonal (max 1))
                         (surround 
                             (from (last To)) 
                             Orthogonal 
@@ -91,7 +80,7 @@
         (version "1.3.4")
         (classification "board/space/blocking")
         (credit "Eric Piette")
-        (origin  "This game was played in Indonesia, around 1874.")
+        (origin "This game was played in Indonesia, around 1874.")
         }
     )
     

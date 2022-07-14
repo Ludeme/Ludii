@@ -2,18 +2,18 @@
 
 //------------------------------------------------------------------------------
 
-(game "Enindji"  
-    (players 2)  
+(game "Enindji" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 6
             (track "Track" "1,E,N,W" loop:True)
         )
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
         (piece "Seed" Shared)
-    })  
+    }) 
     (rules 
         
         (start (set Count 4 to:(sites Track)))
@@ -23,14 +23,14 @@
                 (or (move Vote "End") (move Vote "No"))
                 (or
                     (if (is Cycle) (move Propose "End")) 
-                    (do  
+                    (do 
                         (move Select 
                             (from 
                                 (sites Mover) 
                                 if:(< 0 (count at:(from)))
                             )
                             (then 
-                                (sow  
+                                (sow 
                                     if:(= (count at:(to)) 4)
                                     apply:(fromTo 
                                         (from (to)) 
@@ -53,7 +53,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Enindji is a two-row mancala-style board game that was documented in Dahomey in the early twentieth century. It is similar to other games in the region like Oware, but has a unique capture where the owner of the hole, rather than the person sowing, captures the counters.")
@@ -65,7 +65,7 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Benin, around 1955.")
+        (origin "This game was played in Benin, around 1955.")
         }
     )
     

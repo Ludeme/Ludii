@@ -1,41 +1,26 @@
-(define "HasFreedom" (> (count Liberties Orthogonal) 0))
-
-(define "NoCapture"
-    (not 
-        (can Move 
-            (enclose 
-                (from (last To)) 
-                Orthogonal 
-                (between 
-                    if:("IsEnemyAt" (between)) 
-                    (apply (remove (between))) 
-                )
-            )
-        )
-    )
-)
+(define "NoCapture" (not (can Move ("EncloseCapture" Orthogonal))))
 
 //------------------------------------------------------------------------------
 
-(game "NoGo"  
+(game "NoGo" 
     (players 2) 
     (equipment { 
         (board <Board> use:Vertex) 
         (piece "Marker" Each)
-    })  
+    }) 
     
     (rules 
         (play 
             (do
                 (move Add (to (sites Empty)))
                 ifAfterwards:(and 
-                    "HasFreedom" 
+                    ("HasFreedom" Orthogonal)
                     "NoCapture"
                 )
             )
         )
         
-        (end ("NoMoves" Loss))  
+        (end ("NoMoves" Loss)) 
     )
 )
 
@@ -43,8 +28,8 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "6x7"     <(rectangle 6 7)> "The game is played on 6x7 board.")
-    (item "9x9"     <(square 9)>   "The game is played on 9x9 board.")*
+    (item "6x7"   <(rectangle 6 7)> "The game is played on 6x7 board.")
+    (item "9x9"   <(square 9)>  "The game is played on 9x9 board.")*
     }
 )
 

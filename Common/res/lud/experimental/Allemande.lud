@@ -129,7 +129,7 @@
                 (sites Row (+ "Order" 1))
                 (sites Row 0)
         ))
-    (piece "Square" Each ) // ("Placements" ~))    
+    (piece "Square" Each) // ("Placements" ~))  
     (hand Each size:4)
     }
 )
@@ -209,7 +209,7 @@
             
             Connection is determined by whether the lowest left-edge stone can step a continuous path to the upper rightmost stone.
             
-            Issues with implementing this game in Ludii:     
+            Issues with implementing this game in Ludii:   
             1. Ludii does not have a turn structure which would allow filtering for illegal diagonals at the end of 4 placements and reversing the entire move. (and that approach would be very inefficient anyway.) 
             
             Therefore each diagonal placement is being resolved on the next placement, and is not allowed as the forth placement.
@@ -268,7 +268,7 @@
         (region Colour "EW" P1 (colour 255 0 0 50))
         (region Colour "NS" P2 (colour 200 200 50 50))
         (region Colour P2 (sites State 2) (colour 0 0 0 160))
-        //   (show Piece State)
+        //  (show Piece State)
         (hand Placement P2 scale:0.222 offsetX:0.95 offsetY:0.10 vertical:True)
         (hand Placement P1 scale:0.222 offsetX:0.05 offsetY:0.10 vertical:True)
         }

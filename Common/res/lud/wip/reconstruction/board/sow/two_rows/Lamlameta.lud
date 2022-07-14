@@ -2,8 +2,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Lamlameta"  
-    (players 2)  
+(game "Lamlameta" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 12 store:None
@@ -11,9 +11,9 @@
         )
         (piece "Seed" Shared)
         (hand Each)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-    })  
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+    }) 
     (rules 
         
         (start (set Count 2 to:(sites Track)))
@@ -80,7 +80,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Lamlameta is a two-row mancala-style board game played by the Konso people of Ethiopia. It is played on a larger board than most other games played in Ethiopia, ")
@@ -91,7 +91,7 @@
         (version "1.3.2")
         (classification "board/sow/two rows/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Ethiopia, around 1971.")
+        (origin "This game was played in Ethiopia, around 1971.")
         }
     )
     

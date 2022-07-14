@@ -1,5 +1,5 @@
 (game "Ludus Rebellionis (Asymmetric)"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (square 8)) 	
         (piece "Queen" P1 (move [#]))
@@ -10,7 +10,7 @@
         (start {
             (place "King1" coord:"H8")
             (place "Queen1" coord:"B8")
-            (place "Pawn2" (difference (expand (sites Bottom) steps:3) (sites Phase 1)  ))
+            (place "Pawn2" (difference (expand (sites Bottom) steps:3) (sites Phase 1) ))
         })
         (play [#])
         (end [#])
@@ -40,7 +40,7 @@
         (version "1.3.4")
         (classification "board/war/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Italy, from around 1500 to 1599.")
+        (origin "This game was played in Italy, from around 1500 to 1599.")
         }
     )
     

@@ -1,14 +1,13 @@
 (define "DistInColumn" (count Sites in:(difference (sites Column (column of:(from))) (sites Empty))))
 
-(define "DistInRow"    (count Sites in:(difference (sites Row (row of:(from))) (sites Empty))))
+(define "DistInRow"  (count Sites in:(difference (sites Row (row of:(from))) (sites Empty))))
 
-(define "DistInNESW"   (count Sites in:(difference (sites Direction from:(from) (directions {NE SW}) included:True) (sites Empty))))
+(define "DistInNESW"  (count Sites in:(difference (sites Direction from:(from) (directions {NE SW}) included:True) (sites Empty))))
 
-(define "DistInNWSE"   (count Sites in:(difference (sites Direction from:(from) (directions {NW SE}) included:True) (sites Empty))))
+(define "DistInNWSE"  (count Sites in:(difference (sites Direction from:(from) (directions {NW SE}) included:True) (sites Empty))))
 
 (define "MoveTo" 
-    (move
-        Hop
+    (move Hop
         #1 
         (between 
             (exact (- #2 1))
@@ -23,8 +22,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Lines of Action"  
-    (players 2)  
+(game "Lines of Action" 
+    (players 2) 
     
     (equipment { 
         (board (square 8)) 
@@ -36,16 +35,13 @@
                 ("MoveTo" (directions {NW SE}) "DistInNWSE")
             })
         )
-        }
-    )  
+    }) 
     
     (rules 
-        (start
-            { 
+        (start { 
             (place "Disc1" (difference (union (sites Top) (sites Bottom)) (sites Corners)))
             (place "Disc2" (difference (union (sites Right) (sites Left)) (sites Corners)))
-            }
-        )
+        })
         
         (play (forEach Piece))
         
@@ -53,7 +49,7 @@
             (if (and (= 1 (count Groups if:(= (who at:(to)) P1))) (= 1 (count Groups if:(= (who at:(to)) P2)))) (result Mover <End:result>)) 
             (if (= 1 (count Groups if:(= (who at:(to)) P1))) (result P1 Win)) 
             (if (= 1 (count Groups if:(= (who at:(to)) P2))) (result P2 Win)) 
-        })  
+        }) 
     )
 )
 
@@ -61,8 +57,8 @@
 
 (option "End rules" <End> args:{ <result> }
     {
-    (item "Simultaneous Group = Draw"    <Draw>    "If the two players make a group in the same turn, the game ends in a draw.")*  
-    (item "Simultaneous Group = Mover Win"    <Win>    "If the two players make a group in the same turn, the mover wins.") 
+    (item "Simultaneous Group = Draw"  <Draw>  "If the two players make a group in the same turn, the game ends in a draw.")* 
+    (item "Simultaneous Group = Mover Win"  <Win>  "If the two players make a group in the same turn, the mover wins.") 
 })
 
 //------------------------------------------------------------------------------

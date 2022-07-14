@@ -13,11 +13,11 @@
         (from
             if:(= 
                 (* 
-                    (from)  
+                    (from) 
                     (if (< 0 (count MovesThisTurn)) 1 0)
                 )
                 (* 
-                    (last To)  
+                    (last To) 
                     (if (< 0 (count MovesThisTurn)) 1 0)
                 )
             )

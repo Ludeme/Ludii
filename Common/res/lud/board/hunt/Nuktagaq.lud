@@ -1,5 +1,5 @@
-(game "Nuktagaq"  
-    (players 2)  
+(game "Nuktagaq" 
+    (players 2) 
     (equipment { 
         (board 
             (remove
@@ -11,7 +11,7 @@
         (hand P1)
         (piece "Marker" P1 (or ("HopCapture") "StepToEmpty"))
         (piece "Marker" P2 "StepToEmpty") 
-    })  
+    }) 
     (rules 
         (start { 
             (place "Marker2" (difference (expand (sites Top) steps:4) (union (sites Row 2) (sites Centre))))
@@ -20,10 +20,7 @@
         
         (play (forEach Piece))
         
-        (end {
-            ("NoMoves" Loss)
-            (if (no Pieces P2) (result P1 Win))
-        }) 
+        (end ("NoMovesLossAndNoPiecesPlayerLoss" P2))
     )
 )
 
@@ -40,7 +37,7 @@
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in Canada, around 1937.")
+        (origin "This game was played in Canada, around 1937.")
         }
     )
     

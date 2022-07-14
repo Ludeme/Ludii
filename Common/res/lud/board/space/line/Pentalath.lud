@@ -12,7 +12,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "Pentalath"  
+(game "Pentalath" 
     (players 2) 
     (equipment { 
         (board 
@@ -20,12 +20,12 @@
         )
         (piece "Marker" Each)
         }
-    )  
+    ) 
     
     (rules 
         (play 
             (do
-                (move  
+                (move 
                     Add 
                     (to (sites Empty))
                     (then "CaptureSurroundedPiece")
@@ -41,7 +41,7 @@
 
 (option "Board" <Board> args:{<type>}
     {
-    (item "HalfHexHexBoard"    
+    (item "HalfHexHexBoard"  
         <
         (intersect 
             { 
@@ -49,10 +49,10 @@
             (shift -5.20 0 (hex Rectangle 7 14)) 
             } 
         )
-        >  
+        > 
         "The game is played on the half of a HexHex board of size 7."
     )*
-    (item "HexHexBoard"  <(hex 5)> "The game is played on a HexHex board of size 5.")
+    (item "HexHexBoard" <(hex 5)> "The game is played on a HexHex board of size 5.")
     }
 )
 

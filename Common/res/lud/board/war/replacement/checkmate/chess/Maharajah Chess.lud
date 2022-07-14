@@ -38,7 +38,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )   
+    )  
 )
 
 (define "DoCastle"
@@ -97,8 +97,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Maharajah Chess"  
-    (players 2)  
+(game "Maharajah Chess" 
+    (players 2) 
     (equipment { 
         (board (square 8)) 
         
@@ -183,14 +183,14 @@
                         if:("IsEnemyAt" (to)) 
                         "CaptureToPieceAndResetCounter"
                     ) 
-                )  
+                ) 
             )
         )
         (map "King" {(pair 1 "E1") (pair 2 "E8")})
         (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})
         (map "RookRight" {(pair 1 "H1") (pair 2 "H8")})
         }
-    )  
+    ) 
     (rules 
         (start
             { 

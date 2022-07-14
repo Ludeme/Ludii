@@ -1,6 +1,7 @@
 package search.minimax;
 
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import game.Game;
+import gnu.trove.list.array.TLongArrayList;
 import main.FileHandling;
 import main.collections.FVector;
 import main.collections.FastArrayList;
@@ -40,6 +42,11 @@ import utils.data_structures.transposition_table.TranspositionTable.ABTTData;
  */
 public class AlphaBetaSearch extends ExpertPolicy
 {
+	
+	protected boolean savingSearchTreeDescription = true;
+	protected String searchTreeFile = "/home/cyprien/Documents/M1/Internship/search_trees_raw/AB_default.sav";
+	
+	protected final StringBuffer searchTreeOutput = new StringBuffer();
 	
 	//-------------------------------------------------------------------------
 	
@@ -224,6 +231,9 @@ public class AlphaBetaSearch extends ExpertPolicy
 		if (transpositionTable != null)
 			transpositionTable.allocate();
 		
+		searchTreeOutput.setLength(0);
+		searchTreeOutput.append("[\n");
+		
 		final int initDepth = allowedSearchDepths == AllowedSearchDepths.Even ? 2 : 1;
 		
 		if (maxSeconds > 0)
@@ -257,6 +267,23 @@ public class AlphaBetaSearch extends ExpertPolicy
 			
 			if (transpositionTable != null)
 				transpositionTable.deallocate();
+			
+			// To ouput a visual graph of the search tree:
+			searchTreeOutput.append("]");
+			if (savingSearchTreeDescription)
+			{
+				try
+				{
+			      FileWriter myWriter = new FileWriter(searchTreeFile);
+			      myWriter.write(searchTreeOutput.toString());
+			      myWriter.close();
+			      System.out.println("Successfully saved search tree in a file.");
+			    } catch (IOException e) {
+			      System.out.println("An error occurred.");
+			      e.printStackTrace();
+			    }
+			}
+			
 			return lastReturnedMove;
 		}
 		else
@@ -353,12 +380,22 @@ public class AlphaBetaSearch extends ExpertPolicy
 			// best move during this particular search
 			Move bestMove = sortedRootMoves.get(0);
 			
+			final long initialZobrist = context.state().fullHash(context);
+			final TLongArrayList nodeHashes = new TLongArrayList();
+			nodeHashes.add(initialZobrist);
+			
+			if (savingSearchTreeDescription)
+				searchTreeOutput.append("("+stringOfNodeHashes(nodeHashes)+",0,"+Integer.toString(context.state().playerToAgent(context.state().mover()))+"),\n");
+			
 			for (int i = 0; i < numRootMoves; ++i)
 			{
 				final Context copyContext = copyContext(context);
 				final Move m = sortedRootMoves.get(i);
 				game.apply(copyContext, m);
-				final float value = alphaBeta(copyContext, searchDepth - 1, alpha, beta, maximisingPlayer, stopTime);
+				
+				nodeHashes.add(copyContext.state().fullHash(copyContext));
+				final float value = alphaBeta(copyContext, searchDepth - 1, alpha, beta, maximisingPlayer, stopTime, nodeHashes);
+				nodeHashes.removeAt(nodeHashes.size()-1);
 				
 				if (System.currentTimeMillis() >= stopTime || wantsInterrupt)	// time to abort search
 				{
@@ -473,7 +510,8 @@ public class AlphaBetaSearch extends ExpertPolicy
 		final float inAlpha,
 		final float inBeta,
 		final int maximisingPlayer,
-		final long stopTime
+		final long stopTime,
+		final TLongArrayList nodeHashes
 	)
 	{
 		final Trial trial = context.trial();
@@ -484,6 +522,9 @@ public class AlphaBetaSearch extends ExpertPolicy
 		float beta = inBeta;
 
 		nbStatesEvaluated += 1;
+		
+		if (savingSearchTreeDescription)
+			searchTreeOutput.append("("+stringOfNodeHashes(nodeHashes)+",0,"+Integer.toString(state.playerToAgent(state.mover()))+"),\n");
 		
 		final long zobrist = state.fullHash(context);
 		final ABTTData tableData;
@@ -599,7 +640,13 @@ public class AlphaBetaSearch extends ExpertPolicy
 				final Context copyContext = copyContext(context);
 				final Move m = legalMoves.get(i);
 				game.apply(copyContext, m);
-				final float value = alphaBeta(copyContext, depth - 1, alpha, beta, maximisingPlayer, stopTime);
+				
+				final long newZobrist = state.fullHash(copyContext);
+				nodeHashes.add(newZobrist);
+				
+				final float value = alphaBeta(copyContext, depth - 1, alpha, beta, maximisingPlayer, stopTime, nodeHashes);
+				
+				nodeHashes.removeAt(nodeHashes.size()-1);
 				
 				if (System.currentTimeMillis() >= stopTime || wantsInterrupt)	// time to abort search
 				{
@@ -641,7 +688,13 @@ public class AlphaBetaSearch extends ExpertPolicy
 				final Context copyContext = copyContext(context);
 				final Move m = legalMoves.get(i);
 				game.apply(copyContext, m);
-				final float value = alphaBeta(copyContext, depth - 1, alpha, beta, maximisingPlayer, stopTime);
+				
+				final long newZobrist = state.fullHash(copyContext);
+				nodeHashes.add(newZobrist);
+				
+				final float value = alphaBeta(copyContext, depth - 1, alpha, beta, maximisingPlayer, stopTime, nodeHashes);
+
+				nodeHashes.removeAt(nodeHashes.size()-1);
 				
 				if (System.currentTimeMillis() >= stopTime || wantsInterrupt)	// time to abort search
 				{
@@ -1260,5 +1313,19 @@ public class AlphaBetaSearch extends ExpertPolicy
 	}
 	
 	//-------------------------------------------------------------------------
-
+	
+	public static String stringOfNodeHashes(TLongArrayList nodeHashes)
+	{
+		String res = "(";
+		
+		for (int i=0; i<nodeHashes.size(); ++i)
+		{
+			res += Long.toString(nodeHashes.get(i));
+			res += ",";
+		};
+		res += ")";
+		
+		return res;
+	}
+	
 }

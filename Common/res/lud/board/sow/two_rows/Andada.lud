@@ -15,18 +15,18 @@
 
 //------------------------------------------------------------------------------
 
-(game "Andada"  
-    (players 2)  
+(game "Andada" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
             (track "Track" <Board:trackDirection> loop:True)
         )
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start (set Count 2 to:(sites Track)))
@@ -99,16 +99,16 @@
 
 (option "Board Size" <Board> args:{ <size> <trackDirection>}
     {
-    (item "12 CCW"  <12> <"0,E,N,W"> "Each player has 12 holes and sow anti-clockwise.")  
-    (item "12 CW"   <12> <"11,W,N,E">  "Each player has 12 holes and sow clockwise.")  
-    (item "15 CCW"  <15> <"0,E,N,W">  "Each player has 15 holes and sow anti-clockwise.")   
-    (item "15 CW"   <15> <"14,W,N,E"> "Each player has 15 holes and sow clockwise.")   
-    (item "18 CCW"  <18> <"0,E,N,W">  "Each player has 18 holes and sow anti-clockwise.")   
-    (item "18 CW"   <18> <"17,W,N,E"> "Each player has 18 holes and sow clockwise.")   
-    (item "21 CCW"  <21> <"0,E,N,W">  "Each player has 21 holes and sow anti-clockwise.")   
-    (item "21 CW"   <21> <"20,W,N,E"> "Each player has 21 holes and sow clockwise.")  
-    (item "24 CCW"  <24> <"0,E,N,W">  "Each player has 24 holes and sow anti-clockwise.")   
-    (item "24 CW"   <24> <"23,W,N,E"> "Each player has 24 holes and sow clockwise.")  
+    (item "12 CCW" <12> <"0,E,N,W"> "Each player has 12 holes and sow anti-clockwise.") 
+    (item "12 CW"  <12> <"11,W,N,E"> "Each player has 12 holes and sow clockwise.") 
+    (item "15 CCW" <15> <"0,E,N,W"> "Each player has 15 holes and sow anti-clockwise.")  
+    (item "15 CW"  <15> <"14,W,N,E"> "Each player has 15 holes and sow clockwise.")  
+    (item "18 CCW" <18> <"0,E,N,W"> "Each player has 18 holes and sow anti-clockwise.")  
+    (item "18 CW"  <18> <"17,W,N,E"> "Each player has 18 holes and sow clockwise.")  
+    (item "21 CCW" <21> <"0,E,N,W"> "Each player has 21 holes and sow anti-clockwise.")  
+    (item "21 CW"  <21> <"20,W,N,E"> "Each player has 21 holes and sow clockwise.") 
+    (item "24 CCW" <24> <"0,E,N,W"> "Each player has 24 holes and sow anti-clockwise.")  
+    (item "24 CW"  <24> <"23,W,N,E"> "Each player has 24 holes and sow clockwise.") 
 })
 
 //------------------------------------------------------------------------------
@@ -128,7 +128,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Andada is a two-row mancala-style board game played by the Kunama people of western Eritrea. It is typically played by elders. It has an ending condition that is unusual among mancala-style games, in that the winner is determined by the first to clear their counters from the board once players only have single counters remaining.")
@@ -138,7 +138,7 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Eritrea, around 1977.")
+        (origin "This game was played in Eritrea, around 1977.")
         }
     )
     

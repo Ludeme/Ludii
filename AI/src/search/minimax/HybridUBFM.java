@@ -185,7 +185,7 @@ public class HybridUBFM extends UBFM
 		};
 
 		if (savingSearchTreeDescription)
-			searchTreeOutput.append("("+stringOfnodeHashes(nodeHashes)+","+Float.toString(contextScore)+","+((newMover==maximisingPlayer)? 1: 2)+"),\n");
+			searchTreeOutput.append("("+stringOfNodeHashes(nodeHashes)+","+Float.toString(contextScore)+","+((newMover==maximisingPlayer)? 1: 2)+"),\n");
 		
 		
 		return contextScore;

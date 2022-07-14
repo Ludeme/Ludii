@@ -82,13 +82,13 @@
 
 //------------------------------------------------------------------------------
 
-(game "Tank Tactics"  
-    (players <Players:numPlayers>)  
+(game "Tank Tactics" 
+    (players <Players:numPlayers>) 
     (equipment { 
         (board (rectangle <Board:size>)) 
         (hand Each)
         (piece "Tank" Each (or {"Move" "Shoot" "Trade" "Upgrade"}) maxState:100)
-    })  
+    }) 
     (rules 
         (meta (passEnd NoEnd))
         (start { 
@@ -101,7 +101,7 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty)) 
-                )  
+                ) 
             ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )

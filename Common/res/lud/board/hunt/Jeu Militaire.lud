@@ -1,5 +1,5 @@
-(game "Jeu Militaire"  
-    (players 2)  
+(game "Jeu Militaire" 
+    (players 2) 
     (equipment { 
         (board 
             (rotate 90 ("ThreeMenMorrisGraphWithLeftAndRightTriangles"))
@@ -11,7 +11,7 @@
         (piece "Pawn" P2 N ("StepToEmpty" <Tower>))
         (regions "Home" P2 (sites {"B1" "C2" "A2"}))
         (regions "Home" P1 (sites {"B2"}))
-    })  
+    }) 
     
     (rules 
         <Version:start>
@@ -22,13 +22,13 @@
             (if (no Moves P1) (result P2 Win))
             <Move:limit>
             (if (is In (where "Pawn" P1) (sites P2)) (result P1 Win))
-            //            (if 
-                //            	(= 
-                    //            		(row of:(where "Pawn" P1)) 
-                    //            		(min (results from:(sites Occupied by:P2) to:0 (row of:(from))))
-                //            	) 
-                //            	(result P1 Win)
-            //            )
+            //      (if 
+                //      	(= 
+                    //      		(row of:(where "Pawn" P1)) 
+                    //      		(min (results from:(sites Occupied by:P2) to:0 (row of:(from))))
+                //      	) 
+                //      	(result P1 Win)
+            //      )
         }) 
     )
 )
@@ -37,16 +37,16 @@
 
 (option "Direction Tower" <Tower> args:{ <direction> }
     {
-    (item "All directions"         <(directions {Forwards Rightward Leftward})>  "The towers can move in sideway and forwards (including diagonal and orthogonal forward).")*   
-    (item "No Sideways"            <Forwards>                                    "The towers can move forwards (including diagonal and orthogonal forward).")   
-    (item "Only Forward"           <Forward>                                     "The towers can move only forward.")   
-    (item "Forward and Sideways"   <(directions {Forward Rightward Leftward})>   "The towers can move forward and sideway.")   
+    (item "All directions"     <(directions {Forwards Rightward Leftward})> "The towers can move in sideway and forwards (including diagonal and orthogonal forward).")*  
+    (item "No Sideways"      <Forwards>                  "The towers can move forwards (including diagonal and orthogonal forward).")  
+    (item "Only Forward"      <Forward>                   "The towers can move only forward.")  
+    (item "Forward and Sideways"  <(directions {Forward Rightward Leftward})>  "The towers can move forward and sideway.")  
 })
 
 (option "Direction Army" <Army> args:{ <direction> }
     {
-    (item "All directions" <>            "The army can move in all the directions.")**   
-    (item "Orthogonal"     <Orthogonal>  "The tower can move only orthogonally.")   
+    (item "All directions" <>      "The army can move in all the directions.")**  
+    (item "Orthogonal"   <Orthogonal> "The tower can move only orthogonally.")  
 })
 
 (option "Version" <Version> args:{ <hand> <start> <play>}
@@ -58,11 +58,11 @@
             (place "Pawn2" (sites P2))
         })
         >
-        <(play (forEach Piece))>           
+        <(play (forEach Piece))>      
         "The game is played according to the rules of Lucas with the pieces already on the board."
     )**
     
-    (item "Martin Gardner"     
+    (item "Martin Gardner"   
         <(hand P1)> 
         <(start {
             (place "Pawn1" "Hand1")
@@ -85,9 +85,9 @@
         }
         >
         "The game is played according to the rules of Martin Gardner. The army can be placed anywhere."
-    )  
+    ) 
     
-    (item "Martin Gardner (improved)"     
+    (item "Martin Gardner (improved)"   
         <(hand P1)> 
         <(start {
             (place "Pawn1" "Hand1")
@@ -110,13 +110,13 @@
         }
         >
         "The game is played according to the rules of Martin Gardner with a slightly difference. The army can be placed anywhere except in the middle of the towers."
-    )   
+    )  
 })
 
 (option "Move Limit" <Move> args:{ <limit> }
     {
-    (item "No move limit" <>                                     "")**   
-    (item "12"            <(if (= (count Moves) 12) (result P1 Draw))>  "After twelve moves if no winner, the game is a draw.")   
+    (item "No move limit" <>                   "")**  
+    (item "12"      <(if (= (count Moves) 12) (result P1 Draw))> "After twelve moves if no winner, the game is a draw.")  
 })
 
 //------------------------------------------------------------------------------

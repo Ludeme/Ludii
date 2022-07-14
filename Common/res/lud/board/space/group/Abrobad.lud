@@ -1,4 +1,4 @@
-(define "Shooting"       
+(define "Shooting"    
     (forEach Piece 
         (move 
             (from)
@@ -9,48 +9,29 @@
     )
 )
 
-(define "Hopping"       
+(define "Hopping"    
     (forEach Piece 
         (or 
-            (move 
-                Hop 
-                (between if:(not (is Empty (between))))
-                (to if:(is Empty (to)))
-            )
-            (move 
-                Step
-                (to if:(is Empty (to)))
-            )
+            ("HopAllPiecesToEmpty")
+            ("StepToEmpty")
         )
     )
 )
 
-(define "Sliding"       
+(define "Sliding"    
     (forEach Piece 
-        (move 
-            Slide
-        )
+        (move Slide)
     )
 )
-(define "Stepping"       
+(define "Stepping"    
     (forEach Piece 
-        (move 
-            Step
-            (to if:(is Empty (to)))
-        )
+        ("StepToEmpty")
     )
 )
 
 (define "Jumping"
     (forEach Piece 
-        (move Hop
-            (between
-                (range 0 18)      // upper limit at least 2 times board order.
-                if:(not (is Empty (between)))
-            )
-            (to if:(is Empty (to)))
-            
-        )
+        ("HopAllPiecesToEmpty" ~ ~ (range 0 18))
     )
 )
 
@@ -58,17 +39,14 @@
 
 (game "Abrobad" 
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (hex Limping <Board:size>))
         (piece "Hex" Each)
-        }
-    )
+    })
     (rules 
         (play
             (priority 
-                (move 
-                    Add  
+                (move Add 
                     (to 
                         (sites Empty)
                         if:(= 0 (count Sites in:(sites Around (to) Own)))
@@ -79,7 +57,7 @@
                     (move Propose "Conclude"
                         (then
                             (if 
-                                (is Proposed "Conclude" )
+                                (is Proposed "Conclude")
                                 (add 
                                     (piece (next)) 
                                     (to (sites Empty)) 
@@ -94,8 +72,8 @@
                         )
                     )
                 ) 
-            )     
-        )    
+            )   
+        )  
         (end 
             (if 
                 (is Proposed "Conclude") 
@@ -126,7 +104,7 @@
 
 (option "Movement Type (in any direction)" <Movement> args:{ <type> }
     {
-    (item "Step or jump to first empty"  <"Jumping">
+    (item "Step or jump to first empty" <"Jumping">
         "Movement: Pieces step or jump once, to the first empty position in that direction."
     )**
     
@@ -138,11 +116,11 @@
         "Movement: Pieces step to an adjacent empty position."
     )
     
-    (item "Any unobstructed slide"  <"Sliding"> 
+    (item "Any unobstructed slide" <"Sliding"> 
         "Movement: Pieces slide along a grid direction any distance across empty positions."
     )
     
-    (item "Maximal slide"  <"Shooting">
+    (item "Maximal slide" <"Shooting">
         "Movement: Pieces slide across empty positions as far as they can in any given direction." 
     )
     }

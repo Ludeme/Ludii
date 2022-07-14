@@ -7,7 +7,7 @@
         (forEach Site 
             (sites Occupied by:#1)
             (if
-                (> 3 (count Pieces #1 in:(sites Around (site) "GridDirection" )))
+                (> 3 (count Pieces #1 in:(sites Around (site) "GridDirection")))
                 (set State at:(site) 0)
                 (set State at:(site) 1)
             )
@@ -18,7 +18,7 @@
                 (remember Value 0)
                 (remember Value 0)
                 (forEach Group "GridDirection" 
-                    //   if:(is #1 (who at:(to)))
+                    //  if:(is #1 (who at:(to)))
                     (if
                         (no Pieces in:(intersection (sites) (sites State 1))) 
                         (remember Value 
@@ -32,7 +32,7 @@
                         (then
                             (set Score #1 (* (var "TopValue") (max (values Remembered)))
                                 (then
-                                    (forget Value All)       
+                                    (forget Value All)    
         )))))))
 ))
 
@@ -99,9 +99,9 @@
 
 (option "Board" <BoardShape> args:{<gridType> <directionsUsed> <DiagShow>} 
     {
-    (item "9" <(square 9)> <Orthogonal> <Hidden>  "Order 9, Square Ortho-Grid")**
-    (item "13" <(square 13)> <Orthogonal> <Hidden>  "Order 13, Square Ortho-Grid")
-    (item "19" <(square 19)> <Orthogonal> <Hidden>  "Order 19, Square Ortho-Grid")
+    (item "9" <(square 9)> <Orthogonal> <Hidden> "Order 9, Square Ortho-Grid")**
+    (item "13" <(square 13)> <Orthogonal> <Hidden> "Order 13, Square Ortho-Grid")
+    (item "19" <(square 19)> <Orthogonal> <Hidden> "Order 19, Square Ortho-Grid")
     }
 )
 
@@ -112,7 +112,7 @@
         {
         (description "Wrigglers Squared is an adaptation of Wrigglers to a Square board. Wrigglers is a game that allows a minimal amount of self-removal, and has a goal of maximizing the product of one's largest 2 groups.
             
-            The rules are very simple and the actions of the players highly independent, except for blocking by site occupation. However the goal and the difficulty of modifying one's groups make the game challenging and removals allow for end-game turnarounds.    
+            The rules are very simple and the actions of the players highly independent, except for blocking by site occupation. However the goal and the difficulty of modifying one's groups make the game challenging and removals allow for end-game turnarounds.  
             
             Removal is only allowed where a player has committed to the removal on a previous turn by placing a stone that overcrouds an existing piece. This destroys the group's scoring potential, but allows the overcrouded piece to be removed, potetially dividing the group in a way the increases its potential to score. 
             
@@ -150,7 +150,7 @@
         (board StyleThickness InnerVertices .5)
         (show Edges Diagonal <BoardShape:DiagShow>)
         (piece Foreground "Disc" state:1 image:"square.svg" fillColour:(colour 0 0 0 50) scale:0.4)
-        //    (show Piece State)
+        //  (show Piece State)
         }
     )
     (ai (heuristics (score weight:2)))

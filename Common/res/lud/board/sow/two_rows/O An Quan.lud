@@ -54,8 +54,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "O An Quan"  
-    (players 2)  
+(game "O An Quan" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 5 largeStack:True
@@ -67,11 +67,11 @@
         (piece "Seed" Shared)
         (piece "Ball" Shared)
         (hand Each size:2)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
         (regions "EndHoles" (sites {"A1" "G1"}))
-    })  
+    }) 
     (rules 
         
         (start {
@@ -376,8 +376,8 @@
 //------------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <variant> }
-    {      
-    (item "Mancala World"  <>  "The rules come from the Mancala World.")**   
+    {   
+    (item "Mancala World" <> "The rules come from the Mancala World.")**  
     }
 )
 
@@ -397,7 +397,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "O An Quan is a two-row mancala-style board game played by children in Vietnam.")

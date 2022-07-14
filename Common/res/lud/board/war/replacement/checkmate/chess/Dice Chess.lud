@@ -85,8 +85,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Dice Chess"  
-    (players {(player N) (player S) })  
+(game "Dice Chess" 
+    (players {(player N) (player S) }) 
     (equipment { 
         (board (square <Board:size>))
         (dice d:6 from:1 num:1)
@@ -157,7 +157,7 @@
         )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
-    })  
+    }) 
     
     (rules 
         <Board:start>
@@ -203,21 +203,21 @@
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> <start> } {
-    (item "8x8"  
-        <8>  
+    (item "8x8" 
+        <8> 
         <
         (start { 
             (place "Pawn1" {"A2" "B2" "C2" "D2" "E2" "F2" "G2" "H2"})
             (place "Pawn2" {"H7" "G7" "E7" "F7" "D7" "C7" "B7" "A7"})
-            (place "Bishop1" {"C1" "F1"}) (place "Bishop2" {"C8" "F8"})  
-            (place "Knight1" {"B1" "G1"}) (place "Knight2" {"G8" "B8"})  
+            (place "Bishop1" {"C1" "F1"}) (place "Bishop2" {"C8" "F8"}) 
+            (place "Knight1" {"B1" "G1"}) (place "Knight2" {"G8" "B8"}) 
             (place "Rook1" {"A1" "H1"}) (place "Rook2" {"H8" "A8"}) 
             (place "Queen1" coord:"D1") (place "Queen2" coord:"D8")			
-            (place "King_noCross1" coord:"E1") (place "King_noCross2" coord:"E8")  
+            (place "King_noCross1" coord:"E1") (place "King_noCross2" coord:"E8") 
         })
         >
         "The game is played on a 8x8 board."
-    )*   
+    )*  
     (item "10x10" 
         <10>
         <
@@ -225,16 +225,16 @@
             { 
             (place "Pawn1" {"A2" "B2" "C2" "D2" "E2" "F2" "G2" "H2" "I2" "J2"})
             (place "Pawn2" {"J9" "I9" "H9" "G9" "E9" "F9" "D9" "C9" "B9" "A9"})
-            (place "Bishop1" {"C1" "H1"}) (place "Bishop2" {"C10" "H10"})  
-            (place "Knight1" {"B1" "I1"}) (place "Knight2" {"B10" "I10"})  
+            (place "Bishop1" {"C1" "H1"}) (place "Bishop2" {"C10" "H10"}) 
+            (place "Knight1" {"B1" "I1"}) (place "Knight2" {"B10" "I10"}) 
             (place "Rook1" {"A1" "J1"}) (place "Rook2" {"A10" "J10"}) 
             (place "Queen1" coord:"D1") (place "Queen2" coord:"D10")			
-            (place "King_noCross1" {"E1" "F1" "G1"}) (place "King_noCross2" {"E10" "F10" "G10"})  
+            (place "King_noCross1" {"E1" "F1" "G1"}) (place "King_noCross2" {"E10" "F10" "G10"}) 
             }
         )
         >
         "The game is played on a 10x10 board."
-    )   
+    )  
 })
 
 //------------------------------------------------------------------------------
@@ -265,7 +265,7 @@
         (board Colour OuterEdges (colour Black))
         (board Colour Symbols (colour Black))
         (board Colour Phase0 (colour 222 173 123))
-    })   
+    })  
     (ai
         "Dice Chess_ai"
     )

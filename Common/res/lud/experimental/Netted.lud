@@ -5,7 +5,7 @@
 
 // Observations: -
 // full moves show that everything other than placement of a piece on a cell is done twice.
-// maybe this is also slowing the script down.  
+// maybe this is also slowing the script down. 
 // Sometimes the locations og the secone edge marker
 // and the size of the indecise and move markers changes
 // a few seconds after the move is displayed.
@@ -47,7 +47,7 @@
 ))))))
 
 //--------------------------
-// Diagonal processing (cosmetic, but essential for the players to understand the game)  
+// Diagonal processing (cosmetic, but essential for the players to understand the game) 
 
 (define "HalfWayEdge" 
     (regionSite
@@ -126,14 +126,14 @@
             (step Orthogonal 
                 (to
                     if:("NotBlockedBy" #1)
-                    //     if:(or (= (to) (var "SitePlaced")) ("NotBlockedBy" #1))
+                    //   if:(or (= (to) (var "SitePlaced")) ("NotBlockedBy" #1))
             ))
             #2
             #3
 )))
 
 // Allow state to be calculated as (2 - liberties) 
-// State 0: liberties > 1 OK, State 1 = liberties = 1, State 2: Liberties = 0 Dead  
+// State 0: liberties > 1 OK, State 1 = liberties = 1, State 2: Liberties = 0 Dead 
 // State 1 is used idintify suicidal groups and cells to filter the Add moves.
 
 (define "Liberties"
@@ -142,7 +142,7 @@
             2
             (-
                 (+
-                    (if (is In #3 (sites Outer)) 1 0 )
+                    (if (is In #3 (sites Outer)) 1 0)
                     (count Sites
                         in:(intersection
                             (sites Outer)
@@ -174,7 +174,7 @@
         (= (id "Ball" #3) (what at:(site)))
         (and
             (set State at:(site) #2)
-            (if    
+            (if  
                 (= 2 #2)
                 (trigger "Enmeshed" Next)
         ))
@@ -188,8 +188,8 @@
 
 //--------------------------------------------------
 // Find lists of sites to update
-//   ("UpdateListStateAroundPlayerBlocker" #1 #2 (value) Next Mover)
-//   ("UpdateListStateAroundPlayerBlocker" "SuicideP1" 1 (var "SitePlaced") Mover Next)
+//  ("UpdateListStateAroundPlayerBlocker" #1 #2 (value) Next Mover)
+//  ("UpdateListStateAroundPlayerBlocker" "SuicideP1" 1 (var "SitePlaced") Mover Next)
 
 (define "UpdateListStateAroundPlayerBlocker"
     (if 
@@ -200,7 +200,7 @@
             {
             (remember Value "Update" #2)
             (forEach Site
-                (sites Occupied by:#4 component:"Ball")  
+                (sites Occupied by:#4 component:"Ball") 
                 (if 
                     (and
                         ("IsNotBlockedByBetween" #5
@@ -311,7 +311,7 @@
     (forEach Site 
         (sites Around Cell (var "SitePlaced") Orthogonal
             if:(and
-                (!= -1 (where Level (id "I" Mover) Cell at:(to)))  
+                (!= -1 (where Level (id "I" Mover) Cell at:(to))) 
                 (!= 2 
                     (count Sites Cell
                         in:(intersection
@@ -321,7 +321,7 @@
         )
         (and
             (remove Cell (site) level:(where Level (id "I" Mover) Cell at:(site)))
-            (if  //workaround
+            (if //workaround
                 (= 2 ("Liberties" Next Mover (site)))
                 (forget Value #1 (site))
                 (remember Value #1 (site) unique:True)
@@ -372,7 +372,7 @@
             (apply
                 (and
                     (remove (to) level:(where Level (id "I" Mover) Cell at:(to)))
-                    (set Var "SitePlaced" (to))   
+                    (set Var "SitePlaced" (to))  
         )))
         stack:True
         (then
@@ -401,7 +401,7 @@
             (apply
                 (and
                     {
-                    (apply (set Var "SitePlaced" (to)))   
+                    (apply (set Var "SitePlaced" (to)))  
                     (remove (to) level:(where Level (id "I" Mover) Cell at:(to)))
                     (remove (to) level:(where Level (id "I" Next) Cell at:(to)))
                     }
@@ -479,7 +479,7 @@
                     (no Moves Mover)
                     }
                 )
-                (if     
+                (if   
                     (is Triggered "Enmeshed" Next)
                     (result Mover Win)
                 )
@@ -490,16 +490,16 @@
 // Options
 // Defines for Options
 
-(define "BoardUsed" <BoardShape:gridType> )
+(define "BoardUsed" <BoardShape:gridType>)
 
 (define "HexLimp" (board (hex Limping (- <BoardSize:smallSide> 1)))) // use:Edge))
-(define "Hex2Limp" (board (hex  (- <BoardSize:smallSide> 1) (+ <BoardSize:smallSide> 1)))) // use:Edge))
+(define "Hex2Limp" (board (hex (- <BoardSize:smallSide> 1) (+ <BoardSize:smallSide> 1)))) // use:Edge))
 (define "HexCell" (board (hex Hexagon <BoardSize:smallSide>))) //use:Edge))
 
 (option "Board Grid" <BoardShape> args:{<gridType> <directionUsed> <diagShow> <directionScored>} 
     {
-    //(item "Hex Limping" <"HexLimp"> <Orthogonal> <Hidden> <Orthogonal>  "Hex N / N-1 Grid")
-    (item "Hex Double Limping" <"Hex2Limp"> <Orthogonal> <Hidden> <Orthogonal>  "Hex N+1 / N-1 Grid")*
+    //(item "Hex Limping" <"HexLimp"> <Orthogonal> <Hidden> <Orthogonal> "Hex N / N-1 Grid")
+    (item "Hex Double Limping" <"Hex2Limp"> <Orthogonal> <Hidden> <Orthogonal> "Hex N+1 / N-1 Grid")*
     (item "Hex Grid" <"HexCell"> <Orthogonal> <Hidden> <Orthogonal> "Hex Grid - Standard")
     }
 )
@@ -511,11 +511,11 @@
     (item "Order 4" <4> "Order 4 board")
     (item "Order 5" <5> "Order 5 board")
     (item "Order 6" <6> "Order 6 board")
-    //    (item "Order 7" <7> "Order 7 board")
-    //    (item "Order 8" <8> "Order 8 board")
-    //    (item "Order 9" <9> "Order 9 board")
-    //    (item "Order 10" <10> "Order 10 board")
-    //    (item "Order 11" <11> "Order 11 board")
+    //  (item "Order 7" <7> "Order 7 board")
+    //  (item "Order 8" <8> "Order 8 board")
+    //  (item "Order 9" <9> "Order 9 board")
+    //  (item "Order 10" <10> "Order 10 board")
+    //  (item "Order 11" <11> "Order 11 board")
     }
 )
 
@@ -526,9 +526,9 @@
 (metadata
     (info
         {
-        (description "Netted is a race to surround the opponent  Nets include Hex diagonals and single empty spaces, and so can cross each other. It is placement only and so can be played as a paper and pencil game. However the computer version adds markers for the empty space connections which must be removed when the spaces are filled.
+        (description "Netted is a race to surround the opponent Nets include Hex diagonals and single empty spaces, and so can cross each other. It is placement only and so can be played as a paper and pencil game. However the computer version adds markers for the empty space connections which must be removed when the spaces are filled.
             
-    The distinctive features are  1) a novel type of liberty for live groups that involves the count of available edge sites, and 2) the novel definitions for surrounding that include diagonals that cut groups, and connections across single empty spaces that can be broken by the opponent's placement.
+    The distinctive features are 1) a novel type of liberty for live groups that involves the count of available edge sites, and 2) the novel definitions for surrounding that include diagonals that cut groups, and connections across single empty spaces that can be broken by the opponent's placement.
     
     Moves are forced, suicide is prohibited, stalemate is a loss for the player who is stalemated.
     
@@ -585,14 +585,14 @@ A player who cannot place on their turn, loses.")
 (piece Scale "Ball" 0.78) //0.98)
 (piece Colour P1 "I" fillColour:(colour 0 0 0 150))
 (piece Colour P2 "I" fillColour:(colour 50 50 50 100))
-(piece Rotate  "I"  state:0 degrees:90)
-(piece Rotate  "I" state:1 degrees:60)
-(piece Rotate  "I" state:2 degrees:30)
-(piece Rotate  "I" state:3 degrees:0)
-(piece Rotate  "I" state:4 degrees:150)
-(piece Rotate  "I" state:5 degrees:120)
-//    (piece Rotate  "I"  state:6 degrees:90)
-(piece Scale "I" 1.2)  //0.9)
+(piece Rotate "I" state:0 degrees:90)
+(piece Rotate "I" state:1 degrees:60)
+(piece Rotate "I" state:2 degrees:30)
+(piece Rotate "I" state:3 degrees:0)
+(piece Rotate "I" state:4 degrees:150)
+(piece Rotate "I" state:5 degrees:120)
+//  (piece Rotate "I" state:6 degrees:90)
+(piece Scale "I" 1.2) //0.9)
 (board Colour Phase0 "ColourBackground")
 (board StyleThickness InnerEdges 0.4)
 (board StyleThickness OuterEdges 0.6)
@@ -604,7 +604,7 @@ A player who cannot place on their turn, loses.")
 (board Colour OuterEdges (colour Black))
 (show Edges Diagonal Hidden (colour DarkGrey))
 (stackType None)
-//    (show Piece State "I")
+//  (show Piece State "I")
 
 }
 )

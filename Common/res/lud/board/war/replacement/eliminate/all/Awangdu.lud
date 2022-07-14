@@ -16,11 +16,11 @@
 //------------------------------------------------------------------
 
 (game "Awangdu"
-    (players 2)  
+    (players 2) 
     (equipment 
         { 
         (board (rectangle 5 12) 
-            {    
+            {  
             (track "Track1" "0,E,N1,W,N1,E,N1,W,N1,E" P1 directed:True)
             (track "Track2" "59,W,S1,E,S1,W,S1,E,S1,W" P2 directed:True)
             }
@@ -40,7 +40,7 @@
         ) 
         (map {(pair 0 <High:value>) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 1) (pair 6 <High:value>)})
         }
-    )  
+    ) 
     
     (rules 
         (start 
@@ -81,7 +81,7 @@
 
 (option "High mouths value" <High> args:{ <value> }
     {
-    (item "10" <10> "0 or 6 mouths correspond to 10.")*   
+    (item "10" <10> "0 or 6 mouths correspond to 10.")*  
     (item "11" <11> "0 or 6 mouths correspond to 11.")
     (item "12" <12> "0 or 6 mouths correspond to 12.")
     (item "13" <13> "0 or 6 mouths correspond to 13.")

@@ -35,8 +35,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Agon"  
-    (players 2)  
+(game "Agon" 
+    (players 2) 
     (equipment { 
         (board (hex 6))
         (piece "Pawn" Each 
@@ -60,7 +60,7 @@
                 (then ("CapturePiece"))
             )		
         ) 
-    })  
+    }) 
     (rules 
         (start {
             (place "Pawn1" (sites {89 60 20 3 6 51}))

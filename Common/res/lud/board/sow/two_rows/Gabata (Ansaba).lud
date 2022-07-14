@@ -24,8 +24,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Gabata (Ansaba)"  
-    (players 2)  
+(game "Gabata (Ansaba)" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
@@ -37,14 +37,14 @@
         (hand Each)
         (map "LeftMost" {(pair P1 0) (pair P2 11)})
         (map "CorrespondingHoles" {(pair 0 11) (pair 1 10) (pair 2 9) (pair 3 8) (pair 4 7) (pair 5 6) (pair 6 5) (pair 7 4) (pair 8 3) (pair 9 2) (pair 10 1) (pair 11 0)})
-    })  
+    }) 
     (rules 
         
         (start (set Count 3 to:(sites Track)))
         
         phases:{
         (phase "Sowing"
-            (play         
+            (play     
                 (or {
                     (move Select 
                         (from 
@@ -174,7 +174,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Gabata is a term used for many mancala-style games in the Horn of Africa. This two-row version is played in the Ansaba region of Eritrea, and employs the simultaneous beginning phase that is seen among several games in the region.")
@@ -184,7 +184,7 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Eritrea, around 1971.")
+        (origin "This game was played in Eritrea, around 1971.")
         }
     )
     

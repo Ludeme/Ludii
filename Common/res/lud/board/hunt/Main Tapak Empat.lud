@@ -25,10 +25,7 @@
         (phase "Movement" (play (forEach Piece)))
         }
         
-        (end { 
-            (if (no Moves P2) (result P1 Win))
-            (if (no Pieces P1) (result P2 Win))
-        })  
+        (end ("NoMovesP2NoPiecesP1"))
     )
 )
 
@@ -45,7 +42,7 @@
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in Malaysia, around 1919.")
+        (origin "This game was played in Malaysia, around 1919.")
         }
     )
     

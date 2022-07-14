@@ -12,8 +12,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Shatranj ar-Rumiya"  
-    (players 2)  
+(game "Shatranj ar-Rumiya" 
+    (players 2) 
     (equipment { 
         (board 
             <Variant:board>
@@ -135,7 +135,7 @@
             )		
         )
         }
-    )  
+    ) 
     (rules 
         <Variant:start>
         (play 
@@ -160,7 +160,7 @@
 
 (option "Variant" <Variant> args:{ <start> <board> <end>}
     {
-    (item  "Murray"  
+    (item "Murray" 
         <
         (start {
             (place "Rook1" (sites {52 53}))
@@ -185,7 +185,7 @@
         >
         <>
     "Rules Murray.")* 
-    (item  "Al-Amuli"  
+    (item "Al-Amuli" 
         <
         (start {
             (place "Rook1" (sites {4 5}))

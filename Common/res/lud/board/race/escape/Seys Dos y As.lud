@@ -15,7 +15,7 @@
         (piece "Disc" Each
             (forEach Die 
                 if:("DieNotUsed")
-                (if ("IsOffBoard"  ("NextSiteFrom" (from) (pips)))
+                (if ("IsOffBoard" ("NextSiteFrom" (from) (pips)))
                     (move Remove (from))
                     (move 
                         (from (from))
@@ -33,7 +33,7 @@
     })
     (rules 
         (start {
-            (place Stack "Disc1"  11 count:8) (place Stack "Disc1" 6 count:3) 
+            (place Stack "Disc1" 11 count:8) (place Stack "Disc1" 6 count:3) 
             (place Stack "Disc1" 7 count:4) (place Stack "Disc2" (sites {10..8}) count:5) 
         })
         (play 
@@ -59,7 +59,7 @@
         (version "1.3.4")
         (classification "board/race/escape")
         (credit "Eric Piette")
-        (origin  "This game was played in Spain, around 1283.")
+        (origin "This game was played in Spain, around 1283.")
         }
     )
     

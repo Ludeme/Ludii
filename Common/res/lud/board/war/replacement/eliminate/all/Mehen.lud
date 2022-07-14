@@ -32,7 +32,7 @@
 )
 
 (define "AdvanceOn"
-    (if (!= ("SiteToMoveOnTrack" #1) Off)  	 			
+    (if (!= ("SiteToMoveOnTrack" #1) Off) 	 			
         (if (is In ("SiteToMoveOnTrack" #1) (sites Empty))
             (move (from) (to ("SiteToMoveOnTrack" #1)))
         )
@@ -41,10 +41,10 @@
 
 (define "LionMoveOn"
     (if (and 
-            (!= ("SiteToMoveOnTrackForLion" #1) Off)  
+            (!= ("SiteToMoveOnTrackForLion" #1) Off) 
             (!= ("SiteToMoveOnTrackForLion" #1) End) 
         )			
-        (if  (not (is Friend (who at:(trackSite Move #1  steps:(mul (count Pips) 2)))))
+        (if (not (is Friend (who at:(trackSite Move #1 steps:(mul (count Pips) 2)))))
             (move (from) (to (trackSite Move #1 steps:(mul (count Pips) 2))))
         )
     )
@@ -79,7 +79,7 @@
 
 (game "Mehen"
     (players 2)
-    (equipment  { 
+    (equipment { 
         (board 
             (spiral turns:5 sites:88) 
             {
@@ -157,7 +157,7 @@
 
 (option "Variant" <Variant> args:{ <type> }
     {
-    (item "Kendall"   <>       "The rules are describing with the Kendall ruleset.")   
+    (item "Kendall"  <>    "The rules are describing with the Kendall ruleset.")  
 })
 
 //------------------------------------------------------------------------------
@@ -199,7 +199,7 @@
         (version "1.3.4")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
-        (origin  "This game was played in Egypt, from around 3300BCE to 1225BCE.")
+        (origin "This game was played in Egypt, from around 3300BCE to 1225BCE.")
         }
     )
     

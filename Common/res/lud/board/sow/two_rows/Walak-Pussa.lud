@@ -25,8 +25,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Walak-Pussa"  
-    (players 2)  
+(game "Walak-Pussa" 
+    (players 2) 
     (equipment { 
         (mancalaBoard 2 "Columns"
             {
@@ -35,10 +35,10 @@
             }
         )
         (piece "Seed" Shared)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
-    })  
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
+    }) 
     (rules 
         (start { 
             (set Count 4 to:(sites Track)) 
@@ -436,7 +436,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Walak-Pussa is a two-row mancala-style board game played in Sri Lanka. ")

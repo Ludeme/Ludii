@@ -4,7 +4,7 @@
                 (or { 
                     (forEach Piece Next)
                     (move (from (sites Occupied by:Next container:"Hand" components:{"Rook" "Bishop" "Knight" "Queen"})) (to (sites Empty)))
-                    (move (from (sites Occupied by:Next container:"Hand" component:"Pawn" )) (to (difference (sites Empty) (sites "LastRanks"))))
+                    (move (from (sites Occupied by:Next container:"Hand" component:"Pawn")) (to (difference (sites Empty) (sites "LastRanks"))))
                     }
                 )
                 ifAfterwards:(not ("IsInCheck" "King" Next))
@@ -50,7 +50,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )   
+    )  
 )
 
 (define "DoCastle"
@@ -129,8 +129,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Loop Chess"  
-    (players {(player N) (player S)})  
+(game "Loop Chess" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8))
         (piece "Pawn" Each 
@@ -215,7 +215,7 @@
         
         (hand Each size:6)
         }
-    )  
+    ) 
     (rules 
         (start
             { 
@@ -233,7 +233,7 @@
                     (or 
                         {
                         (move (from (sites Occupied by:Mover container:"Hand" components:{"Rook" "Bishop" "Knight" "Queen"})) (to (sites Empty)))
-                        (move (from (sites Occupied by:Mover container:"Hand" component:"Pawn" )) (to (difference (sites Empty) (sites "LastRanks"))))
+                        (move (from (sites Occupied by:Mover container:"Hand" component:"Pawn")) (to (difference (sites Empty) (sites "LastRanks"))))
                         (forEach Piece)
                         (if (and {
                                 "KingInTheInitialPlace" 

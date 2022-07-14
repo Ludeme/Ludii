@@ -1,18 +1,17 @@
-(game "Cross"  
-    (players 2)  
+(game "Cross" 
+    (players 2) 
     (equipment { 
         (board (hex <Board>)) 
         (piece "Marker" Each)
-        }
-    )  
+    }) 
     (rules 
         (play (move Add (to (sites Empty))))
         (end {
-            (if (is Connected {(sites Side S) (sites Side NW) (sites Side NE)})  (result Mover Win)) 
-            (if (is Connected {(sites Side N) (sites Side SW) (sites Side SE)})  (result Mover Win))
-            (if (is Connected {(sites Side N) (sites Side S) })  (result Mover Loss))
-            (if (is Connected {(sites Side NW) (sites Side SE) })  (result Mover Loss))
-            (if (is Connected {(sites Side NE) (sites Side SW) })  (result Mover Loss))
+            (if (is Connected {(sites Side S) (sites Side NW) (sites Side NE)}) (result Mover Win)) 
+            (if (is Connected {(sites Side N) (sites Side SW) (sites Side SE)}) (result Mover Win))
+            (if (is Connected {(sites Side N) (sites Side S) }) (result Mover Loss))
+            (if (is Connected {(sites Side NW) (sites Side SE) }) (result Mover Loss))
+            (if (is Connected {(sites Side NE) (sites Side SW) }) (result Mover Loss))
         })
     )
 )
@@ -21,9 +20,9 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "5x5"    <5>   "The game is played on a 5x5 board")   
-    (item "6x6"    <6>    "The game is played on a 6x6 board")   
-    (item "7x7"    <7>    "The game is played on a 7x7 board")   
+    (item "5x5"  <5>  "The game is played on a 5x5 board")  
+    (item "6x6"  <6>  "The game is played on a 6x6 board")  
+    (item "7x7"  <7>  "The game is played on a 7x7 board")  
 })
 
 //------------------------------------------------------------------------------

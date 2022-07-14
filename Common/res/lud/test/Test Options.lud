@@ -176,7 +176,7 @@
         (is Even (count Sites in:("CaptureDirection" #1)))
         (= (mover) (who at:(last To)))
         
-        (<Rule>    //= //< 
+        (<Rule>  //= //< 
             (size Stack at:(last To))
             (size Stack 
                 at:(ahead (last To) 
@@ -186,7 +186,7 @@
             )
         )
         
-        (<Rule>    //= //< 
+        (<Rule>  //= //< 
             (size Stack 
                 at:(ahead (last To) 
                     steps:(count Sites in:("CaptureDirection" #1)) 
@@ -335,9 +335,9 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "4"    <4>  "4")
-    (item "5"    <5>  "5")* 
-    (item "6"    <6>  "6") 
+    (item "4"  <4> "4")
+    (item "5"  <5> "5")* 
+    (item "6"  <6> "6") 
     }
 )
 
@@ -373,7 +373,7 @@
             
             Capture:
             Capture is obligatory in Ex nihilo: If you can spend your turn making a capturing move, you must.
-            An enemy stack will be captured if, after you have moved a stack, the enemy  stack is exactly in the middle of an otherwise empty line of cells going from the stack you just moved to another of your stacks. When the enemy stack is captured it is topped by a piece from your hand. This happens automatically in Ludii. 
+            An enemy stack will be captured if, after you have moved a stack, the enemy stack is exactly in the middle of an otherwise empty line of cells going from the stack you just moved to another of your stacks. When the enemy stack is captured it is topped by a piece from your hand. This happens automatically in Ludii. 
             
             Obligatory chaining of captures:
             If, after a capture, the newly captured stack can capture a stack by making just one move, you must make that move. This must continue until you capture a stack that is not in a position to capture."
