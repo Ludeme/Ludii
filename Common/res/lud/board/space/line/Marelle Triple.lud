@@ -1,11 +1,3 @@
-
-(define "RemoveEnemyPiece" 
-    (move
-        Remove
-        (sites Occupied by:Next container:"Board") 
-    )
-)
-
 (define "IfLine3MoveAgain" 
     (then 
         (if 
@@ -23,19 +15,11 @@
 (game "Marelle Triple"
     (players 2)
     
-    (equipment 
-        { 
+    (equipment { 
         (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
         (hand Each)
-        (piece "Marker" Each 
-            (move
-                Step 
-                (to if:(is Empty (to))) 
-                "IfLine3MoveAgain" 
-            )
-        ) 
-        }
-    ) 
+        (piece "Marker" Each ("StepToEmpty" ~ "IfLine3MoveAgain")) 
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:9))
         
@@ -43,7 +27,7 @@
         (phase "Placement"
             (play
                 (if "SameTurn"
-                    "RemoveEnemyPiece"
+                    ("RemoveAnyNextPiece")
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
@@ -57,7 +41,7 @@
         (phase "Movement" 
             (play 
                 (if "SameTurn"
-                    "RemoveEnemyPiece"
+                    ("RemoveAnyNextPiece")
                     (if (> (count Pieces Mover) 4)
                         (forEach Piece)
                         (move 
@@ -69,8 +53,7 @@
             )
         )
         }
-        
-        (end (if (<= (count Pieces Next) 2) (result Mover Win)))
+        (end ("HavingLessPiecesLoss" Next 2))
     )
 )
 
@@ -91,10 +74,6 @@
         (origin "This game was played in France, around 1840.")
         }
     )
-    
-    (graphics {
-        
-    })
     
     (ai
         "Marelle Triple_ai"

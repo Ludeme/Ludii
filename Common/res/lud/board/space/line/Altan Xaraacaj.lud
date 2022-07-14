@@ -1,14 +1,3 @@
-(define "RemoveEnemyPieceNotInLine3" 
-    (move Remove
-        (forEach 
-            (sites Occupied by:Next container:"Board") 
-            if:(not (is Line 3 Orthogonal through:(site)))
-        )
-    )
-)
-
-//------------------------------------------------------------------------------
-
 (game "Altan Xaraacaj"
     (players 2) 
     
@@ -16,7 +5,7 @@
         ("AlquerqueBoard" 5 5) 
         (hand Each)
         (piece "Marker" Each 
-        	("StepToEmpty" ~ 
+            ("StepToEmpty" ~ 
                 (then ("ReplayIfLine3" Orthogonal exact:True))
             )
         ) 
@@ -28,7 +17,7 @@
         (phase "Placement"
             (play
                 (if "SameTurn"
-                    "RemoveEnemyPieceNotInLine3"
+                    ("RemoveAnyNextPieceNotInLine3" Orthogonal)
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
@@ -42,7 +31,7 @@
         (phase "Movement" 
             (play 
                 (if "SameTurn"
-                    "RemoveEnemyPieceNotInLine3"
+                    ("RemoveAnyNextPieceNotInLine3" Orthogonal)
                     (forEach Piece)
                 )
             )

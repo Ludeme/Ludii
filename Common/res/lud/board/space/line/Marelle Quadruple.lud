@@ -1,12 +1,10 @@
 (game "Marelle Quadruple"
     (players 2) 
-    (equipment 
-        {
+    (equipment {
         ("AlquerqueBoard" 5 5)
         (hand Each)
         (piece "Marker" Each "StepToEmpty")
-        }
-    ) 
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:5))
         
@@ -16,9 +14,7 @@
             (nextPhase ("HandEmpty" P2) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
-        )
+        (phase "Movement" (play (forEach Piece)))
         }
         (end (if (is Line 5) (result Mover Win)))
     )

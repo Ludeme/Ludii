@@ -3,12 +3,7 @@
     (equipment {
         ("AlquerqueBoard" 3 3)
         (hand Each)
-        (piece "Marker" Each
-            (move
-                Step
-                (to if:(is Empty (to))) 
-            )		
-        )
+        (piece "Marker" Each ("StepToEmpty"))
     }) 
     (rules 
         (start (place "Marker" "Hand" count:3))
@@ -21,9 +16,7 @@
             (play (move (from (handSite Mover)) (to (sites Empty))))
             (nextPhase Mover ("HandEmpty" Mover) "Moving")
         )
-        (phase "Moving" 
-            (play (forEach Piece))
-        )
+        (phase "Moving" (play (forEach Piece)))
         }
         (end ("Line3Win"))
     )

@@ -26,11 +26,7 @@
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
         
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
+        (phase "Movement" (play (forEach Piece)))
         }
         
         (end 
@@ -90,4 +86,3 @@
         "Les Pendus_ai"
     )
 )
-

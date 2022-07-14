@@ -1,42 +1,17 @@
-(define "RemoveEnemyPieceNotInLine3" 
-    (move
-        Remove
-        (forEach 
-            (sites Occupied by:Next container:"Board") 
-            if:(not (is Line 3 Orthogonal through:(site)))
-        )
-    )
-)
-
-(define "IfLine3MoveAgain" 
-    (then 
-        (if 
-            (is Line 3 Orthogonal) 
-            (moveAgain)
-        )
-    )
-)
-
-//------------------------------------------------------------------------------
-
 (game "Gurgaldaj"
     (players 2) 
-    (equipment 
-        {
+    (equipment {
         (board
             (concentric Triangle rings:3 joinCorners:True)
             use:Vertex
         )
         (hand Each)
         (piece "Marker" Each
-            (move
-                Step
-                (to if:(is Empty (to))) 
-                "IfLine3MoveAgain"
+            ("StepToEmpty" ~ 
+                (then ("ReplayIfLine3" Orthogonal))
             )
         )
-        }
-    ) 
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:8))
         
@@ -44,11 +19,11 @@
         (phase "Placement"
             (play
                 (if "SameTurn"
-                    ("RemoveEnemyPieceNotInLine3")
+                    ("RemoveAnyNextPieceNotInLine3" Orthogonal) 
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
-                        "IfLine3MoveAgain"
+                        (then ("ReplayIfLine3" Orthogonal))
                     ) 
                 )
             )
@@ -58,18 +33,13 @@
         (phase "Movement" 
             (play 
                 (if "SameTurn"
-                    ("RemoveEnemyPieceNotInLine3")
+                    ("RemoveAnyNextPieceNotInLine3" Orthogonal) 
                     (forEach Piece)
                 )
             )
         )
         }
-        (end 
-            (if 
-                (no Pieces Next) 
-                (result Mover Win)
-            )
-        )
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -93,7 +63,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai

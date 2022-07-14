@@ -1,11 +1,9 @@
 (game "Gomoku" 
     (players 2) 
-    (equipment 
-        { 
+    (equipment { 
         (board <Board> use:Vertex) 
         (piece "Marker" Each) 
-        }
-    ) 
+    }) 
     (rules 
         <Play> 
         (end (if (is Line 5 All <Exact>) (result Mover Win))) 

@@ -1,0 +1,12 @@
+// Allows to remove one piece of the next player which is not in a line 3.
+// #1 = The directions of the line (by default adjacent).
+// @example ("RemoveAnyNextPieceNotInLine3")
+
+(define "RemoveAnyNextPieceNotInLine3"
+    (move Remove
+        (forEach 
+            (sites Occupied by:Next container:"Board") 
+            if:(not (is Line 3 #1 through:(site)))
+        )
+    )
+)

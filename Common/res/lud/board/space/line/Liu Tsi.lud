@@ -1,12 +1,10 @@
 (game "Liu Tsi"
     (players 2) 
-    (equipment 
-        {
+    (equipment {
         ("AlquerqueBoard" 3 3)
         (hand Each)
         (piece "Marker" Each "StepToEmpty")
-        }
-    ) 
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:3))
         
@@ -16,9 +14,7 @@
             (nextPhase ("HandEmpty" P2) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
-        )
+        (phase "Movement" (play (forEach Piece)))
         }
         (end ("Line3Win"))
     )
@@ -42,9 +38,6 @@
         }
     )
     
-    (graphics {
-        
-    })
     (ai
         "Liu Tsi_ai"
     )

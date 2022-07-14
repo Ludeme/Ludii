@@ -1,29 +1,7 @@
-(define "RemoveEnemyPieceNotInLine3" 
-    (move
-        Remove
-        (forEach 
-            (sites Occupied by:Next container:"Board") 
-            if:(not (is Line 3 Orthogonal through:(site)))
-        )
-    )
-)
-
-(define "IfLine3MoveAgain" 
-    (then 
-        (if 
-            (is Line 3) 
-            (moveAgain)
-        )
-    )
-)
-
-//------------------------------------------------------------------------------
-
 (game "Jeson Zam"
     (players 2)
     
-    (equipment 
-        { 
+    (equipment { 
         (board
             (add
                 (remove
@@ -66,14 +44,11 @@
         ) 
         (hand Each)
         (piece "Marker" Each 
-            (move 
-                Step 
-                (to if:(is Empty (to))) 
-                "IfLine3MoveAgain" 
+            ("StepToEmpty" ~ 
+                (then ("ReplayIfLine3")) 
             )
         ) 
-        }
-    ) 
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:9))
         
@@ -81,11 +56,11 @@
         (phase "Placement"
             (play
                 (if "SameTurn"
-                    "RemoveEnemyPieceNotInLine3"
+                    ("RemoveAnyNextPieceNotInLine3" Orthogonal) 
                     (move 
                         (from (handSite Mover)) 
                         (to (difference (sites Empty) (sites Centre))) 
-                        "IfLine3MoveAgain" 
+                        (then ("ReplayIfLine3")) 
                     ) 
                 )
             ) 
@@ -95,14 +70,14 @@
         (phase "Movement" 
             (play 
                 (if "SameTurn"
-                    "RemoveEnemyPieceNotInLine3"
+                    ("RemoveAnyNextPieceNotInLine3" Orthogonal) 
                     (forEach Piece)
                 )
             )
         )
         }
         
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -126,7 +101,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     (ai
         "Jeson Zam_ai"

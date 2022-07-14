@@ -1,25 +1,13 @@
-(define "RemoveEnemyPieceNotInLine3" 
-    (move Remove
-        (forEach (sites Occupied by:Next) if:(not (is Line 3 Orthogonal through:(site))))
-    )
-)
-
-(define "IfLine3OrthogonalMoveAgain" 
-    (then 
-        (if (is Line 3 Orthogonal) 
-            (moveAgain)
-        )
-    )
-)
-
-//------------------------------------------------------------------------------
-
 (game "Dara"
     (players 2)
     (equipment {
         (board (rectangle 5 6))
         (hand Each)
-        (piece "Marker" Each ("StepToEmpty" Orthogonal "IfLine3OrthogonalMoveAgain"))
+        (piece "Marker" Each 
+            ("StepToEmpty" Orthogonal 
+                (then ("ReplayIfLine3" Orthogonal))
+            )
+        )
     })
     (rules
         (start (place "Marker" "Hand" count:12))
@@ -33,7 +21,7 @@
         (phase "Movement"
             (play 
                 (if "SameTurn"
-                    "RemoveEnemyPieceNotInLine3"
+                    ("RemoveAnyNextPieceNotInLine3" Orthogonal)
                     (do 
                         (forEach Piece)
                         ifAfterwards:(not (is Line 4 Orthogonal))

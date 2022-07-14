@@ -2,12 +2,6 @@
     (not (is Line 3 Orthogonal))
 )
 
-(define "RemoveEnemyPiece" 
-    (move Remove
-        (sites Occupied by:Next container:"Board") 
-    )
-)
-
 //------------------------------------------------------------------------------
 
 (game "Dra"
@@ -42,7 +36,7 @@
         (phase "Movement"
             (play     
                 (if "SameTurn"
-                    "RemoveEnemyPiece" 
+                    "RemoveAnyNextPiece" 
                     (forEach Piece) 
                 )
             )

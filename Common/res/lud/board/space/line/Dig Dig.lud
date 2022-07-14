@@ -29,9 +29,9 @@
         (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
         (hand Each)
         (piece "Marker" Each 
-        	("StepToEmpty" ~ 
-        		(then ("ReplayIfLine3" if:("IsSingletonStack" (to))))
-        	)
+            ("StepToEmpty" ~ 
+                (then ("ReplayIfLine3" if:("IsSingletonStack" (to))))
+            )
         ) 
     }) 
     
@@ -111,4 +111,3 @@
     })
     
 )
-

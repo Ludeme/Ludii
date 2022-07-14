@@ -9,35 +9,20 @@
         (start (place "Pawn" "Hand" count:8))
         (play 
             (if ("SameTurn")
-                (move Hop 
+                ("HopCapture"
                     (from (last To))
-                    (between if:("IsEnemyAt" (between))) 
-                    (to if:(is Empty (to)) (apply (remove (between))))
+                    ~
                     (then
-                        (if (can Move 
-                                (hop 
-                                    (from (last To))
-                                    (between if:("IsEnemyAt" (between))) 
-                                    (to if:(is Empty (to)) (apply (remove (between))))
-                                )
-                            )
+                        (if (can Move ("HopCapture" (from (last To))))
                             (moveAgain)
                         )
                     )
                 )
                 (priority {
                     (forEach Piece 
-                        (move Hop 
-                            (between if:("IsEnemyAt" (between))) 
-                            (to if:(is Empty (to)) (apply (remove (between))))
+                        ("HopCapture" ~ ~
                             (then
-                                (if (can Move 
-                                        (hop 
-                                            (from (last To))
-                                            (between if:("IsEnemyAt" (between))) 
-                                            (to if:(is Empty (to)) (apply (remove (between))))
-                                        )
-                                    )
+                                (if (can Move ("HopCapture" (from (last To))))
                                     (moveAgain)
                                 )
                             )

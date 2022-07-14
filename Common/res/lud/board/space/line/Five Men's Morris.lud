@@ -1,18 +1,7 @@
-(define "RemoveEnemyPieceNotInLine3" 
-    (move Remove
-        (forEach 
-            (sites Occupied by:Next container:"Board") 
-            if:(not (is Line 3 Orthogonal through:(site)))
-        )
-    )
-)
-
 (define "RemoveEnemyPieceInMillOnlyIfNoOtherChoice" 
-    (if (can Move ("RemoveEnemyPieceNotInLine3"))
-        ("RemoveEnemyPieceNotInLine3") 
-        (move Remove
-            (sites Occupied by:Next container:"Board") 
-        )
+    (if (can Move ("RemoveAnyNextPieceNotInLine3" Orthogonal))
+        ("RemoveAnyNextPieceNotInLine3" Orthogonal) 
+        ("RemoveAnyNextPiece")
     )
 )
 
@@ -59,12 +48,7 @@
         )
         }
         
-        (end 
-            (if 
-                (<= (count Pieces Next) 2)
-                (result Mover Win)
-            )
-        )
+        (end ("HavingLessPiecesLoss" Next 2))
     )
 )
 

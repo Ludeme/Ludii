@@ -1,11 +1,3 @@
-(define "RemoveEnemyPiece" 
-    (move Remove
-        (sites Occupied by:Next container:"Board") 
-    )
-)
-
-//------------------------------------------------------------------------------
-
 (game "Aqrad"
     (players 2)
     
@@ -13,9 +5,9 @@
         (board (rectangle 7 6)) 
         (hand Each)
         (piece "Marker" Each 
-        	("StepToEmpty" Orthogonal 
-        			(then ("ReplayIfLine3" Orthogonal exact:True))
-        	)
+            ("StepToEmpty" Orthogonal 
+                (then ("ReplayIfLine3" Orthogonal exact:True))
+            )
         ) 
     }) 
     (rules 
@@ -25,7 +17,7 @@
         (phase "Placement"
             (play
                 (if "SameTurn"
-                    "RemoveEnemyPiece"
+                    "RemoveAnyNextPiece"
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
@@ -39,7 +31,7 @@
         (phase "Movement" 
             (play 
                 (if "SameTurn"
-                    "RemoveEnemyPiece"
+                    "RemoveAnyNextPiece"
                     (forEach Piece)
                 )
             )
