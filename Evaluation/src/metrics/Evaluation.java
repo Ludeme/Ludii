@@ -100,6 +100,7 @@ public class Evaluation
 		reconstructionMetrics.add(new DurationTurns());
 		reconstructionMetrics.add(new DecisionMoves());
 		reconstructionMetrics.add(new BoardCoverageDefault());
+		reconstructionMetrics.add(new AdvantageP1());
 		reconstructionMetrics.add(new Balance());
 		reconstructionMetrics.add(new Completion());
 		reconstructionMetrics.add(new Drawishness());
