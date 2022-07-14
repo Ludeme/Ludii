@@ -3,7 +3,7 @@
         from:#1 
         #2
         steps:#3
-   )
+    )
 )
 
 (define "DieNotUsed" (!= (pips) 0))
@@ -19,35 +19,35 @@
         (and
             (<= 1 (count Pieces Mover in:(sites {("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die1")) })))
             (<= 1 (count Pieces Mover in:(sites {("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")) })))	
-       )
-   )
+        )
+    )
 )
 
 (define "UpdateScore"
     (forEach Site (sites Occupied by:Mover)
         (and
             (if 
-                (and  
+                (and 
                     (is Enemy (who at:("NextSiteFrom" (site) "Track" ("Die1"))))
                     (= 1 (size Stack at:("NextSiteFrom" (site) "Track" ("Die1"))))
-               )
+                )
                 (if (is In ("NextSiteFrom" (site) "Track" ("Die1")) (sites Mover "FirstHalfOpponent"))
                     (if (all DiceEqual) (addScore Mover 4) (addScore Mover 2))
                     (if (all DiceEqual) (addScore Mover 6) (addScore Mover 4))
-               )
-           )
+                )
+            )
             (if 
-                (and  
+                (and 
                     (is Enemy (who at:("NextSiteFrom" (site) "Track" ("Die2"))))
                     (= 1 (size Stack at:("NextSiteFrom" (site) "Track" ("Die2"))))
-               )
+                )
                 (if (is In ("NextSiteFrom" (site) "Track" ("Die2")) (sites Mover "FirstHalfOpponent"))
                     (if (all DiceEqual) (addScore Mover 4) (addScore Mover 2))
                     (if (all DiceEqual) (addScore Mover 6) (addScore Mover 4))
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -63,7 +63,7 @@
             (track "ReverseHuckeTrack2" {13..18 20} P2 directed:True)
             } 
             use:Vertex
-       ) 
+        ) 
         (dice d:6 num:2)
         (piece "Disc" Each
             (if (is In (from) (sites Mover "BeforeHucke"))
@@ -74,16 +74,16 @@
                         (to 
                             ("NextSiteFrom" (from) "Track" (pips))
                             if:(is In (to) (sites Mover "BeforeHucke")) 
-                       )
-                   )
+                        )
+                    )
                     (then 
                         (if (not (all DiceUsed))
                             (moveAgain)
-                       )
-                   )
-               )
-           )		
-       )
+                        )
+                    )
+                )
+            )		
+        )
         (regions "BeforeHucke" P1 (sites {12..7 5..1}))
         (regions "BeforeHucke" P2 (sites {25..20 18..14}))
         (regions "FirstHalfOpponent" P1 (sites {13..18}))
@@ -97,7 +97,7 @@
         (play 
             (do (if (not "SameTurn") (roll))
                 next:(do (if (not "SameTurn") ("UpdateScore"))
-                    next:(or  
+                    next:(or 
                         (if (>= 0 (var "MovingToHucke")) (forEach Piece top:True))
                         
                         (if (or (< 0 (var "MovingToHucke")) ("CanMove2PiecesToHucke"))
@@ -107,26 +107,26 @@
                                         (from ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die1")))
                                         (to ("HuckeSite"))
                                         (then (if (= 0 (count MovesThisTurn)) (and (moveAgain) (set Var "MovingToHucke" 26)) (set Var "MovingToHucke" 0)))
-                                   )
-                               )
+                                    )
+                                )
                                 (if (and (!= 27 (var "MovingToHucke")) (is Friend (who at:("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")))))
                                     (move 
                                         (from ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")))
                                         (to ("HuckeSite"))
                                         (then (if (= 0 (count MovesThisTurn)) (and (moveAgain) (set Var "MovingToHucke" 27)) (set Var "MovingToHucke" 0)))
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
                 (then
                     (if (no Pieces Mover) (addScore Mover 2))
-               )
-           )
-       )
+                )
+            )
+        )
         (end (if (<= 12 (score Mover)) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -142,9 +142,9 @@
         (version "1.2.1")
         (classification "race/WishlistDLP")
         (credit "Eric Piette")
-        (origin  "This game was played in France, around 1766.")
+        (origin "This game was played in France, around 1766.")
         }
-   )
+    )
     
     (graphics {
         (board Style backgammon)

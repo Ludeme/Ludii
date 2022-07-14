@@ -2,7 +2,7 @@
     (move
         Remove
         (sites Occupied by:Next container:"Board") 
-   )
+    )
 )
 
 (define "IfLine3MoveAgain" 
@@ -10,8 +10,8 @@
         (if 
             (is Line 3 Orthogonal exact:True) 
             (moveAgain)
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -24,7 +24,7 @@
         (hand Each)
         (dice d:6 num:3)
         (piece "Marker" Each) 
-    })  
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:9))
         (play 
@@ -32,11 +32,11 @@
                 "RemoveEnemyPiece"
                 (do (roll)
                     next:(if [#] ("IfLine3MoveAgain"))
-               )
-           )
-       )
+                )
+            )
+        )
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -52,8 +52,8 @@
         (version "1.3.2")
         (classification "board/space/line/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Spain, around 1283.")
+        (origin "This game was played in Spain, around 1283.")
         }
-   )
+    )
     
 )

@@ -3,22 +3,22 @@
     (trackSite FirstSite 
         from:(trackSite FirstSite if:(not (is Mover (who at:(to)))))
         if:(is Mover (who at:(to)))
-   )
+    )
 )
 (define "NextHoleFrom" ("NextSiteOnTrack" #2 from:#1))
 
 //------------------------------------------------------------------------------
 
-(game "Mwendo"  
-    (players 4)  
+(game "Mwendo" 
+    (players 4) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
             <Board:track>
-       )
+        )
         (piece "Seed" Each)
         <Board:regions>
-    })  
+    }) 
     (rules 
         (start {
             (place "Seed1" (sites P1) counts:{3})
@@ -39,14 +39,14 @@
                                     (and
                                         (remove (to) count:(count at:(to)))
                                         (add (piece (id "Seed" Mover)) (to (to)) count:(count at:(to)))
-                                   )
-                               )
+                                    )
+                                )
                                 apply:(if (= 2 (count at:(to)))
                                     (moveAgain)
-                               )
-                           )
-                       )
-                   )
+                                )
+                            )
+                        )
+                    )
                     (if (not ("SameTurn"))
                         (move
                             (from ("RightMost"))
@@ -56,14 +56,14 @@
                                         (and
                                             (remove (to) count:(count at:(to)))
                                             (add (piece (id "Seed" Mover)) (to (to)) count:(count at:(to)))
-                                       )	
-                                   )
-                               )
-                           )
+                                        )	
+                                    )
+                                )
+                            )
                             count:(count at:("RightMost"))
-                       )
-                   )
-               )
+                        )
+                    )
+                )
                 (move
                     (from ("RightMost"))
                     (to 
@@ -72,28 +72,28 @@
                             (and
                                 (remove (to) count:(count at:(to)))
                                 (add (piece (id "Seed" Mover)) (to (to)) count:(count at:(to)))
-                           )	
-                       )	
-                   )
-               )
-           )
-       )
+                            )	
+                        )	
+                    )
+                )
+            )
+        )
         
         (end 
             (forEach NonMover 
                 if:(no Pieces Player) 
                 (result Player Loss)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> <track> <regions>}
     {
-    (item "4"   <4>   
-        <(track "Track" "4,N,E,S,W" loop:True)>  
+    (item "4"  <4>  
+        <(track "Track" "4,N,E,S,W" loop:True)> 
         <
         (regions P1 (sites {0..2}))
         (regions P2 (sites {3 7 11}))
@@ -101,8 +101,8 @@
         (regions P4 (sites {12 8 4}))
         >
     "Each row has 4 holes.") 
-    (item "6"   <6>   
-        <(track "Track" "6,N,E,S,W" loop:True)>  
+    (item "6"  <6>  
+        <(track "Track" "6,N,E,S,W" loop:True)> 
         <
         (regions P1 (sites {0..3}))
         (regions P2 (sites {4 5 11 17}))
@@ -110,8 +110,8 @@
         (regions P4 (sites {19 18 12 6}))
         >
     "Each row has 6 holes.") 
-    (item "8"   <8>   
-        <(track "Track" "8,N,E,S,W" loop:True)>  
+    (item "8"  <8>  
+        <(track "Track" "8,N,E,S,W" loop:True)> 
         <
         (regions P1 (sites {0..4}))
         (regions P2 (sites {5..7 15 23}))
@@ -119,7 +119,7 @@
         (regions P4 (sites {26..24 16 8}))
         >
     "Each row has 8 holes.") 
-    (item "10"   <10> 
+    (item "10"  <10> 
         <(track "Track" "10,N,E,S,W" loop:True)> 
         <
         (regions P1 (sites {0..5}))
@@ -128,7 +128,7 @@
         (regions P4 (sites {33..30 20 10}))
         >
     "Each row has 10 holes.")* 
-    (item "12"   <12> 
+    (item "12"  <12> 
         <(track "Track" "12,N,E,S,W" loop:True)> 
         <
         (regions P1 (sites {0..6}))
@@ -137,7 +137,7 @@
         (regions P4 (sites {40..36 24 12}))
         >
     "Each row has 12 holes.") 
-    (item "14"   <14> 
+    (item "14"  <14> 
         <(track "Track" "14,N,E,S,W" loop:True)> 
         <
         (regions P1 (sites {0..7}))
@@ -145,8 +145,8 @@
         (regions P3 (sites {55..48}))
         (regions P4 (sites {47..42 28 14}))
         >
-    "Each row has 14 holes.")  
-    (item "16"   <16> 
+    "Each row has 14 holes.") 
+    (item "16"  <16> 
         <(track "Track" "16,N,E,S,W" loop:True)> 
         <
         (regions P1 (sites {0..8}))
@@ -154,7 +154,7 @@
         (regions P3 (sites {63..55}))
         (regions P4 (sites {54..48 32 16}))
         >
-    "Each row has 16 holes.")  
+    "Each row has 16 holes.") 
 })
 
 //------------------------------------------------------------------------------
@@ -165,7 +165,7 @@
         "Board Size/10"
         }
         variations:{"Board Size/4" "Board Size/6" "Board Size/8" "Board Size/12" "Board Size/14" "Board Size/16"}
-   )*
+    )*
     
 })
 
@@ -182,9 +182,9 @@
         (version "1.3.4")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Angola, around 1995.")
+        (origin "This game was played in Angola, around 1995.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

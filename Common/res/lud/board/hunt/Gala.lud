@@ -12,7 +12,7 @@
                 (intersection (sites Outer) (sites Row (row of:(centrePoint))))
                 (intersection (sites Outer) (sites Column (column of:(centrePoint))))
             })
-       )
+        )
         (piece "Marker" Each ("StepOrthogonalToEmpty"))
     })
     (rules 
@@ -27,25 +27,25 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (intersection (sites Empty) (sites Mover))) 
-               )  
-           ) 
+                ) 
+            ) 
             (nextPhase (and ("HandEmpty" P1) ("HandEmpty" P2)) "Movement")
-       )
+        )
         
         (phase "Movement" 
             (play 
                 (forEach Piece
                     (then ("CustodialCapture"))
-               )
-           )
+                )
+            )
             
             (end {
                 (if (no Moves P1) (result P2 Win))
                 (if (< (count Pieces P2) 2) (result P1 Win))
             })
-       )
+        )
         }
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -53,16 +53,16 @@
 (metadata 
     (info
         {
-        (description "Gala is a blockade game played among the Buginese and Makassarese people of Sulawesi in Indonesia.   ")
+        (description "Gala is a blockade game played among the Buginese and Makassarese people of Sulawesi in Indonesia.  ")
         (rules "5x5 board. Markings in the central square, each corner square, and the central square of each side. Black plays with thirteen pieces, white plays with ten. Black places the first piece on the central square, then players alternate turns placing a piece on their own half of the board. When all of the pieces are placed, players alternate turns moving pieces on space orthogonally. A piece is captured when it is surrounded on two opposite sides by opponent's pieces. Black wins if it can block white from being able to move. White wins if it is impossible for black to block them.")
         (source "Matthes 1859: 899.")
         (id "804")
         (version "1.3.4")
         (classification "board/space/blocking")
         (credit "Eric Piette")
-        (origin  "This game was played in Sulawesi, around 1859.")
+        (origin "This game was played in Sulawesi, around 1859.")
         }
-   )
+    )
     
     (graphics {
         (show Symbol "thinCross" "MarkedCells")
@@ -73,5 +73,5 @@
     
     (ai
         "Gala_ai"
-   )
+    )
 )

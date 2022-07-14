@@ -2,13 +2,13 @@
     (not (all Sites (difference (sites Occupied by:Shared) (sites #1))
             if:(and
                 (= 0 (count Sites in:(sites LineOfSight Farthest at:(site) #2)))
-                (!=  
+                (!= 
                     (what at:(site))
                     (what at:(regionSite (sites LineOfSight Piece at:(site) #2) index:0))
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 (define "CanSlideW" ("CanSlide" Left W))
@@ -29,28 +29,28 @@
         (if (is Occupied (site))
             (if 
                 (and
-                    (=  
+                    (= 
                         (what at:(site))
                         (what at:("LineOfSightPiece" #3))
-                   )
+                    )
                     (= 0 (state at:("LineOfSightPiece" #3)))
-               )
+                )
                 (and {
                     (remove (site))
                     (remove ("LineOfSightPiece" #3))
                     (add 
                         (piece (mapEntry "Promotion" (what at:(site))))
                         (to ("LineOfSightPiece" #3))
-                   )
+                    )
                     (set State at:("LineOfSightPiece" #3) 1)
                     (addScore P1 (mapEntry "Score" (mapEntry "Promotion" (what at:(site)))))
                 })
                 (if (!= 0 (count Sites in:("LineOfSightEmpty" #3)))
                     (fromTo (from (site)) (to ("LineOfSightEmpty" #3)))
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 (define "ResetState" (forEach Site (sites State 1) (set State at:(site) 0)))
@@ -107,7 +107,7 @@
         (piece "Square256" Shared)
         (piece "Square512" Shared)
         (piece "Square1024" Shared)
-        (piece "Square2048" Shared)   
+        (piece "Square2048" Shared)  
         (map "Promotion" {
             (pair (id "Square2" Shared) (id "Square4" Shared))
             (pair (id "Square4" Shared) (id "Square8" Shared))
@@ -141,37 +141,37 @@
                 (if ("CanSlideW")
                     ("SlideW"
                         ("ApplySlideW")
-                   )
-               )
+                    )
+                )
                 (if ("CanSlideE")
                     ("SlideE"
                         ("ApplySlideE")
-                   )
-               )
+                    )
+                )
                 (if ("CanSlideN")
                     ("SlideN"
                         ("ApplySlideN")
-                   )
-               )
+                    )
+                )
                 (if ("CanSlideS")
                     ("SlideS"
                         ("ApplySlideS")
-                   )
-               )
+                    )
+                )
                 }
                 (then
                     (if (< (value Random (range 1 8)) 2)
                         (add (piece "Square4") (to (sites Random (sites Empty) num:1)))
                         (add (piece "Square2") (to (sites Random (sites Empty) num:1)))
-                   )		
-               )
-           )
-       )
+                    )		
+                )
+            )
+        )
         (end {
             (if (!= Off (where "Square2048" Shared)) (result Mover Win))
             (if (no Moves Next) (result Mover Loss))
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -189,7 +189,7 @@
         (credit "Eric Piette")
         (date "14-03-2014")
         }
-   )
+    )
     
     (graphics {
         (board Colour Phase0 (colour 205 193 179))

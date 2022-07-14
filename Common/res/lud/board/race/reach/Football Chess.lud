@@ -21,16 +21,16 @@
             (to
                 (sites To (leap (from (where "Ball" Shared)) "KnightWalk" (to if:(is Empty (to)))))
                 if:(not (is In (to) (sites Around #1)))
-           )
-       )
+            )
+        )
         (if ("KickerIsA" "King" #1)
             (move
                 (from (where "Ball" Shared))
                 (to
                     (sites To (step (from (where "Ball" Shared)) ("SameDirection" #1) (to if:(is Empty (to)))))
                     if:(if ("InBottomOrTop" #1) (not (is In (to) (sites "Goals"))) True)
-               )
-           )
+                )
+            )
             (if ("KickerIsA" "Queen" #1)
                 (move
                     (from (where "Ball" Shared))
@@ -38,10 +38,10 @@
                         (sites To
                             (slide (from (where "Ball" Shared)) ("SameDirection" #1)
                                 (between if:(if ("InBottomOrTop" #1) ("NotInOrThroughGoal") (is Empty (between))))
-                           )
-                       )
-                   )
-               )
+                            )
+                        )
+                    )
+                )
                 (if ("KickerIsA" "Rook" #1 Orthogonal)
                     (move
                         (from (where "Ball" Shared))
@@ -49,10 +49,10 @@
                             (sites To
                                 (slide (from (where "Ball" Shared)) ("SameDirection" #1)
                                     (between if:(if ("InBottomOrTop" #1) ("NotInOrThroughGoal") (is Empty (between))))
-                               )
-                           )
-                       )
-                   )
+                                )
+                            )
+                        )
+                    )
                     (if ("KickerIsA" "Bishop" #1 Diagonal)
                         (move
                             (from (where "Ball" Shared))
@@ -60,16 +60,16 @@
                                 (sites To
                                     (slide (from (where "Ball" Shared)) ("SameDirection" #1)
                                         (between if:(if ("InBottomOrTop" #1) ("NotInOrThroughGoal") (is Empty (between))))
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         #2
-   )		
+    )		
 )
 
 (define "KickBallAgainWithoutMoving" (is Pending))
@@ -77,12 +77,12 @@
 
 //------------------------------------------------------------------------------
 
-(game "Football Chess"  
-    (players 2)  
+(game "Football Chess" 
+    (players 2) 
     (equipment { 
         (board (square 9)) 
         
-        (piece "Rook" Each (move Slide Orthogonal (to (apply  if:(not (is In (to) (sites "Goals")))))))
+        (piece "Rook" Each (move Slide Orthogonal (to (apply if:(not (is In (to) (sites "Goals")))))))
         (piece "King" Each (move Step (to if:(and (is Empty (to)) (not (is In (to) (sites "Goals")))))))
         (piece "Bishop" Each (move Slide Diagonal (to (apply if:(not (is In (to) (sites "Goals")))))))
         (piece "Knight" Each (move Leap "KnightWalk" (to if:(and (is Empty (to)) (not (is In (to) (sites "Goals")))))))
@@ -90,7 +90,7 @@
         (piece "Ball" Shared)
         (regions "Goals" (sites {"E1" "E9"}))
         (map "Goal" {(pair P1 "E9") (pair P2 "E1")})
-    })  
+    }) 
     (rules 
         (meta (no Repeat PositionalInTurn))
         (start { 
@@ -105,29 +105,29 @@
                     (if ("KickBallAgainWithoutMoving")
                         (forEach Site (sites Around (where "Ball" Shared)) ("KickTheBall" (site))
                             (then (if (can Move (forEach Site (sites Around (where "Ball" Shared)) ("KickTheBall" (site)))) ("CanKickAgainWithoutMoving")))		
-                       )
+                        )
                         ("KickTheBall" (last To) 
                             (then (if (can Move (forEach Site (sites Around (where "Ball" Shared)) ("KickTheBall" (site)))) ("CanKickAgainWithoutMoving")))
-                       )
-                   )
+                        )
+                    )
                     (move Pass)
-               )
+                )
                 (or 
                     (forEach Piece (then (if (can Move ("KickTheBall" (last To))) (moveAgain))))
                     (forEach Site 
                         (sites Around (where "Ball" Shared)) 
                         ("KickTheBall" (site))
                         (then (if (can Move (forEach Site (sites Around (where "Ball" Shared)) ("KickTheBall" (site)))) ("CanKickAgainWithoutMoving")))		
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         
         (end {
             (if (= (where "Ball" Shared) (mapEntry P1)) (result P1 Win))
             (if (= (where "Ball" Shared) (mapEntry P2)) (result P2 Win))
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -160,7 +160,7 @@
         (credit "Eric Piette")
         (date "1951")
         }
-   )
+    )
     
     (graphics {
         (show Check "King")

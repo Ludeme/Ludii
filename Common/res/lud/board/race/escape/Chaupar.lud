@@ -34,12 +34,12 @@
                             (fromTo 
                                 (from (last From) level:(level))
                                 (to (last To))
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         (forEach Die
             if:("DieNotUsed")	
             (if ("IsEndTrack" ("NextSiteOnTrack" (pips) from:(from) #1))
@@ -47,24 +47,24 @@
                 (move 
                     (from (from) level:(level))
                     (to ("NextSiteOnTrack" (pips) from:(from) #1))
-               )
-           )
+                )
+            )
             (then ("ReplayNotAllDiceUsed"))
-       )
+        )
         (then
             (forEach Level (last To) FromTop
                 (if (and 
                         ("IsEnemyAt" (last To) level:(level))
                         (= 1 ("CountPieceTypeInStack" (who at:(last To) level:(level)) (last To)))
-                   )
+                    )
                     (fromTo 
                         (from (last To) level:(level))
                         (to (mapEntry "Start" (who at:(last To) level:(level))))
-                   )
-               )
-           )
-       )
-   )
+                    )
+                )
+            )
+        )
+    )
 )
 
 (define "Move" 
@@ -76,30 +76,30 @@
                 (if (is Mover P4)
                     (forEach Piece ("PieceMove" "Track2") P2)
                     (forEach Piece ("PieceMove" "Track4") P4)
-               )
-           )
-       )
+                )
+            )
+        )
         (forEach Piece)
-   )		
+    )		
 )
 
 //------------------------------------------------------------------------------
 
-(game "Chaupar"  
-    (players 4)  
+(game "Chaupar" 
+    (players 4) 
     (equipment { 
         ("PachisiBoard" 
             {
             (track "Track1" "61,S,E,N,11,E,N,W,53,N,W,S,42,W,S,E,8,54,E1,N7,End" P1 directed:True)
-            (track "Track2" "21,W,S,E,8,S,E,N,11,E,N,W,53,N,W,S,42,W,S1,E7,End"  P2 directed:True)
-            (track "Track3" "88,N,W,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,W1,S7,End"  P3 directed:True)
-            (track "Track4" "32,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W7,End"  P4 directed:True)
+            (track "Track2" "21,W,S,E,8,S,E,N,11,E,N,W,53,N,W,S,42,W,S1,E7,End" P2 directed:True)
+            (track "Track3" "88,N,W,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,W1,S7,End" P3 directed:True)
+            (track "Track4" "32,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W7,End" P4 directed:True)
             }
-       )
+        )
         (dice d:4 faces:{1 2 5 6} num:3)
         (map "Start" {(pair P1 61) (pair P2 21) (pair P3 88) (pair P4 32)})
         (piece "Pawn" Each ("PieceMove" "Track"))
-    })  
+    }) 
     (rules 
         (start {
             (set Team 1 {P1 P3})
@@ -115,7 +115,7 @@
         (play ("RollEachNewTurnMove" ("Move")))
         
         (end ("EscapeTeamWin"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -132,9 +132,9 @@
         (version "1.3.4")
         (classification "board/race/escape")
         (credit "Eric Piette")
-        (origin  "This game was played in South Asia, around 1590.")
+        (origin "This game was played in South Asia, around 1590.")
         }
-   )
+    )
     
     (graphics {
         (stackType 0 Ground)

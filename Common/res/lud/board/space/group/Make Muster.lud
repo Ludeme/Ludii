@@ -10,9 +10,9 @@
         (board 
             (rotate (- 90 <Orient:amount>)
                 (square <Board:poly>)
-           ) 
+            ) 
             use:Cell 
-       )
+        )
         (piece "Disc" Each ("StepToEmpty"))
     })
     (rules
@@ -21,11 +21,11 @@
                 (move Add
                     (to (sites Empty)
                         if:(no Pieces Mover in:(sites Around (to) Adjacent))
-                   )
-               )
+                    )
+                )
                 (forEach Piece)
-           )
-       )
+            )
+        )
         (end 
             (if 
                 (or
@@ -33,14 +33,14 @@
                         ("IsSingleGroup" Mover All)
                         (< 1 (count Pieces Mover))
                         // Original rules disqualified winning condition if a placement could be made in the following turn. 
-                        //            ("NoPlacementAvailable")
+                        //      ("NoPlacementAvailable")
                     })
                     (< 1 (count Groups All if:(!= (mover) (who at:(to)))))
-               )
+                )
                 (result Mover Win)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //---------------------------------------------
@@ -64,7 +64,7 @@
 (option "Orientation" <Orient> args:{<amount>}
     {
     (item "Orthogonal" <0> "Orthogonal")
-    (item "Angled" <62>  "Angled cells")**
+    (item "Angled" <62> "Angled cells")**
     } 
 )
 
@@ -87,7 +87,7 @@
         (credit "Dale W. Walton")
         (date "13-01-2020")
         }
-   )
+    )
     (graphics 
         {
         (board Colour Phase0 (colour 232 229 212))
@@ -101,7 +101,7 @@
         edgeColour:(colour 157 155 141) 
         scale:0.80 
         rotation:<Orient:amount>
-   )
+    )
     (player Colour P1 (colour DarkBlue))
     (player Colour P2 (colour LightRed))
     (piece Colour P1 fillColour:(colour DarkBlue) strokeColour:(colour 39 38 35))

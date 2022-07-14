@@ -20,11 +20,11 @@
                 (and 
                     (is Empty (to)) 
                     ("InTheGoal" (to))
-               ) 
+                ) 
                 (is In (to) "EmptyButNotEnemyGoal")
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "Hop" 
@@ -33,7 +33,7 @@
         #2
         (to if:(and (is In (to) "EmptyButNotEnemyGoal") (not (is Visited (to)))))
         #3		
-   )
+    )
 ) 
 
 (define "HopSequence" 
@@ -45,11 +45,11 @@
                 (and 
                     (not ("InTheGoal" (last To))) 
                     (can Move ("Hop" (last To) #2))
-               ) 
-                #3  
-           )
-       )
-   )
+                ) 
+                #3 
+            )
+        )
+    )
 )
 
 (define "NotEnoughPieceForBothPlayer" (and (< (count Pieces Mover) 2) (< (count Pieces Next) 2)))
@@ -60,7 +60,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "Camelot"  
+(game "Camelot" 
     (players 2) 
     (equipment { 
         (board 
@@ -68,25 +68,25 @@
                 (rectangle 12 16) 
                 (poly { {0 7} {1 10} {4 13} {12 13} {15 10} {16 7} 
                 {16 5} {15 2} {13 0} {3 0} {1 2} {0 5} })
-           )
-       )
+            )
+        )
         (piece "Pawn" Each
             (or
                 (if (not ("InTheGoal" (from))) ("HopSequence" (from) "OnAFriend" "MoveAgainAfterJumpingFriend"))
                 "Step"
-           )
-       )
+            )
+        )
         
         (piece "Knight" Each 
             (or
                 (if (not ("InTheGoal" (from))) ("HopSequence" (from) "OnAFriend" "MoveAgainAfterJumpingFriend"))
                 "Step"
-           )
-       )
+            )
+        )
         
         (regions P1 (sites {"A6" "A7"})) 
         (regions P2 (sites {"P6" "P7"})) 
-    })  
+    }) 
     (rules 
         (start {
             (place "Pawn1" {"F4" "F5" "F6" "F7" "F8" "F9" "G5" "G6" "G7" "G8"})
@@ -105,15 +105,15 @@
                             (or
                                 ("HopSequence" (last To) "OnAFriend" "MoveAgainAfterJumpingFriend")
                                 (move Pass)
-                           )
+                            )
                         })
                         (or
                             ("HopSequence" (last To) "OnAFriend" "MoveAgainAfterJumpingFriend")
                             (move Pass)
-                       )
-                   )
+                        )
+                    )
                     ("HopSequence" (last To) "OnAnEnemy" "MoveAgainAfterJumpingEnemy")
-               )
+                )
                 
                 (priority {
                     // If one of our piece is on the goal of the enemy we have to move it.
@@ -125,10 +125,10 @@
                                 (or
                                     ("HopSequence" (site) "OnAFriend" "MoveAgainAfterJumpingFriend")
                                     "Step"
-                               )
+                                )
                             })
-                       )
-                   )
+                        )
+                    )
                     // If a piece can jump an enemy it has to.
                     (forEach Piece 
                         (move Hop 
@@ -139,10 +139,10 @@
                                     (and 
                                         (is Empty (to)) 
                                         ("InTheGoal" (to))
-                                   ) 
+                                    ) 
                                     (is In (to) "EmptyButNotEnemyGoal")
-                               )
-                           ) 
+                                )
+                            ) 
                             (then 
                                 (if 
                                     (and 
@@ -152,26 +152,26 @@
                                                 (from (last To)) 
                                                 "OnAnEnemy"
                                                 (to if:(is Empty (to))) 
-                                           ) 
-                                       ) 
-                                   ) 
+                                            ) 
+                                        ) 
+                                    ) 
                                     "MoveAgainAfterJumpingEnemy" 
-                               ) 
-                           ) 
-                       ) 
-                   )
+                                ) 
+                            ) 
+                        ) 
+                    )
                     (forEach Piece)
                 })
-           )
-       )
+            )
+        )
         
         (end {
             (if ("GoalFilledby" P1 P2) (result P1 Win))
             (if ("GoalFilledby" P2 P1) (result P2 Win))
             (if "NotEnoughPieceForTheMover" (result Mover Win)) 
             (if "NotEnoughPieceForBothPlayer" (result Mover Draw)) 
-        })  
-   )
+        }) 
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -192,7 +192,7 @@
         (credit "Eric Piette")
         (date "1930")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Yellow))
@@ -208,6 +208,6 @@
     
     (ai 
         "Camelot_ai"
-   )
+    )
     
 )

@@ -5,30 +5,30 @@
                 in:(sites Direction
                     from:(from)
                     #1
-               )
-           )
+                )
+            )
             (count Sites
                 in:(sites Direction
                     from:(from)
                     #2
-               )
-           )
-       )
+                )
+            )
+        )
         (max
             (count Sites
                 in:(sites Direction
                     from:(to)
                     #1
-               )
-           )
+                )
+            )
             (count Sites
                 in:(sites Direction
                     from:(to)
                     #2
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 (define "Hop"
@@ -38,13 +38,13 @@
         (between 
             if:(is Occupied (between)) 
             (apply (remove (between)))
-       )
+        )
         (to 
             if:(and {
                 (is Empty (to))
                 (= 0 (count Sites in:(sites Around (to) Own Orthogonal)))
             })
-       )
+        )
         (then
             (and {
                 (remove (sites Outer))
@@ -57,21 +57,21 @@
                             (between 
                                 if:(is Occupied (between)) 
                                 (apply (remove (between)))
-                           )
+                            )
                             (to 
                                 if:(and {
                                     (is Empty (to))
                                     (= 0 (count Sites in:(sites Around (to) Own Orthogonal)))
                                 })
-                           )
-                       )
-                   )
+                            )
+                        )
+                    )
                     (moveAgain)
                     (set Var 0)
-               )
+                )
             })
-       )
-   )
+        )
+    )
 )
 
 (define "Step"
@@ -85,70 +85,70 @@
                         in:(difference
                             (sites Around (to) Own Orthogonal)
                             (sites {(from)})
-                       )
-                   )
-               )
+                        )
+                    )
+                )
                 (not
                     (and
                         (< 0 
                             (count Sites 
                                 in:(sites Around (from) Enemy Orthogonal)
-                           )
-                       )
+                            )
+                        )
                         (= 0 
                             (count Sites 
                                 in:(sites Around (to) Enemy Orthogonal)
-                           )
-                       )
-                   )
-               )
+                            )
+                        )
+                    )
+                )
                 (or {
                     (and
                         (= 0 
                             (count Sites 
                                 in:(sites Around (from) Enemy Orthogonal)
-                           )
-                       )
+                            )
+                        )
                         (< 0 
                             (count Sites 
                                 in:(sites Around (to) Enemy Orthogonal)
-                           )
-                       )
-                   )
+                            )
+                        )
+                    )
                     (or {
                         (and
                             (or
                                 (= (from) (+ (to) <Board>))
                                 (= (from) (- (to) <Board>))
-                           )
+                            )
                             ("Inward" N S)
-                       )
+                        )
                         (and
                             (or
                                 (= (from) (+ (to) 1))
                                 (= (from) (- (to) 1))
-                           )
+                            )
                             ("Inward" E W)
-                       )
+                        )
                         (and
                             (or
                                 (= (from) (+ (to) (+ <Board> 1)))
                                 (= (from) (- (to) (+ <Board> 1)))
-                           )
+                            )
                             ("Inward" SW NE)
-                       )
+                        )
                         (and
                             (or
                                 (= (from) (+ (to) (- <Board> 1)))
                                 (= (from) (- (to) (- <Board> 1)))
-                           )
+                            )
                             ("Inward" SE NW)
-                       )
-                    })                                  
+                        )
+                    })                 
                 })
             })
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -160,7 +160,7 @@
         (board (square <Board>))
         (piece "Disc" Each)
         }
-   )
+    )
     (rules
         (start 
             {
@@ -168,16 +168,16 @@
                 (difference
                     (sites Phase 0)
                     (sites Outer)
-               )
-           )
+                )
+            )
             (place "Disc2"
                 (difference
                     (sites Phase 1)
                     (sites Outer)
-               )
-           )
+                )
+            )
             }
-       )
+        )
         (play
             (forEach Piece
                 (if
@@ -185,34 +185,34 @@
                     (or
                         ("Hop" ~)
                         ("Step")
-                   )
+                    )
                     ("Hop" if:(= (from) (last To)))
-               )
-           )
-       )
+                )
+            )
+        )
         (end 
             (if 
                 (or
                     (= 0
                         (count Sites in:(sites Occupied by:P1))
-                   )
+                    )
                     (= 0
                         (count Sites in:(sites Occupied by:P2))
-                   )
-               ) 
+                    )
+                ) 
                 (result Mover Win)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "10"   <12>  "A 10x10 board is currently selected")*
-    (item "8"    <10>  "A 8x8 board is currently selected")
-    (item "6"    <8>  "A 6x6 board is currently selected") 
+    (item "10"  <12> "A 10x10 board is currently selected")*
+    (item "8"  <10> "A 8x8 board is currently selected")
+    (item "6"  <8> "A 6x6 board is currently selected") 
     }
 )
 
@@ -253,7 +253,7 @@
         (credit "Designed by Mark Steere and implemented by Michael Amundsen.")
         (date "2010")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Red))
@@ -266,5 +266,5 @@
     })
     (ai
         "Cage_ai"
-   )
+    )
 )

@@ -15,8 +15,8 @@
         (if 
             (= (state at:(last To)) 1) 
             ("PieceHasMoved" (last To))
-       ) 
-   ) 
+        ) 
+    ) 
 )
 
 (define "CaptureToPieceAndResetCounter"
@@ -25,16 +25,16 @@
             (remove 
                 (to) 
                 (then (set Counter))
-           )
-       )
-   ) 
+            )
+        )
+    ) 
 )
 
 (define "KingNotCheckedAndToEmpty"
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-   )   
+    )  
 )
 
 (define "DoubleStep"
@@ -43,7 +43,7 @@
         Forward 
         (between (exact 2) if:(is Empty (between))) 
         (to if:(is Empty (to))) 
-   )
+    )
 )
 
 (define "CaptureForwardDiagonal"
@@ -53,14 +53,14 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Shatera"  
-    (players {(player N) (player S)})  
+(game "Shatera" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -68,7 +68,7 @@
             (or {
                 (if (is In (from) (sites Start (piece (what at:(from)))))
                     "DoubleStep"
-               )
+                )
                 "StepForwardToEmpty" 
                 "CaptureForwardDiagonal"
                 }
@@ -76,12 +76,12 @@
                     (and
                         (if (is In (last To) (sites Mover "Promotion")) 
                             (moveAgain)
-                       )
+                        )
                         (set Counter)
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         
         (piece "Rook" Each 
             (move
@@ -90,18 +90,18 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "King" Each 
             (move
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndResetCounter"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Bishop" Each 
             (move
                 Slide 
@@ -109,9 +109,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Knight" Each 
             (move
                 Leap 
@@ -119,22 +119,22 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndResetCounter"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Queen" Each 
             (move
                 Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
-               ) 
-           ) 
-       )
+                ) 
+            ) 
+        )
         
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Pawn1" (sites Row 1))
@@ -153,12 +153,12 @@
                         (and
                             (set Value Mover (+ 1 (value Player Mover)))
                             (if (!= (value Player Mover) 1) (moveAgain))
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (nextPhase Mover (= 2 (value Player Mover)) "Playing")
-       )
+        )
         (phase "Playing"
             (play 
                 (if "SameTurn"
@@ -166,22 +166,22 @@
                     (do 
                         (forEach Piece)
                         ifAfterwards:(not ("IsInCheck" "King" Mover))
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         }
         
         (end {
             (if (and 
                     ("IsInCheck" "King" Next)
                     ("NextCanNotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
+            ) 
             (if (or (no Moves Mover) (= (counter) 99)) (result Mover Draw)) 
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -191,7 +191,7 @@
     (info
         {
         }
-   )
+    )
     
     (graphics {
         (show Check "King")

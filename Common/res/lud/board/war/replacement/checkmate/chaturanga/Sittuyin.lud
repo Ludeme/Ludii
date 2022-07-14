@@ -3,9 +3,9 @@
         (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
-           )
-       )
-   ) 
+            )
+        )
+    ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -15,8 +15,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-       )
-   )
+        )
+    )
 )
 
 (define "PawnToReplace" (!= 0 (count Sites in:(sites Occupied by:Mover container:"Hand" component:"Pawn"))))
@@ -25,14 +25,14 @@
     (intersection
         (difference (sites Mover) (union (sites "PawnSites") (sites "NoPawnSites")))
         (sites Empty)
-   )
+    )
 )
 
 (define "ReplaceAPawn" 
     (move 
         (from (sites Occupied by:Mover container:"Hand" component:"Pawn")) 
         (to ("EmptySitesBehindPawnPositions"))
-   )
+    )
 )
 
 (define "PawnWasMovedForward"
@@ -43,7 +43,7 @@
     (difference 
         (sites Occupied by:Mover container:"Board")
         (sites Occupied by:Mover container:"Board" component:"Pawn")
-   )
+    )
 )
 
 (define "EmptySiteOnPlayerSideOrOccupiedByOwnedPawn"
@@ -53,10 +53,10 @@
             (union
                 (sites Empty)
                 (sites Occupied by:Mover container:"Board" component:"Pawn")
-           )
-       )
+            )
+        )
         (sites "NoPawnSites")
-   )
+    )
 )
 
 (define "IfPawnStoreIt"
@@ -64,8 +64,8 @@
         (fromTo
             (from (to))
             (to (handSite Mover 5))
-       )
-   )
+        )
+    )
 )
 
 (define "AllPiecesOnBoard"
@@ -74,9 +74,9 @@
             in:(union 
                 (sites Occupied by:P1 container:"Hand") 
                 (sites Occupied by:P2 container:"Hand")
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "NextCanNotMove"
@@ -86,7 +86,7 @@
 //------------------------------------------------------------------------------
 
 (game "Sittuyin"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment {
         (board (square 8))
         (hand Each size:6)
@@ -96,9 +96,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-               ) 
-           )		
-       )
+                ) 
+            )		
+        )
         (piece "Rook" Each
             (move
                 Slide 
@@ -106,9 +106,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )		
-       )
+                ) 
+            )		
+        )
         (piece "Elephant" Each
             (move
                 Step 
@@ -116,9 +116,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-               ) 
-           )			
-       )
+                ) 
+            )			
+        )
         (piece "Knight" Each
             (move
                 Leap 
@@ -126,9 +126,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-               ) 
-           )		
-       )
+                ) 
+            )		
+        )
         (piece "Pawn" Each
             (or 
                 "StepForwardToEmpty" 
@@ -136,10 +136,10 @@
                 (then 
                     (if (is In (last To) (difference (sites "DiagonalSites") (sites Mover "Home"))) 
                         (promote (last To) (piece "Queen") Mover)
-                   )
-               )
-           )		
-       ) 
+                    )
+                )
+            )		
+        ) 
         (piece "Queen" Each
             (move
                 Step 
@@ -147,17 +147,17 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-               ) 
-           )			
-       )
+                ) 
+            )			
+        )
         (regions "Home" P1 (expand (sites Bottom) steps:3))
         (regions "Home" P2 (expand (sites Top) steps:3))
         (regions "NoPawnSites" 
             (union
                 (difference (sites Row 3) (expand (sites Right) steps:3))
                 (difference (sites Row 4) (expand (sites Left) steps:3))
-           )
-       )
+            )
+        )
         (regions "PawnSites" 
             (union {
                 (difference (sites Row 2) (expand (sites Right) steps:3))
@@ -165,20 +165,20 @@
                 (difference (sites Row 4) (expand (sites Right) steps:3))
                 (difference (sites Row 5) (expand (sites Left) steps:3))
             })
-       )
+        )
         (regions "DiagonalSites" 
             (union 
                 (union (sites Centre) (expand (sites Corners) steps:1))
                 (sites {"C6" "F6" "F3" "C3"})
-           )
-       )
+            )
+        )
         (map "KingInitPos" {
             (pair P1 (coord "G2")) 
             (pair P2 (coord "B7")) 
         })
     })
     (rules 
-        (start {   
+        (start {  
             (place "Pawn1" (difference (sites Row 2) (expand (sites Right) steps:3)))
             (place "Pawn1" (difference (sites Row 3) (expand (sites Left) steps:3)))
             (place "Pawn2" (difference (sites Row 4) (expand (sites Right) steps:3)))
@@ -195,19 +195,19 @@
                 (move 
                     (from (sites Occupied by:Mover container:"Hand" component:"King_noCross")) 
                     (to (mapEntry "KingInitPos" Mover))
-               )
-           )
+                )
+            )
             (nextPhase Mover "PlaceFirstElephant")
-       )
+        )
         (phase "PlaceFirstElephant"
             (play 
                 (move 
                     (from (sites Occupied by:Mover container:"Hand" component:"Elephant")) 
                     (to (sites Around (mapEntry "KingInitPos" Mover)))
-               )
-           )
+                )
+            )
             (nextPhase Mover "PlaceOtherPieces")
-       )
+        )
         (phase "PlaceOtherPieces"
             (play 
                 (if ("PawnToReplace")
@@ -221,43 +221,43 @@
                                     (to 
                                         ("EmptySiteOnPlayerSideOrOccupiedByOwnedPawn")
                                         (apply ("IfPawnStoreIt"))
-                                   )
+                                    )
                                     (then (if ("PawnToReplace") (moveAgain)))
-                               )
-                           )
-                       )
+                                )
+                            )
+                        )
                         (move 
                             (from (sites Occupied by:Mover container:"Hand")) 
                             (to 
                                 ("EmptySiteOnPlayerSideOrOccupiedByOwnedPawn")
                                 (apply ("IfPawnStoreIt"))
-                           )
+                            )
                             (then (if ("PawnToReplace") (moveAgain)))
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (nextPhase ("PawnWasMovedForward") "Playing")
-       )
+        )
         (phase "Playing"
             (play
                 (do
                     (forEach Piece)
                     ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
-               )
-           )
-            (end             
+                )
+            )
+            (end       
                 (if (and 
                         ("IsInCheck" "King_noCross" Next)
                         ("NextCanNotMove")
-                   ) 
+                    ) 
                     (result Mover Win)
-               )
-           )
-       )
+                )
+            )
+        )
         }
         
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -274,9 +274,9 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in Myanmar, from around 1795 to 1798.")
+        (origin "This game was played in Myanmar, from around 1795 to 1798.")
         }
-   )
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.825)
@@ -290,6 +290,6 @@
     
     (ai
         "Sittuyin_ai"
-   )
+    )
 )
 

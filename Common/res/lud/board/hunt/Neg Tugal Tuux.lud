@@ -16,17 +16,17 @@
                 {48 51} {50 53} {52 55}
                 {54 57} {56 59} {58 61} {60 63}
                 }
-           )
+            )
             use:Vertex
-       )
+        )
         (piece "Cow" P2 "StepToEmpty")
-        (piece "Human" P1   
+        (piece "Human" P1  
             (move Step 
                 (to 
                     if:(and (is Empty (to)) (>= 1 (- (from) (to))))
-               )
-           )
-       )
+                )
+            )
+        )
     })
     (rules
         (start {
@@ -38,7 +38,7 @@
             (if (and (is Mover P2) (= 1 (where "Cow2" P2))) (result P2 Win))
             (if (= 62 (where "Cow2" P2)) (result P1 Win))
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -54,9 +54,9 @@
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in Mongolia, from around 1963 to 1991.")
+        (origin "This game was played in Mongolia, from around 1963 to 1991.")
         }
-   )
+    )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})
@@ -66,5 +66,5 @@
     
     (ai
         "Neg Tugal Tuux_ai"
-   )
+    )
 )

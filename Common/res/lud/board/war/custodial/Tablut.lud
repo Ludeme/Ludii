@@ -13,15 +13,15 @@
             (max 1) 
             if:(= (what at:(between)) (id #1)) 
             (apply (remove (between)))
-       )
+        )
         (to if:("FriendOrCentre")) 
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Tablut"  
-    (players 2)  
+(game "Tablut" 
+    (players 2) 
     (equipment { 
         (board (square 9)) 
         
@@ -35,9 +35,9 @@
                         ("Custodial" "Thrall2")
                         <Jarl:captureType>
                     })
-               )
-           )
-       )
+                )
+            )
+        )
         
         (piece "Thrall" P2 
             (move
@@ -45,8 +45,8 @@
                 Orthogonal 
                 (between if:(and (!= (between) ("Castle")) (is Empty (between))))
                 (then ("Custodial" "Thrall1")) 
-           ) 
-       ) 
+            ) 
+        ) 
         
         (piece "Jarl" P2 
             (move
@@ -54,16 +54,16 @@
                 Orthogonal 
                 (between if:(and (!= (between) ("Castle")) (is Empty (between))))
                 (then ("Custodial" "Thrall1")) 
-           )
-       )
+            )
+        )
         
         (regions "OrthogonalSitesCentre" 
             (difference
                 (expand origin:("Castle") Orthogonal) 
                 ("Castle")
-           )
-       )
-    })  
+            )
+        )
+    }) 
     (rules 
         (start { 
             (place "Thrall1" {"D1" "E1" "F1" "E2" "A4" "A5" "A6" "B5" "I4" "I5" "I6" "H5" "E8" "D9" "E9" "F9" "E8"})
@@ -77,14 +77,14 @@
             (if (is In (where "Jarl" P2) (sites Outer)) (result P2 Win))
             (if "JarlWasCaptured" (result P1 Win))
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Play Rules" <Jarl> args:{ <captureType> }
-    {   
-    (item "King Flanked"    
+    {  
+    (item "King Flanked"  
         <
         (surround 
             (from (last To)) 
@@ -92,9 +92,9 @@
             (between 
                 if:"JarlAndExpandedCentre" 
                 "CaptureJarl"
-           )
+            )
             (to if:"FriendOrCentre")
-       )
+        )
         (custodial 
             (from (last To)) 
             Orthogonal 
@@ -102,26 +102,26 @@
                 (max 1) 
                 if:"JarlButNotTheExpandedCentre" 
                 "CaptureJarl" 
-           )
+            )
             (to if:("IsFriendAt" (to)))
-       )>
+        )>
         "The king is captured if the enemy flanks him, except on the castle where he should be surrounded."
-   )*
+    )*
     
-    (item "King Surrounded"   
+    (item "King Surrounded"  
         <(surround 
             (from (last To))
             Orthogonal
             (between 
                 if:(= (what at:(between)) (id "Jarl2")) 
                 "CaptureJarl"
-           )
+            )
             (to 
                 if:("FriendOrCentre")
-           )
-       )>     
+            )
+        )>   
         "The king is captured if the enemy surrounds him."
-   )  
+    ) 
     }
 )
 
@@ -133,13 +133,13 @@
         {
         "Play Rules/King Flanked"
         }
-   )
+    )
     
     (ruleset "Ruleset/Smith (Suggested)" 
         {
         "Play Rules/King Surrounded"
         }
-   )
+    )
     
 })
 
@@ -161,9 +161,9 @@
         (version "1.3.4")
         (classification "board/war/custodial")
         (credit "Eric Piette")
-        (origin  "This game was played in Lapland, around 1732.")
+        (origin "This game was played in Lapland, around 1732.")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Black))
@@ -173,6 +173,6 @@
     
     (ai 
         "Tablut_ai"
-   )
+    )
     
 )

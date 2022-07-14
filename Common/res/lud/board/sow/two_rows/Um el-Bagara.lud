@@ -3,7 +3,7 @@
         (from 
             (sites Mover #1) 
             if:(> (count at:(from)) 1)
-       )
+        )
         (then 
             (sow
                 #2
@@ -12,41 +12,41 @@
                     (or
                         (= (count at:(to)) 2) 
                         (= (count at:(to)) 4)
-                   )
-               )
+                    )
+                )
                 apply:(fromTo 
                     (from (to)) 
                     (to (handSite Mover)) 
                     count:(count at:(to))
-               ) 
+                ) 
                 backtracking:True
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
 
 //------------------------------------------------------------------------------
 
-(game "Um el-Bagara"  
-    (players 2)  
+(game "Um el-Bagara" 
+    (players 2) 
     (equipment { 
         (mancalaBoard 2 5 store:None
             { 
             (track "TrackCCW" "0,E,N,W" loop:True)
             (track "TrackCW" "4,W,N,E" loop:True)
             }
-       )
-        (regions "Home1" P1 (sites Bottom))             // P1 home
-        (regions "Home2" P2 (sites Top))                // P2 home
-        (regions "Left1" P1 (sites {0..2}))            // P1 Three LeftMost
-        (regions "Left2" P2 (sites {9..7}))           // P2 Three LeftMost
-        (regions "Right1" P1 (sites {2..4}))           // P1 Three RightMost
-        (regions "Right2" P2 (sites {7..5}))           // P2 Three RightMost
+        )
+        (regions "Home1" P1 (sites Bottom))       // P1 home
+        (regions "Home2" P2 (sites Top))        // P2 home
+        (regions "Left1" P1 (sites {0..2}))      // P1 Three LeftMost
+        (regions "Left2" P2 (sites {9..7}))      // P2 Three LeftMost
+        (regions "Right1" P1 (sites {2..4}))      // P1 Three RightMost
+        (regions "Right2" P2 (sites {7..5}))      // P2 Three RightMost
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start (set Count 5 to:(sites Track))) 
@@ -54,11 +54,11 @@
         (play (or 
                 ("Sow" "Left" "TrackCW")
                 ("Sow" "Right" "TrackCCW")
-           )
-       )
+            )
+        )
         
         (end ("MancalaByScoreWhen" (all Passed)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -75,9 +75,9 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Sudan, around 1925.")
+        (origin "This game was played in Sudan, around 1925.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)
@@ -85,5 +85,5 @@
     
     (ai
         "Um el-Bagara_ai"
-   )
+    )
 )

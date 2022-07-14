@@ -6,25 +6,25 @@
         Orthogonal 
         (between 
             if:("IsEnemyAt" (between)) 
-            (apply             
+            (apply       
                 (and 
                     (remove (between)) 
                     (add (to (between))) 
-               )
-           ) 
-       )
-   )
+                )
+            ) 
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Lotus"  
+(game "Lotus" 
     (players 2) 
     (equipment { 
         (board (rotate 90 (tiling T3464 2)) use:Vertex)
         (piece "Marker" Each)
         }
-   )  
+    ) 
     
     (rules 
         (play 
@@ -35,13 +35,13 @@
                         (to (sites Empty))
                         (then 
                             "CaptureSurroundedPiece"
-                       )
-                   )
+                        )
+                    )
                     ifAfterwards:"HasFreedom"
-               )
+                )
                 (move Pass (then (addScore Mover 1)))
-           )
-       )
+            )
+        )
         
         (end
             (if (all Passed)
@@ -50,10 +50,10 @@
                     (score P1 (+ {(score P1) (size Territory P1) (count Sites in:(sites Occupied by:P1))})) 
                     (score P2 (+ {(score P2) (size Territory P2) (count Sites in:(sites Occupied by:P2)) }))
                     }
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -70,7 +70,7 @@
         (author "Christian Freeling")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Black))
@@ -80,6 +80,6 @@
     
     (ai 
         "Lotus_ai"
-   )
+    )
     
 )

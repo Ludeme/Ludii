@@ -11,19 +11,19 @@
 //------------------------------------------------------------------------------
 
 (game "Tapata"
-    (players 2)  
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
             (track "TrackCCW" "0,E,N,W" loop:True)
-       )
+        )
         (piece "Seed" Shared)
-        (regions "Home" P1 (sites Bottom))                                                     // P1 home
-        (regions "Home" P2 (sites Top))                                                        // P2 home
+        (regions "Home" P1 (sites Bottom))                           // P1 home
+        (regions "Home" P2 (sites Top))                            // P2 home
         (regions "Right Half" P1 (intersection (sites Bottom) (expand (sites Right) steps:5))) // P1 right half
-        (regions "Right Half" P2 (intersection (sites Top) (expand (sites Left) steps:5)))     // P2 right half
-        (map {(pair P1 0) (pair P2 23)})                                                       // First holes
-    })  
+        (regions "Right Half" P2 (intersection (sites Top) (expand (sites Left) steps:5)))   // P2 right half
+        (map {(pair P1 0) (pair P2 23)})                            // First holes
+    }) 
     (rules 
         (start (set Count 3 to:(sites {1 2 4 5 7 8 10 11 22 21 19 18 16 15 13 12})))
         
@@ -39,14 +39,14 @@
                                 (fromTo 
                                     (from (to))
                                     (to (mapEntry Next))
-                               )
-                           )
-                       )
-                   )
-               )
-           )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
             (nextPhase Mover "Play")
-       )
+        )
         
         (phase "Play" 
             (play
@@ -56,7 +56,7 @@
                             ("SameTurn") 
                             "LastHoleSowed" 
                             (sites Mover "Home") 
-                       ) 
+                        ) 
                         if:(and
                             (> (count at:(from)) 0)
                             (or ("SameTurn")
@@ -65,39 +65,39 @@
                                         (and 
                                             (is In ("NextHoleFrom" (from) (count at:(from))) (sites Mover "Home")) 
                                             (!= 0 (count at:("NextHoleFrom" (from) (count at:(from)))))
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     (then 
                         (sow
                             apply:(if (< 1 (count at:(to)))
                                 (moveAgain)
                                 (if (and (!= 0 (count at:("OppositePit" (to)))) (is In (to) (sites Mover "Home")))
                                     (remove ("OppositePit" (to)))
-                               )
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         }
         
         (end
             (forEach NonMover
                 if:("NoPiece")
                 (result Player Loss)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Tapata is a two-rown mancala-style board game played by the Konso people of Ethiopia. It is typically played in spaces reserved for large assemblies, and is typically played by adult men and, less frequently, by boys and adolescents.")
@@ -108,15 +108,15 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Horn of Africa, around 1971.")
+        (origin "This game was played in Horn of Africa, around 1971.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)
     })
     (ai
         "Tapata_ai"
-   )
+    )
 )
 

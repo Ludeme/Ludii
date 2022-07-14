@@ -8,7 +8,7 @@
         if:(and 
             (!= (pips) 0) 
             ("IsNotOffBoard" ("SiteToMoveOnTrack" #2))
-       )
+        )
         (if ("IsEndTrack" ("SiteToMoveOnTrack" #2))
             ("RemoveAPiece" #1)
             (move 
@@ -19,44 +19,44 @@
                         (and 
                             ("IsEnemyAt" (to)) 
                             (> (count at:(to)) 1)
-                       )
-                   ) 
+                        )
+                    ) 
                     (apply 
                         if:(and 
                             ("IsEnemyAt" (to)) 
                             (= (count at:(to)) 1)
-                       ) 
+                        ) 
                         (fromTo 
                             (from (to)) 
                             (to (handSite Next 1))
-                       ) 
-                   )
-               ) 
-           )
-       )
-   )
+                        ) 
+                    )
+                ) 
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (game "XII Scripta"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board 
             (add
                 (merge (rectangle 3 6) (shift 7 0 (rectangle 3 6))) 
                 edges:{{5 18} {11 24} {17 30}}
-           )
-            {    
+            )
+            {  
             (track "Track1" "36,6,E,N1,W,0,E,End" P1 directed:True)
             (track "Track2" "38,6,E,S1,W,12,E,End" P2 directed:True)
             } 
             use:Vertex
-       )
+        )
         (dice num:3)
         (hand Each size:2)
         (piece "Disc" Each ("PieceMove" (from) (from))) 
-    })  
+    }) 
     
     (rules 
         (start { 	
@@ -73,24 +73,24 @@
                                 (if (!= (what at:(handSite Mover 1)) 0)
                                     ("PieceMove" (handSite Mover 1) (handSite Mover))
                                     (or (forEach Piece) (forEach Piece container:(mover)))
-                               )
-                           )
+                                )
+                            )
                             (moveAgain)
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         
         (end ("EscapeWin"))
-   )
+    )
 )
 
 //--------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <type> }
     {
-    (item "Murray"   <>       "The rules are describing with the Murray ruleset.")   
+    (item "Murray"  <>    "The rules are describing with the Murray ruleset.")  
 })
 
 //------------------------------------------------------------------------------
@@ -127,7 +127,7 @@
         (classification "board/race/escape")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (show Edges Hidden) 
@@ -142,6 +142,6 @@
     
     (ai 
         "XII Scripta_ai"
-   )
+    )
     
 )

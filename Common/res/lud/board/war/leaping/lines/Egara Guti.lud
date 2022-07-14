@@ -1,5 +1,5 @@
-(game "Egara Guti"  
-    (players 2)  
+(game "Egara Guti" 
+    (players 2) 
     (equipment { 
         (board 
             (graph
@@ -7,17 +7,17 @@
                 edges:{ {0 1} {0 5} {1 2} {1 5} {2 3} {2 6} {3 4} {3 7} {4 7} {5 6} {5 8} {5 15} {6 7} {6 9} {7 10} {7 17} {8 9} {8 11}
                 {9 10} {9 11} {10 11} {11 12} {11 13} {11 14} {12 13} {12 15} {13 14} {13 16} {14 17} {15 16} {15 18} {15 19} {16 17} {16 20} {17 21}
                 {17 22} {18 19} {19 20} {20 21} {21 22}}
-           )
+            )
             use:Vertex
-       )
+        )
         (piece "Counter" Each 
             (or 
                 ("HopCapture")
                 ("StepToEmpty")
-           )
-       )
+            )
+        )
         }
-   )  
+    ) 
     
     (rules 
         (start {
@@ -28,7 +28,7 @@
         (play (forEach Piece))
         
         (end ("NoMoves" Loss))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -44,9 +44,9 @@
         (version "1.3.4")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1926.")
+        (origin "This game was played in India, around 1926.")
         }
-   )
+    )
     
     (graphics {
         (show Edges Diagonal Hidden)
@@ -55,6 +55,6 @@
     
     (ai 
         "Egara Guti_ai"
-   )
+    )
     
 )

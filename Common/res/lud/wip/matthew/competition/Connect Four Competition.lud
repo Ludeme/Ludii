@@ -10,8 +10,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Connect Four Competition"  
-    (players 2)  
+(game "Connect Four Competition" 
+    (players 2) 
     (equipment { 
         <Model:board>
         (piece "Disc" Each)
@@ -19,16 +19,16 @@
     
     (rules
         <Model:rules>
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Modelisation" <Model> args:{ <board> <rules> }
     {
-    (item "1D"      
+    (item "1D"   
         <(board (rectangle 1 7))>
-        <    
+        <  
         (play 
             (move 
                 Add 
@@ -36,16 +36,16 @@
                     (forEach 
                         (sites Board) 
                         if:(< (size Stack at:(site)) "ColumnSize")
-                   ) 
-               )
+                    ) 
+                )
                 stack:True
-           )
-       )
+            )
+        )
         (end (if (is Line 4 byLevel:True) (result Mover Win)))
         >
         ""
-   )
-    (item "2D"         
+    )
+    (item "2D"     
         <(board (rectangle 6 7))>
         <
         (play 
@@ -53,17 +53,17 @@
                 Add 
                 (to 
                     ("EmptyTop") 
-               )
+                )
                 (then "Drop")
-           )
-       )
+            )
+        )
         (end {
             (if (is Line 4 Diagonal through:(last To afterConsequence:True)) (result Mover Win))
             (if (is Line 4 Orthogonal through:(last To afterConsequence:True)) (result Mover Loss))
         })
         >
         ""
-   )**
+    )**
 })
 
 (metadata
@@ -81,7 +81,7 @@
         (credit "Eric Piette")
         (date "1974")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Yellow))
@@ -93,6 +93,6 @@
     
     (ai 
         "Connect Four_ai"
-   )
+    )
     
 )

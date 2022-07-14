@@ -1,15 +1,15 @@
 (game "Tams"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (square 12)) 		
         (piece "Disc" P1 (move [#])) 
         (piece "Disc" P2 (move [#])) 
-    })  
+    }) 
     (rules 
         (start [#]) 
         (play [#])
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -26,7 +26,7 @@
         (classification "board/war/leaping/reconstruction")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

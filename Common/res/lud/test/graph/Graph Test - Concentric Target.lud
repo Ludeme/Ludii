@@ -1,71 +1,71 @@
-(game "Graph Test - Concentric Target"  
-    (players 2)  
+(game "Graph Test - Concentric Target" 
+    (players 2) 
     (equipment { 
         (<Board>) 
         (piece "Marker") 
-    })  
+    }) 
     (rules 
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------
 
 (option "Board" <Board> args:{ <shape> }
     {
-    (item "Target 4 (single cell per ring)"  <
+    (item "Target 4 (single cell per ring)" <
         (board (concentric Target rings:4))
     > "") 
-    (item "Target 4 (0)"  <
+    (item "Target 4 (0)" <
         (board (concentric Target rings:4 steps:0))
     > "")
-    (item "Target 4 (1)"  <
+    (item "Target 4 (1)" <
         (board (concentric Target rings:4 steps:1))
     > "")
-    (item "Target 4 (2)"  <
+    (item "Target 4 (2)" <
         (board (concentric Target rings:4 steps:2))
     > "")
-    (item "Target 4 (3)"  <
+    (item "Target 4 (3)" <
         (board (concentric Target rings:4 steps:3))
     > "")
-    (item "Target 4 (4)"  <
+    (item "Target 4 (4)" <
         (board (concentric Target rings:4 steps:4))
     > "")
-    (item "Target 4 (5)"  <
+    (item "Target 4 (5)" <
         (board (concentric Target rings:4 steps:5))
     > "")
-    (item "Target 4 (6)"  <
+    (item "Target 4 (6)" <
         (board (concentric Target rings:4 steps:6))
     > "")
-    (item "Target 4 (7)"  <
+    (item "Target 4 (7)" <
         (board (concentric Target rings:4 steps:7))
     > "")
-    (item "Target 4 (8)"  <
+    (item "Target 4 (8)" <
         (board (concentric Target rings:4 steps:8))
     > "")*
-    (item "Target 4 (9)"  <
+    (item "Target 4 (9)" <
         (board (concentric Target rings:4 steps:9))
     > "")
-    (item "Target 4 (10)"  <
+    (item "Target 4 (10)" <
         (board (concentric Target rings:4 steps:10))
     > "")
-    (item "Target 4 (11)"  <
+    (item "Target 4 (11)" <
         (board (concentric Target rings:4 steps:11))
     > "")
-    (item "Target 4 (12)"  <
+    (item "Target 4 (12)" <
         (board (concentric Target rings:4 steps:12))
     > "")
-    (item "Target 4 (13)"  <
+    (item "Target 4 (13)" <
         (board (concentric Target rings:4 steps:13))
     > "")
-    (item "Target 4 (14)"  <
+    (item "Target 4 (14)" <
         (board (concentric Target rings:4 steps:14))
     > "")
-    (item "Target 4 (15)"  <
+    (item "Target 4 (15)" <
         (board (concentric Target rings:4 steps:15))
     > "")
-    (item "Target 4 (16)"  <
+    (item "Target 4 (16)" <
         (board (concentric Target rings:4 steps:16))
     > "")
     }
@@ -73,7 +73,7 @@
 
 //------------------------------------------------------------
 
-(metadata     
+(metadata   
     (info {
         (description "Test harness for concentric board tilings.")
         (credit "Cameron Browne 13/3/2021")
@@ -81,7 +81,7 @@
     (graphics {
         
         (board Colour InnerEdges (colour 127 191 255))
-        (board Colour OuterEdges (colour   0 127 255))
+        (board Colour OuterEdges (colour  0 127 255))
         (board StyleThickness InnerEdges 4)
         (board StyleThickness OuterEdges 4)
         (show StraightEdges False)

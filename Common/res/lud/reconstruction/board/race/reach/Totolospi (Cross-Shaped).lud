@@ -1,24 +1,24 @@
-(game "Totolospi (Cross-Shaped)"  
-    (players 4)  
+(game "Totolospi (Cross-Shaped)" 
+    (players 4) 
     (equipment { 
         (board
             (add
                 (hole
                     (merge 
                         (shift 0 5 (scale 1 5 (rectangle 1 15)))
-                        (shift 5 0 (scale 5 1 (rectangle 15 1)))	  
-                   )
+                        (shift 5 0 (scale 5 1 (rectangle 15 1)))	 
+                    )
                     (poly {{5 5} {5 10} {10 10} {10 5}})
-               )
+                )
                 cells:{ { 21 22 23 24 25 26 49 47 45 43 10 9 8 7 6 5 42 44 46 48 } }
-           )
+            )
             [#]
-       )
+        )
         (hand Each) 
         (dice d:2 from:0 num:4)
         (map "Throw" {(pair 0 1) (pair 1 0) (pair 2 0) (pair 3 0) (pair 4 1)})
         (piece "Marker" Each) // 1 piece per player
-    })  
+    }) 
     (rules 
         (start {
             (place "Marker1" 16)
@@ -28,7 +28,7 @@
         })
         (play [#])
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -44,9 +44,9 @@
         (id "829")
         (version "1.3.2")
         (classification "board/race/reconstruction")
-        (origin  "This game was played in Arizona, from around 1899 to 1901.")
+        (origin "This game was played in Arizona, from around 1899 to 1901.")
         }
-   )
+    )
     
     (graphics {
         (board Colour InnerEdges (colour Black))

@@ -9,11 +9,11 @@
             (concentric {0 10}) 
             (track "Track" {0..9} loop:True)
             use:Vertex
-       )
+        )
         (piece "Square" Shared)
         (dice d:6 num:1)
         (regions P1 (expand (sites Bottom) steps:2)) 
-        (regions P2 (expand (sites Top) steps:2))  
+        (regions P2 (expand (sites Top) steps:2)) 
     })
     (rules
         (start (set Count 1 to:(sites Board)))
@@ -24,20 +24,20 @@
                         (if ("SameTurn")
                             (sites {(last From)})
                             (forEach (sites Mover) if:(is Occupied (site)))
-                       )
-                   )
+                        )
+                    )
                     (to ("NextHoleFrom" (from) (count Pips)))
                     (then (if (is Occupied (last From)) (moveAgain)))
-               )
-           )
-       )
+                )
+            )
+        )
         (end 
             (forEach Player
                 if:(all Sites (sites Player) if:(and (is Next Player) (is Empty (site))))
                 (result Player Loss)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //-------------------------------------------------------------------------
@@ -59,7 +59,7 @@
         (credit "Eric Piette")
         (date "2020")
         }
-   )
+    )
     (graphics {
         (piece Scale "Square" 0.4)
         (show Edges Hidden)

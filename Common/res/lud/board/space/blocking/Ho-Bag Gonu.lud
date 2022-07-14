@@ -13,14 +13,14 @@
             (not (is In (from) (sites Mover))) 
             (is In (to) (difference (sites Empty) (sites Mover))) 
             (is Empty (to)) 
-       ) 
-   )
+        ) 
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Ho-Bag Gonu"  
-    (players 2)  
+(game "Ho-Bag Gonu" 
+    (players 2) 
     (equipment { 
         (board 
             (add
@@ -30,24 +30,24 @@
                     (shift 1 1 (scale 0.5 (concentric {1 4})))
                     (shift 0 2 (rectangle 1 3))
                     }
-               )
+                )
                 edges:{{5 1} {9 7}}
-           )
+            )
             use:Vertex
-       )
+        )
         
         (piece "Disc" Each 
             (move Step 
                 (to if:(or 
                         "MoveInTheEnemyHome"
                         "MoveSomewhereElseButInOurHome"
-                   )
-               ) 
-           )
-       ) 
+                    )
+                ) 
+            )
+        ) 
         (regions "Home" P1 (sites {"A1" "C1" "E1"}))
         (regions "Home" P2 (sites {"A5" "C5" "E5"}))
-    })  
+    }) 
     (rules 
         (start {
             (place "Disc1" (sites P1))
@@ -55,7 +55,7 @@
         })
         (play (forEach Piece))
         (end ("NoMoves" Loss))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -76,10 +76,10 @@
         (classification "board/space/blocking")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (ai 
         "Ho-Bag Gonu_ai"
-   )
+    )
     
 )

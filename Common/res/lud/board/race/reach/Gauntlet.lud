@@ -10,12 +10,12 @@
             if:(and 
                 (not (is In (between) (sites ToClear))) 
                 ("IsEnemyAt" (between))
-           )
+            )
             (apply (remove (between) at:EndOfTurn))
-       ) 
+        ) 
         (to if:(is Empty (to))) 
         #3
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -32,15 +32,15 @@
             (intersection
                 (difference (sites Top) (sites Corners)) 
                 (sites Phase 0)
-           )
-       )
+            )
+        )
         (regions "RunnerGoalPink" Neutral
             (intersection
                 (difference (sites Top) (sites Corners)) (sites Phase 1)
-           )
-       )
+            )
+        )
         }
-   )  
+    ) 
     
     (rules 
         (start { 
@@ -58,59 +58,59 @@
                                 (then
                                     (if (can Move ("HopCounter" (last To) Forward))
                                         (moveAgain)
-                                   )
-                               )
-                           ) 
-                       )
+                                    )
+                                )
+                            ) 
+                        )
                         (forEach Piece "DoubleCounter"
                             ("HopCounter" (from) Backward
                                 (then
                                     (if (can Move ("HopCounter" (last To) Backward))
                                         (moveAgain)
-                                   )
-                               )
-                           ) 
-                       )
-                   )
-               )
-                (or  
+                                    )
+                                )
+                            ) 
+                        )
+                    )
+                )
+                (or 
                     (forEach Piece "Counter" 
                         (move Step 
                             (directions Forward)
                             (to if:(is Empty (to)))
-                       )
-                   )
+                        )
+                    )
                     (forEach Piece "DoubleCounter"
                         (move Step 
                             (directions Backward)
                             (to if:(is Empty (to)))
-                       )
-                   )
-               )
+                        )
+                    )
+                )
             })
-       )
+        )
         
         (end {
             (if (no Moves Next) (result Next Loss))
             (if (is In (last To) (sites Mover)) (result Mover Win))
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "8 x 8 (Standard)"       <8>    "8 x 8 board")*
-    (item "9 x 9"                  <9>    "9 x 9 board")
-    (item "10 x 10 (Tournament)"   <10>   "10 x 10 board")
+    (item "8 x 8 (Standard)"    <8>  "8 x 8 board")*
+    (item "9 x 9"         <9>  "9 x 9 board")
+    (item "10 x 10 (Tournament)"  <10>  "10 x 10 board")
     }
 )
 
 (option "Captures" <Each> args:{<AIstyle>}
     {
-    (item "Forced (Standard)"       <priority>    "Forced captures")*
-    (item "Optional (Tournament)"   <or>          "Optional captures")
+    (item "Forced (Standard)"    <priority>  "Forced captures")*
+    (item "Optional (Tournament)"  <or>     "Optional captures")
     }
 )
 
@@ -140,9 +140,9 @@
         (author "Phil Leduc (used with permission)")
         (publisher "Web published - The Owl's Nest")
         (credit "Phil Leduc")
-        (origin  "This game is from Rhode Island, USA, on 31-01-2001.")
+        (origin "This game is from Rhode Island, USA, on 31-01-2001.")
         }
-   )
+    )
     
     (graphics {
         (board Colour InnerEdges (colour GunMetal))
@@ -159,5 +159,5 @@
     
     (ai
         "Gauntlet_ai"
-   )
+    )
 )

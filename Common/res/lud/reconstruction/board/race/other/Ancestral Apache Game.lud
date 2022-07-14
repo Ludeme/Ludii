@@ -6,39 +6,39 @@
                 (remove 
                     (concentric {24})
                     vertices:{23 12 0 11}
-               )
+                )
                 edges:{{18 19} {11 9} {0 1} {10 8}}
-           )
+            )
             use:Edge
-       )
+        )
         (piece "Marker" Each (move [#]))
     })
     (rules
         (start [#])
         (play [#])
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Players" <Player> args:{ <num>}
     {
-    (item "2" <2>   "The game has 2 players.")*   
-    (item "3" <3>   "The game has 3 players.")  
-    (item "4" <4>   "The game has 4 players.")  
-    (item "5" <5>   "The game has 5 players.")  
-    (item "6" <6>   "The game has 6 players.")  
-    (item "7" <7>   "The game has 7 players.")  
-    (item "8" <8>   "The game has 8 players.")  
-    (item "9" <9>   "The game has 9 players.")  
-    (item "10" <10>   "The game has 10 players.")  
-    (item "11" <11>   "The game has 11 players.")  
-    (item "12" <12>   "The game has 12 players.")  
-    (item "13" <13>   "The game has 13 players.")  
-    (item "14" <14>   "The game has 14 players.")  
-    (item "15" <15>   "The game has 15 players.")  
-    (item "16" <16>   "The game has 16 players.")  
+    (item "2" <2>  "The game has 2 players.")*  
+    (item "3" <3>  "The game has 3 players.") 
+    (item "4" <4>  "The game has 4 players.") 
+    (item "5" <5>  "The game has 5 players.") 
+    (item "6" <6>  "The game has 6 players.") 
+    (item "7" <7>  "The game has 7 players.") 
+    (item "8" <8>  "The game has 8 players.") 
+    (item "9" <9>  "The game has 9 players.") 
+    (item "10" <10>  "The game has 10 players.") 
+    (item "11" <11>  "The game has 11 players.") 
+    (item "12" <12>  "The game has 12 players.") 
+    (item "13" <13>  "The game has 13 players.") 
+    (item "14" <14>  "The game has 14 players.") 
+    (item "15" <15>  "The game has 15 players.") 
+    (item "16" <16>  "The game has 16 players.") 
 })
 
 //------------------------------------------------------------------------------
@@ -54,9 +54,9 @@
         (version "1.3.4")
         (classification "board/race/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Arizona, from around 1280 to 1580.")
+        (origin "This game was played in Arizona, from around 1280 to 1580.")
         }
-   )
+    )
     
     (graphics {
         (show Edges (colour Hidden))

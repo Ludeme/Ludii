@@ -1,6 +1,6 @@
 // Proxm Follow-up consequenses as separate moves.
 
-(define "Constant" <Constant:forConversion>)  // options 0 or 2
+(define "Constant" <Constant:forConversion>) // options 0 or 2
 
 (define "TrioAt"
     (intersection (sites Around (to)) (sites #1 {{R} {F R F} {F L F}} rotations:True))
@@ -19,11 +19,11 @@
                         (is Mover (who at:(to)))
                         (value Piece at:(to))
                         (- 0 (value Piece at:(to)))
-       ))))
+        ))))
         }
 )) 
 
-(define "SitesToConvert"  
+(define "SitesToConvert" 
     (forEach 
         of:(sites State 2)
         (sites Around (site)
@@ -36,7 +36,7 @@
                 }
 ))))
 
-// Using  (not (is Mover ... instead of  (is Next... 
+// Using (not (is Mover ... instead of (is Next... 
             // because (moveAgain) is changing who is next.
             // To get here with state 1, the site is not empty.
             
@@ -45,21 +45,21 @@
                     (to #1
                         (apply
                             (and {(remove #1) (set State at:#1 2) (set Value at:#1 3)})
-           ))))
+            ))))
             
             (define "ChangeNext1ToMoverAt"
                 (add (piece (id "Disc" Mover)) 
                     (to #1
                         (apply
                             (and {(remove #1) (set State at:#1 2) (set Value at:#1 1)})
-           ))))
+            ))))
             
             (define "ChangeNext3To1At"
                 (add (piece (id "Disc" Next))
                     (to #1
                         (apply
                             (and {(remove #1) (set State at:#1 2) (set Value at:#1 1)})
-           ))))
+            ))))
             
             (define "ConvertPromotablePieces" 
                 (if
@@ -69,7 +69,7 @@
                         (= 1 (value Piece at:#1))
                         ("ChangeNext1ToMoverAt" #1)
                         ("ChangeNext3To1At" #1)
-           )))
+            )))
             
             (define "SetScore"
                 (set Score #1
@@ -78,54 +78,54 @@
                             from:(difference (sites Occupied by:#1) (sites ConvexCorners)) 
                             to:(from) 
                             (value Piece at:(to))
-           ))))
+            ))))
             
             (define "ManualConversions"
                 (if
                     (no Pieces
                         in:("SitesToConvert" (site))
-                   )
+                    )
                     (set State at:(last To) 2) 
                     (and
                         (set Pending
                             ("SitesToConvert" (site))
-                       )
+                        )
                         (forEach Value
                             (array
                                 ("SitesToConvert" (site))
-                           )
+                            )
                             (set State at:(value) 1)
-                       )
+                        )
                         (then (moveAgain))
-                   )
+                    )
                     (then
                         (and
                             {
                             ("SetScore" Mover)
                             ("SetScore" Next)
                             }
-           ))))
+            ))))
             
             (define "AutomaticConversions"
                 (while 
                     (not
                         (no Pieces
                             in:("SitesToConvert" (site))
-                   ))
+                    ))
                     (forEach Value
                         (array
                             ("SitesToConvert" (site))
-                       )
+                        )
                         ("ConvertPromotablePieces" (value))
-                   )
+                    )
                     (then
                         (and
                             {
                             ("SetScore" Mover)
                             ("SetScore" Next)
                             }
-               )))
-           )
+                )))
+            )
             
             //--------------------------
             (game "Proxm"
@@ -136,7 +136,7 @@
                     (piece "Disc" Each N maxState:2)
                     (piece "Ball" Each N maxState:2)
                     }
-               )
+                )
                 (rules
                     (play
                         (if
@@ -150,20 +150,20 @@
                                         (sites Empty) 
                                         (apply
                                             (and (set Value at:(to) 1) (set State at:(to) 2))
-                           ))))
+                            ))))
                             
                             (move Select // Only used for Manual Conversions -- possible compile issue when changing options
                                 (from (sites Pending))
                                 (then ("ConvertPromotablePieces" (last To)))
-                           )
+                            )
                             
                             (then <Conversion:application>)
-                   ))
+                    ))
                     (end 
                         (if 
                             (no Moves Next)
                             (byScore)
-           )))) 
+            )))) 
             
             //--------------------------------------
             
@@ -172,39 +172,39 @@
                 (item "Dia 6"
                     <(remove (hex Hexagon 4) cells:{0 3 15 21 33 36})> 
                     "Diagonal Hexhex board with diameter 9"
-               )
+                )
                 (item "Dia 7"
                     <(remove (hex Hexagon 5) cells:{0 1 3 4 5 10 18 25 26 34 35 42 50 55 56 57 59 60})> 
                     "43 Cell Diagonal Hexhex board with diameter 9"
-               )
+                )
                 (item "Dia 10" 
-                    <(remove (hex Hexagon 7) cells:{0 1 2 4 5 6 7 8 13 14 15 23 34 44 45 56 57 58 68 69 70 81 82 92 103 111 112 113 118 119 120 121 122 124 125 126})>  
+                    <(remove (hex Hexagon 7) cells:{0 1 2 4 5 6 7 8 13 14 15 23 34 44 45 56 57 58 68 69 70 81 82 92 103 111 112 113 118 119 120 121 122 124 125 126})> 
                     "91 Cell Diagonal Hexhex board with diameter 10"
-               )**
+                )**
                 (item "Dia 13" 
                     <(remove (hex Hexagon 9) cells:{0 1 2 3 5 6 7 8 9 10 11 16 17 18 19 20 28 29 30 41 55 68 69 83 84 85 98 99 100 101 115 116 117 118 131 132 133 147 148 161 175 186 187 188 196 197 198 199 200 205 206 207 208 209 210 211 213 214 215 216})> 
                     "157 Cell Diagonal Hexhex board with diameter 13"
-               ) 
+                ) 
                 (item "Dia 16" 
                     <(remove (hex Hexagon 11) cells:{0 1 2 3 4 6 7 8 9 10 11 12 13 14 19 20 21 22 23 24 25 33 34 35 36 37 48 49 50 64 81 97 98 115 116 117 133 134 135 136 153 154 155 156 157 173 174 175 176 177 194 195 196 197 213 214 215 232 233 249 266 280 281 282 293 294 295 296 297 305 306 307 308 309 310 311 316 317 318 319 320 321 322 323 324 326 327 328 329 330})> 
                     "241 Cell Diagonal Hexhex board with diameter 16"
-               )
+                )
                 }
-           ) 
+            ) 
             
-            (option "Implementation" <Conversion>  args:{ <application> }
+            (option "Implementation" <Conversion> args:{ <application> }
                 {
                 (item "Automatic" <"AutomaticConversions"> "All conversions are automatically applied as an immediate consequence")
                 (item "Manual" <"ManualConversions"> "Conversions are selected manually one by one - to see what is happening...")
                 }
-           ) 
+            ) 
             
-            (option "Conversion by" <Constant>  args:{ <forConversion> }
+            (option "Conversion by" <Constant> args:{ <forConversion> }
                 {
                 (item "Majority" <0> "Triplets with greater friendly value convert a surronded stone")
                 (item "2 Extra" <2> "Triplets need an excess value of at least 2 to convert a surronded stone")
                 }
-           ) 
+            ) 
             
             (metadata
                 (info
@@ -215,9 +215,9 @@
                         
                         The goal is to have the higher total piece value in play when the board is full. However, pieces on the outermost cells don't score because they are invulnerable.
                         
-                        The idea originated in a search for a playable game based on using surrounding of pieces by triangular formations.   
+                        The idea originated in a search for a playable game based on using surrounding of pieces by triangular formations.  
                         "
-                   )
+                    )
                     (rules "Definitions:
                         Trio: Three pieces adjacent to a given piece that form an equilateral triangle.
                         Promotion: the process of exchanging a piece with the next more favorable piece. - i.e.
@@ -239,14 +239,14 @@
                         
                         The player with the higher score wins. Draws are not possible.
                         "
-                   )
+                    )
                     (source "Dale Walton")
                     (author "Dale Walton")
                     (version "1.3.3")
                     (classification "board/space/territory")
                     (credit "Dale Walton")
                     }
-               )
+                )
                 (graphics
                     {
                     (board Colour Phase0 (colour 200 250 210 120))
@@ -261,9 +261,9 @@
                     (piece Colour P1 state:0 fillColour:(colour Black) strokeColour:(colour 100 100 100))
                     (piece Colour P1 state:1 fillColour:(colour 110 120 110 50) strokeColour:(colour 100 100 100))
                     (piece Colour P1 state:2 fillColour:(colour Black) strokeColour:(colour 100 100 100))
-                    (piece Colour P2  state:0 fillColour:(colour LightOrange) strokeColour:(colour 100 100 100))   
-                    (piece Colour P2  state:1 fillColour:(colour 255 170 55 90) strokeColour:(colour 100 100 100))
-                    (piece Colour P2  state:2 fillColour:(colour LightOrange) strokeColour:(colour 100 100 100))
+                    (piece Colour P2 state:0 fillColour:(colour LightOrange) strokeColour:(colour 100 100 100))  
+                    (piece Colour P2 state:1 fillColour:(colour 255 170 55 90) strokeColour:(colour 100 100 100))
+                    (piece Colour P2 state:2 fillColour:(colour LightOrange) strokeColour:(colour 100 100 100))
                     (piece Background value:1 image:"disc.svg"fillColour:(colour 0 0 0 100) edgeColour:(colour 0 0 0 0) scale:.7)
                     (piece Background value:3 image:"disc.svg"fillColour:(colour 0 0 0 100) edgeColour:(colour 0 0 0 0))
                     (player Colour P1 (colour Black))
@@ -272,8 +272,8 @@
                     (region Colour (sites State 1) (colour 160 200 170 150))
                     (region Colour (sites State 2) (colour 160 200 170))
                 (show Piece Value Middle scale:.7 offsetX:.28 offsetY:.2) // valueOutline:True scale:.8)
-                //   (show Piece State) 
+                //  (show Piece State) 
                 }
-           )
+            )
             (ai (heuristics (score weight:3)))
-       )
+        )

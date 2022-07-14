@@ -2,8 +2,8 @@
     (apply 
         (remove 
             (to) 
-       )
-   ) 
+        )
+    ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -13,8 +13,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-       )
-   )
+        )
+    )
 )
 
 (define "NextCanNotMove"
@@ -24,15 +24,15 @@
 //------------------------------------------------------------------------------
 
 (game "Shatranj (12x12)"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (square 12)) 
         (piece "Pawn" Each 
             (or 
                 "StepForwardToEmpty" 
                 "CaptureForwardDiagonal"
-           )
-       )
+            )
+        )
         
         (piece "Rook" Each 
             (move
@@ -41,9 +41,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         
         (piece "Commoner" Each 
             (move
@@ -52,9 +52,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         
         (piece "Wazir" Each 
             (move
@@ -63,9 +63,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         
         (piece "King_noCross" Each 
             (move
@@ -73,9 +73,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-               )
-           )
-       )
+                )
+            )
+        )
         (piece "Bishop_noCross" Each 
             (move
                 Slide 
@@ -83,9 +83,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Knight" Each 
             (move 
                 Leap 
@@ -93,18 +93,18 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Queen" Each 
             (move
                 Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
     })
     (rules 
         (start { 
@@ -120,18 +120,18 @@
         
         (play 
             (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-       )
+        )
         
         (end {
             (if 
                 (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
+            ) 
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -141,16 +141,16 @@
     (info
         {
         (description "Shatranj is the name for a replacement capture game, played throughout West and South Asia for centuries. This version, played on a 12x12 board, was played in the nineteenth and early twentieth centuries in Punjab.")
-        (rules "12x12 board. 24 pieces per player. Pieces begin on the board in the following arrangement, and with the following movements: Outer row, from left corner: Rukh: moves orthogonally any distance; Ghora: moves orthogonally one space and then diagonally another space, jumping over the first space; Dahja: moves orthogonally any distance; Ratha: moves orthogonally any distance; Fil: moves diagonally any distance; Wazir: moves diagonally or orthogonally any distance; Padshah: moves one space in any direction;  Fil, Ratha, Dahja, Ghora, Rukh. In the second row are twelve Paidal: moves one square forward orthogonally or one diagonally to capture. Players alternate turns moving a piece to a space on the board. If one of the opponent's pieces is on the space to which a player moves their piece, the opponent's piece is captured. If the Padshah can be captured on the opponent's next turn, it is in check. The Padshah cannot remain in check at the end of the player's turn. If this is not possible, it is checkmate and the opponent wins.
+        (rules "12x12 board. 24 pieces per player. Pieces begin on the board in the following arrangement, and with the following movements: Outer row, from left corner: Rukh: moves orthogonally any distance; Ghora: moves orthogonally one space and then diagonally another space, jumping over the first space; Dahja: moves orthogonally any distance; Ratha: moves orthogonally any distance; Fil: moves diagonally any distance; Wazir: moves diagonally or orthogonally any distance; Padshah: moves one space in any direction; Fil, Ratha, Dahja, Ghora, Rukh. In the second row are twelve Paidal: moves one square forward orthogonally or one diagonally to capture. Players alternate turns moving a piece to a space on the board. If one of the opponent's pieces is on the space to which a player moves their piece, the opponent's piece is captured. If the Padshah can be captured on the opponent's next turn, it is in check. The Padshah cannot remain in check at the end of the player's turn. If this is not possible, it is checkmate and the opponent wins.
         ")
         (source "Murray 1913: 347.")
         (id "1627")
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1901.")
+        (origin "This game was played in India, around 1901.")
         }
-   )
+    )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

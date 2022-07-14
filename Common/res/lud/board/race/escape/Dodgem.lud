@@ -10,14 +10,14 @@
             (if (is In (from) (sites Right))
                 (move Remove (from))
                 ("StepMove")
-           )
-       )
+            )
+        )
         (piece "Car" P2 N 
             (if (is In (from) (sites Top))
                 (move Remove (from))
                 ("StepMove")
-           )
-       )
+            )
+        )
     })
     (rules
         (start {
@@ -26,7 +26,7 @@
         })
         (play (forEach Piece))
         (end ("EscapeWin"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -53,7 +53,7 @@
         (credit "Fabio Barbero")
         (date "1972")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Blue))
@@ -62,5 +62,5 @@
     })
     (ai
         "Dodgem_ai"
-   )
+    )
 )

@@ -2,8 +2,8 @@
     (apply 
         (remove 
             (to) 
-       )
-   ) 
+        )
+    ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -17,13 +17,13 @@
                     (and 
                         (is In (to) (sites Mover "Promotion"))
                         ("PowerfulPieceOnColumnHasBeenRemoved")
-                   )
-               )
+                    )
+                )
                 ("IsEnemyAt" (to))
-           )
+            )
             (apply (remove (to)))
-       )
-   )
+        )
+    )
 )
 
 (define "StepForwardToEmpty"
@@ -36,12 +36,12 @@
                     (and 
                         (is In (to) (sites Mover "Promotion"))
                         ("PowerfulPieceOnColumnHasBeenRemoved")
-                   )
-               )
+                    )
+                )
                 (is Empty (to))
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "NextCanNotMove"
@@ -54,7 +54,7 @@
         Forward 
         (between (exact 2) if:(is Empty (between))) 
         (to if:(is Empty (to))) 
-   )
+    )
 )
 
 (define "RememberPieceHasMoved"
@@ -62,8 +62,8 @@
         (if 
             (= (state at:(last To)) 1) 
             ("PieceHasMoved" (last To))
-       ) 
-   ) 
+        ) 
+    ) 
 )
 
 (define "PieceHasMoved"
@@ -80,10 +80,10 @@
                 (if (or (and (is Mover P2) (= (column of:(last To)) 4)) (and (is Mover P1) (= (column of:(last To)) 3)))
                     (id "Ferz_noCross" Mover)
                     (id "King_noCross" Mover)
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 (define "PowerfulPieceOnColumnHasBeenRemoved" 
@@ -96,16 +96,16 @@
                 (if (and (or (and (is Mover P1) (= (column of:(to)) 3)) (and (is Mover P2) (= (column of:(to)) 4))) (< (count Sites in:(sites Occupied by:Mover component:"Ferz_noCross")) 1))
                     True
                     False
-               )
-           )
-       )
-   )	
+                )
+            )
+        )
+    )	
 )
 
 //------------------------------------------------------------------------------
 
 (game "Parsi Chess" 
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8))
         
@@ -114,18 +114,18 @@
                 (if (is In (from) (sites Start (piece (what at:(from)))))
                     (if (= 1 (state at:(ahead (from) Backward)))
                         "DoubleStep"
-                   )
-               )
+                    )
+                )
                 "StepForwardToEmpty" 
                 "CaptureForwardDiagonal"
                 }
                 (then
                     (if (is In (last To) (sites Mover "Promotion")) 
                         (promote (last To) (piece "PromotedPiece"))
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (piece "Boat" Each 
             (move
                 Slide 
@@ -133,10 +133,10 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
+                ) 
                 "RememberPieceHasMoved"
-           )
-       )
+            )
+        )
         (piece "King_noCross" Each 
             (or
                 (move
@@ -144,21 +144,21 @@
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
-                   )
-               )
+                    )
+                )
                 (if (!= (value Player Mover) (mover))
                     (move
                         Leap 
                         "KnightWalk" 
                         (to 
                             if:(is Empty (to))
-                       )
+                        )
                         (then (set Value Mover (mover)))
-                   )
-               )
+                    )
+                )
                 "RememberPieceHasMoved"
-           )
-       )
+            )
+        )
         (piece "Elephant" Each 
             (move
                 Slide 
@@ -166,9 +166,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       ) 
+                ) 
+            )
+        ) 
         (piece "Knight" Each 
             (move
                 Leap 
@@ -176,23 +176,23 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Ferz_noCross" Each 
             (move
                 Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
+                ) 
                 "RememberPieceHasMoved"
-           ) 
-       )
+            ) 
+        )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
         }
-   )  
+    ) 
     (rules 
         (start
             { 
@@ -201,7 +201,7 @@
             (place "Boat1" {"A1" "H1"} state:1) (place "Knight1" {"B1" "G1"}) (place "Elephant1" {"C1" "F1"}) (place "Ferz_noCross1" coord:"D1" state:1) (place "King_noCross1" coord:"E1" state:1) 
             (place "Boat2" {"A8" "H8"} state:1) (place "Knight2" {"B8" "G8"}) (place "Elephant2" {"C8" "F8"}) (place "Ferz_noCross2" coord:"E8" state:1) (place "King_noCross2" coord:"D8" state:1) 
             }
-       )
+        )
         
         (play 
             (do 
@@ -211,24 +211,24 @@
                     (if (!= (next) (value Player Next))
                         (if ("IsInCheck" "King_noCross" Next)
                             (set Value Next (next))
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         
         (end
             {
             (if (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
+            ) 
             (if (= 1 (count Pieces Next)) (result Mover Draw)) // Only the king
             }
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -244,9 +244,9 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in South Asia, around 1814.")
+        (origin "This game was played in South Asia, around 1814.")
         }
-   )
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.825)
@@ -260,5 +260,5 @@
     
     (ai
         "Parsi Chess_ai"
-   )
+    )
 )

@@ -7,12 +7,12 @@
         (and 
             (or (= (column of:(site)) (- (column of:(from)) 1)) (= (column of:(site)) (+ (column of:(from)) 1)))
             (or (= (row of:(site)) (- (row of:(from)) 2)) (= (row of:(site)) (+ (row of:(from)) 2)))
-       )
+        )
         (and 
             (or (= (row of:(site)) (- (row of:(from)) 1)) (= (row of:(site)) (+ (row of:(from)) 1)))
             (or (= (column of:(site)) (- (column of:(from)) 2)) (= (column of:(site)) (+ (column of:(from)) 2)))
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -30,27 +30,27 @@
                         if:(and 
                             ("RightLineColumn")
                             (or (is Empty (site)) ("IsEnemyAt" (site)))
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
         }
-   )  
+    ) 
     (rules 
         (start
             { 
             (place "Knight1" (expand (sites Bottom)))
             (place "Knight2" (expand (sites Top)))
             }
-       )
+        )
         
         (play (forEach Piece))
         
         (end (if "RegionReached" (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -60,7 +60,7 @@
     (info
         {
         }
-   )
+    )
     
     (graphics {
         (board Style Chess)

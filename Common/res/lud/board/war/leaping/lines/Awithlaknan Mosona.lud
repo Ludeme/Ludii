@@ -1,5 +1,5 @@
-(game "Awithlaknan Mosona"  
-    (players 2)  
+(game "Awithlaknan Mosona" 
+    (players 2) 
     (equipment { 
         (board
             (merge {
@@ -12,14 +12,14 @@
                 (shift 0.5 0 (rectangle 1 7))
             })
             use:Vertex
-       )
+        )
         (piece "Counter" Each 
             (or 
                 ("HopCapture")
                 ("StepToEmpty")
-           )
-       )
-    })  
+            )
+        )
+    }) 
     
     (rules 
         (start {
@@ -28,7 +28,7 @@
         })
         (play (forEach Piece))
         (end ("NoMoves" Loss))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -45,14 +45,14 @@
         (version "1.3.4")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in Zuni, from around 1902 to 1903.")
+        (origin "This game was played in Zuni, from around 1902 to 1903.")
         }
-   )
+    )
     (graphics {
         (show Edges Diagonal Hidden)
         
     })
     (ai
         "Awithlaknan Mosona_ai"
-   )
+    )
 )

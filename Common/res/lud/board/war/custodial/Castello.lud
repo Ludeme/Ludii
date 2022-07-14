@@ -4,7 +4,7 @@
     (and 
         (!= (what at:(between)) (id "Castle0")) 
         (not (is Empty (between)))
-   )
+    )
 )
 
 (define "CaptureEnemyPiece"
@@ -12,15 +12,15 @@
         (if 
             (= (who at:(between)) (next)) 
             (remove (between))
-       )
-   )
+        )
+    )
 )
 
 (define "EmptyAndNotVisited"
     (and 
         (is Empty (to)) 
         (not (is Visited (to))) 
-   )
+    )
 )
 
 (define "CanJumpAgain"
@@ -32,12 +32,12 @@
                 if:(if (< (counter) (- "NumMaxCapture" 1)) 
                     "NotEmptyAndNoCastle" 
                     ("IsFriendAt" (between))
-               )
+                )
                 "CaptureEnemyPiece"
-           ) 
+            ) 
             (to if:"EmptyAndNotVisited") 
-       ) 
-   )
+        ) 
+    )
 )
 
 (define "JumpAgain"
@@ -50,18 +50,18 @@
                 (< (counter) "NumMaxCapture") 
                 "NotEmptyAndNoCastle" 
                 ("IsFriendAt" (between))
-           ) 
+            ) 
             "CaptureEnemyPiece"
-       )
+        )
         (to if:"EmptyAndNotVisited")
         (then 
             (if 
                 "CanJumpAgain" 
                 (moveAgain) 
                 (set Counter) 
-           ) 
-       )
-   )
+            ) 
+        )
+    )
 )
 
 (define "CaptureCastleAndStoreItTo"
@@ -71,10 +71,10 @@
         (between 
             if:(= (what at:(between)) (id "Castle0")) 
             (apply (fromTo (from (between)) (to #1)))
-       )
+        )
         (to if:("IsFriendAt" (to)))
         except:1 
-   )	
+    )	
 )
 
 (define "StorageLeftCastle" (handSite Mover))
@@ -85,7 +85,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "Castello"  
+(game "Castello" 
     (players 2) 
     (equipment { 
         (board (rectangle 15 21)) 
@@ -97,26 +97,26 @@
                     (between 
                         if:"NotEmptyAndNoCastle" 
                         "CaptureEnemyPiece" 
-                   )
+                    )
                     (to if:(is Empty (to)))
                     (then 
                         (if 
                             "CanJumpAgain" 
                             (moveAgain) 
                             (set Counter)
-                       ) 
-                   )
-               )
+                        ) 
+                    )
+                )
                 (move Step Orthogonal (to if:(is Empty (to)))) 
-           )
-       ) 
+            )
+        ) 
         (piece "Castle" Neutral)
         (hand Each size:3) 
         (regions "LeftPart" (expand (sites Left) steps:6))
         (regions "RightPart" (expand (sites Right) steps:6))
         (regions "Middle" (expand (sites Centre)))
         }
-   )  
+    ) 
     (rules 
         (start {
             (place "Pawn1" (expand (sites Left)))
@@ -128,38 +128,38 @@
                 (or
                     "JumpAgain"
                     (move Pass)
-               )
+                )
                 (forEach Piece)
                 (then (and 
                         (if (is In (last To) (sites "LeftPart"))
                             (if (< (count Cell at:(handSite Mover)) 3)
                                 ("CaptureCastleAndStoreItTo" "StorageLeftCastle")
-                           )
+                            )
                             (if (is In (last To) (sites "RightPart"))
                                 ("CaptureCastleAndStoreItTo" "StorageRightCastle")
                                 (if (is In (last To) (sites "Middle"))
                                     (if (> (count Cell at:(handSite Mover 2)) 0)							
                                         ("CaptureCastleAndStoreItTo" "StorageMiddleCastle")
-                                   )			
+                                    )			
                                     ("CaptureCastleAndStoreItTo" "StorageMiddleCastle")
-                               )
-                           )
-                       )
+                                )
+                            )
+                        )
                         (set Counter)
-                   ) 
-               )
-           )
-       )
+                    ) 
+                )
+            )
+        )
         (end {
             (if (< (count Pieces Next) 3) (result Mover Win)) 
             (if 
                 (> (count in:(sites Hand Mover)) 
                     3
-               ) 
+                ) 
                 (result Mover Win)
-           )
-        })  
-   )
+            )
+        }) 
+    )
 )
 
 (metadata
@@ -177,7 +177,7 @@
         (credit "Eric Piette")
         (date "1971")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Red))
@@ -194,6 +194,6 @@
     
     (ai 
         "Castello_ai"
-   )
+    )
     
 )

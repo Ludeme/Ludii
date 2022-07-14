@@ -1,10 +1,10 @@
-(game "Mamatjang-Matjang"  
-    (players 2)  
+(game "Mamatjang-Matjang" 
+    (players 2) 
     (equipment { 
         (board [#]) 
         (piece "Tiger" P1 (or "HopCapture" (move [#])))
         (piece "Human" P2 (move [#])) 
-    })  
+    }) 
     (rules 
         (start [#]) // 2 tigers and 2 people (to put in the concepts).
         
@@ -14,7 +14,7 @@
             ("NoMoves" Loss)
             (if (no Pieces P2) (result P1 Win))
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -24,7 +24,7 @@
     (info
         {
         }
-   )
+    )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})

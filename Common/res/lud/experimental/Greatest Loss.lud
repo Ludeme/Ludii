@@ -1,9 +1,9 @@
-(game "Greatest Loss"  
-    (players 2)  
+(game "Greatest Loss" 
+    (players 2) 
     (equipment { 
         (board (square 4)) 
         (piece "Disc" Each) 
-    })  
+    }) 
     (rules 
         (start {
             (place "Disc1" {"A1"} state:1) 
@@ -29,12 +29,12 @@
             (move Select 
                 (from 
                     (sites Occupied by:Mover)
-               )
+                )
                 (then
                     (remove (last To))	
-               )		
-           )
-       ) 
+                )		
+            )
+        ) 
         
         (end 
             (if 
@@ -43,13 +43,13 @@
                         in:(forEach 
                             (sites Occupied by:Mover) 
                             if:(= 8 (state at:(site)))
-                       )
-                   )
-               )
+                        )
+                    )
+                )
                 (result Mover Loss)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -66,7 +66,7 @@
         (credit "Cameron Browne and Eric Piette")
         (date "2021")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour White))
@@ -75,5 +75,5 @@
     })
     (ai
         "Greatest Loss_ai"
-   )
+    )
 )

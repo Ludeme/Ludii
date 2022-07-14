@@ -1,15 +1,15 @@
 (game "Dame"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (square 8))
         (piece "Disc" P1 (move [#])) 
         (piece "Disc" P2 (move [#])) 
-    })  
+    }) 
     (rules 
         (start [#])
         (play [#])
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -25,9 +25,9 @@
         (version "1.3.4")
         (classification "board/war/leaping/diagonal/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Poland, around 1614.")
+        (origin "This game was played in Poland, around 1614.")
         }
-   )
+    )
     
     (graphics {
         (board Style Chess)

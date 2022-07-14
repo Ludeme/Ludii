@@ -10,14 +10,14 @@
                     (sites Group
                         at:(last To) "GridDirection"
                         if:(is In (to) (sites Occupied by:Mover))
-                   ) 
+                    ) 
                     "GridDirection"
                     if:(is Next (who at:(to)))
-               )
+                )
                 if:(>
                     (size Group at:(last To) "GridDirection" if:(is Mover (who at:(to))))
                     (size Group at:(site) "GridDirection" if:(is Next (who at:(to))))
-           ))
+            ))
             // check for secondary removals
             (then 
                 (forEach Value
@@ -29,9 +29,9 @@
                                     from:(sites Around (value) "GridDirection") 
                                     "GridDirection"
                                     if:(is Mover (who at:(to)))
-                           ))
+                            ))
                             (size Group at:(value) "GridDirection" if:(is Next (who at:(to))))
-                       )
+                        )
                         (remove (value))
 ))))))
 
@@ -58,7 +58,7 @@
                         from:(sites Around (to) "GridDirection")
                         "GridDirection"
                         if:(is Mover (who at:(to)))
-           )))
+            )))
             (count Pieces 
                 in:(sites Group
                     from:(sites Around (to) "GridDirection")
@@ -79,7 +79,7 @@
         (sizes Group "GridDirection" Next) 
 ))
 
-(define "SizeOf2ndLargestGroupMover"    
+(define "SizeOf2ndLargestGroupMover"  
     (max
         (difference
             (sizes Group "GridDirection" P2) 
@@ -98,7 +98,7 @@
                             (difference
                                 (sizes Group "GridDirection" Mover)
                                 (var "LargestMover") 
-                       ))
+                        ))
                         (then
                             (set Var "LargestUnique" 
                                 (if
@@ -106,11 +106,11 @@
                                         (>
                                             (var "LargestMover")
                                             (var "LargestNext")
-                                       )
+                                        )
                                         (>
                                             (var "LargestMover")
                                             (var "SecondLargestMover")
-                                   ))
+                                    ))
                                     (var "LargestMover")
                                     0
 )))))))))
@@ -122,7 +122,7 @@
             if:(=
                 (size Group at:(site) "GridDirection")
                 (var "LargestUnique")
-       ))
+        ))
         "GridDirection"
 ))
 
@@ -131,7 +131,7 @@
         (intersection
             (sites Empty)
             (sites Around (difference (sites Occupied by:Mover) (from)) "GridDirection") // adjacent mover
-       )
+        )
         ("SitesAroundLargestChainIfOFMover")
 ))
 
@@ -152,29 +152,29 @@
         (board <BoardShape:gridType> use:Vertex)
         (piece "Disc" Each)
         }
-   )
+    )
     (rules
         (play
             (or
                 (move Add
                     (to (sites Empty)
                         if:(<Variant:placement>)
-                   )
+                    )
                     <GameOption:capture>
-               )
+                )
                 (do
                     (and
                         {
                         (set Var "GroupCount" (count Groups "GridDirection" if:(is Mover (who at:(to)))))
-                        <Movement:precheck>  // "FindSizeOfGroupIfLargerThanAny"
+                        <Movement:precheck> // "FindSizeOfGroupIfLargerThanAny"
                         }
-                   )
+                    )
                     next:(forEach Piece 
                         (move Step "GridDirection"
-                            (to  
+                            (to 
                                 if:(is In (to)
                                     <Movement:limits> // "MergerSites" or "RestrictededMergerSites"
-                   ))))
+                    ))))
                     ifAfterwards:(and
                         {
                         // Reduces the number of groups, by merger
@@ -188,13 +188,13 @@
                                     from:(sites Around (last To) "GridDirection" if:(is Next (who at:(to)))) 
                                     to:(from)
                                     (size Group at:(to) "GridDirection" if:(is Next (who at:(to))))
-                       )))
+                        )))
                         } 
-                   ) 
+                    ) 
                     <GameOption:capture>
-               )
+                )
                 <GameGoal:scoring>
-       ))
+        ))
         (end 
             (if (no Moves Next) <GameGoal:goal>)
 )))
@@ -211,22 +211,22 @@
 
 (option "Board" <BoardShape> args:{<gridType> <directionsUsed> <DiagShow> <bugFix> <fix2>} 
     {
-    (item "Square 6 - tactical AI" <(square 6)> <All> <ThinDashed>  <1.0> <0.0> "Order 6, Square Omni-Grid")
-    (item "Square 9" <(square 9)> <All> <ThinDashed>  <1.0> <0.0> "Order 9, Square Omni-Grid")
-    (item "Square 13*" <(square 13)> <All> <ThinDashed>  <1.0> <0.0> "Order 13, Square Omni-Grid")
-    (item "Square 19" <(square 19)> <All> <ThinDashed>  <1.0> <0.0> "Order 19, Square Omni-Grid")
-    (item "Hex 4 - tactical AI" <(tri Hexagon 4)> <Orthogonal> <Hidden> <1.0>  <0.0> "Order 4, Hex Grid")**
-    (item "Hex 7*" <(tri Hexagon 7)> <Orthogonal> <Hidden> <1.0>  <0.0> "Order 7, Hex Grid")
-    (item "Hex 11" <(tri Hexagon 11)> <Orthogonal> <Hidden> <1.0>  <0.0> "Order 11, Hex Grid")
+    (item "Square 6 - tactical AI" <(square 6)> <All> <ThinDashed> <1.0> <0.0> "Order 6, Square Omni-Grid")
+    (item "Square 9" <(square 9)> <All> <ThinDashed> <1.0> <0.0> "Order 9, Square Omni-Grid")
+    (item "Square 13*" <(square 13)> <All> <ThinDashed> <1.0> <0.0> "Order 13, Square Omni-Grid")
+    (item "Square 19" <(square 19)> <All> <ThinDashed> <1.0> <0.0> "Order 19, Square Omni-Grid")
+    (item "Hex 4 - tactical AI" <(tri Hexagon 4)> <Orthogonal> <Hidden> <1.0> <0.0> "Order 4, Hex Grid")**
+    (item "Hex 7*" <(tri Hexagon 7)> <Orthogonal> <Hidden> <1.0> <0.0> "Order 7, Hex Grid")
+    (item "Hex 11" <(tri Hexagon 11)> <Orthogonal> <Hidden> <1.0> <0.0> "Order 11, Hex Grid")
     (item "TriSquare 4" <(renumber (rotate 135 (tiling T33434 4)))> <Orthogonal> <Hidden> <1.0> <0.0> "Order 6, Triangle-Square Grid")
-    (item "TriSquare 6*" <(renumber (rotate 135 (tiling T33434 6)))>  <Orthogonal> <Hidden> <1.0> <0.0> "Order 9, Triangle-Square Grid")
-    (item "TriSquare 8" <(renumber (rotate 135 (tiling T33434 8)))>  <Orthogonal> <Hidden> <1.0> <0.0> "Order 13, Triangle-Square Grid")
+    (item "TriSquare 6*" <(renumber (rotate 135 (tiling T33434 6)))> <Orthogonal> <Hidden> <1.0> <0.0> "Order 9, Triangle-Square Grid")
+    (item "TriSquare 8" <(renumber (rotate 135 (tiling T33434 8)))> <Orthogonal> <Hidden> <1.0> <0.0> "Order 13, Triangle-Square Grid")
     }
 )
 
 (option "Goal" <GameGoal> args:{<goal> <scoring>} 
     {
-    (item "Largest Chain*"  <(byScore)> <(then "SetScores")> "Cascading scoring of largest chain.")***
+    (item "Largest Chain*" <(byScore)> <(then "SetScores")> "Cascading scoring of largest chain.")***
     (item "Stalemate" <(result Mover Win)> < > "Capture any opponent's piece adjacent to a larger friendly group.")
     }
 )
@@ -269,7 +269,7 @@
             
             The result is a tactical cool clouding of stones, followed by an obstructive race to extend the largest viable group. 
             
-            Players must also be careful obstruct their own possibility of (re)connecting chains that have been formed separately, or been cut in an attack.    
+            Players must also be careful obstruct their own possibility of (re)connecting chains that have been formed separately, or been cut in an attack.  
             
         The leading player may seek to stalemate himself if the opponent has potential for future expansion.")
         (rules "Goal: End with the largest chain of stones, the goal cascades to the next largest in the case of ties.
@@ -301,7 +301,7 @@ When the turn is completed, only chains of equal size remain in contact.
 Ending the game:
 There is no passing. The game ends when either player is unable to move.
 
-Please also try the optional board grids.  
+Please also try the optional board grids. 
 Choose smaller boards for a good AI experience and tactical game.
 Choose larger boards for a strategy game experience with other players.
 

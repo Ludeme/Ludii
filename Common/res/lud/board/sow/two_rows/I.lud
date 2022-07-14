@@ -2,18 +2,18 @@
 
 //------------------------------------------------------------------------------
 
-(game "I"  
-    (players 2)  
+(game "I" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 <Board:size> store:None
             (track "Track" "0,E,N,W" loop:True)
-       )
+        )
         (piece "Seed" Shared)
-        (regions P1 (sites Bottom))  // P1 home
-        (regions P2 (sites Top))     // P2 home
+        (regions P1 (sites Bottom)) // P1 home
+        (regions P2 (sites Top))   // P2 home
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start (set Count 4 to:(sites Track)))
@@ -23,7 +23,7 @@
                 (from 
                     (sites Mover) 
                     if:(> (count at:(from)) 1)
-               )
+                )
                 (then 
                     (sow 
                         apply:(if (or (= 2 (count at:(to))) (= 3 (count at:(to))))
@@ -32,45 +32,45 @@
                                     (from (to)) 
                                     (to (handSite Mover)) 
                                     count:(count at:(to))
-                               )
+                                )
                                 (if (!= (to) (ahead (to) E))
                                     (if (or (= 2 (count at:(ahead (to) E))) (= 3 (count at:(ahead (to) E))))
                                         (fromTo 
                                             (from (ahead (to) E)) 
                                             (to (handSite Mover)) 
                                             count:(count at:(ahead (to) E))
-                                       )
-                                   )
-                               )
+                                        )
+                                    )
+                                )
                                 (if (!= (to) (ahead (to) W))
                                     (if (or (= 2 (count at:(ahead (to) W))) (= 3 (count at:(ahead (to) W))))
                                         (fromTo 
                                             (from (ahead (to) W)) 
                                             (to (handSite Mover)) 
                                             count:(count at:(ahead (to) W))
-                                       )
-                                   )
-                               )
+                                        )
+                                    )
+                                )
                             })
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         
         (end ("MancalaByScoreWhen" (and (no Moves P1) (no Moves P2))))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size>}
     {
-    (item "3"   <3>  "Each row has 3 holes.")*  
-    (item "4"   <4>  "Each row has 4 holes.")  
-    (item "5"   <5>  "Each row has 5 holes.")  
-    (item "6"   <6>  "Each row has 6 holes.")  
-    (item "7"   <7>  "Each row has 7 holes.")   
+    (item "3"  <3> "Each row has 3 holes.")* 
+    (item "4"  <4> "Each row has 4 holes.") 
+    (item "5"  <5> "Each row has 5 holes.") 
+    (item "6"  <6> "Each row has 6 holes.") 
+    (item "7"  <7> "Each row has 7 holes.")  
 })
 
 //------------------------------------------------------------------------------
@@ -83,12 +83,12 @@
         variations:{"Board Size/4" "Board Size/5" 
         "Board Size/6" "Board Size/7" 
         }
-   )*
+    )*
 })
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "I is a two-row mancala-style board game played by the Dogon people of Mali. It is generally played by boys in the sand, using pebbles as counters.")
@@ -98,15 +98,15 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Mali, around 1938.")
+        (origin "This game was played in Mali, around 1938.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)
     })
     (ai
         "I_ai"
-   )
+    )
 )
 

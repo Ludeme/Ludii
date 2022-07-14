@@ -19,8 +19,8 @@
         (if 
             (= (state at:(last To)) 1) 
             "PieceHasMoved"
-       ) 
-   ) 
+        ) 
+    ) 
 )
 
 (define "CaptureToPieceAndResetCounter"
@@ -29,16 +29,16 @@
             (remove 
                 (to) 
                 (then (set Counter))
-           )
-       )
-   ) 
+            )
+        )
+    ) 
 )
 
 (define "KingNotCheckedAndToEmpty"
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-   )   
+    )  
 )
 
 (define "DoCastle"
@@ -49,9 +49,9 @@
         (between 
             (exact #3) 
             if:#4
-       ) 
+        ) 
         #5
-   )
+    )
 )
 
 (define "SmallCastling"
@@ -65,7 +65,7 @@
 (define "SetEnPassantLocation"
     (then 
         (set Pending (ahead (last To) Backward))
-   )
+    )
 )
 
 (define "DoubleStep"
@@ -75,14 +75,14 @@
         (between (exact 2) if:(is Empty (between))) 
         (to if:(is Empty (to))) 
         "SetEnPassantLocation"
-   )
+    )
 )
 
 (define "InLocationEnPassant"
     (and 
         (is Pending) 
         (= (to) (value Pending)) 
-   )
+    )
 )
 
 (define "EnPassant"
@@ -93,9 +93,9 @@
         (then 
             (remove 
                 (ahead (last To) Backward)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "CaptureForwardDiagonal"
@@ -105,15 +105,15 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-       )
-   )
+        )
+    )
 )
 
 (define "PawnMove" 
     (or {
         (if (is In (from) (sites Start (piece (what at:(from)))))
             "DoubleStep"
-       )
+        )
         "StepForwardToEmpty" 
         "CaptureForwardDiagonal"
         "EnPassant"
@@ -122,11 +122,11 @@
             (and
                 (if (is In (last To) (sites Mover "Promotion")) 
                     (moveAgain)
-               )
+                )
                 (set Counter)
-           )
-       )
-   )		
+            )
+        )
+    )		
 )
 
 (define "RookMove" 
@@ -136,9 +136,9 @@
         (to 
             if:("IsEnemyAt" (to)) 
             "CaptureToPieceAndResetCounter"
-       ) 
+        ) 
         "RememberPieceHasMoved"
-   )		
+    )		
 )
 
 (define "KingMove" 
@@ -147,9 +147,9 @@
         (to 
             if:(not ("IsFriendAt" (to))) 
             "CaptureToPieceAndResetCounter"
-       ) 
+        ) 
         "RememberPieceHasMoved"
-   )		
+    )		
 )
 
 (define "BishopMove" 
@@ -159,8 +159,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             "CaptureToPieceAndResetCounter"
-       ) 
-   )		
+        ) 
+    )		
 )
 
 (define "KnightMove" 
@@ -170,8 +170,8 @@
         (to 
             if:(not ("IsFriendAt" (to))) 
             "CaptureToPieceAndResetCounter"
-       ) 
-   )	
+        ) 
+    )	
 )
 
 (define "QueenMove" 
@@ -180,14 +180,14 @@
         (to 
             if:("IsEnemyAt" (to)) 
             "CaptureToPieceAndResetCounter"
-       ) 
-   )	
+        ) 
+    )	
 )
 
 //------------------------------------------------------------------------------
 
-(game "Phase Chess"  
-    (players {(player N) (player S)})  
+(game "Phase Chess" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         (piece "Pawn" Each ("PawnMove"))
@@ -203,7 +203,7 @@
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
         }
-   )  
+    ) 
     (rules 
         (start
             { 
@@ -212,7 +212,7 @@
             (place "Rook1" {"A1" "H1"} state:1) (place "Knight1" {"B1" "G1"}) (place "Bishop1" {"C1" "F1"}) (place "Queen1" coord:"D1") (place "King1" coord:"E1" state:1) 
             (place "Rook2" {"A8" "H8"} state:1) (place "Knight2" {"B8" "G8"}) (place "Bishop2" {"C8" "F8"}) (place "Queen2" coord:"D8") (place "King2" coord:"E8" state:1) 
             }
-       )
+        )
         
         (play 
             (if "SameTurn"
@@ -224,33 +224,33 @@
                                 (forEach Piece "Queen" 
                                     (if (= (phase of:(from)) (phase of:(last To)))
                                         ("QueenMove") 
-                                   )
-                               )
+                                    )
+                                )
                                 (forEach Piece "Knight" 
                                     (if (= (phase of:(from)) (phase of:(last To)))
                                         ("KnightMove")
-                                   )
-                               )
+                                    )
+                                )
                                 (forEach Piece "Bishop" 
                                     (if (= (phase of:(from)) (phase of:(last To)))
                                         ("BishopMove")
-                                   )
-                               )
+                                    )
+                                )
                                 (forEach Piece "King" 
                                     (if (= (phase of:(from)) (phase of:(last To)))
                                         ("KingMove")
-                                   )
-                               )
+                                    )
+                                )
                                 (forEach Piece "Rook" 
                                     (if (= (phase of:(from)) (phase of:(last To)))
                                         ("RookMove")
-                                   )
-                               )
+                                    )
+                                )
                                 (forEach Piece "Pawn" 
                                     (if (= (phase of:(from)) (phase of:(last To)))
                                         ("PawnMove")
-                                   )
-                               )
+                                    )
+                                )
                                 (if (= 0 (phase of:(last To)))
                                     (if (and {
                                             "KingInTheInitialPlace" 
@@ -261,22 +261,22 @@
                                             (if (and 
                                                     ("HasNeverMoved" "RookLeft")
                                                     (can Move ("DoCastle" "RookLeft" E 3 (is Empty (to))))
-                                               )
+                                                )
                                                 "BigCastling"
-                                           )
+                                            )
                                             (if (and 
                                                     ("HasNeverMoved" "RookRight")
                                                     (can Move ("DoCastle" "RookRight" W 2 (is Empty (to))))
-                                               )
+                                                )
                                                 "SmallCastling"
-                                           )
-                                       )
-                                   )
-                               )
+                                            )
+                                        )
+                                    )
+                                )
                             })
                             ifAfterwards:(not ("IsInCheck" "King" Mover (forEach Piece)))
-                       )
-                   )
+                        )
+                    )
                     (do 
                         (or 
                             (forEach Piece)
@@ -289,36 +289,36 @@
                                     (if (and 
                                             ("HasNeverMoved" "RookLeft")
                                             (can Move ("DoCastle" "RookLeft" E 3 (is Empty (to))))
-                                       )
+                                        )
                                         "BigCastling"
-                                   )
+                                    )
                                     (if (and 
                                             ("HasNeverMoved" "RookRight")
                                             (can Move ("DoCastle" "RookRight" W 2 (is Empty (to))))
-                                       )
+                                        )
                                         "SmallCastling"
-                                   )
-                               )
-                           )
-                       )
+                                    )
+                                )
+                            )
+                        )
                         ifAfterwards:(not ("IsInCheck" "King" Mover))
-                   )
+                    )
                 })
-           )
-       )
+            )
+        )
         
         (end
             {
             (if (and 
                     ("IsInCheck" "King" Next)
                     ("NextCanNotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
+            ) 
             (if (or (no Moves Mover) (= (counter) 100)) (result Mover Draw)) 
             }
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -336,7 +336,7 @@
         (credit "Eric Piette")
         (date "13-10-2020")
         }
-   )
+    )
     
     (graphics {
         (show Check "King")
@@ -347,5 +347,5 @@
     
     (ai
         "Phase Chess_ai"
-   )
+    )
 )

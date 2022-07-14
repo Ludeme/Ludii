@@ -1,7 +1,7 @@
 (game "Snort"
     (players 2)
     (equipment {
-        (board  (square 8))
+        (board (square 8))
         (piece "Cat" P1)
         (piece "Dog" P2)
     })
@@ -10,11 +10,11 @@
             (move Add
                 (to 
                     (difference (sites Empty) (sites Around (sites Occupied by:Next) Orthogonal))
-               )
-           )
-       )
+                )
+            )
+        )
         (end (if (no Moves Next) (result P1 Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -34,7 +34,7 @@
         (credit "Eric Piette")
         (date "1970")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour White))

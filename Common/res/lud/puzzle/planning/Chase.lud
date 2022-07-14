@@ -5,7 +5,7 @@
     (> 
         (count Steps Orthogonal (site) (where (id "Human"))) 
         (count Steps Orthogonal (ahead (site) #1) (where (id "Human")))
-   )
+    )
 )
 
 (define "MoveRobot"
@@ -18,18 +18,18 @@
                 (apply 
                     (if (= (id "Human") (what at:(to)))
                         (remove (to))
-                   )
-               )
-           )
-       )
-   )
+                    )
+                )
+            )
+        )
+    )
 )
 
 (define "GoCloser"
     (if ("CloserToHuman" #1)
         ("MoveRobot" #1)
         #2
-   )
+    )
 )
 
 (define "RobotThreat"
@@ -43,14 +43,14 @@
                             ("GoCloser" W 
                                 ("GoCloser" N 
                                     ("GoCloser" S)
-                               )
-                           )
-                       )
-                   )
-               )
-           )
-       )
-   )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
 )
 
 (define "KillRobotsIfColliding"
@@ -60,17 +60,17 @@
             (and
                 (remove (site))
                 (add (piece "Rubble0") (to (site)))
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "Teleportation"
     (fromTo 
         (from (where (id "Human"))) 
-        (to (sites Random))  
+        (to (sites Random)) 
         (then ("RobotThreat"))
-   )
+    )
 )
 
 (define "SafeTeleportation"
@@ -81,17 +81,17 @@
                 (difference 
                     (sites Empty) 
                     (sites Around (sites Occupied by:Shared))
-               )
-           )
-       ) 
+                )
+            )
+        ) 
         (then ("RobotThreat"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Chase"  
-    (players 1)  
+(game "Chase" 
+    (players 1) 
     (equipment { 
         (board (rectangle <Rows:num> <Columns:num>)) 
         (piece "Human" P1 
@@ -99,15 +99,15 @@
                 Step 
                 (to 
                     if:(is Empty (to))
-               )
+                )
                 (then
                     ("RobotThreat")
-               )
-           )
-       )
+                )
+            )
+        )
         (piece "Robot" Shared)
         (piece "Rubble" Neutral)
-    })  
+    }) 
     (rules 
         (start
             {
@@ -115,7 +115,7 @@
             (place Random {"Robot"} count:("NumRobots"))
             (set Score P1 ("NumSafeTeleportation"))
             }
-       )
+        )
         (play
             (or
                 {
@@ -128,138 +128,138 @@
                             (and
                                 (set Score Mover (- (score P1) 1))
                                 ("SafeTeleportation")
-                           )
-                       )
-                   )
-               )
+                            )
+                        )
+                    )
+                )
                 }
                 (then
                     ("KillRobotsIfColliding")
-               )
-           )
-       )
+                )
+            )
+        )
         (end 
             {
             (if (no Pieces Mover) (result Mover Loss))
             (if (no Pieces "Robot") (result Mover Win))
             }
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Rows" <Rows> args:{ <num> }
     {
-    (item  "1"  <1> "The board has 1 row.")  
-    (item  "2"  <2> "The board has 2 rows.")  
-    (item  "3"  <3> "The board has 3 rows.")  
-    (item  "4"  <4> "The board has 4 rows.")  
-    (item  "5"  <5> "The board has 5 rows.")  
-    (item  "6"  <6> "The board has 6 rows.")  
-    (item  "7"  <7> "The board has 7 rows.")  
-    (item  "8"  <8> "The board has 8 rows.")  
-    (item  "9"  <9> "The board has 9 rows.")  
-    (item "10" <10> "The board has 10 rows.")*  
-    (item "11" <11> "The board has 11 rows.")  
-    (item "12" <12> "The board has 12 rows.")  
-    (item "13" <13> "The board has 13 rows.")  
-    (item "14" <14> "The board has 14 rows.")  
-    (item "15" <15> "The board has 15 rows.")  
-    (item "16" <16> "The board has 16 rows.")  
-    (item "17" <17> "The board has 17 rows.")  
-    (item "18" <18> "The board has 18 rows.")  
-    (item "19" <19> "The board has 19 rows.")   
-    (item "20" <20> "The board has 20 rows.")   
-    (item "21" <21> "The board has 21 rows.")   
-    (item "22" <22> "The board has 22 rows.")   
-    (item "23" <23> "The board has 23 rows.")   
-    (item "24" <24> "The board has 24 rows.")   
-    (item "25" <25> "The board has 25 rows.")   
-    (item "26" <26> "The board has 26 rows.")   
-    (item "27" <27> "The board has 27 rows.")   
-    (item "28" <28> "The board has 28 rows.")   
-    (item "29" <29> "The board has 29 rows.")   
-    (item "30" <30> "The board has 30 rows.")  
+    (item "1" <1> "The board has 1 row.") 
+    (item "2" <2> "The board has 2 rows.") 
+    (item "3" <3> "The board has 3 rows.") 
+    (item "4" <4> "The board has 4 rows.") 
+    (item "5" <5> "The board has 5 rows.") 
+    (item "6" <6> "The board has 6 rows.") 
+    (item "7" <7> "The board has 7 rows.") 
+    (item "8" <8> "The board has 8 rows.") 
+    (item "9" <9> "The board has 9 rows.") 
+    (item "10" <10> "The board has 10 rows.")* 
+    (item "11" <11> "The board has 11 rows.") 
+    (item "12" <12> "The board has 12 rows.") 
+    (item "13" <13> "The board has 13 rows.") 
+    (item "14" <14> "The board has 14 rows.") 
+    (item "15" <15> "The board has 15 rows.") 
+    (item "16" <16> "The board has 16 rows.") 
+    (item "17" <17> "The board has 17 rows.") 
+    (item "18" <18> "The board has 18 rows.") 
+    (item "19" <19> "The board has 19 rows.")  
+    (item "20" <20> "The board has 20 rows.")  
+    (item "21" <21> "The board has 21 rows.")  
+    (item "22" <22> "The board has 22 rows.")  
+    (item "23" <23> "The board has 23 rows.")  
+    (item "24" <24> "The board has 24 rows.")  
+    (item "25" <25> "The board has 25 rows.")  
+    (item "26" <26> "The board has 26 rows.")  
+    (item "27" <27> "The board has 27 rows.")  
+    (item "28" <28> "The board has 28 rows.")  
+    (item "29" <29> "The board has 29 rows.")  
+    (item "30" <30> "The board has 30 rows.") 
     }
 )
 (option "Columns" <Columns> args:{ <num> }
     {
-    (item  "2"  <2> "The board has 2 columns.")  
-    (item  "3"  <3> "The board has 3 columns.")  
-    (item  "4"  <4> "The board has 4 columns.")  
-    (item  "5"  <5> "The board has 5 columns.")  
-    (item  "6"  <6> "The board has 6 columns.")  
-    (item  "7"  <7> "The board has 7 columns.")  
-    (item  "8"  <8> "The board has 8 columns.")  
-    (item  "9"  <9> "The board has 9 columns.")  
-    (item "10" <10> "The board has 10 columns.")  
-    (item "11" <11> "The board has 11 columns.")  
-    (item "12" <12> "The board has 12 columns.")  
-    (item "13" <13> "The board has 13 columns.")  
-    (item "14" <14> "The board has 14 columns.")  
-    (item "15" <15> "The board has 15 columns.")  
-    (item "16" <16> "The board has 16 columns.")  
-    (item "17" <17> "The board has 17 columns.")  
-    (item "18" <18> "The board has 18 columns.")  
-    (item "19" <19> "The board has 19 columns.")   
-    (item "20" <20> "The board has 20 columns.")*   
-    (item "21" <21> "The board has 21 columns.")   
-    (item "22" <22> "The board has 22 columns.")   
-    (item "23" <23> "The board has 23 columns.")   
-    (item "24" <24> "The board has 24 columns.")   
-    (item "25" <25> "The board has 25 columns.")   
-    (item "26" <26> "The board has 26 columns.")   
-    (item "27" <27> "The board has 27 columns.")   
-    (item "28" <28> "The board has 28 columns.")   
-    (item "29" <29> "The board has 29 columns.")   
-    (item "30" <30> "The board has 30 columns.")  
+    (item "2" <2> "The board has 2 columns.") 
+    (item "3" <3> "The board has 3 columns.") 
+    (item "4" <4> "The board has 4 columns.") 
+    (item "5" <5> "The board has 5 columns.") 
+    (item "6" <6> "The board has 6 columns.") 
+    (item "7" <7> "The board has 7 columns.") 
+    (item "8" <8> "The board has 8 columns.") 
+    (item "9" <9> "The board has 9 columns.") 
+    (item "10" <10> "The board has 10 columns.") 
+    (item "11" <11> "The board has 11 columns.") 
+    (item "12" <12> "The board has 12 columns.") 
+    (item "13" <13> "The board has 13 columns.") 
+    (item "14" <14> "The board has 14 columns.") 
+    (item "15" <15> "The board has 15 columns.") 
+    (item "16" <16> "The board has 16 columns.") 
+    (item "17" <17> "The board has 17 columns.") 
+    (item "18" <18> "The board has 18 columns.") 
+    (item "19" <19> "The board has 19 columns.")  
+    (item "20" <20> "The board has 20 columns.")*  
+    (item "21" <21> "The board has 21 columns.")  
+    (item "22" <22> "The board has 22 columns.")  
+    (item "23" <23> "The board has 23 columns.")  
+    (item "24" <24> "The board has 24 columns.")  
+    (item "25" <25> "The board has 25 columns.")  
+    (item "26" <26> "The board has 26 columns.")  
+    (item "27" <27> "The board has 27 columns.")  
+    (item "28" <28> "The board has 28 columns.")  
+    (item "29" <29> "The board has 29 columns.")  
+    (item "30" <30> "The board has 30 columns.") 
     }
 )
 (option "Safe Teleportations" <SafeTeleportation> args:{ <num> }
     {
-    (item  "2"  <2> "The player has 2 safe teleportations.")  
-    (item  "3"  <3> "The player has 3 safe teleportations.")  
-    (item  "4"  <4> "The player has 4 safe teleportations.")  
-    (item  "5"  <5> "The player has 5 safe teleportations.")*  
-    (item  "6"  <6> "The player has 6 safe teleportations.")  
-    (item  "7"  <7> "The player has 7 safe teleportations.")  
-    (item  "8"  <8> "The player has 8 safe teleportations.")  
-    (item  "9"  <9> "The player has 9 safe teleportations.")  
-    (item "10" <10> "The player has 10 safe teleportations.")  
+    (item "2" <2> "The player has 2 safe teleportations.") 
+    (item "3" <3> "The player has 3 safe teleportations.") 
+    (item "4" <4> "The player has 4 safe teleportations.") 
+    (item "5" <5> "The player has 5 safe teleportations.")* 
+    (item "6" <6> "The player has 6 safe teleportations.") 
+    (item "7" <7> "The player has 7 safe teleportations.") 
+    (item "8" <8> "The player has 8 safe teleportations.") 
+    (item "9" <9> "The player has 9 safe teleportations.") 
+    (item "10" <10> "The player has 10 safe teleportations.") 
     }
 )
 (option "Robots" <Robots> args:{ <num> }
     {
-    (item  "2"  <2> "2 robots.")  
-    (item  "3"  <3> "3 robots.")  
-    (item  "4"  <4> "4 robots.")  
-    (item  "5"  <5> "5 robots.")  
-    (item  "6"  <6> "6 robots.")  
-    (item  "7"  <7> "7 robots.")  
-    (item  "8"  <8> "8 robots.")  
-    (item  "9"  <9> "9 robots.")  
+    (item "2" <2> "2 robots.") 
+    (item "3" <3> "3 robots.") 
+    (item "4" <4> "4 robots.") 
+    (item "5" <5> "5 robots.") 
+    (item "6" <6> "6 robots.") 
+    (item "7" <7> "7 robots.") 
+    (item "8" <8> "8 robots.") 
+    (item "9" <9> "9 robots.") 
     (item "10" <10> "10 robots.") 
-    (item "11" <11> "11 robots.")  
-    (item "12" <12> "12 robots.")  
-    (item "13" <13> "13 robots.")  
-    (item "14" <14> "14 robots.")  
-    (item "15" <15> "15 robots.")  
-    (item "16" <16> "16 robots.")  
-    (item "17" <17> "17 robots.")  
-    (item "18" <18> "18 robots.")  
-    (item "19" <19> "19 robots.")   
-    (item "20" <20> "20 robots.")*   
-    (item "21" <21> "21 robots.")   
-    (item "22" <22> "22 robots.")   
-    (item "23" <23> "23 robots.")   
-    (item "24" <24> "24 robots.")   
-    (item "25" <25> "25 robots.")   
-    (item "26" <26> "26 robots.")   
-    (item "27" <27> "27 robots.")   
-    (item "28" <28> "28 robots.")   
-    (item "29" <29> "29 robots.")   
-    (item "30" <30> "30 robots.")   
+    (item "11" <11> "11 robots.") 
+    (item "12" <12> "12 robots.") 
+    (item "13" <13> "13 robots.") 
+    (item "14" <14> "14 robots.") 
+    (item "15" <15> "15 robots.") 
+    (item "16" <16> "16 robots.") 
+    (item "17" <17> "17 robots.") 
+    (item "18" <18> "18 robots.") 
+    (item "19" <19> "19 robots.")  
+    (item "20" <20> "20 robots.")*  
+    (item "21" <21> "21 robots.")  
+    (item "22" <22> "22 robots.")  
+    (item "23" <23> "23 robots.")  
+    (item "24" <24> "24 robots.")  
+    (item "25" <25> "25 robots.")  
+    (item "26" <26> "26 robots.")  
+    (item "27" <27> "27 robots.")  
+    (item "28" <28> "28 robots.")  
+    (item "29" <29> "29 robots.")  
+    (item "30" <30> "30 robots.")  
     }
 )
 
@@ -287,7 +287,7 @@
         (credit "Eric Piette")
         (date "1970")
         }
-   )
+    )
     
     (graphics {
         (no Sunken)
@@ -297,5 +297,5 @@
     })
     (ai
         "Chase_ai"
-   )
+    )
 )

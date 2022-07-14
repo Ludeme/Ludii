@@ -4,14 +4,14 @@
     (and
         (if (and (< (var) 1) (is Line 3))	
             (set Var #1)
-       )
+        )
         (if (and ("HandEmpty" P1) ("HandEmpty" P2))
             (if (< ("PlayerSecondPhase") 1) 
                 (moveAgain)
                 (set NextPlayer (player ("PlayerSecondPhase")))
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "IfLine3MoveAgain" 
@@ -21,9 +21,9 @@
             (moveAgain)
             (if (no Moves Next)
                 (and (moveAgain) (set Pending))
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "RemoveEnemyPiece" 
@@ -31,7 +31,7 @@
         Remove
         (sites Occupied by:Next container:"Board") 
         #1
-   )
+    )
 )
 
 (define "ResetGame" 
@@ -50,14 +50,14 @@
         (board
             (concentric Square rings:3)
             use:Vertex
-       ) 
+        ) 
         (piece "Marker" Each
             (move
                 Step 
                 (to if:(is Empty (to))) 
                 "IfLine3MoveAgain" 
-           )		
-       )
+            )		
+        )
         (hand Each)
     })
     (rules 
@@ -69,14 +69,14 @@
                     (from (handSite Mover))
                     (to (sites Empty))
                     (then ("SetPlayerSecondPhase" (mover)))
-               )
-           )
+                )
+            )
             (nextPhase (and ("HandEmpty" P1) ("HandEmpty" P2)) "Remove")
-       )
+        )
         (phase "Remove" 
             (play ("RemoveEnemyPiece"))
             (nextPhase Mover "Move")
-       )
+        )
         (phase "Move" 
             (play 
                 (if (and (not (is Pending)) "SameTurn")
@@ -84,49 +84,49 @@
                         (then
                             (if (no Moves Next)
                                 (and (moveAgain) (set Pending))
-                           )	
-                       )
-                   )
+                            )	
+                        )
+                    )
                     (if (is Pending)
                         (do
                             (forEach Piece
                                 (move
                                     Step 
                                     (to if:(is Empty (to))) 
-                               )
-                           ) 
+                                )
+                            ) 
                             ifAfterwards:(can Move (forEach Piece Next))
-                       )
+                        )
                         (forEach Piece)
-                   )
+                    )
                     (then
                         (if (= 2 (count Pieces P1))
                             (addScore P2 1 
                                 (then 
-                                    (if (!= (score P2) 5)  
+                                    (if (!= (score P2) 5) 
                                         ("ResetGame")
-                                   )
-                               )
-                           )
+                                    )
+                                )
+                            )
                             (if (= 2 (count Pieces P2))
                                 (addScore P1 1 
                                     (then 
-                                        (if (!= (score P1) 5)  
+                                        (if (!= (score P1) 5) 
                                             ("ResetGame")
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
             (nextPhase (= 0 (count Sites in:(sites Occupied by:All container:"Board"))) "Placement")
-       )
+        )
         }
         
         (end (if (= (score Mover) 5) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -143,15 +143,15 @@
         (version "1.3.4")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in Horn of Africa, around 1931.")
+        (origin "This game was played in Horn of Africa, around 1931.")
         }
-   )
+    )
     
     (graphics {
         
     })
     (ai
         "Shah_ai"
-   )
+    )
 )
 

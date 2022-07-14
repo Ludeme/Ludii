@@ -16,10 +16,10 @@
             (if 
                 (= (state at:(last To)) 1) 
                 ("PieceHasMoved" (last To))
-           ) 
+            ) 
             (set Value at:(last To) (% (+ (value Piece at:(last To)) 1) 2))
-       )
-   ) 
+        )
+    ) 
 )
 
 (define "CaptureToPieceAndResetCounter"
@@ -29,20 +29,20 @@
             (and 
                 ("IsEnemyAt" (to))
                 (= (value Piece at:(from)) (value Piece at:(to)))
-           )
+            )
             (remove 
                 (to) 
                 (then (set Counter))
-           )
-       )
-   ) 
+            )
+        )
+    ) 
 )
 
 (define "KingNotCheckedAndToEmpty"
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-   )   
+    )  
 )
 
 (define "DecideToCastle"
@@ -55,14 +55,14 @@
             (between 
                 (exact #3) 
                 if:#4
-           ) 
+            ) 
             (to 
                 if:True
                 (apply ("PieceHasMoved" (from)))
-           )
+            )
             #5
-       )
-   )
+        )
+    )
 )
 
 (define "CastleRook"
@@ -74,13 +74,13 @@
             (between 
                 (exact #3) 
                 if:#4
-           ) 
+            ) 
             (to 
                 if:True
                 (apply ("PieceHasMoved" (from)))
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "SmallCastling"
@@ -100,14 +100,14 @@
             if:(or
                 (is Empty (between))
                 (!= (value Piece at:(from)) (value Piece at:(between)))
-           )
-       ) 
+            )
+        ) 
         (to if:(is Empty (to))
             (apply 
                 if:(is Empty (to))
-           )
-       ) 
-   )
+            )
+        ) 
+    )
 )
 
 (define "CaptureForwardDiagonal"
@@ -118,16 +118,16 @@
             if:(and 
                 ("IsEnemyAt" (to))
                 (= (value Piece at:(from)) (value Piece at:(to)))
-           ) 
+            ) 
             (apply (remove (to)))
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Alice Chess"  
-    (players {(player N) (player S)})  
+(game "Alice Chess" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -135,7 +135,7 @@
             (or {
                 (if (is In (from) (sites Start (piece (what at:(from)))))
                     "DoubleStep"
-               )
+                )
                 "StepForwardToEmpty" 
                 "CaptureForwardDiagonal"
                 }
@@ -143,14 +143,14 @@
                     (and {
                         (if (is In (last To) (sites Mover "Promotion")) 
                             (moveAgain)
-                       )
+                        )
                         (set Counter)
                         (set Value at:(last To) (% (+ (value Piece at:(last To)) 1) 2))
                         }
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         
         (piece "Rook" Each 
             (move
@@ -160,25 +160,25 @@
                     if:(or
                         (is Empty (between))
                         (!= (value Piece at:(from)) (value Piece at:(between)))
-                   )
-               ) 
+                    )
+                ) 
                 (to 
                     if:(and ("IsEnemyAt" (to)) (= (value Piece at:(from)) (value Piece at:(to))))
                     "CaptureToPieceAndResetCounter"
-               ) 
+                ) 
                 "RememberPieceHasMoved"
-           )
-       )
+            )
+        )
         (piece "King" Each 
             (move
                 Step 
                 (to 
                     if:(and (not ("IsFriendAt" (to))) (or (is Empty (to)) (= (value Piece at:(from)) (value Piece at:(to)))))
                     "CaptureToPieceAndResetCounter"
-               ) 
+                ) 
                 "RememberPieceHasMoved"
-           )
-       )
+            )
+        )
         (piece "Bishop" Each 
             (move
                 Slide 
@@ -187,17 +187,17 @@
                     if:(or
                         (is Empty (between))
                         (!= (value Piece at:(from)) (value Piece at:(between)))
-                   )
-               ) 
+                    )
+                ) 
                 (to 
                     if:(and ("IsEnemyAt" (to)) (= (value Piece at:(from)) (value Piece at:(to))))
                     "CaptureToPieceAndResetCounter"
-               ) 
+                ) 
                 (then
                     (set Value at:(last To) (% (+ (value Piece at:(last To)) 1) 2))
-               )
-           )
-       )
+                )
+            )
+        )
         (piece "Knight" Each 
             (move
                 Leap 
@@ -205,12 +205,12 @@
                 (to 
                     if:(and (not ("IsFriendAt" (to))) (or (is Empty (to)) (= (value Piece at:(from)) (value Piece at:(to)))))
                     "CaptureToPieceAndResetCounter"
-               ) 
+                ) 
                 (then
                     (set Value at:(last To) (% (+ (value Piece at:(last To)) 1) 2))
-               )
-           )
-       )
+                )
+            )
+        )
         (piece "Queen" Each 
             (move
                 Slide 
@@ -218,24 +218,24 @@
                     if:(or
                         (is Empty (between))
                         (!= (value Piece at:(from)) (value Piece at:(between)))
-                   )
-               ) 
+                    )
+                ) 
                 (to 
                     if:(and ("IsEnemyAt" (to)) (= (value Piece at:(from)) (value Piece at:(to))))
                     "CaptureToPieceAndResetCounter"
-               ) 
+                ) 
                 (then
                     (set Value at:(last To) (% (+ (value Piece at:(last To)) 1) 2))
-               )
-           ) 
-       )
+                )
+            ) 
+        )
         
         (map "King" {(pair 1 "E1") (pair 2 "E8")})
         (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})
         (map "RookRight" {(pair 1 "H1") (pair 2 "H8")})
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Pawn1" (sites Row 1))
@@ -250,53 +250,53 @@
                     next:(move Promote (last To) (piece {"Queen" "Knight" "Bishop" "Rook"}) Mover 
                         (then
                             (set Value at:(last To) (var "promotedValue"))
-                       ) 
-                   )
-               )
+                        ) 
+                    )
+                )
                 (do 
                     (or 
                         (forEach Piece)
                         (if (and 
                                 ("HasNeverMoved" "King")
                                 (not ("IsInCheck" "King" Mover)) 
-                           )
+                            )
                             (or
                                 (if (and 
                                         ("HasNeverMoved" "RookLeft")
                                         (can Move ("CastleRook" "RookLeft" E 3 (or
                                                     (is Empty (between))
                                                     (!= (value Piece at:(from)) (value Piece at:(between)))
-                                       )))
-                                   )
+                                        )))
+                                    )
                                     "BigCastling"
-                               )
+                                )
                                 (if (and 
                                         ("HasNeverMoved" "RookRight")
                                         (can Move ("CastleRook" "RookRight" W 2 (or
                                                     (is Empty (between))
                                                     (!= (value Piece at:(from)) (value Piece at:(between)))
-                                       )))
-                                   )
+                                        )))
+                                    )
                                     "SmallCastling"
-                               )
-                           )
-                       )
-                   )
+                                )
+                            )
+                        )
+                    )
                     ifAfterwards:(not ("IsInCheck" "King" Mover))
-               )
-           )
-       )
+                )
+            )
+        )
         
         (end {
             (if (and 
                     ("IsInCheck" "King" Next)
                     ("NextCanNotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
+            ) 
             (if (or (no Moves Mover) (= (counter) 99)) (result Mover Draw)) 
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -315,7 +315,7 @@
         (credit "Matthew Stephenson")
         (date "1953")
         }
-   )
+    )
     
     (graphics {
         (piece Colour P1 value:1 fillColour:(colour 163 189 229))

@@ -6,15 +6,15 @@
         Orthogonal 
         (between 
             if:("IsEnemyAt" (between)) 
-            (apply             
+            (apply       
                 (and 
                     (addScore Mover 1) 
                     (remove (between)) 
-               )
-           ) 
-       )
+                )
+            ) 
+        )
         numException:1
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -33,10 +33,10 @@
                 (move
                     Add
                     (to (intersection (sites Empty) (sites "MarkedSites")))
-               )
-           )
+                )
+            )
             (nextPhase (= 0 (count Sites in:(intersection (sites "MarkedSites") (sites Empty)))) "Playing")
-       )
+        )
         (phase "Playing" 
             (play
                 (do
@@ -45,22 +45,22 @@
                         (to (sites Empty))
                         (then 
                             "CaptureSurroundedPiece"
-                       )
-                   )
+                        )
+                    )
                     ifAfterwards:"HasFreedom"
-               )
-           )
+                )
+            )
             (end
                 (if (no Moves Next)
                     (byScore {
                         (score P1 (+ (score P1) (size Territory P1))) 
                         (score P2 (+ (score P2) (size Territory P2)))
                     })
-               )
-           )
-       )
+                )
+            )
+        )
         }
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -77,9 +77,9 @@
         (version "1.3.4")
         (classification "board/space/territory")
         (credit "Eric Piette")
-        (origin  "This game was played in Korea, around 1895.")
+        (origin "This game was played in Korea, around 1895.")
         }
-   )
+    )
     
     (graphics {
         (show Edges Diagonal Hidden)
@@ -92,5 +92,5 @@
     
     (ai
         "Patok_ai"
-   )
+    )
 )

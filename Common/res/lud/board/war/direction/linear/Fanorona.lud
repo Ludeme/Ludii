@@ -9,9 +9,9 @@
                 (is Empty (to)) 
                 (is Enemy (who at:(ahead #2 #3)))
             })
-       )
-   )
-)  
+        )
+    )
+) 
 
 (define "EmptyButNotVisitedWithEnemyIn"
     (and { 
@@ -25,21 +25,21 @@
     (and 
         (is Empty (to)) 
         (is Enemy (who at:(ahead #1 #2)))
-   )
+    )
 )
 
 (define "RemoveEnemyPiece"
     (to 
         if:("IsEnemyAt" (to)) 
         (apply (remove (to)))
-   )
+    )
 )
 
 (define "MoveThePiece"
     (fromTo 
         (from (last From)) 
         (to (last To))
-   ) 
+    ) 
 )
 
 (define "MoveAgainIn"
@@ -49,7 +49,7 @@
         (to 
             (sites Around #1) 
             if:("EmptyButNotVisitedWithEnemyIn" #2 #3)
-       ) 
+        ) 
         (then 
             (and {
                 "MoveThePiece" 
@@ -57,26 +57,26 @@
                     (from #4) 
                     #5
                     "RemoveEnemyPiece"
-               ) 
+                ) 
                 (if 
                     (can Move
                         (or 
                             ("CaptureAgainIn" #1 (to) SameDirection)
                             ("CaptureAgainIn" #1 (from) OppositeDirection)
-                       )
-                   )
+                        )
+                    )
                     (moveAgain)
-               )
+                )
             })
-       )
-   )
+        )
+    )
 )
 
-(define "CaptureFromLast"  		
+(define "CaptureFromLast" 		
     (or 
         ("MoveAgainIn" #1 (to) SameDirection (last To) (directions Vertex from:(last From) to:(last To)))
         ("MoveAgainIn" #1 (from) OppositeDirection (last From) (directions Vertex from:(last To) to:(last From)))
-   )
+    )
 )
 
 (define "MoveIn"
@@ -87,7 +87,7 @@
             (to 
                 (sites Around (from)) 
                 if:("EmptyWithEnemyIn" #1 #2)
-           ) 
+            ) 
             (then 
                 (and 
                     "MoveThePiece" 
@@ -95,27 +95,27 @@
                         (from #3) 
                         #4
                         "RemoveEnemyPiece"
-                   )
-               ) 
-           )
-       ) 
+                    )
+                ) 
+            )
+        ) 
         (then 
             (if 
                 (can Move ("CaptureFromLast" (last To))) 
                 (moveAgain)
-           )
-       ) 
-   )
+            )
+        ) 
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (game "Fanorona" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         ("AlquerqueBoard" <Board:size>)
         (piece "Marker" Each)
-    })  
+    }) 
     
     (rules 
         (start { 
@@ -130,30 +130,30 @@
                         (!= (what at:(last To)) 0) 
                         ("CaptureFromLast" (last To)) 
                         ("CaptureFromLast" (last From))
-                   )
+                    )
                     (move Pass)
-               )
+                )
                 (priority {
                     (or 
                         ("MoveIn" (to) SameDirection (last To) (directions Vertex from:(last From) to:(last To)))
                         ("MoveIn" (from) OppositeDirection (last From) (directions Vertex from:(last To) to:(last From)))
-                   )
+                    )
                     (forEach Piece "StepToEmpty")
                 })
-           )
-       )
+            )
+        )
         
         (end (if (no Pieces Mover) (result Next Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Version" <Board> args:{ <size> <startP1> <startP2> }
     {
-    (item "Telo"  <3 3> <(union (sites Bottom) (sites {"C2"}))> <(union (sites {"A2"}) (sites Top))>                                                      "The game is played on a 3x3 board")   
-    (item "Dimy"  <5 5> <(union (expand (sites Bottom)) (sites {"A3" "D3"}))> <(union (sites {"B3" "E3"}) (expand (sites Top)))>                        "The game is played on a 5x5 board")   
-    (item "Tsivy" <5 9> <(union (expand (sites Bottom)) (sites {"B3" "D3" "G3" "I3"}))> <(union (sites {"A3" "C3" "F3" "H3"}) (expand (sites Top)))>   "The game is played on a 5x9 board")**   
+    (item "Telo" <3 3> <(union (sites Bottom) (sites {"C2"}))> <(union (sites {"A2"}) (sites Top))>                           "The game is played on a 3x3 board")  
+    (item "Dimy" <5 5> <(union (expand (sites Bottom)) (sites {"A3" "D3"}))> <(union (sites {"B3" "E3"}) (expand (sites Top)))>            "The game is played on a 5x5 board")  
+    (item "Tsivy" <5 9> <(union (expand (sites Bottom)) (sites {"B3" "D3" "G3" "I3"}))> <(union (sites {"A3" "C3" "F3" "H3"}) (expand (sites Top)))>  "The game is played on a 5x9 board")**  
 })
 
 //------------------------------------------------------------------------------
@@ -169,9 +169,9 @@
         (version "1.3.4")
         (classification "board/war/direction/linear")
         (credit "Eric Piette")
-        (origin  "This game was played in Madagascar, around 1896.")
+        (origin "This game was played in Madagascar, around 1896.")
         }
-   )
+    )
     
     (graphics {
         
@@ -179,5 +179,5 @@
     
     (ai
         "Fanorona_ai"
-   )
+    )
 )

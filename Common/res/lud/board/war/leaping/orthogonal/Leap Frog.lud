@@ -7,10 +7,10 @@
                 (between
                     if:(is Occupied (between))
                     (apply (if ("IsEnemyAt" (between)) (remove (between))))
-               )
+                )
                 (to if:(is Empty (to)))
-           )
-       )
+            )
+        )
     })
     (rules
         (start {
@@ -19,7 +19,7 @@
         })
         (play (forEach Piece))
         (end ("BlockWin"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -36,9 +36,9 @@
         (classification "board/war/leaping/orthogonal")
         (credit "Fabio Barbero")
         }
-   )
+    )
     
     (ai
         "Leap Frog_ai"
-   )
+    )
 )

@@ -6,9 +6,9 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-       ) 
+        ) 
         #3
-   )
+    )
 )
 
 (define "StepMove" 
@@ -18,15 +18,15 @@
         (to 
             if:(not ("IsFriendAt" (to))) 
             (apply (if ("IsEnemyAt" (to)) (remove (to))))
-       ) 
+        ) 
         #2 
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (game "Heian Dai Shogi"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 13))
         (piece "Pawn" Each (move [#]))
@@ -50,24 +50,24 @@
                 ("StepMove" (directions Forward))
                 ("SlideMove" (directions (directions {Leftward Rightward})))
                 (then [#])
-           )
-       ) 
+            )
+        ) 
         
         (piece "SavageTiger" Each // Diago one space
             ("StepMove" (directions Diagonal) (then [#]))
-       ) 
+        ) 
         
         (piece "FlyingDragon" Each // Slide diago
             ("SlideMove" (directions Diagonal) (then [#]))
-       ) 
+        ) 
         
         (piece "RunningChariot" Each // slide forward and backward
             ("SlideMove" (directions {Forward Backward}) (then [#]))
-       ) 
+        ) 
         
         (piece "Chunin" Each // step forward or backward
             ("StepMove" (directions {Forward Backward}) (then [#]))
-       ) 
+        ) 
     })
     (rules
         (start {
@@ -94,7 +94,7 @@
         })
         (play [#])
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -104,7 +104,7 @@
     (info
         {
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour White))

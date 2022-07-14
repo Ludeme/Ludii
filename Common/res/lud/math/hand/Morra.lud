@@ -17,16 +17,16 @@
         (then 
             (if (= "SumFingers" (amount #1))
                 (addScore #1 1)
-           )
+            )
             applyAfterAllMoves:True
-       )
-   )
+        )
+    )
 )
 
 //-------------------------------------------------------------------------
 
-(game "Morra"  
-    (players <Players:num>)  
+(game "Morra" 
+    (players <Players:num>) 
     
     (mode Simultaneous) 
     
@@ -35,7 +35,7 @@
         (hand Each size:6) 
         (hand Shared)
         (piece "Hand0" Each)
-    })  
+    }) 
     
     (rules 
         (start { 
@@ -52,9 +52,9 @@
                     (move Bet P2 (range 0 ("MaxFingers")) (then (set Pot (+ (pot) (amount P2)))))
                     <Players:betP3>
                 })
-           )
+            )
             (nextPhase "Hand")
-       )
+        )
         
         (phase "Hand" 
             (play 
@@ -63,9 +63,9 @@
                     ("ShowHand" P2)
                     <Players:showHandP3>
                 })
-           )
+            )
             (nextPhase "Observe")
-       )
+        )
         
         (phase "Observe" 
             (play 
@@ -77,11 +77,11 @@
                             (remove 1)
                             <Players:removeP3>
                         })
-                   )
-               )
-           )
+                    )
+                )
+            )
             (nextPhase "Bet")
-       )
+        )
         }
         
         (end 
@@ -92,23 +92,23 @@
                     <Players:endP3>
                 }) 
                 (byScore)
-           )
-       ) 
-   )
+            )
+        ) 
+    )
 )
 
 //-------------------------------------------------------------------------
 
 (option "Players" <Players> args:{ <num> <board> <sumFingers> <initP3> <betP3> <showHandP3> <removeP3> <endP3>}
     {
-    (item "2"  
+    (item "2" 
         <2>
         <(board 
             (union 
                 (square 1) 
                 (shift 0 2 (square 1))
-           )
-       )>
+            )
+        )>
         <(+ (state at:0) (state at:1))>
         <>
         <>
@@ -117,7 +117,7 @@
         <>
     "The game is played with 2 players.")* 
     
-    (item "3"  
+    (item "3" 
         <3> 
         <(board 
             (union 
@@ -126,15 +126,15 @@
                 (shift -1 2 (square 1)) 
                 (shift 1 2 (square 1))
                 }
-           )
-       )>
+            )
+        )>
         <(+ {(state at:0) (state at:1) (state at:2)})>
         <("InitHand" "Hand03" P3)>
         <(move Bet P3 (range 0 ("MaxFingers")) (then (set Pot (+ (pot) (amount P3)))))>
         <("ShowHand" P3)>
         <(remove 2)>
         <(= (score P3) 3)>
-    "The game is played with 3 players.")   
+    "The game is played with 3 players.")  
 })
 
 //-------------------------------------------------------------------------
@@ -152,7 +152,7 @@
         (classification "math/hand")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour HumanLight))

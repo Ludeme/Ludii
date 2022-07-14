@@ -9,11 +9,11 @@
                 (remove 
                     (to) 
                     (then (set Counter))
-               )
+                )
                 (remember Value "CapturedPieces" (what at:(to)))
-           )
-       )
-   ) 
+            )
+        )
+    ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -26,10 +26,10 @@
                 (and
                     (remove (to))
                     (remember Value "CapturedPieces" (what at:(to)))
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 (define "WasCaptured" (is In #1 (values Remembered "CapturedPieces")))
@@ -38,25 +38,25 @@
     (or {
         (if ("WasCaptured" (id "Queen" Mover))
             (move Promote #1 (piece {"Queen"}) Mover)
-       )
+        )
         (if ("WasCaptured" (id "Knight" Mover))
             (move Promote #1 (piece {"Knight"}) Mover)
-       )
+        )
         (if ("WasCaptured" (id "Rook" Mover))
             (move Promote #1 (piece {"Rook"}) Mover)
-       )
+        )
         (if ("WasCaptured" (id "Bishop" Mover))
             (move Promote #1 (piece {"Bishop"}) Mover)
-       )
+        )
         }
         #2		
-   )		
+    )		
 )
 
 //------------------------------------------------------------------------------
 
-(game "Quick Chess"  
-    (players {(player N) (player S)})  
+(game "Quick Chess" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (rectangle 6 5)) 
         
@@ -69,12 +69,12 @@
                     (and
                         (if (and (is In (last To) (sites Mover "Promotion")) (can Move ("PromoteMove" (last To))))
                             (moveAgain)
-                       )
+                        )
                         (set Counter)
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         
         (piece "Rook" Each 
             (move
@@ -83,18 +83,18 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "King" Each 
             (move
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndResetCounter"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Bishop" Each 
             (move
                 Slide 
@@ -102,9 +102,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Knight" Each 
             (move
                 Leap 
@@ -112,22 +112,22 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndResetCounter"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Queen" Each 
             (move
                 Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
-               ) 
-           ) 
-       )
+                ) 
+            ) 
+        )
         
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Pawn1" (sites Row 1))
@@ -141,7 +141,7 @@
                 (do 
                     (forEach Piece)
                     ifAfterwards:(not ("IsInCheck" "King" Mover))
-               )
+                )
                 (then
                     (if
                         (= 19 (counter))
@@ -156,42 +156,42 @@
                                                 (addScore Player 9)
                                                 (if (!= (what at:(site)) (id "King" Player))
                                                     (addScore Player 3)
-                                               )
-                                           )
-                                       )
-                                   )
-                               )
-                           )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
                             (set Var "NoEnoughCapture" 1)
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         
         (end {
             (if (and 
                     ("IsInCheck" "King" Next)
                     ("NextCanNotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
+            ) 
             (if (no Moves Mover) (result Mover Draw))
             (if (= (var "NoEnoughCapture") 1) (byScore)) 
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Start Rules" <Start> args:{ <rule>} {
-    (item "Encyclopedia of Chess Variants"  
+    (item "Encyclopedia of Chess Variants" 
         <
         (place "Rook1" {"E1"}) (place "Knight1" {"A1"}) (place "Bishop1" {"D1"}) (place "Queen1" coord:"C1") (place "King1" coord:"B1") 
         (place "Rook2" {"E6"}) (place "Knight2" {"A6"}) (place "Bishop2" {"D6"}) (place "Queen2" coord:"C6") (place "King2" coord:"B6") 
         >
-    "The game starts like in the encyclopedia of Chess Variants.")*   
-    (item "Quickchess.site"  
+    "The game starts like in the encyclopedia of Chess Variants.")*  
+    (item "Quickchess.site" 
         <
         (place "Rook1" {"A1"}) (place "Knight1" {"E1"}) (place "Bishop1" {"B1"}) (place "Queen1" coord:"D1") (place "King1" coord:"C1") 
         (place "Rook2" {"A6"}) (place "Knight2" {"E6"}) (place "Bishop2" {"B6"}) (place "Queen2" coord:"D6") (place "King2" coord:"C6") 
@@ -220,7 +220,7 @@
         (credit "Eric Piette")
         (date "1991")
         }
-   )
+    )
     
     (graphics {
         (show Check "King")

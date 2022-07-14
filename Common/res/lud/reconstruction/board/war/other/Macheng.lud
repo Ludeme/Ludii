@@ -2,14 +2,14 @@
     (move
         Remove
         (sites Occupied by:Next container:"Board") 
-   )
+    )
 )
 
 (define "IfLine3MoveAgain" 
     (if 
         (is Line 3 Orthogonal exact:True) 
         (moveAgain)
-   )
+    )
 )
 
 (define "Custodial" 
@@ -18,7 +18,7 @@
         Orthogonal
         (between (max 1) if:("IsEnemyAt" (between)) (apply (remove (between))))
         (to if:("IsFriendAt" (to))) 
-   )
+    )
 )
 
 (define "Intervene"
@@ -28,8 +28,8 @@
         (to 
             if:("IsEnemyAt" (to))
             (apply (remove (to)))
-       )
-   )		
+        )
+    )		
 )
 
 //------------------------------------------------------------------------------
@@ -50,10 +50,10 @@
                         "Intervene"
                         "IfLine3MoveAgain" 
                     })
-               )
-           )
-       ) 
-    })  
+                )
+            )
+        ) 
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:9))
         
@@ -71,12 +71,12 @@
                                 "Intervene"
                                 "IfLine3MoveAgain" 
                             })
-                       )
-                   )  
-               )
-           ) 
+                        )
+                    ) 
+                )
+            ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-       )
+        )
         
         (phase "Movement" 
             (play 
@@ -85,14 +85,14 @@
                     (move 
                         (from (sites Occupied by:Mover))
                         (to (sites Empty))
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         }
         
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -102,6 +102,6 @@
     (info
         {
         }
-   )
+    )
     
 )

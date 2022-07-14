@@ -14,8 +14,8 @@
                         (if (is In (to) (expand (sites Left)))
                             (set Value Mover 1) // 1 = left
                             (set Value Mover 0) // 0 = choice
-                       )
-                   )
+                        )
+                    )
                 })
                 (if (< 1 (count at:(to)))
                     (and {
@@ -23,17 +23,17 @@
                         (set Var "Replay" (to))
                         (set Var "Direction" #2) // 1 = CCW, 2 = CW
                     })
-               )
-           )
+                )
+            )
             (if (< 1 (count at:(to)))
                 (and {
                     (moveAgain)
                     (set Var "Replay" (to))
                     (set Var "Direction" #2) // 1 = CCW, 2 = CW
                 })
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "SowingPhase2"
@@ -41,7 +41,7 @@
         (from 
             (sites Mover)
             if:(is Occupied (from))
-       )
+        )
         (then
             (sow
                 #1
@@ -52,16 +52,16 @@
                         (set Var "Replay" (to))
                         (set Var "Direction" #2) // 1 = CCW, 2 = CW
                     })
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Bao Kiswahili (DR Congo)"  
-    (players 2)  
+(game "Bao Kiswahili (DR Congo)" 
+    (players 2) 
     (equipment { 
         (mancalaBoard 4 8 store:None
             {
@@ -70,18 +70,18 @@
             (track "TrackCW1" "7,W,N1,E" loop:True P1)
             (track "TrackCW2" "23,W,N1,E" loop:True P2)
             }
-       )
+        )
         (piece "Seed" Shared)
         (hand Each)
-        (regions "Home" P1 (expand (sites Bottom)))            // P1 home
-        (regions "Home" P2 (expand (sites Top)))               // P2 home
-        (regions "Inner" P1 (sites Row 1))                     // P1 home
-        (regions "Inner" P2 (sites Row 2))                     // P2 home
+        (regions "Home" P1 (expand (sites Bottom)))      // P1 home
+        (regions "Home" P2 (expand (sites Top)))        // P2 home
+        (regions "Inner" P1 (sites Row 1))           // P1 home
+        (regions "Inner" P2 (sites Row 2))           // P2 home
         (map "LeftMostInner" {(pair P1 8) (pair P2 23)})
         (map "RightMostInner" {(pair P1 15) (pair P2 16)})
         (map "AdjacentLeftMostInner" {(pair P1 9) (pair P2 22)})
         (map "AdjacentRightMostInner" {(pair P1 14) (pair P2 17)})
-    })  
+    }) 
     (rules 
         (start {
             (set Count 24 at:(handSite P1))
@@ -101,27 +101,27 @@
                                         (from ("OppositePit" (last To afterConsequence:True)))
                                         (to (mapEntry "LeftMostInner" Mover))
                                         count:(count at:("OppositePit" (last To afterConsequence:True)))
-                                   )
+                                    )
                                     next:(move Select
                                         (from (mapEntry "LeftMostInner" Mover))
                                         (then ("Sowing" "TrackCW" 1))
-                                   )
-                               )
-                           )
+                                    )
+                                )
+                            )
                             (if (or (= 2 (value Player Mover)) (= 0 (value Player Mover))) // Sow capture pieces from the right.
                                 (do 
                                     (fromTo
                                         (from ("OppositePit" (last To afterConsequence:True)))
                                         (to (mapEntry "RightMostInner" Mover))
                                         count:(count at:("OppositePit" (last To afterConsequence:True)))
-                                   )
+                                    )
                                     next:(move Select
                                         (from (mapEntry "RightMostInner" Mover))
                                         (then ("Sowing" "TrackCCW" 2))
-                                   )
-                               )
-                           )
-                       )
+                                    )
+                                )
+                            )
+                        )
                         
                         // Continue to sow.
                         (or
@@ -129,16 +129,16 @@
                                 (move Select
                                     (from (var "Replay"))
                                     (then ("Sowing" "TrackCW" 1))
-                               )
-                           )
+                                )
+                            )
                             (if (or (= (var "Direction") 2) (= (var "Direction") 3))
                                 (move Select
                                     (from (var "Replay"))
                                     (then ("Sowing" "TrackCCW" 2))
-                               )
-                           )
-                       )
-                   )
+                                )
+                            )
+                        )
+                    )
                     (if (is Occupied (handSite Mover)) // Placement phase
                         (priority {
                             (move // Has to capture if possible
@@ -154,11 +154,11 @@
                                             (if (is In (last To) (expand (sites Left)))
                                                 (set Value Mover 1) // 1 = left
                                                 (set Value Mover 0) // 0 = choice
-                                           )
-                                       )
+                                            )
+                                        )
                                     })
-                               )
-                           )
+                                )
+                            )
                             (move // If not possible just place then sow in any direction.
                                 (from (handSite Mover))
                                 (to (sites Mover "Inner"))
@@ -169,32 +169,32 @@
                                         (set Var "Replay" (last To))
                                         (set Var "Direction" 3) // Right or Left
                                     })
-                               )
-                           )
+                                )
+                            )
                         })
                         // Sowing phase
                         (or // No capture in the first sowing in that phase of the game.
                             ("SowingPhase2" "TrackCW" 1)
                             ("SowingPhase2" "TrackCCW" 2)
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         }
         
         (end 
             (forEach Player
                 if:("NoPiecesInInner" Player)
                 (result Player Loss)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Bao Kiswahili is a four-row mancala-style board game played in the eastern part of the Democratic Republic of Congo. It was particularly popular among Banbubangu and Nonda people, as well as in some larger cities in surrounding regions.")
@@ -205,9 +205,9 @@
         (version "1.3.4")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Central Africa, around 1977.")
+        (origin "This game was played in Central Africa, around 1977.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

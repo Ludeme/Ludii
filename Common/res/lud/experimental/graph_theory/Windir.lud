@@ -1,49 +1,49 @@
-(game "Windir"    
+(game "Windir"  
     (players 2)
     (equipment 
         { 
         (board <Board:type> use:Edge)
         (piece "Marker" Neutral) 
         }
-   )    
+    )  
     
-    (rules     	
+    (rules   	
         
         <Version:play>
         
         (end 
             (if (is RegularGraph Neutral) (result Mover Loss))
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board" <Board> args:{ <type>}
     {
-    (item "Graph1"             
+    (item "Graph1"       
         <
         (complete (subdivide (regular Star 4)))
         > 
         
         "The game is played on the Graph1."
-   )* 
+    )* 
     
-    (item "Graph2"             
+    (item "Graph2"       
         <
         (complete (subdivide (regular Star 8)))
         > 
         
         "The game is played on the Graph2."
-   )** 
+    )** 
     
-    (item "Graph3"             
+    (item "Graph3"       
         <
         (complete (subdivide (regular Star 14)))
         > 
         
         "The game is played on the Graph3."
-   )     
+    )   
 })
 
 (option "Version" <Version> args:{ <play> }
@@ -52,26 +52,26 @@
         <
         (play
             (move Add (piece "Marker0")
-                (to Edge (sites Empty Edge))	            
-           ) 
-       ) 
-        >    
+                (to Edge (sites Empty Edge))	      
+            ) 
+        ) 
+        >  
         "The players play on Addition version."
-   )*  
+    )* 
     (item "Deletion"
         <
         (start
-            (set Neutral Edge (sites Board Edge))   
-       )
+            (set Neutral Edge (sites Board Edge))  
+        )
         (play
             (move
                 Remove
                 (sites Occupied by:Neutral on:Edge)
-           )
-       )
-        >        
+            )
+        )
+        >    
         "The players play on Deletion version."
-   )  
+    ) 
 })
 
 //------------------------------------------------------------------------------
@@ -91,7 +91,7 @@
         (credit "Tahmina Begum 26-05-2020")
         (date "26-05-2020")
         }
-   )
+    )
     
     (graphics {
         (player Colour Neutral (colour 0 127 255))
@@ -102,5 +102,5 @@
     
     (ai
         "Windir_ai"
-   )
+    )
 )

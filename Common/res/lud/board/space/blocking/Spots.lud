@@ -4,18 +4,18 @@
             (to) 
             Orthogonal 
             if:(is In (to) (sites Occupied by:Neutral))
-       )
-   ) 
+        )
+    ) 
 )
 
 //------------------------------------------------------------------------------
 
-(game "Spots"  
-    (players 2)  
+(game "Spots" 
+    (players 2) 
     (equipment { 
         (board (hex 5))
         (piece "Marker" Neutral) 
-    })  
+    }) 
     
     (rules 
         (play 
@@ -24,11 +24,11 @@
                 (to 
                     (sites Empty) 
                     if:"NoNeighbour"
-               )
-           )
-       )
+                )
+            )
+        )
         (end ("NoMoves" Loss))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -46,9 +46,9 @@
         (credit "Eric Piette")
         (date "2020")
         }
-   )
+    )
     (ai 
         "Spots_ai"
-   )
+    )
     
 )

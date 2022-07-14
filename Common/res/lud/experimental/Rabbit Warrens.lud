@@ -6,7 +6,7 @@
         (count Steps
             (step Orthogonal (to if:(not (= (id #1) (who at:(to))))))
             (site)
-            (difference (sites Outer) <Board:inner>)   
+            (difference (sites Outer) <Board:inner>)  
 )))
 
 (define "RawTerritoryOf"
@@ -63,20 +63,20 @@
                 if:(and
                     ("Included" #1)
                     ("IsLowestReachableSite" #1)
-           ))
+            ))
             to:(from)
             (+ 1
                 (max
                     (-
                         (max ("Coordinates" #1 (column of:(to))))
                         (min ("Coordinates" #1 (column of:(to))))
-                   )
+                    )
                     (-
                         (max ("Coordinates" #1 (row of:(to))))
                         (min ("Coordinates" #1 (row of:(to))))
 ))))))
 
-(define "RCHX" //region count - Hex  
+(define "RCHX" //region count - Hex 
     (size Array
         (array
             (forEach
@@ -103,7 +103,7 @@
             (*
                 ("TC" #1)
                 (<Board:regionScoring> #1)
-       ))
+        ))
         }
 ))
 
@@ -116,21 +116,21 @@
                 (between (range 0 Infinity) if:True)
                 (to (sites Empty)
                     if:(is Empty (to))
-           ))
+            ))
             ifAfterwards:(or
                 (<
                     (var "SitesMoverAroundFrom")
                     (count Sites in:(sites Around (last To) Orthogonal if:(is Mover (who at:(to)))))
-               )
-                (and   
+                )
+                (and  
                     (=
                         (var "SitesMoverAroundFrom")
                         (count Sites in:(sites Around (last To) Orthogonal if:(is Mover (who at:(to)))))
-                   )   
+                    )  
                     (>
                         (count Sites in:(sites Around (last From) Orthogonal if:(is Next (who at:(to)))))
                         (count Sites in:(sites Around (last To) Orthogonal if:(is Next (who at:(to)))))
-           )))
+            )))
             (then 
                 (and
                     {
@@ -139,7 +139,7 @@
                     (if
                         (is Prev Next)
                         (moveAgain)
-                   )
+                    )
                     }
 )))))
 
@@ -157,7 +157,7 @@
         (piece "<Board:shape>" Each)
         (piece "<Board:shape>" Neutral)
         }
-   )
+    )
     (rules
         (start
             {
@@ -166,26 +166,26 @@
             (place "<Board:shape>1" (handSite P1 0) value:0)
             (place "<Board:shape>2" (handSite P2 0) value:0)
             (place "<Board:shape>0" (handSite P1 1) value:0) 
-            (place "<Board:shape>0" (handSite P2 1) value:0)     
+            (place "<Board:shape>0" (handSite P2 1) value:0)   
         })
         (play
             (or
                 (move Pass)
                 "RabbitMove"
-       ))
+        ))
         (end 
             {
             (if 
                 (and
                     (= (score P1) (score P2))
                     (all Passed)
-               )
+                )
             (byScore {(score Mover 0)}) // (score Next (score Next))})
-       )
+        )
         (if 
             (all Passed)
             (byScore)
-       )
+        )
         }
 )))
 
@@ -258,7 +258,7 @@
             The score is the product of warren complexity and free-space. The actual calculation depends on the board grid: see 'Options', below.
             
             Play:
-            The player of the light stones starts by moving a single stone.  
+            The player of the light stones starts by moving a single stone. 
             Thereafter play alternates with each play performing two stone-moves on his turn.
             
             Each stone move is in one of the 6 grid directions, either
@@ -280,7 +280,7 @@
         (credit "Dale W. Walton")
         (date "02-11-2021")
         }
-   )
+    )
     
     (graphics 
         {
@@ -302,13 +302,13 @@
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
         (region Colour (sites Outer) (colour 200 250 230 90))
-        (region Colour ("RawTerritoryOf" P1) (colour 240 180 150 90))       
-        (region Colour ("RawTerritoryOf" P2) (colour 70 0 0 90))       
-        (piece Colour P1 "<Board:shape>" fillColour:(colour 240 180 150 90))  
-        (piece Colour P2 "<Board:shape>" fillColour:(colour 70 0 0 150))       
-        (piece Colour Neutral "<Board:shape>" fillColour:(colour White) strokeColour:(colour DarkGrey))       
+        (region Colour ("RawTerritoryOf" P1) (colour 240 180 150 90))    
+        (region Colour ("RawTerritoryOf" P2) (colour 70 0 0 90))    
+        (piece Colour P1 "<Board:shape>" fillColour:(colour 240 180 150 90)) 
+        (piece Colour P2 "<Board:shape>" fillColour:(colour 70 0 0 150))    
+        (piece Colour Neutral "<Board:shape>" fillColour:(colour White) strokeColour:(colour DarkGrey))    
         (show Piece Value "<Board:shape>" Middle scale:0.70 offsetX:.25 offsetY:.25)
         }
-   )
+    )
     (ai (heuristics (score)))
 )

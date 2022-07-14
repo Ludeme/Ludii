@@ -7,12 +7,12 @@
 
 //------------------------------------------------------------------------------
 
-(game "Buttons And Lights"  
-    (players 1)  
+(game "Buttons And Lights" 
+    (players 1) 
     (equipment { 
         (board (rectangle 2 3)) 
         (piece "Light" Shared)
-    })  
+    }) 
     (rules
         (start (place "Light" (sites Top)))
         (play
@@ -24,16 +24,16 @@
                         (if ("SecondButton")
                             ("SwapTwoFirstLights")
                             ("SwapTwoLastLights")
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         (end { 
             (if (all Sites (sites Top) if:("LightOn")) (result Mover Win))
             (if (= 4 (counter)) (result Mover Loss))
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -51,7 +51,7 @@
         (credit "Eric Piette")
         (date "2005")
         }
-   )
+    )
     
     (graphics {
         (piece Colour "Light" state:0 fillColour:(colour White))

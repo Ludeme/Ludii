@@ -1,8 +1,8 @@
 (define "OneRowEmpty"
     (or
         (all Sites (sites P1 "Home") if:(= 0 (count at:(site))))
-        (all Sites (sites P2 "Home")  if:(= 0 (count at:(site))))
-   )
+        (all Sites (sites P2 "Home") if:(= 0 (count at:(site))))
+    )
 )
 
 (define "PiecesOwnedBy" (count Cell at:(handSite #1)))
@@ -10,7 +10,7 @@
 //------------------------------------------------------------------------------
 
 (game "Wa'ache Waledat"
-    (players 2)  
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 6 store:None
@@ -18,16 +18,16 @@
             (track "TrackCCW" "0,E,N,W" loop:True)
             (track "TrackCW" "5,W,N,E" loop:True)
             }
-       )
+        )
         (piece "Seed" Shared)
-        (regions "Home" P1 (sites Bottom))                     // P1 home
-        (regions "Home" P2 (sites Top))                        // P2 home
-        (regions "RightHome" P1 (intersection (expand (sites Right) steps:2) (sites Bottom)))  // P1 home
-        (regions "RightHome" P2 (intersection (expand (sites Right) steps:2) (sites Top)))     // P2 home
-        (regions "LeftHome" P1 (intersection (expand (sites Left) steps:2) (sites Bottom)))  // P1 home
-        (regions "LeftHome" P2 (intersection (expand (sites Left) steps:2) (sites Top)))     // P2 home
+        (regions "Home" P1 (sites Bottom))           // P1 home
+        (regions "Home" P2 (sites Top))            // P2 home
+        (regions "RightHome" P1 (intersection (expand (sites Right) steps:2) (sites Bottom))) // P1 home
+        (regions "RightHome" P2 (intersection (expand (sites Right) steps:2) (sites Top)))   // P2 home
+        (regions "LeftHome" P1 (intersection (expand (sites Left) steps:2) (sites Bottom))) // P1 home
+        (regions "LeftHome" P2 (intersection (expand (sites Left) steps:2) (sites Top)))   // P2 home
         (hand Each)
-    })  
+    }) 
     (rules 
         (start (set Count 3 to:(sites Track)))
         
@@ -39,9 +39,9 @@
                             (if (and ("SameTurn") (= 1 (var "ContinueSowing")))
                                 "LastHoleSowed" 
                                 (sites Mover "RightHome")
-                           )
+                            )
                             if:(> (count at:(from)) 0)
-                       )
+                        )
                         (then
                             (sow
                                 "TrackCCW"
@@ -56,26 +56,26 @@
                                                     (from (to))
                                                     (to (handSite Mover))
                                                     count:4
-                                               )
+                                                )
                                                 (set Var "ContinueSowing" 0)
-                                           )
-                                       )
+                                            )
+                                        )
                                     })
                                     (set Var "Direction" 0)
-                               )	
-                           )
-                       )
-                   )
-               )
+                                )	
+                            )
+                        )
+                    )
+                )
                 (if (or (>= 0 (var "Direction")) (= 2 (var "Direction")))
                     (move Select
                         (from
                             (if (and ("SameTurn") (= 1 (var "ContinueSowing")))
                                 "LastHoleSowed" 
                                 (sites Mover "LeftHome")
-                           )
+                            )
                             if:(> (count at:(from)) 0)
-                       )
+                        )
                         (then
                             (sow
                                 "TrackCW"
@@ -90,47 +90,47 @@
                                                     (from (to))
                                                     (to (handSite Mover))
                                                     count:4
-                                               )
+                                                )
                                                 (set Var "ContinueSowing" 0)
-                                           )
-                                       )
+                                            )
+                                        )
                                     })
                                     (set Var "Direction" 0)
-                               )	
-                           )
-                       )
-                   )
-               )
+                                )	
+                            )
+                        )
+                    )
+                )
                 (then
                     (if ("OneRowEmpty")
-                        (and  
+                        (and 
                             (forEach Site (sites P1 "Home")
                                 (fromTo
                                     (from (site))
                                     (to (handSite P1))
                                     count:(count at:(site))
-                               )
-                           )
+                                )
+                            )
                             (forEach Site (sites P2 "Home")
                                 (fromTo
                                     (from (site))
                                     (to (handSite P2))
                                     count:(count at:(site))
-                               )
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         
         (end ("MancalaByScoreWhen" ("NoPieceOnBoard")))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Wa'aché Waledat is a two-row mancala-style board game played in Eritrea. It is typically played only by men and boys. It contains some of the rule mechanisms common to other Gabata games of Ethiopia.")
@@ -141,9 +141,9 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Horn of Africa, around 1971.")
+        (origin "This game was played in Horn of Africa, around 1971.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

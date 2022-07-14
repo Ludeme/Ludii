@@ -6,14 +6,14 @@
     (if (is Mover P1)
         (intersection (sites Bottom) (expand (sites Left)))
         (intersection (sites Top) (expand (sites Right)))
-   )
+    )
 )
 
 (define "RightMostEmpty" 
     (if (is Mover P1)
         (intersection (sites Bottom) (expand (sites Right)))
         (intersection (sites Top) (expand (sites Left)))
-   )
+    )
 )
 
 (define "PiecesOwnedBy" (+ (count at:(mapEntry #1)) (count in:(sites #1))))
@@ -24,20 +24,20 @@
 
 //------------------------------------------------------------------------------
 
-(game "Daramuti"  
-    (players 2)  
+(game "Daramuti" 
+    (players 2) 
     (equipment { 
         (mancalaBoard 2 "Columns"
             {
             (track "TrackCCW" "1,E,N,W" loop:True)
             (track "TrackCW" "7,W,N,E" loop:True)
             }
-       )
+        )
         (piece "Seed" Shared)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
-    })  
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
+    }) 
     (rules 
         (start { 
             (set Count 4 to:(sites Track)) 
@@ -52,7 +52,7 @@
                         (from
                             (sites Mover)
                             if:(and (is Occupied (from)) (is In (from) ("PlayableSites")))
-                       )
+                        )
                         (then 
                             (and
                                 (sow
@@ -63,24 +63,24 @@
                                                 (from ("OppositePitTwoRows" (to)))
                                                 (to (mapEntry Mover))
                                                 count:(count at:("OppositePitTwoRows" (to)))
-                                           )
-                                       )
+                                            )
+                                        )
                                         (and
                                             (moveAgain)
                                             (set Var "Replay" (to))
-                                       )
-                                   )
+                                        )
+                                    )
                                     skipIf:(not (is In (to) ("PlayableSites")))
-                               )
+                                )
                                 (set Var "Direction" 1)
-                           )
-                       )
-                   )
+                            )
+                        )
+                    )
                     (move Select
                         (from
                             (sites Mover)
                             if:(and (is Occupied (from)) (is In (from) ("PlayableSites")))
-                       )
+                        )
                         (then 
                             (and
                                 (sow
@@ -91,23 +91,23 @@
                                                 (from ("OppositePitTwoRows" (to)))
                                                 (to (mapEntry Mover))
                                                 count:(count at:("OppositePitTwoRows" (to)))
-                                           )
-                                       )
+                                            )
+                                        )
                                         (and
                                             (moveAgain)
                                             (set Var "Replay" (to))
-                                       )
-                                   )
+                                        )
+                                    )
                                     skipIf:(not (is In (to) ("PlayableSites")))
-                               )
+                                )
                                 (set Var "Direction" 2)
-                           )
-                       )
-                   )
-               )
-           )
+                            )
+                        )
+                    )
+                )
+            )
             (nextPhase "Sowing")
-       )
+        )
         
         (phase "Sowing" 
             (play
@@ -117,16 +117,16 @@
                             (if (and (not (is Pending)) ("SameTurn"))
                                 (sites {(var "Replay")})
                                 (sites Mover)
-                           )
+                            )
                             if:(and { 
                                 (is Occupied (from)) 
                                 (is In (from) ("PlayableSites")) 
                                 (not (is In (from) ("BlockingHoles")))
                                 (if (not ("OnlySingleCounters"))
                                     (< 1 (count at:(from)))
-                               )
+                                )
                             })
-                       )
+                        )
                         (then 
                             (sow
                                 "TrackCCW"
@@ -136,32 +136,32 @@
                                             (from ("OppositePitTwoRows" (to)))
                                             (to (mapEntry Mover))
                                             count:(count at:("OppositePitTwoRows" (to)))
-                                       )
-                                   )
+                                        )
+                                    )
                                     (and
                                         (moveAgain)
                                         (set Var "Replay" (to))
-                                   )
-                               )
+                                    )
+                                )
                                 skipIf:(not (is In (to) ("PlayableSites")))
-                           )
-                       )
-                   )
+                            )
+                        )
+                    )
                     (move Select
                         (from
                             (if (and (not (is Pending)) ("SameTurn"))
                                 (sites {(var "Replay")})
                                 (sites Mover)
-                           )
+                            )
                             if:(and { 
                                 (is Occupied (from)) 
                                 (is In (from) ("PlayableSites")) 
                                 (not (is In (from) ("BlockingHoles")))
                                 (if (not ("OnlySingleCounters"))
                                     (< 1 (count at:(from)))
-                               )
+                                )
                             })
-                       )
+                        )
                         (then 
                             (sow
                                 "TrackCW"
@@ -171,17 +171,17 @@
                                             (from ("OppositePitTwoRows" (to)))
                                             (to (mapEntry Mover))
                                             count:(count at:("OppositePitTwoRows" (to)))
-                                       )
-                                   )
+                                        )
+                                    )
                                     (and
                                         (moveAgain)
                                         (set Var "Replay" (to))
-                                   )
-                               )
+                                    )
+                                )
                                 skipIf:(not (is In (to) ("PlayableSites")))
-                           )
-                       )
-                   )
+                            )
+                        )
+                    )
                     (then
                         (if (no Moves Next) 
                             (and {
@@ -191,45 +191,45 @@
                                             (from (site))
                                             (to (mapEntry P1))
                                             count:(count at:(site))
-                                       )
-                                   )
-                               )
+                                        )
+                                    )
+                                )
                                 (forEach Site (sites P2)
                                     (if (is Occupied (site))
                                         (fromTo
                                             (from (site))
                                             (to (mapEntry P2))
                                             count:(count at:(site))
-                                       )
-                                   )
-                               )
+                                        )
+                                    )
+                                )
                                 (forget Value "Playable" All)
                                 (forget Value "Blocked" All)
                                 (if (< ("PiecesOwnedBy" P1) ("PiecesOwnedBy" P2))
                                     (and
                                         (set NextPlayer (player 2))
                                         (set Var "Winner" 2)
-                                   )
+                                    )
                                     (and
                                         (set NextPlayer (player 1))
                                         (set Var "Winner" 1)
-                                   )
-                               )
+                                    )
+                                )
                             })
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             
             (end (if (no Moves Next)
                     {
                     (if (> 2 (count at:(mapEntry P1))) (result P2 Win))
                     (if (> 2 (count at:(mapEntry P2))) (result P1 Win))
                     }
-               )
-           )
+                )
+            )
             (nextPhase (no Moves Next) "BetweenRounds")
-       )
+        )
         
         (phase "BetweenRounds" // To continue with the loser player.
             (play
@@ -247,18 +247,18 @@
                                                 (from ("OppositePitTwoRows" (to)))
                                                 (to (mapEntry Next))
                                                 count:(- 4 (count at:(last To)))
-                                           )
+                                            )
                                             (remember Value "Blocked" (last To))
-                                       )
-                                   )
+                                        )
+                                    )
                                     (moveAgain)
                                     (if (= 0 (count at:(mapEntry Mover)))
                                         (set Pending)
-                                   )
+                                    )
                                     (set Var "Direction" 2)
                                 })
-                           )
-                       )
+                            )
+                        )
                         (move
                             (from (mapEntry Mover))
                             (to ("LeftMostEmpty") if:(is Empty (to)))
@@ -271,19 +271,19 @@
                                                 (from ("OppositePitTwoRows" (to)))
                                                 (to (mapEntry Next))
                                                 count:(- 4 (count at:(last To)))
-                                           )
+                                            )
                                             (remember Value "Blocked" (last To))
-                                       )
-                                   )
+                                        )
+                                    )
                                     (moveAgain)
                                     (if (= 0 (count at:(mapEntry Mover)))
                                         (set Pending)
-                                   )
+                                    )
                                     (set Var "Direction" 1)
                                 })
-                           )
-                       )
-                   )
+                            )
+                        )
+                    )
                     (if (!= (mover) (var "Winner"))
                         (move
                             (from (mapEntry Mover))
@@ -291,19 +291,19 @@
                                 (if (= (var "Direction") 1)
                                     ("NextHole" (last To) "TrackCCW" 1) 
                                     ("NextHole" (last To) "TrackCW" 1) 
-                               )
+                                )
                                 if:(is Empty (to))
-                           )
+                            )
                             count:(min 4 (count at:(mapEntry Mover)))
                             (then (and {
                                     (remember Value "Playable" (last To))
                                     (moveAgain)
                                     (if (= 0 (count at:(mapEntry Mover)))
                                         (set Pending)
-                                   )
+                                    )
                                 })
-                           )
-                       )
+                            )
+                        )
                         (move
                             (from (mapEntry Mover))
                             (to (sites Mover) if:(is Empty (to)))
@@ -312,27 +312,27 @@
                                     (remember Value "Playable" (last To))
                                     (if (not (all Sites (sites Mover) if:(is Occupied (site))))
                                         (moveAgain)
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
             (nextPhase (and (!= (var "Winner") (mover)) (= 0 (count at:(mapEntry Mover)))) "Sowing") // To modify to round 2
-       )
+        )
         }
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Daramuti is a two-row mancala-style board game from Sri Lanka. It was documented by Henry Parker in the early twentieth century. ")
         (aliases {"Ellaewala-kanda"})
-        (rules "2x7 board with two stores. Four counters in each hole. Sowing occurs in either a clockwise or anti-clockwise direction; the first player chooses the direction and all subsequent moves are made in that direction. Players sow beginning from holes their row. If the final counter falls into an empty hole, the contents of the opposite hole in the other row are captured. If the last counter falls into a hole with counters, these are picked up and sowing continues.  Throughout the game, singletons cannot be moved if a player has a hole with multiple counters, and a singleton in the front hole cannot be moved if there are other singletons in the player's row. The round ends when one player's holes are empty. 
+        (rules "2x7 board with two stores. Four counters in each hole. Sowing occurs in either a clockwise or anti-clockwise direction; the first player chooses the direction and all subsequent moves are made in that direction. Players sow beginning from holes their row. If the final counter falls into an empty hole, the contents of the opposite hole in the other row are captured. If the last counter falls into a hole with counters, these are picked up and sowing continues. Throughout the game, singletons cannot be moved if a player has a hole with multiple counters, and a singleton in the front hole cannot be moved if there are other singletons in the player's row. The round ends when one player's holes are empty. 
             
             A second round begins with the winner of the first round placing four counters in each of their holes, leaving any surplus in the store. The loser of round one places four counters in as many consecutive holes on their side of the board as possible, and any remaining counters in the next hole. If this hole contains one, it is called puta, if two, naga, if three, wala. Holes with no counters are excluded from play for this round. If the loser has a puta hole, the opponent removes three counters from their hole opposite; if a naga, the opponent removes two from the opposite hole, if a wala, the opponent removes one. The removed counters go into their store. Puta and naga holes are marked with a piece of paper or straw in them. Empty holes are excluded from play in this round. The losing player begins the round, moving in the direction of the excluded holes, and played in the same way as the first round. The player with empty holes begins play in the direction of the empty hole. Counters cannot be sown or captured from puta or naga holes. Play continues as before, but when the final counter falls into a puta or naga hole, the contents of the opposite hole in the other row are captured.
             
@@ -344,9 +344,9 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Sri Lanka, around 1909.")
+        (origin "This game was played in Sri Lanka, around 1909.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

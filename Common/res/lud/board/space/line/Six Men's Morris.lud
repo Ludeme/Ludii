@@ -4,8 +4,8 @@
         (forEach 
             (sites Occupied by:Next container:"Board") 
             if:(not (is Line 3 Orthogonal through:(site)))
-       )
-   )
+        )
+    )
 )
 
 (define "RemoveEnemyPieceInMillOnlyIfNoOtherChoice" 
@@ -14,15 +14,15 @@
         (move
             Remove
             (sites Occupied by:Next container:"Board") 
-       )
-   )
+        )
+    )
 )
 
 (define "RemoveEnemyPiece" 
     (move
         Remove
         (sites Occupied by:Next container:"Board") 
-   )
+    )
 )
 
 (define "IfLine3MoveAgain" 
@@ -30,8 +30,8 @@
         (if 
             (is Line 3 Orthogonal exact:True) 
             (moveAgain)
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -47,9 +47,9 @@
                 Step
                 (to if:(is Empty (to))) 
                 "IfLine3MoveAgain"
-           )
-       ) 
-    })  
+            )
+        ) 
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:<Num:piece>))
         
@@ -62,45 +62,45 @@
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
                         "IfLine3MoveAgain"
-                   )  
-               )
-           ) 
+                    ) 
+                )
+            ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-       )
+        )
         
         (phase "Movement" 
             (play 
                 (if "SameTurn"
                     <Remove:rule>
                     (forEach Piece)
-               )
-           )
-       )
+                )
+            )
+        )
         }
         
         (end 
             (if 
                 (<= (count Pieces Next) 2) 
                 (result Mover Win)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Start Rules" <Num> args:{<piece>}
     {
-    (item "5 pieces"  <5> "The game starts with 5 pieces by player.")
-    (item "6 pieces"  <6> "The game starts with 6 pieces by player.")**
-    (item "7 pieces"  <7> "The game starts with 7 pieces by player.")
+    (item "5 pieces" <5> "The game starts with 5 pieces by player.")
+    (item "6 pieces" <6> "The game starts with 6 pieces by player.")**
+    (item "7 pieces" <7> "The game starts with 7 pieces by player.")
     }
 )
 
 (option "Play Rules" <Remove> args:{<rule>}
     {
-    (item "Any Capture"  <"RemoveEnemyPiece"> "Any Enemy piece can be captured.")**
-    (item "Restriction on Capture"  <"RemoveEnemyPieceInMillOnlyIfNoOtherChoice"> 
+    (item "Any Capture" <"RemoveEnemyPiece"> "Any Enemy piece can be captured.")**
+    (item "Restriction on Capture" <"RemoveEnemyPieceInMillOnlyIfNoOtherChoice"> 
     "We cannot remove an opponent's piece that is in a three in a row formation unless there are no other options.")
     }
 )
@@ -114,14 +114,14 @@
         "Start Rules/6 pieces"
         "Play Rules/Any Capture"
         }
-   )
+    )
     
     (ruleset "Ruleset/Cyningstan (Suggested)" 
         {
         "Start Rules/6 pieces"
         "Play Rules/Restriction on Capture"
         }
-   )
+    )
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         
@@ -150,9 +150,9 @@
         (version "1.3.4")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in Europe, around 1412.")
+        (origin "This game was played in Europe, around 1412.")
         }
-   )
+    )
     
     (graphics {
         
@@ -160,6 +160,6 @@
     
     (ai
         "Six Men's Morris_ai"
-   )
+    )
 )
 

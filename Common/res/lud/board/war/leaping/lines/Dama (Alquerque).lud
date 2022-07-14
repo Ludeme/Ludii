@@ -1,7 +1,7 @@
-(define "PromoteIfBorderReached"  
+(define "PromoteIfBorderReached" 
     (if (is In (last To) (sites Next))
         (move Promote (last To) (piece "DoubleCounter") Mover)
-   )
+    )
 )
 
 (define "HopCounter" 
@@ -11,15 +11,15 @@
         (between 
             if:("IsEnemyAt" (between))
             (apply (remove (between)))
-       ) 
+        ) 
         (to if:(is Empty (to))) 
         (then
             (and 
                 ("PromoteIfBorderReached")
                 ("HasCaptured")
-           )
-       )
-   ) 
+            )
+        )
+    ) 
 )
 
 (define "HopDoubleCounter" 
@@ -30,22 +30,22 @@
             after:9
             if:("IsEnemyAt" (between)) 
             (apply (remove (between)))
-       )
+        )
         (to if:(is Empty (to)))
         (then ("HasCaptured"))
-   )
+    )
 )
 
-(define "HasCaptured"  (set Value Mover 0))
+(define "HasCaptured" (set Value Mover 0))
 (define "HasNotCaptured" (set Value Mover 1))
-(define "DidNotCaptured"  (= (value Player Prev) 1))
-(define "RememberSiteWithPossibleCapture"  
+(define "DidNotCaptured" (= (value Player Prev) 1))
+(define "RememberSiteWithPossibleCapture" 
     (set Pending 
         (sites From
             (or 
                 (forEach Piece "Counter" 
                     ("HopCounter")
-               ) 
+                ) 
                 (forEach Piece "DoubleCounter" 
                     (move
                         Hop
@@ -54,13 +54,13 @@
                             after:9
                             if:("IsEnemyAt" (between)) 
                             (apply (remove (between)))
-                       )
+                        )
                         (to if:(is Empty (to)))
-                   )
-               )
-           )
-       )
-   )
+                    )
+                )
+            )
+        )
+    )
 )
 
 (define "SitesWithPossibleCaptureInPreviousTurn" (sites Pending))
@@ -70,22 +70,22 @@
         Select 
         (from #1
             if:(!= (what at:(from)) 0)
-       )
+        )
         (then 
-            (and  {
+            (and {
                 (remove (last To)) 
                 (moveAgain) 
                 (set Value Prev 0)
             })
-       )
-   )
+        )
+    )
 )
 
 (define "ShouldCapturedButMoved" 
     (and 
-        (is In (last From) ("SitesWithPossibleCaptureInPreviousTurn"))  
+        (is In (last From) ("SitesWithPossibleCaptureInPreviousTurn")) 
         (is In (last From) (sites Empty))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -102,19 +102,19 @@
                     (directions {Forwards Rightward Leftward})
                     (to if:(is Empty (to)))
                     (then ("HasNotCaptured"))
-               )
+                )
                 (then ("PromoteIfBorderReached"))
-           )		
-       )
+            )		
+        )
         (piece "DoubleCounter" Each
             (or
                 ("HopDoubleCounter") 
                 (move Slide (then ("HasNotCaptured")))
-           )		
-       )
+            )		
+        )
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-    })  
+    }) 
     
     (rules 
         (start { 
@@ -128,19 +128,19 @@
                     (or
                         (if ("ShouldCapturedButMoved") 
                             ("HuffOnePieceOf" (last To))
-                       )
+                        )
                         ("HuffOnePieceOf" ("SitesWithPossibleCaptureInPreviousTurn"))
-                   )
-               )
+                    )
+                )
                 (do 
                     ("RememberSiteWithPossibleCapture") 
                     next:(forEach Piece)
-               )
-           )
-       ) 
+                )
+            )
+        ) 
         
-        (end (if (no Pieces Mover) (result Next Win)))  
-   )
+        (end (if (no Pieces Mover) (result Next Win))) 
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -156,8 +156,8 @@
         (version "1.3.4")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in Comoros, around 2018.")
+        (origin "This game was played in Comoros, around 2018.")
         }
-   )
+    )
     
 )

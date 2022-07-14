@@ -4,7 +4,7 @@
     (if (is Mover P1)
         (sites (values Remembered "NumToCaptureP1"))
         (sites (values Remembered "NumToCaptureP2"))
-   )
+    )
 )
 
 (define "UpdateNumToCapture" 
@@ -18,10 +18,10 @@
                     (if (is In 5 ("NumToCapture")) 
                         (remember Value "NumToCaptureP1" 1)
                         (remember Value "NumToCaptureP1" 5)
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (and
             (forget Value "NumToCaptureP2" All)
             (if (is In <ToCapture:num> ("NumToCapture")) 
@@ -31,11 +31,11 @@
                     (if (is In 5 ("NumToCapture")) 
                         (remember Value "NumToCaptureP2" 1)
                         (remember Value "NumToCaptureP2" 5)
-                   )
-               )
-           )
-       )
-   )
+                    )
+                )
+            )
+        )
+    )
 )
 
 (define "NumCountersToCapture"
@@ -46,9 +46,9 @@
             (if (is In 3 ("NumToCapture")) 
                 4
                 6
-           )
-       )
-   )		
+            )
+        )
+    )		
 )
 
 (define "UpdateNumCaptureTwo"
@@ -57,17 +57,17 @@
 
 //------------------------------------------------------------------------------
 
-(game "The Concentration Game"  
-    (players 2)  
+(game "The Concentration Game" 
+    (players 2) 
     (equipment { 
         (mancalaBoard 3 "Columns" store:None
             (track "Track" "0,N,E,S,W2" loop:True)
-       )
+        )
         (piece "Seed" Shared)
-        (regions P1 (union (sites {4}) (sites Bottom)))                     // P1 home
-        (regions P2 (union (sites {7}) (sites Top)))                        // P2 home
-        (map {(pair P1 5) (pair P2 6)})  // kalahs (storage pits)
-    })  
+        (regions P1 (union (sites {4}) (sites Bottom)))           // P1 home
+        (regions P2 (union (sites {7}) (sites Top)))            // P2 home
+        (map {(pair P1 5) (pair P2 6)}) // kalahs (storage pits)
+    }) 
     (rules 
         
         (start {
@@ -83,45 +83,45 @@
                 (from 
                     (sites Mover) 
                     if:(< 1 (count at:(from)))
-               )
+                )
                 (then 
-                    (sow  
+                    (sow 
                         if:(= (count at:(to)) ("NumCountersToCapture")) 
                         apply:(and
                             (fromTo 
                                 (from (to)) 
                                 (to (mapEntry (mover))) 
                                 count:(count at:(to))
-                           )
+                            )
                             (if	(< (value Player Mover) <Sequence:length>) 
                                 ("UpdateNumCaptureTwo")
                                 ("UpdateNumToCapture")
-                           )
-                       )
+                            )
+                        )
                         origin:True
-                   )
-               )
-           )		
-       )
+                    )
+                )
+            )		
+        )
         
         (end ("MancalaByScoreWhen" (no Moves Next)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Num Initial Seed To Capture" <ToCapture> args:{ <num> }
     {
-    (item "2"   <2>  "The number of counters to have in the hole to capture in the initial captures before the sequence is 2.")*   
-    (item "3"   <3>  "The number of counters to have in the hole to capture in the initial captures before the sequence is 3.")   
-    (item "4"   <4>  "The number of counters to have in the hole to capture in the initial captures before the sequence is 4.")   
-    (item "5"   <5>  "The number of counters to have in the hole to capture in the initial captures before the sequence is 5.")
+    (item "2"  <2> "The number of counters to have in the hole to capture in the initial captures before the sequence is 2.")*  
+    (item "3"  <3> "The number of counters to have in the hole to capture in the initial captures before the sequence is 3.")  
+    (item "4"  <4> "The number of counters to have in the hole to capture in the initial captures before the sequence is 4.")  
+    (item "5"  <5> "The number of counters to have in the hole to capture in the initial captures before the sequence is 5.")
 })
 
 (option "Num Initial Capture" <Sequence> args:{ <length> }
     {
-    (item "3"   <1>  "The number of initial captures before the sequence is 3.")   
-    (item "7"   <5>  "The number of initial captures before the sequence is 7.")*   
+    (item "3"  <1> "The number of initial captures before the sequence is 3.")  
+    (item "7"  <5> "The number of initial captures before the sequence is 7.")*  
 })
 
 //------------------------------------------------------------------------------
@@ -155,7 +155,7 @@
         (useFor "Ruleset/Two Counters (Described)" (rules "Three rows of four holes; the central two holes in the middle row are stores. Each player owns the hole in the central row to their left. Ten counters in each hole. Players sow from one of their holes, sowing first into the hole from which the counters were lifted, in an anti-clockwise direction. When the final counter lands in a hole containing two counters, these counters are captured. The player captures like this seven times. The eighth captures happens when the final counter falls into a hole containing one counter; the next capture from a hole containing three; the next from a hole containing five; then repeating the pattern of one, three, five for the rest of the game. The player who captures the most counters wins."))
         (useFor "Ruleset/Two Counters (Described)" (source "Egharevba 1951: 7."))
         (useFor "Ruleset/Two Counters (Described)" (id "234"))
-        (useFor "Ruleset/Three Counters (Described)" (rules "Captures are made when the final counter lands in a hole containing three counters. The first three captures are made in this way. The fourth capture is made from a hole containing one counter, he next from a hole with three, the next from a hole with five,  repeating in the pattern of one, three, five. "))
+        (useFor "Ruleset/Three Counters (Described)" (rules "Captures are made when the final counter lands in a hole containing three counters. The first three captures are made in this way. The fourth capture is made from a hole containing one counter, he next from a hole with three, the next from a hole with five, repeating in the pattern of one, three, five. "))
         (useFor "Ruleset/Three Counters (Described)" (source "Egharevba 1951: 7."))
         (useFor "Ruleset/Three Counters (Described)" (id "1738"))
         (useFor "Ruleset/Four Counters (Described)" (rules "Captures are made when the final counter lands in a hole containing four counters. the first three captures are made in this way, then the fourth capture is from a hole containing one counter, the next from a hole containing three, and the next from a hole containing five, repeating the patter of one, three, five for subsequent captures."))
@@ -169,9 +169,9 @@
         (version "1.3.4")
         (classification "board/sow/three rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Nigeria, around 1948.")
+        (origin "This game was played in Nigeria, around 1948.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

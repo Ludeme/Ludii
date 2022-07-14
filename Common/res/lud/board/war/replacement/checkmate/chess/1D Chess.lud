@@ -7,15 +7,15 @@
         (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
-           )
-       )
-   ) 
+            )
+        )
+    ) 
 )
 
 //------------------------------------------------------------------------------
 
-(game "1D Chess"  
-    (players 2)  
+(game "1D Chess" 
+    (players 2) 
     (equipment { 
         (board (rectangle 1 <BoardSize:BoardSize>)) 
         
@@ -26,18 +26,18 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "King" Each 
             (move 
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Knight" Each 
             (move 
                 Leap 
@@ -45,18 +45,18 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         }
-   )  
+    ) 
     (rules 
         (start
             { 
             (place "Rook1" coord:"C1") (place "Knight1" coord:"B1") (place "King1" coord:"A1") 
             <BoardSize:PiecePlacement>
             }
-       )
+        )
         
         (play (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King" Mover))))
         
@@ -65,18 +65,18 @@
             (if (and 
                     ("IsInCheck" "King" Next)
                     ("NextCanNotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
+            ) 
             (if (or (no Moves Mover) (= (counter) 100)) (result Mover Draw)) 
             }
-       )
-   )
+        )
+    )
 )
 
 (option "BoardSize" <BoardSize> args:{ <BoardSize> <PiecePlacement> }
     {
-    (item "8"    	
+    (item "8"  	
         <
         8
         >
@@ -85,7 +85,7 @@
         >
     "Board of length 8.")**
     
-    (item "9"    	
+    (item "9"  	
         <
         9
         >
@@ -109,7 +109,7 @@
         (classification "board/war/replacement/checkmate/chess")
         (credit "Matthew Stephenson")
         }
-   )
+    )
     
     (graphics {
         (show Check "King")

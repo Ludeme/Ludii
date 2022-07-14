@@ -1,12 +1,12 @@
 (game "Agilidade"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (skew .5 (scale 1 .5 
                     (merge {
                         (wedge 2 2)
                         (shift 0 1 (rotate 180 (wedge 2 2)))
                 }))
-           ) 
+            ) 
         use:Vertex) 
         (piece "discFlat" Each)
         (hand Each)
@@ -20,15 +20,15 @@
             (move 
                 (from (handSite Mover)) 
                 (to (sites Board)) 
-           )
-       )
+            )
+        )
         (end (if (is Line 3 byLevel:True) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "3D version of Tic-Tac-Toe on a 5 spaces board.")
@@ -41,7 +41,7 @@
         (credit "Fabio Barbero")
         (date "2006")
         }
-   )
+    )
     
     (graphics {
         (stackType 1 Count)

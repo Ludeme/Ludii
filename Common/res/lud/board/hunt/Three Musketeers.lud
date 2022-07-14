@@ -4,7 +4,7 @@
         (board (square 5))
         (piece "Musketeer" P1 
             (move Step Orthogonal (to if:("IsEnemyAt" (to)) (apply (remove (to)))))
-       )
+        )
         (piece "Enemy" P2 ("StepOrthogonalToEmpty"))
     })
     (rules
@@ -19,11 +19,11 @@
                 (and 
                     (is Mover P1)
                     (is Line 3 Orthogonal contiguous:False)
-               )
+                )
                 (result P2 Win)
-           )
+            )
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -42,12 +42,12 @@
         (credit "Fabio Barbero")
         (date "1969")
         }
-   )
+    )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})
     })
     (ai
         "Three Musketeers_ai"
-   )
+    )
 )

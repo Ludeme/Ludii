@@ -6,15 +6,15 @@
                 (remove 
                     (concentric {44})
                     vertices:{43 21 0 22}
-               )
+                )
                 edges:{{20 18} {0 1} {19 21} {38 39}}
-           )
+            )
             {
             (track "TrackCW" {39 35 33 31 29 27 25 23 21 19 38 17 15 13 11 9 7 5 3 1 37 0 2 4 6 8 10 12 14 16 36 18 20 22 24 26 28 30 32 34} loop:True)
             (track "TrackCCW" {39 34 32 30 28 26 24 22 20 18 36 16 14 12 10 8 6 4 2 0 37 1 3 5 7 9 11 13 15 17 38 19 21 23 25 27 29 31 33 35} loop:True)
             }
             use:Edge
-       )
+        )
         (regions "AllSites" (sites Board Vertex))
         (piece "Stick" Each)
         (dice d:2 from:0 num:3)
@@ -22,18 +22,18 @@
     (rules 
         (start 
             (place Stack items:<Player:init> Edge 36)
-       )
+        )
         (play (do (roll) next:(forEach Piece)))
         (end (if (no Moves Next) (result Mover Win)))
-   )
+    )
 )
 //------------------------------------------------------------------------------
 
 (option "Players" <Player> args:{ <num> <init>}
     {
-    (item "2" <2> <{"Stick2" "Stick1"}>  "The game has 2 players.")  
-    (item "3" <3> <{"Stick3" "Stick2" "Stick1"}>  "The game has 3 players.")  
-    (item "4" <4> <{"Stick4" "Stick3" "Stick2" "Stick1"}>  "The game has 4 players.")  
+    (item "2" <2> <{"Stick2" "Stick1"}> "The game has 2 players.") 
+    (item "3" <3> <{"Stick3" "Stick2" "Stick1"}> "The game has 3 players.") 
+    (item "4" <4> <{"Stick4" "Stick3" "Stick2" "Stick1"}> "The game has 4 players.") 
 })
 
 //------------------------------------------------------------------------------
@@ -44,15 +44,15 @@
         {
         (description "Tugea is a race game played by the people of Nambé Oweenge Pueblo in New Mexico. Each player plays as a horse around a circular board, attempting to complete a circuit of the board without getting sent back to start by the opponent. ")
         (aliases {"Patol"})
-        (rules "Forty stones arranged in a circle, with a larger gap (\"gate\") after every tenth stone. Two or more players. A flat stone is placed in the center on which the dice are thrown. One stick (\"horse\") per player, all of which start in one of the gates. Three sticks used as dice, flat on one side and round on the other; one of the sticks is notched on the round side. The throws are as follows: One flat side and the notched side up = 1; two flat and the notched side up =  3; three flat sides up = 5; three round sides up = 10; two flat and notched stick up (?) = 15. Throws of 10 and 15 grant the player another throw. Players move in either direction around the circle. When a player lands on a space occupied by an opponent's horse, the opponent's horse is sent back to start. Horses resting in the gates are safe from being sent to start. The first person to complete a circuit of the board wins. ")
+        (rules "Forty stones arranged in a circle, with a larger gap (\"gate\") after every tenth stone. Two or more players. A flat stone is placed in the center on which the dice are thrown. One stick (\"horse\") per player, all of which start in one of the gates. Three sticks used as dice, flat on one side and round on the other; one of the sticks is notched on the round side. The throws are as follows: One flat side and the notched side up = 1; two flat and the notched side up = 3; three flat sides up = 5; three round sides up = 10; two flat and notched stick up (?) = 15. Throws of 10 and 15 grant the player another throw. Players move in either direction around the circle. When a player lands on a space occupied by an opponent's horse, the opponent's horse is sent back to start. Horses resting in the gates are safe from being sent to start. The first person to complete a circuit of the board wins. ")
         (source "Culin 1907: 192-193.")
         (id "861")
         (version "1.3.2")
         (classification "board/race/reach/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in New Mexico, around 1907.")
+        (origin "This game was played in New Mexico, around 1907.")
         }
-   )
+    )
     
     (graphics {
         (show Edges (colour Hidden))

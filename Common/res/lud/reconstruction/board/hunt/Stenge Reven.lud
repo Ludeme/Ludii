@@ -1,5 +1,5 @@
 (game "Stenge Reven"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board 
             (add
@@ -10,20 +10,20 @@
                     (shift 1 0 (rotate -90 (wedge 2))) 
                     (shift -2 0 (rotate 90 (wedge 2))) 
                     }
-               )
+                )
                 edges:{{4 3} {6 1}}
-           )
+            )
             use:Vertex
-       )
+        )
         (piece "Marker" P1 (move [#]))
         (piece "Marker" P2 (move [#]))
-    })  
+    }) 
     
     (rules 
         (start [#])
         (play [#])
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -40,7 +40,7 @@
         (classification "board/hunt/reconstruction")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (show Edges Diagonal Hidden)

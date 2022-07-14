@@ -1,13 +1,13 @@
 (game "Tavli (Zenon)"
-    (players 2)  
-    (equipment {      
+    (players 2) 
+    (equipment {   
         (board (rectangle 2 13) 
             {
             (track "Track1" {6 12..7 5..0 13..18 20..25 End} P1 directed:True)
             (track "Track2" {19 25..20 18..13 0..5 7..12 End} P2 directed:True)
             } 
             use:Vertex
-       ) 
+        ) 
         (piece "Marker" Each [#])
         (dice d:6 num:3)
     })
@@ -16,10 +16,10 @@
         (play 
             (do (roll)
                 next:[#] // Two pieces on a space block an opponent from moving to that spot.
-           )
-       )
+            )
+        )
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -29,7 +29,7 @@
     (info
         {
         }
-   )
+    )
     
     (graphics {
         (board Style backgammon)

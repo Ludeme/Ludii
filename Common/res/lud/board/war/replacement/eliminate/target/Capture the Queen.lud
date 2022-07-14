@@ -1,5 +1,5 @@
-(game "Capture the Queen"  
-    (players 2)  
+(game "Capture the Queen" 
+    (players 2) 
     (equipment { 
         (board (square 8)) 
         (piece "Queen" Each 
@@ -8,17 +8,17 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     (apply (remove (to)))
-               ) 
-           ) 
-       )
-    })  
+                ) 
+            ) 
+        )
+    }) 
     (rules 
         (start
             { 
             (place "Queen2" coord:"D8") 
             (place "Queen1" {"B1" "C1" "E1" "F1"})
             }
-       )
+        )
         
         (play (forEach Piece))
         
@@ -26,7 +26,7 @@
             (if (no Pieces P2) (result P1 Win)) 
             (if (= (count Moves) 100) (result P2 Win)) 
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -42,7 +42,7 @@
         (classification "board/war/replacement/eliminate/target")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (board Style Chess)
@@ -51,6 +51,6 @@
     
     (ai 
         "Capture the Queen_ai"
-   )
+    )
     
 )

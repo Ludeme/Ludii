@@ -16,18 +16,18 @@
                     (from ("OppositePit" (to))) 
                     (to (handSite Mover)) 
                     count:(count at:("OppositePit" (to)))
-               ) 
-           )
-       )
-   )
+                ) 
+            )
+        )
+    )
 )
 
 (define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1 "Home"))))
 
 //------------------------------------------------------------------------------
 
-(game "Hawalis"  
-    (players 2)  
+(game "Hawalis" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -35,14 +35,14 @@
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" "14,E,N1,W" loop:True P2)
             }
-       )
-        (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
-        (regions "Home" P2 (sites Track "Track2"))                              // P2 home
+        )
+        (regions "Home" P1 (sites Track "Track1"))               // P1 Home
+        (regions "Home" P2 (sites Track "Track2"))               // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))   // P2 inner Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))  // P2 inner Home
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home"))))
@@ -51,11 +51,11 @@
             (priority
                 ("Sow" (> (count at:(from)) 1))
                 ("Sow" (= (count at:(from)) 1))
-           )
-       )
+            )
+        )
         
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -71,9 +71,9 @@
         (version "1.3.4")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Oman? Zanzibar?, around 2003.")
+        (origin "This game was played in Oman? Zanzibar?, around 2003.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)
@@ -81,5 +81,5 @@
     
     (ai
         "Hawalis_ai"
-   )
+    )
 )

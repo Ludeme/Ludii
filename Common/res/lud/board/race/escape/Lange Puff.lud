@@ -17,13 +17,13 @@
                                 (fromTo 
                                     (from (to))
                                     (to (handSite Next))
-                               )
-                           )
+                                )
+                            )
                             (forget Value "Opposite" (value))
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (then 
                 (if (!= 0 (size Array (values Remembered "Opposite")))
                     (moveAgain)
@@ -32,10 +32,10 @@
                         (set Pending)
                         (moveAgain)
                     })
-               )
-           )
-       )
-   )	
+                )
+            )
+        )
+    )	
 )
 
 //------------------------------------------------------------------------------
@@ -47,7 +47,7 @@
         (dice d:6 num:2)
         (piece "Disc" Each
             (forEach Die
-                replayDouble:(= 1 (value Player Mover))  
+                replayDouble:(= 1 (value Player Mover)) 
                 if:("DieNotUsed")
                 (if ("IsOffBoard" ("NextSiteFrom" (from) (pips)))
                     (move Remove (from))
@@ -57,9 +57,9 @@
                             ("NextSiteFrom" (from) (pips))
                             if:("NoEnemyOrOnlyOne" (to))
                             ("HittingCapture" (handSite Next))
-                       )
-                   )
-               )
+                        )
+                    )
+                )
                 (then 
                     (if (not (all DiceUsed))
                         (moveAgain)
@@ -68,14 +68,14 @@
                                 (and 
                                     (moveAgain) 
                                     (set Var "PlayOpposite" 1)
-                               )
-                           )
+                                )
+                            )
                             (set Value Mover 1)
-                       )
-                   )
-               )
-           )			
-       )
+                        )
+                    )
+                )
+            )			
+        )
         (hand Each)
     })
     
@@ -99,8 +99,8 @@
                                     (set Pending) 
                                     (moveAgain)
                                 })
-                           )
-                       )
+                            )
+                        )
                     })
                     //(max Distance "Track" Mover 
                         (do (if (and { 
@@ -111,17 +111,17 @@
                                 (and 
                                     (remember Value "Opposite" (- 7 ("DoubleDieValue"))) 
                                     (remember Value "Opposite" (- 7 ("DoubleDieValue")))
-                               )
-                           )
+                                )
+                            )
                             next:(or (forEach Piece top:True) (forEach Piece container:(mover) top:True))
-                       )
+                        )
                     //)
-               )
-           )
-       )
+                )
+            )
+        )
         
         (end ("EscapeWin"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -137,9 +137,9 @@
         (version "1.3.4")
         (classification "board/race/escape")
         (credit "Eric Piette")
-        (origin  "This game was played in Germany, around 1853.")
+        (origin "This game was played in Germany, around 1853.")
         }
-   )
+    )
     
     (graphics {
         (board Style backgammon)

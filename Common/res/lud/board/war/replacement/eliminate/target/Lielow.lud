@@ -11,12 +11,12 @@
                                 from:(sites Occupied by:Mover)
                                 to:0
                                 (size Stack at:(from))
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         (forEach Piece
             (if
                 (=
@@ -26,16 +26,16 @@
                             from:(sites Occupied by:Mover)
                             to:0
                             (size Stack at:(from))
-                       )
-                   )
-               )
+                        )
+                    )
+                )
                 (set State at:(from) 1)
                 (set State at:(from) 0)
-           )
+            )
             Mover
             top:True
-       )
-   )
+        )
+    )
 )
 
 (define "MoveToEmpty"
@@ -46,7 +46,7 @@
                 (from) 
                 Empty 
                 distance:(size Stack at:(from))
-           )
+            )
             (apply 
                 (if
                     (and {
@@ -54,15 +54,15 @@
                         (is In (to) (sites Outer))
                     })
                     (set Var "MoverHasLost" 1)
-               )
-           )
-       )
+                )
+            )
+        )
         count:(size Stack at:(from))
         stack:True
         (then
             (add (to (last To) level:0) stack:True)
-       )
-   )
+        )
+    )
 )
 
 (define "Capture"
@@ -73,18 +73,18 @@
                 (from) 
                 Enemy 
                 distance:(size Stack at:(from))
-           )
+            )
             (apply 
                 (and {
                     (if
                         (= 1 (state at:(to)))
                         (set Var "MoverHasWon" 1)
-                   )
+                    )
                     (set Var (state at:(from)))
                     (remove (to) count:(size Stack at:(to)))
                 })
-           )
-       )
+            )
+        )
         count:(size Stack at:(from))
         stack:True
         (then 
@@ -93,10 +93,10 @@
                 (and 
                     (remove (last To) count:(- (size Stack at:(last To)) 1))
                     (set State at:(last To) (var))
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 (define "Move"
@@ -104,7 +104,7 @@
         ("MoveToEmpty") 
         ("Capture")
         #1
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -122,19 +122,19 @@
                     (difference 
                         (expand (sites Bottom) steps:2)
                         (expand (sites Bottom) steps:1)
-                   )
+                    )
                     (sites Outer)
-               )
-           )
+                )
+            )
             (place "Disc2" 
                 (difference
                     (difference 
                         (expand (sites Top) steps:2)
                         (expand (sites Top) steps:1)
-                   )
+                    )
                     (sites Outer)
-               )
-           )
+                )
+            )
         })
         (play
             (forEach Piece
@@ -145,21 +145,21 @@
                     (do
                         (remove (sites Outer) count:(size Stack at:(last To)))
                         next:("UpdateKing")
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (end {
             (if 
                 (= 1 (var "MoverHasLost")) 
                 (result Mover Loss)
-           )
+            )
             (if 
                 (= 1 (var "MoverHasWon")) 
                 (result Mover Win)
-           )
+            )
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -188,7 +188,7 @@
         (credit "Michael Amundsen")
         (date "2021")
         }
-   )
+    )
     (graphics {
         (player Colour P1 (colour White))
         (player Colour P2 (colour Black))

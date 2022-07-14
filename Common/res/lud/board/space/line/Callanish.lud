@@ -6,8 +6,8 @@
         (and
             ("IsEnemyAt" (to))
             (= 0 (topLevel at:(to)))
-       )
-   )
+        )
+    )
 )
 
 // #1 - site
@@ -19,8 +19,8 @@
             // Cannot use "KnightWalk" macro because it does not work in the "Missing Corners" option.
             { { F F R F } { F F L F } { F R F F } { F L F F } }
             (to if:("CanPlaceKnight"))
-       )
-   )
+        )
+    )
 )
 
 (define "IsWeAreOnTop"
@@ -34,18 +34,18 @@
             if:(and 
                 ("IsWeAreOnTop")
                 (<= 2 (count Sites in:("PossibleKnightSites" (from))))
-           )
-       )
+            )
+        )
         (then
             (do
                 (set Var "CondemnedSite" (last From))
                 next:(do
                     (set State at:(var "CondemnedSite") ("CondemnedState"))
                     next:(moveAgain)
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 (define "MoveFirstKnight"
@@ -54,17 +54,17 @@
             (do
                 (set Pending)
                 next:(moveAgain)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "MoveSecondKnight"
     (move Add (to ("PossibleKnightSites" (var "CondemnedSite"))) stack:True
         (then 
             (remove (var "CondemnedSite"))
-       )
-   )
+        )
+    )
 )
 
 // #1 - "Row"/"Column"
@@ -73,7 +73,7 @@
     (intersection
         (sites #1 #2)
         (sites Occupied by:Next container:"Board")
-   )
+    )
 )
 
 // #1 - "Row"/"Column"
@@ -84,33 +84,33 @@
 
 //------------------------------------------------------------------------------
 
-(game "Callanish"  
-    (players 2)  
+(game "Callanish" 
+    (players 2) 
     (equipment { 
         (board <Board:BoardDef>) 
         (piece "Disc" Each
             ("MoveCondemnPiece")
-       ) 
-    })  
+        ) 
+    }) 
     (rules 
         phases: {
         (phase "Opening"
             (play
                 (move Add (to (sites Empty)))
-           )
+            )
             (nextPhase (>= (count Turns) 2) "Playing")
-       )
+        )
         (phase "Playing"
             (play 
                 (if "SameTurn"
                     (if (is Pending)
                         ("MoveSecondKnight")
                         ("MoveFirstKnight")
-                   )
+                    )
                     (forEach Piece)
-               )
-           )
-       )
+                )
+            )
+        )
         }
         (end {
             (if
@@ -134,12 +134,12 @@
                         (<= <Board:MainWinC> ("OpponentCount" Column 6))
                         <Board:ExtraCols>
                     })
-               )
+                )
                 (result Mover Loss)
-           )
+            )
             (if (no Moves Mover) (result Mover Loss))
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -158,9 +158,9 @@
     
     (info
         {
-        (description "On  the  Isle  of  Lewis  (Outer  Hebrides,  Scotland)  are located   some   of   the   most   impressive   prehistoric megalithic  structures  in  Europe.  The  most  important sites  are  around  the  area  of Callanish,  and  include stone circles, cairns, and stone alignments.
+        (description "On the Isle of Lewis (Outer Hebrides, Scotland) are located  some  of  the  most  impressive  prehistoric megalithic structures in Europe. The most important sites are around the area of Callanish, and include stone circles, cairns, and stone alignments.
             
-        The  goal  of Callanish  is  to  create  an  alignment  of  a certain  number  of  stones  or  stacks  of  your  colour orthogonally along any file or rank of the board.")
+        The goal of Callanish is to create an alignment of a certain number of stones or stacks of your colour orthogonally along any file or rank of the board.")
         (rules "The board is initially empty. Each player chooses a colour: White or Black. White starts by placing a stone on a vacant square. Black does the same.
             
         Players continue taking turns; however, your turn goes as follows: 1. Mark one of your exposed stones for removal from the board (i.e. it cannot be under an enemy stone). 2. Add one of your stones to the board. 3. Add another one of your stones to the board, at which point the marked stone is removed. The following rules constrain where you can add each stone: It must be a “knight’s move” away from the marked stone. That is to say, either 2 spaces vertically and 1 horizontally, or 2 spaces horizontally, and 1 vertically away from the marked stone. The space on which you place it must have none of your stones, and either: be vacant, or have an enemy stone, in which case you will place yours on top, creating a stack that you control.")
@@ -173,7 +173,7 @@
         (credit "Nicholas Bamber")
         (date "2014")
         }
-   )
+    )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

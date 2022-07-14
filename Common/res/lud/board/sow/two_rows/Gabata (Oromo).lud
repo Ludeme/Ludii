@@ -3,18 +3,18 @@
 
 //------------------------------------------------------------------------------
 
-(game "Gabata (Oromo)"  
-    (players 2)  
+(game "Gabata (Oromo)" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 6 store:None
             (track "Track" "0,E,N,W" loop:True)
-       )
+        )
         (piece "Seed" Shared)
         (hand Each)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-    })  
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+    }) 
     (rules 
         
         (start (set Count 4 to:(sites Track)))
@@ -27,8 +27,8 @@
                         (if ("SameTurn")
                             (var "Replay")
                             0
-                       )
-                   )
+                        )
+                    )
                     (then
                         (sow
                             numPerHole:4
@@ -37,14 +37,14 @@
                                 (if (is Occupied ("NextHole" (to) 1))
                                     (set Var "Replay" ("NextHole" (to) 1))
                                     (set Var "Replay" Undefined)
-                               )
-                           )
-                       )
-                   )
-               )
-           )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
             (nextPhase (= Undefined (var "Replay")) "Opening2")
-       )
+        )
         
         (phase "Opening2"
             (play
@@ -53,8 +53,8 @@
                         (if (and ("SameTurn") (!= Undefined (var "Replay")))
                             (var "Replay")
                             6
-                       )
-                   )
+                        )
+                    )
                     (then
                         (do
                             (set Var "NumSowed" (count at:(last To)))
@@ -63,9 +63,9 @@
                                     (and
                                         (moveAgain)
                                         (set Var "Replay" (to))
-                                   )
-                               )
-                           )
+                                    )
+                                )
+                            )
                             (then
                                 (and
                                     (forEach Site (sites Track from:(last From) to:(trackSite Move from:(last From) "Track" steps:(- (var "NumSowed") 1)))
@@ -74,19 +74,19 @@
                                                 (from (site))
                                                 (to (handSite Mover))
                                                 count:4
-                                           )
-                                       )
-                                   )
+                                            )
+                                        )
+                                    )
                                     (set Var "NumSowed" 0)
-                               )
-                           )
-                       )
-                   )
-               )
-           )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
             
             (nextPhase (not (is Next Prev)) "Sowing")
-       )
+        )
         
         (phase "Sowing"
             (play
@@ -95,9 +95,9 @@
                         (if (and ("SameTurn") (!= Undefined (var "Replay")))
                             (sites {(var "Replay")})
                             (sites Mover)
-                       )
+                        )
                         if:(is Occupied (from))
-                   )
+                    )
                     (then
                         (do
                             (set Var "NumSowed" (count at:(last To)))
@@ -106,9 +106,9 @@
                                     (and
                                         (moveAgain)
                                         (set Var "Replay" (to))
-                                   )
-                               )
-                           )
+                                    )
+                                )
+                            )
                             (then
                                 (and
                                     (forEach Site (sites Track from:(last From) to:(trackSite Move from:(last From) "Track" steps:(- (var "NumSowed") 1)))
@@ -117,28 +117,28 @@
                                                 (from (site))
                                                 (to (handSite Mover))
                                                 count:4
-                                           )
-                                       )
-                                   )
+                                            )
+                                        )
+                                    )
                                     (set Var "NumSowed" 0)
-                               )
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         
         }
         
         (end ("MancalaByScoreWhen" ("NoPieceOnBoard")))
         
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Gabata is a term used to refer to several mancala-style games in the Horn of Africa. This version is a two-row game played by an Oromo woman in Addis Ababa.")
@@ -149,7 +149,7 @@
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

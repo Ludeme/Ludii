@@ -13,7 +13,7 @@
                 (= ("ThrowValue") 2)
                 (= ("ThrowValue") 3)
             })
-       )
+        )
         (or
             (if (= 14 ("ThrowValue"))
                 (if ("IsEndTrack" ("SiteToMoveOnTrack" 1))
@@ -23,10 +23,10 @@
                         (to 
                             ("SiteToMoveOnTrack" 1) 
                             ("HittingStackCapture" (handSite (who at:(to) level:(level))))
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (if ("IsEndTrack" ("SiteToMoveOnTrack" ("ThrowValue")))
                 "RemoveAPiece"
                 (move 
@@ -34,11 +34,11 @@
                     (to 
                         ("SiteToMoveOnTrack" ("ThrowValue")) 
                         ("HittingStackCapture" (handSite (who at:(to) level:(level))))
-                   )
-               )
-           )
-       )
-   )
+                    )
+                )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -51,7 +51,7 @@
             (track "Track1" "46,5,SSE,N,E,S,W,NNW2,End" P1 directed:True)
             (track "Track2" "47,41,NNW,W,S,E,N,SSE2,End" P2 directed:True)
             }
-       )
+        )
         (regions "AllSites" (sites Board))
         (regions "LastSide" P1 (sites {6..9 23..27}))
         (regions "LastSide" P2 (sites {27 33..40}))
@@ -70,7 +70,7 @@
         })
         (play ("RollMove" (or (forEach Piece) (forEach Piece container:(mover)))))
         (end ("EscapeWin"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -88,9 +88,9 @@
         (version "1.3.4")
         (classification "board/race/escape")
         (credit "Eric Piette")
-        (origin  "This game was played in Mexico, from around 1791 to 1931.")
+        (origin "This game was played in Mexico, from around 1791 to 1931.")
         }
-   )
+    )
     
     (graphics {
         (show Edges Hidden)

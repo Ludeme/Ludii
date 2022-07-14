@@ -6,10 +6,10 @@
         (between 
             if:("IsEnemyAt" (between)) 
             (apply (remove (between)))
-       ) 
+        ) 
         (to if:(is Empty (to))) 
         #2
-   ) 
+    ) 
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -19,7 +19,7 @@
 //------------------------------------------------------------------------------
 
 (game "Yup'ik Checkers"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (square 8))
         (piece "Counter" P1 N)
@@ -27,7 +27,7 @@
         (piece "DoubleCounter" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-    })  
+    }) 
     
     (rules 
         (start [#])
@@ -40,47 +40,47 @@
                             (if "JumpToPromotionZone" 
                                 (move Promote (last To) (piece "DoubleCounter") Mover)
                                 (if (can Move ("HopMan" (last To))) (moveAgain)) 
-                           ) 
-                       ) 
-                   )
+                            ) 
+                        ) 
+                    )
                     ("HopDiagonalSequenceCaptureAgain")
-               )
+                )
                 (priority {
-                    (or  
+                    (or 
                         (forEach Piece "Counter" 
                             ("HopMan" (from) 
                                 (then 
                                     (if "JumpToPromotionZone"
                                         (move Promote (last To) (piece "DoubleCounter") Mover) 
                                         (if (can Move ("HopMan" (last To))) (moveAgain)) 
-                                   ) 
-                               ) 
-                           ) 
-                       )
+                                    ) 
+                                ) 
+                            ) 
+                        )
                         (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture"))
-                   )
+                    )
                     
-                    (or  
+                    (or 
                         (forEach Piece "Counter" 
                             (move
                                 Step 
                                 (directions {FR FL}) 
                                 (to if:(is Empty (to)))
-                           ) 
+                            ) 
                             (then 
                                 (if "JumpToPromotionZone"
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
-                               )
-                           )
-                       )
+                                )
+                            )
+                        )
                         (forEach Piece "DoubleCounter" "StepDiagonalToEmpty")
-                   )
+                    )
                 })
-           )
-       ) 
+            )
+        ) 
         
         (end ("BlockWin"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -97,9 +97,9 @@
         (version "1.3.4")
         (classification "board/war/leaping/diagonal/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Alaska, from around 1973 to 1974.")
+        (origin "This game was played in Alaska, from around 1973 to 1974.")
         }
-   )
+    )
     
     (graphics {
         (board Style Chess)

@@ -3,32 +3,32 @@
 
 //------------------------------------------------------------------------------
 
-(game "Kubuguza"  
-    (players 2)  
+(game "Kubuguza" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
             { 
             (track "TrackCCW1" "0,E,N1,W" loop:True P1)
             (track "TrackCCW2" "16,E,N1,W" loop:True P2)
-            (track "TrackCW1"  "7,W,N1,E" loop:True P1)
+            (track "TrackCW1" "7,W,N1,E" loop:True P1)
             (track "TrackCW2" "23,W,N1,E" loop:True P2)
             }
-       )
-        (regions "Home" P1 (sites Track "TrackCCW1"))                                     // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))                                     // P2 home
-        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))        // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))          // P2 inner Home
+        )
+        (regions "Home" P1 (sites Track "TrackCCW1"))                   // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))                   // P2 home
+        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))    // P1 inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))     // P2 inner Home
         (regions "HolesCW" P1 (sites {15 8 1 6}))
         (regions "HolesCW" P2 (sites {16 23 25 30}))
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start 
             (set Count 3 to:(union (sites P1 "Inner") (sites P2 "Inner")))
-       )
+        )
         
         (play 
             (or
@@ -37,14 +37,14 @@
                         (if ("SameTurn") 
                             (sites {(var "Replay")})
                             (sites Mover "Home") 
-                       ) 
+                        ) 
                         if:(> (count at:(from)) 1)
-                   )
+                    )
                     (then
                         (sow
                             "TrackCCW"
                             owner:(mover)
-                            apply:(if  (< 1 (count at:(to)))
+                            apply:(if (< 1 (count at:(to)))
                                 (and
                                     (if (and {
                                             (> (count Turns) 2)
@@ -57,28 +57,28 @@
                                                 (from ("OppositeOuterPit" (to)))
                                                 (to (last From))
                                                 count:(count at:("OppositeOuterPit" (to)))
-                                           )
+                                            )
                                             (fromTo
                                                 (from ("OppositePit" (to)))
                                                 (to (last From))
                                                 count:(count at:("OppositePit" (to)))
-                                           )
+                                            )
                                             (set Var "Replay" (last From))
                                         })
                                         (set Var "Replay" (to))
-                                   )
+                                    )
                                     (moveAgain)
-                               )
-                           )
-                       )
-                   )
-               )
+                                )
+                            )
+                        )
+                    )
+                )
                 (move Select
                     (from 
                         (if ("SameTurn") 
                             (sites {(var "Replay")})
                             (sites Mover "HolesCW") 
-                       ) 
+                        ) 
                         if:(and {
                             (> (count at:(from)) 1)
                             (is In (from) (sites Mover "HolesCW"))
@@ -86,16 +86,16 @@
                                 (and
                                     (is Occupied ("OppositeOuterPit" ("NextHoleFrom" (from) "TrackCW" (count at:(from)))))
                                     (is Occupied ("OppositePit" ("NextHoleFrom" (from) "TrackCW" (count at:(from)))))
-                               )
+                                )
                                 False
-                           )
+                            )
                         })
-                   )
+                    )
                     (then
                         (sow
                             "TrackCW"
                             owner:(mover)
-                            apply:(if  (< 1 (count at:(to)))
+                            apply:(if (< 1 (count at:(to)))
                                 (and
                                     (if (and {
                                             (> (count Turns) 2)
@@ -108,27 +108,27 @@
                                                 (from ("OppositeOuterPit" (to)))
                                                 (to (last From))
                                                 count:(count at:("OppositeOuterPit" (to)))
-                                           )
+                                            )
                                             (fromTo
                                                 (from ("OppositePit" (to)))
                                                 (to (last From))
                                                 count:(count at:("OppositePit" (to)))
-                                           )
+                                            )
                                             (set Var "Replay" (last From))
                                         })
                                         (set Var "Replay" (to))
-                                   )
+                                    )
                                     (moveAgain)
-                               )
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         
         (end ("ForEachPlayerNoMovesLoss"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -144,9 +144,9 @@
         (version "1.3.4")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Rwanda, around 1953.")
+        (origin "This game was played in Rwanda, around 1953.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

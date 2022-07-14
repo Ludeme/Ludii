@@ -1,20 +1,20 @@
 (game "Sakko"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board 
             (rectangle 3 13)
             use:Vertex
-       )
+        )
         (dice d:6 from:0 num:3)
         (piece "Marker" Each)
         (piece "King" Each)
-    })  
+    }) 
     
     (rules 
         (start [#]) // 13 pieces per player + a king per player.
         (play [#])
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -31,7 +31,7 @@
         (classification "board/race/reconstruction")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (show Edges Diagonal Hidden)

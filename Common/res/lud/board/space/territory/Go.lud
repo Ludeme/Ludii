@@ -6,31 +6,31 @@
         Orthogonal 
         (between 
             if:("IsEnemyAt" (between)) 
-            (apply             
+            (apply       
                 (and 
                     (addScore Mover 1) 
                     (remove (between)) 
-               )
-           ) 
-       )
-   )
+                )
+            ) 
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Go"  
+(game "Go" 
     (players 2) 
     (equipment 
         { 
         (board <Board> use:Vertex) 
         (piece "Marker" Each)
         }
-   )
+    )
     
     (rules 
         (meta
             (no Repeat)
-       )
+        )
         (play 
             (or
                 (do
@@ -39,13 +39,13 @@
                         (to (sites Empty))
                         (then 
                             "CaptureSurroundedPiece"
-                       )
-                   )
+                        )
+                    )
                     ifAfterwards:"HasFreedom"
-               )
+                )
                 (move Pass)
-           )
-       )
+            )
+        )
         
         (end
             (if (all Passed)
@@ -53,19 +53,19 @@
                     (score P1 (+ (score P1) (size Territory P1))) 
                     (score P2 (+ (score P2) (size Territory P2)))
                 })
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "9x9"      <(square 9)>     "The game is played on a 9x9 board")   
-    (item "13x13"    <(square 13)>    "The game is played on a 13x13 board")   
-    (item "15x15"    <(square 15)>    "The game is played on a 15x15 board")   
-    (item "19x19"    <(square 19)>    "The game is played on a 19x19 board")**   
+    (item "9x9"   <(square 9)>   "The game is played on a 9x9 board")  
+    (item "13x13"  <(square 13)>  "The game is played on a 13x13 board")  
+    (item "15x15"  <(square 15)>  "The game is played on a 15x15 board")  
+    (item "19x19"  <(square 19)>  "The game is played on a 19x19 board")**  
 })
 
 //------------------------------------------------------------------------------
@@ -82,9 +82,9 @@
         (version "1.3.4")
         (classification "board/space/territory")
         (credit "Eric Piette")
-        (origin  "This game was played in China, from around 694 to 710.")
+        (origin "This game was played in China, from around 694 to 710.")
         }
-   )
+    )
     
     (graphics {
         (board Style Go)
@@ -94,6 +94,6 @@
     
     (ai 
         "Go_ai"
-   )
+    )
     
 )

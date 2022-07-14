@@ -3,8 +3,8 @@
         (add 
             (piece (mapEntry "captured" (what at:(to)))) 
             (to (mapEntry "where" (what at:(to))))
-       )
-   )
+        )
+    )
 )
 
 (define "CapturePiece"
@@ -12,8 +12,8 @@
         (add 
             (piece (mapEntry "captured" (what at:(to)))) 
             (to (mapEntry "where" (what at:(to))))
-       )
-   )
+        )
+    )
 )
 
 (define "InPromotionZone"
@@ -37,8 +37,8 @@
         (if 
             (or ("InPromotionZone" (last To)) ("InPromotionZone" (last From))) 
             (moveAgain) 
-       ) 
-   )
+        ) 
+    )
 )
 
 (define "SlideMove"
@@ -47,7 +47,7 @@
         #1 
         (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
-   )   	
+    )  	
 )
 
 (define "StepMove"
@@ -56,7 +56,7 @@
         #1
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
-   )   	
+    )  	
 )
 
 (define "GoldMove" ("StepMove" (directions {Forward Backward Rightward Leftward FL FR})))
@@ -73,21 +73,21 @@
     (= 
         (count Sites in:(sites Occupied by:Mover container:"Board" component:"Fuhyo")) 
         (count Sites in:(difference (sites Occupied by:Mover container:"Board" component:"Fuhyo") (sites Column (column of:(to)))))
-   )
+    )
 )
 
 (define "PlaceAKnight" 
     (move 
         (from (sites Occupied by:Mover container:"Hand" component:"Keima")) 
         (to (difference (sites Empty) (sites Mover "TwoFurthestRank")))
-   )
+    )
 )
 
 (define "PlaceALance" 
     (move 
         (from (sites Occupied by:Mover container:"Hand" component:"Kyosha")) 
         (to (difference (sites Empty) (sites Mover "LastRank")))
-   )
+    )
 )
 
 (define "PlaceAPawn" 
@@ -96,15 +96,15 @@
             (from (sites Occupied by:Mover container:"Hand" component:"Fuhyo")) 
             (to (difference (sites Empty) (sites Mover "LastRank")) 
                 if:"OnePawnPerColumn"
-           )
-       ) 
+            )
+        ) 
         ifAfterwards:(not ("KingCheck" Next))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Shogi Puzzle"  
+(game "Shogi Puzzle" 
     (players {(player N) (player S)}) 
     
     (equipment { 
@@ -121,11 +121,11 @@
                         (if ("InLastRank" (last To)) 
                             "Promote" 
                             (moveAgain) 
-                       ) 
-                   ) 
-               )
-           )
-       )
+                        ) 
+                    ) 
+                )
+            )
+        )
         // Silver General
         (piece "Ginsho" Each ("StepMove" (directions {Forward BL BR FL FR}) "CanPromote"))
         // Rook
@@ -151,24 +151,24 @@
                                             (add 
                                                 (piece (mapEntry "Captured" (what at:(to)))) 
                                                 (to (mapEntry "Where" (what at:(to))))
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               ) 
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ) 
                 (then 
                     (if ("InPromotionZone" (last To))
                         (if ("InTwoFurthestRank" (last To)) 
                             "Promote" 
                             (moveAgain) 
-                       ) 
-                   ) 
-               ) 
-           ) 
-       )
+                        ) 
+                    ) 
+                ) 
+            ) 
+        )
         // Lance
         (piece "Kyosha" Each
             ("SlideMove" 
@@ -178,11 +178,11 @@
                         (if ("InLastRank" (last To)) 
                             "Promote" 
                             (moveAgain) 
-                       ) 
-                   ) 
-               )
-           ) 
-       )
+                        ) 
+                    ) 
+                )
+            ) 
+        )
         // Gold General
         (piece "Kinsho" Each "GoldMove")
         // Promoted Pawn
@@ -221,7 +221,7 @@
                 (or
                     "Promote"
                     (move Pass)
-               )
+                )
                 (do 
                     (or {
                         (move (from (sites Occupied by:Mover container:"Hand" components:{"Kakugyo" "Ginsho" "Hisha" "Kinsho"})) (to (sites Empty))) 
@@ -231,9 +231,9 @@
                         (forEach Piece) 
                     })
                     ifAfterwards:(not ("KingCheck" Mover))
-               )
-           )
-       )
+                )
+            )
+        )
         
         (end {
             (if (and {
@@ -242,23 +242,23 @@
                     (<= (count Turns) <challenge:limit>)
                 }) 
                 (result P1 Win)
-           ) 
+            ) 
             (if (or (no Moves Next) (and (= <challenge:limit> (count Turns)) (not (is Mover Next)))) (result P1 Loss))
             }	
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Challenge" <challenge> args:{ <start> <limit> }
     {
-    (item "1 (1 Move)"   
+    (item "1 (1 Move)"  
         <(place "Kinsho1" {"G7"}) (place "Kinsho1" 86)
         (place "Osho2" coord:"G9") >
         <1> 
         ""
-   )
+    )
     }
 )
 
@@ -276,7 +276,7 @@
         (classification "puzzle/planning")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour White))
@@ -296,6 +296,6 @@
     
     (ai 
         "Shogi Puzzle_ai"
-   )
+    )
     
 )

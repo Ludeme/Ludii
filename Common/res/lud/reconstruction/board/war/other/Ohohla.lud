@@ -1,18 +1,18 @@
-(game "Ohohla"  
+(game "Ohohla" 
     (players 2) 
     (equipment { 
         (board 
             (splitCrossings (regular Star 5))
             use:Vertex
-       )
+        )
         (piece "Disc" P1 (move [#])) 
         (piece "Disc" P2 (move [#])) 
-    })  
+    }) 
     (rules 
         (start [#]) 
         (play [#])
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -28,9 +28,9 @@
         (version "1.3.4")
         (classification "board/war/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Arizona, around 1907.")
+        (origin "This game was played in Arizona, around 1907.")
         }
-   )
+    )
     
     (graphics {
         (show Edges Diagonal Hidden)

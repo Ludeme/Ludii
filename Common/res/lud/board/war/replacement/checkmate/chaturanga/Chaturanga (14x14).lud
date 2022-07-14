@@ -6,8 +6,8 @@
     (apply 
         (if ("IsEnemyAt" (to))
             (remove (to))
-       )
-   ) 
+        )
+    ) 
 )
 
 //------------------------------------------------------------------------------
@@ -22,48 +22,48 @@
                 (to 
                     if:("IsEnemyAt" (to))
                     "CaptureToPiece"
-               ) 
-           )		
-       )
+                ) 
+            )		
+        )
         (piece "Prince" Each
             (move
                 Slide 
                 (between
                     (max 6)
                     if:(is Empty (between))
-               )
+                )
                 (to 
                     if:("IsEnemyAt" (to))
                     "CaptureToPiece"
-               ) 
-           )		
-       )
+                ) 
+            )		
+        )
         (piece "Bishop" Each // Minister
             (move
                 Slide 
                 (between
                     (max 6)
                     if:(is Empty (between))
-               )
+                )
                 (to 
                     if:("IsEnemyAt" (to))
                     "CaptureToPiece"
-               ) 
-           )			
-       ) 
+                ) 
+            )			
+        ) 
         (piece "Queen" Each // Military Leader
             (move
                 Slide 
                 (between
                     (max 6)
                     if:(is Empty (between))
-               )
+                )
                 (to 
                     if:("IsEnemyAt" (to))
                     "CaptureToPiece"
-               ) 
-           )			
-       ) 
+                ) 
+            )			
+        ) 
         (piece "Elephant" Each
             (or {
                 (move
@@ -72,20 +72,20 @@
                     (between
                         (max 5)
                         if:(is Empty (between))
-                   )
+                    )
                     (to 
                         if:("IsEnemyAt" (to))
                         "CaptureToPiece"
-                   ) 
-               )
+                    ) 
+                )
                 (move
                     Step 
                     (directions {BR BL})
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
-                   )
-               )
+                    )
+                )
                 (forEach Direction 
                     Forward 
                     (between (range 1 5))
@@ -102,18 +102,18 @@
                                                 (to 
                                                     if:(not ("IsFriendAt" (to)))
                                                     "CaptureToPiece"
-                                               ) 
-                                           )
-                                       )
-                                   )
-                               )
+                                                ) 
+                                            )
+                                        )
+                                    )
+                                )
                             })
-                       )
-                   )
-               )	
+                        )
+                    )
+                )	
                 
             })
-       ) 
+        ) 
         (piece "Rook" Each // Cart
             (move
                 Slide 
@@ -121,9 +121,9 @@
                 (to 
                     if:("IsEnemyAt" (to))
                     "CaptureToPiece"
-               ) 
-           )			
-       ) 
+                ) 
+            )			
+        ) 
         (piece "Horse" Each
             (move
                 Leap 
@@ -131,9 +131,9 @@
                 (to 
                     if:(is Empty (to))
                     "CaptureToPiece"
-               ) 
-           )		
-       )
+                ) 
+            )		
+        )
         (piece "Wrench" Each // Machinist 
             (or 
                 (move
@@ -142,22 +142,22 @@
                     (between
                         (max 4)
                         if:(is Empty (between))
-                   )
+                    )
                     (to 
                         if:("IsEnemyAt" (to))
                         "CaptureToPiece"
-                   ) 
-               )
+                    ) 
+                )
                 (move
                     Step 
                     (directions {FR FL Backward})
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
-                   )
-               )
-           )		
-       ) 
+                    )
+                )
+            )		
+        ) 
         (piece "Archer" Each
             (or 
                 (move
@@ -166,22 +166,22 @@
                     (between
                         (max 3)
                         if:(is Empty (between))
-                   )
+                    )
                     (to 
                         if:("IsEnemyAt" (to))
                         "CaptureToPiece"
-                   ) 
-               )
+                    ) 
+                )
                 (move
                     Step 
                     (directions {FR FL Backward})
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
-                   )
-               )
-           )			
-       )
+                    )
+                )
+            )			
+        )
         (piece "Spear" Each
             (or 
                 (move
@@ -190,22 +190,22 @@
                     (between
                         (max 2)
                         if:(is Empty (between))
-                   )
+                    )
                     (to 
                         if:("IsEnemyAt" (to))
                         "CaptureToPiece"
-                   ) 
-               )
+                    ) 
+                )
                 (move
                     Step 
                     (directions {FR FL Backward})
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
-                   )
-               )
-           )		
-       )
+                    )
+                )
+            )		
+        )
         (piece "Sword" Each
             (move
                 Step 
@@ -213,34 +213,34 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-               )
-           )		
-       )
+                )
+            )		
+        )
         (hand Each size:11)
         (regions P1 (expand (sites Bottom) steps:6))
         (regions P2 (expand (sites Top) steps:6))
     })
     (rules 
-        (start  {
-            (place "King1" (handSite P1))  (place "King2" (handSite P2)) 
-            (place "Prince1" (handSite P1 1))  (place "Prince2" (handSite P2 1)) 
-            (place "Bishop1" (handSite P1 2))  (place "Bishop2" (handSite P2 2)) 
-            (place "Queen1" (handSite P1 3))  (place "Queen2" (handSite P2 3)) 
-            (place "Elephant1" (handSite P1 4))  (place "Elephant2" (handSite P2 4)) 
-            (place "Rook1" (handSite P1 5) count:2)  (place "Rook2" (handSite P2 5) count:2) 
-            (place "Horse1" (handSite P1 6) count:4)  (place "Horse2" (handSite P2 6) count:4) 
-            (place "Wrench1" (handSite P1 7) count:4)  (place "Wrench2" (handSite P2 7) count:4) 
-            (place "Archer1" (handSite P1 8) count:4)  (place "Archer2" (handSite P2 8) count:4) 
-            (place "Spear1" (handSite P1 9) count:4)  (place "Spear1" (handSite P2 9) count:4) 
-            (place "Sword1" (handSite P1 10) count:4)  (place "Sword2" (handSite P2 10) count:4) 
+        (start {
+            (place "King1" (handSite P1)) (place "King2" (handSite P2)) 
+            (place "Prince1" (handSite P1 1)) (place "Prince2" (handSite P2 1)) 
+            (place "Bishop1" (handSite P1 2)) (place "Bishop2" (handSite P2 2)) 
+            (place "Queen1" (handSite P1 3)) (place "Queen2" (handSite P2 3)) 
+            (place "Elephant1" (handSite P1 4)) (place "Elephant2" (handSite P2 4)) 
+            (place "Rook1" (handSite P1 5) count:2) (place "Rook2" (handSite P2 5) count:2) 
+            (place "Horse1" (handSite P1 6) count:4) (place "Horse2" (handSite P2 6) count:4) 
+            (place "Wrench1" (handSite P1 7) count:4) (place "Wrench2" (handSite P2 7) count:4) 
+            (place "Archer1" (handSite P1 8) count:4) (place "Archer2" (handSite P2 8) count:4) 
+            (place "Spear1" (handSite P1 9) count:4) (place "Spear1" (handSite P2 9) count:4) 
+            (place "Sword1" (handSite P1 10) count:4) (place "Sword2" (handSite P2 10) count:4) 
         })
         phases:{
         (phase "Placement"
             (play 
                 (move (from (sites Hand Mover) if:(is Occupied (from))) (to (intersection (sites Empty) (sites Mover))))
-           )
+            )
             (nextPhase Mover (all Sites (sites Hand Mover) if:(is Empty (site))) "Play")
-       )
+        )
         
         (phase "Play"
             (play 
@@ -248,20 +248,20 @@
                     (forEach Piece)
                     
                     ifAfterwards:(not ("IsInCheck" "King" Mover))
-               )
-           )
-       )
+                )
+            )
+        )
         
-        }      
+        }   
         (end 
             (if (and 
                     ("IsInCheck" "King" Next)
                     ("NextCanNotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
-       )
-   )
+            ) 
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -270,16 +270,16 @@
     
     (info
         {
-        (description "This version of Chaturanga is described in the Hariharacaturanga,  a late medieval Sanskrit manuscript aattributed to Godavaramisra, a minister in the court of Prataparudra Deva, Gajapati emperor of Odisha.")
-        (rules "14x14 board. 32 pieces per player. Pieces move as follows: King (x1): Moves any distance orthogonally or diagonally; Crown Prince (x1): moves up to six spaces orthogonally or diagonally; Minister (x1): moves up to six spaces orthogonally or diagonally;  Military leader (x1): moves up to six spaces orthogonally or diagonally; Elephant (x2): moves forward orthogonally up to five spaces with the possibility of then moving one space backward diagonally; Cart (x2): moves any distance orthogonally; Horse (x4): moves one space orthogonally and then one space diagonally, leaping over any intervening pieces; Machinist (x4): moves forward orthogonally up to four spaces, forward diagonally one space, or backward orthogonally one space; Archer (x4): moves forward orthogonally up to three spaces, forward diagonally one space, or backward orthogonally one space; Spearmen (x4): moves forward orthogonally up to two spaces, forward diagonally one space, or backward orthogonally one space; Swordsmen (x4): forward one space orthogonally or diagonally or backward one space orthogonally. When a piece moves to a space occupied by an opponent's piece, the opponent's piece is captured. If the King can be captured by the opponent on their next turn, it is in check and must not be in check at the end of the player's turn. If this is not possible, the player loses. ")
+        (description "This version of Chaturanga is described in the Hariharacaturanga, a late medieval Sanskrit manuscript aattributed to Godavaramisra, a minister in the court of Prataparudra Deva, Gajapati emperor of Odisha.")
+        (rules "14x14 board. 32 pieces per player. Pieces move as follows: King (x1): Moves any distance orthogonally or diagonally; Crown Prince (x1): moves up to six spaces orthogonally or diagonally; Minister (x1): moves up to six spaces orthogonally or diagonally; Military leader (x1): moves up to six spaces orthogonally or diagonally; Elephant (x2): moves forward orthogonally up to five spaces with the possibility of then moving one space backward diagonally; Cart (x2): moves any distance orthogonally; Horse (x4): moves one space orthogonally and then one space diagonally, leaping over any intervening pieces; Machinist (x4): moves forward orthogonally up to four spaces, forward diagonally one space, or backward orthogonally one space; Archer (x4): moves forward orthogonally up to three spaces, forward diagonally one space, or backward orthogonally one space; Spearmen (x4): moves forward orthogonally up to two spaces, forward diagonally one space, or backward orthogonally one space; Swordsmen (x4): forward one space orthogonally or diagonally or backward one space orthogonally. When a piece moves to a space occupied by an opponent's piece, the opponent's piece is captured. If the King can be captured by the opponent on their next turn, it is in check and must not be in check at the end of the player's turn. If this is not possible, the player loses. ")
         (source "DLP evidence.")
         (id "1453")
         (version "1.3.2")
         (classification "board/war/replacement/checkmate/chaturanga/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in India, from around 1497 to 1540.")
+        (origin "This game was played in India, from around 1497 to 1540.")
         }
-   )
+    )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

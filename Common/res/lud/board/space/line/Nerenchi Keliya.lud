@@ -3,7 +3,7 @@
         Remove
         (sites Occupied by:Enemy container:"Board") 
         (then (moveAgain))
-   )
+    )
 )
 
 (define "IfLine3MoveAgainPlacement" 
@@ -11,8 +11,8 @@
         (if 
             (and (is Line 3) (not ("HandEmpty" Mover)))
             (moveAgain)
-       )
-   )
+        )
+    )
 )
 
 (define "IfLine3MoveAgain" 
@@ -20,8 +20,8 @@
         (if 
             (is Line 3)
             (moveAgain)
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -38,10 +38,10 @@
                 Step 
                 (to if:(is Empty (to))) 
                 "IfLine3MoveAgain" 
-           )
-       ) 
+            )
+        ) 
         }
-   )  
+    ) 
     (rules 
         (start (place "Marker" "Hand" count:9))
         
@@ -53,31 +53,31 @@
                     (from (handSite Mover)) 
                     (to (sites Empty)) 
                     "IfLine3MoveAgainPlacement" 
-               )  
-           ) 
+                ) 
+            ) 
             (nextPhase (and ("HandEmpty" P1) ("HandEmpty" P2)) "Movement")
-       )
+        )
         
         (phase "Movement" 
             (play 
                 (forEach Piece)
-           )
+            )
             (nextPhase Mover (is Line 3) "Capture")
-       )
+        )
         
         (phase "Capture" 
             (play 
                 "RemoveEnemyPiece"
-           )
+            )
             (nextPhase Mover "Movement")
-       )
+        )
         }
         
         (end {
             (if (<= (count Pieces P1) 2) (result P2 Win))
             (if (<= (count Pieces P2) 2) (result P1 Win))
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -92,14 +92,14 @@
         (version "1.3.4")
         (classification "board/space/line")
         (credit "Matthew Stephenson and Eric Piette")
-        (origin  "This game was played in Sri Lanka, around 1909.")
+        (origin "This game was played in Sri Lanka, around 1909.")
         }
-   )
+    )
     
     (graphics {
         
     })
     (ai
         "Nerenchi Keliya_ai"
-   )
+    )
 )

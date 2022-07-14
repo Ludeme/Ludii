@@ -6,7 +6,7 @@
     (if (= (from) (handSite Mover))
         ("SiteToMoveOnTrack" from:0 (- ("ThrowValue") 1))
         ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
-   )	
+    )	
 )
 
 //------------------------------------------------------------------------------
@@ -18,7 +18,7 @@
             (rectangle 2 <Board:size>)
             (track "Track" <Board:track> directed:True)
             use:Vertex
-       )
+        )
         (hand Each)
         (piece "Horse" Each
             (if ("IsOffBoard" ("SiteToMove"))
@@ -27,9 +27,9 @@
                     (from (from) level:(level))
                     (to ("SiteToMove"))
                     stack:True
-               )
-           )
-       )
+                )
+            )
+        )
         ("StickDice" 2)
         (map {(pair 0 10) (pair 1 0) (pair 2 20)})
     })
@@ -39,40 +39,40 @@
             ("RollMove"
                 (if (< 0 ("ThrowValue"))
                     (or (forEach Piece) (forEach Piece container:(mover)))
-               )
-           )
-       )
+                )
+            )
+        )
         (end ("EscapeWin"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Players" <Player> args:{ <num> }
     {
-    (item "6" <6> "The game involves 6 players.")  
-    (item "7" <7> "The game involves 7 players.")*  
+    (item "6" <6> "The game involves 6 players.") 
+    (item "7" <7> "The game involves 7 players.")* 
 })
 
 (option "Board Size" <Board> args:{ <size> <track>}
     {
-    (item "20"  <20> <{0..19 39..20}>    "Each row has 20 holes.")  
-    (item "25"  <25> <{0..24 49..25}>    "Each row has 25 holes.")  
-    (item "30"  <30> <{0..29 59..30}>    "Each row has 30 holes.")  
-    (item "35"  <35> <{0..34 69..35}>    "Each row has 35 holes.")  
-    (item "40"  <40> <{0..39 79..40}>    "Each row has 40 holes.")  
-    (item "45"  <45> <{0..44 89..45}>    "Each row has 45 holes.") 
-    (item "50"  <50> <{0..49 99..50}>    "Each row has 50 holes.")*  
-    (item "55"  <55> <{0..54 109..55}>   "Each row has 55 holes.")  
-    (item "60"  <60> <{0..59 119..60}>   "Each row has 60 holes.")  
-    (item "65"  <65> <{0..64 129..65}>   "Each row has 65 holes.")  
-    (item "70"  <70> <{0..69 139..70}>   "Each row has 70 holes.")  
-    (item "75"  <75> <{0..74 149..75}>   "Each row has 75 holes.")  
-    (item "80"  <80> <{0..79 159..80}>   "Each row has 80 holes.")  
-    (item "85"  <85> <{0..84 169..85}>   "Each row has 85 holes.")  
-    (item "90"  <90> <{0..89 179..90}>   "Each row has 90 holes.")  
-    (item "95"  <95> <{0..94 189..95}>   "Each row has 95 holes.")  
-    (item "100" <100> <{0..99 199..100}> "Each row has 100 holes.")  
+    (item "20" <20> <{0..19 39..20}>  "Each row has 20 holes.") 
+    (item "25" <25> <{0..24 49..25}>  "Each row has 25 holes.") 
+    (item "30" <30> <{0..29 59..30}>  "Each row has 30 holes.") 
+    (item "35" <35> <{0..34 69..35}>  "Each row has 35 holes.") 
+    (item "40" <40> <{0..39 79..40}>  "Each row has 40 holes.") 
+    (item "45" <45> <{0..44 89..45}>  "Each row has 45 holes.") 
+    (item "50" <50> <{0..49 99..50}>  "Each row has 50 holes.")* 
+    (item "55" <55> <{0..54 109..55}>  "Each row has 55 holes.") 
+    (item "60" <60> <{0..59 119..60}>  "Each row has 60 holes.") 
+    (item "65" <65> <{0..64 129..65}>  "Each row has 65 holes.") 
+    (item "70" <70> <{0..69 139..70}>  "Each row has 70 holes.") 
+    (item "75" <75> <{0..74 149..75}>  "Each row has 75 holes.") 
+    (item "80" <80> <{0..79 159..80}>  "Each row has 80 holes.") 
+    (item "85" <85> <{0..84 169..85}>  "Each row has 85 holes.") 
+    (item "90" <90> <{0..89 179..90}>  "Each row has 90 holes.") 
+    (item "95" <95> <{0..94 189..95}>  "Each row has 95 holes.") 
+    (item "100" <100> <{0..99 199..100}> "Each row has 100 holes.") 
 })
 
 //------------------------------------------------------------------------------
@@ -87,13 +87,13 @@
         "Board Size/85" "Board Size/90" "Board Size/95" "Board Size/100"
         
         }
-   )*
+    )*
     
 })
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Uturu Uturu Kaida is a simple race game played in Senegal. The board is made in the sand, and pieces of wood or iron are used as pieces. It is played with six or seven players, who race their horses to the end of the board.")
@@ -103,9 +103,9 @@
         (version "1.3.4")
         (classification "board/race/escape")
         (credit "Eric Piette")
-        (origin  "This game was played in Senegal, around 1955.")
+        (origin "This game was played in Senegal, around 1955.")
         }
-   )
+    )
     
     (graphics {
         (show Edges Hidden)

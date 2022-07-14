@@ -1,10 +1,10 @@
-(game "Manalath"  
+(game "Manalath" 
     (players 2) 
     (equipment { 
         (board (rotate 90 (hex 5))) 
         (piece "Marker" Each)
         (hand Shared size:2)
-    })  
+    }) 
     (rules 
         (start {
             (place "Marker1" (handSite Shared)) 
@@ -16,7 +16,7 @@
                     (from (sites Hand Shared)) 
                     (to (sites Empty)) 
                     copy:True
-               )
+                )
                 ifAfterwards:(< (size Group at:(last To)) 6)
                 (then
                     (forEach Site (sites Occupied by:Mover container:"Board")
@@ -24,17 +24,17 @@
                             (set Var "Group5" 1)
                             (if (= (size Group at:(site)) 4)
                                 (set Var "Group4" 1)
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         (end {
             (if (= (var "Group4") 1) (result Mover Loss)) 
             (if (= (var "Group5") 1) (result Mover Win)) 
-        })  
-   )
+        }) 
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -44,7 +44,7 @@
     (info
         {
         (description "Manalath was invented in 2012 by Dieter Stein and Néstor Romeral Andrés. It is a Yavalath-like game in which the players must create a group of five without first making a group of four.")
-        (rules "Players take turns placing pieces of any colour. They can't  create groups of more than five pieces which are adjacent to each other. 
+        (rules "Players take turns placing pieces of any colour. They can't create groups of more than five pieces which are adjacent to each other. 
             
             A group of 4 pieces is called a quart. A group of 5 pieces is called a quint.
             
@@ -62,9 +62,9 @@
         (credit "Eric Piette")
         (date "2012")
         }
-   )
+    )
     
     (ai
         "Manalath_ai"
-   )
+    )
 )

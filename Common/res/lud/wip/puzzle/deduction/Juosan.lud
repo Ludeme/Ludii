@@ -1,5 +1,5 @@
 (game "Juosan"
-    (players 1)  
+    (players 1) 
     (equipment {
         (board (square <Challenge:size>) (values Cell (range 1 2)))
         (hints { <Challenge:hints> })
@@ -11,18 +11,18 @@
                 (if (= (what at:(last To)) 1)
                     (not (is Line 3 E))
                     (not (is Line 3 S))
-               )
+                )
                 (forAll 
                     Hint 
                     (or 
                         (is Count (sites Hint) of:1 (hint)) 
                         (is Count (sites Hint) of:2 (hint))
-                   )
-               )
+                    )
+                )
             })
-       )
+        )
         (end (if (is Solved) (result P1 Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -41,7 +41,7 @@
         (hint {23 24} 1)
         >
         ""
-   ) 
+    ) 
     
     (item "puzzleblog542 Moderate" 
         <10>
@@ -77,7 +77,7 @@
         (hint {94 95 96 97} 2)
         >
         ""
-   )* 
+    )* 
     
     (item "puzzleblog542 Moderate" 
         <10>
@@ -111,7 +111,7 @@
         (hint {96 97 98} 3)
         >
         ""
-   )
+    )
     
 })
 

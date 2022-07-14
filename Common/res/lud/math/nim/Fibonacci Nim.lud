@@ -4,13 +4,13 @@
 
 //------------------------------------------------------------------------------
 
-(game "Fibonacci Nim"  
-    (players 2)  
+(game "Fibonacci Nim" 
+    (players 2) 
     (equipment { 
         (board (square 1)) 
         (piece "Marker" Neutral)
         }
-   )  
+    ) 
     (rules
         (start (set Count <Size:pile> at:0)) 
         
@@ -25,12 +25,12 @@
                                 (if (= (count at:(last To)) 1)
                                     (remove (last To))
                                     (and (set Count at:(last To) (- (count at:(last To)) 1)) (moveAgain)) 
-                               )
-                           ) 
-                       )
-                   )
+                                )
+                            ) 
+                        )
+                    )
                     (move Pass (then (set Value Mover (- ("NumRemove") 1))))
-               )
+                )
                 (move
                     Select
                     (from (sites Occupied by:Neutral))
@@ -40,45 +40,45 @@
                             (and 
                                 (set Count at:(last To) (- (count at:(last To)) 1)) 
                                 (moveAgain)
-                           ) 
-                       )
-                   ) 
-               )
-           )
-       ) 
+                            ) 
+                        )
+                    ) 
+                )
+            )
+        ) 
         (end (if (no Moves Next) (result <Result> Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "End Rules" <Result> args:{ <type> }
     {
-    (item "Last Mover Loses"   <Next>     "The last mover loses.")   
-    (item "Last Mover Wins"    <Mover>    "The last mover wins.")*   
+    (item "Last Mover Loses"  <Next>   "The last mover loses.")  
+    (item "Last Mover Wins"  <Mover>  "The last mover wins.")*  
 })
 
 (option "Number Piles" <Size> args:{ <pile> }
     {
-    (item "5"   <5>   "The game involves a pile of 5 pieces.")
-    (item "10"  <10>  "The game involves a pile of 10 pieces.")
-    (item "15"  <15>  "The game involves a pile of 15 pieces.")
-    (item "20"  <20>  "The game involves a pile of 20 pieces.")
-    (item "25"  <25>  "The game involves a pile of 25 pieces.")
-    (item "30"  <30>  "The game involves a pile of 30 pieces.")
-    (item "35"  <35>  "The game involves a pile of 35 pieces.")
-    (item "40"  <40>  "The game involves a pile of 40 pieces.")*
-    (item "45"  <45>  "The game involves a pile of 45 pieces.")
-    (item "50"  <50>  "The game involves a pile of 50 pieces.")
-    (item "55"  <55>  "The game involves a pile of 55 pieces.")
-    (item "60"  <60>  "The game involves a pile of 60 pieces.")
-    (item "65"  <65>  "The game involves a pile of 65 pieces.")
-    (item "70"  <70>  "The game involves a pile of 70 pieces.")
-    (item "75"  <75>  "The game involves a pile of 75 pieces.")
-    (item "80"  <80>  "The game involves a pile of 80 pieces.")
-    (item "85"  <85>  "The game involves a pile of 85 pieces.")
-    (item "90"  <90>  "The game involves a pile of 90 pieces.")
-    (item "95"  <95>  "The game involves a pile of 95 pieces.")
+    (item "5"  <5>  "The game involves a pile of 5 pieces.")
+    (item "10" <10> "The game involves a pile of 10 pieces.")
+    (item "15" <15> "The game involves a pile of 15 pieces.")
+    (item "20" <20> "The game involves a pile of 20 pieces.")
+    (item "25" <25> "The game involves a pile of 25 pieces.")
+    (item "30" <30> "The game involves a pile of 30 pieces.")
+    (item "35" <35> "The game involves a pile of 35 pieces.")
+    (item "40" <40> "The game involves a pile of 40 pieces.")*
+    (item "45" <45> "The game involves a pile of 45 pieces.")
+    (item "50" <50> "The game involves a pile of 50 pieces.")
+    (item "55" <55> "The game involves a pile of 55 pieces.")
+    (item "60" <60> "The game involves a pile of 60 pieces.")
+    (item "65" <65> "The game involves a pile of 65 pieces.")
+    (item "70" <70> "The game involves a pile of 70 pieces.")
+    (item "75" <75> "The game involves a pile of 75 pieces.")
+    (item "80" <80> "The game involves a pile of 80 pieces.")
+    (item "85" <85> "The game involves a pile of 85 pieces.")
+    (item "90" <90> "The game involves a pile of 90 pieces.")
+    (item "95" <95> "The game involves a pile of 95 pieces.")
     (item "100" <100> "The game involves a pile of 100 pieces.")
     }
 )
@@ -99,12 +99,12 @@
         (credit "Eric Piette")
         (date "1963")
         }
-   )
+    )
     
     (graphics {
         (no Board)
     })
     (ai
         "Fibonacci Nim_ai"
-   )
+    )
 )

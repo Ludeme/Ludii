@@ -1,13 +1,13 @@
-(game "Manddiare"  
-    (players 2)  
+(game "Manddiare" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 <Board:size>
             (track "Track" "1,E,N,W" loop:True)
-       )
+        )
         (piece "Seed" Shared)
         }
-   )  
+    ) 
     (rules 
         
         (start [#])
@@ -15,26 +15,26 @@
         (play [#]) // When the final counter of the sowing lands in a hole, making it contain an even number of counters, these are captured.
         
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size>}
     {
-    (item "3"   <3>  "Each player has 3 holes.")  
-    (item "4"   <4>  "Each player has 4 holes.")  
-    (item "5"   <5>  "Each player has 5 holes.")  
-    (item "6"   <6>  "Each player has 6 holes.")  
-    (item "7"   <7>  "Each player has 7 holes.")   
-    (item "8"   <8>  "Each player has 8 holes.")   
-    (item "9"   <9>  "Each player has 9 holes.")   
-    (item "10"  <10> "Each player has 10 holes.")  
+    (item "3"  <3> "Each player has 3 holes.") 
+    (item "4"  <4> "Each player has 4 holes.") 
+    (item "5"  <5> "Each player has 5 holes.") 
+    (item "6"  <6> "Each player has 6 holes.") 
+    (item "7"  <7> "Each player has 7 holes.")  
+    (item "8"  <8> "Each player has 8 holes.")  
+    (item "9"  <9> "Each player has 9 holes.")  
+    (item "10" <10> "Each player has 10 holes.") 
 })
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Manddiaré is a two-row mancala-style board game played in Mauritania but women amd young girls. Sometimes boys would play it to get to know girls, but this would not occur in public spaces.")
@@ -45,9 +45,9 @@
         (version "1.3.2")
         (classification "board/sow/two rows/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Mauritania, around 1955.")
+        (origin "This game was played in Mauritania, around 1955.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

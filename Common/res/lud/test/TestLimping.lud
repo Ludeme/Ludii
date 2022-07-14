@@ -1,37 +1,37 @@
-(game "TestLimping"  
-    (players 2)  
+(game "TestLimping" 
+    (players 2) 
     (equipment { 
         (board <Board> use:Vertex) 
         (piece "Disc") 
-    })  
+    }) 
     (rules 
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board" <Board> args:{ <board> }
     {
-    (item  "T1"  <(tri Limping 1)> "")
-    (item  "T2"  <(tri Limping 2)> "")
-    (item  "T3"  <(tri Limping 3)> "")
-    (item  "T4"  <(tri Limping 4)> "")
-    (item  "T5"  <(tri Limping 5)> "")*
-    (item  "T6"  <(tri Limping 6)> "")
-    (item  "T7"  <(tri Limping 7)> "")
-    (item  "T8"  <(tri Limping 8)> "")
-    (item  "T9"  <(tri Limping 9)> "")
+    (item "T1" <(tri Limping 1)> "")
+    (item "T2" <(tri Limping 2)> "")
+    (item "T3" <(tri Limping 3)> "")
+    (item "T4" <(tri Limping 4)> "")
+    (item "T5" <(tri Limping 5)> "")*
+    (item "T6" <(tri Limping 6)> "")
+    (item "T7" <(tri Limping 7)> "")
+    (item "T8" <(tri Limping 8)> "")
+    (item "T9" <(tri Limping 9)> "")
     
-    (item  "H1"  <(hex Limping 1)> "")
-    (item  "H2"  <(hex Limping 2)> "")
-    (item  "H3"  <(hex Limping 3)> "")
-    (item  "H4"  <(hex Limping 4)> "")
-    (item  "H5"  <(hex Limping 5)> "")
-    (item  "H6"  <(hex Limping 6)> "")
-    (item  "H7"  <(hex Limping 7)> "")
-    (item  "H8"  <(hex Limping 8)> "")
-    (item  "H9"  <(hex Limping 9)> "")
+    (item "H1" <(hex Limping 1)> "")
+    (item "H2" <(hex Limping 2)> "")
+    (item "H3" <(hex Limping 3)> "")
+    (item "H4" <(hex Limping 4)> "")
+    (item "H5" <(hex Limping 5)> "")
+    (item "H6" <(hex Limping 6)> "")
+    (item "H7" <(hex Limping 7)> "")
+    (item "H8" <(hex Limping 8)> "")
+    (item "H9" <(hex Limping 9)> "")
     }
 )

@@ -10,11 +10,11 @@
                     ("NextSiteFrom" (handSite Mover) (pips))
                     if:(< (size Stack at:(to)) 2)
                     ("HittingCapture" (handSite Next))
-               )
-           )
+                )
+            )
             (then ("ReplayNotAllDiceUsed"))
-       )
-   )
+        )
+    )
 )
 
 (define "AllPiecesInFinalQuadrant" ("AllOwnedPiecesIn" (sites Mover "FinalQuadrant")))
@@ -32,28 +32,28 @@
                 (if (= End ("NextSiteFrom" (from) (pips)))
                     (if ("AllPiecesInFinalQuadrant")
                         (move Remove (from))
-                   )
+                    )
                     (move 
                         (from (from))
                         (to 
                             ("NextSiteFrom" (from) (pips))
                             if:("NoEnemyOrOnlyOne" (to))
                             ("HittingCapture" (handSite Next))
-                       )
-                   )
-               )
+                        )
+                    )
+                )
                 (then ("ReplayNotAllDiceUsed"))
-           )
-       )
+            )
+        )
         (hand Each)
         (regions "FinalQuadrant" P1 (sites {18..23}))
         (regions "FinalQuadrant" P2 (sites {6..11}))
     })
     (rules 
         (start {
-            (place Stack "Disc1"  6 count:5) (place Stack "Disc1" 4 count:3) 
+            (place Stack "Disc1" 6 count:5) (place Stack "Disc1" 4 count:3) 
             (place Stack "Disc1" 12 count:5) (place Stack "Disc1" 23 count:2)
-            (place Stack "Disc2"  18 count:5) (place Stack "Disc2" 16 count:3) 
+            (place Stack "Disc2" 18 count:5) (place Stack "Disc2" 16 count:3) 
             (place Stack "Disc2" 0 count:5) (place Stack "Disc2" 11 count:2)
         })
         (play 
@@ -62,10 +62,10 @@
                     ("EnterPieces")
                     (if (is Empty (handSite Mover)) (max Distance (forEach Piece top:True)))
                 })
-           )
-       )
+            )
+        )
         (end ("EscapeWin"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -82,9 +82,9 @@
         (version "1.3.4")
         (classification "board/race/escape")
         (credit "Eric Piette")
-        (origin  "This game was played in Korea, around 1895.")
+        (origin "This game was played in Korea, around 1895.")
         }
-   )
+    )
     
     (graphics {
         (show Edges Hidden)

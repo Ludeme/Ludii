@@ -1,17 +1,17 @@
 (game "Gioco dell'Orso"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board
             (add
                 (concentric {1 4 12})
                 edges:{{6 8} {9 11} {12 14} {5 15}}
-           )
+            )
             use:Vertex
-       )
+        )
         (piece "Human" Each ("StepToEmpty"))
         (piece "Bear" Each ("StepToEmpty"))
         (hand Each)
-    })  
+    }) 
     
     (rules 
         (start {
@@ -21,7 +21,7 @@
         
         <Rule:rule>
         
-   )		
+    )		
 )
 
 //------------------------------------------------------------------------------
@@ -37,10 +37,10 @@
                     (from (handSite P1))
                     (to (intersection (sites Empty) (sites {1..4})))
                     (then (if (not ("HandEmpty" P1)) (moveAgain)))
-               )
-           )
+                )
+            )
             (nextPhase ("HandEmpty" P1) "HuntingP2")
-       )
+        )
         (phase "HuntingP2" 
             (play 
                 (forEach Piece
@@ -48,30 +48,30 @@
                         (if (not 
                                 (can Move 
                                     ("StepToEmpty" (from (where "Bear" P2)))
-                               )
-                           )
+                                )
+                            )
                             (and {
                                 (addScore P2 (- (count Moves) 3))
                                 (remove (sites Occupied by:All container:"Board"))
                                 (add (piece "Bear1") (to (sites Centre)))
                                 (add (piece "Human2") (to (handSite P2)) count:3)
                             })
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (nextPhase (= 1 (count Sites in:(sites Occupied by:All container:"Board"))) "PlacementP2")
-       )
+        )
         (phase "PlacementP2" 
             (play
                 (move 
                     (from (handSite P2))
                     (to (intersection (sites Empty) (sites {1..4})))
                     (then (if (not ("HandEmpty" P2)) (moveAgain)))
-               )
-           )
+                )
+            )
             (nextPhase ("HandEmpty" P2) "HuntingP1")
-       )
+        )
         (phase "HuntingP1" 
             (play 
                 (forEach Piece
@@ -79,19 +79,19 @@
                         (if (not 
                                 (can Move 
                                     ("StepToEmpty" (from (where "Bear" P1)))
-                               )
-                           )
+                                )
+                            )
                             (addScore P1 (- (count Moves) (+ (score P2) 6)))
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (end (if (!= 0 (score P1)) (byScore)))
-       )
+        )
         }
-        >  
+        > 
         "The game has two rounds."
-   )*
+    )*
     
     (item "One Round" 
         <
@@ -102,10 +102,10 @@
                     (from (handSite P1))
                     (to (intersection (sites Empty) (sites {1..4})))
                     (then (if (not ("HandEmpty" P1)) (moveAgain)))
-               )
-           )
+                )
+            )
             (nextPhase ("HandEmpty" P1) "HuntingP2")
-       )
+        )
         (phase "HuntingP2" 
             (play (forEach Piece))
             (end {
@@ -114,15 +114,15 @@
                     (or
                         (>= (count Moves) (- (value MoveLimit) 10)) 
                         (>= (count Turns) (- (value TurnLimit) 5)) 
-                   )
+                    )
                     (result P2 Win)
-               )
+                )
             }) 
-       )
+        )
         }
-        >  
+        > 
         "The game has only one round."
-   )
+    )
 })
 
 //------------------------------------------------------------------------------
@@ -155,9 +155,9 @@
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in Italy, from around 1910 to 1994.")
+        (origin "This game was played in Italy, from around 1910 to 1994.")
         }
-   )
+    )
     (graphics {
         (show Line {{6 8}} curve:{0.2 0.6 0.2 0.4} Bezier)
         (show Line {{9 11}} curve:{0.4 0.2 0.6 0.2} Bezier)
@@ -167,5 +167,5 @@
     
     (ai
         "Gioco dell'Orso_ai"
-   )
+    )
 )

@@ -1,5 +1,5 @@
 (game "Picaria" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         <Board>
         (hand Each)
@@ -8,9 +8,9 @@
                 Step 
                 All
                 (to if:(is Empty (to)))
-           )
-       )
-    })  
+            )
+        )
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:3))
         
@@ -20,33 +20,33 @@
                 (move 
                     (from (handSite Mover)) 
                     (to <To>)
-               ) 
-           )
+                ) 
+            )
             (nextPhase ("HandEmpty" P2) "Movement")
-       )
+        )
         
         (phase "Movement"
             (play (forEach Piece))
-       )
+        )
         }
         (end (if (is Line 3 All) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board" <Board> args:{<type>}
     {
-    (item "9 Holes" <(board (square 3) use:Vertex)>  "The board has 9 holes.")*
-    (item "13 Sites" <(board (square 3 diagonals:Solid) use:Vertex)>  "The board has 13 holes.")
-    (item "Merels" <("AlquerqueBoard" 3 3)>  "The board is an Alquerque board.")
+    (item "9 Holes" <(board (square 3) use:Vertex)> "The board has 9 holes.")*
+    (item "13 Sites" <(board (square 3 diagonals:Solid) use:Vertex)> "The board has 13 holes.")
+    (item "Merels" <("AlquerqueBoard" 3 3)> "The board is an Alquerque board.")
     }
 )
 
 (option "Play" <To> args:{<where>}
     {
-    (item "Anywhere" <(sites Empty)>                                "The pieces can be placed to any empty site.")*
-    (item "Not Middle" <(difference (sites Empty) (sites Centre))>  "The pieces can be placed to any empty site except the middle.")
+    (item "Anywhere" <(sites Empty)>                "The pieces can be placed to any empty site.")*
+    (item "Not Middle" <(difference (sites Empty) (sites Centre))> "The pieces can be placed to any empty site except the middle.")
     }
 )
 
@@ -89,11 +89,11 @@
         (version "1.3.4")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in Southwest United States, around 1907.")
+        (origin "This game was played in Southwest United States, around 1907.")
         }
-   )
+    )
     
     (ai
         "Picaria_ai"
-   )
+    )
 )

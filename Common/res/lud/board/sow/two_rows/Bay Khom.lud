@@ -6,14 +6,14 @@
     (if (is Mover P1)
         (sites (values Remembered "OwnedP1"))
         (sites (values Remembered "OwnedP2"))
-   )
+    )
 )
 
 (define "RemmemberOwnedHoles" 
     (if (is Mover P1)
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
-   )
+    )
 )
 
 (define "CaptureMove"
@@ -26,37 +26,37 @@
                         (from ("NextHoleFrom" (to) #1 2))
                         (to (mapEntry Mover))
                         count:(count at:("NextHoleFrom" (to) #1 2))
-                   )
+                    )
                     (if (and (is Empty ("NextHoleFrom" (to) #1 3)) (is Occupied ("NextHoleFrom" (to) #1 4)))
                         (and
                             (fromTo
                                 (from ("NextHoleFrom" (to) #1 4))
                                 (to (mapEntry Mover))
                                 count:(count at:("NextHoleFrom" (to) #1 4))
-                           )
+                            )
                             (if (and (is Empty ("NextHoleFrom" (to) #1 5)) (is Occupied ("NextHoleFrom" (to) #1 6)))
                                 (and
                                     (fromTo
                                         (from ("NextHoleFrom" (to) #1 6))
                                         (to (mapEntry Mover))
                                         count:(count at:("NextHoleFrom" (to) #1 6))
-                                   )
+                                    )
                                     (if (and (is Empty ("NextHoleFrom" (to) #1 7)) (is Occupied ("NextHoleFrom" (to) #1 8)))
                                         (fromTo
                                             (from ("NextHoleFrom" (to) #1 8))
                                             (to (mapEntry Mover))
                                             count:(count at:("NextHoleFrom" (to) #1 8))
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
             (set Var "Direction" 0)
-       )
-   )		
+        )
+    )		
 )
 
 (define "AllRowsEmpty" 
@@ -65,8 +65,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Bay Khom"  
-    (players 2)  
+(game "Bay Khom" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 4
@@ -74,17 +74,17 @@
             (track "TrackCW" "0,5,E,9,4,W" loop:True)
             (track "TrackCCW" "0,1,E,9,8,W" loop:True)
             }
-       )
+        )
         (piece "Seed" Shared) 
         (map {(pair P1 LastSite) (pair P2 FirstSite)}) // kalahs (storage pits)
-        (regions P1 (sites Bottom))                    // P1 home
-        (regions P2 (sites Top))                       // P2 home 
+        (regions P1 (sites Bottom))          // P1 home
+        (regions P2 (sites Top))            // P2 home 
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start { 
-            (set Count 4 to:(union (sites P1)  (sites P2))) 
+            (set Count 4 to:(union (sites P1) (sites P2))) 
             (set Count 5 at:(mapEntry 1)) 
             (set Count 5 at:(mapEntry 2))
             (set RememberValue "OwnedP1" (sites Bottom))
@@ -101,34 +101,34 @@
                                 (if ("SameTurn")
                                     ("LastHoleSowed") 
                                     ("OwnedHoles")
-                               )
+                                )
                                 if:(is Occupied (from))
-                           )
+                            )
                             (then
                                 (sow
                                     "TrackCW"
                                     apply:("CaptureMove" "TrackCW" (set Var "Direction" 1))
-                               )
-                           )
-                       )
-                   )
+                                )
+                            )
+                        )
+                    )
                     (if (or (<= (var "Direction") 0) (= (var "Direction") 2))
                         (move Select
                             (from 
                                 (if ("SameTurn")
                                     ("LastHoleSowed") 
                                     ("OwnedHoles")
-                               )
+                                )
                                 if:(is Occupied (from))
-                           )
+                            )
                             (then
                                 (sow
                                     "TrackCCW"
                                     apply:("CaptureMove" "TrackCCW" (set Var "Direction" 2))
-                               )
-                           )
-                       )
-                   )
+                                )
+                            )
+                        )
+                    )
                     (then
                         (if ("AllRowsEmpty")
                             (and { 
@@ -137,46 +137,46 @@
                                         (from (site))
                                         (to (handSite P1))
                                         count:(count at:(site))
-                                   )
-                               )
+                                    )
+                                )
                                 (if (is Occupied (mapEntry P1))
                                     (fromTo
                                         (from (mapEntry P1))
                                         (to (handSite P1))
                                         count:(count at:(mapEntry P1))
-                                   )
-                               )
+                                    )
+                                )
                                 (forEach Site (sites P2)
                                     (fromTo
                                         (from (site))
                                         (to (handSite P2))
                                         count:(count at:(site))
-                                   )
-                               )
+                                    )
+                                )
                                 (if (is Occupied (mapEntry P2))
                                     (fromTo
                                         (from (mapEntry P2))
                                         (to (handSite P2))
                                         count:(count at:(mapEntry P2))
-                                   )
-                               )
+                                    )
+                                )
                                 (forget Value "OwnedP1" All)
                                 (forget Value "OwnedP2" All)
                             })
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             
             (end (if ("NoPieceOnBoard")
                     {
                     (if (> 9 (count Cell at:(handSite P1))) (result P2 Win))
                     (if (> 9 (count Cell at:(handSite P2))) (result P1 Win))
                     }
-               )
-           )
+                )
+            )
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-       )
+        )
         
         (phase "BetweenRounds"
             (play
@@ -185,7 +185,7 @@
                         (from (handSite Mover))
                         (to (mapEntry Mover))
                         count:5
-                   )
+                    )
                     (if (<= 4 (count Cell at:(handSite Mover)))
                         (move 
                             (from (handSite Mover))	
@@ -193,20 +193,20 @@
                             count:4
                             (then
                                 ("RemmemberOwnedHoles" (last To))	
-                           )
-                       )
-                   )
-               )	
-           )
+                            )
+                        )
+                    )
+                )	
+            )
             (nextPhase (all Passed) "Sowing")
-       )
+        )
         }
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Bày Khòm is a two-row mancala-style board game from Cambodia. It was observed in the mid-twentieth century, but it is possible that Khmer texts from the middle ages mention it as \"khbal camuon.\"")
@@ -217,9 +217,9 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Cambodia, from around 1940 to 1945.")
+        (origin "This game was played in Cambodia, from around 1940 to 1945.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

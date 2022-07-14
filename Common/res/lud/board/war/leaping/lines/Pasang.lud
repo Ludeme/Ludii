@@ -4,8 +4,8 @@
         (between if:(and
                 (is Occupied (between))
                 (!= 1 (state at:(between)))
-           )
-       )
+            )
+        )
         (to 
             if:(is Empty (to))
             (apply
@@ -15,7 +15,7 @@
                         (if (= (what at:(between)) (id "Marker" Shared))
                             (addScore Mover 1)
                             (addScore Mover 2)
-                       )
+                        )
                         (forEach Site (sites Board) 
                             (if (= 1 (state at:(site))) 
                                 (and
@@ -23,17 +23,17 @@
                                     (if (= (what at:(site)) (id "Marker" Shared))
                                         (addScore Mover 1)
                                         (addScore Mover 2)
-                                   )
-                               )
-                           )
-                       )
+                                    )
+                                )
+                            )
+                        )
                     })
                     (set State at:(between) 1)
-               )
-           )	
-       )
+                )
+            )	
+        )
         #2
-   )
+    )
 )
 
 (define "CaptureAgain"
@@ -41,34 +41,34 @@
         (if (and
                 (< (count MovesThisTurn) 6)
                 (can Move ("Move" (from (last To)))) 
-           )
+            )
             (moveAgain)
             (forEach Site (sites Board) 
                 (if (= 1 (state at:(site))) 
                     (set State at:(site) 0)
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (game "Pasang"
-    (players <Players:num>)  
+    (players <Players:num>) 
     (equipment { 
         (board 
             (add
                 (remove
                     (square 11)
                     vertices:{48 49 50 59 60 61 70 71 72}
-               )
+                )
                 edges:{
                 {0 12} {12 24} {24 36} {10 20} {20 30} {30 40} {75 87} {87 99} {99 111} {71 81} {81 91} {91 101} 
                 }
-           )
+            )
             use:Vertex
-       ) 	
+        ) 	
         (piece "Marker" Shared ("Move" (from) ("CaptureAgain")))
         (piece "Disc" Shared ("Move" (from) ("CaptureAgain")))
     })
@@ -85,10 +85,10 @@
                 (move Remove
                     (sites Corners)
                     (then (set Score Mover 1))
-               )
-           )
+                )
+            )
             (nextPhase "MainPhase")
-       )
+        )
         
         (phase "MainPhase"
             (play 
@@ -99,28 +99,28 @@
                                 (forEach Site (sites Board) 
                                     (if (= 1 (state at:(site))) 
                                         (set State at:(site) 0)
-                                   )
-                               )		
-                           )
-                       )
+                                    )
+                                )		
+                            )
+                        )
                         ("Move" (from (last To)) ("CaptureAgain"))
-                   )
+                    )
                     (forEach Piece Shared)
-               )
-           )
-       )
+                )
+            )
+        )
         }
         (end (if (no Moves Next) (byScore)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Players" <Players> args:{ <num> }
     {
-    (item "2"   <2>  "2 Players.")*   
-    (item "3"   <3>  "3 Players.")   
-    (item "4"   <4>  "4 Players.")   
+    (item "2"  <2> "2 Players.")*  
+    (item "3"  <3> "3 Players.")  
+    (item "4"  <4> "4 Players.")  
 })
 
 //------------------------------------------------------------------------------
@@ -134,7 +134,7 @@
         "Players/3"
         "Players/4"
         }
-   )*
+    )*
     
 })
 
@@ -145,15 +145,15 @@
     (info
         {
         (description "Pasang is a capturing game played in Brunei. The board is set up in a number of different common arrangements of pieces. It was generally played by women, and particularly when attending marriage, initiation, or circumcision ceremonies. The pieces were generally stores in a cup in the center of the board.")
-        (rules "11x11 intersecting lines, with the central nine points out of play. Diagonal lines connect the corners of the central square of the board to the outer corners. Played with  two to four players. Black and white stones fill the board, alternating color, with black in the corners of the board. The first player captures one of the stones on one of the corners of the board. Subsequent moves involve capturing a stone by hopping over it with an adjacent stone to an empty space. Multiple captures are possible, but only one, three, five, or seven are allowed in a turn. If an even number of captures is possible, the final capture cannot be taken. Players are not required to capture as many as may be possible. The game ends when no more captures are possible. The player with the highest score wins: black stones count as one, white as two.")
+        (rules "11x11 intersecting lines, with the central nine points out of play. Diagonal lines connect the corners of the central square of the board to the outer corners. Played with two to four players. Black and white stones fill the board, alternating color, with black in the corners of the board. The first player captures one of the stones on one of the corners of the board. Subsequent moves involve capturing a stone by hopping over it with an adjacent stone to an empty space. Multiple captures are possible, but only one, three, five, or seven are allowed in a turn. If an even number of captures is possible, the final capture cannot be taken. Players are not required to capture as many as may be possible. The game ends when no more captures are possible. The player with the highest score wins: black stones count as one, white as two.")
         (source "Bell 1973: 19-21.")
         (id "1379")
         (version "1.3.4")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in Brunei, around 1973.")
+        (origin "This game was played in Brunei, around 1973.")
         }
-   )
+    )
     
     (graphics {
         (show Edges Diagonal (colour Hidden))

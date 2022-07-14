@@ -2,8 +2,8 @@
     (apply 
         (remove 
             (to) 
-       )
-   ) 
+        )
+    ) 
 )
 
 (define "NextCanNotMove"
@@ -23,8 +23,8 @@
         (if 
             (= (state at:(last To)) 1) 
             "PieceHasMoved"
-       ) 
-   ) 
+        ) 
+    ) 
 )
 
 (define "PowerfulPieceOnColumnHasBeenRemoved" 
@@ -37,10 +37,10 @@
                 (if (and (or (= (column of:(to)) 3) (= (column of:(to)) 4)) (< (count Sites in:(sites Occupied by:Mover component:"Ferz_noCross")) 1))
                     True
                     False
-               )
-           )
-       )
-   )	
+                )
+            )
+        )
+    )	
 )
 
 (define "PromotePiece" 
@@ -53,17 +53,17 @@
                     (promote (last To) (piece (id "Elephant" Mover)))
                     (if (or (= (column of:(last To)) 3) (= (column of:(last To)) 4))
                         (promote (last To) (piece (id "Queen" Mover)))
-                   )
-               )
-           )
-       )
-   )
+                    )
+                )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (game "Hindustani Chess" 
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8))
         
@@ -78,15 +78,15 @@
                             (and 
                                 (is In (to) (sites Mover "Promotion"))
                                 ("PowerfulPieceOnColumnHasBeenRemoved")
-                           )
-                       )
+                            )
+                        )
                         (not ("IsFriendAt" (to)))
-                   )
+                    )
                     (apply (remove (to)))
-               )
+                )
                 (then ("PromotePiece"))
-           )
-       )
+            )
+        )
         (piece "Boat" Each 
             (move
                 Slide 
@@ -94,9 +94,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "King_noCross" Each 
             (or
                 (move
@@ -104,8 +104,8 @@
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
-                   )
-               )
+                    )
+                )
                 (if (and (not ("IsInCheck" "King_noCross" Mover)) "HasNeverMoved")
                     (move
                         Leap 
@@ -113,12 +113,12 @@
                         (to 
                             if:(not ("IsFriendAt" (to))) 
                             "CaptureToPiece"
-                       ) 
-                   )
-               )
+                        ) 
+                    )
+                )
                 "RememberPieceHasMoved"
-           )
-       )
+            )
+        )
         (piece "Elephant" Each
             (move
                 Slide 
@@ -126,9 +126,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Horse" Each 
             (move
                 Leap 
@@ -136,22 +136,22 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Ferz_noCross" Each 
             (move
                 Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
         }
-   )  
+    ) 
     (rules 
         (start
             { 
@@ -160,7 +160,7 @@
             (place "Boat1" {"A1" "H1"}) (place "Horse1" {"B1" "G1"}) (place "Elephant1" {"C1" "F1"}) (place "Ferz_noCross1" coord:"D1") (place "King_noCross1" coord:"E1" state:1) 
             (place "Boat2" {"A8" "H8"}) (place "Horse2" {"B8" "G8"}) (place "Elephant2" {"C8" "F8"}) (place "Ferz_noCross2" coord:"E8") (place "King_noCross2" coord:"D8" state:1) 
             }
-       )
+        )
         
         (play (do (forEach Piece) ifAfterwards:(and (not (no Moves Next)) (not ("IsInCheck" "King_noCross" Mover)))))
         
@@ -169,14 +169,14 @@
             (if (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
+            ) 
             (if (= (count Pieces Next) 1) (result Mover Draw)) 
             (if (= (count Pieces Next) (+ 1 (count Sites in:(sites Occupied by:Next component:"Pawn")))) (result Mover Draw)) 
             }
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -192,9 +192,9 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1885.")
+        (origin "This game was played in India, around 1885.")
         }
-   )
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.825)
@@ -208,6 +208,6 @@
     
     (ai
         "Hindustani Chess_ai"
-   )
+    )
 )
 

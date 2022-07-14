@@ -1,5 +1,5 @@
-(game "Pon Chochotl"  
-    (players 2)  
+(game "Pon Chochotl" 
+    (players 2) 
     (equipment {
         ("AlquerqueBoard" 5 5)
         (piece "Corn" P1 "StepToEmpty") 
@@ -8,28 +8,28 @@
                 (if ("SameTurn") 
                     (move Pass) 
                     ("StepToEmpty")
-               ) 
-           ) 
-       )
-    })  
+                ) 
+            ) 
+        )
+    }) 
     (rules 
         (start { 
-            (place  "Corn1" (union {(expand (sites Bottom)) (sites {"A3" "E3"})}))
+            (place "Corn1" (union {(expand (sites Bottom)) (sites {"A3" "E3"})}))
             (place "Bean2" (centrePoint))
         })
         
         (play (forEach Piece)) 
         
         (end ("NoMovesLossAndLessNumPiecesPlayerLoss" P1 9))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Play Rules" <Jump> args:{ <bean> }
     {
-    (item "No multiple hops" <("HopCapture")>                          "The coyote can jump to capture.")*   
-    (item "Multiple hops"    <("HopSequenceCapture" ~ ~ at:EndOfTurn)> "The coyote can jump a sequence of pieces to capture.") 
+    (item "No multiple hops" <("HopCapture")>             "The coyote can jump to capture.")*  
+    (item "Multiple hops"  <("HopSequenceCapture" ~ ~ at:EndOfTurn)> "The coyote can jump a sequence of pieces to capture.") 
     }
 )
 
@@ -65,9 +65,9 @@
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in Southwest United States, around 1907.")
+        (origin "This game was played in Southwest United States, around 1907.")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Yellow))
@@ -76,6 +76,6 @@
     
     (ai 
         "Pon Chochotl_ai"
-   )
+    )
     
 )

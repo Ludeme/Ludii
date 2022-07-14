@@ -19,27 +19,27 @@
                         (if
                             (< 2 (count Sites in:(sites Around (last To) NotEmpty Orthogonal)))
                             (moveAgain)
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         (end 
             (if 
                 (is Full) 
                 (byScore)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "5"    <7>  "A 5x5 playing area is currently selected") 
-    (item "7"    <9>  "A 7x7 playing area is currently selected")*
-    (item "9"    <11>  "A 9x9 playing area is currently selected")
+    (item "5"  <7> "A 5x5 playing area is currently selected") 
+    (item "7"  <9> "A 7x7 playing area is currently selected")*
+    (item "9"  <11> "A 9x9 playing area is currently selected")
     }
 )
 
@@ -59,11 +59,11 @@
         (credit "Michael Amundsen")
         (date "2010")
         }
-   )
+    )
     (graphics
         (player Colour Neutral (colour Grey))
-   )
+    )
     (ai
         "Flume_ai"
-   )
+    )
 )

@@ -13,15 +13,15 @@
                 ("SiteToMoveOnTrack" from:(from) #1)
                 if:(not (and (is In (to) (sites "SafeSites")) ("IsEnemyAt" (to))))
                 ("HittingStackCapture" (handSite (who at:(to) level:(level))))
-           )
-       )
-   )		
+            )
+        )
+    )		
 )
 
 //------------------------------------------------------------------------------
 
-(game "Sokkattan"  
-    (players 4)  
+(game "Sokkattan" 
+    (players 4) 
     (equipment { 
         ("PachisiBoard"
             {
@@ -30,14 +30,14 @@
             (track "Track3" "96,52,N,W,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,W1,S7,End" P3 directed:True)
             (track "Track4" "96,27,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W7,End" P4 directed:True)
             }
-       )
+        )
         (hand Each) 
         ("StickDice" 6)
         (piece "Pawn" Each ("Move" ("ThrowValue")))
         (regions "SafeSites" (sites {67 63 65 23 38 3 82 84 86 30 47 15}))
         (map "Throw" {(pair 0 6) (pair 1 10) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 25) (pair 6 12)})
         (map "Entry" {(pair P1 67) (pair P2 23) (pair P3 82) (pair P4 30)})
-    })  
+    }) 
     (rules 
         (start {
             (set Team 1 {P1 P3})
@@ -56,40 +56,40 @@
                             (move
                                 (from (handSite Mover))
                                 (to (mapEntry "Entry" Mover))
-                           )
-                       )
+                            )
+                        )
                         (forEach Piece ("Move" 1))
                         }
                         (then 
                             (and 
                                 (moveAgain)
                                 (set Var "ExtraOne" 0)
-                           )
-                       )
-                   )
+                            )
+                        )
+                    )
                     (or
                         (if (and (is Occupied (handSite Mover)) ("IsSpecialThrow"))
                             (move
                                 (from (handSite Mover))
                                 (to (mapEntry "Entry" Mover))
-                           )
-                       )
+                            )
+                        )
                         (forEach Piece)
-                   )
-               )
+                    )
+                )
                 (then
                     (if (not ("StopThrow")) 
                         (and
                             (if ("IsSpecialThrow") (set Var "ExtraOne" 1))
                             (moveAgain)
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         
         (end ("EscapeTeamWin"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -106,9 +106,9 @@
         (version "1.3.4")
         (classification "board/race/reach")
         (credit "Eric Piette")
-        (origin  "This game was played in Sri Lanka, around 1906.")
+        (origin "This game was played in Sri Lanka, around 1906.")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Red))

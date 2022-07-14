@@ -4,18 +4,18 @@
 
 //------------------------------------------------------------------------------
 
-(game "Kalah"  
-    (players 2)  
+(game "Kalah" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns"
             (track "Track" "0,ESE,E,ENE,WNW,N,W" loop:True)
-       )
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-        (map {(pair P1 LastSite) (pair P2 FirstSite)})  // kalahs (storage pits)
+        )
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+        (map {(pair P1 LastSite) (pair P2 FirstSite)}) // kalahs (storage pits)
         (piece "Seed" Shared)
-    })  
+    }) 
     (rules 
         
         (start (set Count 4 to:(union (sites P1) (sites P2))))
@@ -24,7 +24,7 @@
                 (from 
                     (sites Mover) 
                     if:(> (count at:(from)) 0)
-               ) 
+                ) 
                 (then 
                     (sow
                         apply:(if (= (to) (mapEntry (mover)))
@@ -39,23 +39,23 @@
                                         (from (to)) 
                                         (to (mapEntry (mover))) 
                                         count:(count at:(to))
-                                   ) 
+                                    ) 
                                     (fromTo 
                                         (from ("OppositePit" (to))) 
                                         (to (mapEntry (mover))) 
                                         count:(count at:("OppositePit" (to)))
-                                   ) 
-                               ) 
-                           )
-                       )
+                                    ) 
+                                ) 
+                            )
+                        )
                         skipIf:(= (to) (mapEntry (next)))
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -73,7 +73,7 @@
         (credit "Eric Piette")
         (date "01-01-1940")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)
@@ -81,6 +81,6 @@
     
     (ai 
         "Kalah_ai"
-   )
+    )
     
 )

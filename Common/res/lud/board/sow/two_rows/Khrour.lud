@@ -3,18 +3,18 @@
 
 //------------------------------------------------------------------------------
 
-(game "Khrour"  
-    (players 2)  
+(game "Khrour" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 <Board:size> store:None
             (track "Track" "0,E,N,W" loop:True)
-       )
+        )
         (piece "Seed" Shared)
         (hand Each)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-    })  
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+    }) 
     (rules 
         
         (start {
@@ -30,7 +30,7 @@
                         (from 
                             (sites Mover)
                             if:(and (is Occupied (from)) (is In (from) ("PlayableSites")))
-                       )
+                        )
                         (then
                             (sow
                                 apply:(if
@@ -42,16 +42,16 @@
                                             (= 8 (count at:(to)))
                                         })
                                         (is In (to) ("PlayableSites"))
-                                   )
+                                    )
                                     (fromTo
                                         (from (to))
                                         (to (handSite Mover))
                                         count:(count at:(to))
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     }
                     (then
                         (if ("NoPieceOnBoard")
@@ -59,22 +59,22 @@
                             (forEach Site (difference (sites Board) ("PlayableSites"))
                                 (if (<= <Board:init> (count at:(site)))
                                     (remember Value "Playable" (site))
-                               )
-                           )
-                       )
-                   )
-               )
-           )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
             (end (if ("NoPieceOnBoard")
                     {
                     (if (= 0 (count Cell at:(handSite P1))) (result P2 Win))
                     (if (= 0 (count Cell at:(handSite P2))) (result P1 Win))
                     }
-               )
-           )
+                )
+            )
             
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-       )
+        )
         
         (phase "BetweenRounds"
             (play
@@ -85,29 +85,29 @@
                             (to (sites Mover) if:(is Empty (to)))
                             count:<Board:init>
                             (then (remember Value "Playable" (last To)))
-                       )
+                        )
                         (move
                             (from (handSite Mover))
                             (to (sites Mover) if:(is Empty (to)))
                             count:(count Cell at:(handSite Mover))
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (nextPhase (all Passed) "Sowing")
-       )
+        )
         }
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> <init>}
     {
-    (item "2"   <2> <4>  "Each player has 2 holes.")  
-    (item "3"   <3> <6>  "Each player has 3 holes.")   
-    (item "4"   <4> <8> "Each player has 4 holes.")   
-    (item "6"   <6> <12>  "Each player has 6 holes.")   
+    (item "2"  <2> <4> "Each player has 2 holes.") 
+    (item "3"  <3> <6> "Each player has 3 holes.")  
+    (item "4"  <4> <8> "Each player has 4 holes.")  
+    (item "6"  <6> <12> "Each player has 6 holes.")  
 })
 
 //------------------------------------------------------------------------------
@@ -118,13 +118,13 @@
         "Board Size/2"
         }
         variations:{"Board Size/3" "Board Size/4" "Board Size/6"}
-   )*
+    )*
     
 })
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Khrour is a two-row mancala-style board game played in West Africa. It is typically played in holes scooped out of the sand, rather than on an actual game board.")
@@ -138,7 +138,7 @@
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

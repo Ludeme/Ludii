@@ -1,12 +1,12 @@
-(game "Zigulzoqge"  
-    (players <Board:players>)  
+(game "Zigulzoqge" 
+    (players <Board:players>) 
     
     (equipment { 
         (mancalaBoard <Board:players> <Board:size> store:None)
         (piece "Seed" Shared)
         (hand Each)
         <Board:regions>
-    })  
+    }) 
     (rules 
         
         (start (set Count 5 to:(sites Board)))
@@ -20,33 +20,33 @@
                                 ("SameTurn") 
                                 (sites {(last To)})
                                 (sites Mover) 
-                           ) 
+                            ) 
                             if:(> (count at:(from)) 0)
-                       )
+                        )
                         (to 
                             (if (is In (from) (sites Right))
                                 (if (and (is In (last To) (sites Right)) (is In (last From) (sites Right)))
                                     (if (is In (from) (sites Top))
                                         (sites {(ahead (from) steps:1 W)})
                                         (sites {(ahead (from) steps:1 N) (ahead (from) steps:1 W)})
-                                   )
+                                    )
                                     (sites {(ahead (from) steps:1 N)})
-                               )
+                                )
                                 (if (is In (from) (sites Left))
                                     (if (and (is In (last To) (sites Left)) (is In (last From) (sites Left)))
                                         (if (is In (from) (sites Bottom))
                                             (sites {(ahead (from) steps:1 E)})
                                             (sites {(ahead (from) steps:1 S) (ahead (from) steps:1 E)})
-                                       )
+                                        )
                                         (sites {(ahead (from) steps:1 S)})
-                                   )
+                                    )
                                     (if (= 1 (var "CurrentDirection"))
                                         (sites {(ahead (from) steps:1 W)})
                                         (sites {(ahead (from) steps:1 E)})
-                                   )
-                               )
-                           )
-                       )
+                                    )
+                                )
+                            )
+                        )
                         (then
                             (and {
                                 (if ("SameTurn")
@@ -59,12 +59,12 @@
                                                     (set Var "CurrentDirection" 1)
                                                     (if (is In (last To) (sites Left))
                                                         (set Var "CurrentDirection" 0)
-                                                   )
-                                               )
-                                           )
+                                                    )
+                                                )
+                                            )
                                             (set Var "CurrentDirection" 0)
-                                       )
-                                   )
+                                        )
+                                    )
                                     (and
                                         (set Var "Count" (- (count at:(last From)) 1))
                                         (if (< 1 (count at:(last From)))
@@ -74,23 +74,23 @@
                                                     (set Var "CurrentDirection" 1)
                                                     (if (is In (last To) (sites Left))
                                                         (set Var "CurrentDirection" 0)
-                                                   )
-                                               )
-                                           )
+                                                    )
+                                                )
+                                            )
                                             (set Var "CurrentDirection" 0)
-                                       )
-                                   )
-                               )
+                                        )
+                                    )
+                                )
                                 (fromTo
                                     (from (last From))
                                     (to (last To))
                                     count:(if ("SameTurn") (var "Count") (count at:(last From)))
-                               )
+                                )
                                 (if (>= 0 (var "MainDirection")) (set Var "MainDirection" 1))
                             })
-                       )
-                   )
-               )
+                        )
+                    )
+                )
                 (if (!= 1 (var "MainDirection"))
                     (move Select
                         (from 
@@ -98,33 +98,33 @@
                                 ("SameTurn") 
                                 (sites {(last To)})
                                 (sites Mover) 
-                           ) 
+                            ) 
                             if:(> (count at:(from)) 0)
-                       )
+                        )
                         (to 
                             (if (is In (from) (sites Left))
                                 (if (and (is In (last To) (sites Left)) (is In (last From) (sites Left)))
                                     (if (is In (from) (sites Bottom))
                                         (sites {(ahead (from) steps:1 E)})
                                         (sites {(ahead (from) steps:1 S) (ahead (from) steps:1 E)})
-                                   )
+                                    )
                                     (sites {(ahead (from) steps:1 S)})
-                               )
+                                )
                                 (if (is In (from) (sites Right))
                                     (if (and (is In (last To) (sites Right)) (is In (last From) (sites Right)))
                                         (if (is In (from) (sites Top))
                                             (sites {(ahead (from) steps:1 W)})
                                             (sites {(ahead (from) steps:1 N) (ahead (from) steps:1 W)})
-                                       )
+                                        )
                                         (sites {(ahead (from) steps:1 N)})
-                                   )
+                                    )
                                     (if (= 1 (var "CurrentDirection"))
                                         (sites {(ahead (from) steps:1 E)})
                                         (sites {(ahead (from) steps:1 W)})
-                                   )
-                               )
-                           )
-                       )
+                                    )
+                                )
+                            )
+                        )
                         (then
                             (and {
                                 (if ("SameTurn")
@@ -137,12 +137,12 @@
                                                     (set Var "CurrentDirection" 1)
                                                     (if (is In (last To) (sites Right))
                                                         (set Var "CurrentDirection" 0)
-                                                   )
-                                               )
-                                           )
+                                                    )
+                                                )
+                                            )
                                             (set Var "CurrentDirection" 0)
-                                       )
-                                   )
+                                        )
+                                    )
                                     (and
                                         (set Var "Count" (- (count at:(last From)) 1))
                                         (if (< 1 (count at:(last From)))
@@ -152,60 +152,60 @@
                                                     (set Var "CurrentDirection" 1)
                                                     (if (is In (last To) (sites Right))
                                                         (set Var "CurrentDirection" 0)
-                                                   )
-                                               )
-                                           )
+                                                    )
+                                                )
+                                            )
                                             (set Var "CurrentDirection" 0)
-                                       )	
-                                   )
-                               )
+                                        )	
+                                    )
+                                )
                                 (fromTo
                                     (from (last From))
                                     (to (last To))
                                     count:(if ("SameTurn") (var "Count") (count at:(last From)))
-                               )
+                                )
                                 (if (>= 0 (var "MainDirection")) (set Var "MainDirection" 2))
                             })
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         
         (end
-            (if  (no Moves Next)
+            (if (no Moves Next)
                 (result Mover Win)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Row Size and Players" <Board> args:{ <players> <size> <regions>}
     {
-    (item "2 Players and 4 Holes per row" <2>  <4> 
+    (item "2 Players and 4 Holes per row" <2> <4> 
         <
         (regions P1 (sites Row 0)) // P1 home
         (regions P2 (sites Row 1)) // P2 home
         >
     "2 players and each row has 4 holes.") 
     
-    (item "2 Players and 5 Holes per row" <2>  <5> 
+    (item "2 Players and 5 Holes per row" <2> <5> 
         <
         (regions P1 (sites Row 0)) // P1 home
         (regions P2 (sites Row 1)) // P2 home
         >
     "2 players and each row has 5 holes.") 
     
-    (item "2 Players and 6 Holes per row" <2>  <6> 
+    (item "2 Players and 6 Holes per row" <2> <6> 
         <
         (regions P1 (sites Row 0)) // P1 home
         (regions P2 (sites Row 1)) // P2 home
         >
     "2 players and each row has 6 holes.") 
     
-    (item "3 Players and 4 Holes per row" <3>  <4> 
+    (item "3 Players and 4 Holes per row" <3> <4> 
         <
         (regions P1 (sites Row 0)) // P1 home
         (regions P2 (sites Row 1)) // P2 home
@@ -213,7 +213,7 @@
         >
     "3 players and each row has 4 holes.") 
     
-    (item "3 Players and 5 Holes per row" <3>  <5> 
+    (item "3 Players and 5 Holes per row" <3> <5> 
         <
         (regions P1 (sites Row 0)) // P1 home
         (regions P2 (sites Row 1)) // P2 home
@@ -221,7 +221,7 @@
         >
     "3 players and each row has 5 holes.") 
     
-    (item "3 Players and 6 Holes per row" <3>  <6> 
+    (item "3 Players and 6 Holes per row" <3> <6> 
         <
         (regions P1 (sites Row 0)) // P1 home
         (regions P2 (sites Row 1)) // P2 home
@@ -229,7 +229,7 @@
         >
     "3 players and each row has 6 holes.") 
     
-    (item "4 Players and 4 Holes per row" <4>  <4> 
+    (item "4 Players and 4 Holes per row" <4> <4> 
         <
         (regions P1 (sites Row 0)) // P1 home
         (regions P2 (sites Row 1)) // P2 home
@@ -238,7 +238,7 @@
         >
     "4 players and each row has 4 holes.")
     
-    (item "4 Players and 5 Holes per row" <4>  <5> 
+    (item "4 Players and 5 Holes per row" <4> <5> 
         <
         (regions P1 (sites Row 0)) // P1 home
         (regions P2 (sites Row 1)) // P2 home
@@ -247,7 +247,7 @@
         >
     "4 players and each row has 5 holes.") 
     
-    (item "4 Players and 6 Holes per row" <4>  <6> 
+    (item "4 Players and 6 Holes per row" <4> <6> 
         <
         (regions P1 (sites Row 0)) // P1 home
         (regions P2 (sites Row 1)) // P2 home
@@ -273,7 +273,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Ziguloqge is a mancala-style board game played by the Hani people of Yunnan, China. It is unique among mancala games because the number of row is detemined by the number of players, and players can choose which rows to sow their counters along, rather than sticking to a predetermined track.")
@@ -284,9 +284,9 @@
         (version "1.3.2")
         (classification "board/sow/four rows/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in China, around 1992.")
+        (origin "This game was played in China, around 1992.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

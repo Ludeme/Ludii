@@ -1,5 +1,5 @@
 (game "Shatranj al-Jawarhiya"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (rectangle 8 7)) 		
         (piece "Mouth" Each (move [#]))
@@ -13,7 +13,7 @@
         (start [#])
         (play [#])
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -31,7 +31,7 @@
         (classification "board/war/replacement/checkmate/chaturanga/reconstruction")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (board Style Chess)

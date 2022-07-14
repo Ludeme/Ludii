@@ -4,31 +4,31 @@
             (intersection 
                 (sites Incident Cell of:Cell at:(if (!= (between) Off) (between) (from))) 
                 (sites Incident Cell of:Cell at:(to))
-           )
+            )
             if:(not (is Empty (site)))
-       )
-   )
+        )
+    )
 )
 
 (define "ToEmptyAndBlocked"
     (and 
         (is Empty (to))
         (= 2 ("NumPiecesBetweenDiagonalStep"))
-   )
+    )
 )
 
 (define "NotBlockedOrNotMaxSlide"
     (or
         (= (between) (to)) 
         (!= 2 ("NumPiecesBetweenDiagonalStep"))
-   )
+    )
 )
 
 (define "ToEmptyAndNotBlocked"
     (and 
         (is Empty (to))
         (!= 2 ("NumPiecesBetweenDiagonalStep"))
-   )
+    )
 )
 
 (define "QueenMove"
@@ -39,21 +39,21 @@
             (to 
                 if:("ToEmptyAndBlocked")
                 (apply if:("NotBlockedOrNotMaxSlide"))
-           )
-       )
+            )
+        )
         #1
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Hex Amazons"  
-    (players 2)  
+(game "Hex Amazons" 
+    (players 2) 
     (equipment { 
         (board (hex 7)) 
         (piece "Queen" Each ("QueenMove" (then (moveAgain))))
         (piece "Dot" Neutral)
-    })  
+    }) 
     (rules 
         (start { 
             (place "Queen1" {"B2" "G2" "E5" "B7"})
@@ -64,7 +64,7 @@
         (phase "Opening" P1
             (play (forEach Piece "QueenMove"))
             (nextPhase Mover "Playing")
-       )
+        )
         (phase "Playing" 
             (play 
                 (if ("SameTurn")
@@ -73,16 +73,16 @@
                         (move Shoot (piece "Dot0") Diagonal
                             (between if:(is Empty (between)))
                             (to if:("ToEmptyAndNotBlocked"))
-                       )
-                   )
+                        )
+                    )
                     (forEach Piece)
-               )
-           )
-       )
+                )
+            )
+        )
         }
         
-        (end ("BlockWin"))  
-   )
+        (end ("BlockWin")) 
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -107,7 +107,7 @@
         (credit "Eric Piette")
         (date "11-09-2020")
         }
-   )
+    )
     
     (graphics {
         (piece Scale "Dot" 0.333)
@@ -116,5 +116,5 @@
     
     (ai
         "Hex Amazons_ai"
-   )
+    )
 )

@@ -12,11 +12,11 @@
                 (or
                     (not ("FromIsOnTheRegionToFill" #1))
                     ("ToIsOnTheRegionToFill" (to)) 
-               )
-           )
-       )
+                )
+            )
+        )
         #2		
-   )
+    )
 ) 
 
 (define "HopSequence" ("Hop" #1 (then (if (can Move ("Hop" (last To))) (moveAgain)))))
@@ -26,17 +26,17 @@
 //------------------------------------------------------------------------------
 
 (game "Chinese Checkers"
-    (players <Players:num>)  
+    (players <Players:num>) 
     (equipment { 
         (board (hex Star ("Dim")))
         (piece "Marker" Each) 
         <Players:home>
-    })  
+    }) 
     (rules 
         <Players:start>
         
         phases:{
-        (phase "Movement"  
+        (phase "Movement" 
             (play 
                 (forEach Piece 
                     (or 
@@ -48,33 +48,33 @@
                                     (or
                                         (not ("FromIsOnTheRegionToFill" (from)))
                                         ("ToIsOnTheRegionToFill" (to))
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           ) 
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            ) 
             (nextPhase (is Mover (next)) "MultiJump")
-       ) 
+        ) 
         (phase "MultiJump" (play 
                 (or 
                     ("HopSequence" (last To)) 
                     (move Pass)
-               )
-           ) 
+                )
+            ) 
             (nextPhase (not (is Mover (next))) "Movement")
-       ) 
+        ) 
         }
         
         (end ("FillWin" (sites (player (mapEntry (mover))))))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Players" <Players> args:{ <num> <home> <start>} {
-    (item "2 (a)"    
+    (item "2 (a)"  
         <2> 
         <
         (regions "Home" P1 (expand origin:(coord row:0 column:("Dim")) steps:(- ("Dim") 1)))
@@ -88,9 +88,9 @@
         })
         >
         "Two players occupy home regions on opposite sides, four home regions are empty."
-   ) 
+    ) 
     
-    (item "2 (b)"    
+    (item "2 (b)"  
         <2> 
         <
         (regions "Home" P1
@@ -99,14 +99,14 @@
                 (expand origin:(coord row:(* ("Dim") 3) column:(* ("Dim") 4)) steps:(- ("Dim") 1))
                 (expand origin:(coord row:(* ("Dim") 3) column:("Dim")) steps:(- ("Dim") 1))
             })
-       )
+        )
         (regions "Home" P2 
             (union {
                 (expand origin:(coord row:("Dim") column:(* ("Dim") 3)) steps:(- ("Dim") 1))
                 (expand origin:(coord row:(* ("Dim") 4) column:(* ("Dim") 3)) steps:(- ("Dim") 1))
                 (expand origin:(coord row:("Dim") column:0) steps:(- ("Dim") 1))
             })
-       )
+        )
         (map {(pair 1 2) (pair 2 1) })
         >
         <
@@ -116,9 +116,9 @@
         })
         >
         "Two players occupy three regions each, alternating around board, i.e. all six home regions start full."
-   )  
+    ) 
     
-    (item "3"       
+    (item "3"    
         <3> 
         <
         (regions "Home" P1 (expand origin:(coord row:0 column:("Dim")) steps:(- ("Dim") 1)))
@@ -137,10 +137,10 @@
         })
         >
         "Three players occupy home regions equally spaced around board, three home regions are empty."
-   )   
+    )  
     
-    (item "4"        
-        <4>  
+    (item "4"    
+        <4> 
         <
         (regions "Home" P1 (expand origin:(coord row:("Dim") column:(* ("Dim") 3)) steps:(- ("Dim") 1)))
         (regions "Home" P2 (expand origin:(coord row:(* ("Dim") 3) column:(* ("Dim") 4)) steps:(- ("Dim") 1)))
@@ -157,10 +157,10 @@
         })
         >
         "Four players occupy home regions, two opposite home regions are empty."
-   )   
+    )  
     
-    (item "5"       
-        <5>    
+    (item "5"    
+        <5>  
         <
         (regions "Home" P1 (expand origin:(coord row:0 column:("Dim")) steps:(- ("Dim") 1)))
         (regions "Home" P2 (expand origin:(coord row:("Dim") column:(* ("Dim") 3)) steps:(- ("Dim") 1)))
@@ -180,10 +180,10 @@
         })
         >
         "Five players occupy home regions, one is empty."
-   )   
+    )  
     
-    (item "6"       
-        <6>  
+    (item "6"    
+        <6> 
         <
         (regions "Home" P1 (expand origin:(coord row:0 column:("Dim")) steps:(- ("Dim") 1)))
         (regions "Home" P2 (expand origin:(coord row:("Dim") column:(* ("Dim") 3)) steps:(- ("Dim") 1)))
@@ -204,18 +204,18 @@
         })
         >
         "Six players occupy home regions (standard game)."
-   )**   
+    )**  
 })
 
 (option "Board Size" <Board> args:{ <size> } {
-    (item "1"    <1>   "The game is played on a board of size 1.")  
-    (item "2"    <2>   "The game is played on a board of size 2.")  
-    (item "3"    <3>   "The game is played on a board of size 3.")   
-    (item "4"    <4>   "The game is played on a board of size 4.")**   
-    (item "5"    <5>   "The game is played on a board of size 5.")   
-    (item "6"    <6>   "The game is played on a board of size 6.")   
-    (item "7"    <7>   "The game is played on a board of size 7.")   
-    (item "8"    <8>   "The game is played on a board of size 8.")   
+    (item "1"  <1>  "The game is played on a board of size 1.") 
+    (item "2"  <2>  "The game is played on a board of size 2.") 
+    (item "3"  <3>  "The game is played on a board of size 3.")  
+    (item "4"  <4>  "The game is played on a board of size 4.")**  
+    (item "5"  <5>  "The game is played on a board of size 5.")  
+    (item "6"  <6>  "The game is played on a board of size 6.")  
+    (item "7"  <7>  "The game is played on a board of size 7.")  
+    (item "8"  <8>  "The game is played on a board of size 8.")  
 })
 
 //------------------------------------------------------------------------------
@@ -233,7 +233,7 @@
         (classification "board/race/fill")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (board Colour InnerEdges (colour 120 190 240))
@@ -250,6 +250,6 @@
     
     (ai 
         "Chinese Checkers_ai"
-   )
+    )
     
 )

@@ -2,7 +2,7 @@
     (move
         Remove
         (forEach (sites Occupied by:Next container:"Board") if:(not (is Line 3 through:(site))))
-   )
+    )
 )
 
 (define "IfLine3MoveAgain" 
@@ -10,8 +10,8 @@
         (if 
             (is Line 3) 
             (moveAgain)
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -27,27 +27,27 @@
                     (concentric Square rings:3 joinCorners:True)
                     vertices:{{0 0}}
                     edges:{{11 24} {16 24} {7 24} {12 24}}
-               )
+                )
                 edges:{{3 6} {8 5} {17 20} {15 18}}
-           )
+            )
             use:Vertex
-       ) 
+        ) 
         (hand Each)
         (piece "Marker" Each 
             (if (> (count Pieces Mover) 3)
                 (move 
                     Step 
                     (to if:(is Empty (to))) 
-               )
+                )
                 (move
                     (from)
                     (to (sites Empty)) 
-               )
+                )
                 "IfLine3MoveAgain" 
-           )
-       ) 
+            )
+        ) 
         }
-   )  
+    ) 
     (rules 
         (start (place "Marker" "Hand" count:12))
         
@@ -60,24 +60,24 @@
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
                         "IfLine3MoveAgain" 
-                   )  
-               )
-           ) 
+                    ) 
+                )
+            ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-       )
+        )
         
         (phase "Movement" 
             (play 
                 (if "SameTurn"
                     "RemoveEnemyPiece"
                     (forEach Piece)
-               )
-           )
-       )
+                )
+            )
+        )
         }
         
         (end (if (<= (count Pieces Next) 2) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -94,9 +94,9 @@
         (version "1.3.4")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in Lesotho, from around 1899 to 2002.")
+        (origin "This game was played in Lesotho, from around 1899 to 2002.")
         }
-   )
+    )
     
     (graphics {
         
@@ -104,5 +104,5 @@
     
     (ai
         "Morabaraba_ai"
-   )
+    )
 )

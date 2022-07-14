@@ -3,10 +3,10 @@
         (or 
             (= (what at:(handSite (mover))) (id "Square0")) 
             (= (what at:(handSite (mover))) (mover))
-       )
+        )
         (add (piece (mover)) (to (last To)))
         (add (piece (next)) (to (last To)))
-   )
+    )
     (remove (handSite (mover)))
 )
 
@@ -19,11 +19,11 @@
                 (fromTo 
                     (from (last To)) 
                     (to (handSite (mover)))
-               ) 
+                ) 
                 (moveAgain)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "LastRow"
@@ -40,10 +40,10 @@
             (intersection 
                 (sites #1)
                 #2
-           )
+            )
             (sites {(last To)})
-       )
-   )
+        )
+    )
 )
 
 (define "Push" 
@@ -55,14 +55,14 @@
                 (push (from (last To)) #2) 
                 "CompleteLineWithPieceTaken"
             })
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Pushing Me XO"  
-    (players 2)  
+(game "Pushing Me XO" 
+    (players 2) 
     (equipment { 
         (board (square 5)) 
         (piece "Disc" P1) 
@@ -70,7 +70,7 @@
         (piece "Square" Neutral)
         (hand Each)
         }
-   )  
+    ) 
     
     (rules 
         (start (place "Square0" (sites Board)))
@@ -83,14 +83,14 @@
                     ("Push" ("From" Top "LastColumn") S)
                 })
                 "TakeAPieceInOuterSites"
-           )
-       )
+            )
+        )
         (end {
             (if (is Line 5 throughAny:(sites LastTo) what:(next)) (result Next Win))
-            (if (is Line 5 throughAny:(sites LastTo)  what:(mover)) (result Mover Win))
+            (if (is Line 5 throughAny:(sites LastTo) what:(mover)) (result Mover Win))
             }
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -114,7 +114,7 @@
         (publisher "BSiri Games & Puzzles")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Gold))
@@ -128,6 +128,6 @@
     
     (ai 
         "Pushing Me XO_ai"
-   )
+    )
     
 )

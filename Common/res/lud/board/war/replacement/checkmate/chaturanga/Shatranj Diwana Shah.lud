@@ -7,9 +7,9 @@
         (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
-           )
-       )
-   ) 
+            )
+        )
+    ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -19,8 +19,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-       )
-   )
+        )
+    )
 )
 
 (define "HasNeverMoved"
@@ -36,8 +36,8 @@
         (if 
             (= (state at:(last To)) 1) 
             "PieceHasMoved"
-       ) 
-   ) 
+        ) 
+    ) 
 )
 
 (define "PromotedPiece" 
@@ -50,16 +50,16 @@
                 (if (and (= (column of:(last To)) 3) (!= 1 (count Pieces Mover "Queen")))
                     (id "Queen" Mover)
                     Undefined
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Shatranj Diwana Shah"  
-    (players 2)  
+(game "Shatranj Diwana Shah" 
+    (players 2) 
     (equipment { 
         (board (square 8)) 
         
@@ -69,18 +69,18 @@
                     "StepForwardToEmpty" 
                     "CaptureForwardDiagonal"
                     }
-               )
+                )
                 ifAfterwards:(if (is In (last To) (sites Mover "Promotion"))
                     (!= Undefined ("PromotedPiece"))
                     True
-               )
+                )
                 (then
                     (if (is In (last To) (sites Mover "Promotion")) 
                         (promote (last To) (piece "PromotedPiece"))
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         
         (piece "Boat" P2 
             (move
@@ -89,9 +89,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "King_noCross" Each
             (if (is Mover P1)
                 (or
@@ -101,24 +101,24 @@
                         (to 
                             if:(not ("IsFriendAt" (to))) 
                             "CaptureToPiece"
-                       ) 
-                   ) 
+                        ) 
+                    ) 
                     (move
                         Slide 
                         (to 
                             if:("IsEnemyAt" (to)) 
                             "CaptureToPiece"
-                       ) 
-                   )  
-               )
+                        ) 
+                    ) 
+                )
                 (or
                     (move
                         Step 
                         (to 
                             if:(not ("IsFriendAt" (to))) 
                             "CaptureToPiece"
-                       ) 
-                   )
+                        ) 
+                    )
                     (if ("HasNeverMoved" (from))
                         (move
                             Leap 
@@ -126,13 +126,13 @@
                             (to 
                                 if:(not ("IsFriendAt" (to))) 
                                 "CaptureToPiece"
-                           ) 
-                       )
-                   )
+                            ) 
+                        )
+                    )
                     "RememberPieceHasMoved"
-               )
-           )
-       )
+                )
+            )
+        )
         (piece "Elephant" P2 
             (move
                 Slide 
@@ -140,9 +140,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Knight" P2 
             (move
                 Leap 
@@ -150,20 +150,20 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Queen" P2 
             (move
                 Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           ) 
-       )
+                ) 
+            ) 
+        )
         (regions "Promotion" P2 (sites Bottom))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Pawn2" (sites Row 6))
@@ -179,22 +179,22 @@
                     (if (and (= (id "King_noCross" P1) (what at:(last To))) ("HasNeverMoved" (where "King_noCross" P2)))
                         (if ("IsInCheck" "King_noCross" P2)
                             (set State at:(where "King_noCross" P2) 0) 
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         
         (end
             (if 
                 (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMoveToProtect" "King_noCross")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
-       )
-   )
+            ) 
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -210,9 +210,9 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1901.")
+        (origin "This game was played in India, around 1901.")
         }
-   )
+    )
     
     (graphics {
         (show Check "King")

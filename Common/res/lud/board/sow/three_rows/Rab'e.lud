@@ -1,43 +1,43 @@
 (define "Columns" 6)
 (define "OneHomeEmpty" 
     (or
-        (all Sites (sites P1) if:(is Empty (site)))  
-        (all Sites (sites P2) if:(is Empty (site)))  
-   )
+        (all Sites (sites P1) if:(is Empty (site))) 
+        (all Sites (sites P2) if:(is Empty (site))) 
+    )
 )
 
 (define "NumCapturedPieces" 
     (+ 
         (count Cell at:(handSite #1))
         (count in:(sites #1))
-   )
+    )
 )
 
 (define "LeftMostEmpty" 
     (trackSite FirstSite 
         from:(mapEntry "LeftMost" Mover)
         if:(is Empty (to))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Rab'e"  
-    (players 2)  
+(game "Rab'e" 
+    (players 2) 
     (equipment { 
         (mancalaBoard 3 "Columns" store:None
             (track "Track" "0,E,N1,W2,17,W,S1,E2" loop:True)
-       )
+        )
         (piece "Seed" Shared)
         (regions P1 (union (sites Bottom) (difference (expand (sites Right) steps:2) (sites Top)))) // P1 Home
-        (regions P2 (union (sites Top) (difference (expand (sites Left) steps:2) (sites Bottom))))  // P2 home
+        (regions P2 (union (sites Top) (difference (expand (sites Left) steps:2) (sites Bottom)))) // P2 home
         (hand Each)
-        (map "LeftMost" {(pair P1 0) (pair P2 17)})   
+        (map "LeftMost" {(pair P1 0) (pair P2 17)})  
         (map "CorrespondingHoles" {
             (pair 0 17) (pair 1 16) (pair 2 15) (pair 3 14) (pair 4 13) (pair 5 12) (pair 11 6) (pair 10 7) (pair 9 8) 
             (pair 8 9) (pair 7 10) (pair 6 11) (pair 12 5) (pair 13 4) (pair 14 3) (pair 15 2) (pair 16 1) (pair 17 0)
         })
-    })  
+    }) 
     (rules 
         
         (start (set Count 4 to:(sites Track)))
@@ -51,15 +51,15 @@
                             (if ("SameTurn")
                                 ("LastHoleSowed") 
                                 (sites Mover) 
-                           )
+                            )
                             if:(< 0 (count at:(from)))
-                       )
+                        )
                         (then
                             (do
                                 (set Var "NumSowed" (count at:(last To)))
                                 next:(sow
                                     apply:(if (and (!= 4 (count at:(to))) (< 1 (count at:(to)))) (moveAgain))
-                               )
+                                )
                                 (then
                                     (and
                                         (forEach Site (sites Track from:(last From) to:(trackSite Move from:(last From) "Track" steps:(var "NumSowed")))
@@ -68,15 +68,15 @@
                                                     (from (site))
                                                     (to (handSite Mover))
                                                     count:4
-                                               )
-                                           )
-                                       )
+                                                )
+                                            )
+                                        )
                                         (set Var "NumSowed" 0)
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     }
                     (then
                         (if ("OneHomeEmpty")
@@ -86,35 +86,35 @@
                                         (from (site))
                                         (to (handSite P1))
                                         count:(count at:(site))
-                                   )
-                               )
+                                    )
+                                )
                                 (forEach Site (sites P2)
                                     (fromTo
                                         (from (site))
                                         (to (handSite P2))
                                         count:(count at:(site))
-                                   )
-                               )
+                                    )
+                                )
                                 (if (<= ("NumCapturedPieces" P1) ("NumCapturedPieces" P2))
                                     (set NextPlayer (player 1))
                                     (set NextPlayer (player 2))
-                               )
+                                )
                             })
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             
             (end (if ("NoPieceOnBoard")
                     {
                     (if (= 0 (count Cell at:(handSite P1))) (result P2 Win))
                     (if (= 0 (count Cell at:(handSite P2))) (result P1 Win))
                     }
-               )
-           )
+                )
+            )
             
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-       )
+        )
         
         (phase "BetweenRounds"
             (play
@@ -133,33 +133,33 @@
                                                 (from (handSite Mover))
                                                 (to ("LeftMostEmpty"))
                                                 count:(count Cell at:(handSite Mover))
-                                           )
+                                            )
                                             (fromTo
                                                 (from (handSite Next))
                                                 (to (mapEntry "CorrespondingHoles" ("LeftMostEmpty")))
                                                 count:(count Cell at:(handSite Next))
-                                           )
-                                       )
-                                   )
+                                            )
+                                        )
+                                    )
                                     (forEach Site (sites Mover)
                                         (if (is Occupied (site))
                                             (fromTo
                                                 (from (handSite Next))
                                                 (to (mapEntry "CorrespondingHoles" (site)))
                                                 count:(count at:(site))
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
             (nextPhase (= 0 (count Cell at:(handSite Mover))) "Sowing")
-       )
+        )
         }
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -175,9 +175,9 @@
         (version "1.3.4")
         (classification "board/sow/three rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Horn of Africa, around 1971.")
+        (origin "This game was played in Horn of Africa, around 1971.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

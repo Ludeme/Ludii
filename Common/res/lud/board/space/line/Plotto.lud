@@ -17,19 +17,19 @@
             ("CheckEndLine" SSE)
             ("CheckEndLine" NNE)
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Plotto"  
-    (players 2)  
+(game "Plotto" 
+    (players 2) 
     (equipment { 
         (boardless Hexagonal) 
         (tile "Hex" Each numSides:6) 
         (tile "SecondHex" Each numSides:6) 
         (hand Each size:2)
-    })  
+    }) 
     
     (rules 
         (start {
@@ -49,14 +49,14 @@
                     if:(and
                         (<= 2 (count Sites in:(sites Around (to) NotEmpty)))
                         (not (is In (what at:(from)) (results from:(last From) to:(sites Around (to)) (what at:(to)))))
-                   )
-               )
+                    )
+                )
                 copy:True
-           )
-       )
+            )
+        )
         
         (end (if ("IsLine4WithEndSameColour") (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -78,17 +78,17 @@
         (credit "Eric Piette")
         (date "1995")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Black))
         (player Colour P2 (colour LightGrey))
-        (piece Colour P1 "SecondHex1"  fillColour:(colour Blue))
-        (piece Colour P2 "SecondHex2"  fillColour:(colour Red))
+        (piece Colour P1 "SecondHex1" fillColour:(colour Blue))
+        (piece Colour P2 "SecondHex2" fillColour:(colour Red))
         (piece Rename P1 piece:"SecondHex" "Hex")
         (piece Rename P2 piece:"SecondHex" "Hex")
-        (piece Colour P1 "Hex1"  fillColour:(colour Black))
-        (piece Colour P2 "Hex2"  fillColour:(colour LightGrey))
+        (piece Colour P1 "Hex1" fillColour:(colour Black))
+        (piece Colour P2 "Hex2" fillColour:(colour LightGrey))
     })
     
 )

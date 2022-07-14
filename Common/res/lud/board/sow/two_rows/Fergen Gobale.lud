@@ -5,7 +5,7 @@
         "TrackFill"
         from:(mapEntry "LeftMost" Mover)
         if:(is Empty (to))
-   )
+    )
 )
 
 (define "NoOccupiedFreeHoles" (all Sites (sites #1 "Home") if:(or (is Empty (site)) (!= 0 (state at:(site))))))
@@ -30,11 +30,11 @@
             (track "TrackFill" "0,E,6,E,N,W,5,W" loop:True)
             }
             use:Vertex
-       )
+        )
         (piece "Seed" Shared)
-        (regions "Home" P1 (sites Bottom))  // P1 Home
-        (regions "Home" P2 (sites Top))     // P2 Home
-        (regions "Central" (sites Centre))  // Central holes
+        (regions "Home" P1 (sites Bottom)) // P1 Home
+        (regions "Home" P2 (sites Top))   // P2 Home
+        (regions "Central" (sites Centre)) // Central holes
         (hand Each)
         (map "LeftMost" {(pair P1 0) (pair P2 11)})
         (map "CorrespondingHoles" {
@@ -62,17 +62,17 @@
                         (from (sites "Central") if:(= 0 (state at:(from))))
                         (then
                             (set State at:(last To) (mover))
-                       )
-                   )
+                        )
+                    )
                     
                     (move Select
                         (from 
                             (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 (sites Mover "Home")
-                           )
+                            )
                             if:(and {(= 0 (state at:(from))) (is In (from) ("PlayableSites")) (is Occupied (from)) })
-                       )
+                        )
                         (then
                             (sow
                                 "Track"
@@ -81,8 +81,8 @@
                                         (and
                                             (moveAgain)
                                             (set Var "Replay" (to))
-                                       )
-                                   )
+                                        )
+                                    )
                                     (if (is In (to) (sites Mover "Home"))
                                         (if (= 3 (count at:("OppositePit" (to))))
                                             (and {
@@ -90,7 +90,7 @@
                                                     (from ("OppositePit" (to)))
                                                     (to (to))
                                                     count:1
-                                               )
+                                                )
                                                 (set State at:(to) (mover))
                                                 (set State at:("OppositePit" (to)) (mover))
                                                 (moveAgain)
@@ -101,22 +101,22 @@
                                                     (from (to))
                                                     (to (handSite Mover))
                                                     count:1
-                                               )
+                                                )
                                                 (if (is Occupied ("OppositePit" (to)))
                                                     (fromTo 
                                                         (from ("OppositePit" (to)))
                                                         (to (handSite Mover))
                                                         count:(count at:("OppositePit" (to)))
-                                                   )
-                                               )
-                                           )
-                                       )
-                                   )
-                               )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
                                 skipIf:(and (not (is In (to) (sites "Central"))) (not (is In (to) ("PlayableSites"))))
-                           )
-                       )
-                   )
+                            )
+                        )
+                    )
                     
                     (then
                         (if (or ("NoOccupiedFreeHoles" P1) ("NoOccupiedFreeHoles" P2))
@@ -128,40 +128,40 @@
                                             (from (site))
                                             (to (handSite P1))
                                             count:(count at:(site))
-                                       )
+                                        )
                                         (if (or (and (= 0 (state at:(site))) (is In (site) (sites P2 "Home"))) (= (state at:(site)) 2))
                                             (fromTo
                                                 (from (site))
                                                 (to (handSite P2))
                                                 count:(count at:(site))
-                                           )
-                                       )
-                                   )
-                               )
+                                            )
+                                        )
+                                    )
+                                )
                                 (if (< ("NumCaptureSeeds" P1) ("NumCaptureSeeds" P2))
                                     (set NextPlayer (player 1))
                                     (set NextPlayer (player 2))
-                               )
+                                )
                                 (if (or (> 5 ("NumCaptureSeeds" P1)) (> 5 ("NumCaptureSeeds" P2)))
                                     (set Var "PlaceOne" 1)
-                               )
+                                )
                                 (forget Value "Playable" All)
                             })
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             
             (end (if (or ("NoOccupiedFreeHoles" P1) ("NoOccupiedFreeHoles" P2))
                     {
-                    (if (= 0  (count Cell at:(handSite P1))) (result P2 Win))
+                    (if (= 0 (count Cell at:(handSite P1))) (result P2 Win))
                     (if (= 0 (count Cell at:(handSite P2))) (result P1 Win))
                     }
-               )
-           )
+                )
+            )
             (nextPhase (or ("NoOccupiedFreeHoles" P1) ("NoOccupiedFreeHoles" P2)) "BetweenRounds")
             
-       )
+        )
         
         (phase "BetweenRounds"
             (play
@@ -175,10 +175,10 @@
                                 (remember Value "Playable" (last To))
                                 (if (is Occupied (handSite Mover))
                                     (moveAgain)	
-                               )
-                           )
-                       )
-                   )
+                                )
+                            )
+                        )
+                    )
                     (if (<= (mapEntry "InitialCount" ("LeftMostEmpty")) (count Cell at:(handSite Mover)))
                         (move
                             (from (handSite Mover))
@@ -189,24 +189,24 @@
                                     (remember Value "Playable" (last To))
                                     (if (is Occupied (handSite Mover))
                                         (moveAgain)	
-                                   )
-                               )
-                           )
-                       )
+                                    )
+                                )
+                            )
+                        )
                         (if (all Sites (sites Mover "Home") if:(is Occupied (site)))
                             (move
                                 (from (handSite Mover))
                                 (to (if (is Empty 12) 12 13))
                                 count:(count Cell at:(handSite Mover))
-                           )
+                            )
                             (move
                                 (from (handSite Mover))
                                 (to ("LeftMostEmpty"))
                                 count:(count Cell at:(handSite Mover))
                                 (then (remember Value "Playable" (last To)))
-                           )
-                       )
-                   )
+                            )
+                        )
+                    )
                     (then
                         (if (is Empty (handSite Mover))
                             (and
@@ -218,21 +218,21 @@
                                                 (from (handSite Next))
                                                 (to (mapEntry "CorrespondingHoles" (site)))
                                                 count:(count at:(site))
-                                           )
-                                       )
-                                   )
-                               )
+                                            )
+                                        )
+                                    )
+                                )
                                 (set Var "PlaceOne" 0)
-                           )
-                       )
-                   )
-               )
-           )
+                            )
+                        )
+                    )
+                )
+            )
             (nextPhase (is Empty (handSite Mover)) "Sowing")
-       )
+        )
         
         }
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -242,14 +242,14 @@
     (info
         {
         (description "Fergen Gobale is a two-row mancala-style board game from Ethiopia. It contains special neutral holes that can be captured in the course of play.")
-        (rules "2x6 board, divided in half and joined in the center with a single row of two holes. From the left, Five, five, three, three, five, and five counters in each hole of the double-row holes, four counters in the single row holes. Each player owns the row closest to them, but neither player controls the holes in the single row. Sowing begins from one of the holes in the player's row, and continues in an anti-clockwise direction. If the final counter lands in an occupied hole, these counters are picked up and sowing continues, unless the hole is in the single row, in which case the turn comes to an end. When the final counter falls in an empty hole in the player's row, the contents of the hole in the opponent's row adjacent to it are captured, along with the final counter of the sowing. However, if the hole from which the capture would be made contained three counters, these plus the final counter of the sowing are divided between the last hole of the sowing and the hole from which the capture would be made, i.e. two counters per each hole. The player then owns both of these holes, but cannot sow from them. The player also chooses at this point one of the holes in the single row to own, but the player still cannot begin sowing from it. Play continues until one player cannot play, and the players collect all of the counters from the holes they own. If one or both holes in the single row have not been claimed, the counters remain in them for the next round. The next round begins with the losing player filling as many holes in their row as possible, beginning from their left, according to the original starting number. After as many holes as possible are filled to the original capacity, the remaining  are placed in the next hole, or in an empty central hole. The opponent matches the arrangement in their own holes that are opposite the ones the other player can fill. If the losing player has fewer than five counters, they place one in each hole, starting from their left, and the opponent matches this arrangement. Play continues like this until one player has no more counters.")
+        (rules "2x6 board, divided in half and joined in the center with a single row of two holes. From the left, Five, five, three, three, five, and five counters in each hole of the double-row holes, four counters in the single row holes. Each player owns the row closest to them, but neither player controls the holes in the single row. Sowing begins from one of the holes in the player's row, and continues in an anti-clockwise direction. If the final counter lands in an occupied hole, these counters are picked up and sowing continues, unless the hole is in the single row, in which case the turn comes to an end. When the final counter falls in an empty hole in the player's row, the contents of the hole in the opponent's row adjacent to it are captured, along with the final counter of the sowing. However, if the hole from which the capture would be made contained three counters, these plus the final counter of the sowing are divided between the last hole of the sowing and the hole from which the capture would be made, i.e. two counters per each hole. The player then owns both of these holes, but cannot sow from them. The player also chooses at this point one of the holes in the single row to own, but the player still cannot begin sowing from it. Play continues until one player cannot play, and the players collect all of the counters from the holes they own. If one or both holes in the single row have not been claimed, the counters remain in them for the next round. The next round begins with the losing player filling as many holes in their row as possible, beginning from their left, according to the original starting number. After as many holes as possible are filled to the original capacity, the remaining are placed in the next hole, or in an empty central hole. The opponent matches the arrangement in their own holes that are opposite the ones the other player can fill. If the losing player has fewer than five counters, they place one in each hole, starting from their left, and the opponent matches this arrangement. Play continues like this until one player has no more counters.")
         (source "Pankhurst 1971: 181.")
         (id "367")
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

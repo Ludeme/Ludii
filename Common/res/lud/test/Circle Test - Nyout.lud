@@ -1,15 +1,15 @@
-(game "Nyout"  
-    (players 2)  
+(game "Nyout" 
+    (players 2) 
     (equipment { 
         (board (circle {0 20}) use:Vertex)
         (piece "Counter" Each)
-    })  
+    }) 
     
     (rules 
         (play 
             (forEach Piece)
-       )
+        )
         
-        (end ("NoMoves" Loss))  
-   )
+        (end ("NoMoves" Loss)) 
+    )
 ) 

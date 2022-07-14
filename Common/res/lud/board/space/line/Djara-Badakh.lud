@@ -1,5 +1,5 @@
 (game "Djara-Badakh"
-    (players 2)  
+    (players 2) 
     
     (equipment { 
         (board (square 3) use:Vertex) 
@@ -8,8 +8,8 @@
             (move
                 Step 
                 (to if:(is Empty (to))) 
-           )
-       ) 
+            )
+        ) 
     })
     
     (rules 
@@ -21,25 +21,25 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty)) 
-               )  
-           ) 
+                ) 
+            ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-       )
+        )
         
         (phase "Movement" 
             (play 
                 (forEach Piece)
-           )
-       )
+            )
+        )
         }
         
         (end 
             (if 
                 (is Line 3)
                 (result Mover Win)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -55,9 +55,9 @@
         (version "1.3.4")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in Horn of Africa, around 1931.")
+        (origin "This game was played in Horn of Africa, around 1931.")
         }
-   )
+    )
     
     (graphics {
         (show Edges Diagonal Hidden)
@@ -65,6 +65,6 @@
     })
     (ai
         "Djara-Badakh_ai"
-   )
+    )
 )
 

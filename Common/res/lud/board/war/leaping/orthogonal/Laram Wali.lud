@@ -11,28 +11,28 @@
             (merge
                 (shift "ArmSize" 0 (rectangle (* 3 "ArmSize") "ArmSize"))
                 (shift 0 "ArmSize" (rectangle "ArmSize" (* 3 "ArmSize")))
-           )
-       )
+            )
+        )
         (hand Each)
         (piece "Marker" Each
             (or
                 (move 
                     Step Orthogonal
                     (to if:(is Empty (to))) 
-               )
+                )
                 (move Hop 
                     Orthogonal
                     (between 
                         (range 1 "NumInitPiece")
                         if:("IsEnemyAt" (between)) 
                         (apply (remove (between)))
-                   )
+                    )
                     (to if:(is Empty (to)))
-               )
-           )
-       )
+                )
+            )
+        )
         }
-   )
+    )
     (rules
         (start (place "Marker" "Hand" count:"NumInitPiece"))
         
@@ -42,32 +42,32 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (difference (sites Empty) (expand (sites Centre) steps:(- (/ "ArmSize" 2) (if (is Even "ArmSize") 1 0)))))
-               ) 
-           )
+                ) 
+            )
             (nextPhase ("HandEmpty" P2) "Movement")
-       )
+        )
         
         (phase "Movement" (play (forEach Piece)))
         }
         
         (end (if (no Pieces Next) (result Mover Win)))
-   )	
+    )	
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <armSize> <numPiece> }
     {
-    (item "1"     <1> <2> "The game is played on a cross board of arm size of 1.") 
-    (item "2"     <2> <4> "The game is played on a cross board of arm size of 2.")  
-    (item "3"     <3> <6> "The game is played on a cross board of arm size of 3.")**  
-    (item "4"     <4> <8> "The game is played on a cross board of arm size of 4.")  
-    (item "5"     <5> <10> "The game is played on a cross board of arm size of 5.")  
-    (item "6"     <6> <12> "The game is played on a cross board of arm size of 6.")  
-    (item "7"     <7> <14> "The game is played on a cross board of arm size of 7.")  
-    (item "8"     <8> <16> "The game is played on a cross board of arm size of 8.")  
-    (item "9"     <9> <18> "The game is played on a cross board of arm size of 9.")  
-    (item "10"    <10> <20> "The game is played on a cross board of arm size of 10.")  
+    (item "1"   <1> <2> "The game is played on a cross board of arm size of 1.") 
+    (item "2"   <2> <4> "The game is played on a cross board of arm size of 2.") 
+    (item "3"   <3> <6> "The game is played on a cross board of arm size of 3.")** 
+    (item "4"   <4> <8> "The game is played on a cross board of arm size of 4.") 
+    (item "5"   <5> <10> "The game is played on a cross board of arm size of 5.") 
+    (item "6"   <6> <12> "The game is played on a cross board of arm size of 6.") 
+    (item "7"   <7> <14> "The game is played on a cross board of arm size of 7.") 
+    (item "8"   <8> <16> "The game is played on a cross board of arm size of 8.") 
+    (item "9"   <9> <18> "The game is played on a cross board of arm size of 9.") 
+    (item "10"  <10> <20> "The game is played on a cross board of arm size of 10.") 
 })
 
 //------------------------------------------------------------------------------
@@ -80,7 +80,7 @@
         variations:{"Board Size/1" "Board Size/2" "Board Size/4" "Board Size/5"
         "Board Size/6" "Board Size/7" "Board Size/8" "Board Size/9" "Board Size/10"
         }
-   )*
+    )*
     
 })
 
@@ -98,9 +98,9 @@
         (version "1.3.4")
         (classification "board/war/leaping/orthogonal")
         (credit "Eric Piette")
-        (origin  "This game was played in Mali, around 1955.")
+        (origin "This game was played in Mali, around 1955.")
         }
-   )
+    )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
@@ -109,5 +109,5 @@
     })
     (ai
         "Laram Wali_ai"
-   )
+    )
 )

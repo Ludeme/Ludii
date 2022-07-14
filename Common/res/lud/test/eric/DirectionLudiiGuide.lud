@@ -1,9 +1,9 @@
 (game "DirectionLudiiGuide"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment {
         (board
             <Board:type>
-       )
+        )
         (piece "Pawn" Each (move Step (directions {<Direction>} of:All bySite:True) (to if:(is Empty (to)))))
     })
     (rules
@@ -12,47 +12,47 @@
         })
         (play
             (forEach Piece)
-       )
+        )
         (end
             (if (no Moves Next)
                 (byScore {
                     (score P1 (count Pieces P1))
                     (score P2 (count Pieces P2))
                 })
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board" <Board> args:{ <type> <initPos>}
     {
-    (item "Tri 5"       <(tri 5)> <14> "")*   
-    (item "Hex 3"       <(rotate 90 (hex 3))> <9> "")   
-    (item "Square 3"    <(square 3)>  <4>"")  
+    (item "Tri 5"    <(tri 5)> <14> "")*  
+    (item "Hex 3"    <(rotate 90 (hex 3))> <9> "")  
+    (item "Square 3"  <(square 3)> <4>"") 
     }
 )
 
 (option "Direction" <Direction> args:{ <type>}
     { 
-    //(item "All"              <All> "")*   
-    //(item "Orthogonal"       <Orthogonal> "") 
-    //(item "Diagonal"       <Diagonal> "")   
-    //(item "Adjacent"       <Adjacent> "")  
-    //(item "OffDiagonal"       <OffDiagonal> "")
-    (item "Forward"       <Forward> "")
-    (item "Backward"       <Backward> "")
-    (item "Rightward"       <Rightward> "")
-    (item "Leftward"       <Leftward> "")
-    (item "Forwards"       <Forwards> "")
-    (item "Backwards"       <Backwards> "")
-    (item "Rightwards"       <Rightwards> "")
-    (item "Leftwards"       <Leftwards> "")
-    (item "FR"       <FR> "")
-    (item "FL"       <FL> "")
-    (item "BR"       <BR> "")
-    (item "BL"       <BL> "")
+    //(item "All"       <All> "")*  
+    //(item "Orthogonal"    <Orthogonal> "") 
+    //(item "Diagonal"    <Diagonal> "")  
+    //(item "Adjacent"    <Adjacent> "") 
+    //(item "OffDiagonal"    <OffDiagonal> "")
+    (item "Forward"    <Forward> "")
+    (item "Backward"    <Backward> "")
+    (item "Rightward"    <Rightward> "")
+    (item "Leftward"    <Leftward> "")
+    (item "Forwards"    <Forwards> "")
+    (item "Backwards"    <Backwards> "")
+    (item "Rightwards"    <Rightwards> "")
+    (item "Leftwards"    <Leftwards> "")
+    (item "FR"    <FR> "")
+    (item "FL"    <FL> "")
+    (item "BR"    <BR> "")
+    (item "BL"    <BL> "")
     }
 )
 

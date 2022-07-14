@@ -1,25 +1,25 @@
 (define "MoveOfThePiece" 
-    (or  
+    (or 
         (move
             Hop
             (from) 
             Forward 
             (between if:("IsFriendAt" (between))) 
             (to if:(is Empty (to))) 
-       ) 
+        ) 
         ("StepForwardToEmpty") 
-   ) 
+    ) 
 )
 
 //------------------------------------------------------------------------------
 
-(game "Insanity"  
-    (players 1)  
+(game "Insanity" 
+    (players 1) 
     (equipment { 
         (board (rectangle 1 10)) 
         (piece "Marker1" P1 E "MoveOfThePiece") 
         (piece "Marker2" P1 W "MoveOfThePiece") 
-    })  
+    }) 
     (rules
         (start {
             (place "Marker1" (expand (sites Left) steps:3))
@@ -31,9 +31,9 @@
             (if 
                 (is Target {2 2 2 2 0 0 1 1 1 1}) 
                 (result P1 Win) 
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -52,7 +52,7 @@
         (credit "Eric Piette")
         (date "1987")
         }
-   )
+    )
     
     (graphics {
         (piece Colour "Marker1" fillColour:(colour Red))
@@ -61,6 +61,6 @@
     
     (ai 
         "Insanity_ai"
-   )
+    )
     
 )

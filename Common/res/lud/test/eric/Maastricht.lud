@@ -10,38 +10,38 @@
         (from 
             (from)
             if:(> (state at:(from)) 1)	
-       ) 
+        ) 
         (to 
             (sites Distance 
                 (step
                     Orthogonal
                     (to 
                         if:(#1)
-                   )
-               ) 
+                    )
+                ) 
                 from:(from) 
                 (range 1 (- #2 1))
-           )
+            )
             if:(is Empty (to)) 
             (apply 
                 (set State at:(from) #3)
-           ) 
-       )
-   )
+            ) 
+        )
+    )
 )
 
 (define "HumanMove"
     (or
         ("Move" (is In (to) "HumanMoveSpots") (state at:(from)) 1)
         ("Move" (is In (to) "RestrictedHumanMoveSpots") 2 1)				// Mountain move, 1 depth
-   )
+    )
 )
 
 (define "VehicleMove"
     (or
         ("Move" (is In (to) "VehicleMoveSpots") (state at:(from)) #1)
         ("Move" (is In (to) "RestrictedVehicleMoveSpots") 2 #1)				// Forest/Shallow water move, 1 depth
-   )
+    )
 )
 
 (define "AircraftMove"
@@ -95,14 +95,14 @@
     (union 
         (sites "Mountain") 
         (difference (sites Board) (union (sites "ShallowWater") (sites "DeepWater"))) 
-   )
+    )
 )
 
 (define "BoatMoveSpots"
     (difference 
         (union (sites Empty) (sites Occupied by:Friend container:"Board")) 
         ("ForbiddenSpotsBoat")
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -124,21 +124,21 @@
     (if ("GroundAttackFrom")
         (is In (to) (union (sites Occupied by:Enemy container:"Board" components:{"Soldier" "Motorbike" "Tank" "Speeder" "Shooter" "Launcher" "Antiair" "Battleship" "Artillery" "Base" "Town" "Factory" "Dock" "Airport" "Cruiser" "Submarine"}) (sites Occupied by:Neutral container:"Board")))
         (is In (to) (union (sites Occupied by:Enemy container:"Board") (sites Occupied by:Neutral container:"Board"))) 
-   )
+    )
 )
 
 (define "BoatAttackCheck"
     (if ("BoatAttackFrom")
         (is In (to) (sites Occupied by:Enemy container:"Board" components:{"Submarine" "Battleship" "Cruiser"}))
         (is In (to) (union (sites Occupied by:Enemy container:"Board") (sites Occupied by:Neutral container:"Board"))) 
-   )
+    )
 )
 
 (define "AircraftAttackCheck"
     (if ("AircraftAttackFrom")
         (is In (to) (sites Occupied by:Enemy container:"Board" components:{"Fighter" "Helicopter" "Bomber"}))
         (is In (to) (union (sites Occupied by:Enemy container:"Board") (sites Occupied by:Neutral container:"Board"))) 
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -152,21 +152,21 @@
     (if ("CounterAttackCheckFrom" #1 #2 #5)
         (is In (#3) (union (sites Occupied #4 components:{"Soldier" "Motorbike" "Tank" "Speeder" "Shooter" "Launcher" "Antiair" "Battleship" "Artillery" "Base" "Town" "Factory" "Dock" "Airport" "Cruiser" "Submarine"}) (sites Occupied by:Neutral container:"Board")))
         (is In (#3) (union (sites Occupied #4) (sites Occupied by:Neutral container:"Board"))) 
-   )
+    )
 )
 
 (define "BoatCounterAttackCheck"
     (if ("CounterAttackCheckFrom" #1 #2 #5)
         (is In (#3) (sites Occupied #4 components:{"Submarine" "Battleship" "Cruiser"}))
         (is In (#3) (union (sites Occupied #4) (sites Occupied by:Neutral container:"Board"))) 
-   )
+    )
 )
 
 (define "AircraftCounterAttackCheck"
     (if ("CounterAttackCheckFrom" #1 #2 #5)
         (is In (#3) (sites Occupied #4 components:{"Fighter" "Helicopter" "Bomber"}))
         (is In (#3) (union (sites Occupied #4) (sites Occupied by:Neutral container:"Board"))) 
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -177,7 +177,7 @@
         (from
             (from)
             if:(> (state at:(from)) 0)
-       )
+        )
         (to
             (sites Distance Orthogonal from:(from) (range #1 #2))
             if:(and {
@@ -186,14 +186,14 @@
                 ("BoatAttackCheck")
                 <FogOfWar:AttackCheck>
             })
-       )
+        )
         (then 
             (do
                 (and 
                     (set Value at:(last To) (max 0 (- (value Piece at:(last To)) ("AttackerDamage" (last From) (last To) False))))
                     (set State at:(last From) 0)
-               )
-                next:(if (and (= 8 (state at:(last To))) (!= (mover) (who at:(last To))))  	// state = 8, means its a building
+                )
+                next:(if (and (= 8 (state at:(last To))) (!= (mover) (who at:(last To)))) 	// state = 8, means its a building
                     // Attacking a building
                     "AttackBuilding"
                     
@@ -210,14 +210,14 @@
                             (if (<= (- (value Piece at:(last From)) ("AttackerDamage" (last To) (last From) True)) 0)							
                                 (remove (last From))
                                 (set Value at:(last From) (- (value Piece at:(last From)) ("AttackerDamage" (last To) (last From) True)))			
-                           ) 
+                            ) 
                             (set Value at:(last From) (value Piece at:(last From)))
-                       )
-                   ) 
-               )
-           )
-       )
-   )
+                        )
+                    ) 
+                )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -235,27 +235,27 @@
                 (if (and
                         (is In (#2) "HumanSites")
                         (is In (#1) (sites Occupied by:All component:"Shooter"))					// Shooter does double damage against humans
-                   )
+                    )
                     (if (is In (#2) (sites "Forest"))
                         ("DamageMultiply" (* (value Piece at:(#1)) 6) #1)							// (Shooter does 150% damage against humans in forests)
                         (if (is In (#2) (union (sites "ShallowWater") (sites "DeepWater")))
                             ("DamageMultiply" (* (value Piece at:(#1)) 10) #1)						// (Shooter does 250% damage against humans in water)
                             ("DamageMultiply" (* (value Piece at:(#1)) 8) #1)						// (Shooter does 200% damage against humans on land)
-                       )
-                   )
+                        )
+                    )
                     (if (is In (#2) (sites "Forest"))
                         ("DamageMultiply" (* (value Piece at:(#1)) 3) #1)							// 75% damage to units in forests
                         (if (is In (#2) (union (sites "ShallowWater") (sites "DeepWater")))
                             ("DamageMultiply" (* (value Piece at:(#1)) 5) #1)						// 125% damage to units in water
                             ("DamageMultiply" (* (value Piece at:(#1)) 4) #1)						// 100% damage to units on land
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             ("DoctrineMultiply" #1 #2 #3) 
-       ) 
+        ) 
         128000				// (4x4x4x5x100x4)
-   )
+    )
 )
 
 (define "DamageMultiply"
@@ -272,7 +272,7 @@
             (set Value at:(last To) 50)
         })
         (set Value at:(last To) (value Piece at:(last To)))
-   )  
+    ) 
 )
 
 (define "CloseCombatAttack"
@@ -302,14 +302,14 @@
                         (if (is In (#1) "BoatSites") 
                             ("GetDoctrineValue" (who at:(#1)) 5) 
                             4
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         (if (and (= 8 (state at:(#2))) (!= (mover) (who at:(#2)))) 			// state = 8, means its a building
             ("GetDoctrineValue" (who at:(#1)) 6) 5 
-       )
+        )
         (if (> (who at:(#2)) 0) ("GetDoctrineValue" (who at:(#2)) 8) 4)
         (if #3 ("GetDoctrineValue" (who at:(#1)) 10) ("GetDoctrineValue" (who at:(#1)) 9))
         (value Random (range ("GetDoctrineValue" (who at:(#1)) 11) ("GetDoctrineValue" (who at:(#1)) 12)))
@@ -327,31 +327,31 @@
             if:(and
                 (> (state at:(from)) 0)
                 (< (value Piece at:(from)) (mapEntry "MaxHealth" (what at:(from))))
-           )
-       )
+            )
+        )
         (to 
             (sites Around (from) Orthogonal
                 if:(is In (to) "MoverBuildingSites") 		
-           )
-       )
+            )
+        )
         (then 
             (and {
                 (set Value at:(last From) 
                     (min 
                         (mapEntry "MaxHealth" (what at:(last From))) 
                         (- (+ (value Piece at:(last From)) (value Piece at:(last To))) 1)
-                   )
-               )
+                    )
+                )
                 (set Value at:(last To) 
                     (max 
                         (- (value Piece at:(last To)) (- (mapEntry "MaxHealth" (what at:(last From))) (value Piece at:(last From))))
                         1
-                   )
-               )
+                    )
+                )
                 (set State at:(last From) 0)
             })
-       )
-   )
+        )
+    )
 )
 
 (define "HealMoveUnit"
@@ -360,15 +360,15 @@
         (from
             (from)
             if:(> (state at:(from)) 0)
-       )
+        )
         (to 
             (sites Around (from) Orthogonal
                 if:(and
                     (= (what at:(from)) (what at:(to)))
                     (< (value Piece at:(to)) (mapEntry "MaxHealth" (what at:(to))))
-               )		
-           )
-       )
+                )		
+            )
+        )
         (then 
             (and {
                 (if (<= (+ (value Piece at:(last To)) (value Piece at:(last From))) (mapEntry "MaxHealth" (what at:(last From))))
@@ -377,30 +377,30 @@
                             (min 
                                 (mapEntry "MaxHealth" (what at:(last From))) 
                                 (+ (value Piece at:(last From)) (value Piece at:(last To)))
-                           )
-                       )
+                            )
+                        )
                         (remove (last From))
-                   )
+                    )
                     (and
                         (set Value at:(last To) 
                             (min 
                                 (mapEntry "MaxHealth" (what at:(last From))) 
                                 (- (+ (value Piece at:(last From)) (value Piece at:(last To))) 1)
-                           )
-                       )
+                            )
+                        )
                         (set Value at:(last From) 
                             (max 
                                 (- (value Piece at:(last To)) (- (mapEntry "MaxHealth" (what at:(last From))) (value Piece at:(last From))))
                                 1
-                           )
-                       )
-                   )
-               )
+                            )
+                        )
+                    )
+                )
                 (set State at:(last From) 0)
                 (set State at:(last To) 0)
             })
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -415,23 +415,23 @@
                 if:(and 
                     (is Empty (to))
                     (<= (/ (* (count at:(site)) ("GetDoctrineValue" (mover) 7)) 4) (score Mover))
-               )
-           )
+                )
+            )
             copy:True
             (then 
                 (and
                     {
                     (addScore 
                         Mover 
-                        (- (/  (* (count at:(last From)) ("GetDoctrineValue" (mover) 7)) 4))
-                   )	
+                        (- (/ (* (count at:(last From)) ("GetDoctrineValue" (mover) 7)) 4))
+                    )	
                     (take Control of:All by:Mover at:(last To))
                     (set State at:(last To) 0)
                     }
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 (define "BuyHumanMove" 
@@ -439,8 +439,8 @@
         (difference 
             (sites Around (sites Occupied by:Mover component:"Town") Orthogonal)
             "ForbiddenSpotsHuman"
-       )
-   )
+        )
+    )
 )
 
 (define "BuyVehicleMove" 
@@ -448,14 +448,14 @@
         (difference 
             (sites Around (sites Occupied by:Mover component:"Factory") Orthogonal)
             "ForbiddenSpotsVehicle"
-       )
-   )
+        )
+    )
 )
 
 (define "BuyAircraftMove" 
     ("BuyMove" components:{"Helicopter" "Fighter" "Bomber"} 
         (sites Around (sites Occupied by:Mover component:"Airport") Orthogonal)
-   )
+    )
 )
 
 (define "BuyBoatMove" 
@@ -463,8 +463,8 @@
         (difference 
             (sites Around (sites Occupied by:Mover component:"Dock") Orthogonal)
             "ForbiddenSpotsBoat"
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -516,9 +516,9 @@
             (if (is In (site) (sites Occupied by:#1 components:{"Town" "Base" "Factory" "Dock" "Airport"}))
                 (take Control of:All by:Neutral at:(site))
                 (remove (site))
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -539,18 +539,18 @@
 
 (define "GetDoctrineValue"
     (if (= #1 1)
-        (mapEntry  <Doctrine1:doctrine> #2)
+        (mapEntry <Doctrine1:doctrine> #2)
         (if (= #1 2)
-            (mapEntry  <Doctrine2:doctrine> #2)
+            (mapEntry <Doctrine2:doctrine> #2)
             (if (= #1 3)
-                (mapEntry  <Doctrine3:doctrine> #2)
+                (mapEntry <Doctrine3:doctrine> #2)
                 (if (= #1 4)
-                    (mapEntry  <Doctrine4:doctrine> #2)
+                    (mapEntry <Doctrine4:doctrine> #2)
                     0
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -559,13 +559,13 @@
 (define "TwoPlayerMaps"
     // state (movement)
     (map "Movement" { 
-        (pair 1 8) (pair 2 8) (pair 3 8) (pair 4 8) (pair 5 8) (pair 6 8) (pair 7 8) (pair 8 8) (pair 9 8) (pair 10 8)  
+        (pair 1 8) (pair 2 8) (pair 3 8) (pair 4 8) (pair 5 8) (pair 6 8) (pair 7 8) (pair 8 8) (pair 9 8) (pair 10 8) 
         (pair 11 4) (pair 12 4) (pair 13 6) (pair 14 6) 
         (pair 15 7) (pair 16 7) (pair 17 5) (pair 18 5) (pair 19 5) (pair 20 5)
         (pair 21 5) (pair 22 5) (pair 23 4) (pair 24 4) (pair 25 4) (pair 26 4)
         (pair 27 5) (pair 28 5) (pair 29 7) (pair 30 7) (pair 31 6) (pair 32 6)
         (pair 33 6) (pair 34 6) (pair 35 6) (pair 36 6) (pair 37 5) (pair 38 5)
-        (pair 39 8) (pair 40 8) (pair 41 8) (pair 42 8) (pair 43 8)  
+        (pair 39 8) (pair 40 8) (pair 41 8) (pair 42 8) (pair 43 8) 
     })
     
     // value (health)
@@ -580,7 +580,7 @@
     })
     
     (map "DamageMultiplier" { 
-        (pair 1 0) (pair 2 0) (pair 3 0) (pair 4 0) (pair 5 0) (pair 6 0) (pair 7 0) (pair 8 0) (pair 9 0) (pair 10 0)  
+        (pair 1 0) (pair 2 0) (pair 3 0) (pair 4 0) (pair 5 0) (pair 6 0) (pair 7 0) (pair 8 0) (pair 9 0) (pair 10 0) 
         (pair 11 50) (pair 12 50) (pair 13 50) (pair 14 50) 
         (pair 15 40) (pair 16 40) (pair 17 40) (pair 18 40) (pair 19 50) (pair 20 50)
         (pair 21 100) (pair 22 100) (pair 23 50) (pair 24 50) (pair 25 100) (pair 26 100)
@@ -747,13 +747,13 @@
 (define "HideSites"
     (forEach Site (intersection (difference (sites Board) ("VisibilityRangeSites")) (difference (sites Board) (sites Hidden What to:#1)))
         (set Hidden {What State Value} at:(site) True to:#1)
-   )
+    )
 )
 
 (define "ShowSites"
     (forEach Site (intersection ("VisibilityRangeSites") (sites Hidden What to:#1))
         (set Hidden {What State Value} at:(site) False to:#1)
-   )
+    )
 )
 
 (define "FogOfWarEachMove"
@@ -776,8 +776,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Maastricht"  
-    (players <Scenario:numPlayers>)  
+(game "Maastricht" 
+    (players <Scenario:numPlayers>) 
     (equipment { 
         (board <Scenario:boardShape>)
         
@@ -851,10 +851,10 @@
         <Scenario:playerMaps>
         
         "DoctrineSetup"
-    })  
+    }) 
     (rules 
         (meta (passEnd NoEnd))
-        (start {     
+        (start {   
             <Scenario:buildingSetup>
             <Scenario:pieceSetup>
             <Scenario:teams>
@@ -895,18 +895,18 @@
                         (and {
                             (forEach Player
                                 ("RemovePiecesIfPlayerHasLost" Player)
-                           )
+                            )
                             (moveAgain)
                             (and {<FogOfWar:EachMove>})
                         })
-                   )
-               )
+                    )
+                )
                 (move Pass
                     (then
                         (and {
                             (forEach Site (sites Occupied by:Mover container:"Board")
                                 (set State at:(site) (mapEntry "Movement" (what at:(site))))
-                           )
+                            )
                             (set Score 
                                 Mover
                                 (+ {
@@ -914,23 +914,23 @@
                                     (* (count Sites in:(sites Occupied by:Mover component:"Town")) 10) 
                                     (score Mover) 
                                 })
-                           )
+                            )
                             (forEach Site (sites Occupied by:Mover components:{"Town" "Base" "Factory" "Dock" "Airport"})
                                 (set Value at:(site) (min (mapEntry "MaxHealth" (what at:(site))) (+ (value Piece at:(site)) 10)))
-                           )
+                            )
                             (and {<FogOfWar:EachMove>})
                         })
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         
         (end 
             (forEach NonMover 
                 if:(= (where "Base" Player) Off) (result Player Loss)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -949,11 +949,11 @@
         (rectangle 15 25)
         >
         <										 
-        (regions "DeepWater" (sites {9 10 35 36 61 62 86 87 111 112 161 162 211 212 235 236 284 285 309 310 335 334 359 360 137 136 186 187 260 261}))  
-        (regions "ShallowWater" (sites {160 159 158 157 156 155 154 153 127 101 75}))  
+        (regions "DeepWater" (sites {9 10 35 36 61 62 86 87 111 112 161 162 211 212 235 236 284 285 309 310 335 334 359 360 137 136 186 187 260 261})) 
+        (regions "ShallowWater" (sites {160 159 158 157 156 155 154 153 127 101 75})) 
         (regions "Forest" (sites {29 30 31 4 5 6 183 182 129 128 0..3 25..28 50..54 109 184 110 85 60 34 100 76 126 152 151 125 102 77 63 88 113 170 195 220 245
                 165..167	
-        }))  
+        })) 
         (regions "Mountain" (sites {80 55 56 57 82})) 
         > 
         <
@@ -982,13 +982,13 @@
         (place "Train_track0" (sites {97 122 147 172 197 222 247 248 298 323 348 373 47 22}) state:8 value:100)
         (place "Cake0" (sites {243 208}) state:8 value:100)
         (place "Goose0" (sites {106..108}) state:8 value:100)
-        >       
+        >    
         <
         
-        >      
+        >   
         <
         100
-        >        
+        >    
         <
         > 
         <
@@ -999,9 +999,9 @@
         (show Symbol "waves" (sites "ShallowWater"))
         (show Symbol "waves" (sites "DeepWater"))
         (show Symbol "mountain" (sites "Mountain"))
-        >                
+        >        
         "Scenario - Maastricht"
-   )**
+    )**
     
     }
 )
@@ -1010,86 +1010,86 @@
 
 (option "Fog of War" <FogOfWar> args:{ <AttackCheck> <EachMove> <Metadata> }
     {
-    (item "Off"    	<> <> <> 															"No Fog of War.")**
-    (item "On"    	<"FogOfWarAttackCheck"> <"FogOfWarEachMove"> <"FogOfWarMetadata">	"Fog of War.")
+    (item "Off"  	<> <> <> 															"No Fog of War.")**
+    (item "On"  	<"FogOfWarAttackCheck"> <"FogOfWarEachMove"> <"FogOfWarMetadata">	"Fog of War.")
 })
 
 //------------------------------------------------------------------------------
 
 (option "Player 1 Doctrine" <Doctrine1> args:{ <doctrine> }
     {
-    (item "None"    			<"NoDoctrine">    		"Player 1 - No Doctrine.")**
-    (item "Special Forces"    	<"SpecialForces">    	"Player 1 - Special Forces.")
-    (item "Brute Strength"		<"BruteStrength">    	"Player 1 - Brute Strength.")
-    (item "Sharpshooter"    	<"Sharpshooter">    	"Player 1 - Sharpshooter.")
-    (item "Ace Pilot"    		<"AcePilot">   			"Player 1 - Ace Pilot.")
-    (item "Sea Dog"    			<"SeaDog">    			"Player 1 - Sea Dog.")
+    (item "None"  			<"NoDoctrine">  		"Player 1 - No Doctrine.")**
+    (item "Special Forces"  	<"SpecialForces">  	"Player 1 - Special Forces.")
+    (item "Brute Strength"		<"BruteStrength">  	"Player 1 - Brute Strength.")
+    (item "Sharpshooter"  	<"Sharpshooter">  	"Player 1 - Sharpshooter.")
+    (item "Ace Pilot"  		<"AcePilot">  			"Player 1 - Ace Pilot.")
+    (item "Sea Dog"  			<"SeaDog">  			"Player 1 - Sea Dog.")
     (item "Guerrilla Warfare" 	<"GuerrillaWarfare"> 	"Player 1 - Guerrilla Warfare.")
-    (item "Foreign Invader"    	<"ForeignInvader">    	"Player 1 - Foreign Invader.")
-    (item "Conscription"    	<"Conscription">    	"Player 1 - Conscription.")
-    (item "Elite Training"    	<"EliteTraining">    	"Player 1 - Elite Training.")
-    (item "Glass Cannon"    	<"GlassCannon">    		"Player 1 - Glass Cannon.")
-    (item "Hardened Resolve"    <"HardenedResolve">  	"Player 1 - Hardened Resolve.")
-    (item "Preemptive Strike"  	<"PreemptiveStrike"> 	"Player 1 - Preemptive Strike.")
-    (item "Retaliation"    		<"Retaliation">    		"Player 1 - Retaliation.")
-    (item "Lady Luck"    		<"LadyLuck">    		"Player 1 - Lady Luck.")
+    (item "Foreign Invader"  	<"ForeignInvader">  	"Player 1 - Foreign Invader.")
+    (item "Conscription"  	<"Conscription">  	"Player 1 - Conscription.")
+    (item "Elite Training"  	<"EliteTraining">  	"Player 1 - Elite Training.")
+    (item "Glass Cannon"  	<"GlassCannon">  		"Player 1 - Glass Cannon.")
+    (item "Hardened Resolve"  <"HardenedResolve"> 	"Player 1 - Hardened Resolve.")
+    (item "Preemptive Strike" 	<"PreemptiveStrike"> 	"Player 1 - Preemptive Strike.")
+    (item "Retaliation"  		<"Retaliation">  		"Player 1 - Retaliation.")
+    (item "Lady Luck"  		<"LadyLuck">  		"Player 1 - Lady Luck.")
 })
 
 (option "Player 2 Doctrine" <Doctrine2> args:{ <doctrine> }
     {
-    (item "None"    			<"NoDoctrine">    		"Player 2 - No Doctrine.")**
-    (item "Special Forces"    	<"SpecialForces">    	"Player 2 - Special Forces.")
-    (item "Brute Strength"		<"BruteStrength">    	"Player 2 - Brute Strength.")
-    (item "Sharpshooter"    	<"Sharpshooter">    	"Player 2 - Sharpshooter.")
-    (item "Ace Pilot"    		<"AcePilot">   			"Player 2 - Ace Pilot.")
-    (item "Sea Dog"    			<"SeaDog">    			"Player 2 - Sea Dog.")
+    (item "None"  			<"NoDoctrine">  		"Player 2 - No Doctrine.")**
+    (item "Special Forces"  	<"SpecialForces">  	"Player 2 - Special Forces.")
+    (item "Brute Strength"		<"BruteStrength">  	"Player 2 - Brute Strength.")
+    (item "Sharpshooter"  	<"Sharpshooter">  	"Player 2 - Sharpshooter.")
+    (item "Ace Pilot"  		<"AcePilot">  			"Player 2 - Ace Pilot.")
+    (item "Sea Dog"  			<"SeaDog">  			"Player 2 - Sea Dog.")
     (item "Guerrilla Warfare" 	<"GuerrillaWarfare"> 	"Player 2 - Guerrilla Warfare.")
-    (item "Foreign Invader"    	<"ForeignInvader">    	"Player 2 - Foreign Invader.")
-    (item "Conscription"    	<"Conscription">    	"Player 2 - Conscription.")
-    (item "Elite Training"    	<"EliteTraining">    	"Player 2 - Elite Training.")
-    (item "Glass Cannon"    	<"GlassCannon">    		"Player 2 - Glass Cannon.")
-    (item "Hardened Resolve"    <"HardenedResolve">  	"Player 2 - Hardened Resolve.")
-    (item "Preemptive Strike"  	<"PreemptiveStrike"> 	"Player 2 - Preemptive Strike.")
-    (item "Retaliation"    		<"Retaliation">    		"Player 2 - Retaliation.")
-    (item "Lady Luck"    		<"LadyLuck">    		"Player 2 - Lady Luck.")
+    (item "Foreign Invader"  	<"ForeignInvader">  	"Player 2 - Foreign Invader.")
+    (item "Conscription"  	<"Conscription">  	"Player 2 - Conscription.")
+    (item "Elite Training"  	<"EliteTraining">  	"Player 2 - Elite Training.")
+    (item "Glass Cannon"  	<"GlassCannon">  		"Player 2 - Glass Cannon.")
+    (item "Hardened Resolve"  <"HardenedResolve"> 	"Player 2 - Hardened Resolve.")
+    (item "Preemptive Strike" 	<"PreemptiveStrike"> 	"Player 2 - Preemptive Strike.")
+    (item "Retaliation"  		<"Retaliation">  		"Player 2 - Retaliation.")
+    (item "Lady Luck"  		<"LadyLuck">  		"Player 2 - Lady Luck.")
 })
 
 (option "Player 3 Doctrine" <Doctrine3> args:{ <doctrine> }
     {
-    (item "None"    			<"NoDoctrine">    		"Player 3 - No Doctrine.")**
-    (item "Special Forces"    	<"SpecialForces">    	"Player 3 - Special Forces.")
-    (item "Brute Strength"		<"BruteStrength">    	"Player 3 - Brute Strength.")
-    (item "Sharpshooter"    	<"Sharpshooter">    	"Player 3 - Sharpshooter.")
-    (item "Ace Pilot"    		<"AcePilot">   			"Player 3 - Ace Pilot.")
-    (item "Sea Dog"    			<"SeaDog">    			"Player 3 - Sea Dog.")
+    (item "None"  			<"NoDoctrine">  		"Player 3 - No Doctrine.")**
+    (item "Special Forces"  	<"SpecialForces">  	"Player 3 - Special Forces.")
+    (item "Brute Strength"		<"BruteStrength">  	"Player 3 - Brute Strength.")
+    (item "Sharpshooter"  	<"Sharpshooter">  	"Player 3 - Sharpshooter.")
+    (item "Ace Pilot"  		<"AcePilot">  			"Player 3 - Ace Pilot.")
+    (item "Sea Dog"  			<"SeaDog">  			"Player 3 - Sea Dog.")
     (item "Guerrilla Warfare" 	<"GuerrillaWarfare"> 	"Player 3 - Guerrilla Warfare.")
-    (item "Foreign Invader"    	<"ForeignInvader">    	"Player 3 - Foreign Invader.")
-    (item "Conscription"    	<"Conscription">    	"Player 3 - Conscription.")
-    (item "Elite Training"    	<"EliteTraining">    	"Player 3 - Elite Training.")
-    (item "Glass Cannon"    	<"GlassCannon">    		"Player 3 - Glass Cannon.")
-    (item "Hardened Resolve"    <"HardenedResolve">  	"Player 3 - Hardened Resolve.")
-    (item "Preemptive Strike"  	<"PreemptiveStrike"> 	"Player 3 - Preemptive Strike.")
-    (item "Retaliation"    		<"Retaliation">    		"Player 3 - Retaliation.")
-    (item "Lady Luck"    		<"LadyLuck">    		"Player 3 - Lady Luck.")
+    (item "Foreign Invader"  	<"ForeignInvader">  	"Player 3 - Foreign Invader.")
+    (item "Conscription"  	<"Conscription">  	"Player 3 - Conscription.")
+    (item "Elite Training"  	<"EliteTraining">  	"Player 3 - Elite Training.")
+    (item "Glass Cannon"  	<"GlassCannon">  		"Player 3 - Glass Cannon.")
+    (item "Hardened Resolve"  <"HardenedResolve"> 	"Player 3 - Hardened Resolve.")
+    (item "Preemptive Strike" 	<"PreemptiveStrike"> 	"Player 3 - Preemptive Strike.")
+    (item "Retaliation"  		<"Retaliation">  		"Player 3 - Retaliation.")
+    (item "Lady Luck"  		<"LadyLuck">  		"Player 3 - Lady Luck.")
 })
 
 (option "Player 4 Doctrine" <Doctrine4> args:{ <doctrine> }
     {
-    (item "None"    			<"NoDoctrine">    		"Player 4 - No Doctrine.")**
-    (item "Special Forces"    	<"SpecialForces">    	"Player 4 - Special Forces.")
-    (item "Brute Strength"		<"BruteStrength">    	"Player 4 - Brute Strength.")
-    (item "Sharpshooter"    	<"Sharpshooter">    	"Player 4 - Sharpshooter.")
-    (item "Ace Pilot"    		<"AcePilot">   			"Player 4 - Ace Pilot.")
-    (item "Sea Dog"    			<"SeaDog">    			"Player 4 - Sea Dog.")
+    (item "None"  			<"NoDoctrine">  		"Player 4 - No Doctrine.")**
+    (item "Special Forces"  	<"SpecialForces">  	"Player 4 - Special Forces.")
+    (item "Brute Strength"		<"BruteStrength">  	"Player 4 - Brute Strength.")
+    (item "Sharpshooter"  	<"Sharpshooter">  	"Player 4 - Sharpshooter.")
+    (item "Ace Pilot"  		<"AcePilot">  			"Player 4 - Ace Pilot.")
+    (item "Sea Dog"  			<"SeaDog">  			"Player 4 - Sea Dog.")
     (item "Guerrilla Warfare" 	<"GuerrillaWarfare"> 	"Player 4 - Guerrilla Warfare.")
-    (item "Foreign Invader"    	<"ForeignInvader">    	"Player 4 - Foreign Invader.")
-    (item "Conscription"    	<"Conscription">    	"Player 4 - Conscription.")
-    (item "Elite Training"    	<"EliteTraining">    	"Player 4 - Elite Training.")
-    (item "Glass Cannon"    	<"GlassCannon">    		"Player 4 - Glass Cannon.")
-    (item "Hardened Resolve"    <"HardenedResolve">  	"Player 4 - Hardened Resolve.")
-    (item "Preemptive Strike"  	<"PreemptiveStrike"> 	"Player 4 - Preemptive Strike.")
-    (item "Retaliation"    		<"Retaliation">    		"Player 4 - Retaliation.")
-    (item "Lady Luck"    		<"LadyLuck">    		"Player 4 - Lady Luck.")
+    (item "Foreign Invader"  	<"ForeignInvader">  	"Player 4 - Foreign Invader.")
+    (item "Conscription"  	<"Conscription">  	"Player 4 - Conscription.")
+    (item "Elite Training"  	<"EliteTraining">  	"Player 4 - Elite Training.")
+    (item "Glass Cannon"  	<"GlassCannon">  		"Player 4 - Glass Cannon.")
+    (item "Hardened Resolve"  <"HardenedResolve"> 	"Player 4 - Hardened Resolve.")
+    (item "Preemptive Strike" 	<"PreemptiveStrike"> 	"Player 4 - Preemptive Strike.")
+    (item "Retaliation"  		<"Retaliation">  		"Player 4 - Retaliation.")
+    (item "Lady Luck"  		<"LadyLuck">  		"Player 4 - Lady Luck.")
 })
 
 //------------------------------------------------------------------------------
@@ -1309,7 +1309,7 @@
         (author "Matthew Stephenson")
         (credit "Matthew Stephenson and Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Red))

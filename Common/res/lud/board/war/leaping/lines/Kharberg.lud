@@ -1,7 +1,7 @@
-(define "PromoteIfBorderReached"  
+(define "PromoteIfBorderReached" 
     (if (is In (last To) (sites Next))
         (move Promote (last To) (piece "DoubleCounter") Mover)
-   )
+    )
 )
 
 (define "Hop" 
@@ -10,42 +10,42 @@
         (between 
             if:("IsEnemyAt" (between))
             (apply (remove (between)))
-       ) 
+        ) 
         (to if:(is Empty (to))) 
         (then
             (and 
                 ("PromoteIfBorderReached")
                 ("HasCaptured")
-           )
-       )
-   ) 
+            )
+        )
+    ) 
 )
 
-(define "HasCaptured"  (set Value Mover 0))
+(define "HasCaptured" (set Value Mover 0))
 (define "HasNotCaptured" (set Value Mover 1))
-(define "DidNotCaptured"  (= (value Player Prev) 1))
-(define "RememberSiteWithPossibleCapture"  
+(define "DidNotCaptured" (= (value Player Prev) 1))
+(define "RememberSiteWithPossibleCapture" 
     (set Pending 
         (sites From
             (or 
                 (forEach Piece "Counter" 
                     ("Hop")
-               ) 
+                ) 
                 (forEach Piece "DoubleCounter" 
                     ("Hop")
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 (define "SitesWithPossibleCaptureInPreviousTurn" (sites Pending))
 
 (define "ShouldCapturedButMoved" 
     (and 
-        (is In (last From) ("SitesWithPossibleCaptureInPreviousTurn"))  
+        (is In (last From) ("SitesWithPossibleCaptureInPreviousTurn")) 
         (is In (last From) (sites Empty))
-   )
+    )
 )
 
 (define "HuffOnePieceOf" 
@@ -53,15 +53,15 @@
         Select 
         (from #1
             if:(!= (what at:(from)) 0)
-       )
+        )
         (then 
-            (and  {
+            (and {
                 (remove (last To)) 
                 (moveAgain) 
                 (set Value Prev 0)
             })
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -79,16 +79,16 @@
                     Step 
                     (to if:(is Empty (to)))
                     (then ("HasNotCaptured"))
-               )
+                )
                 (then ("PromoteIfBorderReached"))
-           )
-       )
+            )
+        )
         (piece "DoubleCounter" Each
             (or
                 ("Hop") 
                 (move Slide (then ("HasNotCaptured")))
-           )
-       )
+            )
+        )
     })
     (rules 
         (start { 
@@ -101,18 +101,18 @@
                     (or
                         (if ("ShouldCapturedButMoved") 
                             ("HuffOnePieceOf" (last To))
-                       )
+                        )
                         ("HuffOnePieceOf" ("SitesWithPossibleCaptureInPreviousTurn"))
-                   )
-               )
+                    )
+                )
                 (do 
                     ("RememberSiteWithPossibleCapture") 
                     next:(forEach Piece)
-               )
-           )
-       )
+                )
+            )
+        )
         (end ("BlockWin"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -123,15 +123,15 @@
         {
         (description "Kharberg is a game with leaping captures played by people living in and around the Sahara. It is typically played by drawing the board in the sand.")
         (aliases {"Kregba" "Damet" "Damiet Hregba"})
-        (rules "5x5 intersecting lines with diagonals in the four quadrants. Twelve pieces per player, arranged on the intersections of the lines, on the first two ranks in front of each player and the two to the right of the player in the central rank. Pieces move in any direction one space. A piece may capture an opponent's piece by hopping over it to an empty space in a straight line. Captures are obligatory. If a player does not capture when they are supposed to, the opponent may remove that piece immediately and then play as normal.  Once pieces reach the opposite side of the board from their starting position at the end of their turn, they are promoted and can move in any direction and over any distance. The player who captures all of their opponent's pieces or blocks them from being able to move wins.")
+        (rules "5x5 intersecting lines with diagonals in the four quadrants. Twelve pieces per player, arranged on the intersections of the lines, on the first two ranks in front of each player and the two to the right of the player in the central rank. Pieces move in any direction one space. A piece may capture an opponent's piece by hopping over it to an empty space in a straight line. Captures are obligatory. If a player does not capture when they are supposed to, the opponent may remove that piece immediately and then play as normal. Once pieces reach the opposite side of the board from their starting position at the end of their turn, they are promoted and can move in any direction and over any distance. The player who captures all of their opponent's pieces or blocks them from being able to move wins.")
         (source "Monod 1950: 12.")
         (id "774")
         (version "1.3.4")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in Sahara, around 1950.")
+        (origin "This game was played in Sahara, around 1950.")
         }
-   )
+    )
     
     (graphics {
         
@@ -139,6 +139,6 @@
     
     (ai
         "Kharberg_ai"
-   )
+    )
 )
 

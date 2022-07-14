@@ -1,12 +1,12 @@
-(game "Akron"  
-    (players 2)  
+(game "Akron" 
+    (players 2) 
     (equipment { 
         (board (square 4 pyramidal:True) use:Vertex) 
         (piece "Ball" Each) 
         (regions P1 {(sites Side N) (sites Side S) })
         (regions P2 {(sites Side W) (sites Side E) })
         }
-   )  
+    ) 
     (rules 
         (meta {
             (gravity)
@@ -18,15 +18,15 @@
                     Add 
                     (to (sites Empty) 
                         if:(is Flat)
-                   )
-               )
+                    )
+                )
                 (move Remove 
                     (sites Occupied by:All)
-               )
-           )
-       )
+                )
+            )
+        )
         (end (if (is Connected Mover) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------

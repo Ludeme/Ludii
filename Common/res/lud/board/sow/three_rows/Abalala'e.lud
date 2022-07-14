@@ -9,25 +9,25 @@
 
 //------------------------------------------------------------------------------
 
-(game "Abalala'e"  
+(game "Abalala'e" 
     // THIS IS JUST FOR ONE ROUND FOR NOW
-    (players 2)  
+    (players 2) 
     (equipment { 
         (mancalaBoard 3 "Columns" store:None
             {
             (track "Track" "0,E,N1,W5,N1,E" loop:True P1)
             (track "Track" "17,W,S1,E5,S1,W" loop:True P2)
             }
-       )
-        (regions "Home" P1 (union (sites Bottom) (sites {"D2" "E2" "F2"})))    // P1 home
-        (regions "Home" P2 (union (sites Top) (sites {"A2" "B2" "C2"})))       // P2 home
-        (regions "LeftPart" P1 (sites {"A1" "B1" "C1"}))                       // P1 Left home
-        (regions "LeftPart" P2 (sites {"D3" "E3" "F3"}))                       // P2 Left home
-        (regions "MiddleRow" (sites {"A2" "B2" "C2" "D2" "E2" "F2"}))          // Middle Row
-        (map "LeftHole" {(pair P1 0) (pair P2 17)})                            // leftHole of each player
+        )
+        (regions "Home" P1 (union (sites Bottom) (sites {"D2" "E2" "F2"})))  // P1 home
+        (regions "Home" P2 (union (sites Top) (sites {"A2" "B2" "C2"})))    // P2 home
+        (regions "LeftPart" P1 (sites {"A1" "B1" "C1"}))            // P1 Left home
+        (regions "LeftPart" P2 (sites {"D3" "E3" "F3"}))            // P2 Left home
+        (regions "MiddleRow" (sites {"A2" "B2" "C2" "D2" "E2" "F2"}))     // Middle Row
+        (map "LeftHole" {(pair P1 0) (pair P2 17)})              // leftHole of each player
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start (set Count 3 to:(union (sites P1 "Home") (sites P2 "Home"))))
@@ -38,9 +38,9 @@
                     (if ("SameTurn") 
                         "LastHoleSowed" 
                         (sites Mover "Home") 
-                   ) 
+                    ) 
                     if:(> (count at:(from)) 0)
-               )
+                )
                 (then 
                     (sow
                         count:(if ("HasCaptured") 1 (count at:(last To))) // If has captured we sow only one seed.
@@ -56,11 +56,11 @@
                                                 (from "NextRowPit") 
                                                 (to (handSite Mover)) 
                                                 count:(count at:"NextRowPit")
-                                           ) 
+                                            ) 
                                             (moveAgain) 
                                             ("StoreLastPitSowed")
                                         })
-                                   )
+                                    )
                                     (if (is In (to) (sites Mover "LeftPart"))
                                         (and {
                                             (if (> (count at:"NextRowPit") 0) 
@@ -69,22 +69,22 @@
                                                         (from "NextRowPit") 
                                                         (to (handSite Mover)) 
                                                         count:(count at:"NextRowPit")
-                                                   )
+                                                    )
                                                     (moveAgain) 
                                                     ("StoreLastPitSowed")
                                                 })
-                                           )
+                                            )
                                             (if (> (count at:"OppositePit") 0) 
                                                 (and {
                                                     (fromTo 
                                                         (from "OppositePit") 
                                                         (to (handSite Mover)) 
                                                         count:(count at:"OppositePit")
-                                                   )
+                                                    )
                                                     (moveAgain) 
                                                     ("StoreLastPitSowed")
                                                 })
-                                           )
+                                            )
                                         })
                                         (if (> (count at:"OppositePit") 0) 
                                             (and {
@@ -92,28 +92,28 @@
                                                     (from "OppositePit") 
                                                     (to (handSite Mover)) 
                                                     count:(count at:"OppositePit")
-                                               )
+                                                )
                                                 (moveAgain) 
                                                 ("StoreLastPitSowed")
                                             })
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         
         (end ("MancalaByScoreWhen"
                 (or {
                     (all Sites (sites P1 "Home") if:(= 0 (count at:(site)))) 
                     (all Sites (sites P2 "Home") if:(= 0 (count at:(site)))) 
                 })
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -130,14 +130,14 @@
         (version "1.3.4")
         (classification "board/sow/three rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Eritrea, around 1971.")
+        (origin "This game was played in Eritrea, around 1971.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)
     })
     (ai
         "Abalala'e_ai"
-   )
+    )
 )

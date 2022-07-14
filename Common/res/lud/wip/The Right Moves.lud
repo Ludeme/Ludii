@@ -2,14 +2,14 @@
     (not
         (all Sites (sites Centre)
             if:(> (count Steps (to) (site)) (count Steps (from) (site)))
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "The Right Moves"  
-    (players 2)  
+(game "The Right Moves" 
+    (players 2) 
     (equipment { 
         (board 
             (add
@@ -19,9 +19,9 @@
                     {45 29} {44 28} {58 42} {57 51} {40 56} {46 30} {48 32} {49 33} {50 34} 
                     {36 52} {37 53} {38 54} {41 57} {0 3} {3 2} {2 1} {1 0}
                     }
-               )
+                )
                 edges:{{0 2} {1 3}}
-           )
+            )
         use:Vertex)
         (piece "Counter" Each 
             (if (is In (from) (sites "SecondInnerMostCircle"))
@@ -31,18 +31,18 @@
                         Rotational
                         (between if:("IsEnemyAt" (between))
                             (apply (remove (between)))
-                       )
+                        )
                         (to if:(is Empty (to))
-                       )
-                   )
-               )
+                        )
+                    )
+                )
                 (or
                     (move Step (to if:(and ("TowardCentre") (is Empty (to)))))
                     (move Hop
                         Rotational
                         (between if:("IsEnemyAt" (between))
                             (apply (remove (between)))		
-                       )
+                        )
                         (to if:(and ("TowardCentre") (is Empty (to))))
                         (then
                             (if (can Move
@@ -52,25 +52,25 @@
                                             Rotational
                                             (between if:("IsEnemyAt" (between)))
                                             (to if:(is Empty (to)))
-                                       )
+                                        )
                                         (hop
                                             (from (last To))
                                             Rotational
                                             (between if:("IsEnemyAt" (between)))
                                             (to if:(and ("TowardCentre") (is Empty (to))))
-                                       )
-                                   )
-                               )
+                                        )
+                                    )
+                                )
                                 (moveAgain)
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         (piece "DoubleCounter" Each)
         (regions "SecondInnerMostCircle" (sites {4..11}))
-    })  
+    }) 
     
     (rules 
         (start {
@@ -87,26 +87,26 @@
                             (between 
                                 if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
-                           )
+                            )
                             (to if:(is Empty (to)))
-                       )
+                        )
                         (move Hop
                             (from (last To))
                             Rotational
                             (between 
                                 if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
-                           )
+                            )
                             (to if:(and ("TowardCentre") (is Empty (to))))
-                       )
-                   )
+                        )
+                    )
                     (move Pass)
-               )
+                )
                 (forEach Piece)
-           )
-       )
+            )
+        )
         (end (if (no Moves Next) (result Next Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -115,7 +115,7 @@
     (info
         {
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Blue))

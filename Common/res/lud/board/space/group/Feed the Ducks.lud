@@ -1,10 +1,10 @@
-(game "Feed the Ducks"  
+(game "Feed the Ducks" 
     (players 2) 
     (equipment { 
         (board (hex 5)) 
         (piece "Marker" Each)
         (piece "Disc" Neutral)
-    })  
+    }) 
     (rules 
         (start {
             (place "Marker1" {"A5" "C7" "D8" "F9" "H9" "I9" "I7" "I5" "F2" "C1" "A1" "A2"}) 
@@ -17,25 +17,25 @@
                     (piece "Disc0")
                     (to (sites Empty)) 
                     (then (attract (from (last To))))
-               )
-           ) 
+                )
+            ) 
             (nextPhase "Move Bread")
-       )
+        )
         (phase "Move Bread" 
             (play 
                 (move 
                     (from (sites Occupied by:Neutral)) 
                     (to (difference (sites Empty) (sites Direction from:(last To))))
                     (then (attract (from (last To))))
-               )
-           )
-       )
+                )
+            )
+        )
         }
         (end {
             ("SingleGroupWin" P1)
             ("SingleGroupWin" P2)
-        })  
-   )
+        }) 
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -56,7 +56,7 @@
         (credit "Eric Piette")
         (date "2011")
         }
-   )
+    )
     
     (graphics {
         (player Colour Neutral (colour Yellow))
@@ -64,6 +64,6 @@
     
     (ai 
         "Feed the Ducks_ai"
-   )
+    )
     
 )

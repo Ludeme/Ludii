@@ -11,14 +11,14 @@
             (add
                 (concentric {10}) 
                 vertices:{{0.45 0.45} {-0.45 -0.45} {0.45 -0.45} {-0.45 0.45}}
-           )
+            )
             (track "Track" {0 2 4 6 8 9 7 5 3 1} loop:True)
             use:Vertex
-       )
+        )
         
-        (regions P1 (sites {0..4}))        // P1 home
-        (regions P2 (sites {5..9}))        // P2 home
-        (map {(pair P1 11) (pair P2 10)})  // kalahs (storage pits)
+        (regions P1 (sites {0..4}))    // P1 home
+        (regions P2 (sites {5..9}))    // P2 home
+        (map {(pair P1 11) (pair P2 10)}) // kalahs (storage pits)
         (piece "Seed" Shared)
     })
     (rules
@@ -31,7 +31,7 @@
                         next:(move Select 
                             (from (site))
                             (then 
-                                (sow  
+                                (sow 
                                     count:(var)
                                     if:True
                                     apply:(if (and (<= (count at:(to)) 9) (is Odd (count at:(to))))
@@ -39,26 +39,26 @@
                                             (from (to)) 
                                             (to (mapEntry (mover))) 
                                             count:(count at:(to))
-                                       )
+                                        )
                                         (if (and (<= (count at:("NextHoleFrom" (to))) 9) (is Odd (count at:("NextHoleFrom" (to)))))
                                             (fromTo 
                                                 (from ("NextHoleFrom" (to))) 
                                                 (to (mapEntry (mover))) 
                                                 count:(count at:("NextHoleFrom" (to)))
-                                           )
-                                       )
-                                   )
+                                            )
+                                        )
+                                    )
                                     origin:True
                                     backtracking:(and (<= (count at:(to)) 9) (is Odd (count at:(to))))
-                               )
-                           )
-                       )	
-                   )
-               )
-           )
-       )
+                                )
+                            )
+                        )	
+                    )
+                )
+            )
+        )
         (end ("MancalaByScoreWhen" (and (no Moves P1) (no Moves P2))))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -74,9 +74,9 @@
         (version "1.3.4")
         (classification "board/sow")
         (credit "Eric Piette")
-        (origin  "This game was played in Nigeria, around 1951.")
+        (origin "This game was played in Nigeria, around 1951.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)
@@ -84,5 +84,5 @@
     
     (ai
         "Okwe (Achalla)_ai"
-   )
+    )
 )

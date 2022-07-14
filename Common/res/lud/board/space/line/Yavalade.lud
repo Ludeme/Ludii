@@ -1,18 +1,18 @@
-(game "Yavalade"  
+(game "Yavalade" 
     (players 3) 
     (equipment { 
         (board (rotate 90 (hex 5))) 
         (piece "Marker" Each)
         }
-   )  
+    ) 
     (rules 
         (play (move Add (to (sites Empty))))
         (end {
             (if (is Line 5 whats:{1 3}) (result P1 Win))
             (if (is Line 5 whats:{1 2}) (result P2 Win))
             (if (is Line 5 whats:{2 3}) (result P3 Win))
-        })  
-   )
+        }) 
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -32,10 +32,10 @@
         (credit "Eric Piette")
         (date "2012")
         }
-   )
+    )
     
     (ai 
         "Yavalade_ai"
-   )
+    )
     
 )

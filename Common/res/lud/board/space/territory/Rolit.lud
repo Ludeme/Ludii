@@ -7,11 +7,11 @@
                 (allCombinations 
                     (add (piece "Ball0" state:(mover)) (to (site))) 
                     (set State at:(between) (mover))
-               )
-           )
-       )
+                )
+            )
+        )
         (to if:(is Friend (state at:(to))))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -37,35 +37,35 @@
                     (sites Empty)
                     (append 
                         "ReverseBoundedPieces" 
-                   )
-               )
+                    )
+                )
                 (move Add (piece "Ball0" state:(mover))
                     (to (sites Around (sites Occupied by:Neutral) Empty))
-               )
+                )
                 (then
                     (forEach Player 
                         (set Score Player 
                             (count Sites in:(sites State (player)))
-                       )	
-                   )
-               )
-           )
-       )
+                        )	
+                    )
+                )
+            )
+        )
         
         (end
             (if (all Passed)
                 (byScore)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Players" <Players> args:{ <num>} {
-    (item "2" <2>  "The game is playing with two players.")   
-    (item "3" <3>  "The game is playing with three players.")  
-    (item "4" <4>  "The game is playing with four players.")*   
+    (item "2" <2> "The game is playing with two players.")  
+    (item "3" <3> "The game is playing with three players.") 
+    (item "4" <4> "The game is playing with four players.")*  
 })
 
 //------------------------------------------------------------------------------
@@ -85,7 +85,7 @@
         (credit "Eric Piette")
         (date "1997")
         }
-   )
+    )
     
     (graphics {
         (piece Colour state:1 fillColour:(colour Red))

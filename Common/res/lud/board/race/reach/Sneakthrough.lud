@@ -14,19 +14,19 @@
                             (set Hidden at:(last To) False to:Next) 
                             (set Hidden at:(last To) False to:Mover) 
                         })
-                   )
-               )
-           )
-       ) 
+                    )
+                )
+            )
+        ) 
         (move Step
             (directions {FR FL}) 
             (to if:(is Empty (to)) (apply (remove (to))))
-       )
+        )
         (move Step
             (directions {FR FL}) 
             (to if:("IsEnemyAt" (to)) (apply (remove (to)))) 
             (then (set Hidden at:(last To) to:Next))
-       )
+        )
     }) 
 )
 
@@ -41,7 +41,7 @@
         (piece "Pawn" P2 S "Moves")
         (regions P2 (sites Top))
         (regions P1 (sites Bottom))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Pawn1" (expand (sites Bottom)))
@@ -56,9 +56,9 @@
             (if 
                 "RegionReached" 
                 (result Mover Win)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -77,7 +77,7 @@
         (credit "Eric Piette")
         (date "01-04-2019")
         }
-   )
+    )
     
     (graphics {
         (board Style Chess)
@@ -85,6 +85,6 @@
     
     (ai 
         "Sneakthrough_ai"
-   )
+    )
     
 )

@@ -13,17 +13,17 @@
                 (then
                     (if (is Line 3)
                         (roll) 
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (end
             {
             (if (and (is Line 4) (= (count Pips) 2)) (result Mover Win))
             (if (and (is Line 3 exact:True) (= (count Pips) 1)) (result Mover Loss))
             }
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -39,7 +39,7 @@
         (version "1.1.19")
         (date "19-05-2021")
         }
-   )
+    )
     
     (graphics {
         (piece Rename piece:"Die" "Square")

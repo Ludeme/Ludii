@@ -1,5 +1,5 @@
-(game "Sujiken"  
-    (players 1)  
+(game "Sujiken" 
+    (players 1) 
     (equipment { 
         (board 
             (remove
@@ -14,9 +14,9 @@
                 25 26
                 17
                 }
-           )
+            )
             (values Cell (range 1 9))
-       ) 
+        ) 
         (regions {Columns Rows})
         (regions {39 43})
         (regions {35 40})
@@ -45,24 +45,24 @@
         (regions {24 25 26 30 31 32 35 36 37})
         (regions {27 28 29 33 34 38})
         (regions {39 40 41 42 43 44})
-    })  
+    }) 
     (rules
         (start <Challenge>)
         (play (satisfy (all Different)))
         (end (if (is Solved) (result P1 Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Challenge" <Challenge> args:{ <start> }
     {
-    (item "1"   
+    (item "1"  
         <(set { {0 6} {1 9} {3 2} {5 8} {7 7} {9 2} {10 1} {12 5} {14 9} {16 3} 
             {20 3} {24 9} {25 3} {26 1} {28 8} {33 9} {34 5} {35 4} {36 8} {42 3} {43 4}
         })>
         ""
-   )   
+    )  
 })
 
 //------------------------------------------------------------------------------
@@ -79,7 +79,7 @@
         (author "George Heineman")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (show Line {{60 63} {63 3} {30 36} {36 6}} (colour Black) scale:2)

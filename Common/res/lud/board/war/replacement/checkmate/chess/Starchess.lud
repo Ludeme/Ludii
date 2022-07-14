@@ -11,9 +11,9 @@
         (if ("IsEnemyAt" (to))
             (remove (to)
                 (then (set Counter))
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 // Usage: ("Directions" <p1_directions> <p2_directions>)
@@ -32,7 +32,7 @@
 (define "IsToEmptyOrEnemy"
     (or "IsToEmpty"
         ("IsEnemyAt" (to))
-   )
+    )
 )
 
 // Source: Chess.lud - NextCanNotMove
@@ -40,7 +40,7 @@
     (not (can Move (do
                 (forEach Piece Next)
                 ifAfterwards:(not ("IsInCheck" "King" Next))
-   )))
+    )))
 )
 
 // Usage: ("P12" <player1_arg> <player2_arg>)
@@ -60,9 +60,9 @@
         #1
         (to if:("IsEnemyAt" (to))
             "CaptureToPieceAndResetCounter"
-       )
+        )
         #2
-   )
+    )
 )
 
 //----------------------------------------
@@ -76,9 +76,9 @@
         #1
         (to if:"IsToEmptyOrEnemy"
             "CaptureToPieceAndResetCounter"
-       )
+        )
         #2
-   )
+    )
 )
 
 //----------------------------------------
@@ -99,8 +99,8 @@
                 (set Pending (ahead (last To) #2))
                 (set Var (last To))
                 }
-       ))
-   )
+        ))
+    )
 )
 
 (define "PawnCapture_Ortho"
@@ -118,14 +118,14 @@
         #1
         (to if:("IsEnemyAt" (to))
             (apply (remove (to)))
-       )
-   )
+        )
+    )
 )
 
 //----------------------------------------
 // Pawn movement: En passant
-//   - Save skipped-over spaces in Pending
-//   - Save location of last-moved Pawn in Var.
+//  - Save skipped-over spaces in Pending
+//  - Save location of last-moved Pawn in Var.
 // Note: Counter is reset in (piece "Pawn" ...).
 //----------------------------------------
 
@@ -136,7 +136,7 @@
         #1
         (to if:"IsEnPassantCapture")
         (then (remove (var)))
-   )
+    )
 )
 
 (define "EnPassant_Ortho"
@@ -147,7 +147,7 @@
     (and
         (is Pending)
         (= (to) (value Pending))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -158,21 +158,21 @@
         {
         (board (rotate 30 (hex Star 2)))
         
-        (piece "King"   Each ("KingCaptureStep"  Orthogonal ~))
-        (piece "Queen"  Each ("SlideCaptureMove" Orthogonal ~))
-        (piece "Rook"   Each ("SlideCaptureMove" (directions {N S}) ~))
+        (piece "King"  Each ("KingCaptureStep" Orthogonal ~))
+        (piece "Queen" Each ("SlideCaptureMove" Orthogonal ~))
+        (piece "Rook"  Each ("SlideCaptureMove" (directions {N S}) ~))
         (piece "Bishop" Each
             ("SlideCaptureMove" (directions {WNW ENE WSW ESE}) ~)
-       )
+        )
         (piece "Knight" Each
             (move
                 Leap
                 "KnightWalk"
                 (to if:"IsToEmptyOrEnemy"
                     "CaptureToPieceAndResetCounter"
-               )
-           )
-       )
+                )
+            )
+        )
         
         (piece "Pawn" Each
             (or {
@@ -185,78 +185,78 @@
                     (and
                         (if (is In (last To) (sites Mover "PromotionZone"))
                             (moveAgain)
-                       )
+                        )
                         (set Counter)
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         
         (hand Each size:5)
         
-        (regions "Home" P1 (sites {"A3"  "B3"  "C3"  "C2"  "C1"}))
+        (regions "Home" P1 (sites {"A3" "B3" "C3" "C2" "C1"}))
         (regions "Home" P2 (sites {"G9" "G8" "G7" "H7" "I7"}))
         
         (regions "PromotionZone" P1 (sites P2 "Home"))
         (regions "PromotionZone" P2 (sites P1 "Home"))
         
-        (regions "Region-Dark"   (sites Phase 1))
-        (regions "Region-Light"  (sites Phase 2))
+        (regions "Region-Dark"  (sites Phase 1))
+        (regions "Region-Light" (sites Phase 2))
         (regions "Region-Medium" (sites Phase 0))
         }
-   )
+    )
     
     (rules
         (start
             {
-            (place "King"   "Hand" count:1)
-            (place "Queen"  "Hand" count:1)
-            (place "Rook"   "Hand" count:1)
+            (place "King"  "Hand" count:1)
+            (place "Queen" "Hand" count:1)
+            (place "Rook"  "Hand" count:1)
             (place "Bishop" "Hand" count:1)
             (place "Knight" "Hand" count:1)
             
-            (place "Pawn1" {"B4"  "C4"  "D4" "D3"  "D2"})
+            (place "Pawn1" {"B4" "C4" "D4" "D3" "D2"})
             (place "Pawn2" {"F8" "F7" "F6" "G6" "H6"})
             }
-       )
+        )
         phases:{
         (phase "Placement"
             (play
                 (move
                     (from (sites Occupied by:Mover container:(mover)))
                     (to (intersection (sites Mover "Home") (sites Empty)))
-               )
-           )
+                )
+            )
             (nextPhase ("HandEmpty" P2) "Movement")
-       )
+        )
         (phase "Movement"
             (play
                 (if ("SameTurn")
                     ("PromoteTo" (piece {"Queen" "Rook" "Bishop" "Knight"}))
                     (do (forEach Piece)
                         ifAfterwards:(not ("IsInCheck" "King" Mover))
-                   )
-               )
-           )
+                    )
+                )
+            )
             (end
                 {
                 (if (and
                         ("IsInCheck" "King" Next)
                         ("NextCannotMove")
-                   )
+                    )
                     (result Mover Win)
-               )
+                )
                 (if (or
                         (no Moves Mover)
                         (= (counter) 100)
-                   )
+                    )
                     (result Mover Draw)
-               )
+                )
                 }
-           )
-       )
+            )
+        )
         }
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -292,7 +292,7 @@
         (author "László Polgár")
         (credit "Jay Coskey, with some small functions drawn from Chess.lud, by Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.7)
@@ -303,11 +303,11 @@
         (piece Scale "Rook" 0.8)
         (board Style Chess)
         
-        (region Colour "Region-Dark"   (colour "#b5651d"))
-        (region Colour "Region-Light"  (colour "#fff8dc"))
+        (region Colour "Region-Dark"  (colour "#b5651d"))
+        (region Colour "Region-Light" (colour "#fff8dc"))
         (region Colour "Region-Medium" (colour "#daae7c"))
     })
     (ai
         "Starchess_ai"
-   )
+    )
 )

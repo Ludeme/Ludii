@@ -20,7 +20,7 @@
             | 
             ]
             use:Vertex
-       )
+        )
         (dice d:[2..6] num:2)
         (piece "Disc" Each)
         (hand Each)
@@ -29,7 +29,7 @@
         (start (place "Disc" "Hand" count:15))
         (play [#]) // I can't describe this alone: "Single pieces are removed from the board and must reenter when an opposing piece lands on the same space."
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -46,9 +46,9 @@
         (version "1.3.2")
         (classification "board/race/escape/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Persia, from around 500 to 651.")
+        (origin "This game was played in Persia, from around 500 to 651.")
         }
-   )
+    )
     
     (graphics {
         (show Edges Hidden)

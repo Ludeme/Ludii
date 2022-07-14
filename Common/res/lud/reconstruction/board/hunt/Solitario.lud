@@ -1,5 +1,5 @@
 (game "Solitario"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board 
             (merge 
@@ -7,18 +7,18 @@
                 (square 5)
                 (shift 0.5 4 (rotate 180 (scale 0.75 1.5 (wedge 3)))) 
                 } 
-           ) 
+            ) 
             use:Vertex
-       )
+        )
         (piece "Marker" P1 (move [#]))
         (piece "Marker" P2 (move [#]))
-    })  
+    }) 
     
     (rules 
         (start [#])
         (play [#])
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -34,9 +34,9 @@
         (version "1.3.4")
         (classification "board/hunt/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Peru, around 1898.")
+        (origin "This game was played in Peru, around 1898.")
         }
-   )
+    )
     
     (graphics {
         (show Edges Diagonal Hidden)

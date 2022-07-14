@@ -12,8 +12,8 @@
 
 //-----------------------------------------------------------------------------
 
-(game "Provincial"  
-    (players 2)  
+(game "Provincial" 
+    (players 2) 
     (equipment { 
         ("BackgammonBoard" ("BackgammonTracksWithBar")) 
         (dice num:3)
@@ -42,21 +42,21 @@
                                 (to ("NextSiteFrom" (site))
                                     if:("NoEnemyOrOnlyOne" (to))
                                     ("HittingCapture" ("Bar"))
-                               )
-                           )
-                       )
-                   )
+                                )
+                            )
+                        )
+                    )
                     (then ("ReplayNotAllDiceUsed"))
-               )
-           )
-       )
+                )
+            )
+        )
         
         (end 
             (if ("AllPieceEscaped")
                 (result Mover Win)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //-------------------------------------------------------------------------
@@ -73,9 +73,9 @@
         (version "1.3.4")
         (classification "board/race/escape")
         (credit "Eric Piette")
-        (origin  "This game was played in England, from around 1300 to 1350.")
+        (origin "This game was played in England, from around 1300 to 1350.")
         }
-   )
+    )
     
     (graphics {
         (board Style backgammon)

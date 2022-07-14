@@ -1,6 +1,6 @@
 // /Polypods 
 //---------------------------------------------
-// Utility for determining if a group is alive   
+// Utility for determining if a group is alive  
 (define "IsAliveAt" // <region>
     (<= 0
         (+
@@ -10,7 +10,7 @@
                 (if (= 0 (state at:(to))) 1 (- 1))
 ))))
 
-//----------------------------------  
+//---------------------------------- 
 // Capture Locations and procedure
 
 (define "CaptureSites"
@@ -27,7 +27,7 @@
             (to)
 )))
 
-(define "AffectedGroupAt"  // The updated group without captured terminals associated with the key location.
+(define "AffectedGroupAt" // The updated group without captured terminals associated with the key location.
     (difference (sites Group at:#1) (sites (values Remembered "CS")))
 )
 
@@ -47,22 +47,22 @@
             (then
                 (forEach Site "KeySitesOfAffectedGroups"
                     (remember Value "KS" (site) unique:True)
-       )))
+        )))
         next:(forEach Site (sites (values Remembered "CS")) (remove (site))
             (then
                 (forEach Value
-                    (values Remembered "KS")  // a key site within the remainder of the group
+                    (values Remembered "KS") // a key site within the remainder of the group
                     ("UpdateTerminals" ("AffectedGroupAt" (value)))
-       )))
+        )))
         (then 
             (and
-                (forEach Value (values Remembered "KS")  
+                (forEach Value (values Remembered "KS") 
                     (if 
                         (not ("IsAliveAt" ("AffectedGroupAt" (value))))
                         (forEach Site
                             ("AffectedGroupAt" (value)) 
                             ("ClaimCapture") 
-               )))
+                )))
                 (forget Value "CS" All
                     (then (forget Value "KS" All))
 )))))
@@ -74,7 +74,7 @@
     (array (intersection #1 (sites Around (site))))
 )
 
-(define "UpdateTerminals"  // <region> such as (sites) or (sites Group at:(last To))
+(define "UpdateTerminals" // <region> such as (sites) or (sites Group at:(last To))
     (forEach Site #1
         (if
             (or
@@ -85,7 +85,7 @@
                         (count Steps 
                             (min ("SurroundingSitesInGroup" #1))
                             (max ("SurroundingSitesInGroup" #1))
-           ))))
+            ))))
             (set State at:(site) 1)
             (set State at:(site) 0)
 )))
@@ -99,7 +99,7 @@
             (sites Empty)
             (sites Around
                 (intersection (sites Occupied by:Next) (sites State 1))
-       ))
+        ))
         level:0
 ))
 
@@ -113,7 +113,7 @@
         (board <BoardShape:gridType> use:Vertex)
         (piece "Disc" Each maxState:1)
         }
-   )
+    )
     (rules
         (play
             (or
@@ -121,13 +121,13 @@
                 (do
                     (move Add "ToAllowedSites" 
                         (then ("UpdateTerminals" (sites Group at:(last To))))
-                   )
+                    )
                     ifAfterwards:("IsAliveAt" (sites Group at:(last To)))
                     (then ("Captures"))
-               ) 
+                ) 
                 (then 
                     ("Score")
-       )))
+        )))
         (end 
             (if
                 (all Passed)
@@ -135,14 +135,14 @@
                 (if
                     (> (score Mover) (score Next))
                     (result Mover Win)
-               )
+                )
                 (if
                     (and
                         (= (score Mover) (score Next))
                         (>= ("FringeScoreOf" Mover) ("FringeScoreOf" Next))
-                   )
+                    )
                     (result Mover Win)
-               )
+                )
                 }
                 (result Next Win)
 ))))
@@ -193,7 +193,7 @@
     (info
         {
         }
-   )
+    )
     (graphics 
         {
         (player Colour P1 (colour DarkGreen))
@@ -207,6 +207,6 @@
         (stackType Default .8)
         // (show Piece State)
         }
-   )
+    )
     (ai (heuristics (score weight:2)))
 )

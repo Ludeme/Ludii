@@ -16,11 +16,11 @@
                     (to 
                         ("SiteToMoveOnTrack") 
                         "CaptureEnemyPiece"
-                   )
-               )
-           )
-       )
-   )
+                    )
+                )
+            )
+        )
+    )
 )
 
 (define "PieceAlreadyEntered" (!= (from) (handSite Mover)))
@@ -28,7 +28,7 @@
     (and 
         (= (from) (handSite Mover)) 
         (all Sites (sites Occupied by:Mover) if:(not (is In (site) (sites Mover "Arc"))))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -41,7 +41,7 @@
             (track "Track1" "46,5,SSE,N,E,S,W,NNW2,End" P1 directed:True)
             (track "Track2" "47,41,NNW,W,S,E,N,SSE2,End" P2 directed:True)
             }
-       )
+        )
         (regions "AllSites" (sites Board))
         (regions "Arc" P1 (sites {1..5}))
         (regions "Arc" P2 (sites {41..45}))
@@ -49,10 +49,10 @@
         (piece "Marker" Each
             (if (or ("PieceAlreadyEntered")
                     ("PieceCanEnterOnlyIfNoPieceOnArc")
-               )
+                )
                 ("Movement")
-           )
-       )
+            )
+        )
         (hand Each)
         (map "Throw" {
             (pair 0 10) (pair 39 5) (pair 24 3) (pair 25 3) (pair 35 3) (pair 33 3)
@@ -63,15 +63,15 @@
         (start (place "Marker" "Hand" count:<Num:piece>))
         (play ("RollMove" (or (forEach Piece) (forEach Piece container:(mover)))))
         (end ("EscapeWin"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Start Rules" <Num> args:{ <piece> }
     {
-    (item  "1"  <1> "Each player has 1 piece.")  
-    (item  "2"  <2> "Each player has 2 pieces.")**  
+    (item "1" <1> "Each player has 1 piece.") 
+    (item "2" <2> "Each player has 2 pieces.")** 
     }
 )
 
@@ -83,7 +83,7 @@
         "Start Rules/2"
         }
         variations:{"Start Rules/1"}
-   )*
+    )*
     
 })
 
@@ -101,7 +101,7 @@
         (classification "board/race/escape")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (show Edges Hidden)
@@ -117,5 +117,5 @@
     
     (ai
         "Kints_ai"
-   )
+    )
 )

@@ -4,12 +4,12 @@
         (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
         (hand Each) // Do we need an hand?
         (piece "Marker" Each) 
-    })  
+    }) 
     (rules 
         (start [#]) // 9 pieces per player.
         (play [#]) // Maybe the line has to be used to capture like in nine men morris?
         (end (if [(is Line 3) | #] (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -27,8 +27,8 @@
         (version "1.3.4")
         (classification "board/space/line/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Southwest Asia, around 1694.")
+        (origin "This game was played in Southwest Asia, around 1694.")
         }
-   )
+    )
     
 )

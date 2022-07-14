@@ -4,8 +4,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Luuth"  
-    (players 2)  
+(game "Luuth" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
@@ -13,12 +13,12 @@
             (track "TrackCCW" "0,E,N,W" loop:True)
             (track "TrackCW" "6,W,N,E" loop:True)
             }
-       )
+        )
         (piece "Seed" Shared)
         (hand Each)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-    })  
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+    }) 
     (rules 
         
         (start (set Count 4 to:(sites Track)))
@@ -32,13 +32,13 @@
                         (if (is In (from) (sites Centre))
                             (difference (sites Board) (from))
                             (difference (sites Board) (sites {(from) ("OppositePit" (from))}))
-                       )
-                   )
+                        )
+                    )
                     count:(count at:(from))
-               )
-           )
+                )
+            )
             (nextPhase Mover "Sowing")
-       )
+        )
         
         (phase "Sowing"
             (play
@@ -47,7 +47,7 @@
                         (from
                             (sites Mover)
                             if:(is Occupied (from))
-                       )
+                        )
                         (then
                             (sow
                                 numPerHole:4
@@ -60,18 +60,18 @@
                                                 (from ("OppositePit" (to)))
                                                 (to (handSite Mover))
                                                 count:(count at:("OppositePit" (to)))
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     (move Select
                         (from
                             (sites Mover)
                             if:(is Occupied (from))
-                       )
+                        )
                         (then
                             (sow
                                 numPerHole:4
@@ -84,25 +84,25 @@
                                                 (from ("OppositePit" (to)))
                                                 (to (handSite Mover))
                                                 count:(count at:("OppositePit" (to)))
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         }
         
         (end ("MancalaByScoreWhen" ("NoPieceOnBoard")))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Luuth is a game played by the Nuer people of Ethiopia. It is similar to a mancala game, but the movement rules only sometimes involve sowing.")
@@ -112,9 +112,9 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Ethiopia, around 1971.")
+        (origin "This game was played in Ethiopia, around 1971.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

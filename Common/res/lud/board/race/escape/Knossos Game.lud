@@ -4,8 +4,8 @@
         (if (= 1 (count Pips)) 
             2
             3
-       )
-   )
+        )
+    )
 )
 
 (define "SiteToMoveOnTrack" ("NextSiteOnTrack" ("ThrowValue") #1))
@@ -20,29 +20,29 @@
         (if (and 
                 ("IsNotOffBoard" ("SiteToMoveOnTrack" #1)) 
                 (not ("IsFriendAt" ("SiteToMoveOnTrack" #1)))
-           )
+            )
             (move 
                 (from) 
                 (to 
                     ("SiteToMoveOnTrack" #1) 
                     "CaptureEnemyPiece"
-               )
-           )
-       )
-   )	
+                )
+            )
+        )
+    )	
 )
 
 (define "SiteAfterBridge" 10)
 
 //------------------------------------------------------------------------------
 
-(game "Knossos Game"  
+(game "Knossos Game" 
     (players 2)
     (equipment {
         (board 
             (merge {
                 (rectangle 1 4) 
-                (shift 1 1  (rectangle 1 2)) 
+                (shift 1 1 (rectangle 1 2)) 
                 (shift 0 -2 (rectangle 3 1))
                 (shift 3 -2 (rectangle 3 1))
                 
@@ -60,7 +60,7 @@
             (track "TrackTop2" "10,13,11,End")
             }
             use:Vertex
-       )
+        )
         ("StickDice" 2)
         (piece "RoundPawn" Each
             (or {
@@ -71,7 +71,7 @@
                 (if (is Mover P1)
                     ("MoveOnTrack" "TrackTop1")
                     ("MoveOnTrack" "TrackTop2")
-               )
+                )
                 (if (and {
                         (not ("IsFriendAt" ("SiteAfterBridge")))
                         (= 3 ("ThrowValue"))
@@ -80,18 +80,18 @@
                     (if (or 
                             (can Move ("MoveOnTrack" "TrackCross1")) 
                             (can Move ("MoveOnTrack" "TrackCross2"))
-                       )
+                        )
                         (move 
                             (from) 
                             (to 
                                 ("SiteAfterBridge") 
                                 "CaptureEnemyPiece"
-                           )
-                       )
-                   )
-               )
+                            )
+                        )
+                    )
+                )
             })
-       )
+        )
         (hand Each)
         (regions "TopSites" (sites {10..13}))
     })
@@ -102,7 +102,7 @@
                 (or 
                     (forEach Piece) 
                     (forEach Piece container:(mover))
-               )
+                )
                 (then 
                     (if (no Pieces Mover)
                         (and
@@ -112,32 +112,32 @@
                                     (forEach Site 
                                         (sites Occupied by:All container:"Board")
                                         (remove (site))
-                                   )
+                                    )
                                     (if (!= 0 (who at:(handSite P1)))
                                         (remove (handSite P1))
-                                   )
+                                    )
                                     (if (!= 0 (who at:(handSite P2)))
                                         (remove (handSite P2))
-                                   )
+                                    )
                                     (add (piece (id "RoundPawn" P1)) (to (handSite P1)) count:2)
                                     (add (piece (id "RoundPawn" P2)) (to (handSite P2)) count:2)
                                 })
-                           )
-                       )
+                            )
+                        )
                         (if (= 3 ("ThrowValue")) (moveAgain))
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (end (if (= (score Mover) 3) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <seleucid> }
     {
-    (item  "Hillbom"  <> "Rules from Seleucid.")* 
+    (item "Hillbom" <> "Rules from Seleucid.")* 
     }
 )
 
@@ -162,7 +162,7 @@
     (info
         {
         (description "The Knossos Game is a speculated game based on an object found at the Palace of Knossos in Crete which looks like a game board, and which had four conical pieces found nearby. It is a unique object, though fragments with similar decoration could point to its existence elsewhere in the Aegean.")
-        (useFor "Ruleset/Hillbom (Scholarly)" (rules "Each player begins at the end of one of the \"wings\" on the board. Two pieces per player. Moves are determined by the throw of two sticks with a rounded side and a flat side. Rolls are as follows: two round  sides up= 1, one flat and one round =2, two flat sides =3, plus another throw. Players move their pieces the appropriate number of spaces onto the board. When a piece is in the central four spaces of the main part of the board, pieces may be taken. A piece is taken when the opponent lands on the same space as a piece, sending it back to the beginning. In these central four squares, the player may choose to proceed upward again either on the first or second space, but may not change direction again. A player may cross the \"bridge\" to the other four spaces by throwing a 3, always stopping on the first space after the bridge, regardless of whether thre . The player then may move to the space closest to them, if a roll allows, where they are safe, and then to the apex point of the board, where they may also be sent to start if the opponent lands there. From there, they must give an exact throw to exit the board. The first player to remove both of their pieces wins. The game is played again, and the first player to win three games is the winner."))
+        (useFor "Ruleset/Hillbom (Scholarly)" (rules "Each player begins at the end of one of the \"wings\" on the board. Two pieces per player. Moves are determined by the throw of two sticks with a rounded side and a flat side. Rolls are as follows: two round sides up= 1, one flat and one round =2, two flat sides =3, plus another throw. Players move their pieces the appropriate number of spaces onto the board. When a piece is in the central four spaces of the main part of the board, pieces may be taken. A piece is taken when the opponent lands on the same space as a piece, sending it back to the beginning. In these central four squares, the player may choose to proceed upward again either on the first or second space, but may not change direction again. A player may cross the \"bridge\" to the other four spaces by throwing a 3, always stopping on the first space after the bridge, regardless of whether thre . The player then may move to the space closest to them, if a roll allows, where they are safe, and then to the apex point of the board, where they may also be sent to start if the opponent lands there. From there, they must give an exact throw to exit the board. The first player to remove both of their pieces wins. The game is played again, and the first player to win three games is the winner."))
         (useFor "Ruleset/Hillbom (Scholarly)" (source "Hillbom 2011: 260-263."))
         (useFor "Ruleset/Hillbom (Scholarly)" (id "183"))
         (useFor "Ruleset/Historical Information (Incomplete)" (rules "The board consists of ten circles: three vertical, three more running perpendicular to those, two more perpendicular downward from those, and two above the central two circles of the horizontal row. Four more circles, arranged in a diamond, are separated from the rest of the board, above the two circles above the horizontal row. "))
@@ -172,9 +172,9 @@
         (id "183")
         (version "1.3.4")
         (classification "board/race/escape")
-        (origin  "This game was played in Crete, from around 1700BCE to 1501BCE.")
+        (origin "This game was played in Crete, from around 1700BCE to 1501BCE.")
         }
-   )
+    )
     
     (graphics {
         (show Edges Hidden)
@@ -343,7 +343,7 @@
         (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:0.12 scaleY:0.04 offsetX:0.17 offsetY:0.575)
         (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:0.022 scaleY:0.42 offsetX:-0.121 offsetY:0.45)
         (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:0.022 scaleY:0.42 offsetX:0.121 offsetY:0.45)
-        (board Background image:"rectangle.svg" fillColour:(colour  White) edgeColour:(colour White) scaleX:0.265 scaleY:0.04 offsetX:0.001 offsetY:0.323)
+        (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:0.265 scaleY:0.04 offsetX:0.001 offsetY:0.323)
         
         (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:0.12 scaleY:0.04 offsetX:-0.2 offsetY:0.18)
         (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:0.12 scaleY:0.04 offsetX:0.2 offsetY:0.18)
@@ -394,17 +394,17 @@
         
         (board Background image:"rectangle.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scaleX:0.2 scaleY:0.15 offsetX:-0.215 offsetY:-0.573)
         (board Background image:"rectangle.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scaleX:0.2 scaleY:0.15 offsetX:0.215 offsetY:-0.573)
-        (board Background image:"disc.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scale:0.095  offsetX:-0.265 offsetY:-0.573)
-        (board Background image:"disc.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scale:0.095  offsetX:-0.165 offsetY:-0.573)
-        (board Background image:"disc.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scale:0.045  offsetX:-0.265 offsetY:-0.573)
-        (board Background image:"disc.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scale:0.045  offsetX:-0.165 offsetY:-0.573)
-        (board Background image:"disc.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scale:0.095  offsetX:0.265 offsetY:-0.573)
-        (board Background image:"disc.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scale:0.095  offsetX:0.165 offsetY:-0.573)
-        (board Background image:"disc.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scale:0.045  offsetX:0.265 offsetY:-0.573)
-        (board Background image:"disc.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scale:0.045  offsetX:0.165 offsetY:-0.573)
+        (board Background image:"disc.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scale:0.095 offsetX:-0.265 offsetY:-0.573)
+        (board Background image:"disc.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scale:0.095 offsetX:-0.165 offsetY:-0.573)
+        (board Background image:"disc.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scale:0.045 offsetX:-0.265 offsetY:-0.573)
+        (board Background image:"disc.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scale:0.045 offsetX:-0.165 offsetY:-0.573)
+        (board Background image:"disc.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scale:0.095 offsetX:0.265 offsetY:-0.573)
+        (board Background image:"disc.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scale:0.095 offsetX:0.165 offsetY:-0.573)
+        (board Background image:"disc.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scale:0.045 offsetX:0.265 offsetY:-0.573)
+        (board Background image:"disc.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scale:0.045 offsetX:0.165 offsetY:-0.573)
     })
     
     (ai
         "Knossos Game_ai"
-   )
+    )
 )

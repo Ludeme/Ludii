@@ -1,12 +1,12 @@
-(game "Test - Circle Faces"  
-    (players 2)  
+(game "Test - Circle Faces" 
+    (players 2) 
     (equipment { 
         (board (circle {4 4 4 1 4})) 
         (piece "Disc" P1) 
         (piece "Cross" P2) 
-    })  
+    }) 
     (rules 
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
-   )
+    )
 )

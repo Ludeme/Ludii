@@ -6,9 +6,9 @@
             (max 1) 
             if:("IsEnemyAt" (between)) 
             (apply (remove (between)))
-       )
+        )
         (to if:("IsFriendAt" (to))) 
-   )
+    )
 )
 
 (define "Surrounded" 
@@ -19,17 +19,17 @@
             if:(and 
                 (is In (between) (sites Corners)) 
                 ("IsEnemyAt" (between))
-           ) 
+            ) 
             (apply (remove (between)))
-       ) 
+        ) 
         (to if:("IsFriendAt" (to))) 
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Dai Hasami Shogi"  
-    (players 2)  
+(game "Dai Hasami Shogi" 
+    (players 2) 
     
     (equipment { 
         (<Board>)
@@ -42,14 +42,14 @@
                     Orthogonal 
                     (between if:(not (is Empty (between)))) 
                     (to if:(is Empty (to)))
-               ) 
+                ) 
                 (then (or "Custodial" "Surrounded"))
-           )
-       )
+            )
+        )
         (regions P1 (expand (sites Bottom)))
         (regions P2 (expand (sites Top)))
         }
-   )
+    )
     
     (rules 
         (start { 
@@ -59,30 +59,30 @@
         
         (play
             (forEach Piece)
-       )
+        )
         
         (end {
             (if 
                 (is Line 5 Orthogonal if:(not (is In (to) (sites Mover)))) 
                 (result Mover Win)
-           ) 
+            ) 
             (if 
                 (and 
                     (< (count Pieces P1) 5) 
                     (< (count Pieces P2) 5) 
-               ) 
+                ) 
                 (result Mover Draw)
-           ) 
+            ) 
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board" <Board> args:{<type>}
     {
-    (item "Shogi" <board (square 9)>                    "The game is played on a Shogi board.")*
-    (item "Go"    <board (square 9) use:Vertex> "The game is played on a Go board.")
+    (item "Shogi" <board (square 9)>          "The game is played on a Shogi board.")*
+    (item "Go"  <board (square 9) use:Vertex> "The game is played on a Go board.")
     }
 )
 
@@ -100,7 +100,7 @@
         (classification "board/space/line")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (useFor {"Board/Shogi"} (board Style Shogi))
@@ -109,6 +109,6 @@
     
     (ai 
         "Dai Hasami Shogi_ai"
-   )
+    )
     
 )

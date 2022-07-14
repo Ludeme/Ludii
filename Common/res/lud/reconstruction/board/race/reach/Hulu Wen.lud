@@ -1,15 +1,15 @@
 (game "Hulu Wen"
-    (players [2..16])  
+    (players [2..16]) 
     (equipment { 
         (board
             (add
                 (remove
                     (square 8)
                     vertices:{40}
-               )
+                )
                 cells:{{47 39 30 31 32 40 49 48}}
-           )
-       )
+            )
+        )
         (dice d:[#] num:2)
         (piece "Disc" Each (move [#])) 
     })
@@ -17,7 +17,7 @@
         (start [#])
         (play [#])
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -33,9 +33,9 @@
         (version "1.3.4")
         (classification "board/race/reach/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in China, from around 1644 to 1911.")
+        (origin "This game was played in China, from around 1644 to 1911.")
         }
-   )
+    )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

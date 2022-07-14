@@ -16,7 +16,7 @@
             })
             (track "Track" "0,E,N,W,S1" loop:True)
             use:Vertex
-       )
+        )
         (regions P1 (sites {0..4 11})) 
         (regions P2 (sites {5..10})) 
         (piece "Seed" Shared)
@@ -31,9 +31,9 @@
                         (if ("SameTurn")
                             (sites {(var "Replay") })
                             (sites Mover)
-                       )
+                        )
                         if:(is Occupied (from))
-                   )
+                    )
                     (then
                         (sow
                             apply:(if (not (and (is In (to) (sites Next)) (= (next) (state at:(to)))))
@@ -43,26 +43,26 @@
                                             (from (to))
                                             (to ("NextHoleFrom" (to) 1))
                                             count:3
-                                       )
+                                        )
                                         (sow
                                             ("NextHoleFrom" (to) 1)
                                             count:3
                                             skipIf:(and (is In (to) (sites Mover)) (= 1 (state at:(to))))
-                                       )
+                                        )
                                         (set State at:(to) 1)
                                     })
                                     (if (< 1 (count at:(to)))
                                         (and
                                             (moveAgain)
                                             (set Var "Replay" (to))
-                                       )
-                                   )
-                               )
-                           )
+                                        )
+                                    )
+                                )
+                            )
                             skipIf:(and (is In (to) (sites Mover)) (= (mover) (state at:(to))))
-                       )
-                   )
-               )
+                        )
+                    )
+                )
                 }
                 (then
                     (forEach Site ("EnemySites")
@@ -72,17 +72,17 @@
                                     (from (site))
                                     (to (centrePoint))
                                     count:(count at:(site))
-                               )
+                                )
                                 (set State at:(site) 1)
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         
         (end ("ForEachPlayerNoMovesLoss"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -98,9 +98,9 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Democratic Republic of Congo., around 1977.")
+        (origin "This game was played in Democratic Republic of Congo., around 1977.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

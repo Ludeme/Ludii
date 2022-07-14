@@ -2,13 +2,13 @@
 
 //------------------------------------------------------------------------------
 
-(game "Bravalath"  
-    (players 2)  
+(game "Bravalath" 
+    (players 2) 
     (equipment { 
         (boardless <Tiling:type>) 
         (tile <Tiling:tile> Each <Tiling:numSides>) 
         }
-   )  
+    ) 
     
     (rules 
         (start {
@@ -23,25 +23,25 @@
                     (sites Playable) 
                     if:(<= 1 
                         (count Sites in:(sites Around (to) NotEmpty)) 
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         
         (end {
             (if (is Line 4) (result Mover Win))
             (if (is Line 3) (result Mover Loss)) 
-        })  
-   )
+        }) 
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Tiling" <Tiling> args:{ <type> <tile> <numSides> <piece1> <piece2> }
     {
-    (item "Hexagonal"      <Hexagonal>  <"Hex">   <numSides:6>   <"Hex1">      <"Hex2">     "The game uses hexagonal tiles.")**   
-    (item "Square"         <Square>     <"Square"> <numSides:4>  <"Square1">   <"Square2">    "The game uses square tiles")     
-    (item "Triangle"       <Triangular>     <"Triangle"> <numSides:3>  <"Triangle1">   <"Triangle2">    "The game uses triangle tiles")    
+    (item "Hexagonal"   <Hexagonal> <"Hex">  <numSides:6>  <"Hex1">   <"Hex2">   "The game uses hexagonal tiles.")**  
+    (item "Square"     <Square>   <"Square"> <numSides:4> <"Square1">  <"Square2">  "The game uses square tiles")   
+    (item "Triangle"    <Triangular>   <"Triangle"> <numSides:3> <"Triangle1">  <"Triangle2">  "The game uses triangle tiles")  
 })
 
 //------------------------------------------------------------------------------
@@ -58,12 +58,12 @@
         (credit "Cameron Browne (8/12/2020)")
         (date "2020")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour 250 240 127))
     })
     (ai
         "Bravalath_ai"
-   )
+    )
 )

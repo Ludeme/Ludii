@@ -2,8 +2,8 @@
     (move Slide #1
         (to
             (apply if:(all Sites (sites Around (to)) if:(!= (what at:(site)) (id #2 Next))))
-       )
-   )	
+        )
+    )	
 )
 (define "MouseMove" ("SlideMove" Orthogonal "Lion"))
 (define "ElephantMove" ("SlideMove" All "Mouse"))
@@ -15,15 +15,15 @@
 
 //------------------------------------------------------------------------------
 
-(game "Barca"  
-    (players 2)  
+(game "Barca" 
+    (players 2) 
     (equipment { 
         (board (square 10)) 
         (piece "Mouse" Each ("MouseMove"))
         (piece "Elephant" Each ("ElephantMove"))
         (piece "Lion" Each ("LionMove"))
         (regions "Water" (sites {"D4" "D7" "G4" "G7"}))
-    })  
+    }) 
     (rules
         (start {
             (place "Elephant1" (sites {"E1" "F1"}))
@@ -43,10 +43,10 @@
                 })
                 (forEach Piece)
             })
-       )
+        )
         
         (end (if ("ThreePiecesInWater") (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -78,7 +78,7 @@
         (credit "Eric Piette")
         (date "2007")
         }
-   )
+    )
     
     (graphics {
         (board Checkered)

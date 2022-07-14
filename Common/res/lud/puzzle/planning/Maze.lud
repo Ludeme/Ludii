@@ -1,7 +1,7 @@
 (define "EdgeInCommon" 
     (intersection (sites Incident Edge of:Cell at:#1) 
         (sites Incident Edge of:Cell at:#2)
-   ) 
+    ) 
 )
 
 (define "NoEdgeBetweenCells"
@@ -20,8 +20,8 @@
                 0 20 40 60 80 100 120 140 1 21 41 61 81 2 22 42 62 3 23 4 5 6
                 19 39 59 79 99 119 139 159 18 38 58 78 98 17 37 57 77 16 36 15 14 13
                 }
-           )
-       )
+            )
+        )
         (piece "Marker" Shared)
         (piece "Cross" Neutral)
         (piece "Human" P1
@@ -30,15 +30,15 @@
                 Orthogonal 
                 (to 
                     if:(and (is Empty (to)) ("NoEdgeBetweenCells" (from) (to)))
-               )
+                )
                 (then 
                     (add 
                         (piece (id "Cross" Neutral))
                         (to (last From))
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (regions "Exit" {<Board:exit>})
     })
     (rules
@@ -49,8 +49,8 @@
                 (union 
                     (sites Outer Edge) 
                     (sites {<Board:walls>})
-               )
-           )
+                )
+            )
             (place "Human" 336)
         })
         
@@ -60,14 +60,14 @@
             (if (no Moves Mover) (result Mover Loss))
             (if (is In (where (id "Human")) (sites "Exit")) (result Mover Win))
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board" <Board> args:{ <walls> <exit> }
     {
-    (item  "Wikipedia"  
+    (item "Wikipedia" 
         <692 693 694 696 672 651 630 589 568 673 653 676 656 657 658 678 719
         699 701 702 682 724 684 705 706 727 686 728 709 689 648 607 566 668
         611 612 613 614 615 677 634 595 574 575 596 637 553 533 532 552 572
@@ -90,7 +90,7 @@
         > 
         <5>
         "The board in Cross+A."
-   )* 
+    )* 
     }
 )
 
@@ -108,7 +108,7 @@
         (classification "puzzle/planning")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Blue))
@@ -125,5 +125,5 @@
     
     (ai
         "Maze_ai"
-   )
+    )
 )

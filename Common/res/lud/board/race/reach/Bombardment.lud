@@ -14,11 +14,11 @@
                     (then
                         (forEach Site (sites Around (last To) includeSelf:True)
                             (if (is Occupied (site)) (remove (site)))
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
     })
@@ -31,7 +31,7 @@
         (play (forEach Piece))
         
         (end (if (or ("ReachedTarget") (no Pieces Next)) (result Mover Win))) 
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -54,7 +54,7 @@
         (credit "Eric Piette")
         (date "2003")
         }
-   )
+    )
     
     (graphics {
         (board Style Chess)

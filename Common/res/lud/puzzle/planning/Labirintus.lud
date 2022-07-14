@@ -6,9 +6,9 @@
             (fromTo 
                 (from (sites Occupied by:P1)) 
                 (to (sites LineOfSight Farthest at:(from) SameDirection))
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -38,18 +38,18 @@
                 (and
                     (is In (where (id "Ball1")) (sites "Exit1"))
                     (is In (where (id "Ball2")) (sites "Exit2"))
-               )
+                )
                 (result Mover Win)
-           )
+            )
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board" <Board> args:{ <walls> <start1> <start2> }
     {
-    (item "Default"  
+    (item "Default" 
         <0..19 300..319 38 278 277 276 275 255 35 36 55 56 52 53 50 49 48 46 45 44 24 66 
         86 42 62 82 83 84 95 135 155 175 215 299 279 259 239 219 199 179 159 139 119 99 
         79 59 39 29 40 60 80 100 120 140 160 180 200 220 240 260 280 258 238 218 217 177 
@@ -60,7 +60,7 @@
         <149>
         <170>
         "Default setup"
-   )* 
+    )* 
     }
 )
 
@@ -79,7 +79,7 @@
         (author "László Nagy")
         (credit "Matthew Stephenson")
         }
-   )
+    )
     
     (graphics {
         (piece Colour "Ball1" fillColour:(colour Red))

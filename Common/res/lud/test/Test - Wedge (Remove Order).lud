@@ -4,15 +4,15 @@
             (exact #1)
             if:#2
             (effect (remove (between)))
-       )
+        )
         (to if:(is Empty (to)))
-   )
+    )
 )
 
 //-------------------------------------------------------------------------------
 
-(game "Merimueng-rimueng-do"  
-    (players 2)  
+(game "Merimueng-rimueng-do" 
+    (players 2) 
     (equipment { 
         (board
             (scale 1.4 1 
@@ -20,10 +20,10 @@
                     (scale 1 2 (wedge 5 6)) 
                     edges:{{0 1} {0 6}}
                     vertices:{19 24}
-               )
-           )
+                )
+            )
             use:Vertex
-       )
+        )
         (hand Each) 
         (piece "Tiger" P1 
             (or {
@@ -32,9 +32,9 @@
                 ("BigHop" 3 (and (!= (row of:(between)) (row of:(from))) ("IsEnemyAt" (between))))
                 ("BigHop" 4 ("IsEnemyAt" (between))) 
             })
-       ) 
+        ) 
         (piece "Sheep" P2 "StepToEmpty") 
-    })  
+    }) 
     (rules 
         (start {
             (place "Tiger1" (handSite P1) count:5)
@@ -47,20 +47,20 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty))
-               ) 
-           )
+                ) 
+            )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-       )
+        )
         
         (phase "Movement"
             (play (forEach Piece))
             (end {
                 ("NoMoves" Loss)
-                (if (no Pieces P2)  (result P1 Win))
+                (if (no Pieces P2) (result P1 Win))
             })
-       )
+        )
         }
-   )
+    )
 )
 
 (metadata
@@ -74,9 +74,9 @@
         (version "0.9.3")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in Indonesia, around 1906CE.")
+        (origin "This game was played in Indonesia, around 1906CE.")
         }
-   )
+    )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})
@@ -85,6 +85,6 @@
     
     (ai 
         "Merimueng-rimueng-do_ai"
-   )
+    )
     
 )

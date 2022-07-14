@@ -7,9 +7,9 @@
                 ("SameTurn") 
                 "LastHoleSowed" 
                 (sites Mover #1) 
-           ) 
+            ) 
             if:(> (count at:(from)) 0)
-       )
+        )
         (then 
             (sow
                 apply:(if 
@@ -23,63 +23,63 @@
                             (from ("OppositePit" (to))) 
                             (to (handSite Mover)) 
                             count:(count at:("OppositePit" (to)))
-                       ) 
+                        ) 
                         (fromTo 
                             (from (to)) 
                             (to (handSite Mover)) 
                             count:1
-                       )  
-                   )
+                        ) 
+                    )
                     (if (> (count at:(to)) 1) (moveAgain))
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 (define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1 "Home"))))
 
 //------------------------------------------------------------------------------
 
-(game "Dabuda"  
-    (players 2)  
+(game "Dabuda" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
             (track "Track" "0,E,N,W" loop:True)
-       )
+        )
         (regions "Home" P1 (sites Bottom)) 			// P1 home
         (regions "Home" P2 (sites Top)) 				// P2 home
-        (regions "RightMost" P1 (sites <Rightmost:sitesP1>))   // The Rightmost holes of the P1 home
-        (regions "RightMost" P2 (sites <Rightmost:sitesP2>))  // The Rightmost  holes of the P2 home
+        (regions "RightMost" P1 (sites <Rightmost:sitesP1>))  // The Rightmost holes of the P1 home
+        (regions "RightMost" P2 (sites <Rightmost:sitesP2>)) // The Rightmost holes of the P2 home
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start (set Count 4 to:(sites Track)))
         
         phases:{
-        (phase "Rightmost" 			  	
+        (phase "Rightmost" 			 	
             (play ("Sow" "RightMost"))
             (nextPhase (= (count Turns) 2) "HomePhase")
-       )
-        (phase "HomePhase"  
+        )
+        (phase "HomePhase" 
             (play ("Sow" "Home")) 
-       )
+        )
         }
         
         (end ("MancalaByScoreWhen" (no Moves Mover)))
         
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Opening" <Rightmost> args:{<sitesP1> <sitesP2>}
     {
-    (item "One Rightmost hole" <{9}> <{10}>            "The player has to open the game with the rightmost hole.")
-    (item "Four Rightmost holes" <{6..9}> <{10..13}>   "The player has to open the game with one of the four rightmost holes.")**
+    (item "One Rightmost hole" <{9}> <{10}>      "The player has to open the game with the rightmost hole.")
+    (item "Four Rightmost holes" <{6..9}> <{10..13}>  "The player has to open the game with one of the four rightmost holes.")**
     }
 )
 
@@ -91,13 +91,13 @@
         {
         "Opening/One Rightmost hole"
         }
-   )**
+    )**
     
     (ruleset "Ruleset/Damohoita (Observed)" 
         {
         "Opening/Four Rightmost holes"
         }
-   )
+    )
     
 })
 
@@ -118,9 +118,9 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Horn of Africa, around 1971.")
+        (origin "This game was played in Horn of Africa, around 1971.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)
@@ -128,6 +128,6 @@
     
     (ai
         "Dabuda_ai"
-   )
+    )
 )
 

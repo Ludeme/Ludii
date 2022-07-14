@@ -1,12 +1,12 @@
 (game "Circle Test"
-    (players 2)  
+    (players 2) 
     (equipment 
         { 
         (board <Board>)
         (hand Each)
         (piece "Marker" Each "StepToEmpty") 
         }
-   )  
+    ) 
     (rules 
         (start (place "Marker" "Hand" count:3))
         
@@ -16,30 +16,30 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty))
-               ) 
-           )
+                ) 
+            )
             (nextPhase ("HandEmpty" P2) "Movement")
-       )
+        )
         
         (phase "Movement"
             (play (forEach Piece))
-       )
+        )
         }
         
         (end (if (is Line 3 through:(centrePoint) what:(mover)) (result Mover Win))) 
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board" <Board> args:{ <board> }
     {
-    (item "{8} C"          <(circle {8})>                      "")   
-    (item "{1 8} C"        <(circle {1 8})>                    "")   
-    (item "{0 8} V"        <(circle {0 8}) use:Vertex>         "")   
-    (item "{1 8} V"        <(circle {1 8}) use:Vertex>         "")   
-    (item "{4 4 4 20} C"   <(circle {4 4 4 20})>               "")   
-    (item "{1 4 4 4 20} V" <(circle {1 4 4 4 20}) use:Vertex>  "")   
+    (item "{8} C"     <(circle {8})>           "")  
+    (item "{1 8} C"    <(circle {1 8})>          "")  
+    (item "{0 8} V"    <(circle {0 8}) use:Vertex>     "")  
+    (item "{1 8} V"    <(circle {1 8}) use:Vertex>     "")  
+    (item "{4 4 4 20} C"  <(circle {4 4 4 20})>        "")  
+    (item "{1 4 4 4 20} V" <(circle {1 4 4 4 20}) use:Vertex> "")  
     }
 )
 
@@ -51,6 +51,6 @@
         {
         (credit "Cameron Browne 18/9/2020")
         }
-   )
+    )
     
 )

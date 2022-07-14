@@ -4,7 +4,7 @@
         Orthogonal
         (between (max 1) if:(= (what at:(between)) (id #1)) (apply (remove (between))))
         (to if:"FriendOrCentreOrFortress") 
-   )
+    )
 )
 
 (define "EmptyButNotCentreOrFortress"
@@ -21,8 +21,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Hnefatafl"  
-    (players 2)  
+(game "Hnefatafl" 
+    (players 2) 
     (equipment { 
         (board (square 11)) 
         (regions "Fortresses" (sites Corners))
@@ -40,32 +40,32 @@
                                 <Capture:distance>
                                 if:(= (what at:(between)) (id "Jarl2")) 
                                 "JarlIsCaptured"
-                           )
+                            )
                             (to 
                                 if:"FriendOrCentreOrFortress"
-                           )
-                       )
+                            )
+                        )
                     })
-               )
-           )
-       )
+                )
+            )
+        )
         (piece "Thrall" P2 
             (move
                 Slide
                 Orthogonal 
                 (between if:"EmptyButNotCentreOrFortress") 
                 (then ("Custodial" "Thrall1")) 
-           ) 
-       ) 
+            ) 
+        ) 
         (piece "Jarl" P2 
             (move
                 Slide
                 Orthogonal 
                 (then ("Custodial" "Thrall1")) 
-           ) 
-       ) 
+            ) 
+        ) 
         }
-   )  
+    ) 
     (rules 
         (start
             { 
@@ -73,25 +73,25 @@
             (place "Thrall2" {"F4" "E5" "F5" "G5" "D6" "E6" "G6" "H6" "E7" "F7" "G7" "F8"})
             (place "Jarl2" (centrePoint))
             }
-       )
+        )
         
         (play (forEach Piece)) 
         
         (end
             {
             (if (is Within (id "Jarl2") in:(sites "Fortresses")) (result P2 Win))
-            (if "JarlWasCaptured"  (result P1 Win))
+            (if "JarlWasCaptured" (result P1 Win))
             }
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Play Rules" <Capture> args:{ <type> <distance> }
     {
-    (item "Fetlar Common"   <surround (from (last To)) Orthogonal> <>       "The game is played with the common rules.")   
-    (item "Fetlar Latin"    <custodial (from (last To)) Orthogonal> <(max 1)> "The game is played with the latin rules.")   
+    (item "Fetlar Common"  <surround (from (last To)) Orthogonal> <>    "The game is played with the common rules.")  
+    (item "Fetlar Latin"  <custodial (from (last To)) Orthogonal> <(max 1)> "The game is played with the latin rules.")  
 })
 
 //------------------------------------------------------------------------------
@@ -102,13 +102,13 @@
         {
         "Play Rules/Fetlar Common"
         }
-   )
+    )
     
     (ruleset "Ruleset/Copenhagen (Suggested)" 
         {
         
         }
-   )
+    )
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         
@@ -128,7 +128,7 @@
                 Their objective is for the king to escape by reaching any of the four corner squares.
                 The attackers comprise 24 soldiers positioned in four groups of 6 around the perimeter of the board.
                 The King piece is the only piece that can occupy the central and the four corner squares.
-        All pieces move orthogonally any number of spaces, and pieces are taken by custodial capture (surrounding an enemy  piece on either side with two of a player's pieces). The king piece must be captured by surrounding it on all four sides."))
+        All pieces move orthogonally any number of spaces, and pieces are taken by custodial capture (surrounding an enemy piece on either side with two of a player's pieces). The king piece must be captured by surrounding it on all four sides."))
         (useFor "Ruleset/Fetlar (Suggested)" (source "<a href=\"http://tafl.cyningstan.com/page/88/fetlar-hnefatafl\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />cyningstan</a>"))
         (useFor "Ruleset/Fetlar (Suggested)" (id "42"))
         (useFor "Ruleset/Historical Information (Incomplete)" (rules "Boards can be 7x7 or 13x13. Two players. One side has a king piece and allied pieces, the other has uniform pieces, greater in number. The central spot on the board is marked. Can be played on intersection of lines or in the squares. Captures are made. "))
@@ -142,9 +142,9 @@
         (version "1.3.4")
         (classification "board/war/custodial")
         (credit "Eric Piette")
-        (origin  "This game was played in Scandinavia, from around 790 to 1413.")
+        (origin "This game was played in Scandinavia, from around 790 to 1413.")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Black))
@@ -155,7 +155,7 @@
     
     (ai 
         "Hnefatafl_ai"
-   )
+    )
     
 )
 

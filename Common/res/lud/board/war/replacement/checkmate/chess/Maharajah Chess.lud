@@ -19,8 +19,8 @@
         (if 
             (= (state at:(last To)) 1) 
             "PieceHasMoved"
-       ) 
-   ) 
+        ) 
+    ) 
 )
 
 (define "CaptureToPieceAndResetCounter"
@@ -29,16 +29,16 @@
             (remove 
                 (to) 
                 (then (set Counter))
-           )
-       )
-   ) 
+            )
+        )
+    ) 
 )
 
 (define "KingNotCheckedAndToEmpty"
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-   )   
+    )  
 )
 
 (define "DoCastle"
@@ -49,9 +49,9 @@
         (between 
             (exact #3) 
             if:#4
-       ) 
+        ) 
         #5
-   )
+    )
 )
 
 (define "SmallCastling"
@@ -65,7 +65,7 @@
 (define "SetEnPassantLocation"
     (then 
         (set Pending (ahead (last To) Backward))
-   )
+    )
 )
 
 (define "DoubleStep"
@@ -74,14 +74,14 @@
         Forward 
         (between (exact 2) if:(is Empty (between))) 
         (to if:(is Empty (to))) 
-   )
+    )
 )
 
 (define "InLocationEnPassant"
     (and 
         (is Pending) 
         (= (to) (value Pending)) 
-   )
+    )
 )
 
 (define "CaptureForwardDiagonal"
@@ -91,14 +91,14 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Maharajah Chess"  
-    (players 2)  
+(game "Maharajah Chess" 
+    (players 2) 
     (equipment { 
         (board (square 8)) 
         
@@ -106,15 +106,15 @@
             (or {
                 (if (is In (from) (sites Start (piece (what at:(from)))))
                     "DoubleStep"
-               )
+                )
                 "StepForwardToEmpty" 
                 "CaptureForwardDiagonal"
                 }
                 (then
                     (set Counter)
-               )
-           )
-       )
+                )
+            )
+        )
         
         (piece "Rook" P2 
             (move
@@ -123,20 +123,20 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
-               ) 
+                ) 
                 "RememberPieceHasMoved"
-           )
-       )
+            )
+        )
         (piece "King" P2 
             (move
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndResetCounter"
-               ) 
+                ) 
                 "RememberPieceHasMoved"
-           )
-       )
+            )
+        )
         (piece "Bishop" P2 
             (move
                 Slide 
@@ -144,9 +144,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Knight" P2 
             (move
                 Leap 
@@ -154,18 +154,18 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndResetCounter"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Queen" P2 
             (move
                 Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
-               ) 
-           ) 
-       )
+                ) 
+            ) 
+        )
         
         (piece "Amazon" P1 
             (or
@@ -175,22 +175,22 @@
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPieceAndResetCounter"
-                   ) 
-               ) 
+                    ) 
+                ) 
                 (move
                     Slide 
                     (to 
                         if:("IsEnemyAt" (to)) 
                         "CaptureToPieceAndResetCounter"
-                   ) 
-               )  
-           )
-       )
+                    ) 
+                ) 
+            )
+        )
         (map "King" {(pair 1 "E1") (pair 2 "E8")})
         (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})
         (map "RookRight" {(pair 1 "H1") (pair 2 "H8")})
         }
-   )  
+    ) 
     (rules 
         (start
             { 
@@ -198,7 +198,7 @@
             (place "Amazon1" coord:"E1")
             (place "Rook2" {"A8" "H8"} state:1) (place "Knight2" {"B8" "G8"}) (place "Bishop2" {"C8" "F8"}) (place "Queen2" coord:"D8") (place "King2" coord:"E8" state:1) 
             }
-       )
+        )
         
         (play 
             (do 
@@ -214,24 +214,24 @@
                             (if (and 
                                     ("HasNeverMoved" "RookLeft")
                                     (can Move ("DoCastle" "RookLeft" E 3 (is Empty (to))))
-                               )
+                                )
                                 "BigCastling"
-                           )
+                            )
                             (if (and 
                                     ("HasNeverMoved" "RookRight")
                                     (can Move ("DoCastle" "RookRight" W 2 (is Empty (to))))
-                               )
+                                )
                                 "SmallCastling"
-                           )
-                       )
-                   )
-               )
+                            )
+                        )
+                    )
+                )
                 ifAfterwards:(if (is Mover P1)
                     (not ("IsInCheck" "Amazon" Mover))
                     (not ("IsInCheck" "King" Mover))
-               )
-           )
-       )
+                )
+            )
+        )
         
         (end
             {
@@ -240,18 +240,18 @@
                     (and 
                         ("IsInCheck" "King" Next)
                         ("NextCanNotMoveToProtect" "King")
-                   ) 
+                    ) 
                     (and 
                         ("IsInCheck" "Amazon" Next)
                         ("NextCanNotMoveToProtect" "Amazon")
-                   ) 
-               )
+                    ) 
+                )
                 (result Mover Win)
-           ) 
+            ) 
             (if (or (no Moves Mover) (= (counter) 100)) (result Mover Draw)) 
             }
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -269,7 +269,7 @@
         (classification "board/war/replacement/checkmate/chess")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (show Check "King")
@@ -280,6 +280,6 @@
     
     (ai 
         "Maharajah Chess_ai"
-   )
+    )
     
 )

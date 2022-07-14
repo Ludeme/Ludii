@@ -12,8 +12,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Musoro Tsoro"  
-    (players 2)  
+(game "Musoro Tsoro" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -21,15 +21,15 @@
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" <Row:track2> loop:True P2)
             }
-       )
-        (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
-        (regions "Home" P2 (sites Track "Track2"))                              // P2 home
+        )
+        (regions "Home" P1 (sites Track "Track1"))               // P1 Home
+        (regions "Home" P2 (sites Track "Track2"))               // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))   // P2 inner Home
-        (regions "Outer" P1  (sites Bottom))                                    // P1 outer Home
-        (regions "Outer" P2 (sites Top))                                        // P2 outer Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))  // P2 inner Home
+        (regions "Outer" P1 (sites Bottom))                  // P1 outer Home
+        (regions "Outer" P2 (sites Top))                    // P2 outer Home
         (piece "Seed" Shared)
-    })  
+    }) 
     (rules 
         
         (start {
@@ -42,18 +42,18 @@
             (or
                 (if (and (!= 0 (state at:(var))) ("SameTurn"))
                     (move Pass)
-               )
+                )
                 (move Select
                     (from 
                         (if ("SameTurn")
                             "LastHoleSowed" 
                             (sites Mover "Home") 
-                       ) 
+                        ) 
                         if:(if "AHoleHasMoreThanOneCounter"
                             (> (count at:(from)) 1)
                             (and (= (count at:(from)) 1) (= 0 (count at:("NextHoleFrom" (from) Mover)))) 
-                       )
-                   )
+                        )
+                    )
                     (then 
                         (and
                             (sow
@@ -67,54 +67,54 @@
                                                 (if 
                                                     (> (count at:("OppositeOuterPit" (to))) 0) 
                                                     (remove ("OppositeOuterPit" (to))) 
-                                               ) 
-                                           ) 
-                                       ) 
-                                   )
+                                                ) 
+                                            ) 
+                                        ) 
+                                    )
                                     (and
                                         (moveAgain)
                                         (set Var (to))
-                                   )
-                               )
-                           )
+                                    )
+                                )
+                            )
                             (forEach Site (sites Board)
                                 (if (!= 0 (state at:(site))) (set State at:(site) (state at:(site))))
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         
         (end
             (forEach NonMover
                 if:("NoPiece")
                 (result Player Loss)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Row> args:{ <size> <track2>}
     {
-    (item "6"   <6>  <"12,E,N1,W">  "6 Holes per row.")   
-    (item "7"   <7>  <"14,E,N1,W">  "7 Holes per row.")   
-    (item "8"   <8>  <"16,E,N1,W">  "8 Holes per row.")**   
-    (item "9"   <9>  <"18,E,N1,W">  "9 Holes per row.")   
-    (item "10"  <10> <"20,E,N1,W"> "10 Holes per row.")   
-    (item "11"  <11> <"22,E,N1,W"> "11 Holes per row.")   
-    (item "12"  <12> <"24,E,N1,W"> "12 Holes per row.")*   
-    (item "13"  <13> <"26,E,N1,W"> "13 Holes per row.")   
-    (item "14"  <14> <"28,E,N1,W"> "14 Holes per row.")   
-    (item "15"  <15> <"30,E,N1,W"> "15 Holes per row.")*   
-    (item "16"  <16> <"32,E,N1,W"> "16 Holes per row.")  
-    (item "17"  <17> <"34,E,N1,W"> "17 Holes per row.")  
-    (item "18"  <18> <"36,E,N1,W"> "18 Holes per row.")*  
-    (item "19"  <19> <"38,E,N1,W"> "19 Holes per row.")  
-    (item "20"  <20> <"40,E,N1,W"> "20 Holes per row.")  
-    (item "21"  <21> <"42,E,N1,W"> "21 Holes per row.")
+    (item "6"  <6> <"12,E,N1,W"> "6 Holes per row.")  
+    (item "7"  <7> <"14,E,N1,W"> "7 Holes per row.")  
+    (item "8"  <8> <"16,E,N1,W"> "8 Holes per row.")**  
+    (item "9"  <9> <"18,E,N1,W"> "9 Holes per row.")  
+    (item "10" <10> <"20,E,N1,W"> "10 Holes per row.")  
+    (item "11" <11> <"22,E,N1,W"> "11 Holes per row.")  
+    (item "12" <12> <"24,E,N1,W"> "12 Holes per row.")*  
+    (item "13" <13> <"26,E,N1,W"> "13 Holes per row.")  
+    (item "14" <14> <"28,E,N1,W"> "14 Holes per row.")  
+    (item "15" <15> <"30,E,N1,W"> "15 Holes per row.")*  
+    (item "16" <16> <"32,E,N1,W"> "16 Holes per row.") 
+    (item "17" <17> <"34,E,N1,W"> "17 Holes per row.") 
+    (item "18" <18> <"36,E,N1,W"> "18 Holes per row.")* 
+    (item "19" <19> <"38,E,N1,W"> "19 Holes per row.") 
+    (item "20" <20> <"40,E,N1,W"> "20 Holes per row.") 
+    (item "21" <21> <"42,E,N1,W"> "21 Holes per row.")
 })
 
 //------------------------------------------------------------------------------
@@ -127,7 +127,7 @@
         variations:{"Board Size/6" "Board Size/7" "Board Size/9" "Board Size/10" "Board Size/11"
         "Board Size/12" "Board Size/13" "Board Size/14" "Board Size/15" "Board Size/16" "Board Size/17"
         "Board Size/18" "Board Size/19" "Board Size/20" "Board Size/21"}
-   )*
+    )*
 })
 
 //------------------------------------------------------------------------------
@@ -144,9 +144,9 @@
         (version "1.3.4")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Zimbabwe, around 1964.")
+        (origin "This game was played in Zimbabwe, around 1964.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)
@@ -155,5 +155,5 @@
     
     (ai
         "Musoro Tsoro_ai"
-   )
+    )
 )

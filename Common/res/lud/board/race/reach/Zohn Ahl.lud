@@ -4,21 +4,21 @@
     (or 
         (= ("ThrowValue") 5)
         (= ("ThrowValue") 10)
-   )
+    )
 )
 
 (define "HandTeam" 
     (if (or (is Mover P1) (is Mover P2))
         1
         3
-   )
+    )
 )
 
 (define "HandOpponent" 
     (if (or (is Mover P1) (is Mover P2))
         3
         1
-   )
+    )
 )
 
 (define "Move"
@@ -30,9 +30,9 @@
                 (fromTo
                     (from (handSite ("HandOpponent")))
                     (to (handSite ("HandTeam")))
-               )
-           )
-       )
+                )
+            )
+        )
         (move 
             (from (from))
             (to
@@ -44,31 +44,31 @@
                             (fromTo
                                 (from (to))
                                 (to (mapEntry "Start" (who at:(to))))
-                           )
+                            )
                             (fromTo
                                 (from (handSite ("HandOpponent")))
                                 (to (handSite ("HandTeam")))
-                           )
-                       )
-                   )
-               )
-           )
+                            )
+                        )
+                    )
+                )
+            )
             (then
                 (if (= (last To) (mapEntry "Opposite" Mover))
                     (and
                         (fromTo
                             (from (last To))
                             (to (mapEntry "Start" Mover))
-                       )
+                        )
                         (fromTo
                             (from (handSite ("HandTeam")))
                             (to (handSite ("HandOpponent")))
-                       )
-                   )
-               )
-           )
-       )
-   )		
+                        )
+                    )
+                )
+            )
+        )
+    )		
 )
 
 //------------------------------------------------------------------------------
@@ -89,7 +89,7 @@
                 {4 10} {5 11} {16 18} {17 19}
                 {28 34} {35 29} {43 41} {42 40}
                 }
-           )
+            )
             {
             (track "Track1" "5,6,7,8,9,36,37,38,39,40,41,44,45,46,47,33,32,31,30,29,28,27,26,25,24,23,22,21,20,17,16,15,14,13,12,0,1,2,3,End" P1 directed:True)
             (track "Track2" "5,6,7,8,9,36,37,38,39,40,41,44,45,46,47,33,32,31,30,29,28,27,26,25,24,23,22,21,20,17,16,15,14,13,12,0,1,2,3,End" P2 directed:True)
@@ -97,7 +97,7 @@
             (track "Track4" "4,3,2,1,0,12,13,14,15,16,17,20,21,22,23,24,25,26,27,28,29,30,31,32,33,47,46,45,44,41,40,39,38,37,36,9,8,7,6,End" P4 directed:True)
             }
             use:Vertex
-       )
+        )
         (piece "Stick" P1 ("Move"))
         (piece "Stick" P3 ("Move"))
         (piece "Stick" Neutral)
@@ -122,35 +122,35 @@
                 (if (or (is Mover P1) (is Mover P2))
                     (forEach Piece P1)
                     (forEach Piece P3)
-               )
+                )
                 (then
                     (if ("ReplayThrow")
                         (moveAgain)
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (end (if (is Empty (handSite ("HandOpponent"))) (result TeamMover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Start" <Scoring> args:{ <num> } {
-    (item "2"   <2>  "Each team has 2 scoring sticks.") 
-    (item "3"   <3>  "Each team has 3 scoring sticks.") 
-    (item "4"   <4>  "Each team has 4 scoring sticks.") 
-    (item "5"   <5>  "Each team has 5 scoring sticks.") 
-    (item "6"   <6>  "Each team has 6 scoring sticks.") 
-    (item "7"   <7>  "Each team has 7 scoring sticks.") 
-    (item "8"   <8>  "Each team has 8 scoring sticks.") 
-    (item "9"   <9>  "Each team has 9 scoring sticks.") 
-    (item "10"  <10> "Each team has 10 scoring sticks.")* 
-    (item "11"  <11> "Each team has 11 scoring sticks.") 
-    (item "12"  <12> "Each team has 12 scoring sticks.") 
-    (item "13"  <13> "Each team has 13 scoring sticks.") 
-    (item "14"  <14> "Each team has 14 scoring sticks.") 
-    (item "15"  <15> "Each team has 15 scoring sticks.") 
+    (item "2"  <2> "Each team has 2 scoring sticks.") 
+    (item "3"  <3> "Each team has 3 scoring sticks.") 
+    (item "4"  <4> "Each team has 4 scoring sticks.") 
+    (item "5"  <5> "Each team has 5 scoring sticks.") 
+    (item "6"  <6> "Each team has 6 scoring sticks.") 
+    (item "7"  <7> "Each team has 7 scoring sticks.") 
+    (item "8"  <8> "Each team has 8 scoring sticks.") 
+    (item "9"  <9> "Each team has 9 scoring sticks.") 
+    (item "10" <10> "Each team has 10 scoring sticks.")* 
+    (item "11" <11> "Each team has 11 scoring sticks.") 
+    (item "12" <12> "Each team has 12 scoring sticks.") 
+    (item "13" <13> "Each team has 13 scoring sticks.") 
+    (item "14" <14> "Each team has 14 scoring sticks.") 
+    (item "15" <15> "Each team has 15 scoring sticks.") 
 })
 
 //------------------------------------------------------------------------------
@@ -164,7 +164,7 @@
         "Start/7" "Start/8" "Start/9" "Start/11" "Start/12"
         "Start/13" "Start/14" "Start/15"
         }
-   )*
+    )*
     
 })
 
@@ -182,9 +182,9 @@
         (version "1.3.4")
         (classification "board/race/reach")
         (credit "Eric Piette")
-        (origin  "This game was played in Great Plains, around 1898.")
+        (origin "This game was played in Great Plains, around 1898.")
         }
-   )
+    )
     
     (graphics {
         (board Background image:"disc" edgeColour:(colour Black) scale:0.07)

@@ -6,8 +6,8 @@
     (then 
         (if ("IsEnemyAt" (ahead (last To) ("Direction" (last To))))
             (moveAgain)
-       )
-   )    
+        )
+    )  
 )
 
 (define "Slide" 
@@ -16,7 +16,7 @@
         (between (exact #1))
         (to if:(is Empty (to)))
         #2
-   )    
+    )  
 )
 
 (define "MoveThree"
@@ -27,9 +27,9 @@
             (if (can Move ("Slide" 1))
                 ("Slide" 1 ("MoveAgainIsJumpEnemy"))
                 (move Select (from) (then (moveAgain)))
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "MoveTwo"
@@ -38,38 +38,38 @@
         (if (can Move ("Slide" 1))
             ("Slide" 1 ("MoveAgainIsJumpEnemy"))
             (move Select (from) (then (moveAgain)))
-       )
-   )
+        )
+    )
 )
 
 (define "MoveOne"
     (if (can Move ("Slide" 1))
         ("Slide" 1)
         (move Select (from) (then (moveAgain)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (game "Squadro"
-    (players {(player E) (player S)})  
+    (players {(player E) (player S)}) 
     (equipment {
         (board 
             (remove 
                 (square 7) 
                 vertices:{0 6 42 48}
-           )
+            )
             use:Vertex
-       )
+        )
         (piece "Minus" Each
             (if (= 3 (state at:(from)))
                 "MoveThree"
                 (if (= 2 (state at:(from)))
                     "MoveTwo"
                     "MoveOne"
-               )
-           )
-       )
+                )
+            )
+        )
         (regions "Home" P1 (sites Left))
         (regions "Home" P2 (sites Top))
         (regions "OppositeHome" P1 (sites Right))
@@ -94,7 +94,7 @@
         })
         
         (play 
-            (if ("SameTurn")    
+            (if ("SameTurn")  
                 (move Hop
                     (from (last To))
                     (between 
@@ -107,30 +107,30 @@
                                     (if (is Mover P1)
                                         (coord row:(if (= (value Piece at:(between)) 1) (- (count Rows) 1) 0) column:(column of:(between)))
                                         (coord row:(row of:(between)) column:(if (= (value Piece at:(between)) 1) 0 (- (count Columns) 1)))
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     (to if:(is Empty (to)))
-               )
+                )
                 (forEach Piece)
                 (then 
                     (if (is In (last To) (sites Mover "OppositeHome"))
                         (and
                             (set Value at:(last To) 2)
                             (set State at:(last To) (mapEntry (last To)))
-                       )
+                        )
                         (if (and (!= (last From) (last To)) (is In (last To) (sites Mover "Home")))
                             (remove (last To))
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         
         (end (if (= (count Pieces Mover) 1) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -151,7 +151,7 @@
         (credit "Eric Piette")
         (date "2018")
         }
-   )
+    )
     
     (graphics {
         
@@ -297,5 +297,5 @@
     })
     (ai
         "Squadro_ai"
-   )
+    )
 )

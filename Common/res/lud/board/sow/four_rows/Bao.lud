@@ -8,11 +8,11 @@
                 (if (<= (count at:(from)) 6)
                     (count at:(last From))
                     (min 1 (count at:(last From)))
-               )
+                )
                 (count at:(last From))
-           )
+            )
             (count at:(last From))
-       )
+        )
         #1
         owner:(mover)
         apply:(if (is In (to) (sites Mover "Inner"))
@@ -25,8 +25,8 @@
                         (if (is In (to) (expand (sites Left)))
                             (set Var "Side" 1) // 1 = left
                             (set Var "Side" 0) // 0 = choice
-                       )
-                   )
+                        )
+                    )
                 })
                 (if (< 1 (count at:(to)))
                     (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
@@ -36,9 +36,9 @@
                             (set Var "Direction" #2) // 1 = CCW, 2 = CW
                         })
                         (set Var "Direction" 0)
-                   )
-               )
-           )
+                    )
+                )
+            )
             (if (< 1 (count at:(to)))
                 (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
                     (and {
@@ -47,15 +47,15 @@
                         (set Var "Direction" #2) // 1 = CCW, 2 = CW
                     })
                     (set Var "Direction" 0)
-               )
-           )
-       )
+                )
+            )
+        )
         (then
             (if (and {(!= 1 (value Player Mover)) (is In (last From) (sites "SquaresHoles")) (< (count at:(last From)) 6)})
                 (set Value Mover 1) // 1 means no special status for Square hole.
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "AllHolesEmptyExceptLeftMost"
@@ -68,8 +68,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Bao"  
-    (players 2)  
+(game "Bao" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 8 store:None
@@ -79,20 +79,20 @@
             (track "TrackCW1" "7,W,N1,E" loop:True P1)
             (track "TrackCW2" "23,W,N1,E" loop:True P2)
             }		
-       )
+        )
         (piece "Seed" Shared)
         (hand Each)
-        (regions "Home" P1 (expand (sites Bottom)))               // P1 home
-        (regions "Home" P2 (expand (sites Top)))                  // P2 home
-        (regions "Inner" P1 (sites Row 1))                        // P1 inner
-        (regions "Inner" P2 (sites Row 2))                        // P2 inner
-        (regions "SquaresHoles" (sites {19 12}))                        // Square holes
-        (regions "RightSquare" (sites {18 13}))                   // Right Square holes
+        (regions "Home" P1 (expand (sites Bottom)))        // P1 home
+        (regions "Home" P2 (expand (sites Top)))         // P2 home
+        (regions "Inner" P1 (sites Row 1))            // P1 inner
+        (regions "Inner" P2 (sites Row 2))            // P2 inner
+        (regions "SquaresHoles" (sites {19 12}))            // Square holes
+        (regions "RightSquare" (sites {18 13}))          // Right Square holes
         (map "LeftMostInner" {(pair P1 8) (pair P2 23)})
         (map "RightMostInner" {(pair P1 15) (pair P2 16)})
         (map "AdjacentLeftMostInner" {(pair P1 9) (pair P2 22)})
         (map "AdjacentRightMostInner" {(pair P1 14) (pair P2 17)})
-    })  
+    }) 
     (rules 
         (start {
             (set Count 22 at:(handSite P1))
@@ -111,27 +111,27 @@
                                     (from ("OppositePit" (last To afterConsequence:True)))
                                     (to (mapEntry "LeftMostInner" Mover))
                                     count:(count at:("OppositePit" (last To afterConsequence:True)))
-                               )
+                                )
                                 next:(move Select
                                     (from (mapEntry "LeftMostInner" Mover))
                                     (then ("Sowing" "TrackCW" 1))
-                               )
-                           )
-                       )
+                                )
+                            )
+                        )
                         (if (or (= 2 (var "Side")) (= 0 (var "Side"))) // Sow capture pieces from the right.
                             (do 
                                 (fromTo
                                     (from ("OppositePit" (last To afterConsequence:True)))
                                     (to (mapEntry "RightMostInner" Mover))
                                     count:(count at:("OppositePit" (last To afterConsequence:True)))
-                               )
+                                )
                                 next:(move Select
                                     (from (mapEntry "RightMostInner" Mover))
                                     (then ("Sowing" "TrackCCW" 2))
-                               )
-                           )
-                       )
-                   )
+                                )
+                            )
+                        )
+                    )
                     
                     // Continue to sow.
                     (or
@@ -140,29 +140,29 @@
                                 (if (!= (var "Replay") (mapEntry "RightMostInner" Mover))
                                     True
                                     ("AllHolesEmptyExceptRightMost")
-                               )
+                                )
                                 (or (= (var "Direction") 1) (= (var "Direction") 3))
-                           )
+                            )
                             (move Select
                                 (from (var "Replay"))
                                 (then ("Sowing" "TrackCW" 1))
-                           )
-                       )
+                            )
+                        )
                         (if 
                             (and
                                 (if (!= (var "Replay") (mapEntry "LeftMostInner" Mover))
                                     True
                                     ("AllHolesEmptyExceptLeftMost")
-                               )
+                                )
                                 (or (= (var "Direction") 2) (= (var "Direction") 3))
-                           )
+                            )
                             (move Select
                                 (from (var "Replay"))
                                 (then ("Sowing" "TrackCCW" 2))
-                           )
-                       )
-                   )
-               )
+                            )
+                        )
+                    )
+                )
                 (if (is Occupied (handSite Mover)) // Placement phase
                     (priority {
                         (move // Has to capture if possible
@@ -178,11 +178,11 @@
                                         (if (is In (last To) (expand (sites Left)))
                                             (set Var "Side" 1) // 1 = left
                                             (set Var "Side" 0) // 0 = choice
-                                       )
-                                   )
+                                        )
+                                    )
                                 })
-                           )
-                       )
+                            )
+                        )
                         (if (!= (value Player Mover) 1) // Still have the special square effect.
                             (move // If not possible just place then sow in any direction from any inner hole except the square one.
                                 (from (handSite Mover))
@@ -194,8 +194,8 @@
                                         (set Var "Replay" (last To))
                                         (set Var "Direction" 3) // Right or Left
                                     })
-                               )
-                           )
+                                )
+                            )
                             (move // If not possible just place then sow in any direction from any inner hole except the square one.
                                 (from (handSite Mover))
                                 (to (sites Mover "Inner") if:(is Occupied (to)))
@@ -206,9 +206,9 @@
                                         (set Var "Replay" (last To))
                                         (set Var "Direction" 3) // Right or Left
                                     })
-                               )
-                           )
-                       )
+                                )
+                            )
+                        )
                         
                         (if (!= (value Player Mover) 1)
                             (move // If not possible just place then sow in any direction from the square hole.
@@ -221,9 +221,9 @@
                                         (set Var "Replay" (last To))
                                         (set Var "Direction" 3) // Right or Left
                                     })
-                               )
-                           )
-                       )
+                                )
+                            )
+                        )
                     })
                     // Sowing phase
                     (priority {
@@ -234,8 +234,8 @@
                                     if:(and
                                         (or (< 1 (count at:(from))) (> 16 (count at:(from))))
                                         (is Occupied ("OppositePit" ("NextHole" (from) "TrackCW" (count at:(from)))))
-                                   )
-                               )
+                                    )
+                                )
                                 (then
                                     (sow
                                         "TrackCW"
@@ -250,8 +250,8 @@
                                                         (if (is In (to) (expand (sites Left)))
                                                             (set Var "Side" 1) // 1 = left
                                                             (set Var "Side" 0) // 0 = choice
-                                                       )
-                                                   )
+                                                        )
+                                                    )
                                                 })
                                                 (if (< 1 (count at:(to)))
                                                     (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
@@ -261,9 +261,9 @@
                                                             (set Var "Direction" 1) // 1 = CCW, 2 = CW
                                                         })
                                                         (set Var "Direction" 0) // 1 = CCW, 2 = CW
-                                                   )
-                                               )
-                                           )
+                                                    )
+                                                )
+                                            )
                                             (if (< 1 (count at:(to)))
                                                 (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
                                                     (and {
@@ -272,20 +272,20 @@
                                                         (set Var "Direction" 1) // 1 = CCW, 2 = CW
                                                     })
                                                     (set Var "Direction" 0) // 1 = CCW, 2 = CW
-                                               )
-                                           )
-                                       )
-                                   )
-                               )
-                           )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
                             (move Select
                                 (from 
                                     (sites Mover)
                                     if:(and 
                                         (or (< 1 (count at:(from))) (> 16 (count at:(from))))
                                         (is Occupied ("OppositePit" ("NextHole" (from) "TrackCCW" (count at:(from)))))
-                                   )
-                               )
+                                    )
+                                )
                                 (then
                                     (sow
                                         "TrackCCW"
@@ -300,8 +300,8 @@
                                                         (if (is In (to) (expand (sites Left)))
                                                             (set Var "Side" 1) // 1 = left
                                                             (set Var "Side" 0) // 0 = choice
-                                                       )
-                                                   )
+                                                        )
+                                                    )
                                                 })
                                                 (if (< 1 (count at:(to)))
                                                     (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
@@ -311,9 +311,9 @@
                                                             (set Var "Direction" 2) // 1 = CCW, 2 = CW
                                                         })
                                                         (set Var "Direction" 0) // 1 = CCW, 2 = CW
-                                                   )
-                                               )
-                                           )
+                                                    )
+                                                )
+                                            )
                                             (if (< 1 (count at:(to)))
                                                 (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
                                                     (and {
@@ -322,22 +322,22 @@
                                                         (set Var "Direction" 2) // 1 = CCW, 2 = CW
                                                     })
                                                     (set Var "Direction" 0) // 1 = CCW, 2 = CW
-                                               )
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
                         (or 
                             (move Select
                                 (from 
                                     (if (!= (value Player Mover) 1)
                                         (sites Mover)
                                         (difference (sites Mover) (sites "SquaresHoles"))
-                                   )
+                                    )
                                     if:(or (< 1 (count at:(from))) (> 16 (count at:(from))))
-                               )
+                                )
                                 (then
                                     (sow
                                         "TrackCW"
@@ -352,8 +352,8 @@
                                                         (if (is In (to) (expand (sites Left)))
                                                             (set Var "Side" 1) // 1 = left
                                                             (set Var "Side" 0) // 0 = choice
-                                                       )
-                                                   )
+                                                        )
+                                                    )
                                                 })
                                                 (if (< 1 (count at:(to)))
                                                     (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
@@ -363,9 +363,9 @@
                                                             (set Var "Direction" 1) // 1 = CCW, 2 = CW
                                                         })
                                                         (set Var "Direction" 0) // 1 = CCW, 2 = CW
-                                                   )
-                                               )
-                                           )
+                                                    )
+                                                )
+                                            )
                                             (if (< 1 (count at:(to)))
                                                 (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
                                                     (and {
@@ -374,20 +374,20 @@
                                                         (set Var "Direction" 1) // 1 = CCW, 2 = CW
                                                     })
                                                     (set Var "Direction" 0) // 1 = CCW, 2 = CW
-                                               )
-                                           )
-                                       )
-                                   )
-                               )
-                           )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
                             (move Select
                                 (from 
                                     (if (!= (value Player Mover) 1)
                                         (sites Mover)
                                         (difference (sites Mover) (sites "SquaresHoles"))
-                                   )
+                                    )
                                     if:(or (< 1 (count at:(from))) (> 16 (count at:(from))))
-                               )
+                                )
                                 (then
                                     (sow
                                         "TrackCCW"
@@ -402,8 +402,8 @@
                                                         (if (is In (to) (expand (sites Left)))
                                                             (set Var "Side" 1) // 1 = left
                                                             (set Var "Side" 0) // 0 = choice
-                                                       )
-                                                   )
+                                                        )
+                                                    )
                                                 })
                                                 (if (< 1 (count at:(to)))
                                                     (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
@@ -413,9 +413,9 @@
                                                             (set Var "Direction" 2) // 1 = CCW, 2 = CW
                                                         })
                                                         (set Var "Direction" 0) // 1 = CCW, 2 = CW
-                                                   )
-                                               )
-                                           )
+                                                    )
+                                                )
+                                            )
                                             (if (< 1 (count at:(to)))
                                                 (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
                                                     (and {
@@ -424,47 +424,47 @@
                                                         (set Var "Direction" 2) // 1 = CCW, 2 = CW
                                                     })
                                                     (set Var "Direction" 0) // 1 = CCW, 2 = CW
-                                               )
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
                     })
-               )
-           )
-       )
+                )
+            )
+        )
         
         (end ("ForEachPlayerNoMovesLoss"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Bao is a four-row mancala-style board game played in Zanzibar and Swahili-speaking areas of coastal East Africa.")
-        (rules "4x8 board. One hole, the Nyumba, is square, and is the hole immediately to the right of center in the player's inner row. The holes on both ends of both players' inner rows are Kichwa, and the next holes in from those are the Kimbi. Players sow from one of their holes in either direction on the board. When the final counter lands in an occupied hole, these counters are picked up and sowing continues, when a capture is not possible. When the final counter lands in an empty hole, the turn ends.  Play begins with six counters in the Nyumba, two in each of the holes to its right, and 22 counters to be entered on the board.
+        (rules "4x8 board. One hole, the Nyumba, is square, and is the hole immediately to the right of center in the player's inner row. The holes on both ends of both players' inner rows are Kichwa, and the next holes in from those are the Kimbi. Players sow from one of their holes in either direction on the board. When the final counter lands in an occupied hole, these counters are picked up and sowing continues, when a capture is not possible. When the final counter lands in an empty hole, the turn ends. Play begins with six counters in the Nyumba, two in each of the holes to its right, and 22 counters to be entered on the board.
             
-            Namua is the stage of the game where there are still counters to be placed on the board. During Namua, the Nyumba is the house, as long as it has at least six counters in it and it has not been emptied. Players place counters into an occupied hole in their front row. If this hole is opposite one of the opponent's occupied holes, the opponent's counters in that hole are captured. Captures must be made if possible. If a capture is not possible, the counter is placed into a hole and the contents of that hole are sown. The house cannot be emptied, but if it is the only occupied hole, the counter placed into it, and only that one counter, can be sown to one of the adjacent holes.  Sowing from a Kichwa in the direction of the back row is not allowed unless it is the only occupied hole in the front row. Players cannot place a counter in holes with single counters  unless only holes in the front row with single counters exist or the house is still present. If the final counter of a sowing lands in the house, the turn ends. Once all of the counters are placed on the board for both players, Namua ends.
+            Namua is the stage of the game where there are still counters to be placed on the board. During Namua, the Nyumba is the house, as long as it has at least six counters in it and it has not been emptied. Players place counters into an occupied hole in their front row. If this hole is opposite one of the opponent's occupied holes, the opponent's counters in that hole are captured. Captures must be made if possible. If a capture is not possible, the counter is placed into a hole and the contents of that hole are sown. The house cannot be emptied, but if it is the only occupied hole, the counter placed into it, and only that one counter, can be sown to one of the adjacent holes. Sowing from a Kichwa in the direction of the back row is not allowed unless it is the only occupied hole in the front row. Players cannot place a counter in holes with single counters unless only holes in the front row with single counters exist or the house is still present. If the final counter of a sowing lands in the house, the turn ends. Once all of the counters are placed on the board for both players, Namua ends.
             
-            The next stage begins. The rules for the house mentioned above during the Namua stage no longer apply, but the rules below remain in effect until the first capture in this phase of the game has been made.  Players alternate turns taking the counters from one of their holes that has more than one and less than sixteen counters and sowing them. When the final counter lands in an occupied hole in the front row opposite one of the opponent's occupied holes, the opponent's counters are captured, unless the hole from which sowing began contained sixteen or more counters. Captures must be made if possible. Single counters cannot be sown. Sowing must occur from an inner row hole when possible. A Kichwa cannot be sown toward the back row if it is the only occupied hole in the front row. 
+            The next stage begins. The rules for the house mentioned above during the Namua stage no longer apply, but the rules below remain in effect until the first capture in this phase of the game has been made. Players alternate turns taking the counters from one of their holes that has more than one and less than sixteen counters and sowing them. When the final counter lands in an occupied hole in the front row opposite one of the opponent's occupied holes, the opponent's counters are captured, unless the hole from which sowing began contained sixteen or more counters. Captures must be made if possible. Single counters cannot be sown. Sowing must occur from an inner row hole when possible. A Kichwa cannot be sown toward the back row if it is the only occupied hole in the front row. 
             
-            Capturing rules:  The counters captured from the opponent's hole are captured and sown on the player's front row. If they were captured from a Kimbi or Kichwa, they must be sown from the nearest Kichwa. If they were not captured from one of these holes, they must be sown from the Kichwa in the direction toward which the sowing was proceeding when the capture was made. If the capture was not made from a Kimbi or Kichwa and it was not made while sowing, the player can choose which Kichwa to sow from. Further captures in the same turn must be made with this sowing if possible, and are made if the final counter lands in an occupied hole in the inner row which is opposite an occupied hole in the opponent's inner row. If a capture is not possible, the sowing must end in the house. When the final counter lands in the house, the player may choose to continue sowing from the house or to end their turn. If the player cannot capture and cannot drop the final counter in the house, they must sow into an occupied hole, and continue sowing from that hole. The player may sow such that the final counter lands in an empty hole only when none of the other options are possible.
+            Capturing rules: The counters captured from the opponent's hole are captured and sown on the player's front row. If they were captured from a Kimbi or Kichwa, they must be sown from the nearest Kichwa. If they were not captured from one of these holes, they must be sown from the Kichwa in the direction toward which the sowing was proceeding when the capture was made. If the capture was not made from a Kimbi or Kichwa and it was not made while sowing, the player can choose which Kichwa to sow from. Further captures in the same turn must be made with this sowing if possible, and are made if the final counter lands in an occupied hole in the inner row which is opposite an occupied hole in the opponent's inner row. If a capture is not possible, the sowing must end in the house. When the final counter lands in the house, the player may choose to continue sowing from the house or to end their turn. If the player cannot capture and cannot drop the final counter in the house, they must sow into an occupied hole, and continue sowing from that hole. The player may sow such that the final counter lands in an empty hole only when none of the other options are possible.
             
             When a player sows in such a way that they do not capture and the opponent is unable to capture on their next turn but the player will be able to capture on their own following move, the opponent cannot sow from this hole. The opponent is able to sow from such a hole if they can capture from this hole; if the hole in question is the house (this remains true for all phases of the game); if it is the only occupied hole in the front row; or if it is the only hole in the front row with greater than one counter. This rule does not apply during the Namua phase.
             
-        A player wins when their opponent's inner row holes are empty. This includes in the middle of sowing (e.g., sowing into the outer row directly from a Kichwa when it is the only occupied hole in the front row). A player may also lose if they only  have single counters in their holes. ")
+        A player wins when their opponent's inner row holes are empty. This includes in the middle of sowing (e.g., sowing into the outer row directly from a Kichwa when it is the only occupied hole in the front row). A player may also lose if they only have single counters in their holes. ")
         (source "de Voogt 1995: 35-51.")
         (id "1567")
         (version "1.3.4")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
-        (origin  "This game was played in East Africa, from around 1990 to 1994.")
+        (origin "This game was played in East Africa, from around 1990 to 1994.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

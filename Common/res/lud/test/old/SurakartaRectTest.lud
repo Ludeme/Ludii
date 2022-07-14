@@ -5,22 +5,22 @@
             if:(or 
                 (= (between) (from)) 
                 (is Empty (between))
-           )
-       ) 
+            )
+        ) 
         (to 
             if:("IsEnemyAt" (to)) 
             (apply if:False (remove (to)))
-       )
+        )
         (then (set Counter))
-   )
+    )
 )
 
 (define "NoCaptureProposal" 101)
 
 //------------------------------------------------------------------------------
 
-(game "SurakartaRectTest"  
-    (players 2)  
+(game "SurakartaRectTest" 
+    (players 2) 
     (equipment { 
         (surakartaBoard (rect 5 7)) 
         
@@ -29,8 +29,8 @@
                 ("StepToEmpty")
                 ("SlideToCapture")						
             })
-       )
-    })  
+        )
+    }) 
     (rules 
         (start {
             (place "Marker1" (expand (sites Bottom)))
@@ -42,21 +42,21 @@
                 (or 
                     (if (>= (counter) "NoCaptureProposal") 
                         (propose "End" (then (vote "End")))
-                   )
+                    )
                     (forEach Piece)
-               )
-           )
-       ) 
+                )
+            )
+        ) 
         (end {
             (if (is Decided "End")
                 (byScore {
                     (set Score P1 (count Pieces P1)) 
                     (set Score P2 (count Pieces P2))
                 })
-           )
+            )
             (if (no Pieces Next) (result Mover Win)) 
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------

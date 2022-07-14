@@ -1,11 +1,11 @@
-(game "O-Pat-Kono"  
-    (players 2)  
+(game "O-Pat-Kono" 
+    (players 2) 
     (equipment { 
         (board (rectangle 5 5) use:Vertex) 
         (piece "Marker" Each "StepDiagonalToEmpty") 
         (regions "Home" P1 (union (sites Bottom) (sites {"A2" "E2"}))) 
         (regions "Home" P2 (union (sites Top) (sites {"A4" "E4"}))) 
-    })  
+    }) 
     (rules 
         (start {
             (place "Marker1" (sites P1))
@@ -14,7 +14,7 @@
         (play (forEach Piece))
         
         (end ("FillWin" (sites Next)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -31,9 +31,9 @@
         (version "1.3.4")
         (classification "board/race/fill")
         (credit "Eric Piette")
-        (origin  "This game was played in Korea, from around 1893 to 1895.")
+        (origin "This game was played in Korea, from around 1893 to 1895.")
         }
-   )
+    )
     
     (graphics {
         (board Style Graph)
@@ -43,5 +43,5 @@
     
     (ai
         "O-Pat-Kono_ai"
-   )
+    )
 )

@@ -7,8 +7,8 @@
                 (to if:("IsEnemyAt" (to))
                     (apply
                         (remove (to))
-                   )
-               )
+                    )
+                )
                 (then
                     (forEach Site
                         (sites Around (last To))
@@ -16,17 +16,17 @@
                             (and
                                 (remove (site))
                                 (add (piece (id "Ball" Mover)) (to (site)))
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                            )
+                        )
+                    )
+                )
+            )
+        )
     })
     (rules
         (start {
-            //            (place "Ball1" (difference (union (sites Top) (sites Right)) (union {(sites Left) (sites Bottom) (intersertion (sites Top) (sites Right))})))
-            //            (place "Ball2" (difference (union (sites Bottom) (sites Left)) (union {(sites Right) (sites Top) (intersertion (sites Bottom) (sites Left))})))
+            //      (place "Ball1" (difference (union (sites Top) (sites Right)) (union {(sites Left) (sites Bottom) (intersertion (sites Top) (sites Right))})))
+            //      (place "Ball2" (difference (union (sites Bottom) (sites Left)) (union {(sites Right) (sites Top) (intersertion (sites Bottom) (sites Left))})))
             (place "Ball1" (sites Phase 1))
             (place "Ball2" (sites Phase 0))
         })
@@ -38,9 +38,9 @@
                     (score P1 (count Pieces P1))
                     (score P2 (count Pieces P2))
                 })
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -61,7 +61,7 @@
         (credit "Eric Piette")
         (date "2002")
         }
-   )
+    )
     
     (graphics {
         (board Style Chess)

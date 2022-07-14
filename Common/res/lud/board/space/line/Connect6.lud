@@ -1,18 +1,18 @@
-(game "Connect6"  
-    (players 2)  
+(game "Connect6" 
+    (players 2) 
     (equipment 
         { 
         (board (square 19) use:Vertex) 
         (piece "Marker" Each) 
         }
-   )  
+    ) 
     (rules 
         
         phases:{
         (phase "Opening" 
             (play (move Add (to (sites Empty))))
             (nextPhase "Playing")
-       )
+        )
         (phase "Playing" 
             (play 
                 (move 
@@ -22,16 +22,16 @@
                         (if 
                             (is Even (count Moves)) 
                             (moveAgain)
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (nextPhase "Playing")
-       )
+        )
         }
         
         (end (if (is Line 6 All) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -48,9 +48,9 @@
         (classification "board/space/line")
         (author "Professor I-Chen Wu")
         (credit "Eric Piette")
-        (origin  "This game is from Taiwan, on 2003.")
+        (origin "This game is from Taiwan, on 2003.")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Black))
@@ -60,6 +60,6 @@
     
     (ai 
         "Connect6_ai"
-   )
+    )
     
 )

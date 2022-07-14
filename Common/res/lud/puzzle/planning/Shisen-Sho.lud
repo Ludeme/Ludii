@@ -9,33 +9,33 @@
                             Orthogonal
                             (to 
                                 if:(is In (to) (sites Empty))
-                           )
-                       ) 
+                            )
+                        ) 
                         from:(from) 
                         (range 1 (count Sites in:(sites Board)))
-                   )
+                    )
                     Orthogonal
-               )
+                )
                 (sites Around (from) Orthogonal)
-           )
+            )
             if: 
             (and
                 (= (what at:(from)) (what at:(to)))
                 (not (= (from) (to)))
-           )
+            )
             (apply 
                 (and
                     (remove (from))
                     (remove (to))
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Shisen-Sho"  
+(game "Shisen-Sho" 
     (players 1)
     (equipment { 
         (board (rectangle (+ <Size:boardHeight> <OuterRing:extraBoardSize>)(+ <Size:boardWidth> <OuterRing:extraBoardSize>))) 
@@ -90,7 +90,7 @@
         (piece "WindSouth" P1)
         
         <OuterRing:tilePlacementRegion>
-    })  
+    }) 
     (rules 
         (start { 
             (place Random (sites "TilePlacementRegion") {"BambooOne" "BambooTwo" "BambooThree" "BambooFour" "BambooFive" "BambooSix" "BambooSeven" "BambooEight" "BambooNine"
@@ -103,8 +103,8 @@
             } count:<Size:numTiles>) 
         })
         (play "Move")
-        (end (if (no Pieces All) (result P1 Win)))  
-   )
+        (end (if (no Pieces All) (result P1 Win))) 
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -139,7 +139,7 @@
         (classification "puzzle/planning")
         (credit "Matthew Stephenson")
         }
-   )
+    )
     
     (graphics {
         (board Colour InnerEdges (colour 0 100 0))
@@ -150,5 +150,5 @@
     
     (ai
         "Shisen-Sho_ai"
-   )
+    )
 )

@@ -11,20 +11,20 @@
                 (= (what at:(to)) (id "General" P7))
             })
             (add (piece (id "General" Mover)) (to (handSite Mover)))
-       )
+        )
         next:(remove 
             (to) 
             (then (addScore Mover 1))
-       )
-   )
+        )
+    )
 )
 
 (define "CaptureToPiece"
     (apply 
         (if ("IsEnemyAt" (to))
             ("RemoveEnemyPiece")
-       )
-   )
+        )
+    )
 )
 
 (define "NotaKing" 
@@ -59,9 +59,9 @@
         (and 
             (is Active #1) 
             (or (<= (count Pieces #1 in:(sites Board)) 7) ("CaptureGeneralOf" #1))
-       ) 
+        ) 
         (remove (sites Occupied by:#1 container:"Board"))
-   )
+    )
 )
 
 (define "PlayerLoseIfNoPiece" (if (= (count Pieces #1 in:(sites Board)) 0) (result #1 Loss)))
@@ -83,39 +83,39 @@
                 All
                 (between
                     if:("EmptyNotKing" (between))
-               )
+                )
                 (to 
                     if:("EnemyNotKing" (to))
                     "CaptureToPiece"
-               ) 
-           ) 
-       )
+                ) 
+            ) 
+        )
         (piece "Deputy General" Each
             (move
                 Slide 
                 Orthogonal
                 (between
                     if:("EmptyNotKing" (between))
-               )
+                )
                 (to 
                     if:("EnemyNotKing" (to))
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Officer" Each
             (move
                 Slide 
                 Diagonal
                 (between
                     if:("EmptyNotKing" (between))
-               )
+                )
                 (to 
                     if:("EnemyNotKing" (to))
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Diplomat" Each (move Slide All))
         (piece "Archer" Each
             (move 
@@ -125,9 +125,9 @@
                 (to 
                     if:(or (is Empty (to)) ("EnemyNotKing" (to))) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "CrossBow" Each
             (move 
                 Hop 
@@ -136,9 +136,9 @@
                 (to 
                     if:(or (is Empty (to)) ("EnemyNotKing" (to))) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Knife" Each
             (move 
                 Step 
@@ -146,9 +146,9 @@
                 (to 
                     if:(or (is Empty (to)) ("EnemyNotKing" (to))) 
                     "CaptureToPiece"
-               )
-           )
-       )
+                )
+            )
+        )
         (piece "Broadsword" Each
             (move 
                 Step 
@@ -156,29 +156,29 @@
                 (to 
                     if:(or (is Empty (to)) ("EnemyNotKing" (to))) 
                     "CaptureToPiece"
-               )
-           )
-       )
+                )
+            )
+        )
         (piece "Catapult" Each
             (or 
                 (move Slide Orthogonal) 
                 (move Hop 
                     Orthogonal 
                     (between 
-                        before:(count Rows)  
-                        after:(count Rows)  
+                        before:(count Rows) 
+                        after:(count Rows) 
                         if:("IsFriendAt" (between))
-                   )
+                    )
                     (to 
                         if:(is Empty (to)) 
                         (apply 
                             if:("EnemyNotKing" (to)) 
                             ("RemoveEnemyPiece")
-                       )
-                   )  
-               ) 
-           )
-       )
+                        )
+                    ) 
+                ) 
+            )
+        )
         (piece "Knight" Each 
             (forEach Direction 
                 Orthogonal 
@@ -196,15 +196,15 @@
                                         (apply 
                                             if:("IsEnemyAt" (to))
                                             ("RemoveEnemyPiece")
-                                       )
-                                   )
-                               )
-                           )
-                       ) 
-                   )
-               )
-           )
-       )
+                                        )
+                                    )
+                                )
+                            )
+                        ) 
+                    )
+                )
+            )
+        )
         (hand Each)
     })
     (rules 
@@ -253,9 +253,9 @@
                         ("RemovePiecesIfPlayerHasLost" P6)
                         ("RemovePiecesIfPlayerHasLost" P7)
                     })
-               )
-           )
-       )
+                )
+            )
+        )
         (end { 
             ("PlayerLoseIfNoPiece" P1)
             ("PlayerLoseIfNoPiece" P2)
@@ -266,9 +266,9 @@
             ("PlayerLoseIfNoPiece" P7)
             (if (or (= ("PiecesCaptured") 30) (= 2 ("GeneralCaptured")))
                 (byScore)
-           )
+            )
         })
-   )
+    )
 )
 
 //---------------------------------
@@ -284,9 +284,9 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/xiangqi")
         (credit "Eric Piette")
-        (origin  "This game was played in China, from around 1039 to 1647.")
+        (origin "This game was played in China, from around 1039 to 1647.")
         }
-   )
+    )
     
     (graphics {
         (show Edges Diagonal Hidden)
@@ -311,5 +311,5 @@
     })
     (ai
         "Qi Guo Xiangxi_ai"
-   )
+    )
 )

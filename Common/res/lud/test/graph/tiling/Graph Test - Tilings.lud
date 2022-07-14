@@ -1,31 +1,31 @@
-(game "Graph Test - Tilings"  
-    (players 2)  
+(game "Graph Test - Tilings" 
+    (players 2) 
     (equipment { 
         (board <Board>) 
         (piece "Marker") 
-    })  
+    }) 
     (rules 
         (play (move Add (to (sites Empty))))
         (end (if (is Line 8) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Tiling Type" <Board> args:{ <type> }
     {
-    (item  "S"   <(square 4)>    "")  
-    (item  "H"   <(hex 4)>    "")  
-    (item  "T"   <(tri 4)>    "")  
+    (item "S"  <(square 4)>  "") 
+    (item "H"  <(hex 4)>  "") 
+    (item "T"  <(tri 4)>  "") 
     
-    (item  "488"    <(tiling T488 2)>    "")  
-    (item  "4612"   <(tiling T4612 2)>    "")  
-    (item  "3464"   <(tiling T3464 2)>    "")  
-    (item  "3636"   <(tiling T3636 2)>    "")  
-    (item  "31212"  <(tiling T31212 2)>    "")  
-    (item  "33336"  <(tiling T33336 2)>    "")  
-    (item  "33344"  <(tiling T33344 2)>    "")  
-    (item  "33434"  <(tiling T33434 2)>    "")  
+    (item "488"  <(tiling T488 2)>  "") 
+    (item "4612"  <(tiling T4612 2)>  "") 
+    (item "3464"  <(tiling T3464 2)>  "") 
+    (item "3636"  <(tiling T3636 2)>  "") 
+    (item "31212" <(tiling T31212 2)>  "") 
+    (item "33336" <(tiling T33336 2)>  "") 
+    (item "33344" <(tiling T33344 2)>  "") 
+    (item "33434" <(tiling T33434 2)>  "") 
     }
 )
 
@@ -42,16 +42,16 @@
         (version "0.9.3")
         (classification "board/space/line")
         (credit "Cameron Browne 31/5/2020")
-        (origin  "This game was played in England, from around 1850CE to 1883CE.")
+        (origin "This game was played in England, from around 1850CE to 1883CE.")
         }
-   )
+    )
     
     (graphics {
         //(board Checkered)
         //(board Colour Phase0 (colour 100 200 255))
         //(board Colour Phase1 (colour 150 215 255))
         //(board Colour Phase2 (colour 200 230 255))
-        //(board Colour Phase0 (colour 200 130  50))
+        //(board Colour Phase0 (colour 200 130 50))
         //(board Colour Phase2 (colour 225 180 100))
         //(board Colour Phase1 (colour 255 230 150))
         (board StyleThickness OuterEdges 2)

@@ -2,18 +2,18 @@
 
 //------------------------------------------------------------------------------
 
-(game "Kara"  
-    (players 2)  
+(game "Kara" 
+    (players 2) 
     (equipment { 
         (mancalaBoard 2 3
             (track "Track" "1,E,N,W" loop:True)
-       )
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+        )
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
         (map "RightHole" {(pair P1 3) (pair P2 4)})
         (piece "Seed" Shared)
-    })  
+    }) 
     (rules 
         
         (start (set Count 7 to:(sites Track)))
@@ -23,25 +23,25 @@
                 (from 
                     (sites Mover) 
                     if:(> (count at:(from)) 0)
-               )
+                )
                 (then 
                     (sow
                         if:(and 
                             (is In (count at:(to)) (sites {2 4 6})) 
                             (is In (to) (union (sites Next) (sites {(mapEntry "RightHole" (mover))})))
-                       )
+                        )
                         apply:(fromTo 
                             (from (to)) 
                             (to (mapEntry (mover))) 
                             count:(count at:(to))
-                       ) 
-                   )
-               )
-           )
-       )
+                        ) 
+                    )
+                )
+            )
+        )
         
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -58,9 +58,9 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Sudan, around 1925.")
+        (origin "This game was played in Sudan, around 1925.")
         }
-   )
+    )
     
     (graphics { 
         (board Style Mancala)
@@ -68,6 +68,6 @@
     
     (ai 
         "Kara_ai"
-   )
+    )
     
 )

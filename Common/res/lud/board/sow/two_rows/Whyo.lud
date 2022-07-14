@@ -3,17 +3,17 @@
 //------------------------------------------------------------------------------
 
 (game "Whyo"
-    (players 2)  
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 6
             (track "TrackCCW" "1,E,N,W" loop:True)
-       )
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
+        )
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
         (piece "Seed" Shared)
-        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
-    })  
+        (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
+    }) 
     (rules 
         (start (set Count 4 to:(sites Track)))
         
@@ -26,18 +26,18 @@
                             (if (is Mover P1)
                                 (union (sites Mover) (sites {12}))
                                 (difference (sites Mover) (sites {12}))
-                           )
+                            )
                             (if (= (score P2) 1)
                                 (if (is Mover P2)
                                     (union (sites Mover) (sites {1}))
                                     (difference (sites Mover) (sites {1}))
-                               )
+                                )
                                 (sites Mover)
-                           )
-                       )
-                   )
+                            )
+                        )
+                    )
                     if:(> (count at:(from)) 0)
-               )
+                )
                 (then 
                     (sow
                         apply:(if (= (count at:(to)) 4)
@@ -45,11 +45,11 @@
                                 (from (to)) 
                                 (to (mapEntry Mover)) 
                                 count:(count at:(to))
-                           )
+                            )
                             (if (< (count at:(to)) 1)
                                 (moveAgain)
-                           )
-                       )
+                            )
+                        )
                         (then
                             (if (no Moves Next)
                                 (and 
@@ -59,51 +59,51 @@
                                                 (from (site))
                                                 (to (mapEntry Mover)) 
                                                 count:(count at:(site))
-                                           )
-                                       )
+                                            )
+                                        )
                                         (then
                                             (and {
                                                 (if (< ("PiecesOwnedBy" P1) ("PiecesOwnedBy" P2))
                                                     (addScore P2 1)
-                                               )
+                                                )
                                                 (if (< ("PiecesOwnedBy" P2) ("PiecesOwnedBy" P1))
                                                     (addScore P1 1)
-                                               )
+                                                )
                                                 (if (< (var) 0)
                                                     (and { 
                                                         (forEach Site (sites Board)
                                                             (if (> (count at:(site)) 0)
                                                                 (remove (site))
-                                                           )
-                                                       )
+                                                            )
+                                                        )
                                                         (forEach Site (union (sites P1) (sites P2))
                                                             (add (piece (id "Seed" Shared)) (to (site)) count:4)
-                                                       )
+                                                        )
                                                     })
-                                               )
+                                                )
                                             })
-                                       )
-                                   )
+                                        )
+                                    )
                                     (set Var (+ (var) 1))
-                               )
-                           )
-                       )
-                   )
-               )
-           )		
-       )
+                                )
+                            )
+                        )
+                    )
+                )
+            )		
+        )
         
         (end
             (if (= (var) 1)
                 (byScore)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Whyo is a two-row mancala-style board game played in Oron, Nigeria. The name is reportedly taken from the English \"Why oh!\", an exclamation made when referring to smart tricks.")
@@ -114,7 +114,7 @@
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

@@ -1,12 +1,12 @@
 (game "Chopsticks"
-    (players 2)  
+    (players 2) 
     (equipment 
         { 
         (board (square 2))
         (piece "Hand" Each)
         (piece "HandFlip" Each)
         }
-   )  
+    ) 
     (rules 
         (start { 
             (place "HandFlip1" coord:"A1" state:1) 
@@ -20,22 +20,22 @@
                 (from 
                     (sites Occupied by:Mover) 
                     if:(!= (state at:(to)) 0)
-               )
+                )
                 (to 
                     (sites Occupied by:Next) 
                     if:(!= (state at:(to)) 0)
-               )
+                )
                 (then 
                     (set State 
                         at:(last To) 
                         (% (+ (state at:(last From)) (state at:(last To))) 5)
-                   )
-               ) 
-           )
-       )
+                    )
+                ) 
+            )
+        )
         
         (end ("BlockWin"))
-   )
+    )
 )
 
 (metadata
@@ -50,7 +50,7 @@
         (classification "math/hand")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour HumanLight))
@@ -62,6 +62,6 @@
     
     (ai 
         "Chopsticks_ai"
-   )
+    )
     
 )

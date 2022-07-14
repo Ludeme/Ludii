@@ -4,16 +4,16 @@
             (add 
                 (piece (mapEntry "Captured" (what at:(to)))) 
                 (to (mapEntry "Where" (what at:(to))))
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "NextCannotMove"
     (not (can Move (do (or
                     ("PlacePiece" Next) 
                     (forEach Piece Next) 
-               ) 
+                ) 
     ifAfterwards:(not ("IsInCheck" "Osho" Next)))))
 )
 
@@ -22,7 +22,7 @@
         (from (sites Occupied by:#1 container:"Hand")) 
         (to (sites Empty))
         (then (moveAgain))
-   )
+    )
 )
 
 (define "CapturePiece"
@@ -30,8 +30,8 @@
         (add 
             (piece (mapEntry "Captured" (what at:(to)))) 
             (to (mapEntry "Where" (what at:(to))))
-       )
-   )
+        )
+    )
 )
 
 (define "PromoteDecision"
@@ -48,7 +48,7 @@
         #1 
         (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
-   )   	
+    )  	
 )
 
 (define "StepMove"
@@ -57,15 +57,15 @@
         #1
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
-   )   	
+    )  	
 )
 
 (define "GoldMove" ("StepMove" (directions {Forward Backward Rightward Leftward FL FR}) (then "Promote")))
 
 //------------------------------------------------------------------------------
 
-(game "Kyoto Shogi"  
-    (players {(player N) (player S)})  
+(game "Kyoto Shogi" 
+    (players {(player N) (player S)}) 
     
     (equipment { 
         (board (square 5))
@@ -78,8 +78,8 @@
             ("StepMove" 
                 Forward 
                 (then "Promote")
-           )
-       )
+            )
+        )
         
         // Silver General
         (piece "Ginsho" Each ("StepMove" (directions {Forward BL BR FL FR}) (then "Promote")))
@@ -109,25 +109,25 @@
                                             (add 
                                                 (piece (mapEntry "Captured" (what at:(to)))) 
                                                 (to (mapEntry "Where" (what at:(to))))
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               ) 
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ) 
                 (then "Promote") 
-           ) 
-       )
+            ) 
+        )
         
         // Lance
         (piece "Kyosha" Each
             ("SlideMove" 
                 Forward 
                 (then "Promote")
-           ) 
-       )
+            ) 
+        )
         
         // Gold General
         (piece "Kinsho" Each "GoldMove")
@@ -150,7 +150,7 @@
             (pair (id "Fuhyo" P1) (id "Fuhyo" P2)) (pair (id "Fuhyo" P2) (id "Fuhyo" P1)) 
             (pair (id "Ginsho" P1) (id "Ginsho" P2)) (pair (id "Ginsho" P2) (id "Ginsho" P1))
             (pair (id "Kinsho" P1) (id "Kinsho" P2)) (pair (id "Kinsho" P2) (id "Kinsho" P1)) 
-            (pair (id "Tokin" P1) (id "Tokin" P2)) (pair (id "Tokin" P2) (id "Tokin" P1))  
+            (pair (id "Tokin" P1) (id "Tokin" P2)) (pair (id "Tokin" P2) (id "Tokin" P1)) 
             (pair (id "Hisha" P1) (id "Fuhyo" P2)) (pair (id "Hisha" P2) (id "Fuhyo" P1)) 
             (pair (id "Kakugyo" P1) (id "Ginsho" P2)) (pair (id "Kakugyo" P2) (id "Ginsho" P1)) 
             (pair (id "Keima" P1) (id "Kinsho" P2)) (pair (id "Keima" P2) (id "Kinsho" P1)) 
@@ -184,24 +184,24 @@
                     (or
                         ("PlacePiece" Mover) 
                         (forEach Piece) 
-                   )
+                    )
                     ifAfterwards:(not ("IsInCheck" "Osho" Mover))
-               )
-           )
-       )
+                )
+            )
+        )
         
         (end
             {
             (if (and 
                     ("IsInCheck" "Osho" Next)
                     ("NextCannotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
+            ) 
             ("BlockWin")
             }
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -235,7 +235,7 @@
         (credit "Matthew Stephenson")
         (date "1976")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour White))
@@ -254,5 +254,5 @@
     
     (ai
         "Kyoto Shogi_ai"
-   )
+    )
 )

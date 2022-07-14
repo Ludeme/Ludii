@@ -6,12 +6,12 @@
     (trackSite FirstSite "TrackCCW"
         from:(mapEntry "LeftMost" Mover)
         if:(is Empty (to))
-   )
+    )
 )
 //------------------------------------------------------------------------------
 
-(game "Mawkar Katiya"  
-    (players 2)  
+(game "Mawkar Katiya" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
@@ -19,13 +19,13 @@
             (track "TrackCW" "6,W,N,E" loop:True)
             (track "TrackCCW" "0,E,N,W" loop:True)
             }
-       )
+        )
         (piece "Seed" Shared)
         (hand Each)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
         (map "LeftMost" {(pair P1 0) (pair P2 13)})
-    })  
+    }) 
     
     (rules 
         (start {
@@ -43,39 +43,39 @@
                                 ("SameTurn") 
                                 (sites {(var "Replay")}) 
                                 (sites Mover) 
-                           ) 
+                            ) 
                             if:(and {
                                 (is Occupied (from)) 
                                 (is In (from) ("PlayableSites"))
                                 (!= (next) (state at:(from)))
                             })
-                       )
+                        )
                         (then
                             (do
                                 (and
                                     (set Var "NumSowed" (count at:(last To)))
                                     (set Var "StateSowFrom" (state at:(last To)))
-                               )
+                                )
                                 next:(sow
                                     "TrackCW"
                                     apply:(if (is Occupied ("NextHole" (to) 1))
                                         (and 
                                             (moveAgain)
                                             (set Var "Replay" ("NextHole" (to) 1))
-                                       )
+                                        )
                                         (if (is Occupied ("OppositePitTwoRows" ("NextHole" (to) 1)))
                                             (and
                                                 (fromTo
                                                     (from ("OppositePitTwoRows" ("NextHole" (to) 1)))
                                                     (to (handSite Mover))
                                                     count:(count at: ("OppositePitTwoRows" ("NextHole" (to) 1)))
-                                               )
+                                                )
                                                 (set State at:("OppositePitTwoRows" ("NextHole" (to) 1)) (state at:("OppositePitTwoRows" ("NextHole" (to) 1))))
-                                           )
-                                       )
-                                   )
+                                            )
+                                        )
+                                    )
                                     skipIf:(or (and (!= (state at:(to)) (mover)) (!= (state at:(to)) 0)) (not (is In (to) ("PlayableSites"))))
-                               )
+                                )
                                 (then
                                     (and {
                                         (forEach Site (sites Track from:(last From) to:(trackSite Move from:(last From) "Track" steps:(var "NumSowed")))
@@ -85,28 +85,28 @@
                                                         (from (site))
                                                         (to (handSite Mover))
                                                         count:(value Player Mover)
-                                                   )
+                                                    )
                                                     (set State at:(site) (state at:(site)))
-                                               )
+                                                )
                                                 (if (and (is Occupied (site)) (= (mover) (state at:(site))))
                                                     (and
                                                         (fromTo
                                                             (from (site))
                                                             (to (handSite Mover))
                                                             count:1
-                                                       ) 
+                                                        ) 
                                                         (set State at:(site) (state at:(site)))
-                                                   )
-                                               )
-                                           )
-                                       )
+                                                    )
+                                                )
+                                            )
+                                        )
                                         (set Var "NumSowed" 0)
                                         (if (< 0 (var "StateSowFrom")) (set State at:(last From) (var "StateSowFrom")))
                                     })
-                               )
-                           )
-                       )
-                   )
+                                )
+                            )
+                        )
+                    )
                     }
                     (then
                         (if ("NoPieceOnBoard")
@@ -118,42 +118,42 @@
                                                 (from (site))
                                                 (to (handSite P1))
                                                 count:(count at:(site))
-                                           )
-                                       )
+                                            )
+                                        )
                                         (if (= (state at:(site)) 2)
                                             (fromTo
                                                 (from (site))
                                                 (to (handSite P2))
                                                 count:(count at:(site))
-                                           )
-                                       )
-                                   )
-                               )
+                                            )
+                                        )
+                                    )
+                                )
                                 (forget Value "Playable" All)
                                 (if (>= (count Cell at:(handSite P1)) (count Cell at:(handSite P2)))
                                     (set Var "CurrentWinner" 1)
                                     (set Var "CurrentWinner" 2)
-                               )
+                                )
                                 (set Value P2 0)
                                 (set Value P1 0)
                                 (forEach Site (sites Board) 
                                     (if (!= 0 (state at:(site))) (set State at:(site) 0))
-                               )
+                                )
                             })
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (end (if ("NoPieceOnBoard")
                     {
                     (if (= 0 (count Cell at:(handSite P1))) (result P2 Win))
                     (if (= 0 (count Cell at:(handSite P2))) (result P1 Win))
                     }
-               )
-           )
+                )
+            )
             
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-       )
+        )
         
         (phase "BetweenRounds"
             (play
@@ -164,7 +164,7 @@
                             (to "LeftMostEmpty")
                             count:5
                             (then (remember Value "Playable" (last To)))
-                       )
+                        )
                         (if (and (!= 0 (count Cell at:(handSite Mover))) (!= (mover) (var "CurrentWinner")))
                             (move
                                 (from (handSite Mover))
@@ -176,28 +176,28 @@
                                         (set Value Mover (count at:(last To)))
                                         (set State at:(last To) (next))
                                     })
-                               )
-                           )
-                       )
-                   )
+                                )
+                            )
+                        )
+                    )
                     (if (= (mover) (var "CurrentWinner"))
                         (move Pass
                             (then
                                 (set Value Mover (count Cell at:(handSite Mover)))
-                           )
-                       )
-                   )
-               )
-           )
+                            )
+                        )
+                    )
+                )
+            )
             (nextPhase (all Passed) "Sowing")
-       )
+        )
         }
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Mawkar Katiya is a two-row mancala-style board game that was played by the Khasi people of India in the early part of the twentieth century.")
@@ -210,7 +210,7 @@
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

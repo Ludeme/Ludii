@@ -5,7 +5,7 @@
 //------------------------------------------------------------------------------
 
 (game "Vignone Game"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board 
             (merge 
@@ -14,18 +14,18 @@
                 (shift 1.5 0.5 (scale 0.5 (rotate -90 (wedge 3)))) 
                 (shift -1.5 0.5 (scale 0.5 (rotate 90 (wedge 3))))
                 }
-           )
+            )
             use:Vertex
-       )
+        )
         (piece "Marker" P1 (move [#]))
         (piece "Marker" P2 (move [#]))
-    })  
+    }) 
     
     (rules 
         (start [#])
         (play [#])
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -41,9 +41,9 @@
         (version "1.3.4")
         (classification "board/hunt/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Italy, from around 1615 to 1997.")
+        (origin "This game was played in Italy, from around 1615 to 1997.")
         }
-   )
+    )
     
     (graphics {
         (show Edges Diagonal Hidden)

@@ -3,62 +3,62 @@
 //------------------------------------------------------------------------------
 
 (game "Fondji" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         (mancalaBoard 2 6
             (track "Track" "1,E,N,W" loop:True)
-       )
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+        )
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
         (piece "Seed" Shared)
-    })  
+    }) 
     
     (rules 
-        (start (set Count 4 to:(sites Track)))		  
+        (start (set Count 4 to:(sites Track)))		 
         (play 
             (if (is Proposed "End")
                 (or (move Vote "End") (move Vote "No"))
                 (or
                     (if (is Cycle) (move Propose "End")) 
-                    (do  
+                    (do 
                         (move Select 
                             (from 
                                 (sites Mover) 
                                 if:(< 0 (count at:(from)))
-                           )
+                            )
                             (then 
-                                (sow  
+                                (sow 
                                     if:(and 
                                         (is In (to) (sites Next)) 
                                         (or 
                                             (= (count at:(to)) 2) 
                                             (= (count at:(to)) 3)
-                                       )
-                                   ) 
+                                        )
+                                    ) 
                                     apply:(fromTo 
                                         (from (to)) 
                                         (to (mapEntry (mover))) 
                                         count:(count at:(to))
-                                   )
+                                    )
                                     includeSelf:False
                                     backtracking:True
-                               )
-                           )
-                       )
+                                )
+                            )
+                        )
                         ifAfterwards:(< 0 (count in:(sites Next)))
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         
         (end ("MancalaByScoreWhen" (or (no Moves Mover) (is Decided "End"))))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Fondji is a two-row mancala-style board game that was played in Dahomey in the early twentieth century. It is similar to other two-row mancala games from the region, like Oware.")
@@ -69,9 +69,9 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Benin, around 1955.")
+        (origin "This game was played in Benin, around 1955.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

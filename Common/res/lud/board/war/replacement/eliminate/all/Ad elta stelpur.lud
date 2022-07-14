@@ -2,14 +2,14 @@
     (or 
         (= 6 (pips)) 
         (= 1 (pips))
-   )
+    )
 )
 
 (define "AnyDieIs6Or1" 
     (or 
         (is AnyDie 6) 
         (is AnyDie 1)
-   )
+    )
 )
 
 (define "DieIs1" 
@@ -20,7 +20,7 @@
     (trackSite Move 
         #2
         steps:#1
-   )
+    )
 )
 
 (define "UseADie6" 
@@ -28,8 +28,8 @@
         (if (all DiceEqual)
             12 
             6
-       )
-   ) 
+        )
+    ) 
 )
 
 (define "UsedADie6" (is Pending))
@@ -53,18 +53,18 @@
                         (if (and 
                                 (or (= 6 #1) (= 12 #1)) 
                                 (!= 0 (count in:(sites Mover)))
-                           ) 
+                            ) 
                             (is In (from) (sites Mover))
                             True
-                       )
-                   )
-               )
+                        )
+                    )
+                )
                 (apply 
                     if:("IsEnemyAt" (to)) 
                     (remove (to))
-               )
-           )
-       )
+                )
+            )
+        )
         (if (= 1 (count Pieces Mover))
             (move 
                 (from)
@@ -74,17 +74,17 @@
                     (apply 
                         if:("IsEnemyAt" (to)) 
                         (remove (to))
-                   )
-               )
-           )
-       )
-   )
+                    )
+                )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Ad elta stelpur"  
-    (players 2)  
+(game "Ad elta stelpur" 
+    (players 2) 
     (equipment 
         { 
         (board (rectangle 2 13) 
@@ -93,13 +93,13 @@
             (track "CornerTrack" {0 5 7 12 25 20 18 13} loop:True)
             }
             use:Vertex
-       ) 
+        ) 
         (regions "LeftMost" P1 {0 1})
         (regions "LeftMost" P2 {24 25})
         (dice num:2)
         (piece "Disc" Each) 
         } 
-   )
+    )
     
     (rules
         (start 
@@ -107,7 +107,7 @@
             (place "Disc1" {0..5})
             (place "Disc2" {20..25})
             }
-       )
+        )
         
         (play 
             (do 
@@ -118,49 +118,49 @@
                         (and 
                             (not ("UsedADie6")) 
                             (not ("AnyDieIs6Or1"))
-                       ) 
+                        ) 
                         (roll)
-                   )
-               )
+                    )
+                )
                 next:(if ("UsedADie6")
                     (forEach Piece 
                         ("MoveAPiece" ("WithDie6Again"))
-                   )
+                    )
                     (forEach Die 
                         if:("DieIs6Or1")
                         (if ("DieIs1")
                             (forEach Piece 
                                 ("MoveAPiece" ("WithDie1"))
-                           )
+                            )
                             (forEach Piece 
                                 ("MoveAPiece" ("WithDie6")) 
                                 (then 
                                     (and 
                                         ("UseADie6") 
                                         (moveAgain)
-                                   )
-                               )
-                           )
-                       )
-                   ) 
+                                    )
+                                )
+                            )
+                        )
+                    ) 
                     (then 
                         (if (or 
                                 ("AnyDieIs6Or1") 
                                 (all DiceEqual)
-                           )
+                            )
                             (moveAgain)
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         
         (end 
             (if (no Pieces Next)
                 (result Mover Win)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -176,14 +176,14 @@
         (version "1.3.4")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
-        (origin  "This game was played in Iceland, from around 1888 to 1892.")
+        (origin "This game was played in Iceland, from around 1888 to 1892.")
         }
-   )
+    )
     
     (graphics {
         (board Style backgammon)
     })
     (ai
         "Ad elta stelpur_ai"
-   )
+    )
 )

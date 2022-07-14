@@ -10,16 +10,16 @@
 //------------------------------------------------------------------------------
 
 (game "Sungka" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         (mancalaBoard 2 "Columns"
             (track "Track" "7,W,WNW,ENE,E,ESE" loop:True)
-       )
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+        )
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
         (piece "Seed" Shared)
-    })  
+    }) 
     
     (rules 
         (start (set Count "Columns" to:(union (sites P1) (sites P2))))		
@@ -33,47 +33,47 @@
                             (and 
                                 ("SameTurn") 
                                 (not ("WasInStore"))
-                           ) 
+                            ) 
                             "LastHoleSowed" 
                             (sites Mover)
-                       )
+                        )
                         if:(< 0 (count at:(from)))
-                   )
+                    )
                     (then 
                         (sow 
                             apply:(if ("SowingEndInMyStore")
                                 (and
                                     (moveAgain)
                                     ("LastCounterInTheStore")
-                               )
+                                )
                                 (if (and {(is In (to) (sites Mover)) (= (count at:(to)) 1) (< 0 (count at:"OppositePit"))})
                                     (fromTo 
                                         (from "OppositePit") 
                                         (to (mapEntry (mover))) 
                                         count:(count at:"OppositePit")
-                                   )
+                                    )
                                     (if (> (count at:(to)) 1)
                                         (and
                                             (moveAgain)
                                             ("StoreLastHoleSowed")
-                                       )
-                                   )
-                               )
-                           )
+                                        )
+                                    )
+                                )
+                            )
                             skipIf:(= (to) (mapEntry Next))
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (end (if (all Passed)
                     {
                     (if (> 7 (count at:(mapEntry P1))) (result P2 Win))
                     (if (> 7 (count at:(mapEntry P2))) (result P1 Win))
                     }
-               )
-           )
+                )
+            )
             (nextPhase (all Passed) "BetweenRounds")
-       )
+        )
         (phase "BetweenRounds"
             (play
                 (if (<= 7 (count at:(mapEntry Mover)))
@@ -81,13 +81,13 @@
                         (from (mapEntry Mover))
                         (to (intersection (sites Empty) (sites Mover)))
                         count:7
-                   )
-               )
-           )
+                    )
+                )
+            )
             (nextPhase (all Passed) "Sowing")
-       )
+        )
         }
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -103,12 +103,12 @@
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)
     })
     (ai
         "Sungka_ai"
-   )
+    )
 )

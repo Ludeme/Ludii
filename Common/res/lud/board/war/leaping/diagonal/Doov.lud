@@ -6,10 +6,10 @@
         (between 
             if:("IsEnemyAt" (between)) 
             (apply (remove (between)))
-       ) 
+        ) 
         (to if:(is Empty (to))) 
         #2
-   ) 
+    ) 
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -19,7 +19,7 @@
 //------------------------------------------------------------------------------
 
 (game "Doov" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (square 8)) 
         (piece "Counter" P1 N)
@@ -27,7 +27,7 @@
         (piece "DoubleCounter" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Counter1" (difference (expand (sites Bottom)) (sites Phase 1) ))
@@ -36,37 +36,37 @@
         
         (play 
             (or 
-                (or  
+                (or 
                     (forEach Piece "Counter" 
                         ("HopMan" (from) 
                             (then 
                                 (if "JumpToPromotionZone" (promote (last To) (piece "DoubleCounter") Mover)) 
-                           ) 
-                       ) 
-                   )
+                            ) 
+                        ) 
+                    )
                     (forEach Piece "DoubleCounter" ("HopDiagonalCapture"))
-               )
+                )
                 
-                (or  
+                (or 
                     (forEach Piece "Counter" 
                         (move
                             Step 
                             (directions {FR FL}) 
                             (to if:(is Empty (to)))
-                       ) 
+                        ) 
                         (then 
                             (if "JumpToPromotionZone"
                                 (promote (last To) (piece "DoubleCounter") Mover)
-                           )
-                       )
-                   )
+                            )
+                        )
+                    )
                     (forEach Piece "DoubleCounter" "StepDiagonalToEmpty")
-               )
-           )
-       ) 
+                )
+            )
+        ) 
         
         (end ("BlockWin"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -83,9 +83,9 @@
         (version "1.3.4")
         (classification "board/war/leaping/diagonal")
         (credit "Eric Piette")
-        (origin  "This game was played in Mongolia, from around 1963 to 1966.")
+        (origin "This game was played in Mongolia, from around 1963 to 1966.")
         }
-   )
+    )
     
     (graphics {
         (board Style Chess)
@@ -94,5 +94,5 @@
     
     (ai
         "Doov_ai"
-   )
+    )
 )

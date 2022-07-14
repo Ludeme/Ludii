@@ -5,10 +5,10 @@
         (directions {FR FL}) 
         (between 
             if:("IsEnemyAt" (between)) 
-       ) 
+        ) 
         (to if:(is Empty (to))) 
         #2
-   ) 
+    ) 
 )
 
 (define "ReachedTarget" (is In (last To) (sites Mover)))
@@ -24,14 +24,14 @@
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
         }
-   )  
+    ) 
     (rules 
         (start
             { 
             (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1) ))
             (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1)))
             }
-       )
+        )
         
         (play 
             (if "SameTurn"
@@ -39,31 +39,31 @@
                     ("HopMan" (last To)
                         (then 
                             (if (can Move ("HopMan" (last To))) (moveAgain)) 
-                       ) 
-                   )
+                        ) 
+                    )
                     (move Pass)
-               )
-                (or  
+                )
+                (or 
                     (forEach Piece "Counter" 
                         ("HopMan" (from)
                             (then 
                                 (if (can Move ("HopMan" (last To))) (moveAgain)) 
-                           )
-                       ) 
-                   )
+                            )
+                        ) 
+                    )
                     (forEach Piece "Counter" 
                         (move
                             Step 
                             (directions {FR FL}) 
                             (to if:(is Empty (to)))
-                       ) 
-                   )
-               )
-           )
-       ) 
+                        ) 
+                    )
+                )
+            )
+        ) 
         
         (end (if "ReachedTarget" (result Mover Win))) 
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -79,7 +79,7 @@
         (classification "experimental")
         (credit "Matthew Stephenson")
         }
-   )
+    )
     
     (graphics {
         (board Style Chess)
@@ -88,5 +88,5 @@
     
     (ai
         "Breakthrough Checkers_ai"
-   )
+    )
 )

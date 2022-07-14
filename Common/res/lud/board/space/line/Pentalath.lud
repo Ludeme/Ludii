@@ -6,53 +6,53 @@
         (between 
             if:("IsEnemyAt" (between)) 
             (apply (remove (between))) 
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Pentalath"  
+(game "Pentalath" 
     (players 2) 
     (equipment { 
         (board 
             <Board:type>
-       )
+        )
         (piece "Marker" Each)
         }
-   )  
+    ) 
     
     (rules 
         (play 
             (do
-                (move  
+                (move 
                     Add 
                     (to (sites Empty))
                     (then "CaptureSurroundedPiece")
-               )
+                )
                 ifAfterwards:"HasFreedom"
-           )
-       )
+            )
+        )
         (end (if (is Line 5) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board" <Board> args:{<type>}
     {
-    (item "HalfHexHexBoard"    
+    (item "HalfHexHexBoard"  
         <
         (intersect 
             { 
             (hex 7) 
             (shift -5.20 0 (hex Rectangle 7 14)) 
             } 
-       )
-        >  
+        )
+        > 
         "The game is played on the half of a HexHex board of size 7."
-   )*
-    (item "HexHexBoard"  <(hex 5)> "The game is played on a HexHex board of size 5.")
+    )*
+    (item "HexHexBoard" <(hex 5)> "The game is played on a HexHex board of size 5.")
     }
 )
 
@@ -73,10 +73,10 @@
         (credit "Eric Piette")
         (date "2009")
         }
-   )
+    )
     
     (ai 
         "Pentalath_ai"
-   )
+    )
     
 )

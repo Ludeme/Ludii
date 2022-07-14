@@ -1,12 +1,12 @@
 (game "Nine Holes"
-    (players 2)  
+    (players 2) 
     (equipment 
         {
         (board (square 3) use:Vertex)
         (hand Each)
         (piece "Marker" Each (move (from) (to (sites Empty))))
         }
-   )  
+    ) 
     (rules 
         (start (place "Marker" "Hand" count:3))
         
@@ -14,14 +14,14 @@
         (phase "Placement"
             (play (move (from (handSite Mover)) (to (sites Empty))))
             (nextPhase ("HandEmpty" P2) "Movement")
-       )
+        )
         
         (phase "Movement"
             (play (forEach Piece))
-       )
+        )
         }
         (end (if (is Line 3 Orthogonal) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -37,9 +37,9 @@
         (version "1.3.4")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in Europe, around 1699.")
+        (origin "This game was played in Europe, around 1699.")
         }
-   )
+    )
     
     (graphics {
         (show Edges Diagonal Hidden)
@@ -48,5 +48,5 @@
     
     (ai
         "Nine Holes_ai"
-   )
+    )
 )

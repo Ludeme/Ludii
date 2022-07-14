@@ -7,8 +7,8 @@
         (if
             (= ("Captured") (state at:(site)))
             (remove (site))
-       )
-   )
+        )
+    )
 )
 
 // #1 - A/B
@@ -26,10 +26,10 @@
                 (and
                     (set State at:(site) ("Captured"))
                     (addScore Mover 1)
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 // #1 - colour string
@@ -42,7 +42,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "Blooms"  
+(game "Blooms" 
     (players 2) 
     (equipment { 
         (board <Board>) 
@@ -72,8 +72,8 @@
                         //)
                     //)
                 //)
-           )
-       )
+            )
+        )
         
         (end
             (if (all Passed)
@@ -81,16 +81,16 @@
                     (score P1 (+ (score P1) (size Territory P1))) 
                     (score P2 (+ (score P2) (size Territory P2)))
                 })
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "4 spaces per side"      <(hex 4)>     "The game is played on a board with 4 spaces per side")**   
+    (item "4 spaces per side"   <(hex 4)>   "The game is played on a board with 4 spaces per side")**  
 })
 
 //------------------------------------------------------------------------------
@@ -106,9 +106,9 @@
         (version "1.2.1")
         (classification "board/space/territory")
         (credit "Nicholas Bamber")
-        (origin  "This game was played in China, from around 694CE to 710CE.")
+        (origin "This game was played in China, from around 694CE to 710CE.")
         }
-   )
+    )
     
     (graphics {
         (board Colour Phase0 (colour White))

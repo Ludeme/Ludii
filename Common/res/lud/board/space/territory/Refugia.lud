@@ -11,9 +11,9 @@
             (union
                 (sites Occupied by:Next)
                 (sites Occupied by:Neutral)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //--------------------------------------------------
@@ -42,11 +42,11 @@
                     from:(sites Occupied by:#1) 
                     to:(sites Around (from) if:(is #1 (who at:(to))))
                     1
-               )
-           )
+                )
+            )
             2
-       )
-   )
+        )
+    )
 )
 
 (define "Placement"
@@ -54,8 +54,8 @@
         (to 
             (sites Empty) 
             if:"NonAdjacent"
-       )
-   )
+        )
+    )
 )
 
 (define "StepMove"
@@ -65,12 +65,12 @@
                 if:(and
                     (is Empty (to))
                     ("MoveAllowed")
-               )
-           )
+                )
+            )
             (then ("UpdateScore" Mover))
-       )
+        )
         Mover
-   )
+    )
 )
 
 (define "HopNeutral"
@@ -82,19 +82,19 @@
                     (and 
                         (remove (between))
                         (add (piece (id "Fan" Neutral)) (to (between)))
-                   )
-               )
-           )
+                    )
+                )
+            )
             (to 
                 if:(and 
                     (is Empty (to))
                     ("MoveAllowed")
-               )
-           )
+                )
+            )
             (then (and ("UpdateScore" Mover) ("UpdateScore" Next)))
-       )
+        )
         Mover
-   )
+    )
 )
 
 (define "HopEnemy"
@@ -106,19 +106,19 @@
                     (and 
                         (remove (between))
                         (add (piece (id "Disc" Mover)) (to (between)))
-                   )
-               )
-           )
+                    )
+                )
+            )
             (to 
                 if:(and 
                     (is Empty (to))
                     ("MoveAllowed")
-               )
-           )
+                )
+            )
             (then (and ("UpdateScore" Mover) ("UpdateScore" Next)))
-       )
+        )
         Mover
-   )
+    )
 )
 
 //-------------------------------------------
@@ -127,13 +127,13 @@
     (players 2)
     (equipment
         {
-        (board (hex  <Board:size>))
+        (board (hex <Board:size>))
         (piece "Disc" P1)
         (piece "Disc" P2)
-        (piece "Fan"  Neutral)
+        (piece "Fan" Neutral)
         }
-   )
-    (rules   
+    )
+    (rules  
         (start (set Score Each 0))
         (play
             (or
@@ -144,8 +144,8 @@
                 ("Placement")
                 (move Pass) 
                 }
-           )
-       )
+            )
+        )
         (end 
             (if 
                 (all Passed)
@@ -153,40 +153,40 @@
                 (if 
                     (> (score Mover) (score Next))
                     (result Mover Win)
-               )
+                )
                 (if 
                     (< (score Mover) (score Next))
                     (result Next Win)
-               )
+                )
                 (if 
                     (> ("TieBreaker" Mover) ("TieBreaker" Next))
                     (result Mover Win)
-               )
+                )
                 (if 
                     (< ("TieBreaker" Mover) ("TieBreaker" Next))
                     (result Next Win)
-               )
+                )
                 }
                 (result Next Win)
-           )
-       )
-   )
-)           
+            )
+        )
+    )
+)      
 
 //---------------------------------------
 
 (option "Board Size" <Board> args:{ <size> } 
     {
-    (item "Hex  2-3" <{2 3 2 3 2}>  "Board & size: Hexhex (12) with edges alternating 2 and 3")
-    (item "Hex  2-4" <{2 4 2 4 2}>  "Board & size: Hexhex (18) with edges alternating 2 and 4")
-    (item "Hex  3-4" <{3 4 3 4 3}>  "Board & size: Hexhex (27) with edges alternating 3 and 4")***
-    (item "Hex  3-5" <{3 5 3 5 3}>  "Board & size: Hexhex (36) with edges alternating 3 and 5")
-    (item "Hex  4-5" <{4 5 4 5 4}>  "Board & size: Hexhex (48) with edges alternating 4 and 5")
-    (item "Hex  4-6" <{4 6 4 6 4}>  "Board & size: Hexhex (60) with edges alternating 4 and 6")
-    (item "Hex  5-6" <{5 6 5 6 5}>  "Board & size: Hexhex (75) with edges alternating 5 and 6")
-    (item "Hex  5-7" <{5 7 5 7 5}>  "Board & size: Hexhex (90) with edges alternating 5 and 7")
-    (item "Hex  6-7" <{6 7 6 7 6}>  "Board & size: Hexhex (108) with edges alternating 7 and 8") 
-    (item "Hex  6-8" <{6 8 6 8 6}>  "Board & size: Hexhex (126) with edges alternating 6 and 8") 
+    (item "Hex 2-3" <{2 3 2 3 2}> "Board & size: Hexhex (12) with edges alternating 2 and 3")
+    (item "Hex 2-4" <{2 4 2 4 2}> "Board & size: Hexhex (18) with edges alternating 2 and 4")
+    (item "Hex 3-4" <{3 4 3 4 3}> "Board & size: Hexhex (27) with edges alternating 3 and 4")***
+    (item "Hex 3-5" <{3 5 3 5 3}> "Board & size: Hexhex (36) with edges alternating 3 and 5")
+    (item "Hex 4-5" <{4 5 4 5 4}> "Board & size: Hexhex (48) with edges alternating 4 and 5")
+    (item "Hex 4-6" <{4 6 4 6 4}> "Board & size: Hexhex (60) with edges alternating 4 and 6")
+    (item "Hex 5-6" <{5 6 5 6 5}> "Board & size: Hexhex (75) with edges alternating 5 and 6")
+    (item "Hex 5-7" <{5 7 5 7 5}> "Board & size: Hexhex (90) with edges alternating 5 and 7")
+    (item "Hex 6-7" <{6 7 6 7 6}> "Board & size: Hexhex (108) with edges alternating 7 and 8") 
+    (item "Hex 6-8" <{6 8 6 8 6}> "Board & size: Hexhex (126) with edges alternating 6 and 8") 
     }
 )
 
@@ -204,7 +204,7 @@
         {
         (description "Refugia is a modern experimental game with a goal of consolidating stones.
             
-            Stones enter unconnected, and can only move by fleeing from concentrations of enemy stones. Thus it is a movement game with a territorial aspect.  
+            Stones enter unconnected, and can only move by fleeing from concentrations of enemy stones. Thus it is a movement game with a territorial aspect. 
             
             The game includes capture-by-hopping moves, which create mutual-enemy stones as an intermediate stage before possible reconversion back to player's stones. This mechanism keeps the game provably finite. 
             
@@ -228,7 +228,7 @@
             -- B. Hop your opponent's stone and replace it with a mutual enemy piece.
             -- C. Hop a mutual enemy piece and replace it with a stone from your supply.
             
-        Note that the number of enemies is based on a count of both the opponent's stones and the mutual-enemy stones combined.  ")
+        Note that the number of enemies is based on a count of both the opponent's stones and the mutual-enemy stones combined. ")
         (id "1153")
         (source "<a href=\"https://boardgamegeek.com/thread/2557883\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
         (version "1.3.4")
@@ -237,7 +237,7 @@
         (credit "Dale W. Walton")
         (date "11-12-2020")
         }
-   )
+    )
     
     (graphics 
         {
@@ -247,8 +247,8 @@
         (board StyleThickness OuterEdges 2.0)
         (piece Foreground Neutral "Fan" image:"Fan" fillColour:(colour White) scale:0.96)
         }
-   )
+    )
     (ai
         "Refugia_ai"
-   )
+    )
 )

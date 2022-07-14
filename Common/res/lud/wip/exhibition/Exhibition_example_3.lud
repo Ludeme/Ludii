@@ -6,12 +6,12 @@
                     (if (is Empty (handSite #1 4)) (handSite #1 4)
                         (if (is Empty (handSite #1 5)) (handSite #1 5)
                             (handSite #1 6)
-                       )
-                   )
-               )
-           )
-       )
-   )
+                        )
+                    )
+                )
+            )
+        )
+    )
 )
 
 (define "AllSites"
@@ -26,8 +26,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Exhibition_example_3"  
-    (players 2)  
+(game "Exhibition_example_3" 
+    (players 2) 
     (equipment { 
         (board (concentric {1 8}))
         (hand Each size:7)
@@ -38,7 +38,7 @@
         (piece "Jarl" P1)
         (piece "Jarl" P2)
         (hand Shared size:6)
-    })  
+    }) 
     (rules 
         (start {
             (place "Pawn1" (handSite Shared 0))
@@ -56,26 +56,26 @@
                         (to ("FirstEmptySiteHand" P1))
                         copy:(is In (from) (sites Hand All))
                         (then (moveAgain))
-                   )
-               )
+                    )
+                )
                 (if (not (all Sites (sites Hand P2) if:(is Occupied Cell (site))))
                     (move 
                         (from (forEach ("AllSites") if:(if (is In (site) (sites Board)) (= (who at:(site)) P2) (= (who Cell at:(site)) P2)))) 
                         (to ("FirstEmptySiteHand" P2))
                         copy:(is In (from) (sites Hand All))
                         (then (moveAgain))
-                   )
-               )
+                    )
+                )
                 (move Select
                     (from ("AllSites")) 
                     (then (moveAgain))
-               )
+                )
                 (move 
                     (from ("AllSites")) 
                     (to (forEach (sites Board) if:(is Empty (site))))
                     copy:(is In (from) (sites Hand All))
                     (then (moveAgain))
-               )
+                )
                 (move Select
                     (from (sites Board) if:(is Occupied (from)))
                     (to Cell (sites Hand All))
@@ -83,9 +83,9 @@
                         (and
                             (remove (last From))
                             (moveAgain)
-                       )
-                   )
-               )
+                        )
+                    )
+                )
                 (move Select
                     (from Cell (union (sites Hand P1) (sites Hand P2)) if:(is Occupied Cell (from)))
                     (to Cell (sites Hand All))
@@ -93,13 +93,13 @@
                         (and
                             (remove (last From))
                             (moveAgain)
-                       )
-                   )
-               )
+                        )
+                    )
+                )
             })
-       )
+        )
         (end (if (is Line 9999) (result Mover Win)))
-   )
+    )
 )
 
 (metadata 

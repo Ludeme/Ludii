@@ -1,18 +1,18 @@
 (game "Shisima"
-    (players 2)  
+    (players 2) 
     (equipment 
         { 
         (board (concentric {1 8}) use:Vertex)
         (piece "Marker" Each "StepToEmpty")
         }
-   )  
+    ) 
     (rules 
         (start 
             { 
             (place "Marker1" {1 8 7})
             (place "Marker2" {3 4 5})
             }
-       )
+        )
         
         (play (forEach Piece))
         (end 
@@ -20,11 +20,11 @@
                 (and 
                     (= (what at:(centrePoint)) (mover)) 
                     (is Line 3)
-               ) 
+                ) 
                 (result Mover Win)
-           )
-       )  
-   )
+            )
+        ) 
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -40,9 +40,9 @@
         (version "1.3.4")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in Kenya, around 1982.")
+        (origin "This game was played in Kenya, around 1982.")
         }
-   )
+    )
     
     (graphics {
         (no Curves)
@@ -51,6 +51,6 @@
     
     (ai 
         "Shisima_ai"
-   )
+    )
     
 )

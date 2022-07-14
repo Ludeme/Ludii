@@ -3,8 +3,8 @@
         (if 
             ("IsEnemyAt" (to)) 
             (remove (to))
-       )
-   )		
+        )
+    )		
 )
 
 (define "Promote" 
@@ -15,11 +15,11 @@
                 (or 
                     (is In (last To) (sites Mover "Promotion")) 
                     (is In (last From) (sites Mover "Promotion")) 
-               ) 
-           )  
+                ) 
+            ) 
             (moveAgain) 
-       ) 
-   ) 
+        ) 
+    ) 
 )
 
 (define "SlideMove" 
@@ -30,9 +30,9 @@
         (to 
             if:("IsEnemyAt" (to)) 
             ("CaptureEnemy")
-       ) 
+        ) 
         #3
-   )
+    )
 )
 
 (define "StepMove" 
@@ -42,9 +42,9 @@
         (to 
             if:(not ("IsFriendAt" (to))) 
             ("CaptureEnemy")
-       ) 
+        ) 
         #2 
-   )
+    )
 )
 
 (define "HopMove" 
@@ -53,13 +53,13 @@
         #1
         (between 
             if:True
-       )
+        )
         (to 
             if:(not ("IsFriendAt" (to))) 
             ("CaptureEnemy")
-       ) 
+        ) 
         #2 
-   )
+    )
 )
 
 (define "HopMoveWithRange" 
@@ -71,13 +71,13 @@
             #3
             #4
             if:True
-       )
+        )
         (to 
             if:(not ("IsFriendAt" (to))) 
             ("CaptureEnemy")
-       ) 
+        ) 
         #5 
-   )
+    )
 )
 
 (define "DoubleStep" 
@@ -87,7 +87,7 @@
         (to 
             if:(not ("IsFriendAt" (to))) 
             ("CaptureEnemy")
-       ) 
+        ) 
         (then 
             (step
                 (from (last To))
@@ -95,10 +95,10 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     ("CaptureEnemy")
-               )	
-           )
-       ) 
-   )
+                )	
+            )
+        ) 
+    )
 )
 
 (define "ForwardKnightMove" 
@@ -115,14 +115,14 @@
                             (from) 
                             (to 
                                 ("CaptureEnemy")
-                           )
-                       )
-                   )
-               )
-           )
-       ) 
+                            )
+                        )
+                    )
+                )
+            )
+        ) 
         #1
-   )
+    )
 )
 
 (define "RangingJump"
@@ -131,27 +131,27 @@
         #1
         (between 
             (range 1 (count Columns))
-            if:(not (is In (what at:(between))  #2))
-       )
+            if:(not (is In (what at:(between)) #2))
+        )
         (to 
             if:(and ("IsEnemyAt" (to)) (not (is In (what at:(to)) #3))) 
             ("CaptureEnemy")
-       ) 
-   )		
+        ) 
+    )		
 )
 
 (define "AdjacentEnemyPieces" 
     (intersection 
         (sites Around #1) 
         (sites Occupied by:Next)
-   )
+    )
 )
 
 (define "FireEnemyDemonAdjacent" 
     (intersection 
         (sites Around #1) 
         (sites Occupied by:Next component:"FireDemon")
-   )
+    )
 )
 
 (define "PassiveBurn" 
@@ -159,8 +159,8 @@
         (and 
             (remove (last To))
             (set Value Mover Undefined)
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -182,39 +182,39 @@
                             Diagonal
                             (sites {(id "King1") (id "King2") (id "Prince1") (id "Prince2") (id "GreatGeneral1") (id "GreatGeneral2") (id "ViceGeneral1") (id "ViceGeneral2")})
                             (sites {(id "King" Next) (id "Prince" Next)}) 
-                       )
+                        )
                         ("SlideMove" Diagonal)
-                   )
-               )
+                    )
+                )
                 (move
                     Step
                     Adjacent
                     (to 
                         if:(is Empty (to))
-                   ) 
+                    ) 
                     (then 
                         (if (< (value Player Mover) 1)
                             (and
                                 (set Value Mover (+ 1 (value Player Mover)))
                                 (moveAgain)
-                           )
+                            )
                             (set Value Mover Undefined)
-                       )
-                   )
-               )
+                        )
+                    )
+                )
                 (move
                     Step
                     Adjacent
                     (to 
                         if:("IsEnemyAt" (to))
                         ("CaptureEnemy")
-                   ) 
+                    ) 
                     (then 
                         (set Value Mover Undefined)
-                   )
-               )
+                    )
+                )
             })
-       )
+        )
         
         (piece "GreatGeneral"
             (or
@@ -222,10 +222,10 @@
                     Adjacent
                     (sites {(id "King1") (id "King2") (id "Prince1") (id "Prince2") (id "GreatGeneral1") (id "GreatGeneral2")})
                     (sites {(id "King" Next) (id "Prince" Next)}) 
-               )
+                )
                 ("SlideMove" Adjacent)
-           )
-       )
+            )
+        )
         
         (piece "BishopGeneral"
             (or
@@ -233,11 +233,11 @@
                     Diagonal
                     (sites {(id "King1") (id "King2") (id "Prince1") (id "Prince2") (id "GreatGeneral1") (id "GreatGeneral2") (id "ViceGeneral1") (id "ViceGeneral2") (id "BishopGeneral1") (id "BishopGeneral2") (id "RookGeneral1") (id "RookGeneral2")})
                     (sites {(id "King" Next) (id "Prince" Next)}) 
-               )
+                )
                 ("SlideMove" Diagonal)
                 "Promote"
-           )
-       )
+            )
+        )
         
         (piece "RookGeneral"
             (or
@@ -245,11 +245,11 @@
                     Orthogonal
                     (sites {(id "King1") (id "King2") (id "Prince1") (id "Prince2") (id "GreatGeneral1") (id "GreatGeneral2") (id "ViceGeneral1") (id "ViceGeneral2") (id "BishopGeneral1") (id "BishopGeneral2") (id "RookGeneral1") (id "RookGeneral2")})
                     (sites {(id "King" Next) (id "Prince" Next)}) 
-               )
+                )
                 ("SlideMove" Orthogonal)
                 "Promote"
-           )	
-       )
+            )	
+        )
         
         (piece "Lion"
             (or {
@@ -268,12 +268,12 @@
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         ("CaptureEnemy")
-                   ) 
-               )
+                    ) 
+                )
                 }
                 "Promote"
-           )		
-       )
+            )		
+        )
         
         (piece "HornedFalcon"
             (or {
@@ -283,8 +283,8 @@
                 ("SlideMove" (difference Adjacent (directions {Forward})))
                 }
                 "Promote"
-           )	
-       )
+            )	
+        )
         
         (piece "SoaringEagle"
             (or {
@@ -296,40 +296,40 @@
                 ("SlideMove" (difference Adjacent (directions {FL FR})))
                 }
                 "Promote"
-           )
-       )
+            )
+        )
         
         (piece "DragonHorse"
             (or
                 ("StepMove" Orthogonal)
                 ("SlideMove" Diagonal)	
                 "Promote"
-           )
-       )
+            )
+        )
         
         (piece "DragonKing"
             (or
                 ("StepMove" Diagonal)
                 ("SlideMove" Orthogonal)	
                 "Promote"
-           )
-       )
+            )
+        )
         
         (piece "Bishop"
             ("SlideMove" Diagonal ~ "Promote")	
-       )
+        )
         
         (piece "Rook"
             ("SlideMove" Orthogonal ~ "Promote")	
-       )
+        )
         
         (piece "FerociousLeopard"
             ("StepMove" (directions {Backward Forward FL FR BR BL}) "Promote")
-       )
+        )
         
         (piece "GoldGeneral"
             ("StepMove" (directions {Backward Forward FL FR Rightward Leftward}) "Promote")
-       )
+        )
         
         (piece "FireDemon"
             (or 
@@ -338,36 +338,36 @@
                         (then
                             (remove 
                                 ("AdjacentEnemyPieces" (last To))
-                           )		
-                       )	  
-                   )	
-               )
+                            )		
+                        )	 
+                    )	
+                )
                 (move
                     Step
                     Adjacent
                     (to 
                         if:(is Empty (to))
-                   ) 
+                    ) 
                     (then 
                         (if (!= 0 (count Sites in:("AdjacentEnemyPieces" (last To))))
                             (and
                                 (remove 
                                     ("AdjacentEnemyPieces" (last To))
-                               )
+                                )
                                 (set Value Mover Undefined)
-                           )
+                            )
                             (if (< (value Player Mover) 1)
                                 (and
                                     (set Value Mover (+ 1 (value Player Mover)))
                                     (moveAgain)
-                               )
+                                )
                                 (set Value Mover Undefined)
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         
         (piece "HeavenlyTetrarch"
             (or {
@@ -386,22 +386,22 @@
                         if:(or 
                             (is Empty (between))
                             (is In (between) (sites Around (from)))
-                       )
-                   )
+                        )
+                    )
                     (to 
                         if:(and 
                             (not (is In (to) (sites Around (from)))) 
                             ("IsEnemyAt" (to))
-                       ) 
+                        ) 
                         (apply 
                             if:(not (is In (to) (sites Around (from)))) 
                             (if 
                                 ("IsEnemyAt" (to)) 
                                 (remove (to))
-                           )
-                       )
-                   ) 
-               )	
+                            )
+                        )
+                    ) 
+                )	
                 (move Slide 
                     (directions {Rightward Leftward}) 
                     (between 
@@ -409,40 +409,40 @@
                         if:(or 
                             (is Empty (between))
                             (is In (between) (sites Around (from)))
-                       )
-                   )
+                        )
+                    )
                     (to 
                         if:(and 
                             (not (is In (to) (sites Around (from)))) 
                             ("IsEnemyAt" (to))
-                       ) 
+                        ) 
                         (apply 
                             if:(not (is In (to) (sites Around (from)))) 
                             (if 
                                 ("IsEnemyAt" (to)) 
                                 (remove (to))
-                           )
-                       )
-                   ) 
-               )	
+                            )
+                        )
+                    ) 
+                )	
             })
-       )
+        )
         
         (piece "WaterBuffalo"
             (or 
                 ("SlideMove" (directions {FR FL BR BL Rightward Leftward}))
                 ("SlideMove" (directions {Forward Backward}) (between (max 2)))
                 "Promote"
-           )
-       )
+            )
+        )
         
         (piece "ChariotSoldier"
             (or 
                 ("SlideMove" (directions {FR FL BR BL Forward Backward}))
                 ("SlideMove" (directions {Rightward Leftward}) (between (max 2)))
                 "Promote"
-           )	
-       )
+            )	
+        )
         
         (piece "SideSoldier"
             (or {
@@ -451,8 +451,8 @@
                 ("StepMove" Backward)
                 }
                 "Promote"
-           )	
-       )
+            )	
+        )
         
         (piece "VerticalSoldier"
             (or {
@@ -461,8 +461,8 @@
                 ("StepMove" Backward)
                 }
                 "Promote"
-           )	
-       )
+            )	
+        )
         
         (piece "Knight" ("ForwardKnightMove" "Promote"))
         
@@ -484,8 +484,8 @@
                 ("DoubleStep" NW NE)
                 ("DoubleStep" NW SW)
                 }
-           )		
-       )
+            )		
+        )
         
         (piece "LionHawk"
             (or {
@@ -505,11 +505,11 @@
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         ("CaptureEnemy")
-                   ) 
-               )
+                    ) 
+                )
                 }
-           )
-       )
+            )
+        )
         
         (piece "Queen" ("SlideMove" Adjacent ~ "Promote"))
         
@@ -518,16 +518,16 @@
                 ("StepMove" Orthogonal)
                 ("HopMove" Diagonal)
                 "Promote"
-           )
-       )
+            )
+        )
         
         (piece "Kirin"
             (or
                 ("StepMove" Diagonal)
                 ("HopMove" Orthogonal)
                 "Promote"
-           )	
-       )
+            )	
+        )
         
         (piece "FreeBoar" ("SlideMove" (directions {FR FL BR BL Rightward Leftward})))
         
@@ -538,39 +538,39 @@
                 ("StepMove" (directions {Forward Backward}))
                 ("SlideMove" (directions {Rightward Leftward}))
                 "Promote"
-           )
-       )
+            )
+        )
         
         (piece "VerticalMover"
             (or
                 ("StepMove" (directions {Rightward Leftward}))
                 ("SlideMove" (directions {Forward Backward}))
                 "Promote"
-           )	
-       )
+            )	
+        )
         
         (piece "CopperGeneral"
             ("StepMove" (directions {Forward Backward FR FL}) "Promote")
-       )
+        )
         
         (piece "SilverGeneral"
             ("StepMove" (directions {Forward BR BL FR FL}) "Promote")
-       )
+        )
         
         (piece "MultiGeneral"
             ("SlideMove" (directions {Forward BR BL}))		
-       )
+        )
         
         (piece "FlyingStag"
             (or
                 ("SlideMove" (directions {Forward Backward}))	
                 ("StepMove" (directions {Rightward Leftward BR BL FR FL}))
-           )
-       )
+            )
+        )
         
         (piece "Dog"
             ("StepMove" (directions {BR BL Forward}) "Promote")
-       )
+        )
         
         (piece "BlindTiger" ("StepMove" (difference Adjacent (directions {Forward})) "Promote"))
         
@@ -681,15 +681,15 @@
                                 (last To) 
                                 (piece (mapEntry "Promoted" (what at:(last To)))) 
                                 (then (set State at:(last To) 1))
-                           )
-                       )
-                   )
+                            )
+                        )
+                    )
                     (move Pass (then (set Value Mover Undefined)))
-               )
+                )
                 (forEach Piece)
                 (then ("PassiveBurn"))
-           )
-       )
+            )
+        )
         
         (end 
             (if 
@@ -699,16 +699,16 @@
                     (= (where "Prince" Next) Off) 
                 }) 
                 (result Mover Win)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <type> }
     {
-    (item "Wikipedia"   <>       "The rules are describing from wikipedia.")   
+    (item "Wikipedia"  <>    "The rules are describing from wikipedia.")  
 })
 
 //------------------------------------------------------------------------------
@@ -743,9 +743,9 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/shogi")
         (credit "Eric Piette")
-        (origin  "This game was played in Japan, from around 1675 to 1699.")
+        (origin "This game was played in Japan, from around 1675 to 1699.")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour White))

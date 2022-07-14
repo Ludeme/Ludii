@@ -2,8 +2,8 @@
     (apply 
         (remove 
             (to) 
-       )
-   ) 
+        )
+    ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -13,8 +13,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-       )
-   )
+        )
+    )
 )
 
 (define "NextCanNotMove"
@@ -36,11 +36,11 @@
                         (and
                             (promote (last To) (piece "Ferz_noCross") Mover)	
                             (fromTo (from (last To)) (to (last From)))
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         (piece "Rook" Each 
             (move
                 Slide 
@@ -48,9 +48,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Camel" Each 
             (move
                 Slide 
@@ -58,18 +58,18 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "King_noCross" Each 
             (move
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-               )
-           )
-       )
+                )
+            )
+        )
         (piece "Bishop_noCross" Each 
             (move
                 Slide 
@@ -77,9 +77,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       ) 
+                ) 
+            )
+        ) 
         (piece "Queen" Each 
             (move
                 Step 
@@ -87,18 +87,18 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-               )
-           )
-       ) 
+                )
+            )
+        ) 
         (piece "Commoner" Each 
             (move
                 Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       ) 
+                ) 
+            )
+        ) 
         (piece "Elephant" Each 
             (move
                 Slide 
@@ -106,9 +106,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       ) 
+                ) 
+            )
+        ) 
         (piece "Knight" Each 
             (move
                 Leap 
@@ -116,18 +116,18 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Ferz_noCross" Each 
             (move
                 Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     })
@@ -159,18 +159,18 @@
             (if (no Moves Mover)
                 (move Remove
                     (difference (sites Occupied by:Next) (where "King_noCross" Next))
-               )
+                )
                 (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-           )
-       )
+            )
+        )
         
         (end {
             (if (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
+            ) 
             (if (and {
                     (no Pieces Next "Ferz_noCross")
                     (no Pieces Next "Knight")
@@ -182,9 +182,9 @@
                     (no Pieces Next "Queen")
                 })
                 (result Mover Win) 
-           ) 
+            ) 
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -201,9 +201,9 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1871.")
+        (origin "This game was played in India, around 1871.")
         }
-   )
+    )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

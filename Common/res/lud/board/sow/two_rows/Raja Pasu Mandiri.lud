@@ -7,8 +7,8 @@
         (if (> 6 (% (+ 1 (var "Round")) 9))
             (sites {2 3 4 9 10 11})
             (sites {5 6 12 13})
-       )
-   )
+        )
+    )
 )
 
 (define "HomeP2" 
@@ -17,8 +17,8 @@
         (if (> 6 (% (+ 1 (var "Round")) 9))
             (sites {5 6 12 13})
             (sites {0 1 7 8})
-       )
-   )
+        )
+    )
 )
 
 (define "HomeP3"
@@ -27,8 +27,8 @@
         (if (> 6 (% (+ 1 (var "Round")) 9))
             (sites {0 1 7 8})
             (sites {2 3 4 9 10 11})
-       )
-   )
+        )
+    )
 )
 
 (define "HomeMover"
@@ -37,8 +37,8 @@
         (if (is Mover P2)
             ("HomeP2")
             ("HomeP3")
-       )
-   )
+        )
+    )
 )
 
 (define "FourOrLessPieceOnBoard" (> 4 (count in:(difference (sites Board) (sites Row 1)))))
@@ -60,9 +60,9 @@
             (track "Track" "6,W,7,E" loop:True)
             }
             use:Vertex
-       )
+        )
         (piece "Seed" Shared)
-        (map {(pair P1 15) (pair P2 14) (pair P3 16)})  // kalahs (storage pits)
+        (map {(pair P1 15) (pair P2 14) (pair P3 16)}) // kalahs (storage pits)
     })
     (rules
         (start { 
@@ -77,7 +77,7 @@
                         (from 
                             (if ("SameTurn") (sites {(var "Replay")}) ("HomeMover"))
                             if:(and (is Occupied (from)) (is In (from) ("PlayableSites")))
-                       )
+                        )
                         (then 
                             (do
                                 (set Var "NumSowed" (count at:(last To)))
@@ -86,17 +86,17 @@
                                         (and
                                             (moveAgain)
                                             (set Var "Replay" (to))
-                                       )
+                                        )
                                         (if (is Occupied ("NextHole" (to)))
                                             (fromTo
                                                 (from (to))
                                                 (to (mapEntry Mover))
                                                 count:(count at:(to))
-                                           )
-                                       )
-                                   )
+                                            )
+                                        )
+                                    )
                                     skipIf:(not (is In (to) ("PlayableSites")))
-                               )
+                                )
                                 (then
                                     (and
                                         (forEach Site (sites Track from:(last From) to:("NextSiteOnTrack" (var "NumSowed") from:(last From) "Track"))
@@ -105,15 +105,15 @@
                                                     (from (site))
                                                     (to (mapEntry Mover))
                                                     count:4
-                                               )
-                                           )
-                                       )
+                                                )
+                                            )
+                                        )
                                         (set Var "NumSowed" 0)
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     }
                     (then 
                         (if ("FourOrLessPieceOnBoard")
@@ -124,58 +124,58 @@
                                             (from (site))
                                             (to (mapEntry Mover))
                                             count:(count at:(site))
-                                       )
-                                   )
-                               )
+                                        )
+                                    )
+                                )
                                 (if (and (= 6 (count Sites in:("HomeP1"))) (< 2 (count at:(mapEntry P1))))
                                     (and
                                         (fromTo
                                             (from (mapEntry P1))
                                             (to (mapEntry P2))
                                             count:1
-                                       )
+                                        )
                                         (fromTo
                                             (from (mapEntry P1))
                                             (to (mapEntry P3))
                                             count:1
-                                       )
-                                   )
+                                        )
+                                    )
                                     (if (and (= 6 (count Sites in:("HomeP2"))) (< 2 (count at:(mapEntry P2))))
                                         (and
                                             (fromTo
                                                 (from (mapEntry P2))
                                                 (to (mapEntry P1))
                                                 count:1
-                                           )
+                                            )
                                             (fromTo
                                                 (from (mapEntry P2))
                                                 (to (mapEntry P3))
                                                 count:1
-                                           )
-                                       )
+                                            )
+                                        )
                                         (if (and (= 6 (count Sites in:("HomeP3"))) (< 2 (count at:(mapEntry P3))))
                                             (and
                                                 (fromTo
                                                     (from (mapEntry P3))
                                                     (to (mapEntry P1))
                                                     count:1
-                                               )
+                                                )
                                                 (fromTo
                                                     (from (mapEntry P3))
                                                     (to (mapEntry P2))
                                                     count:1
-                                               )
-                                           )
-                                       )
-                                   )
-                               )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
                                 (set Var "Round" (+ 1 (var "Round")))
                                 (forget Value "Playable" All)
                             })
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             
             (end {
                 (if ("FourOrLessPieceOnBoard")
@@ -184,11 +184,11 @@
                     (if (> 7 (count at:(mapEntry P2))) (result P2 Loss))
                     (if (> 7 (count at:(mapEntry P3))) (result P3 Loss))
                     }
-               )
+                )
             })
             
             (nextPhase ("FourOrLessPieceOnBoard") "BetweenRounds")
-       )
+        )
         
         (phase "BetweenRounds"
             (play
@@ -199,14 +199,14 @@
                             (to ("HomeMover"))
                             count:7
                             (then (remember Value "Playable" (last To)))
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (nextPhase (all Passed) "Sowing")
-       )
+        )
         }
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -222,9 +222,9 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Sri Lanka, around 2000.")
+        (origin "This game was played in Sri Lanka, around 2000.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

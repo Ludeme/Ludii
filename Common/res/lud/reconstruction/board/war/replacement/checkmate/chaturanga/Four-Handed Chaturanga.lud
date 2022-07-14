@@ -1,5 +1,5 @@
 (game "Four-Handed Chaturanga"
-    (players 4)  
+    (players 4) 
     (equipment {
         (board (square 8))
         (piece "Chariot" Each (move [#])) 
@@ -8,7 +8,7 @@
         (piece "King" Each (move [#]))
         (piece "Pawn" Each (move [#]))
     })
-    (rules     
+    (rules   
         (start { 
             (place "Pawn1" {"A2" "B2" "C2" "D2"} value:1)
             (place "Pawn2" {"G1" "G2" "G3" "G4"} value:1)
@@ -21,7 +21,7 @@
         })
         (play [#])
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -31,6 +31,6 @@
     (info
         {
         }
-   )
+    )
     
 )

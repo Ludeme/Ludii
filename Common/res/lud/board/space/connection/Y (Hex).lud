@@ -1,12 +1,12 @@
-(game "Y (Hex)"  
-    (players 2)  
+(game "Y (Hex)" 
+    (players 2) 
     (equipment { 
         (board (tri Hexagon 7) use:Vertex) 
         (piece "Marker" Each)
         (regions "SSW" {(sites Side S) (sites Side SW) })
         (regions "NNW" {(sites Side NW) (sites Side N) })
         (regions "NESE" {(sites Side NE) (sites Side SE) })
-    })  
+    }) 
     (rules 
         (play (move Add (to (sites Empty))))
         (end 
@@ -14,11 +14,11 @@
                     (sites "SSW") 
                     (sites "NNW") 
                     (sites "NESE")
-                })  
+                }) 
                 (result Mover Win) 
-           ) 
-       )
-   )
+            ) 
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -37,7 +37,7 @@
         (credit "Eric Piette")
         (date "01-09-2019")
         }
-   )
+    )
     
     (graphics {
         (region Colour "SSW" Vertex (colour Green))
@@ -47,5 +47,5 @@
     
     (ai
         "Y (Hex)_ai"
-   )
+    )
 )

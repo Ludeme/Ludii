@@ -2,8 +2,8 @@
     (not
         (all Sites #1 
             if:(not #2)
-       )
-   )
+        )
+    )
 )
 
 (define "UnClaimable"
@@ -13,11 +13,11 @@
             (=
                 (count Sites
                     in:(sites Around (site) Own Orthogonal)
-               )
+                )
                 (count Sites
                     in:(sites Around (site) Enemy Orthogonal)
-               )
-           )
+                )
+            )
             (not
                 (can Move
                     (move Select 
@@ -28,14 +28,14 @@
                                 ("SomeSite" 
                                     (sites Around (site) Empty Orthogonal)
                                     (is Related Orthogonal (site) (from))
-                               )
-                           )                    
-                       )
-                   )
-               )
-           )
+                                )
+                            )          
+                        )
+                    )
+                )
+            )
         })
-   )
+    )
 )
 
 (define "Select"
@@ -47,18 +47,18 @@
                 ("SomeSite" 
                     (sites Around (site) Empty Orthogonal)
                     (is Related Orthogonal (site) (from))
-               )
-           )                    
-       )
+                )
+            )          
+        )
         (to
             (sites Around (from) Empty Orthogonal)
             if:("SomeSite"
                 (sites Around (to) Empty Orthogonal)
                 (is Related Orthogonal (site) (from))
-           )
-       )
+            )
+        )
         #1
-   )
+    )
 )
 
 (define "Place"
@@ -67,9 +67,9 @@
             (intersection
                 (sites Around (last From) Orthogonal includeSelf:True)
                 (sites Around (last To) Orthogonal includeSelf:True)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "Score"
@@ -79,17 +79,17 @@
                 in:(forEach
                     ("UnClaimable")
                     if:(!= 1 (state at:(site)))
-               )
-           )
+                )
+            )
         2)
-   )
+    )
 )
 
 (define "Mark"
     (forEach Site
         ("UnClaimable")
         (set State at:(site) 1)
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -102,13 +102,13 @@
             (remove 
                 (rotate 30 (dual (tiling T3636 5))) 
                 cells:{0 4 5 73 81 97 142 143 152}
-           )
-       )
+            )
+        )
         (tile "Rhombus" Each)
         }
-   )
+    )
     (rules
-        (play   
+        (play  
             ("Select" 
                 (then
                     (do
@@ -116,11 +116,11 @@
                         next:(do
                             ("Place")
                             next:("Score")
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         (end 
             (if 
                 (no Moves Next) 
@@ -132,9 +132,9 @@
                                 (max
                                     (/ (count Sites in:(sites Occupied by:P1)) 3)
                                     (/ (count Sites in:(sites Occupied by:P2)) 3)
-                               )
+                                )
                                 (/ (count Sites in:(sites Occupied by:P1)) 3)
-                           )
+                            )
                             (count Sites 
                                 in:(forEach
                                     (sites Empty)
@@ -143,19 +143,19 @@
                                             in:(intersection
                                                 (sites Around (site) Orthogonal)
                                                 (sites Occupied by:P1)
-                                           )
-                                       )
+                                            )
+                                        )
                                         (count Sites
                                             in:(intersection
                                                 (sites Around (site) Orthogonal)
                                                 (sites Occupied by:P2)
-                                           )
-                                       )
-                                   )
-                               )
-                           )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
                         })
-                   )
+                    )
                     (score P2
                         (+ {
                             (score P2)
@@ -163,9 +163,9 @@
                                 (max
                                     (/ (count Sites in:(sites Occupied by:P1)) 3)
                                     (/ (count Sites in:(sites Occupied by:P2)) 3)
-                               )
+                                )
                                 (/ (count Sites in:(sites Occupied by:P2)) 3)
-                           )
+                            )
                             (count Sites 
                                 in:(forEach
                                     (sites Empty)
@@ -174,23 +174,23 @@
                                             in:(intersection
                                                 (sites Around (site) Orthogonal)
                                                 (sites Occupied by:P2)
-                                           )
-                                       )
+                                            )
+                                        )
                                         (count Sites
                                             in:(intersection
                                                 (sites Around (site) Orthogonal)
                                                 (sites Occupied by:P1)
-                                           )
-                                       )
-                                   )
-                               )
-                           )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
                         })
-                   )
+                    )
                 })
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -199,7 +199,7 @@
     (info
         {
         (description "Fight over left-overs in this quick territorial game.")
-        (rules "On your turn, you place a hexagonal tile of your color that covers three mutually orthogonally adjacent rhombuses. In Ludii this is done by first selecting one of the rhombuses the tile will cover, then another. The third one is determined by these two selections. When no more placements  are possible, the game is over and the winner is the player with the higher score.
+        (rules "On your turn, you place a hexagonal tile of your color that covers three mutually orthogonally adjacent rhombuses. In Ludii this is done by first selecting one of the rhombuses the tile will cover, then another. The third one is determined by these two selections. When no more placements are possible, the game is over and the winner is the player with the higher score.
             
             The general idea behind the scoring is simple: You get 1 point per empty rhombus that ends up adjacent to more of your hexagons than your opponent's hexagons. However, two slight complications are necessary to exclude all draws in as fair a manner as possible:
             
@@ -216,8 +216,8 @@
         (credit "Designed and implemented by Michael Amundsen.")
         (date "2020")
         }
-   )
+    )
     (ai
         "Residuel_ai"
-   )
+    )
 )

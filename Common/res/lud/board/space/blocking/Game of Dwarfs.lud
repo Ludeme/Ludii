@@ -7,11 +7,11 @@
                 (remove
                     (rotate 90 ("ThreeMenMorrisGraphWithLeftAndRightTriangles"))
                     vertices:{3 7 1}
-               )
+                )
                 edges:{{0 1} {4 5} {2 7} {0 4}}
-           )
+            )
             use:Vertex
-       )
+        )
         
         (piece "Foot" P1 
             (move Step Adjacent 
@@ -19,10 +19,10 @@
                     if:(and
                         (if (= 1 (count Turns)) (!= (centrePoint) (to)) True)
                         (is Empty (to))
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         
         (piece "Gnome" P2 ("StepToEmpty" (directions {Forwards Rightward Leftward})))
         
@@ -43,10 +43,10 @@
                 (move 
                     (from (handSite Mover))
                     (to (expand (sites Top)))
-               )
-           )
+                )
+            )
             (nextPhase P1 "MainP1")
-       )
+        )
         (phase "MainP1" P1 
             (play 
                 (forEach Piece
@@ -55,28 +55,28 @@
                             (set Score P1 2)
                             (if (is Cycle)
                                 (set Score P1 1)
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         (phase "MainP2" P2 
             (play (forEach Piece
                     (then (if (no Moves Next)
                             (set Score P2 1)
                             (if (is Cycle)
                                 (set Score P1 1)
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         }
         
         (end (forEach Player if:(!= 0 (score Player)) (result Player Win))) 
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -100,7 +100,7 @@
         (credit "Eric Piette")
         (date "1943")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour White))

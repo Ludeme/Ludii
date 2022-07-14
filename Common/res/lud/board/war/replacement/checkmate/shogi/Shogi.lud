@@ -4,9 +4,9 @@
             (add 
                 (piece (mapEntry "Captured" (what at:(to)))) 
                 (to (mapEntry "Where" (what at:(to))))
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "NextCannotMove"
@@ -17,45 +17,45 @@
                     (move 
                         (from (sites Occupied by:Next container:"Hand" components:{"Kakugyo" "Ginsho" "Hisha" "Kinsho"})) 
                         (to (sites Empty))
-                   ) 
+                    ) 
                     (do 
                         (move 
                             (from (sites Occupied by:Next container:"Hand" component:"Fuhyo")) 
                             (to (difference (sites Empty) (sites Next "LastRank")) 
                                 if:("OnePawnPerColumn" Next)
-                           )
-                       ) 
+                            )
+                        ) 
                         ifAfterwards:(not ("IsInCheck" "Osho" Mover))
-                   )
+                    )
                     ("PlaceLance" Next)
                     ("PlaceKnight" Next) 
                     (forEach Piece Next) 
                 })
                 ifAfterwards:(not ("IsInCheck" "Osho" Next))
-           ) 
-       )
-   )
+            ) 
+        )
+    )
 )
 
 (define "OnePawnPerColumn" 
     (= 
         (count Sites in:(sites Occupied by:#1 container:"Board" component:"Fuhyo")) 
         (count Sites in:(difference (sites Occupied by:#1 container:"Board" component:"Fuhyo") (sites Column (column of:(to)))))
-   )
+    )
 )
 
 (define "PlaceKnight" 
     (move 
         (from (sites Occupied by:#1 container:"Hand" component:"Keima")) 
         (to (difference (sites Empty) (sites #1 "TwoFurthestRank")))
-   )
+    )
 )
 
 (define "PlaceLance" 
     (move 
         (from (sites Occupied by:#1 container:"Hand" component:"Kyosha")) 
         (to (difference (sites Empty) (sites #1 "LastRank")))
-   )
+    )
 )
 
 (define "PlacePawn" 
@@ -64,10 +64,10 @@
             (from (sites Occupied by:#1 container:"Hand" component:"Fuhyo")) 
             (to (difference (sites Empty) (sites #1 "LastRank")) 
                 if:("OnePawnPerColumn" #1)
-           )
-       ) 
+            )
+        ) 
         ifAfterwards:(not (and ("IsInCheck" "Osho" #2) ("NextCannotMove")))
-   )
+    )
 ) 
 
 (define "InPromotionZone"
@@ -91,8 +91,8 @@
         (if 
             (or ("InPromotionZone" (last To)) ("InPromotionZone" (last From))) 
             (moveAgain) 
-       ) 
-   )
+        ) 
+    )
 )
 
 (define "SlideMove"
@@ -101,7 +101,7 @@
         #1 
         (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
-   )   	
+    )  	
 )
 
 (define "StepMove"
@@ -110,15 +110,15 @@
         #1
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
-   )   	
+    )  	
 )
 
 (define "GoldMove" ("StepMove" (directions {Forward Backward Rightward Leftward FL FR})))
 
 //------------------------------------------------------------------------------
 
-(game "Shogi"  
-    (players {(player N) (player S)})  
+(game "Shogi" 
+    (players {(player N) (player S)}) 
     
     (equipment { 
         (board (square 9))
@@ -135,11 +135,11 @@
                         (if ("InLastRank" (last To)) 
                             ("Promote") 
                             (moveAgain) 
-                       ) 
-                   ) 
-               )
-           )
-       )
+                        ) 
+                    ) 
+                )
+            )
+        )
         
         // Silver General
         (piece "Ginsho" Each ("StepMove" (directions {Forward BL BR FL FR}) "CanPromote"))
@@ -169,24 +169,24 @@
                                             (add 
                                                 (piece (mapEntry "Captured" (what at:(to)))) 
                                                 (to (mapEntry "Where" (what at:(to))))
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               ) 
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ) 
                 (then 
                     (if ("InPromotionZone" (last To))
                         (if ("InTwoFurthestRank" (last To)) 
                             "Promote" 
                             (moveAgain) 
-                       ) 
-                   ) 
-               ) 
-           ) 
-       )
+                        ) 
+                    ) 
+                ) 
+            ) 
+        )
         
         // Lance
         (piece "Kyosha" Each
@@ -197,11 +197,11 @@
                         (if ("InLastRank" (last To)) 
                             "Promote" 
                             (moveAgain) 
-                       ) 
-                   ) 
-               )
-           ) 
-       )
+                        ) 
+                    ) 
+                )
+            ) 
+        )
         
         // Gold General
         (piece "Kinsho" Each "GoldMove")
@@ -283,35 +283,35 @@
                 (or
                     ("Promote")
                     (move Pass)
-               )
+                )
                 (do 
                     (or {
                         (move 
                             (from (sites Occupied by:Mover container:"Hand" components:{"Kakugyo" "Ginsho" "Hisha" "Kinsho"})) 
                             (to (sites Empty))
-                       ) 
+                        ) 
                         ("PlacePawn" Mover Next)
                         ("PlaceLance" Mover)
                         ("PlaceKnight" Mover) 
                         (forEach Piece) 
                     })
                     ifAfterwards:(not ("IsInCheck" "Osho" Mover))
-               )
-           )
-       )
+                )
+            )
+        )
         
         (end
             {
             (if (and 
                     ("IsInCheck" "Osho" Next)
                     ("NextCannotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
+            ) 
             ("BlockWin")
             }
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -328,9 +328,9 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/shogi")
         (credit "Eric Piette")
-        (origin  "This game was played in Japan, around 1058.")
+        (origin "This game was played in Japan, around 1058.")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour White))
@@ -349,6 +349,6 @@
     
     (ai 
         "Shogi_ai"
-   )
+    )
     
 )

@@ -4,8 +4,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Tsoro (Baia)"  
-    (players 2)  
+(game "Tsoro (Baia)" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -15,18 +15,18 @@
             (track "TrackCW1" <Row:trackCW1> loop:True P1)
             (track "TrackCW2" <Row:trackCW2> loop:True P2)
             }
-       )
-        (regions "Home" P1 (sites Track "TrackCCW1"))                              // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))                              // P2 home
+        )
+        (regions "Home" P1 (sites Track "TrackCCW1"))               // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))               // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))   // P2 inner Home
-        (regions "Outer" P1 (sites Bottom))                                        // P1 outer Home
-        (regions "Outer" P2 (sites Top))                                           // P2 outer Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))  // P2 inner Home
+        (regions "Outer" P1 (sites Bottom))                    // P1 outer Home
+        (regions "Outer" P2 (sites Top))                      // P2 outer Home
         (regions "FirstMove" P1 (difference (expand (intersection (difference (sites Track "TrackCCW1") (sites Bottom)) (sites Left)) steps:2 E) (expand (intersection (difference (sites Track "TrackCCW1") (sites Bottom)) (sites Left)) E))) // P1 first Hole
-        (regions "FirstMove" P2 (difference (expand (intersection (difference (sites Track "TrackCCW2") (sites Top)) (sites Right)) steps:2 W) (expand (intersection (difference (sites Track "TrackCCW2") (sites Top)) (sites Right)) W)))     // P2 first Hole
+        (regions "FirstMove" P2 (difference (expand (intersection (difference (sites Track "TrackCCW2") (sites Top)) (sites Right)) steps:2 W) (expand (intersection (difference (sites Track "TrackCCW2") (sites Top)) (sites Right)) W)))   // P2 first Hole
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start {
@@ -56,28 +56,28 @@
                                                 (from ("OppositePit" (to)))
                                                 (to (handSite Mover))
                                                 count: (count at:("OppositePit" (to)))
-                                           )
+                                            )
                                             (if (is Occupied ("OppositeOuterPit" (to)))
                                                 (fromTo
                                                     (from ("OppositeOuterPit" (to)))
                                                     (to (handSite Mover))
                                                     count: (count at:("OppositeOuterPit" (to)))
-                                               )
-                                           )
+                                                )
+                                            )
                                             (set Value Mover (+ 1 (value Player Mover)))
                                             (set Var "FreeCapture" 5)
                                             (moveAgain)
                                         })
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     (move
                         (from
                             (sites Next "Home")
                             if:(and (is Occupied (from)) (not (is In (from) (sites Next "FirstMove"))))
-                       )
+                        )
                         (to (handSite Mover))
                         count:(count at:(from))
                         (then
@@ -85,14 +85,14 @@
                                 (set Var "FreeCapture" (- (var "FreeCapture") 1))
                                 (if (< 1 (var "FreeCapture"))
                                     (moveAgain)
-                               )
-                           )
-                       )
-                   )
-               )
-           )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
             (nextPhase Mover (not (is Next Mover)) "Main")
-       )
+        )
         
         (phase "Main"
             (play 
@@ -103,15 +103,15 @@
                                 (if ("SameTurn")
                                     (sites {(var "Replay")})
                                     (sites Mover "Home") 
-                               )
+                                )
                                 if:(and 
                                     (< 1 (count at:(from)))
                                     (if ("SameTurn")
                                         True
                                         (is Empty ("PreviousHole"))	
-                                   )
-                               )
-                           )
+                                    )
+                                )
+                            )
                             (then
                                 (sow
                                     "TrackCCW"
@@ -129,41 +129,41 @@
                                                         (from ("OppositePit" (to)))
                                                         (to (handSite Mover))
                                                         count: (count at:("OppositePit" (to)))
-                                                   )
+                                                    )
                                                     (if (is Occupied ("OppositeOuterPit" (to)))
                                                         (fromTo
                                                             (from ("OppositeOuterPit" (to)))
                                                             (to (handSite Mover))
                                                             count: (count at:("OppositeOuterPit" (to)))
-                                                       )
-                                                   )
+                                                        )
+                                                    )
                                                     (set Value Mover (+ 1 (value Player Mover)))
                                                     (if (= 0 (value Player Mover)) // second capture.
                                                         (set Var "FreeCapture" 3)
                                                         (set Var "FreeCapture" 2)
-                                                   )
+                                                    )
                                                     (moveAgain)
                                                 })
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
                         (move Select
                             (from 
                                 (if ("SameTurn")
                                     (sites {(var "Replay")})
                                     (sites Mover "Home") 
-                               )
+                                )
                                 if:(and 
                                     (= 1 (count at:(from)))
                                     (if ("SameTurn")
                                         True
                                         (is Empty ("PreviousHole"))	
-                                   )
-                               )
-                           )
+                                    )
+                                )
+                            )
                             (then
                                 (sow
                                     "TrackCCW"
@@ -173,16 +173,16 @@
                                             (moveAgain)
                                             (set Var "Replay" (to))
                                         })
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     (move
                         (from
                             (sites Next "Home")
                             if:(and (is Occupied (from)) (not (is In (from) (sites Next "FirstMove"))))
-                       )
+                        )
                         (to (handSite Mover))
                         count:(count at:(from))
                         (then
@@ -190,35 +190,35 @@
                                 (set Var "FreeCapture" (- (var "FreeCapture") 1))
                                 (if (< 1 (var "FreeCapture"))
                                     (moveAgain)
-                               )
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         }
         
         (end
             (forEach NonMover
                 if:("NoPiece")
                 (result Player Loss)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Row> args:{ <size> <trackCCW2> <trackCW1> <trackCW2>}
     {
-    (item "13"   <13> <"26,E,N1,W"> <"12,W,N1,E"> <"39,E,S1,W"> "Each row has 13 holes.")*   
-    (item "14"   <14> <"28,E,N1,W"> <"13,W,N1,E"> <"42,E,S1,W"> "Each row has 14 holes.")   
-    (item "15"   <15> <"30,E,N1,W"> <"14,W,N1,E"> <"45,E,S1,W"> "Each row has 15 holes.")   
-    (item "16"   <16> <"32,E,N1,W"> <"15,W,N1,E"> <"48,E,S1,W"> "Each row has 16 holes.")   
-    (item "17"   <17> <"34,E,N1,W"> <"16,W,N1,E"> <"51,E,S1,W"> "Each row has 17 holes.")   
-    (item "18"   <18> <"36,E,N1,W"> <"17,W,N1,E"> <"54,E,S1,W"> "Each row has 18 holes.")   
-    (item "19"   <19> <"38,E,N1,W"> <"18,W,N1,E"> <"57,E,S1,W"> "Each row has 19 holes.")   
+    (item "13"  <13> <"26,E,N1,W"> <"12,W,N1,E"> <"39,E,S1,W"> "Each row has 13 holes.")*  
+    (item "14"  <14> <"28,E,N1,W"> <"13,W,N1,E"> <"42,E,S1,W"> "Each row has 14 holes.")  
+    (item "15"  <15> <"30,E,N1,W"> <"14,W,N1,E"> <"45,E,S1,W"> "Each row has 15 holes.")  
+    (item "16"  <16> <"32,E,N1,W"> <"15,W,N1,E"> <"48,E,S1,W"> "Each row has 16 holes.")  
+    (item "17"  <17> <"34,E,N1,W"> <"16,W,N1,E"> <"51,E,S1,W"> "Each row has 17 holes.")  
+    (item "18"  <18> <"36,E,N1,W"> <"17,W,N1,E"> <"54,E,S1,W"> "Each row has 18 holes.")  
+    (item "19"  <19> <"38,E,N1,W"> <"18,W,N1,E"> <"57,E,S1,W"> "Each row has 19 holes.")  
 })
 
 //------------------------------------------------------------------------------
@@ -235,9 +235,9 @@
         (version "1.3.4")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Zimbabwe, around 1931.")
+        (origin "This game was played in Zimbabwe, around 1931.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

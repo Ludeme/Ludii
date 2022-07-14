@@ -18,16 +18,16 @@
                                     in:(intersection
                                         (sites Occupied by:All component:"Hex")
                                         (sites Around (to) Orthogonal)
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     (move Add
                         (piece "Disc0")
                         (to (sites Empty))
-                   )
-               )
+                    )
+                )
                 ifAfterwards:(and
                     (all Sites
                         (sites Occupied by:All component:"Hex")
@@ -37,13 +37,13 @@
                                     (sites Around
                                         (site)
                                         Orthogonal
-                                   )
+                                    )
                                     (sites Occupied by:Neutral)
                                     
-                               )
-                           )
-                       )
-                   )
+                                )
+                            )
+                        )
+                    )
                     (all Sites
                         (sites Occupied by:Neutral)
                         if:(not
@@ -54,30 +54,30 @@
                                             (sites Group at:(site))
                                             Own
                                             Orthogonal
-                                       )
-                                   )
-                               )
+                                        )
+                                    )
+                                )
                                 (< 0
                                     (count Sites
                                         in:(sites Around
                                             (sites Group at:(site))
                                             Enemy
                                             Orthogonal
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
                 (then
                     (if
                         (= 1 (% (+ 1 (count Moves)) 2))
                         (moveAgain)
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (end 
             (if 
                 (all Passed) 
@@ -88,7 +88,7 @@
                                 from:(intersection
                                     (sites Occupied by:P1)
                                     (sites Around (sites Occupied by:Neutral) Orthogonal)
-                               )
+                                )
                                 to:1
                                 (* 
                                     (to)
@@ -98,25 +98,25 @@
                                                 from:(intersection
                                                     (sites Around (from) Orthogonal)
                                                     (sites Occupied by:Neutral)
-                                               )
+                                                )
                                                 to:1
                                                 (* (from) (to))
-                                           )
-                                       )
+                                            )
+                                        )
                                         Orthogonal
                                         if:(= (id "Disc0") (what at:(to)))
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     (score P2
                         (+
                             (results
                                 from:(intersection
                                     (sites Occupied by:P2)
                                     (sites Around (sites Occupied by:Neutral) Orthogonal)
-                               )
+                                )
                                 to:1
                                 (* 
                                     (to)
@@ -126,22 +126,22 @@
                                                 from:(intersection
                                                     (sites Around (from) Orthogonal)
                                                     (sites Occupied by:Neutral)
-                                               )
+                                                )
                                                 to:1
                                                 (* (from) (to))
-                                           )
-                                       )
+                                            )
+                                        )
                                         Orthogonal
                                         if:(= (id "Disc0") (what at:(to)))
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                    )
+                                )
+                            )
+                        )
+                    )
                 })
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -168,7 +168,7 @@
         (credit "Michael Amundsen")
         (date "2021")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Pink))
@@ -176,7 +176,7 @@
         (piece Colour Neutral "Disc"
             fillColour:(colour Green)
             strokeColour:(colour Green)
-       )
+        )
         (piece Scale Neutral "Disc" 0.7)
         (region Colour (sites Board) (colour VeryLightBlue))
         (board Colour InnerEdges (colour Turquoise))

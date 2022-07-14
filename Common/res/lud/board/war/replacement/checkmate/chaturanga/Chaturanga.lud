@@ -2,8 +2,8 @@
     (apply 
         (remove 
             (to) 
-       )
-   ) 
+        )
+    ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -13,8 +13,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-       )
-   )
+        )
+    )
 )
 
 (define "NextCanNotMove"
@@ -24,7 +24,7 @@
 //------------------------------------------------------------------------------
 
 (game "Chaturanga" 
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8))
         
@@ -35,10 +35,10 @@
                 (then
                     (if (is In (last To) (sites Mover "Promotion")) 
                         (moveAgain)
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (piece "Rook" Each 
             (move
                 Slide 
@@ -46,18 +46,18 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "King_noCross" Each 
             (move
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-               )
-           )
-       )
+                )
+            )
+        )
         (piece "Elephant" Each <Elephant>) 
         (piece "Knight" Each 
             (move
@@ -66,9 +66,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Ferz_noCross" Each 
             (move
                 Step 
@@ -76,12 +76,12 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-               )
-           )
-       )
+                )
+            )
+        )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Pawn1" (sites Row 1))
@@ -94,38 +94,38 @@
             (if "SameTurn"
                 (move Promote (last To) (piece "Ferz_noCross") Mover)
                 (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-           )
-       )
+            )
+        )
         
         (end {
             (if (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
+            ) 
             (if (no Moves Mover) (result Mover Win)) 
             (if (= (count Pieces Next) 1) (result Mover Win)) 
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Play Rules" <Elephant> args:{ <move> }
     {
-    (item "Elephant Move is Orthogonal Jump"             
-        <(move Hop Orthogonal (between if:True) (to if:(not ("IsFriendAt" (to))) (apply (remove (to)))))>   
+    (item "Elephant Move is Orthogonal Jump"       
+        <(move Hop Orthogonal (between if:True) (to if:(not ("IsFriendAt" (to))) (apply (remove (to)))))>  
         "The elephants can jump only orthogonally."
-   )
-    (item "Elephant Move is Diagonal Jump"             
-        <(move Hop Diagonal (between if:True) (to if:(not ("IsFriendAt" (to))) (apply (remove (to)))))>    
+    )
+    (item "Elephant Move is Diagonal Jump"       
+        <(move Hop Diagonal (between if:True) (to if:(not ("IsFriendAt" (to))) (apply (remove (to)))))>  
         "The elephants can jump only diagonally."
-   ) 
-    (item "Elephant Move is like a Silver in Shogi"             
-        <(move Step (directions {Forward BL BR FL FR}) (to if:(not ("IsFriendAt" (to))) (apply (remove (to)))))>   
+    ) 
+    (item "Elephant Move is like a Silver in Shogi"       
+        <(move Step (directions {Forward BL BR FL FR}) (to if:(not ("IsFriendAt" (to))) (apply (remove (to)))))>  
         "The elephants can move like a Silver in Shogi."
-   )     
+    )   
 })
 
 //------------------------------------------------------------------------------
@@ -166,9 +166,9 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in India, from around 621 to 1138.")
+        (origin "This game was played in India, from around 621 to 1138.")
         }
-   )
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.825)
@@ -182,6 +182,6 @@
     
     (ai 
         "Chaturanga_ai"
-   )
+    )
     
 )

@@ -4,8 +4,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Chongka'"  
-    (players 2)  
+(game "Chongka'" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns"
@@ -13,12 +13,12 @@
             (track "Track1" "7,W,WNW,ENE,E" loop:True P1)
             (track "Track2" "7,W,N,E,ESE" loop:True P2)
             }
-       )
+        )
         (piece "Seed" Shared) 
-        (regions P1 (sites Bottom))                    // P1 home
-        (regions P2 (sites Top))                       // P2 home   
-        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
-    })  
+        (regions P1 (sites Bottom))          // P1 home
+        (regions P2 (sites Top))            // P2 home  
+        (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
+    }) 
     (rules 
         
         (start (set Count 7 to:(union (sites P1) (sites P2))))
@@ -30,9 +30,9 @@
                         ("SameTurn") 
                         "LastHoleSowed" 
                         (sites Mover) 
-                   ) 
+                    ) 
                     if:(> (count at:(from)) 0)
-               )
+                )
                 (then 
                     (sow
                         "Track"
@@ -45,26 +45,26 @@
                             (if (and 
                                     (is In (to) (sites Mover)) 
                                     (> (count at:("OppositePit" (to))) 0)
-                               )
+                                )
                                 (fromTo 
                                     (from ("OppositePit" (to))) 
                                     (to (mapEntry Mover)) 
                                     count:(count at:("OppositePit" (to)))
-                               ) 
-                           )
-                       )
-                   )
-               )
-           )		
-       )
+                                ) 
+                            )
+                        )
+                    )
+                )
+            )		
+        )
         
         (end ("MancalaByScoreWhen" (and (no Moves Mover) (no Moves Next))))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Chongka' is a two-row mancala-style board game played by the Chamorro people in the Marianas Islands. It was documented in the early twentieth century by Georg Fritz. It is similar to other mancala-style games played on the islands of the western Pacific and Indian Oceans.")
@@ -75,14 +75,14 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Marianas Islands., around 1904.")
+        (origin "This game was played in Marianas Islands., around 1904.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)
     })
     (ai
         "Chongka'_ai"
-   )
+    )
 )

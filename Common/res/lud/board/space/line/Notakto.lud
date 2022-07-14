@@ -1,5 +1,5 @@
-(game "Notakto"  
-    (players 2)  
+(game "Notakto" 
+    (players 2) 
     (equipment { 
         (board
             (union {
@@ -20,25 +20,25 @@
                 (shift 12 8 (square 3))
                 (shift 12 12 (square 3))
             })		
-       )
+        )
         (piece "Marker" Each) 
-    })  
+    }) 
     (rules 
         (play 
             (move Add 
                 (to 
                     (sites Empty)
                     if:(= 0 (state at:(to)))
-               )
+                )
                 (then
                     (if (is Line 3) 
                         (forEach Site (expand origin:(last To) steps:2) (set State at:(site) 1))
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (end (if (no Moves Next) (result Mover Loss)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -63,6 +63,6 @@
         (credit "Eric Piette")
         (date "2010")
         }
-   )
+    )
     
 )

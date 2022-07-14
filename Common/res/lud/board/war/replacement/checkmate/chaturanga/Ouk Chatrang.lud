@@ -3,8 +3,8 @@
         (if 
             (= (state at:(last To)) 1) 
             ("PieceHasMoved" (last To))
-       ) 
-   ) 
+        ) 
+    ) 
 )
 
 (define "PieceHasMoved"
@@ -15,8 +15,8 @@
     (apply 
         (remove 
             (to) 
-       )
-   ) 
+        )
+    ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -26,8 +26,8 @@
         (to 
             if:("IsEnemyAt" (to))
             (apply (remove (to)))
-       )
-   )
+        )
+    )
 )
 
 (define "NextCanNotMove"
@@ -37,7 +37,7 @@
 //------------------------------------------------------------------------------
 
 (game "Ouk Chatrang"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment {
         (board (square 8))
         (hand Each size:5)
@@ -48,20 +48,20 @@
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
-                   )
-               )
+                    )
+                )
                 (if (= 1 (state at:(from)))
                     (move
                         Leap 
                         "KnightWalk" 
                         (to 
                             if:(is Empty (to))
-                       )
-                   )
-               )
+                        )
+                    )
+                )
                 "RememberPieceHasMoved"
-           )
-       )
+            )
+        )
         (piece "Boat" Each 
             (move
                 Slide 
@@ -69,9 +69,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Ferz_noCross" Each
             (or
                 (move
@@ -80,18 +80,18 @@
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
-                   )
-               )
+                    )
+                )
                 (move
                     Step 
                     Forward
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (piece "Knight" Each
             (move
                 Leap 
@@ -99,9 +99,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-               ) 
-           )		
-       )
+                ) 
+            )		
+        )
         (piece "Fish" Each
             (or 
                 "StepForwardToEmpty" 
@@ -109,10 +109,10 @@
                 (then
                     (if (is In (last To) (sites Mover "Promotion")) 
                         (promote (last To) (piece (id "Queen" Mover)))
-                   )
-               )
-           )		
-       ) 
+                    )
+                )
+            )		
+        ) 
         (piece "Queen" Each
             (or
                 (move
@@ -121,8 +121,8 @@
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
-                   )
-               )
+                    )
+                )
                 (if (= 1 (state at:(from)))
                     (move
                         Hop 
@@ -131,17 +131,17 @@
                         (to 
                             if:(not ("IsFriendAt" (to))) 
                             "CaptureToPiece" 
-                       )
-                   )
-               )
+                        )
+                    )
+                )
                 "RememberPieceHasMoved"
-           )		
-       )
+            )		
+        )
         (regions "Promotion" P1 (sites Row 5))
         (regions "Promotion" P2 (sites Row 2))
     })
     (rules 
-        (start {   
+        (start {  
             (place "Fish1" (sites Row 2))
             (place "Fish2" (sites Row 5))
             (place "Boat1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Ferz_noCross1" {"C1" "F1"}) (place "Queen1" coord:"D1" state:1) (place "King_noCross1" coord:"E1" state:1) 
@@ -153,13 +153,13 @@
             (if (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
+            ) 
             (if (no Moves Mover) (result Mover Draw)) 
             }
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -170,14 +170,14 @@
         {
         (description "Ouk Chatrang is a game of captures played in Cambodia. It is related, and very similar to, Makruk as played in Thailand. It is popular among Cambodian men. Chess-playing scenes from the Angkor period show figures playing a similar game, but it is unknown how old the rules as they are played today are.")
         (aliases {"Chhôeu Trâng" "Ouk" "Chaturang" "Chatrang"})
-        (rules "8x8 board, not checkered. Pieces, their number, and moves are as follows: Ang/Sdaach (\"King\")x1: moves on space in any direction, on its first move it may move like a Chess knight; Neang (\"Queen\")x1; moves diagonally one  space, on its first move it may move two spaces forward orthogonally, jumping over the intervening space; Koul (\"General\")x2: move one space diagonally or one space orthogonally forward; Ses (\"Horse\")x2:  moves like a Chess knight; Tuuk (\"Boat\")x2:  move orthogonally any distance; Trey (\"Fish\")x8: move orthogonally forward one space, diagonally forward one space to capture. When a Trey reaches the rank where the opponent's Treys begin the game, it is promoted to a Neang. The pieces begin arranged along the edge of the board, in the following order: Tuuk, Ses, Koul, Neang, Ang, Koul, Ses, Tuuk. The Treys are arranged on the third rank (I.e., there is an empty row of spaces between the Treys and the other pieces). The opponent's pieces have the same arrangement on the opposite side of the board. Players take turns moving pieces. When a piece is moved to the same space on which a piece belonging to the opponent is positioned, the opposing piece is taken. If an Ang can be taken on the opponent's next move, it is in \"Ouk,\" and the player must either move the Ang to a safe place, capture the threatening piece, or move another piece in the way of the threatened capture. If it is not possible to remove the Ang from this state, the opponent wins by Ouk Ngueb, \"checkmate.\" A draw occurs when the Ang has no legal move but it not in Ouk.")
+        (rules "8x8 board, not checkered. Pieces, their number, and moves are as follows: Ang/Sdaach (\"King\")x1: moves on space in any direction, on its first move it may move like a Chess knight; Neang (\"Queen\")x1; moves diagonally one space, on its first move it may move two spaces forward orthogonally, jumping over the intervening space; Koul (\"General\")x2: move one space diagonally or one space orthogonally forward; Ses (\"Horse\")x2: moves like a Chess knight; Tuuk (\"Boat\")x2: move orthogonally any distance; Trey (\"Fish\")x8: move orthogonally forward one space, diagonally forward one space to capture. When a Trey reaches the rank where the opponent's Treys begin the game, it is promoted to a Neang. The pieces begin arranged along the edge of the board, in the following order: Tuuk, Ses, Koul, Neang, Ang, Koul, Ses, Tuuk. The Treys are arranged on the third rank (I.e., there is an empty row of spaces between the Treys and the other pieces). The opponent's pieces have the same arrangement on the opposite side of the board. Players take turns moving pieces. When a piece is moved to the same space on which a piece belonging to the opponent is positioned, the opposing piece is taken. If an Ang can be taken on the opponent's next move, it is in \"Ouk,\" and the player must either move the Ang to a safe place, capture the threatening piece, or move another piece in the way of the threatened capture. If it is not possible to remove the Ang from this state, the opponent wins by Ouk Ngueb, \"checkmate.\" A draw occurs when the Ang has no legal move but it not in Ouk.")
         (source "<a href=\"http://history.chess.free.fr/cambodian/Cambodian%20Chess%20Games.htm\" target=\\"_blank\\" class=\"style1\" style=\"color: #0000EE\" />Cambodian Chess Games</a>")
         (id "302")
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.825)

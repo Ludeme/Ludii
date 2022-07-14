@@ -6,17 +6,17 @@
         "TrackCCW"
         from:(mapEntry "LeftMost" Mover)
         if:(is Empty (to))
-   )
+    )
 )
 
 (define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
-(define "NoPieceOnOwnedHoles"  (no Pieces All in:(sites #1)))
+(define "NoPieceOnOwnedHoles" (no Pieces All in:(sites #1)))
 
 //------------------------------------------------------------------------------
 
 (game "Yucebao"
-    (players 2)  
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 5 largeStack:True
@@ -24,17 +24,17 @@
             (track "TrackCCW" "0,1,E,11,10,W" loop:True)
             (track "TrackCW" "11,5,W,0,6,E" loop:True)
             }
-       )
+        )
         (piece "Seed" Shared)
         (piece "Ball" P1)
         (piece "Ball" P2)
         (hand Each size:2)
-        (regions P1 (sites Bottom))      // P1 home
-        (regions P2 (sites Top))         // P2 home
-        (map {(pair P1 LastSite) (pair P2 FirstSite)})  // kalah holes
-        (map "LeftMost" {(pair P1 1) (pair P2 10)})  // leftMost holes
+        (regions P1 (sites Bottom))   // P1 home
+        (regions P2 (sites Top))     // P2 home
+        (map {(pair P1 LastSite) (pair P2 FirstSite)}) // kalah holes
+        (map "LeftMost" {(pair P1 1) (pair P2 10)}) // leftMost holes
         (regions "EndHoles" (sites {"A1" "G1"}))
-    })  
+    }) 
     (rules 
         (start {
             (place Stack "Seed" (union (sites Bottom) (sites Top)) count:5)
@@ -52,9 +52,9 @@
                                 (if ("SameTurn")
                                     (sites {(var "Replay")})
                                     (sites Mover) 
-                               )
+                                )
                                 if:(!= 0 (size Stack at:(from)))
-                           )
+                            )
                             (then
                                 (and {
                                     (forEach Value min:1 max:(size Stack at:(last From))
@@ -63,7 +63,7 @@
                                                 (from (last From) level:(- (size Stack at:(last From)) (value)))
                                                 (to ("NextHole" (last From) "TrackCCW" (value)))
                                                 stack:True
-                                           )
+                                            )
                                             (and
                                                 (if (and (is Occupied ("NextHole" (last From) "TrackCCW" (value))) (!= ("NextHole" (last From) "TrackCCW" (value)) (last From)))
                                                     (if (= (who at:(last From) level:(- (size Stack at:(last From)) (value))) P1)
@@ -72,71 +72,71 @@
                                                                 (fromTo
                                                                     (from ("NextHole" (last From) "TrackCCW" (value)) level:(level))
                                                                     (to (handSite P1))
-                                                               )
+                                                                )
                                                                 (fromTo
                                                                     (from ("NextHole" (last From) "TrackCCW" (value)) level:(level))
                                                                     (to (handSite P1 1))
-                                                               )
-                                                           )
-                                                       )
+                                                                )
+                                                            )
+                                                        )
                                                         (forEach Level ("NextHole" (last From) "TrackCCW" (value)) FromTop
                                                             (if (= (id "Seed" Shared) (what at:("NextHole" (last From) "TrackCCW" (value)) level:(level)))
                                                                 (fromTo
                                                                     (from ("NextHole" (last From) "TrackCCW" (value)) level:(level))
                                                                     (to (handSite P2))
-                                                               )
+                                                                )
                                                                 (fromTo
                                                                     (from ("NextHole" (last From) "TrackCCW" (value)) level:(level))
                                                                     (to (handSite P2 1))
-                                                               )
-                                                           )
-                                                       )
-                                                   )
-                                               )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
                                                 (fromTo
                                                     (from (last From) level:(- (size Stack at:(last From)) (value)))
                                                     (to ("NextHole" (last From) "TrackCCW" (value)))
                                                     stack:True
-                                               )
-                                           )
-                                       )
-                                   )
+                                                )
+                                            )
+                                        )
+                                    )
                                     (if (< (var "Direction") 1) (set Var "Direction" 1))
                                     (if (< (size Stack at:(last From)) 8)
                                         (if (!= 0 (size Stack at:("NextHole" (last From) "TrackCCW" (+ 1 (size Stack at:(last From))))))
                                             (and 
                                                 (moveAgain)
                                                 (set Var "Replay" ("NextHole" (last From) "TrackCCW" (+ 1 (size Stack at:(last From)))))
-                                           )
+                                            )
                                             (if (is Occupied ("NextHole" (last From) "TrackCCW" (+ 2 (size Stack at:(last From)))))
                                                 (forEach Level ("NextHole" (last From) "TrackCCW" (+ 2 (size Stack at:(last From)))) FromTop
                                                     (if (= (id "Seed" Shared) (what at:("NextHole" (last From) "TrackCCW" (+ 2 (size Stack at:(last From)))) level:(level)))
                                                         (fromTo
                                                             (from ("NextHole" (last From) "TrackCCW" (+ 2 (size Stack at:(last From)))) level:(level))
                                                             (to (handSite Mover))
-                                                       )
+                                                        )
                                                         (fromTo
                                                             (from ("NextHole" (last From) "TrackCCW" (+ 2 (size Stack at:(last From)))) level:(level))
                                                             (to (handSite Mover 1))
-                                                       )
-                                                   )
-                                               )
-                                           )
-                                       )
-                                   )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
                                 })
-                           )
-                       )
-                   )
+                            )
+                        )
+                    )
                     (if (!= (var "Direction") 1)
                         (move Select
                             (from 
                                 (if ("SameTurn")
                                     (sites {(var "Replay")})
                                     (sites Mover) 
-                               ) 
+                                ) 
                                 if:(!= 0 (size Stack at:(from)))
-                           )
+                            )
                             (then
                                 (and {
                                     (forEach Value min:1 max:(size Stack at:(last From))
@@ -145,7 +145,7 @@
                                                 (from (last From) level:(- (size Stack at:(last From)) (value)))
                                                 (to ("NextHole" (last From) "TrackCW" (value)))
                                                 stack:True
-                                           )
+                                            )
                                             (and
                                                 (if (and (is Occupied ("NextHole" (last From) "TrackCW" (value))) (!= ("NextHole" (last From) "TrackCW" (value)) (last From)))
                                                     (if (= (who at:(last From) level:(- (size Stack at:(last From)) (value))) P1)
@@ -154,62 +154,62 @@
                                                                 (fromTo
                                                                     (from ("NextHole" (last From) "TrackCW" (value)) level:(level))
                                                                     (to (handSite P1))
-                                                               )
+                                                                )
                                                                 (fromTo
                                                                     (from ("NextHole" (last From) "TrackCW" (value)) level:(level))
                                                                     (to (handSite P1 1))
-                                                               )
-                                                           )
-                                                       )
+                                                                )
+                                                            )
+                                                        )
                                                         (forEach Level ("NextHole" (last From) "TrackCW" (value)) FromTop
                                                             (if (= (id "Seed" Shared) (what at:("NextHole" (last From) "TrackCW" (value)) level:(level)))
                                                                 (fromTo
                                                                     (from ("NextHole" (last From) "TrackCW" (value)) level:(level))
                                                                     (to (handSite P2))
-                                                               )
+                                                                )
                                                                 (fromTo
                                                                     (from ("NextHole" (last From) "TrackCW" (value)) level:(level))
                                                                     (to (handSite P2 1))
-                                                               )
-                                                           )
-                                                       )
-                                                   )
-                                               )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
                                                 (fromTo
                                                     (from (last From) level:(- (size Stack at:(last From)) (value)))
                                                     (to ("NextHole" (last From) "TrackCW" (value)))
                                                     stack:True
-                                               )
-                                           )
-                                       )
-                                   )
+                                                )
+                                            )
+                                        )
+                                    )
                                     (if (< (var "Direction") 1) (set Var "Direction" 2))
                                     (if (< (size Stack at:(last From)) 8)
                                         (if (!= 0 (size Stack at: ("NextHole" (last From) "TrackCW" (+ 1 (size Stack at:(last From))))))
                                             (and 
                                                 (moveAgain)
                                                 (set Var "Replay" ("NextHole" (last From) "TrackCW" (+ 1 (size Stack at:(last From)))))
-                                           )
+                                            )
                                             (if (is Occupied ("NextHole" (last From) "TrackCW" (+ 2 (size Stack at:(last From)))))
                                                 (forEach Level ("NextHole" (last From) "TrackCW" (+ 2 (size Stack at:(last From)))) FromTop
                                                     (if (= (id "Seed" Shared) (what at:("NextHole" (last From) "TrackCW" (+ 2 (size Stack at:(last From)))) level:(level)))
                                                         (fromTo
                                                             (from ("NextHole" (last From) "TrackCW" (+ 2 (size Stack at:(last From)))) level:(level))
                                                             (to (handSite Mover))
-                                                       )
+                                                        )
                                                         (fromTo
                                                             (from ("NextHole" (last From) "TrackCW" (+ 2 (size Stack at:(last From)))) level:(level))
                                                             (to (handSite Mover 1))
-                                                       )
-                                                   )
-                                               )
-                                           )
-                                       )
-                                   )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
                                 })
-                           )
-                       )
-                   )
+                            )
+                        )
+                    )
                     }
                     (then
                         (if ("NoPieceOnOwnedHoles" P1)
@@ -222,16 +222,16 @@
                                                 (from (site) level:(level))
                                                 (to (handSite P1))
                                                 stack:True
-                                           )
+                                            )
                                             (fromTo
                                                 (from (site) level:(level))
                                                 (to (handSite P1 1))
                                                 stack:True
-                                           )
-                                       )
-                                   )
-                               )
-                           )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
                             (if ("NoPieceOnOwnedHoles" P2)
                                 (forEach Site
                                     (sites Board)
@@ -242,34 +242,34 @@
                                                     (from (site) level:(level))
                                                     (to (handSite P2))
                                                     stack:True
-                                               )
+                                                )
                                                 (fromTo
                                                     (from (site) level:(level))
                                                     (to (handSite P2 1))
                                                     stack:True
-                                               )
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
             (end (if ("NoPieceOnBoard")
                     {
                     (if (> 5 (size Stack Cell at:(handSite P1)))
                         (result P2 Win)
-                   )
+                    )
                     (if (> 5 (size Stack Cell at:(handSite P2)))
                         (result P1 Win)
-                   )
+                    )
                     }
-               )
-           )
+                )
+            )
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-       )
+        )
         
         (phase "BetweenRounds"
             (play 
@@ -284,11 +284,11 @@
                                         (from Cell (last From) level:(- (size Stack Cell at:(last From)) (value)))
                                         (to (last To))
                                         stack:True
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     (if (!= 0 (size Stack Cell at:(handSite Mover 1)))
                         (move Select
                             (from Cell (handSite Mover 1))
@@ -298,21 +298,21 @@
                                     (from Cell (last From) level:(topLevel Cell at:(last From)))
                                     (to (last To))
                                     stack:True
-                               )
-                           )
-                       )
-                   )
-               )
-           )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
             (nextPhase (all Passed) "Sowing")
-       )
+        )
         }
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Yucebao is a two-row mancala-style board game played by the Bai people of Yunnan, China. It is typically played by men and boys, and involves the use of special stones which effect captures in addition to the usual mancala-style capturing rules.")
@@ -323,9 +323,9 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Yunnan, China, around 1992.")
+        (origin "This game was played in Yunnan, China, around 1992.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

@@ -7,12 +7,12 @@
             if:(and 
                 (not (is In (between) (sites ToClear))) 
                 ("IsEnemyAt" (between))
-           )
+            )
             (apply (remove (between) at:EndOfTurn))
-       ) 
+        ) 
         (to if:(is Empty (to))) 
         #2
-   ) 
+    ) 
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -22,7 +22,7 @@
 //------------------------------------------------------------------------------
 
 (game "Brazilian Draughts" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (square 8)) 
         (piece "Counter" P1 N)
@@ -31,7 +31,7 @@
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-   )  
+    ) 
     
     (rules 
         (start { 
@@ -49,13 +49,13 @@
                                     (moveAgain)
                                     (if "JumpToPromotionZone" 
                                         (promote (last To) (piece "DoubleCounter") Mover)
-                                   )
-                               ) 
-                           ) 
-                       )
-                   )
+                                    )
+                                ) 
+                            ) 
+                        )
+                    )
                     (max Moves ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn))
-               )
+                )
                 (priority {
                     (max Moves
                         (or 
@@ -66,35 +66,35 @@
                                             (moveAgain) 
                                             (if "JumpToPromotionZone" 
                                                 (promote (last To) (piece "DoubleCounter") Mover)
-                                           )
-                                       ) 
-                                   ) 
-                               ) 
-                           )
+                                            )
+                                        ) 
+                                    ) 
+                                ) 
+                            )
                             (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))
-                       )
-                   )
-                    (or  
+                        )
+                    )
+                    (or 
                         (forEach Piece "Counter" 
                             (move
                                 Step 
                                 (directions {FR FL}) 
                                 (to if:(is Empty (to)))
-                           )
+                            )
                             (then 
                                 (if "JumpToPromotionZone"
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
-                               )
-                           )
-                       )
+                                )
+                            )
+                        )
                         (forEach Piece "DoubleCounter" (move Slide Diagonal))
-                   )
+                    )
                 })
-           )
-       )
+            )
+        )
         
         (end ("BlockWin"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -111,7 +111,7 @@
         (classification "board/war/leaping/diagonal")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (board Style Chess)
@@ -120,6 +120,6 @@
     
     (ai 
         "Brazilian Draughts_ai"
-   )
+    )
     
 )

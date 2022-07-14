@@ -4,13 +4,13 @@
             (from) 
             Orthogonal 
             if:("IsFriendAt" (to))
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Quantum Leap"  
+(game "Quantum Leap" 
     (players 2) 
     (equipment { 
         (board (hex 5))
@@ -20,14 +20,14 @@
                 (between 
                     (exact (- "DistanceToMove" 1))
                     if:True
-               )
+                )
                 (to 
                     if:("IsEnemyAt" (to)) 
                     (apply (remove (to)))
-               )
-           )
-       )
-    })  
+                )
+            )
+        )
+    }) 
     (rules 
         (start {
             (place "Marker2" (centrePoint))
@@ -44,16 +44,16 @@
                         (to (sites Occupied by:Next))
                         (then
                             (swap Pieces (last From) (last To))
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (nextPhase "Play")		
-       )
+        )
         (phase "Play" (play (forEach Piece)))
         }
-        (end ("NoMoves" Loss))  
-   )
+        (end ("NoMoves" Loss)) 
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -73,7 +73,7 @@
         (credit "Eric Piette")
         (date "2013")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Black))
@@ -82,6 +82,6 @@
     
     (ai 
         "Quantum Leap_ai"
-   )
+    )
     
 )

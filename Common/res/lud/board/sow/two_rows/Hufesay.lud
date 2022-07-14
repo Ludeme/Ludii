@@ -4,52 +4,52 @@
     (if (is Mover P1)
         (sites (values Remembered "OwnedP1"))
         (sites (values Remembered "OwnedP2"))
-   )
+    )
 )
 
 (define "RemmemberOwnedHoles" 
     (if (is Mover P1)
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
-   )
+    )
 )
 
 (define "OneRowIsEmpty"	
     (or
         (all Sites (sites P1) if:(= 0 (count at:(site))))
         (all Sites (sites P2) if:(= 0 (count at:(site))))
-   )
+    )
 )
 
 (define "LeftMostEmpty" 
     (trackSite FirstSite 
         from:(mapEntry "LeftMost" Mover)
         if:(is Empty (to))
-   )
+    )
 )
 
 (define "NumCapturedPieces" 
     (+ 
         (count Cell at:(handSite #1))
         (count in:(sites #1))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Hufesay"  
-    (players 2)  
+(game "Hufesay" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
             (track "Track" "0,E,N,W" loop:True)
-       )
+        )
         (regions "Home" P1 (sites Bottom)) 
         (regions "Home" P2 (sites Top)) 
         (piece "Seed" Shared)
         (hand Each)
         (map "LeftMost" {(pair P1 0) (pair P2 11)})
-    })  
+    }) 
     (rules 
         
         (start {
@@ -68,9 +68,9 @@
                                 ("SameTurn") 
                                 "LastHoleSowed" 
                                 ("OwnedHoles") 
-                           ) 
+                            ) 
                             if:(is Occupied (from))
-                       )
+                        )
                         (then
                             (sow
                                 apply:(if (> (count at:(to)) 1)
@@ -78,17 +78,17 @@
                                     (if (and 
                                             (is In (to) (sites Mover)) 
                                             (> (count at:("OppositePit" (to))) 0)
-                                       )
+                                        )
                                         (fromTo 
                                             (from ("OppositePit" (to))) 
                                             (to (handSite Mover)) 
                                             count:(count at:("OppositePit" (to)))
-                                       ) 
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                        ) 
+                                    )
+                                )
+                            )
+                        )
+                    )
                     }
                     (then
                         (if ("OneRowIsEmpty")
@@ -99,40 +99,40 @@
                                             (from (site))
                                             (to (handSite P1))
                                             count:(count at:(site))
-                                       )
-                                   )
-                               )
+                                        )
+                                    )
+                                )
                                 (forEach Site (sites (values Remembered "OwnedP2"))
                                     (if (is Occupied (site))
                                         (fromTo
                                             (from (site))
                                             (to (handSite P2))
                                             count:(count at:(site))
-                                       )
-                                   )
-                               )
+                                        )
+                                    )
+                                )
                                 (forget Value "OwnedP1" All)
                                 (forget Value "OwnedP2" All)
                                 (if (>= ("NumCapturedPieces" P1) ("NumCapturedPieces" P2))
                                     (set NextPlayer (player 1))
                                     (set NextPlayer (player 2))
-                               )
+                                )
                             })
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             
             (end (if ("NoPieceOnBoard")
                     {
                     (if (> 4 (count Cell at:(handSite P1))) (result P2 Win))
                     (if (> 4 (count Cell at:(handSite P2))) (result P1 Win))
                     }
-               )
-           )
+                )
+            )
             
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-       )
+        )
         
         (phase "BetweenRounds"
             (play
@@ -152,35 +152,35 @@
                                                 (from (handSite Mover))
                                                 (to ("LeftMostEmpty"))
                                                 count:3
-                                           )
+                                            )
                                             (fromTo 
                                                 (from (handSite Next))
                                                 (to ("LeftMostEmpty"))
                                                 count:1
-                                           )
+                                            )
                                             ("RemmemberOwnedHoles" ("LeftMostEmpty"))
                                         })
                                         (fromTo 
                                             (from (handSite Mover))
                                             (to (handSite Next))
                                             count:(count Cell at:(handSite Mover))
-                                       )
-                                   )
-                               )
+                                        )
+                                    )
+                                )
                             })
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (nextPhase (and (is Empty (handSite P1)) (is Empty (handSite P2))) "Sowing")
-       )
+        )
         }
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Hufesay is a two-row mancala-style board game played in the Maychew area of Ethiopia. ")
@@ -190,9 +190,9 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Horn of Africa, around 1971.")
+        (origin "This game was played in Horn of Africa, around 1971.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

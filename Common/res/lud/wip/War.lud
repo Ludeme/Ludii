@@ -4,7 +4,7 @@
         (from #1) 
         (to (handSite #2) level:0) 
         stack:True
-   )
+    )
 )
 (define "MoveCardsOfP1To" ("MoveAllCardToBottom" 0 #1))
 (define "MoveCardsOfP2To" ("MoveAllCardToBottom" 1 #1))
@@ -14,7 +14,7 @@
         (to #2)
         #3
         #4
-   )	
+    )	
 )
 (define "P1PlayACard" ("PlayACard" P1 0 #1 #2))
 (define "P2PlayACard" ("PlayACard" P2 1 #1 #2))
@@ -25,14 +25,14 @@
     (and 
         ("MoveCardsOfP1To" #1)
         ("MoveCardsOfP2To" #1)
-   )
+    )
 )
 
 (define "PlayACardOfEachDeck" 
     (and 
         ("P2PlayACard") 
         ("P1PlayACard")
-   )
+    )
 )
 
 (define "P1HasNoCard" (and (= (what at:0) 0) ("HandEmpty" P1)))
@@ -42,16 +42,16 @@
 
 //------------------------------------------------------------------------------
 
-(game "War"  
-    (players 2)  
-    (mode Simultaneous)  
+(game "War" 
+    (players 2) 
+    (mode Simultaneous) 
     (equipment { 
         (board 
             (union 
                 (square 1) 
                 (shift 2 0 (square 1))
-           )
-       )
+            )
+        )
         (deck)
         (hand Each)
     })
@@ -63,7 +63,7 @@
                 (or
                     ("P1PlayACard" P1 ("MakeTopCardP1Visible"))
                     ("P2PlayACard" P2 ("MakeTopCardP2Visible"))
-               )
+                )
                 (move Pass
                     (then 
                         (and 
@@ -71,27 +71,27 @@
                                 ("TakeCards" P1)
                                 (if ("CardOfP2isHigher")
                                     ("TakeCards" P2)
-                                    ("PlayACardOfEachDeck")  // Else the cards have the same value
-                               )
-                           )
+                                    ("PlayACardOfEachDeck") // Else the cards have the same value
+                                )
+                            )
                             ("MaskedCards")
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         
         (end {
             (if 
                 ("P1HasNoCard")
                 (result P2 Win) 
-           )   
+            )  
             (if 
                 ("P2HasNoCard")
                 (result P1 Win) 
-           )
+            )
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -106,12 +106,12 @@
         (version "1.0.0")
         (classification "card")
         (credit "Eric Piette")
-        (origin  "This game was played in Unknown, around 1827CE.")
+        (origin "This game was played in Unknown, around 1827CE.")
         }
-   )
+    )
     (graphics (no Board))
     
     (ai 
         "War_ai"
-   )
+    )
 )

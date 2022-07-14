@@ -1,4 +1,4 @@
-(define "NotAnEnemy"    
+(define "NotAnEnemy"  
     (not ("IsEnemyAt" (to)))
 )
 
@@ -6,7 +6,7 @@
     (trackSite Move 
         from:#1 
         steps:(pips)
-   )
+    )
 )
 
 (define "DieNotUsed" (!= (pips) 0))
@@ -16,15 +16,15 @@
         (difference 
             (sites Occupied by:Mover) 
             (sites Mover "Home")
-       )
-   )
+        )
+    )
 )
 
 (define "RemoveAPiece" 
     (move
         Remove
         (site) 
-   )		
+    )		
 )
 
 (define "DieNotUsedAndNoEscapeAndNotOffTheTrack" 
@@ -41,8 +41,8 @@
         (to 
             ("NextSiteFrom" #1) 
             if:("NotAnEnemy") 
-       )
-   )
+        )
+    )
 )
 
 (define "MoveAPieceIf" 
@@ -55,8 +55,8 @@
                 ("PieceInLastQuadrant")
             })
             ("MoveAPiece" #2)
-       )
-   )		
+        )
+    )		
 )
 
 (define "AllPieceEscaped" (= 0 (size Stack in:(sites Occupied by:Mover))))
@@ -69,32 +69,32 @@
     (and 
         (!= (what at:(site)) 0) 
         (!= ("NextSiteFrom" (site)) Off)
-   )
+    )
 )
 
 (define "SetScoreOf" 
     (score 
         #1
         (size Stack in:(sites Occupied by:#2))
-   )
+    )
 )
 
 (define "HaveAPieceAndCanEscape" 
     (and 
         ("IsFriendAt" (site)) 
         (< (trackSite Move from:(site) steps:(pips)) 0)
-   )
+    )
 )
 
 (define "PieceInLastQuadrant" 
     (!= 
         (count Sites in:(intersection (sites Occupied by:Mover) (sites Mover "Home"))) 
         0
-   ) 
+    ) 
 )
 
 (define "InTheStartingPosition" 
-    (= (from) (mapEntry (mover)))  
+    (= (from) (mapEntry (mover))) 
 )
 
 (define "Not14PiecesInThePosition"
@@ -103,8 +103,8 @@
 
 //-----------------------------------------------------------------------------
 
-(game "MughrabiehSubgame"  
-    (players 2)  
+(game "MughrabiehSubgame" 
+    (players 2) 
     (equipment { 
         (board (rectangle 2 13)
             {
@@ -112,7 +112,7 @@
             (track "Track2" {25..20 18..13 0..5 7..12 End} P2 directed:True)
             } 
             use:Vertex
-       ) 
+        ) 
         (dice num:2)
         (regions "Home" P1 { 20..25 }) 
         (regions "Home" P2 { 7..12 }) 
@@ -139,30 +139,30 @@
                                 (if ("CanEscape")
                                     ("RemoveAPiece")
                                     ("MoveAPiece" (site))
-                               )
-                           )
+                                )
+                            )
                             noMoveYet:(firstMoveOnTrack "Track" Mover
                                 (if "HaveAPieceAndCanEscape"
                                     "RemoveAPiece"
-                               )
-                           )
+                                )
+                            )
                             (then 
                                 (if (not (all DiceUsed))
                                     (moveAgain)
-                               )
-                           )
-                       )
-                   )
+                                )
+                            )
+                        )
+                    )
                     (forEach Piece top:True
                         (then 
                             (if (not (all DiceUsed))
                                 (moveAgain)
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         
         (end 
             (if ("AllPieceEscaped") 
@@ -170,9 +170,9 @@
                     ("SetScoreOf" P1 P2)
                     ("SetScoreOf" P2 P1)
                 })
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //-------------------------------------------------------------------------
@@ -184,7 +184,7 @@
         (version "1.1.0")
         (classification "")
         }
-   )
+    )
     
     (graphics {
         (board Style backgammon)

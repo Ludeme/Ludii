@@ -4,9 +4,9 @@
             (add 
                 (piece ("Captured" (what at:(to)))) 
                 (to (mapEntry "Where" ("Captured" (what at:(to)))))
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "NextCannotMove"
@@ -17,24 +17,24 @@
                     (move 
                         (from (sites Occupied by:Next container:"Hand" components:{"Kakugyo" "Ginsho" "Hisha" "Kinsho"})) 
                         (to (sites Empty))
-                   ) 
+                    ) 
                     (do 
                         (move 
                             (from (sites Occupied by:Next container:"Hand" component:"Fuhyo")) 
                             (to (difference (sites Empty) (sites Next "LastRank")) 
                                 if:("OnePawnPerColumn" Next)
-                           )
-                       ) 
+                            )
+                        ) 
                         ifAfterwards:("IsInCheck" "Osho" Mover)
-                   )
+                    )
                     ("PlaceLance" Next)
                     ("PlaceKnight" Next) 
                     (forEach Piece Next) 
                 })
                 ifAfterwards:(not ("IsInCheck" "Osho" Next))
-           ) 
-       )
-   )
+            ) 
+        )
+    )
 )
 
 (define "CanNotMove"
@@ -45,21 +45,21 @@
     (= 
         (count Sites in:(sites Occupied by:#1 container:"Board" component:"Fuhyo")) 
         (count Sites in:(difference (sites Occupied by:#1 container:"Board" component:"Fuhyo") (sites Column (column of:(to)))))
-   )
+    )
 )
 
 (define "PlaceKnight" 
     (move 
         (from (sites Occupied by:#1 container:"Hand" component:"Keima")) 
         (to (difference (sites Empty) (sites #1 "TwoFurthestRank")))
-   )
+    )
 )
 
 (define "PlaceLance" 
     (move 
         (from (sites Occupied by:#1 container:"Hand" component:"Kyosha")) 
         (to (difference (sites Empty) (sites #1 "LastRank")))
-   )
+    )
 )
 
 (define "PlacePawn" 
@@ -68,10 +68,10 @@
             (from (sites Occupied by:#1 container:"Hand" component:"Fuhyo")) 
             (to (difference (sites Empty) (sites #1 "LastRank")) 
                 if:("OnePawnPerColumn" #1)
-           )
-       ) 
+            )
+        ) 
         ifAfterwards:(not (and ("IsInCheck" "Osho" #2) ("NextCannotMove")))
-   )
+    )
 ) 
 
 (define "InPromotionZone"
@@ -95,8 +95,8 @@
         (if 
             (or ("InPromotionZone" (last To)) ("InPromotionZone" (last From))) 
             (moveAgain) 
-       ) 
-   )
+        ) 
+    )
 )
 
 (define "SlideMove"
@@ -105,7 +105,7 @@
         #1 
         (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
-   )   	
+    )  	
 )
 
 (define "StepMove"
@@ -114,7 +114,7 @@
         #1
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
-   )   	
+    )  	
 )
 
 (define "GoldMove" ("StepMove" (directions {Forward Backward Rightward Leftward FL FR})))
@@ -148,19 +148,19 @@
                                                         (if (or {(= #1 (id "Narikyo" P2)) (= #1 (id "Narikyo" P3)) (= #1 (id "Narikyo" P4))})
                                                             (id "Kyosha" P1)
                                                             (id "Osho" P1)
-                                                       )
-                                                   )
-                                               )
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         (if (is Mover P2)
             (if (or {(= #1 (id "Fuhyo" P1)) (= #1 (id "Fuhyo" P3)) (= #1 (id "Fuhyo" P4))})
                 (id "Fuhyo" P2)
@@ -189,19 +189,19 @@
                                                             (if (or {(= #1 (id "Narikyo" P1)) (= #1 (id "Narikyo" P3)) (= #1 (id "Narikyo" P4))})
                                                                 (id "Kyosha" P2)
                                                                 (id "Osho" P2)
-                                                           )
-                                                       )
-                                                   )
-                                               )
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
             (if (is Mover P3)
                 (if (or {(= #1 (id "Fuhyo" P1)) (= #1 (id "Fuhyo" P2)) (= #1 (id "Fuhyo" P4))})
                     (id "Fuhyo" P3)
@@ -230,19 +230,19 @@
                                                                 (if (or {(= #1 (id "Narikyo" P1)) (= #1 (id "Narikyo" P2)) (= #1 (id "Narikyo" P4))})
                                                                     (id "Kyosha" P3)
                                                                     (id "Osho" P3)
-                                                               )
-                                                           )
-                                                       )
-                                                   )
-                                               )
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
                 (if (or {(= #1 (id "Fuhyo" P1)) (= #1 (id "Fuhyo" P2)) (= #1 (id "Fuhyo" P3))})
                     (id "Fuhyo" P4)
                     (if (or {(= #1 (id "Keima" P1)) (= #1 (id "Keima" P2)) (= #1 (id "Keima" P3))})
@@ -270,22 +270,22 @@
                                                                 (if (or {(= #1 (id "Narikyo" P1)) (= #1 (id "Narikyo" P2)) (= #1 (id "Narikyo" P3))})
                                                                     (id "Kyosha" P4)
                                                                     (id "Osho" P4)
-                                                               )
-                                                           )
-                                                       )
-                                                   )
-                                               )
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           )
-       )
-   )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
 )
 
 (define "RemoveKingIfCheckmate"
@@ -294,16 +294,16 @@
             (and 
                 ("IsInCheck" "Osho" #1)
                 ("CanNotMove" #1 #2)
-           )
+            )
             (remove (where (id "Osho" #1)))
-       )
-   )		
+        )
+    )		
 )
 
 //------------------------------------------------------------------------------
 
-(game "Yonin Shogi"  
-    (players {(player N) (player W) (player S) (player E)})  
+(game "Yonin Shogi" 
+    (players {(player N) (player W) (player S) (player E)}) 
     
     (equipment { 
         (board (square 9))
@@ -320,11 +320,11 @@
                         (if ("InLastRank" (last To)) 
                             ("Promote") 
                             (moveAgain) 
-                       ) 
-                   ) 
-               )
-           )
-       )
+                        ) 
+                    ) 
+                )
+            )
+        )
         
         // Silver General
         (piece "Ginsho" Each ("StepMove" (directions {Forward BL BR FL FR}) "CanPromote"))
@@ -354,24 +354,24 @@
                                             (add 
                                                 (piece ("Captured" (what at:(to)))) 
                                                 (to (mapEntry "Where" ("Captured" (what at:(to)))))
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               ) 
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ) 
                 (then 
                     (if ("InPromotionZone" (last To))
                         (if ("InTwoFurthestRank" (last To)) 
                             "Promote" 
                             (moveAgain) 
-                       ) 
-                   ) 
-               ) 
-           ) 
-       )
+                        ) 
+                    ) 
+                ) 
+            ) 
+        )
         
         // Lance
         (piece "Kyosha" Each
@@ -382,11 +382,11 @@
                         (if ("InLastRank" (last To)) 
                             "Promote" 
                             (moveAgain) 
-                       ) 
-                   ) 
-               )
-           ) 
-       )
+                        ) 
+                    ) 
+                )
+            ) 
+        )
         
         // Gold General
         (piece "Kinsho" Each "GoldMove")
@@ -458,20 +458,20 @@
                 (or
                     ("Promote")
                     (move Pass)
-               )
+                )
                 (do 
                     (or {
                         (move 
                             (from (sites Occupied by:Mover container:"Hand" components:{"Kakugyo" "Ginsho" "Hisha" "Kinsho"})) 
                             (to (sites Empty))
-                       ) 
+                        ) 
                         ("PlacePawn" Mover Next)
                         ("PlaceLance" Mover)
                         ("PlaceKnight" Mover) 
                         (forEach Piece) 
                     })
                     ifAfterwards:(not ("IsInCheck" "Osho" Mover))
-               )
+                )
                 (then
                     (and {
                         ("RemoveKingIfCheckmate" P1 1)
@@ -479,25 +479,25 @@
                         ("RemoveKingIfCheckmate" P3 3)
                         ("RemoveKingIfCheckmate" P4 4)
                     })
-               )
-           )
-       )
+                )
+            )
+        )
         
         (end
             {
             (forEach NonMover
                 if:(= (where "Osho" Player) Off) 
                 (result Player Loss)
-           )
+            )
             (if (no Moves Next) (result Next Loss)) 
             }
-       )
-   )
+        )
+    )
 )
 
 (option "Setup" <PiecePlacement> args:{ <PiecePlacement> }
     {
-    (item "1993"    	
+    (item "1993"  	
         <
         (place "Osho1" coord:"E1") (place "Kinsho1" {"D1" "F1"}) (place "Ginsho1" {"C1" "G1"}) (place "Fuhyo1" {"D2" "F2" "E3"}) (place "Hisha1" coord:"E2")
         (place "Osho2" coord:"I5") (place "Kinsho2" {"I4" "I6"}) (place "Ginsho2" {"I3" "I7"}) (place "Fuhyo2" {"H4" "H6" "G5"}) (place "Hisha2" coord:"H5")
@@ -506,7 +506,7 @@
         >
     "Setup by Ota Mitsuyasu in 1993")**
     
-    (item "1991"    	
+    (item "1991"  	
         <
         (place "Osho1" coord:"E1") (place "Kinsho1" {"D1" "F1"}) (place "Ginsho1" {"C1" "G1"}) (place "Keima1" {"B1" "H1"}) (place "Kyosha1" coord:"A1") (place "Fuhyo1" {"D3" "F3" "E3" "G3" "H3"}) (place "Hisha1" coord:"G2") (place "Kakugyo1" coord:"B2")
         (place "Osho2" coord:"I5") (place "Kinsho2" {"I4" "I6"}) (place "Ginsho2" {"I3" "I7"}) (place "Keima2" {"I2" "I8"}) (place "Kyosha2" coord:"I1") (place "Fuhyo2" {"G4" "G5" "G6" "G7" "G8"}) (place "Hisha2" coord:"H7") (place "Kakugyo2" coord:"H2")
@@ -532,7 +532,7 @@
         (credit "Matthew Stephenson")
         (date "1995")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour White))
@@ -554,6 +554,6 @@
     
     (ai 
         "Yonin Shogi_ai"
-   )
+    )
     
 )

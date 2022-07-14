@@ -1,5 +1,5 @@
-(game "Janes Soppi"  
-    (players 2)  
+(game "Janes Soppi" 
+    (players 2) 
     (equipment { 
         (board 
             (merge {
@@ -8,11 +8,11 @@
                 (shift -1.5 0.5 (rotate 90 (wedge 2))) 
             })
             use:Vertex
-       )
+        )
         (hand Each)
         (piece "Hound" P1 "StepToEmpty")
         (piece "Hare" P2 "StepToEmpty")
-    })  
+    }) 
     
     (rules 
         (start {
@@ -26,18 +26,18 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty))
-               ) 
-           )
+                ) 
+            )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-       )
+        )
         
         (phase "Movement"
             (play (forEach Piece))
-       )
+        )
         }
         
         <End:rule>
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -49,9 +49,9 @@
         (end {
             (if (no Moves P2) (result P1 Win))
         }) 
-        >  
+        > 
         "The game has an ending condition only for P1."
-   )*
+    )*
     
     (item "Cond for P1 and P2" 
         <
@@ -61,13 +61,13 @@
                 (or
                     (>= (count Moves) (- (value MoveLimit) 10)) 
                     (>= (count Turns) (- (value TurnLimit) 5)) 
-               )
+                )
                 (result P2 Win)
-           )
+            )
         }) 
-        >  
+        > 
         "The game has an ending condition for each player."
-   )
+    )
 })
 
 //------------------------------------------------------------------------------
@@ -102,9 +102,9 @@
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in Estonia, around 1973.")
+        (origin "This game was played in Estonia, around 1973.")
         }
-   )
+    )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})
@@ -113,5 +113,5 @@
     
     (ai
         "Janes Soppi_ai"
-   )
+    )
 )

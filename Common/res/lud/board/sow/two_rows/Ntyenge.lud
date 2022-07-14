@@ -2,18 +2,18 @@
 
 //------------------------------------------------------------------------------
 
-(game "Ntyenge"  
-    (players 2)  
+(game "Ntyenge" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 8 store:None
             (track "Track" "0,E,N,W" loop:True)		
-       )
+        )
         (piece "Seed" Shared)
         (regions P1 (sites Bottom)) 
         (regions P2 (sites Top)) 
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start (set Count 4 to:(sites Track)))
@@ -28,20 +28,20 @@
                                 (from (to))
                                 (to (handSite Mover))
                                 count:(count at:(to))
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         
         (end ("MancalaByScoreWhen" ("NoPieceOnBoard")))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Ntyéngé is a two-row mancala-style board game played by the Mbenge people in Gabon. It is sometimes played on a board, but more frequently is made in the ground and played with seeds or pebbles.")
@@ -52,9 +52,9 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Central Africa, from around 1899 to 1907.")
+        (origin "This game was played in Central Africa, from around 1899 to 1907.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

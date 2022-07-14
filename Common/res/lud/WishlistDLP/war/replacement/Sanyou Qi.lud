@@ -16,45 +16,45 @@
                     (shift 7 4 (graph
                             vertices:{{1.37 0.63} {1 0.42} {1 0}}
                             edges:{{0 1} {1 2}} 
-                   ))
+                    ))
                     (shift 1 4 (graph
                             vertices:{{-1.37 0.63} {-1 0.42} {-1 0}}
                             edges:{{0 1} {1 2}} 
-                   ))
+                    ))
                     (shift 4 10.2 (graph
-                            vertices:{{-0.37 1.37}  {0 1.16} {0.37 1.37}}
+                            vertices:{{-0.37 1.37} {0 1.16} {0.37 1.37}}
                             edges:{{0 1} {1 2}} 
-                   ))
+                    ))
                     (shift 1 5 (graph
-                            vertices:{{0 0} {1 0}  {1 0.6} {0.5 0.87}}
-                            edges:{{0 1} {1 2} {2 3}  {3 0}} 
-                   ))
+                            vertices:{{0 0} {1 0} {1 0.6} {0.5 0.87}}
+                            edges:{{0 1} {1 2} {2 3} {3 0}} 
+                    ))
                     (shift 7 5 (graph
-                            vertices:{{0 0} {-1 0}  {-1 0.6} {-0.5 0.87}}
-                            edges:{{0 1} {1 2} {2 3}  {3 0}} 
-                   ))
+                            vertices:{{0 0} {-1 0} {-1 0.6} {-0.5 0.87}}
+                            edges:{{0 1} {1 2} {2 3} {3 0}} 
+                    ))
                     (shift 4 10.2 (graph
                             vertices:{{0 0} {-0.5 -0.87} {0 -1.14} {0.5 -0.87}}
-                            edges:{{0 1} {1 2} {2 3}  {3 0}} 
-                   ))
+                            edges:{{0 1} {1 2} {2 3} {3 0}} 
+                    ))
                     (shift 3 5 (graph
                             vertices:{{0 0} {0 1.16} {1 1.16} {2 1.16} {2 0} {2 1.16}}
                             edges:{{0 1} {1 2} {2 3} {3 4} {2 5}} 
-                   ))
+                    ))
                     (shift -1 1.74 (rotate 240 (shift 3 5 (graph
                                     vertices:{{0 0} {0 1.15} {1 1.15} {2 1.15} {2 0} {2 1.15}}
                                     edges:{{0 1} {1 2} {2 3} {3 4} {2 5}} 
-                   ))))
+                    ))))
                     (shift 1 1.74 (rotate -240 (shift 3 5 (graph
                                     vertices:{{0 0} {0 1.15} {1 1.15} {2 1.15} {2 0} {2 1.15}}
                                     edges:{{0 1} {1 2} {2 3} {3 4} {2 5}} 
-                   ))))
+                    ))))
                 })
                 vertices:{{4 6.74}}
                 edges:{{48 160} {150 163} {164 100} {160 165} {164 165} {163 165}}
-           )
+            )
             use:Vertex
-       )
+        )
         // General
         (piece "Jiang" Each) 
         
@@ -63,35 +63,35 @@
         
         // Elephant
         (piece "Xiang" Each 
-       ) 
+        ) 
         
         // Horse
         (piece "Ma" Each 
-       )
+        )
         
         // Chariot
         (piece "Ju" Each 
-       )
+        )
         
         // Canon
         (piece "Pao" Each 
-       )
+        )
         
         // Soldier
         (piece "Zu" Each
-       )
+        )
         
         // Fire
         (piece "Huo" Each
-       )
+        )
         
         // Flag
         (piece "Qi" Each
-       )
+        )
     })
     (rules 
         (start {
-            (place "Jiang1" 4) (place "Jiang2" 92)  (place "Jiang3" 143) 
+            (place "Jiang1" 4) (place "Jiang2" 92) (place "Jiang3" 143) 
             (place "Shi1" (sites {3 5})) (place "Shi2" (sites {93 91})) (place "Shi3" (sites {144 142}))
             (place "Xiang1" (sites {2 6})) (place "Xiang2" (sites {94 90})) (place "Xiang3" (sites {145 141}))
             (place "Ma1" (sites {1 7})) (place "Ma2" (sites {95 89})) (place "Ma3" (sites {146 140}))
@@ -103,7 +103,7 @@
         })
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -119,9 +119,9 @@
             (version "1.3.4")
             (classification "war/replacement/WishlistDLP")
             (credit "Eric Piette")
-            (origin  "This game was played in China, around 1697.")
+            (origin "This game was played in China, around 1697.")
             }
-       )
+        )
         
         (graphics {
             (show Edges Diagonal Hidden)
@@ -140,5 +140,5 @@
             (piece Style ExtendedXiangqi)
         })
         
-   )
+    )
     

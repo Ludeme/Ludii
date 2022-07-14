@@ -12,25 +12,25 @@
                 (or
                     (not ("FromIsOnTheRegionToFill" #1))
                     ("ToIsOnTheRegionToFill" (to)) 
-               )
-           )
-       )
+                )
+            )
+        )
         #2		
-   )
+    )
 ) 
 
 (define "HopSequence" ("Hop" #1 (then (if (can Move ("Hop" (last To))) (moveAgain)))))
 
 //------------------------------------------------------------------------------
 
-(game "Grasshopper"  
-    (players 2)  
+(game "Grasshopper" 
+    (players 2) 
     (equipment { 
         (board <Board:size>) 
         (piece "Counter" Each)
         <Board:home>
         (map {(pair P1 P2) (pair P2 P1)})
-    })  
+    }) 
     (rules 
         (start { 
             (place "Counter1" (sites P1))
@@ -38,7 +38,7 @@
         })
         
         phases:{
-        (phase "Movement"  
+        (phase "Movement" 
             (play 
                 (forEach Piece 
                     (or 
@@ -50,28 +50,28 @@
                                     (or
                                         (not (is In (from) (sites Next)))
                                         (is In (to) (sites Next)) 
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           ) 
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            ) 
             (nextPhase (is Mover (next)) "MultiJump")
-       ) 
+        ) 
         (phase "MultiJump" 
             (play 
                 (or 
                     ("HopSequence" (last To)) 
                     (move Pass)
-               )
-           ) 
+                )
+            ) 
             (nextPhase (not (is Mover (next))) "Movement")
-       ) 
+        ) 
         }
         
         (end ("FillWin" (sites (player (mapEntry (mover))))))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -80,20 +80,20 @@
     {
     (item "8x8" 
         <(square 8)>
-        <  
+        < 
         (regions "Home" P1 (expand origin:(coord "A1") steps:3 Orthogonal))
         (regions "Home" P2 (expand origin:(coord "H8") steps:3 Orthogonal))
         >
         "The game is played on a board 8x8."
-   )*   
-    (item "10x10"    
+    )*  
+    (item "10x10"  
         <(square 10)>
-        <  
+        < 
         (regions "Home" P1 (expand origin:(coord "A1") steps:4 Orthogonal))
         (regions "Home" P2 (expand origin:(coord "J10") steps:4 Orthogonal))
         >
         "The game is played on a board 10x10."
-   ) 
+    ) 
 })
 
 //------------------------------------------------------------------------------
@@ -110,10 +110,10 @@
         (classification "board/race/fill")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (ai 
         "Grasshopper_ai"
-   )
+    )
     
 )

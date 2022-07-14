@@ -14,19 +14,19 @@
                 (to 
                     ("NextSiteFrom" (mapEntry "Entry" Mover) (- (pips) 1))
                     if:(is Empty (to))
-               )
-           )
+                )
+            )
             
             (then ("ReplayNotAllDiceUsed"))
-       )
-   )
+        )
+    )
 )
 
 (define "CommonMove"
     (if ("IsEndTrack" ("NextSiteFrom" (from) #1))
         (if ("AllPiecesInFinalQuadrant")
             (move Remove (from))
-       )
+        )
         (move 
             (from (from))
             (to 
@@ -36,16 +36,16 @@
                     (if (not (is In (to) (sites Mover "StartingSide")))
                         True
                         (> 2 (size Stack at:(to)))
-                   )
+                    )
                     (if (not (is In (to) (sites Mover "AfterPenultimate")))
                         True
                         (>= 10 (count Pieces in:(sites {(handSite Mover) (mapEntry "Entry" Mover)})))
-                   )
+                    )
                 })
                 ("HittingCapture" (handSite Next))
-           )
-       )
-   )		
+            )
+        )
+    )		
 )
 
 (define "Move" 
@@ -54,7 +54,7 @@
         if:("DieNotUsed")
         ("CommonMove" (pips))
         (then ("ReplayNotAllDiceUsed"))
-   )		
+    )		
 )
 
 (define "SpecialMove" ("CommonMove" #1))
@@ -66,9 +66,9 @@
             (to 
                 ("NextSiteFrom" (mapEntry "Entry" Mover) (- #1 1))
                 if:(is Empty (to))
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "PlayMove" 
@@ -85,14 +85,14 @@
                             (set Value Mover ("DieValue"))
                             (set Var "DoubleToPlay" ("DieValue"))
                         })
-                   )
-               )
+                    )
+                )
                 (or
                     ("EnterPieces")
                     (forEach Piece top:True)
-               )
-           )
-       )
+                )
+            )
+        )
         (or
             ("SpecialEnterPieces" (var "DoubleToPlay"))
             (forEach Piece ("SpecialMove" (var "DoubleToPlay")) top:True)
@@ -103,43 +103,43 @@
                             (and
                                 (set Var "DoubleToPlay" (var "DoubleToPlay"))
                                 (moveAgain)
-                           )
+                            )
                             (if (!= 6 (var "DoubleToPlay"))
                                 (and
                                     (set Var "DoubleToPlay" (+ (var "DoubleToPlay") 1))
                                     (moveAgain)
-                               )
+                                )
                                 (and
                                     (set Var "DoubleToPlay" 0)
                                     (set Value Mover 0)
-                               )
-                           )
-                       )	
+                                )
+                            )
+                        )	
                         (if (!= (var "FirstPlay") 1)
                             (and
                                 (set Var "DoubleToPlay" (var "DoubleToPlay"))
                                 (moveAgain)
-                           )
+                            )
                             (if (!= 1 (var "DoubleToPlay"))
                                 (and
                                     (set Var "DoubleToPlay" (- (var "DoubleToPlay") 1))
                                     (moveAgain)
-                               )
+                                )
                                 (and
                                     (set Var "DoubleToPlay" 0)
                                     (set Value Mover 0)
-                               )
-                           )
-                       )
-                   )
+                                )
+                            )
+                        )
+                    )
                     (if (!= (var "FirstPlay") 1) (set Var "FirstPlay" 1) (set Var "FirstPlay" 0))
                 })
-           )
-       )
+            )
+        )
         (then
             (if (no Pieces Mover) (set Score Mover 2))
-       )
-   )	
+        )
+    )	
 )
 
 //------------------------------------------------------------------------------
@@ -152,7 +152,7 @@
             (track "Track1" {25..20 18..13 0..5 7..12 End} P1 directed:True)
             (track "Track2" {0..5 7..12 25..20 18..13 End} P2 directed:True)
             }
-       )
+        )
         (dice d:6 num:2)
         (piece "Disc" Each ("Move")) 
         (hand Each)
@@ -179,12 +179,12 @@
                             (set Var "FirstPlay" 0)
                             (set Var "DoubleToPlay" 0)
                         })
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (end ("EscapeWin"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -201,9 +201,9 @@
         (version "1.3.4")
         (classification "board/race/escape")
         (credit "Eric Piette")
-        (origin  "This game was played in Iceland, from around 1888 to 1892.")
+        (origin "This game was played in Iceland, from around 1888 to 1892.")
         }
-   )
+    )
     
     (graphics {
         (board Style backgammon)

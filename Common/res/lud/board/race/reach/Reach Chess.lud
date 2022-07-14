@@ -13,15 +13,15 @@
         (if 
             (= (state at:(last To)) 1) 
             ("PieceHasMoved" (last To))
-       ) 
-   ) 
+        ) 
+    ) 
 )
 
 (define "KingNotCheckedAndToEmpty"
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-   )   
+    )  
 )
 
 (define "DecideToCastle"
@@ -32,13 +32,13 @@
         (between 
             (exact #3) 
             if:#4
-       ) 
+        ) 
         (to 
             if:True
             (apply ("PieceHasMoved" (from)))
-       )
+        )
         #5
-   )
+    )
 )
 
 (define "CastleRook"
@@ -48,12 +48,12 @@
         (between 
             (exact #3) 
             if:#4
-       ) 
+        ) 
         (to 
             if:True
             (apply ("PieceHasMoved" (from)))
-       )
-   )
+        )
+    )
 )
 
 (define "SmallCastling"
@@ -68,22 +68,22 @@
     (if (and 
             ("HasNeverMoved" "King")
             (not ("IsInCheck" "King" Mover)) 
-       )
+        )
         (or
             (if (and 
                     ("HasNeverMoved" "RookLeft")
                     (can Move ("CastleRook" "RookLeft" E 3 (is Empty (to))))
-               )
+                )
                 "BigCastling"
-           )
+            )
             (if (and 
                     ("HasNeverMoved" "RookRight")
                     (can Move ("CastleRook" "RookRight" W 2 (is Empty (to))))
-               )
+                )
                 "SmallCastling"
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //**** Defines used to model the extra Pawn moves. ****
@@ -91,7 +91,7 @@
 (define "SetEnPassantLocation"
     (then 
         (set Pending (ahead (last To) Backward))
-   )
+    )
 )
 
 (define "DoubleStep"
@@ -101,14 +101,14 @@
         (between (exact 2) if:(is Empty (between))) 
         (to if:(is Empty (to))) 
         "SetEnPassantLocation"
-   )
+    )
 )
 
 (define "InLocationEnPassant"
     (and 
         (is Pending) 
         (= (to) (value Pending)) 
-   )
+    )
 )
 
 (define "EnPassant"
@@ -119,21 +119,21 @@
         (then 
             (remove 
                 (ahead (last To) Backward)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "InitialPawnMove"
     (if (is In (from) (sites Start (piece (what at:(from)))))
         "DoubleStep"
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Reach Chess"  
-    (players {(player N) (player S)})  
+(game "Reach Chess" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -141,16 +141,16 @@
             (or 
                 "InitialPawnMove"
                 "EnPassant"
-           )
+            )
             (then
                 (and
                     (if (is In (last To) (sites Mover "Promotion")) 
                         (moveAgain)
-                   )
+                    )
                     (set Counter)
-               )
-           )
-       )
+                )
+            )
+        )
         ("ChessRook" "Rook" (then (set Counter)) ("RememberPieceHasMoved"))
         ("ChessKing" "King" (then (set Counter)) ("RememberPieceHasMoved"))
         ("ChessBishop" "Bishop" (then (set Counter)))
@@ -162,7 +162,7 @@
         (map "RookRight" {(pair 1 "H1") (pair 2 "H8")})
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Pawn1" (sites Row 1))
@@ -178,14 +178,14 @@
                     (or 
                         (forEach Piece)
                         ("Castling")
-                   )
+                    )
                     ifAfterwards:(not ("IsInCheck" "King" Mover))
-               )
-           )
-       )
+                )
+            )
+        )
         
         (end (if (is Connected Mover) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -204,12 +204,12 @@
         (credit "Markus Niebisch")
         (date "02-2021")
         }
-   )
+    )
     
     (graphics {
         (show Check "King")
         (piece Scale "Pawn" 0.825)
         (piece Families {"Defined" "Microsoft" "Pragmata" "Symbola"})
         (board Style Chess)
-    })    
+    })  
 )

@@ -1,7 +1,7 @@
-(define "PromoteIfCornersReached"  
+(define "PromoteIfCornersReached" 
     (if (is In (last To) (sites Next))
         (move Promote (last To) (piece "DiscDouble") Mover)
-   )
+    )
 )
 
 (define "HopDisc" 
@@ -11,15 +11,15 @@
         (between 
             if:("IsEnemyAt" (between))
             (apply (remove (between)))
-       ) 
+        ) 
         (to if:(is Empty (to))) 
         (then
             (and 
                 ("PromoteIfCornersReached")
                 ("HasCaptured")
-           )
-       )
-   ) 
+            )
+        )
+    ) 
 )
 
 (define "HopDiscDouble" 
@@ -31,22 +31,22 @@
             after:9
             if:("IsEnemyAt" (between)) 
             (apply (remove (between)))
-       )
+        )
         (to if:(is Empty (to)))
         (then ("HasCaptured"))
-   )
+    )
 )
 
-(define "HasCaptured"  (set Value Mover 0))
+(define "HasCaptured" (set Value Mover 0))
 (define "HasNotCaptured" (set Value Mover 1))
-(define "DidNotCaptured"  (= (value Player Prev) 1))
-(define "RememberSiteWithPossibleCapture"  
+(define "DidNotCaptured" (= (value Player Prev) 1))
+(define "RememberSiteWithPossibleCapture" 
     (set Pending 
         (sites From
             (or 
                 (forEach Piece "Disc" 
                     ("HopDisc")
-               ) 
+                ) 
                 (forEach Piece "DiscDouble" 
                     (move
                         Hop
@@ -56,13 +56,13 @@
                             after:9
                             if:("IsEnemyAt" (between)) 
                             (apply (remove (between)))
-                       )
+                        )
                         (to if:(is Empty (to)))
-                   )
-               )
-           )
-       )
-   )
+                    )
+                )
+            )
+        )
+    )
 )
 
 (define "SitesWithPossibleCaptureInPreviousTurn" (sites Pending))
@@ -72,28 +72,28 @@
         Select 
         (from #1
             if:(!= (what at:(from)) 0)
-       )
+        )
         (then 
-            (and  {
+            (and {
                 (remove (last To)) 
                 (moveAgain) 
                 (set Value Prev 0)
             })
-       )
-   )
+        )
+    )
 )
 
 (define "ShouldCapturedButMoved" 
     (and 
-        (is In (last From) ("SitesWithPossibleCaptureInPreviousTurn"))  
+        (is In (last From) ("SitesWithPossibleCaptureInPreviousTurn")) 
         (is In (last From) (sites Empty))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (game "La Dama" 
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 5) use:Vertex)
         (piece "Disc" Each
@@ -104,19 +104,19 @@
                     (directions {Rightward Leftward Forwards} of:All) 
                     (to if:(is Empty (to)))
                     (then ("HasNotCaptured"))
-               )
+                )
                 (then ("PromoteIfCornersReached"))
-           )		
-       )
+            )		
+        )
         (piece "DiscDouble" Each
             (or
                 ("HopDiscDouble") 
                 (move Slide All (then ("HasNotCaptured")))
-           )		
-       )
+            )		
+        )
         (regions P1 (intersection (sites Corners) (sites Bottom)))
         (regions P2 (intersection (sites Corners) (sites Top)))
-    })  
+    }) 
     
     (rules 
         (start { 
@@ -130,19 +130,19 @@
                     (or
                         (if ("ShouldCapturedButMoved") 
                             ("HuffOnePieceOf" (last To))
-                       )
+                        )
                         ("HuffOnePieceOf" ("SitesWithPossibleCaptureInPreviousTurn"))
-                   )
-               )
+                    )
+                )
                 (do 
                     ("RememberSiteWithPossibleCapture") 
                     next:(forEach Piece)
-               )
-           )
-       ) 
+                )
+            )
+        ) 
         
         (end (if (no Pieces Mover) (result Next Win))) 
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -166,9 +166,9 @@
         (version "1.3.4")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in Canary Islands, from around 1911 to 1994.")
+        (origin "This game was played in Canary Islands, from around 1911 to 1994.")
         }
-   )
+    )
     
     (graphics {
         (show Edges Hidden)

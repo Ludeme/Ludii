@@ -2,8 +2,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Nsumbi"  
-    (players 2)  
+(game "Nsumbi" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -11,13 +11,13 @@
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" "16,E,N1,W" loop:True P2)
             }
-       )
-        (regions "Home" P1 (sites Track "Track1"))                                     // P1 Home
-        (regions "Home" P2 (sites Track "Track2"))                                     // P2 home
-        (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom)))        // P1 Home
-        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))           // P2 home
+        )
+        (regions "Home" P1 (sites Track "Track1"))                   // P1 Home
+        (regions "Home" P2 (sites Track "Track2"))                   // P2 home
+        (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom)))    // P1 Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))      // P2 home
         (piece "Seed" Shared)
-    })  
+    }) 
     (rules 
         
         (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home"))))
@@ -31,12 +31,12 @@
                         (sow
                             "Track"
                             owner:(mover)
-                       )
-                   )
-               )		
-           )
+                        )
+                    )
+                )		
+            )
             (nextPhase Mover "Playing")
-       )
+        )
         (phase "Playing"
             (play 
                 (move Select
@@ -45,9 +45,9 @@
                             ("SameTurn") 
                             "LastHoleSowed" 
                             (sites Mover) 
-                       ) 
+                        ) 
                         if:(< 1 (count at:(from)))
-                   )
+                    )
                     (then 
                         (sow
                             "Track"
@@ -64,33 +64,33 @@
                                         (from ("OppositePit" (to))) 
                                         (to (last From)) 
                                         count:(count at:("OppositePit" (to)))
-                                   ) 
+                                    ) 
                                     (fromTo 
                                         (from ("OppositeOuterPit" (to))) 
                                         (to (last From)) 
                                         count:(count at:("OppositeOuterPit" (to)))
-                                   ) 
+                                    ) 
                                     (sow
                                         (last From)
                                         count:(+ (count at:("OppositePit" (to))) (count at:("OppositeOuterPit" (to))))
                                         "Track"
                                         owner:(mover)
                                         origin:True
-                                   )
+                                    )
                                 })
                                 (if (< 1 (count at:(to)))
                                     (moveAgain)
-                               )
-                           )
-                       )
-                   )
-               )		
-           )		
-       )
+                                )
+                            )
+                        )
+                    )
+                )		
+            )		
+        )
         }
         
         (end ("BlockWin"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -108,7 +108,7 @@
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

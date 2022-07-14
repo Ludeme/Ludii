@@ -4,15 +4,15 @@
             (range 1 9)
             if:#1
             (apply (remove (between)))
-       )
+        )
         (to if:(is Empty (to)))
-   )
+    )
 )
 
 //-------------------------------------------------------------------------------
 
-(game "Merimueng-rimueng"  
-    (players 2)  
+(game "Merimueng-rimueng" 
+    (players 2) 
     (equipment { 
         ("AlquerqueBoardWithBottomAndTopTriangles")
         (hand P2) 
@@ -21,9 +21,9 @@
                 ("StepToEmpty")
                 ("BigHop" ("IsEnemyAt" (between))) 
             })
-       ) 
+        ) 
         (piece "Sheep" P2 "StepToEmpty") 
-    })  
+    }) 
     (rules 
         (start {
             (place "Sheep2" (difference (expand (sites Centre)) (centrePoint)))
@@ -41,10 +41,10 @@
                 (and 
                     (not ("HandEmpty" P2)) 
                     (< (count Sites in:(sites Occupied by:P2 container:"Board")) 8)
-               ) 
+                ) 
                 "Placement"
-           )
-       )
+            )
+        )
         
         (phase "Placement"
             (play 
@@ -52,18 +52,18 @@
                     (from (handSite Mover)) 
                     (to (sites Empty))
                     (then (moveAgain))
-               ) 
-           )
+                ) 
+            )
             (nextPhase 
                 (or 
                     ("HandEmpty" P2) 
                     (= (count Sites in:(sites Occupied by:P2 container:"Board")) 8)
-               ) 
+                ) 
                 "Movement"
-           )
-       )
+            )
+        )
         }
-   )
+    )
 )
 
 //-------------------------------------------------------------------------------
@@ -79,9 +79,9 @@
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in Sumatra, around 1906.")
+        (origin "This game was played in Sumatra, around 1906.")
         }
-   )
+    )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})

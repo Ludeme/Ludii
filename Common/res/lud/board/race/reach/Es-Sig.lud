@@ -31,11 +31,11 @@
                 if:(or
                     (is Empty (site))
                     (and ("IsSingletonStack" (site)) (= (site) (where "Ghoula" Neutral)))
-               )
-           )
+                )
+            )
             (is Empty ("ExternalSite"))
-       )
-   )
+        )
+    )
 )
 
 (define "MoveGhoula"
@@ -44,12 +44,12 @@
             (move
                 (from (where "Ghoula" Neutral) level:(where Level "Ghoula" Neutral at:(where "Ghoula" Neutral)))
                 (to ("GhoulaOnTrack" "GhoulaTrack" "ThrowGhoulaValue"))
-           )
+            )
             (move
                 (from (where "Ghoula" Neutral) level:(where Level "Ghoula" Neutral at:(where "Ghoula" Neutral)))
                 (to ("GhoulaOnTrack" "ReverseGhoulaTrack" "ThrowGhoulaValue"))
-           )
-       )
+            )
+        )
         (move
             (from (where "Ghoula" Neutral) level:(where Level "Ghoula" Neutral at:(where "Ghoula" Neutral)))
             (to ("GhoulaOnTrack" "ReverseGhoulaTrack" "ThrowGhoulaValue"))
@@ -57,18 +57,18 @@
                 (if (= (last From) ("KillingSite"))
                     (forEach Level (last From) FromTop
                         (remove (last From) level:(level))
-                   )
+                    )
                     (forEach Level (last From) FromTop
                         (fromTo
                             (from (last From) level:(level))
                             (to (last To))
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         (then (set Var 0))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -88,7 +88,7 @@
             (track "GhoulaTrack" "19,W,N1,E,N1,W,N1,E,N1,W,N1,E,N1,W" directed:True)
             (track "ReverseGhoulaTrack" "50,12,E,S1,W,S1,E,S1,W,S1,E,S1,W,S1,E" directed:True)
             }
-       )
+        )
         (piece "Ghoula" Neutral)
         (piece "Stick" Each
             (if (= (from) ("TopRightSquare"))
@@ -99,18 +99,18 @@
                         (then
                             (forEach Level (last To)
                                 (set State at:(last To) level:(level) 0)
-                           )
-                       )
-                   )
+                            )
+                        )
+                    )
                     (if ("Sig")
                         (move Select
                             (from (from) level:(level))
                             (then 
                                 (set State at:(last To) level:(last LevelTo) (+ 1 (state at:(last To) level:(last LevelTo))))
-                           )
-                       )
-                   )
-               )
+                            )
+                        )
+                    )
+                )
                 (if (= (from) ("CentralSquare"))
                     (if (= (state at:(from) level:(level)) 11)
                         (move 
@@ -119,44 +119,44 @@
                             (then
                                 (forEach Level (last To)
                                     (set State at:(last To) level:(level) 0)
-                               )
-                           )
-                       )
+                                )
+                            )
+                        )
                         (if ("Sig")
                             (move Select
                                 (from (from) level:(level))
                                 (then 
                                     (set State at:(last To) level:(last LevelTo) (+ 1 (state at:(last To) level:(last LevelTo))))
-                               )
-                           )
-                       )
-                   )
+                                )
+                            )
+                        )
+                    )
                     (if (and (!= (from) ("BegginingFinalTrack")) (is In (from) (sites Track "Track")))
                         (move
                             (from (from) level:(level)
                                 if:(if ("ActivatedPiece" (from) (level))
                                     True
                                     ("Sig")
-                               )
-                           )
+                                )
+                            )
                             (to
                                 ("SiteToMoveOnTrack" "Track" ("ThrowValue"))
                                 if:True
-                           )
+                            )
                             (then
                                 (if (not ("ActivatedPiece" (last To) (topLevel at:(last To))))
                                     ("ActivePiece" (last To) (topLevel at:(last To)))
-                               )
-                           )
-                       )
+                                )
+                            )
+                        )
                         (if (is In (from) (sites Track "ExtensionTrack"))
                             (or {
                                 (if (and (!= (from) ("FinalSite")) ("Sig"))
                                     (move
                                         (from (from) level:(level))
                                         (to ("SiteToMoveOnTrack" "ExtensionTrack" 1))
-                                   )
-                               )
+                                    )
+                                )
                                 (if (= (from) ("FinalSite"))
                                     (move Pass
                                         (then
@@ -164,32 +164,32 @@
                                                 (and
                                                     (moveAgain)
                                                     (set Var 1)
-                                               )
-                                           )
-                                       )
-                                   )
-                               )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
                             })
-                       )
-                   )
-               )
+                        )
+                    )
+                )
                 (then
                     (if (and (= (last To) ("FinalSite")) (!= (last From) ("FinalSite")))
                         (if (!= Undefined (var "ScoreToGet"))
                             (and
                                 (set Score Mover (- (var "ScoreToGet") 1))
                                 (set Var "ScoreToGet" (- (var "ScoreToGet") 1))
-                           )
+                            )
                             (and
                                 (set Score Mover (count Players))
                                 (set Var "ScoreToGet" (count Players))
-                           )
-                       )
-                   )
-               )
-           )
+                            )
+                        )
+                    )
+                )
+            )
             maxState:12
-       )
+        )
         ("StickDice" 4)
         (map "Throw" {(pair 0 4) (pair 1 3) (pair 2 0) (pair 3 1) (pair 4 6)})
         (map "ThrowGhoula" {(pair 0 4) (pair 1 6) (pair 2 4) (pair 3 2) (pair 4 6)})
@@ -201,19 +201,19 @@
                 (if (> (var) 0)
                     ("MoveGhoula")
                     (if (or (= (where "Stick" Mover) ("FinalSite")) (!= 0 ("ThrowValue"))) (forEach Piece))
-               )
-           )
-       )
+                )
+            )
+        )
         (end {
             (forEach Player
                 if:(no Pieces Player) 
                 (result Player Loss)
-           )
+            )
             (if ("GhoulaPhaseDone")
                 (byScore)
-           )
+            )
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -224,37 +224,37 @@
         <
         (place Stack items:{"Ghoula0" "Stick2" "Stick1"} ("ExternalSite"))
         >
-    "The game has 2 players.")   
-    (item "3" <3>  
+    "The game has 2 players.")  
+    (item "3" <3> 
         <
         (place Stack items:{"Ghoula0" "Stick3" "Stick2" "Stick1"} ("ExternalSite"))
         >
-    "The game has 3 players.")  
-    (item "4" <4>  
+    "The game has 3 players.") 
+    (item "4" <4> 
         <
         (place Stack items:{"Ghoula0""Stick4" "Stick3" "Stick2" "Stick1"} ("ExternalSite"))
         >
-    "The game has 4 players.")*  
-    (item "5" <5>  
+    "The game has 4 players.")* 
+    (item "5" <5> 
         <
         (place Stack items:{"Ghoula0" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"} ("ExternalSite"))
         >
-    "The game has 5 players.")  
-    (item "6" <6>  
+    "The game has 5 players.") 
+    (item "6" <6> 
         <
         (place Stack items:{"Ghoula0" "Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"} ("ExternalSite"))
         >
-    "The game has 6 players.")  
-    (item "7" <7>  
+    "The game has 6 players.") 
+    (item "7" <7> 
         <
         (place Stack items:{"Ghoula0" "Stick7" "Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"} ("ExternalSite"))
         >
-    "The game has 7 players.")  
-    (item "8" <8>  
+    "The game has 7 players.") 
+    (item "8" <8> 
         <
         (place Stack items:{"Ghoula0" "Stick8" "Stick7" "Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"} ("ExternalSite"))
         >
-    "The game has 8 players.")  
+    "The game has 8 players.") 
 })
 
 //------------------------------------------------------------------------------
@@ -265,7 +265,7 @@
         "Players/4"
         }
         variations:{"Players/2" "Players/3" "Players/5" "Players/6" "Players/7" "Players/8"}
-   )*
+    )*
     
 })
 
@@ -283,9 +283,9 @@
         (version "1.3.4")
         (classification "board/race/reach")
         (credit "Eric Piette")
-        (origin  "This game was played in Tunisia, around 1988.")
+        (origin "This game was played in Tunisia, around 1988.")
         }
-   )
+    )
     
     (graphics {
         (piece Colour "Die" state:1 fillColour:(colour Green))

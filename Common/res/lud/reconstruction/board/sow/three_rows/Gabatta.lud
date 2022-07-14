@@ -2,17 +2,17 @@
 
 //------------------------------------------------------------------------------
 
-(game "Gabatta"  
-    (players 2)  
+(game "Gabatta" 
+    (players 2) 
     (equipment { 
         (mancalaBoard 3 "Columns")
         (piece "Seed" Shared)
-    })  
+    }) 
     (rules 
         (start (set Count 3 to:(difference (sites Board) (union (sites Right) (sites Left)))))
         (play [#])
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -27,9 +27,9 @@
         (version "1.3.4")
         (classification "board/sow/three rows/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Eritrea, around 1893.")
+        (origin "This game was played in Eritrea, around 1893.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

@@ -2,7 +2,7 @@
     (if (= Undefined (value Player Mover)) 
         1
         (value Player Mover)
-   )
+    )
 )
 
 (define "PieceMovement"
@@ -11,7 +11,7 @@
         (between 
             (max ("RemainingMove"))
             if:(not ("IsEnemyAt" (between)))
-       )
+        )
         (to
             if:("IsEnemyAt" (to))
             (apply
@@ -19,20 +19,20 @@
                 (if ("IsEnemyAt" (to))
                     (remove (to)
                         (then (set Value Next (+ (value Player Next) 1)))
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (then
             (if (<= (- ("RemainingMove") (count Steps (last From) (last To))) 0)
                 (set Value Mover (- 7 (count Pieces Mover)))
                 (and
                     (set Value Mover (- ("RemainingMove") (count Steps (last From) (last To))))
                     (moveAgain)
-               )
-           )
-       )
-   )		
+                )
+            )
+        )
+    )		
 )
 
 //------------------------------------------------------------------------------
@@ -53,15 +53,15 @@
             (if ("SameTurn")
                 ("PieceMovement" (from (last To)))
                 (forEach Piece)
-           )
-       )
+            )
+        )
         (end 
             (if 
                 (or (and (= 1 (count Pieces Next)) (= 6 (count Pieces Mover))) (no Pieces Next))
                 (result Mover Win)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -90,6 +90,6 @@
         (credit "Eric Piette")
         (date "2001")
         }
-   )
+    )
     
 )

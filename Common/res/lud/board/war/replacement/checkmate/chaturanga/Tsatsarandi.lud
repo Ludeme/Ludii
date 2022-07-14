@@ -2,8 +2,8 @@
     (apply 
         (remove 
             (to) 
-       )
-   ) 
+        )
+    ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -13,8 +13,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-       )
-   )
+        )
+    )
 )
 
 (define "NextCanNotMove"
@@ -31,8 +31,8 @@
             (or 
                 "StepForwardToEmpty" 
                 "CaptureForwardDiagonal"
-           )		
-       )
+            )		
+        )
         (piece "Rook"
             (move
                 Slide 
@@ -40,18 +40,18 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )		
-       )
+                ) 
+            )		
+        )
         (piece "King_noCross"
             (move
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-               )
-           )		
-       )
+                )
+            )		
+        )
         (piece "Bishop_noCross"
             (move 
                 Hop 
@@ -61,11 +61,11 @@
                     if:(or 
                         (is Empty (to)) 
                         ("IsEnemyAt" (to))
-                   ) 
+                    ) 
                     "CaptureToPiece"
-               )
-           )		
-       )
+                )
+            )		
+        )
         (piece "Knight"
             (move 
                 Leap 
@@ -73,9 +73,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-               ) 
-           )		
-       )
+                ) 
+            )		
+        )
         (piece "Ferz_noCross"
             (move
                 Step 
@@ -83,9 +83,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-               )
-           )		
-       )
+                )
+            )		
+        )
     })
     (rules 
         (start {
@@ -98,7 +98,7 @@
         })
         (play 
             (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-       )
+        )
         
         (end
             {
@@ -106,12 +106,12 @@
                 (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
+            ) 
             }
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -127,9 +127,9 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in Nigeria, from around 1926 to 1936.")
+        (origin "This game was played in Nigeria, from around 1926 to 1936.")
         }
-   )
+    )
     
     (graphics {
         (show Check "King")
@@ -144,5 +144,5 @@
     
     (ai
         "Tsatsarandi_ai"
-   )
+    )
 )

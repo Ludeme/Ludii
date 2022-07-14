@@ -4,13 +4,13 @@
     (trackSite FirstSite 
         from:(trackSite FirstSite if:(not (is Mover (who at:(to)))))
         if:(is Mover (who at:(to)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (game "Ngaya"
-    (players ("NumPlayers"))  
+    (players ("NumPlayers")) 
     (equipment { 
         (board 
             (concentric {"NumHolesCircle"}) 
@@ -18,9 +18,9 @@
             (track "Track" [#] loop:True) // Circuit track.
             }
             use:Vertex
-       )
+        )
         (piece "Seed" Each)
-    })  
+    }) 
     
     (rules
         
@@ -31,22 +31,22 @@
                 Select 
                 (from 
                     ("LeftMost") 
-               )
+                )
                 (then
                     (sow
                         [#]	// When the final counter lands in an empty hole, the player moves again
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         
         (end 
             (forEach NonMover 
                 if:(no Pieces Player) 
                 (result Player Loss)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -56,7 +56,7 @@
     (info
         {
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

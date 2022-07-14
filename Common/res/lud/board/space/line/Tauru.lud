@@ -3,8 +3,8 @@
         (if 
             (is Line 3) 
             (moveAgain)
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -20,16 +20,16 @@
                 Step Orthogonal
                 (to if:(is Empty (to))) 
                 "IfLine3MoveAgain" 
-           )
-       )
+            )
+        )
         }
-   )
+    )
     (rules
         (start 
             {
             (place "Marker" "Hand" count:12) 
             }
-       )
+        )
         
         phases:{
         (phase "Placement"
@@ -38,16 +38,16 @@
                     (move
                         Remove
                         (sites Occupied by:Next container:"Board")
-                   )
+                    )
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty))
                         "IfLine3MoveAgain" 
-                   ) 
-               )
-           )
+                    ) 
+                )
+            )
             (nextPhase ("HandEmpty" P2) "Movement")
-       )
+        )
         
         (phase "Movement"
             (play 
@@ -55,15 +55,15 @@
                     (move
                         Remove
                         (sites Occupied by:Next container:"Board")
-                   )
+                    )
                     (forEach Piece)
-               )
-           )
-       )
+                )
+            )
+        )
         }
         
         (end (if (<= (count Pieces Next) 2) (result Mover Win)))
-   )	
+    )	
 )
 
 //------------------------------------------------------------------------------
@@ -80,9 +80,9 @@
         (version "1.3.4")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in Benin, around 1955.")
+        (origin "This game was played in Benin, around 1955.")
         }
-   )
+    )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
@@ -91,5 +91,5 @@
     })
     (ai
         "Tauru_ai"
-   )
+    )
 )

@@ -11,23 +11,23 @@
                 {40 50} {50 60} {60 70}
                 {70 80} {80 90} {90 100} {100 110}
                 }
-           )
+            )
             use:Vertex
-       )
+        )
         (piece "Marker" Each (move [#]))
     })
     (rules
         (start {
             (place "Marker1" 
                 (expand (intersection (sites Bottom) (sites Left)) steps:9)
-           )
+            )
             (place "Marker2" 
                 (expand (intersection (sites Top) (sites Right)) steps:9)
-           )
+            )
         })
         (play [#])
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -44,9 +44,9 @@
         (version "1.3.2")
         (classification "board/war/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Arizona, from around 1889 to 1890.")
+        (origin "This game was played in Arizona, from around 1889 to 1890.")
         }
-   )
+    )
     
     (graphics {
         (show Edges Diagonal Hidden)

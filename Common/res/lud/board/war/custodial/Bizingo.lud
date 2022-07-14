@@ -5,10 +5,10 @@
         (between 
             #1
             (apply (remove (between)))
-       )
+        )
         (to if:("IsFriendAt" (to))) 
         #2
-   )
+    )
 )
 
 (define "SurroundedThrall" 
@@ -19,11 +19,11 @@
                 (and
                     (is In (between) (sites Outer)) 
                     (= 1 (phase of:(between))) 
-               )
-           )
+                )
+            )
             (= (what at:(between)) (id "Thrall" Next))
-       ) 
-   )
+        ) 
+    )
 )
 
 (define "SurroundedJarl" 
@@ -34,12 +34,12 @@
                 (and
                     (is In (between) (sites Outer)) 
                     (= 1 (phase of:(between))) 
-               )
-           )
+                )
+            )
             (= (what at:(between)) (id "Jarl" Next))
-       ) 
+        ) 
         with:(piece (id "Jarl" Mover))
-   )
+    )
 )
 
 (define "SurroundedEnemyOnOuterEdge" 
@@ -50,9 +50,9 @@
             (= 0 (phase of:(between))) 
             (is Enemy (what at:(between)))
             }
-       ) 
+        ) 
         with:(piece (id "Jarl" Mover))
-   )
+    )
 )
 
 (define "SiteSurrounded"
@@ -61,9 +61,9 @@
             in:(intersection 
                 (sites Around (last To) Orthogonal) 
                 (sites Occupied by:Next)
-           )
-       )
-   )	
+            )
+        )
+    )	
 )
 
 (define "SuicideSurrounded" 
@@ -75,14 +75,14 @@
                     ("SurroundedThrall")
                     ("SurroundedJarl")
                     }
-               )
-           )
-       )
+                )
+            )
+        )
         (if 
             ("SiteSurrounded")
             (remove (last To))
-       )
-   )
+        )
+    )
 )
 
 (define "PieceMove"
@@ -91,8 +91,8 @@
             if:(and 
                 (is Empty (to)) 
                 (= (phase of:(from)) (phase of:(to)))
-           )
-       )
+            )
+        )
         (then
             (and
                 {
@@ -101,9 +101,9 @@
                 ("SurroundedThrall")
                 ("SurroundedJarl")
                 }
-           )
-       )
-   )	
+            )
+        )
+    )	
 )
 
 //------------------------------------------------------------------------------
@@ -115,11 +115,11 @@
             (remove
                 (tri 13)
                 cells:{ 0 1 13 25 11 12 24 36 165..168}
-           )
-       )
+            )
+        )
         (piece "Thrall" Each ("PieceMove"))
         (piece "Jarl" Each ("PieceMove"))
-    })    
+    })  
     (rules 
         (start
             {
@@ -128,18 +128,18 @@
             (place "Thrall2" (sites {137..139 126..129 113..117 98 100 101 103}))
             (place "Jarl2" (sites {99 102}))
             }
-       )
+        )
         (play (forEach Piece)) 
         (end 
             (forEach Player 
                 if:(<= (count Pieces Player) 2) 
                 (result Player Loss)
-           )
-       ) 
-   )
+            )
+        ) 
+    )
 )
 
-(metadata    
+(metadata  
     (info
         {
         (description "Bizingo is a two-player strategy board game created sometime in the 1850s in the United States. Two opposing armies on a triangular grid face off against one another. ")
@@ -160,12 +160,12 @@
         (credit "Eric Piette")
         (date "1850")
         }
-   )
+    )
     
     (graphics {
         (board Style Chess)
     })
     (ai
         "Bizingo_ai"
-   )
+    )
 )

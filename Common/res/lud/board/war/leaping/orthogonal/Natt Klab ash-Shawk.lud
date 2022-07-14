@@ -6,8 +6,8 @@
             (or
                 ("StepOrthogonalToEmpty")
                 ("HopOrthogonalCapture")
-           )
-       )
+            )
+        )
     })
     (rules 
         (start { 
@@ -16,7 +16,7 @@
         })
         (play (forEach Piece))
         (end (if (no Pieces Next) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -32,9 +32,9 @@
         (version "1.3.4")
         (classification "board/war/leaping/orthogonal")
         (credit "Eric Piette")
-        (origin  "This game was played in Palestine, around 1951.")
+        (origin "This game was played in Palestine, around 1951.")
         }
-   )
+    )
     
     (graphics {
         (show Symbol "thinCross" 12 scale:0.9)
@@ -45,6 +45,6 @@
     
     (ai
         "Natt Klab ash-Shawk_ai"
-   )
+    )
 )
 

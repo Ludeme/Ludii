@@ -6,8 +6,8 @@
     (apply 
         (if ("IsEnemyAt" (to))
             (remove (to))
-       )
-   ) 
+        )
+    ) 
 )
 
 (define "EnemyNotImmumned" 
@@ -17,8 +17,8 @@
                 (= (what at:(to)) (id "Pawn" Next))
                 (is In (to) (sites Mover))
             })
-       )
-   )
+        )
+    )
 )
 
 (define "CaptureForwardDiagonal"
@@ -28,8 +28,8 @@
         (to 
             if:("EnemyNotImmumned") 
             (apply (remove (to)))
-       )
-   )
+        )
+    )
 )
 
 (define "NotSpecialPawn" 
@@ -50,7 +50,7 @@
     (and 
         (is In (last To) (sites Next))
         (= 2 (state at:(last To)))
-   )
+    )
 )
 
 (define "ThirdPromotionOfSpecialPawn" 
@@ -61,8 +61,8 @@
             (sites Board) 
             (if (= (if (is Mover P1) 11 12) (value Piece at:(site)))
                 (set Value at:(site) "ValueOfPawnKingPower")
-           )
-       )
+            )
+        )
     })
 )
 
@@ -72,8 +72,8 @@
         if:(if (is Mover P1)
             (and (is Enemy (who at:(ahead (site) NE))) (is Enemy (who at:(ahead (site) NW))))
             (and (is Enemy (who at:(ahead (site) SE))) (is Enemy (who at:(ahead (site) SW))))
-       )
-   )
+        )
+    )
 )
 
 (define "SiteWithSpecialPawnAndFirstPromotion" 
@@ -82,15 +82,15 @@
         if:(and 
             (= (what at:(site)) (id "Pawn" Mover)) 
             (<= (value Piece at:(site)) 2)
-       )
-   )
+        )
+    )
 )
 
 (define "MakePawnReadyForSecondPromotion" 
     (and
         (set Value at:(last To) (if (is Mover P1) 11 12))
         (set State at:(last To) 1)
-   )
+    )
 )
 
 (define "SiteWithSpecialPawnAndSecondPromotion" 
@@ -101,14 +101,14 @@
             (or (= (value Piece at:(site)) 11) (= (value Piece at:(site)) 12))
             (= (state at:(site)) 1)
         })
-   )
+    )
 )
 
 (define "ToEmptyInitSiteShahPawn" 
     (to 
         (mapEntry "InitShahPawn" Mover)
         if:(is Empty (to))
-   )
+    )
 )
 
 (define "MakePawnReadyForThirdPromotion" 
@@ -119,7 +119,7 @@
     (difference 
         (sites Occupied by:Mover container:"Board")
         (sites Occupied by:Mover container:"Board" component:"King_noCross")
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -133,7 +133,7 @@
                 (shift 11 1 (square 1))
                 (shift -1 9 (square 1))
             })
-       )
+        )
         (piece "Pawn" Each
             (if (= "ValueOfPawnKingPower" (value Piece at:(from)))
                 (move
@@ -141,8 +141,8 @@
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece"
-                   ) 
-               )
+                    ) 
+                )
                 (or
                     "StepForwardToEmpty" 
                     "CaptureForwardDiagonal"	
@@ -151,12 +151,12 @@
                             ("PromoteToAssignedPiece")
                             (if ("HasToDoThirdPromotion")
                                 ("ThirdPromotionOfSpecialPawn")
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         
         (piece "Wazir" Each
             (move Hop Orthogonal 
@@ -165,11 +165,11 @@
                     if:(or 
                         (is Empty (to)) 
                         ("EnemyNotImmumned")
-                   ) 
+                    ) 
                     (apply (remove (to)))
-               ) 
-           )		
-       )
+                ) 
+            )		
+        )
         
         (piece "Knight_rotated" Each
             (move
@@ -178,9 +178,9 @@
                 (to 
                     if:(or (is Empty (to)) ("EnemyNotImmumned")) 
                     "CaptureToPiece"
-               ) 
-           )		
-       )
+                ) 
+            )		
+        )
         
         (piece "Elephant" Each
             (move Hop Diagonal 
@@ -189,11 +189,11 @@
                     if:(or 
                         (is Empty (to)) 
                         ("EnemyNotImmumned")
-                   ) 
+                    ) 
                     (apply (remove (to)))
-               ) 
-           )		
-       )
+                ) 
+            )		
+        )
         
         (piece "Queen" Each
             (move
@@ -202,9 +202,9 @@
                 (to 
                     if:(or (is Empty (to)) ("EnemyNotImmumned")) 
                     "CaptureToPiece"
-               ) 
-           )		
-       )
+                ) 
+            )		
+        )
         
         (piece "King_noCross" Each
             (move
@@ -219,14 +219,14 @@
                                 (and 
                                     (= (to) (mapEntry "ExtraSquare" Next))
                                     (< (value Piece at:(to)) 23)
-                               )
-                           )
-                       )
-                   ) 
+                                )
+                            )
+                        )
+                    ) 
                     "CaptureToPiece"
-               ) 
-           )		
-       )
+                ) 
+            )		
+        )
         
         (piece "Amazon" Each
             (move
@@ -235,9 +235,9 @@
                 (to 
                     if:(or (is Empty (to)) ("EnemyNotImmumned")) 
                     "CaptureToPiece"
-               ) 
-           )		
-       )
+                ) 
+            )		
+        )
         
         (piece "Giraffe" Each
             (forEach Direction 
@@ -256,16 +256,16 @@
                                             (to 
                                                 if:("EnemyNotImmumned")
                                                 "CaptureToPiece"
-                                           ) 
-                                       )
-                                   )
-                               )
-                           )
+                                            ) 
+                                        )
+                                    )
+                                )
+                            )
                         })
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (piece "Bishop_noCross" Each
             (move
                 Slide 
@@ -274,9 +274,9 @@
                 (to 
                     if:("EnemyNotImmumned")
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         
         (piece "Knight" Each
             (move
@@ -285,9 +285,9 @@
                 (to 
                     if:(or (is Empty (to)) ("EnemyNotImmumned")) 
                     "CaptureToPiece"
-               ) 
-           )		
-       )
+                ) 
+            )		
+        )
         
         (piece "Rook" Each
             (move
@@ -296,9 +296,9 @@
                 (to 
                     if:("EnemyNotImmumned") 
                     "CaptureToPiece"
-               ) 
-           )		
-       )
+                ) 
+            )		
+        )
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         (map "InitShahPawn" {(pair P1 "G3") (pair P2 "G9")})
@@ -346,44 +346,44 @@
                         (from ("SiteWithSpecialPawnAndFirstPromotion"))
                         (to ("SitePawnCanCaptureTwice"))
                         (then ("MakePawnReadyForSecondPromotion"))
-                   )
+                    )
                     (move // To move a Baidaq al-Bayadiq in the second promotion to the starting Shah's Baidaq.
                         (from ("SiteWithSpecialPawnAndSecondPromotion"))
                         ("ToEmptyInitSiteShahPawn")
                         (then ("MakePawnReadyForThirdPromotion"))
-                   )
+                    )
                     (if (and (!= (value Player Mover) 1)
                             ("IsInCheck" "King_noCross" Mover)	
-                       )
+                        )
                         (forEach Site ("AnyOwnedSitesOnBoardExceptKing")
                             (move Swap Pieces (where "King_noCross" Mover) (site) (then (set Value Mover 1)))
-                       )
-                   )
+                        )
+                    )
                     (forEach Piece)
                 })
                 ifAfterwards:(and (not ("NextCanNotMove")) (not ("IsInCheck" "King_noCross" Mover)))
-           )
-       )
-        (end {    
-            (if  
+            )
+        )
+        (end {  
+            (if 
                 (no Moves Next)
                 (result Mover Win)
-           )
+            )
             (if (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           )
+            )
             (if 
                 (or 
                     (= (what at:(mapEntry "ExtraSquare" P1)) (id "King_noCross" P2))
                     (= (what at:(mapEntry "ExtraSquare" P2)) (id "King_noCross" P1))
-               )
+                )
                 (result Mover Draw)
-           )
+            )
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -394,15 +394,15 @@
         {
         (description "Shatranj al-Kabir is a type of Shatranj that is described in several manuscripts from medieval Southwest Asia. They agree that this was a favorite game of Timur, also known as Tamerlane. It is a larger version of Shatranj with more pieces, a larger board, and the use of citadels to force a draw.")
         (aliases {"Shatranj Kamil" "Great Chess" "Complete Chess" "Perfect Chess" "Tamerlane Chess"})
-        (rules "11x10 board, with a twelfth space on the right of the second row of eleven on each side. Each player starts with the following pieces, with their specialized moves: Shah (x1): moves orthogonally or diagonally one space; Wazir (x1): moves one space orthogonally; Firzan (x1) moves one space diagonally; Dabbaba (x2): jumps orthogonally to the third space; Tali'as (x2): moves diagonally two or more spaces; Jamal (x2): jumps diagonally one space then two orthogonally in the same direction; Zurafa (x2): moves diagonally one space then orthogonally three or more spaces; Pil (x2) jumps two spaces diagonally; Asb (x2): jumps one space diagonally and one space orthogonally in the same direction; Rukh(x2): moves any number of spaces orthogonally; Baidaq (x10); move orthogonally forward one space or diagonally forward one space to capture. Each Baidaq is assigned to one of the piece types and promotes to that piece. They are placed in the third rank, with the Baidaq al-Bayadiq on the leftmost square,  with the following promotion assignments for each regular Baidaq proceeding from left to right beginning on the second square from the left: Dabbaba, Jamal, Pil, Firzan, Shah, Wazir, Zurafa, Tali'as, Asb, Rukh.  Baidaq al-Bayadiq (x1), moves like a Baidaq, but does not promote immediately when it reaches the opposite edge. Instead, it waits there, immune to capture, until a situation arises where two of the opponent's pieces could theoretically be taken by a pawn. The Baidaq al-Bayadiq is then moved to that spot, any piece (including the player's own) being moved from that spot, and then the capture being made on the next turn. It then proceeds as before, and if it is to be promoted again, it becomes a Shah's Baidaq, and is replaced on the appropriate starting position. If it is promoted a third time, it becomes Shah Masnu'a, and the original Shah's Baidaq becomes Shahzada, and both move like the Shah.  If the Shah can be taken on the next turn, it is in Check and must not be in Check at the beginning of the next turn. If a Shah is not in Check but no legal moves are available, it is a Stalemate and the opponent wins. If the Shah is in Check and it is impossible to escape, Checkmate occurs and the opponent wins. Once per game, a player  may swap a Shah which is in Check or Stalemate with another of the player's pieces. If the player can place the Shah in the extra space on the opponent's side of the board, the game is a draw. The Shah cannot enter the extra space if the opponent's Shah Masnu's occupies it. ")
+        (rules "11x10 board, with a twelfth space on the right of the second row of eleven on each side. Each player starts with the following pieces, with their specialized moves: Shah (x1): moves orthogonally or diagonally one space; Wazir (x1): moves one space orthogonally; Firzan (x1) moves one space diagonally; Dabbaba (x2): jumps orthogonally to the third space; Tali'as (x2): moves diagonally two or more spaces; Jamal (x2): jumps diagonally one space then two orthogonally in the same direction; Zurafa (x2): moves diagonally one space then orthogonally three or more spaces; Pil (x2) jumps two spaces diagonally; Asb (x2): jumps one space diagonally and one space orthogonally in the same direction; Rukh(x2): moves any number of spaces orthogonally; Baidaq (x10); move orthogonally forward one space or diagonally forward one space to capture. Each Baidaq is assigned to one of the piece types and promotes to that piece. They are placed in the third rank, with the Baidaq al-Bayadiq on the leftmost square, with the following promotion assignments for each regular Baidaq proceeding from left to right beginning on the second square from the left: Dabbaba, Jamal, Pil, Firzan, Shah, Wazir, Zurafa, Tali'as, Asb, Rukh. Baidaq al-Bayadiq (x1), moves like a Baidaq, but does not promote immediately when it reaches the opposite edge. Instead, it waits there, immune to capture, until a situation arises where two of the opponent's pieces could theoretically be taken by a pawn. The Baidaq al-Bayadiq is then moved to that spot, any piece (including the player's own) being moved from that spot, and then the capture being made on the next turn. It then proceeds as before, and if it is to be promoted again, it becomes a Shah's Baidaq, and is replaced on the appropriate starting position. If it is promoted a third time, it becomes Shah Masnu'a, and the original Shah's Baidaq becomes Shahzada, and both move like the Shah. If the Shah can be taken on the next turn, it is in Check and must not be in Check at the beginning of the next turn. If a Shah is not in Check but no legal moves are available, it is a Stalemate and the opponent wins. If the Shah is in Check and it is impossible to escape, Checkmate occurs and the opponent wins. Once per game, a player may swap a Shah which is in Check or Stalemate with another of the player's pieces. If the player can place the Shah in the extra space on the opponent's side of the board, the game is a draw. The Shah cannot enter the extra space if the opponent's Shah Masnu's occupies it. ")
         (source "Murray 1913: 344-345.")
         (id "294")
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in Southwest Asia, from around 1352 to 1657.")
+        (origin "This game was played in Southwest Asia, from around 1352 to 1657.")
         }
-   )
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.825)
@@ -411,6 +411,6 @@
     
     (ai
         "Shatranj al-Kabir_ai"
-   )
+    )
 )
 

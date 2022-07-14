@@ -2,8 +2,8 @@
     (apply 
         (remove 
             (to) 
-       )
-   ) 
+        )
+    ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -13,8 +13,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-       )
-   )
+        )
+    )
 )
 
 (define "NextCanNotMove"
@@ -24,7 +24,7 @@
 //------------------------------------------------------------------------------
 
 (game "Shataranja"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 10)) 
         (piece "Pawn" Each 
@@ -36,11 +36,11 @@
                         (and
                             (promote (last To) (piece "Bishop_noCross") Mover)	
                             (fromTo (from (last To)) (to (last From)))
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         (piece "Rook" Each 
             (move
                 Slide 
@@ -48,18 +48,18 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "King_noCross" Each 
             (move
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-               )
-           )
-       )
+                )
+            )
+        )
         (piece "Elephant" Each 
             (move
                 Slide 
@@ -67,9 +67,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )		
-       ) 
+                ) 
+            )		
+        ) 
         (piece "Knight" Each 
             (move
                 Leap 
@@ -77,18 +77,18 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Queen" Each 
             (move
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-               )
-           )
-       )
+                )
+            )
+        )
         (piece "Ferz_noCross" Each 
             (or
                 (move
@@ -96,27 +96,27 @@
                     (to 
                         if:("IsEnemyAt" (to)) 
                         "CaptureToPiece"
-                   ) 
-               )
+                    ) 
+                )
                 (move
                     Leap 
                     "KnightWalk" 
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece"
-                   ) 
-               )
-           )
-       )
+                    ) 
+                )
+            )
+        )
         (piece "Bishop_noCross" Each 
             (move
                 Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )		
-       ) 
+                ) 
+            )		
+        ) 
         (piece "Commoner" Each 
             (or
                 (move
@@ -125,18 +125,18 @@
                     (to 
                         if:("IsEnemyAt" (to)) 
                         "CaptureToPiece"
-                   ) 
-               )
+                    ) 
+                )
                 (move
                     Leap 
                     "KnightWalk" 
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece"
-                   ) 
-               )
-           )		
-       ) 
+                    ) 
+                )
+            )		
+        ) 
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     })
@@ -154,18 +154,18 @@
             (if (no Moves Mover)
                 (move Remove
                     (difference (sites Occupied by:Next) (where "King_noCross" Next))
-               )
+                )
                 (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-           )
-       )
+            )
+        )
         
         (end {
             (if (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
+            ) 
             (if (and {
                     (no Pieces Next "Ferz_noCross")
                     (no Pieces Next "Queen")
@@ -176,9 +176,9 @@
                     (no Pieces Next "Commoner")
                 })
                 (result Mover Win) 
-           ) 
+            ) 
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -192,14 +192,14 @@
         ")
         (rules "10x10 board. Pieces move as follows: Raja (x1): moves one space in any direction; Crown Prince (placed to the left of the Raja, x1): moves like any of the other pieces; Kotwal (Police Chief, placed to the right of the Raja, x1): Moves like the Elephant and the Vaha; Mantri (x1): moves any distance orthogonally or diagonally; Elephant (x2): moves diagonally any distance; Vaha (two placed in front of the Queens, x4): move orthogonally one space and then diagonally another, jumping over any intervening pieces; Chariot (x2): moves orthogonally any distance; Queen (placed in front of the Raja and Crown Prince, x2): move one square orthogonally or diagonally; Padati (placed in the second row, except for the central two squares, x8): move forward orthogonally one space or one space diagonally forward to capture. When a Padati reaches the opposite edge of the board, it is promoted to a Mantri and is moved immediately to the space it last moved from. An opponent's piece is captured by moving one of the player's own pieces onto the space occupied by the opponent's piece. If the Raja can be captured on the opponent's next turn, it is in check. The Raja cannot be in check at the end of the player's turn. If this is impossible, the opponent wins. When a player is reduced to only their Raja and Padati, the opponent wins. In the case of a stalemate, the player in stalemate may remove any of the opponent's pieces (except their Raja).
         ")
-        (source "Iyer 1982: 48-50,  Bock-Raming 1995: 116.")
+        (source "Iyer 1982: 48-50, Bock-Raming 1995: 116.")
         (id "1463")
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1871.")
+        (origin "This game was played in India, around 1871.")
         }
-   )
+    )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

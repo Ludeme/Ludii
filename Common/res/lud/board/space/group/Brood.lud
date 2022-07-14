@@ -1,6 +1,6 @@
 // Shape matching utility
 
-(define "IfThisRotationDo"  // compiles but sometimes misses
+(define "IfThisRotationDo" // compiles but sometimes misses
     (if
         (= 0
             (size Array
@@ -16,28 +16,28 @@
                                         from:(sites Group at:#4)
                                         to:(from)
                                         (- (* 32 #1))
-                                   )
-                               )
+                                    )
+                                )
                                 (max
                                     (results
                                         from:(sites Group at:#4)
                                         to:(from)
                                         (- (#2))
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     (results
                         from:(sites)
                         to:(from)
                         (value Piece at:(from))
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         #3
-   )
+    )
 )
 
 (define "DRow" (/ (value Piece at:(from)) 32))
@@ -52,22 +52,22 @@
         ("IsSameSizeAsShapeAtValue" #2) 
         (priority 
             {
-            ("IfThisRotationDo" ("DRow")        ("DCol") #1 #2) 
-            ("IfThisRotationDo" ("DRow")        (- "DRow" "DCol") #1 #2) 
+            ("IfThisRotationDo" ("DRow")    ("DCol") #1 #2) 
+            ("IfThisRotationDo" ("DRow")    (- "DRow" "DCol") #1 #2) 
             ("IfThisRotationDo" (- "DRow" "DCol") ("DRow") #1 #2) 
-            ("IfThisRotationDo" ("DCol")        ("DRow") #1 #2) 
-            ("IfThisRotationDo" (- "DCol")        (- "DRow" "DCol") #1 #2) 
+            ("IfThisRotationDo" ("DCol")    ("DRow") #1 #2) 
+            ("IfThisRotationDo" (- "DCol")    (- "DRow" "DCol") #1 #2) 
             ("IfThisRotationDo" (- "DCol" "DRow") ("DCol") #1 #2) 
             
-            ("IfThisRotationDo" (- "DRow")        (- "DCol") #1 #2) 
-            ("IfThisRotationDo" (- "DRow")        (- "DCol" "DRow") #1 #2) 
+            ("IfThisRotationDo" (- "DRow")    (- "DCol") #1 #2) 
+            ("IfThisRotationDo" (- "DRow")    (- "DCol" "DRow") #1 #2) 
             ("IfThisRotationDo" (- "DCol" "DRow") (- "DRow") #1 #2) 
-            ("IfThisRotationDo" (- "DCol")        (- "DRow") #1 #2) 
-            ("IfThisRotationDo" ("DCol")        (- "DCol" "DRow") #1 #2) 
+            ("IfThisRotationDo" (- "DCol")    (- "DRow") #1 #2) 
+            ("IfThisRotationDo" ("DCol")    (- "DCol" "DRow") #1 #2) 
             ("IfThisRotationDo" (- "DRow" "DCol") (- "DCol") #1 #2) 
             }
-       )
-   )
+        )
+    )
 )
 
 //----------------------------------------------
@@ -83,13 +83,13 @@
                             (+
                                 (* 32 (- (var "LastRow") (row of:(site))))
                                 (- (var "LastCol") (column of:(site)))
-                           )
-                       )
-                   )
-               )
-           )
-       )
-   )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
 )
 
 //----------------------------------
@@ -107,7 +107,7 @@
     (forEach Site
         (sites Group at:(var "KeySite")) 
         (set State at:(site) (min ("BroodSize") ("GroupSize")))
-   )
+    )
 )
 
 (define "CountShapesOf"
@@ -122,17 +122,17 @@
                         ("IfShapessMatchDo"
                             (remember Value "ShapeCount"
                                 (var "KeySite")
-                           )
+                            )
                             (var "KeySite") 
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             }
             (then ("RecordMultiplier"))
-       )
+        )
         (then (forget Value All))
-   )
+    )
 )
 
 (define "ScorePlayer"
@@ -146,12 +146,12 @@
                 (set Score Mover 0
                     (then
                         (forEach Piece (addScore Mover (state at:(from))))
-                   )
-               )     
+                    )
+                )   
                 }
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "PlaceHex"
@@ -159,12 +159,12 @@
         (forEach Site 
             (sites Occupied by:Mover)
             (set State at:(site) 0)
-       )
+        )
         next:(move Add (piece (id "Hex" Mover)) (to (sites Empty))
             (then ("RecordShapeVectorsAsValues"))
-       )
+        )
         (then ("ScorePlayer" (mover)))
-   )
+    )
 )
 
 //--------------------------------------------------------- 
@@ -181,14 +181,14 @@
         <Protocol:setup>
         (play
             <Protocol:protocol>
-       )
+        )
         (end
             (if <Protocol:endCondition>
                 (byScore)
-           )
-       )
-   )
-)   
+            )
+        )
+    )
+)  
 
 //---------------
 
@@ -220,7 +220,7 @@
             (or
                 (= 0 (count Moves))
                 (!= 0 (count MovesThisTurn))//("SameTurn")
-           )
+            )
             ("PlaceHex")
             (or
                 (move Pass)
@@ -229,14 +229,14 @@
                     ("PlaceHex")
                     } 
                     (then (moveAgain))
-               )
-           )
+                )
+            )
             (then (forget Value All))
-       )
+        )
         >
         <(all Passed)> 
         "The 12* placement protocol is currently in effect. This is the protocol described in the rules above."
-   )*
+    )*
     (item "11*" 
         <(meta (swap))> 
         <(start {(place "Disc0" (handSite Shared))})>
@@ -246,16 +246,16 @@
             (move Add (piece "Disc0")
                 (to (sites Empty))
                 (then (if (= 1 (count MovesThisTurn)) (moveAgain)))
-           )
+            )
             (or
                 ("PlaceHex")
                 (if
                     (< 1 (count Sites in:(sites Empty)))
                     (move Select (from (handSite Shared)) (then (moveAgain)))
-               )
-           )
+                )
+            )
             (then (forget Value All))
-       )
+        )
         >
         <(is Full)> 
         "With the current option, instead of the placement protocol described above, the following protocol is followed:
@@ -265,7 +265,7 @@
         On the second player's first turn, they may chose to swap sides instead of making a placement.
         The game ends when the board is full.
         "
-   )
+    )
     }
 )
 
@@ -275,7 +275,7 @@
     (info
         {
         }
-   )
+    )
     (graphics
         {
         (board Colour Phase0 (colour 100 200 250 120))
@@ -291,6 +291,6 @@
         (piece Scale Neutral .6)
         <Graphics:values>
         }
-   )
+    )
     (ai (heuristics (score)))
 )

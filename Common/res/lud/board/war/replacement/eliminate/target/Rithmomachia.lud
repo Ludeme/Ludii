@@ -2,14 +2,14 @@
     (= 
         (value Piece at:(to) level:0)
         (* (value Piece at:(from) level:(level)) (count Steps (from) (to)))
-   )
+    )
 )
 
 (define "DivisionWithDistance" 
     (= 
         (value Piece at:(to) level:0)
         (/ (value Piece at:(from) level:(level)) (count Steps (from) (to)))
-   )
+    )
 )
 
 (define "Addition"
@@ -27,26 +27,26 @@
                                         (slide (from (site) level:(level)) Diagonal 
                                             (between (exact 2) if:(is Empty (between)))
                                             (to if:("IsEnemyAt" (to)))
-                                       )
+                                        )
                                         (if (= (what at:(site) level:(level)) (id "Square" Mover))
                                             (slide (from (site) level:(level)) Orthogonal 
                                                 (between (exact 3) if:(is Empty (between)))
                                                 (to if:("IsEnemyAt" (to)))
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     (= 
                         (value Piece at:(to) level:0)
                         (+ (value Piece at:(from) level:(level)) (value Piece at:(site)))
-                   )
+                    )
                 })
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "Substraction"
@@ -64,26 +64,26 @@
                                         (slide (from (site) level:(level)) Diagonal 
                                             (between (exact 2) if:(is Empty (between)))
                                             (to if:("IsEnemyAt" (to)))
-                                       )
+                                        )
                                         (if (= (what at:(site) level:(level)) (id "Square" Mover))
                                             (slide (from (site) level:(level)) Orthogonal 
                                                 (between (exact 3) if:(is Empty (between)))
                                                 (to if:("IsEnemyAt" (to)))
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     (= 
                         (value Piece at:(to) level:0)
                         (abs (- (value Piece at:(from) level:(level)) (value Piece at:(site))))
-                   )
+                    )
                 })
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "Multiplication"
@@ -101,26 +101,26 @@
                                         (slide (from (site) level:(level)) Diagonal 
                                             (between (exact 2) if:(is Empty (between)))
                                             (to if:("IsEnemyAt" (to)))
-                                       )
+                                        )
                                         (if (= (what at:(site) level:(level)) (id "Square" Mover))
                                             (slide (from (site) level:(level)) Orthogonal 
                                                 (between (exact 3) if:(is Empty (between)))
                                                 (to if:("IsEnemyAt" (to)))
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     (= 
                         (value Piece at:(to) level:0)
                         (* (value Piece at:(from) level:(level)) (value Piece at:(site)))
-                   )
+                    )
                 })
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "Division"
@@ -138,38 +138,38 @@
                                         (slide (from (site) level:(level)) Diagonal 
                                             (between (exact 2) if:(is Empty (between)))
                                             (to if:("IsEnemyAt" (to)))
-                                       )
+                                        )
                                         (if (= (what at:(site) level:(level)) (id "Square" Mover))
                                             (slide (from (site) level:(level)) Orthogonal 
                                                 (between (exact 3) if:(is Empty (between)))
                                                 (to if:("IsEnemyAt" (to)))
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     (or
                         (and
                             (!= 0 (value Piece at:(site)))
                             (= 
                                 (value Piece at:(to))
                                 (/ (value Piece at:(from) level:(level)) (value Piece at:(site)))
-                           )
-                       )
+                            )
+                        )
                         (and
                             (!= 0 (value Piece at:(from)))
                             (= 
                                 (value Piece at:(to))
                                 (/ (value Piece at:(site) level:(level)) (value Piece at:(from)))
-                           )
-                       )
-                   )
+                            )
+                        )
+                    )
                 })
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "Encirclement"
@@ -185,23 +185,23 @@
                                 (to 
                                     if:("IsFriendAt" (to))
                                     (apply if:("IsFriendAt" (to)))	
-                               )
-                           )
+                                )
+                            )
                             (if (= (what at:(site) level:(level)) (id "Square" Next))
                                 (slide (from (site) level:(level)) Orthogonal 
                                     (between (exact 3) if:(is Empty (between)))
                                     (to 
                                         if:("IsFriendAt" (to))
                                         (apply if:("IsFriendAt" (to)))	
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
             0
-       )
+        )
         (=
             (count Sites 
                 in:
@@ -212,20 +212,20 @@
                             (slide (from (site) level:(level)) Diagonal 
                                 (between (exact 2) if:(is Empty (between)))
                                 (to if:("IsEnemyAt" (to)))
-                           )
+                            )
                             (if (= (what at:(site) level:(level)) (id "Square" Next))
                                 (slide (from (site) level:(level)) Orthogonal 
                                     (between (exact 3) if:(is Empty (between)))
                                     (to if:("IsEnemyAt" (to)))
-                               )
-                           )
-                       )
-                   )
-               )
-           )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
             0
-       )
-   )
+        )
+    )
 )
 
 (define "CaptureConditions"
@@ -256,9 +256,9 @@
                     (= 
                         (abs (- (value Piece at:(ahead (last To) N)) (value Piece at:(last To))))
                         (abs (- (value Piece at:(ahead (last To) S)) (value Piece at:(last To))))
-                   )
+                    )
                 })
-           )
+            )
             (if (and (!= (ahead (last To) N) (last To)) (!= (ahead (last To) steps:2 N) (last To)))
                 (and {
                     (is Mover (who at:(ahead (last To) N))) 
@@ -268,9 +268,9 @@
                     (= 
                         (abs (- (value Piece at:(ahead (last To) N)) (value Piece at:(last To))))
                         (abs (- (value Piece at:(ahead (last To) steps:2 N)) (value Piece at:(ahead (last To) N))))
-                   )
+                    )
                 })
-           )
+            )
             (if (and (!= (ahead (last To) S) (last To)) (!= (ahead (last To) steps:2 S) (last To)))
                 (and {
                     (is Mover (who at:(ahead (last To) S))) 
@@ -280,9 +280,9 @@
                     (= 
                         (abs (- (value Piece at:(ahead (last To) S)) (value Piece at:(last To))))
                         (abs (- (value Piece at:(ahead (last To) steps:2 S)) (value Piece at:(ahead (last To) S))))
-                   )
+                    )
                 })
-           )
+            )
             
             // E W
             (if (and (!= (ahead (last To) E) (last To)) (!= (ahead (last To) W) (last To)))
@@ -294,9 +294,9 @@
                     (= 
                         (abs (- (value Piece at:(ahead (last To) E)) (value Piece at:(last To))))
                         (abs (- (value Piece at:(ahead (last To) W)) (value Piece at:(last To))))
-                   )
+                    )
                 })
-           )
+            )
             (if (and (!= (ahead (last To) E) (last To)) (!= (ahead (last To) steps:2 E) (last To)))
                 (and {
                     (is Mover (who at:(ahead (last To) E))) 
@@ -306,9 +306,9 @@
                     (= 
                         (abs (- (value Piece at:(ahead (last To) E)) (value Piece at:(last To))))
                         (abs (- (value Piece at:(ahead (last To) steps:2 E)) (value Piece at:(ahead (last To) E))))
-                   )
+                    )
                 })
-           )
+            )
             (if (and (!= (ahead (last To) W) (last To)) (!= (ahead (last To) steps:2 W) (last To)))
                 (and {
                     (is Mover (who at:(ahead (last To) W))) 
@@ -318,9 +318,9 @@
                     (= 
                         (abs (- (value Piece at:(ahead (last To) W)) (value Piece at:(last To))))
                         (abs (- (value Piece at:(ahead (last To) steps:2 W)) (value Piece at:(ahead (last To) W))))
-                   )
+                    )
                 })
-           )
+            )
             
             // NE SW
             (if (and (!= (ahead (last To) NE) (last To)) (!= (ahead (last To) SW) (last To)))
@@ -332,9 +332,9 @@
                     (= 
                         (abs (- (value Piece at:(ahead (last To) NE)) (value Piece at:(last To))))
                         (abs (- (value Piece at:(ahead (last To) SW)) (value Piece at:(last To))))
-                   )
+                    )
                 })
-           )
+            )
             (if (and (!= (ahead (last To) NE) (last To)) (!= (ahead (last To) steps:2 NE) (last To)))
                 (and {
                     (is Mover (who at:(ahead (last To) NE))) 
@@ -344,9 +344,9 @@
                     (= 
                         (abs (- (value Piece at:(ahead (last To) NE)) (value Piece at:(last To))))
                         (abs (- (value Piece at:(ahead (last To) steps:2 NE)) (value Piece at:(ahead (last To) NE))))
-                   )
+                    )
                 })
-           )
+            )
             (if (and (!= (ahead (last To) SW) (last To)) (!= (ahead (last To) steps:2 SW) (last To)))
                 (and {
                     (is Mover (who at:(ahead (last To) SW))) 
@@ -356,9 +356,9 @@
                     (= 
                         (abs (- (value Piece at:(ahead (last To) SW)) (value Piece at:(last To))))
                         (abs (- (value Piece at:(ahead (last To) steps:2 SW)) (value Piece at:(ahead (last To) SW))))
-                   )
+                    )
                 })
-           )
+            )
             
             // SE NW
             (if (and (!= (ahead (last To) SE) (last To)) (!= (ahead (last To) NW) (last To)))
@@ -370,9 +370,9 @@
                     (= 
                         (abs (- (value Piece at:(ahead (last To) SE)) (value Piece at:(last To))))
                         (abs (- (value Piece at:(ahead (last To) NW)) (value Piece at:(last To))))
-                   )
+                    )
                 })
-           )
+            )
             (if (and (!= (ahead (last To) SE) (last To)) (!= (ahead (last To) steps:2 SE) (last To)))
                 (and {
                     (is Mover (who at:(ahead (last To) SE))) 
@@ -382,9 +382,9 @@
                     (= 
                         (abs (- (value Piece at:(ahead (last To) SE)) (value Piece at:(last To))))
                         (abs (- (value Piece at:(ahead (last To) steps:2 SE)) (value Piece at:(ahead (last To) SE))))
-                   )
+                    )
                 })
-           )
+            )
             (if (and (!= (ahead (last To) NW) (last To)) (!= (ahead (last To) steps:2 NW) (last To)))
                 (and {
                     (is Mover (who at:(ahead (last To) NW))) 
@@ -394,11 +394,11 @@
                     (= 
                         (abs (- (value Piece at:(ahead (last To) NW)) (value Piece at:(last To))))
                         (abs (- (value Piece at:(ahead (last To) steps:2 NW)) (value Piece at:(ahead (last To) NW))))
-                   )
+                    )
                 })
-           )
+            )
         })
-   )
+    )
 )
 
 (define "GeometricProgression"
@@ -416,9 +416,9 @@
                     (= 
                         (/ (value Piece at:(ahead (last To) N)) (value Piece at:(last To)))
                         (/ (value Piece at:(last To)) (value Piece at:(ahead (last To) S)))
-                   )
+                    )
                 })
-           )
+            )
             (if (and (!= (ahead (last To) N) (last To)) (!= (ahead (last To) steps:2 N) (last To)))
                 (and {
                     (is Mover (who at:(ahead (last To) N))) 
@@ -430,9 +430,9 @@
                     (= 
                         (/ (value Piece at:(ahead (last To) N)) (value Piece at:(last To)))
                         (/ (value Piece at:(ahead (last To) steps:2 N)) (value Piece at:(ahead (last To) N)))
-                   )
+                    )
                 })
-           )
+            )
             (if (and (!= (ahead (last To) S) (last To)) (!= (ahead (last To) steps:2 S) (last To)))
                 (and {
                     (is Mover (who at:(ahead (last To) S))) 
@@ -444,9 +444,9 @@
                     (= 
                         (/ (value Piece at:(ahead (last To) S)) (value Piece at:(last To)))
                         (/ (value Piece at:(ahead (last To) steps:2 S)) (value Piece at:(ahead (last To) S)))
-                   )
+                    )
                 })
-           )
+            )
             
             // E W
             (if (and (!= (ahead (last To) E) (last To)) (!= (ahead (last To) W) (last To)))
@@ -460,9 +460,9 @@
                     (= 
                         (/ (value Piece at:(ahead (last To) E)) (value Piece at:(last To)))
                         (/ (value Piece at:(last To)) (value Piece at:(ahead (last To) W)))
-                   )
+                    )
                 })
-           )
+            )
             (if (and (!= (ahead (last To) E) (last To)) (!= (ahead (last To) steps:2 E) (last To)))
                 (and {
                     (is Mover (who at:(ahead (last To) E))) 
@@ -474,9 +474,9 @@
                     (= 
                         (/ (value Piece at:(ahead (last To) E)) (value Piece at:(last To)))
                         (/ (value Piece at:(ahead (last To) steps:2 E)) (value Piece at:(ahead (last To) E)))
-                   )
+                    )
                 })
-           )
+            )
             (if (and (!= (ahead (last To) W) (last To)) (!= (ahead (last To) steps:2 W) (last To)))
                 (and {
                     (is Mover (who at:(ahead (last To) W))) 
@@ -488,9 +488,9 @@
                     (= 
                         (/ (value Piece at:(ahead (last To) W)) (value Piece at:(last To)))
                         (/ (value Piece at:(ahead (last To) steps:2 W)) (value Piece at:(ahead (last To) W)))
-                   )
+                    )
                 })
-           )
+            )
             
             // NE SW
             (if (and (!= (ahead (last To) NE) (last To)) (!= (ahead (last To) SW) (last To)))
@@ -504,9 +504,9 @@
                     (= 
                         (/ (value Piece at:(ahead (last To) NE)) (value Piece at:(last To)))
                         (/ (value Piece at:(last To)) (value Piece at:(ahead (last To) SW)))
-                   )
+                    )
                 })
-           )
+            )
             (if (and (!= (ahead (last To) NE) (last To)) (!= (ahead (last To) steps:2 NE) (last To)))
                 (and {
                     (is Mover (who at:(ahead (last To) NE))) 
@@ -518,9 +518,9 @@
                     (= 
                         (/ (value Piece at:(ahead (last To) NE)) (value Piece at:(last To)))
                         (/ (value Piece at:(ahead (last To) steps:2 NE)) (value Piece at:(ahead (last To) NE)))
-                   )
+                    )
                 })
-           )
+            )
             (if (and (!= (ahead (last To) SW) (last To)) (!= (ahead (last To) steps:2 SW) (last To)))
                 (and {
                     (is Mover (who at:(ahead (last To) SW))) 
@@ -532,9 +532,9 @@
                     (= 
                         (/ (value Piece at:(ahead (last To) SW)) (value Piece at:(last To)))
                         (/ (value Piece at:(ahead (last To) steps:2 SW)) (value Piece at:(ahead (last To) SW)))
-                   )
+                    )
                 })
-           )
+            )
             
             // SE NW
             (if (and (!= (ahead (last To) SE) (last To)) (!= (ahead (last To) NW) (last To)))
@@ -548,9 +548,9 @@
                     (= 
                         (/ (value Piece at:(ahead (last To) SE)) (value Piece at:(last To)))
                         (/ (value Piece at:(last To)) (value Piece at:(ahead (last To) NW)))
-                   )
+                    )
                 })
-           )
+            )
             (if (and (!= (ahead (last To) SE) (last To)) (!= (ahead (last To) steps:2 SE) (last To)))
                 (and {
                     (is Mover (who at:(ahead (last To) SE))) 
@@ -562,9 +562,9 @@
                     (= 
                         (/ (value Piece at:(ahead (last To) SE)) (value Piece at:(last To)))
                         (/ (value Piece at:(ahead (last To) steps:2 SE)) (value Piece at:(ahead (last To) SE)))
-                   )
+                    )
                 })
-           )
+            )
             (if (and (!= (ahead (last To) NW) (last To)) (!= (ahead (last To) steps:2 NW) (last To)))
                 (and {
                     (is Mover (who at:(ahead (last To) NW))) 
@@ -576,11 +576,11 @@
                     (= 
                         (/ (value Piece at:(ahead (last To) NW)) (value Piece at:(last To)))
                         (/ (value Piece at:(ahead (last To) steps:2 NW)) (value Piece at:(ahead (last To) NW)))
-                   )
+                    )
                 })
-           )
+            )
         })
-   )
+    )
 )
 
 (define "HarmonicProgression"
@@ -598,9 +598,9 @@
                     (= 
                         (/ (value Piece at:(ahead (last To) N)) (value Piece at:(last To)))
                         (/ (value Piece at:(last To)) (value Piece at:(ahead (last To) S)))
-                   )
+                    )
                 })
-           )
+            )
             (if (and (!= (ahead (last To) N) (last To)) (!= (ahead (last To) steps:2 N) (last To)))
                 (and {
                     (is Mover (who at:(ahead (last To) N))) 
@@ -612,9 +612,9 @@
                     (= 
                         (/ (value Piece at:(ahead (last To) N)) (value Piece at:(last To)))
                         (/ (value Piece at:(ahead (last To) steps:2 N)) (value Piece at:(ahead (last To) N)))
-                   )
+                    )
                 })
-           )
+            )
             (if (and (!= (ahead (last To) S) (last To)) (!= (ahead (last To) steps:2 S) (last To)))
                 (and {
                     (is Mover (who at:(ahead (last To) S))) 
@@ -626,9 +626,9 @@
                     (= 
                         (/ (value Piece at:(ahead (last To) S)) (value Piece at:(last To)))
                         (/ (value Piece at:(ahead (last To) steps:2 S)) (value Piece at:(ahead (last To) S)))
-                   )
+                    )
                 })
-           )
+            )
             
             // E W
             (if (and (!= (ahead (last To) E) (last To)) (!= (ahead (last To) W) (last To)))
@@ -642,9 +642,9 @@
                     (= 
                         (/ (value Piece at:(ahead (last To) E)) (value Piece at:(last To)))
                         (/ (value Piece at:(last To)) (value Piece at:(ahead (last To) W)))
-                   )
+                    )
                 })
-           )
+            )
             (if (and (!= (ahead (last To) E) (last To)) (!= (ahead (last To) steps:2 E) (last To)))
                 (and {
                     (is Mover (who at:(ahead (last To) E))) 
@@ -656,9 +656,9 @@
                     (= 
                         (/ (value Piece at:(ahead (last To) E)) (value Piece at:(last To)))
                         (/ (value Piece at:(ahead (last To) steps:2 E)) (value Piece at:(ahead (last To) E)))
-                   )
+                    )
                 })
-           )
+            )
             (if (and (!= (ahead (last To) W) (last To)) (!= (ahead (last To) steps:2 W) (last To)))
                 (and {
                     (is Mover (who at:(ahead (last To) W))) 
@@ -670,9 +670,9 @@
                     (= 
                         (/ (value Piece at:(ahead (last To) W)) (value Piece at:(last To)))
                         (/ (value Piece at:(ahead (last To) steps:2 W)) (value Piece at:(ahead (last To) W)))
-                   )
+                    )
                 })
-           )
+            )
             
             // NE SW
             (if (and (!= (ahead (last To) NE) (last To)) (!= (ahead (last To) SW) (last To)))
@@ -686,9 +686,9 @@
                     (= 
                         (/ (value Piece at:(ahead (last To) NE)) (value Piece at:(last To)))
                         (/ (value Piece at:(last To)) (value Piece at:(ahead (last To) SW)))
-                   )
+                    )
                 })
-           )
+            )
             (if (and (!= (ahead (last To) NE) (last To)) (!= (ahead (last To) steps:2 NE) (last To)))
                 (and {
                     (is Mover (who at:(ahead (last To) NE))) 
@@ -700,9 +700,9 @@
                     (= 
                         (/ (value Piece at:(ahead (last To) NE)) (value Piece at:(last To)))
                         (/ (value Piece at:(ahead (last To) steps:2 NE)) (value Piece at:(ahead (last To) NE)))
-                   )
+                    )
                 })
-           )
+            )
             (if (and (!= (ahead (last To) SW) (last To)) (!= (ahead (last To) steps:2 SW) (last To)))
                 (and {
                     (is Mover (who at:(ahead (last To) SW))) 
@@ -714,9 +714,9 @@
                     (= 
                         (/ (value Piece at:(ahead (last To) SW)) (value Piece at:(last To)))
                         (/ (value Piece at:(ahead (last To) steps:2 SW)) (value Piece at:(ahead (last To) SW)))
-                   )
+                    )
                 })
-           )
+            )
             
             // SE NW
             (if (and (!= (ahead (last To) SE) (last To)) (!= (ahead (last To) NW) (last To)))
@@ -730,9 +730,9 @@
                     (= 
                         (/ (value Piece at:(ahead (last To) SE)) (value Piece at:(last To)))
                         (/ (value Piece at:(last To)) (value Piece at:(ahead (last To) NW)))
-                   )
+                    )
                 })
-           )
+            )
             (if (and (!= (ahead (last To) SE) (last To)) (!= (ahead (last To) steps:2 SE) (last To)))
                 (and {
                     (is Mover (who at:(ahead (last To) SE))) 
@@ -744,9 +744,9 @@
                     (= 
                         (/ (value Piece at:(ahead (last To) SE)) (value Piece at:(last To)))
                         (/ (value Piece at:(ahead (last To) steps:2 SE)) (value Piece at:(ahead (last To) SE)))
-                   )
+                    )
                 })
-           )
+            )
             (if (and (!= (ahead (last To) NW) (last To)) (!= (ahead (last To) steps:2 NW) (last To)))
                 (and {
                     (is Mover (who at:(ahead (last To) NW))) 
@@ -758,11 +758,11 @@
                     (= 
                         (/ (value Piece at:(ahead (last To) NW)) (value Piece at:(last To)))
                         (/ (value Piece at:(ahead (last To) steps:2 NW)) (value Piece at:(ahead (last To) NW)))
-                   )
+                    )
                 })
-           )
+            )
         })
-   )
+    )
 )
 
 (define "MathematicalProgressionAlignementOpponentSide"
@@ -789,13 +789,13 @@
                             ("IsEnemyAt" (to)) 
                             (forEach Level (to) FromTop
                                 (remove (to) level:(level))
-                           )
-                       )
-                   )		
-               )
+                            )
+                        )
+                    )		
+                )
                 stack:True
-           )		
-       )
+            )		
+        )
         (piece "Triangle" Each
             (move Slide Diagonal
                 (between (exact 2) if:(is Empty (between)))
@@ -805,13 +805,13 @@
                         (if ("IsEnemyAt" (to)) 
                             (forEach Level (to) FromTop
                                 (remove (to) level:(level))
-                           )
-                       )
-                   )		
-               )
+                            )
+                        )
+                    )		
+                )
                 stack:True
-           )
-       )
+            )
+        )
         (piece "Disc" Each
             (move Step Orthogonal
                 (to 
@@ -820,13 +820,13 @@
                         (if ("IsEnemyAt" (to)) 
                             (forEach Level (to) FromTop
                                 (remove (to) level:(level))
-                           )
-                       )
-                   )		
-               )
+                            )
+                        )
+                    )		
+                )
                 stack:True
-           )
-       )
+            )
+        )
         (regions P1 (expand (sites Bottom) steps:7))
         (regions P2 (expand (sites Top) steps:7))
     })
@@ -836,7 +836,7 @@
             (place "Square1" coord:"B1" value:169) 
             (place "Square1" coord:"G1" value:81) 
             (place "Square1" coord:"H1" value:25) 
-            (place "Square1" coord:"A2"  value:153) 
+            (place "Square1" coord:"A2" value:153) 
             (place "Square1" coord:"G2" value:45) 
             (place "Square1" coord:"H2" value:15) 
             
@@ -905,20 +905,20 @@
                         (if 
                             ("Encirclement")
                             (move Remove (site) level:(level))
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         (end (if 
                 (and
                     ("MathematicalProgressionAlignementOpponentSide") 
                     ("NoStackedPiece" Next)
-               )
+                )
                 (result Mover Win)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -956,7 +956,7 @@
         (classification "board/war/replacement/eliminate/target")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (stackType None)

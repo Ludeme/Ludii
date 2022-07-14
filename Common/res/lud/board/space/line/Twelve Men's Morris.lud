@@ -4,8 +4,8 @@
         (forEach 
             (sites Occupied by:Next container:"Board") 
             if:(not (is Line 3 Orthogonal through:(site)))
-       )
-   )
+        )
+    )
 )
 
 (define "RemoveEnemyPiece" 
@@ -14,8 +14,8 @@
         (move
             Remove
             (sites Occupied by:Next container:"Board") 
-       )
-   )
+        )
+    )
 )
 
 (define "IfLine3MoveAgain" 
@@ -23,8 +23,8 @@
         (if 
             (is Line 3) 
             (moveAgain)
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -40,9 +40,9 @@
                 Step 
                 (to if:(is Empty (to))) 
                 "IfLine3MoveAgain" 
-           )
-       ) 
-    })  
+            )
+        ) 
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:12))
         
@@ -55,11 +55,11 @@
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
                         "IfLine3MoveAgain" 
-                   )  
-               )
-           ) 
+                    ) 
+                )
+            ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-       )
+        )
         
         (phase "Movement" 
             (play 
@@ -70,23 +70,23 @@
                         (move 
                             (from (sites Occupied by:Mover))
                             (to (sites Empty))
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         }
         
         (end (if (<= (count Pieces Next) 2) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board" <Board> args:{<type>}
     {
-    (item "Without Diagonal" <(concentric Square rings:4)>                 "The board has no diagonal.")
-    (item "With Diagonal"    <(concentric Square rings:3 joinCorners:True)>   "The board has some diagonals.")**
+    (item "Without Diagonal" <(concentric Square rings:4)>         "The board has no diagonal.")
+    (item "With Diagonal"  <(concentric Square rings:3 joinCorners:True)>  "The board has some diagonals.")**
     }
 )
 
@@ -98,13 +98,13 @@
         {
         "Board/With Diagonal"
         }
-   )
+    )
     
     (ruleset "Ruleset/Board Game Geek (Suggested)" 
         {
         "Board/Without Diagonal"
         }
-   )
+    )
     
 })
 
@@ -127,12 +127,12 @@
         (version "1.3.4")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in Unknown, from around 600 to 799.")
+        (origin "This game was played in Unknown, from around 600 to 799.")
         }
-   )
+    )
     
     (ai
         "Twelve Men's Morris_ai"
-   )
+    )
 )
 

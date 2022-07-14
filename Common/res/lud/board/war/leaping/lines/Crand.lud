@@ -8,30 +8,30 @@
                 {0 10} {10 20} {20 30} {30 40} {40 50} {50 60} {60 70} {70 80}
                 {72 64} {64 56} {56 48} {48 40} {40 32} {32 24} {16 24} {16 8}
                 }
-           )
+            )
             use:Vertex
-       )
+        )
         (piece "Counter" Each
             (or
                 (move
                     Step 
                     (difference Forwards Diagonal)
                     (to if:(is Empty (to)))
-               )	
+                )	
                 "HopCapture"
                 (then
                     (if (is In (last To) (sites Next))
                         (move Promote (last To) (piece "DoubleCounter") Mover)
-                   )		
-               )
-           )
-       )
+                    )		
+                )
+            )
+        )
         (piece "DoubleCounter" Each
             (or
                 (move Slide)	
                 "HopCapture"
-           )		
-       )
+            )		
+        )
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
     })
@@ -42,7 +42,7 @@
         })
         (play (forEach Piece))
         (end (if (no Pieces Next) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -60,9 +60,9 @@
         (version "1.3.4")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in Mauritania, around 1952.")
+        (origin "This game was played in Mauritania, around 1952.")
         }
-   )
+    )
     
     (graphics {
         
@@ -71,5 +71,5 @@
     
     (ai
         "Crand_ai"
-   )
+    )
 )

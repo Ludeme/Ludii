@@ -28,16 +28,16 @@
                                                     (apply 
                                                         if:("IsEnemyAt" (to))
                                                         (remove (to))
-                                                   )
-                                               )
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
                 (forEach Direction 
                     N 
                     (to 
@@ -56,16 +56,16 @@
                                                     (apply 
                                                         if:("IsEnemyAt" (to))
                                                         (remove (to))
-                                                   )
-                                               )
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
                 (forEach Direction 
                     E 
                     (to 
@@ -84,16 +84,16 @@
                                                     (apply 
                                                         if:("IsEnemyAt" (to))
                                                         (remove (to))
-                                                   )
-                                               )
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
                 (forEach Direction 
                     E
                     (to 
@@ -112,16 +112,16 @@
                                                     (apply 
                                                         if:("IsEnemyAt" (to))
                                                         (remove (to))
-                                                   )
-                                               )
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
                 (forEach Direction 
                     W 
                     (to 
@@ -140,16 +140,16 @@
                                                     (apply 
                                                         if:("IsEnemyAt" (to))
                                                         (remove (to))
-                                                   )
-                                               )
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
                 (forEach Direction 
                     W 
                     (to 
@@ -168,16 +168,16 @@
                                                     (apply 
                                                         if:("IsEnemyAt" (to))
                                                         (remove (to))
-                                                   )
-                                               )
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
                 (forEach Direction 
                     S 
                     (to 
@@ -196,16 +196,16 @@
                                                     (apply 
                                                         if:("IsEnemyAt" (to))
                                                         (remove (to))
-                                                   )
-                                               )
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
                 (forEach Direction 
                     S 
                     (to 
@@ -224,34 +224,34 @@
                                                     (apply 
                                                         if:("IsEnemyAt" (to))
                                                         (remove (to))
-                                                   )
-                                               )
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
             })
-       )
+        )
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
         }
-   )  
+    ) 
     (rules 
         (start
             { 
             (place "Knight1" (expand (sites Bottom)))
             (place "Knight2" (expand (sites Top)))
             }
-       )
+        )
         
         (play (forEach Piece))
         
         (end (if "RegionReached" (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -261,7 +261,7 @@
     (info
         {
         }
-   )
+    )
     
     (graphics {
         (board Style Chess)

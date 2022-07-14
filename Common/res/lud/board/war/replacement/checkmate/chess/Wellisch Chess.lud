@@ -17,7 +17,7 @@
         (= (what at:(to)) (id #1 P2))
         (= (what at:(to)) (id #1 P3))
         }
-   )
+    )
 )
 
 (define "IsToEmpty"
@@ -27,7 +27,7 @@
 (define "IsToEmptyOrEnemy"
     (or "IsToEmpty"
         ("IsEnemyAt" (to))
-   )
+    )
 )
 
 // Source: Chess.lud - NextCanNotMove
@@ -35,14 +35,14 @@
     (not (can Move (do
                 (forEach Piece (next))
                 ifAfterwards:(not ("IsInCheck" "King" Next))
-   )))
+    )))
 )
 
 // Usage: ("P123" <p1_arg> <p2_arg> <p3_arg>)
 (define "P123"
     (if (is Mover P1) #1
         (if (is Mover P2) #2 #3)
-   )
+    )
 )
 
 //----------------------------------------
@@ -53,22 +53,22 @@
 // Usage: ("GrabToPiece <then>)
 (define "GrabToPiece"
     (if ("IsToA" "Pawn")
-        (remove (to))            // Remove Pawn
+        (remove (to))      // Remove Pawn
         (if ("IsToA" "King")
             (and
-                (trigger "CapturedEnemyKing" Mover)  // Record winner
-                (remove (to))    // Remove King
-           )
-            (move                // Grab any other piece
+                (trigger "CapturedEnemyKing" Mover) // Record winner
+                (remove (to))  // Remove King
+            )
+            (move        // Grab any other piece
                 (from (to))
-                (to (handSite    // Place in an open site
+                (to (handSite  // Place in an open site
                         (who at:(to))
                         (mapEntry "HandIndex" (what at:(to)))
-               ))
+                ))
                 #1
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "GrabToPieceAndResetCounter"
@@ -82,9 +82,9 @@
         #1
         (to if:("IsEnemyAt" (to))
             (apply "GrabToPieceAndResetCounter")
-       )
+        )
         #2
-   )
+    )
 )
 
 // Usage: ("StepGrabMove" <directions> <then>)
@@ -96,11 +96,11 @@
             (apply
                 (if ("IsEnemyAt" (to))
                     "GrabToPieceAndResetCounter"
-               )
-           )
-       )
+                )
+            )
+        )
         #2
-   )
+    )
 )
 
 //----------------------------------------
@@ -123,8 +123,8 @@
     (then
         (if (= (state at:(last To)) 1)
             "History_SaveMovement"
-       )
-   )
+        )
+    )
 )
 
 //----------------------------------------
@@ -134,11 +134,11 @@
 (define "Castle_PreCheck"
     (and
         {
-        (= (what at:(mapEntry "King" (mover))) (id "King" Mover))  // At Start Cell
+        (= (what at:(mapEntry "King" (mover))) (id "King" Mover)) // At Start Cell
         ("History_HasNeverMoved" "King")
         (not ("IsInCheck" "King" Mover))
         }
-   )
+    )
 )
 
 // Usage: ("KingSideSwap" <king_idx> <rook_idx>)
@@ -148,11 +148,11 @@
             ("History_HasNeverMoved" "RookRight")
             (not ("IsInCheck" "King" Mover at:(mapEntry "RookRight" Mover)))
             }
-       )
+        )
         (move Swap Pieces #1 #2
             (then "History_SaveMovement")
-       )
-   )
+        )
+    )
 )
 
 // Usage: ("QueenSideSwap" <king_idx> <rook_idx>)
@@ -164,22 +164,22 @@
             (not ("IsInCheck" "King" Mover at:(mapEntry "Queen" Mover)))
             (is In (mapEntry "Queen" Mover) (sites Empty))
             }
-       )
+        )
         (and
             {
             (move Swap Pieces #1 #2
                 (then "History_SaveMovement")
-           )
+            )
             }
-       )
-   )
+        )
+    )
 )
 
-(define "Castle_KingSide_P1"  ("KingSideSwap"  3  4))
-(define "Castle_KingSide_P2"  ("KingSideSwap"  61 51))
-(define "Castle_KingSide_P3"  ("KingSideSwap"  77 84))
+(define "Castle_KingSide_P1" ("KingSideSwap" 3 4))
+(define "Castle_KingSide_P2" ("KingSideSwap" 61 51))
+(define "Castle_KingSide_P3" ("KingSideSwap" 77 84))
 
-(define "Castle_QueenSide_P1" ("QueenSideSwap" 3  1))
+(define "Castle_QueenSide_P1" ("QueenSideSwap" 3 1))
 (define "Castle_QueenSide_P2" ("QueenSideSwap" 61 78))
 (define "Castle_QueenSide_P3" ("QueenSideSwap" 77 60))
 
@@ -202,8 +202,8 @@
         #1
         (to if:("IsEnemyAt" (to))
             (apply ("GrabToPiece" ~))
-       )
-   )
+        )
+    )
 )
 
 (define "PawnGrab"
@@ -216,7 +216,7 @@
         Step
         #1
         (to if:"IsToEmpty")
-   )
+    )
 )
 
 (define "StepOrthoToEmpty"
@@ -235,20 +235,20 @@
     (move
         (from (sites Occupied by:Mover container:"Hand"
                 components:{"Queen" "Rook" "Knight"}
-       ))
+        ))
         (to (last To))
-   )
+    )
 )
 
 (define "PromoteFromHandDelayed"
     (move
         (from (sites Occupied by:Mover container:"Hand"
                 components:{"Queen" "Rook" "Knight"}
-       ))
+        ))
         (to (sites Mover "PromotionZone")
             if:(= (what at:(to)) (id "Pawn" Mover))
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -259,7 +259,7 @@
         {
         (board (hex 6))
         
-        (piece "King" Each  // Moves in Orthogonal steps
+        (piece "King" Each // Moves in Orthogonal steps
             (or {
                 ("StepGrabMove" Orthogonal "History_SaveMovementChange")
                 (if "Castle_PreCheck"
@@ -267,21 +267,21 @@
                         "Castle_KingSide"
                         "Castle_QueenSide"
                         }
-                   )
-               )
+                    )
+                )
                 }
-           )
-       )
-        (piece "Queen" Each  // Q = R + N
+            )
+        )
+        (piece "Queen" Each // Q = R + N
             (or
-                ("SlideGrabMove" Orthogonal ~)  // Rook move
-                ("StepGrabMove"  Diagonal ~)    // Knight move
-           )
-       )
+                ("SlideGrabMove" Orthogonal ~) // Rook move
+                ("StepGrabMove" Diagonal ~)  // Knight move
+            )
+        )
         (piece "Rook" Each ("SlideGrabMove" Orthogonal ~))
-        (piece "Knight" Each  // Different from other hexagonal chess variants
+        (piece "Knight" Each // Different from other hexagonal chess variants
             ("StepGrabMove" Diagonal ~)
-       )
+        )
         
         (piece "Pawn" Each
             (or {
@@ -292,81 +292,81 @@
                     (and
                         (if (is In (last To) (sites Mover "PromotionZone"))
                             (moveAgain)
-                       )
+                        )
                         (set Counter)
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         
-        (map "King"      {(pair 1 "D1") (pair 2 "C8")  (pair 3 "K9")})
-        (map "RookLeft"  {(pair 1 "B1") (pair 2 "E10") (pair 3 "K7")})
-        (map "RookRight" {(pair 1 "E1") (pair 2 "B7")  (pair 3 "K10")})
+        (map "King"   {(pair 1 "D1") (pair 2 "C8") (pair 3 "K9")})
+        (map "RookLeft" {(pair 1 "B1") (pair 2 "E10") (pair 3 "K7")})
+        (map "RookRight" {(pair 1 "E1") (pair 2 "B7") (pair 3 "K10")})
         
-        (map "Queen"     {(pair 1 2)    (pair 2 70)    (pair 3 69)})
+        (map "Queen"   {(pair 1 2)  (pair 2 70)  (pair 3 69)})
         
-        (hand Each size:3)  // One for each of Queen, Rook, Knight
+        (hand Each size:3) // One for each of Queen, Rook, Knight
         
         (map "HandIndex"
             {
-            (pair 4 0) (pair 7 1) (pair 10 2)  // P1: Q, R, N
-            (pair 5 0) (pair 8 1) (pair 11 2)  // P2: Q, R, N
-            (pair 6 0) (pair 9 1) (pair 12 2)  // P3: Q, R, N
+            (pair 4 0) (pair 7 1) (pair 10 2) // P1: Q, R, N
+            (pair 5 0) (pair 8 1) (pair 11 2) // P2: Q, R, N
+            (pair 6 0) (pair 9 1) (pair 12 2) // P3: Q, R, N
             }
-       )
+        )
         
         (regions "PromotionZone" P1 (sites Top))
-        (regions "PromotionZone" P2 (sites {"K6" "J5" "I4" "H3" "G2" "F1"}))  // Side ESE
-        (regions "PromotionZone" P3 (sites {"A1" "A2" "A3" "A4" "A5" "A6"}))  // Side WSW
+        (regions "PromotionZone" P2 (sites {"K6" "J5" "I4" "H3" "G2" "F1"})) // Side ESE
+        (regions "PromotionZone" P3 (sites {"A1" "A2" "A3" "A4" "A5" "A6"})) // Side WSW
         
-        (regions "Region-Grey"   (sites Phase 1))
-        (regions "Region-Red"    (sites Phase 2))
+        (regions "Region-Grey"  (sites Phase 1))
+        (regions "Region-Red"  (sites Phase 2))
         (regions "Region-Yellow" (sites Phase 0))
         }
-   )
+    )
     
     (rules
         (start
             {
-            (place "King1"   coord:"D1" state:1)
-            (place "Queen1"  coord:"C1")
-            (place "Rook1"   {"B1" "E1"} state:1)
+            (place "King1"  coord:"D1" state:1)
+            (place "Queen1" coord:"C1")
+            (place "Rook1"  {"B1" "E1"} state:1)
             (place "Knight1" {"A1" "D2" "F1"})
             
-            (place "King3"   coord:"K9" state:1)
-            (place "Queen3"  coord:"K8")
-            (place "Rook3"   {"K10" "K7"} state:1)
+            (place "King3"  coord:"K9" state:1)
+            (place "Queen3" coord:"K8")
+            (place "Rook3"  {"K10" "K7"} state:1)
             (place "Knight3" {"K11" "J8" "K6"})
             
-            (place "King2"   coord:"C8" state:1)
-            (place "Queen2"  coord:"D9")
-            (place "Rook2"   {"B7" "E10"} state:1)
+            (place "King2"  coord:"C8" state:1)
+            (place "Queen2" coord:"D9")
+            (place "Rook2"  {"B7" "E10"} state:1)
             (place "Knight2" {"A6" "D8" "F11"})
             
-            (place "Pawn1"   {"A2"  "B2"  "C2" "D3" "E3" "E2" "F2"  "G2"})
-            (place "Pawn3"   {"J11" "J10" "J9" "I8" "I7" "J7" "J6"  "J5"})
-            (place "Pawn2"   {"A5"  "B6"  "C7" "D7" "E8" "E9" "F10" "G11"})
+            (place "Pawn1"  {"A2" "B2" "C2" "D3" "E3" "E2" "F2" "G2"})
+            (place "Pawn3"  {"J11" "J10" "J9" "I8" "I7" "J7" "J6" "J5"})
+            (place "Pawn2"  {"A5" "B6" "C7" "D7" "E8" "E9" "F10" "G11"})
             }
-       )
+        )
         phases:{
         (phase "Movement"
             (play
                 (if ("SameTurn")
                     (if (not ("HandEmpty" Mover))
                         "PromoteFromHand"
-                   )
+                    )
                     (do
                         // First: Delayed promotion - no captured piece was available earlier.
-                        (if (> (count in:(sites Hand Mover)) 0)  
+                        (if (> (count in:(sites Hand Mover)) 0) 
                             "PromoteFromHandDelayed"
-                       )
+                        )
                         next:(do
                             (forEach Piece)
                             ifAfterwards:(not ("IsInCheck" "King" Mover))
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (end
                 {
                 (if (is Triggered "CapturedEnemyKing" P1) (result P1 Win))
@@ -377,12 +377,12 @@
                 (if (= (where "King" P2) Off) (result P2 Loss))
                 (if (= (where "King" P3) Off) (result P3 Loss))
                 
-                (if (= (counter) 100) (result Mover Draw))  // No available moves causes pass
+                (if (= (counter) 100) (result Mover Draw)) // No available moves causes pass
                 }
-           )
-       )
+            )
+        )
         }
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -424,7 +424,7 @@
         (credit "Jay Coskey, with some small functions drawn from Chess.lud, by Eric Piette")
         (date "1912")
         }
-   )
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.7)
@@ -434,8 +434,8 @@
         (piece Scale "Rook" 0.8)
         (board Style Chess)
         
-        (region Colour "Region-Grey"   (colour "#acacac"))
-        (region Colour "Region-Red"    (colour "#ff7f7f"))
+        (region Colour "Region-Grey"  (colour "#acacac"))
+        (region Colour "Region-Red"  (colour "#ff7f7f"))
         (region Colour "Region-Yellow" (colour "#fff87f"))
         
         (player Colour P2 (colour Cyan))
@@ -444,5 +444,5 @@
     })
     (ai
         "Wellisch Chess_ai"
-   )
+    )
 )

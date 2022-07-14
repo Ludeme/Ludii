@@ -3,19 +3,19 @@
 //------------------------------------------------------------------------------
 
 (game "Wouri" 
-    (players 2)  
+    (players 2) 
     (equipment {
         (mancalaBoard 2 6 store:None
             (track "Track" "0,E,N,W" loop:True)
-       )
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
+        )
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     
     (rules 
-        (start (set Count 4 to:(sites Track)))		  
+        (start (set Count 4 to:(sites Track)))		 
         (play 
             (do 
                 (move Select 
@@ -24,15 +24,15 @@
                             ("SameTurn") 
                             "LastHoleSowed" 
                             (sites Mover)
-                       ) 
+                        ) 
                         if:(< 0 (count at:(from)))
-                   )
+                    )
                     (then 
-                        (sow  
+                        (sow 
                             apply:(if (and 
                                     (is In (to) (sites Next)) 
                                     (= (count at:(to)) 4)
-                               ) 
+                                ) 
                                 (fromTo 
                                     (from (to)) 
                                     (to (handSite Mover)) 
@@ -45,24 +45,24 @@
                                                     (from (site)) 
                                                     (to (handSite Mover)) 
                                                     count:(count at:(site))
-                                               )
-                                           )
-                                       )
-                                   )
-                               )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
                                 (if (< 1 (count at:(to))) 
                                     (moveAgain)
-                               )
-                           )
+                                )
+                            )
                             includeSelf:False
-                       )
-                   )
-               )
+                        )
+                    )
+                )
                 ifAfterwards:(< 0 (count in:(if (is Mover P1) (sites P2) (sites P1))))
-           )
-       )
+            )
+        )
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -78,11 +78,11 @@
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }
-   )
+    )
     (graphics {
         (board Style Mancala)
     })
     (ai
         "Wouri_ai"
-   )
+    )
 )

@@ -8,18 +8,18 @@
             (forEach 
                 (sites Mover "Home") 
                 if:(< 1 (count at:(site)))
-           )
+            )
             if:(= 0 (count at:(site)))
-       )
-   )
+        )
+    )
 )
 
 (define "NextHoleFrom" ("NextSiteOnTrack" 1 from:#1))
 
 //------------------------------------------------------------------------------
 
-(game "Msuwa wa Kunja"  
-    (players 2)  
+(game "Msuwa wa Kunja" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -27,48 +27,48 @@
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" <Row:track2> loop:True P2)
             }
-       )
-        (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
-        (regions "Home" P2 (sites Track "Track2"))                              // P2 home
+        )
+        (regions "Home" P1 (sites Track "Track1"))               // P1 Home
+        (regions "Home" P2 (sites Track "Track2"))               // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))   // P2 inner Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))  // P2 inner Home
         (piece "Seed" Shared)
-    })  
+    }) 
     (rules 
         
         (start 
             (set Count 2 to:(union (sites Top) (sites Bottom))) 
-       )
+        )
         
         (play 
             (if (and 
                     ("SameTurn") 
                     (< 0 (var))
-               )
+                )
                 (move Remove 
                     (forEach
                         (sites Next "Home")
                         if:(< 0 (count at:(site)))
-                   )
+                    )
                     (then 
                         (and
                             (if (> (var) 1)
                                 (moveAgain)
-                           )
+                            )
                             (set Var (- (var) 1))
-                       )
+                        )
                         
-                   )
-               )
+                    )
+                )
                 (if ("HaveHolesWithMoreThanOneCounter") 
                     (move Select
                         (from 
                             (if ("SameTurn") 
                                 "LastHoleSowed" 
                                 (sites Mover "Home") 
-                           ) 
+                            ) 
                             if:(< 1 (count at:(from)))
-                       )
+                        )
                         (then 
                             (sow
                                 "Track"
@@ -85,22 +85,22 @@
                                                         (set Var 2)
                                                         (moveAgain)
                                                     })
-                                               )
-                                           )
-                                       )
-                                   )
-                               ) 
-                           )
-                       )
-                   )
+                                                )
+                                            )
+                                        )
+                                    )
+                                ) 
+                            )
+                        )
+                    )
                     (move Select
                         (from 
                             (sites Mover "Home") 
                             if:(and
                                 (= 1 (count at:(from)))
                                 (= 0 (count at:("NextHoleFrom" (from))))
-                           )
-                       )
+                            )
+                        )
                         (then 
                             (sow
                                 "Track"
@@ -116,36 +116,36 @@
                                                     (set Var 2)
                                                     (moveAgain)
                                                 })
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         
         (end
             (forEach NonMover
                 if:("NoPiece")
                 (result Player Loss)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Row> args:{ <size> <track2> }
     {
-    (item "10"   <10> <"20,E,N1,W"> "Each row has 10 holes.")*   
-    (item "12"   <12> <"24,E,N1,W"> "Each row has 12 holes.")   
-    (item "14"   <14> <"28,E,N1,W"> "Each row has 14 holes.")   
-    (item "16"   <16> <"32,E,N1,W"> "Each row has 16 holes.")   
-    (item "18"   <18> <"36,E,N1,W"> "Each row has 18 holes.")   
-    (item "20"   <20> <"40,E,N1,W"> "Each row has 20 holes.")
+    (item "10"  <10> <"20,E,N1,W"> "Each row has 10 holes.")*  
+    (item "12"  <12> <"24,E,N1,W"> "Each row has 12 holes.")  
+    (item "14"  <14> <"28,E,N1,W"> "Each row has 14 holes.")  
+    (item "16"  <16> <"32,E,N1,W"> "Each row has 16 holes.")  
+    (item "18"  <18> <"36,E,N1,W"> "Each row has 18 holes.")  
+    (item "20"  <20> <"40,E,N1,W"> "Each row has 20 holes.")
 })
 
 //------------------------------------------------------------------------------
@@ -156,7 +156,7 @@
         "Board Size/10"
         }
         variations:{"Board Size/12" "Board Size/14" "Board Size/16" "Board Size/18" "Board Size/20"}
-   )*
+    )*
     
 })
 
@@ -174,9 +174,9 @@
         (version "1.3.4")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
-        (origin  "This game was played in East Africa, around 1913.")
+        (origin "This game was played in East Africa, around 1913.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)
@@ -184,5 +184,5 @@
     
     (ai
         "Msuwa wa Kunja_ai"
-   )
+    )
 )

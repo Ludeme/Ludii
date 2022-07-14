@@ -2,7 +2,7 @@
     (if (= (column of:(where "Jiang" P1)) (column of:(where "Jiang" P2)))
         (not ("NoSites" (forEach (sites Direction from:(where "Jiang" P1) N stop:(= (to) (where "Jiang" P2))) if:(not (is Empty (site))))))
         True
-   )
+    )
 )
 
 (define "EnemyCannotMove"
@@ -17,16 +17,16 @@
             if:(and 
                 (is In (to) (sites Mover "Palace")) 
                 (not ("IsFriendAt" (to)))
-           ) 
+            ) 
             (apply (remove (to)))
-       )
-   ) 
+        )
+    ) 
 )
 
 //------------------------------------------------------------------------------
 
 (game "Xiangqi" 
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (rectangle 10 9) use:Vertex) 
         
@@ -47,13 +47,13 @@
                         (is In (between) (sites Mover "Home")) 
                         (is Empty (between)) 
                     })
-               )
+                )
                 (to 
                     if:("IsEnemyAt" (to)) 
                     (apply (remove (to)))
-               ) 
-           )
-       ) 
+                ) 
+            )
+        ) 
         
         // Horse
         (piece "Ma" Each 
@@ -72,15 +72,15 @@
                                         (apply 
                                             if:("IsEnemyAt" (to))
                                             (remove (to))
-                                       )
-                                   )
-                               )
-                           )
-                       ) 
-                   )
-               )
-           ) 
-       )
+                                        )
+                                    )
+                                )
+                            )
+                        ) 
+                    )
+                )
+            ) 
+        )
         
         // Chariot
         (piece "Ju" Each 
@@ -90,9 +90,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     (apply (remove (to)))
-               )
-           )
-       )
+                )
+            )
+        )
         
         // Canon
         (piece "Pao" Each 
@@ -103,19 +103,19 @@
                     Orthogonal 
                     (between 
                         before:(count Rows) 
-                        after:(count Rows)  
+                        after:(count Rows) 
                         if:(not (is Empty (between)))
-                   )
+                    )
                     (to 
                         if:(is Empty (to)) 
                         (apply 
                             if:("IsEnemyAt" (to)) 
                             (remove (to))
-                       )
-                   )  
-               ) 
-           )
-       )
+                        )
+                    ) 
+                ) 
+            )
+        )
         
         // Soldier
         (piece "Zu" Each
@@ -125,19 +125,19 @@
                     (is In (from) (sites Mover "Home")) 
                     Forward 
                     (directions {Forward Rightward Leftward})
-               ) 
+                ) 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     (apply (remove (to)))
-               )
-           )
-       )
+                )
+            )
+        )
         
         (regions "PalaceP1" P1 { 3..5 12..14 21..23 })
         (regions "PalaceP2" P2 { 66..68 75..77 84..86 })
         (regions "Home" P1 (expand (sites Bottom) steps:4))
         (regions "Home" P2 (expand (sites Top) steps:4))
-    })  
+    }) 
     
     (rules 
         (start { 
@@ -150,21 +150,21 @@
                 ifAfterwards:(and 
                     ("JiangSameColumnWithNoPieceBetween")
                     (not ("IsInCheck" "Jiang" Mover))
-               )
-           )
-       )
+                )
+            )
+        )
         
         (end {
             (if (and 
                     ("IsInCheck" "Jiang" Next) 
                     ("EnemyCannotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
+            ) 
             
             ("BlockWin")
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -181,9 +181,9 @@
                 (version "1.3.4")
                 (classification "board/war/replacement/checkmate/xiangqi")
                 (credit "Eric Piette")
-                (origin  "This game was played in China, from around 779 to 1127.")
+                (origin "This game was played in China, from around 779 to 1127.")
                 }
-           )
+            )
             
             (graphics {
                 (player Colour P1 (colour White))
@@ -195,6 +195,6 @@
             
             (ai 
                 "Xiangqi_ai"
-           )
+            )
             
-       )
+        )

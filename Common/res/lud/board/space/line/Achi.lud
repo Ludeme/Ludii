@@ -2,7 +2,7 @@
     (move
         Remove 
         (sites Occupied by:Next container:"Board") 
-   )
+    )
 )
 
 (define "IfLine3MoveAgain" 
@@ -10,14 +10,14 @@
         (if 
             (is Line 3 Orthogonal exact:True) 
             (moveAgain)
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (game "Achi"
-    (players 2)  
+    (players 2) 
     <Variant>
 )
 
@@ -25,7 +25,7 @@
 
 (option "Variant" <Variant> args:{ <rules>}
     {
-    (item "Murray"  
+    (item "Murray" 
         <
         (equipment { 
             (board (concentric Square rings:2) use:Vertex) 
@@ -35,9 +35,9 @@
                     Step 
                     (to if:(is Empty (to))) 
                     "IfLine3MoveAgain"
-               )
-           ) 
-        })  
+                )
+            ) 
+        }) 
         (rules 
             (start (place "Marker" "Hand" count:6))
             
@@ -50,40 +50,40 @@
                             (from (handSite Mover)) 
                             (to (sites Empty)) 
                             "IfLine3MoveAgain"
-                       )  
-                   )
-               ) 
+                        ) 
+                    )
+                ) 
                 (nextPhase Mover ("HandEmpty" Mover) "Movement")
-           )
+            )
             
             (phase "Movement" 
                 (play 
                     (if "SameTurn"
                         "RemoveEnemyPiece"
                         (forEach Piece)
-                   )
-               )
-           )
+                    )
+                )
+            )
             }
             
             (end 
                 (if 
                     (<= (count Pieces Next) 2) 
                     (result Mover Win)
-               )
-           )
-       )	
-        >   
+                )
+            )
+        )	
+        >  
         "The game is played according to the rules of Murray."
-   )**  
+    )** 
     
-    (item "Wikipedia with All sites"  
+    (item "Wikipedia with All sites" 
         <
         (equipment { 
             ("AlquerqueBoard" 3 3)
             (hand Each)
             (piece "Marker" Each "StepToEmpty")
-        })  
+        }) 
         
         (rules 
             (start (place "Marker" "Hand" count:3))
@@ -93,28 +93,28 @@
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty))
-                   ) 
-               )
+                    ) 
+                )
                 (nextPhase (>= (count Moves) 6) "Movement")
-           )
+            )
             
             (phase "Movement"
                 (play (forEach Piece))
-           )
+            )
             }
             (end (if (is Line 3) (result Mover Win)))
-       )
-        >   
+        )
+        >  
         "The game is played according to the rules described in Wikipedia in steping to any sites."
-   )
+    )
     
-    (item "Wikipedia with not in the middle"  
+    (item "Wikipedia with not in the middle" 
         <
         (equipment { 
             ("AlquerqueBoard" 3 3)
             (hand Each)
             (piece "Marker" Each (move Step (to if:(is In (to) (difference (sites Empty) (sites Centre))))))
-        })  
+        }) 
         
         (rules 
             (start (place "Marker" "Hand" count:3))
@@ -124,20 +124,20 @@
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty))
-                   ) 
-               )
+                    ) 
+                )
                 (nextPhase (>= (count Moves) 6) "Movement")
-           )
+            )
             
             (phase "Movement"
                 (play (forEach Piece))
-           )
+            )
             }
             (end (if (is Line 3) (result Mover Win)))
-       )
-        >   
+        )
+        >  
         "The game is played according to the rules described in Wikipedia in steping to any sites except the middle."
-   )
+    )
 })
 
 //------------------------------------------------------------------------------
@@ -148,13 +148,13 @@
         {
         "Variant/Murray"
         }
-   )
+    )
     
     (ruleset "Ruleset/Wikipedia (Suggested)" 
         {
         "Variant/Wikipedia with All sites"
         }
-   )
+    )
     
 })
 
@@ -177,11 +177,11 @@
         (classification "board/space/line")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (ai 
         "Achi_ai"
-   )
+    )
     
 )
 

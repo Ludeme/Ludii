@@ -2,15 +2,15 @@
     (apply 
         (if (is Occupied (to))
             (remove (to))
-       )
-   ) 
+        )
+    ) 
 )
 
 (define "EmptySitesInHome" 
     (forEach 
         (sites Mover "Home") 
         if:(is Empty (site))
-   )
+    )
 )
 
 (define "CubeInHand" 
@@ -21,7 +21,7 @@
     (all Sites 
         (sites Mover "Goal") 
         if:(is In (site) (sites Occupied by:Mover))
-   )
+    )
 )
 
 (define "MoveForwards" 
@@ -30,8 +30,8 @@
         (to 
             if:True
             "CaptureToPiece"
-       ) 
-   )
+        ) 
+    )
 )
 
 (define "SameValue" 
@@ -48,10 +48,10 @@
                 (if ("IsNotOffBoard" (where "Square" Mover state:(+ (count Pips) 4)))
                     (= (state at:(from)) (+ (count Pips) 4))
                     (= (state at:(from)) (+ (count Pips) 5))
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 (define "ValueNextLower" 
@@ -64,19 +64,19 @@
                 (if ("IsNotOffBoard" (where "Square" Mover state:(- (count Pips) 4)))
                     (= (state at:(from)) (- (count Pips) 4))
                     (= (state at:(from)) (- (count Pips) 5))
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 (define "MoveAPieceOf" 
-    (forEach Piece       
+    (forEach Piece    
         (if 
             #1
             ("MoveForwards")
-       )
-   )
+        )
+    )
 )
 
 (define "PieceIsOnTheBoard" 
@@ -85,8 +85,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "EinStein Wurfelt Nicht"  
-    (players {(player SE) (player NW)})  
+(game "EinStein Wurfelt Nicht" 
+    (players {(player SE) (player NW)}) 
     (equipment { 
         (board (square <Board:size>)) 
         (piece "Square" Each) 
@@ -96,22 +96,22 @@
         (regions "Home" P2 (expand (intersection (sites Bottom) (sites Right)) steps:<Board:sizeHome> Orthogonal))
         (regions "Goal" P1 (intersection (sites Bottom) (sites Right)))
         (regions "Goal" P2 (intersection (sites Top) (sites Left)))
-    })  
+    }) 
     (rules 
         (start {
             <Board:start>
         })
         phases:{
-        (phase "Placement" 	        
+        (phase "Placement" 	    
             (play 
                 (move 
                     (from ("CubeInHand")) 
                     (to ("EmptySitesInHome"))
-               )
-           )
+                )
+            )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-       )
-        (phase "Movement" 	        
+        )
+        (phase "Movement" 	    
             (play 
                 ("RollMove"
                     (if ("PieceIsOnTheBoard")
@@ -119,11 +119,11 @@
                         (or
                             ("MoveAPieceOf" ("ValueNextHigher"))
                             ("MoveAPieceOf" ("ValueNextLower"))
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         }
         
         (end 
@@ -131,11 +131,11 @@
                 (or 
                     (no Pieces Next) 
                     ("GoalReached")
-               ) 
+                ) 
                 (result Mover Win)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -147,7 +147,7 @@
         <6>
         <1>
         <2>
-        <  
+        < 
         (place "Square1" (handSite P1) state:1) 
         (place "Square1" (handSite P1 1) state:2) 
         (place "Square1" (handSite P1 2) state:3) 
@@ -163,13 +163,13 @@
         (place "Square2" (handSite P2 5) state:6) 
         >
         "The version of the game played on 5x5 board."
-   )*   
-    (item "6"    
+    )*  
+    (item "6"  
         <6>
         <10>
         <2>
         <3>
-        <  
+        < 
         (place "Square1" (handSite P1) state:2) 
         (place "Square1" (handSite P1 1) state:3) 
         (place "Square1" (handSite P1 2) state:4) 
@@ -193,7 +193,7 @@
         (place "Square2" (handSite P2 9) state:12) 
         >
         "The version of the game played on 6x6 board."
-   ) 
+    ) 
 })
 
 //------------------------------------------------------------------------------
@@ -219,7 +219,7 @@
         (credit "Eric Piette")
         (date "2004")
         }
-   )
+    )
     
     (graphics {
         (region Colour "Home" Edge)
@@ -231,5 +231,5 @@
     
     (ai
         "EinStein Wurfelt Nicht_ai"
-   )
+    )
 )

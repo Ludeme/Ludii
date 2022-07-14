@@ -5,22 +5,22 @@
 //------------------------------------------------------------------------------
 
 (game "Chungcajon" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         (mancalaBoard 2 7
             {
             (track "Track1" "7,W,WNW,ENE,E" loop:True P1)
             (track "Track2" "8,E,ESE,WSW,W" loop:True P2)
             }
-       )
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+        )
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
         (piece "Seed" Shared)
-    })  
+    }) 
     
     (rules 
-        (start (set Count 7 to:(union (sites P1) (sites P2))))		  
+        (start (set Count 7 to:(union (sites P1) (sites P2))))		 
         (play 
             (move Select 
                 (from 
@@ -28,24 +28,24 @@
                         ("SameTurn") 
                         "LastHoleSowed" 
                         (sites Mover) 
-                   ) 
+                    ) 
                     if:(> (count at:(from)) 0)
-               )
+                )
                 (then 
-                    (sow  
+                    (sow 
                         "Track"
                         owner:(mover)
                         if:(and 
                             (> (count at:(to)) 1)
                             ("NotMoverStore")
-                       ) 
+                        ) 
                         apply:(moveAgain)
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (end ("MancalaByScoreWhen" (all Sites (union (sites P1) (sites P2)) if:(= 0 (count at:(site))))))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -61,9 +61,9 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Philippines, around 1900.")
+        (origin "This game was played in Philippines, around 1900.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)
@@ -71,5 +71,5 @@
     
     (ai
         "Chungcajon_ai"
-   )
+    )
 )

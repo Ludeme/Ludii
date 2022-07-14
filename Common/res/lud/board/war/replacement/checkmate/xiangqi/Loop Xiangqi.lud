@@ -2,7 +2,7 @@
     (if (= (column of:(where "Jiang" P1)) (column of:(where "Jiang" P2)))
         (not ("NoSites" (forEach (sites Direction from:(where "Jiang" P1) N stop:(= (to) (where "Jiang" P2))) if:(not (is Empty (site))))))
         True
-   )
+    )
 )
 
 (define "EnemyCannotMove"
@@ -14,7 +14,7 @@
                     (move (from (sites Occupied by:Next container:"Hand" component:"Shi")) (to (intersection (sites Empty) (sites Next "PalaceShi"))))
                     (move (from (sites Occupied by:Next container:"Hand" component:"Xiang")) (to (intersection (sites Empty) (sites Next "Home"))))
                     }
-               )
+                )
     ifAfterwards:(not ("IsInCheck" "Jiang" Next)))))
 )
 
@@ -26,22 +26,22 @@
             if:(and 
                 (is In (to) (sites Mover "Palace")) 
                 (not ("IsFriendAt" (to)))
-           ) 
+            ) 
             (apply 
                 if:("IsEnemyAt" (to))
                 (add 
                     (piece (mapEntry "captured" (what at:(to)))) 
                     (to Cell (mapEntry "where" (what at:(to))))
-               )
-           )
-       )
-   ) 
+                )
+            )
+        )
+    ) 
 )
 
 //------------------------------------------------------------------------------
 
 (game "Loop Xiangqi" 
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (rectangle 10 9) use:Vertex) 
         
@@ -59,7 +59,7 @@
                         (is In (between) (sites Mover "Home")) 
                         (is Empty (between)) 
                     })
-               )
+                )
                 (to 
                     if:("IsEnemyAt" (to)) 
                     (apply 
@@ -68,12 +68,12 @@
                             (add 
                                 (piece (mapEntry "captured" (what at:(to)))) 
                                 (to Cell (mapEntry "where" (what at:(to))))
-                           )
-                       )
-                   )
-               ) 
-           )
-       ) 
+                            )
+                        )
+                    )
+                ) 
+            )
+        ) 
         
         // Horse
         (piece "Ma" Each 
@@ -94,16 +94,16 @@
                                             (add 
                                                 (piece (mapEntry "captured" (what at:(to)))) 
                                                 (to Cell (mapEntry "where" (what at:(to))))
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       ) 
-                   )
-               )
-           ) 
-       )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        ) 
+                    )
+                )
+            ) 
+        )
         
         // Chariot
         (piece "Ju" Each 
@@ -118,12 +118,12 @@
                             (add 
                                 (piece (mapEntry "captured" (what at:(to)))) 
                                 (to Cell (mapEntry "where" (what at:(to))))
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         
         // Canon
         (piece "Pao" Each 
@@ -134,9 +134,9 @@
                     Orthogonal 
                     (between 
                         before:(count Rows) 
-                        after:(count Rows)  
+                        after:(count Rows) 
                         if:(not (is Empty (between)))
-                   )
+                    )
                     (to 
                         if:(is Empty (to)) 
                         (apply 
@@ -144,12 +144,12 @@
                             (add 
                                 (piece (mapEntry "captured" (what at:(to)))) 
                                 (to Cell (mapEntry "where" (what at:(to))))
-                           )
-                       )
-                   )  
-               ) 
-           )
-       )
+                            )
+                        )
+                    ) 
+                ) 
+            )
+        )
         
         // Soldier
         (piece "Zu" Each
@@ -159,18 +159,18 @@
                     (is In (from) (sites Mover "Home")) 
                     Forward 
                     (directions {Forward Rightward Leftward})
-               ) 
+                ) 
                 (to 
                     (apply 
                         if:("IsEnemyAt" (to))
                         (add 
                             (piece (mapEntry "captured" (what at:(to)))) 
                             (to Cell (mapEntry "where" (what at:(to))))
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         
         // General
         (piece "Jiang" Each ("StepMoveOnThePalace" Orthogonal)) 
@@ -179,14 +179,14 @@
         (regions "PalaceP2" P2 { 66..68 75..77 84..86 })
         (regions "Home" P1 (expand (sites Bottom) steps:4))
         (regions "Home" P2 (expand (sites Top) steps:4))
-        (map "where" {(pair 2 90) (pair 1 96) (pair 4 91) (pair 3 97) (pair 6 92) (pair 5 98) (pair 8 93) (pair 7 99) (pair 10 94) (pair 9 100) (pair 12 95) (pair 11 101)})        
+        (map "where" {(pair 2 90) (pair 1 96) (pair 4 91) (pair 3 97) (pair 6 92) (pair 5 98) (pair 8 93) (pair 7 99) (pair 10 94) (pair 9 100) (pair 12 95) (pair 11 101)})    
         (map "captured" {(pair 1 2) (pair 2 1) (pair 3 4) (pair 4 3) (pair 5 6) (pair 6 5) (pair 7 8) (pair 8 7) (pair 9 10) (pair 10 9) (pair 11 12) (pair 12 11)})
         
         (regions "PalaceShiP1" P1 { 3 5 13 21 23 })
         (regions "PalaceShiP2" P2 { 66 68 76 84 86 })
         
         (hand Each size:6)
-    })  
+    }) 
     
     (rules 
         (start { 
@@ -199,26 +199,26 @@
                     {
                     (forEach Piece) 
                     (move (from (sites Occupied by:Mover container:"Hand" components:{"Ma" "Ju" "Pao" "Zu"})) (to (sites Empty)))
-                    (move (from (sites Occupied by:Mover container:"Hand" component:"Shi")) (to (intersection (sites Empty) (sites Mover "PalaceShi"))))  
+                    (move (from (sites Occupied by:Mover container:"Hand" component:"Shi")) (to (intersection (sites Empty) (sites Mover "PalaceShi")))) 
                     (move (from (sites Occupied by:Mover container:"Hand" component:"Xiang")) (to (intersection (sites Empty) (sites Mover "Home"))))
                 })
                 ifAfterwards:(and 
                     ("JiangSameColumnWithNoPieceBetween")
                     (not ("IsInCheck" "Jiang" Mover))
-               )
-           )
-       )
+                )
+            )
+        )
         
         (end {
             (if (and 
                     ("IsInCheck" "Jiang" Next) 
                     ("EnemyCannotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
+            ) 
             ("BlockWin")
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -235,7 +235,7 @@
         (credit "Matthew Stephenson")
         (date "15-10-2021")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour White))

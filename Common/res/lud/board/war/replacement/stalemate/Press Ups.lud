@@ -2,8 +2,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Press Ups"  
-    (players 2)  
+(game "Press Ups" 
+    (players 2) 
     (equipment { 
         (board (square 7)) 
         (piece "Disc" Each) 
@@ -11,7 +11,7 @@
         (regions P1 (difference (union (sites Bottom) (sites Top)) (union (sites Right) (sites Left))))
         (regions P2 (difference (union (sites Right) (sites Left)) (union (sites Bottom) (sites Top))))
         }
-   )  
+    ) 
     
     (rules 
         (start {
@@ -27,10 +27,10 @@
                     Select
                     (from "AllSitesWithoutOwnedPiece") 
                     (then (remove (last To)))
-               )
-           ) 
+                )
+            ) 
             (nextPhase "Remove")
-       )
+        )
         (phase "Remove" 
             (play 
                 (move
@@ -38,11 +38,11 @@
                     (from 
                         (sites Around (last To)) 
                         if:(not (is Empty (from)))
-                   ) 
+                    ) 
                     (then (remove (last To)))
-               )
-           )
-       )
+                )
+            )
+        )
         }
         
         (end 
@@ -54,10 +54,10 @@
                     (score P1 (count Pieces P1)) 
                     (score P2 (count Pieces P2))
                 })
-           )
+            )
             }
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -78,7 +78,7 @@
         (credit "Eric Piette")
         (date "1974")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Red))
@@ -88,6 +88,6 @@
     
     (ai 
         "Press Ups_ai"
-   )
+    )
     
 )

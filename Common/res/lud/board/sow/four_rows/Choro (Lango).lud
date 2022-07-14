@@ -8,13 +8,13 @@
             (is In ("NextHole" (site) "TrackCCW" (count at:(site))) (sites Mover "Inner")) 
             (is Occupied ("OppositePit" ("NextHole" (site) "TrackCCW" (count at:(site)))))
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Choro (Lango)"  
-    (players 2)  
+(game "Choro (Lango)" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -24,19 +24,19 @@
             (track "TrackCW1" "7,W,N1,E" loop:True P1)
             (track "TrackCW2" "24,E,S1,W" loop:True P2)
             }
-       )
-        (regions "Home" P1 (sites Track "TrackCCW1"))                              // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))                              // P2 home
+        )
+        (regions "Home" P1 (sites Track "TrackCCW1"))               // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))               // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))   // P2 inner Home
-        (regions "Outer" P1 (sites Bottom))                                        // P1 outer Home
-        (regions "Outer" P2 (sites Top))                                           // P2 outer Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))  // P2 inner Home
+        (regions "Outer" P1 (sites Bottom))                    // P1 outer Home
+        (regions "Outer" P2 (sites Top))                      // P2 outer Home
         (regions "FourLeftMost" P1 (intersection (expand (sites Left)) (expand (sites Bottom)))) // P1 four left most
-        (regions "FourLeftMost" P2 (intersection (expand (sites Right)) (expand (sites Top))))   // P2 four left most
-        (regions "TwoRightMostOuter" P1 (intersection (expand (sites Right)) (sites Bottom)))    // P1 two right most outer
-        (regions "TwoRightMostOuter" P2 (intersection (expand (sites Left)) (sites Top)))        // P2 two right most outer
+        (regions "FourLeftMost" P2 (intersection (expand (sites Right)) (expand (sites Top))))  // P2 four left most
+        (regions "TwoRightMostOuter" P1 (intersection (expand (sites Right)) (sites Bottom)))  // P1 two right most outer
+        (regions "TwoRightMostOuter" P2 (intersection (expand (sites Left)) (sites Top)))    // P2 two right most outer
         (piece "Seed" Shared)
-    })  
+    }) 
     (rules 
         
         (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home"))))
@@ -51,19 +51,19 @@
                             (if (= 1 (value Player Mover))
                                 (sites Mover "Outer") 
                                 (sites Mover "TwoRightMostOuter") 
-                           )
-                       )
+                            )
+                        )
                         if:(if ("SameTurn")
                             (< 0 (count at:(from)))
                             (and
                                 (if (= 0 (count Sites in:("HolesWithPossibleCapture" (sites Mover "Outer"))))
                                     True
                                     (is In (from) ("HolesWithPossibleCapture" (sites Mover "Outer")))
-                               )
+                                )
                                 (< 1 (count at:(from)))
-                           )
-                       )
-                   )
+                            )
+                        )
+                    )
                     (then 
                         (sow
                             count:(if ("SameTurn") (var "Count") (count at:(last From)))
@@ -76,41 +76,41 @@
                                         (if (and 
                                                 (is Occupied ("OppositePit" (to)))
                                                 (is In (to) (sites Mover "Inner"))
-                                           )
+                                            )
                                             (and {
                                                 (fromTo
                                                     (from ("OppositePit" (to)))
                                                     (to ("CorrespondingOuterPit" (to)))
                                                     count:(count at:("OppositePit" (to)))
-                                               )
+                                                )
                                                 (if (is Occupied ("OppositeOuterPit" (to)))
                                                     (fromTo
                                                         (from ("OppositeOuterPit" (to)))
                                                         (to ("CorrespondingOuterPit" (to)))
                                                         count:(count at:("OppositeOuterPit" (to)))
-                                                   )
-                                               )
+                                                    )
+                                                )
                                                 (set Var "Replay" ("CorrespondingOuterPit" (to)))
                                                 (if (= 1 (count at:("CorrespondingOuterPit" (to))))
                                                     (set Var "Count" (+ { 1 (count at:("OppositePit" (to))) (count at:("OppositeOuterPit" (to))) }))
                                                     (set Var "Count" (+ (count at:("OppositePit" (to))) (count at:("OppositeOuterPit" (to)))))
-                                               )
+                                                )
                                             })
                                             (and
                                                 (set Var "Replay" (to))
                                                 (set Var "Count" (count at:(to)))
-                                           )
-                                       )
-                                   )
-                               )
+                                            )
+                                        )
+                                    )
+                                )
                                 (if (!= 1 (value Player Mover)) (set Value Mover 1))
-                           )
-                       )
-                   )
-               )
-           )
+                            )
+                        )
+                    )
+                )
+            )
             (nextPhase Mover (= 1 (count at:(last To afterConsequence:True))) "MainPhase")
-       )
+        )
         
         (phase "MainPhase"
             (play
@@ -120,17 +120,17 @@
                             (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 (sites Mover "FourLeftMost") 
-                           )
+                            )
                             if:(and {
                                 if:(if ("SameTurn")
                                     (< 0 (count at:(from)))
                                     (< 1 (count at:(from)))
-                               )
+                                )
                                 (is In (from) (sites Mover "FourLeftMost"))
                                 (is In ("NextHole" (from) "TrackCW" (count at:(from))) (sites Mover "Inner"))
                                 (is Occupied ("OppositePit" ("NextHole" (from) "TrackCW" (count at:(from)))))
                             })
-                       )
+                        )
                         (then 
                             (sow
                                 count:(if ("SameTurn") (var "Count") (count at:(last From)))
@@ -143,53 +143,53 @@
                                         (if (and 
                                                 (is Occupied ("OppositePit" (to)))
                                                 (is In (to) (sites Mover "Inner"))
-                                           )
+                                            )
                                             (and {
                                                 (fromTo
                                                     (from ("OppositePit" (to)))
                                                     (to ("CorrespondingOuterPit" (to)))
                                                     count:(count at:("OppositePit" (to)))
-                                               )
+                                                )
                                                 (if (is Occupied ("OppositeOuterPit" (to)))
                                                     (fromTo
                                                         (from ("OppositeOuterPit" (to)))
                                                         (to ("CorrespondingOuterPit" (to)))
                                                         count:(count at:("OppositeOuterPit" (to)))
-                                                   )
-                                               )
-                                                (set Var "Replay" ("CorrespondingOuterPit" (to)))      
+                                                    )
+                                                )
+                                                (set Var "Replay" ("CorrespondingOuterPit" (to)))   
                                                 (if (= 1 (count at:("CorrespondingOuterPit" (to))))
                                                     (set Var "Count" (+ { 1 (count at:("OppositePit" (to))) (count at:("OppositeOuterPit" (to))) }))
                                                     (set Var "Count" (+ (count at:("OppositePit" (to))) (count at:("OppositeOuterPit" (to)))))
-                                               )
+                                                )
                                             })
                                             (and
                                                 (set Var "Replay" (to))
                                                 (set Var "Count" (count at:(to)))
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     (move Select
                         (from 
                             (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 (sites Mover) 
-                           )
+                            )
                             if:(if ("SameTurn")
                                 (< 0 (count at:(from)))
                                 (and
                                     (if (= 0 (count Sites in:("HolesWithPossibleCapture" (sites Mover))))
                                         True
                                         (is In (from) ("HolesWithPossibleCapture" (sites Mover)))
-                                   )
+                                    )
                                     (< 1 (count at:(from)))
-                               )
-                           )
-                       )
+                                )
+                            )
+                        )
                         (then 
                             (sow
                                 count:(if ("SameTurn") (var "Count") (count at:(last From)))
@@ -208,37 +208,37 @@
                                                     (from ("OppositePit" (to)))
                                                     (to ("CorrespondingOuterPit" (to)))
                                                     count:(count at:("OppositePit" (to)))
-                                               )
+                                                )
                                                 (if (is Occupied ("OppositeOuterPit" (to)))
                                                     (fromTo
                                                         (from ("OppositeOuterPit" (to)))
                                                         (to ("CorrespondingOuterPit" (to)))
                                                         count:(count at:("OppositeOuterPit" (to)))
-                                                   )
-                                               )
+                                                    )
+                                                )
                                                 (set Var "Replay" ("CorrespondingOuterPit" (to)))
                                                 (if (= 1 (count at:("CorrespondingOuterPit" (to))))
                                                     (set Var "Count" (+ { 1 (count at:("OppositePit" (to))) (count at:("OppositeOuterPit" (to))) }))
                                                     (set Var "Count" (+ (count at:("OppositePit" (to))) (count at:("OppositeOuterPit" (to)))))
-                                               )
+                                                )
                                             })
                                             (and
                                                 (set Var "Replay" (to))
                                                 (set Var "Count" (count at:(to)))
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         }
         
         (end ("BlockWin"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -254,9 +254,9 @@
         (version "1.3.4")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Uganda, around 1927.")
+        (origin "This game was played in Uganda, around 1927.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

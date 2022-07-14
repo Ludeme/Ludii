@@ -2,18 +2,18 @@
     (+ 
         (count Groups if:(= (who at:(to)) P1) min:<Group>) 
         (count Groups if:(= (who at:(to)) P2) min:<Group>)
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Odd"  
+(game "Odd" 
     (players 2) 
     (equipment { 
         (board (rotate 90 (hex <Board>))) 
         (piece "Marker" Each)
         (hand Shared size:2)
-    })  
+    }) 
     (rules 
         (start {
             (place "Marker1" (handSite Shared)) 
@@ -24,8 +24,8 @@
                 (from (sites Hand Shared)) 
                 (to (sites Empty))
                 copy:True
-           )
-       )
+            )
+        )
         (end 
             (if (is Full) 
                 (if 
@@ -33,51 +33,51 @@
                         (+ 
                             (count Groups if:(= (who at:(to)) P1) min:<Group>) 
                             (count Groups if:(= (who at:(to)) P2) min:<Group>)
-                       )
-                   ) 
+                        )
+                    ) 
                     (result P1 Win)
-               )
+                )
                 (result P2 Win)
-           ) 
-       )
-   )
+            ) 
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "3"    <3>  "Played on a size 3 board.")   
-    (item "4"    <4>  "Played on a size 4 board.")   
-    (item "5"    <5>  "Played on a size 5 board.")*   
-    (item "6"    <6>  "Played on a size 6 board.")   
-    (item "7"    <7>  "Played on a size 7 board.")  
-    (item "8"    <8>  "Played on a size 8 board.")   
-    (item "9"    <9>  "Played on a size 9 board.")   
-    (item "10"  <10>  "Played on a size 10 board.")   
-    (item "11"  <11>  "Played on a size 11 board.")   
-    (item "12"  <12>  "Played on a size 12 board.")  
+    (item "3"  <3> "Played on a size 3 board.")  
+    (item "4"  <4> "Played on a size 4 board.")  
+    (item "5"  <5> "Played on a size 5 board.")*  
+    (item "6"  <6> "Played on a size 6 board.")  
+    (item "7"  <7> "Played on a size 7 board.") 
+    (item "8"  <8> "Played on a size 8 board.")  
+    (item "9"  <9> "Played on a size 9 board.")  
+    (item "10" <10> "Played on a size 10 board.")  
+    (item "11" <11> "Played on a size 11 board.")  
+    (item "12" <12> "Played on a size 12 board.") 
     }
 )
 
 (option "Minimum Group Size" <Group> args:{ <size> }
     {
-    (item "3"    <3>  "Min group size 3.")   
-    (item "4"    <4>  "Min group size 4.")   
-    (item "5"    <5>  "Min group size 5.")*   
-    (item "6"    <6>  "Min group size 6.")   
-    (item "7"    <7>  "Min group size 7.")  
-    (item "8"    <8>  "Min group size 8.")   
-    (item "9"    <9>  "Min group size 9.")   
-    (item "10"  <10>  "Min group size 10.")   
-    (item "11"  <11>  "Min group size 11.")   
-    (item "12"  <12>  "Min group size 12.")  
+    (item "3"  <3> "Min group size 3.")  
+    (item "4"  <4> "Min group size 4.")  
+    (item "5"  <5> "Min group size 5.")*  
+    (item "6"  <6> "Min group size 6.")  
+    (item "7"  <7> "Min group size 7.") 
+    (item "8"  <8> "Min group size 8.")  
+    (item "9"  <9> "Min group size 9.")  
+    (item "10" <10> "Min group size 10.")  
+    (item "11" <11> "Min group size 11.")  
+    (item "12" <12> "Min group size 12.") 
     }
 )
 
 //(rulesets {
-    //    (ruleset "Ruleset/Standard" { "Board Size/5" "Minimum Group Size/5"})*
-    //    (ruleset "Ruleset/Expert" { "Board Size/7" "Minimum Group Size/7"})   
+    //  (ruleset "Ruleset/Standard" { "Board Size/5" "Minimum Group Size/5"})*
+    //  (ruleset "Ruleset/Expert" { "Board Size/7" "Minimum Group Size/7"})  
 //})
 
 //------------------------------------------------------------------------------
@@ -97,12 +97,12 @@
         (credit "Eric Piette")
         (date "2007")
         }
-   )
+    )
     
     (graphics {
         (show Score All "GroupCount" " groups")
     })
     (ai
         "Odd_ai"
-   )
+    )
 )

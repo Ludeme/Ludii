@@ -16,14 +16,14 @@
                                 (if (is In (to) (sites "Square7"))
                                     (all Sites (sites "Square7") if:(!= (id #1 Neutral) (what at:(site))))
                                     (all Sites (sites "Square8") if:(!= (id #1 Neutral) (what at:(site))))
-                               )
-                           )
-                       )
-                   )
-               )
-           )
-       )
-   )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
 )
 
 (define "AddPiece"
@@ -35,14 +35,14 @@
                 (all Sites (sites Column (column of:(to))) if:(!= (id #1 Neutral) (what at:(site))))
                 ("CheckLineRightSubGame" #1)
             })
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Duidoku"  
-    (players 2)  
+(game "Duidoku" 
+    (players 2) 
     (equipment { 
         (board (square 9)) 
         (piece "1" Neutral)
@@ -54,16 +54,16 @@
         (piece "7" Neutral)
         (piece "8" Neutral)
         (piece "9" Neutral)
-        (regions "Square0"  (sites { 0..2   9..11 18..20}))
-        (regions "Square1"  (sites { 3..5  12..14 21..23}))
-        (regions "Square2"  (sites { 6..8  15..17 24..26}))
-        (regions "Square3"  (sites {27..29 36..38 45..47}))
-        (regions "Square4"  (sites {30..32 39..41 48..50}))
-        (regions "Square5"  (sites {33..35 42..44 51..53}))
-        (regions "Square6"  (sites {54..56 63..65 72..74}))
-        (regions "Square7"  (sites {57..59 66..68 75..77}))
-        (regions "Square8"  (sites {60..62 69..71 78..80}))
-    })  
+        (regions "Square0" (sites { 0..2  9..11 18..20}))
+        (regions "Square1" (sites { 3..5 12..14 21..23}))
+        (regions "Square2" (sites { 6..8 15..17 24..26}))
+        (regions "Square3" (sites {27..29 36..38 45..47}))
+        (regions "Square4" (sites {30..32 39..41 48..50}))
+        (regions "Square5" (sites {33..35 42..44 51..53}))
+        (regions "Square6" (sites {54..56 63..65 72..74}))
+        (regions "Square7" (sites {57..59 66..68 75..77}))
+        (regions "Square8" (sites {60..62 69..71 78..80}))
+    }) 
     (rules
         (play
             (or {
@@ -77,12 +77,12 @@
                 ("AddPiece" "8")
                 ("AddPiece" "9")
             })
-       )
+        )
         (end { 
             (if (all Sites (sites Board) if:(is Occupied (site))) (result Mover Draw))
             ("BlockWin")
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -91,7 +91,7 @@
     (info
         {
         (description "Duidoku is a two-player version of Sudoku. ")
-        (rules "The player to play the last possible legal move wins the game.  The other player loses.  Unless, that is, the board is completely full, in which case the game is a tie.")
+        (rules "The player to play the last possible legal move wins the game. The other player loses. Unless, that is, the board is completely full, in which case the game is a tie.")
         (id "1774")
         (source "<a href=\"https://www.duidoku.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.duidoku.com/</a>")
         (version "1.3.4")
@@ -100,7 +100,7 @@
         (credit "Eric Piette")
         (date "2008")
         }
-   )
+    )
     (graphics {
         (board Style Sudoku)
         (player Colour Neutral (colour 0 0 0 0))

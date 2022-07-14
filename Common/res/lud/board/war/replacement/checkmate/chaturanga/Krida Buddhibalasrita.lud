@@ -2,8 +2,8 @@
     (apply 
         (if ("IsEnemyAt" (to))
             (remove (to))
-       )
-   ) 
+        )
+    ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -13,8 +13,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-       )
-   )
+        )
+    )
 )
 
 (define "NextCanNotMove" (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next (forEach Piece)))))))
@@ -23,8 +23,8 @@
     (move Step
         (to if:(not ("IsFriendAt" (to)))
             ("CaptureEnemyToPiece")
-       )
-   )
+        )
+    )
 )
 
 (define "KnightMove" 
@@ -34,8 +34,8 @@
         (to 
             if:(not ("IsFriendAt" (to))) 
             "CaptureEnemyToPiece"
-       ) 
-   )		
+        ) 
+    )		
 )
 
 (define "QueenMove" 
@@ -43,15 +43,15 @@
         Diagonal
         (to if:(not ("IsFriendAt" (to)))
             ("CaptureEnemyToPiece")
-       )
-   ) 		
+        )
+    ) 		
 )
 
 (define "ElephantMove"
     (move Hop Diagonal 
         (between if:True) 
         (to if:(not ("IsFriendAt" (to))) ("CaptureEnemyToPiece")) 
-   )		
+    )		
 )
 
 (define "RookMove" 
@@ -61,8 +61,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             "CaptureEnemyToPiece"
-       ) 
-   )	
+        ) 
+    )	
 )
 
 (define "Move" 
@@ -73,14 +73,14 @@
             (if ("IsInCheck" "King_noCross" Next)
                 (set Value Mover (+ 1 (value Player Mover)))
                 (set Value Mover 0)
-           )
-       )
-   )	
+            )
+        )
+    )	
 )
 
 //------------------------------------------------------------------------------
 
-(game "Krida Buddhibalasrita"  
+(game "Krida Buddhibalasrita" 
     (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
@@ -99,12 +99,12 @@
                             (promote (last To) (piece "Ferz_noCross") Mover)
                             (if (not (is In (last To) (sites "PromotionMarked")))
                                 (fromTo (from (last To)) (to (last From)))	
-                           )
-                       )
-                   )
-               )
-           )		
-       )
+                            )
+                        )
+                    )
+                )
+            )		
+        )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
         (regions "PromotionMarked" (sites {"A1" "D1" "E1" "H1" "A8" "D8" "E8" "H8"}))
@@ -122,23 +122,23 @@
             (if (can Move ("Move"))
                 ("Move")
                 (move Remove (difference (sites Occupied by:Next) (sites Occupied by:Next component:"King_noCross")))
-           )
-       )
+            )
+        )
         
         (end {
             (if (or
                     (and 
                         ("IsInCheck" "King_noCross" Next)
                         ("NextCanNotMove")
-                   ) 
+                    ) 
                     (= 1 (count Pieces Next))
-               )
+                )
                 (result Mover Win)
-           ) 
+            ) 
             (if (= (value Player P1) 64) (result P1 Win)) 
             (if (= (value Player P2) 64) (result P2 Win)) 
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -155,9 +155,9 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in India, from around 1600 to 1699.")
+        (origin "This game was played in India, from around 1600 to 1699.")
         }
-   )
+    )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

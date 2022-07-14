@@ -11,7 +11,7 @@
             (difference
                 (sites Incident Edge of:Cell at:(regionSite ("SharedCells" #1 #2) index:0))
                 (sites Incident Edge of:Cell at:(regionSite ("SharedCells" #1 #2) index:1))
-       ))
+        ))
         index:0
 ))
 
@@ -22,17 +22,17 @@
             (difference
                 (sites Incident Edge of:Cell at:#1)
                 (sites Incident Edge of:Cell at:#2)
-       ))
+        ))
         index:0
 ))
 
-(define "EdgeIsOriented"     
+(define "EdgeIsOriented"   
     (= 
         (regionSite (sites Incident Cell of:Edge at:#1) index:0) 
         (ahead Cell (regionSite (sites Incident Cell of:Edge at:#1) index:1) #2)
 )) 
 
-(define "EdgeOrientationInteger"  (if (or ("EdgeIsOriented" #1 E) ("EdgeIsOriented" #1 W)) 0 2))  // of an edge
+(define "EdgeOrientationInteger" (if (or ("EdgeIsOriented" #1 E) ("EdgeIsOriented" #1 W)) 0 2)) // of an edge
 
 (define "AddConnector"
     (if 
@@ -46,34 +46,34 @@
                         {{ F F #2 F }} 
                         (to Cell (sites Occupied by:Mover)
                             if:("NeedsConnection")
-               )))
+                )))
                 ("HalfWayEdge" (to) (last To))
-           )   
+            )  
             (add
                 (piece (id "I" Mover))
                 (to
                     Edge
                     (value)
                     (apply (set Var "ToEdge" (value))) 
-               )
+                )
                 stack:True
                 (then (set State Edge at:(var "ToEdge") (+ #1 ("EdgeOrientationInteger" (var "ToEdge")))))
-       ))
+        ))
 ))
 
 (define "RemoveConnector"
     (and
         {
-        (forEach Site  // edge between friends may not have opponent break.
+        (forEach Site // edge between friends may not have opponent break.
             (sites Around Cell (last To) Orthogonal)
             (apply if:(is Mover (who at:(site)))
                 (remove Edge ("BetweenEdge" (site) (last To)) count:2)
-       ))
+        ))
         (forEach Site // edge friend break not needed at edge around placement
             (sites Incident Edge of:Cell at:(last To)) 
             (apply if:(= (mover) (who Edge at:(site)))
                 (remove Edge (site) count:2)
-       ))
+        ))
         }
 ))
 
@@ -87,17 +87,17 @@
                 in:(intersection
                     (sites Around Cell (to))
                     (sites Around Cell (last To))
-       )))
+        )))
         (> 2
             (count Pieces All
                 in:(intersection
                     (sites Around Cell (to) Adjacent)
                     (sites Around Cell (last To) Adjacent)
-       )))
+        )))
         }
 ))
 
-//--------------------------------------------------  
+//-------------------------------------------------- 
 // Connectivity
 
 (define "Twist"
@@ -115,7 +115,7 @@
         (and
             (!= 0 (count Pieces of:("Opponent" #3) in:("Twist" #2 #1 #1)))
             (!= 0 (count Pieces of:("Opponent" #3) in:("Twist" #1 #2 #2)))
-       )
+        )
         (and
             (!= 0 (count Pieces of:("Opponent" #3) in:("Twist" #2 #1 #2)))
             (!= 0 (count Pieces of:("Opponent" #3) in:("Twist" #1 #2 #1)))
@@ -130,9 +130,9 @@
         {
         (= (to) (from))
         (and
-            (is #1 (who at:(from)))       
+            (is #1 (who at:(from)))    
             (is #1 (who at:(to))) 
-       )  
+        ) 
         (not ("Break" (from) (to) #1))
         }
 ))
@@ -152,14 +152,14 @@
                     Orthogonal
                     (to 
                         if:(and
-                            //       {
+                            //    {
                             (or
                                 (is Empty (to))
-                                (is #2 (who at:(to)))       
-                           )
-                            ("NotCrossingConnector" #2)  
-                            //       }
-               )))
+                                (is #2 (who at:(to)))    
+                            )
+                            ("NotCrossingConnector" #2) 
+                            //    }
+                )))
                 (#1) 
                 (difference ("Liberties" #2) #1)
 ))))
@@ -169,7 +169,7 @@
         (do
             "CheckMoverLoss"
             next:(set Score Mover (- 0 (count Pieces Cell Mover in:(sites State Cell 1))))
-       )
+        )
         (do
             "CheckOpponentLoss"
             next:(set Score Next (- 0 (count Pieces Cell Next in:(sites State Cell 1))))
@@ -187,7 +187,7 @@
                 (if
                     ("IsDeadSiteValueofPlayer" (value) Mover)
                     (set State at:(value) 1)
-           ))
+            ))
             }
 ))) 
 
@@ -211,8 +211,8 @@
         (then 
             (and 
                 {
-                ("AddConnector" 1  L)
-                ("AddConnector" 2  R)
+                ("AddConnector" 1 L)
+                ("AddConnector" 2 R)
                 ("RemoveConnector")
                 ("Scoring")
                 }
@@ -232,7 +232,7 @@
         (piece "I" P1 maxState:5)
         (piece "I" P2 maxState:5)
         }
-   )
+    )
     (rules
         (play
             (or
@@ -242,24 +242,24 @@
                         (to
                             (sites Occupied by:Next)
                             (apply (remove (to)))
-               )))
+                )))
                 ("Add2EmptyWithConsequenses")
-       ))
+        ))
         (end 
             (if 
                 (or
                     (is Triggered "Enmeshed" Mover)
                     (is Triggered "Enmeshed" Next)
-               )
+                )
                 { 
                 (if
                     (= (score Mover) (score Next))
                     (result Next Win)
-               )
+                )
                 (if
                     (!= (score Mover) (score Next))
                     (byScore)
-               ) 
+                ) 
                 }
                 (byScore)
 ))))
@@ -282,9 +282,9 @@
                     (*
                         (- 7 <BoardSize:smallSide>)
                         (/ (site) <BoardSize:smallSide>)
-                   )
+                    )
                     }
-               )
+                )
                 5
 ))))
 
@@ -320,7 +320,7 @@
             
             The game is a race to deprive the opponent of liberties by surrounding the opponent's stones and or by destroying the liberties by placing stones on them. 
             
-            If the players surround each other, the player with fewer captured stones wins, and where the result is still undetermined, the last to play loses. This latter rule prevents players from simply racing to cover up the liberties.  
+            If the players surround each other, the player with fewer captured stones wins, and where the result is still undetermined, the last to play loses. This latter rule prevents players from simply racing to cover up the liberties. 
             
             -------------
             The main differences from Netted is that life in N-Mesh requires only a single liberty for a region, and the liberties are specific cells distributed across the board. (Netted liberties were the edge cells and each stone required its own exclusive liberty)
@@ -330,7 +330,7 @@
             These include adjacency, as well as a short type of connection that can permanently cross the other player's connections and a longer type of connection that can be broken. 
             In N-Mesh the long connections are at knight's move distance, and are broken by a pair of stones placed in between, and the crossing connections are diagonals.
             
-            -------------   
+            -------------  
             Surrounding is done by nets. A net is made of adjacent stones as well as stones connected by diagonals and single empty spaces. Thus opponent's nets can cross each other and a portion of a net may be surrounded without surrounding the whole net. Having a connection to a living stone does not guarantee life to another stone: what provides life to a stone is having an empty liberty cell in the same region defined by the opponent's surrounding net.
             
             Offensive tactics include:
@@ -355,7 +355,7 @@
             -- If the game is to be played without a pie rule, a symmetrical arrangement is preferred for greater balance.
         The pie rule means that the game is a proven 2nd-player win, and the quality of the AI can be judged accordingly.")
         (rules "Goal: 
-            Deprive any of your opponent's stones access to an empty shaded Liberty cell, by surrounding or 'Enmeshing' them.  
+            Deprive any of your opponent's stones access to an empty shaded Liberty cell, by surrounding or 'Enmeshing' them. 
             
             Play:
             -- Black starts with an empty board.
@@ -387,7 +387,7 @@
         (credit "Dale W. Walton")
         (date "17-09-2021")
         }
-   )
+    )
     
     (graphics 
         {
@@ -400,18 +400,18 @@
         (piece Scale "Ball" 0.78)
         
         (piece Colour P1 "I" state:0 fillColour:(colour Red) strokeColour:(colour Red)) 
-        (piece Colour P2 "I" state:0 fillColour:(colour Red) strokeColour:(colour Red))  
+        (piece Colour P2 "I" state:0 fillColour:(colour Red) strokeColour:(colour Red)) 
         (piece Rotate P1 "I" state:0 degrees:90) // debug test: state 0 only occurs in intermediate graphics processing
         (piece Rotate P2 "I" state:0 degrees:90) // debug test: state 0 only occurs in intermediate graphics processing
         
         (piece Colour P1 "I" state:1 fillColour:(colour 0 0 0 150) strokeColour:(colour 0 0 0 150)) 
-        (piece Colour P2 "I" state:1 fillColour:(colour 50 50 50 100) strokeColour:(colour 50 50 50 100))  
+        (piece Colour P2 "I" state:1 fillColour:(colour 50 50 50 100) strokeColour:(colour 50 50 50 100)) 
         (piece Colour P1 "I" state:2 fillColour:(colour 0 0 0 150) strokeColour:(colour 0 0 0 150)) 
-        (piece Colour P2 "I" state:2 fillColour:(colour 50 50 50 100) strokeColour:(colour 50 50 50 100))   
-        (piece Colour P1 "I" state:3 fillColour:(colour 0 0 0 150) strokeColour:(colour 0 0 0 150))  
-        (piece Colour P2 "I" state:3 fillColour:(colour 50 50 50 100) strokeColour:(colour 50 50 50 100))   
+        (piece Colour P2 "I" state:2 fillColour:(colour 50 50 50 100) strokeColour:(colour 50 50 50 100))  
+        (piece Colour P1 "I" state:3 fillColour:(colour 0 0 0 150) strokeColour:(colour 0 0 0 150)) 
+        (piece Colour P2 "I" state:3 fillColour:(colour 50 50 50 100) strokeColour:(colour 50 50 50 100))  
         (piece Colour P1 "I" state:4 fillColour:(colour 0 0 0 150) strokeColour:(colour 0 0 0 150)) 
-        (piece Colour P2 "I" state:4 fillColour:(colour 50 50 50 100) strokeColour:(colour 50 50 50 100))  
+        (piece Colour P2 "I" state:4 fillColour:(colour 50 50 50 100) strokeColour:(colour 50 50 50 100)) 
         (piece Rotate P1 "I" state:1 degrees:155) 
         (piece Rotate P1 "I" state:2 degrees:205) 
         (piece Rotate P1 "I" state:3 degrees:65) 
@@ -433,8 +433,8 @@
         (show Edges Diagonal Hidden (colour DarkGrey))
         (stackType None)
         (region Colour "Marked" (colour Grey))
-        //    (show Piece State "I")
+        //  (show Piece State "I")
         }
-   )
+    )
     
 )

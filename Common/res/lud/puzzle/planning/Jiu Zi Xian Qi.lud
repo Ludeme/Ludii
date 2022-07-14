@@ -1,41 +1,41 @@
 (game "Jiu Zi Xian Qi"
-    (players 1)  
+    (players 1) 
     (equipment { 
         (board 
             (splitCrossings (regular Star 5))
             use:Vertex
-       )
+        )
         (piece "Marker" P1
             (move Hop 
                 (between 
                     if:("IsFriendAt" (between))
                     (apply (remove (between)))
-               )
+                )
                 (to if:(is Empty (to)))
-           )
-       ) 
+            )
+        ) 
         }
-   )  
+    ) 
     (rules 
         (start 
             (place "Marker" (sites Board))
-       )
+        )
         
         phases:{
         (phase "Remove" 
             (play (move Remove (sites Board)))
             (nextPhase "Playing")
-       )
+        )
         (phase "Playing"
             (play (forEach Piece))
             (end { 
                 (if (= 1 (count Pieces P1)) (result Mover Win))
                 (if (no Moves Next) (result Mover Loss))
             })
-       )
+        )
         }
         
-   )		
+    )		
 )
 
 //------------------------------------------------------------------------------
@@ -53,9 +53,9 @@
         (classification "puzzle/planning")
         (author "Elsa, beijing, china")
         (credit "Eric Piette")
-        (origin  "This game was played in China, around 2019.")
+        (origin "This game was played in China, around 2019.")
         }
-   )
+    )
     
     (graphics {
         (show Edges Diagonal Hidden)
@@ -64,5 +64,5 @@
     
     (ai
         "Jiu Zi Xian Qi_ai"
-   )
+    )
 )

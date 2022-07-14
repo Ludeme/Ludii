@@ -7,8 +7,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Nsolo"  
-    (players 2)  
+(game "Nsolo" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -16,13 +16,13 @@
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" <Row:track2> loop:True P2)
             }
-       )
-        (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
-        (regions "Home" P2 (sites Track "Track2"))                              // P2 home
+        )
+        (regions "Home" P1 (sites Track "Track1"))               // P1 Home
+        (regions "Home" P2 (sites Track "Track2"))               // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))   // P2 inner Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))  // P2 inner Home
         (piece "Seed" Shared)
-    })  
+    }) 
     (rules 
         
         (start 
@@ -32,14 +32,14 @@
                     (difference (sites P1 "Inner") (sites Right))
                     (difference (sites P2 "Inner") (sites Left))
                 })
-           )
-       )
+            )
+        )
         
         (play 
             (if (and ("SameTurn") (= (var "Replay") Undefined))
                 (move Remove 
                     (sites Next "Home")
-               )
+                )
                 (if ("AllSitesNoMoreThanOne")
                     (move Select
                         (from (sites Mover "Home") if:(and (is Occupied (from)) (is Empty ("NextHole" (from) 1))))
@@ -47,18 +47,18 @@
                             (sow
                                 "Track"
                                 owner:(mover)		
-                           )
-                       )
-                   )
+                            )
+                        )
+                    )
                     (move Select
                         (from 
                             (if 
                                 ("SameTurn") 
                                 (sites {(var "Replay") })
                                 (sites Mover "Home") 
-                           ) 
+                            ) 
                             if:(> (count at:(from)) 1)
-                       )
+                        )
                         (then
                             (sow
                                 "Track"
@@ -67,7 +67,7 @@
                                     (if (and 
                                             (is In (to) (sites Mover "Inner"))
                                             (is Occupied ("OppositePit" (to)))
-                                       )
+                                        )
                                         (and
                                             (remove ("OppositePit" (to)))
                                             (if (is Occupied ("OppositeOuterPit" (to)))
@@ -76,40 +76,40 @@
                                                     (set Var "Replay" Undefined)
                                                     (remove ("OppositeOuterPit" (to)))
                                                 })	
-                                           )
-                                       )
+                                            )
+                                        )
                                         (and
                                             (moveAgain)
                                             (set Var "Replay" (to))
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         
         (end
             (forEach NonMover
                 if:("NoPiece")
                 (result Player Loss)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Row> args:{ <size> <track2> }
     {
-    (item "10"   <10> <"20,E,N1,W">  "Each row has 10 holes.")*   
-    (item "12"   <12> <"24,E,N1,W">  "Each row has 12 holes.")   
-    (item "14"   <14> <"28,E,N1,W">  "Each row has 14 holes.")   
-    (item "16"   <16> <"32,E,N1,W">  "Each row has 16 holes.")   
-    (item "18"   <18> <"36,E,N1,W">  "Each row has 18 holes.")   
-    (item "20"   <20> <"40,E,N1,W">  "Each row has 20 holes.")   
+    (item "10"  <10> <"20,E,N1,W"> "Each row has 10 holes.")*  
+    (item "12"  <12> <"24,E,N1,W"> "Each row has 12 holes.")  
+    (item "14"  <14> <"28,E,N1,W"> "Each row has 14 holes.")  
+    (item "16"  <16> <"32,E,N1,W"> "Each row has 16 holes.")  
+    (item "18"  <18> <"36,E,N1,W"> "Each row has 18 holes.")  
+    (item "20"  <20> <"40,E,N1,W"> "Each row has 20 holes.")  
 })
 
 //------------------------------------------------------------------------------
@@ -120,7 +120,7 @@
         "Board Size/10"
         }
         variations:{"Board Size/12" "Board Size/14" "Board Size/16" "Board Size/18" "Board Size/20"}
-   )*
+    )*
     
 })
 
@@ -138,9 +138,9 @@
         (version "1.3.4")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
-        (origin  "This game was played in East Africa, around 1913.")
+        (origin "This game was played in East Africa, around 1913.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

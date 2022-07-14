@@ -10,8 +10,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Pagade Kayi Ata (Sixteen-handed)"  
-    (players <Player:num>)  
+(game "Pagade Kayi Ata (Sixteen-handed)" 
+    (players <Player:num>) 
     (equipment { 
         (board 
             (add
@@ -34,7 +34,7 @@
                     (shift 3.39 8.21 (rotate 315 (rectangle 3 8)))
                     (shift 0.88 4.45 (rotate 337.5 (rectangle 3 8)))
                     }
-               )
+                )
                 edges:{
                 {8 71} {44 107} {80 143} {116 179} {152 215} {188 251}
                 {224 287} {260 323} {296 359} {332 395} {368 431} {404 467}
@@ -49,36 +49,36 @@
                 575 566 557 548
                 } 
                 }
-           )
+            )
             {
             (track 
                 "Track1" 
                 "384,15,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S1,End" 
                 P1 
                 directed:True
-           )
+            )
             (track 
                 "Track2" 
                 "384,39,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE1,End" 
                 P2 
                 directed:True
-           )
+            )
             (track 
                 "Track3" 
                 "384,63,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE1,End" 
                 P3 
                 directed:True
-           )
+            )
             (track 
                 "Track4" 
                 "384,87,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE1,End" 
                 P4 
                 directed:True
-           )
+            )
             <Player:track58>
             <Player:track916>
             }
-       )
+        )
         (map "Start" { 
             (pair 1 15) (pair 2 39) (pair 3 63) (pair 4 87)
             (pair 5 111) (pair 6 135) (pair 7 159) (pair 8 183)
@@ -89,7 +89,7 @@
             (if (and 
                     (!= (pips) 0) 
                     ("IsNotOffBoard" ("SiteToMoveOnTrack" (from)))
-               )
+                )
                 (if ("IsEndTrack" ("SiteToMoveOnTrack" (from)))
                     ("RemoveAPiece" (from))
                     (move 
@@ -102,33 +102,33 @@
                                     (and
                                         (is In (to) (sites "Castle"))
                                         (not ("IsEnemyAt" (to))) 
-                                   )
-                               )
+                                    )
+                                )
                                 (not 
                                     (and 
                                         ("IsEnemyAt" (to)) 
                                         (> (count at:(to)) 1)
-                                   )
-                               )
-                           )
+                                    )
+                                )
+                            )
                             (apply 
                                 if:(and 
                                     ("IsEnemyAt" (to)) 
                                     (= (count at:(to)) 1)
-                               )
+                                )
                                 (and
                                     (fromTo 
                                         (from (to)) 
                                         (to ("Center"))
-                                   )
+                                    )
                                     ("HasCapturedAnEnemy")
-                               )
-                           )
-                       ) 
-                   )
-               )
-           )	
-       ) 
+                                )
+                            )
+                        ) 
+                    )
+                )
+            )	
+        ) 
         
         (hand Each)
         (dice d:8 faces:{1 3 4 6 8 10 12 16} num:2)
@@ -148,7 +148,7 @@
             264 307 291 298 304 288 355 339 346 352 360 336
         })
         (regions "DiceHand" <Player:diceHand>)
-    })  
+    }) 
     (rules 
         <Player:start>
         (play
@@ -163,14 +163,14 @@
                                 (and 
                                     (not ("HandEmpty" Mover))
                                     (= (pips) "ValueToEnter")
-                               )
+                                )
                                 (move
                                     (from (handSite Mover)) 
                                     (to (mapEntry "Start" (mover)))
-                               )
-                           )
+                                )
+                            )
                             (or (forEach Piece) (forEach Piece container:(mover)))
-                       )
+                        )
                         (then (if (can Move 
                                     (forEach Die 
                                         combined:True 
@@ -179,32 +179,32 @@
                                                 (and 
                                                     (not ("HandEmpty" Mover))
                                                     (= (pips) "ValueToEnter")
-                                               )
+                                                )
                                                 (fromTo 
                                                     (from (handSite Mover)) 
                                                     (to (mapEntry "Start" (mover)))
-                                               )
-                                           )
+                                                )
+                                            )
                                             (or (forEach Piece) (forEach Piece container:(mover)))
-                                       )
-                                   )
-                               )
+                                        )
+                                    )
+                                )
                                 (moveAgain)
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         (end ("EscapeWin"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Players" <Player> args:{ <num> <start> <diceHand> <track58> <track916>}
     {
-    (item  "4"  
+    (item "4" 
         <4> 
         <
         (start {
@@ -217,9 +217,9 @@
         <{389 390}>
         <>
         <>
-    "The game involves 4 players.")  
-    (item  "8"  
-        <8>  
+    "The game involves 4 players.") 
+    (item "8" 
+        <8> 
         <
         (start {
             (place Stack "Disc1" (handSite P1) count:4)
@@ -239,29 +239,29 @@
             "384,111,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E1,End" 
             P5 
             directed:True
-       )
+        )
         (track 
             "Track6" 
             "384,135,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE1,End" 
             P6 
             directed:True
-       )
+        )
         (track 
             "Track7" 
             "384,159,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE1,End," 
             P7 
             directed:True
-       )
+        )
         (track 
             "Track8" 
             "384,183,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE1,End," 
             P8 
             directed:True
-       )
+        )
         >
         <>
-    "The game involves 8 players.")  
-    (item  "16" 
+    "The game involves 8 players.") 
+    (item "16" 
         <16> 
         <
         (start {
@@ -290,25 +290,25 @@
             "384,111,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E1,End" 
             P5 
             directed:True
-       )
+        )
         (track 
             "Track6" 
             "384,135,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE1,End" 
             P6 
             directed:True
-       )
+        )
         (track 
             "Track7" 
             "384,159,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE1,End," 
             P7 
             directed:True
-       )
+        )
         (track 
             "Track8" 
             "384,183,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE1,End," 
             P8 
             directed:True
-       )
+        )
         >
         <
         (track 
@@ -316,51 +316,51 @@
             "384,207,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N1,End" 
             P9 
             directed:True
-       )
+        )
         (track 
             "Track10" 
             "384,231,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW1,End" 
             P10 
             directed:True
-       )
+        )
         (track 
             "Track11" 
             "384,255,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW1,End" 
             P11 
             directed:True
-       )
+        )
         (track 
             "Track12" 
             "384,279,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW1,End" 
             P12 
             directed:True
-       )
+        )
         (track 
             "Track13" 
             "384,303,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W1,End" 
             P13 
             directed:True
-       )
+        )
         (track 
             "Track14" 
             "384,327,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW1,End" 
             P14 
             directed:True
-       )
+        )
         (track 
             "Track15" 
             "384,351,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW1,End" 
             P15 
             directed:True
-       )
+        )
         (track 
             "Track16" 
             "384,375,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW1,End" 
             P16 
             directed:True
-       )
+        )
         >
-    "The game involves 16 players.")*  
+    "The game involves 16 players.")* 
     }
 )
 
@@ -372,7 +372,7 @@
         "Players/16"
         }
         variations:{"Players/4" "Players/8"}
-   )*
+    )*
     
 })
 
@@ -384,15 +384,15 @@
         {
         (description "Pagade Kayi Ata was a version of Pachisi invented by Maharaja Krishnaraja Wadiyar III of Mysore. This game can be played by up to sixteen players.")
         (aliases {"Sixteen-handed Pachisi"})
-        (rules "Sixteen 3x8 rectangles are arranged in a circle, each rectangle touching the corner of another on its left and right. The second, fifth, and eighth squares (counting from the top) in the outer rows, and the third and sixth squares in the central row of each rectangle are marked. Can be played with sixteen, eight, or four players. It can be played individually, or on two teams. Each rectangle has one set of four pieces. They enter the board from the center, proceeding down the central row or their respective rectangles, proceeding in the outer rows of the rectangles in an anti-clockwise direction. When a complete circuit of the board has been made, the pieces must travel down the central row again and exit the board with an exact throw. The game is played with two eight-sided die, containing the following values: 1, 3, 4, 6, 8, 10, 12, 16 on one, 2, 5, 7, 9, 11, 13, 15, 16 on the other. It may also be played with four rectangular dice each with the values 1, 3, 4, 6. Pieces are entered on the throw of nine. Doubles allow a second roll.Spaces moved may be broken up between two pieces but each piece must move a number equal to that displayed on one of the dice. A player can pass, but only before the die is thrown. When two pieces of the same color occupy a space, no other pieces may pass them. These pieces may then move as a single pawn. If a piece lands on the same spot occupied by an opponent's piece, the opponent's piece is sent back to the start. Two pieces moving as a single pawn can only be sent to start by two other pieces moving as a single pawn. Pieces on a marked space cannot be sent to start. A  play which sends an opponent's piece to start allows another roll. A player may bypass the central row and circuit the board another time if they wish (i.e., in order to send another player back to start to prevent them from winning). The first player to remove all their pieces from the board wins, and the other platers continue playing until all but one player have moved their pieces into the center.")
+        (rules "Sixteen 3x8 rectangles are arranged in a circle, each rectangle touching the corner of another on its left and right. The second, fifth, and eighth squares (counting from the top) in the outer rows, and the third and sixth squares in the central row of each rectangle are marked. Can be played with sixteen, eight, or four players. It can be played individually, or on two teams. Each rectangle has one set of four pieces. They enter the board from the center, proceeding down the central row or their respective rectangles, proceeding in the outer rows of the rectangles in an anti-clockwise direction. When a complete circuit of the board has been made, the pieces must travel down the central row again and exit the board with an exact throw. The game is played with two eight-sided die, containing the following values: 1, 3, 4, 6, 8, 10, 12, 16 on one, 2, 5, 7, 9, 11, 13, 15, 16 on the other. It may also be played with four rectangular dice each with the values 1, 3, 4, 6. Pieces are entered on the throw of nine. Doubles allow a second roll.Spaces moved may be broken up between two pieces but each piece must move a number equal to that displayed on one of the dice. A player can pass, but only before the die is thrown. When two pieces of the same color occupy a space, no other pieces may pass them. These pieces may then move as a single pawn. If a piece lands on the same spot occupied by an opponent's piece, the opponent's piece is sent back to the start. Two pieces moving as a single pawn can only be sent to start by two other pieces moving as a single pawn. Pieces on a marked space cannot be sent to start. A play which sends an opponent's piece to start allows another roll. A player may bypass the central row and circuit the board another time if they wish (i.e., in order to send another player back to start to prevent them from winning). The first player to remove all their pieces from the board wins, and the other platers continue playing until all but one player have moved their pieces into the center.")
         (source "Vasantha 2006: 34-37")
         (id "653")
         (version "1.3.4")
         (classification "board/race/reach")
         (credit "Eric Piette")
-        (origin  "This game was played in Mysore, around 1858.")
+        (origin "This game was played in Mysore, around 1858.")
         }
-   )
+    )
     
     (graphics {
         (stackType 0 site:384 Ring)

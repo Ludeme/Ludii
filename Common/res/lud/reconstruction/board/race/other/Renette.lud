@@ -1,5 +1,5 @@
 (game "Renette" // Capturing all of the opponent's pieces results in a win.
-    (players 2)  
+    (players 2) 
     (equipment 
         (board (rectangle 2 13) 
             {
@@ -7,14 +7,14 @@
             (track [#] P2 directed:True)
             } 
             use:Vertex
-       ) 		
+        ) 		
         [#]
-   )
+    )
     (rules
         (start [#])
         (play [#]) 
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -31,6 +31,6 @@
         (classification "board/race/reconstruction")
         (credit "Eric Piette")
         }
-   )
+    )
     
 )

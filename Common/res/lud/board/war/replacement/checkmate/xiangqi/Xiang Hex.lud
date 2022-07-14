@@ -2,7 +2,7 @@
     (if (= (column of:(where "Jiang" P1)) (column of:(where "Jiang" P2)))
         (not ("NoSites" (forEach (sites Direction from:(where "Jiang" P1) N stop:(= (to) (where "Jiang" P2))) if:(not (is Empty (site))))))
         True
-   )
+    )
 )
 
 (define "EnemyCannotMove"
@@ -17,16 +17,16 @@
             if:(and 
                 (is In (to) (sites Mover "Palace")) 
                 (not ("IsFriendAt" (to)))
-           ) 
+            ) 
             (apply (remove (to)))
-       )
-   ) 
+        )
+    ) 
 )
 
 //------------------------------------------------------------------------------
 
 (game "Xiang Hex" 
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (renumber Cell (rotate 90 (remove (hex Rectangle 9 11) cells:{0 1 11 21 63 74 85 84 94 93 83 73 31 20 9 10}))))
         
@@ -47,13 +47,13 @@
                         (is In (between) (sites Mover "Home")) 
                         (is Empty (between)) 
                     })
-               )
+                )
                 (to 
                     if:("IsEnemyAt" (to)) 
                     (apply (remove (to)))
-               ) 
-           )
-       ) 
+                ) 
+            )
+        ) 
         
         // Horse
         (piece "Ma" Each 
@@ -72,15 +72,15 @@
                                         (apply 
                                             if:("IsEnemyAt" (to))
                                             (remove (to))
-                                       )
-                                   )
-                               )
-                           )
-                       ) 
-                   )
-               )
-           ) 
-       )
+                                        )
+                                    )
+                                )
+                            )
+                        ) 
+                    )
+                )
+            ) 
+        )
         
         // Chariot
         (piece "Ju" Each 
@@ -90,9 +90,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     (apply (remove (to)))
-               )
-           )
-       )
+                )
+            )
+        )
         
         // Canon
         (piece "Pao" Each 
@@ -103,19 +103,19 @@
                     Orthogonal 
                     (between 
                         before:(count Rows) 
-                        after:(count Rows)  
+                        after:(count Rows) 
                         if:(not (is Empty (between)))
-                   )
+                    )
                     (to 
                         if:(is Empty (to)) 
                         (apply 
                             if:("IsEnemyAt" (to)) 
                             (remove (to))
-                       )
-                   )  
-               ) 
-           )
-       )
+                        )
+                    ) 
+                ) 
+            )
+        )
         
         // Soldier
         (piece "Zu" Each
@@ -125,19 +125,19 @@
                     (is In (from) (sites Mover "Home")) 
                     Forward 
                     (union (directions {Forward FL FR}) (directions {W E}))
-               ) 
+                ) 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     (apply (remove (to)))
-               )
-           )
-       )
+                )
+            )
+        )
         
         (regions "PalaceP1" P1 { 0 1 2 4 7 8 12 })
         (regions "PalaceP2" P2 { 66 70 71 74 76 77 78 })
         (regions "Home" P1 (forEach (sites Board) if:(< (site) 37)))
         (regions "Home" P2 (forEach (sites Board) if:(> (site) 41)))
-    })  
+    }) 
     
     (rules 
         (start { 
@@ -150,20 +150,20 @@
                 ifAfterwards:(and 
                     ("JiangSameColumnWithNoPieceBetween")
                     (not ("IsInCheck" "Jiang" Mover))
-               )
-           )
-       )
+                )
+            )
+        )
         
         (end {
             (if (and 
                     ("IsInCheck" "Jiang" Next) 
                     ("EnemyCannotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
+            ) 
             ("BlockWin")
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -182,7 +182,7 @@
         (credit "Matthew Stephenson and Eric Piette")
         (date "2008")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour White))

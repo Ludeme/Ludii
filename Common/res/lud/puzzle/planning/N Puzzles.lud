@@ -1,9 +1,9 @@
-(game "N Puzzles"  
-    (players 1)  
+(game "N Puzzles" 
+    (players 1) 
     (equipment { 
         (board (square <Version:boardSize>)) 
         <Version:pieces>
-    })  
+    }) 
     
     (rules
         (start {
@@ -15,16 +15,16 @@
         (end 
             (if 
                 (is Target {<Version:order>}) (result P1 Win)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Version> args:{ <boardSize> <pieces> <random> <order>}
     {
-    (item "2x2"   
+    (item "2x2"  
         <2>
         <
         (piece "1" P1 "StepOrthogonalToEmpty")
@@ -34,9 +34,9 @@
         <"1" "2" "3">
         <3 0 1 2> 
         ""
-   )
+    )
     
-    (item "3x3"   
+    (item "3x3"  
         <3>
         <
         (piece "1" P1 "StepOrthogonalToEmpty")
@@ -51,9 +51,9 @@
         <"1" "2" "3" "4" "5" "6" "7" "8">
         <7 8 0 4 5 6 1 2 3>
         ""
-   )**
+    )**
     
-    (item "4x4"   
+    (item "4x4"  
         <4>
         <
         (piece "1" P1 "StepOrthogonalToEmpty")
@@ -75,9 +75,9 @@
         <"1" "2" "3" "4" "5" "6" "7" "8" "9" "10" "11" "12" "13" "14" "15">
         <13 14 15 0 9 10 11 12 5 6 7 8 1 2 3 4>
         ""
-   )
+    )
     
-    (item "5x5"   
+    (item "5x5"  
         <5>
         <
         (piece "1" P1 "StepOrthogonalToEmpty")
@@ -108,7 +108,7 @@
         <"1" "2" "3" "4" "5" "6" "7" "8" "9" "10" "11" "12" "13" "14" "15" "16" "17" "18" "19" "20" "21" "22" "23" "24">
         <21 22 23 24 0 16 17 18 19 20 11 12 13 14 15 6 7 8 9 10 1 2 3 4 5>
         ""
-   )
+    )
 })
 
 //------------------------------------------------------------------------------
@@ -127,7 +127,7 @@
         (credit "Eric Piette")
         (date "1874")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour 210 230 255))
@@ -136,6 +136,6 @@
     
     (ai 
         "N Puzzles_ai"
-   )
+    )
     
 )

@@ -9,7 +9,7 @@
             (>= 1 (count Sites in:(difference (sites Occupied by:All) ("WhereHyena"))))
             ("IsSingletonStack" ("WhereHyena"))
         })
-   )
+    )
 )
 
 (define "WhereHyena" (if ("IsNotOffBoard" (where "Hyena" Neutral)) (where "Hyena" Neutral) (handSite P1)))
@@ -27,9 +27,9 @@
                     (if (!= (site) (last To))
                         (forEach Level (site) FromTop
                             (remove (site) level:(level)) 
-                       )
-                   )
-               )
+                        )
+                    )
+                )
                 (forEach Site (sites Track "Track" from:(last From) to:(last To))
                     (if (!= (site) (last To))
                         (forEach Level (site) FromTop
@@ -40,18 +40,18 @@
                                         (if (and 
                                                 (= 0 (state at:(site) level:(level)))
                                                 (!= 0 (who at:(site) level:(level)))
-                                           )
+                                            )
                                             (set State at:(site) level:(level) (site))
-                                       )
-                                   )	
-                               )
-                           )
-                       )
-                   )
-               )
-           )
-       )
-   )
+                                        )
+                                    )	
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -65,7 +65,7 @@
             (track "Track" {86..0} directed:True)
             }
             use:Vertex
-       )
+        )
         ("StickDice" 4)
         (map "Throw" {(pair 0 20) (pair 1 5) (pair 2 0) (pair 3 9) (pair 4 80)})
         (piece "Stick" Each
@@ -79,33 +79,33 @@
                                 (forEach Level (site) FromTop
                                     (if ("IsPieceAt" "Hyena" Neutral (site) level:(level))
                                         (set Value Mover 2)
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
                 (move
                     (from (from) level:(level))
                     (to
                         ("SiteToMoveOnTrack" "Track" ("ThrowValue"))
                         if:True
-                   )
+                    )
                     (then
                         (if (= 1 (value Player Mover))
                             (forEach Site (sites Track "Track" from:(last From) to:(last To)) 
                                 (forEach Level (site) FromTop
                                     (if ("IsPieceAt" "Hyena" Neutral (site) level:(level))
                                         (set Value Mover 2)
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
             maxState:85
-       )
+        )
         (piece "Hyena" Neutral)
         (hand P1)
     })
@@ -134,42 +134,42 @@
                                                             (and	
                                                                 (set State at:(site) level:(level) 0)
                                                                 (set Value (player (who at:(site) level:(level))) 1)
-                                                           )
-                                                       )		
-                                                   )
-                                               )
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                                            )
+                                                        )		
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     (if ("NotThrow0") 
                         (or (forEach Piece) (forEach Piece container:1))
                         (move Pass
                             (then 
                                 (if (= 1 (value Player Mover))
                                     (remove (where "Stick" Mover) level:(where Level "Stick" Neutral at:(where "Stick" Mover)))
-                               )
-                           )
-                       )
-                   )
-               )
+                                )
+                            )
+                        )
+                    )
+                )
                 (then (if ("NotThrow0") (moveAgain)))
-           )
-       )
+            )
+        )
         (end {
             (forEach Player
                 if:(no Pieces Player) 
                 (result Player Loss)
-           )
+            )
             (forEach Player
                 if:("HyenaPhaseDone")
                 (result Player Win)
-           )
+            )
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -177,8 +177,8 @@
 (option "Players" <Player> args:{ <number> <init>}
     {
     (item "2" <2> <{"Stick2" "Stick1"}> "The game has 2 players.") 
-    (item "3" <3> <{"Stick3" "Stick2" "Stick1"}> "The game has 3 players.")  
-    (item "4" <4> <{"Stick4" "Stick3" "Stick2" "Stick1"}> "The game has 4 players.")*  
+    (item "3" <3> <{"Stick3" "Stick2" "Stick1"}> "The game has 3 players.") 
+    (item "4" <4> <{"Stick4" "Stick3" "Stick2" "Stick1"}> "The game has 4 players.")* 
     (item "5" <5> <{"Stick5" "Stick4" "Stick3" "Stick2" "Stick1"}> "The game has 5 players.") 
     (item "6" <6> <{"Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"}> "The game has 6 players.") 
     (item "7" <7> <{"Stick7" "Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"}> "The game has 7 players.") 
@@ -194,7 +194,7 @@
         "Players/4"
         }
         variations:{"Players/2" "Players/3" "Players/5" "Players/6" "Players/7" "Players/8"}
-   )*
+    )*
     
 })
 
@@ -206,15 +206,15 @@
         {
         (description "Ishighän is a race game played by the Kel Ferwan people near Agadez, Niger. It is said to be typically for boys, but all ages participate in the game. Extra values are sometimes awarded to players on their throws when they grab a throwing stick that lands on its end, which is not modeled in this version.")
         (aliases {"Ishighän"})
-        (rules "The board is drawn in the sand, with any large number of holes in a spiral pattern. The starting point is before the first hole in the outer ring of the spiral, and is made as a mound of sand; the goal is another mound of sand at the center of the spiral. Each player has one piece, which they place on the starting mound. Another piece, the hyena, also begins on the starting mound. Four throwing sticks, with a black side and a white side, used as dice. The values of the throws are as follows: four white sides = 20; three white sides = 5; two white sides = 0; one white sides = 9; all black sides = 80. Players throw, move, and throw again until they throw a 0. When a player reaches the goal, they then play as the hyena on their turn. When the hyena catches up to another player's piece, it drags the piece with it, until throwing a 0. When a 0 is thrown, the player moves back to the place where they were before the hyena dragged them, and must overtake the hyena in this turn. If the player cannot, they are removed from the game. If the player is overtaken by the hyena a second time, they are removed from the game.  ")
+        (rules "The board is drawn in the sand, with any large number of holes in a spiral pattern. The starting point is before the first hole in the outer ring of the spiral, and is made as a mound of sand; the goal is another mound of sand at the center of the spiral. Each player has one piece, which they place on the starting mound. Another piece, the hyena, also begins on the starting mound. Four throwing sticks, with a black side and a white side, used as dice. The values of the throws are as follows: four white sides = 20; three white sides = 5; two white sides = 0; one white sides = 9; all black sides = 80. Players throw, move, and throw again until they throw a 0. When a player reaches the goal, they then play as the hyena on their turn. When the hyena catches up to another player's piece, it drags the piece with it, until throwing a 0. When a 0 is thrown, the player moves back to the place where they were before the hyena dragged them, and must overtake the hyena in this turn. If the player cannot, they are removed from the game. If the player is overtaken by the hyena a second time, they are removed from the game. ")
         (source "Casajus 1989: 35-37.")
         (id "1169")
         (version "1.3.4")
         (classification "board/race/reach")
         (credit "Eric Piette")
-        (origin  "This game was played in Niger, around 1976.")
+        (origin "This game was played in Niger, around 1976.")
         }
-   )
+    )
     
     (graphics {
         (piece Colour "Die" state:1 fillColour:(colour Black))

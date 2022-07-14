@@ -1,5 +1,5 @@
-(game "Tron"  
-    (players 2)  
+(game "Tron" 
+    (players 2) 
     (equipment { 
         (board (square 10)) 
         (piece "King" Each 
@@ -10,19 +10,19 @@
                         (if 
                             (not (is Empty (to))) 
                             (trigger "Collision" (mover))
-                       )
-                   )
-               ) 
+                        )
+                    )
+                ) 
                 (then 
                     (add 
                         (piece (id "Square" Mover)) 
                         (to (last From)) 
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (piece "Square" Each)
-    })  
+    }) 
     (rules 
         (start { 
             (place "King1" coord:"E5")
@@ -32,7 +32,7 @@
         (play (forEach Piece))
         
         (end (if (is Triggered "Collision" Mover) (result Next Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -50,7 +50,7 @@
         (credit "Eric Piette")
         (date "2008")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Blue))
@@ -62,6 +62,6 @@
     
     (ai 
         "Tron_ai"
-   )
+    )
     
 )

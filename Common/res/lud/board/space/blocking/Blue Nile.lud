@@ -2,17 +2,17 @@
     (sites Around 
         (to) 
         if:(not (is In (to) (sites Empty)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (game "Blue Nile" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (hex 5)) 
         (piece "Marker" Neutral) 
-    })  
+    }) 
     
     (rules 
         
@@ -20,9 +20,9 @@
         (phase "start" P1 
             (play (move Add (piece (id "Marker0")) (to (sites Empty)))) 
             (nextPhase "play")
-       )
+        )
         
-        (phase "play"     
+        (phase "play"   
             (play 
                 (move Add 
                     (piece "Marker0") 
@@ -30,19 +30,19 @@
                         (sites Around 
                             (last To) 
                             if:(and 
-                                (is Empty (to))  
+                                (is Empty (to)) 
                                 // not adjacent to any other piece except the last one placed.
                                 ("NoSites" (difference ("AdjacentNotEmptySites") (last To)))
-                           ) 
-                       )
-                   )
-               )
-           )
-       )
+                            ) 
+                        )
+                    )
+                )
+            )
+        )
         }
         
-        (end ("NoMoves" Loss))  
-   )
+        (end ("NoMoves" Loss)) 
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -60,10 +60,10 @@
         (credit "Eric Piette")
         (date "2002")
         }
-   )
+    )
     
     (ai 
         "Blue Nile_ai"
-   )
+    )
     
 )

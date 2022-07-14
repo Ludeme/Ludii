@@ -1,4 +1,4 @@
-//----------------------- Kings  -------------------------------------------------------
+//----------------------- Kings -------------------------------------------------------
 
 // #1 - P1 or P2
 (define "SitesKings"
@@ -54,15 +54,15 @@
         (if 
             (= (state at:(last To)) 1) 
             "PieceHasMoved"
-       ) 
-   ) 
+        ) 
+    ) 
 )
 
 (define "KingNotCheckedAndToEmpty"
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-   )   
+    )  
 )
 
 // This macro defines one piece move of a castling manouvre
@@ -79,9 +79,9 @@
         (between 
             (exact #3) 
             if:#4
-       ) 
+        ) 
         #5
-   )
+    )
 )
 
 (define "SmallCastling"
@@ -100,9 +100,9 @@
             (remove 
                 (to) 
                 (then (set Counter))
-           )
-       )
-   ) 
+            )
+        )
+    ) 
 )
 
 // #1 - direction
@@ -114,9 +114,9 @@
         (to 
             if:("IsEnemyAt" (to)) 
             "CaptureToPieceAndResetCounter"
-       ) 
+        ) 
         #2
-   )
+    )
 )
 
 // #1 - direction
@@ -128,9 +128,9 @@
         (to 
             if:(not ("IsFriendAt" (to))) 
             "CaptureToPieceAndResetCounter"
-       ) 
+        ) 
         #2
-   )
+    )
 )
 
 // #1 - direction
@@ -141,8 +141,8 @@
         (to 
             if:(or ("IsEnemyAt" (to)) (is Empty (to)))
             "CaptureToPieceAndResetCounter"
-       ) 
-   )
+        ) 
+    )
 )
 
 (define "KnightMove"
@@ -152,8 +152,8 @@
         (to 
             if:(not ("IsFriendAt" (to))) 
             "CaptureToPieceAndResetCounter"
-       ) 
-   )
+        ) 
+    )
 )
 
 //----------------------- Pawns and Hoplites -------------------------------------------------------
@@ -166,7 +166,7 @@
         #1 
         #2
         (to if:(is Empty (to))) 
-   )
+    )
 )
 
 // #1 - Directions
@@ -177,8 +177,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-       )
-   )
+        )
+    )
 )
 
 // #1 - Directions
@@ -187,7 +187,7 @@
         Step
         #1
         (to if:(is Empty (to)))
-   )
+    )
 )
 
 (define "PawnPromotion"
@@ -195,18 +195,18 @@
         (and
             (if (is In (last To) (sites Mover "Promotion")) 
                 (moveAgain)
-           )
+            )
             (set Counter)
-       )
-   )
+        )
+    )
 )
 
 (define "PawnDirections" (directions { FL FR }))
 
 //----------------------- Core -------------------------------------------------------
 
-(game "Spartan Chess"  
-    (players {(player N) (player S)})  
+(game "Spartan Chess" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -214,40 +214,40 @@
             (or {
                 (if (is In (from) (sites Start (piece (what at:(from)))))
                     ("PawnDoubleMove" Forward (between if:(is Empty (between))))
-               )
+                )
                 ("PawnMove" Forward) 
                 ("PawnCapture" ("PawnDirections"))
                 }
                 ("PawnPromotion")
-           )
-       )
+            )
+        )
         (piece "Hoplite" P2
             (or {
                 (if (is In (from) (sites Start (piece (what at:(from)))))
                     ("PawnDoubleMove" ("PawnDirections"))
-               )
+                )
                 ("PawnMove" ("PawnDirections")) 
                 ("PawnCapture" Forward)
                 }
                 ("PawnPromotion")
-           )
-       )
+            )
+        )
         
         (piece "Rook" P1
             ("SlideMove" Orthogonal "RememberPieceHasMoved")
-       )
+        )
         (piece "General" P2
             (or
                 ("SlideMove" Orthogonal)
                 ("StepMove" Diagonal) 
-           )
-       )
+            )
+        )
         (piece "Warlord" P2
             (or
                 ("SlideMove" Diagonal)
                 ("KnightMove") 
-           )
-       )
+            )
+        )
         (piece "Lieutenant" P2
             (or {
                 ("StepMove" Diagonal) 
@@ -257,34 +257,34 @@
                     (directions { W E }) 
                     (to 
                         if:(is Empty (to))
-                   ) 
-               )
+                    ) 
+                )
             })
-       )
+        )
         (piece "Captain" P2
             (or
                 ("StepMove" Orthogonal) 
                 ("HopMove" Orthogonal)
-           )
-       )
+            )
+        )
         
         (piece "King" Each
             ("StepMove" Adjacent ("RememberPieceHasMoved")) 
-       )
+        )
         (piece "Bishop" P1 
             ("SlideMove" Diagonal)
-       )
+        )
         (piece "Knight" P1
             ("KnightMove")
-       )
+        )
         (piece "Queen" P1 
             ("SlideMove")
-       )
+        )
         
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
         }
-   )  
+    ) 
     (rules 
         (start
             { 
@@ -301,17 +301,17 @@
             (place "King2" {"C8" "F8"} state:0)
             (place "Captain2" {"D8" "E8"})
             }
-       )
+        )
         
         (play 
             (if "SameTurn"
-                (if (= (mover)  (id P1))
+                (if (= (mover) (id P1))
                     (move Promote (last To) (piece {"Queen" "Knight" "Bishop" "Rook"}) Mover)
                     (if (= 1 ("CountSpartanKings"))
                         (move Promote (last To) (piece {"King" "Captain" "General" "Warlord" "Lieutenant"}) Mover)
                         (move Promote (last To) (piece {"Captain" "General" "Warlord" "Lieutenant"}) Mover)
-                   )
-               )	
+                    )
+                )	
                 (do 
                     (or 
                         (forEach Piece)
@@ -324,35 +324,35 @@
                                 (if (and 
                                         ("HasNeverMoved" "RookLeft")
                                         (can Move ("DoCastle" "RookLeft" E 3 (is Empty (to))))
-                                   )
+                                    )
                                     "BigCastling"
-                               )
+                                )
                                 (if (and 
                                         ("HasNeverMoved" "RookRight")
                                         (can Move ("DoCastle" "RookRight" W 2 (is Empty (to))))
-                                   )
+                                    )
                                     "SmallCastling"
-                               )
-                           )
-                       )
-                   )
+                                )
+                            )
+                        )
+                    )
                     ifAfterwards:(not ("IsInOmnicheck" Mover))
-               )
-           )
-       )
+                )
+            )
+        )
         
         (end
             {
             (if (and 
                     ("IsInOmnicheck" Next)
                     ("NextCanNotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
+            ) 
             (if (or (no Moves Mover) (= (counter) 100)) (result Mover Draw)) 
             }
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -404,7 +404,7 @@
         (credit "Nicholas Bamber (building on Eric Piette's implementation of chess)")
         (date "2010")
         }
-   )
+    )
     
     (graphics {
         (player Name P1 "Persians")
@@ -426,6 +426,6 @@
     
     (ai
         "Spartan Chess_ai"
-   )
+    )
     
 )

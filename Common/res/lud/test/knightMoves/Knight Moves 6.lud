@@ -19,28 +19,28 @@
                                 (not ("IsFriendAt" (site)))
                                 (= 3 (count Steps Orthogonal (from) (site)))
                             })
-                       )
+                        )
                         (sites To (slide (between if:True)))
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
         }
-   )  
+    ) 
     (rules 
         (start
             { 
             (place "Knight1" (expand (sites Bottom)))
             (place "Knight2" (expand (sites Top)))
             }
-       )
+        )
         
         (play (forEach Piece))
         
         (end (if "RegionReached" (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -50,7 +50,7 @@
     (info
         {
         }
-   )
+    )
     
     (graphics {
         (board Style Chess)

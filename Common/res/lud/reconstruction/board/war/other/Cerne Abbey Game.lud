@@ -1,12 +1,12 @@
 (game "Cerne Abbey Game"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board 
             (rectangle 12 3) 
             use:Vertex
-       )
+        )
         (piece "Marker" Each (move [#]))
-    })  
+    }) 
     
     (rules 
         (start {
@@ -15,7 +15,7 @@
         })
         (play [#])
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -31,9 +31,9 @@
         (version "1.3.4")
         (classification "board/war/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in England, from around 1250 to 1300.")
+        (origin "This game was played in England, from around 1250 to 1300.")
         }
-   )
+    )
     
     (graphics {
         (show Edges Diagonal Hidden)

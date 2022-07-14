@@ -3,25 +3,25 @@
         (if 
             (is Line 3 Orthogonal exact:True) 
             (moveAgain)
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (game "Nzengue (Large)"
-    (players 2)  
+    (players 2) 
     (equipment {
         (board
             (square [#])
             use:Vertex
-       )
+        )
         (hand Each)
         (move
             Step 
             (to if:(is Empty (to))) 
             "IfLine3MoveAgain" 
-       )
+        )
     }) 
     (rules 
         (start (place "Marker" "Hand" count:12))
@@ -35,24 +35,24 @@
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
                         "IfLine3MoveAgain" 
-                   )  
-               )
-           ) 
+                    ) 
+                )
+            ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-       )
+        )
         
         (phase "Movement" 
             (play 
                 (if "SameTurn"
                     [#]
                     (forEach Piece)
-               )
-           )
-       )
+                )
+            )
+        )
         }
         
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -68,8 +68,8 @@
         (id "1357")
         (version "1.3.4")
         (classification "board/space/line/reconstruction")
-        (origin  "This game was played in Republic of Congo, around 1971.")
+        (origin "This game was played in Republic of Congo, around 1971.")
         }
-   )
+    )
     
 )

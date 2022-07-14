@@ -3,8 +3,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Isolo"  
-    (players 2)  
+(game "Isolo" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -12,24 +12,24 @@
             (track "TrackCCW1" "0,E,N1,W" loop:True P1)
             (track "TrackCCW2" "16,E,N1,W" loop:True P2)
             }
-       )
-        (regions "Home" P1 (sites Track "TrackCCW1"))                              // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))                              // P2 home
+        )
+        (regions "Home" P1 (sites Track "TrackCCW1"))               // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))               // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))   // P2 inner Home
-        (regions "Outer" P1 (sites Bottom))                                        // P1 outer Home
-        (regions "Outer" P2 (sites Top))                                          // P2 outer Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))  // P2 inner Home
+        (regions "Outer" P1 (sites Bottom))                    // P1 outer Home
+        (regions "Outer" P2 (sites Top))                     // P2 outer Home
         (piece "Seed" Shared)
         (hand Each)
         (map "RightmostOuter" {(pair P1 7) (pair P2 24)})
         (map "RightmostInner" {(pair P1 15) (pair P2 16)})
         (map "SecondRightmostInner" {(pair P1 14) (pair P2 17)})
-    })  
+    }) 
     (rules 
         
         (start 
             (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home")))
-       )
+        )
         
         phases:{
         (phase "Opening1"
@@ -40,12 +40,12 @@
                             (from (site))
                             (to (mapEntry "RightmostOuter" Mover))
                             count:(count at:(site))
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (nextPhase Mover (all Sites (difference (sites Mover "Outer") (mapEntry "RightmostOuter" Mover)) if:(is Empty (site))) "Opening2")
-       )
+        )
         (phase "Opening2"
             (play
                 (forEach Site (sites Mover "Inner")
@@ -54,13 +54,13 @@
                             (from (site))
                             (to ("InnerToOuter" (site)))
                             count:1
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             
             (nextPhase Mover (all Sites (sites Mover "Inner") if:(= (count at:(site)) 1)) "Opening3")
-       )
+        )
         
         (phase "Opening3"
             (play
@@ -69,8 +69,8 @@
                         (if ("SameTurn")
                             ("LastHoleSowed") 
                             (sites {(mapEntry "RightmostInner" Mover)})
-                       )
-                   )
+                        )
+                    )
                     (then 
                         (sow
                             "TrackCCW"
@@ -81,14 +81,14 @@
                                     (from (to))
                                     (to (mapEntry "SecondRightmostInner" Mover))
                                     count:1
-                               )
-                           )
-                       )
-                   )
-               )
-           )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
             (nextPhase Mover (not (is Next Mover)) "InitialSowing")
-       )
+        )
         
         (phase "InitialSowing"
             (play
@@ -97,9 +97,9 @@
                         (if ("SameTurn")
                             ("LastHoleSowed") 
                             (sites Mover "Home")
-                       )
+                        )
                         if:(is Occupied (from))
-                   )
+                    )
                     (then
                         (sow
                             "TrackCCW"
@@ -113,36 +113,36 @@
                                                     (from ("OppositePit" (to)))	
                                                     (to (last From))
                                                     count:(count at:("OppositePit" (to)))
-                                               )
-                                           )
+                                                )
+                                            )
                                             (if (is Occupied ("OppositeOuterPit" (to)))
                                                 (fromTo
                                                     (from ("OppositeOuterPit" (to)))	
                                                     (to (last From))
                                                     count:(count at:("OppositeOuterPit" (to)))
-                                               )
-                                           )
+                                                )
+                                            )
                                             (sow
                                                 (last From)
                                                 count:(+ (count at:("OppositeOuterPit" (to))) (count at:("OppositePit" (to))))
                                                 "TrackCCW"
                                                 owner:(mover)
                                                 skipIf:(is In (to) (sites {(mapEntry "RightmostOuter" Mover) (mapEntry "RightmostInner" Mover)}))
-                                           )
+                                            )
                                         })
                                         (moveAgain)
-                                   )
+                                    )
                                     (moveAgain)
-                               )
-                           )
+                                )
+                            )
                             skipIf:(is In (to) (sites {(mapEntry "RightmostOuter" Mover) (mapEntry "RightmostInner" Mover)}))
-                       )
-                   )
-               )
+                        )
+                    )
+                )
                 
-           )
+            )
             (nextPhase Mover (is In (last From) (sites {(mapEntry "RightmostOuter" Mover) (mapEntry "RightmostInner" Mover)})) "InitialSowing")
-       )
+        )
         
         (phase "Sowing"
             (play
@@ -150,7 +150,7 @@
                     (from
                         (sites Mover "Home")
                         if:(is Occupied (from))
-                   )
+                    )
                     (then
                         (sow
                             "TrackCCW"
@@ -164,35 +164,35 @@
                                                     (from ("OppositePit" (to)))	
                                                     (to (last From))
                                                     count:(count at:("OppositePit" (to)))
-                                               )
-                                           )
+                                                )
+                                            )
                                             (if (is Occupied ("OppositeOuterPit" (to)))
                                                 (fromTo
                                                     (from ("OppositeOuterPit" (to)))	
                                                     (to (last From))
                                                     count:(count at:("OppositeOuterPit" (to)))
-                                               )
-                                           )
+                                                )
+                                            )
                                             (sow
                                                 (last From)
                                                 count:(+ (count at:("OppositeOuterPit" (to))) (count at:("OppositePit" (to))))
                                                 "TrackCCW"
                                                 owner:(mover)
-                                           )
+                                            )
                                         })
                                         (moveAgain)
-                                   )
+                                    )
                                     (moveAgain)
-                               )
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         }
         (end ("ForEachPlayerNoMovesLoss"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -208,9 +208,9 @@
         (version "1.3.4")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Tanzania, around 1979.")
+        (origin "This game was played in Tanzania, around 1979.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

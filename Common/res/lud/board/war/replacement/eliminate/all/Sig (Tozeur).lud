@@ -10,14 +10,14 @@
     (apply 
         if:("IsEnemyAt" (to)) 
         (remove (to))
-   ) 
+    ) 
 )
 
 (define "AllPieceInOpponentHome" 
     (and
         (= (count Sites in:(difference (sites Occupied by:P1) (sites P2))) 0)
         (= (count Sites in:(difference (sites Occupied by:P2) (sites P1))) 0)
-   )		
+    )		
 )
 
 //------------------------------------------------------------------------------
@@ -32,36 +32,36 @@
             (track "Track2" "51,W,S1,E,S1,W,S1,E" P2 directed:True)
             }
             use:Vertex
-       )
+        )
         (piece "Stick" Each 
             (if (or 
                     ("ActivatedPiece") 
                     (and (= (count Pips) 1) ("InactivePiece"))
-               )
+                )
                 (if (!= "SiteToMoveOnTrack" Off)
                     (if (or
                             (is In "SiteToMoveOnTrack" (sites Empty))
                             (is Enemy (who at:"SiteToMoveOnTrack"))
-                       )
+                        )
                         (move 
                             (from)
                             (to 
                                 "SiteToMoveOnTrack" 
                                 "CaptureEnemyPiece"
-                           )
-                       )
-                   )
+                            )
+                        )
+                    )
                     (then ("ActivatePiece"))
-               )
-           )
-       )
+                )
+            )
+        )
         (regions "AllSites" (sites Board))
-        (dice d:2 from:0 num:6)        
+        (dice d:2 from:0 num:6)    
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
     })
     (rules 
-        (start {  
+        (start { 
             (place "Stick1" (sites Bottom) state:1)
             (place "Stick2" (sites Top) state:1)
         })
@@ -70,9 +70,9 @@
             (if (no Pieces Next) (result Mover Win))
             (if ("AllPieceInOpponentHome")
                 (result Mover Draw)
-           )
+            )
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -88,12 +88,12 @@
         (version "1.3.4")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
-        (origin  "This game was played in Tunisia, around 1988.")
+        (origin "This game was played in Tunisia, around 1988.")
         }
-   )
+    )
     
     (graphics {
-        (show Edges Hidden)    
+        (show Edges Hidden)  
         (show Symbol "disc" "AllSites" Vertex fillColour:(colour White) edgeColour:(colour Black) scale:1)
         (piece Scale "Stick" 0.5)
         
@@ -101,6 +101,6 @@
     
     (ai
         "Sig (Tozeur)_ai"
-   )
+    )
 )
 

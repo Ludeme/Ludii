@@ -41,11 +41,11 @@
                 (apply 
                     (set State at:(to) level:(level) 
                         (+ 1 (state at:(to) level:(level)))
-                   )
-               )
-           )
-       )
-   )
+                    )
+                )
+            )
+        )
+    )
 )
 
 (define "LastSirMove"
@@ -59,9 +59,9 @@
             (to
                 #2
                 (apply (set State at:(from) level:(level) 0))
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "SirMove" 
@@ -70,9 +70,9 @@
             (from (from) level:(level))
             (to
                 #2
-           )
-       )
-   )	
+            )
+        )
+    )	
 )
 
 (define "NextSite" ("NextSiteOnTrack" 1 from:#1 #2))
@@ -97,14 +97,14 @@
                                 (if (= (site) (where "Mother" (who at:(site) level:(level))))
                                     ("StartMother")
                                     ("StartAngel")
-                               )
-                           )
-                       )
-                   )
-               )
-           )
-       )
-   )		
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )		
 )
 
 (define "Move" 
@@ -115,20 +115,20 @@
                     (from (from) level:(level))
                     (to
                         ("SiteToMoveOnTrack" "FirstTrack" #1)
-                   )
-               )
+                    )
+                )
                 ("CaptureMove" "FirstTrack")
-           )
+            )
             (if (is In (from) (sites Track "SecondTrack"))
                 (move
                     (from (from) level:(level))
                     (to
                         ("SiteToMoveOnTrack" "SecondTrack" #1)
-                   )
+                    )
                     
                     ("CaptureMove" "SecondTrack")
-               )
-           )
+                )
+            )
             ("EnterToMinaret")
             ("ExitFromMinaret")
             ("GoToStep1")
@@ -140,13 +140,13 @@
             ("LastSirMove" ("Cairo") ("Medina"))
             ("LastSirMove" ("Medina") ("Mecca"))
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Siryu (Race)"  
-    (players <Player:num>)  
+(game "Siryu (Race)" 
+    (players <Player:num>) 
     (equipment { 
         (board 
             (merge {
@@ -159,14 +159,14 @@
             (track "FirstTrack" "13,S,E1,N,E1,S1" directed:True)
             (track "SecondTrack" "6,S1,E1,N,E1,S" directed:True)
             }
-       )
+        )
         ("StickDice" 6)
         (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 0) (pair 3 0) (pair 4 0) (pair 5 1) (pair 6 6)})
         (map "ExtraThrow" {(pair 0 1) (pair 1 1) (pair 2 0) (pair 3 0) (pair 4 0) (pair 5 1) (pair 6 3)})
         (piece "Father" Each ("Move" ("ThrowValue")))
         (piece "Angel" Each ("Move" (* 2 ("ThrowValue")) ("GoToStep3Angel")))
         (piece "Mother" Each ("Move" ("ThrowValue")))
-    })  
+    }) 
     (rules 
         <Player:start>
         
@@ -180,23 +180,23 @@
                                 (if (<= (var) 0)
                                     (set Var 2)
                                     (set Var (+ 2 (var)))
-                               )
-                           )
+                                )
+                            )
                             (moveAgain)
-                       )
+                        )
                         (if (> (var) 0)
                             (and
                                 (set Var (- (var) 1))
                                 (moveAgain)
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         
         (end (if ("AllPiecesInMecca") (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -214,8 +214,8 @@
             (place Stack "Mother2" "StartMother")
         })
         >
-    "The game has 2 players.")   
-    (item "3" <3>  
+    "The game has 2 players.")  
+    (item "3" <3> 
         <
         (start {
             (place Stack "Father1" "StartFather")
@@ -229,8 +229,8 @@
             (place Stack "Mother3" "StartMother")
         })
         >
-    "The game has 3 players.")  
-    (item "4" <4>  
+    "The game has 3 players.") 
+    (item "4" <4> 
         <
         (start {
             (place Stack "Father1" "StartFather")
@@ -247,8 +247,8 @@
             (place Stack "Mother4" "StartMother")
         })
         >
-    "The game has 4 players.")*  
-    (item "5" <5>  
+    "The game has 4 players.")* 
+    (item "5" <5> 
         <
         (start {
             (place Stack "Father1" "StartFather")
@@ -268,8 +268,8 @@
             (place Stack "Mother5" "StartMother")
         })
         >
-    "The game has 5 players.")  
-    (item "6" <6>  
+    "The game has 5 players.") 
+    (item "6" <6> 
         <
         (start {
             (place Stack "Father1" "StartFather")
@@ -292,8 +292,8 @@
             (place Stack "Mother6" "StartMother")
         })
         >
-    "The game has 6 players.")  
-    (item "7" <7>  
+    "The game has 6 players.") 
+    (item "7" <7> 
         <
         (start {
             (place Stack "Father1" "StartFather")
@@ -319,8 +319,8 @@
             (place Stack "Mother7" "StartMother")
         })
         >
-    "The game has 7 players.")  
-    (item "8" <8>  
+    "The game has 7 players.") 
+    (item "8" <8> 
         <
         (start {
             (place Stack "Father1" "StartFather")
@@ -349,7 +349,7 @@
             (place Stack "Mother8" 7)
         })
         >
-    "The game has 8 players.")  
+    "The game has 8 players.") 
 })
 
 //------------------------------------------------------------------------------
@@ -360,7 +360,7 @@
         "Players/4"
         }
         variations:{"Players/2" "Players/3" "Players/5" "Players/6" "Players/7" "Players/8"}
-   )*
+    )*
     
 })
 
@@ -377,9 +377,9 @@
         (version "1.3.4")
         (classification "board/race/reach")
         (credit "Eric Piette")
-        (origin  "This game was played in Algeria, around 1969.")
+        (origin "This game was played in Algeria, around 1969.")
         }
-   )
+    )
     
     (graphics {
         (show Symbol "disc" ("Minaret") scale:0.9)

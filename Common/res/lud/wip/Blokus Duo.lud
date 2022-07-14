@@ -5,26 +5,26 @@
         (regions "StartingPoint" (sites {"E10" "J5"}))
         (hand Each size:21)
         (tile "Square" Each)
-        (tile "TwoVertical" Each  {{F}}) 
-        (tile "ThreeVertical" Each  {{F F}}) 
-        (tile "MiniL" Each  {{L F R F} {R F L F}}) 
-        (tile "FourVertical" Each  {{F F F}}) 
+        (tile "TwoVertical" Each {{F}}) 
+        (tile "ThreeVertical" Each {{F F}}) 
+        (tile "MiniL" Each {{L F R F} {R F L F}}) 
+        (tile "FourVertical" Each {{F F F}}) 
         (tile "L" Each "LWalk") 
-        (tile "MiniT" Each  {{F L F R R F L F}}) 
-        (tile "BigSquare" Each  {{F R F R F}}) 
-        (tile "ZigZag" Each  {{R F R F L F} {L F L F R F}}) 
-        (tile "FiveVertical" Each  {{F F F F}}) 
-        (tile "BigL" Each  {{L F R F F F} {R F L F F F}}) 
-        (tile "BigZigZag" Each  {{F L F R F F} {F R F L F F}}) 
-        (tile "ExtendedSquare" Each  {{L F R F R F L F} {R F L F L F R F}}) 
-        (tile "M" Each  {{R F L F F L F}}) 
-        (tile "ExtendedVertical" Each  {{F R F L L F R F F} {F L F R R F L F F}}) 
-        (tile "T" Each  { {F F L F R R F F} }) 
-        (tile "LargeL" Each  { {L F F R F F} {R F F L F F} }) 
-        (tile "LongZigZag" Each  { {L F R F L F R F} {R F L F R F L F} }) 
-        (tile "S" Each  { {F L F F R F} {F R F F L F} }) 
-        (tile "ExtendedT" Each  { {F L F R R F L F R F} {F R F L L F R F L F} }) 
-        (tile "Cross" Each  { {F L F R R F L F R R F L F}}) 
+        (tile "MiniT" Each {{F L F R R F L F}}) 
+        (tile "BigSquare" Each {{F R F R F}}) 
+        (tile "ZigZag" Each {{R F R F L F} {L F L F R F}}) 
+        (tile "FiveVertical" Each {{F F F F}}) 
+        (tile "BigL" Each {{L F R F F F} {R F L F F F}}) 
+        (tile "BigZigZag" Each {{F L F R F F} {F R F L F F}}) 
+        (tile "ExtendedSquare" Each {{L F R F R F L F} {R F L F L F R F}}) 
+        (tile "M" Each {{R F L F F L F}}) 
+        (tile "ExtendedVertical" Each {{F R F L L F R F F} {F L F R R F L F F}}) 
+        (tile "T" Each { {F F L F R R F F} }) 
+        (tile "LargeL" Each { {L F F R F F} {R F F L F F} }) 
+        (tile "LongZigZag" Each { {L F R F L F R F} {R F L F R F L F} }) 
+        (tile "S" Each { {F L F F R F} {F R F F L F} }) 
+        (tile "ExtendedT" Each { {F L F R R F L F R F} {F R F L L F R F L F} }) 
+        (tile "Cross" Each { {F L F R R F L F R R F L F}}) 
     })
     (rules 
         (start {
@@ -57,50 +57,50 @@
                     (move 
                         (from (sites Occupied by:Mover container:(mover))) 
                         (to (sites Empty))
-                   )
+                    )
                     ifAfterwards:(or (not (is Empty (coord "E10"))) (not (is Empty (coord "J5"))))
-               )
-           ) 
+                )
+            ) 
             (nextPhase Mover "Playing")
-       )
+        )
         (phase "Opening" P2
             (play 
                 (do
                     (move 
                         (from (sites Occupied by:Mover container:(mover))) 
                         (to (sites Empty))
-                   )
+                    )
                     ifAfterwards:(and (not (is Empty (coord "E10"))) (not (is Empty (coord "J5"))))
-               )
-           ) 
+                )
+            ) 
             (nextPhase Mover "Playing")
-       )
+        )
         (phase "Playing" 
             (play 
                 (do
                     (move 
                         (from (sites Occupied by:Mover container:(mover))) 
                         (to (sites Empty))
-                   )
+                    )
                     ifAfterwards:(and
                         (= 0 (count Sites in:(intersection (sites LargePiece at:(last To))
                             (sites Around (difference (sites Occupied by:Mover container:"Board") (sites LargePiece at:(last To))) Orthogonal)))
-                       )
+                        )
                         (= 1 (count Sites in:(intersection (sites LargePiece at:(last To))
                             (sites Around (difference (sites Occupied by:Mover container:"Board") (sites LargePiece at:(last To))) Diagonal)))
-                       )
-                   ) 
-               )
-           )
-       )
+                        )
+                    ) 
+                )
+            )
+        )
         }
         (end 
             (if 
                 (and (no Moves P1) (no Moves P2)) 
                 (byScore {(score P1 (- 0 (size LargePiece in:(sites Occupied by:P1 container:1)))) (score P2 (- 0 (size LargePiece in:(sites Occupied by:P2 container:2))))})
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -110,7 +110,7 @@
     (info
         {
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour VeryLightGrey))

@@ -1,16 +1,16 @@
-(game "Knight's Tour"  
-    (players 1)  
+(game "Knight's Tour" 
+    (players 1) 
     (equipment { 
         (board (square 8)) 
         (piece "Knight" P1)
         }
-   )  
+    ) 
     (rules 
-        phases:{    
+        phases:{  
         (phase "Placement" 
             (play (move Add (to (sites Empty)))) 
             (nextPhase "Movement")
-       )
+        )
         (phase "Movement" 
             (play 
                 (move
@@ -20,23 +20,23 @@
                     (to if:(is Empty (to)))
                     (then 
                         (add (to (last From)))
-                   )
-               ) 
-           )
-       )
+                    )
+                ) 
+            )
+        )
         }
         
         (end {
             (if 
                 (>= (count Moves) (count Sites "Board")) 
                 (result P1 Win) 
-           )
+            )
             (if 
                 (no Moves P1) 
                 (result P1 Loss) 
-           )  
+            ) 
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -52,9 +52,9 @@
         (version "1.3.4")
         (classification "puzzle/planning")
         (credit "Eric Piette")
-        (origin  "This game was played in India, from around 1500 to 1550.")
+        (origin "This game was played in India, from around 1500 to 1550.")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour DarkGrey))
@@ -63,6 +63,6 @@
     
     (ai 
         "Knight's Tour_ai"
-   )
+    )
     
 )

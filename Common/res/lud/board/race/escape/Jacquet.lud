@@ -16,9 +16,9 @@
             (difference 
                 (sites Board) 
                 "StartPos"
-           )
+            )
             if:(!= (who at:(site)) (mover))
-       )
+        )
         (is Occupied ("Bar" (mover)))
         (< (size Stack at:("StartPos")) 14)
         (not (all Sites (sites Mover "OppositeQuadrant") if:(!= (who at:(site)) (mover))))
@@ -31,8 +31,8 @@
 
 //-----------------------------------------------------------------------------
 
-(game "Jacquet"  
-    (players 2)  
+(game "Jacquet" 
+    (players 2) 
     (equipment { 
         ("BackgammonBoard" "BackgammonTracksSameDirectionOppositeCornersWithBars") 
         (dice num:2)
@@ -62,28 +62,28 @@
                             (if (if (!= (site) "StartPos")
                                     True
                                     ("PieceInOpponentQuadrantOrNoPieceInTheBoard")
-                               )
+                                )
                                 (move 
                                     (from (site))
                                     (to ("NextSiteFrom" (site))
                                         if:("NoEnemyOrOnlyOne" (to))
                                         ("HittingCapture" ("Bar" (next))) 
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     (then ("ReplayNotAllDiceUsed"))
-               )
-           )
-       )
+                )
+            )
+        )
         
         (end 
             (if ("AllPieceEscaped")
                 (result Mover Win)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //-------------------------------------------------------------------------
@@ -99,9 +99,9 @@
         (version "1.3.4")
         (classification "board/race/escape")
         (credit "Eric Piette")
-        (origin  "This game was played in France, around 1840.")
+        (origin "This game was played in France, around 1840.")
         }
-   )
+    )
     
     (graphics {
         (board Style backgammon)

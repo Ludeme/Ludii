@@ -1,16 +1,16 @@
 (game "Tswana Game"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (mancalaBoard 4 4 store:None)
         (piece "Seed" Shared)
-    })   
+    })  
     (rules
         (start {
             (set Count 2 to:(sites Board))
         })
         (play [#]) 
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -25,8 +25,8 @@
         (id "1345")
         (version "1.3.4")
         (classification "board/sow/four rows/reconstruction")
-        (origin  "This game was played in Southern Africa, around 1972.")
+        (origin "This game was played in Southern Africa, around 1972.")
         }
-   )
+    )
     
 )

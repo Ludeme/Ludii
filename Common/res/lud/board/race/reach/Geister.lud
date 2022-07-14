@@ -1,5 +1,5 @@
-(game "Geister"  
-    (players 2)  
+(game "Geister" 
+    (players 2) 
     
     (equipment { 
         (board (square 6)) 
@@ -18,7 +18,7 @@
             (pair (id "GhostGood" P1) (handSite P1)) (pair (id "GhostEvil" P1) (handSite P1 1)) 
             (pair (id "GhostGood" P2) (handSite P2)) (pair (id "GhostEvil" P2) (handSite P2 1)) 
         })
-    })  
+    }) 
     
     (rules 
         (start { 
@@ -38,8 +38,8 @@
                         (forEach 
                             (sites Mover "Home") 
                             if:(is Empty (site))
-                       )
-                   ) 
+                        )
+                    ) 
                     (then 
                         (if 
                             ("HandEmpty" P2) 
@@ -49,12 +49,12 @@
                                 (set Hidden What (sites P2 "Home") to:P1) 
                                 (set Hidden What (sites P1 "Home") to:P2)
                             }) 
-                       ) 
-                   )
-               )
-           ) 
+                        ) 
+                    )
+                )
+            ) 
             (nextPhase ("HandEmpty" P2) "Movement")
-       )
+        )
         (phase "Movement" 
             (play
                 (forEach Piece {"GhostGood" "GhostEvil"} 
@@ -68,19 +68,19 @@
                                         (add 
                                             (piece (what at:(to))) 
                                             (to (mapEntry "Where" (what at:(to))))
-                                       )
-                                   )
-                               ) 
-                           )
-                       )
+                                        )
+                                    )
+                                ) 
+                            )
+                        )
                         (move Select (from (intersection (sites Occupied by:Mover component:"GhostGood") (sites Mover "Escape")))
                             (then 
                                 (trigger "Escaped" (mover))
-                           )
-                       )
-                   )
-               )
-           )
+                            )
+                        )
+                    )
+                )
+            )
             (end {
                 (if 
                     (or {
@@ -89,18 +89,18 @@
                         (is Triggered "Escaped" Mover)
                     }) 
                     (result Mover Win)
-               )
+                )
                 (if 
                     (or
                         (no Pieces Next "GhostEvil" in:(sites Board))
                         (no Pieces Mover "GhostGood" in:(sites Board))
-                   ) 
+                    ) 
                     (result Mover Loss)
-               )
+                )
             })
-       )
+        )
         }
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -131,7 +131,7 @@
         (author "Alex Randolph")
         (credit "Matthew Stephenson")
         }
-   )
+    )
     
     (graphics {
         (piece Rename piece:"GhostGood" "disc")

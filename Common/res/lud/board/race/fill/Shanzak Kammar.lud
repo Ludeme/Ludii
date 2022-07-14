@@ -1,17 +1,17 @@
 (game "Shanzak Kammar"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board 
             (add
                 ("AlquerqueGraphWithBottomAndTopTriangles") 
                 edges:{{5 1} {1 7} {7 3} {3 9} {13 9} {7 13} {11 5} {15 11} {11 17} {7 11} {17 13} {13 19} {23 19} {23 17} {17 21} {15 21}}
-           )
+            )
             use:Vertex
-       )
+        )
         (piece "Marker" Each (or "StepToEmpty" "HopCapture"))
         (regions "Goal" P1 (expand (sites Top)))
         (regions "Goal" P2 (expand (sites Bottom)))
-    })  
+    }) 
     (rules 
         (start {
             (place "Marker1" (expand (sites Bottom) steps:3))
@@ -21,7 +21,7 @@
         (play (forEach Piece))
         
         (end (if (= 6 (count Pieces Mover in:(sites Mover "Goal"))) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -38,9 +38,9 @@
         (version "1.3.4")
         (classification "board/race/fill")
         (credit "Eric Piette")
-        (origin  "This game was played in Central Asia, around 1893.")
+        (origin "This game was played in Central Asia, around 1893.")
         }
-   )
+    )
     
     (graphics {
         (show Edges Diagonal Hidden)

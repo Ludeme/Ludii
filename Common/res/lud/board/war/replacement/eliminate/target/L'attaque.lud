@@ -14,7 +14,7 @@
         (set Hidden Value at:(mapEntry (what at:(from))) False to:P2) 
         (set Hidden Value at:(mapEntry (what at:(to))) False to:P1)
         (set Hidden Value at:(mapEntry (what at:(to))) False to:P2)
-    })  
+    }) 
 )
 
 (define "CaptureDefenderAndMakeVisible"
@@ -27,7 +27,7 @@
         (set Hidden Value at:(mapEntry (what at:(to))) False to:P1) 
         (set Hidden Value at:(mapEntry (what at:(to))) False to:P2) 
         (set Hidden Value at:(to) False to:Next)
-    })  
+    }) 
 )
 
 (define "CaptureDefenderAndMoveAttackerAndMakeVisible"
@@ -63,7 +63,7 @@
                         
                         (!= (what at:(to)) (id "Bomb" Next)) 
                         (!= (what at:(to)) (id "Flag" Next))
-                   )
+                    )
                     (if (= (value Piece at:(to)) (value Piece at:(from)))
                         ("CapturePiecesAndMakeVisible")
                         (if (< (value Piece at:(to)) (value Piece at:(from)))
@@ -72,13 +72,13 @@
                                 (if (and 
                                         (= (what at:(from)) (id "Spy" Mover)) 
                                         (= (what at:(to)) (id "Marshal" Next))
-                                   )
+                                    )
                                     ("CaptureDefenderAndMoveAttackerAndMakeVisible")
                                     ("CaptureAttackerAndMakeVisible")
-                               )
-                           )
-                       )
-                   )
+                                )
+                            )
+                        )
+                    )
                     (if (= (what at:(to)) (id "Bomb" Next))
                         (if (= (what at:(from)) (id "Miner" Mover))
                             (and { 
@@ -92,25 +92,25 @@
                                 (set Hidden Value at:(from) False to:Next) 
                             })
                             ("CaptureAttackerAndMakeVisible")
-                       )
+                        )
                         (if (= (what at:(to)) (id "Flag" Next))
                             (and 
                                 ("CaptureFlag") 
                                 (remove (to))
-                           )
-                       )
-                   )
-               )
+                            )
+                        )
+                    )
+                )
                 (note player:Mover "attacks" to:Next)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "L'attaque"  
-    (players 2)  
+(game "L'attaque" 
+    (players 2) 
     
     (equipment { 
         (board 
@@ -119,12 +119,12 @@
                     (hole 
                         (rectangle 10 9)
                         (poly {{2 4} {2 6} {3 6} {3 4}})
-                   )
+                    )
                     (poly {{4 4} {4 6} {5 6} {5 4}})
-               )
+                )
                 (poly {{6 4} {6 6} {7 6} {7 4}})
-           )
-       ) 
+            )
+        ) 
         (hand Each size:12)
         
         (piece "Marshal" Each)
@@ -145,7 +145,7 @@
         (map {(pair 1 84) (pair 2 96) (pair 3 85) (pair 4 97) (pair 5 86) (pair 6 98) (pair 7 87) (pair 8 99) (pair 9 88)
         (pair 10 100) (pair 11 89) (pair 12 101) (pair 13 90) (pair 14 102) (pair 15 91) (pair 16 103) (pair 17 92) (pair 18 104) (pair 19 93) (pair 20 105) (pair 21 94) (pair 22 106) (pair 23 95) (pair 24 107)})
         }
-   )  
+    ) 
     
     (rules 
         (start { 
@@ -169,8 +169,8 @@
                         (intersection 
                             (sites Mover "Home") 
                             (sites Empty)
-                       )
-                   ) 
+                        )
+                    ) 
                     (then 
                         (if 
                             ("HandEmpty" P2) 
@@ -182,12 +182,12 @@
                                 (set Hidden Value (sites P2 "Home") to:P1) 
                                 (set Hidden Value (sites P1 "Home") to:P2)
                             }) 
-                       ) 
-                   )
-               )
-           ) 
+                        ) 
+                    )
+                )
+            ) 
             (nextPhase ("HandEmpty" P2) "Movement")
-       )
+        )
         (phase "Movement" 
             (play
                 (or 
@@ -198,9 +198,9 @@
                             (to 
                                 if:(not ("IsFriendAt" (to))) 
                                 "Capture"
-                           )
-                       )
-                   )
+                            )
+                        )
+                    )
                     (forEach Piece "Scout" 
                         (or
                             (move
@@ -208,20 +208,20 @@
                                 (from)
                                 (to (sites LineOfSight Empty at:(from) Orthogonal))
                                 (then (fromTo (from (last From)) (to (last To))))
-                           )
+                            )
                             (move
                                 Select
                                 (from)
                                 (to 
                                     (sites LineOfSight Piece at:(from) Orthogonal)
                                     if:("IsEnemyAt" (to))
-                               )
-                                (then   
+                                )
+                                (then  
                                     (and
                                         (if (and 
                                                 (!= (what at:(last To)) (id "Bomb" Next)) 
                                                 (!= (what at:(last To)) (id "Flag" Next))
-                                           )
+                                            )
                                             (if (= (value Piece at:(last To)) (value Piece at:(last From)))
                                                 (and {
                                                     (set Hidden What at:(last To) False to:Mover) 
@@ -239,7 +239,7 @@
                                                         (set Hidden Value at:(mapEntry (what at:(last To))) False to:P1) 
                                                         (set Hidden Value at:(mapEntry (what at:(last To))) False to:P2) 
                                                         (set Hidden Value at:(last To) False to:Next)
-                                                    })  
+                                                    }) 
                                                     (and {
                                                         (fromTo (from (last From)) (to (mapEntry (what at:(last From))))) 
                                                         (set Hidden What at:(mapEntry (what at:(last From))) False to:P1) 
@@ -249,8 +249,8 @@
                                                         (set Hidden Value at:(mapEntry (what at:(last From))) False to:P2) 
                                                         (set Hidden Value at:(last To) False to:Mover)
                                                     }) 
-                                               )
-                                           )
+                                                )
+                                            )
                                             (if (= (what at:(last To)) (id "Bomb" Next))
                                                 (and {
                                                     (fromTo (from (last From)) (to (mapEntry (what at:(last From))))) 
@@ -266,22 +266,22 @@
                                                     (remove (last To))
                                                     (fromTo (from (last From)) (to (last To))) 
                                                     }
-                                               )
-                                           )
-                                       )
+                                                )
+                                            )
+                                        )
                                         (note player:Mover "attacks" to:Next)
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
             (end (if "FlagWasCaptured" (result Mover Win))) 
-       )
+        )
         }
         
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -298,7 +298,7 @@
         (classification "board/war/replacement/eliminate/target")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (show Piece Value)
@@ -312,6 +312,6 @@
     
     (ai 
         "L'attaque_ai"
-   )
+    )
     
 )

@@ -6,8 +6,8 @@
         (hand Each)
         (piece "Marker" Each 
             (move [#])
-       ) 
-    })  
+        ) 
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:[3 | 6 | 20]))
         
@@ -15,19 +15,19 @@
         (phase "Placement"
             (play
                 [#]
-           ) 
+            ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-       )
+        )
         
         (phase "Movement" 
             (play 
                 [#]
-           )
-       )
+            )
+        )
         }
         
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -37,6 +37,6 @@
     (info
         {
         }
-   )
+    )
     
 )

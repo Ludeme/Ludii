@@ -11,25 +11,25 @@
         Hop 
         (between if:(not (is Empty (between))))
         (to if:(is Empty (to)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Tic-Tac-Choose-Chess"  
-    (players 2)  
+(game "Tic-Tac-Choose-Chess" 
+    (players 2) 
     (equipment { 
         (board (square 3)) 
         (hand Each size:3)
         (piece "Queen" Each (or ("HopAny") (move Slide All)))
-        (piece "King"  Each (or ("HopAny") ("StepToEmpty")))
-        (piece "Rook"  Each (or ("HopAny") (move Slide Orthogonal)))
-    })  
+        (piece "King" Each (or ("HopAny") ("StepToEmpty")))
+        (piece "Rook" Each (or ("HopAny") (move Slide Orthogonal)))
+    }) 
     (rules 
         (start { 
             (place "Queen" "Hand")
-            (place "King"  "Hand")
-            (place "Rook"  "Hand")
+            (place "King" "Hand")
+            (place "Rook" "Hand")
         })
         
         phases:{
@@ -42,21 +42,21 @@
                         (then 
                             (if (not ("HandEmpty" P1)) 
                                 (moveAgain)		// We get to nominate for opponent now
-                           )
-                       )
-                   )		
-               )        	
-           )
+                            )
+                        )
+                    )		
+                )    	
+            )
             (nextPhase ("HandEmpty" P1) "Movement")
-       )
+        )
         
         (phase "Movement"
             (play (forEach Piece))
-       )
+        )
         }
         
         (end (if (is Line 3 Mover) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -67,5 +67,5 @@
         {
         (credit "Dennis Soemers")
         }
-   )
+    )
 )

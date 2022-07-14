@@ -1,14 +1,14 @@
-(game "Gol Ekuish"  
-    (players 2)  
+(game "Gol Ekuish" 
+    (players 2) 
     (equipment { 
         (board (concentric {1 6 6 6 6 6 6 6}) use:Vertex)
         (piece "Counter" Each 
             (or 
                 ("HopRotationalCapture")
                 ("StepRotationalToEmpty")
-           )
-       )
-    })  
+            )
+        )
+    }) 
     
     (rules 
         (start {
@@ -18,7 +18,7 @@
         
         (play (forEach Piece))
         (end ("NoMoves" Loss)) 
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -35,9 +35,9 @@
         (version "1.3.4")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1924.")
+        (origin "This game was played in India, around 1924.")
         }
-   )
+    )
     
     (graphics {
         
@@ -45,6 +45,6 @@
     
     (ai 
         "Gol Ekuish_ai"
-   )
+    )
     
 )

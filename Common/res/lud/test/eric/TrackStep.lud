@@ -8,11 +8,11 @@
             (track "Track1" trackSteps:{5 N})
             //(track "Track1" "5,N")
             }	
-       )
+        )
         
     })
     (rules 
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
-   )
+    )
 )

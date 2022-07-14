@@ -1,5 +1,5 @@
 (game "Buga Nokhoi"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board 
             (merge {
@@ -8,11 +8,11 @@
                 (square 5 diagonals:Alternating)
             })
             use:Vertex
-       )
+        )
         (piece "Deer" P2 (and ("StepToEmpty") ("HopCapture")))
         (piece "Dog" P1 ("StepToEmpty"))
         (hand P1)
-    })  
+    }) 
     
     (rules 
         // “The other player plays with twelve dogs, at least some of which begin in the main part of the board, but some may be introduced later. “
@@ -30,10 +30,10 @@
                     (from (handSite Mover)) 
                     (to (sites Empty)) 
                     (then (if (is Occupied (handSite P1)) (moveAgain)))
-               )  
-           ) 
+                ) 
+            ) 
             (nextPhase Mover ("HandEmpty" P1) "Movement")
-       )
+        )
         
         (phase "Movement" (play (forEach Piece)))
         }
@@ -42,7 +42,7 @@
             (if (no Pieces P1) (result P2 Win))
             (if (no Moves P2) (result P1 Win))
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -58,9 +58,9 @@
         (version "1.3.4")
         (classification "board/hunt/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Mongolia, from around 1988 to 1991.")
+        (origin "This game was played in Mongolia, from around 1988 to 1991.")
         }
-   )
+    )
     
     (graphics {
         (show Edges Diagonal Hidden)

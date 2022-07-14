@@ -10,8 +10,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Hus (Damara)"  
-    (players 2)  
+(game "Hus (Damara)" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -19,27 +19,27 @@
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" <Board:track2> loop:True P2)
             }
-       )
-        (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
-        (regions "Home" P2 (sites Track "Track2"))                              // P2 home
+        )
+        (regions "Home" P1 (sites Track "Track1"))               // P1 Home
+        (regions "Home" P2 (sites Track "Track2"))               // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))   // P2 inner Home
-        (regions "Outer" P1 (sites Bottom))                                     // P1 outer Home
-        (regions "Outer" P2 (sites Top))                                        // P1 outer Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))  // P2 inner Home
+        (regions "Outer" P1 (sites Bottom))                   // P1 outer Home
+        (regions "Outer" P2 (sites Top))                    // P1 outer Home
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start 
             (set Count 2 to:(union { 
-                    (expand (intersection (sites Row 1) (sites Right)) steps:3 W)  
+                    (expand (intersection (sites Row 1) (sites Right)) steps:3 W) 
                     (expand (intersection (sites Row 2) (sites Left)) steps:3 E) 
                     (sites P1 "Outer")
                     (sites P2 "Outer") 
                 }) 
-           ) 
-       )
+            ) 
+        )
         
         (play 
             (move Select
@@ -47,9 +47,9 @@
                     (if ("SameTurn") 
                         (if "MoveAgainAfterCapture" "PlayFromNextHole" "LastHoleSowed") 
                         (sites Mover "Home") 
-                   ) 
+                    ) 
                     if:(> (count at:(from)) <Sow:numSeed>)
-               )
+                )
                 (then 
                     (sow
                         "Track"
@@ -66,54 +66,54 @@
                                         (from (to)) 
                                         (to (handSite Mover)) 
                                         count:(count at:(to))
-                                   ) 
+                                    ) 
                                     (fromTo 
                                         (from ("OppositePit" (to))) 
                                         (to (handSite Mover)) 
                                         count:(count at:("OppositePit" (to)))
-                                   ) 
+                                    ) 
                                     (fromTo 
                                         (from ("OppositeOuterPit" (to))) 
                                         (to (handSite Mover)) 
                                         count:(count at:("OppositeOuterPit" (to)))
-                                   )
+                                    )
                                     (if (> (count at:"NextHole") 1)
                                         (and
                                             (set Pending "NextHole") // We store the next hole to play in the pending value.
                                             (moveAgain)
-                                       )
-                                   )
+                                        )
+                                    )
                                     }
-                               )
+                                )
                                 (moveAgain)
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> <track2> }
     {
-    (item "12"   <12> <"24,E,N1,W"> "Each player has 12 holes.")*   
-    (item "14"   <14> <"28,E,N1,W"> "Each player has 14 holes.")   
-    (item "16"   <16> <"32,E,N1,W"> "Each player has 16 holes.")   
-    (item "18"   <18> <"36,E,N1,W"> "Each player has 18 holes.")   
-    (item "20"   <20> <"40,E,N1,W"> "Each player has 20 holes.")   
-    (item "22"   <22> <"44,E,N1,W"> "Each player has 22 holes.")   
-    (item "24"   <24> <"48,E,N1,W"> "Each player has 24 holes.")   
+    (item "12"  <12> <"24,E,N1,W"> "Each player has 12 holes.")*  
+    (item "14"  <14> <"28,E,N1,W"> "Each player has 14 holes.")  
+    (item "16"  <16> <"32,E,N1,W"> "Each player has 16 holes.")  
+    (item "18"  <18> <"36,E,N1,W"> "Each player has 18 holes.")  
+    (item "20"  <20> <"40,E,N1,W"> "Each player has 20 holes.")  
+    (item "22"  <22> <"44,E,N1,W"> "Each player has 22 holes.")  
+    (item "24"  <24> <"48,E,N1,W"> "Each player has 24 holes.")  
 })
 
 (option "Play Rules" <Sow> args:{<numSeed>}
     {
-    (item "Sowing with 1 or more seeds" <0>   "The player can sow from any hole with one or more seeds.")**
-    (item "Sowing with 2 or more seeds" <1>   "The player can sow from any hole with two or more seeds.")
+    (item "Sowing with 1 or more seeds" <0>  "The player can sow from any hole with one or more seeds.")**
+    (item "Sowing with 2 or more seeds" <1>  "The player can sow from any hole with two or more seeds.")
     }
 )
 
@@ -125,17 +125,17 @@
         "Play Rules/Sowing with 1 or more seeds" "Board Size/12"
         }
         variations:{"Board Size/14" "Board Size/16" "Board Size/18" 
-        "Board Size/20" "Board Size/22"  "Board Size/24" 
+        "Board Size/20" "Board Size/22" "Board Size/24" 
         }
-   )*
+    )*
     
     (ruleset "Ruleset/Wagner (Observed)" {
         "Play Rules/Sowing with 2 or more seeds" "Board Size/12"
         }
         variations:{"Board Size/14" "Board Size/16" "Board Size/18" 
-        "Board Size/20" "Board Size/22"  "Board Size/24" 
+        "Board Size/20" "Board Size/22" "Board Size/24" 
         }
-   )
+    )
     
 })
 
@@ -158,9 +158,9 @@
         (version "1.3.4")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Southwest Africa, from around 1916 to 1923.")
+        (origin "This game was played in Southwest Africa, from around 1916 to 1923.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)
@@ -168,5 +168,5 @@
     
     (ai
         "Hus (Damara)_ai"
-   )
+    )
 )

@@ -4,13 +4,13 @@
     (trackSite FirstSite 
         from:(trackSite FirstSite if:(not (is Mover (who at:(to)))))
         if:(is Mover (who at:(to)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (game "Ga"
-    (players ("NumPlayers"))  
+    (players ("NumPlayers")) 
     (equipment { 
         (board 
             (concentric {"NumHolesCircle"}) 
@@ -18,9 +18,9 @@
             (track "Track" [#] loop:True)
             }
             use:Vertex
-       )
+        )
         (piece "Seed" Each)
-    })  
+    }) 
     
     (rules
         
@@ -32,18 +32,18 @@
                     Select 
                     (from 
                         ("LeftMost") 
-                   )
+                    )
                     (then
                         (sow
                             sowEffect:(if (and (!= (mover) (what at:(to))) (is Occupied (to)))
                                 (and
                                     (remove (to) count:(count at:(to)))
                                     (add (piece (id "Seed" Mover)) (to (to)) count:(count at:(to)))
-                               )
-                           )		
-                       )
-                   )
-               )
+                                )
+                            )		
+                        )
+                    )
+                )
                 (move
                     (from ("LeftMost"))
                     (to 
@@ -52,20 +52,20 @@
                             (and
                                 (remove (to) count:(count at:(to)))
                                 (add (piece (id "Seed" Mover)) (to (to)) count:(count at:(to)))
-                           )	
-                       )	
-                   )
-               )
-           )
-       )
+                            )	
+                        )	
+                    )
+                )
+            )
+        )
         
         (end 
             (forEach NonMover 
                 if:(no Pieces Player) 
                 (result Player Loss)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -75,7 +75,7 @@
     (info
         {
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

@@ -2,9 +2,9 @@
 
 (define "Nbors" (count Sites in:(intersection
             (sites Around #1)
-            (sites Occupied by:#2)   
-       )
-   )
+            (sites Occupied by:#2)  
+        )
+    )
 )
 
 (define "TriCorners")
@@ -16,13 +16,13 @@
             (- (/ (- (* {3 #1 #1}) #1) 2) 1) 
             (+ 1 (- (* {3 #1 #1}) (* 4 #1))) 
             }
-       )
+        )
         (place "Ball2" 
             {(- #1 1) 
             (+ 1 (/ (- (* {3 #1 #1}) (* 5 #1)) 2)) 
             (- (* {3 #1 #1}) (* 3 #1)) 
             }
-       )
+        )
         }
 ))
 (define "LimpCorners"
@@ -33,13 +33,13 @@
             (- (/ (+ (* {3 #1 #1}) #1) 2) 1) 
             (- (* 3 (* #1 #1)) #1) 
             }
-       )
+        )
         (place "Ball2" 
             { #1
             (/ (- (* {3 #1 #1}) (* 3 #1)) 2)
             (- (* 3 (* #1 #1)) 1) 
             }
-       )
+        )
         }
 ))
 
@@ -63,11 +63,11 @@
                     (to (sites Empty)) 
                     (then 
                         (set Var (last To))
-                   )
-               )
-           )
+                    )
+                )
+            )
             (nextPhase)
-       )
+        )
         
         (phase "Play"
             (play
@@ -76,10 +76,10 @@
                     (to (sites LineOfSight Empty at:(var)))
                     (then
                         (set Var (last To))
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         }
         
         (end
@@ -88,24 +88,24 @@
                 (no Moves Next) {
                 (if
                     (> ("Nbors" (last To) P1) ("Nbors" (last To) P2)) (result P1 Win)
-               )
+                )
                 
                 (if
                     (> ("Nbors" (last To) P2) ("Nbors" (last To) P1)) (result P2 Win)
-               )
+                )
                 
                 (if
                     (and (= ("Nbors" (last To) P1) ("Nbors" (last To) P2)) (is Mover P1)) (result P1 Win)
-               )
+                )
                 
                 (if
                     (and (= ("Nbors" (last To) P1) ("Nbors" (last To) P2)) (is Mover P2)) (result P2 Win)
-               )
+                )
                 }
-           )
+            )
             }
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -121,23 +121,23 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "3"    <3>  "Played on a size 3 board.")   
-    (item "4"    <4>  "Played on a size 4 board.")   
-    (item "5"    <5>  "Played on a size 5 board.")   
-    (item "6"    <6>  "Played on a size 6 board.")   
-    (item "7"    <7>  "Played on a size 7 board.")*   
-    (item "8"    <8>  "Played on a size 8 board.")   
-    (item "9"    <9>  "Played on a size 9 board.")   
-    (item "10"  <10>  "Played on a size 10 board.")   
-    (item "11"  <11>  "Played on a size 11 board.")   
-    (item "12"  <12>  "Played on a size 12 board.")   
-    (item "13"  <13>  "Played on a size 13 board.")   
-    (item "14"  <14>  "Played on a size 14 board.")   
-    (item "15"  <15>  "Played on a size 15 board.")   
-    (item "16"  <16>  "Played on a size 16 board.")   
-    (item "17"  <17>  "Played on a size 17 board.")   
-    (item "18"  <18>  "Played on a size 18 board.")   
-    (item "19"  <19>  "Played on a size 19 board.")   
+    (item "3"  <3> "Played on a size 3 board.")  
+    (item "4"  <4> "Played on a size 4 board.")  
+    (item "5"  <5> "Played on a size 5 board.")  
+    (item "6"  <6> "Played on a size 6 board.")  
+    (item "7"  <7> "Played on a size 7 board.")*  
+    (item "8"  <8> "Played on a size 8 board.")  
+    (item "9"  <9> "Played on a size 9 board.")  
+    (item "10" <10> "Played on a size 10 board.")  
+    (item "11" <11> "Played on a size 11 board.")  
+    (item "12" <12> "Played on a size 12 board.")  
+    (item "13" <13> "Played on a size 13 board.")  
+    (item "14" <14> "Played on a size 14 board.")  
+    (item "15" <15> "Played on a size 15 board.")  
+    (item "16" <16> "Played on a size 16 board.")  
+    (item "17" <17> "Played on a size 17 board.")  
+    (item "18" <18> "Played on a size 18 board.")  
+    (item "19" <19> "Played on a size 19 board.")  
     }
 )
 
@@ -157,8 +157,8 @@
         (publisher "Alek Erickson")
         (credit "Alek Erickson")
         }
-   )
+    )
     (ai
         "HexTrike_ai"
-   )
+    )
 )

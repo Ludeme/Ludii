@@ -7,11 +7,11 @@
                 "KnightWalk"
                 forward:True 
                 (to if:(not ("IsFriendAt" (to))) (apply (remove (to))))
-           )
-       )
+            )
+        )
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Knight1" (expand (sites Bottom)))
@@ -21,7 +21,7 @@
         (play (forEach Piece))
         
         (end ("ReachWin" (sites Mover) Mover))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -39,7 +39,7 @@
         (credit "Eric Piette")
         (date "01-01-2008")
         }
-   )
+    )
     
     (graphics {
         (board Style Chess)
@@ -47,6 +47,6 @@
     
     (ai 
         "Knightthrough_ai"
-   )
+    )
     
 )

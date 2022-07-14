@@ -4,7 +4,7 @@
         (board (square 7))
         (piece "Bean" Each
             (move Step (to if:(is Empty (to))))
-       )
+        )
     })
     (rules
         (start {
@@ -21,21 +21,21 @@
                         (to if:(is Empty (to))
                             (apply 
                                 (remove (between))
-                           )
-                       )
+                            )
+                        )
                         (then
                             (if (can Move
                                     (hop
                                         (from (last To))
                                         (between if:("IsEnemyAt" (between)))
                                         (to if:(is Empty (to)))
-                                   )
-                               )
+                                    )
+                                )
                                 (moveAgain)
-                           )
-                       )
-                   )
-               )
+                            )
+                        )
+                    )
+                )
                 (priority {
                     (max Moves
                         (forEach Piece
@@ -44,38 +44,38 @@
                                 (to if:(is Empty (to))
                                     (apply 
                                         (remove (between))
-                                   )
-                               )
+                                    )
+                                )
                                 (then
                                     (if (can Move
                                             (hop
                                                 (from (last To))
                                                 (between if:("IsEnemyAt" (between)))
                                                 (to if:(is Empty (to)))
-                                           )
-                                       )
+                                            )
+                                        )
                                         (moveAgain)
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     (forEach Piece)
                 })
-           )
-       )
+            )
+        )
         
         (end (if (or
                     (no Pieces Next) 
                     (and
                         (= 1 (count Pieces Mover))
                         (= (centrePoint) (where "Bean" Mover))
-                   )
-               )
+                    )
+                )
                 (result Mover Win)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -100,7 +100,7 @@
         (credit "Eric Piette")
         (date "2001")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Green))

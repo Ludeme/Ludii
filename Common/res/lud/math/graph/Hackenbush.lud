@@ -2,7 +2,7 @@
     (forEach Site
         (sites Group Edge at:(site))
         (remove Edge (site))
-   )
+    )
 )
 
 (define "NotConnectedToTheGround" 
@@ -10,9 +10,9 @@
         (count Sites in:(intersection 
                 ("Ground")
                 (sites Group Edge at:(site) if:(not (is Empty (to))))
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "Ground" (sites Bottom))
@@ -20,46 +20,46 @@
 //------------------------------------------------------------------------------
 
 (game "Hackenbush" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board <Board:type> use:Edge)
         (piece "Marker" Each) 
-        (piece "Disc" Shared)  
-        (piece "Cross" Neutral)   
-        (regions All (expand (sites Bottom)))      
+        (piece "Disc" Shared) 
+        (piece "Cross" Neutral)  
+        (regions All (expand (sites Bottom)))   
         }
-   )  
+    ) 
     
     (rules
         (start {
             (set Neutral Edge ("Ground")) 
             <Version:start>
-        })        
+        })    
         (play
             (move
-                Remove <Version:play>                   
-                (then		            		
+                Remove <Version:play>          
+                (then		      		
                     (forEach Site 
                         (sites Incident Edge of:Edge at:(last To)) 
                         (if
                             ("NotConnectedToTheGround")
                             ("RemoveCutBranch")
-                       )
-                   )
-               )
-           )
-       )
-        (end                     
-            (if (no Moves Mover) (result Next Win))           
-       )
-   )
+                        )
+                    )
+                )
+            )
+        )
+        (end           
+            (if (no Moves Mover) (result Next Win))      
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board" <Board> args:{ <type> }
     {
-    (item "Graph1"             
+    (item "Graph1"       
         <
         (graph
             vertices:{ 
@@ -68,12 +68,12 @@
             edges:{ 
             {0 1} {1 2} {2 3} {4 3} {4 5} {6 5} {2 7} {7 8} {7 9} {8 10} {8 11}
             {5 12} {12 14} {12 13} {13 15} {13 16}}
-       )
-        >             
+        )
+        >       
         "The game is played on the Graph1."
-   )* 
+    )* 
     
-    (item "Graph2"             
+    (item "Graph2"       
         <
         (graph
             vertices:{ 
@@ -82,12 +82,12 @@
             edges:{ 
             {0 1} {1 2} {2 3} {4 3} {4 5} {6 5} {2 7} {3 8} {5 9} {8 10} {10 11} {11 12} {11 13}
             {11 14} {10 15} {15 16} {17 15} {8 18} {18 19} {18 20} {20 21} {20 22} {20 23}}
-       )
-        >                      
+        )
+        >           
         "The game is played on the Graph2."
-   ) 
+    ) 
     
-    (item "Graph3"             
+    (item "Graph3"       
         <
         (graph
             vertices:{ 
@@ -98,41 +98,41 @@
             {0 1} {1 2} {2 3} {4 3} {4 5} {6 5} {2 7} {7 8} {8 9} {4 10} {10 11} {11 12} {9 13}
             {9 12} {12 14} {13 15} {14 15} {15 16} {16 19} {19 20} {20 21} {21 22} {22 23} {20 23}
             {16 17} {17 18} {16 24} {24 26} {16 25} {25 26} {26 27} {27 28} {28 29} {29 30}}
-       )       
+        )    
         
-        >                      
+        >           
         "The game is played on the Graph3."
-   ) 
+    ) 
 })
 
 //------------------------------------------------------------------------------
 
 (option "Version" <Version> args:{ <start> <play> }
     {
-    (item "Hackenbush"    
+    (item "Hackenbush"  
         <
-        (set Shared Edge (difference (sites Board Edge) (sites {0..5})))                         
-        >  
-        <(sites Occupied by:Shared)>    
+        (set Shared Edge (difference (sites Board Edge) (sites {0..5})))             
+        > 
+        <(sites Occupied by:Shared)>  
         "The players play on Hackenbush version."
-   )*  
+    )* 
     (item "HackenbushR-B"
         <
         (set P1 Edge (sites {6..12}))
-        (set P2 Edge (difference (sites Board Edge) (union (sites {6..12}) (sites {0..5}))))       
+        (set P2 Edge (difference (sites Board Edge) (union (sites {6..12}) (sites {0..5}))))    
         > 
-        <(sites Occupied by:Mover)>        
+        <(sites Occupied by:Mover)>    
         "The players play on HackenbushR-B version."
-   )   
+    )  
     (item "HackenbushR-G-B"
         <
         (set P1 Edge (sites {6 8 10}))
         (set P2 Edge (sites {9 12 13}))
-        (set Shared Edge (difference (sites Board Edge) (union (union (sites {6 8 10}) (sites {0..5})) (sites {9 12 13}))))            
-        >  
-        <(difference (sites Occupied by:All on:Edge) (union (sites Occupied by:Neutral on:Edge) (sites Occupied by:Next on:Edge)))>        
+        (set Shared Edge (difference (sites Board Edge) (union (union (sites {6 8 10}) (sites {0..5})) (sites {9 12 13}))))      
+        > 
+        <(difference (sites Occupied by:All on:Edge) (union (sites Occupied by:Neutral on:Edge) (sites Occupied by:Next on:Edge)))>    
         "The players play on HackenbushR-G-B version."
-   )   
+    )  
 })
 
 //------------------------------------------------------------------------------
@@ -152,13 +152,13 @@
         (credit "Tahmina Begum 11-06-2020")
         (date "1982")
         }
-   )
+    )
     
     (graphics {
         (player Colour Neutral (colour Black))
-        (player Colour Shared (colour Green))  
+        (player Colour Shared (colour Green)) 
         (player Colour P1 (colour Red)) 
-        (player Colour P2 (colour Blue))      
+        (player Colour P2 (colour Blue))   
         (board Style PenAndPaper replaceComponentsWithFilledCells:True)
         (show Edges ThinDotted (colour 127 127 127))
         
@@ -166,5 +166,5 @@
     
     (ai
         "Hackenbush_ai"
-   )
+    )
 )

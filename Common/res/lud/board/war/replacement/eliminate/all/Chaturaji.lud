@@ -4,9 +4,9 @@
             (and 
                 (addScore Mover (value Piece at:(to))) 
                 (remove (to)) 
-           )
-       )
-   ) 
+            )
+        )
+    ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -16,8 +16,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             "CaptureToPieceAndAddScore"
-       )
-   )
+        )
+    )
 )
 
 (define "PromoteTo" 
@@ -34,17 +34,17 @@
                     (forEach Piece "Knight")
                     (if (= (pips) 2)
                         (forEach Piece "Boat")
-                   )
-               )
-           )
-       )
-   )
+                    )
+                )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Chaturaji"  
-    (players {(player N) (player W) (player S) (player E)})  
+(game "Chaturaji" 
+    (players {(player N) (player W) (player S) (player E)}) 
     (equipment { 
         (board (square 8))
         (dice d:4 from:2 num:1)
@@ -56,10 +56,10 @@
                 (then
                     (if (is In (last To) (sites Mover "Promotion"))
                         (and (moveAgain) (set Pending))
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (piece "Boat" Each
             (move
                 Hop 
@@ -67,9 +67,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndAddScore"
-               )
-           )
-       )
+                )
+            )
+        )
         (piece "Knight" Each
             (move
                 Leap 
@@ -77,9 +77,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndAddScore"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Elephant" Each
             (move
                 Slide 
@@ -88,23 +88,23 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndAddScore" 
-               )
-           )
-       ) 
+                )
+            )
+        ) 
         (piece "King_noCross" Each
             (move
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndAddScore" 
-               )
-           )
-       )
+                )
+            )
+        )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Left))
         (regions "Promotion" P3 (sites Bottom))
         (regions "Promotion" P4 (sites Right))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Pawn1" {"A2" "B2" "C2" "D2"} value:1)
@@ -131,28 +131,28 @@
                         (if 
                             (can Move "PlayAPiece")
                             (moveAgain)
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         
         (end
             (if (= 
                     (count Pieces Mover) 
                     (- (count Pieces All) 1) // We remove the dice
-               )
+                )
                 (byScore)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //--------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <type> }
     {
-    (item "Wikipedia"   <>       "The rules are describing with the Wikipedia ruleset.")   
+    (item "Wikipedia"  <>    "The rules are describing with the Wikipedia ruleset.")  
 })
 
 //------------------------------------------------------------------------------
@@ -188,9 +188,9 @@
         (version "1.3.4")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
-        (origin  "This game was played in India, from around 1490 to 1580.")
+        (origin "This game was played in India, from around 1490 to 1580.")
         }
-   )
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.825)
@@ -207,6 +207,6 @@
     
     (ai 
         "Chaturaji_ai"
-   )
+    )
     
 )

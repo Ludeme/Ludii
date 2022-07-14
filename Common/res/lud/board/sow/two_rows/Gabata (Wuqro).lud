@@ -2,21 +2,21 @@
     (if (is Mover P1)
         (sites (values Remembered "OwnedP1"))
         (sites (values Remembered "OwnedP2"))
-   )
+    )
 )
 
 (define "OpponentOwnedHoles" 
     (if (is Mover P1)
         (sites (values Remembered "OwnedP2"))
         (sites (values Remembered "OwnedP1"))
-   )
+    )
 )
 
 (define "RemmemberOwnedHoles" 
     (if (is Mover P1)
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
-   )
+    )
 )
 
 (define "LeftMostEmpty" 
@@ -24,33 +24,33 @@
         "Track"
         from:(mapEntry "LeftMost" Mover)
         if:(is Empty (to))
-   )
+    )
 )
 
 (define "RememberOwnedHolesRandom" 
     (if (< 50 (value Random (range 1 100)))
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
-   )
+    )
 )
 
 (define "NumPiecesOnBoard" (count in:(sites Board)))
 
 //------------------------------------------------------------------------------
 
-(game "Gabata (Wuqro)"  
-    (players 2)  
+(game "Gabata (Wuqro)" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 6 store:None
             (track "Track" "0,E,N,W" loop:True)
-       )
+        )
         (piece "Seed" Shared)
         (hand Each)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
         (map "LeftMost" {(pair P1 0) (pair P2 11)})
-    })  
+    }) 
     (rules 
         
         (start {
@@ -71,12 +71,12 @@
                                     (and
                                         (moveAgain)
                                         (set Var "Replay" (to))
-                                   )
+                                    )
                                     (set Var "Round" (+ 1 (var "Round")))
-                               )
-                           )
-                       )
-                   )
+                                )
+                            )
+                        )
+                    )
                     (move
                         (from 0)
                         (to 11)
@@ -89,18 +89,18 @@
                                             (from (site))
                                             (to 11)
                                             count:(count at:(site))
-                                       )
-                                   )
-                               )
+                                        )
+                                    )
+                                )
                                 (moveAgain)
                                 (set Var "Replay" 11)
                             })
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (nextPhase (not (is Next Mover)) "Sowing")
-       )
+        )
         
         (phase "Sowing"
             (play
@@ -110,9 +110,9 @@
                             (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 ("OwnedHoles")
-                           )
+                            )
                             if:(is Occupied (from))
-                       )
+                        )
                         (then
                             (do
                                 (set Var "NumSowed" (count at:(last To)))
@@ -123,14 +123,14 @@
                                                 (from (to))
                                                 (to (handSite Mover))
                                                 count:4
-                                           )
+                                            )
                                             (and
                                                 (moveAgain)
                                                 (set Var "Replay" (to))
-                                           )
-                                       )
-                                   )
-                               )
+                                            )
+                                        )
+                                    )
+                                )
                                 (then
                                     (and
                                         (forEach Site (sites Track from:(last From) to:(trackSite Move from:(last From) "Track" steps:(- (var "NumSowed") 1)))
@@ -139,15 +139,15 @@
                                                     (from (site))
                                                     (to (handSite Mover))
                                                     count:4
-                                               )
-                                           )
-                                       )
+                                                )
+                                            )
+                                        )
                                         (set Var "NumSowed" 0)
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     }
                     (then
                         (if (= 4 ("NumPiecesOnBoard"))
@@ -157,8 +157,8 @@
                                         (from (site))
                                         (to (handSite Mover))
                                         count:(count at:(site))
-                                   )
-                               )
+                                    )
+                                )
                                 (forget Value "OwnedP1" All)
                                 (forget Value "OwnedP2" All)
                                 (set Var "Round" (+ 1 (var "Round")))
@@ -167,24 +167,24 @@
                                 (and {
                                     (forget Value "OwnedP1" All)
                                     (forget Value "OwnedP2" All)
-                                    (set Var "Round" (+ 1 (var "Round")))                        		   
+                                    (set Var "Round" (+ 1 (var "Round")))            		  
                                 })
-                           )
-                       )
-                   )
-               )
-           )
+                            )
+                        )
+                    )
+                )
+            )
             
             (end (if ("NoPieceOnBoard")
                     {
                     (if (> 2 (count Cell at:(handSite P1))) (result P2 Win))
                     (if (> 2 (count Cell at:(handSite P2))) (result P1 Win))
                     }
-               )
-           )
+                )
+            )
             
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-       )
+        )
         
         (phase "BetweenRounds"
             (play
@@ -204,19 +204,19 @@
                                                 (from (handSite Mover))
                                                 (to ("LeftMostEmpty"))
                                                 count:2
-                                           )
+                                            )
                                             (fromTo 
                                                 (from (handSite Next))
                                                 (to ("LeftMostEmpty"))
                                                 count:1
-                                           )
+                                            )
                                             ("RemmemberOwnedHoles" ("LeftMostEmpty"))
                                         })
-                                   )
-                               )
+                                    )
+                                )
                             })
-                       )
-                   )
+                        )
+                    )
                     (then
                         (if (and (is Empty (handSite P1)) (is Empty (handSite P2))) 
                             (and
@@ -224,22 +224,22 @@
                                     (is Even (var "Round"))
                                     (set NextPlayer (player 2))
                                     (set NextPlayer (player 1))
-                               )
+                                )
                                 (set Pending)
-                           )
-                       )
-                   )
-               )
-           )
+                            )
+                        )
+                    )
+                )
+            )
             (nextPhase (and (is Empty (handSite P1)) (is Empty (handSite P2))) "Opening")
-       )
+        )
         }
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Gabata is a term used for several mancala-style board games in the Horn of Africa. This is a two-row version played in the Wuqro area of Ethiopia.")
@@ -250,7 +250,7 @@
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

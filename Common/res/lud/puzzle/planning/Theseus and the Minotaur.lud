@@ -1,7 +1,7 @@
 (define "EdgeInCommon" 
     (intersection (sites Incident Edge of:Cell at:#1) 
         (sites Incident Edge of:Cell at:#2)
-   ) 
+    ) 
 )
 
 (define "NoEdgeBetweenCells"
@@ -11,7 +11,7 @@
 (define "OriginalCloserToTheseus"
     (> (count Steps Orthogonal (where (id "Minotaur0")) (where (id "Theseus"))) 
         (count Steps Orthogonal (ahead (where (id "Minotaur0")) #1) (where (id "Theseus"))) 
-   )
+    )
 )
 
 (define "SmartCloserToTheseus"
@@ -21,23 +21,23 @@
                 Orthogonal
                 (to 
                     if:("NoEdgeBetweenCells" (from) (to))
-               )
-           )
+                )
+            )
             (where (id "Minotaur0"))
             (where (id "Theseus"))
-       ) 
+        ) 
         (count Steps 
             (step
                 (from (ahead (where (id "Minotaur0")) #1))
                 Orthogonal
                 (to 
                     if:("NoEdgeBetweenCells" (from) (to))
-               )
-           )
+                )
+            )
             (ahead (where (id "Minotaur0")) #1)
             (where (id "Theseus"))
-       )
-   )
+        )
+    )
 )
 
 (define "MoveMinotaur"
@@ -48,21 +48,21 @@
                 (if (= (id "Theseus") (what at:(to)))
                     (remove 
                         (to) 
-                   )
-               )
-           ) 
-       )
-   )
+                    )
+                )
+            ) 
+        )
+    )
 )
 
 (define "GoCloserToTheseus" 
     (if (and ("NoEdgeBetweenCells" (where (id "Minotaur0")) (ahead (where (id "Minotaur0")) #1))
             (<Minotaur:move> #1)
-       )
+        )
         ("MoveMinotaur" #1)
         #2
         #3
-   )
+    )
 )
 
 (define "MinotaurThreatAgain"
@@ -70,9 +70,9 @@
         ("GoCloserToTheseus" W 
             ("GoCloserToTheseus" N 
                 ("GoCloserToTheseus" S)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "MinotaurThreat"
@@ -80,18 +80,18 @@
         ("GoCloserToTheseus" W 
             ("GoCloserToTheseus" N 
                 ("GoCloserToTheseus" S)
-           )
-       ) 
+            )
+        ) 
         (then 
             ("MinotaurThreatAgain")
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Theseus and the Minotaur"  
-    (players 1)  
+(game "Theseus and the Minotaur" 
+    (players 1) 
     (equipment { 
         (board <Board:type>) 
         (piece "Theseus" P1 
@@ -100,13 +100,13 @@
                 Orthogonal 
                 (to 
                     if:(and (is Empty (to)) ("NoEdgeBetweenCells" (from) (to)))
-               )
-           )
-       )
+                )
+            )
+        )
         (piece "Minotaur" Neutral)
         (piece "Marker" Shared)
         (regions "Exit" {<Board:exit>})
-    })  
+    }) 
     (rules 
         (start
             {
@@ -118,78 +118,78 @@
                 (union 
                     (sites Outer Edge) 
                     (sites {<Board:walls>})
-               )
-           )
+                )
+            )
             }
-       )
+        )
         (play
             (or
                 (forEach Piece)
                 (move Pass)
                 (then
                     <Minotaur:threat>
-               )
-           )
-       )
+                )
+            )
+        )
         (end 
             {
             (if (no Pieces Mover) (result Mover Loss))
             (if (is In (where (id "Theseus")) (sites "Exit")) (result Mover Win))
             }
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board" <Board> args:{ <type> <startTheseus> <startMinotaur> <exit> <walls> }
     {
-    (item  "Wikipedia"  
+    (item "Wikipedia" 
         <(square 6)> 
         <"E4"> 
         <"A6"> 
         <34>
         <65 60 53 47 46 33 41 63 76 48 28 21 36 43 56 62 20> 
         "The board in Wikipedia."
-   )* 
-    (item  "Rectangle 4x7"  
+    )* 
+    (item "Rectangle 4x7" 
         <(rectangle 4 7)> 
         <"C3"> 
         <"A3"> 
         <1>
         <31 38 39 20 27 28> 
         "The board in Wikipedia."
-   )
-    (item  "Square 8x8"  
+    )
+    (item "Square 8x8" 
         <(square 8)> 
         <"H5"> 
         <"A8"> 
         <16>
         <17 26 28 20 21 46 63 48 56 64 73 58 109 115 124 97 88> 
         "The board in Wikipedia."
-   )
+    )
     }
 )
 
 (option "Play" <Minotaur> args:{ <move> }
     {
-    (item  "Original"  <"OriginalCloserToTheseus"> "The minotaur comes closer to Theseus in looking only the number of orthogonal steps without to take in account the walls.")* 
-    (item  "Smart"  <"SmartCloserToTheseus"> "The minotaur comes closer to Theseus in looking only the number of orthogonal steps in taking in account the walls.")  
+    (item "Original" <"OriginalCloserToTheseus"> "The minotaur comes closer to Theseus in looking only the number of orthogonal steps without to take in account the walls.")* 
+    (item "Smart" <"SmartCloserToTheseus"> "The minotaur comes closer to Theseus in looking only the number of orthogonal steps in taking in account the walls.") 
     }
 )
 
 (option "End" <Minotaur> args:{ <threat> }
     {
-    (item  "Immediate Win"  
+    (item "Immediate Win" 
         <(if (not (is In (where (id "Theseus")) (sites "Exit")))
             ("MinotaurThreat")
-       )> 
+        )> 
         "Theseus wins immediately if he reaches the exit."
-   )* 
-    (item  "Not Immediate Win"  
+    )* 
+    (item "Not Immediate Win" 
         <("MinotaurThreat")> 
         "Theseus wins if he reaches the exit and the minotaur can not reach him."
-   )  
+    ) 
     }
 )
 
@@ -209,7 +209,7 @@
         (credit "Eric Piette")
         (date "1990")
         }
-   )
+    )
     
     (graphics {
         (player Colour Neutral (colour Red))
@@ -223,5 +223,5 @@
     })
     (ai
         "Theseus and the Minotaur_ai"
-   )
+    )
 )

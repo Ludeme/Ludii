@@ -14,7 +14,7 @@
             #2
             if:("IsEnemyAt" (between)) 
             (apply (remove (between) #3))
-       )
+        )
         (to if:(is Empty (to)))
         (then 
             (if (can Move 
@@ -27,13 +27,13 @@
                             if:(and 
                                 (not (is In (between) (sites ToClear))) 
                                 ("IsEnemyAt" (between))
-                           )
-                       )
+                            )
+                        )
                         (to if:(is Empty (to)))
-                   )
-               ) 
+                    )
+                ) 
                 (moveAgain)
-           )
-       )
-   )
+            )
+        )
+    )
 )

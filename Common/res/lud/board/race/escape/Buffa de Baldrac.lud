@@ -16,30 +16,30 @@
                     if:(and
                         ("DieNotUsed")
                         (<= 0 ("NextSiteFrom" (from) (pips)))
-                   )
+                    )
                     (move 
                         (from (from))
                         (to 
                             ("NextSiteFrom" (from) (pips))
                             if:("NoEnemyOrOnlyOne" (to))
                             ("HittingCapture" (handSite Next))
-                       )
-                   )
+                        )
+                    )
                     (then ("ReplayNotAllDiceUsed"))
-               )
+                )
                 (if ("AllPiecesInLastQuadrant")
                     (forEach Die 
                         combined:True 
                         if:(and
                             ("DieNotUsed")
                             ("IsEndTrack" ("NextSiteFrom" (from) (pips)))
-                       )
+                        )
                         (move Remove (from))
                         (then ("ReplayNotAllDiceUsed"))
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (regions "FirstQuadrant" P1 (sites {0..5}))
         (regions "FirstQuadrant" P2 (sites {12..17}))
         (regions "LastQuadrant" P1 (sites {12..17}))
@@ -62,23 +62,23 @@
                             if:(and
                                 ("DieNotUsed")
                                 (is In ("NextSiteFrom" (mapEntry "StartTrack" (mover)) (- (pips) 1)) (sites Mover "FirstQuadrant"))
-                           )
+                            )
                             (move 
                                 (from (handSite Mover))
                                 (to 
                                     ("NextSiteFrom" (mapEntry "StartTrack" (mover)) (- (pips) 1))
                                     if:("NoEnemyOrOnlyOne" (to))
-                               )
-                           )
+                                )
+                            )
                             (then ("ReplayNotAllDiceUsed"))
-                       )
+                        )
                         (forEach Piece top:True)
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (end ("EscapeWin"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -95,9 +95,9 @@
         (version "1.3.4")
         (classification "board/race/escape")
         (credit "Eric Piette")
-        (origin  "This game was played in Spain, around 1283.")
+        (origin "This game was played in Spain, around 1283.")
         }
-   )
+    )
     
     (graphics {
         (show Edges Hidden)

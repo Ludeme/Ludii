@@ -6,14 +6,14 @@
         Orthogonal 
         (between 
             if:("IsEnemyAt" (between)) 
-            (apply             
+            (apply       
                 (and 
                     (addScore Mover 1) 
                     (remove (between)) 
-               )
-           ) 
-       )
-   )
+                )
+            ) 
+        )
+    )
 )
 //------------------------------------------------------------------------------
 
@@ -31,11 +31,11 @@
         (piece "Ball" P1)
         (piece "Ball" P2)
         }
-   )	
+    )	
     (rules 
         (meta
             (no Repeat)
-       )
+        )
         (play 
             (or
                 (do
@@ -44,22 +44,22 @@
                         (to (sites Empty))
                         (then 
                             "CaptureSurroundedPiece"
-                       )
-                   )
+                        )
+                    )
                     ifAfterwards:"HasFreedom"
-               )
+                )
                 (move Pass)
-           )
-       )        
+            )
+        )    
         (end
             (if (all Passed)
                 (byScore {
                     (score P1 (+ (score P1) (size Territory P1))) 
                     (score P2 (+ (score P2) (size Territory P2)))
                 })
-           )
-       )
-   )	
+            )
+        )
+    )	
     
 )
 
@@ -67,7 +67,7 @@
 
 (option "Board Grid" <BoardShape> args:{<gridType> <directionsUsed> <DiagShow> <directionsWin>} 
     {
-    (item "Hex Grid" <"HexHex"> <Orthogonal>      <Hidden>   <Orthogonal>       "Hex Grid - Standard")
+    (item "Hex Grid" <"HexHex"> <Orthogonal>   <Hidden>  <Orthogonal>    "Hex Grid - Standard")
     }
 )
 
@@ -100,10 +100,10 @@
         (credit "Helge Kosuch")
         (date "2021")
         }
-   )
+    )
     
     (graphics 
-        {       
+        {    
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
         (piece Scale 0.8)
@@ -115,5 +115,5 @@
         (board Colour OuterEdges (colour Black))
         (show Edges Diagonal <BoardShape:DiagShow> (colour Black))
         }
-   )
+    )
 )

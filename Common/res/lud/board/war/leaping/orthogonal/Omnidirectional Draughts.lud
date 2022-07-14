@@ -6,10 +6,10 @@
         (between 
             if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
             (apply (remove (between) at:EndOfTurn))
-       ) 
+        ) 
         (to if:(is Empty (to))) 
         #2
-   ) 
+    ) 
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -19,21 +19,21 @@
 //------------------------------------------------------------------------------
 
 (game "Omnidirectional Draughts" 
-    (players 2)  
+    (players 2) 
     (equipment { 
-        (board (square <Board>))        
+        (board (square <Board>))    
         (piece "Counter" P1 N)
         (piece "Counter" P2 S) 
         (piece "DoubleCounter" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-    })  
+    }) 
     
     (rules 
         
         (start {
             (place "Counter1" (expand (sites Bottom) steps: (- (/ <Board> 2) 2))) 
-            (place "Counter2" (expand (sites Top) steps: (- (/ <Board> 2) 2)))              
+            (place "Counter2" (expand (sites Top) steps: (- (/ <Board> 2) 2)))       
         })
         
         (play 
@@ -46,13 +46,13 @@
                                     (moveAgain)
                                     (if "JumpToPromotionZone" 
                                         (move Promote (last To) (piece "DoubleCounter") Mover)
-                                   )
-                               ) 
-                           ) 
-                       )
-                   )
+                                    )
+                                ) 
+                            ) 
+                        )
+                    )
                     (max Moves ("HopSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn))
-               )
+                )
                 (priority {
                     (max Moves
                         (or 
@@ -63,44 +63,44 @@
                                             (moveAgain) 
                                             (if "JumpToPromotionZone" 
                                                 (move Promote (last To) (piece "DoubleCounter") Mover)
-                                           )
-                                       ) 
-                                   ) 
-                               ) 
-                           )
+                                            )
+                                        ) 
+                                    ) 
+                                ) 
+                            )
                             (forEach Piece "DoubleCounter" ("HopSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))
-                       )
-                   )
-                    (or  
+                        )
+                    )
+                    (or 
                         (forEach Piece "Counter" 
                             (move
                                 Step 
                                 (directions Forwards) 
                                 (to if:(is Empty (to)))
-                           )
+                            )
                             (then 
                                 (if "JumpToPromotionZone"
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
-                               )
-                           )
-                       )
+                                )
+                            )
+                        )
                         (forEach Piece "DoubleCounter" (move Slide))
-                   )
+                    )
                 })
-           )
-       ) 
+            )
+        ) 
         
         (end ("BlockWin"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "6x6"      <6>     "The game is played on a 6x6 board")
-    (item "8x8"      <8>     "The game is played on a 8x8 board")**
-    (item "10x10"    <10>    "The game is played on a 10x10 board")
+    (item "6x6"   <6>   "The game is played on a 6x6 board")
+    (item "8x8"   <8>   "The game is played on a 8x8 board")**
+    (item "10x10"  <10>  "The game is played on a 10x10 board")
 })
 
 //------------------------------------------------------------------------------
@@ -118,7 +118,7 @@
         (credit "A. Sambruni")
         (date "2021")
         }
-   )
+    )
     
     (graphics {
         (board Style Chess)
@@ -127,5 +127,5 @@
     
     (ai
         "Omnidirectional Draughts_ai"
-   )
+    )
 )

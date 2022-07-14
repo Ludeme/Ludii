@@ -4,7 +4,7 @@
     (union
         (sites Direction from:4 NW included:True)
         (sites Direction from:0 NE included:True)
-   )
+    )
 )
 
 (define "HopLargeDiagonals" 
@@ -12,22 +12,22 @@
         (from
             (from)
             if:(is In (from) ("LargeDiagonals"))
-       )
+        )
         Adjacent
         (between 
             before:(count Rows) 
             after:(count Rows)
             if:(and ("IsEnemyAt" (between)) (is In (between) ("LargeDiagonals"))) 
             (apply (remove (between)))
-       )
+        )
         (to if:(and (is Empty (to)) (is In (to) ("LargeDiagonals"))))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (game "Fetach"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     
     (equipment { 
         ("AlquerqueBoard" 5 5)
@@ -37,50 +37,50 @@
                     (if (!= 0 (count Moves))
                         (difference Adjacent Backwards)
                         Forwards
-                   )
+                    )
                     (to if:(is Empty (to)))
                     (then 
                         (if "OnPromotionZone"
                             (promote (last To) (piece "DoubleCounter") Mover)
-                       )
-                   )	
-               )
+                        )
+                    )	
+                )
                 (move Hop 
                     (difference Adjacent Backwards)
                     (between 
                         if:("IsEnemyAt" (between)) 
                         (apply (remove (between)))
-                   )
+                    )
                     (to if:(is Empty (to)))
                     (then 
                         (if "OnPromotionZone"
                             (promote (last To) (piece "DoubleCounter") Mover)
-                       )
-                   )	
+                        )
+                    )	
                     
-               )
+                )
             })
-       )
+        )
         (piece "DoubleCounter" Each
             (or {
                 (move Step 
                     Adjacent
                     (to if:(is Empty (to)))
-               )
+                )
                 (move Hop 
                     Adjacent
                     (between 
                         if:("IsEnemyAt" (between)) 
                         (apply (remove (between)))
-                   )
+                    )
                     (to if:(is Empty (to)))
-               )
+                )
                 ("HopLargeDiagonals")
             })
-       )
+        )
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-    })  
+    }) 
     
     (rules 
         (start { 
@@ -89,7 +89,7 @@
         })
         (play (forEach Piece))
         (end (if (no Pieces Next) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -106,8 +106,8 @@
         (version "1.3.4")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in Morocco, from around 1960 to 1982.")
+        (origin "This game was played in Morocco, from around 1960 to 1982.")
         }
-   )
+    )
     
 )

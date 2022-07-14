@@ -1,5 +1,5 @@
 (game "Mudrunggum"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board 
             (merge 
@@ -8,12 +8,12 @@
                 (wedge 3) 
                 (shift 0 6 (rotate 180 (wedge 3))) 
                 } 
-           ) 
+            ) 
             use:Vertex
-       )
+        )
         (piece "Tiger" P1 (move [#]))
         (piece "Sheep" P2 (move [#]))
-    })  
+    }) 
     
     (rules 
         (start {
@@ -22,7 +22,7 @@
         })
         (play [#])
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -38,9 +38,9 @@
         (version "1.3.4")
         (classification "board/hunt/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1832.")
+        (origin "This game was played in India, around 1832.")
         }
-   )
+    )
     
     (graphics {
         (show Edges Diagonal Hidden)

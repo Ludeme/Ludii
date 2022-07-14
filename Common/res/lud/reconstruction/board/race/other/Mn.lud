@@ -1,5 +1,5 @@
 (game "Mn"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (scale 1 6 (rectangle 1 16))) 
         (piece "Square" Each (move [#])) // 5 Pieces.
@@ -8,7 +8,7 @@
         (start [#])
         (play [#])
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -25,9 +25,9 @@
         (version "1.3.4")
         (classification "board/race/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Egypt, from around 3300BCE to 1802BCE.")
+        (origin "This game was played in Egypt, from around 3300BCE to 1802BCE.")
         }
-   )
+    )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

@@ -6,18 +6,18 @@
 
 //------------------------------------------------------------------------------
 
-(game "Intotoi"  
-    (players 2)  
+(game "Intotoi" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
             (track "Track" "0,E,N,W" loop:True)
-       )
+        )
         (piece "Seed" Shared)
         (hand Each)
-        (regions P1 (sites Bottom))                    // P1 home
-        (regions P2 (sites Top))                       // P2 home
-    })  
+        (regions P1 (sites Bottom))          // P1 home
+        (regions P2 (sites Top))            // P2 home
+    }) 
     (rules 
         
         (start (set Count 3 to:(sites {1 2 4 5 7 8 10 11 22 21 19 18 16 15 13 12})))
@@ -29,10 +29,10 @@
                 (move Select
                     (from 10)
                     (then (sow count:2))
-               )
-           )
+                )
+            )
             (nextPhase "Opening2")
-       )
+        )
         
         (phase "Opening2"
             (play
@@ -41,33 +41,33 @@
                         (from 
                             (sites {"PlayFromLastHole"})
                             if:(> (count at:(from)) 0)
-                       )
+                        )
                         (then 
                             (sow
                                 apply:(if (!= 1 (count at:(to)))
                                     (moveAgain)
-                               )		
-                           )
-                       )
-                   )
+                                )		
+                            )
+                        )
+                    )
                     (move Select
                         (from 
                             (sites {13 15})
                             if:(> (count at:(from)) 0)
-                       )
+                        )
                         (then 
                             (sow
                                 count:2
                                 apply:(if (!= 1 (count at:(to)))
                                     (moveAgain)
-                               )		
-                           )
-                       )
-                   )
-               )
-           )
+                                )		
+                            )
+                        )
+                    )
+                )
+            )
             (nextPhase (not (is Next Mover)) "Play")
-       )
+        )
         
         (phase "Play"
             (play 
@@ -79,17 +79,17 @@
                                     (from 
                                         (sites Mover)
                                         if:(> (count at:(from)) 0)
-                                   )
+                                    )
                                     (then (sow))
-                               )
+                                )
                                 ifAfterwards:(or
                                     (and (= 1 (count at:("PlayFromLastHole"))) (is In ("PlayFromLastHole") (sites Mover)))
                                     (is In ("PlayFromLastHole") (sites Next))
-                               )
-                           )
-                       )
+                                )
+                            )
+                        )
                         if:(> (count at:(from)) 0)
-                   )
+                    )
                     (then 
                         (sow
                             apply:(if (= 1 (count at:(to)))
@@ -98,16 +98,16 @@
                                         (from ("OppositePit" (to))) 
                                         (to (handSite Mover)) 
                                         count:(count at:("OppositePit" (to)))
-                                   )
-                               )
+                                    )
+                                )
                                 (moveAgain)
-                           )		
-                       )
-                   )
-               )
-           )
+                            )		
+                        )
+                    )
+                )
+            )
             (nextPhase Mover (is Next Mover) "Replay")
-       )
+        )
         
         (phase "Replay"
             (play 
@@ -115,7 +115,7 @@
                     (from 
                         (sites {"PlayFromLastHole"})
                         if:(> (count at:(from)) 0)
-                   )
+                    )
                     (then 
                         (sow
                             apply:(if (= 1 (count at:(to)))
@@ -124,25 +124,25 @@
                                         (from ("OppositePit" (to))) 
                                         (to (handSite Mover)) 
                                         count:(count at:("OppositePit" (to)))
-                                   )
-                               )
+                                    )
+                                )
                                 (moveAgain)
-                           )		
-                       )
-                   )
-               )
-           )
+                            )		
+                        )
+                    )
+                )
+            )
             (nextPhase Mover (not (is Next Mover)) "Play")
-       )
+        )
         }
         
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Intotoi is a two-row mancala-style board game played by the Samburu people of Kenya. It was documented in the early twentieth century.")
@@ -152,15 +152,15 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Kenya, around 1951.")
+        (origin "This game was played in Kenya, around 1951.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)
     })
     (ai
         "Intotoi_ai"
-   )
+    )
 )
 

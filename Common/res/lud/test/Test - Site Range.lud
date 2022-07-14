@@ -1,9 +1,9 @@
-(game "Test - Site Range"  
-    (players 2)  
+(game "Test - Site Range" 
+    (players 2) 
     (equipment { 
         (board (square 8)) 
         (piece "Marker" Each) 
-    })  
+    }) 
     (rules 
         (start {
             (place "Marker1" <Start:range1>) 
@@ -12,18 +12,18 @@
         
         (play (move Add (to (sites Empty))))
         (end (if (is Line 6) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Start" <Start> args:{ <range1> <range2> }
     {
-    (item  "A"  <{"A1"}> <{"E1"}>  "")
-    (item  "B"  <{"A1" "A2"}> <{"E1"}>  "")
-    (item  "C"  <{"A1" "A2" "A3" "B1" "B2" "B3"}> <{"E1" "F1"}>  "")
-    (item  "D"  <{"A1".."B3"}> <{"E1".."F1"}>  "")
-    (item  "E"  <{"A1".."C6"}> <{"E1".."H1"}>  "")
+    (item "A" <{"A1"}> <{"E1"}> "")
+    (item "B" <{"A1" "A2"}> <{"E1"}> "")
+    (item "C" <{"A1" "A2" "A3" "B1" "B2" "B3"}> <{"E1" "F1"}> "")
+    (item "D" <{"A1".."B3"}> <{"E1".."F1"}> "")
+    (item "E" <{"A1".."C6"}> <{"E1".."H1"}> "")
     }
 )
 
@@ -40,7 +40,7 @@
         (version "1.1.16")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in England, from around 1850CE to 1883CE.")
+        (origin "This game was played in England, from around 1850CE to 1883CE.")
         }
-   )
+    )
 )

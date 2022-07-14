@@ -1,5 +1,5 @@
 (game "Pancha (Mahabalipuram with Double Loop)"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board 
             (merge {
@@ -12,14 +12,14 @@
                 (shift 0 10 (scale 1 1 (rectangle 1 5)))
                 (shift 0 15 (rectangle 1 11))
             })
-       )
+        )
         (piece "Disc" Each (move [#]))
     })
     (rules
         (start [#])
         (play [#])
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -37,7 +37,7 @@
             (classification "board/race/escape/reconstruction")
             (credit "Eric Piette")
             }
-       )
+        )
         
         (graphics {
             (board Colour Phase0 (colour 223 178 110))
@@ -47,9 +47,9 @@
             (show Line {
                 {97 88} {98 87} {58 57} {59 56} {106 95} {105 96}
                 {48 47} {49 46} {86 46} {48 82} {77 76} {78 75}
-                {67 63} {68 26} {12 6} {0 8} {26 21} {31 39} {38 37}       
+                {67 63} {68 26} {12 6} {0 8} {26 21} {31 39} {38 37}    
             })
         })
         
-   )
+    )
     

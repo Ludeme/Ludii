@@ -2,8 +2,8 @@
     (apply
         (if (not (is Empty (to)))
             (remove (to)) 
-       )
-   ) 
+        )
+    ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -14,8 +14,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             "CaptureToPiece"
-       )
-   )
+        )
+    )
 )
 (define "DoubleStep"
     (move
@@ -23,7 +23,7 @@
         Forward 
         (between (exact 2) if:(is Empty (between))) 
         (to if:(is Empty (to))) 
-   )
+    )
 )
 
 (define "PromoteTo" 
@@ -35,7 +35,7 @@
         #1
         Forward
         (to if:(is Empty (to)))
-   )
+    )
 )
 
 (define "PlayAPiece"
@@ -53,12 +53,12 @@
                                 (forEach Piece "Bishop")
                                 (if (= (pips) 1)
                                     (forEach Piece "Pawn")
-                               )
-                           )
-                       )
-               ))
-           )
-       )
+                                )
+                            )
+                        )
+                ))
+            )
+        )
         // If a pawn can promote, it can whatever the die value.
         (forEach Site 
             (sites Direction from:(sites Mover) (if (is Mover P1) S N) distance:1)
@@ -66,27 +66,27 @@
                 (or
                     (if (can Move ("CaptureForwardDiagonal" (from (site))))
                         ("CaptureForwardDiagonal" (from (site)))
-                   )
+                    )
                     (if (can Move ("StepForwardToEmpty" (from (site))))
                         ("StepForwardToEmpty" (from (site)))
-                   )
+                    )
                     (then
                         (if (is In (last To) (sites Mover "Promotion"))
                             (moveAgain) 
-                       )
-                   )
-               )
-           )
-       )
-   )
+                        )
+                    )
+                )
+            )
+        )
+    )
 )
 
 (define "NoEnemyKings" (no Pieces Next "King_noCross"))
 
 //------------------------------------------------------------------------------
 
-(game "Dice Chess"  
-    (players {(player N) (player S) })  
+(game "Dice Chess" 
+    (players {(player N) (player S) }) 
     (equipment { 
         (board (square <Board:size>))
         (dice d:6 from:1 num:1)
@@ -95,17 +95,17 @@
             (or {
                 (if (is In (from) (sites Start (piece (what at:(from)))))
                     "DoubleStep"
-               )
+                )
                 ("StepForwardToEmpty") 
                 ("CaptureForwardDiagonal")
                 }
                 (then
                     (if (is In (last To) (sites Mover "Promotion"))
                         (moveAgain) 
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (piece "Bishop" Each
             (move
                 Slide 
@@ -113,9 +113,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Knight" Each
             (move
                 Leap 
@@ -123,9 +123,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Rook" Each
             (move
                 Slide 
@@ -134,30 +134,30 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece" 
-               )
-           )
-       )
+                )
+            )
+        )
         (piece "Queen" Each
             (move
                 Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           ) 
-       )		
+                ) 
+            ) 
+        )		
         (piece "King_noCross" Each
             (move
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-               )
-           )
-       )
+                )
+            )
+        )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
-    })  
+    }) 
     
     (rules 
         <Board:start>
@@ -182,42 +182,42 @@
                                     (if (= (count Pips) 5)
                                         ("PromoteTo" "Queen")
                                         ("PromoteTo" "King_noCross")
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     "PlayAPiece"
-               )
-           )
-       )
+                )
+            )
+        )
         
         (end 
             (if "NoEnemyKings"
                 (result Next Loss)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> <start> } {
-    (item "8x8"  
-        <8>  
+    (item "8x8" 
+        <8> 
         <
         (start { 
             (place "Pawn1" {"A2" "B2" "C2" "D2" "E2" "F2" "G2" "H2"})
             (place "Pawn2" {"H7" "G7" "E7" "F7" "D7" "C7" "B7" "A7"})
-            (place "Bishop1" {"C1" "F1"}) (place "Bishop2" {"C8" "F8"})  
-            (place "Knight1" {"B1" "G1"}) (place "Knight2" {"G8" "B8"})  
+            (place "Bishop1" {"C1" "F1"}) (place "Bishop2" {"C8" "F8"}) 
+            (place "Knight1" {"B1" "G1"}) (place "Knight2" {"G8" "B8"}) 
             (place "Rook1" {"A1" "H1"}) (place "Rook2" {"H8" "A8"}) 
             (place "Queen1" coord:"D1") (place "Queen2" coord:"D8")			
-            (place "King_noCross1" coord:"E1") (place "King_noCross2" coord:"E8")  
+            (place "King_noCross1" coord:"E1") (place "King_noCross2" coord:"E8") 
         })
         >
         "The game is played on a 8x8 board."
-   )*   
+    )*  
     (item "10x10" 
         <10>
         <
@@ -225,16 +225,16 @@
             { 
             (place "Pawn1" {"A2" "B2" "C2" "D2" "E2" "F2" "G2" "H2" "I2" "J2"})
             (place "Pawn2" {"J9" "I9" "H9" "G9" "E9" "F9" "D9" "C9" "B9" "A9"})
-            (place "Bishop1" {"C1" "H1"}) (place "Bishop2" {"C10" "H10"})  
-            (place "Knight1" {"B1" "I1"}) (place "Knight2" {"B10" "I10"})  
+            (place "Bishop1" {"C1" "H1"}) (place "Bishop2" {"C10" "H10"}) 
+            (place "Knight1" {"B1" "I1"}) (place "Knight2" {"B10" "I10"}) 
             (place "Rook1" {"A1" "J1"}) (place "Rook2" {"A10" "J10"}) 
             (place "Queen1" coord:"D1") (place "Queen2" coord:"D10")			
-            (place "King_noCross1" {"E1" "F1" "G1"}) (place "King_noCross2" {"E10" "F10" "G10"})  
+            (place "King_noCross1" {"E1" "F1" "G1"}) (place "King_noCross2" {"E10" "F10" "G10"}) 
             }
-       )
+        )
         >
         "The game is played on a 10x10 board."
-   )   
+    )  
 })
 
 //------------------------------------------------------------------------------
@@ -255,7 +255,7 @@
         (classification "board/war/replacement/checkmate/chess")
         (credit "Michael Taktikos and Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.825)
@@ -265,8 +265,8 @@
         (board Colour OuterEdges (colour Black))
         (board Colour Symbols (colour Black))
         (board Colour Phase0 (colour 222 173 123))
-    })   
+    })  
     (ai
         "Dice Chess_ai"
-   )
+    )
 )

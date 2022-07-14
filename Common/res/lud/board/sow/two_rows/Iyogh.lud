@@ -8,8 +8,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Iyogh"  
-    (players 2)  
+(game "Iyogh" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
@@ -17,7 +17,7 @@
             (track "TrackCCW" "0,E,N,W" loop:True)
             (track "TrackCW" "7,W,N,E" loop:True)
             }
-       )
+        )
         (piece "Seed" Shared)
         (regions P1 (sites Bottom)) 
         (regions P2 (sites Top)) 
@@ -26,7 +26,7 @@
         (map "RightMost" {(pair P1 7) (pair P2 8)})
         (regions "RightMost" P1 (sites {5 6})) 
         (regions "RightMost" P2 (sites {9 10})) 
-    })  
+    }) 
     (rules 
         
         (start (set Count 4 to:(sites Track)))
@@ -38,10 +38,10 @@
                     (from (sites Mover "RightMost") if:(is Occupied (from)))
                     (to (mapEntry "RightMost" Mover))
                     count:(count at:(from))
-               )
-           )
+                )
+            )
             (nextPhase Mover (all Sites (sites Mover "RightMost") if:(is Empty (site))) "Sowing")
-       )
+        )
         (phase "Sowing"
             (play 
                 (or {
@@ -60,26 +60,26 @@
                                                 if:(or
                                                     (= 1 (count at:("OppositePitTwoRows" (to))))
                                                     (= 3 (count at:("OppositePitTwoRows" (to))))
-                                               )
+                                                )
                                                 apply:(if (or
                                                         (= 1 (count at:("OppositePitTwoRows" (to))))
                                                         (= 3 (count at:("OppositePitTwoRows" (to))))
-                                                   )
+                                                    )
                                                     (fromTo
                                                         (from ("OppositePitTwoRows" (to)))
                                                         (to (handSite Mover))
                                                         count:(count at:("OppositePitTwoRows" (to)))
-                                                   )
-                                               )
+                                                    )
+                                                )
                                                 forward:True
-                                           )	
+                                            )	
                                             (set Var "NumToSow" 0)
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     (if (is Occupied Cell (handSite Mover))
                         (forEach Value min:1 max:(count Cell at:(handSite Mover))
                             (do (set Var "NumToSow" (value))
@@ -88,8 +88,8 @@
                                         if:(or
                                             (= 1 (count at:("OppositePitTwoRows" ("NextHoleFrom" (mapEntry "LeftMost" Mover) "TrackCW" (value)))))
                                             (= 3 (count at:("OppositePitTwoRows" ("NextHoleFrom" (mapEntry "LeftMost" Mover) "TrackCW" (value)))))
-                                       )
-                                   )
+                                        )
+                                    )
                                     (to (mapEntry "LeftMost" Mover))
                                     count:(value)
                                     (then
@@ -100,52 +100,52 @@
                                                 if:(or
                                                     (= 1 (count at:("OppositePitTwoRows" (to))))
                                                     (= 3 (count at:("OppositePitTwoRows" (to))))
-                                               )
+                                                )
                                                 apply:(if (or
                                                         (= 1 (count at:("OppositePitTwoRows" (to))))
                                                         (= 3 (count at:("OppositePitTwoRows" (to))))
-                                                   )
+                                                    )
                                                     (fromTo
                                                         (from ("OppositePitTwoRows" (to)))
                                                         (to (handSite Mover))
                                                         count:(count at:("OppositePitTwoRows" (to)))
-                                                   )
-                                               )
+                                                    )
+                                                )
                                                 forward:True
-                                           )	
+                                            )	
                                             (set Var "NumToSow" 0)
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     (move Select
                         (from 
                             (sites Mover) 
                             if:(< 0 (count at:(from)))
-                       )
+                        )
                         (then 
                             (sow
                                 "TrackCCW"
                                 if:(or
                                     (= 1 (count at:("OppositePitTwoRows" (to))))
                                     (= 3 (count at:("OppositePitTwoRows" (to))))
-                               )
+                                )
                                 apply:(if (or
                                         (= 1 (count at:("OppositePitTwoRows" (to))))
                                         (= 3 (count at:("OppositePitTwoRows" (to))))
-                                   )
+                                    )
                                     (fromTo
                                         (from ("OppositePitTwoRows" (to)))
                                         (to (handSite Mover))
                                         count:(count at:("OppositePitTwoRows" (to)))
-                                   )
-                               )
+                                    )
+                                )
                                 forward:True
-                           )
-                       )
-                   )
+                            )
+                        )
+                    )
                     (move Select
                         (from 
                             (sites Mover) 
@@ -154,48 +154,48 @@
                                 (or
                                     (= 1 (count at:("OppositePitTwoRows" ("NextHoleFrom" (from) "TrackCW" (count at:(from))))))
                                     (= 3 (count at:("OppositePitTwoRows" ("NextHoleFrom" (from) "TrackCW" (count at:(from))))))
-                               )
-                           )
-                       )
+                                )
+                            )
+                        )
                         (then 
                             (sow
                                 "TrackCW"
                                 if:(or
                                     (= 1 (count at:("OppositePitTwoRows" (to))))
                                     (= 3 (count at:("OppositePitTwoRows" (to))))
-                               )
+                                )
                                 apply:(if (or
                                         (= 1 (count at:("OppositePitTwoRows" (to))))
                                         (= 3 (count at:("OppositePitTwoRows" (to))))
-                                   )
+                                    )
                                     (fromTo
                                         (from ("OppositePitTwoRows" (to)))
                                         (to (handSite Mover))
                                         count:(count at:("OppositePitTwoRows" (to)))
-                                   )
-                               )
+                                    )
+                                )
                                 forward:True
-                           )
+                            )
                             
-                       )
-                   )
+                        )
+                    )
                 })
-           )
-       )
+            )
+        )
         }
         
         (end 
             (forEach Player
                 if:("NoPiecesInPlayerSide" Player)
                 (result Player Loss)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Iyogh is a two-row mancala-style board game plauyed by the Kukuma people in Nigeria. It was documented in the early twentieth century.")
@@ -205,9 +205,9 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Nigeria, around 1951.")
+        (origin "This game was played in Nigeria, around 1951.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

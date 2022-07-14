@@ -5,17 +5,17 @@
             (merge
                 ("AlquerqueGraphWithBottomTriangle")
                 (rotate 45 (shift 1.5 6.2 (square 2 diagonals:Solid)))
-           )
+            )
             use:Vertex
-       )
+        )
         (hand P1)
         (piece "Marker" P1 "StepToEmpty")
         (piece "Bull" P2
             (or
                 "StepToEmpty"
                 "HopCapture"
-           )
-       )
+            )
+        )
     })
     
     (rules
@@ -28,11 +28,11 @@
         (phase "Placement" P1
             (play (move (from (handSite P1)) (to (sites Empty))))
             (nextPhase Mover ("HandEmpty" P1) "Movement")
-       )
+        )
         (phase "Movement" (play (forEach Piece)))
         }
         (end ("NoMovesP2NoPiecesP1"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -49,9 +49,9 @@
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in Siberia, from around 1905 to 1995.")
+        (origin "This game was played in Siberia, from around 1905 to 1995.")
         }
-   )
+    )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})
@@ -60,5 +60,5 @@
     
     (ai
         "Bouge Shodra_ai"
-   )
+    )
 )

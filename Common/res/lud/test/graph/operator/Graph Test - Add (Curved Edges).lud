@@ -1,24 +1,24 @@
-(game "Graph Test - Add (Curved Edges)"  
-    (players 2)  
+(game "Graph Test - Add (Curved Edges)" 
+    (players 2) 
     (equipment { 
         (board 
             (add 
                 (graph vertices:{ {0 0} {1 2} {2 0} }) 
                 edges:{ {{0 0} {1 2}} {{1 2} {2 0}} } 
                 edgesCurved:{ 
-                {{0 0} {2 0} {.5  1} {-.5  1}} 
+                {{0 0} {2 0} {.5 1} {-.5 1}} 
                 {{0 0} {2 0} {.5 -1} {-.5 -1}} 
                 } 
-           )
+            )
             use:Vertex
-       ) 
+        ) 
         (piece "Disc" P1) 
         (piece "Cross" P2) 
-    })  
+    }) 
     (rules 
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -34,7 +34,7 @@
         (version "0.9.3")
         (classification "board/space/line")
         (credit "Cameron Browne 31/5/2020")
-        (origin  "This game was played in England, from around 1850CE to 1883CE.")
+        (origin "This game was played in England, from around 1850CE to 1883CE.")
         }
-   )
+    )
 )

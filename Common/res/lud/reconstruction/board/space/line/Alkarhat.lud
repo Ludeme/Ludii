@@ -5,12 +5,12 @@
         (board (square 6)) 
         (hand Each) // Do we have an hand here?
         (piece "Marker" Each) 
-    })  
+    }) 
     (rules 
         (start [#]) // 13 pieces per player
         (play [#]) // Surrounding the opponent in an alignement game?
         (end [#]) // Alignement game so (is Line ...)?
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -26,9 +26,9 @@
         (version "1.3.4")
         (classification "board/space/line/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Niger, around 1922.")
+        (origin "This game was played in Niger, around 1922.")
         }
-   )
+    )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

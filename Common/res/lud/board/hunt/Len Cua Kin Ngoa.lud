@@ -13,16 +13,16 @@
                                 (between 
                                     if:(= (who at:(between)) P1) 
                                     (apply (remove (between)))
-                               )
+                                )
                                 (to if:(is Empty (to)))
-                           )
-                       )
-                   )
-               )
+                            )
+                        )
+                    )
+                )
                 (remove (site))
-           )
-       )
-   )		
+            )
+        )
+    )		
 )
 
 (define "MinDistanceWithCorners" 
@@ -31,20 +31,20 @@
             from:(last To)
             to:(sites Corners)
             (count Steps (from) (to))
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Len Cua Kin Ngoa"  
-    (players 2)  
+(game "Len Cua Kin Ngoa" 
+    (players 2) 
     (equipment { 
         (board (square 4))
         (hand P1)
         (piece "Ox" P1 (or ("HopDiagonalCapture") "StepOrthogonalToEmpty"))
         (piece "Tiger" P2 (or ("HopOrthogonalCapture") "StepOrthogonalToEmpty")) 
-    })  
+    }) 
     (rules 
         (start { 
             (place "Ox1" (handSite P1) count:12)
@@ -58,40 +58,40 @@
                     (from (handSite P1)) 
                     (to (sites Empty))
                     ("RemoveAllTigersWithNoMove")
-               )
-           ) 
+                )
+            ) 
             (nextPhase ("HandEmpty" P1) "MovementP1")
-       )
+        )
         (phase "MovementP1" P1
             (play 
                 (forEach Piece ("RemoveAllTigersWithNoMove"))
-           )
-       )
+            )
+        )
         (phase "FirstTigerMovement" P2 
             (play 
                 (forEach Piece
                     (if (= 
                             (count Steps (from) (last To))
                             ("MinDistanceWithCorners")
-                       )
+                        )
                         (or ("HopOrthogonalCapture") "StepToEmpty")
-                   )
-               )
-           )
+                    )
+                )
+            )
             (nextPhase Mover "MovementP2")
-       )
+        )
         (phase "MovementP2" P2
             (play 
                 (forEach Piece)
-           )
-       )
+            )
+        )
         }
         
         (end {
             (if (no Pieces P1) (result P2 Win))
             (if (>= 2 (count Pieces P2)) (result P1 Win))
         }) 
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -108,9 +108,9 @@
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in Thailand, around 1836.")
+        (origin "This game was played in Thailand, around 1836.")
         }
-   )
+    )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})
@@ -121,5 +121,5 @@
     
     (ai
         "Len Cua Kin Ngoa_ai"
-   )
+    )
 )

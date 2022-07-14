@@ -1,86 +1,86 @@
-(game "Graph Test - Concentric"  
-    (players 2)  
+(game "Graph Test - Concentric" 
+    (players 2) 
     (equipment { 
         (<Board>) 
         (piece "Marker") 
-    })  
+    }) 
     (rules 
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------
 
 (option "Board" <Board> args:{ <shape> }
     {
-    (item "Circle A"  <
+    (item "Circle A" <
         (board (concentric {0 8}))
     > "") 
-    (item "Circle B"  <
+    (item "Circle B" <
         (board (concentric {1 6}))
     > "") 
-    (item "Circle C"  <
+    (item "Circle C" <
         (board (concentric {0 8}) use:Vertex)
     > "") 
-    (item "Circle D"  <
+    (item "Circle D" <
         (board (concentric {1 6}) use:Vertex)
     > "") 
-    (item "Circle E"  <
+    (item "Circle E" <
         (board (concentric {8}))
     > "") 
-    (item "Circle F"  <
+    (item "Circle F" <
         (board (concentric {8}) use:Vertex)
     > "") 
-    (item "Tri"  <
+    (item "Tri" <
         (board (concentric sides:3 rings:3) use:Vertex)
     > "") 
-    (item "Tri A"  <
+    (item "Tri A" <
         (board (concentric Triangle rings:3) use:Vertex)
     > "") 
-    (item "Tri B"  <
+    (item "Tri B" <
         (board (concentric sides:3 rings:3 joinMidpoints:False joinCorners:True) use:Vertex)
     > "") 
-    (item "Morris 2"  <
+    (item "Morris 2" <
         (board (concentric sides:4 rings:2) use:Vertex)
     > "") 
-    (item "Morris 3"  <
+    (item "Morris 3" <
         (board (concentric Square rings:3) use:Vertex)
     > "") 
-    (item "Morris 3a"  <
+    (item "Morris 3a" <
         (board (concentric sides:4 rings:3) use:Vertex)
     > "") 
-    (item "Morris 3b"  <
+    (item "Morris 3b" <
         (board (concentric sides:4 rings:3 joinMidpoints:False joinCorners:True) use:Vertex)
     > "")
-    (item "Morris 3c"  <
+    (item "Morris 3c" <
         (board (concentric sides:4 rings:3 joinMidpoints:True joinCorners:True) use:Vertex)
     > "") 
-    (item "Morris 3d"  <
+    (item "Morris 3d" <
         (board (concentric sides:4 rings:3 joinMidpoints:False joinCorners:False) use:Vertex)
     > "") 
-    (item "Morris 3e"  <
+    (item "Morris 3e" <
         (board (concentric sides:4 rings:3))
     > "") 
-    (item "Morris 4"  <
+    (item "Morris 4" <
         (board (concentric sides:4 rings:4) use:Vertex)
     > "") 
-    (item "Pentagon"  <
+    (item "Pentagon" <
         (board (concentric sides:5 rings:3) use:Vertex)
     > "") 
-    (item "Hex"  <
+    (item "Hex" <
         (board (concentric Hexagon rings:3) use:Vertex)
     > "") 
-    (item "Hex A"  <
+    (item "Hex A" <
         (board (concentric sides:6 rings:3) use:Vertex)
     > "") 
-    (item "Hex B"  <
+    (item "Hex B" <
         (board (concentric sides:6 rings:3 joinMidpoints:False joinCorners:True) use:Vertex)
     > "") 
-    (item "Target 4a"  <
+    (item "Target 4a" <
         (board (concentric Target rings:4))
     > "") 
-    (item "Target 4b"  <
+    (item "Target 4b" <
         (board (concentric Target rings:4 steps:16))
     > "") 
     }
@@ -88,7 +88,7 @@
 
 //------------------------------------------------------------
 
-(metadata     
+(metadata   
     (info {
         (description "Test harness for concentric board tilings.")
         (credit "Cameron Browne 13/3/2021")
@@ -96,7 +96,7 @@
     (graphics {
         
         (board Colour InnerEdges (colour 127 191 255))
-        (board Colour OuterEdges (colour   0 127 255))
+        (board Colour OuterEdges (colour  0 127 255))
         (board StyleThickness InnerEdges 1)
         (board StyleThickness OuterEdges 1)
     })

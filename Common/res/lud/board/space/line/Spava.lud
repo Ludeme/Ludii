@@ -1,29 +1,29 @@
-(game "Spava"  
-    (players <Version:numPlayers>)  
+(game "Spava" 
+    (players <Version:numPlayers>) 
     (equipment { 
         (board (square <Board> pyramidal:True) use:Vertex) 
         (piece "Ball" Each) 
-    })  
+    }) 
     (rules 
         (play 
             (move 
                 Add 
                 (to (sites Empty) 
                     if:(is Flat)
-               )
-           )
-       )
+                )
+            )
+        )
         (end {
             (if 
                 (is Line (- (count Rows) (layer of:(last To))) SameLayer) 
                 (result Mover Win)
-           )
+            )
             (if 
                 (is Line (- (- (count Rows) (layer of:(last To))) 1) SameLayer) 
                 (result Mover Loss)
-           )
+            )
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -31,21 +31,21 @@
 (option "Players" <Version> args:{<numPlayers> <playRules>}
     {
     (item "2 Players" <2> <(meta (swap)) (play (move Add (to (sites Empty))))> "Two players.")**
-    (item "3 Players" <3> <(play (priority {(move Add (to (union (sites Winning Mover (add (to (sites Empty) if:(is Flat)))) (sites Winning Next (add (to (sites Empty) if:(is Flat))))))) (move Add (to (sites Empty) if:(is Flat))) }))>  "Three players.")
-    (item "4 Players" <4> <(play (priority {(move Add (to (union (sites Winning Mover (add (to (sites Empty) if:(is Flat)))) (sites Winning Next (add (to (sites Empty) if:(is Flat))))))) (move Add (to (sites Empty) if:(is Flat))) }))>  "Four players.")
+    (item "3 Players" <3> <(play (priority {(move Add (to (union (sites Winning Mover (add (to (sites Empty) if:(is Flat)))) (sites Winning Next (add (to (sites Empty) if:(is Flat))))))) (move Add (to (sites Empty) if:(is Flat))) }))> "Three players.")
+    (item "4 Players" <4> <(play (priority {(move Add (to (union (sites Winning Mover (add (to (sites Empty) if:(is Flat)))) (sites Winning Next (add (to (sites Empty) if:(is Flat))))))) (move Add (to (sites Empty) if:(is Flat))) }))> "Four players.")
     }
 )
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "2x2"    <2>    "2x2 square pyramidal board.")  
-    (item "3x3"    <3>    "3x3 square pyramidal board.")  
-    (item "4x4"    <4>    "4x4 square pyramidal board.")*  
-    (item "5x5"    <5>    "5x5 square pyramidal board.")  
-    (item "6x6"    <6>    "6x6 square pyramidal board.")  
-    (item "7x7"    <7>    "7x7 square pyramidal board.")  
-    (item "8x8"    <8>    "8x8 square pyramidal board.")  
-    (item "9x9"    <9>    "9x9 square pyramidal board.")  
+    (item "2x2"  <2>  "2x2 square pyramidal board.") 
+    (item "3x3"  <3>  "3x3 square pyramidal board.") 
+    (item "4x4"  <4>  "4x4 square pyramidal board.")* 
+    (item "5x5"  <5>  "5x5 square pyramidal board.") 
+    (item "6x6"  <6>  "6x6 square pyramidal board.") 
+    (item "7x7"  <7>  "7x7 square pyramidal board.") 
+    (item "8x8"  <8>  "8x8 square pyramidal board.") 
+    (item "9x9"  <9>  "9x9 square pyramidal board.") 
 })
 
 //------------------------------------------------------------------------------
@@ -66,10 +66,10 @@
         (credit "Cameron Browne")
         (date "2012")
         }
-   )
+    )
     
     (graphics {
         (piece Scale "Ball" 1.0)
         (board Style Shibumi)
-    })    
+    })  
 )

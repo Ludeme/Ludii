@@ -3,9 +3,9 @@
         (if (and ("IsEnemyAt" (to)) (!= (what at:(to)) (id "King" Next)))
             (remove 
                 (to) 
-           )
-       )
-   ) 
+            )
+        )
+    ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -15,28 +15,28 @@
         (to 
             if:(and ("IsEnemyAt" (to)) (!= (what at:(to)) (id "King" Next)))
             (apply (remove (to)))
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (game "Samantsy"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8))
         (piece "King" Each 
             ("StepToEmpty")
-       )
+        )
         (piece "Queen" Each
             (move
                 Slide 
                 (to 
                     if:(and ("IsEnemyAt" (to)) (!= (what at:(to)) (id "King" Next)))
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Pawn" Each
             (or {
                 "StepForwardToEmpty" 
@@ -45,10 +45,10 @@
                 (then
                     (if (is In (last To) (sites Mover "Promotion")) 
                         (promote (last To) (piece (id "Queen" Mover)))
-                   )
-               )
-           )		
-       )
+                    )
+                )
+            )		
+        )
         (piece "Knight" Each
             (move
                 Leap 
@@ -56,9 +56,9 @@
                 (to 
                     if:(or (is Empty (to)) (and ("IsEnemyAt" (to)) (!= (what at:(to)) (id "King" Next))))
                     "CaptureToPiece"
-               ) 
-           )		
-       )
+                ) 
+            )		
+        )
         (piece "Rook" Each
             (move
                 Slide 
@@ -66,9 +66,9 @@
                 (to 
                     if:(and ("IsEnemyAt" (to)) (!= (what at:(to)) (id "King" Next)))
                     "CaptureToPiece"
-               ) 
-           )		
-       )
+                ) 
+            )		
+        )
         (piece "Bishop" Each
             (move
                 Slide 
@@ -76,17 +76,17 @@
                 (between
                     (exact 2)
                     if:(is Empty (between))
-               )
+                )
                 (to 
                     if:(and ("IsEnemyAt" (to)) (!= (what at:(to)) (id "King" Next)))
                     "CaptureToPiece"
-               ) 
-           )		
-       )
+                ) 
+            )		
+        )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     })
-    (rules         
+    (rules     
         (start { 
             (place "Pawn1" (sites Row 1))
             (place "Pawn2" (sites Row 6))
@@ -95,7 +95,7 @@
         })
         (play (forEach Piece))
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -111,9 +111,9 @@
         (version "1.3.2")
         (classification "board/war/replacement/checkmate/chaturanga/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Madagascar, around 1912.")
+        (origin "This game was played in Madagascar, around 1912.")
         }
-   )
+    )
     
     (graphics {
         (board Style Chess)

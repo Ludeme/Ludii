@@ -1,12 +1,12 @@
 (game "Tuk Tak"
-    (players 2)  
+    (players 2) 
     (equipment 
         {
         (board (square 3))
         (hand Each)
         (piece "Marker" Each "StepToEmpty")
         }
-   )  
+    ) 
     (rules 
         (start (place "Marker" "Hand" count:3))
         
@@ -14,14 +14,14 @@
         (phase "Placement"
             (play (move (from (handSite Mover)) (to (sites Empty))))
             (nextPhase ("HandEmpty" P2) "Movement")
-       )
+        )
         
         (phase "Movement"
             (play (forEach Piece))
-       )
+        )
         }
         (end (if (is Line 3) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -37,12 +37,12 @@
         (version "1.3.4")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1934.")
+        (origin "This game was played in India, around 1934.")
         }
-   )
+    )
     
     (graphics {
-        (board Style Graph)  
+        (board Style Graph) 
         (show Edges Diagonal Hidden)
         (board Colour OuterEdges (colour Hidden))
         (board Colour OuterVertices (colour Hidden))
@@ -50,5 +50,5 @@
     
     (ai
         "Tuk Tak_ai"
-   )
+    )
 )

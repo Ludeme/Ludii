@@ -50,7 +50,7 @@
                     (is Within (id "2Dot" Mover) in:(sites))
                     (is Within (id "3Dot" Mover) in:(sites))
                     }
-               )
+                )
                 // Score for mover's double runs
                 (forEach Site (sites)
                     (and
@@ -58,9 +58,9 @@
                             (if (is Within (id "3Dot" Mover) at:(site))
                                 3
                                 (if (is Within (id "2Dot" Mover) at:(site)) 1 -1)
-                       ))
+                        ))
                         (set State at:(site) 1)
-       ))))
+        ))))
         
         // Also check for opponent's runs
         (forEach Group "Connection" if:(is In (to) (sites Occupied by:Next))
@@ -72,16 +72,16 @@
                     (is Within (id "2Dot" Next) in:(sites))
                     (is Within (id "3Dot" Next) in:(sites))
                     }
-               )
+                )
                 (forEach Site (sites)
                     (and
                         (addScore Next
                             (if (is Within (id "3Dot" Next) at:(site))
                                 6
                                 (if (is Within (id "2Dot" Next) at:(site)) 2 -2)
-                       ))
+                        ))
                         (set State at:(site) 1)
-               ))
+                ))
 ))))
 
 //-----------------------------------------
@@ -92,16 +92,16 @@
         {
         (or
             (is Within (id "1Dot" P1) in:(difference (sites Around (#1) "Connection") (#2)))
-            (is Within (id "1Dot" P2) in:(difference (sites Around (#1) "Connection")  (#2)))
-       )
+            (is Within (id "1Dot" P2) in:(difference (sites Around (#1) "Connection") (#2)))
+        )
         (or
-            (is Within (id "2Dot" P1) in:(difference (sites Around (#1) "Connection")  (#2)))
-            (is Within (id "2Dot" P2) in:(difference (sites Around (#1) "Connection")  (#2)))
-       ) 
-        (or   
+            (is Within (id "2Dot" P1) in:(difference (sites Around (#1) "Connection") (#2)))
+            (is Within (id "2Dot" P2) in:(difference (sites Around (#1) "Connection") (#2)))
+        ) 
+        (or  
             (is Within (id "3Dot" P1) in:(difference (sites Around (#1) "Connection") (#2)))
             (is Within (id "3Dot" P2) in:(difference (sites Around (#1) "Connection") (#2)))
-       )
+        )
         }
 ))
 //-----------------------------------------------------
@@ -115,7 +115,7 @@
                 (< 0 (count Pieces Mover #1 in:(sites Hand Mover)))
                 (not
                     ("IntolerableSite" (to) (to))
-       )))
+        )))
         (then 
             (and
                 {
@@ -125,7 +125,7 @@
                     (if 
                         ("IntolerableSite" (site) (site))
                         (remove (site))
-               ))
+                ))
                 (forEach Site (sites Occupied by:Mover) (set State at:(site) 0)) // clear move limits
                 }
 ))))
@@ -136,15 +136,15 @@
         (move Step 
             (from (site))
             "Connection"
-            (to  
+            (to 
                 if:(and
                     {
                     (is Empty (to)) 
                     (not
                         ("IntolerableSite" (to) (from))
-                   )
+                    )
                     }
-           ))
+            ))
             (then
                 (and
                     (forEach Site 
@@ -152,9 +152,9 @@
                         (if 
                             ("IntolerableSite" (site) (site))
                             (remove (site))
-                   )) 
+                    )) 
                     (set State at:(last To) 2) // freeze piece 
-       )))
+        )))
 ))
 
 //-------------------------------------------------
@@ -172,7 +172,7 @@
 (define "Stalemate" 
     (if 
         (no Moves Mover)
-        (move Pass (then (forEach Site (sites State 1) (set State at:(site) 0))))  
+        (move Pass (then (forEach Site (sites State 1) (set State at:(site) 0)))) 
         (move Pass (then (set Score Mover (count Pieces Mover in:(sites Board)))))
 ))
 //-----------------------------------------------
@@ -188,7 +188,7 @@
         (piece "2Dot" Each)
         (piece "3Dot" Each)
         }
-   )
+    )
     (rules
         ("SetupHands")
         (play
@@ -202,25 +202,25 @@
                         ("AddPiece" "2Dot")
                         ("AddPiece" "3Dot")
                         }
-                   )
+                    )
                     ("StepPiece")
                     (do (forEach Site (sites State 0) (set State at:(site) 1))
                         next:("Stalemate")
-                   )
+                    )
                     (move Pass
                         (then
                             (forEach Site (sites State 0) (set State at:(site) 1)) 
-                   ))
+                    ))
                     }
                     (then 
                         ("ScoreWinCondition")
-               ))
+                ))
                 ("Stalemate")
-       ))
+        ))
         (end 
             (if 
                 (!= 0 (count Sites in:(sites State 1)))
-                //    (< 0 (+ (score Mover) (score Next)))
+                //  (< 0 (+ (score Mover) (score Next)))
                 (byScore)
 ))))
 
@@ -231,11 +231,11 @@
     {
     (item "TriSquare Omni" <"TriSquare"> <All> <ThinDashed> <1.0> <0.0> "Triangle-Square Omni-Grid")**
     (item "TriSquare Grid" <"TriSquare"> <Orthogonal> <Hidden> <1.0> <0.0> "Triangle-Square Grid")
-    (item "Hex Limping" <"HexLimp"> <Orthogonal> <Hidden> <1.8>  <-0.85> "Hex N / N-1 Grid")***
-    (item "Hex Grid" <"HexHex"> <Orthogonal> <Hidden> <1.0>  <0.0> "Hex Grid")
-    (item "Icosahedron" <"Icosahedron"> <Orthogonal> <Hidden> <1.0> <0.0>  "Icosahedron")
-    (item "Square Omni" <"SquareGrid"> <All> <ThinDashed>  <1.0> <0.0> "Square Omni-Grid")
-    (item "Square grid" <"SquareGrid"> <Orthogonal> <Hidden> <1.0>  <0.0> "Square Grid")
+    (item "Hex Limping" <"HexLimp"> <Orthogonal> <Hidden> <1.8> <-0.85> "Hex N / N-1 Grid")***
+    (item "Hex Grid" <"HexHex"> <Orthogonal> <Hidden> <1.0> <0.0> "Hex Grid")
+    (item "Icosahedron" <"Icosahedron"> <Orthogonal> <Hidden> <1.0> <0.0> "Icosahedron")
+    (item "Square Omni" <"SquareGrid"> <All> <ThinDashed> <1.0> <0.0> "Square Omni-Grid")
+    (item "Square grid" <"SquareGrid"> <Orthogonal> <Hidden> <1.0> <0.0> "Square Grid")
     }
 )
 
@@ -272,7 +272,7 @@
             
             These tactics are mostly at odds with setting up your own double-run. For example, completely running out of one type of piece prevents one from forming a double run at all. 
             
-        The game is intended to be played in sets and different wins produce different scores so that this is interesting.  Each player's stock of pieces is weighted to make higher scores less likely than lower scores.")
+        The game is intended to be played in sets and different wins produce different scores so that this is interesting. Each player's stock of pieces is weighted to make higher scores less likely than lower scores.")
         (rules "Dual Goals: 
         A) Create an isolated group of 4 that contains a single pair. This is called a double-run, but it only scores for the pair depending on its value: (1+1) (2+2) or (3+3); 
     B) Force the opponent to stalemate you. This scores one point for each of your pieces on the board, with out regard to their value.
@@ -327,12 +327,12 @@ A double-run belong to the opponent is scored by the opponent, and has twice the
     (piece Rename piece:"3Dot" "Salta3Dot.svg")
     (piece Colour P1 state:0 fillColour:(colour 229 92 0) strokeColour:(colour Black))
     (piece Colour P2 state:0 fillColour:(colour 255 238 170) strokeColour:(colour Black))
-    (piece Colour P1 state:1 fillColour:(colour 229 92 0 80) strokeColour:(colour  0 0 0 150))
+    (piece Colour P1 state:1 fillColour:(colour 229 92 0 80) strokeColour:(colour 0 0 0 150))
     (piece Colour P2 state:1 fillColour:(colour 255 238 170 80) strokeColour:(colour 0 0 0 150))
     (board Style Graph)
     (board StyleThickness InnerVertices 1.5)
     (show Edges Diagonal <BoardShape:DiagShow>)
-    //    (show Piece State)
+    //  (show Piece State)
     
     (hand Placement P2 offsetX:0.95 vertical:True)
     (hand Placement P1 offsetX:0.05 vertical:True)

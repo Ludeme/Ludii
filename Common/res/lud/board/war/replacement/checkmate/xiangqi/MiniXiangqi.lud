@@ -2,7 +2,7 @@
     (if (= (column of:(where "Jiang" P1)) (column of:(where "Jiang" P2)))
         (not ("NoSites" (forEach (sites Direction from:(where "Jiang" P1) N stop:(= (to) (where "Jiang" P2))) if:(not (is Empty (site))))))
         True
-   )
+    )
 )
 
 (define "EnemyCannotMove"
@@ -17,16 +17,16 @@
             if:(and 
                 (is In (to) (sites Mover "Palace")) 
                 (not ("IsFriendAt" (to)))
-           ) 
+            ) 
             (apply (remove (to)))
-       )
-   ) 
+        )
+    ) 
 )
 
 //------------------------------------------------------------------------------
 
 (game "MiniXiangqi" 
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (rectangle 7 7) use:Vertex) 
         
@@ -50,15 +50,15 @@
                                         (apply 
                                             if:("IsEnemyAt" (to))
                                             (remove (to))
-                                       )
-                                   )
-                               )
-                           )
-                       ) 
-                   )
-               )
-           ) 
-       )
+                                        )
+                                    )
+                                )
+                            )
+                        ) 
+                    )
+                )
+            ) 
+        )
         
         // Chariot
         (piece "Ju" Each 
@@ -68,9 +68,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     (apply (remove (to)))
-               )
-           )
-       )
+                )
+            )
+        )
         
         // Canon
         (piece "Pao" Each 
@@ -81,19 +81,19 @@
                     Orthogonal 
                     (between 
                         before:(count Rows) 
-                        after:(count Rows)  
+                        after:(count Rows) 
                         if:(not (is Empty (between)))
-                   )
+                    )
                     (to 
                         if:(is Empty (to)) 
                         (apply 
                             if:("IsEnemyAt" (to)) 
                             (remove (to))
-                       )
-                   )  
-               ) 
-           )
-       )
+                        )
+                    ) 
+                ) 
+            )
+        )
         
         // Soldier
         (piece "Zu" Each
@@ -103,13 +103,13 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     (apply (remove (to)))
-               )
-           )
-       )
+                )
+            )
+        )
         
         (regions "PalaceP1" P1 { 2..4 9..11 16..18 })
         (regions "PalaceP2" P2 { 30..32 37..39 44..46 })
-    })  
+    }) 
     
     (rules 
         (start { 
@@ -122,20 +122,20 @@
                 ifAfterwards:(and 
                     ("JiangSameColumnWithNoPieceBetween")
                     (not ("IsInCheck" "Jiang" Mover))
-               )
-           )
-       )
+                )
+            )
+        )
         
         (end {
             (if (and 
                     ("IsInCheck" "Jiang" Next) 
                     ("EnemyCannotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
+            ) 
             ("BlockWin")
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -154,7 +154,7 @@
         (credit "Matthew Stephenson")
         (date "1974")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour White))

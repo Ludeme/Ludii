@@ -27,18 +27,18 @@
                                     if:(and 
                                         (!= (site) (last To))
                                         (!= (id "Car" Shared) (what at:(site)))
-                                   )
-                               )
+                                    )
+                                )
                                 num:1
-                           ) 
+                            ) 
                             False 
                             to:P1
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (nextPhase "FinalChoice")
-       )
+        )
         
         (phase "FinalChoice"
             (play 
@@ -46,23 +46,23 @@
                     (from (sites Board)) 
                     (then 
                         (set Hidden What (sites Board) False to:P1)
-                   )
-               )
-           )
+                    )
+                )
+            )
             (end {
                 (if 
                     (= (what at:(last To)) (id "Car" Shared))
                     (result P1 Win) 
-               )
+                )
                 (if 
                     (= (what at:(last To)) (id "Goat" Shared))
                     (result P1 Loss) 
-               )
+                )
                 }
-           )
-       )
+            )
+        )
         }
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -84,7 +84,7 @@
         (credit "Eric Piette")
         (date "1975")
         }
-   )
+    )
     
     (graphics {
         (no Board)

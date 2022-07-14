@@ -5,10 +5,10 @@
         (between 
             if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
             (apply (remove (between) at:EndOfTurn))
-       ) 
+        ) 
         (to if:(is Empty (to))) 
         #2
-   ) 
+    ) 
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -17,7 +17,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "HexDame"  
+(game "HexDame" 
     (players 2) 
     (equipment { 
         (board (rotate 90 (hex 5))) 
@@ -27,7 +27,7 @@
         (regions P1 (union (sites Side SW) (sites Side SE)))
         (regions P2 (union (sites Side NW) (sites Side NE)))
         }
-   ) 
+    ) 
     
     (rules 
         (start {
@@ -44,16 +44,16 @@
                                     (moveAgain)
                                     (if "JumpToPromotionZone" 
                                         (move Promote (last To) (piece "DoubleCounter") Mover)
-                                   )
-                               ) 
-                           ) 
-                       )
-                   )
+                                    )
+                                ) 
+                            ) 
+                        )
+                    )
                     (max Moves ("HopSequenceCaptureAgain" before:10 after:10 at:EndOfTurn))
-               )
+                )
                 (priority {
                     (max Moves
-                        (or  
+                        (or 
                             (forEach Piece "Counter"
                                 ("HopMan" (from) 
                                     (then 
@@ -61,34 +61,34 @@
                                             (moveAgain) 
                                             (if "JumpToPromotionZone" 
                                                 (move Promote (last To) (piece "DoubleCounter") Mover)
-                                           )
-                                       ) 
-                                   ) 
-                               ) 
-                           )
+                                            )
+                                        ) 
+                                    ) 
+                                ) 
+                            )
                             (forEach Piece "DoubleCounter" ("HopSequenceCapture" before:10 after:10 at:EndOfTurn))
-                       )
-                   )
-                    (or  
+                        )
+                    )
+                    (or 
                         (forEach Piece "Counter" 
                             (move
                                 Step 
                                 (directions {Forward FL FR}) 
                                 (to if:(is Empty (to)))
-                           )
+                            )
                             (then 
                                 (if "JumpToPromotionZone"
                                     (promote (last To) (piece "DoubleCounter") Mover)
-                               )
-                           )
-                       )
+                                )
+                            )
+                        )
                         (forEach Piece "DoubleCounter" (move Slide))
-                   )
+                    )
                 })
-           )
-       )
+            )
+        )
         (end ("BlockWin"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -107,7 +107,7 @@
         (credit "Eric Piette")
         (date "1979")
         }
-   )
+    )
     
     (graphics {
         (player Colour P2 (colour Red))
@@ -116,6 +116,6 @@
     
     (ai 
         "HexDame_ai"
-   )
+    )
     
 )

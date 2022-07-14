@@ -1,8 +1,8 @@
-(game "Graph Test - Conhex C (Dual)"  
-    (players 2)  
+(game "Graph Test - Conhex C (Dual)" 
+    (players 2) 
     (equipment { 
         (board
-            (dual   
+            (dual  
                 (add 
                     (square 6) 
                     edges:{ 
@@ -14,17 +14,17 @@
                     {35 43} {36 44} {37 45} {39 45} {40 46} {41 47} 
                     }
                     updateFaces:True
-               ) 
-           )
+                ) 
+            )
             //use:Vertex
-       )  
+        ) 
         (piece "Disc" P1) 
         (piece "Cross" P2) 
-    })  
+    }) 
     (rules 
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -40,7 +40,7 @@
         (version "0.9.3")
         (classification "board/space/line")
         (credit "Cameron Browne 31/5/2020")
-        (origin  "This game was played in England, from around 1850CE to 1883CE.")
+        (origin "This game was played in England, from around 1850CE to 1883CE.")
         }
-   )
+    )
 )

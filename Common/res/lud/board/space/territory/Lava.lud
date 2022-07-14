@@ -7,14 +7,14 @@
                 stop:(= (next) (who at:(to)))
                 stopIncluded:True
                 distance:(size Stack at:(from))
-           )
+            )
             if:(>=
                 (count Steps (from) (to))
                 (size Stack at:(to))
-           )    
-       )
+            )  
+        )
         #1
-   )
+    )
 )
 
 (define "Move"
@@ -24,12 +24,12 @@
             (to (last To))
             count:(count Steps (last From) (last To))
             stack:True
-       )
+        )
         (add 
             (to (last To)) 
             stack:True
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -47,31 +47,31 @@
         })
         (play
             ("Select" (then ("Move")))
-       )
+        )
         (end 
             (if (is Full) 
                 (byScore {
                     (score P1 (count Sites in:(sites Occupied by:P1 top:True)))
                     (score P2 (count Sites in:(sites Occupied by:P2 top:True)))
                 })
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <board> }
     {
-    (item "4"    <4>  "A size 4 board is currently selected")*
-    (item "5"    <5>  "A size 5 board is currently selected")
+    (item "4"  <4> "A size 4 board is currently selected")*
+    (item "5"  <5> "A size 5 board is currently selected")
     }
 )
 
 (option "Show Stack Size As Number" <Stack> args:{ <stack> }
     {
-    (item "No"    <Default 0.6>  "The number of pieces in a stack is currently not shown on the top piece.")*
-    (item "Yes"    <DefaultAndCount 0.6>  "The number of pieces in a stack is shown on the top piece.")
+    (item "No"  <Default 0.6> "The number of pieces in a stack is currently not shown on the top piece.")*
+    (item "Yes"  <DefaultAndCount 0.6> "The number of pieces in a stack is shown on the top piece.")
     }
 )
 
@@ -101,7 +101,7 @@
         (credit "Michael Amundsen")
         (date "2021")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour DarkGrey))

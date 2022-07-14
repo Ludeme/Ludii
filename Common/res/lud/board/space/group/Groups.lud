@@ -1,14 +1,14 @@
-(game "Groups"  
-    (players 2)  
+(game "Groups" 
+    (players 2) 
     (equipment { 
         (board (square 8)) 
         (piece "Disc" Each 
             (or 
                 ("StepToEmpty")
                 ("HopAllPiecesToEmpty")
-           )
-       )
-    })  
+            )
+        )
+    }) 
     
     (rules 
         (start { 
@@ -18,8 +18,8 @@
         
         (play (forEach Piece))
         
-        (end ("SingleGroupWin" Mover Orthogonal))  
-   )
+        (end ("SingleGroupWin" Mover Orthogonal)) 
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -37,7 +37,7 @@
         (author "Richard Hutnik")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (board Style Chess)
@@ -45,6 +45,6 @@
     
     (ai 
         "Groups_ai"
-   )
+    )
     
 )

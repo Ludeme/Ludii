@@ -2,7 +2,7 @@
     (move
         Remove
         (forEach (sites Occupied by:Next) if:(not (is Line 3 Orthogonal through:(site))))
-   )
+    )
 )
 
 (define "IfLine3OrthogonalMoveAgain" 
@@ -10,8 +10,8 @@
         (if 
             (is Line 3 Orthogonal) 
             (moveAgain)
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -27,22 +27,22 @@
                 Step Orthogonal
                 (to if:(is Empty (to))) 
                 "IfLine3OrthogonalMoveAgain" 
-           )
-       )
+            )
+        )
         }
-   )
+    )
     (rules
         (start 
             {
             (place "Marker" "Hand" count:12) 
             }
-       )
+        )
         
         phases:{
         (phase "Placement"
             <Rules>
             (nextPhase ("HandEmpty" P2) "Movement")
-       )
+        )
         
         (phase "Movement"
             (play 
@@ -51,14 +51,14 @@
                     (do 
                         (forEach Piece)
                         ifAfterwards:(not (is Line 4 Orthogonal))
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         }
         
         (end (if (<= (count Pieces Next) 2) (result Mover Win)))
-   )	
+    )	
 )
 
 //------------------------------------------------------------------------------
@@ -85,9 +85,9 @@
         (classification "board/space/line")
         (credit "Matthew Stephenson")
         }
-   )
+    )
     
     (ai
         "Dara_ai"
-   )
+    )
 )

@@ -1,14 +1,14 @@
-(game "Bara Guti (Bihar)"  
-    (players 2)  
+(game "Bara Guti (Bihar)" 
+    (players 2) 
     (equipment { 
         (board (concentric {1 8 8 8}) use:Vertex)
         (piece "Counter" Each 
             (or 
                 ("HopRotationalCapture") 
                 ("StepRotationalToEmpty") 
-           )
-       )
-    })  
+            )
+        )
+    }) 
     
     (rules 
         (start {
@@ -18,10 +18,10 @@
         
         (play 
             (forEach Piece)
-       )
+        )
         
-        (end (if (no Pieces Next) (result Next Loss)))  
-   )
+        (end (if (no Pieces Next) (result Next Loss))) 
+    )
 ) 
 
 //------------------------------------------------------------------------------
@@ -37,9 +37,9 @@
         (version "1.3.4")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1935.")
+        (origin "This game was played in India, around 1935.")
         }
-   )
+    )
     
     (graphics {
         
@@ -47,5 +47,5 @@
     
     (ai
         "Bara Guti (Bihar)_ai"
-   )
+    )
 )

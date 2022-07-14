@@ -2,8 +2,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Azigo"  
-    (players 2)  
+(game "Azigo" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 20 store:None
@@ -12,7 +12,7 @@
             (track "TrackSpecialHome1" "0,E" loop:True P1)
             (track "TrackSpecialHome2" "39,W" loop:True P2)
             }
-       )
+        )
         (piece "Seed" Shared)
         (hand Each)
         (map "LeftMost" {(pair P1 0) (pair P2 39)})
@@ -20,7 +20,7 @@
         (regions "OpeningRegion" P2 (sites {28..31}))
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-    })  
+    }) 
     (rules 
         
         (start {
@@ -37,10 +37,10 @@
                     (from (sites Mover "OpeningRegion") if:(is Occupied (from)))
                     (to (handSite Mover))
                     count:(count at:(from))
-               )
-           )
+                )
+            )
             (nextPhase Mover (all Sites (sites Mover "OpeningRegion") if:(is Empty (site))) "Sowing")
-       )
+        )
         (phase "Sowing"
             (play
                 (or
@@ -54,19 +54,19 @@
                                         (or
                                             (= 2 (count at:(to)))
                                             (= 4 (count at:(to)))
-                                       )
-                                   )
+                                        )
+                                    )
                                     (fromTo
                                         (from (to))
                                         (to (handSite Mover))
                                         count:(count at:(to))
-                                   )
-                               )
+                                    )
+                                )
                                 origin:(< 1 (count at:(from)))
                                 backtracking:True
-                           )
-                       )
-                   )
+                            )
+                        )
+                    )
                     (if (is Occupied Cell (handSite Mover))
                         (or
                             (do (set Var "NumToSow" (count Cell at:(handSite Mover)))
@@ -84,29 +84,29 @@
                                                     (or
                                                         (= 2 (count at:(to)))
                                                         (= 4 (count at:(to)))
-                                                   )
-                                               )
+                                                    )
+                                                )
                                                 apply:(if (and
                                                         (is In (to) (sites Next))
                                                         (or
                                                             (= 2 (count at:(to)))
                                                             (= 4 (count at:(to)))
-                                                       )
-                                                   )
+                                                        )
+                                                    )
                                                     (fromTo
                                                         (from (to))
                                                         (to (handSite Mover))
                                                         count:(count at:(to))
-                                                   )
-                                               )
+                                                    )
+                                                )
                                                 origin:True
                                                 forward:True
-                                           )
+                                            )
                                             (set Var "NumToSow" 0)
-                                       )
-                                   )
-                               )
-                           )
+                                        )
+                                    )
+                                )
+                            )
                             (do (set Var "NumToSow" (count Cell at:(handSite Mover)))
                                 next:(move
                                     (from (handSite Mover))
@@ -119,26 +119,26 @@
                                                 "TrackSpecialHome"
                                                 owner:(mover)
                                                 origin:True
-                                           )
+                                            )
                                             (set Var "NumToSow" 0)
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         }
         
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Azigo is a two-row mancala-style board game played by the Igbo people of Nigeria. ")
@@ -148,9 +148,9 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Nigeria, around 1951.")
+        (origin "This game was played in Nigeria, around 1951.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

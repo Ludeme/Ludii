@@ -5,29 +5,29 @@
 (define "PlayableSites" 
     (forEach (sites Mover "Home")
         if:(is In (site) (values Remembered))
-   )
+    )
 )
 
 (define "AllPossibleHolesFilled" 
     (or 
         (and (> 7 (count at:(mapEntry P2))) (= 42 (count in:(sites Bottom))))
         (and (> 7 (count at:(mapEntry P1))) (= 42 (count in:(sites Top)))) 
-   )
+    )
 )
 
 (define "NoLegalMoves" 
     (all Sites (forEach 
             (difference (union (sites Bottom) (sites Top)) (sites Empty))
             if:(is In (site) (values Remembered))
-       )
+        )
         if:(= 0 (count at:(site)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Galatjang"  
-    (players 2)  
+(game "Galatjang" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns"
@@ -35,12 +35,12 @@
             (track "Track1" "1,E,ENE,WNW,W" loop:True P1)
             (track "Track2" "12,W,WSW,ESE,E" loop:True P2)
             }
-       )
+        )
         (piece "Seed" Shared)
-        (regions "Home" P1 (sites Bottom))              // P1 Home
-        (regions "Home" P2 (sites Top))                 // P2 home
-        (map {(pair P1 LastSite) (pair P2 FirstSite)})  // kalahs (storage pits)
-    })  
+        (regions "Home" P1 (sites Bottom))       // P1 Home
+        (regions "Home" P2 (sites Top))         // P2 home
+        (map {(pair P1 LastSite) (pair P2 FirstSite)}) // kalahs (storage pits)
+    }) 
     (rules 
         
         (start {
@@ -57,9 +57,9 @@
                             (and (not (is Pending)) ("SameTurn")) 
                             ("LastHoleSowed") 
                             ("PlayableSites") 
-                       ) 
+                        ) 
                         if:(> (count at:(from)) 0)
-                   )
+                    )
                     (then 
                         (sow
                             "Track"
@@ -74,30 +74,30 @@
                                             (from ("OppositePit" (to))) 
                                             (to (mapEntry Mover)) 
                                             count:(count at:("OppositePit" (to)))
-                                       )
-                                   )
-                               )
-                           )
+                                        )
+                                    )
+                                )
+                            )
                             (then 
                                 (if ("NoLegalMoves")
                                     (and 
                                         (forEach Site 
                                             (difference (sites P1 "Home") (sites Empty))
                                             (fromTo (from (site)) (to (mapEntry P1)) count:(count at:(site)))
-                                       )
+                                        )
                                         (forEach Site 
                                             (difference (sites P2 "Home") (sites Empty))
                                             (fromTo (from (site)) (to (mapEntry P2)) count:(count at:(site)))
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
             (nextPhase ("NoLegalMoves") "BetweenRound")
-       )
+        )
         (phase "BetweenRound"
             (play 
                 (if (>= (count at:(mapEntry Mover)) 7)
@@ -105,7 +105,7 @@
                         (from (mapEntry Mover))
                         (to (intersection (sites Empty) (sites Mover "Home")))
                         count:7
-                   )
+                    )
                     (then 
                         (if ("AllPossibleHolesFilled")
                             (and 
@@ -113,28 +113,28 @@
                                 (forEach Site (sites Board)
                                     (if (= 7 (count at:(site)))
                                         (remember Value (site))
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
             (nextPhase ("AllPossibleHolesFilled") "Round")
-       )
+        )
         }
         
         (end
             (if ("CaptureEnoughSeed")
                 (result Mover Win)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Galatjan is a two-row mancala-style board game from the island of Celebes in Indonesia. It was played by the Macassar people in the middle of the nineteenth century. Kaudern states that it is played throughout Indonesia. It was customary to play this game during times of mourning.")
@@ -144,9 +144,9 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Indonesia, around 1859.")
+        (origin "This game was played in Indonesia, around 1859.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)
@@ -154,5 +154,5 @@
     
     (ai
         "Galatjang_ai"
-   )
+    )
 )

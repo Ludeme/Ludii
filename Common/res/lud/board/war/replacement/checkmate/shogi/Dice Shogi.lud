@@ -8,9 +8,9 @@
             (add 
                 (piece (mapEntry "Captured" (what at:(to)))) 
                 (to (mapEntry "Where" (what at:(to))))
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "InPromotionZone"
@@ -26,8 +26,8 @@
         (if 
             ("InPromotionZone" (last To)) 
             "Promote"
-       )
-   )
+        )
+    )
 )
 
 (define "CanPromote"
@@ -35,8 +35,8 @@
         (if 
             (or ("InPromotionZone" (last To)) ("InPromotionZone" (last From))) 
             (moveAgain) 
-       ) 
-   )
+        ) 
+    )
 )
 
 (define "SlideMove"
@@ -45,7 +45,7 @@
         #1 
         (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
-   )   	
+    )  	
 )
 
 (define "StepMove"
@@ -54,7 +54,7 @@
         #1
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
-   )   	
+    )  	
 )
 
 (define "PlaceAPiece"
@@ -62,15 +62,15 @@
         (move 
             (from (sites Occupied by:#1 container:"Hand" components:{"Kakugyo" "Ginsho" "Hisha" "Kinsho"})) 
             (to (sites Empty))
-       ) 
+        ) 
         (do 
             (move 
                 (from (sites Occupied by:#1 container:"Hand" component:"Fuhyo")) 
                 (to (difference (sites Empty) (sites #1 "Promotion"))) 
-           ) 
+            ) 
             ifAfterwards:(not ("IsInCheck" "Osho" #2 (forEach Piece #1)))
-       )
-    })   	
+        )
+    })  	
 )
 
 (define "CorrectColumn"
@@ -81,8 +81,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Dice Shogi"  
-    (players {(player N) (player S)})  
+(game "Dice Shogi" 
+    (players {(player N) (player S)}) 
     
     (equipment { 
         (board (square 5))
@@ -143,7 +143,7 @@
         })
         (map "Promoted" { 
             (pair (id "Fuhyo" P1) (id "Tokin" P1)) (pair (id "Fuhyo" P2) (id "Tokin" P2)) 
-            (pair (id "Ginsho" P1) (id "Narigin" P1)) (pair (id "Ginsho" P2) (id "Narigin" P2))  
+            (pair (id "Ginsho" P1) (id "Narigin" P1)) (pair (id "Ginsho" P2) (id "Narigin" P2)) 
             (pair (id "Hisha" P1) (id "Ryuo" P1)) (pair (id "Hisha" P2) (id "Ryuo" P2)) 
             (pair (id "Kakugyo" P1) (id "Ryuma" P1)) (pair (id "Kakugyo" P2) (id "Ryuma" P2)) 
         })
@@ -163,7 +163,7 @@
                 (or
                     ("Promote")
                     (move Pass)
-               )
+                )
                 (do (roll)
                     next:(do
                         (if (!= 6 (count Pips))
@@ -174,29 +174,29 @@
                                             ifAfterwards:(and 
                                                 (not ("IsInCheck" "Osho" Mover (forEach Piece Next))) 
                                                 ("CorrectColumn")
-                                           )
-                                       )
-                                   )
+                                            )
+                                        )
+                                    )
                                     (do 
                                         (or ("PlaceAPiece" Mover Next) (forEach Piece))
                                         ifAfterwards:("CorrectColumn")
-                                   )
+                                    )
                                     (or ("PlaceAPiece" Mover Next) (forEach Piece))
-                               )
+                                )
                             })
                             (or ("PlaceAPiece" Mover Next) (forEach Piece))
-                       )
+                        )
                         ifAfterwards:(not ("IsInCheck" "Osho" Mover (forEach Piece Next)))
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         
         (end {
             (if (and ("IsInCheck" "Osho" Next (or ("PlaceAPiece" Mover Next) (forEach Piece))) ("NextCannotMove")) (result Mover Win)) 
             ("BlockWin")
         })
-   )
+    )
 )
 
 (metadata
@@ -213,7 +213,7 @@
         (classification "board/war/replacement/checkmate/shogi")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour White))
@@ -231,5 +231,5 @@
     })
     (ai
         "Dice Shogi_ai"
-   )
+    )
 )

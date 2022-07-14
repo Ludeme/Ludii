@@ -6,7 +6,7 @@
             (track "Track" {25..20 18..13 0..5 7..12 End} P1 directed:True)
             } 
             use:Vertex
-       ) 
+        ) 
         (dice d:6 num:3)
         (piece "Disc" Each (move [#]))
     })
@@ -18,7 +18,7 @@
         })
         (play (do (roll) next:[#]))
         (end ("EscapeWin"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -35,9 +35,9 @@
         (version "1.3.2")
         (classification "board/race/escape/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Italy, from around 1275 to 1299.")
+        (origin "This game was played in Italy, from around 1275 to 1299.")
         }
-   )
+    )
     
     (graphics {
         (board Style backgammon)

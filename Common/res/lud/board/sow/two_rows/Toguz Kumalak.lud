@@ -5,25 +5,25 @@
 (define "CaptureFromTuzOf" 
     (if (and (> ("Tuz" #1) 0) (> (count at:("Tuz" #1)) 0))
         (fromTo (from ("Tuz" #1)) (to (mapEntry #1)) count:(count at:("Tuz" #1)))
-   )
+    )
 )
 
 (define "PiecesOwnedBy" (+ (count at:(mapEntry #1)) (count in:(sites #1))))
 
 //------------------------------------------------------------------------------
 
-(game "Toguz Kumalak"  
+(game "Toguz Kumalak" 
     (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns"
             (track "Track" "1,E,N,W" loop:True)
-       )
-        (regions P1 (sites Bottom))                       // P1 home
-        (regions P2 (sites Top))                          // P2 home
-        (map {(pair P1 FirstSite) (pair P2 LastSite)})    // kalahs (storage pits)
+        )
+        (regions P1 (sites Bottom))            // P1 home
+        (regions P2 (sites Top))             // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
         (piece "Seed" Shared)
-    })  
+    }) 
     (rules 
         
         (start (set Count 9 to:(sites Track)))
@@ -33,19 +33,19 @@
                 (from 
                     (sites Mover) 
                     if:(> (count at:(from)) 0)
-               )
+                )
                 (then 
                     (sow 
                         apply:(if 
                             (and 
                                 (is In (to) (sites Next)) 
                                 (is Even (count at:(to)))
-                           ) 
+                            ) 
                             (fromTo 
                                 (from (to)) 
                                 (to (mapEntry (mover))) 
                                 count:(count at:(to))
-                           )
+                            )
                             (if (and { 
                                     (is In (to) (sites Next)) 
                                     (= (count at:(to)) 3) 
@@ -53,32 +53,32 @@
                                     (if (< ("Tuz" Next) 0)
                                         True
                                         (!= (+ (to) ("Tuz" Next)) 19)
-                                   )
-                                })  
+                                    )
+                                }) 
                                 (and
                                     (set Value Mover (to))
                                     (fromTo 
                                         (from (to)) 
                                         (to (mapEntry (mover))) 
                                         count:(count at:(to))
-                                   )
-                               )
-                           )
-                       )
+                                    )
+                                )
+                            )
+                        )
                         origin:(!= (count at:(last From)) 1)
                         (then
                             (and
                                 ("CaptureFromTuzOf" P1)
                                 ("CaptureFromTuzOf" P2)
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -95,9 +95,9 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Central Asia, from around 1500 to 2000.")
+        (origin "This game was played in Central Asia, from around 1500 to 2000.")
         }
-   )
+    )
     
     (graphics {
         (show PlayerHoles)
@@ -106,6 +106,6 @@
     
     (ai 
         "Toguz Kumalak_ai"
-   )
+    )
     
 )

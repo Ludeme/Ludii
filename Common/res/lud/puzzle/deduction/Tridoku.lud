@@ -3,14 +3,14 @@
         (sites Board Vertex)
         if:(all Different
             (sites Incident Cell of:Vertex at:(site))
-       )
-   )	
+        )
+    )	
 )
 
 //------------------------------------------------------------------------------
 
-(game "Tridoku"  
-    (players 1)  
+(game "Tridoku" 
+    (players 1) 
     (equipment { 
         (board (tri 9) (values Cell (range 1 9)))
         (regions {0 1 2 9 10 17 18 25 32})
@@ -28,7 +28,7 @@
         (regions {4 12 20 27 34 40 46 51 56})
         (regions {4 13 21 29 36 43 49 55 60})
         (regions {60 64 59 63 58 62 57 61 56})
-    })  
+    }) 
     (rules
         (start <Challenge>)
         (play 
@@ -36,16 +36,16 @@
                 ("NoTwoEqualsCellSharingAVertex")
                 (all Different)
             })
-       )
+        )
         (end (if (is Solved) (result P1 Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Challenge" <Challenge> args:{ <start> }
     {
-    (item "1"   
+    (item "1"  
         <(set {
             {9 6} {17 8} {2 3} {11 9} {12 1} {4 7} {13 6} {14 4} {6 1} {16 7} 
             {18 1} {28 3} {23 5} {24 4} {39 5} {33 4} {34 2} {41 1} {42 6} {36 8}
@@ -54,7 +54,7 @@
             {77 6} {79 3} {78 7}
         })>
         ""
-   )   
+    )  
 })
 
 //------------------------------------------------------------------------------
@@ -70,30 +70,30 @@
         (author "Japheth Light")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (show Line {
             {0 54} {54 9} {0 9} {3 27} {3 30} {30 6}
             {6 33} {33 27} {30 45} {30 48} {48 45}} 
             (colour Black) scale:2
-       )
+        )
         
         (region Colour (sites {
                 0..3 5..8 24 38 50 68 74
                 78 80 77 72 65 45 32 17
             }) (colour 252 252 156)
-       )
+        )
         
         (region Colour (sites {
                 56 4 60
             }) (colour 156 252 204)
-       )
+        )
         
         (region Colour (sites {
                 12 20 27 34 40 46 51 61 57 62 58 
                 63 59 64 55 49 43 36 29 21 13
             }) (colour 236 212 196)
-       )
+        )
     })
 )

@@ -1,76 +1,76 @@
 (game "Onek Rong" 
-    (players <Version:numPlayers>)  
+    (players <Version:numPlayers>) 
     (equipment { 
         (board <Board:type> use:Vertex)
-        (piece "Marker" Each)   
+        (piece "Marker" Each)  
     })
     
     (rules 
         (start
             <Board:start>
-       ) 
+        ) 
         (play
             (or
                 (move 
-                    Claim                
-                    (to (sites Empty))   
+                    Claim        
+                    (to (sites Empty))  
                     (then 
-                        (if (= 1 (size Group at:(last To)))  
-                            (addScore Mover (cost Vertex at:(last To)))    
-                       )
-                   ) 
-               )
-                (move Pass)                   
-           )
-       )
+                        (if (= 1 (size Group at:(last To))) 
+                            (addScore Mover (cost Vertex at:(last To)))  
+                        )
+                    ) 
+                )
+                (move Pass)          
+            )
+        )
         (end
             (if (or (= (count Sites in:(sites Empty)) 0) (all Passed))
                 (byScore)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board" <Board> args:{ <type> <start> }
     {
-    (item "Graph1"             
+    (item "Graph1"       
         <
         (subdivide (hex 2))
         > 
         <
-        {      
-        (set Cost 1 Vertex at:0)  
+        {   
+        (set Cost 1 Vertex at:0) 
         (set Cost 2 Vertex at:1)
         (set Cost 3 Vertex at:2) 
-        (set Cost 1 Vertex at:3)  
+        (set Cost 1 Vertex at:3) 
         (set Cost 2 Vertex at:4)
         (set Cost 3 Vertex at:5) 
-        (set Cost 1 Vertex at:6)  
+        (set Cost 1 Vertex at:6) 
         (set Cost 2 Vertex at:7)
         (set Cost 3 Vertex at:8)
         (set Cost 3 Vertex at:9)
-        (set Cost 1 Vertex at:10)  
+        (set Cost 1 Vertex at:10) 
         (set Cost 2 Vertex at:11)
         (set Cost 3 Vertex at:12) 
-        (set Cost 1 Vertex at:13)  
+        (set Cost 1 Vertex at:13) 
         (set Cost 2 Vertex at:14)
         (set Cost 3 Vertex at:15) 
-        (set Cost 1 Vertex at:16)  
+        (set Cost 1 Vertex at:16) 
         (set Cost 2 Vertex at:17)
         (set Cost 3 Vertex at:18) 
-        (set Cost 3 Vertex at:19)  
-        (set Cost 1 Vertex at:20)  
+        (set Cost 3 Vertex at:19) 
+        (set Cost 1 Vertex at:20) 
         (set Cost 2 Vertex at:21)
         (set Cost 3 Vertex at:22) 
         (set Cost 1 Vertex at:23) 
         }
-        >       
+        >    
         ""
-   )* 
+    )* 
     
-    (item "Graph2"             
+    (item "Graph2"       
         <
         (graph
             vertices:{ 
@@ -85,41 +85,41 @@
             {13 18} {14 19} {15 16} {15 20} {15 21} {16 20} {16 21} {20 21} 
             {16 17} {17 22} {21 22} {17 18} {18 23} {22 23} {18 19} {18 24} 
             {19 23} {19 24} {23 24}}
-       )
-        >  
+        )
+        > 
         <
         {
-        (set Cost 1 Vertex at:0)  
+        (set Cost 1 Vertex at:0) 
         (set Cost 2 Vertex at:1)
         (set Cost 3 Vertex at:2) 
-        (set Cost 1 Vertex at:3)  
+        (set Cost 1 Vertex at:3) 
         (set Cost 2 Vertex at:4)
         (set Cost 3 Vertex at:5) 
-        (set Cost 1 Vertex at:6)  
+        (set Cost 1 Vertex at:6) 
         (set Cost 2 Vertex at:7)
         (set Cost 3 Vertex at:8)
         (set Cost 3 Vertex at:9)
-        (set Cost 1 Vertex at:10)  
+        (set Cost 1 Vertex at:10) 
         (set Cost 2 Vertex at:11)
         (set Cost 3 Vertex at:12) 
-        (set Cost 1 Vertex at:13)  
+        (set Cost 1 Vertex at:13) 
         (set Cost 2 Vertex at:14)
         (set Cost 3 Vertex at:15) 
-        (set Cost 1 Vertex at:16)  
+        (set Cost 1 Vertex at:16) 
         (set Cost 2 Vertex at:17)
         (set Cost 3 Vertex at:18) 
-        (set Cost 3 Vertex at:19)  
-        (set Cost 1 Vertex at:20)  
+        (set Cost 3 Vertex at:19) 
+        (set Cost 1 Vertex at:20) 
         (set Cost 2 Vertex at:21)
         (set Cost 3 Vertex at:22) 
-        (set Cost 1 Vertex at:23)  
+        (set Cost 1 Vertex at:23) 
         (set Cost 2 Vertex at:24)
         }
-        >        
+        >    
         ""
-   ) 
+    ) 
     
-    (item "Graph3"             
+    (item "Graph3"       
         <
         (graph
             vertices:{ 
@@ -129,34 +129,34 @@
             {0 1} {0 2} {0 10} {1 4} {1 15} {2 3} {2 5} {3 4} {3 7} {4 9} {5 6} 
             {5 11} {10 11} {11 16} {6 12} {6 7} {7 8} {8 9} {9 14} {14 15} {8 13} 
             {13 12} {12 16} {13 17} {14 17} {16 18} {18 17} {18 19} {10 19} {15 19}}
-       )
+        )
         > 
         <
         {
-        (set Cost 1 Vertex at:0)  
+        (set Cost 1 Vertex at:0) 
         (set Cost 2 Vertex at:1)
         (set Cost 3 Vertex at:2) 
-        (set Cost 1 Vertex at:3)  
+        (set Cost 1 Vertex at:3) 
         (set Cost 2 Vertex at:4)
         (set Cost 3 Vertex at:5) 
-        (set Cost 1 Vertex at:6)  
+        (set Cost 1 Vertex at:6) 
         (set Cost 2 Vertex at:7)
         (set Cost 3 Vertex at:8)
         (set Cost 3 Vertex at:9)
-        (set Cost 1 Vertex at:10)  
+        (set Cost 1 Vertex at:10) 
         (set Cost 2 Vertex at:11)
         (set Cost 3 Vertex at:12) 
-        (set Cost 1 Vertex at:13)  
+        (set Cost 1 Vertex at:13) 
         (set Cost 2 Vertex at:14)
         (set Cost 3 Vertex at:15) 
-        (set Cost 1 Vertex at:16)  
+        (set Cost 1 Vertex at:16) 
         (set Cost 2 Vertex at:17)
         (set Cost 3 Vertex at:18) 
         (set Cost 3 Vertex at:19) 
         }
-        >        
+        >    
         ""
-   )    
+    )  
     
 })
 
@@ -164,20 +164,20 @@
 
 (option "Players" <Version> args:{ <numPlayers>}
     {
-    (item "2"  
+    (item "2" 
         <2> 
         "The version of the game played with 2 players."
-   )*  
+    )* 
     
-    (item "3"  
-        <3>           
+    (item "3" 
+        <3>      
         "The version of the game played with 3 players."
-   ) 
+    ) 
     
-    (item "4"  
-        <4>         
+    (item "4" 
+        <4>     
         "The version of the game played with 4 players."
-   )     
+    )   
 })
 
 //------------------------------------------------------------------------------
@@ -195,7 +195,7 @@
         (credit "Tahmina Begum")
         (date "01-07-2020")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Red))
@@ -210,5 +210,5 @@
     
     (ai
         "Onek Rong_ai"
-   )
+    )
 )

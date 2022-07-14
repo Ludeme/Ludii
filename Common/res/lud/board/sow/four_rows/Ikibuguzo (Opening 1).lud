@@ -4,8 +4,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Ikibuguzo (Opening 1)"  
-    (players 2)  
+(game "Ikibuguzo (Opening 1)" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -15,11 +15,11 @@
             (track "TrackCW1" "7,W,N1,E" loop:True P1)
             (track "TrackCW2" "24,E,S1,W" loop:True P2)
             }
-       )
-        (regions "Home" P1 (sites Track "TrackCCW1"))                              // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))                              // P2 home
+        )
+        (regions "Home" P1 (sites Track "TrackCCW1"))               // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))               // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))   // P2 inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))  // P2 inner Home
         (map "FirstMove" {(pair P1 10) (pair P2 21)})
         (map "SecondMove" {(pair P1 12) (pair P2 19)})
         (map "ThirdMove" {(pair P1 14) (pair P2 17)})
@@ -27,7 +27,7 @@
         (map "SecondLeftInner" {(pair P1 9) (pair P2 22)})
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start { 
@@ -48,12 +48,12 @@
                             (from (mapEntry "FirstMove" Mover))
                             (to ("NextHole" (from) "TrackCCW" 2))
                             count:1
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (nextPhase Mover "SecondMove")
-       )
+        )
         (phase "SecondMove"
             (play
                 (move 
@@ -65,12 +65,12 @@
                             (from (mapEntry "SecondMove" Mover))
                             (to ("NextHole" (from) "TrackCCW" 2))
                             count:1
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (nextPhase Mover "ThirdMove")
-       )
+        )
         (phase "ThirdMove"
             (play
                 (move 
@@ -82,12 +82,12 @@
                             (from (mapEntry "ThirdMove" Mover))
                             (to ("NextHole" (from) "TrackCCW" 2))
                             count:1
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (nextPhase Mover "MainPhase")
-       )
+        )
         
         (phase "MainPhase"
             (play
@@ -97,18 +97,18 @@
                             (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 (sites {(mapEntry "LeftMostOuter" Mover) (mapEntry "SecondLeftInner" Mover)}) 
-                           )
+                            )
                             if:(and {
                                 if:(if ("SameTurn")
                                     (< 0 (count at:(from)))
                                     (< 1 (count at:(from)))
-                               )
+                                )
                                 (is In (from) (sites {(mapEntry "LeftMostOuter" Mover) (mapEntry "SecondLeftInner" Mover)}))
                                 (is In ("NextHole" (from) "TrackCW" (count at:(from))) (sites Mover "Inner"))
                                 (is Occupied ("OppositePit" ("NextHole" (from) "TrackCW" (count at:(from)))))
                                 (is Occupied ("OppositeOuterPit" ("NextHole" (from) "TrackCW" (count at:(from)))))
                             })
-                       )
+                        )
                         (then 
                             (sow
                                 "TrackCW"
@@ -127,32 +127,32 @@
                                                     (from ("OppositePit" (to)))
                                                     (to (last From))
                                                     count:(count at:("OppositePit" (to)))
-                                               )
+                                                )
                                                 (fromTo
                                                     (from ("OppositeOuterPit" (to)))
                                                     (to (last From))
                                                     count:(count at:("OppositeOuterPit" (to)))
-                                               )
+                                                )
                                                 (set Var "Replay" (from))
                                             })
                                             (set Var "Replay" (to))
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     (move Select
                         (from 
                             (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 (sites Mover) 
-                           )
+                            )
                             if:(if ("SameTurn")
                                 (< 0 (count at:(from)))
                                 (< 1 (count at:(from)))
-                           )
-                       )
+                            )
+                        )
                         (then 
                             (sow
                                 "TrackCCW"
@@ -171,27 +171,27 @@
                                                     (from ("OppositePit" (to)))
                                                     (to (last From))
                                                     count:(count at:("OppositePit" (to)))
-                                               )
+                                                )
                                                 (fromTo
                                                     (from ("OppositeOuterPit" (to)))
                                                     (to (last From))
                                                     count:(count at:("OppositeOuterPit" (to)))
-                                               )
+                                                )
                                                 (set Var "Replay" (from))
                                             })
                                             (set Var "Replay" (to))
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
             (end ("BlockWin"))
-       )
+        )
         }
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -200,7 +200,7 @@
     
     (info
         {
-        (description "Ikibuguzo is a four-row mancala-style board game from the Great Lakes Region of Africa. It  is closely related to other games in the region, but with different opening positions and the possibility of winning by making a specific capture.")
+        (description "Ikibuguzo is a four-row mancala-style board game from the Great Lakes Region of Africa. It is closely related to other games in the region, but with different opening positions and the possibility of winning by making a specific capture.")
         (aliases {"Uruheso" "Uruheisho"})
         (rules "4x8 board. Two counters in each hole. Opening play: Players simultaneously arrange their counters in the following patter, beginning from the bottom left and proceeding anti-clockwise: 0, 6, 0, 0, 0, 0, 0, 17, 0, 3, 0, 3, 0, 3, 0, 0. Players then move alternately. The first three turns are made by sowing from the holes with three holes, proceeding in order from the one furthest to the left, sowing two in the next hole and one in the following. They then sow from the next hole to the right with three counters on the next turn in the same way. Main phase: Play begins from any hole on the player's side of the board with counters in it. Singletons cannot move. Sowing happens in an anti-clockwise direction. If the last counter lands in an empty hole, the turn is over. For capturing: Holes are in 'opposition' when one player has the front row hole occupied and the opponent has both of the holes opposite it occupied. If the last hole in a sowing is in opposition, the player takes the counters in both of the opponent's holes and places them in the empty hole from which the player lifted the counters. The player then sows the captured counters from this hole. Further captures in the sowing can occur in the same way. However, each player has two hole from which clockwise plays can be made: the leftmost hole in the outer row and the second from the left in the inner row. Clockwise moves can only be made from these holes if they immediately lead to a capture. When the captured counters are sown, starting from the same hole, they can also be sown clockwise if they lead to a capture. If they cannot lead to a capture, they are sown anti-clockwise. Another alternative the player has is that, if the player plays clockwise from one of these holes and therefore makes a capture, the captured counters may be placed in the hole and left there, and the player may play instead from the other hole from which clockwise captures are allowed in a clockwise direction, if it leads to a capture. The player may continue playing from this hole as above until the possibilities to move are exhausted, and then may move from any hole in an anti-clockwise direction. Multiple captures can only be made in a clockwise direction from these holes if it is made on the first sowing of the turn. Otherwise, only one clockwise capture can be made and sowing must proceed in an anti-clockwise direction. If the last counter lands on a hole that is occupied but not in opposition, these counters are picked up and sowing continues. Play ends when one player captures all the opponent's counters or one player cannot play. The player who cannot play loses. A player may also win by capturing the counters from both of the opponent's end holes in the inner row in a single turn.")
         (source "Murray 1951: 217.")
@@ -208,9 +208,9 @@
         (version "1.3.4")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
-        (origin  "This game was played in African Great Lakes, around 1952.")
+        (origin "This game was played in African Great Lakes, around 1952.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

@@ -4,7 +4,7 @@
         (board 
             (rectangle 2 13) 
             use:Vertex
-       )
+        )
         (dice d:6 num:2)
         (piece "Disc" Each (move [#]))
     })
@@ -12,7 +12,7 @@
         (start [#])
         (play [#])
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -28,9 +28,9 @@
         (version "1.3.4")
         (classification "board/race/escape/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Turkey, from around 1503 to 1599.")
+        (origin "This game was played in Turkey, from around 1503 to 1599.")
         }
-   )
+    )
     
     (graphics {
         (board Style backgammon)

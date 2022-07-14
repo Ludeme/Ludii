@@ -6,18 +6,18 @@
 
 //------------------------------------------------------------------------------
 
-(game "Khutka Boia"  
-    (players 2)  
+(game "Khutka Boia" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 5 store:None
             (track "Track" "0,E,N,W" loop:True)
-       )
+        )
         (piece "Seed" Shared)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start {
@@ -36,9 +36,9 @@
                                     ("SameTurn") 
                                     "PlayFromNextLastHole" 
                                     (sites Mover) 
-                               ) 
+                                ) 
                                 if:(and (is Occupied (from)) (is In (from) ("PlayableSites")))
-                           )
+                            )
                             (then
                                 (do
                                     (if (= 1 (value Player Next))
@@ -46,8 +46,8 @@
                                             (from (last From))
                                             (to (handSite Mover))
                                             count:1
-                                       )
-                                   )
+                                        )
+                                    )
                                     next:(sow
                                         (last From)
                                         apply:(if (is Occupied ("NextHoleFrom" (to) "Track" 1))
@@ -57,14 +57,14 @@
                                                     (from ("NextHoleFrom" (to) "Track" 2))
                                                     (to (handSite Mover))
                                                     count:(count at:("NextHoleFrom" (to) "Track" 2))
-                                               )
-                                           )
-                                       )
+                                                )
+                                            )
+                                        )
                                         skipIf:(not (is In (to) ("PlayableSites")))
-                                   )
-                               )
-                           )
-                       )
+                                    )
+                                )
+                            )
+                        )
                         }
                         (then
                             (and {
@@ -75,10 +75,10 @@
                                                 (from (site))
                                                 (to (handSite Player))
                                                 count:4
-                                           )
-                                       )
-                                   )
-                               )
+                                            )
+                                        )
+                                    )
+                                )
                                 (forEach Site (sites P1)
                                     (if (and (is Occupied (site)) (= 1 (state at:(site))))
                                         (and
@@ -86,11 +86,11 @@
                                                 (from (site))
                                                 (to (handSite Player))
                                                 count:(count at:(site))
-                                           )	
+                                            )	
                                             (set State at:(site) 1)
-                                       )
-                                   )	
-                               )
+                                        )
+                                    )	
+                                )
                                 (forEach Site (sites P2)
                                     (if (and (is Occupied (site)) (= 2 (state at:(site))))
                                         (and
@@ -98,14 +98,14 @@
                                                 (from (site))
                                                 (to (handSite Player))
                                                 count:(count at:(site))
-                                           )	
+                                            )	
                                             (set State at:(site) 2)
-                                       )
-                                   )	
-                               )
+                                        )
+                                    )	
+                                )
                             })
-                       )
-                   )
+                        )
+                    )
                     }
                     (then
                         (if ("OneSeedOnBoard")
@@ -115,38 +115,38 @@
                                         (from (site))
                                         (to (handSite P1))
                                         count:(count at:(site))
-                                   )
-                               )
+                                    )
+                                )
                                 (forEach Site (sites P2)
                                     (fromTo
                                         (from (site))
                                         (to (handSite P2))
                                         count:(count at:(site))
-                                   )
-                               )
+                                    )
+                                )
                                 (forEach Site (sites Board)
                                     (if (!= 0 (state at:(site)))
                                         (set State at:(site) 0)
-                                   )
-                               )
+                                    )
+                                )
                                 (set Value P1 0)
                                 (set Value P2 0)
                                 (forget Value "Playable" All)
                             })
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (end (if ("NoPieceOnBoard")
                     {
                     (if (= 0 (count Cell at:(handSite P1))) (result P2 Win))
                     (if (= 0 (count Cell at:(handSite P2))) (result P1 Win))
                     }
-               )
-           )
+                )
+            )
             
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-       )
+        )
         
         (phase "BetweenRounds"
             (play
@@ -157,12 +157,12 @@
                             (to (sites Mover) if:(is Empty (to)))
                             count:5
                             (then (remember Value "Playable" (last To)))
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (nextPhase (all Passed) "DecisionForNextRound")
-       )
+        )
         
         (phase "DecisionForNextRound"
             (play
@@ -175,8 +175,8 @@
                                     (from (handSite P1))
                                     (to (handSite P2))
                                     count:1
-                               )
-                           )
+                                )
+                            )
                             (if (= 1 (count Cell at:(handSite P2)))
                                 (and
                                     (set Value P2 1)
@@ -184,16 +184,16 @@
                                         (from (handSite P2))
                                         (to (handSite P1))
                                         count:1
-                                   )
-                               )
+                                    )
+                                )
                                 (if (= 2 (count Cell at:(handSite P2)))
                                     (set Var "Bha" 1)
                                     (if (= 2 (count Cell at:(handSite P1)))
                                         (set Var "Bha" 2)
-                                   )
-                               )
-                           )
-                       )
+                                    )
+                                )
+                            )
+                        )
                         next:(if (= (var "Bha") P1)
                             (move Select
                                 (from (intersection (union (sites Left) (sites Right)) (sites P1)))
@@ -201,9 +201,9 @@
                                     (and
                                         (set State at:(last To) 1)
                                         (set Var "Bha" 0)
-                                   )
-                               )
-                           )
+                                    )
+                                )
+                            )
                             (if (= (var "Bha") P2)
                                 (move Select
                                     (from (intersection (union (sites Left) (sites Right)) (sites P2)))
@@ -211,25 +211,25 @@
                                         (and
                                             (set State at:(last To) 2)
                                             (set Var "Bha" 0)
-                                       )
-                                   )
-                               )
+                                        )
+                                    )
+                                )
                                 (move Pass)
-                           )
-                       )
-                   )
+                            )
+                        )
+                    )
                     (move Pass)
-               )
-           )
+                )
+            )
             (nextPhase "Sowing")
-       )
+        )
         }
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Khutka Boia is a two-row mancala-style board game played in the Mianwali district of Pakistan in the early twentieth century. It was played by all ages and genders, and generally played on holes made one a stone surface.")
@@ -240,9 +240,9 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in South Asia, around 1925.")
+        (origin "This game was played in South Asia, around 1925.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

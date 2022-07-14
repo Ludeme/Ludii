@@ -1,10 +1,10 @@
-(game "Co Chan Cho"  
-    (players 2)  
+(game "Co Chan Cho" 
+    (players 2) 
     (equipment { 
         (board 
             (square 2 diagonals:Solid)
             use:Vertex
-       )
+        )
         (piece "Disc" Each
             (move Step 
                 (to 
@@ -16,10 +16,10 @@
                         }) 
                         (is Empty (to))
                     })
-               )
-           )
-       )
-    })  
+                )
+            )
+        )
+    }) 
     
     (rules 
         (start {
@@ -27,8 +27,8 @@
             (place "Disc2" (sites Bottom))
         })
         (play (forEach Piece))
-        (end ("NoMoves" Loss))  
-   )
+        (end ("NoMoves" Loss)) 
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -37,15 +37,15 @@
     
     (info
         {
-        (description "Co Chan Cho is a blocking game that w asplayed by children in the Tonkin region of Vietnam  int he mid twentiethcentury.  The game was usually drawn ont he ground, and broken  pieces of pottery, paper, or straw were used as pieces.")
-        (rules "The board is a square with diagonals drawn, with the bottom side of the square marked with an X. Two pieces per player, which begin on opposite corners of the square, one player to the left of the side with the X and the other to the right. Players alternate  turns moving  one of their pieces along the lines of the board to an empty adjacent point. Players cannot move along the line marked with an X. When one player  cannot move, the opponent wins.")
+        (description "Co Chan Cho is a blocking game that w asplayed by children in the Tonkin region of Vietnam int he mid twentiethcentury. The game was usually drawn ont he ground, and broken pieces of pottery, paper, or straw were used as pieces.")
+        (rules "The board is a square with diagonals drawn, with the bottom side of the square marked with an X. Two pieces per player, which begin on opposite corners of the square, one player to the left of the side with the X and the other to the right. Players alternate turns moving one of their pieces along the lines of the board to an empty adjacent point. Players cannot move along the line marked with an X. When one player cannot move, the opponent wins.")
         (source "Son 1985: 44.")
         (id "1929")
         (version "1.3.4")
         (classification "board/space/blocking")
-        (origin  "This game was played in Vietnam, from around 1940 to 1941.")
+        (origin "This game was played in Vietnam, from around 1940 to 1941.")
         }
-   )
+    )
     
     (graphics {
         (show Symbol "cross" Edge 0 fillColour:(colour Black) edgeColour:(colour Black) scale:0.2)

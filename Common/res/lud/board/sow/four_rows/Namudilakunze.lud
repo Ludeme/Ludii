@@ -3,27 +3,27 @@
 
 //------------------------------------------------------------------------------
 
-(game "Namudilakunze"  
-    (players 2)  
+(game "Namudilakunze" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
             {
             <Board:tracks>
             }
-       )
+        )
         (piece "Seed" Shared)
-        (regions "Home" P1 (sites Track "TrackCCW1"))                              // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))                              // P2 home
+        (regions "Home" P1 (sites Track "TrackCCW1"))               // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))               // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))   // P2 inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))  // P2 inner Home
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start 
             (set Count 1 to:(difference (sites Board) (sites { 0 (- (* ("Columns") 4) 1)})))
-       )
+        )
         
         phases:{
         (phase "FirstTurn"
@@ -34,9 +34,9 @@
                             ("SameTurn") 
                             ("LastHoleSowed")
                             (sites Mover "Home") 
-                       ) 
+                        ) 
                         if:(is Occupied (from))
-                   )
+                    )
                     (then
                         (sow
                             "TrackCW"
@@ -48,16 +48,16 @@
                                         (remove ("OppositePit" (to)))
                                         (if (is Occupied ("OppositeOuterPit" (to)))
                                             (remove ("OppositeOuterPit" (to)))
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
             (nextPhase Mover (not (is Next Mover)) "Main")
-       )
+        )
         (phase "Main"
             (play 
                 (or
@@ -68,9 +68,9 @@
                                     ("SameTurn") 
                                     ("LastHoleSowed")
                                     (sites Mover "Home") 
-                               ) 
+                                ) 
                                 if:(is Occupied (from))
-                           )
+                            )
                             (then
                                 (sow
                                     "TrackCCW"
@@ -82,18 +82,18 @@
                                                 (if (is Empty ("OppositePit" (to)))
                                                     (if (is Occupied ("OppositeOuterPit" (to)))
                                                         (remove ("OppositeOuterPit" (to)))
-                                                   )
-                                               )
-                                           )
-                                       )
+                                                    )
+                                                )
+                                            )
+                                        )
                                         (if (!= 1 (value Player Mover))
                                             (set Value Mover 1)
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     (if (or (>= 0 (value Player Mover)) (= (value Player Mover) 2))
                         (move Select
                             (from 
@@ -101,9 +101,9 @@
                                     ("SameTurn") 
                                     ("LastHoleSowed")
                                     (sites Mover "Home") 
-                               ) 
+                                ) 
                                 if:(is Occupied (from))
-                           )
+                            )
                             (then
                                 (sow
                                     "TrackCW"
@@ -115,45 +115,45 @@
                                                 (if (is Empty ("OppositePit" (to)))
                                                     (if (is Occupied ("OppositeOuterPit" (to)))
                                                         (remove ("OppositeOuterPit" (to)))
-                                                   )
-                                               )
-                                           )
-                                       )
+                                                    )
+                                                )
+                                            )
+                                        )
                                         (if (!= 2 (value Player Mover))
                                             (set Value Mover 2)
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         }
         
         (end
             (forEach NonMover
                 if:("NoPiece")
                 (result Player Loss)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> <tracks> }
     {
-    (item "7"   <7>  
+    (item "7"  <7> 
         <
         (track "TrackCCW1" "0,E,N1,W" loop:True P1)
         (track "TrackCCW2" "14,E,N1,W" loop:True P2)
         (track "TrackCW1" "6,W,N1,E" loop:True P1)
         (track "TrackCW2" "20,W,N1,E" loop:True P2)
         >
-    "Each player has 7 holes.")*  
-    (item "8"   <8>   
+    "Each player has 7 holes.")* 
+    (item "8"  <8>  
         <
         (track "TrackCCW1" "0,E,N1,W" loop:True P1)
         (track "TrackCCW2" "16,E,N1,W" loop:True P2)
@@ -161,7 +161,7 @@
         (track "TrackCW2" "23,W,N1,E" loop:True P2)
         >
     "Each player has 8 holes.") 
-    (item "9"   <9>   
+    (item "9"  <9>  
         <
         (track "TrackCCW1" "0,E,N1,W" loop:True P1)
         (track "TrackCCW2" "18,E,N1,W" loop:True P2)
@@ -169,7 +169,7 @@
         (track "TrackCW2" "26,W,N1,E" loop:True P2)
         >
     "Each player has 9 holes.") 
-    (item "10"  <10>  
+    (item "10" <10> 
         <
         (track "TrackCCW1" "0,E,N1,W" loop:True P1)
         (track "TrackCCW2" "20,E,N1,W" loop:True P2)
@@ -187,7 +187,7 @@
         "Board Size/7"
         }
         variations:{"Board Size/8" "Board Size/9" "Board Size/10"}
-   )*
+    )*
     
 })
 
@@ -206,7 +206,7 @@
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

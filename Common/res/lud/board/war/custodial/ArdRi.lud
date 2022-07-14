@@ -6,9 +6,9 @@
             (max 1) 
             if:(= (what at:(between)) (id #1))
             (apply (remove (between))) 
-       )
+        )
         (to if:("IsFriendAt" (to)))
-   )
+    )
 )
 
 (define "JarlIsCaptured" (apply (trigger "Surrounded" P2)))
@@ -19,13 +19,13 @@
     (and 
         (not (is In (to) (sites Centre))) 
         (is Empty (to))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "ArdRi"  
-    (players 2)  
+(game "ArdRi" 
+    (players 2) 
     (equipment { 
         (board (square 7)) 
         
@@ -42,37 +42,37 @@
                                 <Capture:distance> 
                                 if:(= (what at:(between)) (id "Jarl2")) 
                                 "JarlIsCaptured"
-                           )
+                            )
                             (to 
                                 if:(or 
                                     ("IsFriendAt" (to)) 
                                     (is In (to) (sites Centre))
-                               )
-                           )
-                       )
+                                )
+                            )
+                        )
                         }
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (piece "Thrall" P2 
             (move
                 Step
                 Orthogonal 
                 (to if:"EmptyButNotTheCentre") 
                 (then ("Custodial" "Thrall1"))
-           )
-       ) 
+            )
+        ) 
         (piece "Jarl" P2 
             (move
                 Step
                 Orthogonal 
                 (to if:(is Empty (to))) 
                 (then ("Custodial" "Thrall1"))
-           )
-       ) 
+            )
+        ) 
         }
-   )  
+    ) 
     (rules 
         (start
             { 
@@ -80,7 +80,7 @@
             (place "Thrall2" (difference (expand (sites Centre)) (sites Centre)))
             (place "Jarl2" (centrePoint))
             }
-       )
+        )
         
         (play (forEach Piece)) 
         
@@ -89,16 +89,16 @@
             (if (is Within (id "Jarl2") in:(sites Outer)) (result P2 Win))
             (if "JarlWasCaptured" (result P1 Win))
             }
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Play Rules" <Capture> args:{ <type> <distance> }
     {
-    (item "Common"       <surround (from (last To)) Orthogonal> <>          "The game is played with the common rules.")   
-    (item "Corrected"    <custodial (from (last To)) Orthogonal> <(max 1)>    "The game is played with the corrected rules.")   
+    (item "Common"    <surround (from (last To)) Orthogonal> <>     "The game is played with the common rules.")  
+    (item "Corrected"  <custodial (from (last To)) Orthogonal> <(max 1)>  "The game is played with the corrected rules.")  
 })
 
 //------------------------------------------------------------------------------
@@ -115,7 +115,7 @@
         (classification "board/war/custodial")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Black))
@@ -125,6 +125,6 @@
     
     (ai 
         "ArdRi_ai"
-   )
+    )
     
 )

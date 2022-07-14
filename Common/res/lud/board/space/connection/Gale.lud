@@ -1,11 +1,11 @@
-(game "Gale"  
-    (players 2)  
+(game "Gale" 
+    (players 2) 
     (equipment { 
         (board (square <Board>)) 
         (piece "Square" Each)
         (regions P1 {(sites Top) (sites Bottom) })
         (regions P2 {(sites Left) (sites Right) })
-    })  
+    }) 
     (rules 
         (start {
             (place "Square1" (forEach (sites Board) if:(and (is Even (column of:(site))) (is Odd (row of:(site))))))
@@ -14,28 +14,28 @@
         (play (move Add (to (sites Empty))))
         
         (end (if (is Connected Mover) (result Mover <Result>)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "5x5"    <5>    "The game is played on a 5x5 board")   
-    (item "7x7"    <7>    "The game is played on a 7x7 board")   
-    (item "9x9"    <9>    "The game is played on a 9x9 board")   
-    (item "11x11"    <11>  "The game is played on a 11x11 board") 
-    (item "13x13"    <13>  "The game is played on a 13x13 board")**  
-    (item "15x15"    <15>  "The game is played on a 15x15 board")  
-    (item "17x17"    <17>  "The game is played on a 17x17 board")  
-    (item "19x19"    <19>  "The game is played on a 19x19 board")  
+    (item "5x5"  <5>  "The game is played on a 5x5 board")  
+    (item "7x7"  <7>  "The game is played on a 7x7 board")  
+    (item "9x9"  <9>  "The game is played on a 9x9 board")  
+    (item "11x11"  <11> "The game is played on a 11x11 board") 
+    (item "13x13"  <13> "The game is played on a 13x13 board")** 
+    (item "15x15"  <15> "The game is played on a 15x15 board") 
+    (item "17x17"  <17> "The game is played on a 17x17 board") 
+    (item "19x19"  <19> "The game is played on a 19x19 board") 
     
 })
 
 (option "End Rules" <Result> args:{ <type>}
     {
-    (item "Standard" <Win>  "The first player to connect their two sides wins.")*   
-    (item "Misere"   <Loss> "The first player to connect their two sides loses.")  
+    (item "Standard" <Win> "The first player to connect their two sides wins.")*  
+    (item "Misere"  <Loss> "The first player to connect their two sides loses.") 
 })
 
 //------------------------------------------------------------------------------
@@ -53,7 +53,7 @@
         (credit "Woody Pidcock")
         (date "1958")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Yellow))
@@ -67,6 +67,6 @@
     
     (ai
         "Gale_ai"
-   )
+    )
 )
 

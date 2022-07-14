@@ -33,7 +33,7 @@
         (union
             (sites (values Remembered "P1")) 
             (difference (sites Occupied by:P1) (handSite P1 0))
-       ) 
+        ) 
         (sites (values Remembered "P2"))
 )) 
 
@@ -42,7 +42,7 @@
         (union
             (sites (values Remembered "P2")) 
             (difference (sites Occupied by:P2) (handSite P2 0))
-       ) 
+        ) 
         (sites (values Remembered "P1"))
 )) 
 
@@ -70,7 +70,7 @@
             (and
                 (forEach Site (<Board:hullType> (sites))
                     (forget Value #1 (site))
-               )
+                )
                 (remove (sites))
 ))))
 
@@ -102,7 +102,7 @@
             (>
                 (value Piece at:(site)) 
                 (value Piece at:(handSite Mover 0))
-           )
+            )
             (sites Around (site) Orthogonal)
 )))
 
@@ -119,14 +119,14 @@
         (hand Each size:1)
         (piece "Disc" Each)
         }
-   )
+    )
     (rules
         (start
             {
             (place "Disc1" (handSite P1 0) value:0) 
             (place "Disc2" (handSite P2 0) value:0) 
             }
-       )
+        )
         (play
             (or
                 (move Pass)
@@ -134,18 +134,18 @@
                     (to
                         (difference
                             (union
-                                {  // "{}" needed because 2nd item might not exist...
+                                { // "{}" needed because 2nd item might not exist...
                                 (if
                                     (= 1 (mover)) 
                                     ("EmptySitesOutsideEnemyTerritoryFor" "P2")
                                     ("EmptySitesOutsideEnemyTerritoryFor" "P1")
-                               )
+                                )
                                 (<RestrictionEasementFor:placement>)
                                 }
-                           )
+                            )
                             ("SitesInOversizedGroups")
-                       )
-                   )
+                        )
+                    )
                     (then
                         (do 
                             ("UpdateGroupSizeValue4PiecesConnected2Placement")
@@ -161,9 +161,9 @@
                                                 ("CaptureWithin" "P2" "P1")
                                                 ("CaptureWithin" "P1" "P2")
                                                 (then ("Scoring"))
-                                           )
+                                            )
                                             ("Scoring")
-       )))))))))
+        )))))))))
         (end 
             (if 
                 (all Passed)
@@ -171,11 +171,11 @@
                 (if
                     (> (score Mover) (score Next))
                     (result Mover Win)
-               )
+                )
                 (if
                     (< (score Mover) (score Next))
                     (result Mover Loss)
-               )
+                )
                 } 
                 (result Mover Win)
 )))) 
@@ -201,11 +201,11 @@
     (item "Strong Territory" 
         < >
         "No placement within Enemy territory."
-   ) 
+    ) 
     (item "Weak Territory"
         <(sites Around (intersection (sites Board) (sites Occupied by:Mover)) Orthogonal if:(is Empty (to)))>
         "Placement within Enemy territory is allowed if adjacent to a Friendly group."
-   )
+    )
     }
 )
 
@@ -274,9 +274,9 @@ Weak Territory, allowing placement next to a friendly group in enemy territory i
     (board Colour Symbols (colour Black))
     (player Colour P1 (colour Black))
     (player Colour P2 (colour LightOrange))
-    (region Colour ("P1Territory")     (colour  60 120 170 120)) 
-    (region Colour ("CommonTerritory") (colour 120 155 185 120))  
-    (region Colour ("P2Territory")     (colour 180 190 200 120))
+    (region Colour ("P1Territory")   (colour 60 120 170 120)) 
+    (region Colour ("CommonTerritory") (colour 120 155 185 120)) 
+    (region Colour ("P2Territory")   (colour 180 190 200 120))
     (show Piece Value Middle valueOutline:False scale:.8)
     (hand Placement P1 scale:.1 offsetX:0.05 offsetY:0.75 vertical:True)
     (hand Placement P2 scale:.1 offsetX:0.95 offsetY:0.75 vertical:True)

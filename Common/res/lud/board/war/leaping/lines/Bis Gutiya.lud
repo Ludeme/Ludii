@@ -1,4 +1,4 @@
-(game "Bis Gutiya"  
+(game "Bis Gutiya" 
     (players 2)
     (equipment { 
         (board (square 5 diagonals:Solid) use:Vertex)
@@ -6,9 +6,9 @@
             (or
                 ("StepToEmpty") 
                 ("HopCapture") 
-           )
-       )
-    })  
+            )
+        )
+    }) 
     
     (rules 
         (start { 
@@ -19,7 +19,7 @@
         (play (forEach Piece)) 
         
         (end (if (no Pieces Next) (result Mover Win))) 
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -35,9 +35,9 @@
         (version "1.3.4")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1935.")
+        (origin "This game was played in India, around 1935.")
         }
-   )
+    )
     
     (graphics {
         
@@ -45,5 +45,5 @@
     
     (ai
         "Bis Gutiya_ai"
-   )
+    )
 )

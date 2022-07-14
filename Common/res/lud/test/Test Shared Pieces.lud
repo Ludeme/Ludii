@@ -5,15 +5,15 @@
         (board (rectangle 8 4))
         (piece "Queen" Shared)
         }
-   )
+    )
     (rules
         (start
             {
             (place "Queen" {"D2" "D1" "C1"})
             (place "Queen" {"A8" "B8" "A7"})
             }
-       )
+        )
         (play (move Slide (from (sites {"A8"}))))
         (end (if (no Moves Next) (result Mover Win)))
-   )
+    )
 )

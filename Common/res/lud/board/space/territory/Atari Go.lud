@@ -6,14 +6,14 @@
         Orthogonal 
         (between 
             if:("IsEnemyAt" (between)) 
-            (apply         
+            (apply     
                 (and
                     (trigger "CaptureMade" Next)
                     (remove (between)) 
-               )
-           ) 
-       )
-   )
+                )
+            ) 
+        )
+    )
 )
 
 (define "HasMadeACapture"
@@ -22,7 +22,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "Atari Go"  
+(game "Atari Go" 
     (players 2) 
     (equipment { 
         (board <Board> use:Vertex) 
@@ -36,22 +36,22 @@
                     Add
                     (to (sites Empty))
                     (then ("CaptureSurroundedPiece"))
-               )
+                )
                 ifAfterwards:("HasFreedom")
-           )
-       )
+            )
+        )
         (end (if "HasMadeACapture" (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "9x9"      <(square 9)>     "The game is played on a 9x9 board.")   
-    (item "13x13"    <(square 13)>    "The game is played on a 13x13 board.")   
-    (item "15x15"    <(square 15)>    "The game is played on a 15x15 board.")   
-    (item "19x19"    <(square 19)>    "The game is played on a 19x19 board.")**   
+    (item "9x9"   <(square 9)>   "The game is played on a 9x9 board.")  
+    (item "13x13"  <(square 13)>  "The game is played on a 13x13 board.")  
+    (item "15x15"  <(square 15)>  "The game is played on a 15x15 board.")  
+    (item "19x19"  <(square 19)>  "The game is played on a 19x19 board.")**  
 })
 
 //------------------------------------------------------------------------------
@@ -68,7 +68,7 @@
         (classification "board/space/territory")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (board Style Go)
@@ -78,6 +78,6 @@
     
     (ai 
         "Atari Go_ai"
-   )
+    )
     
 )

@@ -1,10 +1,10 @@
-(game "Oumoul Kono"  
-    (players 2)  
+(game "Oumoul Kono" 
+    (players 2) 
     (equipment { 
         (board 
             (square 2 diagonals:Solid)
             use:Vertex
-       )
+        )
         (piece "Disc" Each
             (move Step 
                 (to 
@@ -16,10 +16,10 @@
                         }) 
                         (is Empty (to))
                     })
-               )
-           )
-       )
-    })  
+                )
+            )
+        )
+    }) 
     
     (rules 
         (start {
@@ -27,8 +27,8 @@
             (place "Disc2" (sites Top))
         })
         (play (forEach Piece))
-        (end ("NoMoves" Loss))  
-   )
+        (end ("NoMoves" Loss)) 
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -44,9 +44,9 @@
         (version "1.3.4")
         (classification "board/space/blocking")
         (credit "Eric Piette")
-        (origin  "This game was played in Korea, around 1895.")
+        (origin "This game was played in Korea, around 1895.")
         }
-   )
+    )
     
     (graphics {
         (show Symbol "disc" Edge 7 edgeColour:(colour Black) scale:0.4)
@@ -55,5 +55,5 @@
     
     (ai
         "Oumoul Kono_ai"
-   )
+    )
 )

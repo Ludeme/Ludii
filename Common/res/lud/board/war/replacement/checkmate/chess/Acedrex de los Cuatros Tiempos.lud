@@ -14,10 +14,10 @@
                 (and 
                     (note player:Next "Pays into the pot" to:Next) 
                     (set Pot (+ (pot) (amount Next)))
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 (define "CaptureForwardDiagonal"
@@ -27,8 +27,8 @@
         (to 
             if:(= ("RightPlayer") (who at:(to))) 
             ("CapturePiece")
-       )
-   )
+        )
+    )
 )
 
 (define "PawnMove" 
@@ -39,9 +39,9 @@
         (then
             (if (is In (last To) (sites #1)) 
                 (promote (last To) (piece {"Queen"}) Mover)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "RightPlayer" 
@@ -51,40 +51,40 @@
             (if (is Active P3)
                 3
                 4
-           )
-       )
+            )
+        )
         (if (is Mover P2)
             (if (is Active P3)
                 3
                 (if (is Active P4)
                     4
                     1
-               )
-           )
+                )
+            )
             (if (is Mover P3)
                 (if (is Active P4)
                     4
                     (if (is Active P1)
                         1
                         2
-                   )
-               )
+                    )
+                )
                 (if (is Active P1)
                     1
                     (if (is Active P2)
                         2
                         3
-                   )
-               )
-           )
-       )
-   )
+                    )
+                )
+            )
+        )
+    )
 )
 
 //----------------------------------------------------------------
 
-(game "Acedrex de los Cuatros Tiempos"  
-    (players 4)  
+(game "Acedrex de los Cuatros Tiempos" 
+    (players 4) 
     (equipment { 
         (board (square 8))
         (piece "King" Each
@@ -93,9 +93,9 @@
                 (to 
                     if:("EmptyorNext") 
                     ("CapturePiece")
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Pawn" P1 W ("PawnMove" Left))
         (piece "Pawn3d" P1 N ("PawnMove" Top))
         
@@ -115,9 +115,9 @@
                 (to 
                     if:("EmptyorNext") 
                     ("CapturePiece")
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Rook" Each
             (move
                 Slide 
@@ -125,9 +125,9 @@
                 (to 
                     if:(= ("RightPlayer") (who at:(to))) 
                     ("CapturePiece")
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Bishop" Each
             (move 
                 Hop 
@@ -136,9 +136,9 @@
                 (to 
                     if:("EmptyorNext") 
                     ("CapturePiece")
-               ) 
-           )		
-       )
+                ) 
+            )		
+        )
         (piece "Queen" Each
             (move
                 Step 
@@ -146,11 +146,11 @@
                 (to 
                     if:("EmptyorNext") 
                     ("CapturePiece")
-               ) 
-           )	
-       )
+                ) 
+            )	
+        )
         }
-   )
+    )
     (rules
         (start {
             (place "King1" coord:"H1") (place "Knight1" coord:"G1") (place "Rook1" coord:"H2") 
@@ -169,7 +169,7 @@
         (phase "Betting" 
             (play (move Bet Mover (range 0 100)))
             (nextPhase Mover)
-       )
+        )
         (phase "Playing" 
             (play
                 (do
@@ -185,26 +185,26 @@
                                         (and 
                                             (note player:Next "Pays into the pot" to:Next) 
                                             (set Pot (+ (pot) (amount Next)))
-                                       )
-                                   )
-                               )
+                                        )
+                                    )
+                                )
                                 (and 
                                     (note player:Next "Pays into the pot" to:Next) 
                                     (set Pot (+ (pot) (amount Next)))
-                               )
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         }
         (end
             (if (no Pieces Next)
                 (result Next Loss)
-           ) 
-       )
-   )
+            ) 
+        )
+    )
 )
 
 //----------------------------------------------------------------
@@ -220,7 +220,7 @@
         (classification "board/war/replacement/checkmate/chess")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (board Style Chess)
@@ -234,5 +234,5 @@
     
     (ai
         "Acedrex de los Cuatros Tiempos_ai"
-   )
+    )
 )

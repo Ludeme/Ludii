@@ -2,8 +2,8 @@
     (apply 
         (remove 
             (to) 
-       )
-   ) 
+        )
+    ) 
 )
 
 (define "NextCanNotMove"
@@ -12,18 +12,18 @@
 
 //------------------------------------------------------------------------------
 
-(game "Shatranj ar-Rumiya"  
-    (players 2)  
+(game "Shatranj ar-Rumiya" 
+    (players 2) 
     (equipment { 
         (board 
             <Variant:board>
-       )
+        )
         (piece "Pawn" Each
             (or {
                 (move Step
                     (if (= (state at:(from)) 0) CW CCW)
                     (to if:(is Empty (to)))
-               )
+                )
                 (move 
                     (from)
                     (to 
@@ -32,16 +32,16 @@
                                 (move Step
                                     (if (= (state at:(from)) 0) CW CCW)
                                     (to if:True)
-                               )
-                           )
+                                )
+                            )
                             Orthogonal
-                       )
+                        )
                         if:(and 
                             (is Related Diagonal (from) (to))
                             ("IsEnemyAt" (to))
-                       )
-                   )
-               )
+                        )
+                    )
+                )
                 }
                 (then 
                     (if (= (state at:(last To)) 0) 
@@ -49,18 +49,18 @@
                             (and 
                                 (remove (last To))
                                 (remove (ahead (last To) CW))
-                           )
-                       )
+                            )
+                        )
                         (if (= (id "Pawn" Next) (what at:(ahead (last To) CCW)))
                             (and 
                                 (remove (last To))
                                 (remove (ahead (last To) CCW))
-                           )
-                       )
-                   )	
-               )
-           )
-       )
+                            )
+                        )
+                    )	
+                )
+            )
+        )
         (piece "Rook" Each
             (move
                 Slide 
@@ -68,9 +68,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )		
-       )
+                ) 
+            )		
+        )
         (piece "Knight" Each
             (forEach Direction 
                 Orthogonal
@@ -83,22 +83,22 @@
                             (if (and 
                                     (not ("IsFriendAt" (to))) 
                                     (= 3 (count Steps Orthogonal (from) (to)))
-                               )
+                                )
                                 (move 
                                     (from) 
                                     (to 
                                         (apply 
                                             if:("IsEnemyAt" (to))
                                             (remove (to))
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               ) 
-           )
-       )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ) 
+            )
+        )
         (piece "Elephant" Each
             (move 
                 (from)
@@ -107,14 +107,14 @@
                     if:(and 
                         (not ("IsFriendAt" (to))) 
                         (< 2 (count Steps Orthogonal (from) (to)))
-                   )
+                    )
                     (apply 
                         if:("IsEnemyAt" (to))
                         (remove (to))
-                   )
-               )
-           )	
-       )
+                    )
+                )
+            )	
+        )
         (piece "Queen" Each
             (move
                 Step 
@@ -122,45 +122,45 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-               )
-           )		
-       )
+                )
+            )		
+        )
         (piece "King_noCross" Each
             (move
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-               )
-           )		
-       )
+                )
+            )		
+        )
         }
-   )  
+    ) 
     (rules 
         <Variant:start>
         (play 
             (do
                 (forEach Piece)
                 ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
-           )
-       )
+            )
+        )
         (end { 
             (if (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           )
+            )
             <Variant:end>
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <start> <board> <end>}
     {
-    (item  "Murray"  
+    (item "Murray" 
         <
         (start {
             (place "Rook1" (sites {52 53}))
@@ -181,11 +181,11 @@
         (remove
             (concentric {0 0 0 16 16 16 16})
             cells:{1}
-       )
+        )
         >
         <>
     "Rules Murray.")* 
-    (item  "Al-Amuli"  
+    (item "Al-Amuli" 
         <
         (start {
             (place "Rook1" (sites {4 5}))
@@ -208,16 +208,16 @@
                 (remove
                     (concentric {0 0 0 16 16 16 16})
                     cells:{1}
-               )
+                )
                 edges:{{0 5} {0 9} {0 13} {1 0}}
-           )
+            )
             cells:{
             {0 5 6 7 8 9}
             {0 9 10 11 12 13}
             {0 13 14 15 16 1}
             {0 1 2 3 4 5}
             }
-       )
+        )
         >
         <
         (if (is In (where "King_noCross" Mover) (sites {64..67})) (result Mover Draw))
@@ -260,7 +260,7 @@
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
@@ -277,5 +277,5 @@
     
     (ai
         "Shatranj ar-Rumiya_ai"
-   )
+    )
 )

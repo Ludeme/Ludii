@@ -1,5 +1,5 @@
 (game "To Kinegi tou Lagou"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board 
             (add
@@ -17,23 +17,23 @@
                             (shift -5 5 (concentric {1 8}))
                         })
                         vertices:{20 18 27 11 48 49 50 51 52 41 42 43 44 45 34 35 36 37 30 59 58 57 64 63}
-                   )
+                    )
                     edges:{
                     {0 1} {0 7} {0 5} {0 3} {33 35} {30 29} {27 25} {39 37}
                     }
-               )
+                )
                 edges:{
-                {15 8}  {22 6}  {4 12}  {19 2}  {18 36}  {38 20}  {40 14}  {16 26}
-                {28 24}  {23 32}  {31 11}  {10 34}  {5 30}  {3 35}  {39 1}  {27 7}              
+                {15 8} {22 6} {4 12} {19 2} {18 36} {38 20} {40 14} {16 26}
+                {28 24} {23 32} {31 11} {10 34} {5 30} {3 35} {39 1} {27 7}       
                 }
-           )
+            )
             use:Vertex
-       )
+        )
         (piece "Human" Each ("StepToEmpty"))
         (piece "Dog" Each ("StepToEmpty"))
         (piece "Hare" Each ("StepToEmpty"))
         (hand Each size:2)
-    })  
+    }) 
     
     (rules 
         (start {
@@ -43,7 +43,7 @@
         })
         
         <Rule:rule>
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -59,10 +59,10 @@
                     (from (sites Hand P1) if:(is Occupied (from)))
                     (to (sites {1..8}) if:(is Empty (to)))
                     (then (if (not ("HandEmpty" P1)) (moveAgain)))
-               )
-           )
+                )
+            )
             (nextPhase ("HandEmpty" P1) "HuntingP2")
-       )
+        )
         (phase "HuntingP2" 
             (play 
                 (forEach Piece
@@ -72,9 +72,9 @@
                                     (step 
                                         (from (where "Hare" P2))
                                         (to if:(is Empty (to)))
-                                   )
-                               )
-                           )
+                                    )
+                                )
+                            )
                             (and {
                                 (addScore P2 (- (count Moves) 3))
                                 (remove (sites Occupied by:All container:"Board"))
@@ -82,22 +82,22 @@
                                 (add (piece "Human2") (to (handSite P2)))
                                 (add (piece "Dog2") (to (handSite P2 1)) count:2)
                             })
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (nextPhase (= 1 (count Sites in:(sites Occupied by:All container:"Board"))) "PlacementP2")
-       )
+        )
         (phase "PlacementP2" 
             (play
                 (move 
                     (from (sites Hand P2) if:(is Occupied (from)))
                     (to (intersection (sites Empty) (sites {1..8})) if:(is Empty (to)))
                     (then (if (not ("HandEmpty" P2)) (moveAgain)))
-               )
-           )
+                )
+            )
             (nextPhase ("HandEmpty" P2) "HuntingP1")
-       )
+        )
         (phase "HuntingP1" 
             (play 
                 (forEach Piece
@@ -107,20 +107,20 @@
                                     (step 
                                         (from (where "Hare" P1))
                                         (to if:(is Empty (to)))
-                                   )
-                               )
-                           )
+                                    )
+                                )
+                            )
                             (addScore P1 (- (count Moves) (+ (score P2) 6)))
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (end (if (!= 0 (score P1)) (byScore)))
-       )
+        )
         }
-        >  
+        > 
         "The game has two rounds."
-   )*
+    )*
     
     (item "One Round" 
         <
@@ -131,10 +131,10 @@
                     (from (sites Hand P1) if:(is Occupied (from)))
                     (to (sites {1..8}) if:(is Empty (to)))
                     (then (if (not ("HandEmpty" P1)) (moveAgain)))
-               )
-           )
+                )
+            )
             (nextPhase ("HandEmpty" P1) "HuntingP2")
-       )
+        )
         (phase "HuntingP2" 
             (play (forEach Piece))
             (end {
@@ -143,15 +143,15 @@
                     (or
                         (>= (count Moves) (- (value MoveLimit) 10)) 
                         (>= (count Turns) (- (value TurnLimit) 5)) 
-                   )
+                    )
                     (result P2 Win)
-               )
+                )
             }) 
-       )
+        )
         }
-        >  
+        > 
         "The game has only one round."
-   )
+    )
 })
 
 //------------------------------------------------------------------------------
@@ -185,8 +185,8 @@
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in Greece, from around 1906 to 1983.")
+        (origin "This game was played in Greece, from around 1906 to 1983.")
         }
-   )
+    )
     
 )

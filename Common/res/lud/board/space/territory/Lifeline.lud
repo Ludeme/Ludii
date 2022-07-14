@@ -2,8 +2,8 @@
     (not
         (all Sites #1 
             if:(not #2)
-       )
-   )
+        )
+    )
 )
 
 (define "WeakPieSetup"
@@ -14,18 +14,18 @@
                     (sites Empty)
                     if:(= 0
                         (count Sites in:(sites Around (to) Own Orthogonal))
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (nextPhase 
             (and
                 (= 2 (count Sites in:(sites Occupied by:P1 component:"Disc")))
                 (= 2 (count Sites in:(sites Occupied by:P2 component:"Disc")))
-           )
+            )
             "Play"
-       )
-   )
+        )
+    )
 )
 
 (define "StrongPieSetup"
@@ -34,27 +34,27 @@
             (move Select
                 (from
                     (sites Empty)
-               )
+                )
                 (to 
                     (sites Empty)
                     if:(not (is In (from) (sites Around (to) includeSelf:True)))
-               )
+                )
                 (then 
                     (and
                         (add (to (last To)))
                         (add (to (last From)))
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (nextPhase 
             (and
                 (= 2 (count Sites in:(sites Occupied by:P1 component:"Disc")))
                 (= 2 (count Sites in:(sites Occupied by:P2 component:"Disc")))
-           )
+            )
             "Play"
-       )
-   )
+        )
+    )
 )
 
 (define "KomiPieSetup"
@@ -73,27 +73,27 @@
                                 (forEach Site
                                     (sites Distance from:(centrePoint) (exact 2))
                                     (remove (site) count:(size Stack at:(site)))
-                               )
-                           )
-                       )
-                   )
-               )
+                                )
+                            )
+                        )
+                    )
+                )
                 (if 
                     (= 1 (count Moves))
                     (or
                         (move Pass)
                         (move Add (piece 1) (to (sites Empty))
                             (then (swap Players 1 2))
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         (nextPhase 
             (= 2 (count Moves))
             "Opening"
-       )
-   )
+        )
+    )
     (phase "Opening"
         (play 
             (move Add 
@@ -101,18 +101,18 @@
                     (sites Empty)
                     if:(= 0
                         (count Sites in:(sites Around (to) Own Orthogonal))
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (nextPhase 
             (and
                 (= 2 (count Sites in:(sites Occupied by:P1 component:"Disc")))
                 (= 2 (count Sites in:(sites Occupied by:P2 component:"Disc")))
-           )
+            )
             "Play"
-       )
-   )
+        )
+    )
 )
 
 (define "Place"
@@ -129,17 +129,17 @@
                                 if:(or 
                                     (is Empty (to)) 
                                     (is Mover (who at:(to)))
-                               )
-                           )
-                       )
+                                )
+                            )
+                        )
                         (to)
                         (sites Occupied by:Mover)
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         #1
-   )
+    )
 )
 
 (define "ReachesPlayer"
@@ -149,9 +149,9 @@
                 in:(difference
                     (sites Occupied by:#2 component:"Disc")
                     #1
-               )
-           )
-       )
+                )
+            )
+        )
         ("SomeSite"
             #1
             (> Infinity
@@ -161,18 +161,18 @@
                             if:(or
                                 (is Empty (to)) 
                                 (is #2 (who at:(to)))
-                           )
-                       )
-                   )
+                            )
+                        )
+                    )
                     (site)
                     (difference
                         (sites Occupied by:#2)
                         #1
-                   )
-               )
-           )
-       )
-   )
+                    )
+                )
+            )
+        )
+    )
 )
 
 (define "Remove"
@@ -181,9 +181,9 @@
             (not ("ReachesPlayer" (sites) #1))
             (remove (sites))
             (pass)
-       )
+        )
         #2
-   )
+    )
 )
 
 (define "SpendKomi"
@@ -194,7 +194,7 @@
             (< 0 (count Pieces Mover in:(sites Board)))
         })
         (move Remove (handSite P2))
-   )
+    )
 )
 
 (define "KomiSelection"
@@ -216,7 +216,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "Lifeline"  
+(game "Lifeline" 
     (players 2) 
     (equipment 
         { 
@@ -225,7 +225,7 @@
         (piece "Shi_Western" P2) //Alternative icons: paper, button-pass
         (hand P2)
         }
-   )
+    )
     (rules 
         <Balance:meta>
         <Balance:start>
@@ -239,20 +239,20 @@
                         (then 
                             ("Remove" Enemy 
                                 (then ("Remove" Mover ~))
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         }
         (end 
             (if
                 (and (no Moves Next) (< 2 (count Moves)))
                 (result Next Loss)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -267,16 +267,16 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "3"    <(tri Hexagon 3)>    "A board of size 3 is currently selected.")
-    (item "4"    <(tri Hexagon 4)>    "A board of size 4 is currently selected.")
-    (item "5"    <(tri Hexagon 5)>    "A board of size 5 is currently selected.")
-    (item "6"    <(tri Hexagon 6)>    "A board of size 6 is currently selected.")
-    (item "7"    <(tri Hexagon 7)>    "A board of size 7 is currently selected.")*
-    (item "8"    <(tri Hexagon 8)>    "A board of size 8 is currently selected.")
-    (item "9"    <(tri Hexagon 9)>    "A board of size 9 is currently selected.")
-    (item "10"    <(tri Hexagon 10)>  "A board of size 10 is currently selected.")
-    (item "11"    <(tri Hexagon 11)>  "A board of size 11 is currently selected.")
-    (item "12"    <(tri Hexagon 12)>  "A board of size 12 is currently selected.")
+    (item "3"  <(tri Hexagon 3)>  "A board of size 3 is currently selected.")
+    (item "4"  <(tri Hexagon 4)>  "A board of size 4 is currently selected.")
+    (item "5"  <(tri Hexagon 5)>  "A board of size 5 is currently selected.")
+    (item "6"  <(tri Hexagon 6)>  "A board of size 6 is currently selected.")
+    (item "7"  <(tri Hexagon 7)>  "A board of size 7 is currently selected.")*
+    (item "8"  <(tri Hexagon 8)>  "A board of size 8 is currently selected.")
+    (item "9"  <(tri Hexagon 9)>  "A board of size 9 is currently selected.")
+    (item "10"  <(tri Hexagon 10)> "A board of size 10 is currently selected.")
+    (item "11"  <(tri Hexagon 11)> "A board of size 11 is currently selected.")
+    (item "12"  <(tri Hexagon 12)> "A board of size 12 is currently selected.")
 })
 
 //------------------------------------------------------------------------------
@@ -332,7 +332,7 @@
         (credit "Michael Amundsen")
         (date "02-2022")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Black))

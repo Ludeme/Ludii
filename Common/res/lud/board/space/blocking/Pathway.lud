@@ -14,32 +14,32 @@
                             (sites Around
                                 (to)
                                 Orthogonal
-                           )
+                            )
                             if:(is Empty (site))
-                       )
+                        )
                         (= 1
                             (count Sites
                                 in:(sites Around
                                     (to)
                                     Own
                                     Orthogonal
-                               )
-                           )
-                       )
-                   )
-               )
-           )        
-       )
+                                )
+                            )
+                        )
+                    )
+                )
+            )    
+        )
         (end ("NoMoves" Win))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "6"    <6>  "A 6x6 board is currently selected")* 
-    (item "8"    <8>  "A 8x8 board is currently selected")
+    (item "6"  <6> "A 6x6 board is currently selected")* 
+    (item "8"  <8> "A 8x8 board is currently selected")
     }
 )
 
@@ -60,8 +60,8 @@
         (credit "Michael Amundsen")
         (date "2021")
         }
-   )
+    )
     (ai
         "Pathway_ai"
-   )
+    )
 )

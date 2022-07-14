@@ -1,13 +1,13 @@
-(game "Aiyawatstani"  
+(game "Aiyawatstani" 
     (players 2) 
     (equipment { 
         (board 
             (square 5 diagonals:Solid)
             use:Vertex
-       )
+        )
         (piece "Disc" Each (move [#])) 
         }
-   )  
+    ) 
     (rules 
         (start { 
             (place "Disc1" (forEach (sites Board) if:(< (site) (centrePoint))))
@@ -15,7 +15,7 @@
         })
         (play [#])
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -31,8 +31,8 @@
         (version "1.3.4")
         (classification "board/war/leaping/lines/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in New Mexico, around 1907.")
+        (origin "This game was played in New Mexico, around 1907.")
         }
-   )
+    )
     
 )

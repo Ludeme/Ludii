@@ -13,18 +13,18 @@
                     (if (or (= 0 ("BlankDie1")) (= 0 ("BlankDie2")))
                         2
                         35
-                   )
+                    )
                     (if (or (= 0 ("BlankDie1")) (= 0 ("BlankDie2")))
                         3
                         (if (= 0 ("StripedDie"))
                             20
                             15
-                       )
-                   )
-               )
-           )
-       )
-   )
+                        )
+                    )
+                )
+            )
+        )
+    )
 )
 
 (define "SiteToMoveOnTrack" ("NextSiteOnTrack" #2 #1))
@@ -51,13 +51,13 @@
                     (shift 4 4 (rectangle 6 1))
                 })
                 vertices:{{1 1} {1 8} {8 1} {8 8} {4.5 4.5}}
-           )
+            )
             {
             (track "Track1" "69,5,N,W,N,W,S,65,11,E,N,W,67,41,S,E,N,66,8,W,S,E,64,26,N4,E3,68,56" P1 directed:True)
             (track "Track2" "70,14,S,E,S,E,N,66,8,W,S,E,64,26,N,W,S,65,11,E,N,W,67,41,S4,W3,68,56" P2 directed:True)
             }
             use:Vertex
-       )
+        )
         ("StickDice" 4)
         (piece "Marker" Each
             (if ("IsOffBoard" ("SiteToMoveOnTrack" from:(from) ("ThrowValue")))
@@ -68,18 +68,18 @@
                         ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
                         if:True
                         ("HittingStackCapture" (handSite (who at:(to) level:(level))))
-                   )
+                    )
                     (then
                         (if (is In (last To) (sites "RemoveSites"))
                             (fromTo
                                 (from (last To))
                                 (to (handSite (mover)))
-                           )
-                       )
-                   )
-               )
-           )		
-       )
+                            )
+                        )
+                    )
+                )
+            )		
+        )
         (hand Each)
         (regions "RemoveSites" (sites {51 56}))
     })
@@ -93,11 +93,11 @@
                 (or
                     (forEach Piece)
                     (forEach Piece container:(mover))
-               )
-           )
-       )
+                )
+            )
+        )
         (end ("EscapeWin"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -108,15 +108,15 @@
         {
         (description "Kolica Atárakua is a race game played by the Purépecha people of Michoacán, Mexico. The board is strikingly similar to boards found at Mesoamerican archaeological sites, suggesting that this game is very old.")
         (aliases {"Kolica Atárakua" "Kolitza" "Kolica Atákua"})
-        (rules "Two players. Four pieces per player, played with four stick dice. They are round on one side, flat on the other, and the round side of one has horizontal stripes, another has cross-hatching, the other two remaining blank. The throws are as follows: One flat side up = 1; two flat sides and at least one blank round side up = 2; two flat sides and both marked round sides up = 35; four flat sides up = 5; four round sides up = 10; three flat sides and one blank round side up = 3; three flat sides and cross-hatched round side up = 15; three flat sides and striped round side up = 20. The throw may only be applied to one piece. Pieces enter from the midpoint of the sides and proceed along the track in the middle, then back to the edge following that track and making a circuit of the board, returning back to the center when it has traveled along the entire perimeter. If a piece lands exactly on the points where the tracks cross in the center, the piece starts again from the beginning, but remains in the center of the board until it does so. The goal is for pieces to pass the points where the center tracks intersect after traveling all the way around the board with all four pieces. If a player lands on the same space as an opponent's piece, the opponent's piece must again start from the beginning.  ")
+        (rules "Two players. Four pieces per player, played with four stick dice. They are round on one side, flat on the other, and the round side of one has horizontal stripes, another has cross-hatching, the other two remaining blank. The throws are as follows: One flat side up = 1; two flat sides and at least one blank round side up = 2; two flat sides and both marked round sides up = 35; four flat sides up = 5; four round sides up = 10; three flat sides and one blank round side up = 3; three flat sides and cross-hatched round side up = 15; three flat sides and striped round side up = 20. The throw may only be applied to one piece. Pieces enter from the midpoint of the sides and proceed along the track in the middle, then back to the edge following that track and making a circuit of the board, returning back to the center when it has traveled along the entire perimeter. If a piece lands exactly on the points where the tracks cross in the center, the piece starts again from the beginning, but remains in the center of the board until it does so. The goal is for pieces to pass the points where the center tracks intersect after traveling all the way around the board with all four pieces. If a player lands on the same space as an opponent's piece, the opponent's piece must again start from the beginning. ")
         (source "Beals and Carrasco 1944: 519-521.")
         (id "330")
         (version "1.3.4")
         (classification "board/race/escape")
         (credit "Eric Piette")
-        (origin  "This game was played in Mexico, around 1944.")
+        (origin "This game was played in Mexico, around 1944.")
         }
-   )
+    )
     
     (graphics {
         (show Edges Diagonal Hidden)

@@ -1,29 +1,29 @@
-(game "Matoe"  
-    (players 2)  
+(game "Matoe" 
+    (players 2) 
     (equipment { 
         (mancalaBoard 2 [3..40] store:None
             {
             (track [#])
             (track [#])
             }
-       )
+        )
         (piece "Seed" Shared)
-    })  
+    }) 
     (rules 
         (start [#])
         (play 
             (move Select 
                 (from [#])
                 (then (sow [#]))
-           )
-       )
+            )
+        )
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Matoe is a two-row mancala-style board game played on the Indonesian island of Sumba.")
@@ -34,7 +34,7 @@
         (classification "board/sow/two rows/reconstruction")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

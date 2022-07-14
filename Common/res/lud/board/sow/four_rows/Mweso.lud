@@ -3,8 +3,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Mweso"  
-    (players 2)  
+(game "Mweso" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -14,16 +14,16 @@
             (track "TrackCW1" "7,W,N1,E" loop:True P1)
             (track "TrackCW2" "24,E,S1,W" loop:True P2)
             }
-       )
+        )
         (piece "Seed" Shared)
-        (regions "Home" P1 (sites Track "TrackCCW1"))                                      // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))                                      // P2 Home
-        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))         // P1 Inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))           // P2 Inner Home
+        (regions "Home" P1 (sites Track "TrackCCW1"))                   // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))                   // P2 Home
+        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))     // P1 Inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))      // P2 Inner Home
         (regions "Left" P1 (intersection (sites Track "TrackCCW1") (expand (sites Left)))) // P1 Left Holes
-        (regions "Left" P2 (intersection (sites Track "TrackCCW2") (expand (sites Right))))  // P2 Left Holes
+        (regions "Left" P2 (intersection (sites Track "TrackCCW2") (expand (sites Right)))) // P2 Left Holes
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start {
@@ -38,10 +38,10 @@
                     (from (handSite Mover))
                     (to (sites Mover "Home"))
                     count:1
-               )
-           )
+                )
+            )
             (nextPhase Mover (is Empty (handSite Mover)) "Sowing")
-       )
+        )
         
         (phase "Sowing"
             (play
@@ -52,9 +52,9 @@
                                 (if ("SameTurn")
                                     (sites {(var "Replay")})
                                     (sites Mover "Home") 
-                               )
+                                )
                                 if:(< 1 (count at:(from)))
-                           )
+                            )
                             (then
                                 (sow
                                     "TrackCCW"
@@ -69,41 +69,41 @@
                                                     (and
                                                         (is Occupied ("OppositePit" (to)))
                                                         (is Occupied ("OppositeOuterPit" (to)))
-                                                   )	
+                                                    )	
                                                     (and {
                                                         (fromTo
                                                             (from ("OppositePit" (to)))
                                                             (to (last From))
                                                             count:(count at:("OppositePit" (to)))
-                                                       )
+                                                        )
                                                         (fromTo
                                                             (from ("OppositeOuterPit" (to)))
                                                             (to (last From))
                                                             count:(count at:("OppositeOuterPit" (to)))
-                                                       )
+                                                        )
                                                         (sow 
                                                             (last From)
                                                             count:(+ (count at:("OppositePit" (to))) (count at:("OppositeOuterPit" (to))))
                                                             "TrackCCW"
                                                             owner:(mover)
-                                                       )
+                                                        )
                                                     })
-                                               )
-                                           )
+                                                )
+                                            )
                                         })
                                         (set Var "Direction" 0)
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     (if (!= 1 (var "Direction"))
                         (move Select
                             (from 
                                 (if ("SameTurn")
                                     (sites {(var "Replay")})
                                     (sites Mover "Left") 
-                               )
+                                )
                                 if:(and
                                     (< 1 (count at:(from)))
                                     (if ("SameTurn")
@@ -112,12 +112,12 @@
                                             (and
                                                 (is Occupied ("OppositePit" ("NextHole" (from) "TrackCW" (count at:(from)))))
                                                 (is Occupied ("OppositeOuterPit" ("NextHole" (from) "TrackCW" (count at:(from)))))
-                                           )
+                                            )
                                             False
-                                       )
-                                   )
-                               )
-                           )
+                                        )
+                                    )
+                                )
+                            )
                             (then
                                 (sow
                                     "TrackCW"
@@ -132,41 +132,41 @@
                                                     (and
                                                         (is Occupied ("OppositePit" (to)))
                                                         (is Occupied ("OppositeOuterPit" (to)))
-                                                   )	
+                                                    )	
                                                     (and {
                                                         (fromTo
                                                             (from ("OppositePit" (to)))
                                                             (to (last From))
                                                             count:(count at:("OppositePit" (to)))
-                                                       )
+                                                        )
                                                         (fromTo
                                                             (from ("OppositeOuterPit" (to)))
                                                             (to (last From))
                                                             count:(count at:("OppositeOuterPit" (to)))
-                                                       )
+                                                        )
                                                         (sow 
                                                             (last From)
                                                             count:(+ (count at:("OppositePit" (to))) (count at:("OppositeOuterPit" (to))))
                                                             "TrackCCW"
                                                             owner:(mover)
-                                                       )
+                                                        )
                                                     })
-                                               )
-                                           )
+                                                )
+                                            )
                                         })
                                         (set Var "Direction" 0)
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                    )
+                                )
+                            )
+                        )
+                    )
                 })
-           )
+            )
             
             (end (if (and (not (is Next Mover)) (no Moves Next)) (result Mover Win)))
-       )
+        )
         }
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -183,9 +183,9 @@
         (version "1.3.4")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Uganda, around 1912.")
+        (origin "This game was played in Uganda, around 1912.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

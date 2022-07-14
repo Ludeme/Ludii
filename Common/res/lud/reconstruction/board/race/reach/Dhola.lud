@@ -1,5 +1,5 @@
-(game "Dhola"  
-    (players [2..4])  
+(game "Dhola" 
+    (players [2..4]) 
     (equipment { 
         (board 
             (add
@@ -7,22 +7,22 @@
                     (merge 
                         (shift 0 8 (rectangle 3 19)) 
                         (shift 8 0 (rectangle 19 3))
-                   )
+                    )
                     (poly {{8 8} {8 11} {11 11} {11 8}})
-               )
+                )
                 cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9 } }
-           )
+            )
             [#]
-       )
+        )
         (hand Each) 
         (dice d:2 from:0 num:5)
         (piece "Pawn" Each) // 4 pieces per player
-    })  
+    }) 
     (rules 
         (start [#])
         (play [#])
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -38,9 +38,9 @@
         (version "1.3.2")
         (classification "board/race/reach/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Maldives, around 1883.")
+        (origin "This game was played in Maldives, around 1883.")
         }
-   )
+    )
     
     (graphics {
         (board Colour InnerEdges (colour Black))

@@ -5,24 +5,24 @@
         (between 
             if:(is Next (who at:(between)))
             (apply (remove (between)))
-       )
+        )
         (to if:(and 
                 (or (= 3 (count Steps Vertex All (last To) (to))) (= 4 (count Steps Vertex All (last To) (to)))) 
         (is Mover (who at:(to)))))
         (then (addScore Mover 1))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Keryo-Pente"  
-    (players 2)  
+(game "Keryo-Pente" 
+    (players 2) 
     (equipment 
         { 
         (board <Board> use:Vertex) 
         (piece "Ball" Each) 
         }
-   )  
+    ) 
     (rules 
         (start {
             (set Score Each 0)
@@ -33,44 +33,44 @@
             (if (is Line 5 All) (result Mover Win))
             (if (> (score Mover) 14) (result Mover Win))
             }
-       )  
-   )
+        ) 
+    )
 )
 
 //-------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> }
-    {   
-    (item "19x19"  <(square 19)>  "Played on a 19x19 board.")   
+    {  
+    (item "19x19" <(square 19)> "Played on a 19x19 board.")  
     }
 )
 
 (option "Opening" <Play> args:{ <rules> }
     {
-    (item "Standard Pente"   
+    (item "Standard Pente"  
         <
         phases:{
         (phase "Opening"
             (play (move Add (to (sites "J10"))))
             (nextPhase "General")
-       )
+        )
         (phase "General"
             (play 
                 (move Add (to (sites Empty))
                     (then "Custodial")
-               )
-           )
-       )
+                )
+            )
+        )
         }
         >
         "Open at the centre point."
-   )*
+    )*
     (item "Freestyle" 
         <
         (play (move Add (to (sites Empty))))
         > 
         "Open anywhere."
-   )
+    )
     }
 )
 
@@ -80,8 +80,8 @@
     
     (info
         {
-        (description "Keryo-Pente was invented by Rollie Tesh in 1983, as an alternative way to mitigate the first-player advantage in Pente.  As in Pente, players compete to be the first to form an orthogonal or diagonal line of five stones.  However, in Keryo-Pente players may capture two or three opposing stones rather than only two; the threshold to win the game by capture also increases from 10 to 15 stones.  This variation reduces the first-player advantage by significantly increasing the second player's defensive options.")
-        (rules "Keryo-Pente is played on a 19x19 Go board.  White goes first, and plays their first move on the centre point (unless playing Freestyle).  After the opening, players alternate playing one stone of their colour onto any empty point.  If their placement results in a pair or a line of three enemy stones being sandwiched between two of their own stones, those enemy stones are captured.  The first player to form an orthogonal or diagonal line of five (or more) of their stones, or to capture 15 enemy stones, wins the game.")
+        (description "Keryo-Pente was invented by Rollie Tesh in 1983, as an alternative way to mitigate the first-player advantage in Pente. As in Pente, players compete to be the first to form an orthogonal or diagonal line of five stones. However, in Keryo-Pente players may capture two or three opposing stones rather than only two; the threshold to win the game by capture also increases from 10 to 15 stones. This variation reduces the first-player advantage by significantly increasing the second player's defensive options.")
+        (rules "Keryo-Pente is played on a 19x19 Go board. White goes first, and plays their first move on the centre point (unless playing Freestyle). After the opening, players alternate playing one stone of their colour onto any empty point. If their placement results in a pair or a line of three enemy stones being sandwiched between two of their own stones, those enemy stones are captured. The first player to form an orthogonal or diagonal line of five (or more) of their stones, or to capture 15 enemy stones, wins the game.")
         (id "1413")
         (source "<a href=\"https://pente.org/help/helpWindow.jsp?file=playGameRules\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Pente.org</a>")
         (version "1.3.4")
@@ -90,7 +90,7 @@
         (credit "Eric Silverman")
         (date "1983")
         }
-   )
+    )
     
     (graphics {
         (board Style Go)
@@ -100,5 +100,5 @@
     
     (ai
         "Keryo-Pente_ai"
-   )
+    )
 ) 

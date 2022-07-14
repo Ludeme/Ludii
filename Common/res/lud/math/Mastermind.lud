@@ -9,20 +9,20 @@
     (union
         (sites Row (+ "RowToPlace" 1))
         (sites Row (- "RowToPlace" 1))
-   )
+    )
 )
 
 (define "RightPositionAndColor"
     (= 
         (what at:(regionSite (sites Row ("RowToPlace")) index:(value))) 
         (what at:(coord row:0 column:(value)))
-   )
+    )
 )
 
 (define "ColorInSolution"
     (is In (what at:(regionSite (sites Bottom) index:(value))) 
         (results from:(sites Row ("RowToPlace")) to:0 (what at:(from)))
-   )
+    )
 )
 
 (define "CombinationPlaced"
@@ -40,10 +40,10 @@
 (define "CombinationFound"
     (and
         (= 0 (count Sites in:(intersection (sites Empty) (sites Row ("RowToCheck")))))
-        (=  "NumColumn" 
+        (= "NumColumn" 
             (count Sites in:(forEach (sites Row ("RowToCheck")) if:("PositionAndColorOK")))
-       )
-   )
+        )
+    )
 )
 
 (define "AddHint" 
@@ -70,11 +70,11 @@
                     (repeat "NumRow" 1 
                         step:{{1 0} {0 1}} 
                         (poly {{0 0} {0 0.5} {0.5 0.5} {0.5 0}})
-                   )
-               )
+                    )
+                )
             })
             use:Vertex
-       )
+        )
         (piece "Marker1" Shared)
         (piece "Marker2" Shared)
         (piece "Marker3" Shared)
@@ -114,12 +114,12 @@
                             (if ("CombinationToFindPlaced")
                                 (set Var 0) // Init number of try.
                                 (moveAgain)
-                           )
+                            )
                         })
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (phase "Finding" P2
             (play
                 (move
@@ -136,43 +136,43 @@
                                             ("AddBlackHint")
                                             (if ("ColorInSolution")
                                                 ("AddWhiteHint")
-                                           )
-                                       )
-                                   )
+                                            )
+                                        )
+                                    )
                                     (set Var (+ 1 ("NumTry")))
                                     (then
                                         (if (or ("CombinationFound") (>= "NumTry" "NumRow"))
                                             (forEach Site (sites Bottom)
                                                 (set Hidden at:(site) False to:P2)	
-                                           )
-                                       )		
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           )
+                                            )
+                                        )		
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
             (end {
                 (if ("CombinationFound") (result P2 Win))
                 (if (>= "NumTry" "NumRow") (result P1 Win))
             })
-       )
+        )
         }
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Num> args:{ <row> } {
-    (item "4 Tries"    <4>   "P2 has 4 tries.")   
-    (item "6 Tries"    <6>   "The game is played on a 6x6 board.")   
-    (item "8 Tries"    <8>   "The game is played on a 8x8 board.")   
-    (item "10 Tries"  <10>  "The game is played on a 10x10 board.")   
-    (item "12 Tries"  <12>  "The game is played on a 12x12 board.")*   
-    (item "14 Tries"  <14>  "The game is played on a 14x14 board.")   
-    (item "16 Tries"  <16>  "The game is played on a 16x16 board.")   
-    (item "18 Tries"  <18>  "The game is played on a 18x18 board.")   
+    (item "4 Tries"  <4>  "P2 has 4 tries.")  
+    (item "6 Tries"  <6>  "The game is played on a 6x6 board.")  
+    (item "8 Tries"  <8>  "The game is played on a 8x8 board.")  
+    (item "10 Tries" <10> "The game is played on a 10x10 board.")  
+    (item "12 Tries" <12> "The game is played on a 12x12 board.")*  
+    (item "14 Tries" <14> "The game is played on a 14x14 board.")  
+    (item "16 Tries" <16> "The game is played on a 16x16 board.")  
+    (item "18 Tries" <18> "The game is played on a 18x18 board.")  
 })
 
 //------------------------------------------------------------------------------
@@ -195,7 +195,7 @@
         (credit "Eric Piette")
         (date "1970")
         }
-   )
+    )
     
     (graphics {
         (show Edges Hidden)

@@ -6,14 +6,14 @@
         Orthogonal 
         (between 
             if:("IsEnemyAt" (between)) 
-            (apply             
+            (apply       
                 (and 
                     (addScore Mover 1) 
                     (remove (between)) 
-               )
-           ) 
-       )
-   )
+                )
+            ) 
+        )
+    )
 )
 
 (define "IllegalMove"
@@ -37,15 +37,15 @@
                     (note player:Mover "has moved")
                     (note player:Next "to play")
                 })
-           )
-       )
+            )
+        )
         ifAfterwards:"HasFreedom"
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Phantom Go"  
+(game "Phantom Go" 
     (players 2) 
     (equipment { 
         (board <Board> use:Vertex) 
@@ -61,26 +61,26 @@
                         (union 
                             (sites Empty) 
                             (sites Hidden to:Mover)
-                       )
-                   )
+                        )
+                    )
                     (then 
                         (priority 
                             {
                             (if 
                                 ("NotEmpty")
                                 ("IllegalMove")
-                           )
+                            )
                             
                             ("MadeALegalMove")
                             
                             ("IllegalMove")
                             }
-                       )
-                   )
-               )
+                        )
+                    )
+                )
                 (move Pass)
-           )
-       )
+            )
+        )
         
         (end
             (if (all Passed)
@@ -88,19 +88,19 @@
                     (score P1 (+ (score P1) (size Territory P1))) 
                     (score P2 (+ (score P2) (size Territory P2)))
                 })
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "9x9"      <(square 9)>     "The game is played on a 9x9 board")**   
-    (item "13x13"    <(square 13)>    "The game is played on a 13x13 board")   
-    (item "15x15"    <(square 15)>    "The game is played on a 15x15 board")   
-    (item "19x19"    <(square 19)>    "The game is played on a 19x19 board")   
+    (item "9x9"   <(square 9)>   "The game is played on a 9x9 board")**  
+    (item "13x13"  <(square 13)>  "The game is played on a 13x13 board")  
+    (item "15x15"  <(square 15)>  "The game is played on a 15x15 board")  
+    (item "19x19"  <(square 19)>  "The game is played on a 19x19 board")  
 })
 
 //------------------------------------------------------------------------------
@@ -121,7 +121,7 @@
         (classification "board/space/territory")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (board Style Go)
@@ -132,5 +132,5 @@
     
     (ai
         "Phantom Go_ai"
-   )
+    )
 )

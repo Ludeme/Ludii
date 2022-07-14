@@ -4,10 +4,10 @@
         (to if:(or 
                 (is Empty (to)) 
                 ("IsEnemyAt" (to))
-           ) 
+            ) 
             (apply (remove (to)))
-       )
-   )		
+        )
+    )		
 )
 
 (define "ReachedTarget" (is In (last To) (sites Mover)))
@@ -21,7 +21,7 @@
         (piece "Pawn" Each (or ("StepForward") ("StepDiagonalForward")))
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Pawn1" (expand (sites Bottom)))
@@ -31,7 +31,7 @@
         (play (forEach Piece))
         
         (end (if "ReachedTarget" (result Mover Win))) 
-   )
+    )
 )
 
 //------------------------------------------------------------------------------

@@ -6,9 +6,9 @@
             (max 1) 
             if:("IsEnemyAt" (between)) 
             (apply (remove (between)))
-       )
+        )
         (to if:("IsFriendAt" (to)))
-   )
+    )
 )
 
 (define "SurroundCaptures" 
@@ -19,24 +19,24 @@
             if:(and 
                 (is In (between) (sites Corners)) 
                 ("IsEnemyAt" (between))
-           ) 
+            ) 
             (apply (remove (between)))
-       ) 
+        ) 
         (to if:("IsFriendAt" (to))) 
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Hasami Shogi"  
-    (players 2)  
+(game "Hasami Shogi" 
+    (players 2) 
     
     (equipment { 
         (board (square 9))
         (piece "Fuhyo" P1 (move Slide Orthogonal (then (or "CustodialCaptures" "SurroundCaptures"))))
         (piece "Tokin" P2 (move Slide Orthogonal (then (or "CustodialCaptures" "SurroundCaptures"))))
         }
-   )
+    )
     
     (rules 
         (start { 
@@ -47,7 +47,7 @@
         (play (forEach Piece))
         
         (end (if (= (count Pieces Next) 1) (result Mover Win)))
-   )
+    )
 )
 
 (metadata
@@ -61,9 +61,9 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/shogi")
         (credit "Eric Piette")
-        (origin  "This game was played in Japan, around 1951.")
+        (origin "This game was played in Japan, around 1951.")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour White))
@@ -76,6 +76,6 @@
     
     (ai 
         "Hasami Shogi_ai"
-   )
+    )
     
 )

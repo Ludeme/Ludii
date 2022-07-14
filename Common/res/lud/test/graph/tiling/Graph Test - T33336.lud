@@ -1,26 +1,26 @@
-(game "Graph Test - T33336"  
-    (players 2)  
+(game "Graph Test - T33336" 
+    (players 2) 
     (equipment { 
         (board <Board>) 
         (piece "Marker") 
-    })  
+    }) 
     (rules 
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Tiling Type" <Board> args:{ <type> }
     {
-    (item "2" <(tiling T33336 2)>    "")  
-    (item "3" <(tiling T33336 3)>    "")  
-    (item "4x4" <(tiling T33336 4 4)>    "")  
-    (item "4x3" <(tiling T33336 4 3)>    "")  
-    (item "Poly" <(tiling T33336 (poly {{1 0} {1 9} {9 0}}))>    "")  
-    (item "2, Dual" <(dual (tiling T33336 2))>  "")  
-    (item "3, Dual" <(dual (tiling T33336 3))>  "")  
+    (item "2" <(tiling T33336 2)>  "") 
+    (item "3" <(tiling T33336 3)>  "") 
+    (item "4x4" <(tiling T33336 4 4)>  "") 
+    (item "4x3" <(tiling T33336 4 3)>  "") 
+    (item "Poly" <(tiling T33336 (poly {{1 0} {1 9} {9 0}}))>  "") 
+    (item "2, Dual" <(dual (tiling T33336 2))> "") 
+    (item "3, Dual" <(dual (tiling T33336 3))> "") 
 })
 
 //------------------------------------------------------------------------------
@@ -36,7 +36,7 @@
         (version "0.9.3")
         (classification "board/space/line")
         (credit "Cameron Browne 31/5/2020")
-        (origin  "This game was played in England, from around 1850CE to 1883CE.")
+        (origin "This game was played in England, from around 1850CE to 1883CE.")
         }
-   )
+    )
 )

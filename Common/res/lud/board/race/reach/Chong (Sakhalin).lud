@@ -15,7 +15,7 @@
     (apply 
         if:("IsEnemyAt" (to)) 
         (remove (to))
-   ) 
+    ) 
 )
 
 //------------------------------------------------------------------------------
@@ -29,7 +29,7 @@
             (track "Track1" "0,E,N1,W,N1,E" P1 directed:True)
             (track "Track2" <Board:track2> P2 directed:True)
             }
-       )
+        )
         (dice d:6 num:4)
         (piece "Marker" Each
             (move
@@ -42,13 +42,13 @@
                             (if (not ("IsPieceAt" "King" Next (to)))
                                 True
                                 (= 1 (abs (- (to) (from))))
-                           )
-                       )
+                            )
+                        )
                     })
                     ("CaptureEnemyPiece")
-               )
-           )
-       )
+                )
+            )
+        )
         (piece "King" Each
             (if (= 1 (pips))
                 (if (<= 2 (count Pieces Mover))
@@ -64,21 +64,21 @@
                                         (if (not ("IsPieceAt" "King" Next (to)))
                                             True
                                             (= 1 (abs (- (to) (from))))
-                                       )
-                                   )
+                                        )
+                                    )
                                 })
                                 ("CaptureEnemyPiece")
-                           )
-                       )
-                   )
+                            )
+                        )
+                    )
                     (firstMoveOnTrack "Track" Mover
                         (if (and (> (site) (from)) (is Mover (who at:(site))))
                             (move Swap Pieces (from) (site))
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
     })
     (rules 
         (start { 
@@ -95,24 +95,24 @@
                         (if (is Mover P1)
                             (if (is Mover (who at:(- (where "King" Mover) ("NumDiceAtOne"))))
                                 (move Swap Pieces (where "King" Mover) (- (where "King" Mover) ("NumDiceAtOne")))
-                           )
+                            )
                             (if (is Mover (who at:(+ (where "King" Mover) ("NumDiceAtOne"))))
                                 (move Swap Pieces (where "King" Mover) (+ (where "King" Mover) ("NumDiceAtOne")))
-                           )
+                            )
                             (then
                                 (fromTo
                                     (from (last From))
                                     (to ("SiteToMoveOnTrack" from:(last From) (- ("SumPips") ("NumDiceAtOne")))
                                         ("CaptureEnemyPiece")
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
             (nextPhase Mover (not (was Pass)) "Playing")
-       )
+        )
         (phase "Playing"
             (play
                 ("RollEachNewTurnMove"
@@ -120,39 +120,39 @@
                         if:("DieNotUsed")
                         (forEach Piece)
                         (then ("ReplayNotAllDiceUsed"))
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         }
         
         (end {
             (if (= (who at:0) P2) (result P2 Win))
             (if (= (who at:(- (count Sites in:(sites Board)) 1)) P1) (result P1 Win))
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> <track2>} {
-    (item "3x12"    <12> <"35,W,S1,E,S1,W">   "The game is played on a 3x12 board.")   
-    (item "3x13"    <13> <"38,W,S1,E,S1,W">  "The game is played on a 3x13 board.")   
-    (item "3x14"    <14> <"41,W,S1,E,S1,W">  "The game is played on a 3x14 board.")   
-    (item "3x15"    <15> <"44,W,S1,E,S1,W">  "The game is played on a 3x15 board.")   
-    (item "3x16"    <16> <"47,W,S1,E,S1,W">  "The game is played on a 3x16 board.")   
-    (item "3x17"    <17> <"50,W,S1,E,S1,W">  "The game is played on a 3x17 board.")   
-    (item "3x18"    <18> <"53,W,S1,E,S1,W">  "The game is played on a 3x18 board.")   
-    (item "3x19"    <19> <"56,W,S1,E,S1,W">  "The game is played on a 3x19 board.")   
-    (item "3x20"    <20> <"59,W,S1,E,S1,W">  "The game is played on a 3x20 board.")   
-    (item "3x21"    <21> <"62,W,S1,E,S1,W">  "The game is played on a 3x21 board.")   
-    (item "3x22"    <22> <"65,W,S1,E,S1,W">  "The game is played on a 3x22 board.")   
-    (item "3x23"    <23> <"68,W,S1,E,S1,W">  "The game is played on a 3x23 board.")   
-    (item "3x24"    <24> <"71,W,S1,E,S1,W">  "The game is played on a 3x24 board.")   
-    (item "3x25"    <25> <"74,W,S1,E,S1,W">  "The game is played on a 3x25 board.")   
-    (item "3x26"    <26> <"77,W,S1,E,S1,W">  "The game is played on a 3x26 board.")   
-    (item "3x27"    <27> <"80,W,S1,E,S1,W">  "The game is played on a 3x27 board.")   
-    (item "3x28"    <28> <"83,W,S1,E,S1,W">  "The game is played on a 3x28 board.")   
+    (item "3x12"  <12> <"35,W,S1,E,S1,W">  "The game is played on a 3x12 board.")  
+    (item "3x13"  <13> <"38,W,S1,E,S1,W"> "The game is played on a 3x13 board.")  
+    (item "3x14"  <14> <"41,W,S1,E,S1,W"> "The game is played on a 3x14 board.")  
+    (item "3x15"  <15> <"44,W,S1,E,S1,W"> "The game is played on a 3x15 board.")  
+    (item "3x16"  <16> <"47,W,S1,E,S1,W"> "The game is played on a 3x16 board.")  
+    (item "3x17"  <17> <"50,W,S1,E,S1,W"> "The game is played on a 3x17 board.")  
+    (item "3x18"  <18> <"53,W,S1,E,S1,W"> "The game is played on a 3x18 board.")  
+    (item "3x19"  <19> <"56,W,S1,E,S1,W"> "The game is played on a 3x19 board.")  
+    (item "3x20"  <20> <"59,W,S1,E,S1,W"> "The game is played on a 3x20 board.")  
+    (item "3x21"  <21> <"62,W,S1,E,S1,W"> "The game is played on a 3x21 board.")  
+    (item "3x22"  <22> <"65,W,S1,E,S1,W"> "The game is played on a 3x22 board.")  
+    (item "3x23"  <23> <"68,W,S1,E,S1,W"> "The game is played on a 3x23 board.")  
+    (item "3x24"  <24> <"71,W,S1,E,S1,W"> "The game is played on a 3x24 board.")  
+    (item "3x25"  <25> <"74,W,S1,E,S1,W"> "The game is played on a 3x25 board.")  
+    (item "3x26"  <26> <"77,W,S1,E,S1,W"> "The game is played on a 3x26 board.")  
+    (item "3x27"  <27> <"80,W,S1,E,S1,W"> "The game is played on a 3x27 board.")  
+    (item "3x28"  <28> <"83,W,S1,E,S1,W"> "The game is played on a 3x28 board.")  
 })
 
 //------------------------------------------------------------------------------
@@ -162,7 +162,7 @@
     (info
         {
         }
-   )
+    )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

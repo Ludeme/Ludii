@@ -2,16 +2,16 @@
     (not
         (all Sites #1 
             if:(not #2)
-       )
-   )
+        )
+    )
 )
 
 (define "Place"
     (move Add
         (to 
             (sites Around (sites Occupied by:Mover) Empty Orthogonal)
-       )
-   )
+        )
+    )
 )
 
 (define "Remove"
@@ -26,15 +26,15 @@
                         (>=
                             11
                             <Size>
-                       )
+                        )
                         (< 0 (count Sites in:(sites Around (site) Own Orthogonal)))
                         True
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (then (forEach Site (sites Group at:(last From) Orthogonal) (remove (site))))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -46,7 +46,7 @@
         (board (square <Size>) use:Vertex)
         (piece "Disc" Each)
         }
-   )
+    )
     (rules
         (start {
             (place "Disc1" 
@@ -57,8 +57,8 @@
                         (!= 0 (% (site) 4))
                         (= 0 (% (row of:(site)) 4))
                     })
-               )
-           )
+                )
+            )
             (place "Disc2" 
                 (forEach 
                     (sites Phase 0) 
@@ -67,36 +67,36 @@
                         (!= 0 (% (site) 4))
                         (= 2 (% (row of:(site)) 4))
                     })
-               )
-           )
+                )
+            )
         })
         (play
             (or
                 ("Place")
                 ("Remove")
-           )
-       )
+            )
+        )
         (end 
             (if 
                 (no Pieces Next) 
                 (result Next Loss)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Size> args:{ <size> }
     {
-    (item "5"    <5>  "A size 5 board is currently selected")
-    (item "7"    <7>  "A size 7 board is currently selected")
-    (item "9"    <9>  "A size 9 board is currently selected")
-    (item "11"    <11>  "A size 11 board is currently selected")
-    (item "13"    <13>  "A size 13 board is currently selected")*
-    (item "15"    <15>  "A size 15 board is currently selected")
-    (item "17"    <17>  "A size 17 board is currently selected")
-    (item "19"    <19>  "A size 19 board is currently selected")
+    (item "5"  <5> "A size 5 board is currently selected")
+    (item "7"  <7> "A size 7 board is currently selected")
+    (item "9"  <9> "A size 9 board is currently selected")
+    (item "11"  <11> "A size 11 board is currently selected")
+    (item "13"  <13> "A size 13 board is currently selected")*
+    (item "15"  <15> "A size 15 board is currently selected")
+    (item "17"  <17> "A size 17 board is currently selected")
+    (item "19"  <19> "A size 19 board is currently selected")
     }
 )
 

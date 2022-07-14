@@ -4,30 +4,30 @@
     (if (is Mover P1)
         (remember Value "SowedHolesP1" #1 unique:True)
         (remember Value "SowedHolesP2" #1 unique:True)
-   )
+    )
 )
 
 (define "SowedHoles" 
     (if (is Mover P1)
         (values Remembered "SowedHolesP1")
         (values Remembered "SowedHolesP2")
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Adjiboto"  
-    (players 2)  
+(game "Adjiboto" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 5 store:None
             (track "Track" "0,E,N,W" loop:True)
-       )
+        )
         (piece "Seed" Shared)
         (hand Each)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-    })  
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+    }) 
     (rules 
         
         (start (set Count 10 to:(sites Track)))
@@ -41,12 +41,12 @@
                         (and
                             (sow origin:True)
                             ("RemmemberSowedHoles" (last From))
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (nextPhase Mover (< 8 (count Turns)))
-       )
+        )
         (phase "Main"
             (play
                 (move Select
@@ -62,30 +62,30 @@
                                 (from ("NextHole" (to) 1))
                                 (to (handSite Mover))
                                 count:(count at:("NextHole" (to) 1))
-                           )
+                            )
                             origin:True		
                             forward:True
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (end 
                 (if (no Moves Next) 
                     {
                     (if (< (count Cell at:(handSite Next)) 50) (result Mover Win))
                     (if (>= (count Cell at:(handSite Next)) 50) (result Mover Draw))
                     }
-               )
+                )
                 
-           )
-       )
+            )
+        )
         }
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Adjiboto is a two-row mancala-style board game that was observed in the early twentieth century in Beidotti village, Suriname, where Saamaka people lived. The board was kept in an open sturcture which served as the meeting place for the village council, house of mourning, and to accommodate travelers.")
@@ -96,7 +96,7 @@
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

@@ -3,8 +3,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Spreta"  
-    (players 2)  
+(game "Spreta" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -12,15 +12,15 @@
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" <Board:CCW2> loop:True P2)
             }
-       )
-        (regions "Home" P1 (sites Track "Track1"))                                     // P1 Home
-        (regions "Home" P2 (sites Track "Track2"))                                     // P2 home
-        (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom)))        // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))          // P2 inner Home
-        (regions "Outer" P1  (sites Bottom))                                           // P1 outer Home
-        (regions "Outer" P2  (sites Top))                                             // P2 outer Home
+        )
+        (regions "Home" P1 (sites Track "Track1"))                   // P1 Home
+        (regions "Home" P2 (sites Track "Track2"))                   // P2 home
+        (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom)))    // P1 inner Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))     // P2 inner Home
+        (regions "Outer" P1 (sites Bottom))                      // P1 outer Home
+        (regions "Outer" P2 (sites Top))                       // P2 outer Home
         (piece "Seed" Shared)
-    })  
+    }) 
     (rules 
         
         (start { 
@@ -31,7 +31,7 @@
                     (difference (sites P1 "Inner") (sites { <Board:thirdHoleInnerP1> <Board:rightMostInnerHoleP1>})) 
                     (difference (sites P2 "Inner") (sites { <Board:thirdHoleInnerP2> <Board:rightMostInnerHoleP2>}))
                 }) 
-           )
+            )
             (set Count 2 to:(sites { <Board:thirdHoleInnerP1> <Board:thirdHoleInnerP2>})) 
             
         })
@@ -43,17 +43,17 @@
                     (from 
                         (sites Mover) 
                         if:(= 2 (count at:(from)))
-                   )	
+                    )	
                     (then
                         (sow
                             "Track"
                             owner:(mover)		
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (nextPhase Mover "Playing")
-       )
+        )
         (phase "Playing"
             (play 
                 (if (or (= 1 (var "ExtraCapture")) (= 2 (var "ExtraCapture")))
@@ -65,20 +65,20 @@
                                 (and 
                                     (moveAgain)
                                     (set Var "ExtraCapture" 2)
-                               )
+                                )
                                 (set Var "ExtraCapture" 0)
-                           )
-                       )
-                   )
+                            )
+                        )
+                    )
                     (priority {
                         (move Select
                             (from 
                                 (if ("SameTurn") 
                                     "LastHoleSowed" 
                                     (sites Mover) 
-                               ) 
+                                ) 
                                 if:(< 1 (count at:(from)))
-                           )
+                            )
                             (then 
                                 (sow
                                     "Track"
@@ -89,29 +89,29 @@
                                             (and {
                                                 (if (> (count at:("OppositePit" (to))) 0) 
                                                     (remove ("OppositePit" (to)) count:(count at:("OppositePit" (to)))) 
-                                               )
+                                                )
                                                 (if (> (count at:("OppositeOuterPit" (to))) 0) 
                                                     (remove ("OppositeOuterPit" (to)) count:(count at:("OppositeOuterPit" (to)))) 
-                                               )
+                                                )
                                                 (set Var "ExtraCapture" 1)
                                                 (moveAgain)
                                             })
-                                       )
-                                   )
-                               )
-                           )
-                       )
+                                        )
+                                    )
+                                )
+                            )
+                        )
                         (move Select
                             (from 
                                 (if ("SameTurn") 
                                     "LastHoleSowed" 
                                     (sites Mover) 
-                               ) 
+                                ) 
                                 if:(and
                                     (= 1 (count at:(from)))
                                     (= 0 (count at:("NextSite" from:(from))))
-                               )
-                           )
+                                )
+                            )
                             (then 
                                 (sow
                                     "Track"
@@ -122,38 +122,38 @@
                                             (and {
                                                 (if (> (count at:("OppositePit" (to))) 0) 
                                                     (remove ("OppositePit" (to)) count:(count at:("OppositePit" (to)))) 
-                                               )
+                                                )
                                                 (if (> (count at:("OppositeOuterPit" (to))) 0) 
                                                     (remove ("OppositeOuterPit" (to)) count:(count at:("OppositeOuterPit" (to)))) 
-                                               )
+                                                )
                                                 (set Var "ExtraCapture" 1)
                                                 (moveAgain)
                                             })
-                                       )
-                                   )
-                               )
-                           )
-                       )
+                                        )
+                                    )
+                                )
+                            )
+                        )
                     })
-               )
-           )
-       )
+                )
+            )
+        )
         }
         
         (end
             (if (all Sites (sites Next "Home") if:(= 0 (count at:(site))))
                 (result Mover Win)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> <CCW2> <thirdHoleInnerP1> <rightMostInnerHoleP1> <thirdHoleInnerP2> <rightMostInnerHoleP2>}
     {
-    (item "10"   <10>  <"20,E,N1,W"> <12> <19> <27> <20> "Each player has 10 holes by row.")*  
-    (item "12"   <12>  <"24,E,N1,W"> <14> <23> <33> <24> "Each player has 12 holes by row.") 
+    (item "10"  <10> <"20,E,N1,W"> <12> <19> <27> <20> "Each player has 10 holes by row.")* 
+    (item "12"  <12> <"24,E,N1,W"> <14> <23> <33> <24> "Each player has 12 holes by row.") 
 })
 
 //------------------------------------------------------------------------------
@@ -163,15 +163,15 @@
     (info
         {
         (description "Spreta is a four-row mancala-style game board played by the Chikunda people of Malawi. ")
-        (rules "4x10-12 board (even numbers only). One counter in each hole, except for the third hole from the left of the inner row, which contains two, and the rightmost hole of the inner row, which is empty. Play must begin from the hole containing two counters. Sowing occurs in an anti-clockwise direction. When the final counter lands in an occupied hole. These are picked up and sowing continues. When the final counter falls in an empty hole, the contents of the hole in the opponent's  inner row opposite this hole are captured; if there are also counters in the opponent's outer row, these are also captured, along with the contents of any other two holes on the opponent's side of the board. Single counters can be moved only when there are no holes with multiple counters and they may only be moved to an empty hole. The player who captures all of the opponent's counters wins.")
+        (rules "4x10-12 board (even numbers only). One counter in each hole, except for the third hole from the left of the inner row, which contains two, and the rightmost hole of the inner row, which is empty. Play must begin from the hole containing two counters. Sowing occurs in an anti-clockwise direction. When the final counter lands in an occupied hole. These are picked up and sowing continues. When the final counter falls in an empty hole, the contents of the hole in the opponent's inner row opposite this hole are captured; if there are also counters in the opponent's outer row, these are also captured, along with the contents of any other two holes on the opponent's side of the board. Single counters can be moved only when there are no holes with multiple counters and they may only be moved to an empty hole. The player who captures all of the opponent's counters wins.")
         (source "Sanderson 1913: 736.")
         (id "257")
         (version "1.3.4")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Malawi, around 1913.")
+        (origin "This game was played in Malawi, around 1913.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

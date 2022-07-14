@@ -19,7 +19,7 @@
 (define "CascadeTie"
     (and
         (set Score Mover (var "MoverScore")) 
-        (set Score Next  (var "NextScore")) 
+        (set Score Next (var "NextScore")) 
 ))
 
 (define "CascadeTiebreaker"
@@ -28,31 +28,31 @@
         (and
             (set Score Mover (* <Variant:tieFactor> ("CascadeScore" Mover Next)))
             (set Score Next (* <Variant:tieFactor> ("CascadeScore" Next Mover)))
-       )
+        )
         ("CascadeTie")
 ))
 
 //---------------------
 // Defines for scoring options
 
-(define "Scoring"  // Captures + cascade scoring
+(define "Scoring" // Captures + cascade scoring
     (set Var "MoverScore"
         (+
             (value Piece at:(handSite Mover))
             ("GroupCount" Mover)
-       )
+        )
         (then
             (set Var "NextScore"
                 (+
                     (value Piece at:(handSite Next))
                     ("GroupCount" Next)
-               )
+                )
                 (then 
                     ("CascadeTiebreaker")
 )))))
 
 //----------------------------
-(define "CapturingAtScoreWhat4Who"  
+(define "CapturingAtScoreWhat4Who" 
     (forEach Value
         (array #1)
         (if 
@@ -66,9 +66,9 @@
                             (add (piece (id "Disc" #2)) (to (handSite #3))
                                 (then
                                     (set Value at:(handSite #3) (+ 1 (value Piece at:(handSite #3))))
-                           ))
+                            ))
                             (set Value at:(handSite #3) (+ 1 (value Piece at:(handSite #3))))
-               )))
+                )))
                 (remove (value))
 ))))
 
@@ -82,12 +82,12 @@
             (and 
                 (is Empty (site))
                 (is In (site) (sites Outer))
-           )
+            )
             (!= Infinity
                 (count Steps
                     (step "ConnectionDirection"
                         (to if:(is Empty (to)))
-                   )
+                    )
                     (site)
                     (difference (sites Outer) (site))
 )))))
@@ -104,7 +104,7 @@
         (piece "Disc" Each)
         (hand Each size:1)
         }
-   )
+    )
     (rules
         (start (set Score Each 0))
         (play
@@ -118,24 +118,24 @@
                                 in:(intersection
                                     (sites Around (to) "ConnectionDirection")
                                     (sites Empty)
-               )))))
+                )))))
                 ifAfterwards:("AllHave1Connection2Edge" 
                     (intersection 
                         (sites Around (last To) "ConnectionDirection")
                         (sites Empty)
-               )) 
+                )) 
                 (then
                     (do
                         ("CapturingAtScoreWhat4Who" 
                             (intersection 
                                 (sites Occupied by:All) 
                                 (sites Around (last To) "ConnectionDirection") 
-                           )
-                            Next  // which pieces score: Mover, Next, All, None
+                            )
+                            Next // which pieces score: Mover, Next, All, None
                             <Variant:bonus2> // who gets their value
-                       )
+                        )
                         next:("Scoring")
-       ))))
+        ))))
         (end 
             (if 
                 (no Moves Next)
@@ -143,11 +143,11 @@
                 (if 
                     (= (score Mover) (score Next))
                     (result Mover Win)
-               )
+                )
                 (if 
                     (!= (score Mover) (score Next))
                     (byScore)
-               )
+                )
                 }
 ))))
 /-----------------------------------------
@@ -164,7 +164,7 @@
 // Options
 (option "Board Size" <BoardSize> args:{<smallSide> <backgroundSize>} 
     {
-    (item "Order 5" <5> <1.4>  "Order 5 board")
+    (item "Order 5" <5> <1.4> "Order 5 board")
     (item "Order 7" <7> <1.3> "Order 7 board")
     (item "Order 9" <9> <1.23> "Order 9 board")**
     (item "Order 11" <11> <1.2> "Order 11 board")
@@ -197,7 +197,7 @@
         {
         (description "Watershed is a square board placement game based on Branching Coral, with the principle of placing pieces, such that, after placement, every site on the boards still has a connection via empty sites to an empty site at the perimeter. 
             
-            Scoring for the standard Plateau version is based on the size of the largest group plus a bonus factor for the number of opponent's pieces captured.  This works to reward capture and thus encourages breaking up opponent's groups, while remaining straight forward in the need to enlarge your largest group, it allows creating come-back groups, or staging combacks by capturing material.
+            Scoring for the standard Plateau version is based on the size of the largest group plus a bonus factor for the number of opponent's pieces captured. This works to reward capture and thus encourages breaking up opponent's groups, while remaining straight forward in the need to enlarge your largest group, it allows creating come-back groups, or staging combacks by capturing material.
             
             Ties are broken in favor of the underdog by considering only the largest group size as a negative score without including the capture bonus. Opponent-paired groups of the same size are excluded in this comparison. If all groups are paired in size with the opponent, last to play wins. 
             
@@ -215,7 +215,7 @@
             Capture 
             After placement, simultaneously remove all the stones adjacent to the placed stone that are no longer next to 2 empty sites.
             
-            There is no passing. The game ends when no more placements can be made.  
+            There is no passing. The game ends when no more placements can be made. 
             
             Ties are broken in favor of the underdog by compairing cascading largest groups (excluding tied pairs) Tie breaker scores are negative, so largest group LOSES.
             
@@ -237,7 +237,7 @@
         (credit "Dale W. Walton")
         (date "06-05-2021")
         }
-   )
+    )
     
     (graphics 
         {
@@ -259,6 +259,6 @@
         (show Piece Value "Disc" Middle)
         (board Background image:"Square-alt1" fillColour:"ColourBackground" edgeColour:(colour 180 180 180 80) scale:<BoardSize:backgroundSize>) 
         }
-   )
+    )
 )
 

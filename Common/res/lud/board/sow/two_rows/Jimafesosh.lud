@@ -8,34 +8,34 @@
     (if (is Mover P1)
         (sites (values Remembered "OwnedP1"))
         (sites (values Remembered "OwnedP2"))
-   )
+    )
 )
 
 (define "RemmemberOwnedHoles" 
     (if (is Mover P1)
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
-   )
+    )
 )
 
 (define "RememberOwnedHolesRandom" 
     (if (< 50 (value Random (range 1 100)))
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
-   )
+    )
 )
 
 (define "RightMostEmpty" 
     (trackSite FirstSite "TrackCW"
         from:(mapEntry "RightMost" Mover)
         if:(is Empty (to))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Jimafesosh"  
-    (players 2)  
+(game "Jimafesosh" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
@@ -43,13 +43,13 @@
             (track "TrackCCW" "0,E,N,W" loop:True)
             (track "TrackCW" "5,W,N,E" loop:True)
             }
-       )
+        )
         (piece "Seed" Shared)
         (hand Each)
         (map "RightMost" {(pair P1 5) (pair P2 6)})
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-    })  
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+    }) 
     (rules 
         
         (start {
@@ -66,8 +66,8 @@
                         (if ("SameTurn")
                             (var "Replay")
                             5
-                       )
-                   )
+                        )
+                    )
                     (then
                         (sow
                             numPerHole:4
@@ -77,14 +77,14 @@
                                 (if (is Occupied ("NextHole" (to) 1))
                                     (set Var "Replay" ("NextHole" (to) 1))
                                     (set Var "Replay" Undefined)
-                               )
-                           )
-                       )
-                   )
-               )
-           )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
             (nextPhase (= Undefined (var "Replay")) "Opening2")
-       )
+        )
         (phase "Opening2"
             (play
                 (move Select 
@@ -92,8 +92,8 @@
                         (if (and ("SameTurn") (!= Undefined (var "Replay")))
                             (var "Replay")
                             4
-                       )
-                   )
+                        )
+                    )
                     (then
                         (sow
                             "TrackCCW"
@@ -101,22 +101,22 @@
                                 (and
                                     (moveAgain)
                                     (set Var "Replay" (to))
-                               )
+                                )
                                 (if (is Occupied ("OppositePitTwoRows" (to)))
                                     (fromTo
                                         (from ("OppositePitTwoRows" (to)))
                                         (to (handSite Mover))
                                         count:(count at:("OppositePitTwoRows" (to)))
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
             
             (nextPhase (not (is Next Prev)) "Sowing")
-       )
+        )
         
         (phase "Sowing"
             (play
@@ -126,9 +126,9 @@
                             (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 ("OwnedHoles") 
-                           )
+                            )
                             if:(is Occupied (from))
-                       )
+                        )
                         (then
                             (sow
                                 "TrackCCW"
@@ -136,18 +136,18 @@
                                     (and
                                         (moveAgain)
                                         (set Var "Replay" (to))
-                                   )
+                                    )
                                     (if (is Occupied ("OppositePitTwoRows" (to)))
                                         (fromTo
                                             (from ("OppositePitTwoRows" (to)))
                                             (to (handSite Mover))
                                             count:(count at:("OppositePitTwoRows" (to)))
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     }
                     (then
                         (if ("OneOrLessPieceOnBoard")
@@ -157,32 +157,32 @@
                                         (from (site))
                                         (to (handSite P1))
                                         count:(count at:(site))
-                                   )
-                               )
+                                    )
+                                )
                                 (forEach Site (sites P2)
                                     (fromTo
                                         (from (site))
                                         (to (handSite P2))
                                         count:(count at:(site))
-                                   )
-                               )
+                                    )
+                                )
                                 (forget Value "OwnedP1" All)
                                 (forget Value "OwnedP2" All)
                             })
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (end (if ("NoPieceOnBoard")
                     {
                     (if (= 0 (count Cell at:(handSite P1))) (result P2 Win))
                     (if (= 0 (count Cell at:(handSite P2))) (result P1 Win))
                     }
-               )
-           )
+                )
+            )
             
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-       )
+        )
         
         (phase "BetweenRounds"
             (play
@@ -200,12 +200,12 @@
                                             (from (handSite Mover))
                                             (to ("RightMostEmpty"))
                                             count:3
-                                       )
+                                        )
                                         (fromTo 
                                             (from (handSite Next))
                                             (to ("RightMostEmpty"))
                                             count:1
-                                       )
+                                        )
                                         ("RemmemberOwnedHoles" ("RightMostEmpty"))
                                     })
                                     (if (= 2 (count Cell at:(handSite Mover)))
@@ -214,43 +214,43 @@
                                                 (from (handSite Mover))
                                                 (to ("RightMostEmpty"))
                                                 count:2
-                                           )
+                                            )
                                             (fromTo 
                                                 (from (handSite Next))
                                                 (to ("RightMostEmpty"))
                                                 count:2
-                                           )
+                                            )
                                             ("RememberOwnedHolesRandom" ("RightMostEmpty"))
                                         })
-                                   )
-                               )
+                                    )
+                                )
                             })
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (nextPhase (and (is Empty (handSite P1)) (is Empty (handSite P2))) "Sowing")
-       )
+        )
         }
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Jimafesosh is a two-row mancala-style board game played in the Wollo region of Ethiopia.")
-        (rules "2x6 board. Four counters in each hole. In the opening phase, the player takes all of the counters in their rightmost hole and places them in the opponent's opposite hole. The player  then takes the contents of the next hole, placing all of them into the hole following it, until the entire board has alternating holes with eight and zero counters. When the final hole is made with eight counters, these are picked up and the player sows as normal in an anti-clockwise direction. When the final counter falls into an occupied hole, the counters are picked up and sowing continues. When the final counter falls into an empty hole, the player captures the counters in the opposite hole. If a player cannot play, they must pass their turn until there are counters available for them to play. Play continues until there is one piece or fewer on the board, the player to whom the row in which the single piece is located captures it. A second round is played, each player placing four counters into each hole starting from the rightmost hole in their row. The player with more counters gains a hole from their opponent for every four extra balls they've captured. If an opponent has three extra after counting in such a way, they also gain a hole, and if each player has two remaining counters ownership is determined by chance. Play continues in several rounds like this until one player takes all the counters.
+        (rules "2x6 board. Four counters in each hole. In the opening phase, the player takes all of the counters in their rightmost hole and places them in the opponent's opposite hole. The player then takes the contents of the next hole, placing all of them into the hole following it, until the entire board has alternating holes with eight and zero counters. When the final hole is made with eight counters, these are picked up and the player sows as normal in an anti-clockwise direction. When the final counter falls into an occupied hole, the counters are picked up and sowing continues. When the final counter falls into an empty hole, the player captures the counters in the opposite hole. If a player cannot play, they must pass their turn until there are counters available for them to play. Play continues until there is one piece or fewer on the board, the player to whom the row in which the single piece is located captures it. A second round is played, each player placing four counters into each hole starting from the rightmost hole in their row. The player with more counters gains a hole from their opponent for every four extra balls they've captured. If an opponent has three extra after counting in such a way, they also gain a hole, and if each player has two remaining counters ownership is determined by chance. Play continues in several rounds like this until one player takes all the counters.
         ")
         (source "Pankhurst 1971: 179.")
         (id "364")
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Ethiopia, around 1971.")
+        (origin "This game was played in Ethiopia, around 1971.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

@@ -1,9 +1,9 @@
 (game "T'mbl"
-    (players 2)  
+    (players 2) 
     (equipment {
         (board (square 3 diagonals:Alternating) use:Vertex)
         (piece "Marker" Each ("StepToEmpty"))
-    })  
+    }) 
     (rules 
         (start {
             (place "Marker1" (sites Top))
@@ -11,7 +11,7 @@
         })
         (play (forEach Piece))
         (end (if (and (is In (centrePoint) (sites Occupied by:Mover)) (is Line 3)) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -27,8 +27,8 @@
         (version "1.3.4")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in Algeria, around 1964.")
+        (origin "This game was played in Algeria, around 1964.")
         }
-   )
+    )
     
 )

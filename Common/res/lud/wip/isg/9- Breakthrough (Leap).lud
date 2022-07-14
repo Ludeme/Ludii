@@ -1,7 +1,7 @@
 (define "Leap"
     (move Leap { {F F R F} {F F L F} }
         (to if:(not ("IsFriendAt" (to))) (apply (remove (to))))
-   )		
+    )		
 )
 
 (define "ReachedTarget" (is In (last To) (sites Mover)))
@@ -16,7 +16,7 @@
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
         (hand Each)
-    })  
+    }) 
     (rules 
         (start (place "Knight" "Hand" count:18))
         
@@ -26,16 +26,16 @@
                 (move
                     (from (handSite Mover))
                     (to (expand (sites Next) steps:2) if:(is Empty (to)))
-               )
-           )
+                )
+            )
             (nextPhase Mover (is Empty (handSite Mover)) "Move")
-       )
+        )
         (phase "Move"
             (play (forEach Piece))
             (end (if "ReachedTarget" (result Mover Win))) 
-       )
+        )
         }
-   )
+    )
 )
 
 //------------------------------------------------------------------------------

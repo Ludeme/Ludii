@@ -8,15 +8,15 @@
         (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
-           )
-       )
-   ) 
+            )
+        )
+    ) 
 )
 
 //------------------------------------------------------------------------------
 
-(game "Chessence"  
-    (players 2)  
+(game "Chessence" 
+    (players 2) 
     (equipment { 
         (board (rectangle 9 6)) 
         (piece "Pawn" Each
@@ -27,26 +27,26 @@
                         Orthogonal 
                         (between
                             if:(and (is Empty (between)) (not (is In (between) (sites "BlackenedSquares"))))
-                       )
+                        )
                         (to 
                             if:("IsEnemyAt" (to)) 
                             "CaptureToPiece"
-                       ) 
-                   )
-               )
+                        ) 
+                    )
+                )
                 (if (not (all Sites (sites Around (from) Diagonal) if:(!= (what at:(site)) (id "Pawn" Mover))))
                     (move
                         Slide 
                         Diagonal 
                         (between
                             if:(and (is Empty (between)) (not (is In (between) (sites "BlackenedSquares"))))
-                       )
+                        )
                         (to 
                             if:("IsEnemyAt" (to)) 
                             "CaptureToPiece"
-                       ) 
-                   )
-               )
+                        ) 
+                    )
+                )
                 
                 (if (not 
                         (all Sites
@@ -54,29 +54,29 @@
                                 (sites Around 
                                     (sites To (hop Orthogonal (between if:True) (to if:True))) 
                                     Orthogonal
-                               )
+                                )
                                 if:(= 2 (count Steps (from) (site)))
-                           )
+                            )
                             if:(!= (what at:(site)) (id "Pawn" Mover))
-                       )
-                   )
+                        )
+                    )
                     (move
                         Leap 
                         "KnightWalk" 
                         (to 
                             if:(and (not ("IsFriendAt" (to))) (not (is In (to) (sites "BlackenedSquares"))))
                             "CaptureToPiece"
-                       ) 
-                   )
-               )
+                        ) 
+                    )
+                )
             })
-       )
+        )
         (piece "King" Each)
         (hand Each)
         (regions "BlackenedSquares" (sites {"A2" "B3" "B5" "C6" "D4" "E5" "E7" "F8"}))
         (regions "PawnStart" P1 (sites {"E1" "E2" "F2" "D2" "D3" "E3"}))
         (regions "PawnStart" P2 (sites {"B9" "B8" "A8" "C8" "C7" "B7"}))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Pawn" "Hand" count:3)
@@ -91,26 +91,26 @@
                 (do 
                     (forEach Piece)
                     ifAfterwards:(not ("IsInCheck" "King" Mover))
-               )
+                )
                 (if (is Occupied (handSite Mover))
                     (move
                         (from (sites Hand))
                         (to (sites Mover "PawnStart") if:(is Empty (to)))
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         
         (end {
-            (if  (and 
+            (if (and 
                     ("IsInCheck" "King" Next)
                     ("NextCanNotMove")
-               )
+                )
                 (result Mover Win)
-           ) 
+            ) 
             (if (no Moves Mover) (result Mover Loss)) 
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -140,7 +140,7 @@
         (credit "Eric Piette")
         (date "1989")
         }
-   )
+    )
     
     (graphics {
         (show Check "King")

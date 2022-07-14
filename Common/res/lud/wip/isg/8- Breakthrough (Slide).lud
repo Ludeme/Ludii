@@ -3,8 +3,8 @@
     (move Slide (directions {FR FL} of:All) 
         (to if:("IsEnemyAt" (to))
             (apply (remove (to)))
-       )
-   )		
+        )
+    )		
 )
 (define "Jump" 
     (move Hop (directions {Forwards Rightward Leftward} of:All) 
@@ -12,8 +12,8 @@
         (to 
             if:(or (is Empty (to)) ("IsEnemyAt" (to))) 
             (apply (remove (to)))
-       )
-   )		
+        )
+    )		
 )
 
 (define "ReachedTarget" (is In (last To) (sites Mover)))
@@ -28,7 +28,7 @@
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
         (hand Each)
-    })  
+    }) 
     (rules 
         (start (place "Pawn" "Hand" count:18))
         
@@ -38,16 +38,16 @@
                 (move
                     (from (handSite Mover))
                     (to (expand (sites Next) steps:2) if:(is Empty (to)))
-               )
-           )
+                )
+            )
             (nextPhase Mover (is Empty (handSite Mover)) "Move")
-       )
+        )
         (phase "Move"
             (play (forEach Piece))
             (end (if "ReachedTarget" (result Mover Win))) 
-       )
+        )
         }
-   )
+    )
 )
 
 //------------------------------------------------------------------------------

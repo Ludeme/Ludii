@@ -1,18 +1,18 @@
 (game "Seven-Fang"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board 
             (square 7)
             use:Vertex
-       )
+        )
         (piece "Disc" P1 (move [#])) 
         (piece "Disc" P2 (move [#])) 
-    })  
+    }) 
     (rules 
         (start [#]) 
         (play [#])
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -28,9 +28,9 @@
         (version "1.3.4")
         (classification "board/war/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in China, from around 1997 to 1999.")
+        (origin "This game was played in China, from around 1997 to 1999.")
         }
-   )
+    )
     
     (graphics {
         (show Edges Diagonal Hidden)

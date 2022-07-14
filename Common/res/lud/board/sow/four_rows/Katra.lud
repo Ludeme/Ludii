@@ -2,8 +2,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Katra"  
-    (players 2)  
+(game "Katra" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -13,14 +13,14 @@
             (track "TrackCW1" <Board:CW1> loop:True P1)
             (track "TrackCW2" <Board:CW2> loop:True P2)
             }
-       )
-        (regions "Home" P1 (sites Track "TrackCCW1"))  // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))  // P2 home
-        (regions "Outer" P1 (sites Bottom))            // P1 outer Home
-        (regions "Outer" P2  (sites Top))             // P2 outer Home
+        )
+        (regions "Home" P1 (sites Track "TrackCCW1")) // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2")) // P2 home
+        (regions "Outer" P1 (sites Bottom))      // P1 outer Home
+        (regions "Outer" P2 (sites Top))       // P2 outer Home
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home"))))
@@ -34,9 +34,9 @@
                                 ("SameTurn") 
                                 (sites {(var "Replay")})
                                 (sites Mover "Home") 
-                           ) 
+                            ) 
                             if:(> (count at:(from)) 0)
-                       )
+                        )
                         (then
                             (and
                                 (sow
@@ -47,14 +47,14 @@
                                             (and
                                                 (moveAgain)
                                                 (set Var "Replay" (to))
-                                           )
+                                            )
                                             (if (< 1 (count at:("OppositePit" (to))))
                                                 (and {
                                                     (fromTo
                                                         (from ("OppositePit" (to)))
                                                         (to (to))
                                                         count:(count at:("OppositePit" (to)))
-                                                   )
+                                                    )
                                                     (moveAgain)
                                                     (set Var "Replay" (to))
                                                 })
@@ -64,22 +64,22 @@
                                                             (from ("OppositeOuterPit" (to)))
                                                             (to (to))
                                                             count:(count at:("OppositeOuterPit" (to)))
-                                                       )
+                                                        )
                                                         (moveAgain)
                                                         (set Var "Replay" (to))
                                                     })
-                                               )
-                                           )
-                                       )
-                                   )
-                               )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
                                 (if (!= (value Player Mover) 1)
                                     (set Value Mover 1)
-                               )
-                           )
-                       )
-                   )
-               )
+                                )
+                            )
+                        )
+                    )
+                )
                 
                 (if (!= (value Player Mover) 1)
                     (move Select
@@ -88,9 +88,9 @@
                                 ("SameTurn") 
                                 (sites {(var "Replay")})
                                 (sites Mover "Home") 
-                           ) 
+                            ) 
                             if:(> (count at:(from)) 0)
-                       )
+                        )
                         (then
                             (and
                                 (sow
@@ -101,14 +101,14 @@
                                             (and
                                                 (moveAgain)
                                                 (set Var "Replay" (to))
-                                           )
+                                            )
                                             (if (< 1 (count at:("OppositePit" (to))))
                                                 (and {
                                                     (fromTo
                                                         (from ("OppositePit" (to)))
                                                         (to (to))
                                                         count:(count at:("OppositePit" (to)))
-                                                   )
+                                                    )
                                                     (moveAgain)
                                                     (set Var "Replay" (to))
                                                 })
@@ -118,36 +118,36 @@
                                                             (from ("OppositeOuterPit" (to)))
                                                             (to (to))
                                                             count:(count at:("OppositeOuterPit" (to)))
-                                                       )
+                                                        )
                                                         (moveAgain)
                                                         (set Var "Replay" (to))
                                                     })
-                                               )
-                                           )
-                                       )
-                                   )
-                               )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
                                 (if (!= (value Player Mover) 2)
                                     (set Value Mover 2)
-                               )
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         
         (end "ForEachNonMoverNoMovesLoss")
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <rowSize> <CCW2> <CW1> <CW2> }
     {
-    (item "6"   <6> <"12,E,N1,W"> <"5,W,N1,E"> <"18,E,S1,W"> "Each player has 6 holes on each row.")  
-    (item "8"   <8> <"16,E,N1,W"> <"7,W,N1,E"> <"24,E,S1,W"> "Each player has 8 holes on each row.")*   
-    (item "10"  <10> <"20,E,N1,W"> <"9,W,N1,E"> <"30,E,S1,W"> "Each player has 10 holes on each row.")  
+    (item "6"  <6> <"12,E,N1,W"> <"5,W,N1,E"> <"18,E,S1,W"> "Each player has 6 holes on each row.") 
+    (item "8"  <8> <"16,E,N1,W"> <"7,W,N1,E"> <"24,E,S1,W"> "Each player has 8 holes on each row.")*  
+    (item "10" <10> <"20,E,N1,W"> <"9,W,N1,E"> <"30,E,S1,W"> "Each player has 10 holes on each row.") 
 })
 
 //------------------------------------------------------------------------------
@@ -158,7 +158,7 @@
         "Board Size/8"
         }
         variations:{"Board Size/6" "Board Size/10"}
-   )*
+    )*
     
 })
 
@@ -178,7 +178,7 @@
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

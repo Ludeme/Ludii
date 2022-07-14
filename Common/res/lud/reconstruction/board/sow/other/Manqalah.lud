@@ -1,20 +1,20 @@
-(game "Manqalah"  
-    (players 2)  
+(game "Manqalah" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard #)
         (piece "Seed" Shared)
-    })  
+    }) 
     (rules
         (start [#])
         (play [#])
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Manqalah is a game that was played in Southwest Asia during the tenth century. Little is known about it, but it could be the earliest attestation of the sowing type of game known from much later.")
@@ -23,9 +23,9 @@
         (id "1065")
         (version "1.3.4")
         (classification "board/sow/reconstruction")
-        (origin  "This game was played in Southwest Asia, from around 900 to 967.")
+        (origin "This game was played in Southwest Asia, from around 900 to 967.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

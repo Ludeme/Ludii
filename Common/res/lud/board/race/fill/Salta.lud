@@ -5,7 +5,7 @@
         (between if:("IsEnemyAt" (between)))
         (to if:("IsEmptyAndNotVisited" (to)))
         #2		
-   )
+    )
 ) 
 
 (define "HopSequence" ("Hop" #1 (then (if (can Move ("Hop" (last To))) (moveAgain)))))
@@ -29,7 +29,7 @@
 //------------------------------------------------------------------------------
 
 (game "Salta" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (square 10)) 
         (piece "Salta1Dot" Each)
@@ -47,7 +47,7 @@
         (piece "Salta3Star" Each)
         (piece "Salta4Star" Each)
         (piece "Salta5Star" Each)
-    })  
+    }) 
     
     (rules 
         (start { 
@@ -67,18 +67,18 @@
                     (forEach Piece ("HopSequence" (from)))
                     (forEach Piece "StepDiagonalToEmpty")
                 }) 
-           )
-       ) 
+            )
+        ) 
         
         (end {
             (if "GoalOfP1Filled" 
                 (result P1 Win)
-           )
+            )
             (if "GoalOfP2Filled" 
                 (result P2 Win)
-           )
+            )
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -97,7 +97,7 @@
         (credit "Eric Piette")
         (date "1899")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Green))
@@ -107,6 +107,6 @@
     
     (ai 
         "Salta_ai"
-   )
+    )
     
 )

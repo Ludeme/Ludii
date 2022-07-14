@@ -6,7 +6,7 @@
             #2
             if:("IsEnemyAt" (between)) 
             (apply (remove (between) #3))
-       )
+        )
         (to if:(is Empty (to)))
         (then 
             (if (can Move 
@@ -16,17 +16,17 @@
                         (between 
                             if:("IsEnemyAt" (between))
                             (apply (remove (between)))
-                       )
+                        )
                         (to if:(is Empty (to)))
-                   )
-               ) 
+                    )
+                ) 
                 (moveAgain)
                 (if "JumpToPromotionZone"
                     (promote (last To) (piece "DoubleCounter") Mover)
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 (define "HopDiagonalDoubleCounter" 
@@ -38,7 +38,7 @@
             after:(count Rows)
             if:("IsEnemyAt" (between)) 
             (apply (remove (between)))
-       )
+        )
         (to if:(is Empty (to)))
         (then 
             (if (can Move 
@@ -51,14 +51,14 @@
                             after:(count Rows)
                             if:("IsEnemyAt" (between)) 
                             (apply (remove (between)))
-                       )
+                        )
                         (to if:(is Empty (to)))
-                   )
-               ) 
+                    )
+                ) 
                 (moveAgain)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -79,29 +79,29 @@
                     (then 
                         (if "JumpToPromotionZone"
                             (promote (last To) (piece "DoubleCounter") Mover)
-                       )
-                   )
-               )
+                        )
+                    )
+                )
                 "HopDiagonalCounter"
-           )
-       )
+            )
+        )
         (piece "DoubleCounter" Each
             (or
                 (move Slide Diagonal)
                 ("HopDiagonalDoubleCounter")
-           )
-       )
+            )
+        )
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-   )  
+    ) 
     (rules 
         (start
             { 
             (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 0) ))
             (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 0)))
             }
-       )
+        )
         
         (play 
             (if	("SameTurn")
@@ -113,17 +113,17 @@
                                     (if 
                                         (= (what at:(site)) (id "Counter" Mover)) 
                                         (promote (site) (piece "DoubleCounter") Mover) 
-                                   )
-                               )
-                           )
-                       )
+                                    )
+                                )
+                            )
+                        )
                         (move Hop 
                             (from (last To)) 
                             Diagonal
                             (between 
                                 if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
-                           )
+                            )
                             (to if:(is Empty (to)))
                             (then 
                                 (if (can Move 
@@ -133,18 +133,18 @@
                                             (between 
                                                 if:("IsEnemyAt" (between))
                                                 (apply (remove (between)))
-                                           )
+                                            )
                                             (to if:(is Empty (to)))
-                                       )
-                                   ) 
+                                        )
+                                    ) 
                                     (moveAgain)
                                     (if "JumpToPromotionZone"
                                         (promote (last To) (piece "DoubleCounter") Mover)
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     (or 
                         (move Pass)
                         (move Hop 
@@ -156,7 +156,7 @@
                                 after:(count Rows)
                                 if:("IsEnemyAt" (between)) 
                                 (apply (remove (between)))
-                           )
+                            )
                             (to if:(is Empty (to)))
                             (then 
                                 (if (can Move 
@@ -169,23 +169,23 @@
                                                 after:(count Rows)
                                                 if:("IsEnemyAt" (between)) 
                                                 (apply (remove (between)))
-                                           )
+                                            )
                                             (to if:(is Empty (to)))
-                                       )
-                                   ) 
+                                        )
+                                    ) 
                                     (moveAgain)
-                               )
-                           )
-                       )
-                   )
-               )
+                                )
+                            )
+                        )
+                    )
+                )
                 (forEach Piece)
-           )
+            )
             
-       ) 
+        ) 
         
         (end (if (no Pieces Next) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -203,7 +203,7 @@
         (classification "board/war/leaping/diagonal")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (board Colour Phase0 (colour 250 221 144))
@@ -214,5 +214,5 @@
     
     (ai
         "Damspel_ai"
-   )
+    )
 )

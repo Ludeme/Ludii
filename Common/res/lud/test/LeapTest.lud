@@ -7,7 +7,7 @@
                 Leap { { L F F } { R F F } }
                 rotations:False
             (to if:(is Empty (to))))
-       )
+        )
     })
     (rules
         (start {
@@ -16,5 +16,5 @@
         })
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
-   )
+    )
 )

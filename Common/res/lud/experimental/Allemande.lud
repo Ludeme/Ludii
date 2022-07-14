@@ -9,18 +9,18 @@
         (move Add
             (piece (id "Square" Mover)) 
             (to Cell "EmptyCellsAroundPiecesPlaced")
-       )
+        )
         (move Select
             (from Edge
                 (forEach
                     of:"EmptyCellsAroundPiecesPlaced"
                     (sites Incident Edge of:Cell at:(site))
-               )
+                )
                 if:(no Pieces All in:(sites Incident Cell of:Edge at:(from)))
-           )
+            )
             (then
                 (add (piece (id "Square" Mover)) (to Cell (sites Incident Cell of:Edge at:(last From))))
-       ))
+        ))
         }
 ))
 
@@ -34,12 +34,12 @@
                 (if
                     (not ("SameTurn")) 
                     (remember Value (last To))
-       )))
+        )))
         (move Select
             (from Edge
                 (sites Board Edge) 
                 if:(no Pieces All in:(sites Incident Cell of:Edge at:(from)))
-           )
+            )
             (then
                 (forEach Site 
                     (sites Incident Cell of:Edge at:(last From))
@@ -47,15 +47,15 @@
                         (add
                             (piece (id "Square" Mover)) 
                             (to (site))
-                       )
+                        )
                         (if
                             (not ("SameTurn"))
                             (remember Value (site))
-       )))))
+        )))))
         (if
             ("SameTurn")
             (move Pass) // allows playing less than 2 pieces
-       )
+        )
         }
 ))
 
@@ -72,11 +72,11 @@
                 (can Move
                     (do <GameOption:restriction>
                         ifAfterwards:("NoCrosscuts")
-               ))
+                ))
                 }
-           )
+            )
             (then (moveAgain))
-       )
+        )
         (do
             <GameOption:restriction>
             ifAfterwards:("NoCrosscuts")
@@ -93,7 +93,7 @@
             (sites Column (+ "Order" 1))
             (sites Column 0)
             }
-       )
+        )
         (is Connected 
             at:(regionSite (sites Row Cell 0) index:0)
             Orthogonal
@@ -101,7 +101,7 @@
             (sites Row (+ "Order" 1))
             (sites Row 0) 
             }
-       )
+        )
 ))
 
 (define "Order" <Board:size>)
@@ -114,22 +114,22 @@
             (remove
                 (square (+ 2 "Order")) 
                 cells:{0 (+ "Order" 1) (* (+ "Order" 2) (+ "Order" 1)) (- (^ (+ "Order" 2) 2) 1)} 
-           ) 
+            ) 
             use:Cell
-       )
+        )
         (regions "EW"
             P1
             (union
                 (sites Column (+ "Order" 1))
                 (sites Column 0)
-       ))
+        ))
         (regions "NS"
             P2
             (union 
                 (sites Row (+ "Order" 1))
                 (sites Row 0)
-       ))
-    (piece "Square" Each) // ("Placements" ~))    
+        ))
+    (piece "Square" Each) // ("Placements" ~))  
     (hand Each size:4)
     }
 )
@@ -140,18 +140,18 @@
             (union
                 (sites Column (+ "Order" 1))
                 (sites Column 0) 
-       ))
+        ))
         // this must come last for the variant placement to work (last To) must be the "Next" player
         (place "Square2" 
             (union
                 (sites Row (+ "Order" 1))
                 (sites Row 0) 
-       ))
+        ))
         }
-   )
+    )
     (play
         "GamePlay"
-   )
+    )
     (end
         (if
             "Goal"
@@ -165,11 +165,11 @@
     (item "Anyplace"
         <("Placements")>
         "The pieces may be placed anywhere that leave all crosscuts connected"
-   )
+    )
     (item "Together"
         <("TouchingPlacements")>
         "Both the pieces must be placed together (touching) and leave all crosscuts connected"
-   )**
+    )**
     }
 )
 
@@ -209,7 +209,7 @@
             
             Connection is determined by whether the lowest left-edge stone can step a continuous path to the upper rightmost stone.
             
-            Issues with implementing this game in Ludii:     
+            Issues with implementing this game in Ludii:   
             1. Ludii does not have a turn structure which would allow filtering for illegal diagonals at the end of 4 placements and reversing the entire move. (and that approach would be very inefficient anyway.) 
             
             Therefore each diagonal placement is being resolved on the next placement, and is not allowed as the forth placement.
@@ -256,7 +256,7 @@
         (credit "Dale W. Walton")
         (date "2022")
         }
-   )
+    )
     
     (graphics
         {
@@ -268,11 +268,11 @@
         (region Colour "EW" P1 (colour 255 0 0 50))
         (region Colour "NS" P2 (colour 200 200 50 50))
         (region Colour P2 (sites State 2) (colour 0 0 0 160))
-        //   (show Piece State)
+        //  (show Piece State)
         (hand Placement P2 scale:0.222 offsetX:0.95 offsetY:0.10 vertical:True)
         (hand Placement P1 scale:0.222 offsetX:0.05 offsetY:0.10 vertical:True)
         }
-   )
+    )
     (ai
         (heuristics (lineCompletionHeuristic targetLength:"Order"))
 ))

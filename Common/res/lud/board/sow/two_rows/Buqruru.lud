@@ -3,18 +3,18 @@
 
 //------------------------------------------------------------------------------
 
-(game "Buqruru"  
-    (players 2)  
+(game "Buqruru" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 4 store:None
             (track "Track" <Direction> loop:True)
-       )
+        )
         (piece "Seed" Shared)
         (hand Each)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-    })  
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+    }) 
     (rules 
         
         (start {
@@ -29,12 +29,12 @@
                     (from 
                         (sites Mover)
                         if:(is In (from) ("PlayableSites"))			
-                   )
+                    )
                     (then (set Value Mover (last To)))
-               )
-           )
+                )
+            )
             (nextPhase Mover "Sowing")
-       )
+        )
         
         (phase "Sowing"
             (play
@@ -44,7 +44,7 @@
                             (from 
                                 (value Player Mover)
                                 if:(is In (from) ("PlayableSites"))	
-                           )
+                            )
                             (then
                                 (sow 
                                     numPerHole:1
@@ -56,13 +56,13 @@
                                                 (= 5 (count at:(to)))
                                                 (= 7 (count at:(to)))
                                             })
-                                       )
+                                        )
                                         (fromTo
                                             (from (to))
                                             (to (handSite Mover))
                                             count:(count at:(to))
-                                       )
-                                   )
+                                        )
+                                    )
                                     apply:(if (or { 
                                             (= 2 (count at:(to)))
                                             (= 4 (count at:(to)))
@@ -73,13 +73,13 @@
                                             (from (to))
                                             (to (handSite Mover))
                                             count:(count at:(to))
-                                       )
-                                   )
+                                        )
+                                    )
                                     skipIf:(not (is In (to) ("PlayableSites")))
                                     backtracking:True
-                               )
-                           )
-                       )
+                                )
+                            )
+                        )
                         (if (= 0 (% (count at:(value Player Mover)) 2))
                             (move Select
                                 (from (value Player Mover))
@@ -94,13 +94,13 @@
                                                     (= 4 (count at:(to)))
                                                     (= 6 (count at:(to)))
                                                 })
-                                           )
+                                            )
                                             (fromTo
                                                 (from (to))
                                                 (to (handSite Mover))
                                                 count:(count at:(to))
-                                           )
-                                       )
+                                            )
+                                        )
                                         apply:(if (or { 
                                                 (= 2 (count at:(to)))
                                                 (= 4 (count at:(to)))
@@ -111,14 +111,14 @@
                                                 (from (to))
                                                 (to (handSite Mover))
                                                 count:(count at:(to))
-                                           )
-                                       )
+                                            )
+                                        )
                                         skipIf:(not (is In (to) ("PlayableSites")))
                                         backtracking:True
-                                   )
-                               )
-                           )
-                       )
+                                    )
+                                )
+                            )
+                        )
                         (if (= 0 (% (count at:(value Player Mover)) 3))
                             (move Select
                                 (from (value Player Mover))
@@ -132,13 +132,13 @@
                                                     (= 3 (count at:(to)))
                                                     (= 5 (count at:(to)))
                                                 })
-                                           )
+                                            )
                                             (fromTo
                                                 (from (to))
                                                 (to (handSite Mover))
                                                 count:(count at:(to))
-                                           )
-                                       )
+                                            )
+                                        )
                                         apply:(if (or { 
                                                 (= 2 (count at:(to)))
                                                 (= 4 (count at:(to)))
@@ -149,14 +149,14 @@
                                                 (from (to))
                                                 (to (handSite Mover))
                                                 count:(count at:(to))
-                                           )
-                                       )
+                                            )
+                                        )
                                         skipIf:(not (is In (to) ("PlayableSites")))
                                         backtracking:True
-                                   )
-                               )
-                           )
-                       )
+                                    )
+                                )
+                            )
+                        )
                         (if (= 0 (% (count at:(value Player Mover)) 4))
                             (move Select
                                 (from (value Player Mover))
@@ -170,13 +170,13 @@
                                                     (= 2 (count at:(to)))
                                                     (= 4 (count at:(to)))
                                                 })
-                                           )
+                                            )
                                             (fromTo
                                                 (from (to))
                                                 (to (handSite Mover))
                                                 count:(count at:(to))
-                                           )
-                                       )
+                                            )
+                                        )
                                         apply:(if (or { 
                                                 (= 2 (count at:(to)))
                                                 (= 4 (count at:(to)))
@@ -187,14 +187,14 @@
                                                 (from (to))
                                                 (to (handSite Mover))
                                                 count:(count at:(to))
-                                           )
-                                       )
+                                            )
+                                        )
                                         skipIf:(not (is In (to) ("PlayableSites")))
                                         backtracking:True
-                                   )
-                               )
-                           )
-                       )
+                                    )
+                                )
+                            )
+                        )
                     })
                     
                     (then
@@ -206,24 +206,24 @@
                                             (from (site))
                                             (to (handSite P1))
                                             count:(count at:(site))
-                                       )
-                                   )
-                               )
+                                        )
+                                    )
+                                )
                                 (forEach Site (sites P2)
                                     (if (is Occupied (site))
                                         (fromTo
                                             (from (site))
                                             (to (handSite P2))
                                             count:(count at:(site))
-                                       )
-                                   )
-                               )
+                                        )
+                                    )
+                                )
                                 (forget Value "Playable" All)
                             })
-                       )	
-                   )
-               )
-           )
+                        )	
+                    )
+                )
+            )
             (end {
                 (if (and (= 0 (count at:(value Player P1))) (= 0 (count at:(value Player P2)))) (result Mover Draw))
                 (if ("OneOrLessPieceOnBoard")
@@ -231,11 +231,11 @@
                     (if (= 0 (count Cell at:(handSite P1))) (result P2 Win))
                     (if (= 0 (count Cell at:(handSite P2))) (result P1 Win))
                     }
-               )
+                )
             })
             
             (nextPhase ("OneOrLessPieceOnBoard") "BetweenRounds")
-       )
+        )
         
         (phase "BetweenRounds"
             (play
@@ -246,34 +246,34 @@
                             (to (sites Mover))
                             count:6
                             (then (remember Value "Playable" (last To)))
-                       )
+                        )
                         (move
                             (from (handSite Mover))
                             (to (sites Mover))
                             count:(count at:(handSite Mover))
                             (then (remember Value "Playable" (last To)))
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (nextPhase (all Passed) "SelectingHole")
-       )
+        )
         }
         
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Direction" <Direction> args:{ <choice> }
     {
-    (item "CCW" <"0,E,N,W">  "The game is played counter clockwise.")*   
-    (item "CW"  <"3,W,N,E">  "The game is played clockwise.")   
+    (item "CCW" <"0,E,N,W"> "The game is played counter clockwise.")*  
+    (item "CW" <"3,W,N,E"> "The game is played clockwise.")  
 })
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Buqruru is a two-row mancala-style board game played in the Tidikelt and Haggar regions of Algeria. It is typically made out of holes in the sand, and camel droppings are used as pieces.")
@@ -286,9 +286,9 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Algeria, around 1964.")
+        (origin "This game was played in Algeria, around 1964.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

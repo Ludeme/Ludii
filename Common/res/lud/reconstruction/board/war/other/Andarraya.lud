@@ -1,24 +1,24 @@
 (game "Andarraya"
-    (players 2)  
-    //    (equipment { 
-        //        (board 
-            //            (rotate 45
-                //                (merge {
-                    //                    (rectangle 5 4)
-                    //                    (shift -1 1 (rectangle 3 6))
-                    //                    (shift -2 2 (rectangle 1 8))
-                    //                    (shift 1 -1 (rectangle 7 2))
-                //                })
-            //           )
-            //            use:Vertex
-        //       ) 
-    //    })
+    (players 2) 
+    //  (equipment { 
+        //    (board 
+            //      (rotate 45
+                //        (merge {
+                    //          (rectangle 5 4)
+                    //          (shift -1 1 (rectangle 3 6))
+                    //          (shift -2 2 (rectangle 1 8))
+                    //          (shift 1 -1 (rectangle 7 2))
+                //        })
+            //      )
+            //      use:Vertex
+        //    ) 
+    //  })
     (equipment [#])
     (rules
         (start [#])
         (play [#]) // Involve capture
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -34,8 +34,8 @@
         (version "1.3.4")
         (classification "board/war/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Spain, from around 1493 to 1495.")
+        (origin "This game was played in Spain, from around 1493 to 1495.")
         }
-   )
+    )
     
 )

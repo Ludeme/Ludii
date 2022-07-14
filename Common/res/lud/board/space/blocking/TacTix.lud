@@ -1,9 +1,9 @@
-(game "TacTix"  
-    (players 2)  
+(game "TacTix" 
+    (players 2) 
     (equipment { 
         (board (square 4))
         (piece "Ball" Shared) 
-    })  
+    }) 
     
     (rules 
         (start (place "Ball" (sites Board)))
@@ -22,39 +22,39 @@
                                         (and
                                             (is Occupied (ahead (last To) (directions Cell from:(last From) to:(last To)))) 
                                             (!= (last To) (ahead (last To) (directions Cell from:(last From) to:(last To))))
-                                       )
+                                        )
                                         (moveAgain)
-                                   )
-                               )
-                           )
-                       )
+                                    )
+                                )
+                            )
+                        )
                         (move Select
                             (from (last To))
                             (to (ahead (last To) (directions Cell from:(last From) to:(last To))))
                             (then 
                                 (and
                                     (remove (last To))
-                                    (if  (and
+                                    (if (and
                                             (is Occupied (ahead (last To) (directions Cell from:(last From) to:(last To)))) 
                                             (!= (last To) (ahead (last To) (directions Cell from:(last From) to:(last To))))
-                                       )
+                                        )
                                         (moveAgain)
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     (move Pass)
-               )
+                )
                 (move Remove
                     (sites Board)
                     (then (if (not (all Sites (sites Around (last To) Orthogonal) if:(is Empty (site)))) (moveAgain)))
-               )
-           )
-       )
+                )
+            )
+        )
         
         (end ("NoMoves" Win))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -79,7 +79,7 @@
         (credit "Eric Piette")
         (date "1949")
         }
-   )
+    )
     
     (graphics {
         (no Sunken)

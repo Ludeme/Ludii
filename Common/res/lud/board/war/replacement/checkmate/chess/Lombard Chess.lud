@@ -3,8 +3,8 @@
         (if 
             (= (state at:(last To)) 1) 
             ("PieceHasMoved" (last To))
-       ) 
-   ) 
+        ) 
+    ) 
 )
 
 (define "PieceHasMoved"
@@ -16,9 +16,9 @@
         (if ("IsEnemyAt" (to))
             (remove 
                 (to)
-           )
-       )
-   ) 
+            )
+        )
+    ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -30,10 +30,10 @@
             (apply 
                 (remove 
                     (to)
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 (define "NextCanNotMove"
@@ -46,13 +46,13 @@
         Forward 
         (between (exact 2) if:(is Empty (between))) 
         (to if:(is Empty (to))) 
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (game "Lombard Chess"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         (piece "King" Each
@@ -62,8 +62,8 @@
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
-                   )
-               )
+                    )
+                )
                 (if (= 1 (state at:(from)))
                     (or
                         (move
@@ -71,23 +71,23 @@
                             (between 
                                 (range 1 2)
                                 if:(not ("IsEnemyAt" (between)))
-                           ) 
+                            ) 
                             (to 
                                 if:(is Empty (to))
-                           )
-                       )
+                            )
+                        )
                         (move
                             Leap 
                             "KnightWalk" 
                             (to 
                                 if:(is Empty (to))
-                           ) 
-                       )
-                   )
-               )
+                            ) 
+                        )
+                    )
+                )
                 ("RememberPieceHasMoved")
-           )
-       )
+            )
+        )
         (piece "Rook" Each
             (move
                 Slide 
@@ -95,9 +95,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )		
-       )
+                ) 
+            )		
+        )
         (piece "Bishop" Each
             (move
                 Hop 
@@ -106,9 +106,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-               )
-           )		
-       )
+                )
+            )		
+        )
         (piece "Knight" Each
             (move
                 Leap 
@@ -116,9 +116,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-               ) 
-           )			
-       )
+                ) 
+            )			
+        )
         (piece "Queen" Each
             (or
                 (move
@@ -127,9 +127,9 @@
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
-                   )
+                    )
                     "RememberPieceHasMoved"
-               )	
+                )	
                 (if (= 1 (state at:(from)))
                     (move
                         Hop 
@@ -137,33 +137,33 @@
                         (between if:True)
                         (to 
                             if:(is Empty (to))
-                       )
-                   )
-               )
+                        )
+                    )
+                )
                 ("RememberPieceHasMoved")
-           )
-       )
+            )
+        )
         (piece "Pawn" Each
             (or {
                 (move Step 
                     Forward 
                     (to if:(is Empty (to)))
-               )
+                )
                 "CaptureForwardDiagonal"
                 (if (is In (from) (sites Start (piece (what at:(from)))))
                     "DoubleStep"
-               )
+                )
                 }
                 (then
                     (if (is In (last To) (sites Mover "Promotion")) 
                         (and
                             (promote (last To) (piece (id "Queen" Mover)))
                             (set State at:(last To) 1)
-                       )
-                   )
-               )
-           )		
-       )
+                        )
+                    )
+                )
+            )		
+        )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     })
@@ -181,21 +181,21 @@
                 (then
                     (if (and (= 1 (state at:(where "King" Next))) ("IsInCheck" "King" Next))
                         ("PieceHasMoved" (where "King" Next))
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         
         (end {
             (if (and 
                     ("IsInCheck" "King" Next)
                     ("NextCanNotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
+            ) 
             (if (no Moves Next) (result Mover Draw)) 
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -212,9 +212,9 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chess")
         (credit "Eric Piette")
-        (origin  "This game was played in Italy, from around 1250 to 1322.")
+        (origin "This game was played in Italy, from around 1250 to 1322.")
         }
-   )
+    )
     
     (graphics {
         (board Style Chess)

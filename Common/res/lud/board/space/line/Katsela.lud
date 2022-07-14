@@ -1,5 +1,5 @@
 (game "Katsela"
-    (players 2)  
+    (players 2) 
     (equipment {
         ("AlquerqueBoard" 3 3)
         (hand Each)
@@ -7,26 +7,26 @@
             (move
                 Step
                 (to if:(is Empty (to))) 
-           )		
-       )
-    })  
+            )		
+        )
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:3))
         phases:{
         (phase "Opening" 
             (play (move (from (handSite Mover)) (to (centrePoint))))
             (nextPhase "Placing") 
-       )
+        )
         (phase "Placing" 
             (play (move (from (handSite Mover)) (to (sites Empty))))
             (nextPhase Mover ("HandEmpty" Mover) "Moving")
-       )
+        )
         (phase "Moving" 
             (play (forEach Piece))
-       )
+        )
         }
         (end (if (is Line 3) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -43,9 +43,9 @@
         (version "1.3.4")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in Central Africa, around 1930.")
+        (origin "This game was played in Central Africa, around 1930.")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Red))

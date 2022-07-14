@@ -5,16 +5,16 @@
 //------------------------------------------------------------------------------
 
 (game "Shono"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (mancalaBoard 2 "Columns"
             (track "Track" "1,E,N,W" loop:True)
-       )
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+        )
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
         (piece "Seed" Shared)
-    })  
+    }) 
     
     (rules 
         (start (set Count 5 to:(sites Track)))
@@ -23,44 +23,44 @@
                 (from 
                     (sites Mover) 
                     if:(< 0 (count at:(from)))
-               )
+                )
                 (then 
-                    (sow  
+                    (sow 
                         if:(and 
                             (is In (to) (sites Next)) 
                             (or 
                                 (= (count at:(to)) 2) 
                                 (= (count at:(to)) 3)
-                           )
-                       ) 
+                            )
+                        ) 
                         apply:(fromTo 
                             (from (to)) 
                             (to (mapEntry (mover))) 
                             count:(count at:(to))
-                       )
+                        )
                         includeSelf:False
                         backtracking:True
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-   )	
+    )	
 )
 
 //------------------------------------------------------------------------------
 
 (option "Size Seeds" <Scale> args:{ <value> }
     {
-    (item "Normal"  
-        <1>     
+    (item "Normal" 
+        <1>   
         "The seeds have a normal size."
-   )*
-    (item "Small"  
-        <0.8>     
+    )*
+    (item "Small" 
+        <0.8>   
         "The seeds are small."
-   )
+    )
 })
 
 //------------------------------------------------------------------------------
@@ -93,9 +93,9 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Central Africa, around 1912.")
+        (origin "This game was played in Central Africa, around 1912.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

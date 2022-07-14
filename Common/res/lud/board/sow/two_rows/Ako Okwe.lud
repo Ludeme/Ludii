@@ -5,7 +5,7 @@
         (from 
             (sites Mover) 
             if:(> (count at:(from)) 0)
-       )
+        )
         (then 
             (sow
                 #1
@@ -19,33 +19,33 @@
                     (then (and 
                             (if (= "NumCaptureDone" 1) (set Value Mover 2)) 
                             (if ("IsOffBoard" "NumCaptureDone") (set Value Mover 1))
-                       ) 
-                   )
-               )
+                        ) 
+                    )
+                )
                 origin:True
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "PiecesOwnedBy" (+ (count at:(mapEntry #1)) (count in:(sites #1))))
 
 //------------------------------------------------------------------------------
 
-(game "Ako Okwe"  
-    (players 2)  
+(game "Ako Okwe" 
+    (players 2) 
     (equipment { 
         (mancalaBoard 2 5
             { 
             (track "TrackCCW" "1,E,N,W" loop:True)
-            (track "TrackCW"  "6,E,S,W" loop:True)
+            (track "TrackCW" "6,E,S,W" loop:True)
             }
-       )
-        (regions P1 (sites Bottom))                    // P1 home
-        (regions P2 (sites Top))                       // P2 home
+        )
+        (regions P1 (sites Bottom))          // P1 home
+        (regions P2 (sites Top))            // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
         (piece "Seed" Shared)
-    })  
+    }) 
     (rules 
         
         (start (set Count 10 to:(sites Track)))
@@ -53,25 +53,25 @@
         (play (or ("Sow" "TrackCW") ("Sow" "TrackCCW")))
         
         (end ("MancalaByScoreWhen" (no Moves Mover)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Play Rules" <Capture> args:{ <doneSoFar> <numCounters> <ruleSecondCapture> }
     {
-    (item "First capture = 1"   
+    (item "First capture = 1"  
         <1> 
         <1>
         <>
         "The first capture must be of one counter."
-   )   
-    (item "First capture = 3, Second Capture = 1"   
+    )  
+    (item "First capture = 3, Second Capture = 1"  
         <2> 
         <3>
         <(and (= "NumCaptureDone" 1) (= (count at:(to)) 1))>
         "The first capture must be of three counters, the second of one counter."
-   )*
+    )*
 })
 
 //------------------------------------------------------------------------------
@@ -82,13 +82,13 @@
         {
         "Play Rules/First capture = 3, Second Capture = 1"
         }
-   )
+    )
     
     (ruleset "Ruleset/Murray (Observed)" 
         {
         "Play Rules/First capture = 1"
         }
-   )
+    )
     
 })
 
@@ -110,9 +110,9 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in West Africa, around 1951.")
+        (origin "This game was played in West Africa, around 1951.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)
@@ -120,6 +120,6 @@
     
     (ai 
         "Ako Okwe_ai"
-   )
+    )
     
 )

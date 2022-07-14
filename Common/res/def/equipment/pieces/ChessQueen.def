@@ -9,17 +9,17 @@
         (move
             Slide 
             (to 
-                if:("IsEnemyAt" (to))   
+                if:("IsEnemyAt" (to))  
                 (apply 
                     (if ("IsEnemyAt" (to)) 
                         (remove 
                             (to) 
                             #2
-                       )
-                   )
-               ) 
-           ) 
+                        )
+                    )
+                ) 
+            ) 
             #3
-       ) 
-   )
+        ) 
+    )
 )

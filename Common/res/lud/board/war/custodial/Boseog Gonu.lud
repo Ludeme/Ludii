@@ -1,4 +1,4 @@
-(game "Boseog Gonu"  
+(game "Boseog Gonu" 
     (players 2)
     
     (equipment {
@@ -12,16 +12,16 @@
                     (shift -1.5 0.5 (rotate 90 (wedge 2))) 
                     (shift 1.5 0.5 (rotate -90 (wedge 2))) 
                     }
-               )
+                )
                 edges:{ 
                 {{1 1} {0 0}} 
                 {{1 1} {2 2}} 
                 {{1 1} {2 0}} 
                 {{1 1} {0 2}}
                 } 
-           )
+            )
             use:Vertex
-       )
+        )
         (piece "Disc" Each <Disc>)
     })
     
@@ -32,14 +32,14 @@
         })
         (play (forEach Piece)) 
         (end (if (= (count Pieces Next) 1) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Variant" <Disc> args:{ <move> }
     {
-    (item "Original"         
+    (item "Original"     
         <
         (move
             Step
@@ -51,16 +51,16 @@
                         (max 1) 
                         if:("IsEnemyAt" (between)) 
                         (apply (remove (between)))
-                   )
+                    )
                     (to if:(= (what at:(to)) (what at:(last To)))) 
-               )	  
-           )
-       ) 
+                )	 
+            )
+        ) 
         >
         "The game is played according to the rules of the source."
-   )** 
+    )** 
     
-    (item "No diagonal capture"         
+    (item "No diagonal capture"     
         <
         (move
             Step
@@ -73,15 +73,15 @@
                         (max 1) 
                         if:("IsEnemyAt" (between)) 
                         (apply (remove (between)))
-                   )
+                    )
                     (to if:(= (what at:(to)) (what at:(last To)))) 
-               )	  
-           )
-       ) 
+                )	 
+            )
+        ) 
         >
         "The game is played according to the rules of the source but the capture is allowed only horizontally and vertically."
-   )*   
-    (item "No diagonal capture and slide"    
+    )*  
+    (item "No diagonal capture and slide"  
         <
         (move
             Slide
@@ -93,13 +93,13 @@
                         (max 1) 
                         if:("IsEnemyAt" (between)) 
                         (apply (remove (between)))
-                   )
+                    )
                     (to if:(= (what at:(to)) (what at:(last To)))) 
-               )
-           ) 
-       )
-        >  
-    "The game is played according to the rules described in Youtube. The two differences with the source is: Capture possible only horizontally and vertically and the pieces can slide.")   
+                )
+            ) 
+        )
+        > 
+    "The game is played according to the rules described in Youtube. The two differences with the source is: Capture possible only horizontally and vertically and the pieces can slide.")  
 })
 
 //------------------------------------------------------------------------------
@@ -120,7 +120,7 @@
         (classification "board/war/custodial")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (board Style Graph)
@@ -129,6 +129,6 @@
     
     (ai 
         "Boseog Gonu_ai"
-   )
+    )
     
 )

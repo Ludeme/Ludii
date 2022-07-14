@@ -3,14 +3,14 @@
     (equipment {
         (mancalaBoard 3 4 store:None
             (track "Track" {0..3 7 11..8 4} loop:True)		
-       )
+        )
         (piece "Seed" Shared)
     })
     (rules
         (start [#])
         (play [#])
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -26,9 +26,9 @@
         (version "1.3.4")
         (classification "board/sow/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Benin, from around 1500 to 1699.")
+        (origin "This game was played in Benin, from around 1500 to 1699.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

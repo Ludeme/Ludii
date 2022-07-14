@@ -1,16 +1,16 @@
 (game "Chupu"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (square 3)) // 120 spaces, separated by two barriers into three zones. One space is a pit.
         (dice d:2 from:0 num:5) // Two dice have a pheasant on the white side and a cow on the black side, some GUI to do...
         (piece "Disc" Each) // Twenty pieces in five colors.
-        //	        (map "RoyalThrow" {(pair 5 16) (pair 0 8) (pair 3 14) (pair 2 10) })
-        //	        (map "MixedThrow" {(pair 5 16) (pair 0 8) (pair 3 14) (pair 2 10) }) //"Mixed" throws are: one pheasant, one cow, three white = 12; one pheasant, one cow, three black = 11; two pheasants, two white, one black = 5; two cows, two black, one white =4; three white, two black = 3; three black and two white =2.
+        //	    (map "RoyalThrow" {(pair 5 16) (pair 0 8) (pair 3 14) (pair 2 10) })
+        //	    (map "MixedThrow" {(pair 5 16) (pair 0 8) (pair 3 14) (pair 2 10) }) //"Mixed" throws are: one pheasant, one cow, three white = 12; one pheasant, one cow, three black = 11; two pheasants, two white, one black = 5; two cows, two black, one white =4; three white, two black = 3; three black and two white =2.
     })
     (rules
         (play (do (roll) next:(forEach Piece))) // Royal throws grant the player an extra throw. A royal throw is required to pass a barrier or to escape the pit. Pieces may only land on the same spot as another of the player's pieces after the first barrier. If a player's piece lands on a space occupied by an opponent's piece, the opponent's piece is a hit. Hitting a piece gives the player an extra throw.
         (end (if (no Moves Next) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -20,7 +20,7 @@
     (info
         {
         }
-   )
+    )
     
     (graphics {
         (piece Colour "Die" state:0 fillColour:(colour White))

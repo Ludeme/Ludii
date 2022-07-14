@@ -1,23 +1,23 @@
-(define "RememberSiteWithPossibleCapture"  
+(define "RememberSiteWithPossibleCapture" 
     (forEach Site
         (sites From
             (forEach Piece "Marker" 
                 ("HopCapture")
-           )
-       )
+            )
+        )
         (remember Value "From" (site))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Asalto"  
-    (players 2)  
+(game "Asalto" 
+    (players 2) 
     (equipment { 
         ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
         (piece "Marker" P1 (or ("HopCapture") "StepToEmpty"))
         (piece "Marker" P2 "StepToEmpty") 
-    })  
+    }) 
     (rules 
         (start {
             (place "Marker1" (sites {"C6" "E6"}))
@@ -36,20 +36,20 @@
                                     (and
                                         (forEach Site (sites (values Remembered "From"))
                                             (remove (site))
-                                       )
+                                        )
                                         (if (is In (last From) (sites (values Remembered "From")))
                                             (remove (last To))
-                                       )
-                                   )
-                               )
-                           )
+                                        )
+                                    )
+                                )
+                            )
                             (forget Value All)
-                       )
-                   )
-               )
+                        )
+                    )
+                )
                 (forEach Piece)
-           )
-       )
+            )
+        )
         
         (end {
             (if (no Pieces P2) (result P1 Win))
@@ -57,11 +57,11 @@
                 (or
                     (or (no Pieces P1) (no Moves P1))
                     (all Sites (expand (sites Top) steps:2) if:(= (who at:(site)) P2))
-               )
+                )
                 (result P2 Win)
-           )
+            )
         }) 
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -78,9 +78,9 @@
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in Europe, around 1891.")
+        (origin "This game was played in Europe, around 1891.")
         }
-   )
+    )
     
     (graphics {
         (region Colour Edge {70 71 65 66 67 68 69 63 64 58 59 60 61 62 40 41} regionSiteType:Edge (colour Red))
@@ -88,5 +88,5 @@
     
     (ai
         "Asalto_ai"
-   )
+    )
 )

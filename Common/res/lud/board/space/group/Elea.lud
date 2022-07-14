@@ -10,18 +10,18 @@
                     (forEach Site 
                         (sites)
                         (set State at:(site) 0)
-                   )
-               )
+                    )
+                )
                 (and
                     (addScore Mover -2)
                     (forEach Site 
                         (sites)
                         (set State at:(site) 1)
-                   )
-               )
-           )
-       )
-   )
+                    )
+                )
+            )
+        )
+    )
 )
 
 (define "MarkEvenGroups"
@@ -32,13 +32,13 @@
             (forEach Site 
                 (sites)
                 (set State at:(site) 0)
-           )
+            )
             (forEach Site 
                 (sites)
                 (set State at:(site) 1)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "UpdateScoreMover"
@@ -50,9 +50,9 @@
                 (is Odd (count Sites in:(sites)))
                 (addScore Mover -1)
                 (addScore Mover -2)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -68,34 +68,34 @@
             (move Add
                 (to (sites Empty))
                 (then <Score>)
-           )
-       )
+            )
+        )
         (end 
             (if (is Full) 
                 (byScore)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Visual aids" <Score> args:{ <score> }
     {
-    (item "Show running score and mark even groups"  <("UpdateScoreMoverAndMarkEvenGroups")>  "The score is currently updated after each move, and groups of even size are marked with a red outline.")*
-    (item "Show running score"  <("UpdateScoreMover")>  "The score is currently updated after each move, but the parity of group sizes is not marked on the stones.")
-    (item "None" <(if (or (= 1 (count Sites in:(sites Empty))) (is Full)) ("UpdateScoreMover"))>  "The score is currently updated only when the board is full, and the parity of group sizes is not marked on the stones. (This makes the AI stronger.)")
+    (item "Show running score and mark even groups" <("UpdateScoreMoverAndMarkEvenGroups")> "The score is currently updated after each move, and groups of even size are marked with a red outline.")*
+    (item "Show running score" <("UpdateScoreMover")> "The score is currently updated after each move, but the parity of group sizes is not marked on the stones.")
+    (item "None" <(if (or (= 1 (count Sites in:(sites Empty))) (is Full)) ("UpdateScoreMover"))> "The score is currently updated only when the board is full, and the parity of group sizes is not marked on the stones. (This makes the AI stronger.)")
     }
 )
 
 (option "Board Size" <Size> args:{ <size> }
     {
-    (item "3"    <3>  "A size 3 board is currently selected")
-    (item "4"    <4>  "A size 4 board is currently selected")
-    (item "5"    <5>  "A size 5 board is currently selected")*
-    (item "6"    <6>  "A size 6 board is currently selected")
-    (item "7"    <7>  "A size 7 board is currently selected")
-    (item "8"    <8>  "A size 8 board is currently selected")
+    (item "3"  <3> "A size 3 board is currently selected")
+    (item "4"  <4> "A size 4 board is currently selected")
+    (item "5"  <5> "A size 5 board is currently selected")*
+    (item "6"  <6> "A size 6 board is currently selected")
+    (item "7"  <7> "A size 7 board is currently selected")
+    (item "8"  <8> "A size 8 board is currently selected")
     }
 )
 
@@ -117,7 +117,7 @@
         (credit "Michael Amundsen")
         (date "2022")
         }
-   )
+    )
     (graphics {
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
@@ -129,5 +129,5 @@
     })
     (ai
         (bestAgent "MC-GRAVE")
-   )
+    )
 )

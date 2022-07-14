@@ -1,26 +1,26 @@
-(game "Fifangha"  
-    (players 2)  
+(game "Fifangha" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 8 store:None)
         (piece "Seed" Shared)
         }
-   )  
+    ) 
     (rules 
         
         (play (forEach Piece))
         
         (end
-            (if  (no Moves Next)
+            (if (no Moves Next)
                 (result Mover Win)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Fifangha is a four-row mancala-style board game played in Madagascar in the early seventeenth century.")
@@ -29,9 +29,9 @@
         (id "1557")
         (version "1.3.2")
         (classification "board/sow/four rows/reconstruction")
-        (origin  "This game was played in Madagascar., from around 1648 to 1658.")
+        (origin "This game was played in Madagascar., from around 1648 to 1658.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

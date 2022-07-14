@@ -1,11 +1,11 @@
 (game "Slitherlink"
-    (players 1)  
-    (equipment  
+    (players 1) 
+    (equipment 
         {
         (board (rectangle <Challenge:size>) (values Edge (range 0 1)) use:Edge)
         (hints { <Challenge:hints> } Cell)
         }
-   )
+    )
     (rules
         (play
             (satisfy {
@@ -13,19 +13,19 @@
                     (or 
                         (= (hint Cell at:(from)) Off) 
                         (is Count Edge (sites Incident Edge of:Cell at:(from)) (hint Cell at:(from)))
-                   )
-               )
+                    )
+                )
                 (forAll Vertex 
                     (or 
                         (is Count Edge (sites Incident Edge of:Vertex at:(from)) 0)
                         (is Count Edge (sites Incident Edge of:Vertex at:(from)) 2)
-                   )
-               )
+                    )
+                )
                 (< (count Groups Edge) 2)
             })
-       )
+        )
         (end (if (is Solved) (result P1 Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -44,7 +44,7 @@
         (hint {15} 0)
         >
         ""
-   )   
+    )  
     
     (item "Janko.at" 
         <7 7>
@@ -69,7 +69,7 @@
         (hint {31} 2)
         >
         ""
-   )
+    )
     
     (item "Nikoli Example" 
         <8 8>
@@ -94,7 +94,7 @@
         (hint {48} 3)
         >
         ""
-   )*
+    )*
     
     (item "Janko.at Extreme" 
         <31 46>
@@ -738,7 +738,7 @@
         (hint {1348} 2)
         >
         ""
-   )
+    )
 })
 
 //------------------------------------------------------------------------------
@@ -756,7 +756,7 @@
         (publisher "Nikoli")
         (credit "Eric Piette")
         }
-   )
+    )
     (graphics {
         (board Style PenAndPaper replaceComponentsWithFilledCells:True)
         (player Colour P1 (colour Black))

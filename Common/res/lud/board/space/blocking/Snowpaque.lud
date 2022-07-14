@@ -4,39 +4,39 @@
             (to) 
             Orthogonal 
             if:(is In (to) (sites Occupied by:Neutral))
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Snowpaque"  
-    (players 2)  
+(game "Snowpaque" 
+    (players 2) 
     (equipment { 
         (board (hex 5)) 
         (piece "Marker" Neutral) 
-    })  
+    }) 
     (rules 
         
         phases:{
         (phase "start" P1 
             (play (move Add (piece (id "Marker0")) (to (sites Empty)))) 
             (nextPhase "play")
-       )
-        (phase "play"   
+        )
+        (phase "play"  
             (play 
                 (move Add 
                     (piece "Marker0") 
                     (to 
                         (sites Empty) 
                         if:(= "NumNeighbour" 1)
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         }
         (end ("NoMoves" Loss))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -55,10 +55,10 @@
         (credit "Eric Piette")
         (date "2015")
         }
-   )
+    )
     
     (ai 
         "Snowpaque_ai"
-   )
+    )
     
 )

@@ -21,21 +21,21 @@
                 (difference 
                     ("InitSitesP1")
                     (sites Outer)
-               )
-           )
+                )
+            )
             (place "Marker2" 
                 (difference 
                     (sites Board)
                     (union
                         ("InitSitesP1")
                         (union (sites Centre) (sites Outer))
-                   )
-               )
-           )
+                    )
+                )
+            )
         })
         (play [#]) // Dice is supposed to be roll to remove piece?
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -52,7 +52,7 @@
         (classification "board/war/reconstruction")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (board style Board)

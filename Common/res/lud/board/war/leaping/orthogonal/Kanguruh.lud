@@ -17,12 +17,12 @@
                         (and {
                             (if ("IsEnemyAt" (between))
                                 (remove (between))
-                           )
+                            )
                             (remember Value (from))
                             (remember Value (to))
                         })
-                   )
-               )
+                    )
+                )
                 (then
                     (if 
                         (can Move
@@ -30,14 +30,14 @@
                                 (from (last To))
                                 (between if:(is Occupied (between)))
                                 (to if:(and (is Empty (to)) (not (is In (to) (values Remembered)))))
-                           )
-                       )
+                            )
+                        )
                         (moveAgain)
                         (forget Value All)
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
     })
     (rules
         (start {
@@ -51,8 +51,8 @@
                     (move Pass
                         (then
                             (forget Value All)
-                       )
-                   )
+                        )
+                    )
                     (move Hop
                         (from (last To))
                         (between if:(is Occupied (between)))
@@ -62,11 +62,11 @@
                                 (and
                                     (if ("IsEnemyAt" (between))
                                         (remove (between))
-                                   )
+                                    )
                                     (remember Value (to))
-                               )
-                           )
-                       )
+                                )
+                            )
+                        )
                         (then
                             (if 
                                 (can Move
@@ -74,26 +74,26 @@
                                         (from (last To))
                                         (between if:(is Occupied (between)))
                                         (to if:(and (is Empty (to)) (not (is In (to) (values Remembered)))))
-                                   )
-                               )
+                                    )
+                                )
                                 (moveAgain)
                                 (forget Value All)
-                           )
-                       )
-                   )
-               )
+                            )
+                        )
+                    )
+                )
                 (forEach Piece)
-           )
-       )
+            )
+        )
         
         (end (if (no Moves Next) 
                 (byScore {
                     (score P1 (count Pieces P1))
                     (score P2 (count Pieces P2))
                 })
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -117,7 +117,7 @@
         (credit "Eric Piette")
         (date "1985")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour yellow))

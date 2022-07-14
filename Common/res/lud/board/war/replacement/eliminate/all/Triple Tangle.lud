@@ -7,13 +7,13 @@
                 (intersection 
                     (sites Incident Edge of:Vertex at:(last From))
                     (sites Incident Edge of:Vertex at:(last To))
-               )
+                )
                 (if (is Enemy (who Edge at:(site)))
                     (remove Edge (site))
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 (define "MoveVertexToCell" 
@@ -23,9 +23,9 @@
             (intersection
                 (sites Empty Cell)
                 (sites Incident Cell of:Vertex at:(from))
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "MoveLastCellToEmptyCellOverEmptyEdge" 
@@ -34,7 +34,7 @@
         (to Cell 
             (intersection (sites Empty Cell)
                 (sites Incident Cell of:Cell at:(from))
-           )
+            )
             if:(and
                 (= 1
                     (count Sites 
@@ -43,12 +43,12 @@
                             (sites Incident Edge of:Cell at:(from))
                             (sites Incident Edge of:Cell at:(to))
                         })
-                   )
-               )
+                    )
+                )
                 (!= (last From) (to))
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "MoveEdgetoEdge" 
@@ -60,13 +60,13 @@
                 (intersection 
                     (sites Incident Vertex of:Edge at:(last From))
                     (sites Incident Vertex of:Edge at:(last To))
-               )
+                )
                 (if (is Enemy (who Vertex at:(site)))
                     (remove Vertex (site))
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 (define "MoveEdgetoCell" 
@@ -76,9 +76,9 @@
             (intersection
                 (sites Empty Cell)
                 (sites Incident Cell of:Edge at:(from))
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "MoveCellToEmptyCellOverEdge" 
@@ -88,20 +88,20 @@
             (intersection
                 (sites Empty Cell)
                 (sites Incident Cell of:Cell at:(from))
-           )
-       )
+            )
+        )
         (then 
             (forEach Site 
                 (intersection 
                     (sites Incident Edge of:Cell at:(last From))
                     (sites Incident Edge of:Cell at:(last To))
-               )
+                )
                 (if (is Enemy (who Edge at:(site)))
                     (remove Edge (site))
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 (define "MoveCellToEnemyCellOverEmptyEdge" 
@@ -118,15 +118,15 @@
                             (sites Incident Edge of:Cell at:(from))
                             (sites Incident Edge of:Cell at:(to))
                         })
-                   )
-               )
-           )
+                    )
+                )
+            )
             (apply 
                 (remove Cell (to))
-           )
-       )
+            )
+        )
         (then (moveAgain))
-   )
+    )
 )
 
 (define "MoveCellToEmptyCellOverVertex" 
@@ -139,23 +139,23 @@
                         in:(intersection 
                             (sites Incident Vertex of:Cell at:(from))
                             (sites Incident Vertex of:Cell at:(site))
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         (then 
             (forEach Site 
                 (intersection 
                     (sites Incident Vertex of:Cell at:(last From))
                     (sites Incident Vertex of:Cell at:(last To))
-               )
+                )
                 (if (is Enemy (who Vertex at:(site)))
                     (remove Vertex (site))
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 (define "MoveCellToEdge" 
@@ -165,9 +165,9 @@
             (intersection
                 (sites Empty Edge)
                 (sites Incident Edge of:Cell at:(from))
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "MoveCellToVertex" 
@@ -177,9 +177,9 @@
             (intersection
                 (sites Empty Vertex)
                 (sites Incident Vertex of:Cell at:(from))
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "RemoveSiteTypeOccupiedPiece"
@@ -202,7 +202,7 @@
             ("RemoveSiteTypeOccupiedPiece" #1 Cell)
             ("RemoveSiteTypeOccupiedPiece" #1 Edge)
         })
-   )		
+    )		
 )
 
 (define "RemoveLastPiece" 
@@ -215,12 +215,12 @@
 
 //------------------------------------------------------------------------------
 
-(game "Triple Tangle"  
+(game "Triple Tangle" 
     (players <Players:num>) 
     (equipment { 
         (board (tiling T3464 1) use:Vertex)
         (piece "Disc" Each)
-    })  
+    }) 
     
     (rules 
         <Players:start>
@@ -233,15 +233,15 @@
                         (or
                             ("MoveVertexToVertex")
                             ("MoveVertexToCell")
-                       )
-                   )
+                        )
+                    )
                     
                     (forEach Piece on:Edge 
                         (or
                             ("MoveEdgetoEdge")
                             ("MoveEdgetoCell")
-                       )
-                   )
+                        )
+                    )
                     
                     (forEach Piece on:Cell 
                         (or {
@@ -251,21 +251,21 @@
                             ("MoveCellToEdge")
                             ("MoveCellToVertex")
                         })
-                   )
+                    )
                 })
                 <Players:removeLastPiece>
-           )
-       )
+            )
+        )
         
         <Players:end>
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Players" <Players> args:{ <num> <start> <removeLastPiece> <end>} {
     (item "2"
-        <2>  
+        <2> 
         <
         (start {
             (place "Disc1" (sites {4 5 0 1}))
@@ -279,10 +279,10 @@
         <>
         < (end (if (>= 1 ("CountPiecesAllSiteTypes" Next)) (result Mover Win))) >
         "The game is played with 2 players."
-   )*
+    )*
     
     (item "3"
-        <3>  
+        <3> 
         <
         (start {
             (place "Disc1" (sites {2 4 6 8}))
@@ -347,7 +347,7 @@
         (credit "Eric Piette")
         (date "2020")
         }
-   )
+    )
     
     (graphics {
         (player Colour P3 (colour Grey))
@@ -360,5 +360,5 @@
     
     (ai
         "Triple Tangle_ai"
-   )
+    )
 )

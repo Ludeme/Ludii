@@ -3,30 +3,30 @@
         (if 
             (is Line 3 Orthogonal exact:True) 
             (moveAgain)
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (game "Six-Penny Madell"
-    (players 2)  
+    (players 2) 
     (equipment 
         {
         (board
             (concentric Triangle rings:3 joinMidpoints:False joinCorners:True)
             use:Vertex
-       )
+        )
         (hand Each)
         (piece "Marker" Each
             (move
                 Step
                 (to if:(is Empty (to))) 
                 "IfLine3MoveAgain"
-           )
-       )
+            )
+        )
         }
-   )  
+    ) 
     (rules 
         (start (place "Marker" "Hand" count:6))
         
@@ -37,16 +37,16 @@
                     (move
                         Remove
                         (sites Occupied by:Next container:"Board") 
-                   )
+                    )
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
                         "IfLine3MoveAgain"
-                   )  
-               )
-           )
+                    ) 
+                )
+            )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-       )
+        )
         
         (phase "Movement" 
             (play 
@@ -54,19 +54,19 @@
                     (move
                         Remove
                         (sites Occupied by:Next container:"Board") 
-                   )
+                    )
                     (forEach Piece)
-               )
-           )
-       )
+                )
+            )
+        )
         }
         (end 
             (if 
                 (no Pieces Next) 
                 (result Mover Win)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -82,9 +82,9 @@
         (version "1.3.4")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in England, around 1897.")
+        (origin "This game was played in England, around 1897.")
         }
-   )
+    )
     
     (graphics {
         (show Edges Diagonal Hidden)
@@ -94,6 +94,6 @@
     
     (ai
         "Six-Penny Madell_ai"
-   )
+    )
 )
 

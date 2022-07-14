@@ -2,8 +2,8 @@
     (apply 
         (remove 
             (to) 
-       )
-   ) 
+        )
+    ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -13,8 +13,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-       )
-   )
+        )
+    )
 )
 
 (define "NextCanNotMove"
@@ -34,9 +34,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-               )
-           )
-       )
+                )
+            )
+        )
         (piece "Rook" Each
             (move
                 Slide 
@@ -44,9 +44,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Elephant" Each
             (move Hop Diagonal 
                 (between if:True) 
@@ -54,11 +54,11 @@
                     if:(or 
                         (is Empty (to)) 
                         (and ("IsEnemyAt" (to)) (!= (what at:(to)) (id "Elephant" Next)))
-                   ) 
+                    ) 
                     (apply (remove (to)))
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Knight" Each
             (move 
                 Leap 
@@ -66,9 +66,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Pawn" Each
             (or 
                 "StepForwardToEmpty" 
@@ -76,10 +76,10 @@
                 (then
                     (if (is In (last To) (sites Mover "Promotion")) 
                         (moveAgain)
-                   )
-               )
-           )
-       ) 
+                    )
+                )
+            )
+        ) 
         (piece "Ferz_noCross" Each
             (move
                 Step 
@@ -87,14 +87,14 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-               )
-           )
-       )
+                )
+            )
+        )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     })
     (rules 
-        (start {   
+        (start {  
             (place "Pawn1" (sites Row 1))
             (place "Pawn2" (sites Row 6))
             (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Elephant1" {"C1" "F1"}) (place "Ferz_noCross1" coord:"D1") (place "King_noCross1" coord:"E1") 
@@ -110,12 +110,12 @@
                         (to 
                             if:(is Empty (to)) 
                             (apply (remove (to)))
-                       ) 
-                   )
-               )
-           )
+                        ) 
+                    )
+                )
+            )
             (nextPhase Mover "OpeningSoldier")
-       )
+        )
         (phase "OpeningSoldier" 
             (play 
                 (forEach Piece "Pawn"
@@ -126,21 +126,21 @@
                             (to 
                                 if:(is Empty (to)) 
                                 (apply (remove (to)))
-                           ) 
-                       )
-                   )
-               )
-           )
+                            ) 
+                        )
+                    )
+                )
+            )
             (nextPhase Mover "Playing")
-       )
+        )
         (phase "Playing" 
             (play 
                 (if "SameTurn"
                     (move Promote (last To) (piece "Ferz_noCross") Mover)
                     (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-               )
-           )
-       )
+                )
+            )
+        )
         }
         (end
             {
@@ -148,13 +148,13 @@
                 (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
+            ) 
             ("BlockWin")
             }
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -172,7 +172,7 @@
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.825)
@@ -182,6 +182,6 @@
     
     (ai
         "Rumi Shatranj_ai"
-   )
+    )
 )
 

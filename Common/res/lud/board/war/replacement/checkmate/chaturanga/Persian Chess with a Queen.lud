@@ -7,9 +7,9 @@
         (if ("IsEnemyAt" (to))
             (remove 
                 (to)
-           )
-       )
-   ) 
+            )
+        )
+    ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -21,10 +21,10 @@
             (apply 
                 (remove 
                     (to)
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 (define "NextCanNotMove"
@@ -34,7 +34,7 @@
 //------------------------------------------------------------------------------
 
 (game "Persian Chess with a Queen"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         (piece "King_noCross" Each
@@ -44,20 +44,20 @@
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
-                   )
+                    )
                     (then 
                         (if (and
                                 (= 1 (state at:(last To)))
                                 (= (last To) (mapEntry "AheadKing" Mover))
-                           )
+                            )
                             (set State at:(last To) 2)
                             (if 
                                 (!= (state at:(last To)) 0) 
                                 ("PieceHasMoved" (last To))
-                           ) 	
-                       )
-                   )
-               )
+                            ) 	
+                        )
+                    )
+                )
                 (if (and {
                         (= 1 (state at:(from)))
                         (= 1 (state at:(mapEntry "RookRight" Mover)))
@@ -70,10 +70,10 @@
                             (if 
                                 (!= (state at:(last To)) 0) 
                                 ("PieceHasMoved" (last To))
-                           ) 		
-                       )
-                   )
-               )
+                            ) 		
+                        )
+                    )
+                )
                 (if (and {
                         (= 1 (state at:(from)))
                         (= 1 (state at:(mapEntry "RookLeft" Mover)))
@@ -86,10 +86,10 @@
                             (if 
                                 (!= (state at:(last To)) 0) 
                                 ("PieceHasMoved" (last To))
-                           )
-                       )
-                   )
-               )
+                            )
+                        )
+                    )
+                )
                 (if (and {
                         (= 2 (state at:(from)))
                         (= 2 (state at:(regionSite (sites Start (piece (id "King" Mover))) index:0)))
@@ -99,9 +99,9 @@
                         (to (mapEntry "KnightKingLeftBackward" Mover))
                         (then
                             ("PieceHasMoved" (last To))
-                       )
-                   )
-               )
+                        )
+                    )
+                )
                 (if (and {
                         (= 2 (state at:(from)))
                         (= 3 (state at:(regionSite (sites Start (piece (id "King" Mover))) index:0)))
@@ -111,12 +111,12 @@
                         (to (mapEntry "KnightKingRightBackward" Mover))
                         (then
                             ("PieceHasMoved" (last To))
-                       )
-                   )
-               )
+                        )
+                    )
+                )
                 }
-           )
-       )
+            )
+        )
         (piece "Rook" Each
             (move
                 Slide 
@@ -124,22 +124,22 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
+                ) 
                 (then 
                     (if 
                         (= (state at:(last To)) 1) 
                         (if (and
                                 (is In (last To) (sites Start (piece (id "King" Mover))))
                                 (= 2 (state at:(where "King" Mover)))
-                           )
+                            )
                             (if (= (last From) (mapEntry "RookLeft" Mover)) (set State at:(last To) 2) (set State at:(last To) 3))
                             ("PieceHasMoved" (last To))
-                       )
-                   ) 
-               ) 
-           )	
+                        )
+                    ) 
+                ) 
+            )	
             maxState:3
-       )
+        )
         (piece "Bishop_noCross" Each
             (move
                 Slide 
@@ -147,9 +147,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )	
-       )
+                ) 
+            )	
+        )
         (piece "Knight" Each
             (move
                 Leap 
@@ -157,27 +157,27 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-               ) 
-           )			
-       )
+                ) 
+            )			
+        )
         (piece "Ferz_noCross" Each
             (move
                 Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )	
-       )
+                ) 
+            )	
+        )
         (piece "Pawn" Each
             (or 
                 (move Step 
                     Forward 
                     (to if:(is Empty (to)))
-               )
+                )
                 "CaptureForwardDiagonal"
-           )		
-       )
+            )		
+        )
         (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})
         (map "RookRight" {(pair 1 "H1") (pair 2 "H8")})
         (map "AheadKing" {(pair 1 "E2") (pair 2 "E7")})
@@ -197,18 +197,18 @@
         (play 
             (do (forEach Piece) 
                 ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
-           )
-       )
+            )
+        )
         
         (end 
             (if (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
-       )
-   )
+            ) 
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -218,16 +218,16 @@
     (info
         {
         (description "Persian Chess with a Queen—its indigenous name was not recorded—is a game that was played in the nineteenth century in Samarkand, Uzbekistan.")
-        (rules "8x8 board. The pieces move as follows, with the number per player: 1 x Shah (king): moves one space orthogonally or diagonally. 1 x Fers (counselor): Any distance orthogonally or diagonally.]. 2 x Rukh (rook): Any number of spaces orthogonally. 2 x Pil (elephant): Any distance diagonally. 2 x Asb (horse): Moves as a chess knight. 8 x Sarbaz (soldier): Moves one space forward orthogonally; one space forward diagonally to capture. No en passant. The first move must be the Fers's Sarbaz, which moves two spaces forward. Castling can happen in three moves, moving the Shah forward or backward once orthogonally and once with the Asb's  move, and moving the Rukh to the Shah's former space. Castling can also be done on the Fers's side, but moving the Rukh to the Fers's space. When a piece moves to a space occupied by an opponent's piece, the opponent's piece is captured. If the Shah can be captured on the opponent's next turn, it is in check. A player's Shah must not be in check at the end of their turn. If this is impossible, it is checkmate and the opponent wins.
+        (rules "8x8 board. The pieces move as follows, with the number per player: 1 x Shah (king): moves one space orthogonally or diagonally. 1 x Fers (counselor): Any distance orthogonally or diagonally.]. 2 x Rukh (rook): Any number of spaces orthogonally. 2 x Pil (elephant): Any distance diagonally. 2 x Asb (horse): Moves as a chess knight. 8 x Sarbaz (soldier): Moves one space forward orthogonally; one space forward diagonally to capture. No en passant. The first move must be the Fers's Sarbaz, which moves two spaces forward. Castling can happen in three moves, moving the Shah forward or backward once orthogonally and once with the Asb's move, and moving the Rukh to the Shah's former space. Castling can also be done on the Fers's side, but moving the Rukh to the Fers's space. When a piece moves to a space occupied by an opponent's piece, the opponent's piece is captured. If the Shah can be captured on the opponent's next turn, it is in check. A player's Shah must not be in check at the end of their turn. If this is impossible, it is checkmate and the opponent wins.
         ")
         (source "Markov 2017.")
         (id "1325")
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in Uzbekistan, around 1877.")
+        (origin "This game was played in Uzbekistan, around 1877.")
         }
-   )
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.825)

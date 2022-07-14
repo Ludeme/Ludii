@@ -21,21 +21,21 @@
                 (difference 
                     ("InitSitesP1")
                     (sites Outer)
-               )
-           )
+                )
+            )
             (place "Marker2" 
                 (difference 
                     (sites Board)
                     (union
                         ("InitSitesP1")
                         (union (sites Centre) (sites Outer))
-                   )
-               )
-           )
+                    )
+                )
+            )
         })
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------

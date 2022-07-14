@@ -3,20 +3,20 @@
         (if (is Mover P1) 
             (id "Disc" P1) 
             (id "Cross" P2)
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Tic-Tac-Die"  
-    (players 2)  
+(game "Tic-Tac-Die" 
+    (players 2) 
     (equipment { 
         (board (square 3)) 
         (piece "Disc" P1) 
         (piece "Cross" P2) 
         (dice d:9 from:0 num:1)
-    })  
+    }) 
     (rules 
         (play 
             (do
@@ -24,27 +24,27 @@
                 next:(if (is Empty (count Pips))
                     (move Add ("PlayerPiece") (to (count Pips)))
                     <Play:choice>
-               )
-           )
-       )
+                )
+            )
+        )
         (end {
             (if (is Line 3) (result Mover Win))
             (if (is Full) (result Mover Draw))
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Play Rules" <Play> args:{ <choice>} {
     (item "No Choice" 
-        <(move Pass (then (moveAgain)))>  
+        <(move Pass (then (moveAgain)))> 
         "Players reroll until they roll an empty cell."
-   )*   
+    )*  
     (item "Some Choice" 
         <(move Add ("PlayerPiece") (to (sites Empty)))> 
         "Player chooses if the rolled cell is occupied."
-   )   
+    )  
 })
 
 //------------------------------------------------------------------------------
@@ -61,7 +61,7 @@
         (credit "Eric Piette")
         (date "11-12-2020")
         }
-   )
+    )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
@@ -71,5 +71,5 @@
     
     (ai
         "Tic-Tac-Die_ai"
-   )
+    )
 )

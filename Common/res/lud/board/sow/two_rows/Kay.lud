@@ -3,18 +3,18 @@
 
 //------------------------------------------------------------------------------
 
-(game "Kay"  
-    (players 2)  
+(game "Kay" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 6
             (track "Track" "1,E,N,W" loop:True)
-       )
+        )
         (piece "Seed" Shared)
         (regions "Home" P1 (sites Bottom)) 
         (regions "Home" P2 (sites Top)) 
-        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
-    })  
+        (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
+    }) 
     (rules 
         
         (start (set Count 4 to:(sites Track)))
@@ -25,15 +25,15 @@
                     (if ("SameTurn") 
                         "LastHoleSowed" 
                         (sites Mover) 
-                   ) 
+                    ) 
                     if:(or 
                         (< 1 (count at:(from)))
                         (and 
                             (= 1 (count at:(from)))
                             (is Empty ("NextHoleFrom" (from) "Track" 1))
-                       )
-                   )
-               )
+                        )
+                    )
+                )
                 (then
                     (sow
                         if:True
@@ -42,27 +42,27 @@
                                 (from (to))
                                 (to (mapEntry Mover))
                                 count:(count at:(to))
-                           )
+                            )
                             (if (< 1 (count at:(to)))
                                 (if (is Occupied ("NextHoleFrom" (to) "Track" 1))
                                     (moveAgain)
-                               )
-                           )
-                       )
+                                )
+                            )
+                        )
                         includeSelf:False
                         backtracking:(= 4 (count at:(to)))
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         
         (end ("MancalaByScoreWhen" (no Moves Next)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Kay is a two-row mancala-style board game played in Haiti. It is very similar to games from the Caribbean and West Africa.")
@@ -73,9 +73,9 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Haiti, around 1952.")
+        (origin "This game was played in Haiti, around 1952.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

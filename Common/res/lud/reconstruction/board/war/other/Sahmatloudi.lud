@@ -3,15 +3,15 @@
     (equipment {
         (board 
             (square 9)
-       )
+        )
         (piece "Disc" P1 (move [#])) 
         (piece "Disc" P2 (move [#])) 
-    })  
+    }) 
     (rules 
         (start [#]) 
         (play [#])
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -28,7 +28,7 @@
         (classification "board/war/reconstruction")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

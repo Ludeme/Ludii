@@ -4,18 +4,18 @@
 
 //------------------------------------------------------------------------------
 
-(game "Baqura"  
-    (players 2)  
+(game "Baqura" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 6 store:None
             (track "Track" "0,E,N,W" loop:True)
-       )
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
+        )
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start {
@@ -29,10 +29,10 @@
                 (move 
                     (from (handSite Mover))
                     (to (sites Mover))
-               )
-           )
+                )
+            )
             (nextPhase Mover ("HandEmpty" Mover) "Sowing")
-       )
+        )
         (phase "Sowing" 
             (play 
                 (if (not (all Sites (sites Mover) if:(= 0 (count at:(site)))))
@@ -43,9 +43,9 @@
                                 "SameTurn" 
                                 "LastHoleSowed" 
                                 (sites Mover) 
-                           ) 
+                            ) 
                             if:(> (count at:(from)) 0)
-                       )
+                        )
                         (then 
                             (sow
                                 if:(> (count at:(to)) 1)
@@ -57,19 +57,19 @@
                                                 (from ("OppositePitTwoRows" (to))) 
                                                 (to (handSite Mover)) 
                                                 count:(count at:("OppositePitTwoRows" (to)))
-                                           ) 
-                                       )
+                                            ) 
+                                        )
                                         (fromTo 
                                             (from (to)) 
                                             (to (handSite Mover)) 
                                             count:(count at:(to))
-                                       ) 
-                                   )
-                               )
+                                        ) 
+                                    )
+                                )
                                 backtracking:(and {(is In (to) (sites Mover)) (> (count at:(to)) 1) (is Even (count at:(to))) })
-                           )
-                       )
-                   )
+                            )
+                        )
+                    )
                     (move Pass 
                         (then 
                             (and
@@ -79,20 +79,20 @@
                                             (from (site))
                                             (to (handSite Next))
                                             count:(count at:(site))
-                                       )
-                                   )
-                               )
+                                        )
+                                    )
+                                )
                                 (if (< ("PiecesOwnedBy" P1) ("PiecesOwnedBy" P2))
                                     (set NextPlayer (player 1))
                                     (set NextPlayer (player 2))
-                               )
-                           )
-                       )
-                   )
-               )
-           )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
             (nextPhase (was Pass) "PlacementLosingPlayer")
-       )
+        )
         (phase "PlacementLosingPlayer" 
             (play 
                 (move 
@@ -106,30 +106,30 @@
                                         (from Cell (handSite Next))
                                         (to ("OppositePitTwoRows" (site)))
                                         count:(count at:(site))
-                                   )
-                               )
-                           )
+                                    )
+                                )
+                            )
                             (moveAgain)
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (nextPhase ("HandEmpty" Mover) "Sowing")
-       )
+        )
         }
         
         (end 
             (forEach Player
                 if:(= 0 ("PiecesOwnedBy" Player))
                 (result Player Loss)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Baqura is a two-row mancala-style board game reported in the seventeenth century by Thomas Hyde in his De Ludis Orientalibus. He describes the rules and states that it was played in Mesopotamia.")
@@ -139,14 +139,14 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Mesopotamia, around 1694.")
+        (origin "This game was played in Mesopotamia, around 1694.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)
     })
     (ai
         "Baqura_ai"
-   )
+    )
 )

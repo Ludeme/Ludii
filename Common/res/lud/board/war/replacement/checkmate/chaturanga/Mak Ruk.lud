@@ -2,8 +2,8 @@
     (apply 
         (remove 
             (to) 
-       )
-   ) 
+        )
+    ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -13,8 +13,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-       )
-   )
+        )
+    )
 )
 
 (define "NextCanNotMove"
@@ -23,8 +23,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Mak Ruk"  
-    (players {(player N) (player S)})  
+(game "Mak Ruk" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -35,10 +35,10 @@
                 (then
                     (if (is In (last To) (sites Mover "Promotion")) 
                         (promote (last To) (piece "Ferz_noCross") Mover)
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         
         (piece "Rook" Each 
             (move
@@ -47,9 +47,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "King_noCross" Each 
             (move
                 Step 
@@ -57,9 +57,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-               )
-           )
-       )
+                )
+            )
+        )
         (piece "Bishop_noCross" Each 
             (or
                 (move
@@ -68,17 +68,17 @@
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
-                   )
-               )
+                    )
+                )
                 (move
                     Step 
                     (directions {BL BR})
                     (to 
                         if:(is Empty (to)) 
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (piece "Knight" Each 
             (move 
                 Leap 
@@ -86,28 +86,28 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Ferz_noCross" Each 
             (or
                 (if (= (state at:(from)) 1)
                     (move (from) (to (ahead (ahead (from) N) N) if:(is Empty (to))))
                     (then (set State at:(last To) 0))
-               )
+                )
                 (move
                     Step 
                     (directions {BL BR FL FR Forward})
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
-    })  
+    }) 
     (rules 
         (start
             { 
@@ -116,11 +116,11 @@
             (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Bishop_noCross1" {"C1" "F1"}) (place "Ferz_noCross1" coord:"E1" state:1) (place "King_noCross1" coord:"D1") 
             (place "Rook2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Bishop_noCross2" {"C8" "F8"}) (place "Ferz_noCross2" coord:"D8" state:1) (place "King_noCross2" coord:"E8") 
             }
-       )
+        )
         
         (play 
             (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-       )
+        )
         
         (end
             {
@@ -128,16 +128,16 @@
                 (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
+            ) 
             (if (no Moves Next) (result Mover Draw)) 
             (if (and {(= (count Pieces Next) 1) (= (count Pieces Mover) 2) (!= Off (where "Ferz_noCross" Mover))})
                 (result Mover Draw)
-           )
+            )
             }
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -153,9 +153,9 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in Thailand, around 1839.")
+        (origin "This game was played in Thailand, around 1839.")
         }
-   )
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.825)
@@ -165,5 +165,5 @@
     
     (ai
         "Mak Ruk_ai"
-   )
+    )
 )

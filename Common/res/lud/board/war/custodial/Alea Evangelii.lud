@@ -6,7 +6,7 @@
             (max 1) 
             if:(= (what at:(between)) (id #1)) 
             (apply (remove (between))) 
-       )
+        )
         (to 
             if:(or {
                 ("IsFriendAt" (to)) 
@@ -14,10 +14,10 @@
                 (and 
                     (is In (to) (sites Centre)) 
                     (is Empty (to))
-               )
+                )
             })
-       ) 
-   )
+        ) 
+    )
 )
 
 (define "CaptureJarl" (apply (trigger "Surrounded" P2)))
@@ -28,24 +28,24 @@
     (and 
         (not (is In (between) (sites "Fortresses"))) 
         (is Empty (between))
-   )
+    )
 )
 
 (define "AFriendOrTheCentre" 
     (or 
         ("IsFriendAt" (to)) 
         (is In (to) (sites Centre))
-   )
+    )
 )
 
-(define "JarlAndExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (is In (between) (expand origin:(centrePoint)  Orthogonal))))
+(define "JarlAndExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (is In (between) (expand origin:(centrePoint) Orthogonal))))
 
-(define "JarlButNotTheExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (not (is In (between) (expand origin:(centrePoint)  Orthogonal)))))
+(define "JarlButNotTheExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (not (is In (between) (expand origin:(centrePoint) Orthogonal)))))
 
 //------------------------------------------------------------------------------
 
-(game "Alea Evangelii"  
-    (players 2)  
+(game "Alea Evangelii" 
+    (players 2) 
     (equipment { 
         (board (square 19)) 
         (regions "Fortresses" (expand (sites Corners)))
@@ -65,40 +65,40 @@
                             (between 
                                 if:"JarlAndExpandedCentre" 
                                 "CaptureJarl"
-                           )
+                            )
                             (to if:"AFriendOrTheCentre")
-                       )
+                        )
                         (custodial 
                             (from (last To)) 
                             Orthogonal
                             (between 
                                 if:"JarlButNotTheExpandedCentre" 
                                 "CaptureJarl"
-                           )
+                            )
                             (to if:("IsFriendAt" (to))) 
-                       )
+                        )
                     })
-               )
-           )
-       )
+                )
+            )
+        )
         (piece "Thrall" P2 
             (move
                 Slide
                 Orthogonal 
-                (between if:"EmptyButNotFortress")  
+                (between if:"EmptyButNotFortress") 
                 (to (apply if:(!= (to) (centrePoint)))) 
                 (then ("Custodial" "Thrall1")) 
-           ) 
-       )
+            ) 
+        )
         (piece "Jarl" P2 
             (move
                 Slide
                 Orthogonal 
                 (to (apply if:(!= (to) (centrePoint))))
-           )
-       )
+            )
+        )
         }
-   )  
+    ) 
     (rules 
         (start
             { 
@@ -107,31 +107,31 @@
                 "P12" "E13" "O13" "A14" "C14" "Q14" "S14" "G15" "I15" "K15" "M15" "H16" "L16"
                 "A17" "F17" "N17" "S17" "C19" "F19" "N19" "Q19"
                 }
-           )
+            )
             (place "Thrall2" {"J4" "F6" "N6" "J7" "I8" "K8" "H9" "J9" "L9" "D10" "G10" "I10" "K10" "M10" "P10"
                 "H11" "J11" "L11" "I12" "K12" "J13" "F14" "N14" "J16"
                 }
-           )
+            )
             (place "Jarl2" (centrePoint))
             }
-       )
+        )
         
         (play (forEach Piece)) 
         
         (end
             {
             (if (is Within (id "Jarl2") in:(sites "Fortresses")) (result P2 Win))
-            (if "JarlWasCaptured"  (result P1 Win))
+            (if "JarlWasCaptured" (result P1 Win))
             }
-       )
-   )
+        )
+    )
 )
 
 //--------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <type> }
     {
-    (item "Cyningstan"   <>       "The rules are describing with the Cyningstan ruleset.")   
+    (item "Cyningstan"  <>    "The rules are describing with the Cyningstan ruleset.")  
 })
 
 //--------------------------------------------------------------------------
@@ -167,9 +167,9 @@
         (version "1.3.4")
         (classification "board/war/custodial")
         (credit "Eric Piette")
-        (origin  "This game was played in British Isles, from around 1100 to 1199.")
+        (origin "This game was played in British Isles, from around 1100 to 1199.")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Black))
@@ -180,6 +180,6 @@
     
     (ai 
         "Alea Evangelii_ai"
-   )
+    )
     
 )

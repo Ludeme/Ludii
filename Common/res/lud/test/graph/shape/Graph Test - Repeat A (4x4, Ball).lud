@@ -1,5 +1,5 @@
-(game "Graph Test - Repeat A (4x4, Ball)"  
-    (players 2)  
+(game "Graph Test - Repeat A (4x4, Ball)" 
+    (players 2) 
     (equipment { 
         (board 
             (repeat 4 4 step:{{4.3301 -1.5}{-.866 4.5}} 
@@ -14,15 +14,15 @@
                 (poly {{0 0} {0 -2} {0.866 -2.5} {.866 -3.5} {-.866 -2.5} {-.866 -.5} {-1.732 0} {-1.732 1}})
                 (poly {{0.866 -2.5} {.866 -3.5} {1.732 -3} {1.732 -2}})
                 }
-           )
-       ) 
+            )
+        ) 
         (piece "Marker" P1) 
         (piece "Marker" P2) 
-    })  
+    }) 
     (rules 
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -38,9 +38,9 @@
         (version "0.9.3")
         (classification "board/space/line")
         (credit "Cameron Browne 16/6/2020")
-        (origin  "This game was played in England, from around 1850CE to 1883CE.")
+        (origin "This game was played in England, from around 1850CE to 1883CE.")
         }
-   )
+    )
     (graphics {
         (board Style Chess)
     })

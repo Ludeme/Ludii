@@ -7,18 +7,18 @@
                     (set Var "NumberOfFriendlyGroupsBeforePlacement"
                         (count Groups Orthogonal
                             if:(is Mover (who at:(to)))
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         ifAfterwards:(<
             (count Groups Orthogonal
                 if:(is Mover (who at:(to)))
-           )
+            )
             (var "NumberOfFriendlyGroupsBeforePlacement")
-       )
-   )
+        )
+    )
 )
 
 (game "Scaffold"
@@ -39,35 +39,35 @@
                     (if 
                         (can Move ("Connect"))
                         (moveAgain)
-                   )
-               )
+                    )
+                )
                 
-           )
-       )
+            )
+        )
         (end (if (is Connected Orthogonal Mover) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "4x4"     <4>  "A 4x4 board is currently selected")
-    (item "5x5"     <5>  "A 5x5 board is currently selected")
-    (item "6x6"     <6>  "A 6x6 board is currently selected")
-    (item "7x7"     <7>  "A 7x7 board is currently selected")
-    (item "8x8"     <8>  "An 8x8 board is currently selected")
-    (item "9x9"     <9>  "A 9x9 board is currently selected")
-    (item "10x10"  <10>  "A 10x10 board is currently selected")
-    (item "11x11"  <11>  "An 11x11 board is currently selected")
-    (item "12x12"  <12>  "A 12x12 board is currently selected")*
-    (item "13x13"  <13>  "A 13x13 board is currently selected")
-    (item "14x14"  <14>  "A 14x14 board is currently selected")
-    (item "15x15"  <15>  "A 15x15 board is currently selected")
-    (item "16x16"  <16>  "A 16x16 board is currently selected")
-    (item "17x17"  <17>  "A 17x17 board is currently selected")
-    (item "18x18"  <18>  "An 18x18 board is currently selected")
-    (item "19x19"  <19>  "A 19x19 board is currently selected")
+    (item "4x4"   <4> "A 4x4 board is currently selected")
+    (item "5x5"   <5> "A 5x5 board is currently selected")
+    (item "6x6"   <6> "A 6x6 board is currently selected")
+    (item "7x7"   <7> "A 7x7 board is currently selected")
+    (item "8x8"   <8> "An 8x8 board is currently selected")
+    (item "9x9"   <9> "A 9x9 board is currently selected")
+    (item "10x10" <10> "A 10x10 board is currently selected")
+    (item "11x11" <11> "An 11x11 board is currently selected")
+    (item "12x12" <12> "A 12x12 board is currently selected")*
+    (item "13x13" <13> "A 13x13 board is currently selected")
+    (item "14x14" <14> "A 14x14 board is currently selected")
+    (item "15x15" <15> "A 15x15 board is currently selected")
+    (item "16x16" <16> "A 16x16 board is currently selected")
+    (item "17x17" <17> "A 17x17 board is currently selected")
+    (item "18x18" <18> "An 18x18 board is currently selected")
+    (item "19x19" <19> "A 19x19 board is currently selected")
     }
 )
 
@@ -94,7 +94,7 @@
         (credit "Michael Amundsen")
         (date "2022")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Black))

@@ -11,12 +11,12 @@
                             (and
                                 (remove (site))
                                 (add (piece (id "Ball" Mover)) (to (site)))
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                            )
+                        )
+                    )
+                )
+            )
+        )
     })
     (rules
         (start {
@@ -35,26 +35,26 @@
                                 (and
                                     (remove (site))
                                     (add (piece (id "Ball" Mover)) (to (site)))
-                               )
-                           )
-                       )
-                   )
-               )
+                                )
+                            )
+                        )
+                    )
+                )
                 (forEach Piece)
                 (move Add
                     (to (difference (sites Empty) (sites Around (sites Occupied by:Mover) Empty)))
-               )
+                )
             })
-       )
+        )
         
         (end (if (is Full)
                 (byScore {
                     (score P1 (count Pieces P1))
                     (score P2 (count Pieces P2))
                 })
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -79,7 +79,7 @@
         (credit "Eric Piette")
         (date "2001")
         }
-   )
+    )
     
     (graphics {
         (board Style Chess)

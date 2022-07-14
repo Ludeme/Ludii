@@ -12,13 +12,13 @@
     (or 
         (move "PositionOfTileX" (to #1 (rotations {N E})) copy:True)
         (move "PositionOfTileCurved" (to #1 (rotations Orthogonal)) copy:True)
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Trax"  
-    (players 2)  
+(game "Trax" 
+    (players 2) 
     (equipment { 
         (boardless Square) 
         (hand Shared size:2)
@@ -28,15 +28,15 @@
             (path from:0 to:2 colour:1)
             (path from:1 to:3 colour:2)
             }
-       ) 
+        ) 
         (tile "TileCurved" 
             numSides:4
             { 
             (path from:0 to:1 colour:1)
             (path from:2 to:3 colour:2)
             }
-       )
-    })  
+        )
+    }) 
     (rules 
         
         (meta (automove))
@@ -50,23 +50,23 @@
         (phase "Opening"
             (play ("PlaceATileTo" (centrePoint)))
             (nextPhase "Connection")
-       )
+        )
         
         (phase "Connection"
-            (play     
+            (play   
                 (do
                     ("PlaceATileTo" "AnotherConnectedTile")
                     ifAfterwards:(is SidesMatch)
-               )
-           )
+                )
+            )
             (end {
                 (if (or (is Loop (mover) path:True) (<= "PathLength" (pathExtent (mover)))) (result Mover Win))
                 (if (or (is Loop (next) path:True) (<= "PathLength" (pathExtent (next)))) (result Next Win))
                 (if (>= (count Sites in:(sites Occupied by:All)) (* (count Players) "NumTiles")) (result Mover Draw))
             })
-       )
+        )
         }
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -91,7 +91,7 @@
         (credit "Eric Piette")
         (date "1980")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour White))
@@ -102,6 +102,6 @@
     
     (ai 
         "Trax_ai"
-   )
+    )
     
 )

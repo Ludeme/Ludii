@@ -1,14 +1,14 @@
-(game "Flowers"  
-    (players 2)  
+(game "Flowers" 
+    (players 2) 
     (equipment { 
         (board (dual (tiling T33336 3))) 
         (piece "Marker" P1) 
         (piece "Marker" P2) 
-    })  
+    }) 
     (rules 
         (play (move Add (to (sites Empty))))
         (end (if (is Line 4 Orthogonal) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -26,8 +26,8 @@
         (credit "Cameron Browne 15/6/2020")
         (date "15-06-2020")
         }
-   )
+    )
     (ai
         "Flowers_ai"
-   )
+    )
 )

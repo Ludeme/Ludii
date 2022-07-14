@@ -1,6 +1,6 @@
 // Shape matching utility
 
-(define "IfThisRotationDo"  // compiles but sometimes misses
+(define "IfThisRotationDo" // compiles but sometimes misses
     (if
         (= 0
             (size Array
@@ -16,28 +16,28 @@
                                         from:(sites Group at:#4)
                                         to:(from)
                                         (- (* 32 #1))
-                                   )
-                               )
+                                    )
+                                )
                                 (max
                                     (results
                                         from:(sites Group at:#4)
                                         to:(from)
                                         (- (#2))
-                                   )
-                               )
-                           )
-                       )
-                   )
+                                    )
+                                )
+                            )
+                        )
+                    )
                     (results
                         from:(sites)
                         to:(from)
                         (value Piece at:(from))
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         #3
-   )
+    )
 )
 
 (define "DRow" (/ (value Piece at:(from)) 32))
@@ -52,22 +52,22 @@
         ("IsSameSizeAsShapeAtValue" #2) 
         (priority 
             {
-            ("IfThisRotationDo" ("DRow")        ("DCol") #1 #2) 
-            ("IfThisRotationDo" ("DRow")        (- "DRow" "DCol") #1 #2) 
+            ("IfThisRotationDo" ("DRow")    ("DCol") #1 #2) 
+            ("IfThisRotationDo" ("DRow")    (- "DRow" "DCol") #1 #2) 
             ("IfThisRotationDo" (- "DRow" "DCol") ("DRow") #1 #2) 
-            ("IfThisRotationDo" ("DCol")        ("DRow") #1 #2) 
-            ("IfThisRotationDo" (- "DCol")        (- "DRow" "DCol") #1 #2) 
+            ("IfThisRotationDo" ("DCol")    ("DRow") #1 #2) 
+            ("IfThisRotationDo" (- "DCol")    (- "DRow" "DCol") #1 #2) 
             ("IfThisRotationDo" (- "DCol" "DRow") ("DCol") #1 #2) 
             
-            ("IfThisRotationDo" (- "DRow")        (- "DCol") #1 #2) 
-            ("IfThisRotationDo" (- "DRow")        (- "DCol" "DRow") #1 #2) 
+            ("IfThisRotationDo" (- "DRow")    (- "DCol") #1 #2) 
+            ("IfThisRotationDo" (- "DRow")    (- "DCol" "DRow") #1 #2) 
             ("IfThisRotationDo" (- "DCol" "DRow") (- "DRow") #1 #2) 
-            ("IfThisRotationDo" (- "DCol")        (- "DRow") #1 #2) 
-            ("IfThisRotationDo" ("DCol")        (- "DCol" "DRow") #1 #2) 
+            ("IfThisRotationDo" (- "DCol")    (- "DRow") #1 #2) 
+            ("IfThisRotationDo" ("DCol")    (- "DCol" "DRow") #1 #2) 
             ("IfThisRotationDo" (- "DRow" "DCol") (- "DCol") #1 #2) 
             }
-       )
-   )
+        )
+    )
 )
 
 //----------------------------------------------
@@ -83,13 +83,13 @@
                             (+
                                 (* 32 (- (var "LastRow") (row of:(site))))
                                 (- (var "LastCol") (column of:(site)))
-                           )
-                       )
-                   )
-               )
-           )
-       )
-   )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
 )
 
 //----------------------------------
@@ -107,7 +107,7 @@
     (+
         (count Value (var "KeySite") in:(values Remembered "ShapeCount"))
         (count Value (+ 1000 (var "KeySite")) in:(values Remembered "ShapeCount"))
-   )
+    )
 )
 
 (define "RecordMultiplier" 
@@ -115,7 +115,7 @@
         (= 0 "BroodSize")
         (set State at:(var "KeySite") (* (% "ManifoldBroodSize" 2) (- 2 (% "GroupSize" 2))))
         (set State at:(var "KeySite") 0)
-   )
+    )
 )
 
 (define "CountShapesOf"
@@ -132,18 +132,18 @@
                                 (+ 
                                     (if (> (var "KeySite") (regionSite (sites) index:0)) 0 1000)
                                     (var "KeySite")
-                               ) 
-                           )
+                                ) 
+                            )
                             (var "KeySite") 
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             }
             (then ("RecordMultiplier"))
-       )
+        )
         (then (forget Value All))
-   )
+    )
 )
 
 (define "ScorePlayer"
@@ -157,12 +157,12 @@
                 (set Score Mover 0
                     (then
                         (forEach Piece (addScore Mover (state at:(from))))
-                   )
-               )     
+                    )
+                )   
                 }
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "PlaceHex"
@@ -170,12 +170,12 @@
         (forEach Site 
             (sites Occupied by:Mover)
             (set State at:(site) 0)
-       )
+        )
         next:(move Add (piece (id "Hex" Mover)) (to (sites Empty))
             (then ("RecordShapeVectorsAsValues"))
-       )
+        )
         (then ("ScorePlayer" (mover)))
-   )
+    )
 )
 
 //--------------------------------------------------------- 
@@ -192,7 +192,7 @@
                 (or
                     (= 0 (count Moves))
                     (!= 0 (count MovesThisTurn))//("SameTurn")
-               )
+                )
                 ("PlaceHex")
                 (or
                     (move Pass)
@@ -201,18 +201,18 @@
                         ("PlaceHex")
                         } 
                         (then (moveAgain))
-                   )
-               )
+                    )
+                )
                 (then (forget Value All))
-           )
-       )
+            )
+        )
         (end
             (if (all Passed)
                 (byScore)
-           )
-       )
-   )
-)   
+            )
+        )
+    )
+)  
 
 //---------------
 
@@ -240,7 +240,7 @@
     (info
         {
         }
-   )
+    )
     (graphics
         {
         (board Colour Phase0 (colour 100 200 250 120))
@@ -259,6 +259,6 @@
         (piece Foreground P1 state:2 image:"2" edgeColour:(colour White) scale:.3)
         (piece Foreground P2 state:2 image:"2" edgeColour:(colour Black) scale:.3)
         }
-   )
+    )
     (ai (heuristics (score)))
 )

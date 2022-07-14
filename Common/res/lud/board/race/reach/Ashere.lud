@@ -8,9 +8,9 @@
             (if (is Prev P3)
                 ("NextSite" from:(where "Marker" Prev) "Track3")
                 ("NextSite" from:(where "Marker" Prev) "Track4")
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -27,7 +27,7 @@
             (track "Track4" {31 27 23 19 15 11 7 3} P4 directed:True)
             }
             use:Vertex
-       )
+        )
         (piece "Marker" Each)
         (piece "Stick" Shared)
         (hand Each size:2)
@@ -47,10 +47,10 @@
                     (piece (id "Stick" Shared))
                     (to Cell (sites Hand Mover))
                     (then (set Hidden Cell at:(last To) to:Next))
-               )
-           )
+                )
+            )
             (nextPhase "Guessing")
-       )
+        )
         
         (phase "Guessing"
             (play
@@ -63,30 +63,30 @@
                                     (fromTo 
                                         (from (where "Marker" Prev))
                                         (to ("NextSitePrev"))
-                                   )
+                                    )
                                     (if (not (is In ("NextSitePrev") (sites Centre)))
                                         (set NextPlayer (player (prev)))
-                                   )
-                               )
+                                    )
+                                )
                                 (and {
                                     (moveAgain)
                                     (fromTo 
                                         (from (where "Marker" Mover))
                                         (to ("NextSite" from:(where "Marker" Mover)))
-                                   )
+                                    )
                                 })
-                           )
+                            )
                             (remove Cell (sites Hand Prev))
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (nextPhase "Hiding")
-       )
+        )
         
         }
         
-        (end  
+        (end 
             (if (!= (- (count Players) (count Active)) (count Sites in:(forEach (sites Centre) if:(is Occupied (site)))))
                 {
                 (if (and (is Active P1) (is In (where "Marker" P1) (sites Centre))) (result P1 Win))
@@ -94,9 +94,9 @@
                 (if (and (is Active P3) (is In (where "Marker" P3) (sites Centre))) (result P3 Win))
                 (if (and (is Active P4) (is In (where "Marker" P4) (sites Centre))) (result P4 Win))
                 }
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -112,9 +112,9 @@
         (version "1.3.4")
         (classification "board/race/reach")
         (credit "Eric Piette")
-        (origin  "This game was played in Nigeria, around 1951.")
+        (origin "This game was played in Nigeria, around 1951.")
         }
-   )
+    )
     
     (graphics {
         (show Edges Hidden)

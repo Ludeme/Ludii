@@ -1,5 +1,5 @@
-(game "Bagh Batti"  
-    (players 2)  
+(game "Bagh Batti" 
+    (players 2) 
     (equipment { 
         ("AlquerqueBoard" 5 5)
         (piece "Goat" P1 "StepToEmpty")
@@ -7,9 +7,9 @@
             (or
                 ("StepToEmpty")
                 ("HopSequenceCapture")
-           )
-       )
-    })  
+            )
+        )
+    }) 
     
     (rules 
         (start { 
@@ -22,14 +22,14 @@
                 (or
                     (move Pass)
                     ("HopSequenceCaptureAgain")
-               )
+                )
                 (forEach Piece top:True)
-           )
+            )
             
-       )
+        )
         
-        (end ("NoMovesP2NoPiecesP1"))  
-   )
+        (end ("NoMovesP2NoPiecesP1")) 
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -45,9 +45,9 @@
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1926.")
+        (origin "This game was played in India, around 1926.")
         }
-   )
+    )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})

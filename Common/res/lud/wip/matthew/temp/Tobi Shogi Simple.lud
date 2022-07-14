@@ -1,5 +1,5 @@
-(game "Tobi Shogi"  
-    (players {(player N) (player S)})  
+(game "Tobi Shogi" 
+    (players {(player N) (player S)}) 
     (equipment
         {
         (board (square 9))
@@ -8,19 +8,19 @@
                 (move Step 
                     (directions {Forward Rightward Leftward})
                     (to if:(is Empty (to))) 
-               )
+                )
                 (move Hop 
                     (directions {Forward Rightward Leftward})
                     (between 
                         if:("IsEnemyAt" (between)) 
                         (apply (remove (between)))
-                   )
+                    )
                     (to if:(is Empty (to)))
-               )
-           )	        	
-       )
+                )
+            )	    	
+        )
         }
-   )
+    )
     (rules 
         (start { 
             (place "Fuhyo1" (expand (sites Bottom)))
@@ -30,7 +30,7 @@
         (play (forEach Piece))
         
         (end (if (= (count Pieces Next) 0) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------

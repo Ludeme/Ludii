@@ -6,7 +6,7 @@
         (do
             (forEach Player
                 (remember Value "Scores" #1)
-           )
+            )
             next:(do
                 (forEach Player
                     (if
@@ -14,20 +14,20 @@
                         (and
                             (remember Value "Tied" (player))
                             (set Score Player #1)
-                       )
-                        (set Score Player #1)   
-               ))
+                        )
+                        (set Score Player #1)  
+                ))
                 next:(do
                     (forEach Value
                         (values Remembered "Tied")
                         (forEach
                             (players All if:(is In (player) (values Remembered "Tied")))
                             (addScore (player (player)) <TType:selTiebreaker>) // can be "CascadeWins" "CascadeLoses" "StoneCount" "GroupCount"
-                   ))
+                    ))
                     next:(forget Value "Scores" All 
                         (then
                             (forget Value "Tied" All)
-       )))))
+        )))))
         (forEach Player (set Score Player #1))
 ))
 
@@ -48,7 +48,7 @@
         (max
             (difference 
                 (values Remembered "Scores") 
-                #1  // This is causing a non-fatal null pointer exception at compilation
+                #1 // This is causing a non-fatal null pointer exception at compilation
 ))))
 
 (define "GroupCount"
@@ -56,12 +56,12 @@
 )
 
 (define "StoneCount" // change to score Most pieces placed
-(count Sites in:(sites Occupied by:Player))   // (forEach (sites Occupied) if:(= (who at:(site)) #1)))
+(count Sites in:(sites Occupied by:Player))  // (forEach (sites Occupied) if:(= (who at:(site)) #1)))
 )
 
 //----------------------------
 
-(define "LessQtyAroundSiteThanAnother"  
+(define "LessQtyAroundSiteThanAnother" 
     (>
         (max 0 (count Pieces of:#1 in:(sites Around (site) "ConnectionDirection")))
         (max 0 (count Pieces of:(mover) in:(sites Around (site) "ConnectionDirection")))
@@ -76,15 +76,15 @@
             (difference
                 (difference (sites Board) (sites Empty))
                 (sites Occupied by:Mover)
-           )
+            )
             (if
                 ("LessQtyAroundSiteThanAnother" (who at:(site)))
                 (move Remove (site)
                     (then
                         (claim (to (last To)))
-       ))))
+        ))))
         }
-        (then <SType:selScoring>)  
+        (then <SType:selScoring>) 
 ))
 
 //-----------------------------------------------
@@ -97,19 +97,19 @@
         "BoardUsed"
         (piece "Ball" Each)
         }
-   )
+    )
     (rules
         (start
             (set Score Each 0)
-       )
+        )
         (play
             "Anemone" 
-       )
+        )
         (end 
             (if 
                 (all Passed)
                 (byScore)
-           )              
+            )       
 )))
 
 //-------------------------------------------------
@@ -120,7 +120,7 @@
 (define "BoardUsed" <BoardShape:gridType>)
 
 (define "HexLimp" (board (hex Limping (- <BoardSize:smallSide> 1)) use:Cell))
-(define "Hex2Limp" (board (hex  (- <BoardSize:smallSide> 1) (+ <BoardSize:smallSide> 1)) use:Cell))
+(define "Hex2Limp" (board (hex (- <BoardSize:smallSide> 1) (+ <BoardSize:smallSide> 1)) use:Cell))
 (define "HexCell" (board (hex Hexagon <BoardSize:smallSide>) use:Cell))
 (define "TriSquare" (board (tiling T33434 (- <BoardSize:smallSide> 2)) use:Vertex))
 (define "SquareGrid" (board (square <BoardSize:smallSide>) use:Cell))
@@ -128,13 +128,13 @@
 
 //-----------------------------------------
 // Options
-// Notes: Opponent scoring on odd square diagonal grid leads to 1st player win by  diagonals only.
+// Notes: Opponent scoring on odd square diagonal grid leads to 1st player win by diagonals only.
 
 (option "Board Size" <BoardSize> args:{<smallSide> <backgroundSize>} 
     {
-    (item "3 (20 moves)"  <3>  <1.30> "Order 3 board")
-    (item "4 (45 moves)"  <4>  <1.20> "Order 4 board")*
-    (item "5 (75 moves)"  <5>  <1.15> "Order 5 board")
+    (item "3 (20 moves)" <3> <1.30> "Order 3 board")
+    (item "4 (45 moves)" <4> <1.20> "Order 4 board")*
+    (item "5 (75 moves)" <5> <1.15> "Order 5 board")
     }
 )
 
@@ -142,7 +142,7 @@
     args:{<gridType> <directionUsed> <diagShow> <directionScored> <backgroundImage>} 
     {
     (item "Hex Double Limping"
-        <"Hex2Limp"> <Orthogonal> <Hidden> <Orthogonal> <"Disc">  
+        <"Hex2Limp"> <Orthogonal> <Hidden> <Orthogonal> <"Disc"> 
     "Hex N+1 / N-1 Grid")
     
     (item "TriSquare 7 direction majorities"
@@ -170,17 +170,17 @@
     }
 )
 
-(option "Players" <HowMany>  args:{<playerCount>}
+(option "Players" <HowMany> args:{<playerCount>}
     {
-    (item "2"  <2> "2 players")*
-    (item "3"  <3> "3 players")
-    (item "4"  <4> "4 players")
+    (item "2" <2> "2 players")*
+    (item "3" <3> "3 players")
+    (item "4" <4> "4 players")
     }
 )
 
 //---------------------------------------------
 
-(define "ColourBackground"  (colour 136 175 96)) //meadow (colour 146 175 86)) // tawny: (colour 175 146 86)) 
+(define "ColourBackground" (colour 136 175 96)) //meadow (colour 146 175 86)) // tawny: (colour 175 146 86)) 
 
 (metadata
     (info
@@ -199,14 +199,14 @@
             Either scoring for stones placed, or for the largest group.
             Tie breakers scoring is needed to reduce the frequency of ties.
             
-            multi-player cascade group scoring: Between those tied for winner, each pair of players is considered separately and the difference in size of their largest groups (after excluding all pairs of equal-size groups) is awarded to the owner of the larger group for cascade scoring (or to the owner of the smaller group for underdog scoring.)  Underdog tiebreaking is currently prefered.
+            multi-player cascade group scoring: Between those tied for winner, each pair of players is considered separately and the difference in size of their largest groups (after excluding all pairs of equal-size groups) is awarded to the owner of the larger group for cascade scoring (or to the owner of the smaller group for underdog scoring.) Underdog tiebreaking is currently prefered.
             In 2-player games, the last player to place is the final tie-breaker.
             
             Finiteness:
             Each individual placement/capture is obviously finite as eventually one of the players with the smallest number of surrounding pieces will have placed there. Proof is needed that, as a whole, cycling is impossible, but this is what is experienced practically, even with multiple players.
             
             If every thing is equal, the last to play wins. Thus on even boards, the first player is obligated to break mirror play to win.
-            ----------------------           
+            ----------------------      
         The previous version had the goal of least number of groups. This goal was flawed, allowing the simple strategy of always passing to force a win.")
         (rules "Choose between two versions: 
             -- Place the most stones, or 
@@ -233,7 +233,7 @@
             This difference is added to the score of the player with the larger group in that pairing - (or to the score of other player in that pairing, in the case of underdog tie-breaking) 
             
             The winner of the game is decided by these amended scores.
-        Ties may still remain.  Also ties between non-leading players are not resolved.")
+        Ties may still remain. Also ties between non-leading players are not resolved.")
         (id "1549")
         (version "1.3.4")
         (classification "experimental")
@@ -241,7 +241,7 @@
         (credit "Dale W. Walton")
         (date "25-05-2021")
         }
-   )
+    )
     
     (graphics 
         {
@@ -262,8 +262,8 @@
         (board Colour OuterEdges (colour Black))
         (show Edges Diagonal <BoardShape:diagShow> (colour DarkGrey))
         
-        (board Background image:<BoardShape:backgroundImage> fillColour:"ColourBackground" edgeColour:(colour 180 180 180 80)  scale:<BoardSize:backgroundSize>) 
+        (board Background image:<BoardShape:backgroundImage> fillColour:"ColourBackground" edgeColour:(colour 180 180 180 80) scale:<BoardSize:backgroundSize>) 
         }
-   )
+    )
 )
 

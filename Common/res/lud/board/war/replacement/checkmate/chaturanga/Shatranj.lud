@@ -2,8 +2,8 @@
     (apply 
         (remove 
             (to) 
-       )
-   ) 
+        )
+    ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -13,8 +13,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-       )
-   )
+        )
+    )
 )
 
 (define "NextCanNotMove"
@@ -23,8 +23,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Shatranj"  
-    (players {(player N) (player S)})  
+(game "Shatranj" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -35,10 +35,10 @@
                 (then
                     (if (is In (last To) (sites Mover "Promotion")) 
                         (moveAgain)
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         
         (piece "Rook" Each 
             (move
@@ -47,18 +47,18 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "King_noCross" Each 
             (move
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-               )
-           )
-       )
+                )
+            )
+        )
         (piece "Bishop_noCross" Each 
             (move 
                 Hop 
@@ -68,11 +68,11 @@
                     if:(or 
                         (is Empty (to)) 
                         ("IsEnemyAt" (to))
-                   ) 
+                    ) 
                     "CaptureToPiece"
-               )
-           )
-       )
+                )
+            )
+        )
         (piece "Knight" Each 
             (move 
                 Leap 
@@ -80,9 +80,9 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Ferz_noCross" Each 
             (move
                 Step 
@@ -90,12 +90,12 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-               )
-           )
-       )
+                )
+            )
+        )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Pawn1" (sites Row 1))
@@ -108,21 +108,21 @@
             (if "SameTurn"
                 (move Promote (last To) (piece "Ferz_noCross") Mover)
                 (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-           )
-       )
+            )
+        )
         
         (end {
             (if 
                 (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
+            ) 
             (if (= (count Pieces Next) 1) (result Mover Win)) 
             ("BlockWin")
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -139,9 +139,9 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in Iran, from around 531 to 1257.")
+        (origin "This game was played in Iran, from around 531 to 1257.")
         }
-   )
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.825)
@@ -151,6 +151,6 @@
     
     (ai 
         "Shatranj_ai"
-   )
+    )
     
 )

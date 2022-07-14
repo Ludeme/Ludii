@@ -4,8 +4,8 @@
         (board 
             (complete (regular Star 6))
             use:Edge
-       )         
-    })    
+        )     
+    })  
     (rules 
         (play 
             (move 
@@ -13,20 +13,20 @@
                 (to
                     Edge 
                     (sites Empty Edge)
-               )
-           )
-       ) 
+                )
+            )
+        ) 
         (end 
             (if 
                 (is Path Edge Mover length:(exact 3) closed:True) 
                 (result Mover Loss)
-           )
-       ) 
-   )
+            )
+        ) 
+    )
 )
 
 //------------------------------------------------------------------------------
-(metadata    
+(metadata  
     (info
         {
         (description "Sim is a pencil-and-paper game played by two players.")
@@ -39,7 +39,7 @@
         (credit "Tahmina Begum")
         (date "1969")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Red))
@@ -47,8 +47,8 @@
         (board Style PenAndPaper replaceComponentsWithFilledCells:True)
         (show Edges Orthogonal ThinDotted)
         
-    })    
+    })  
     (ai
         "Sim_ai"
-   )
+    )
 )

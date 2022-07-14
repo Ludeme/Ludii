@@ -18,10 +18,10 @@
             (play 
                 (move Add
                     (to (intersection (sites Top) (sites Left)))
-               )
-           )
+                )
+            )
             (nextPhase "Main")
-       )
+        )
         (phase "Main"
             (play 
                 (if (is Mover P1)
@@ -30,33 +30,33 @@
                             (and {
                                 (if (is Enemy (who at:(coord row:0 column:(column of:(last From)))))
                                     (set Pending (row of:(coord row:0 column:(column of:(last From)))))
-                               )
+                                )
                                 (push (from (last To)) S)
                                 (add (piece (id "Ball" Mover)) (to (last To)))
                             })
-                       )
-                   )
+                        )
+                    )
                     (move Select (from (sites Left) if:(not (is In (row of:(from)) (sites Pending))))
                         (then
                             (and {
                                 (if (is Enemy (who at:(coord row:(row of:(last From)) column:(- (count Columns) 1))))
                                     (set Pending (column of:(coord row:(row of:(last From)) column:(- (count Columns) 1))))
-                               )
+                                )
                                 (push (from (last To)) E)
                                 (add (piece (id "Ball" Mover)) (to (last To)))
                             })
-                       )	   
-                   )
-               )
-           )
-       )
+                        )	  
+                    )
+                )
+            )
+        )
         }
         
         (end {
             (if ("ConnectedEdges" P1) (result P1 Win))
             (if ("ConnectedEdges" P2) (result P2 Win))
         }) 
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -81,7 +81,7 @@
         (author "Dijkstra and van Dijk")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour VeryDarkGrey))

@@ -11,7 +11,7 @@
 //-------------------------------
 // Bug matching Utility
 
-(define "IfThisRotationDo"  // compiles but sometimes misses
+(define "IfThisRotationDo" // compiles but sometimes misses
     (if
         (= 0
             (size Array
@@ -27,19 +27,19 @@
                                         from:(sites Group at:(last To))
                                         to:(from)
                                         (- (* 32 #1))
-                               ))
+                                ))
                                 (max
                                     (results
                                         from:(sites Group at:(last To))
                                         to:(from)
                                         (- (#2))
-                           )))
-                   ))
+                            )))
+                    ))
                     (results
                         from:(sites)
                         to:(from)
                         (value Piece at:(from))
-       ))))
+        ))))
         #3
 ))
 
@@ -53,7 +53,7 @@
             (and
                 ("IsSameSizeAsSelectedBug") 
                 ("IsBugAdjacentToSelectedBug") 
-           )
+            )
             (priority // Remove and grow again if matches any rotation - Otherwise do nothing
                 {
                 ("IfThisRotationDo" ("DRow") ("DCol") #1) 
@@ -108,12 +108,12 @@
         (forEach Site 
             (sites Group at:(last To))
             (set State at:(site) 0)
-       )
+        )
         (priority
             (do 
                 ("RecordTheGrowingBugsShapeVectorsAsValues") 
                 next:("IfBugsMatchDo" ("MarkTheSelectedBugsAsEdible") ("ThenMarkTheGrowingBudAsEdible")) 
-           )
+            )
             ("RecordTheGrowingBugsShapeVectorsAsValues") 
 )))
 
@@ -138,7 +138,7 @@
                 (forEach Site
                     (sites Group at:(last To))
                     (set State at:(site) 0)
-               )
+                )
                 (moveAgain)
                 }
 ))))
@@ -168,12 +168,12 @@
         ("SizeLargestBug")
 ))
 
-(define "RequiredGrowth"  
+(define "RequiredGrowth" 
     (move Add
         (to (sites Empty)
             if:(and ("PlacementDoesntMergeBugs") ("BugNot2Big"))
             #1
-       )
+        )
         #2
 )) 
 
@@ -183,11 +183,11 @@
     (is In (to) (sites Around (sites Group at:(last From))))
 )
 
-(define "BonusGrowth"   
+(define "BonusGrowth"  
     (move Add
         (to (sites Empty)
             if:(and ("IsNext2BugThatAte") ("PlacementDoesntMergeBugs"))
-       )
+        )
         #1
 )) 
 
@@ -207,12 +207,12 @@
             if:(and 
                 (is Mover (who at:(to)))
                 (= 1 (state at:(to)))
-           )
+            )
             (move Select
                 (from (max (array (sites))))
                 (then
                     ("EatAllNeighboringBugsAndGrow")
-       )))
+        )))
         ifAfterwards:("BugCanStillGrow") 
 ))
 
@@ -224,7 +224,7 @@
         (board <Board:type> use:Cell)
         (piece "Hex" Each maxValue:1023) // 32rows * 32columns for recording vectors
         }
-   )
+    )
     (rules
         (play
             (if
@@ -233,26 +233,26 @@
                     (> 1 ("SizeLargestBug"))
                     (move Add (to (sites Board)))
                     ("RequiredGrowth" (apply (set Var "Last2Grow" (mover))) (then ("FindWhatThereIsToEat")))
-               )
+                )
                 (if
                     (= 0 (size Array (values Remembered)))
                     ("PlayerChoosesAHungryBug")
                     ("BonusGrowth" (then ("FindWhatThereIsToEat")))
-               )
+                )
                 (then ("Score"))
-       ))
+        ))
         (end
             (if
                 (and
                     (no Moves Mover)
                     (not ("SameTurn"))
-               ) 
+                ) 
                 (if
                     (= (var "Last2Grow") (mover))
                     (result Mover Loss)
-               )
+                )
                 (result Mover Win)
-))))   
+))))  
 
 //----------------------------------
 
@@ -269,7 +269,7 @@
 (option "Board" <Board> args:{ <type> <graphics> }
     {
     (item "Hex3" <(hex Hexagon 3)> "3 Hexagon")**
-    (item "Hex 343434" <(hex Limping 3)>  "343434 Hexagon")
+    (item "Hex 343434" <(hex Limping 3)> "343434 Hexagon")
     (item "Hex4" <(hex Hexagon 4) > "4 Hexagon")
     (item "Hex 454545" <(hex Limping 4)> "454545 Hexagon")
     (item "Hex5" <(hex Hexagon 5)> "5 Hexagon")
@@ -286,7 +286,7 @@
         {
         
         }
-   )
+    )
     
     (graphics
         {
@@ -309,12 +309,12 @@
                         (is Mover (who at:(to))) 
                         (= 1 (state at:(to)))
                         }
-                   )
+                    )
                     (select (from (max (array (sites)))))
-           ))
+            ))
             (colour 72 144 160 190)
-       )
+        )
         (show Score AtEnd)
         }
-   )
+    )
 )

@@ -3,8 +3,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Tshuba"  
-    (players 2)  
+(game "Tshuba" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -12,14 +12,14 @@
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" <Board:CCW2> loop:True P2)
             }
-       )
-        (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
-        (regions "Home" P2 (sites Track "Track2"))                              // P2 home
+        )
+        (regions "Home" P1 (sites Track "Track1"))               // P1 Home
+        (regions "Home" P2 (sites Track "Track2"))               // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))   // P2 inner Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))  // P2 inner Home
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home"))))
@@ -30,16 +30,16 @@
                     (difference (sites Next "Home") (sites Empty))
                     count:(count at:(to))
                     (then (set Var "ExtraCapture" 0))
-               )
+                )
                 (move Select
                     (from 
                         (if 
                             ("SameTurn") 
                             "LastHoleSowed" 
                             (sites Mover) 
-                       ) 
+                        ) 
                         if:(< 0 (count at:(from)))
-                   )
+                    )
                     (then 
                         (sow
                             "Track"
@@ -50,38 +50,38 @@
                                     (and {
                                         (if (> (count at:("OppositePit" (to))) 0) 
                                             (remove ("OppositePit" (to)) count:(count at:("OppositePit" (to)))) 
-                                       )
+                                        )
                                         (if (> (count at:("OppositeOuterPit" (to))) 0) 
                                             (remove ("OppositeOuterPit" (to)) count:(count at:("OppositeOuterPit" (to)))) 
-                                       )
+                                        )
                                         (set Var "ExtraCapture" 1)
                                         (moveAgain)
                                     })
-                               )
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         
         (end
             (if (all Sites (sites Next "Home") if:(= 0 (count at:(site))))
                 (result Mover Win)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <rowSize> <CCW2> }
     {
-    (item "4"   <4>  <"8,E,N1,W">   "Each player has 4 holes on each row.")*  
-    (item "8"   <8>  <"16,E,N1,W">  "Each player has 8 holes on each row.")  
-    (item "10"  <10> <"20,E,N1,W">  "Each player has 10 holes on each row.") 
-    (item "16"  <16> <"32,E,N1,W">  "Each player has 16 holes on each row.")   
-    (item "22"  <22> <"44,E,N1,W">  "Each player has 22 holes on each row.")   
+    (item "4"  <4> <"8,E,N1,W">  "Each player has 4 holes on each row.")* 
+    (item "8"  <8> <"16,E,N1,W"> "Each player has 8 holes on each row.") 
+    (item "10" <10> <"20,E,N1,W"> "Each player has 10 holes on each row.") 
+    (item "16" <16> <"32,E,N1,W"> "Each player has 16 holes on each row.")  
+    (item "22" <22> <"44,E,N1,W"> "Each player has 22 holes on each row.")  
 })
 
 //------------------------------------------------------------------------------
@@ -92,7 +92,7 @@
         "Board Size/4"
         }
         variations:{"Board Size/8" "Board Size/10" "Board Size/16" "Board Size/22"}
-   )*
+    )*
     
 })
 
@@ -110,9 +110,9 @@
         (version "1.3.4")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Mozambique, around 1912.")
+        (origin "This game was played in Mozambique, around 1912.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

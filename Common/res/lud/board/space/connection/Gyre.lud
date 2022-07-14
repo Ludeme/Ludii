@@ -14,14 +14,14 @@
                         in:(union
                             (sites Outer)
                             (sites {(centrePoint)})
-                       )
-                   )
+                        )
+                    )
                     (max
                         (results
                             from:(difference
                                 (sites Board)
                                 (sites Group at:(last To))
-                           )
+                            )
                             to:2 
                             (* (to)
                                 (count Sites
@@ -29,36 +29,36 @@
                                         (union
                                             (sites Outer)
                                             (sites {(centrePoint)})
-                                       )
+                                        )
                                         (sites Group at:(from)
                                             if:(not
                                                 (is In
                                                     (to)
                                                     (sites Group at:(last To))
-                                               )
-                                           )
-                                       )
-                                   )
-                               )
-                           )   
-                       )
-                   )
-               )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )  
+                        )
+                    )
+                )
                 (result Mover Win)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //-------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "5"    <5>  "A size 5 board is currently selected")
-    (item "6"    <6>  "A size 6 board is currently selected")
-    (item "7"    <7>  "A size 7 board is currently selected")*
-    (item "8"    <8>  "A size 8 board is currently selected")
-    (item "9"    <9>  "A size 9 board is currently selected")
+    (item "5"  <5> "A size 5 board is currently selected")
+    (item "6"  <6> "A size 6 board is currently selected")
+    (item "7"  <7> "A size 7 board is currently selected")*
+    (item "8"  <8> "A size 8 board is currently selected")
+    (item "9"  <9> "A size 9 board is currently selected")
     }
 )
 
@@ -78,5 +78,5 @@
         (credit "Michael Amundsen")
         (date "2015")
         }
-   )
+    )
 )

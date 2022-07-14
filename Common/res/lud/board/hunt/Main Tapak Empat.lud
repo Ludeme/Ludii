@@ -18,15 +18,15 @@
                 (move 
                     (from (handSite P1)) 
                     (to (sites Empty))
-               )
-           ) 
+                )
+            ) 
             (nextPhase ("HandEmpty" P1))
-       )
+        )
         (phase "Movement" (play (forEach Piece)))
         }
         
         (end ("NoMovesP2NoPiecesP1"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -42,9 +42,9 @@
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in Malaysia, around 1919.")
+        (origin "This game was played in Malaysia, around 1919.")
         }
-   )
+    )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})

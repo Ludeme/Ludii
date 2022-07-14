@@ -6,11 +6,11 @@
         (between 
             if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
             (apply (remove (between) at:EndOfTurn count:(size Stack at:(between))))
-       ) 
+        ) 
         (to if:(is Empty (to))) 
         stack:True
         #3
-   ) 
+    ) 
 )
 
 (define "HopGeneral" 
@@ -22,7 +22,7 @@
             #3
             if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
             (apply (remove (between) at:EndOfTurn count:(size Stack at:(between))))
-       )
+        )
         (to if:(is Empty (to)))
         stack:True
         (then 
@@ -36,15 +36,15 @@
                             if:(and 
                                 (not (is In (between) (sites ToClear))) 
                                 ("IsEnemyAt" (between))
-                           )
-                       )
+                            )
+                        )
                         (to if:(is Empty (to)))
-                   )
-               ) 
+                    )
+                ) 
                 (moveAgain)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 (define "NoKing" 
@@ -86,17 +86,17 @@
                             (if ("NoKing")
                                 True
                                 (< (size Stack at:(to)) 2)
-                           )
+                            )
                             (if ("DoesNotHaveThreeGeneral")
                                 True
                                 (!= (size Stack at:(to)) 1)
-                           )
+                            )
                         })
-                   )
-               )
-           )
+                    )
+                )
+            )
             (nextPhase Mover (and (not ("NoKing")) (not ("DoesNotHaveThreeGeneral"))) "Play")
-       )
+        )
         (phase "Play"
             (play 
                 (if ("SameTurn")
@@ -106,32 +106,32 @@
                                 (then 
                                     (if (can Move ("Hop" (last To) Orthogonal))
                                         (moveAgain)
-                                   ) 
-                               )
-                           )
+                                    ) 
+                                )
+                            )
                             (if ("IsKing" (last To))
                                 ("Hop" (last To) ~
                                     (then 
                                         (if (can Move ("Hop" (last To)))
                                             (moveAgain)
-                                       ) 
-                                   )
-                               )
+                                        ) 
+                                    )
+                                )
                                 (if ("IsGeneral" (last To))
                                     ("HopGeneral" (from (last To)) before:(count Columns) after:(count Columns) at:EndOfTurn)
-                               )
-                           )
-                       )
-                   )
+                                )
+                            )
+                        )
+                    )
                     (if ("NoKing")
                         (forEach Piece
                             (if ("IsSoldier" (from))
                                 (move Step Orthogonal
                                     (to if:(and ("IsFriendAt" (to)) (= 2 (size Stack at:(to)))))
                                     stack:True
-                               )
-                           )
-                       )
+                                )
+                            )
+                        )
                         (priority {
                             (max Moves withValue:True
                                 (forEach Piece
@@ -140,24 +140,24 @@
                                             (then 
                                                 (if (can Move ("Hop" (last To) Orthogonal))
                                                     (moveAgain)
-                                               ) 
-                                           )
-                                       )
+                                                ) 
+                                            )
+                                        )
                                         (if ("IsKing" (from))
                                             ("Hop" (from) ~
                                                 (then 
                                                     (if (can Move ("Hop" (last To)))
                                                         (moveAgain)
-                                                   ) 
-                                               )
-                                           )
+                                                    ) 
+                                                )
+                                            )
                                             (if ("IsGeneral" (from))
                                                 ("HopGeneral" (from) before:(count Columns) after:(count Columns) at:EndOfTurn)
-                                           )
-                                       )
-                                   )		
-                               )
-                           )
+                                            )
+                                        )
+                                    )		
+                                )
+                            )
                             (forEach Piece
                                 (if ("IsSoldier" (from))
                                     (or
@@ -166,26 +166,26 @@
                                             (move Step Orthogonal
                                                 (to if:(and ("IsFriendAt" (to)) (= 1 (size Stack at:(to)))))
                                                 stack:True
-                                           )
-                                       )
-                                   )
+                                            )
+                                        )
+                                    )
                                     (if ("IsGeneral" (from))
                                         (move Slide Orthogonal stack:True)
                                         (if ("IsKing" (from))
                                             (move Step (to if:(is Empty (to))) stack:True)
-                                       )
-                                   )
-                               )		
-                           )
+                                        )
+                                    )
+                                )		
+                            )
                         })
-                   )
-               )
-           )
+                    )
+                )
+            )
             (end (if ("NoKing") (result Mover Loss)))
-       )
+        )
         }
         
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -214,7 +214,7 @@
             Capture is compulsory if possible.
             
             - A Soldier or King captures by jumping over an enemy piece occupying a square to which it can legally move and landing on the square immediately beyond it in the same direction, provided that the landing square is vacant.
-            - A General captures in the same way, but may move any number of vacant squares before the captured piece, and  may land on any successive vacant square in line of travel beyond the captured piece.
+            - A General captures in the same way, but may move any number of vacant squares before the captured piece, and may land on any successive vacant square in line of travel beyond the captured piece.
             
             If the capturing piece can then make another capture, it must, and it must continue doing so until all possible consecutive captures have been made. An enemy piece can only be jumped once in a single turn. If it is reached a second time it forms a block and ends the turn. At the end of a capturing turn all captured pieces must be removed from the board before the next player moves.
             
@@ -233,7 +233,7 @@
         (credit "Eric Piette")
         (date "2019")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour VeryDarkGrey))

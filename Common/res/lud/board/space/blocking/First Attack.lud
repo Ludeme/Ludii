@@ -1,22 +1,22 @@
-(game "First Attack"  
-    (players 2)  
+(game "First Attack" 
+    (players 2) 
     (equipment { 
         (board (square 8))
         (piece "Ball" Shared) 
-    })  
+    }) 
     (rules 
         (play 
             (move Add
                 (piece "Ball")
                 (to (sites Empty)
                     if:(all Sites (sites Direction from:(to) Adjacent) if:(is Empty (site)))		
-               )
+                )
                 
-           )
-       ) 
+            )
+        ) 
         
         (end ("BlockWin"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -36,7 +36,7 @@
         (author "Frank Harary")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (board Style Chess)

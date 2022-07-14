@@ -1,14 +1,14 @@
-(game "Bara Guti"  
-    (players 2)  
+(game "Bara Guti" 
+    (players 2) 
     (equipment { 
         ("AlquerqueBoard" 5 5)
         (piece "Marker" Each 
             (or 
                 ("HopCapture")
                 ("StepToEmpty")
-           )
-       )
-    })  
+            )
+        )
+    }) 
     (rules 
         (start { 
             (place "Marker1" (union {(sites Row 0) (sites Row 1) (sites {"A3" "B3"})}))
@@ -17,10 +17,10 @@
         
         (play 
             (forEach Piece)
-       )
+        )
         
         (end (if (no Pieces Next) (result Next Loss)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -39,9 +39,9 @@
         (version "1.3.4")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in South Asia, around 1919.")
+        (origin "This game was played in South Asia, around 1919.")
         }
-   )
+    )
     
     (graphics {
         (show Edges Diagonal Hidden)
@@ -49,5 +49,5 @@
     
     (ai
         "Bara Guti_ai"
-   )
+    )
 )

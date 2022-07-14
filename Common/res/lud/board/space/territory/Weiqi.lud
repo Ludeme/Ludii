@@ -4,11 +4,11 @@
         Orthogonal 
         (between 
             if:("IsEnemyAt" (between)) 
-            (apply             
+            (apply       
                 (remove (between)) 
-           ) 
-       )
-   )
+            ) 
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -19,31 +19,31 @@
         (board (square 19) use:Vertex)
         (piece "Marker" Each)
     })
-    (rules  
+    (rules 
         (meta
             (no Repeat)
-       )
-        (play         
+        )
+        (play     
             (or
                 (move 
                     Add
                     (to (sites Empty))
                     (then 
                         "CaptureSurroundedPiece"
-                   )
-               )
+                    )
+                )
                 (move Pass)
-           )
-       )
+            )
+        )
         (end
             (if (all Passed)
                 (byScore {
-                    (score P1 (+ (count Pieces P1)  (size Territory P1))) 
+                    (score P1 (+ (count Pieces P1) (size Territory P1))) 
                     (score P2 (+ (count Pieces P2) (size Territory P2)))
                 })
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -61,9 +61,9 @@
         (version "1.3.4")
         (classification "board/space/territory")
         (credit "Eric Piette")
-        (origin  "This game was played in China, from around 500 to 599.")
+        (origin "This game was played in China, from around 500 to 599.")
         }
-   )
+    )
     
     (graphics {
         (board Style Go)
@@ -72,5 +72,5 @@
     })
     (ai
         "Weiqi_ai"
-   )
+    )
 )

@@ -13,7 +13,7 @@
 (define "CaptureMove"
     (if ("IsEnemyAt" (to))
         (remove (to))
-   )
+    )
 )
 
 (define "PlayedHalfThrow" (= 1 (var)))
@@ -37,7 +37,7 @@
             (track "Track2" "47,W,S1,E,S1,W,S1,E" P2 directed:True)
             }
             use:Vertex
-       )
+        )
         (piece "Stick" Each
             (if (and (not (is In (from) (sites Next "Home"))) (!= 0 ("ThrowValue")))
                 (or
@@ -48,58 +48,58 @@
                                 if:(if ("ActivatedPiece" (from))
                                     True
                                     ("ThrowToActivate")
-                               )	
-                           )
+                                )	
+                            )
                             (to 
                                 ("SiteToMoveOnTrack" ("ThrowValue"))
                                 if:(not ("IsFriendAt" (to)))
                                 (apply "CaptureMove")
-                           )
+                            )
                             (then
                                 (if (not ("ActivatedPiece" (last To)))
                                     ("ActivePiece" (last To))
-                               )
-                           )
-                       )
-                   )
+                                )
+                            )
+                        )
+                    )
                     (move
                         (from 
                             (from)
                             if:(if ("ActivatedPiece" (from))
                                 True
                                 ("ThrowToActivate")
-                           )	
-                       )
+                            )	
+                        )
                         (to 
                             ("SiteToMoveOnTrack" (/ ("ThrowValue") 2))
                             if:(not ("IsFriendAt" (to)))
                             (apply "CaptureMove")
-                       )
+                        )
                         (then
                             (and
                                 (if (not ("ActivatedPiece" (last To)))
                                     ("ActivePiece" (last To))
-                               )
+                                )
                                 (if (not ("PlayedHalfThrow"))
                                     (and
                                         (set Var 1)
                                         (moveAgain)
-                                   )
+                                    )
                                     (set Var 0)
-                               )
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         (regions "Home" P1 (sites Bottom))
         (regions "Home" P2 (sites Top))
         (map "Throw" {(pair 0 8) (pair 1 0) (pair 2 0) (pair 3 2) (pair 4 12)})
         (dice d:2 from:0 num:4)
     })
     (rules 
-        (start {  
+        (start { 
             (place "Stick1" (sites Bottom))
             (place "Stick2" (sites Top))
         })
@@ -109,23 +109,23 @@
                 next:(if (can Move (forEach Piece))
                     (forEach Piece)
                     (move Pass (then (set Var 0)))
-               )
+                )
                 (then
                     (if ("IsSpecialThrow")
                         (moveAgain)
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (end 
             (if (and (= 0 ("NumPieceNotInEnemyHome" P1 P2)) (= 0 ("NumPieceNotInEnemyHome" P2 P1)))
                 (byScore {
                     (score P1 ("PiecesOwnedOnEnemyHomedBy" P2 P1)) 
                     (score P2 ("PiecesOwnedOnEnemyHomedBy" P1 P2))
                 })
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -141,12 +141,12 @@
         (version "1.3.4")
         (classification "board/race/fill")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1979.")
+        (origin "This game was played in India, around 1979.")
         }
-   )
+    )
     
     (graphics {
-        (show Edges Hidden)    
+        (show Edges Hidden)  
         (show Symbol "disc" Vertex (sites Board) fillColour:(colour White) edgeColour:(colour Black) scale:1)
         (piece Colour "Die" state:1 fillColour:(colour Black))
         (piece Scale "Stick" 0.5)

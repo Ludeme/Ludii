@@ -11,8 +11,8 @@
             (from (to)) 
             (to (handSite Next))
             count:(count at:(to))
-       )
-   ) 
+        )
+    ) 
 )
 
 (define "HasToThrow" (< ("ThrowValue") 0))
@@ -26,17 +26,17 @@
         (move (from (handSite Mover))
             (to (mapEntry "EntrySite" (mover)))
             (then ("ThrowAgainAndPlay"))
-       )
+        )
         (if (and (= "ThrowValue" 5) (not ("HandEmpty" Mover)))
             (move (from (handSite Mover))
                 (to (mapEntry "EntrySite" (mover)))
                 count:(count Cell at:(handSite Mover))
                 (then ("ThrowAgainAndPlay"))
-           )
+            )
             (forEach Piece)
-       )
+        )
         (then ("StopTurnIfNoMoveAgain"))
-   )
+    )
 )
 
 (define "ThrowMove" 
@@ -45,10 +45,10 @@
             (if ("IfMoveAgain")
                 (do (set Value Mover (count Pips)) next:("Move"))
                 (move Pass (then (set Value Mover (count Pips))))
-           )
-       )
+            )
+        )
         ("Move")
-   )
+    )
 )
 
 //-------------------------------------------------------------------------
@@ -63,39 +63,39 @@
                 (shift 0 3.5 (rectangle 3 5))
                 (shift 7.5 3.5 (rectangle 3 5))
             })
-            {    
+            {  
             (track "Track1" "20,E,N,W,14,W,S,E,44,W,S,E,45,E,N,W,15,E,N1,W,End" P1 directed:True)
             (track "Track2" "39,W,S,E,45,E,N,W,15,E,N,W,14,W,S,E,44,W,S1,E,End" P2 directed:True)
             }
-       )
+        )
         ("StickDice" 5)
         (hand Each)
         (piece "Marker" Each
             (if ("IsEndTrack" "SiteToMoveOnTrack")
                 "RemoveAPiece"
-                (if ("IsNotOffBoard" "SiteToMoveOnTrack")  	 			
+                (if ("IsNotOffBoard" "SiteToMoveOnTrack") 	 			
                     (if (if
                             (not ("IsEnemyAt" "SiteToMoveOnTrack"))
                             True
                             (not (is In "SiteToMoveOnTrack" (sites "Protect")))
-                       )
+                        )
                         (move 
                             (from) 
                             (to 
                                 "SiteToMoveOnTrack" 
                                 "CaptureEnemyPiece"
-                           )
+                            )
                             (then 
                                 (if 
                                     (or (= 1 (value Player Mover)) (= 5 (value Player Mover)))
                                     ("ThrowAgainAndPlay")
-                               ) 
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                                ) 
+                            )
+                        )
+                    )
+                )
+            )
+        )
         (map "EntrySite" {(pair P1 (coord "F2")) (pair P2 (coord "E5"))})
         (regions "Protect" (sites {"A1" "A3" "A4" "A6" "J1" "J3" "J4" "J6"}))
     })
@@ -110,15 +110,15 @@
                             (if 
                                 (or (= 1 (value Player Mover)) (= 5 (value Player Mover)))
                                 ("ThrowAgainAndPlay")
-                           ) 
+                            ) 
                             ("StopTurnIfNoMoveAgain")
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         (end ("EscapeWin"))
-   )
+    )
 )
 
 //-------------------------------------------------------------------------
@@ -135,9 +135,9 @@
         (version "1.3.4")
         (classification "board/race/escape")
         (credit "Eric Piette")
-        (origin  "This game was played in THailand, around 1836.")
+        (origin "This game was played in THailand, around 1836.")
         }
-   )
+    )
     
     (graphics {
         (board Background image:"rectangle.svg" fillColour:(colour 153 76 0) edgeColour:(colour 153 76 0) scale:1.05)
@@ -151,5 +151,5 @@
     })
     (ai
         "Len Doat_ai"
-   )
+    )
 )

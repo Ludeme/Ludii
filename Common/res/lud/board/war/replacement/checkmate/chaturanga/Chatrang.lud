@@ -3,16 +3,16 @@
         (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
-           )
-       )
-   ) 
+            )
+        )
+    ) 
 )
 
 (define "KingNotCheckedAndToEmpty"
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King_noCross" Mover at:(to)))
-   )   
+    )  
 )
 
 (define "DoubleStep"
@@ -21,7 +21,7 @@
         Forward 
         (between (exact 2) if:(is Empty (between))) 
         (to if:(is Empty (to))) 
-   )
+    )
 )
 
 (define "CaptureForwardDiagonal"
@@ -31,8 +31,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-       )
-   )
+        )
+    )
 )
 
 (define "CanNotMove"
@@ -46,20 +46,20 @@
                 (and 
                     ("IsInCheck" "King_noCross" #1)
                     ("CanNotMove" #1 #2)
-               )
+                )
                 (= (where (id "King_noCross" #1)) Off)
-           )
+            )
             (forEach Site (sites Occupied by:#1)
                 (remove (site))
-           )
-       )
-   )		
+            )
+        )
+    )		
 )
 
 //------------------------------------------------------------------------------
 
-(game "Chatrang"  
-    (players {(player N) (player S) (player N) (player S)})  
+(game "Chatrang" 
+    (players {(player N) (player S) (player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -67,11 +67,11 @@
             (or {
                 (if (is In (from) (sites Start (piece (what at:(from)))))
                     "DoubleStep"
-               )
+                )
                 "StepForwardToEmpty" 
                 "CaptureForwardDiagonal"
             })
-       )
+        )
         
         (piece "Rook" Each 
             (move
@@ -80,18 +80,18 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "King_noCross" Each 
             (move
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Elephant" Each 
             (move
                 Slide 
@@ -99,9 +99,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Knight" Each 
             (move
                 Leap 
@@ -109,10 +109,10 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
-    })  
+                ) 
+            )
+        )
+    }) 
     (rules 
         
         (start { 
@@ -139,15 +139,15 @@
                         ("RemovePiecesIfCheckmate" P3 3)
                         ("RemovePiecesIfCheckmate" P4 4)
                     })
-               )
-           )
-       )
+                )
+            )
+        )
         
         (end {
             (forEach NonMover
                 if:(= (where "King_noCross" Player) Off) 
                 (result Player Loss)
-           )
+            )
             (if 
                 (and {
                     (no Pieces Enemy "Pawn") 
@@ -156,9 +156,9 @@
                     (no Pieces Enemy "Rook") 
                 })
                 (result TeamMover Win)
-           )
+            )
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -174,9 +174,9 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in Pakistan, around 1900.")
+        (origin "This game was played in Pakistan, around 1900.")
         }
-   )
+    )
     
     (graphics {
         (show Check "King_noCross")

@@ -4,14 +4,14 @@
 
 //------------------------------------------------------------------------------
 
-(game "Test - Ruleset Variations"  
-    (players <Players:numPlayers>)  
+(game "Test - Ruleset Variations" 
+    (players <Players:numPlayers>) 
     (equipment { 
         (board (square <Board:size>)) 
         (piece "Counter" Each "StepToEmpty")
         <Players:home>
         }
-   )  
+    ) 
     (rules 
         (start { 
             <Players:start>
@@ -20,7 +20,7 @@
         (play (forEach Piece)) 
         
         (end (if "RegionFilled" (result Mover Win))) 
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -31,24 +31,24 @@
         <6>
         <1>
         "The board is a square 6x6"
-   )*
+    )*
     (item "8x8"
         <8>
         <2>
         "The board is a square 8x8"
-   )
+    )
     (item "10x10"
         <10>
         <3>
         "The board is a square 10x10"
-   )
+    )
 })
 
 (option "Players" <Players> args:{ <numPlayers> <home> <start> }
     {
     (item "2" 
         <2>
-        <  
+        < 
         (regions "Home" P1 (expand (intersection (sites Bottom) (sites Left)) steps:"SizeStart" Orthogonal))
         (regions "Home" P2 (expand (intersection (sites Top) (sites Right)) steps:"SizeStart" Orthogonal))
         (map {(pair P1 P2) (pair P2 P1)})
@@ -58,10 +58,10 @@
         (place "Counter2" (sites P2))
         >
         "The game involves two players."
-   )*   
-    (item "4"    
+    )*  
+    (item "4"  
         <4>
-        <  
+        < 
         (regions "Home" P1 (expand (intersection (sites Bottom) (sites Left)) steps:"SizeStart" Orthogonal))
         (regions "Home" P2 (expand (intersection (sites Top) (sites Right)) steps:"SizeStart" Orthogonal))
         (regions "Home" P3 (expand (intersection (sites Top) (sites Left)) steps:"SizeStart" Orthogonal))
@@ -75,7 +75,7 @@
         (place "Counter4" (sites P4))
         >
         "The game involves four players."
-   ) 
+    ) 
 })
 
 //------------------------------------------------------------------------------
@@ -93,7 +93,7 @@
     (ruleset "Ruleset/Bajr Large (Observed)" 
         { "Board/10x10" "Players/2" }
         variations:{ "Board/6x6" "Board/8x8" "Players/4" }
-   )
+    )
     
 })
 
@@ -113,9 +113,9 @@
         (version "1.1.13")
         (classification "board/race/fill")
         (credit "Eric Piette")
-        (origin  "This game was played in Mongolia, from around 1963CE to 1966CE.")
+        (origin "This game was played in Mongolia, from around 1963CE to 1966CE.")
         }
-   )
+    )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

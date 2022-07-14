@@ -3,7 +3,7 @@
 //------------------------------------------------------------------------------
 
 (game "Qelat (Beni Amir-Mensa)"
-    (players 2)  
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 6 store:None
@@ -11,13 +11,13 @@
             (track "TrackCCW" "0,E,N,W" loop:True)
             (track "TrackCW" "5,W,N,E" loop:True)
             }
-       )
+        )
         (piece "Seed" Shared)
-        (regions "Left"  P1 (intersection (expand (sites Left) steps:2) (sites Bottom)))  // P1 home left
-        (regions "Left"  P2 (intersection (expand (sites Right) steps:2) (sites Top)))    // P2 home left
+        (regions "Left" P1 (intersection (expand (sites Left) steps:2) (sites Bottom))) // P1 home left
+        (regions "Left" P2 (intersection (expand (sites Right) steps:2) (sites Top)))  // P2 home left
         (regions "Right" P1 (intersection (expand (sites Right) steps:2) (sites Bottom))) // P1 home right
-        (regions "Right" P2 (intersection (expand (sites Left) steps:2) (sites Top)))     // P2 home right
-    })  
+        (regions "Right" P2 (intersection (expand (sites Left) steps:2) (sites Top)))   // P2 home right
+    }) 
     (rules 
         (start (set Count 4 to:(sites Track)))
         
@@ -34,10 +34,10 @@
                                     (= 0 (state at:(to)))
                                 })
                                 (set State at:(to) (mover))
-                           )
-                       )
-                   )
-               )
+                            )
+                        )
+                    )
+                )
                 (move Select
                     (from (sites Mover "Right") if:(and (= 0 (state at:(from))) (is Occupied (from))))
                     (then
@@ -49,20 +49,20 @@
                                     (= 0 (state at:(to)))
                                 })
                                 (set State at:(to) (mover))
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         
         (end ("MancalaByScoreWhen" (and (no Moves P1) (no Moves P2))))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Qelat is a two-row mancala-style board game played by the Beni Amir and Mensa people of Eritrea. This game is typically played by older men, and is played for large stakes. Instead of capturing counters, players create \"walda,\" captured holes in which counters accumulate throughout the game.")
@@ -72,9 +72,9 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Horn of Africa, around 1971.")
+        (origin "This game was played in Horn of Africa, around 1971.")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

@@ -3,15 +3,15 @@
         (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
-           )
-       )
-   ) 
+            )
+        )
+    ) 
 )
 
 //------------------------------------------------------------------------------
 
 (game "Shakhmaty (Early Modern)" 
-    (players 2)  
+    (players 2) 
     (equipment { // Each player has one king, one queen, two bishops, two knights, two rooks, and eight pawns.
         (board (square 8))
         (piece "King" Each (move [#])) 
@@ -22,18 +22,18 @@
                     (to 
                         if:("IsEnemyAt" (to)) 
                         "CaptureToPiece"
-                   ) 
-               ) 
+                    ) 
+                ) 
                 (move
                     Leap 
                     "KnightWalk" 
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece"
-                   ) 
-               )
-           )
-       )
+                    ) 
+                )
+            )
+        )
         (piece "Knight" Each (move [#]))
         (piece "Pawn" Each (move [#]))
         (piece "Rook" Each (move [#]))
@@ -43,7 +43,7 @@
         (start [#])
         (play [#])
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -53,7 +53,7 @@
     (info
         {
         }
-   )
+    )
     
     (graphics {
         (show Check "King")

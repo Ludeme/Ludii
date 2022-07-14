@@ -38,10 +38,10 @@
                 (if (= ("SiteToMoveOnTrack" #1 #2) 0)
                     (or (is Line 2 E through:("SiteToMoveOnTrack" #1 #2)) (is Line 2 N through:("SiteToMoveOnTrack" #1 #2)))
                     (or (is Line 2 W through:("SiteToMoveOnTrack" #1 #2)) (is Line 2 E through:("SiteToMoveOnTrack" #1 #2)))
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 (define "NextSiteFrom" ("NextSiteOnTrack" 1 from:(last From)))
@@ -51,7 +51,7 @@
 (define "BearOffPieceIfNoPieceInHomeRow" 
     (if (all Sites (sites Occupied by:Mover) if:(not (is In (site) (sites "TopRow"))))
         (move Remove (from))
-   )
+    )
 )
 
 (define "BearOffPieceOnWater" (move Remove (sites "Water")))
@@ -59,19 +59,19 @@
 (define "BearOffPieceOnWaterIfNoPieceInHomeRow" 
     (if (all Sites (sites Occupied by:Mover) if:(not (is In (site) (sites "TopRow"))))
         (move Remove (sites "Water"))
-   )
+    )
 )
 
 (define "TrapRule"
-    (if  (and (or {
+    (if (and (or {
                 ("IsEndTrack" ("SiteToMoveOnTrack")) 
                 ("IsOffBoard" ("SiteToMoveOnTrack"))
                 (is In ("SiteToMoveOnTrack") (union {(sites "Water") (sites "Baw") (sites "Two Men") (sites "Horus")}))
             })
             (= 1 (count Sites in:(intersection (sites Empty) (sites "Water"))))
-       )
+        )
         (move (from) (to (sites "Water")))
-   )
+    )
 )
 
 (define "ThrowOfOne" (or (is Mover P1) (and (is Mover P2) (= (value Player Mover) 1))))
@@ -86,7 +86,7 @@
     (or {
         // Square 26
         (if (is In (from) (sites "Neferu"))
-            (if  ("IsNotOffBoard" ("SiteToMoveOnTrack"))
+            (if ("IsNotOffBoard" ("SiteToMoveOnTrack"))
                 (if ("IsEndTrack" ("SiteToMoveOnTrack"))
                     #1 // Bear off rule
                     (if 
@@ -94,44 +94,44 @@
                         (move 
                             (from) 
                             (to ("SiteToMoveOnTrack"))
-                       )
+                        )
                         (if (and (not ("TwoConsecutiveSpaces")) ("IsEnemyAt" ("SiteToMoveOnTrack")))
                             (if (and 
                                     (= 1 (count in:(intersection (sites Empty) (sites "Water")))) 
                                     (is In ("SiteToMoveOnTrack") (union {(sites "Baw") (sites "Two Men") (sites "Horus")}))
-                               )
+                                )
                                 (move Swap Pieces
                                     (from) 	
                                     ("SiteToMoveOnTrack") 
                                     (then (fromTo 
                                             (from (last From)) 
                                             (to ("NextSiteFrom"))
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         // Squares 28-29
         (if (is In (from) (union {(sites "Two Men") (sites "Baw")}))
-            (if  ("IsNotOffBoard" ("SiteToMoveOnTrack"))
+            (if ("IsNotOffBoard" ("SiteToMoveOnTrack"))
                 (if ("IsEndTrack" ("SiteToMoveOnTrack")) 
                     #1 // Bear off rule
-               )
-           )
-       )
+                )
+            )
+        )
         // Square 30
         (if (is In (from) (sites "Horus"))
-            (if  (or 
+            (if (or 
                     ("IsEndTrack" ("SiteToMoveOnTrack")) 
                     ("IsOffBoard" ("SiteToMoveOnTrack"))
-               )
+                )
                 #1 // Bear off rule
-           )
-       )
+            )
+        )
         (if (not (is In (from) (union {(sites "Neferu") (sites "Water") (sites "Baw") (sites "Two Men") (sites "Horus")})))
             (or {
                 #2 // Trap rule
@@ -142,23 +142,23 @@
                             ("IsOffBoard" ("SiteToMoveOnTrack"))
                             (is In ("SiteToMoveOnTrack") (union {(sites "Water") (sites "Baw") (sites "Two Men") (sites "Horus")}))
                         })
-                   )
+                    )
                     (if 
                         (is Empty ("SiteToMoveOnTrack"))
                         (move 
                             (from) 
                             (to ("SiteToMoveOnTrack"))
-                       )
+                        )
                         (if (and (not ("TwoConsecutiveSpaces")) ("IsEnemyAt" ("SiteToMoveOnTrack")))
                             (move Swap Pieces
                                 (from) 	
                                 ("SiteToMoveOnTrack") 
-                           )
-                       )
-                   )
-               )
+                            )
+                        )
+                    )
+                )
             })
-       )
+        )
     })
 )
 
@@ -166,22 +166,22 @@
     (or {
         // Square 26
         (if (is In (from) (sites "Neferu"))
-            (if  ("IsNotOffBoard" ("SiteToMoveOnTrack" "TrackOpposite"))
+            (if ("IsNotOffBoard" ("SiteToMoveOnTrack" "TrackOpposite"))
                 (if 
                     (is Empty ("SiteToMoveOnTrack" "TrackOpposite"))
                     (move 
                         (from) 
                         (to ("SiteToMoveOnTrack" "TrackOpposite"))
-                   )
+                    )
                     (if (and (not ("TwoConsecutiveSpaces" "TrackOpposite")) ("IsEnemyAt" ("SiteToMoveOnTrack" "TrackOpposite")))
                         (move Swap Pieces
                             (from) 	
                             ("SiteToMoveOnTrack" "TrackOpposite") 
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         (if (not (is In (from) (union {(sites "Neferu") (sites "Water") (sites "Baw") (sites "Two Men") (sites "Horus")})))
             // Squares 1 to 25
             (if ("IsNotOffBoard" ("SiteToMoveOnTrack" "TrackOpposite"))
@@ -190,16 +190,16 @@
                     (move 
                         (from) 
                         (to ("SiteToMoveOnTrack" "TrackOpposite"))
-                   )
+                    )
                     (if (and (not ("TwoConsecutiveSpaces" "TrackOpposite")) ("IsEnemyAt" ("SiteToMoveOnTrack" "TrackOpposite")))
                         (move Swap Pieces
                             (from) 	
                             ("SiteToMoveOnTrack" "TrackOpposite") 
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
     })
 )
 
@@ -207,7 +207,7 @@
     (and 
         (= (state at:("Ankh Waset Site")) 1) 
         (= 1 (count Sites in:(intersection (sites Occupied by:Mover) (sites "Ankh Waset"))))
-   )	
+    )	
 )
 
 (define "PieceOnAnkhWasetHasMoved" (then (set State at:(last To) 0)))
@@ -226,35 +226,35 @@
                 (move 
                     (from ("Ankh Waset Site")) 
                     (to ("SiteToMoveOnTrack" from:("Ankh Waset Site")))
-               )
+                )
                 (if (and 
                         (not ("TwoConsecutiveSpaces" from:("Ankh Waset Site"))) 
                         ("IsEnemyAt" ("SiteToMoveOnTrack" from:("Ankh Waset Site")))
-                   )
+                    )
                     (move Swap Pieces
                         ("Ankh Waset Site") 
                         ("SiteToMoveOnTrack" from:("Ankh Waset Site")) 
-                   )
-               )
+                    )
+                )
                 ("PieceOnAnkhWasetHasMoved")
-           )
+            )
             (if 
                 (is Empty ("SiteToMoveOnTrack" from:("Ankh Waset Site") "TrackOpposite"))
                 (move 
                     (from ("Ankh Waset Site")) 
                     (to ("SiteToMoveOnTrack" from:("Ankh Waset Site") "TrackOpposite"))
-               )
+                )
                 (if (and 
                         (not ("TwoConsecutiveSpaces" from:("Ankh Waset Site") "TrackOpposite")) 
                         ("IsEnemyAt" ("SiteToMoveOnTrack" from:("Ankh Waset Site") "TrackOpposite"))
-                   )
+                    )
                     (move Swap Pieces
                         ("Ankh Waset Site") 
                         ("SiteToMoveOnTrack" from:("Ankh Waset Site") "TrackOpposite") 
-                   )
-               )
+                    )
+                )
                 ("PieceOnAnkhWasetHasMoved")
-           )
+            )
         })
         (if ("PieceOnWater")
             (if (= ("Throw") 4)
@@ -262,10 +262,10 @@
                 (or
                     (if ("NoPieceOnAnkhWaset")
                         (move (from (sites "Water")) (to (sites "Ankh Waset")) ("PieceOnAnkhWasetHasToMove"))
-                   )
+                    )
                     (move Pass)
-               )
-           )
+                )
+            )
             
             (if ("StartingThrow" #1)
                 (priority {
@@ -273,10 +273,10 @@
                     (forEach Piece ("MovePieceBackward"))
                     }
                     (then (if (is In ("Throw") (sites {1 4 5})) (moveAgain)))
-               )
-           )
-       )
-   )
+                )
+            )
+        )
+    )
 )
 
 (define "KendallRules" 
@@ -293,16 +293,16 @@
                                     #2
                                     (if (is Mover P2) 
                                         (swap Players P1 P2)
-                                   )
+                                    )
                                     (set NextPlayer (player 1))
                                 })
-                           )
-                       )
-                   )
-               )
-           )
+                            )
+                        )
+                    )
+                )
+            )
             (nextPhase (= 1 (count Pips)) "Playing")
-       )
+        )
         (phase "Playing"
             (play 
                 (do 
@@ -310,26 +310,26 @@
                     next:(if (can Move ("KendallMoves" #3 #4 #5 #7))
                         ("KendallMoves" #3 #4 #5 #7)
                         (move Pass (then (if (is In ("Throw") (sites {1 4 5})) (moveAgain))))
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         }
         
         (end ("EscapeWin"))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (game "Senet"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (rectangle 3 10) 
-            {    
+            {  
             <Track>
             }
-       )
+        )
         <Dice>
         <Throw>
         (regions "Symbols" (sites {"F2" "F1" "G1" "H1" "I1"}))
@@ -344,7 +344,7 @@
         (regions "BottomRow" (sites Bottom))
         (piece "SenetPiece" Each ("PieceMovement")) 
         (hand Each)
-    })  
+    }) 
     <Ruleset:rules>
 )
 
@@ -402,158 +402,158 @@
 
 (option "Play Rules" <Ruleset> args:{<piece> <rules>}
     {
-    (item "Kendall"  
+    (item "Kendall" 
         <>
         <
-        ("KendallRules" ("SevenPiecesOnBoard") ("MoveInFront7Pieces") ("NoStartingThrow") ("BearOffPiece")  ("BearOffPieceOnWater"))
-        >  
+        ("KendallRules" ("SevenPiecesOnBoard") ("MoveInFront7Pieces") ("NoStartingThrow") ("BearOffPiece") ("BearOffPieceOnWater"))
+        > 
     "The rules of Kendall.")**
     
     //-----------------------------------
     
-    (item "Kendall 5 pieces"  
+    (item "Kendall 5 pieces" 
         <>
         <
-        ("KendallRules" ("FivePiecesOnBoard") ("MoveInFront5Pieces") ("NoStartingThrow") ("BearOffPiece")  ("BearOffPieceOnWater"))
-        >  
+        ("KendallRules" ("FivePiecesOnBoard") ("MoveInFront5Pieces") ("NoStartingThrow") ("BearOffPiece") ("BearOffPieceOnWater"))
+        > 
     "The rules of Kendall with 5 pieces.")
     
     //-----------------------------------
     
-    (item "Kendall with trap"  
+    (item "Kendall with trap" 
         <>
         <
-        ("KendallRules" ("SevenPiecesOnBoard") ("MoveInFront7Pieces") ("NoStartingThrow") ("BearOffPiece")  ("BearOffPieceOnWater") ~ ("TrapRule"))
-        >  
+        ("KendallRules" ("SevenPiecesOnBoard") ("MoveInFront7Pieces") ("NoStartingThrow") ("BearOffPiece") ("BearOffPieceOnWater") ~ ("TrapRule"))
+        > 
     "The rules of Kendall. A roll greater than that required to land exactly on the Neferu site causes the player to fall into the water.")
     
     //-----------------------------------
     
-    (item "Kendall special bear off"  
+    (item "Kendall special bear off" 
         <>
         <
-        ("KendallRules" ("SevenPiecesOnBoard") ("MoveInFront7Pieces") ("NoStartingThrow") ("BearOffPieceIfNoPieceInHomeRow")  ("BearOffPieceOnWaterIfNoPieceInHomeRow"))
-        >  
+        ("KendallRules" ("SevenPiecesOnBoard") ("MoveInFront7Pieces") ("NoStartingThrow") ("BearOffPieceIfNoPieceInHomeRow") ("BearOffPieceOnWaterIfNoPieceInHomeRow"))
+        > 
     "The rules of Kendall. Cannot bear off until all pieces are beyond the home row.")
     
     //-----------------------------------
     
-    (item "Kendall starting throw"  
+    (item "Kendall starting throw" 
         <>
         <
-        ("KendallRules" ("SevenPiecesOnBoard") ("MoveInFront7Pieces") ("ThrowOfOne") ("BearOffPiece")  ("BearOffPieceOnWater") ("SetStartingThrow"))
-        >  
+        ("KendallRules" ("SevenPiecesOnBoard") ("MoveInFront7Pieces") ("ThrowOfOne") ("BearOffPiece") ("BearOffPieceOnWater") ("SetStartingThrow"))
+        > 
     "The rules of Kendall. A throw of 1 is required to begin.")
     
     //-----------------------------------
     
-    (item "Kendall 5 pieces and with trap"  
+    (item "Kendall 5 pieces and with trap" 
         <>
         <
-        ("KendallRules" ("FivePiecesOnBoard") ("MoveInFront5Pieces") ("NoStartingThrow") ("BearOffPiece")  ("BearOffPieceOnWater") ~ ("TrapRule"))
-        >  
+        ("KendallRules" ("FivePiecesOnBoard") ("MoveInFront5Pieces") ("NoStartingThrow") ("BearOffPiece") ("BearOffPieceOnWater") ~ ("TrapRule"))
+        > 
     "The rules of Kendall with 5 pieces. A roll greater than that required to land exactly on the Neferu site causes the player to fall into the water.")
     
     //-----------------------------------
     
-    (item "Kendall 5 pieces special bear off"  
+    (item "Kendall 5 pieces special bear off" 
         <>
         <
-        ("KendallRules" ("FivePiecesOnBoard") ("MoveInFront5Pieces") ("NoStartingThrow") ("BearOffPieceIfNoPieceInHomeRow")  ("BearOffPieceOnWaterIfNoPieceInHomeRow") ~ ~)
-        >  
+        ("KendallRules" ("FivePiecesOnBoard") ("MoveInFront5Pieces") ("NoStartingThrow") ("BearOffPieceIfNoPieceInHomeRow") ("BearOffPieceOnWaterIfNoPieceInHomeRow") ~ ~)
+        > 
     "The rules of Kendall with 5 pieces. A roll greater than that required to land exactly on the Neferu site causes the player to fall into the water.")
     
     //-----------------------------------
     
-    (item "Kendall with trap and starting throw"  
+    (item "Kendall with trap and starting throw" 
         <>
         <
-        ("KendallRules" ("SevenPiecesOnBoard") ("MoveInFront7Pieces") ("ThrowOfOne") ("BearOffPiece")  ("BearOffPieceOnWater") ("SetStartingThrow") ("TrapRule"))
-        >  
+        ("KendallRules" ("SevenPiecesOnBoard") ("MoveInFront7Pieces") ("ThrowOfOne") ("BearOffPiece") ("BearOffPieceOnWater") ("SetStartingThrow") ("TrapRule"))
+        > 
     "The rules of Kendall. A roll greater than that required to land exactly on the Neferu site causes the player to fall into the water. A throw of 1 is required to begin.")
     
     //-----------------------------------
     
-    (item "Kendall 5 pieces and starting throw"  
+    (item "Kendall 5 pieces and starting throw" 
         <>
         <
-        ("KendallRules" ("FivePiecesOnBoard") ("MoveInFront5Pieces") ("ThrowOfOne") ("BearOffPiece")  ("BearOffPieceOnWater") ("SetStartingThrow") ~)
-        >  
+        ("KendallRules" ("FivePiecesOnBoard") ("MoveInFront5Pieces") ("ThrowOfOne") ("BearOffPiece") ("BearOffPieceOnWater") ("SetStartingThrow") ~)
+        > 
     "The rules of Kendall with 5 pieces. A throw of 1 is required to begin.")
     
     //-----------------------------------
     
-    (item "Kendall starting throw special bear off"  
+    (item "Kendall starting throw special bear off" 
         <>
         <
-        ("KendallRules" ("SevenPiecesOnBoard") ("MoveInFront7Pieces") ("ThrowOfOne") ("BearOffPieceIfNoPieceInHomeRow")  ("BearOffPieceOnWaterIfNoPieceInHomeRow") ("SetStartingThrow") ~)
-        >  
+        ("KendallRules" ("SevenPiecesOnBoard") ("MoveInFront7Pieces") ("ThrowOfOne") ("BearOffPieceIfNoPieceInHomeRow") ("BearOffPieceOnWaterIfNoPieceInHomeRow") ("SetStartingThrow") ~)
+        > 
     "The rules of Kendall. Cannot bear off until all pieces are beyond the home row. A throw of 1 is required to begin.")
     
     //-----------------------------------
     
-    (item "Kendall with trap and special bear off"  
+    (item "Kendall with trap and special bear off" 
         <>
         <
-        ("KendallRules" ("SevenPiecesOnBoard") ("MoveInFront7Pieces") ("NoStartingThrow") ("BearOffPieceIfNoPieceInHomeRow")  ("BearOffPieceOnWaterIfNoPieceInHomeRow") ~ ("TrapRule"))
-        >  
+        ("KendallRules" ("SevenPiecesOnBoard") ("MoveInFront7Pieces") ("NoStartingThrow") ("BearOffPieceIfNoPieceInHomeRow") ("BearOffPieceOnWaterIfNoPieceInHomeRow") ~ ("TrapRule"))
+        > 
     "The rules of Kendall. A roll greater than that required to land exactly on the Neferu site causes the player to fall into the water. Cannot bear off until all pieces are beyond the home row.")
     
     //-----------------------------------
     
-    (item "Kendall 5 pieces special bear off and starting throw"  
+    (item "Kendall 5 pieces special bear off and starting throw" 
         <>
         <
-        ("KendallRules" ("FivePiecesOnBoard") ("MoveInFront5Pieces") ("ThrowOfOne") ("BearOffPieceIfNoPieceInHomeRow")  ("BearOffPieceOnWaterIfNoPieceInHomeRow") ("SetStartingThrow"))
-        >  
+        ("KendallRules" ("FivePiecesOnBoard") ("MoveInFront5Pieces") ("ThrowOfOne") ("BearOffPieceIfNoPieceInHomeRow") ("BearOffPieceOnWaterIfNoPieceInHomeRow") ("SetStartingThrow"))
+        > 
     "The rules of Kendall with 5 pieces. Cannot bear off until all pieces are beyond the home row. A throw of 1 is required to begin.")
     
     //-----------------------------------
     
-    (item "Kendall 5 pieces trap and special bear off"  
+    (item "Kendall 5 pieces trap and special bear off" 
         <>
         <
-        ("KendallRules" ("FivePiecesOnBoard") ("MoveInFront5Pieces") ("NoStartingThrow") ("BearOffPieceIfNoPieceInHomeRow")  ("BearOffPieceOnWaterIfNoPieceInHomeRow") ~ ("TrapRule"))
-        >  
+        ("KendallRules" ("FivePiecesOnBoard") ("MoveInFront5Pieces") ("NoStartingThrow") ("BearOffPieceIfNoPieceInHomeRow") ("BearOffPieceOnWaterIfNoPieceInHomeRow") ~ ("TrapRule"))
+        > 
     "The rules of Kendall with 5 pieces. Cannot bear off until all pieces are beyond the home row. A roll greater than that required to land exactly on the Neferu site causes the player to fall into the water.")
     
     //-----------------------------------
     
-    (item "Kendall starting throw trap and special bear off"  
+    (item "Kendall starting throw trap and special bear off" 
         <>
         <
-        ("KendallRules" ("SevenPiecesOnBoard") ("MoveInFront7Pieces") ("ThrowOfOne") ("BearOffPieceIfNoPieceInHomeRow")  ("BearOffPieceOnWaterIfNoPieceInHomeRow") ("SetStartingThrow") ("TrapRule"))
-        >  
+        ("KendallRules" ("SevenPiecesOnBoard") ("MoveInFront7Pieces") ("ThrowOfOne") ("BearOffPieceIfNoPieceInHomeRow") ("BearOffPieceOnWaterIfNoPieceInHomeRow") ("SetStartingThrow") ("TrapRule"))
+        > 
     "The rules of Kendall. A roll greater than that required to land exactly on the Neferu site causes the player to fall into the water. Cannot bear off until all pieces are beyond the home row. A throw of 1 is required to begin.")
     
     //-----------------------------------
     
-    (item "Kendall 5 pieces trap and starting throw"  
+    (item "Kendall 5 pieces trap and starting throw" 
         <>
         <
-        ("KendallRules" ("FivePiecesOnBoard") ("MoveInFront5Pieces") ("ThrowOfOne") ("BearOffPiece")  ("BearOffPieceOnWater") ("SetStartingThrow") ("TrapRule"))
-        >  
+        ("KendallRules" ("FivePiecesOnBoard") ("MoveInFront5Pieces") ("ThrowOfOne") ("BearOffPiece") ("BearOffPieceOnWater") ("SetStartingThrow") ("TrapRule"))
+        > 
     "The rules of Kendall with 5 pieces. A roll greater than that required to land exactly on the Neferu site causes the player to fall into the water. A throw of 1 is required to begin.")
     
     //-----------------------------------
     
-    (item "Kendall all options"  
+    (item "Kendall all options" 
         <>
         <
-        ("KendallRules" ("FivePiecesOnBoard") ("MoveInFront5Pieces") ("ThrowOfOne") ("BearOffPieceIfNoPieceInHomeRow")  ("BearOffPieceOnWaterIfNoPieceInHomeRow") ("SetStartingThrow") ("TrapRule"))
-        >  
+        ("KendallRules" ("FivePiecesOnBoard") ("MoveInFront5Pieces") ("ThrowOfOne") ("BearOffPieceIfNoPieceInHomeRow") ("BearOffPieceOnWaterIfNoPieceInHomeRow") ("SetStartingThrow") ("TrapRule"))
+        > 
     "The rules of Kendall with 5 pieces. A roll greater than that required to land exactly on the Neferu site causes the player to fall into the water. Cannot bear off until all pieces are beyond the home row. A throw of 1 is required to begin.")
     
     //-----------------------------------
     
     (item "Bell" 
         <
-        (define "NotAFriendOrNotOnSymbols"  
+        (define "NotAFriendOrNotOnSymbols" 
             (if (is In ("SiteToMoveOnTrack" #1) (sites "Symbols"))
                 (is Empty ("SiteToMoveOnTrack" #1))
                 (not ("IsFriendAt" ("SiteToMoveOnTrack" #1)))
-           )
-       )
+            )
+        )
         
         //-----------------------------------
         
@@ -563,8 +563,8 @@
                 (from) 
                 (then 
                     (addScore Mover 1) 
-               )
-           )
+                )
+            )
             (if ("IsNotOffBoard" ("SiteToMoveOnTrack" #1)) 			
                 (if 
                     ("NotAFriendOrNotOnSymbols" #1)
@@ -576,12 +576,12 @@
                             (apply 
                                 if:("IsEnemyAt" (to)) 
                                 (remove (to))
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         >
         <
         (rules 
@@ -600,14 +600,14 @@
                                     (set Var (count Pips))
                                     (if (< (var) (count Pips))
                                         (moveAgain)
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
                 (nextPhase (= 2 (count Moves)) "Playing")
-           )
+            )
             (phase "Playing"
                 (play 
                     ("RollMove"
@@ -616,24 +616,24 @@
                                 (sites "Symbols")
                                 (if (= (who at:(to)) (mover))
                                     ("PieceMovement" from:(to))
-                               )
-                           )
+                                )
+                            )
                             (forEach Piece)
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             }
             
             (end 
                 (if 
                     (and (no Pieces P1) (no Pieces P2)) 
                     (byScore)
-               )
-           )
-       )
-        >  
-    "The rules of Bell.")   
+                )
+            )
+        )
+        > 
+    "The rules of Bell.")  
     
     //-----------------------------------
     
@@ -649,8 +649,8 @@
             (if (= (last To) (last From))
                 (- (value Player Mover) (+ 1 (count StepsOnTrack (last From) 9)))
                 (- (value Player Mover) (count StepsOnTrack (last From) (last To)))
-           )
-       )
+            )
+        )
         
         //-----------------------------------
         
@@ -662,80 +662,80 @@
                             (from) 
                             (then 
                                 (if ("HasAnAdditionalThrow") ("ResetAdditionalThrow")) 
-                           )
-                       )
-                        (if ("IsNotOffBoard" ("SiteToMoveOnTrackPiccione"))  			
+                            )
+                        )
+                        (if ("IsNotOffBoard" ("SiteToMoveOnTrackPiccione")) 			
                             (if 
                                 (is Empty ("SiteToMoveOnTrackPiccione"))
                                 (move 
                                     (from) 
                                     (to 
                                         ("SiteToMoveOnTrackPiccione") 
-                                   )
+                                    )
                                     (then (if ("HasAnAdditionalThrow") ("ResetAdditionalThrow")))
-                               )
-                           )
-                       )
+                                )
+                            )
+                        )
                         (then 
                             (and
-                                (if (is In (last To)  (sites "Water"))
-                                    ("AutoCaptureLastPiece")   
-                               )
+                                (if (is In (last To) (sites "Water"))
+                                    ("AutoCaptureLastPiece")  
+                                )
                                 (if 
                                     (< 0 ("RestOfThrow"))
                                     (and {
-                                        (set Value Mover ("RestOfThrow"))  
+                                        (set Value Mover ("RestOfThrow")) 
                                         (if (is In (last To) (union (sites "Ankh Waset") (sites "Neferu")))
-                                            ("SaveAdditionalThrow")   
-                                       )
+                                            ("SaveAdditionalThrow")  
+                                        )
                                         (moveAgain)
                                     })
                                     (if (or ("HasASaveAdditionalThrow") (is In (last To) (union (sites "Ankh Waset") (sites "Neferu"))))
                                         (and ("GetAdditionalThrow") (moveAgain))
                                         ("ResetAdditionalThrow")
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
                 (forEach Value min:1 max:("CurrentThrow")
-                    (if ("IsNotOffBoard" ("SiteToMoveOnTrackPiccione" "TrackOpposite"))  			
+                    (if ("IsNotOffBoard" ("SiteToMoveOnTrackPiccione" "TrackOpposite")) 			
                         (if 
                             (is Empty ("SiteToMoveOnTrackPiccione" "TrackOpposite"))
                             (move 
                                 (from) 
                                 (to 
                                     ("SiteToMoveOnTrackPiccione" "TrackOpposite") 
-                               )
+                                )
                                 (then (if ("HasAnAdditionalThrow") ("ResetAdditionalThrow")))
-                           )
-                       )
-                   )
+                            )
+                        )
+                    )
                     (then 
                         (and
-                            (if (is In (last To)  (sites "Water"))
-                                ("AutoCaptureLastPiece")   
-                           )
+                            (if (is In (last To) (sites "Water"))
+                                ("AutoCaptureLastPiece")  
+                            )
                             (if 
                                 (< 0 ("RestOfThrow"))
                                 (and {
-                                    (set Value Mover ("RestOfThrow"))  
+                                    (set Value Mover ("RestOfThrow")) 
                                     (if (is In (last To) (union (sites "Ankh Waset") (sites "Neferu")))
-                                        ("SaveAdditionalThrow")   
-                                   )
+                                        ("SaveAdditionalThrow")  
+                                    )
                                     (moveAgain)
                                 })
                                 (if (or ("HasASaveAdditionalThrow") (is In (last To) (union (sites "Ankh Waset") (sites "Neferu"))))
                                     (and ("GetAdditionalThrow") (moveAgain))
                                     ("ResetAdditionalThrow")
-                               )
-                           )
-                       )
-                   )
-               )
+                                )
+                            )
+                        )
+                    )
+                )
             })
-       )
+        )
         >
         <
         (define "HasASaveAdditionalThrow" (= (var) 1))
@@ -757,14 +757,14 @@
         (define "AutoCaptureLastPiece" 
             (move (from (last To)) (to (handSite Mover)) 
                 (then (if ("HasAnAdditionalThrow") ("ResetAdditionalThrow")))
-           )
-       )
+            )
+        )
         
         (define "MoveApieceAfterThrowing" 
             (do (set Value Mover ("Throw"))
                 next:(forEach Piece)
-           )
-       )
+            )
+        )
         
         (define "CanMoveEnteredPiece" 
             (if (= ("Throw") 1)
@@ -776,11 +776,11 @@
                         (if (= ("Throw") 4)
                             (or {(is Empty 21) (is Empty 22) (is Empty 23) (is Empty 24)})
                             (or {(is Empty 21) (is Empty 22) (is Empty 23) (is Empty 24) (is Empty 25)})
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         
         //-----------------------------------
         
@@ -791,7 +791,7 @@
                 (do 
                     (if (or {(= (last From) (handSite Mover)) ("NewTurn") ("HasAnAdditionalThrow") })
                         (roll) 
-                   )
+                    )
                     next:(or 
                         (if ("CanEnterAPiece") 
                             (move 
@@ -801,34 +801,34 @@
                                     (and 
                                         (if ("HasAnAdditionalThrow") ("ResetAdditionalThrow")) 
                                         (moveAgain)
-                                   )
-                               )
-                           )
-                       )
+                                    )
+                                )
+                            )
+                        )
                         (if ("HasEnteredAPieceOrNewTurn")
                             (if ("HasEnteredAPiece")
                                 (if ("CanMoveEnteredPiece")
                                     ("MoveApieceAfterThrowing")
                                     ("AutoCaptureLastPiece")
-                               )
+                                )
                                 ("MoveApieceAfterThrowing")
-                           )
+                            )
                             (forEach Piece)
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             
             (end ("EscapeWin"))
-       )
-        >  
-    "The rules of Piccione.")   
+        )
+        > 
+    "The rules of Piccione.")  
     
     //-----------------------------------
     
-    (item "Jequier"  
+    (item "Jequier" 
         <
-        (define "EmptyOrEnemyNotOnSafePlacesAndNotTwoInARow"  
+        (define "EmptyOrEnemyNotOnSafePlacesAndNotTwoInARow" 
             (or 
                 (is Empty ("SiteToMoveOnTrack" #1))
                 (and {
@@ -836,8 +836,8 @@
                     (not (is In ("SiteToMoveOnTrack" #1) (union {(sites "Ankh Waset") (sites "Neferu") (sites "Baw") (sites "Two Men") }))) 
                     (and (not (is Line 2 W through:("SiteToMoveOnTrack" #1))) (not (is Line 2 E through:("SiteToMoveOnTrack" #1))))
                 })
-           )
-       )
+            )
+        )
         
         (define "NextSite" (trackSite Move steps:1))
         
@@ -861,37 +861,37 @@
                                             (if (is Empty 28)
                                                 28
                                                 29
-                                           )
-                                       )
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         
         (define "NotGroupOfThree" 
             (and
                 (not (is Line 3 W through:(trackSite Move #1 steps:(/ ("Throw") 2)) whats:{(id "SenetPiece1") (id "SenetPiece2")})) 
                 (not (is Line 3 E through:(trackSite Move #1 steps:(/ ("Throw") 2)) whats:{(id "SenetPiece1") (id "SenetPiece2")}))
-           )
-       )
+            )
+        )
         
         (define "AllPieceInBottomRow" 
             (all Sites (sites Occupied by:Mover) if:(is In (site) (sites "BottomRow")))
-       )
+        )
         
         (define "NumEnemyPiecesOnTopRow" 
             (count Sites in:(intersection (sites Occupied by:Next) (sites "TopRow")))
-       )
+        )
         (define "NumEnemyPiecesOnMiddleRow" 
             (count Sites in:(intersection (sites Occupied by:Next) (sites "MiddleRow")))
-       )
+        )
         (define "NumEnemyPiecesOnBottomRow" 
             (count Sites in:(intersection (sites Occupied by:Next) (sites "BottomRow")))
-       )
+        )
         
         //-----------------------------------
         
@@ -902,17 +902,17 @@
                         (and 
                             (is In (from) (sites "TopRow")) 
                             (is Empty ("NextSite"))
-                       )
-                   )
+                        )
+                    )
                     (or (< "Throw" 4) (and (>= "Throw" 4) ("NotGroupOfThree")))
-               )
+                )
                 (if (or 
                         ("IsEndTrack" ("SiteToMoveOnTrack" #1)) 
                         ("IsOffBoard" ("SiteToMoveOnTrack" #1))
-                   )
+                    )
                     (if ("AllPieceInBottomRow")
                         (move Remove (from))
-                   )
+                    )
                     (if 
                         ("EmptyOrEnemyNotOnSafePlacesAndNotTwoInARow" #1)
                         (move 
@@ -923,28 +923,28 @@
                                 (apply 
                                     if:("IsEnemyAt" (to)) 
                                     (fromTo (from (to)) (to "FurthestEmptySite"))
-                               )
-                           )
-                       )
-                   )
-               )
+                                )
+                            )
+                        )
+                    )
+                )
                 (then 
                     (if (is In (last To) (sites "Water"))
                         (fromTo (from (last To)) (to "FurthestEmptySite"))
-                   )
-               )
-           )
+                    )
+                )
+            )
             (if (and 
                     (or 
                         (not (is In (from) (sites "TopRow"))) 
                         (and 
                             (is In (from) (sites "TopRow")) 
                             (is Empty ("NextSite"))
-                       )
-                   )
+                        )
+                    )
                     (or (< "Throw" 4) (and (>= "Throw" 4) ("NotGroupOfThree" "TrackOpposite")))
-               )
-                (if ("IsNotOffBoard" ("SiteToMoveOnTrack" "TrackOpposite"))  			
+                )
+                (if ("IsNotOffBoard" ("SiteToMoveOnTrack" "TrackOpposite")) 			
                     (if 
                         ("EmptyOrEnemyNotOnSafePlacesAndNotTwoInARow" "TrackOpposite")
                         (move 
@@ -955,17 +955,17 @@
                                 (apply 
                                     if:("IsEnemyAt" (to)) 
                                     (fromTo (from (to)) (to "FurthestEmptySite"))
-                               )
-                           )
-                       )
-                   )
-               )
+                                )
+                            )
+                        )
+                    )
+                )
                 (then 
                     (if (is In (last To) (sites "Water"))
                         (fromTo (from (last To)) (to "FurthestEmptySite"))
-                   )
-               )
-           )
+                    )
+                )
+            )
         })
         >
         <
@@ -986,26 +986,26 @@
                                         (fromTo (from (coord "J3")) (to (coord "J2")))
                                         (if (is Mover P1) 
                                             (swap Players P1 P2)
-                                       )
+                                        )
                                         (set NextPlayer (player 2))
                                     })
-                               )
-                           )
-                       )
-                   )
-               )
+                                )
+                            )
+                        )
+                    )
+                )
                 (nextPhase (= 1 (count Pips)) "Playing")
-           )
+            )
             (phase "Playing"
                 (play 
                     ("RollMove"
                         (if (can Move (forEach Piece))
                             (forEach Piece (then (if (is In ("Throw") (sites {1 4 6})) (moveAgain))))
                             (move Pass (then (if (is In ("Throw") (sites {1 4 6})) (moveAgain))))
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             }
             
             (end 
@@ -1018,13 +1018,13 @@
                                 (* 2 ("NumEnemyPiecesOnMiddleRow")) 
                                 ("NumEnemyPiecesOnBottomRow")
                             })
-                       )
+                        )
                         }
-                   )
-               )
-           )
-       )
-        >  
+                    )
+                )
+            )
+        )
+        > 
     "The rules of Jequier.") 
 })
 
@@ -1133,7 +1133,7 @@
     })
     
     (ruleset "Ruleset/Piccione (Scholarly)" {
-        "Play Rules/Piccione"  "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward Except Three Last Spaces"
+        "Play Rules/Piccione" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward Except Three Last Spaces"
     })
     
     (ruleset "Ruleset/Jequier (Scholarly)" {
@@ -1144,49 +1144,49 @@
         {
         // Ruleset To Reconstruct
         }
-   )
+    )
     
     (ruleset "Ruleset/Double Senet (Reconstructed)" 
         {
         // Ruleset To Reconstruct
         }
-   )
+    )
     
     (ruleset "Ruleset/Vertical Senet (Reconstructed)" 
         {
         // Ruleset To Reconstruct
         }
-   )
+    )
     
     (ruleset "Ruleset/Late New Kingdom Senet (Reconstructed)" 
         {
         // Ruleset To Reconstruct
         }
-   )
+    )
     
     (ruleset "Ruleset/Early New Kingdom Senet (Reconstructed)" 
         {
         // Ruleset To Reconstruct
         }
-   )
+    )
     
     (ruleset "Ruleset/Middle Kingdom Senet (Reconstructed)" 
         {
         // Ruleset To Reconstruct
         }
-   )
+    )
     
     (ruleset "Ruleset/Simple Marked Senet (Reconstructed)" 
         {
         // Ruleset To Reconstruct
         }
-   )
+    )
     
     (ruleset "Ruleset/Simple Senet (Reconstructed)" 
         {
         // Ruleset To Reconstruct
         }
-   )
+    )
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         // Ruleset To Reconstruct
@@ -1308,9 +1308,9 @@
         (version "1.3.4")
         (classification "board/race/escape")
         (credit "Eric Piette")
-        (origin  "This game was played in Egypt, from around 2970BCE to 301BCE.")
+        (origin "This game was played in Egypt, from around 2970BCE to 301BCE.")
         }
-   )
+    )
     
     (graphics {
         
@@ -1434,10 +1434,10 @@
         (useFor "Ruleset/Piccione (Scholarly)" (show Symbol "horus" Cell 9 scale:0.9))
         
         (board Colour Symbols (colour DarkBrown))
-        (piece ExtendName P2 "2")        
+        (piece ExtendName P2 "2")    
         (useFor "Ruleset/Jequier (Scholarly)" (piece Colour "Die" state:0 fillColour:(colour Red)))
     })
     (ai
         "Senet_ai"
-   )
+    )
 )

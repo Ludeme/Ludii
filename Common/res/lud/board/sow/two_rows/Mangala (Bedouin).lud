@@ -5,19 +5,19 @@
 (define "OneRowIsEmpty"
     (or
         (all Sites (sites P1) if:(= 0 (count at:(site))))
-        (all Sites (sites P2)  if:(= 0 (count at:(site))))
-   )
+        (all Sites (sites P2) if:(= 0 (count at:(site))))
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Mangala (Bedouin)"  
-    (players 2)  
+(game "Mangala (Bedouin)" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
             (track "Track" "5,W,N,E" loop:True)
-       )
+        )
         (piece "Seed" Shared)
         (hand Each)
         (hand Shared)
@@ -37,10 +37,10 @@
                     (from (handSite Shared))
                     (to (sites Centre))
                     (then (if (is Occupied (handSite Shared)) (moveAgain)))
-               )
-           )
+                )
+            )
             (nextPhase (is Empty (handSite Shared)) "OpeningP2")
-       )
+        )
         
         (phase "OpeningP2"
             (play 
@@ -56,24 +56,24 @@
                                     (add (piece (id "Seed" Shared)) (to 8) count:(count at:3))
                                     (add (piece (id "Seed" Shared)) (to 3) count:(count at:8))
                                 })
-                           )
-                       )
-                   )
-               )
-           )
+                            )
+                        )
+                    )
+                )
+            )
             
             (nextPhase (all Passed) "SowingRestricted")
-       )
+        )
         
         (phase "SowingRestricted"
             (play
                 (move Select
-                    (from (mapEntry Mover)  if:(is Occupied (from)))
+                    (from (mapEntry Mover) if:(is Occupied (from)))
                     (then (sow))
-               )
-           )
+                )
+            )
             (nextPhase Mover "Sowing")
-       )
+        )
         
         (phase "Sowing"
             (play
@@ -82,9 +82,9 @@
                         (if ("SameTurn") 
                             "LastHoleSowed" 
                             (sites Mover) 
-                       ) 
+                        ) 
                         if:(> (count at:(from)) 0)		
-                   )
+                    )
                     (then
                         (sow
                             apply:(if (< 10 (count at:(to)))
@@ -96,31 +96,31 @@
                                                 (from (to))
                                                 (to (handSite Mover))
                                                 count:(count at:(to))
-                                           )
+                                            )
                                             (fromTo
                                                 (from ("OppositePit" (to)))
                                                 (to (handSite Mover))
                                                 count:(count at:("OppositePit" (to)))
-                                           )
-                                       )
+                                            )
+                                        )
                                         (moveAgain)
-                                   )
-                               )
-                           )		
-                       )
-                   )
-               )
-           )
+                                    )
+                                )
+                            )		
+                        )
+                    )
+                )
+            )
             
             (end ("MancalaByScoreWhen" ("OneRowIsEmpty")))
-       )
+        )
         }
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Mangala is a word which refers to many two-row mancala-style board games throughout Western Asia and North Africa. This game was played by the Bedouin of the Arabian Peninsula in the early twentieth century.")
@@ -131,7 +131,7 @@
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (board Style Mancala)

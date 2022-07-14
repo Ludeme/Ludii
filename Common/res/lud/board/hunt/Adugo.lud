@@ -1,10 +1,10 @@
-(game "Adugo"  
-    (players 2)  
+(game "Adugo" 
+    (players 2) 
     (equipment { 
         ("AlquerqueBoardWithBottomTriangle") 
         (piece "Jaguar" P1 (or "HopCapture" "StepToEmpty"))
         (piece "Dog" P2 "StepToEmpty") 
-    })  
+    }) 
     (rules 
         (start { 
             (place "Dog2" (difference (expand (sites Top) steps:2) (sites {"C5"})))
@@ -14,14 +14,14 @@
         (play (forEach Piece)) 
         
         (end ("NoMovesLossAndLessNumPiecesPlayerLoss" P2 <Num:dogs>))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "End Rules" <Num> args:{ <dogs> }
     {
-    (item "Capture all the dogs"       <0> "The objective of the player 1 is to capture all the dogs.")*   
+    (item "Capture all the dogs"    <0> "The objective of the player 1 is to capture all the dogs.")*  
     (item "Capture at least five dogs" <9> "The objective of the player 1 is to capture at least five dogs.") 
     }
 )
@@ -41,7 +41,7 @@
         (classification "board/hunt")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})
@@ -50,6 +50,6 @@
     
     (ai 
         "Adugo_ai"
-   )
+    )
     
 )

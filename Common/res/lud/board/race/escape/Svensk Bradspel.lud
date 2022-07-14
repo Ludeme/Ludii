@@ -20,7 +20,7 @@
             (= 5 (size Stack at:14))
             (= 5 (size Stack at:15))
         })
-   )
+    )
 )
 
 (define "ThreeOnFiveFinal" 
@@ -49,7 +49,7 @@
             (= 3 (size Stack at:17))
             (= 3 (size Stack at:18))
         })
-   )
+    )
 )
 
 (define "SevenFiveThreeFinal" 
@@ -70,7 +70,7 @@
             (= 5 (size Stack at:14))
             (= 3 (size Stack at:15))
         })
-   )
+    )
 )
 
 (define "FifteenFinal" 
@@ -78,12 +78,12 @@
         (and 
             ("IsFriendAt" 12)
             (= 15 (size Stack at:12))
-       )
+        )
         (and 
             ("IsFriendAt" 13)
             (= 15 (size Stack at:13))
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -100,7 +100,7 @@
                 (if ("IsEndTrack" ("NextSiteFrom" (from) (pips)))
                     (if ("AllPiecesInFinalQuadrant")
                         (move Remove (from))
-                   )
+                    )
                     (move 
                         (from (from))
                         (to 
@@ -110,32 +110,32 @@
                                 (if (not (is In (to) (sites Mover "StartingSide")))
                                     True
                                     (if (= (value Player Mover) 1) True (is Empty (to)))
-                               )
-                           )
+                                )
+                            )
                             (apply 
                                 (if ("IsEnemyAt" (to))
                                     (fromTo 
                                         (from (to))
                                         (to (mapEntry "Bar" Next))
-                                   )
-                               )
-                           )
-                       )
-                   )
-               )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
                 (then 
                     (and
                         ("ReplayNotAllDiceUsed")
                         (if (and
                                 (= (last To) (mapEntry "12thPoint" Mover))
                                 (!= 1 (value Player Mover))
-                           )
+                            )
                             (set Value Mover 1)
-                       )
-                   )
-               )
-           )		
-       )
+                        )
+                    )
+                )
+            )		
+        )
         (regions "FinalQuadrant" P1 (sites {7..12}))
         (regions "FinalQuadrant" P2 (sites {13..18}))
         (regions "StartingSide" P1 (sites {25..20 18..14}))
@@ -151,17 +151,17 @@
         (play 
             ("RollEachNewTurnMove"
                 (forEach Piece top:True)
-           )		
-       )
+            )		
+        )
         
         (end { 
             ("EscapeWin")
-            (if  ("FiveOnThreeFinal" Mover) (result Mover Win))
-            (if  ("ThreeOnFiveFinal" Mover) (result Mover Win))
-            (if  ("SevenFiveThreeFinal" Mover) (result Mover Win))
-            (if  ("FifteenFinal" Mover) (result Mover Win))
+            (if ("FiveOnThreeFinal" Mover) (result Mover Win))
+            (if ("ThreeOnFiveFinal" Mover) (result Mover Win))
+            (if ("SevenFiveThreeFinal" Mover) (result Mover Win))
+            (if ("FifteenFinal" Mover) (result Mover Win))
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -178,9 +178,9 @@
         (version "1.3.4")
         (classification "board/race/escape")
         (credit "Eric Piette")
-        (origin  "This game was played in Sweden, around 1888.")
+        (origin "This game was played in Sweden, around 1888.")
         }
-   )
+    )
     
     (graphics {
         (board Style backgammon)

@@ -1,14 +1,14 @@
-(game "Yi"  
+(game "Yi" 
     (players 2) 
     (equipment { 
         (board (square 17) use:Vertex) 
         (piece "Disc" P1 (move [#])) 
         (piece "Disc" P2 (move [#])) 
-    })  
+    }) 
     (rules 
         (play [#]) // "Players make groups on the board, opponents may capture groups" NEED CONCEPT
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -24,9 +24,9 @@
         (version "1.3.4")
         (classification "board/space/territory/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in China, from around 450BCE to 755.")
+        (origin "This game was played in China, from around 450BCE to 755.")
         }
-   )
+    )
     
     (graphics {
         (board Style Go)

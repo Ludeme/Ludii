@@ -2,8 +2,8 @@
     (apply 
         (remove 
             (to) 
-       )
-   ) 
+        )
+    ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -13,8 +13,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-       )
-   )
+        )
+    )
 )
 
 (define "NextCanNotMove"
@@ -24,7 +24,7 @@
 //------------------------------------------------------------------------------
 
 (game "Cittabhramanrpasya Khelanam"
-    (players {(player S) (player N)})  
+    (players {(player S) (player N)}) 
     (equipment { 
         (board (square 8))
         
@@ -37,11 +37,11 @@
                         (and
                             (promote (last To) (piece "Ferz_noCross") Mover)	
                             (fromTo (from (last To)) (to (last From)))
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         (piece "Rook" P1 
             (move
                 Slide 
@@ -49,18 +49,18 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "King_noCross" P1 
             (move
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
-               )
-           )
-       )
+                )
+            )
+        )
         (piece "Elephant" P1 
             (move
                 Slide 
@@ -68,9 +68,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       ) 
+                ) 
+            )
+        ) 
         (piece "Knight" P1 
             (move
                 Leap 
@@ -78,18 +78,18 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "Ferz_noCross" P1 
             (move
                 Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (piece "King_noCross" P2 
             (or
                 (move
@@ -98,8 +98,8 @@
                     (to 
                         if:(and (not ("IsFriendAt" (to))) (not (is In (to) (sites Around (where "King-noCross" Next)))))
                         "CaptureToPiece"
-                   ) 
-               )
+                    ) 
+                )
                 
                 (move
                     Slide 
@@ -109,14 +109,14 @@
                             if:(not (is In (to) (sites Around (where "King-noCross" Next))))
                             (remove 
                                 (to) 
-                           )
-                       )
-                   ) 
-               )
-           )
-       )
+                            )
+                        )
+                    ) 
+                )
+            )
+        )
         (regions "Promotion" P1 (sites Bottom))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Pawn1" (sites Row 6))
@@ -126,17 +126,17 @@
         
         (play 
             (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-       )
+        )
         
         (end {
             (if (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
+            ) 
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -152,9 +152,9 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1871.")
+        (origin "This game was played in India, around 1871.")
         }
-   )
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.825)

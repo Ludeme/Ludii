@@ -2,7 +2,7 @@
     (move
         Remove
         (sites Occupied by:Next container:"Board") 
-   )
+    )
 )
 
 (define "IfLine3MoveAgain" 
@@ -10,8 +10,8 @@
         (if 
             (is Line 3 Orthogonal exact:True) 
             (moveAgain)
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -28,10 +28,10 @@
                 Step 
                 (to if:(is Empty (to))) 
                 "IfLine3MoveAgain" 
-           )
-       ) 
+            )
+        ) 
         }
-   )  
+    ) 
     (rules 
         (start (place "Marker" "Hand" count:9))
         
@@ -44,24 +44,24 @@
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
                         "IfLine3MoveAgain" 
-                   )  
-               )
-           ) 
+                    ) 
+                )
+            ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-       )
+        )
         
         (phase "Movement" 
             (play 
                 (if "SameTurn"
                     "RemoveEnemyPiece"
                     (forEach Piece)
-               )
-           )
-       )
+                )
+            )
+        )
         }
         
         (end (if (<= (count Pieces Next) 2) (result Mover Win)))
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -78,9 +78,9 @@
         (version "1.3.4")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in Greece, from around 1900 to 1901.")
+        (origin "This game was played in Greece, from around 1900 to 1901.")
         }
-   )
+    )
     
     (graphics {
         
@@ -88,5 +88,5 @@
     
     (ai
         "Triodi_ai"
-   )
+    )
 )

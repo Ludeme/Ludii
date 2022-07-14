@@ -6,21 +6,21 @@
         (between 
             if:("IsEnemyAt" (between))
             (apply (remove (between)))
-       ) 
+        ) 
         (to if:(is Empty (to))) 
         #2
-   ) 
+    ) 
 )
 
 //------------------------------------------------------------------------------
 
 (game "Mraha wa Bwe" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (square 5)) 
         (piece "Counter" Each)
         (hand Each)
-    })  
+    }) 
     
     (rules 
         (start (place "Counter" "Hand" count:12))
@@ -32,10 +32,10 @@
                     (from (handSite Mover))
                     (to (difference (sites Empty) (sites Centre)))
                     (then (if ("NewTurn") (moveAgain)))
-               )
-           )
+                )
+            )
             (nextPhase Mover (is Empty (handSite Mover)) "Play")
-       )
+        )
         (phase "Play"
             (play 
                 (if "SameTurn"
@@ -44,36 +44,36 @@
                             (then 
                                 (if (can Move ("HopCounter" (last To))) 
                                     (moveAgain)
-                               ) 
-                           ) 
-                       )
+                                ) 
+                            ) 
+                        )
                         (move Pass)
-                   )
+                    )
                     (or 
                         (forEach Piece "Counter"
                             ("HopCounter" (from) 
                                 (then 
                                     (if (can Move ("HopCounter" (last To))) 
                                         (moveAgain) 
-                                   ) 
-                               ) 
-                           ) 
-                       )
+                                    ) 
+                                ) 
+                            ) 
+                        )
                         (forEach Piece "Counter" 
                             (move
                                 Step 
                                 Orthogonal 
                                 (to if:(is Empty (to)))
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         }
         
         (end (if (no Moves Mover) (result Mover Loss))) 
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -89,9 +89,9 @@
         (version "1.3.4")
         (classification "board/war/leaping/orthogonal")
         (credit "Eric Piette")
-        (origin  "This game was played in Comoros, around 2018.")
+        (origin "This game was played in Comoros, around 2018.")
         }
-   )
+    )
     
     (graphics {
         (board Style Chess)

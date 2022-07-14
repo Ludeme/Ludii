@@ -6,7 +6,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "Kawade Kelia"  
+(game "Kawade Kelia" 
     (players <Player:num>)
     (equipment {
         (board 
@@ -22,9 +22,9 @@
                 (shift 5 13
                     (graph
                         vertices:{ { 0 0 } {0 1} {-0.94 0.26 } {-0.23 -0.44} } 
-                        edges:{ {0 1} {1 2}  {2 3} {3 0}} 
-                   )
-               )
+                        edges:{ {0 1} {1 2} {2 3} {3 0}} 
+                    )
+                )
             })
             {
             (track "Track1" "71,0,E5,N5,E,N,W,S,E5,N,WSW,SW,End" P1 directed:True)
@@ -41,19 +41,19 @@
                             (and 
                                 ("IsEnemyAt" "SiteToMoveOnTrack")
                                 (not (is In "SiteToMoveOnTrack" (sites "Protect")))
-                           )
+                            )
                         })
                         (move 
                             (from (from) level:(level))
                             (to 
                                 "SiteToMoveOnTrack" 
                                 "CaptureEnemyPiece"
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         ("StickDice" 6)
         (hand Each)
         (regions "Protect" (sites {5 17 19 27 41 57 46 62 63 34 35 51 52}))
@@ -67,25 +67,25 @@
         (play 
             ("RollMove"
                 (or (forEach Piece) (forEach Piece container:(mover) top:True))
-           )
-       )
+            )
+        )
         (end {
             <Player:end>
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Players" <Player> args:{ <num> <startP3P4> <trackP3P4> <end> }
     {
-    (item  "2"  <2> <> <> 
+    (item "2" <2> <> <> 
         <
         (if (no Pieces P1) (result P1 Win))
-        (if (no Pieces P2)  (result P2 Win))
+        (if (no Pieces P2) (result P2 Win))
         > 
-    "The game involves 2 players.")  
-    (item  "4"  <4> 
+    "The game involves 2 players.") 
+    (item "4" <4> 
         <
         (place Stack "Paddle3" (handSite P3) count:3)
         (place Stack "Paddle4" (handSite P4) count:3)
@@ -99,7 +99,7 @@
         <
         ("EscapeTeamWin")
         > 
-    "The game involves 4 players.")*  
+    "The game involves 4 players.")* 
     }
 )
 
@@ -116,9 +116,9 @@
         (version "1.3.4")
         (classification "board/race/escape")
         (credit "Eric Piette")
-        (origin  "This game was played in Sri Lanka, around 1898.")
+        (origin "This game was played in Sri Lanka, around 1898.")
         }
-   )
+    )
     (graphics {
         (show Line {{5 19} {18 6} {29 50} {33 51} {90 85} {91 84} {34 46} {45 35} {43 57} {56 44} {112 102} {113 101} {79 67} {78 68} {126 119} {117 128} {72 63} {74 61} {95 108} {106 97}} (colour Black) scale:2)
         (piece Scale "Paddle" 0.5)

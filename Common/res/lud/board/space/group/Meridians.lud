@@ -5,11 +5,11 @@
                 if:(>
                     (count Pieces Mover in:(sites LineOfSight at:(site)))
                     0
-               )
-           )
-       )
+                )
+            )
+        )
         #1
-   )
+    )
 )
 
 (define "Remove"
@@ -27,22 +27,22 @@
                                     from:(site)
                                     stop:(is Occupied (to))
                                     stopIncluded:True
-                               )
-                           )
+                                )
+                            )
                             (sites)
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (remove (sites))
-       )
-   ) 
+        )
+    ) 
 )
 
 (game "Meridians"
     (players 2)
     (equipment {
-        (board (dual  (hex Prism <Size>)) use:Vertex)
+        (board (dual (hex Prism <Size>)) use:Vertex)
         (piece "Disc" Each)
     })
     (rules
@@ -59,29 +59,29 @@
                                     (>
                                         (count Pieces Mover in:(sites LineOfSight at:(site)))
                                         0
-                                   )
+                                    )
                                     (= 
                                         (count Sites in:(sites Around (site) Own))
                                         0 
-                                   )
-                               )
-                           )
+                                    )
+                                )
+                            )
                             (sites Empty)
-                       )
-                   )
-               )
-           )
+                        )
+                    )
+                )
+            )
             (nextPhase (= 4 (count Moves)) "Play")
-       )
+        )
         (phase "Play"
             (play
                 (if
                     (can Move ("Move" ~))
                     ("Move" (then ("Remove")))
                     (move Pass (then ("Remove")))
-               )
-           )
-       )
+                )
+            )
+        )
         }
         (end 
             (if 
@@ -90,25 +90,25 @@
                     (or
                         (= 0
                             (count Sites in:(sites Occupied by:P1))
-                       )
+                        )
                         (= 0
                             (count Sites in:(sites Occupied by:P2))
-                       )
-                   ) 
-               )
+                        )
+                    ) 
+                )
                 (result Mover Loss)
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Size> args:{ <size> }
     {
-    (item "5 6"    <6 5>  "A board with side lengths 5 and 6 is currently selected")
-    (item "6 7"    <7 6>  "A board with side lengths 6 and 7 is currently selected")*
-    (item "7 8"    <8 7>  "A board with side lengths 7 and 8 is currently selected")
+    (item "5 6"  <6 5> "A board with side lengths 5 and 6 is currently selected")
+    (item "6 7"  <7 6> "A board with side lengths 6 and 7 is currently selected")*
+    (item "7 8"  <8 7> "A board with side lengths 7 and 8 is currently selected")
     }
 )
 
@@ -143,14 +143,14 @@
         (credit "Michael Amundsen")
         (date "2021")
         }
-   )
+    )
     
     (graphics {
         (region Colour (sites Board) (colour 0 0 0 0))
         (show Symbol "Dot" (sites Board) edgeColour:(colour Black) scale:0.2)
         (board Background image:"square.svg" fillColour:(colour 238 227 209) edgeColour:(colour 238 227 209) scale:1.2)
-        (board Colour InnerEdges (colour Black))    
-        (board Colour OuterEdges (colour Black))    
+        (board Colour InnerEdges (colour Black))  
+        (board Colour OuterEdges (colour Black))  
         (board StyleThickness InnerEdges 0.2)
         (board StyleThickness OuterEdges 0.2)
     })

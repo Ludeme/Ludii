@@ -17,25 +17,25 @@
                     (from
                         (forEach (sites Occupied by:Next)
                             if:(!= 0 (count Sites in:(intersection (sites LineOfSight at:(site) Diagonal) (sites Occupied by:Mover))))
-                       )
-                   )
+                        )
+                    )
                     (then
                         (and
                             (remove (last To))
                             (add (piece (id "Ball" Neutral)) (to (last To)))
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         (end (if (and (no Moves P1) (no Moves P2))
                 (byScore {
                     (score P1 (count Pieces P1))
                     (score P2 (count Pieces P2))
                 })
-           )
-       )
-   )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -58,7 +58,7 @@
         (credit "Eric Piette")
         (date "2002")
         }
-   )
+    )
     
     (graphics {
         (show Edges Diagonal (colour Hidden))

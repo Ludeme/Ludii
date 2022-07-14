@@ -2,7 +2,7 @@
     (move
         Remove
         (forEach (sites Occupied by:Next container:"Board") if:(not (is Line 3 Orthogonal through:(site))))
-   )
+    )
 )
 
 (define "IfLine3OrthogonalMoveAgain" 
@@ -10,8 +10,8 @@
         (if 
             (is Line 3 Orthogonal) 
             (moveAgain)
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -22,20 +22,20 @@
         (board
             (concentric Square rings:3)
             use:Vertex
-       ) 
+        ) 
         (piece "Marker" Each
             (move 
                 Step Orthogonal
                 (to if:(is Empty (to))) 
                 "IfLine3OrthogonalMoveAgain" 
-           )
-       )
+            )
+        )
         (hand Each)
     })
     (rules 
         (start 
             (place "Marker" "Hand" count:9)
-       )
+        )
         phases:{
         (phase "Placement"
             (play 
@@ -45,26 +45,26 @@
                         (from (handSite Mover)) 
                         (to (sites Empty))
                         "IfLine3OrthogonalMoveAgain"
-                   ) 
-               )
-           )
+                    ) 
+                )
+            )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-       )
+        )
         
         (phase "Movement"
             (play 
                 (if "SameTurn"
                     "RemoveEnemyPieceNotInLine3"
                     (forEach Piece)
-               )
-           )
-       )
+                )
+            )
+        )
         }
         (end {
             (if (<= (count Pieces Next) 2) (result Mover Win))
             ("BlockWin")
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -81,9 +81,9 @@
         (version "1.3.4")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in Iceland, from around 1862 to 1889.")
+        (origin "This game was played in Iceland, from around 1862 to 1889.")
         }
-   )
+    )
     
     (graphics {
         
@@ -91,6 +91,6 @@
     
     (ai
         "Mylna_ai"
-   )
+    )
 )
 

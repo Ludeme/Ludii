@@ -5,8 +5,8 @@
         (to 
             if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
-       )
-   )
+        )
+    )
 )
 
 (define "CaptureToPiece"
@@ -14,9 +14,9 @@
         (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
-           )
-       )
-   ) 
+            )
+        )
+    ) 
 )
 
 (define "NextCanNotMove"
@@ -36,7 +36,7 @@
 //------------------------------------------------------------------------------
 
 (game "Main Chator"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment {
         (board (square 8))
         (piece "King_noCross"
@@ -46,33 +46,33 @@
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece"
-                   ) 
+                    ) 
                     (then
                         (if (not ("KingMovedOrCheckedBefore" (last To)))
                             ("RememberKingMovedOrChecked" (last To))
-                       )
-                   )
-               )		
+                        )
+                    )
+                )		
                 (if ("IsFirstCheck")
                     (or {
                         (move
                             Slide 
                             (between
                                 (exact 2)
-                           )
+                            )
                             (to 
                                 if:("IsEnemyAt" (to)) 
                                 "CaptureToPiece"
-                           ) 
-                       )
+                            ) 
+                        )
                         (move
                             Leap 
                             "KnightWalk" 
                             (to 
                                 if:(not ("IsFriendAt" (to))) 
                                 "CaptureToPiece"
-                           ) 
-                       )
+                            ) 
+                        )
                         (if (is In (from) ("KingSites"))
                             (or
                                 (if (and {
@@ -84,9 +84,9 @@
                                         (from)
                                         (to
                                             (ahead (from) steps:2 W)
-                                       )
-                                   )
-                               )
+                                        )
+                                    )
+                                )
                                 (if (and {
                                         (is Empty (ahead (from) steps:2 E))
                                         (= (id "Rook" Mover) (what at:(ahead (from) E))) 
@@ -96,16 +96,16 @@
                                         (from)
                                         (to
                                             (ahead (from) steps:2 E)
-                                       )
-                                   )
-                               )
-                           )
-                       )
+                                        )
+                                    )
+                                )
+                            )
+                        )
                         }
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (piece "Rook"
             (move
                 Slide 
@@ -113,17 +113,17 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
+                ) 
                 (then
                     (if (and 
                             (not ("RookMovedBefore" (last To)))
                             (not (is In (last To) ("SitesNextToKing")))
-                       )
+                        )
                         ("RememberRookMoved" (last To))
-                   )
-               )
-           )
-       )
+                    )
+                )
+            )
+        )
         (piece "Bishop_noCross"
             (move
                 Slide 
@@ -131,9 +131,9 @@
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )		
-       )
+                ) 
+            )		
+        )
         (piece "Knight"
             (move
                 Leap 
@@ -141,52 +141,52 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
-               ) 
-           )		
-       )
+                ) 
+            )		
+        )
         (piece "Pawn"
             (if (= 1 (state at:(from)))
                 (move Step
                     (directions {Rightward Leftward}) 
                     (to if:(is Empty (to)))
                     (then (set State at:(last To) 2))
-               )
+                )
                 (if (= 2 (state at:(from)))
                     (move Step
                         (directions {BR BL Rightward Leftward}) 
                         (to if:(is Empty (to)))
                         (then (promote (last To) (piece "Queen") Mover))
-                   )
+                    )
                     (or {
                         "StepForwardToEmpty" 
                         "CaptureForwardDiagonal"
                         }
                         (then
-                            (if (is In (last To) (sites Mover "Promotion"))  // to update for the last rules
+                            (if (is In (last To) (sites Mover "Promotion")) // to update for the last rules
                                 (if (is In (last To) (sites Corners)) 
                                     (promote (last To) (piece "Queen") Mover)
                                     (set State at:(last To) 1)
-                               )
-                           )
-                       )
-                   )	
-               )
-           )
-       ) 
+                                )
+                            )
+                        )
+                    )	
+                )
+            )
+        ) 
         (piece "Queen"
             (move
                 Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
-               ) 
-           )
-       )
+                ) 
+            )
+        )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     })
     (rules 
-        (start {   
+        (start {  
             (place "Pawn1" (sites Row 1))
             (place "Pawn2" (sites Row 6))
             (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Bishop_noCross1" {"C1" "F1"}) (place "Queen1" coord:"E1") (place "King_noCross1" coord:"D1") 
@@ -202,22 +202,22 @@
                             (and
                                 ("RememberKingMovedOrChecked" (where "King_noCross" Next))
                                 ("SetFirstCheck")
-                           )
-                       )
-                   )
-               )
-           )
-       )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         
         (end 
             (if (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-               ) 
+                ) 
                 (result Mover Win)
-           ) 
-       )
-   )
+            ) 
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -228,14 +228,14 @@
         {
         (description "Main Chator is a capturing game played in Malaysia and Indonesia that is very similar to other games derived from Chaturanga. It involves special rules for castling and pawn promotion and a special move when the Rajah is first checked. ")
         (aliases {"Main Chatur"})
-        (rules "Played on an 8x8 board with pieces with specialized moves. The pieces are as follows, and placed on the outer rank in the following order, starting from the left corner and moving in, with the placement mirrored on the right side (the Mautri is placed to the right of the Rajah): Tor (2): can move any number of spaces orthogonally; Kudah (2): moves in any direction, one space orthogonally with one space forward diagonally, jumping over any intervening pieces; Gajah (2): can move any number of spaces diagonally;  Rajah (1): can move one space orthogonally or diagonally; Mautri (1): can move any number of spaces orthogonally or diagonally; Bidah (8), placed in front of the other pieces: can move one space forward, or one space diagonally to capture. The Bidah are placed on the second file.  When first checked, the Rajah may move like a Kudah, or move two spaces in any direction. Players capture pieces by moving onto a space occupied by an opponent's piece. Castling may occur in two separate moves: the Tor moves next to the Rajah, and if the Rajah is checked, it may move to the other side of the Tor. Promotion of Bidahs occur when they reach the opposite edge of the board, but only immediately if they reach the Tor's square. Pawns reaching any other square must make two further moves before they can be promoted; the first must be a lateral orthogonal move, the second may be lateral orthogonal or diagonal. If the Rajah can be captured on the opponent's next turn, it is in check. The Rajah must not be in check at the end of the player's turn. If this is impossible, it is checkmate and the opponent wins.")
+        (rules "Played on an 8x8 board with pieces with specialized moves. The pieces are as follows, and placed on the outer rank in the following order, starting from the left corner and moving in, with the placement mirrored on the right side (the Mautri is placed to the right of the Rajah): Tor (2): can move any number of spaces orthogonally; Kudah (2): moves in any direction, one space orthogonally with one space forward diagonally, jumping over any intervening pieces; Gajah (2): can move any number of spaces diagonally; Rajah (1): can move one space orthogonally or diagonally; Mautri (1): can move any number of spaces orthogonally or diagonally; Bidah (8), placed in front of the other pieces: can move one space forward, or one space diagonally to capture. The Bidah are placed on the second file. When first checked, the Rajah may move like a Kudah, or move two spaces in any direction. Players capture pieces by moving onto a space occupied by an opponent's piece. Castling may occur in two separate moves: the Tor moves next to the Rajah, and if the Rajah is checked, it may move to the other side of the Tor. Promotion of Bidahs occur when they reach the opposite edge of the board, but only immediately if they reach the Tor's square. Pawns reaching any other square must make two further moves before they can be promoted; the first must be a lateral orthogonal move, the second may be lateral orthogonal or diagonal. If the Rajah can be captured on the opponent's next turn, it is in check. The Rajah must not be in check at the end of the player's turn. If this is impossible, it is checkmate and the opponent wins.")
         (source "Brooke 1849: 246-247.")
         (id "299")
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
         }
-   )
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.825)

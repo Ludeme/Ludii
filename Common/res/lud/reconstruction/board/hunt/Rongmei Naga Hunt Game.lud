@@ -1,18 +1,18 @@
-(game "Rongmei Naga Hunt Game"  
+(game "Rongmei Naga Hunt Game" 
     (players 2) 
     (equipment { 
         (board 
             (rectangle 5 3 diagonals:Alternating)
             use:Vertex
-       )
+        )
         (piece "Disc" P1 (move [#])) 
         (piece "Disc" P2 (move [#])) 
-    })  
+    }) 
     (rules 
         (start [#])
         (play [#])
         (end [#])
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -27,8 +27,8 @@
         (version "1.3.4")
         (classification "board/hunt/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1911.")
+        (origin "This game was played in India, around 1911.")
         }
-   )
+    )
     
 )

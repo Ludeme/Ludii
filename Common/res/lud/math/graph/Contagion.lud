@@ -5,7 +5,7 @@
 (define "EdgeInCommon" 
     (intersection (sites Incident Edge of:Cell at:(from)) 
         (sites Incident Edge of:Cell at:(to))
-   ) 
+    ) 
 )
 
 (define "NoEdgeBetweenCells"
@@ -19,20 +19,20 @@
                     (difference 
                         "EdgeInCommon"
                         (sites Empty Edge)
-                   )
-               )
-           )
-       )
-   )
+                    )
+                )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (game "Contagion" 
-    (players 2)  
+    (players 2) 
     (equipment {
         (board <Board>)
-    })  
+    }) 
     
     (rules 
         (start (set Score P2 (* (count Rows) (count Columns))))
@@ -45,17 +45,17 @@
                     (to
                         Cell 
                         (sites Empty Cell)
-                   )
+                    )
                     (then 
                         (and 
                             (if (< (count MovesThisTurn) (- "NumContagionByTurn" 1)) (moveAgain)) 
                             (addScore {P1 P2} {1 -1}) 
-                       ) 
-                   )
-               )
-           )
+                        ) 
+                    )
+                )
+            )
             (nextPhase (not (is Next Mover)) "ContagionGrowth")
-       )
+        )
         
         (phase "ContagionGrowth" P1 
             (play (move 
@@ -64,16 +64,16 @@
                         Cell 
                         (sites Empty Cell) 
                         if:("NoEdgeBetweenCells")
-                   ) 
+                    ) 
                     (then 
                         (and 
                             (if (< (count MovesThisTurn) (- "NumContagionByTurn" 1)) (moveAgain)) 
                             (addScore {P1 P2} {1 -1})
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         
         (phase "Containment" P2
             (play
@@ -82,46 +82,46 @@
                     (to
                         Edge 
                         (sites Empty Edge)
-                   )
+                    )
                     (then 
                         (if 
                             (< (count MovesThisTurn) (- "NumContainmentByTurn" 1)) 
                             (moveAgain)
-                       )
-                   )
-               )
-           )
-       )
+                        )
+                    )
+                )
+            )
+        )
         }
         (end 
             {
             (if (> (score P1) (/ (* (count Rows) (count Columns)) 2)) (result P1 Win))
             (if (no Moves P1) (result P2 Win))
             }
-       )
-   )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "2x2"    <(rectangle  2  2)>    "The game is played on a 2x2 board")   
-    (item "3x3"    <(rectangle  3  3)>    "The game is played on a 3x3 board")   
-    (item "4x4"    <(rectangle  4  4)>    "The game is played on a 4x4 board")   
-    (item "5x10"   <(rectangle  5 10)>   "The game is played on a 5x10 board")   
-    (item "5x5"    <(rectangle  5  5)>    "The game is played on a 5x5 board")   
-    (item "6x6"    <(rectangle  6  6)>    "The game is played on a 6x6 board")   
-    (item "7x7"    <(rectangle  7  7)>    "The game is played on a 7x7 board")   
-    (item "8x8"    <(rectangle  8  8)>    "The game is played on a 8x8 board")**   
-    (item "9x9"    <(rectangle  9  9)>    "The game is played on a 9x9 board")   
-    (item "10x5"   <(rectangle 10  5)>   "The game is played on a 10x5 board")   
-    (item "10x10"  <(rectangle 10 10)>  "The game is played on a 10x10 board")   
-    (item "11x11"  <(rectangle 11 11)>  "The game is played on a 11x11 board")   
-    (item "12x12"  <(rectangle 12 12)>  "The game is played on a 12x12 board")   
-    (item "13x13"  <(rectangle 13 13)>  "The game is played on a 13x13 board")   
-    (item "14x14"  <(rectangle 14 14)>  "The game is played on a 14x14 board")   
-    (item "15x15"  <(rectangle 15 15)>  "The game is played on a 15x15 board")   
+    (item "2x2"  <(rectangle 2 2)>  "The game is played on a 2x2 board")  
+    (item "3x3"  <(rectangle 3 3)>  "The game is played on a 3x3 board")  
+    (item "4x4"  <(rectangle 4 4)>  "The game is played on a 4x4 board")  
+    (item "5x10"  <(rectangle 5 10)>  "The game is played on a 5x10 board")  
+    (item "5x5"  <(rectangle 5 5)>  "The game is played on a 5x5 board")  
+    (item "6x6"  <(rectangle 6 6)>  "The game is played on a 6x6 board")  
+    (item "7x7"  <(rectangle 7 7)>  "The game is played on a 7x7 board")  
+    (item "8x8"  <(rectangle 8 8)>  "The game is played on a 8x8 board")**  
+    (item "9x9"  <(rectangle 9 9)>  "The game is played on a 9x9 board")  
+    (item "10x5"  <(rectangle 10 5)>  "The game is played on a 10x5 board")  
+    (item "10x10" <(rectangle 10 10)> "The game is played on a 10x10 board")  
+    (item "11x11" <(rectangle 11 11)> "The game is played on a 11x11 board")  
+    (item "12x12" <(rectangle 12 12)> "The game is played on a 12x12 board")  
+    (item "13x13" <(rectangle 13 13)> "The game is played on a 13x13 board")  
+    (item "14x14" <(rectangle 14 14)> "The game is played on a 14x14 board")  
+    (item "15x15" <(rectangle 15 15)> "The game is played on a 15x15 board")  
 })
 
 //------------------------------------------------------------------------------
@@ -139,7 +139,7 @@
         (credit "Eric Piette")
         (date "01-05-2019")
         }
-   )
+    )
     
     (graphics {
         (player Colour P1 (colour Black))
@@ -150,5 +150,5 @@
     
     (ai
         "Contagion_ai"
-   )
+    )
 )

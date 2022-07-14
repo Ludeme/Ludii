@@ -1,30 +1,30 @@
-(game "Shi Liu Kan Tsiang Kun"  
-    (players 2)  
+(game "Shi Liu Kan Tsiang Kun" 
+    (players 2) 
     (equipment { 
         (board
             (merge
                 (scale 2 (square 5 diagonals:Alternating))
                 (shift 2 8 (rotate 180 (wedge 3)))
-           )
+            )
             use:Vertex
-       )
+        )
         (piece "General" P1 
             ("StepToEmpty"
                 ~
                 (then 
                     ("InterveneCapture")
-               )
-           )
-       )
+                )
+            )
+        )
         (piece "Marker" P2
             (move Step 
                 (to if:(and (not (is In (to) (expand (sites Top)))) (is Empty (to))))
                 (then 
                     ("CustodialCapture")
-               )
-           )
-       ) 
-    })  
+                )
+            )
+        ) 
+    }) 
     (rules 
         (start { 
             (place "General1" (ahead (centrePoint) S))
@@ -33,7 +33,7 @@
         
         (play (forEach Piece)) 
         
-        (end  {
+        (end {
             (if (no Pieces P2) (result P1 Win))
             (if (no Pieces P1) (result P2 Win))
             (if 
@@ -43,9 +43,9 @@
                     (= (who at:(coord "D5")) P2)
                 }) 
                 (result P2 Win)
-           )
+            )
         })
-   )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -62,9 +62,9 @@
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in China, around 1876.")
+        (origin "This game was played in China, around 1876.")
         }
-   )
+    )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})
@@ -73,5 +73,5 @@
     
     (ai
         "Shi Liu Kan Tsiang Kun_ai"
-   )
+    )
 )
