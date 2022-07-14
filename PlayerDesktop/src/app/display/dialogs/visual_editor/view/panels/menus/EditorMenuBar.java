@@ -18,12 +18,12 @@ public class EditorMenuBar extends JMenuBar {
         // adding settings menu items
         addJMenuItem(settings, "Open settings...", null);
 
-        JMenu about = new JMenu("About"); // read about the editor: documentation, research report, DLP
+        JMenu about = new JMenu("Help"); // read about the editor: documentation, research report, DLP
         // adding about menu items
         addJMenuItem(about, "User Guide", e-> new UserGuideFrame());
-        addJMenuItem(about, "Open documentation", null);
-        addJMenuItem(about, "Learn more about the editor", null); // opens research paper
-        addJMenuItem(about, "Learn more about DLP", null);
+        addJMenuItem(about, "Documentation", null);
+        addJMenuItem(about, "About Visual Editor...", null); // opens research paper
+        addJMenuItem(about, "About DLP...", null);
 
         add(new FileMenu(this));
         add(new EditMenu(this));

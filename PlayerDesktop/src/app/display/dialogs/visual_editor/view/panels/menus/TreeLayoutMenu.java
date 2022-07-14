@@ -4,6 +4,7 @@ import app.display.dialogs.visual_editor.LayoutManagement.GraphAnimator;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorSidebar;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
+import app.display.dialogs.visual_editor.view.panels.userGuide.LayoutUserGuideFrame;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -64,7 +65,7 @@ public class TreeLayoutMenu extends JMenu
             EditorSidebar.getEditorSidebar().setLayoutTabSelected();
         });
 
-        menuBar.addJMenuItem(this, "Help", null);
+        menuBar.addJMenuItem(this, "Help", e -> new LayoutUserGuideFrame());
 
     }
 
