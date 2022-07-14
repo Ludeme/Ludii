@@ -1,6 +1,5 @@
 (define "RemoveEnemyPieceNotInLine3" 
-    (move
-        Remove
+    (move Remove
         (forEach 
             (sites Occupied by:Next container:"Board") 
             if:(not (is Line 3 Orthogonal through:(site)))
@@ -10,8 +9,7 @@
 
 (define "IfLine3MoveAgain" 
     (then 
-        (if 
-            (is Line 3 Orthogonal exact:True) 
+        (if (is Line 3 Orthogonal exact:True) 
             (moveAgain)
         )
     )
@@ -25,13 +23,7 @@
     (equipment { 
         ("AlquerqueBoard" 5 5) 
         (hand Each)
-        (piece "Marker" Each 
-            (move
-                Step
-                (to if:(is Empty (to))) 
-                "IfLine3MoveAgain"
-            )
-        ) 
+        (piece "Marker" Each ("StepToEmpty" ~ "IfLine3MoveAgain")) 
     }) 
     (rules 
         (start (place "Marker" "Hand" count:6))
@@ -61,12 +53,7 @@
         )
         }
         
-        (end 
-            (if 
-                (no Pieces Next) 
-                (result Mover Win)
-            )
-        )
+        (end ("CaptureAll" Next))
     )
 )
 

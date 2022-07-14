@@ -1,12 +1,10 @@
 (game "Alquerque de Tres"
     (players 2) 
-    (equipment 
-        {
+    (equipment {
         ("AlquerqueBoard" 3 3)
         (hand Each)
         (piece "Marker" Each)
-        }
-    ) 
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:3))
         (play (move (from (handSite Mover)) (to (sites Empty))))
