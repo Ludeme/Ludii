@@ -41,7 +41,7 @@
             )
         ) 
         }
-    )  
+    ) 
     (rules 
         (start (place "Marker" "Hand" count:9))
         
@@ -53,7 +53,7 @@
                     (from (handSite Mover)) 
                     (to (sites Empty)) 
                     "IfLine3MoveAgainPlacement" 
-                )  
+                ) 
             ) 
             (nextPhase (and ("HandEmpty" P1) ("HandEmpty" P2)) "Movement")
         )
@@ -92,7 +92,7 @@
         (version "1.3.4")
         (classification "board/space/line")
         (credit "Matthew Stephenson and Eric Piette")
-        (origin  "This game was played in Sri Lanka, around 1909.")
+        (origin "This game was played in Sri Lanka, around 1909.")
         }
     )
     

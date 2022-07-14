@@ -37,8 +37,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Hufesay"  
-    (players 2)  
+(game "Hufesay" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
@@ -49,7 +49,7 @@
         (piece "Seed" Shared)
         (hand Each)
         (map "LeftMost" {(pair P1 0) (pair P2 11)})
-    })  
+    }) 
     (rules 
         
         (start {
@@ -180,7 +180,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Hufesay is a two-row mancala-style board game played in the Maychew area of Ethiopia. ")
@@ -190,7 +190,7 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Horn of Africa, around 1971.")
+        (origin "This game was played in Horn of Africa, around 1971.")
         }
     )
     

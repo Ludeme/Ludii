@@ -11,8 +11,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Papan Dakon"  
-    (players 2)  
+(game "Papan Dakon" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns"
@@ -22,11 +22,11 @@
             }
         )
         (piece "Seed" Shared)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
         (map "RightMost" {(pair P1 7) (pair P2 8)})
-    })  
+    }) 
     (rules 
         (start {
             (set Count 7 to:(union (sites P1) (sites P2)))
@@ -107,7 +107,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Papan Dakon is a two-row mancala-style board game from Borneo. It is one of many games that are similar throughout southeast Asia.")

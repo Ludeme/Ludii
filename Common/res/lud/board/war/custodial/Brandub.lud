@@ -29,14 +29,14 @@
 
 (define "EmptyCentre" (and (is In (to) (sites Centre)) (is Empty (to))))
 
-(define "JarlAndExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (is In (between) (expand origin:(centrePoint)  Orthogonal))))
+(define "JarlAndExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (is In (between) (expand origin:(centrePoint) Orthogonal))))
 
-(define "JarlButNotTheExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (not (is In (between) (expand origin:(centrePoint)  Orthogonal)))))
+(define "JarlButNotTheExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (not (is In (between) (expand origin:(centrePoint) Orthogonal)))))
 
 //------------------------------------------------------------------------------
 
-(game "Brandub"  
-    (players 2)  
+(game "Brandub" 
+    (players 2) 
     (equipment { 
         (board (square 7)) 
         (regions "Fortresses" (sites Corners))
@@ -58,7 +58,7 @@
                         (custodial 
                             (from (last To)) 
                             Orthogonal 
-                            (between (max 1) if:"JarlButNotTheExpandedCentre" "JarlIsCaptured" )
+                            (between (max 1) if:"JarlButNotTheExpandedCentre" "JarlIsCaptured")
                             (to if:"FriendOrFortress")
                         )
                     })
@@ -82,7 +82,7 @@
             )
         )
         }
-    )  
+    ) 
     (rules 
         (start
             { 
@@ -97,7 +97,7 @@
         (end
             {
             (if (is Within (id "Jarl2") in:(sites "Fortresses")) (result P2 Win))
-            (if "JarlWasCaptured"  (result P1 Win))
+            (if "JarlWasCaptured" (result P1 Win))
             }
         )
     )
@@ -107,7 +107,7 @@
 
 (option "Variant" <Variant> args:{ <type> }
     {
-    (item "Nielsen"   <>       "The rules are describing with the Nielsen ruleset.")   
+    (item "Nielsen"  <>    "The rules are describing with the Nielsen ruleset.")  
 })
 
 //------------------------------------------------------------------------------
@@ -143,7 +143,7 @@
         (version "1.3.4")
         (classification "board/war/custodial")
         (credit "Eric Piette")
-        (origin  "This game was played in Ireland, from around 1200 to 1640.")
+        (origin "This game was played in Ireland, from around 1200 to 1640.")
         }
     )
     

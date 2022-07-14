@@ -46,7 +46,7 @@
                     (not ("InTheGoal" (last To))) 
                     (can Move ("Hop" (last To) #2))
                 ) 
-                #3  
+                #3 
             )
         )
     )
@@ -60,7 +60,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "Camelot"  
+(game "Camelot" 
     (players 2) 
     (equipment { 
         (board 
@@ -86,7 +86,7 @@
         
         (regions P1 (sites {"A6" "A7"})) 
         (regions P2 (sites {"P6" "P7"})) 
-    })  
+    }) 
     (rules 
         (start {
             (place "Pawn1" {"F4" "F5" "F6" "F7" "F8" "F9" "G5" "G6" "G7" "G8"})
@@ -170,7 +170,7 @@
             (if ("GoalFilledby" P2 P1) (result P2 Win))
             (if "NotEnoughPieceForTheMover" (result Mover Win)) 
             (if "NotEnoughPieceForBothPlayer" (result Mover Draw)) 
-        })  
+        }) 
     )
 )
 

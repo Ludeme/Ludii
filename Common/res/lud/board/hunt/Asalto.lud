@@ -1,4 +1,4 @@
-(define "RememberSiteWithPossibleCapture"  
+(define "RememberSiteWithPossibleCapture" 
     (forEach Site
         (sites From
             (forEach Piece "Marker" 
@@ -11,13 +11,13 @@
 
 //------------------------------------------------------------------------------
 
-(game "Asalto"  
-    (players 2)  
+(game "Asalto" 
+    (players 2) 
     (equipment { 
         ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
         (piece "Marker" P1 (or ("HopCapture") "StepToEmpty"))
         (piece "Marker" P2 "StepToEmpty") 
-    })  
+    }) 
     (rules 
         (start {
             (place "Marker1" (sites {"C6" "E6"}))
@@ -78,7 +78,7 @@
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in Europe, around 1891.")
+        (origin "This game was played in Europe, around 1891.")
         }
     )
     

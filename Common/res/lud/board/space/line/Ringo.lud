@@ -56,15 +56,15 @@
 
 //------------------------------------------------------------------------------
 
-(game "Ringo"  
-    (players 2)  
+(game "Ringo" 
+    (players 2) 
     (equipment 
         { 
         (boardless Square) 
         (piece "Disc" Each ("MoveDisc")) 
         (piece "Ring" Each) 
         }
-    )  
+    ) 
     (rules 
         (start {
             (place "Ring1" (ahead (centrePoint) NE)) 

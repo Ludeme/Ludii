@@ -17,7 +17,7 @@
     (and 
         (is Empty (to)) 
         (or (not ("IsInCheck" "King" Mover at:(to))) (no Pieces Next "King" in:(sites Board)))
-    )   
+    )  
 )
 
 (define "CaptureForwardDiagonal"
@@ -45,8 +45,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Unachess"  
-    (players {(player N) (player S)})  
+(game "Unachess" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -123,7 +123,7 @@
         (regions "PawnPlacementRows" P1 (expand (sites Bottom) steps:3))
         (regions "PawnPlacementRows" P2 (expand (sites Top) steps:3))
         (hand Each size:6)
-    })  
+    }) 
     (rules 
         (start { 
             (place "Pawn1" (handSite P1 0) count:8)
@@ -167,13 +167,13 @@
 
 (option "Setup" <PlacementConditions> args:{ <PlacementConditions> }
     {
-    (item "v1"    	
+    (item "v1"  	
         <
         ifAfterwards:True
         >
     "Original")**
     
-    (item "v2"    	
+    (item "v2"  	
         <
         ifAfterwards:(not ("IsInCheck" "King" Next))
         >

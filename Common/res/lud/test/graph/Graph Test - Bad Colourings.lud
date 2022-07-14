@@ -1,16 +1,16 @@
-(game "Graph Test - Bad Colourings"  
+(game "Graph Test - Bad Colourings" 
     (players 2) 
     (equipment { 
         (board <Board>)
         (piece "Marker" Each) 
         }
-    )  
+    ) 
     (rules 
         (play (move Add (to (sites Empty))))
         (end {
             (if (is Line 4) (result Mover Win))
             (if (is Line 3) (result Mover Loss)) 
-        })  
+        }) 
     )
 )
 
@@ -19,23 +19,23 @@
 (option "Board Type" <Board> args:{ <type> }
     {
     
-    (item "A" <(dual (tiling T3636 3))>  "")
+    (item "A" <(dual (tiling T3636 3))> "")
     
-    (item "B" <(dual (subdivide (tiling T3464 2)))>  "")
+    (item "B" <(dual (subdivide (tiling T3464 2)))> "")
     
     (item "C" <(renumber
             (merge 
                 { 
-                (shift  2 2 (square 5 diagonals:Alternating)) 
-                (shift  2.2 0.0             (scale .9 1 (wedge 3))) 
-                (shift  5.2 3.0 (rotate  90 (scale .9 1 (wedge 3)))) 
-                (shift  2.2 6.0 (rotate 180 (scale .9 1 (wedge 3)))) 
+                (shift 2 2 (square 5 diagonals:Alternating)) 
+                (shift 2.2 0.0       (scale .9 1 (wedge 3))) 
+                (shift 5.2 3.0 (rotate 90 (scale .9 1 (wedge 3)))) 
+                (shift 2.2 6.0 (rotate 180 (scale .9 1 (wedge 3)))) 
                 (shift -0.8 3.0 (rotate 270 (scale .9 1 (wedge 3)))) 
                 
-                (shift  0.09 0.79 (rotate  -45 (scale .707 .707 (wedge 3))))
-                (shift  5.09 0.79 (rotate   45 (scale .707 .707 (wedge 3))))
-                (shift  0.09 5.79 (rotate -135 (scale .707 .707 (wedge 3))))
-                (shift  5.09 5.79 (rotate  135 (scale .707 .707 (wedge 3))))
+                (shift 0.09 0.79 (rotate -45 (scale .707 .707 (wedge 3))))
+                (shift 5.09 0.79 (rotate  45 (scale .707 .707 (wedge 3))))
+                (shift 0.09 5.79 (rotate -135 (scale .707 .707 (wedge 3))))
+                (shift 5.09 5.79 (rotate 135 (scale .707 .707 (wedge 3))))
                 } 
             ) 
         )
@@ -43,27 +43,27 @@
     
     (item "D" <(repeat 2 2 step:{{2 1} {-1 2}} 
             {
-            (poly {{0 0} { 0  1} {  .5  1.5} { 1  1} { 1  0}})
-            (poly {{0 0} { 1  0} { 1.5  -.5}   { 1 -1} { 0 -1}})
-            (poly {{0 0} { 0 -1} { -.5 -1.5} {-1 -1} {-1  0}})
-            (poly {{0 0} {-1  0} {-1.5   .5}   {-1  1} { 0  1}})
+            (poly {{0 0} { 0 1} { .5 1.5} { 1 1} { 1 0}})
+            (poly {{0 0} { 1 0} { 1.5 -.5}  { 1 -1} { 0 -1}})
+            (poly {{0 0} { 0 -1} { -.5 -1.5} {-1 -1} {-1 0}})
+            (poly {{0 0} {-1 0} {-1.5  .5}  {-1 1} { 0 1}})
             }
-    )>  "")
+    )> "")
     
     }
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (graphics {
         (board Checkered)
-        (board Colour Phase0 (colour 200 130  50))
+        (board Colour Phase0 (colour 200 130 50))
         (board Colour Phase1 (colour 225 180 100))
         (board Colour Phase2 (colour 255 230 150))
-        (board Colour Phase3 (colour 200 100  25))
+        (board Colour Phase3 (colour 200 100 25))
         (board StyleThickness OuterEdges 0)
         (board StyleThickness InnerEdges 0)
         
-    })    
+    })  
 )

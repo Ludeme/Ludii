@@ -17,7 +17,7 @@
                         )
                     )
                 })
-                (if (< 1 (count at:( to)))
+                (if (< 1 (count at:(to)))
                     (and {
                         (moveAgain)
                         (set Var "Replay" (to))
@@ -25,7 +25,7 @@
                     })
                 )
             )
-            (if (< 1 (count at:( to)))
+            (if (< 1 (count at:(to)))
                 (and {
                     (moveAgain)
                     (set Var "Replay" (to))
@@ -46,7 +46,7 @@
             (sow
                 #1
                 owner:(mover)
-                apply:(if (< 1 (count at:( to)))
+                apply:(if (< 1 (count at:(to)))
                     (and {
                         (moveAgain)
                         (set Var "Replay" (to))
@@ -60,8 +60,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Bao Kiswahili (DR Congo)"  
-    (players 2)  
+(game "Bao Kiswahili (DR Congo)" 
+    (players 2) 
     (equipment { 
         (mancalaBoard 4 8 store:None
             {
@@ -73,15 +73,15 @@
         )
         (piece "Seed" Shared)
         (hand Each)
-        (regions "Home" P1 (expand (sites Bottom)))            // P1 home
-        (regions "Home" P2 (expand (sites Top)))               // P2 home
-        (regions "Inner" P1 (sites Row 1))                     // P1 home
-        (regions "Inner" P2 (sites Row 2))                     // P2 home
+        (regions "Home" P1 (expand (sites Bottom)))      // P1 home
+        (regions "Home" P2 (expand (sites Top)))        // P2 home
+        (regions "Inner" P1 (sites Row 1))           // P1 home
+        (regions "Inner" P2 (sites Row 2))           // P2 home
         (map "LeftMostInner" {(pair P1 8) (pair P2 23)})
         (map "RightMostInner" {(pair P1 15) (pair P2 16)})
         (map "AdjacentLeftMostInner" {(pair P1 9) (pair P2 22)})
         (map "AdjacentRightMostInner" {(pair P1 14) (pair P2 17)})
-    })  
+    }) 
     (rules 
         (start {
             (set Count 24 at:(handSite P1))
@@ -194,7 +194,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Bao Kiswahili is a four-row mancala-style board game played in the eastern part of the Democratic Republic of Congo. It was particularly popular among Banbubangu and Nonda people, as well as in some larger cities in surrounding regions.")
@@ -205,7 +205,7 @@
         (version "1.3.4")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Central Africa, around 1977.")
+        (origin "This game was played in Central Africa, around 1977.")
         }
     )
     

@@ -1,12 +1,12 @@
 (game "Round Merels"
-    (players 2)  
+    (players 2) 
     (equipment 
         { 
         (board (concentric {1 8}) use:Vertex)
         (hand Each)
         (piece "Marker" Each "StepToEmpty") 
         }
-    )  
+    ) 
     (rules 
         (start (place "Marker" "Hand" count:3))
         
@@ -34,7 +34,7 @@
 
 (option "Variant" <Variant> args:{ <type> }
     {
-    (item "Blumlein"   <>       "The rules are describing with the Blumlein ruleset.")   
+    (item "Blumlein"  <>    "The rules are describing with the Blumlein ruleset.")  
 })
 
 //------------------------------------------------------------------------------
@@ -69,7 +69,7 @@
         (version "1.3.4")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in Rome?, from around 250 to 550.")
+        (origin "This game was played in Rome?, from around 250 to 550.")
         }
     )
     

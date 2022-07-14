@@ -261,7 +261,7 @@
         )
         (then 
             (and {
-                (add (piece "Square0")  (to (last To)))
+                (add (piece "Square0") (to (last To)))
                 (set Value at:(last From) (- (value Piece at:(last From)) 1))
             })
         )
@@ -379,7 +379,7 @@
                 (expand origin:(ahead (from)) Orthogonal)
             )
             if:(or 
-                (not ("IsSiteProtectedByEntrenchment" (to) (from)))  
+                (not ("IsSiteProtectedByEntrenchment" (to) (from))) 
                 (is In (to) (sites Occupied by:Mover container:"Board" components:{"RiderOutline"}))
             )
         )
@@ -419,7 +419,7 @@
                 (sites Occupied by:Enemy container:"Board" components:{"TinSoldier" "RiderOutline" "Bishop"})
             )
             if:(or 
-                (not ("IsSiteProtectedByEntrenchment" (to) (from)))  
+                (not ("IsSiteProtectedByEntrenchment" (to) (from))) 
                 (is In (to) (sites Occupied by:Mover container:"Board" components:{"RiderOutline"}))
             )
         )
@@ -585,10 +585,10 @@
             )
             if:(and
                 (or 
-                    (not ("IsSiteProtectedByEntrenchment" (to) (from)))  
+                    (not ("IsSiteProtectedByEntrenchment" (to) (from))) 
                     (is In (to) (sites Occupied by:Mover container:"Board" components:{"RiderOutline"}))
                 )
-                ("IsSiteProtectedByEntrenchment" (from) (to))   
+                ("IsSiteProtectedByEntrenchment" (from) (to))  
             )
         )
         (then 
@@ -616,7 +616,7 @@
                 #1
             )
             if:(or 
-                (not ("IsSiteProtectedByEntrenchment" (to) (from)))  
+                (not ("IsSiteProtectedByEntrenchment" (to) (from))) 
                 (is In (to) (sites Occupied by:Mover container:"Board" components:{"RiderOutline"}))
             )
         )
@@ -645,7 +645,7 @@
                 #1
             )
             if:(or 
-                (not ("IsSiteProtectedByEntrenchment" (to) (from)))  
+                (not ("IsSiteProtectedByEntrenchment" (to) (from))) 
                 (is In (to) (sites Occupied by:Mover container:"Board" components:{"RiderOutline"}))
             )
         )
@@ -669,7 +669,7 @@
                 "RegionBridge"
                 #1
             )
-            if:(not ("IsSiteProtectedByEntrenchment" (to) (from)))  
+            if:(not ("IsSiteProtectedByEntrenchment" (to) (from))) 
         )
         (then 
             (forget Value "Bridges" (last To))
@@ -691,7 +691,7 @@
                 "RegionBridge"
                 #1
             )
-            if:(not ("IsSiteProtectedByEntrenchment" (to) (from)))  
+            if:(not ("IsSiteProtectedByEntrenchment" (to) (from))) 
         )
         (then 
             // (add (piece (id "Fire" Mover)) (to (last To)))
@@ -806,8 +806,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Kriegsspiel"  
-    (players 2)  
+(game "Kriegsspiel" 
+    (players 2) 
     (equipment { 
         (board (rectangle 33 49)) 
         (hand Each size:6)
@@ -890,15 +890,15 @@
                 96 145 92 141 190 239 288 337 386 435 484 533 236 237 286 335 384 383 334 285 240 241 290 339 388 387 430 528 527 
                 526 525 476 427 574 573 572 571 570 619 668 667 666 665 664 663 614 613 612 661 710 759 808 857 906 611 610 561 609 
                 608 607 512 426 377 376 327 278 277 276 275 274 273 272 271 270 269 268 267 266 265 264 263 262 261 260 259 258 257 
-        463 414 365 316 604 653 555 506 457 408 359 310 215 166 117 116 228 179 130 81 32}))  
-        (regions "MountainRegion" (sites {395 444 493 542 591 784 701 702 703 752 751 750 565 516 913 864 865 914 915 866 1299 1250 1296 1247 1394 1443 1492 1397 1446 1495 1502 1551 1503}))  
+        463 414 365 316 604 653 555 506 457 408 359 310 215 166 117 116 228 179 130 81 32})) 
+        (regions "MountainRegion" (sites {395 444 493 542 591 784 701 702 703 752 751 750 565 516 913 864 865 914 915 866 1299 1250 1296 1247 1394 1443 1492 1397 1446 1495 1502 1551 1503})) 
         (regions "TownRegion" (sites {449 450 451 452 400 351 352 562 513 563 564 515 1052 1101 1053 1054 1103 1264 1265 1216 1167 1166 1165 1164}))
         (regions "ForestRegion" (sites {499 500 501 790 791 1432 1433 1201 1200 1395 1396 415 416 220 221 184 183 825 826 1117 1116 1115})) 
         (regions "EntrenchmentRegion1" (sites {939 988 1086 1135 1184 1180 1131 1082 1425 1474 1523 1527 1478 1429})) 
         (regions "EntrenchmentRegion2" (sites {932 936 888 889 890 1081})) 
         (regions "EntrenchmentRegion3" (sites {677 628 530 481 432 534 485 436 191 142 93 187 138 89})) 
         (regions "EntrenchmentRegion4" (sites {726 727 728 680 684 535})) 
-    })  
+    }) 
     (rules 
         (meta (passEnd NoEnd))
         (start {

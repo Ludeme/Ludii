@@ -1,12 +1,12 @@
-(game "Warri"  
-    (players 2)  
+(game "Warri" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 6 
             (track "Track" "1,E,N,W" loop:True)
         )
         (piece "Seed" Shared)
-    })  
+    }) 
     (rules 
         (start (set Count 4 to:(sites Track)))
         (play [#])
@@ -16,7 +16,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Warri is a two-row mancala-style board game played on the island of Antigua in the Caribbean.")

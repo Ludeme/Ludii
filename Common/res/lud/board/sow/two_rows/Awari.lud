@@ -2,31 +2,31 @@
 
 //------------------------------------------------------------------------------
 
-(game "Awari"  
-    (players 2)  
+(game "Awari" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 6 store:None
             (track "Track" "0,E,N,W" loop:True)
         )
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start (set Count 4 to:(sites Track)))
         
         (play 
-            (do  
+            (do 
                 (move Select 
                     (from 
                         (sites Mover) 
                         if:(< 0 (count at:(from)))
                     )
                     (then 
-                        (sow  
+                        (sow 
                             if:(and 
                                 (is In (to) (sites Next)) 
                                 (or 
@@ -54,7 +54,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Awari is a two-row mancala-style board game played by the Ndyuka people of Suriname. It is closely similar to other games found throughout West Africa and the Caribbean.")

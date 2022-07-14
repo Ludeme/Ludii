@@ -20,7 +20,7 @@
             )
             (set State at:(from) 1)	
         )
-    )  
+    ) 
 )
 
 (define "SlideMove" 
@@ -128,7 +128,7 @@
 //------------------------------------------------------------------------------
 
 (game "Tai Shogi"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 25))
         
@@ -578,7 +578,7 @@
         (piece "GoldenBird" Each
             (or {
                 ("SlideMove" (directions {Rightward Leftward}) (between (max 2)))
-                ("SlideMove"  Diagonal (between (max 3)))
+                ("SlideMove" Diagonal (between (max 3)))
                 ("SlideMove" (directions {Forward Backward}))
                 }
             )
@@ -587,7 +587,7 @@
         (piece "GreatDragon" Each
             (or {
                 ("SlideMove" (directions {Forward Backward}) (between (max 2)))
-                ("SlideMove"  (directions {BR BL}) (between (max 3)))
+                ("SlideMove" (directions {BR BL}) (between (max 3)))
                 ("SlideMove" (directions {Rightward Leftward}))
                 (move // jump to two steps.
                     Hop
@@ -884,11 +884,11 @@
         
         (piece "FreeWolf" Each ("SlideMove" (directions {Forwards Rightward Leftward})))
         
-        (piece "AngryBoar" Each ("StepMove" Orthogonal ))
+        (piece "AngryBoar" Each ("StepMove" Orthogonal))
         
-        (piece "CatSword" Each ("StepMove" Diagonal ))
+        (piece "CatSword" Each ("StepMove" Diagonal))
         
-        (piece "FreeCat" Each ("SlideMove" Diagonal ))
+        (piece "FreeCat" Each ("SlideMove" Diagonal))
         
         (piece "CoiledSerpent" Each ("StepMove" (directions {Forward Backwards})))
         
@@ -904,7 +904,7 @@
         
         (piece "GoldGeneral" Each ("StepMove" (directions {Forwards Rightward Leftward Backward})))
         
-        (piece "FreeGold" Each ("SlideMove" (directions {Forwards Rightward Leftward Backward})  ))
+        (piece "FreeGold" Each ("SlideMove" (directions {Forwards Rightward Leftward Backward}) ))
         
         (piece "SilverGeneral" Each ("StepMove" (directions {Forwards BR BL})))
         
@@ -912,21 +912,21 @@
         
         (piece "CopperGeneral" Each ("StepMove" (directions {Forwards Backward})))
         
-        (piece "FreeCopper" Each ("SlideMove" (directions {Forwards Backward})  ))
+        (piece "FreeCopper" Each ("SlideMove" (directions {Forwards Backward}) ))
         
         (piece "TileGeneral" Each ("StepMove" (directions {FR FL Backward})))
         
-        (piece "FreeTile" Each ("SlideMove" (directions {FR FL Backward})  ))
+        (piece "FreeTile" Each ("SlideMove" (directions {FR FL Backward}) ))
         
-        (piece "IronGeneral" Each ("StepMove" Forwards ))
+        (piece "IronGeneral" Each ("StepMove" Forwards))
         
-        (piece "FreeIron" Each ("SlideMove" Forwards ))
+        (piece "FreeIron" Each ("SlideMove" Forwards))
         
         (piece "WoodGeneral" Each ("SlideMove" (directions {FR FL}) (between (max 2))))
         
         (piece "StoneGeneral" Each ("StepMove" (directions {FR FL})))
         
-        (piece "FreeStone" Each ("SlideMove" (directions {FR FL})  ))
+        (piece "FreeStone" Each ("SlideMove" (directions {FR FL}) ))
         
         (piece "EarthGeneral" Each ("StepMove" (directions {Forward Backward})))
         
@@ -954,7 +954,7 @@
         
         (piece "RamsHeadSoldier" Each ("SlideMove" (directions {FR FL})))
         
-        (piece "Lance" Each ("SlideMove" Forward ))
+        (piece "Lance" Each ("SlideMove" Forward))
         
         (piece "Pawn" Each ("StepMove" Forward))
         
@@ -1199,7 +1199,7 @@
 
 (option "Variant" <Variant> args:{ <type> }
     {
-    (item "Wikipedia"   <>       "The rules are describing from wikipedia.")   
+    (item "Wikipedia"  <>    "The rules are describing from wikipedia.")  
 })
 
 //------------------------------------------------------------------------------

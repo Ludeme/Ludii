@@ -1,5 +1,5 @@
-(game "Backgammon"  
-    (players 2)  
+(game "Backgammon" 
+    (players 2) 
     (equipment { 
         (board (square 2) 13 {
             (track "Track1" {6 12..7 5..0 13..18 20..25 End} 1 directed:True)
@@ -8,7 +8,7 @@
         (dice num:2)
         (regions P1 { 20..25 })
         (regions P2 { 7..12 })
-        (map {(pair 1 6 ) (pair 2 19)})
+        (map {(pair 1 6) (pair 2 19)})
         (piece "Disc" Each
             (forEach Die 
                 replayDouble:True 
@@ -116,7 +116,7 @@
                             )
                         )
                     )
-                    //                    //(max Distance
+                    //          //(max Distance
                         (if (= (what at:(mapEntry (mover))) 0)
                             (forEach Piece top:True)
                             (forEach Die replayDouble:True (!= (pips) 0)

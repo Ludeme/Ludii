@@ -1,11 +1,11 @@
-(game "Ko-app-paw-na"  
-    (players 2)  
+(game "Ko-app-paw-na" 
+    (players 2) 
     (equipment { 
         (board (square 5) use:Vertex)
         (piece "Rabbit" P1 "StepToEmpty") 
         (piece "Counter" P2 (or "HopCapture" "StepToEmpty"))
         (regions P1 (union (expand (sites Top)) (sites {"A3" "E3"})))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Rabbit1" (union (expand (sites Bottom)) (sites {"A3" "E3"})))
@@ -41,7 +41,7 @@
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in Southwest United States, around 1907.")
+        (origin "This game was played in Southwest United States, around 1907.")
         }
     )
     

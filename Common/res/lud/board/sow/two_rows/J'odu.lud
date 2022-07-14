@@ -5,31 +5,31 @@
 //------------------------------------------------------------------------------
 
 (game "J'odu" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         (mancalaBoard 2 "Columns"
             (track "Track" "1,E,N,W" loop:True)
         )
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
         (piece "Seed" Shared)
-    })  
+    }) 
     
     (rules 
-        (start (set Count 4 to:(sites Track)))		  
+        (start (set Count 4 to:(sites Track)))		 
         (play 
-            (do  
+            (do 
                 (move Select 
                     (from 
                         (if ("SameTurn") 
                             "LastHoleSowed" 
                             (sites Mover) 
-                        )  
+                        ) 
                         if:(< 0 (count at:(from)))
                     )
                     (then 
-                        (sow  
+                        (sow 
                             apply:(if (> (count at:(to)) 1)
                                 (moveAgain)
                                 (if (is In (to) (sites Mover)) 
@@ -63,7 +63,7 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in West Africa, around 1951.")
+        (origin "This game was played in West Africa, around 1951.")
         }
     )
     

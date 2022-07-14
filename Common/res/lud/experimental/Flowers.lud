@@ -1,10 +1,10 @@
-(game "Flowers"  
-    (players 2)  
+(game "Flowers" 
+    (players 2) 
     (equipment { 
         (board (dual (tiling T33336 3))) 
         (piece "Marker" P1) 
         (piece "Marker" P2) 
-    })  
+    }) 
     (rules 
         (play (move Add (to (sites Empty))))
         (end (if (is Line 4 Orthogonal) (result Mover Win)))

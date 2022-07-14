@@ -36,9 +36,9 @@
 (define "CounterPlayer" 
     (if (= #1 P1)
         (id "Counter" P1)
-        (if  (= #1 P2)
+        (if (= #1 P2)
             (id "Counter" P2)
-            (if  (= #1 P3)
+            (if (= #1 P3)
                 (id "Counter" P3)
                 (id "Counter" P4)
             )
@@ -269,7 +269,7 @@
         (version "1.3.4")
         (classification "board/race/escape")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1956.")
+        (origin "This game was played in India, around 1956.")
         }
     )
     

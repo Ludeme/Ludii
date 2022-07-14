@@ -56,8 +56,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Pahada Keliya"  
-    (players 4)  
+(game "Pahada Keliya" 
+    (players 4) 
     (equipment {
         ("PachisiBoard"
             {
@@ -119,7 +119,7 @@
         (regions "RightCentral" P2 (sites Direction from:0 E included:True distance:7))
         (regions "RightCentral" P3 (sites Direction from:93 S included:True distance:7))
         (regions "RightCentral" P4 (sites Direction from:50 W included:True distance:7))
-    })  
+    }) 
     (rules 
         (start {
             (set Team 1 {P1 P3})
@@ -157,7 +157,7 @@
         (version "1.3.4")
         (classification "board/race/reach")
         (credit "Eric Piette")
-        (origin  "This game was played in Sri Lanka, around 1909.")
+        (origin "This game was played in Sri Lanka, around 1909.")
         }
     )
     

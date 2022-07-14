@@ -38,7 +38,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )   
+    )  
 )
 
 (define "DoCastle"
@@ -110,8 +110,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Safe Passage"  
-    (players {(player N) (player S)})  
+(game "Safe Passage" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -192,7 +192,7 @@
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
         }
-    )  
+    ) 
     (rules 
         (start
             { 

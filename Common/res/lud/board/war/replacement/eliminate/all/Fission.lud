@@ -1,5 +1,5 @@
-(game "Fission"  
-    (players 2)  
+(game "Fission" 
+    (players 2) 
     (equipment { 
         (board (square 8))
         (piece "Ball" Each
@@ -17,7 +17,7 @@
                 )
             )
         ) 
-    })  
+    }) 
     (rules 
         (start {
             (place "Ball1" (intersection (sites Phase 1) (expand (sites Centre) steps:2 Orthogonal)))

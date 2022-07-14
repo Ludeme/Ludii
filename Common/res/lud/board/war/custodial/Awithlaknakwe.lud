@@ -18,7 +18,7 @@
             Sites
             in:(difference 
                 ("SitesOccupiedTeam1")
-                ("StartSitesTeam2")  
+                ("StartSitesTeam2") 
             )
         )
     )
@@ -30,7 +30,7 @@
             Sites
             in:(difference 
                 ("SitesOccupiedTeam2")
-                ("StartSitesTeam1")  
+                ("StartSitesTeam1") 
             )
         )
     )
@@ -42,8 +42,8 @@
 
 //--------------------------------------------------------------------------
 
-(game "Awithlaknakwe"  
-    (players {(player N) (player E) (player S) (player W)})  
+(game "Awithlaknakwe" 
+    (players {(player N) (player E) (player S) (player W)}) 
     (equipment 
         {
         (board 
@@ -83,7 +83,7 @@
         })
         (play 
             (forEach Piece
-                (then     
+                (then   
                     (custodial 
                         (from (last To)) 
                         Orthogonal

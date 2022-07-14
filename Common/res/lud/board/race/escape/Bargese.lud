@@ -44,8 +44,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Bargese"  
-    (players 2)  
+(game "Bargese" 
+    (players 2) 
     (equipment { 
         ("PachisiBoard" 
             {
@@ -89,7 +89,7 @@
         (map "XEntry" {(pair P1 2) (pair P2 48)})
         (regions "SafeSites" (sites {60 62 16 48 87 89 37 2}))
         }
-    )  
+    ) 
     (rules 
         (start { 
             (place Stack "Pawn1" (handSite P1) count:4)
@@ -124,7 +124,7 @@
         (version "1.3.4")
         (classification "board/race/reach")
         (credit "Eric Piette")
-        (origin  "This game was played in Syria, around 2002.")
+        (origin "This game was played in Syria, around 2002.")
         }
     )
     

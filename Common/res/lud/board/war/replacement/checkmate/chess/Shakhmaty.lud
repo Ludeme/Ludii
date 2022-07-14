@@ -33,7 +33,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )   
+    )  
 )
 
 (define "DecideToCastle"
@@ -125,8 +125,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Shakhmaty"  
-    (players {(player N) (player S)})  
+(game "Shakhmaty" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -205,7 +205,7 @@
         (regions "Promotion" P2 (sites Bottom))
         (regions "Half" P1 (expand (sites Bottom) steps:3))
         (regions "Half" P2 (expand (sites Top) steps:3))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Pawn1" (sites Row 1))
@@ -284,7 +284,7 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chess")
         (credit "Eric Piette")
-        (origin  "This game was played in Russia, from around 1821 to 1854.")
+        (origin "This game was played in Russia, from around 1821 to 1854.")
         }
     )
     

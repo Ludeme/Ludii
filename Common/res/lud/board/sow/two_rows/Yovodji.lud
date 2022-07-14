@@ -10,19 +10,19 @@
 //------------------------------------------------------------------------------
 
 (game "Yovodji" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
             (track "Track" "0,E,N,W" loop:True)
         )
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     
     (rules 
-        (start (set Count 4 to:(sites Track)))		  
+        (start (set Count 4 to:(sites Track)))		 
         (play 
             (if (is Proposed "End")
                 (or (move Vote "End") (move Vote "No"))
@@ -38,7 +38,7 @@
                             if:(< 0 (count at:(from)))
                         )
                         (then 
-                            (sow  
+                            (sow 
                                 apply:(if ("CaptureAsInOware" (to))
                                     (fromTo 
                                         (from (to)) 

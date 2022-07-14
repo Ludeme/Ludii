@@ -39,7 +39,7 @@
                             #3
                             if:(and (not (is In (between) (last Between))) ("IsEnemyAt" (between))) 
                             (apply (fromTo (from (between)) (to)))
-                        )     	
+                        )   	
                         (to if:(and 
                                 (is In (from) (sites Occupied by:Mover)) 
                                 (is Empty (to))
@@ -68,11 +68,11 @@
         (piece "CounterStar" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-    })  
+    }) 
     
     (rules 
         (start { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ))
+            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1) ))
             (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1)))
         })
         
@@ -134,7 +134,7 @@
                             (if 
                                 (can Move 
                                     (hop 
-                                        (from (last To))  
+                                        (from (last To)) 
                                         Diagonal 
                                         (between 
                                             before:(count Rows)
@@ -146,7 +146,7 @@
                                                 (is In (from) (sites Occupied by:Mover)) 
                                                 (is Empty (to))
                                             )
-                                        )  
+                                        ) 
                                         stack:True
                                     )
                                 ) 
@@ -187,7 +187,7 @@
         (version "1.3.4")
         (classification "board/war/leaping/diagonal")
         (credit "Eric Piette")
-        (origin  "This game was played in Russia, around 1875.")
+        (origin "This game was played in Russia, around 1875.")
         }
     )
     

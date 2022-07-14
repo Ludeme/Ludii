@@ -8,8 +8,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Lontu-Holo"  
-    (players 2)  
+(game "Lontu-Holo" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 6
@@ -18,8 +18,8 @@
             (track "TrackCCW2" {4 5 6 12 11 10} loop:True P2) 
             }
         )
-        (regions "Home" P1 (sites Track "TrackCCW1"))          // P1 home
-        (regions "Home" P2 (sites Track "TrackCCW2"))          // P2 home
+        (regions "Home" P1 (sites Track "TrackCCW1"))     // P1 home
+        (regions "Home" P2 (sites Track "TrackCCW2"))     // P2 home
         (regions "TwoHolesClosestNotCentre" P1 (sites {1 3}))
         (regions "TwoHolesClosestNotCentre" P2 (sites {10 12}))
         (regions "TwoHolesFurtherNotCentre" P1 (sites {7 9}))
@@ -37,8 +37,8 @@
         (map "LeftFurtherRow" {(pair P1 7) (pair P2 6)})
         (map "LeftClosestRow" {(pair P1 1) (pair P2 12)})
         (piece "Seed" Shared)
-        (map "Store" {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
-    })  
+        (map "Store" {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
+    }) 
     (rules 
         (start (set Count 4 to:(union (sites Bottom) (sites Top))))
         
@@ -104,7 +104,7 @@
 
 (option "Variant" <Variant> args:{ <opening> }
     {
-    (item "Lontu Holo"   
+    (item "Lontu Holo"  
         <
         (phase "Opening1"
             (play 
@@ -179,10 +179,10 @@
             
             (nextPhase Mover (is Empty (mapEntry "Store" Mover)) "Sowing")
         )
-        >  
-    "The opening rules of the variant Lontu Holo.")*  
+        > 
+    "The opening rules of the variant Lontu Holo.")* 
     
-    (item "Alternate Opening 1"   
+    (item "Alternate Opening 1"  
         <
         (phase "Opening1"
             (play 
@@ -254,10 +254,10 @@
             
             (nextPhase (and (is Empty (mapEntry "Store" P1)) (is Empty (mapEntry "Store" P2))) "Sowing")
         )
-        >  
+        > 
     "The opening rules of the variant Alternate Opening 1.")
     
-    (item "Alternate Opening 2"   
+    (item "Alternate Opening 2"  
         <
         (phase "Opening1"
             (play 
@@ -347,10 +347,10 @@
             
             (nextPhase (and (is Empty (mapEntry "Store" P1)) (is Empty (mapEntry "Store" P2))) "Sowing")
         )
-        >  
+        > 
     "The opening rules of the variant Alternate Opening 2.") 
     
-    (item "Alternate Opening 3"   
+    (item "Alternate Opening 3"  
         <
         (phase "Opening1"
             (play 
@@ -449,7 +449,7 @@
             
             (nextPhase (and (is Empty (mapEntry "Store" P1)) (is Empty (mapEntry "Store" P2))) "Sowing")
         )
-        >  
+        > 
     "The opening rules of the variant Alternate Opening 3.") 
 })
 
@@ -477,7 +477,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Lontu-Holo is a two-row mancala-style board game played by the Ndyuka people of Suriname. It is one of the only recorded games of this type where the goal is to capture the fewest number of counters.")
@@ -498,7 +498,7 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Suriname, around 1930.")
+        (origin "This game was played in Suriname, around 1930.")
         }
     )
     

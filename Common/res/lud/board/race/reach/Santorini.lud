@@ -12,8 +12,8 @@
 
 //-------------------------------------------------------------------------
 
-(game "Santorini"  
-    (players 2)  
+(game "Santorini" 
+    (players 2) 
     (equipment { 
         (board (square 5)) 
         (hand Each)
@@ -34,7 +34,7 @@
         (piece "SquareSmall" Neutral)
         (piece "Octagon" Neutral)
         (piece "Marker" Neutral)
-    })  
+    }) 
     (rules 
         (start {
             (place Stack "Pawn3d1" (handSite P1) count:2)
@@ -53,7 +53,7 @@
                             (moveAgain)
                         )
                     )
-                )  
+                ) 
             ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )

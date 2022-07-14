@@ -1,5 +1,5 @@
-(game "Groups"  
-    (players 2)  
+(game "Groups" 
+    (players 2) 
     (equipment { 
         (board (square 8)) 
         (piece "Disc" Each 
@@ -8,7 +8,7 @@
                 ("HopAllPiecesToEmpty")
             )
         )
-    })  
+    }) 
     
     (rules 
         (start { 
@@ -18,7 +18,7 @@
         
         (play (forEach Piece))
         
-        (end ("SingleGroupWin" Mover Orthogonal))  
+        (end ("SingleGroupWin" Mover Orthogonal)) 
     )
 )
 

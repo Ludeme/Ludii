@@ -16,8 +16,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Symbol S.2"  
-    (players 2)  
+(game "Symbol S.2" 
+    (players 2) 
     
     (equipment { 
         (board 
@@ -35,7 +35,7 @@
                 "IfLine3MoveAgain"
             )
         ) 
-    })  
+    }) 
     (rules 
         
         (start (place "Marker" "Hand" count:4))
@@ -49,7 +49,7 @@
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
                         "IfLine3MoveAgain"
-                    )  
+                    ) 
                 )
             ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")

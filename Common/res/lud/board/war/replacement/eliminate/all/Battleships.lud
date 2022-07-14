@@ -79,8 +79,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Battleships"  
-    (players 2)  
+(game "Battleships" 
+    (players 2) 
     (equipment { 
         (board (rectangle 10 20))
         ("DefinePiece" "CarrierTemplate" { {F F F F} {L F F F F}} "Carrier")
@@ -91,7 +91,7 @@
         (regions "Defence" P1 (expand (sites Left) steps:9))
         (regions "Defence" P2 (expand (sites Right) steps:9))
         (hand Each size:5)
-    })  
+    }) 
     (rules
         (start {
             (set Hidden (sites P1 "Defence") to:P2)

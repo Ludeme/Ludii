@@ -66,7 +66,7 @@
         )
         (piece "Marker" Each)
         (piece "Rectangle" Each)
-        (regions "Holes"  (union (difference (sites Board Vertex) (sites Outer Vertex)) (sites Corners Vertex)))
+        (regions "Holes" (union (difference (sites Board Vertex) (sites Outer Vertex)) (sites Corners Vertex)))
         (regions P1 {(sites Side N) (sites Side S) })
         (regions P2 {(sites Side W) (sites Side E) })
     })
@@ -110,7 +110,7 @@
             
             Each turn the current player places one of their pegs on an empty hole, which may conquer one or more cells. A cell is conquered by the first player to occupy at least half of its surrounding holes. A blue rectangle is placed on cells conquered by Blue, and a red rectangle is placed on cells conquered by Red.
             The central cell, which has five holes, is conquered by the player who has occupied any three of these holes. 
-        The first player that completes a contiguous chain of connected cells of his colour between the 2 sides of his colour wins the game.  ")
+        The first player that completes a contiguous chain of connected cells of his colour between the 2 sides of his colour wins the game. ")
         (id "1763")
         (source "<a href=\"http://nestorgames.com/rulebooks/CONHEX_EN.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a>
         ")

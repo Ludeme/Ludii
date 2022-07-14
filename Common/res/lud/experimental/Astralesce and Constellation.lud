@@ -41,7 +41,7 @@
 //--------------------------------------------------------
 // Variants
 
-(define "Astralesce"  
+(define "Astralesce" 
     (forEach Piece
         (do
             ("ValueAtFrom")
@@ -69,7 +69,7 @@
                     ))
                     (to 
                         if:(is Next (who at:(to))) 
-                        (apply (remove (to)))  
+                        (apply (remove (to))) 
                 )) 
                 ifAfterwards:(> "ValueAtTo" (var "MaxSizeFrom"))
 ))))
@@ -138,15 +138,15 @@
     (item "Astralesce"
         <"Astralesce"> 
         <"StandardEnd"> 
-        <"Starfour"> //   <"Disc"> 
+        <"Starfour"> //  <"Disc"> 
         "Astralesce: Capturing every opponent's piece along the way, slide a piece to a location in-line with larger groups than the piece had been in-line with before moving. (A group is considered in-line if it contains the first friendly piece along any of the 6 radial grid directions.) Win when unified; if tied, the mover wins."
     )
     
     (item "Constellate"
         <"Constellate"> 
-        <"StandardEnd"> //   <"AMSEnd"> 
+        <"StandardEnd"> //  <"AMSEnd"> 
         <"Starfour"> 
-        "Constellate:  Slide a piece to a location in-line with larger groups than the piece had been in-line with before moving. (A group is considered in-line if it contains the first friendly piece along any of the 6 radial grid directions.) An opponent's piece at the destination is removed. Win when unified; if tied, the mover wins. However, a player who prevents his opponent from moving before either has won, loses."
+        "Constellate: Slide a piece to a location in-line with larger groups than the piece had been in-line with before moving. (A group is considered in-line if it contains the first friendly piece along any of the 6 radial grid directions.) An opponent's piece at the destination is removed. Win when unified; if tied, the mover wins. However, a player who prevents his opponent from moving before either has won, loses."
     )
     }
 )
@@ -156,8 +156,8 @@
     (item "Order 3"
         <4> 
         <(sites Inner)> 
-        //   <(place "Disc1" {5 12 17 20 25 29 })>
-        //   <(place "Disc2" {7 11 16 19 24 31 })>
+        //  <(place "Disc1" {5 12 17 20 25 29 })>
+        //  <(place "Disc2" {7 11 16 19 24 31 })>
         <(place "Disc1" {2 5 8 9 12 17 20 25 29 })>
         <(place "Disc2" {1 4 7 11 14 16 19 24 31 })>
     "Order 4 board")
@@ -199,7 +199,7 @@
             
             This is inherently difficult perceptually, and it remains to be seen if the game can be played without the assistance of an app.
             
-            However the game is both interesting and exciting, and appears to have various levels of strategy.     
+            However the game is both interesting and exciting, and appears to have various levels of strategy.   
             
             The goal is unification, and causing a stalemate before achieving the goal is considered a loss.
             
@@ -250,8 +250,8 @@ E) find the all the lines radiating from all pieces of all groups that are large
     (piece Colour P1 strokeColour:(colour VeryDarkGrey))
     (piece Colour P2 strokeColour:(colour DarkGrey))
     (piece Background "Disc" image:"Disc" fillColour:(colour 0 0 0 75) edgeColour:(colour 0 0 0 0) scale:0.95 offsetX:-1 offsetY:2)
-(piece Foreground "Disc1" image:<Game:token> scale:0.75 ) // fillColour:(colour 0 0 0 75) edgeColour:(colour 0 0 0 0) scale:0.70 )
-(piece Foreground "Disc2" image:<Game:token> fillColour:(colour 255 255 255 60) edgeColour:(colour 255 255 255 120) scale:0.70 )
+(piece Foreground "Disc1" image:<Game:token> scale:0.75) // fillColour:(colour 0 0 0 75) edgeColour:(colour 0 0 0 0) scale:0.70)
+(piece Foreground "Disc2" image:<Game:token> fillColour:(colour 255 255 255 60) edgeColour:(colour 255 255 255 120) scale:0.70)
 (board Colour Phase0 (colour 220 230 245))
 (board StyleThickness InnerEdges 1.6)
 (board StyleThickness OuterEdges 1.6)

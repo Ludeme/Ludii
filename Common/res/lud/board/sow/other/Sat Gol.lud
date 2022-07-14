@@ -33,7 +33,7 @@
                     if:(> (count at:(from)) 0)
                 )
                 (then 
-                    (sow  
+                    (sow 
                         apply:(if (!= 0 (count at:("NextHoleFrom" (to) 1)))
                             (moveAgain)
                             (and
@@ -80,7 +80,7 @@
         (version "1.3.4")
         (classification "board/sow")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1924.")
+        (origin "This game was played in India, around 1924.")
         }
     )
     

@@ -28,13 +28,13 @@
 
 //------------------------------------------------------------------------------
 
-(game "Hasami Shogi"  
-    (players 2)  
+(game "Hasami Shogi" 
+    (players 2) 
     
     (equipment { 
         (board (square 9))
-        (piece "Fuhyo" P1 (move Slide Orthogonal (then (or "CustodialCaptures" "SurroundCaptures" ))))
-        (piece "Tokin" P2 (move Slide Orthogonal (then (or "CustodialCaptures" "SurroundCaptures" ))))
+        (piece "Fuhyo" P1 (move Slide Orthogonal (then (or "CustodialCaptures" "SurroundCaptures"))))
+        (piece "Tokin" P2 (move Slide Orthogonal (then (or "CustodialCaptures" "SurroundCaptures"))))
         }
     )
     
@@ -61,7 +61,7 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/shogi")
         (credit "Eric Piette")
-        (origin  "This game was played in Japan, around 1951.")
+        (origin "This game was played in Japan, around 1951.")
         }
     )
     

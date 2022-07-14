@@ -12,18 +12,18 @@
 
 //------------------------------------------------------------------------------
 
-(game "Toguz Kumalak"  
+(game "Toguz Kumalak" 
     (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns"
             (track "Track" "1,E,N,W" loop:True)
         )
-        (regions P1 (sites Bottom))                       // P1 home
-        (regions P2 (sites Top))                          // P2 home
-        (map {(pair P1 FirstSite) (pair P2 LastSite)})    // kalahs (storage pits)
+        (regions P1 (sites Bottom))            // P1 home
+        (regions P2 (sites Top))             // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
         (piece "Seed" Shared)
-    })  
+    }) 
     (rules 
         
         (start (set Count 9 to:(sites Track)))
@@ -54,7 +54,7 @@
                                         True
                                         (!= (+ (to) ("Tuz" Next)) 19)
                                     )
-                                })  
+                                }) 
                                 (and
                                     (set Value Mover (to))
                                     (fromTo 
@@ -95,7 +95,7 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Central Asia, from around 1500 to 2000.")
+        (origin "This game was played in Central Asia, from around 1500 to 2000.")
         }
     )
     

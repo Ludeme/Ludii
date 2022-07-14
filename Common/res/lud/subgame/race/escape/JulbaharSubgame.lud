@@ -1,4 +1,4 @@
-(define "NotAnEnemy"    
+(define "NotAnEnemy"  
     (not ("IsEnemyAt" (to)))
 )
 
@@ -109,8 +109,8 @@
 
 //-----------------------------------------------------------------------------
 
-(game "JulbaharSubgame"  
-    (players 2)  
+(game "JulbaharSubgame" 
+    (players 2) 
     (equipment { 
         (board (rectangle 2 13)
             {

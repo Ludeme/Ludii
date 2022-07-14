@@ -2,7 +2,7 @@
     (count Sites 
         in:(intersection 
             (sites Around #1) 
-            (sites Occupied by:All)    
+            (sites Occupied by:All)  
         )
     )
 )
@@ -23,7 +23,7 @@
 
 //----------------------------------------------------------------
 
-(game "Abak"  
+(game "Abak" 
     (players <Players>)
     (equipment {
         (board (square <Board:size>))
@@ -44,12 +44,12 @@
                 (move Add 
                     (to (difference (sites Playable) (sites Centre)))
                     (then 
-                        (forEach Site (sites Occupied by:All)  
+                        (forEach Site (sites Occupied by:All) 
                             (if (<= 4 ("Nbors" (to)))
                                 (remove (to)) 
                             )
                             (then 
-                                (forEach Site (sites Occupied by:All)  
+                                (forEach Site (sites Occupied by:All) 
                                     (if (= 0 ("Nbors" (to)))
                                         (remove (to)) 
                                     )
@@ -70,19 +70,19 @@
 
 (option "Board Size" <Board> args:{ <size> <regions> }
     {
-    (item "9x9"    	<9>		<"RegularRegions">		"The game is played on a 9x9 board.")  
-    (item "11x11"	<11>    <"RegularRegions">		"The game is played on a 11x11 board.")**   
-    (item "15x15"   <15>   	<"RegularRegions">		"The game is played on a 15x15 board.")   
-    (item "19x19"   <19>   	<"AlternateRegions">	"The game is played on a 19x19 board.")   
+    (item "9x9"  	<9>		<"RegularRegions">		"The game is played on a 9x9 board.") 
+    (item "11x11"	<11>  <"RegularRegions">		"The game is played on a 11x11 board.")**  
+    (item "15x15"  <15>  	<"RegularRegions">		"The game is played on a 15x15 board.")  
+    (item "19x19"  <19>  	<"AlternateRegions">	"The game is played on a 19x19 board.")  
 })
 
 (option "Players" <Players> args:{ <number> }
     {
-    (item "Two" 	<2>  	"Two players.")**   
-    (item "Three"   <3>		"Three players.")
-    (item "Four"   	<4>		"Four players.")   
-    (item "Five"   	<5>		"Five players.")   
-    (item "Six"   	<6>		"Six players.")    
+    (item "Two" 	<2> 	"Two players.")**  
+    (item "Three"  <3>		"Three players.")
+    (item "Four"  	<4>		"Four players.")  
+    (item "Five"  	<5>		"Five players.")  
+    (item "Six"  	<6>		"Six players.")  
 })
 
 //------------------------------------------------------------------------------
@@ -110,7 +110,7 @@
         (author "Luc Chanteloup (used with permission)")
         (publisher "Lujees edition")
         (credit "Matthew Stephenson and Eric Piette")
-        (origin  "This game is from Le Mans (France), on 2015.")
+        (origin "This game is from Le Mans (France), on 2015.")
         }
     )
     

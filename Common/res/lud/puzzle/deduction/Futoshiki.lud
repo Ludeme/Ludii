@@ -1,5 +1,5 @@
 (game "Futoshiki"
-    (players 1)  
+    (players 1) 
     (equipment { 
         (board 
             (square <Challenge:size>) 
@@ -8,9 +8,9 @@
         ) 
         <Challenge:hints>
         (regions {Columns Rows})
-    })  
+    }) 
     (rules 
-        (start <Challenge:start> )
+        (start <Challenge:start>)
         (play 
             (satisfy {
                 (forAll Hint (< (from) (to)))
@@ -51,7 +51,7 @@
         )
         >
         ""
-    )   
+    )  
     (item "2" 
         <5>
         <

@@ -1,5 +1,5 @@
-(game "Rimau-Rimau (Two Tigers)"  
-    (players 2)  
+(game "Rimau-Rimau (Two Tigers)" 
+    (players 2) 
     (equipment { 
         ("AlquerqueBoardWithBottomAndTopTriangles")
         (hand Each) 
@@ -10,7 +10,7 @@
             })
         ) 
         (piece "human" P2 "StepToEmpty") 
-    })  
+    }) 
     (rules 
         <Start:start>
         <Start:play>
@@ -21,7 +21,7 @@
 
 (option "Start Rules" <Start> args:{ <start> <play> }
     {
-    (item "Tigers Start in hand"       
+    (item "Tigers Start in hand"    
         <
         (start {
             (place "human2" (difference (expand (sites Centre)) (centrePoint)))
@@ -42,7 +42,7 @@
                 (move
                     Remove
                     (intersection (sites Board) (sites Occupied by:Next))
-                    (then  (moveAgain))
+                    (then (moveAgain))
                 )
             )
             (nextPhase Mover "PlacementSecondTiger")
@@ -70,12 +70,12 @@
             (play (forEach Piece))
             (end {
                 (if (no Moves P1) (result P2 Win))
-                (if (no Pieces P2)  (result P1 Win))
+                (if (no Pieces P2) (result P1 Win))
             })
         )
         }
         > 
-    "The two tigers start in the hand.")*   
+    "The two tigers start in the hand.")*  
     (item "Tigers start at the centre" 
         <
         (start {
@@ -140,7 +140,7 @@
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in Singapore, around 1889.")
+        (origin "This game was played in Singapore, around 1889.")
         }
     )
     

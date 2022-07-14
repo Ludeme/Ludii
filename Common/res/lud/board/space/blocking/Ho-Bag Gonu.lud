@@ -19,8 +19,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Ho-Bag Gonu"  
-    (players 2)  
+(game "Ho-Bag Gonu" 
+    (players 2) 
     (equipment { 
         (board 
             (add
@@ -47,7 +47,7 @@
         ) 
         (regions "Home" P1 (sites {"A1" "C1" "E1"}))
         (regions "Home" P2 (sites {"A5" "C5" "E5"}))
-    })  
+    }) 
     (rules 
         (start {
             (place "Disc1" (sites P1))

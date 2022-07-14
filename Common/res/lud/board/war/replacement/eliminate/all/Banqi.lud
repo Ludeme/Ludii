@@ -89,7 +89,7 @@
         
         // Soldier
         (piece "Zu" Each ("StepMove")) 
-    })  
+    }) 
     
     (rules 
         (start { 
@@ -98,7 +98,7 @@
             (place Random {"Ju1"} count:2 value:6) (place Random {"Ju2"} count:2 value:6) 
             (place Random {"Ma1"} count:2 value:5) (place Random {"Ma2"} count:2 value:5) 
             (place Random {"Xiang1"} count:2 value:2) (place Random {"Xiang2"} count:2 value:2) 
-            (place Random {"Shi1"} count:2  value:3) (place Random {"Shi2"} count:2 value:3) 
+            (place Random {"Shi1"} count:2 value:3) (place Random {"Shi2"} count:2 value:3) 
             (place Random {"Jiang1"} count:1 value:7) (place Random {"Jiang2"} count:1 value:7) 
             (set Hidden {What Who} (sites Board) to:P1)
             (set Hidden {What Who} (sites Board) to:P2)

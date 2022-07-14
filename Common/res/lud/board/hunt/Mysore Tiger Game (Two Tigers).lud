@@ -1,5 +1,5 @@
-(game "Mysore Tiger Game (Two Tigers)"  
-    (players 2)  
+(game "Mysore Tiger Game (Two Tigers)" 
+    (players 2) 
     (equipment {
         ("AlquerqueBoardWithFourTriangles")
         (hand Each) 
@@ -10,7 +10,7 @@
                 ("HopCapture")
             )
         )
-    })  
+    }) 
     (rules 
         (start {
             (place "Human2" (handSite P2) count:25)
@@ -46,7 +46,7 @@
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in India, from around 1794 to 1868.")
+        (origin "This game was played in India, from around 1794 to 1868.")
         }
     )
     

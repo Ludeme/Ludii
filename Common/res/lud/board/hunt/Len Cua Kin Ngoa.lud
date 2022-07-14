@@ -37,14 +37,14 @@
 
 //------------------------------------------------------------------------------
 
-(game "Len Cua Kin Ngoa"  
-    (players 2)  
+(game "Len Cua Kin Ngoa" 
+    (players 2) 
     (equipment { 
         (board (square 4))
         (hand P1)
-        (piece "Ox" P1 (or ("HopDiagonalCapture") "StepOrthogonalToEmpty" ))
-        (piece "Tiger" P2 (or ("HopOrthogonalCapture") "StepOrthogonalToEmpty" )) 
-    })  
+        (piece "Ox" P1 (or ("HopDiagonalCapture") "StepOrthogonalToEmpty"))
+        (piece "Tiger" P2 (or ("HopOrthogonalCapture") "StepOrthogonalToEmpty")) 
+    }) 
     (rules 
         (start { 
             (place "Ox1" (handSite P1) count:12)
@@ -74,7 +74,7 @@
                             (count Steps (from) (last To))
                             ("MinDistanceWithCorners")
                         )
-                        (or ("HopOrthogonalCapture") "StepToEmpty" )
+                        (or ("HopOrthogonalCapture") "StepToEmpty")
                     )
                 )
             )
@@ -108,7 +108,7 @@
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in Thailand, around 1836.")
+        (origin "This game was played in Thailand, around 1836.")
         }
     )
     

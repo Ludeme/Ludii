@@ -91,8 +91,8 @@
 
 //-------------------------------------------------------------------------
 
-(game "Cannon"  
-    (players {(player N) (player S)})  
+(game "Cannon" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 10) use:Vertex) 
         (piece "Pawn" Each
@@ -130,7 +130,7 @@
         
         (phase "Moving" 
             (play (forEach Piece))
-            (end  
+            (end 
                 (if (or 
                         (= Off (where "Town" Next)) 
                         (no Moves Next)

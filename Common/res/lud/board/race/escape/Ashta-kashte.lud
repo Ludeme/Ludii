@@ -89,19 +89,19 @@
 
 (option "Players" <Player> args:{ <num> <startP3> <trackP3> <startP4> <trackP4> }
     {
-    (item  "2"  <2> <> <> <> <> "The game involves 2 players.")* 
-    (item  "3"  <3> 
+    (item "2" <2> <> <> <> <> "The game involves 2 players.")* 
+    (item "3" <3> 
         <(place Stack "Paddle3" (handSite P3) count:4)> 
         <(track "Track3" "3,E,N,W,S,E2,NW1,N4,E4,S4,W3,N3,E2,S2,W1,N1" P3 directed:True)> 
         <> 
         <> 
     "The game involves 3 players.")
-    (item  "4"  <4> 
+    (item "4" <4> 
         <(place Stack "Paddle3" (handSite P3) count:4)> 
         <(track "Track3" "3,E,N,W,S,E2,NW1,N4,E4,S4,W3,N3,E2,S2,W1,N1" P3 directed:True)> 
         <(place Stack "Paddle4" (handSite P4) count:4)> 
         <(track "Track4" "45,W,S,E,N,W2,SE1,S4,W4,N4,E3,S3,W2,N2,E1,S1" P4 directed:True)> 
-    "The game involves 4 players.")  
+    "The game involves 4 players.") 
     }
 )
 

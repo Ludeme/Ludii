@@ -96,19 +96,19 @@
 
 (option "Running Score" <Score> args:{ <score> }
     {
-    (item "On"  <(then ("UpdateScoreMover"))>  "The score is currently updated after each move. (This makes the AI weaker.)")
-    (item "Off" <>  "The score is currently updated only when the board is full. (This makes the AI stronger.)")*
+    (item "On" <(then ("UpdateScoreMover"))> "The score is currently updated after each move. (This makes the AI weaker.)")
+    (item "Off" <> "The score is currently updated only when the board is full. (This makes the AI stronger.)")*
     }
 )
 
 (option "Board Size" <Size> args:{ <size> }
     {
-    (item "4"    <4>  "A size 4 board is currently selected")
-    (item "5"    <5>  "A size 5 board is currently selected")
-    (item "6"    <6>  "A size 6 board is currently selected")*
-    (item "7"    <7>  "A size 7 board is currently selected")
-    (item "8"    <8>  "A size 8 board is currently selected")
-    (item "9"    <9>  "A size 9 board is currently selected")
+    (item "4"  <4> "A size 4 board is currently selected")
+    (item "5"  <5> "A size 5 board is currently selected")
+    (item "6"  <6> "A size 6 board is currently selected")*
+    (item "7"  <7> "A size 7 board is currently selected")
+    (item "8"  <8> "A size 8 board is currently selected")
+    (item "9"  <9> "A size 9 board is currently selected")
     }
 )
 

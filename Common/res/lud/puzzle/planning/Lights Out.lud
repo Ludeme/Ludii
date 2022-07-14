@@ -1,9 +1,9 @@
-(game "Lights Out"  
-    (players 1)  
+(game "Lights Out" 
+    (players 1) 
     (equipment { 
         (board (square 5)) 
         (piece "Light" Shared)
-    })  
+    }) 
     (rules
         (start (place Random {"Light"} count:(value Random (range 10 20))))
         (play

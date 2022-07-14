@@ -6,7 +6,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "Kawade Kelia"  
+(game "Kawade Kelia" 
     (players <Player:num>)
     (equipment {
         (board 
@@ -22,7 +22,7 @@
                 (shift 5 13
                     (graph
                         vertices:{ { 0 0 } {0 1} {-0.94 0.26 } {-0.23 -0.44} } 
-                        edges:{ {0 1} {1 2}  {2 3} {3 0}} 
+                        edges:{ {0 1} {1 2} {2 3} {3 0}} 
                     )
                 )
             })
@@ -79,13 +79,13 @@
 
 (option "Players" <Player> args:{ <num> <startP3P4> <trackP3P4> <end> }
     {
-    (item  "2"  <2> <> <> 
+    (item "2" <2> <> <> 
         <
         (if (no Pieces P1) (result P1 Win))
-        (if (no Pieces P2)  (result P2 Win))
+        (if (no Pieces P2) (result P2 Win))
         > 
-    "The game involves 2 players.")  
-    (item  "4"  <4> 
+    "The game involves 2 players.") 
+    (item "4" <4> 
         <
         (place Stack "Paddle3" (handSite P3) count:3)
         (place Stack "Paddle4" (handSite P4) count:3)
@@ -99,7 +99,7 @@
         <
         ("EscapeTeamWin")
         > 
-    "The game involves 4 players.")*  
+    "The game involves 4 players.")* 
     }
 )
 
@@ -116,7 +116,7 @@
         (version "1.3.4")
         (classification "board/race/escape")
         (credit "Eric Piette")
-        (origin  "This game was played in Sri Lanka, around 1898.")
+        (origin "This game was played in Sri Lanka, around 1898.")
         }
     )
     (graphics {

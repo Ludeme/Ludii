@@ -3,18 +3,18 @@
 
 //------------------------------------------------------------------------------
 
-(game "Um el-Bil"  
-    (players 2)  
+(game "Um el-Bil" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Column" store:None
             (track "Track" "0,E,N,W" loop:True)
         )
         (regions P1 (sites Bottom)) // P1 home
-        (regions P2 (sites Top))    // P2 home
+        (regions P2 (sites Top))  // P2 home
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     
     (rules 
         (start (set Count 4 to:(sites Track)))		
@@ -25,7 +25,7 @@
                 (move Select 
                     (from (- ("Column") 1))
                     (then 
-                        (sow  
+                        (sow 
                             if:(= (count at:(to)) 1)
                             apply:(fromTo 
                                 (from (to)) 
@@ -46,7 +46,7 @@
                         if:(< 0 (count at:(from)))
                     )
                     (then 
-                        (sow  
+                        (sow 
                             if:(= (count at:(to)) 1)
                             apply:(fromTo 
                                 (from (to)) 
@@ -67,9 +67,9 @@
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> } {
-    (item "6 Holes"    <6>   "The game is played with 6 holes per row.")*   
-    (item "7 Holes"    <7>   "The game is played with 7 holes per row.")   
-    (item "8 Holes"    <8>   "The game is played with 8 holes per row.")   
+    (item "6 Holes"  <6>  "The game is played with 6 holes per row.")*  
+    (item "7 Holes"  <7>  "The game is played with 7 holes per row.")  
+    (item "8 Holes"  <8>  "The game is played with 8 holes per row.")  
 })
 
 //------------------------------------------------------------------------------
@@ -92,7 +92,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "'Um El-Bil is a two-row mancala-style board game played in Tunisia. Typically it is played in holes in the ground, with camel droppings, shells, or nuts as counters. It was rarely played by young girls. ")
@@ -110,7 +110,7 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Tunisia, around 1988.")
+        (origin "This game was played in Tunisia, around 1988.")
         }
     )
     

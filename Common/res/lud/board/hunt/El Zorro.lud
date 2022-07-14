@@ -1,13 +1,13 @@
-(game "El Zorro"  
-    (players {(player N) (player S)})  
+(game "El Zorro" 
+    (players {(player N) (player S)}) 
     (equipment { 
         ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
-        (piece "Fox" P1 (or ("HopCapture") "StepToEmpty" ))
+        (piece "Fox" P1 (or ("HopCapture") "StepToEmpty"))
         (piece "Hen" P2 ("StepToEmpty" (directions {Rightward Leftward Forwards}))) 
-    })  
+    }) 
     (rules 
         (start { 
-            (place "Hen2" (union (sites Top) (expand  (sites Row 4))))
+            (place "Hen2" (union (sites Top) (expand (sites Row 4))))
             (place "Fox1" (intersection (union (sites Column 4) (sites Column 2)) (sites Bottom)))
         })
         
@@ -36,7 +36,7 @@
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in Canary Islands, from around 1923 to 1994.")
+        (origin "This game was played in Canary Islands, from around 1923 to 1994.")
         }
     )
     

@@ -1,4 +1,4 @@
-(define "NotAnEnemy"    
+(define "NotAnEnemy"  
     (not ("IsEnemyAt" (to)))
 )
 
@@ -94,7 +94,7 @@
 )
 
 (define "InTheStartingPosition" 
-    (= (from) (mapEntry (mover)))  
+    (= (from) (mapEntry (mover))) 
 )
 
 (define "Not14PiecesInThePosition"
@@ -103,8 +103,8 @@
 
 //-----------------------------------------------------------------------------
 
-(game "MughrabiehSubgame"  
-    (players 2)  
+(game "MughrabiehSubgame" 
+    (players 2) 
     (equipment { 
         (board (rectangle 2 13)
             {

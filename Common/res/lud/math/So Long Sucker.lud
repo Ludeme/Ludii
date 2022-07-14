@@ -87,13 +87,13 @@
 
 //-------------------------------------------------------------------------
 
-(game "So Long Sucker"  
-    (players 4)  
+(game "So Long Sucker" 
+    (players 4) 
     (equipment { 
         (board (rectangle 4 7))
         (hand Each size:5)
         (piece "Marker" Each)
-    })  
+    }) 
     (rules
         (start {
             (place Stack "Marker1" (handSite P1) count:7)

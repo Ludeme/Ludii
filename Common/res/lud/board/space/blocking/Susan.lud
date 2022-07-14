@@ -20,12 +20,12 @@
 
 //------------------------------------------------------------------------------
 
-(game "Susan"  
+(game "Susan" 
     (players 2) 
     (equipment { 
         (board (hex 5)) 
         (piece "Marker" Each "StepOrthogonalToEmpty")
-    })  
+    }) 
     
     (rules 
         (play (or
@@ -48,7 +48,7 @@
             (if "SurroundedMySelf" (result Next Win))
             (if ("SurroundedOver" P1) (result P2 Win)) 
             (if ("SurroundedOver" P2) (result P1 Win)) 
-        })  
+        }) 
     )
 )
 

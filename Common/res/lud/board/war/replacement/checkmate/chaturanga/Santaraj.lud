@@ -26,7 +26,7 @@
 //------------------------------------------------------------------------------
 
 (game "Santaraj"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment {
         (board (square 8))
         (hand Each size:5)
@@ -89,7 +89,7 @@
         (regions "Promotion" P2 (sites Bottom))
     })
     (rules 
-        (start {   
+        (start {  
             (place "Pawn1" (sites Row 1))
             (place "Pawn2" (sites Row 6))
             (place "Castle1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Ferz_noCross1" {"C1" "F1"}) (place "Queen1" coord:"D1") (place "King_noCross1" coord:"E1") 
@@ -145,7 +145,7 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in Ethiopia., from around 1892 to 1971.")
+        (origin "This game was played in Ethiopia., from around 1892 to 1971.")
         }
     )
     

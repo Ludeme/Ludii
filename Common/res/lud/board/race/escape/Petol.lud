@@ -23,25 +23,25 @@
                     (shift 4.5 6
                         (graph
                             vertices:{ { 0 0 } { 0 1 } { 2 3 } {2 0 } } 
-                            edges:{ {0 1} {1 2}  {2 3} {3 0}} 
+                            edges:{ {0 1} {1 2} {2 3} {3 0}} 
                         )
                     )
                     (shift 2 7
                         (graph
                             vertices:{ { 0 0 } { 0 2 } { 4.5 2 } {2.5 0 } } 
-                            edges:{ {0 1} {1 2}  {2 3} {3 0}} 
+                            edges:{ {0 1} {1 2} {2 3} {3 0}} 
                         )
                     )
                     (shift 0 7
                         (graph
                             vertices:{ { 0 0 } { 0 2 } { -2.5 2 } {-4.5 0 } } 
-                            edges:{ {0 1} {1 2}  {2 3} {3 0}} 
+                            edges:{ {0 1} {1 2} {2 3} {3 0}} 
                         )
                     )
                     (shift -2.5 10
                         (graph
                             vertices:{ { 0 0 } { 0 -1 } { -2 -3 } {-2 0 } } 
-                            edges:{ {0 1} {1 2}  {2 3} {3 0}} 
+                            edges:{ {0 1} {1 2} {2 3} {3 0}} 
                         )
                     )
                 })
@@ -146,7 +146,7 @@
 //------------------------------------------------------------------------------
 
 (option "Players" <Players> args:{ <num> <tracks> <entries> <endTracks> <startRules> <playingTeamPieces> } {
-    (item "2"  <2>  
+    (item "2" <2> 
         <
         {
         (track "Track1" "56,S,E1,S,E,N,W,S7,W1,N,End" P1 directed:True)
@@ -175,7 +175,7 @@
         )
         >
     "The game is played with 2 players.") 
-    (item "4"  <4>  
+    (item "4" <4> 
         <
         {
         (track "Track1" "56,S,E1,S,E,N,W,S7,W1,N,End" P1 directed:True)
@@ -209,8 +209,8 @@
             (or (forEach Piece P2) (forEach Piece P4))
         )
         >
-    "The game is played with 4 players.")  
-    (item "6"  <6>  
+    "The game is played with 4 players.") 
+    (item "6" <6> 
         <
         {
         (track "Track1" "56,S,E1,S,E,N,W,S7,W1,N,End" P1 directed:True)
@@ -250,7 +250,7 @@
             (or {(forEach Piece P2) (forEach Piece P4) (forEach Piece P6)})
         )
         >
-    "The game is played with 6 players.")*   
+    "The game is played with 6 players.")*  
 })
 
 //------------------------------------------------------------------------------
@@ -279,7 +279,7 @@
         (version "1.3.4")
         (classification "board/race/escape")
         (credit "Eric Piette")
-        (origin  "This game was played in Mexico, around 1924.")
+        (origin "This game was played in Mexico, around 1924.")
         }
     )
     

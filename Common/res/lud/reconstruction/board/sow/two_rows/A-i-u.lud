@@ -1,5 +1,5 @@
-(game "A-i-u"  
-    (players 2)  
+(game "A-i-u" 
+    (players 2) 
     (equipment { 
         (mancalaBoard 2 6 store:None
             {
@@ -8,7 +8,7 @@
             }
         )
         (piece "Seed" Shared)
-    })  
+    }) 
     (rules 
         (start [#])
         (play 
@@ -23,7 +23,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "A-i-ú is a mancala-style board game that was played in Brazil at least until the early twentieth century.")
@@ -34,7 +34,7 @@
         (version "1.3.4")
         (classification "board/sow/two rows/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Brazil, from around 1851 to 1916.")
+        (origin "This game was played in Brazil, from around 1851 to 1916.")
         }
     )
     

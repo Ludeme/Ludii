@@ -1,6 +1,6 @@
 // Proxm Follow-up consequenses as separate moves.
 
-(define "Constant" <Constant:forConversion> )  // options 0 or 2
+(define "Constant" <Constant:forConversion>) // options 0 or 2
 
 (define "TrioAt"
     (intersection (sites Around (to)) (sites #1 {{R} {F R F} {F L F}} rotations:True))
@@ -23,7 +23,7 @@
         }
 )) 
 
-(define "SitesToConvert"  
+(define "SitesToConvert" 
     (forEach 
         of:(sites State 2)
         (sites Around (site)
@@ -36,7 +36,7 @@
                 }
 ))))
 
-// Using  (not (is Mover ... instead of  (is Next... 
+// Using (not (is Mover ... instead of (is Next... 
             // because (moveAgain) is changing who is next.
             // To get here with state 1, the site is not empty.
             
@@ -178,7 +178,7 @@
                     "43 Cell Diagonal Hexhex board with diameter 9"
                 )
                 (item "Dia 10" 
-                    <(remove (hex Hexagon 7) cells:{0 1 2 4 5 6 7 8 13 14 15 23 34 44 45 56 57 58 68 69 70 81 82 92 103 111 112 113 118 119 120 121 122 124 125 126})>  
+                    <(remove (hex Hexagon 7) cells:{0 1 2 4 5 6 7 8 13 14 15 23 34 44 45 56 57 58 68 69 70 81 82 92 103 111 112 113 118 119 120 121 122 124 125 126})> 
                     "91 Cell Diagonal Hexhex board with diameter 10"
                 )**
                 (item "Dia 13" 
@@ -192,14 +192,14 @@
                 }
             ) 
             
-            (option "Implementation" <Conversion>  args:{ <application> }
+            (option "Implementation" <Conversion> args:{ <application> }
                 {
                 (item "Automatic" <"AutomaticConversions"> "All conversions are automatically applied as an immediate consequence")
                 (item "Manual" <"ManualConversions"> "Conversions are selected manually one by one - to see what is happening...")
                 }
             ) 
             
-            (option "Conversion by" <Constant>  args:{ <forConversion> }
+            (option "Conversion by" <Constant> args:{ <forConversion> }
                 {
                 (item "Majority" <0> "Triplets with greater friendly value convert a surronded stone")
                 (item "2 Extra" <2> "Triplets need an excess value of at least 2 to convert a surronded stone")
@@ -215,7 +215,7 @@
                         
                         The goal is to have the higher total piece value in play when the board is full. However, pieces on the outermost cells don't score because they are invulnerable.
                         
-                        The idea originated in a search for a playable game based on using surrounding of pieces by triangular formations.   
+                        The idea originated in a search for a playable game based on using surrounding of pieces by triangular formations.  
                         "
                     )
                     (rules "Definitions:
@@ -258,12 +258,12 @@
                     (board StyleThickness OuterVertices 0.4)
                     (board Colour Symbols (colour Black))
                     (piece Scale value:1 .7)
-                    (piece Colour P1 state:0 fillColour:(colour Black) strokeColour:(colour 100 100 100 ))
-                    (piece Colour P1 state:1 fillColour:(colour 110 120 110 50) strokeColour:(colour 100 100 100 ))
-                    (piece Colour P1 state:2 fillColour:(colour Black) strokeColour:(colour 100 100 100 ))
-                    (piece Colour P2  state:0 fillColour:(colour LightOrange) strokeColour:(colour 100 100 100 ))   
-                    (piece Colour P2  state:1 fillColour:(colour 255 170 55 90) strokeColour:(colour 100 100 100 ))
-                    (piece Colour P2  state:2 fillColour:(colour LightOrange) strokeColour:(colour 100 100 100 ))
+                    (piece Colour P1 state:0 fillColour:(colour Black) strokeColour:(colour 100 100 100))
+                    (piece Colour P1 state:1 fillColour:(colour 110 120 110 50) strokeColour:(colour 100 100 100))
+                    (piece Colour P1 state:2 fillColour:(colour Black) strokeColour:(colour 100 100 100))
+                    (piece Colour P2 state:0 fillColour:(colour LightOrange) strokeColour:(colour 100 100 100))  
+                    (piece Colour P2 state:1 fillColour:(colour 255 170 55 90) strokeColour:(colour 100 100 100))
+                    (piece Colour P2 state:2 fillColour:(colour LightOrange) strokeColour:(colour 100 100 100))
                     (piece Background value:1 image:"disc.svg"fillColour:(colour 0 0 0 100) edgeColour:(colour 0 0 0 0) scale:.7)
                     (piece Background value:3 image:"disc.svg"fillColour:(colour 0 0 0 100) edgeColour:(colour 0 0 0 0))
                     (player Colour P1 (colour Black))
@@ -272,7 +272,7 @@
                     (region Colour (sites State 1) (colour 160 200 170 150))
                     (region Colour (sites State 2) (colour 160 200 170))
                 (show Piece Value Middle scale:.7 offsetX:.28 offsetY:.2) // valueOutline:True scale:.8)
-                //   (show Piece State) 
+                //  (show Piece State) 
                 }
             )
             (ai (heuristics (score weight:3)))

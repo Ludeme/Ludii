@@ -10,16 +10,16 @@
 //------------------------------------------------------------------------------
 
 (game "Sungka" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         (mancalaBoard 2 "Columns"
             (track "Track" "7,W,WNW,ENE,E,ESE" loop:True)
         )
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
         (piece "Seed" Shared)
-    })  
+    }) 
     
     (rules 
         (start (set Count "Columns" to:(union (sites P1) (sites P2))))		

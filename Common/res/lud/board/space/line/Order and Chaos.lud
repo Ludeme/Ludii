@@ -1,11 +1,11 @@
-(game "Order and Chaos"  
-    (players 2)  
+(game "Order and Chaos" 
+    (players 2) 
     (equipment { 
         (board (square 6)) 
         (piece "Disc" Shared) 
         (piece "Cross" Shared)
         (hand Shared size:2) 
-    })  
+    }) 
     (rules 
         (start {
             (place "Disc" (handSite Shared)) 

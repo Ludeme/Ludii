@@ -45,7 +45,7 @@
 //------------------------------------------------------------------------------
 
 (game "Qelat"
-    (players 2)  
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 6 store:None
@@ -56,10 +56,10 @@
         )
         (piece "Seed" Shared)
         (hand Each)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
         (map "RightMost" {(pair P1 5) (pair P2 6)})
-    })  
+    }) 
     (rules 
         (start {
             (set RememberValue "OwnedP1" (sites Bottom))
@@ -207,7 +207,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Qelat is a two-row mancala-style board game that is played in western Eritrea. It is very similar to the Gabata game from Shoa in Ethiopia, which is one of the more widely played Gabata games in the region.")

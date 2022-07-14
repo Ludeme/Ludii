@@ -154,7 +154,7 @@
         (regions "Goal" P1 (sites Top))
         (regions "Goal" P2 (sites Bottom))
         }
-    )  
+    ) 
     (rules 
         (start { 
             (place "Rabbit" "Hand" count:8 value:1)
@@ -169,7 +169,7 @@
         (phase "PlacementP1"
             (play 
                 (move 
-                    (from (sites Occupied by:Mover container:(mover)))  // pieces in the hand of P1.
+                    (from (sites Occupied by:Mover container:(mover))) // pieces in the hand of P1.
                     (to (forEach (sites Mover "Home") if:(is Empty (site)))) 
                     (then (if (not ("HandEmpty" P1)) (moveAgain))) 
                 ) 
@@ -180,7 +180,7 @@
         (phase "PlacementP2"
             (play 
                 (move 
-                    (from (sites Occupied by:Mover container:(mover)))  // pieces in the hand of P2.
+                    (from (sites Occupied by:Mover container:(mover))) // pieces in the hand of P2.
                     (to (forEach (sites Mover "Home") if:(is Empty (site)))) 
                     (then (if ("HandEmpty" P2) (remember State) (moveAgain))) 
                 ) 
@@ -188,7 +188,7 @@
             (nextPhase ("HandEmpty" P2) "Movement")
         )
         
-        (phase "Movement"  
+        (phase "Movement" 
             (play
                 (avoidStoredState
                     (if "HasToPushAPiece"

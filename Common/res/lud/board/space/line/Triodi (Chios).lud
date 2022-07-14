@@ -34,7 +34,7 @@
             )
         ) 
         }
-    )  
+    ) 
     (rules 
         (start (place "Marker" "Hand" count:3))
         
@@ -44,7 +44,7 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty)) 
-                )  
+                ) 
             ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
@@ -69,7 +69,7 @@
         (version "1.3.4")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in Greece, around 1949.")
+        (origin "This game was played in Greece, around 1949.")
         }
     )
     

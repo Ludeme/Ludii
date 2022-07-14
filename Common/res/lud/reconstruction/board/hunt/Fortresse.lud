@@ -1,5 +1,5 @@
-(game "Fortresse"  
-    (players 2)  
+(game "Fortresse" 
+    (players 2) 
     (equipment { 
         (board 
             (merge 
@@ -8,13 +8,13 @@
             )
             use:Vertex
         )
-        (piece "Marker" P1 (or ("HopCapture") "StepToEmpty" ))
+        (piece "Marker" P1 (or ("HopCapture") "StepToEmpty"))
         (piece "Marker" P2 "StepToEmpty") 
-    })  
+    }) 
     (rules 
         (start {
             (place "Marker1" (forEach (sites [#]) if:(is Occupied (site)))) // We do not know where start the pieces of P1
-            (place "Marker2"  (union (sites Row 2) (expand (sites Bottom) steps:2)))
+            (place "Marker2" (union (sites Row 2) (expand (sites Bottom) steps:2)))
         })
         
         (play (forEach Piece))
@@ -46,7 +46,7 @@
         (version "1.3.4")
         (classification "board/hunt/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Switzerland, around 1917.")
+        (origin "This game was played in Switzerland, around 1917.")
         }
     )
     

@@ -1,19 +1,19 @@
 // Murus Gallicus and Advanced Murus Gallicus by Phil Leduc
 
-//  Move a tower (2-stack) in any direction into the two nearest cells if the
+// Move a tower (2-stack) in any direction into the two nearest cells if the
 // destination cells are empty or contain a mover/own singleton (1-stack).
 (define "MoveTower"
     (move Hop
         (from if:(and (is Mover (who at:(from)))
                 (= (size Stack at:(from)) 2)
-            )  
+            ) 
         )
-        (between  if:(or 
+        (between if:(or 
                 (is Empty (between))
                 (and 
                     (is Mover (who at:(between)))
                     (< (size Stack at:(between)) <Stack:limit>) 
-                )  
+                ) 
             ) 
             (apply (fromTo (from) (to (between))))
         )
@@ -22,7 +22,7 @@
                 (is Empty (to))
                 (and (is Mover (who at:(to)))
                     (< (size Stack at:(to)) <Stack:limit>)
-                )  
+                ) 
             ) 
         )
         stack:True
@@ -34,11 +34,11 @@
     (move Step
         (from if:(and (is Mover (who at:(from)))
                 (= (size Stack at:(from)) 2)
-            )  
+            ) 
         )
         (to 
             if:(and ("IsEnemyAt" (to)) ("IsSingletonStack" (to)))
-            (apply (remove (to)))   // This removes the only enemy piece in the 'to' cell.
+            (apply (remove (to)))  // This removes the only enemy piece in the 'to' cell.
         )
         stack:True
         (then
@@ -47,7 +47,7 @@
                     (from (last To))
                     (to (last From))
                 )
-                (remove (last To))        
+                (remove (last To))    
             ) 
         )
     )
@@ -58,11 +58,11 @@
     (move Step
         (from if:(and (is Mover (who at:(from)))
                 (= (size Stack at:(from)) 2)
-            )  
+            ) 
         )
         (to 
             if:(and ("IsEnemyAt" (to)) (= (size Stack at:(to)) 3))
-            (apply (remove (to)))   // This removes one enemy piece in the 'to' cell.
+            (apply (remove (to)))  // This removes one enemy piece in the 'to' cell.
         )
         stack:True
         (then
@@ -84,31 +84,31 @@
     (move Hop
         (from if:(and (is Mover (who at:(from)))
                 (= (size Stack at:(from)) 3)
-            )   
-        )                                       
+            )  
+        )                    
         (difference All Backwards)
         (between (range 1 2) if:True)
         (to if:
             (and
-                (not ("IsEnemyAt" (to)))  
-                (not (is Mover (who at:(to))))  
+                (not ("IsEnemyAt" (to))) 
+                (not (is Mover (who at:(to)))) 
             )
         )
     )
 )
 
 // Throw a stone left, diagonally left, straight ahead, diagonally right, or right two or three cells regardless
-// of what is between the 3-stack and the target ENEMY-OCCUPIED  cell.
+// of what is between the 3-stack and the target ENEMY-OCCUPIED cell.
 (define "ThrowStonetoEnemy"
     (move Hop
         (from if:(and (is Mover (who at:(from)))
                 (= (size Stack at:(from)) 3)
-            )   
-        )                                       
+            )  
+        )                    
         (difference All Backwards)
         (between (range 1 2) if:True)
         (to if:
-            ("IsEnemyAt" (to))  
+            ("IsEnemyAt" (to)) 
         )
         (then
             (and
@@ -121,8 +121,8 @@
 
 //**************************************************************************************************
 
-(game "Murus Gallicus"  
-    (players {(player N) (player S)})  
+(game "Murus Gallicus" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (<Board:shape>)) 
         (piece "Counter_isometric" Each) 
@@ -130,7 +130,7 @@
         (regions "RomanGoal1" P1 (sites Top))
         (regions "GaulGoal2" P2 (sites Bottom))
         
-    })  
+    }) 
     (rules
         (start {
             (place Stack "Counter_isometric1" (sites {<Board:rangeP1>}) count:2)
@@ -143,18 +143,18 @@
                     (move
                         (from (last From))
                         (to (last To)) 
-                        stack:True               
+                        stack:True        
                         (then 
                             (and 
                                 (remove (last To)) 
                                 (remove (last To)) 
                             )
-                        )                
-                    )                
+                        )        
+                    )        
                     (move Pass)
                 )
                 (forEach Piece "Counter_isometric"
-                    (or     
+                    (or   
                         {
                         "MoveTower"
                         "SacrificeCaptureWall"
@@ -166,7 +166,7 @@
                     )
                     top:True
                 )
-            )            
+            )      
         )
         
         (end {
@@ -180,23 +180,23 @@
 
 (option "Stacking Limit" <Stack> args:{ <limit> }
     {
-    (item "Standard"        <2>    "Stack limit is 2.")*
-    (item "Advanced"       <3>    "Stack limit is 3.")
+    (item "Standard"    <2>  "Stack limit is 2.")*
+    (item "Advanced"    <3>  "Stack limit is 3.")
     }
 )
 
 (option "Board" <Board> args:{ <shape> <rangeP1> <rangeP2>}
     {
-    (item "Rectangle 7 x 8 1r"        <rectangle 7 8>   <0..7>   <48..55>    "Standard 7 x 8, one row")*
-    (item "Square 8 x 8 1r"            <square 8>         <0..7>   <56..63>     "Square 8 x 8, one row")
-    (item "Square 8 x 8 2r"            <square 8>         <0..15>   <48..63>   "Square 8 x 8, two rows")
-    (item "Hex 5 x 5 x 5 2r"            <hex 5>              <0..10> <50..60>     "Hexhex base 5, two rows.")
+    (item "Rectangle 7 x 8 1r"    <rectangle 7 8>  <0..7>  <48..55>  "Standard 7 x 8, one row")*
+    (item "Square 8 x 8 1r"      <square 8>     <0..7>  <56..63>   "Square 8 x 8, one row")
+    (item "Square 8 x 8 2r"      <square 8>     <0..15>  <48..63>  "Square 8 x 8, two rows")
+    (item "Hex 5 x 5 x 5 2r"      <hex 5>       <0..10> <50..60>   "Hexhex base 5, two rows.")
     }
 )
 
 (option "End Game" <End> args:{ <event> }
     {
-    (item "Immediate"        
+    (item "Immediate"    
         <
         (if 
             (and 
@@ -208,17 +208,17 @@
             )
             (result Mover Win)
         )
-        >    
-        "Immediately after reaching goal."    
-    )*    
-    (item "Delayed"      
+        >  
+        "Immediately after reaching goal."  
+    )*  
+    (item "Delayed"   
         <
-        (if (= 1 (count Sites in:(intersection (sites Occupied by:Next)  (sites Next)  )     ))
+        (if (= 1 (count Sites in:(intersection (sites Occupied by:Next) (sites Next) )  ))
             (result Next Win)
         )
-        >    
-        "After opponent's last chance to remove invader."    
-    )    
+        >  
+        "After opponent's last chance to remove invader."  
+    )  
     }
 )
 
@@ -281,7 +281,7 @@ Goal: A player wins by reaching any cell of his or her opponent's home row and t
     (board Colour Phase1 (colour "#FCFCE1"))
     (player Colour P1 (colour HumanLight))
     (player Colour P2 (colour Brown))
-})        
+})    
 
 )
 

@@ -11,7 +11,7 @@
             })
         )
     )
-)  
+) 
 
 (define "EmptyButNotVisitedWithEnemyIn"
     (and { 
@@ -72,7 +72,7 @@
     )
 )
 
-(define "CaptureFromLast"  		
+(define "CaptureFromLast" 		
     (or 
         ("MoveAgainIn" #1 (to) SameDirection (last To) (directions Vertex from:(last From) to:(last To)))
         ("MoveAgainIn" #1 (from) OppositeDirection (last From) (directions Vertex from:(last To) to:(last From)))
@@ -115,11 +115,11 @@
 //------------------------------------------------------------------------------
 
 (game "Vela" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         ("AlquerqueBoard" 5 9)
         (piece "Marker" Each)
-    })  
+    }) 
     
     (rules 
         (start { 
@@ -184,7 +184,7 @@
         (version "1.3.4")
         (classification "board/war/direction/linear")
         (credit "Eric Piette")
-        (origin  "This game was played in Madagascar, around 1896.")
+        (origin "This game was played in Madagascar, around 1896.")
         }
     )
     

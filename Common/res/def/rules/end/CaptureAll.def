@@ -1,0 +1,6 @@
+// Checks if a player has no piece and lose. This ludemeplex can be used only in an ending condition.
+// @example ("CaptureAll" Next)
+
+(define "CaptureAll"
+		(if (no Pieces #1) (result #1 Loss))
+)

@@ -23,8 +23,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Mak Ruk"  
-    (players {(player N) (player S)})  
+(game "Mak Ruk" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -107,7 +107,7 @@
         )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
-    })  
+    }) 
     (rules 
         (start
             { 
@@ -153,7 +153,7 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in Thailand, around 1839.")
+        (origin "This game was played in Thailand, around 1839.")
         }
     )
     

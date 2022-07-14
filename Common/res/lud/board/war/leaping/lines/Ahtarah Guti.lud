@@ -1,5 +1,5 @@
-(game "Ahtarah Guti"  
-    (players 2)  
+(game "Ahtarah Guti" 
+    (players 2) 
     (equipment { 
         (board 
             (merge 
@@ -17,7 +17,7 @@
                 ("StepToEmpty")
             )
         )
-    })  
+    }) 
     (rules 
         (start { 
             (place "Marker1" (union {(sites Row 0) (sites Row 1) (sites Row 2) (sites Row 3) (sites {13 14})}))
@@ -52,7 +52,7 @@
         (version "1.3.4")
         (classification "board/war/leaping/lines")
         (credit "Matthew Stephenson")
-        (origin  "This game was played in South Asia., from around 1904 to 1905.")
+        (origin "This game was played in South Asia., from around 1904 to 1905.")
         }
     )
     

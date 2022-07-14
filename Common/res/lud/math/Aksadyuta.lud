@@ -34,10 +34,10 @@
                 (if (and ("Treta" (handSite P1)) ("Dvapara" (handSite P2))) (result P1 Win))
                 (if (and ("Treta" (handSite P2)) ("Dvapara" (handSite P1))) (result P2 Win))
                 
-                (if (and ("Krta" (handSite P1))  ("Krta" (handSite P2))) (result Mover Draw))
-                (if (and ("Kali" (handSite P1))  ("Kali" (handSite P2))) (result Mover Draw))
-                (if (and ("Dvapara" (handSite P1))  ("Dvapara" (handSite P2))) (result Mover Draw))
-                (if (and ("Treta" (handSite P1))  ("Treta" (handSite P2))) (result Mover Draw))
+                (if (and ("Krta" (handSite P1)) ("Krta" (handSite P2))) (result Mover Draw))
+                (if (and ("Kali" (handSite P1)) ("Kali" (handSite P2))) (result Mover Draw))
+                (if (and ("Dvapara" (handSite P1)) ("Dvapara" (handSite P2))) (result Mover Draw))
+                (if (and ("Treta" (handSite P1)) ("Treta" (handSite P2))) (result Mover Draw))
             })
         })
     )
@@ -47,7 +47,7 @@
 
 (option "Variant" <Variant> args:{ <name> }
     {
-    (item "Syed"   <>  "The game is played with the rules of Syed.")*   
+    (item "Syed"  <> "The game is played with the rules of Syed.")*  
 })
 
 //------------------------------------------------------------------------------
@@ -82,7 +82,7 @@
         (version "1.3.4")
         (classification "math")
         (credit "Eric Piette")
-        (origin  "This game was played in India, from around 1000BCE to 901BCE.")
+        (origin "This game was played in India, from around 1000BCE to 901BCE.")
         }
     )
     

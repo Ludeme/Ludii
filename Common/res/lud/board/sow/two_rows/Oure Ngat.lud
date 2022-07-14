@@ -4,8 +4,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Oure Ngat"  
-    (players 2)  
+(game "Oure Ngat" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 4 store:None
@@ -13,9 +13,9 @@
         )
         (piece "Seed" Shared)
         (regions "Home" P1 (sites Bottom)) // P1 Home
-        (regions "Home" P2 (sites Top))    // P2 home
+        (regions "Home" P2 (sites Top))  // P2 home
         (hand Each)
-    })  
+    }) 
     (rules 
         (start (set Count 6 to:(sites Track)))
         
@@ -50,7 +50,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     
     (info
         {

@@ -38,7 +38,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )   
+    )  
 )
 
 (define "DoCastle"
@@ -107,8 +107,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "ChessX"  
-    (players {(player N) (player S)})  
+(game "ChessX" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -183,7 +183,7 @@
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
         }
-    )  
+    ) 
     (rules 
         (start
             { 
@@ -253,7 +253,7 @@
         (version "0.9.3")
         (classification "board/war/chess")
         (credit "Eric Piette")
-        (origin  "This game was played in Europe, around 1512CE.")
+        (origin "This game was played in Europe, around 1512CE.")
         }
     )
     

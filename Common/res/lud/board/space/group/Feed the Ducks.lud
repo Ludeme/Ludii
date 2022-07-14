@@ -1,10 +1,10 @@
-(game "Feed the Ducks"  
+(game "Feed the Ducks" 
     (players 2) 
     (equipment { 
         (board (hex 5)) 
         (piece "Marker" Each)
         (piece "Disc" Neutral)
-    })  
+    }) 
     (rules 
         (start {
             (place "Marker1" {"A5" "C7" "D8" "F9" "H9" "I9" "I7" "I5" "F2" "C1" "A1" "A2"}) 
@@ -34,7 +34,7 @@
         (end {
             ("SingleGroupWin" P1)
             ("SingleGroupWin" P2)
-        })  
+        }) 
     )
 )
 

@@ -85,8 +85,8 @@
 
 (option "Running Score" <Score> args:{ <score> }
     {
-    (item "On"  <("UpdateScore")>  "The score is currently updated after each move.")
-    (item "Off" <(if (is Full) ("UpdateScore"))>  "The score is currently updated only when the board is full. (This makes the AI stronger.)")*
+    (item "On" <("UpdateScore")> "The score is currently updated after each move.")
+    (item "Off" <(if (is Full) ("UpdateScore"))> "The score is currently updated only when the board is full. (This makes the AI stronger.)")*
     }
 )
 

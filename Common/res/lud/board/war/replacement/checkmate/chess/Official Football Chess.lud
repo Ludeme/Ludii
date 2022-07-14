@@ -34,7 +34,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )   
+    )  
 )
 
 (define "DecideToCastle"
@@ -126,8 +126,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Official Football Chess"  
-    (players {(player N) (player S)})  
+(game "Official Football Chess" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -207,7 +207,7 @@
         (map "RookRight" {(pair 1 "H1") (pair 2 "H8")})
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Pawn1" (sites {"B2" "C2" "E2" "F2"}))

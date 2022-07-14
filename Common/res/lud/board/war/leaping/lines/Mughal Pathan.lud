@@ -1,5 +1,5 @@
-(game "Mughal Pathan"  
-    (players 2)  
+(game "Mughal Pathan" 
+    (players 2) 
     (equipment { 
         (board
             (add
@@ -24,7 +24,7 @@
             )
         )
         }
-    )  
+    ) 
     (rules 
         (start {
             (place "Marker1" (union (sites Bottom) (expand (sites Row 2))))
@@ -59,7 +59,7 @@
         (version "1.3.4")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1938.")
+        (origin "This game was played in India, around 1938.")
         }
     )
     

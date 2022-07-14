@@ -1,5 +1,5 @@
-(game "Pong Hau K'i"  
-    (players 2)  
+(game "Pong Hau K'i" 
+    (players 2) 
     (equipment { 
         (board 
             (add
@@ -13,12 +13,12 @@
         )
         (hand Each)
         (piece "Disc" Each "StepToEmpty")
-    })  
+    }) 
     
     (rules 
         (start <Rules:start>)
         <Rules:play>
-        (end ("NoMoves" Loss))  
+        (end ("NoMoves" Loss)) 
     )
 )
 
@@ -26,13 +26,13 @@
 
 (option "Start Rules" <Rules> args:{ <start> <play> }
     {
-    (item "Placed"     
+    (item "Placed"   
         <{(place "Disc1" {"A3" "C3"}) (place "Disc2" {"A1" "C1"})}> 
         <(play (forEach Piece))> 
         "The piece are already placed on the board."
     )*
     
-    (item "To place"     
+    (item "To place"   
         <(place "Disc" "Hand" count:2)> 
         <phases:{
         (phase "Placement" 
@@ -43,12 +43,12 @@
                 )
             ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )  
+        ) 
         
         (phase "Movement" 
             (play (forEach Piece))
         )
-        }>   
+        }>  
         "The pieces have to place before to play."
     )
     }
@@ -68,7 +68,7 @@
         (version "1.3.4")
         (classification "board/space/blocking")
         (credit "Eric Piette")
-        (origin  "This game was played in Asia, around 1895.")
+        (origin "This game was played in Asia, around 1895.")
         }
     )
     

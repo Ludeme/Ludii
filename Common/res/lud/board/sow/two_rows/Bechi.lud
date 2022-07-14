@@ -108,19 +108,19 @@
 
 //------------------------------------------------------------------------------
 
-(game "Bechi"  
-    (players 2)  
+(game "Bechi" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 ("Column") store:None
             <Board:tracks>
         )
-        (regions "Home" P1 (sites Bottom))                     // P1 home
-        (regions "Home" P2 (sites Top))                        // P2 home
+        (regions "Home" P1 (sites Bottom))           // P1 home
+        (regions "Home" P2 (sites Top))            // P2 home
         <Board:regions>
         (piece "Seed" Shared) 
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start (set Count 6 to:(sites Track)))
@@ -189,8 +189,8 @@
 
 (option "Variant" <Board> args:{ <size> <tracks> <regions> <centreMove>}
     {
-    (item "Kunama"  
-        <4>     
+    (item "Kunama" 
+        <4>   
         <
         {
         (track "TrackCW" "3,W,N,E" loop:True)
@@ -206,7 +206,7 @@
         <>
         "The board has 4 columns."
     )
-    (item "Three Holes"  
+    (item "Three Holes" 
         <3> 
         <
         {
@@ -282,7 +282,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Béchi is a two-row mancala-style board game played by the Kunama people of Eritrea, particularly by boys and adolescent young men. It involves trickery, in which eliminated holes can be deceptively filled with counters to fool the other player into thinking they can play there.")

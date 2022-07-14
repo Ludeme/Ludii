@@ -29,7 +29,7 @@
                 "IfLine3MoveAgain" 
             )
         ) 
-    })  
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:[#]))
         
@@ -42,7 +42,7 @@
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
                         "IfLine3MoveAgain" 
-                    )  
+                    ) 
                 )
             ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")

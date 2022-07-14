@@ -86,7 +86,7 @@
 //------------------------------------------------------------------------------
 
 (game "Sittuyin"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment {
         (board (square 8))
         (hand Each size:6)
@@ -178,7 +178,7 @@
         })
     })
     (rules 
-        (start {   
+        (start {  
             (place "Pawn1" (difference (sites Row 2) (expand (sites Right) steps:3)))
             (place "Pawn1" (difference (sites Row 3) (expand (sites Left) steps:3)))
             (place "Pawn2" (difference (sites Row 4) (expand (sites Right) steps:3)))
@@ -246,7 +246,7 @@
                     ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
                 )
             )
-            (end             
+            (end       
                 (if (and 
                         ("IsInCheck" "King_noCross" Next)
                         ("NextCanNotMove")
@@ -274,7 +274,7 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in Myanmar, from around 1795 to 1798.")
+        (origin "This game was played in Myanmar, from around 1795 to 1798.")
         }
     )
     

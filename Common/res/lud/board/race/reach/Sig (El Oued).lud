@@ -127,13 +127,13 @@
                 })
             )
             {
-            (track "FirstTrack"  "0,E,N1,W,N1,E1" directed:True)
+            (track "FirstTrack" "0,E,N1,W,N1,E1" directed:True)
             (track "SecondTrack" "13,E,N1,W,N1,E" directed:True)
             }
         )
         (dice d:2 from:0 num:6)
         (piece "Father" Each ("Move" (if (= 1 (var "SpecialSig")) (+ 1 ("ThrowValue")) ("ThrowValue"))))
-        (piece "Djinn" Each  
+        (piece "Djinn" Each 
             (if (= ("Mecca") (where "Father" Mover))
                 ("Move" (* 2 (if (= 1 (var "SpecialSig")) (+ 1 ("ThrowValue")) ("ThrowValue"))) ("GoToStep1Djinn"))
             )
@@ -196,8 +196,8 @@
             (place Stack "Mother2" 0)
         })
         >
-    "The game has 2 players.")   
-    (item "3" <3>  
+    "The game has 2 players.")  
+    (item "3" <3> 
         <
         (start {
             (place Stack "Father1" 0)
@@ -211,8 +211,8 @@
             (place Stack "Mother3" 0)
         })
         >
-    "The game has 3 players.")  
-    (item "4" <4>  
+    "The game has 3 players.") 
+    (item "4" <4> 
         <
         (start {
             (place Stack "Father1" 0)
@@ -229,8 +229,8 @@
             (place Stack "Mother4" 0)
         })
         >
-    "The game has 4 players.")*  
-    (item "5" <5>  
+    "The game has 4 players.")* 
+    (item "5" <5> 
         <
         (start {
             (place Stack "Father1" 0)
@@ -250,8 +250,8 @@
             (place Stack "Mother5" 0)
         })
         >
-    "The game has 5 players.")  
-    (item "6" <6>  
+    "The game has 5 players.") 
+    (item "6" <6> 
         <
         (start {
             (place Stack "Father1" 0)
@@ -274,8 +274,8 @@
             (place Stack "Mother6" 0)
         })
         >
-    "The game has 6 players.")  
-    (item "7" <7>  
+    "The game has 6 players.") 
+    (item "7" <7> 
         <
         (start {
             (place Stack "Father1" 0)
@@ -301,8 +301,8 @@
             (place Stack "Mother7" 0)
         })
         >
-    "The game has 7 players.")  
-    (item "8" <8>  
+    "The game has 7 players.") 
+    (item "8" <8> 
         <
         (start {
             (place Stack "Father1" 0)
@@ -331,7 +331,7 @@
             (place Stack "Mother8" 0)
         })
         >
-    "The game has 8 players.")  
+    "The game has 8 players.") 
 })
 
 //------------------------------------------------------------------------------
@@ -358,7 +358,7 @@
         (version "1.3.4")
         (classification "board/race/reach")
         (credit "Eric Piette")
-        (origin  "This game was played in Algeria, around 1964.")
+        (origin "This game was played in Algeria, around 1964.")
         }
     )
     

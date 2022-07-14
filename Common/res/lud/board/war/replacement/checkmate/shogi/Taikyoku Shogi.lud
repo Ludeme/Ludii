@@ -7,7 +7,7 @@
                     (is In (last To) (sites Mover "Promotion")) 
                     (is In (last From) (sites Mover "Promotion")) 
                 ) 
-            )  
+            ) 
             (moveAgain) 
         ) 
     ) 
@@ -73,15 +73,15 @@
 
 //------------------------------------------------------------------------------
 
-(game "Taikyoku Shogi"  
-    (players {(player N) (player S)})  
+(game "Taikyoku Shogi" 
+    (players {(player N) (player S)}) 
     
     (equipment { 
         (board (square 36))
         
         (piece "King" Each ("SlideMove" ~ (between (max 2))))
-        (piece "Prince" Each ("StepMove" ~ "Promote" ))
-        (piece "Lance" Each ("SlideMove" Forward ~ "Promote" ))
+        (piece "Prince" Each ("StepMove" ~ "Promote"))
+        (piece "Lance" Each ("SlideMove" Forward ~ "Promote"))
         (piece "TurtleSnake" Each (or 
                 ("StepMove" (directions {Forward FL FLL Backward BL BLL}))
                 ("SlideMove" (directions {NE SW}))
@@ -100,7 +100,7 @@
                 "Promote"
             )
         )
-        (piece "Whale" Each ("SlideMove" (directions {Forward Backwards}) ~ "Promote" ))
+        (piece "Whale" Each ("SlideMove" (directions {Forward Backwards}) ~ "Promote"))
         (piece "FireDemon" Each (or
                 ("SlideMove" (directions {N S}) (between (max 2)))
                 ("SlideMove" (directions {Rightwards Leftwards}))
@@ -147,7 +147,7 @@
                 )
             )
         )
-        (piece "BeastCadet" Each ("SlideMove" (directions {Forwards Rightwards Leftwards}) (between (max 2)) "Promote" ))
+        (piece "BeastCadet" Each ("SlideMove" (directions {Forwards Rightwards Leftwards}) (between (max 2)) "Promote"))
         (piece "RunningHorse" Each (or {
                 ("SlideMove" Forwards)
                 ("StepMove" Backward)
@@ -175,7 +175,7 @@
                 ("SlideMove" Orthogonal (between (max 2)))
             )
         )
-        (piece "WoodenDove" Each  (or {
+        (piece "WoodenDove" Each (or {
                 ("SlideMove" Diagonal)
                 ("SlideMove" Orthogonal (between (max 2)))
                 ("HopMoveWithRange" Diagonal ~ (exact 2) after:2)
@@ -189,7 +189,7 @@
                 "Promote"
             )
         )
-        (piece "Queen" Each ("SlideMove" ~ ~ "Promote" ))
+        (piece "Queen" Each ("SlideMove" ~ ~ "Promote"))
         (piece "RearStandard" Each (or 
                 ("SlideMove" Orthogonal)
                 ("SlideMove" Diagonal (between (max 2)))
@@ -200,7 +200,7 @@
         (piece "RightGeneral" Each ("StepMove")) // Eric to check if no promotion here.
         (piece "GoldGeneral" Each ("StepMove" (directions {Forward Backward Rightward Leftward FL FR}) "Promote"))
         (piece "ReverseChariot" Each ("StepMove" (directions {N S}) "Promote"))
-        (piece "WhiteElephant" Each ("SlideMove" ~ (between (max 2)) "Promote" ))
+        (piece "WhiteElephant" Each ("SlideMove" ~ (between (max 2)) "Promote"))
         (piece "FragrantElephant" Each ("SlideMove" ~ (between (max 2)) "Promote"))
         (piece "TurtleDove" Each (or 
                 ("StepMove" (directions {Rightward Leftward Backward}))
@@ -291,18 +291,18 @@
                 "Promote"
             )
         )
-        (piece "Wrestler" Each ("SlideMove" Diagonal (between (max 3)) "Promote" ))
-        (piece "GuardianOfTheGods" Each ("SlideMove" Orthogonal (between (max 3)) "Promote" ))
-        (piece "SilverGeneral" Each ("StepMove" (directions {Forward BL BR FL FR}) "Promote" ))
-        (piece "NeighboringKing" Each ("StepMove" (directions {Forwards Rightwards Leftwards}) "Promote" ))
-        (piece "DrunkenElephant" Each ("StepMove" (directions {Forwards Rightwards Leftwards}) "Promote" ))
+        (piece "Wrestler" Each ("SlideMove" Diagonal (between (max 3)) "Promote"))
+        (piece "GuardianOfTheGods" Each ("SlideMove" Orthogonal (between (max 3)) "Promote"))
+        (piece "SilverGeneral" Each ("StepMove" (directions {Forward BL BR FL FR}) "Promote"))
+        (piece "NeighboringKing" Each ("StepMove" (directions {Forwards Rightwards Leftwards}) "Promote"))
+        (piece "DrunkenElephant" Each ("StepMove" (directions {Forwards Rightwards Leftwards}) "Promote"))
         (piece "GoldChariot" Each (or 
                 ("StepMove" (directions {Rightward Leftward FL FR BL BR}))
                 ("SlideMove" (directions {N S}))
                 "Promote"
             )
         )
-        (piece "SideDragon" Each ("SlideMove" (directions {Forward Rightward Leftward}) ~ "Promote" ))
+        (piece "SideDragon" Each ("SlideMove" (directions {Forward Rightward Leftward}) ~ "Promote"))
         (piece "RunningStag" Each (or 
                 ("SlideMove" Backward (between (max 2)))
                 ("SlideMove" (directions {FR FL Rightward Leftward}))
@@ -432,7 +432,7 @@
                 "Promote"
             )
         )
-        (piece "CopperGeneral" Each ("StepMove" (directions {Forward FR FL Backward}) "Promote" ))
+        (piece "CopperGeneral" Each ("StepMove" (directions {Forward FR FL Backward}) "Promote"))
         (piece "KirinMaster" Each (or {
                 ("SlideMove" (directions {BR BL FL FR Forward Backward}))
                 ("SlideMove" (directions {E W}) (between (max 3)))
@@ -549,7 +549,7 @@
                 "Promote"
             )
         )
-        (piece "CaptiveCadet" Each ("SlideMove" (directions {Forwards Rightwards Leftwards}) (between (max 3)) "Promote" ))
+        (piece "CaptiveCadet" Each ("SlideMove" (directions {Forwards Rightwards Leftwards}) (between (max 3)) "Promote"))
         (piece "GreatStag" Each (or {
                 ("SlideMove" Orthogonal)
                 ("SlideMove" (directions {BR BL}) (between (max 2)))
@@ -665,7 +665,7 @@
                 "Promote"
             )
         )
-        (piece "Soldier" Each ("StepMove" Orthogonal "Promote" ))
+        (piece "Soldier" Each ("StepMove" Orthogonal "Promote"))
         (piece "LittleStandard" Each (or {
                 ("SlideMove" Orthogonal)
                 ("SlideMove" (directions {FR FL}) (between (max 2)))
@@ -686,7 +686,7 @@
                 "Promote"
             )
         )
-        (piece "RunningChariot" Each ("StepMove" Orthogonal "Promote" ))
+        (piece "RunningChariot" Each ("StepMove" Orthogonal "Promote"))
         (piece "RamsHeadSoldier" Each (or 
                 ("SlideMove" (directions {FR FL}))
                 ("StepMove" Backward)
@@ -713,8 +713,8 @@
                 "Promote"
             )
         )
-        (piece "Deva" Each ("StepMove" (directions {Forward FL Backwards Rightward Leftward}) "Promote" ))
-        (piece "DarkSpirit" Each ("StepMove" (directions {Backwards Rightward Leftward Forward FR}) "Promote" ))
+        (piece "Deva" Each ("StepMove" (directions {Forward FL Backwards Rightward Leftward}) "Promote"))
+        (piece "DarkSpirit" Each ("StepMove" (directions {Backwards Rightward Leftward Forward FR}) "Promote"))
         (piece "WoodChariot" Each (or 
                 ("SlideMove" (directions {N S}))
                 ("StepMove" (directions {NW SE}))
@@ -751,22 +751,22 @@
                 "Promote"
             )
         )
-        (piece "FerociousLeopard" Each ("StepMove" (directions {Backwards Forwards}) "Promote" ))
+        (piece "FerociousLeopard" Each ("StepMove" (directions {Backwards Forwards}) "Promote"))
         (piece "FierceEagle" Each (or 
                 ("StepMove" (directions {Forward Rightward Leftward}))
                 ("SlideMove" Diagonal (between (max 2)))
                 "Promote"
             )
         )
-        (piece "FlyingDragon" Each ("HopMove" Diagonal "Promote" ))
+        (piece "FlyingDragon" Each ("HopMove" Diagonal "Promote"))
         (piece "PoisonousSnake" Each (or 
                 ("StepMove" (directions {FR FL Backward}))
                 ("SlideMove" (directions {Forward Rightward Leftward}) (between (max 2)))
                 "Promote"
             )
         )
-        (piece "FlyingGoose" Each ("StepMove" (directions {Forward FR FL Backward}) "Promote" ))
-        (piece "StruttingCrow" Each ("StepMove" (directions {Forward BR BL}) "Promote"  ))
+        (piece "FlyingGoose" Each ("StepMove" (directions {Forward FR FL Backward}) "Promote"))
+        (piece "StruttingCrow" Each ("StepMove" (directions {Forward BR BL}) "Promote" ))
         (piece "BlindDog" Each ("StepMove" (directions {Rightward Leftward Backward FR FL}) "Promote"))
         (piece "WaterGeneral" Each (or 
                 ("SlideMove" (directions {FR FL}) (between (max 3)))
@@ -858,8 +858,8 @@
                 "Promote"
             )
         )
-        (piece "Donkey" Each ("SlideMove" Orthogonal (between (max 2)) "Promote" ))
-        (piece "FlyingHorse" Each ("SlideMove" Diagonal (between (max 2)) "Promote" ))
+        (piece "Donkey" Each ("SlideMove" Orthogonal (between (max 2)) "Promote"))
+        (piece "FlyingHorse" Each ("SlideMove" Diagonal (between (max 2)) "Promote"))
         (piece "ViolentBear" Each (or 
                 ("SlideMove" (directions {FR FL}) (between (max 2)))
                 ("StepMove" (directions {Forward Rightward Leftward}))
@@ -872,7 +872,7 @@
                 "Promote"
             )
         )
-        (piece "EvilWolf" Each ("StepMove" (directions {Forward Rightward Leftward FL FR}) "Promote" ))
+        (piece "EvilWolf" Each ("StepMove" (directions {Forward Rightward Leftward FL FR}) "Promote"))
         (piece "LiberatedHorse" Each
             (or {
                 ("SlideMove" Forward)
@@ -882,7 +882,7 @@
                 "Promote"
             )
         )
-        (piece "FlyingCock" Each ("StepMove" (directions {FR FL Rightward Leftward}) "Promote" ))
+        (piece "FlyingCock" Each ("StepMove" (directions {FR FL Rightward Leftward}) "Promote"))
         (piece "OldMonkey" Each ("StepMove" (directions {FR FL BR BL Backward}) "Promote"))
         (piece "ChineseCock" Each ("StepMove" (directions {Rightward Leftward Backward FR FL}) "Promote"))
         (piece "WesternBarbarian" Each (or 
@@ -909,8 +909,8 @@
                 "Promote"
             )
         )
-        (piece "ViolentStag" Each ("StepMove" (directions {Forward BL BR FL FR}) "Promote" ))
-        (piece "ViolentWolf" Each ("StepMove" (directions {Forward Backward Rightward Leftward FL FR}) "Promote" ))
+        (piece "ViolentStag" Each ("StepMove" (directions {Forward BL BR FL FR}) "Promote"))
+        (piece "ViolentWolf" Each ("StepMove" (directions {Forward Backward Rightward Leftward FL FR}) "Promote"))
         (piece "TreacherousFox" Each (or 
                 ("SlideMove" (directions {Backwards Forwards}))
                 ("HopMoveWithRange" (directions {Backwards Forwards}) ~ (range 1 2) after:34)
@@ -947,15 +947,15 @@
                 "Promote"
             )
         )
-        (piece "EnchantedBadger" Each ("SlideMove" Orthogonal (between (max 2)) "Promote" ))
+        (piece "EnchantedBadger" Each ("SlideMove" Orthogonal (between (max 2)) "Promote"))
         (piece "HorseMan" Each (or 
                 ("SlideMove" (directions {FR FL Forward Backward}))
                 ("SlideMove" (directions {E W}) (between (max 2)))
                 "Promote"
             )
         )
-        (piece "SwoopingOwl" Each ("StepMove" (directions {Forward BR BL}) "Promote" ))
-        (piece "ClimbingMonkey" Each ("StepMove" (directions {Forward FR FL Backward}) "Promote" ))
+        (piece "SwoopingOwl" Each ("StepMove" (directions {Forward BR BL}) "Promote"))
+        (piece "ClimbingMonkey" Each ("StepMove" (directions {Forward FR FL Backward}) "Promote"))
         (piece "CatSword" Each ("StepMove" Diagonal "Promote"))
         (piece "SwallowsWings" Each (or 
                 ("StepMove" (directions {FR FL Forward Backward}))
@@ -963,20 +963,20 @@
                 "Promote"
             )
         )
-        (piece "BlindMonkey" Each ("StepMove" (directions {Rightwards Leftwards}) "Promote" ))
-        (piece "BlindTiger" Each ("StepMove" (directions {Backwards Rightwards Leftwards}) "Promote" ))
-        (piece "Oxcart" Each ("SlideMove" Forward ~ "Promote" ))
+        (piece "BlindMonkey" Each ("StepMove" (directions {Rightwards Leftwards}) "Promote"))
+        (piece "BlindTiger" Each ("StepMove" (directions {Backwards Rightwards Leftwards}) "Promote"))
+        (piece "Oxcart" Each ("SlideMove" Forward ~ "Promote"))
         (piece "SideFlier" Each (or 
                 ("StepMove" (directions {BR BL FR FL}))
                 ("SlideMove" (directions {E W}))
                 "Promote"
             )
         )
-        (piece "BlindBear" Each ("StepMove" (directions {Rightwards Leftwards}) "Promote" ))
+        (piece "BlindBear" Each ("StepMove" (directions {Rightwards Leftwards}) "Promote"))
         (piece "OldRat" Each ("StepMove" (directions {BR BL Forward}) "Promote"))
-        (piece "SquareMover" Each ("StepMove" Orthogonal "Promote" ))
+        (piece "SquareMover" Each ("StepMove" Orthogonal "Promote"))
         (piece "CoiledSerpent" Each ("StepMove" (directions {BR BL Forward Backward}) "Promote"))
-        (piece "RecliningDragon" Each ("StepMove" Orthogonal "Promote" ))
+        (piece "RecliningDragon" Each ("StepMove" Orthogonal "Promote"))
         (piece "LionHawk" Each (or {
                 ("SlideMove" ~ (between (max 2)))
                 ("HopMove" Orthogonal)
@@ -1005,7 +1005,7 @@
         (piece "VerticalSoldier" Each (or {
                 ("SlideMove" (directions {E W}) (between (max 2)))
                 ("SlideMove" Forward)
-                ("StepMove"  Backward)
+                ("StepMove" Backward)
                 }
                 "Promote"
             )
@@ -1042,7 +1042,7 @@
                 "Promote"
             )
         )
-        (piece "WoodGeneral" Each ("SlideMove" (directions {FR FL}) (between (max 2)) "Promote" ))
+        (piece "WoodGeneral" Each ("SlideMove" (directions {FR FL}) (between (max 2)) "Promote"))
         (piece "OxSoldier" Each (or {
                 ("SlideMove" Forwards)
                 ("SlideMove" (directions {E W}) (between (max 3)))
@@ -1051,7 +1051,7 @@
                 "Promote"
             )
         )
-        (piece "EarthGeneral" Each ("StepMove" (directions {N S}) "Promote" ))
+        (piece "EarthGeneral" Each ("StepMove" (directions {N S}) "Promote"))
         (piece "BoarSoldier" Each (or {
                 ("SlideMove" Forwards)
                 ("SlideMove" (directions {E W}) (between (max 2)))
@@ -1060,7 +1060,7 @@
                 "Promote"
             )
         )
-        (piece "StoneGeneral" Each ("StepMove" (directions {FR FL}) "Promote" ))
+        (piece "StoneGeneral" Each ("StepMove" (directions {FR FL}) "Promote"))
         (piece "LeopardSoldier" Each (or {
                 ("SlideMove" Forwards)
                 ("SlideMove" (directions {E W}) (between (max 2)))
@@ -1069,7 +1069,7 @@
                 "Promote"
             )
         )
-        (piece "TileGeneral" Each ("StepMove" (directions {FR FL Backward}) "Promote" ))
+        (piece "TileGeneral" Each ("StepMove" (directions {FR FL Backward}) "Promote"))
         (piece "BearSoldier" Each (or {
                 ("SlideMove" Forwards)
                 ("SlideMove" (directions {E W}) (between (max 2)))
@@ -1078,7 +1078,7 @@
                 "Promote"
             )
         )
-        (piece "IronGeneral" Each ("StepMove" Forwards "Promote" ))
+        (piece "IronGeneral" Each ("StepMove" Forwards "Promote"))
         (piece "GreatMaster" Each (or {
                 ("SlideMove" (directions {FR FL Forward Backward}))
                 ("SlideMove" (directions {BR BL Rightward Leftward}) (between (max 5)))
@@ -1114,7 +1114,7 @@
                 "Promote"
             )
         )
-        (piece "FlyingOx" Each ("SlideMove" (directions {Backwards Forwards}) ~ "Promote" ))
+        (piece "FlyingOx" Each ("SlideMove" (directions {Backwards Forwards}) ~ "Promote"))
         (piece "LongbowSoldier" Each (or {
                 ("SlideMove" Forward)
                 ("SlideMove" (directions {FR FL}) (between (max 3)))
@@ -1157,7 +1157,7 @@
                 "Promote"
             )
         )
-        (piece "SwordSoldier" Each ("StepMove" (directions {FR FL Backward}) "Promote" ))
+        (piece "SwordSoldier" Each ("StepMove" (directions {FR FL Backward}) "Promote"))
         (piece "HornedFalcon" Each (or 
                 ("SlideMove")
                 ("HopMove" Forward)
@@ -1182,7 +1182,7 @@
                 "Promote"
             )
         )
-        (piece "SavageTiger" Each ("SlideMove" Forward ~ "Promote" ))
+        (piece "SavageTiger" Each ("SlideMove" Forward ~ "Promote"))
         (piece "CrossBowSoldier" Each (or 
                 {
                 ("SlideMove" Forward (between (max 5)))
@@ -1206,25 +1206,25 @@
                 "Promote"
             )
         )
-        (piece "LeftDog" Each  (or 
-                ("StepMove" Backward)				  
+        (piece "LeftDog" Each (or 
+                ("StepMove" Backward)				 
                 ("SlideMove" (directions {Forward BL}))
             )
         )
         (piece "RightDog" Each (or 
-                ("StepMove" Backward)						  
+                ("StepMove" Backward)						 
                 ("SlideMove" (directions {Forward BR}))
             )
         )
-        (piece "GoBetween" Each ("StepMove" (directions {N S}) "Promote" ))
-        (piece "Pawn" Each ("StepMove" Forward "Promote" ))
+        (piece "GoBetween" Each ("StepMove" (directions {N S}) "Promote"))
+        (piece "Pawn" Each ("StepMove" Forward "Promote"))
         
         (piece "DivineTurtle" Each (or 
                 ("StepMove" (directions {Forward Backward Leftward Rightward FL}))
                 ("SlideMove" (directions {BR BL FR}))
             )
         )
-        (piece "DivineTiger" Each  (or 
+        (piece "DivineTiger" Each (or 
                 ("SlideMove" (directions {Forward Rightward Leftward FL}))
                 ("SlideMove" Backward (between (max 2)))
             )
@@ -1333,7 +1333,7 @@
                 ("SlideMove" (directions {BR BL Rightward Leftward}) (between (max 2)))
             )
         )
-        (piece "GooseWing" Each  (or {
+        (piece "GooseWing" Each (or {
                 ("SlideMove" (directions {Forward Backward}))
                 ("SlideMove" (directions {Rightward Leftward}) (between (max 3)))
                 ("StepMove" Diagonal)
@@ -1429,7 +1429,7 @@
                 ("SlideMove" (directions {E W}) (between (max 2)))
             )
         )
-        (piece "GreatDreamEater" Each (or  
+        (piece "GreatDreamEater" Each (or 
                 ("SlideMove")
                 ("HopMoveWithRange" (directions {FR FL}) ~ (exact 2))
             )
@@ -1444,7 +1444,7 @@
                 ("HopMoveWithRange" Orthogonal ~ (exact 2))
             )
         )
-        (piece "TreasureTurtle" Each (or  
+        (piece "TreasureTurtle" Each (or 
                 ("SlideMove")
                 ("HopMove" Orthogonal)	
             )
@@ -1548,7 +1548,7 @@
                 ("SlideMove" (directions {BR BL}) (between (max 2)))
             )
         )
-        (piece "RunningBoar" Each  (or 
+        (piece "RunningBoar" Each (or 
                 ("SlideMove" (directions {N S}))
                 ("StepMove" (directions {E W}))	
             )
@@ -1628,7 +1628,7 @@
         (regions "Promotion" P2 (expand (sites Bottom) steps:6))
         
         (map "Promoted" { 
-            (pair 3 1) (pair 4 2) (pair 5 181) (pair 6 182) (pair 7 419) (pair 8 420) (pair 9 421) (pair 10 422) (pair 11 287) (pair 12 288) (pair 13 423) (pair 14 424) (pair 15 425) (pair 16 426)  
+            (pair 3 1) (pair 4 2) (pair 5 181) (pair 6 182) (pair 7 419) (pair 8 420) (pair 9 421) (pair 10 422) (pair 11 287) (pair 12 288) (pair 13 423) (pair 14 424) (pair 15 425) (pair 16 426) 
             (pair 17 397) (pair 18 398) (pair 19 397) (pair 20 398) (pair 23 111) (pair 24 112) (pair 25 27) (pair 26 28) (pair 27 37) (pair 28 38) (pair 29 59) (pair 30 60) (pair 35 37) (pair 36 38)
             (pair 37 167) (pair 38 168) (pair 39 149) (pair 40 150) (pair 41 427) (pair 42 428) (pair 43 429) (pair 44 430) (pair 45 177) (pair 46 178) (pair 47 13) (pair 48 14) (pair 49 431) (pair 50 432)
             (pair 51 431) (pair 52 432) (pair 53 71) (pair 54 72) (pair 55 177) (pair 56 178) (pair 57 433) (pair 58 434) (pair 59 201) (pair 60 202) (pair 61 435) (pair 62 436) (pair 63 161) (pair 64 162)
@@ -1976,7 +1976,7 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/shogi")
         (credit "Eric Piette")
-        (origin  "This game was played in Japan, from around 1603 to 1868.")
+        (origin "This game was played in Japan, from around 1603 to 1868.")
         }
     )
     (graphics {

@@ -13,8 +13,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Selus"  
-    (players 2)  
+(game "Selus" 
+    (players 2) 
     (equipment { 
         (mancalaBoard 3 "Columns" store:None
             (track "Track" "0,E,N1,W2,17,W,S1,E2" loop:True)
@@ -25,7 +25,7 @@
         (regions "Home" P2 (union (intersection (sites Row 1) (expand (sites Left) steps:2)) (sites Top))) // P2 home
         (regions "ThreeLeftMost" P1 (intersection (sites Bottom) (expand (sites Left) steps:2))) // P1 ThreeLeftMost
         (regions "ThreeLeftMost" P2 (intersection (sites Top) (expand (sites Right) steps:2))) // P2 ThreeLeftMost
-    })  
+    }) 
     (rules 
         
         (start (set Count 3 to:(sites Board)))
@@ -254,13 +254,13 @@
         {
         (description "Selus is a three-row mancala-style game played in Ethiopia since at least the nineteenth century. It is considered an aristocratic game, and was played by nobility in the Ethiopian Empire. It involves complex rules, and is said to have taken several hours to play.")
         (aliases {"Gabata" "Sulusé"})
-        (rules "3x6 board. Three counters per hole. Each player owns the row of holes closest to them, as well as the right half of the central row, with respect to their perspective. Sowing occurs from left to right in the player's complete row, right to left in the player's half of the central row, then continuing from right to left in the opponent's outer row, left to right in the opponent's holes in the central row, and then continuing as before into the player's outer row. In the opening phase, players play simultaneously. When the final counter of a sowing falls into an occupied hole, the contents are picked up and sowing continues. Each player plays until their final counter falls into an empty hole; the first player to do so begins the main phase. In the main phase, players alternate turns, and picking up the counters and continuing to sow when the final counter lands in an occupied hole, and stopping when the final counter lands in an empty hole. There are some restrictions with regard to sowing. Each of the player's three leftmost holes cannot be sown from to begin a turn if they contain three counters or less, unless there are no other options for play, in which case sowing must occur from a hole with one counter, and if none are available, then it must begin from a hole with two counters, or three counters if that is the only option. Separately, if the player's other holes only contain two or three counters, the player must play from a hole containing two counters, and these must be the option closest to the opponent's holes. Players must also play from holes containing more than three counters when available. During sowing, a player may not drop a counter into any of the opponent's holes which contain three counters (except when making a nedf, see below), skipping over them and sowing in the next available holes.  When the final counter of a sowing lands in a hole in the opponent's row containing three counters, this hole becomes a \"nedf.\" Any counters falling into the nedf cannot be sown. Only one nedf can exist at one time. After the first nedf is made, any others can only be made by placing the final two counters of a sowing into holes which contain three counters, the penultimate hole becoming the new nedf. The player then continues their turn with the counters from the final hole. The hole after the nedf becomes the yazab tabaqi, or \"guardian.\" While the yazab tabaqi contains exactly three counters, the opponent cannot create a new nedf. Play continues until one player has no counters to move, or concedes they can no longer make a nedf.")
+        (rules "3x6 board. Three counters per hole. Each player owns the row of holes closest to them, as well as the right half of the central row, with respect to their perspective. Sowing occurs from left to right in the player's complete row, right to left in the player's half of the central row, then continuing from right to left in the opponent's outer row, left to right in the opponent's holes in the central row, and then continuing as before into the player's outer row. In the opening phase, players play simultaneously. When the final counter of a sowing falls into an occupied hole, the contents are picked up and sowing continues. Each player plays until their final counter falls into an empty hole; the first player to do so begins the main phase. In the main phase, players alternate turns, and picking up the counters and continuing to sow when the final counter lands in an occupied hole, and stopping when the final counter lands in an empty hole. There are some restrictions with regard to sowing. Each of the player's three leftmost holes cannot be sown from to begin a turn if they contain three counters or less, unless there are no other options for play, in which case sowing must occur from a hole with one counter, and if none are available, then it must begin from a hole with two counters, or three counters if that is the only option. Separately, if the player's other holes only contain two or three counters, the player must play from a hole containing two counters, and these must be the option closest to the opponent's holes. Players must also play from holes containing more than three counters when available. During sowing, a player may not drop a counter into any of the opponent's holes which contain three counters (except when making a nedf, see below), skipping over them and sowing in the next available holes. When the final counter of a sowing lands in a hole in the opponent's row containing three counters, this hole becomes a \"nedf.\" Any counters falling into the nedf cannot be sown. Only one nedf can exist at one time. After the first nedf is made, any others can only be made by placing the final two counters of a sowing into holes which contain three counters, the penultimate hole becoming the new nedf. The player then continues their turn with the counters from the final hole. The hole after the nedf becomes the yazab tabaqi, or \"guardian.\" While the yazab tabaqi contains exactly three counters, the opponent cannot create a new nedf. Play continues until one player has no counters to move, or concedes they can no longer make a nedf.")
         (source "Pankhurst 1971: 165-166.")
         (id "341")
         (version "1.3.4")
         (classification "board/sow/three rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Horn of Africa, around 1971.")
+        (origin "This game was played in Horn of Africa, around 1971.")
         }
     )
     

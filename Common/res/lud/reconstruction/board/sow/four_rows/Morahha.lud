@@ -1,10 +1,10 @@
-(game "Morahha"  
-    (players 2)  
+(game "Morahha" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 8 store:None)
         (piece "Seed" Shared)
-    })  
+    }) 
     (rules
         (start [#])
         (play [#])
@@ -14,7 +14,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Morahha is a four-rown mancala-style board game played in seventeenth century Comoros.")
@@ -24,7 +24,7 @@
         (version "1.3.4")
         (classification "board/sow/four rows/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Comoros, around 1694.")
+        (origin "This game was played in Comoros, around 1694.")
         }
     )
     

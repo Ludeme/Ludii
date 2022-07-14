@@ -1,9 +1,9 @@
 (game "Ngrin"
-    (players 2)  
+    (players 2) 
     (equipment {
         (board (square 3 diagonals:Alternating) use:Vertex)
         (piece "Marker" Each)
-    })  
+    }) 
     (rules 
         phases:{
         (phase "Opening" (play (move Add (to (centrePoint)))) (nextPhase "Playing"))
@@ -26,7 +26,7 @@
         (version "1.3.4")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in Republic of Congo, around 1972.")
+        (origin "This game was played in Republic of Congo, around 1972.")
         }
     )
     

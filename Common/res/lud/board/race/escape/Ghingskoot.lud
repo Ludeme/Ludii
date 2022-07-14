@@ -114,13 +114,13 @@
 
 (option "Players" <Players> args:{ <num> <arc3> <arc4> <track3> <track4> }
     {
-    (item  "2"  <2>
+    (item "2" <2>
         <>
         <>
         <>
         <>
-    "2 players.")**  
-    (item  "3"  <3>
+    "2 players.")** 
+    (item "3" <3>
         <(regions "Arc" P3 (sites {1..5}))>
         <>
         <
@@ -129,7 +129,7 @@
         >
         <>
     "3 players.") 
-    (item  "4"  <4> 
+    (item "4" <4> 
         <(regions "Arc" P3 (sites {1..5}))>
         <(regions "Arc" P4 (sites {41..45}))>
         <
@@ -140,14 +140,14 @@
         (track "TrackCW4" "49,41,NNW,S,W,N,E,SSE,End" P4 directed:True)
         (track "TrackCCW4" "49,41,NNW,W,S,E,N,SSE,End" P4 directed:True)
         >
-    "4 players.")  
+    "4 players.") 
     }
 )
 
 (option "Start Rules" <Num> args:{ <piece> }
     {
-    (item  "1"  <1> "Each player has 1 piece.")  
-    (item  "2"  <2> "Each player has 2 pieces.")**  
+    (item "1" <1> "Each player has 1 piece.") 
+    (item "2" <2> "Each player has 2 pieces.")** 
     }
 )
 

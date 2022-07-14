@@ -1,5 +1,5 @@
-(game "Madelinette"  
-    (players 2)  
+(game "Madelinette" 
+    (players 2) 
     (equipment { 
         (board 
             (add
@@ -12,7 +12,7 @@
             use:Vertex
         ) 
         (piece "Counter" Each ("StepToEmpty"))
-    })  
+    }) 
     
     (rules 
         (start {
@@ -20,7 +20,7 @@
             (place "Counter2" (sites {"C1" "A2" "C3"}))
         })
         (play (forEach Piece)) 
-        (end ("NoMoves" Loss))  
+        (end ("NoMoves" Loss)) 
     )
 )
 

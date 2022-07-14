@@ -71,7 +71,7 @@
 )
 
 (define "MoveAPieceOf" 
-    (forEach Piece       
+    (forEach Piece    
         (if 
             #1
             ("MoveForwards")
@@ -85,8 +85,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "EinStein Wurfelt Nicht"  
-    (players {(player SE) (player NW)})  
+(game "EinStein Wurfelt Nicht" 
+    (players {(player SE) (player NW)}) 
     (equipment { 
         (board (square <Board:size>)) 
         (piece "Square" Each) 
@@ -96,13 +96,13 @@
         (regions "Home" P2 (expand (intersection (sites Bottom) (sites Right)) steps:<Board:sizeHome> Orthogonal))
         (regions "Goal" P1 (intersection (sites Bottom) (sites Right)))
         (regions "Goal" P2 (intersection (sites Top) (sites Left)))
-    })  
+    }) 
     (rules 
         (start {
             <Board:start>
         })
         phases:{
-        (phase "Placement" 	        
+        (phase "Placement" 	    
             (play 
                 (move 
                     (from ("CubeInHand")) 
@@ -111,7 +111,7 @@
             )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
-        (phase "Movement" 	        
+        (phase "Movement" 	    
             (play 
                 ("RollMove"
                     (if ("PieceIsOnTheBoard")
@@ -147,7 +147,7 @@
         <6>
         <1>
         <2>
-        <  
+        < 
         (place "Square1" (handSite P1) state:1) 
         (place "Square1" (handSite P1 1) state:2) 
         (place "Square1" (handSite P1 2) state:3) 
@@ -163,13 +163,13 @@
         (place "Square2" (handSite P2 5) state:6) 
         >
         "The version of the game played on 5x5 board."
-    )*   
-    (item "6"    
+    )*  
+    (item "6"  
         <6>
         <10>
         <2>
         <3>
-        <  
+        < 
         (place "Square1" (handSite P1) state:2) 
         (place "Square1" (handSite P1 1) state:3) 
         (place "Square1" (handSite P1 2) state:4) 

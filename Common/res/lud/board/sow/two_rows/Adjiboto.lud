@@ -16,8 +16,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Adjiboto"  
-    (players 2)  
+(game "Adjiboto" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 5 store:None
@@ -25,9 +25,9 @@
         )
         (piece "Seed" Shared)
         (hand Each)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-    })  
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+    }) 
     (rules 
         
         (start (set Count 10 to:(sites Track)))
@@ -85,7 +85,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Adjiboto is a two-row mancala-style board game that was observed in the early twentieth century in Beidotti village, Suriname, where Saamaka people lived. The board was kept in an open sturcture which served as the meeting place for the village council, house of mourning, and to accommodate travelers.")

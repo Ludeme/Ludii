@@ -1,5 +1,5 @@
-(game "Ngola"  
-    (players 2)  
+(game "Ngola" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 8 store:None
@@ -9,7 +9,7 @@
             }		
         )
         (piece "Seed" Shared)
-    })  
+    }) 
     (rules 
         
         (start (set Count 2 to:(sites Board)))
@@ -17,7 +17,7 @@
         (play (forEach Piece))
         
         (end
-            (if  (no Moves Next)
+            (if (no Moves Next)
                 (result Mover Win)
             )
         )
@@ -26,7 +26,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Ngola is a four-row mancala-style board game played in the Republic of Congo.")
@@ -36,7 +36,7 @@
         (version "1.3.2")
         (classification "board/sow/four rows/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Republic of Congo, around 1971.")
+        (origin "This game was played in Republic of Congo, around 1971.")
         }
     )
     

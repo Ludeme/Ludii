@@ -47,7 +47,7 @@
         (dice d:6 num:2)
         (piece "Disc" Each
             (forEach Die
-                replayDouble:(= 1 (value Player Mover))  
+                replayDouble:(= 1 (value Player Mover)) 
                 if:("DieNotUsed")
                 (if ("IsOffBoard" ("NextSiteFrom" (from) (pips)))
                     (move Remove (from))
@@ -137,7 +137,7 @@
         (version "1.3.4")
         (classification "board/race/escape")
         (credit "Eric Piette")
-        (origin  "This game was played in Germany, around 1853.")
+        (origin "This game was played in Germany, around 1853.")
         }
     )
     

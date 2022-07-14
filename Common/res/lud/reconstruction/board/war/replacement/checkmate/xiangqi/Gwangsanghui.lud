@@ -107,13 +107,13 @@
                     Orthogonal 
                     (between 
                         before:(count Rows) 
-                        after:(count Rows)  
+                        after:(count Rows) 
                         if:(and (not (is Empty (between))) (!= (id "Pao" Mover) (what at:(between))))
                     )
                     (to 
                         if:(is Empty (to)) 
                         ("CaptureMoveCannon")
-                    )  
+                    ) 
                 ) 
             )		
         )

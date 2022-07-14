@@ -1,11 +1,11 @@
-(game "DominoBoard"  
-    (players 2)  
+(game "DominoBoard" 
+    (players 2) 
     (equipment { 
         (board (square 21)) 
         (hand Each size:21)
         (dominoes)
         }
-    )  
+    ) 
     (rules 
         (start {
             (place "Domino03" 242 state:1) 
@@ -38,6 +38,6 @@
         (end {
             (if ("HandEmpty" Mover) (result Mover Win)) 
             (if (all Passed) (result Mover Draw)) 
-        })  
+        }) 
     )
 )

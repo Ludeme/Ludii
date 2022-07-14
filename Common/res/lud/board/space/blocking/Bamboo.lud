@@ -29,15 +29,15 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "4"    <4>  "A size 4 board is currently selected")
-    (item "5"    <5>  "A size 5 board is currently selected")* 
-    (item "6"    <6>  "A size 6 board is currently selected")
+    (item "4"  <4> "A size 4 board is currently selected")
+    (item "5"  <5> "A size 5 board is currently selected")* 
+    (item "6"  <6> "A size 6 board is currently selected")
     }
 )
 
 (option "End Rules" <Result> args:{ <type>} {
-    (item "Standard" <Loss>  "The standard goal is selected, which means that the first player unable to place loses.")*   
-    (item "Misere"   <Win> "The misere goal is selected, which means that the first player unable to place wins.")   
+    (item "Standard" <Loss> "The standard goal is selected, which means that the first player unable to place loses.")*  
+    (item "Misere"  <Win> "The misere goal is selected, which means that the first player unable to place wins.")  
 })
 
 //------------------------------------------------------------------------------

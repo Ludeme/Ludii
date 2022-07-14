@@ -2,8 +2,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Nsumbi"  
-    (players 2)  
+(game "Nsumbi" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -12,12 +12,12 @@
             (track "Track2" "16,E,N1,W" loop:True P2)
             }
         )
-        (regions "Home" P1 (sites Track "Track1"))                                     // P1 Home
-        (regions "Home" P2 (sites Track "Track2"))                                     // P2 home
-        (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom)))        // P1 Home
-        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))           // P2 home
+        (regions "Home" P1 (sites Track "Track1"))                   // P1 Home
+        (regions "Home" P2 (sites Track "Track2"))                   // P2 home
+        (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom)))    // P1 Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))      // P2 home
         (piece "Seed" Shared)
-    })  
+    }) 
     (rules 
         
         (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home"))))

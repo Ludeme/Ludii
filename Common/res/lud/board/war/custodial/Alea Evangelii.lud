@@ -38,14 +38,14 @@
     )
 )
 
-(define "JarlAndExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (is In (between) (expand origin:(centrePoint)  Orthogonal))))
+(define "JarlAndExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (is In (between) (expand origin:(centrePoint) Orthogonal))))
 
-(define "JarlButNotTheExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (not (is In (between) (expand origin:(centrePoint)  Orthogonal)))))
+(define "JarlButNotTheExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (not (is In (between) (expand origin:(centrePoint) Orthogonal)))))
 
 //------------------------------------------------------------------------------
 
-(game "Alea Evangelii"  
-    (players 2)  
+(game "Alea Evangelii" 
+    (players 2) 
     (equipment { 
         (board (square 19)) 
         (regions "Fortresses" (expand (sites Corners)))
@@ -85,7 +85,7 @@
             (move
                 Slide
                 Orthogonal 
-                (between if:"EmptyButNotFortress")  
+                (between if:"EmptyButNotFortress") 
                 (to (apply if:(!= (to) (centrePoint)))) 
                 (then ("Custodial" "Thrall1")) 
             ) 
@@ -98,7 +98,7 @@
             )
         )
         }
-    )  
+    ) 
     (rules 
         (start
             { 
@@ -121,7 +121,7 @@
         (end
             {
             (if (is Within (id "Jarl2") in:(sites "Fortresses")) (result P2 Win))
-            (if "JarlWasCaptured"  (result P1 Win))
+            (if "JarlWasCaptured" (result P1 Win))
             }
         )
     )
@@ -131,7 +131,7 @@
 
 (option "Variant" <Variant> args:{ <type> }
     {
-    (item "Cyningstan"   <>       "The rules are describing with the Cyningstan ruleset.")   
+    (item "Cyningstan"  <>    "The rules are describing with the Cyningstan ruleset.")  
 })
 
 //--------------------------------------------------------------------------
@@ -167,7 +167,7 @@
         (version "1.3.4")
         (classification "board/war/custodial")
         (credit "Eric Piette")
-        (origin  "This game was played in British Isles, from around 1100 to 1199.")
+        (origin "This game was played in British Isles, from around 1100 to 1199.")
         }
     )
     

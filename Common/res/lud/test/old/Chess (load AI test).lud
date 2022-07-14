@@ -36,7 +36,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover (to)))
-    )   
+    )  
 )
 
 (define "DoCastle"
@@ -105,8 +105,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Chess"  
-    (players {(player N) (player S)})  
+(game "Chess" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -181,7 +181,7 @@
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
         }
-    )  
+    ) 
     (rules 
         (start
             { 
@@ -258,5 +258,5 @@
     
     (ai 
         "Chess_ai"
-    )    
+    )  
 )

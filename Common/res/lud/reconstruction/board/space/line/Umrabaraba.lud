@@ -7,7 +7,7 @@
         (piece "Marker" Each 
             (move [#])
         ) 
-    })  
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:10))
         
@@ -20,7 +20,7 @@
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
                         (then [#])
-                    )  
+                    ) 
                 )
             ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")

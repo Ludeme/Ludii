@@ -1,13 +1,11 @@
-(game "All Queens Chess"  
-    (players 2)  
+(game "All Queens Chess" 
+    (players 2) 
     (equipment { 
         (board (square 5)) 
         (piece "Queen" Each (move Slide))
-        }
-    )  
+    }) 
     (rules 
-        (start
-            { 
+        (start { 
             (place "Queen1" 
                 (union { 
                     (difference (sites Bottom) (sites Phase 1)) 
@@ -22,8 +20,7 @@
                     (difference (sites Top) (sites Phase 1)) 
                 }) 
             )
-            }
-        )
+        })
         
         (play (forEach Piece))
         (end (if (is Line 4) (result Mover Win)))

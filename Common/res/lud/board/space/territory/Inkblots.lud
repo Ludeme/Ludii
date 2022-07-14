@@ -13,7 +13,7 @@
         (play
             (move Add (to (sites Empty))
                 (then
-                    (add (piece (id "Triangle" Next))        // assumes both players use Disc
+                    (add (piece (id "Triangle" Next))    // assumes both players use Disc
                         (to
                             (intersection
                                 (expand (sites Occupied by:Next) Orthogonal)
@@ -41,23 +41,23 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "3"    <3>  "Played on a size 3 board.") 
-    (item "4"    <4>  "Played on a size 4 board.") 
-    (item "5"    <5>  "Played on a size 5 board.") 
-    (item "6"    <6>  "Played on a size 6 board.") 
-    (item "7"    <7>  "Played on a size 7 board.")*
-    (item "8"    <8>  "Played on a size 8 board.") 
-    (item "9"    <9>  "Played on a size 9 board.")
-    (item "10"  <10>  "Played on a size 10 board.") 
-    (item "11"  <11>  "Played on a size 11 board.") 
-    (item "12"  <12>  "Played on a size 12 board.") 
-    (item "13"  <13>  "Played on a size 13 board.") 
-    (item "14"  <14>  "Played on a size 14 board.") 
-    (item "15"  <15>  "Played on a size 15 board.") 
-    (item "16"  <16>  "Played on a size 16 board.") 
-    (item "17"  <17>  "Played on a size 17 board.") 
-    (item "18"  <18>  "Played on a size 18 board.") 
-    (item "19"  <19>  "Played on a size 19 board.")*
+    (item "3"  <3> "Played on a size 3 board.") 
+    (item "4"  <4> "Played on a size 4 board.") 
+    (item "5"  <5> "Played on a size 5 board.") 
+    (item "6"  <6> "Played on a size 6 board.") 
+    (item "7"  <7> "Played on a size 7 board.")*
+    (item "8"  <8> "Played on a size 8 board.") 
+    (item "9"  <9> "Played on a size 9 board.")
+    (item "10" <10> "Played on a size 10 board.") 
+    (item "11" <11> "Played on a size 11 board.") 
+    (item "12" <12> "Played on a size 12 board.") 
+    (item "13" <13> "Played on a size 13 board.") 
+    (item "14" <14> "Played on a size 14 board.") 
+    (item "15" <15> "Played on a size 15 board.") 
+    (item "16" <16> "Played on a size 16 board.") 
+    (item "17" <17> "Played on a size 17 board.") 
+    (item "18" <18> "Played on a size 18 board.") 
+    (item "19" <19> "Played on a size 19 board.")*
     }
 )
 

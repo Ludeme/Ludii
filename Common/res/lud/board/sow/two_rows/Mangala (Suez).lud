@@ -3,8 +3,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Mangala (Suez)"  
-    (players 2)  
+(game "Mangala (Suez)" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
@@ -14,7 +14,7 @@
         (regions P1 (sites Bottom)) 
         (regions P2 (sites Top)) 
         (hand Each)
-    })  
+    }) 
     (rules 
         (start (set Count 8 to:(sites Track)))
         
@@ -74,7 +74,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Mangala is the name of many mancala-style board games throughout Southwest Asia and North Africa. This particular one is a two-row game that was played in the Suez Peninsula during the early twentieth century.")

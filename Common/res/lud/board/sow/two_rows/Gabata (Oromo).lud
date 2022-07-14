@@ -3,8 +3,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Gabata (Oromo)"  
-    (players 2)  
+(game "Gabata (Oromo)" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 6 store:None
@@ -12,9 +12,9 @@
         )
         (piece "Seed" Shared)
         (hand Each)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-    })  
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+    }) 
     (rules 
         
         (start (set Count 4 to:(sites Track)))
@@ -138,7 +138,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Gabata is a term used to refer to several mancala-style games in the Horn of Africa. This version is a two-row game played by an Oromo woman in Addis Ababa.")

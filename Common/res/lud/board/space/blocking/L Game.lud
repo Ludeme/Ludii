@@ -7,13 +7,13 @@
 
 //------------------------------------------------------------------------------
 
-(game "L Game"  
-    (players 2)  
+(game "L Game" 
+    (players 2) 
     (equipment { 
         (board (square 4)) 
         (piece "Dot" Neutral) 
         (tile "L" Each "LWalk") 
-    })  
+    }) 
     (rules 
         (start { 
             (place "Dot0" {"A4" "D1"})
@@ -39,11 +39,11 @@
         
         (end 
             (if 
-                "CanNotMoveALPiece"  
+                "CanNotMoveALPiece" 
                 (result Mover Win) 
             ) 
         ) 
-    )  
+    ) 
 )
 
 //------------------------------------------------------------------------------

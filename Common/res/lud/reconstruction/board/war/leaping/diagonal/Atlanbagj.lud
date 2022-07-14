@@ -1,9 +1,9 @@
 (game "Atlanbagj"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (square 8))
         (piece "Counter" Each (move [#])) // Pieces moves Ortho or Diago to capture. Need the concepts...
-    })  
+    }) 
     
     (rules 
         (start {
@@ -29,7 +29,7 @@
         (version "1.3.4")
         (classification "board/war/leaping/diagonal/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Turkey, around 1694.")
+        (origin "This game was played in Turkey, around 1694.")
         }
     )
     

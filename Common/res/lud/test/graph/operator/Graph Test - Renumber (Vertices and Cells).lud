@@ -1,14 +1,14 @@
-(game "Graph Test - Renumber (Vertices and Cells)"  
-    (players 2)  
+(game "Graph Test - Renumber (Vertices and Cells)" 
+    (players 2) 
     (equipment { 
         (board 
             (renumber Vertex Cell
                 (merge 
                     { 
-                    (shift  2 2 (square 5 diagonals:Alternating)) 
-                    (shift  2 0 (wedge 3)) 
-                    (shift  5 3 (rotate  90 (wedge 3))) 
-                    (shift  2 6 (rotate 180 (wedge 3))) 
+                    (shift 2 2 (square 5 diagonals:Alternating)) 
+                    (shift 2 0 (wedge 3)) 
+                    (shift 5 3 (rotate 90 (wedge 3))) 
+                    (shift 2 6 (rotate 180 (wedge 3))) 
                     (shift -1 3 (rotate 270 (wedge 3))) 
                     } 
                 )
@@ -17,7 +17,7 @@
         ) 
         (piece "Disc" P1) 
         (piece "Cross" P2) 
-    })  
+    }) 
     (rules 
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
@@ -37,7 +37,7 @@
         (version "0.9.3")
         (classification "board/space/line")
         (credit "Cameron Browne 31/5/2020")
-        (origin  "This game was played in England, from around 1850CE to 1883CE.")
+        (origin "This game was played in England, from around 1850CE to 1883CE.")
         }
     )
 )

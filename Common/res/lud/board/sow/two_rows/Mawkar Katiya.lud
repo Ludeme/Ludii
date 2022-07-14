@@ -10,8 +10,8 @@
 )
 //------------------------------------------------------------------------------
 
-(game "Mawkar Katiya"  
-    (players 2)  
+(game "Mawkar Katiya" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
@@ -22,10 +22,10 @@
         )
         (piece "Seed" Shared)
         (hand Each)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
         (map "LeftMost" {(pair P1 0) (pair P2 13)})
-    })  
+    }) 
     
     (rules 
         (start {
@@ -197,7 +197,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Mawkar Katiya is a two-row mancala-style board game that was played by the Khasi people of India in the early part of the twentieth century.")

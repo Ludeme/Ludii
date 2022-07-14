@@ -10,7 +10,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "Quantum Leap"  
+(game "Quantum Leap" 
     (players 2) 
     (equipment { 
         (board (hex 5))
@@ -27,7 +27,7 @@
                 )
             )
         )
-    })  
+    }) 
     (rules 
         (start {
             (place "Marker2" (centrePoint))
@@ -52,7 +52,7 @@
         )
         (phase "Play" (play (forEach Piece)))
         }
-        (end ("NoMoves" Loss))  
+        (end ("NoMoves" Loss)) 
     )
 )
 

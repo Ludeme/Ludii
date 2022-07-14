@@ -47,8 +47,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Awagagae"  
-    (players 2)  
+(game "Awagagae" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 6 store:None
@@ -56,9 +56,9 @@
         )
         (piece "Seed" Shared)
         (hand Each)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-    })  
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+    }) 
     (rules 
         (start {
             (set RememberValue "OwnedP1" (sites Bottom))
@@ -76,12 +76,12 @@
                             (if 
                                 ("SameTurn") 
                                 "LastHoleSowed" 
-                                ("OwnedHoles")  
+                                ("OwnedHoles") 
                             )
                             if:(and ("PossibleSowFrom") (< 0 (count at:(from))))
                         )
                         (then 
-                            (sow  
+                            (sow 
                                 "Track"
                                 apply:(if (not ("CapturedHole" (mover) (to)))
                                     (if (and 
@@ -201,7 +201,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Awagagae is a two-row mancala-style board game from Eritrea. It is closely related to other Gabata games from the region.")
@@ -212,7 +212,7 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Horn of Africa, around 1971.")
+        (origin "This game was played in Horn of Africa, around 1971.")
         }
     )
     

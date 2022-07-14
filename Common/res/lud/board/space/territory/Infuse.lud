@@ -63,7 +63,7 @@
     (players 2)
     (equipment
         {
-        (board "BoardUsed" use:Cell )
+        (board "BoardUsed" use:Cell)
         (piece "Disc" Each)
         }
     )
@@ -110,12 +110,12 @@
                     (all Passed)
                     (<= (score Mover) (score Next))
                 )
-                (result  Next Win)
+                (result Next Win)
             )
             }
         )
     )
-)      
+)   
 
 //---------------------------------------------
 

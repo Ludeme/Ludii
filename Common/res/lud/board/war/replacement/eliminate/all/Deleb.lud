@@ -293,7 +293,7 @@
 
 (option "Board Size" <Board> args:{ <size> <dice> <tracks>}
     {
-    (item "10"  <10>  
+    (item "10" <10> 
         <
         (define "Die1" (face 40))
         (define "Die2" (face 41))
@@ -309,7 +309,7 @@
         }
         >
     "The board has 10 columns.") 
-    (item "20"  <20>  
+    (item "20" <20> 
         <
         (define "Die1" (face 80))
         (define "Die2" (face 81))
@@ -324,8 +324,8 @@
         (track "Track4" "79,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P3)
         }
         >
-    "The board has 20 columns.")*  
-    (item "30"  <30>  
+    "The board has 20 columns.")* 
+    (item "30" <30> 
         <
         (define "Die1" (face 120))
         (define "Die2" (face 121))
@@ -340,8 +340,8 @@
         (track "Track4" "119,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P3)
         }
         >
-    "The board has 30 columns.")  
-    (item "40"  <40>  
+    "The board has 30 columns.") 
+    (item "40" <40> 
         <
         (define "Die1" (face 160))
         (define "Die2" (face 161))
@@ -357,7 +357,7 @@
         }
         >
     "The board has 40 columns.") 
-    (item "50"  <50>  
+    (item "50" <50> 
         <
         (define "Die1" (face 200))
         (define "Die2" (face 201))
@@ -373,7 +373,7 @@
         }
         >
     "The board has 50 columns.") 
-    (item "60"  <60>  
+    (item "60" <60> 
         <
         (define "Die1" (face 240))
         (define "Die2" (face 241))
@@ -389,7 +389,7 @@
         }
         >
     "The board has 60 columns.") 
-    (item "70"  <70>  
+    (item "70" <70> 
         <
         (define "Die1" (face 280))
         (define "Die2" (face 281))
@@ -405,7 +405,7 @@
         }
         >
     "The board has 70 columns.") 
-    (item "80"  <80>  
+    (item "80" <80> 
         <
         (define "Die1" (face 320))
         (define "Die2" (face 321))
@@ -421,7 +421,7 @@
         }
         >
     "The board has 80 columns.") 
-    (item "90"  <90>  
+    (item "90" <90> 
         <
         (define "Die1" (face 360))
         (define "Die2" (face 361))
@@ -478,13 +478,13 @@
         {
         (description "Dèleb is a game with captures played in Somalia. It is played with teams, and often is played on a large board. One defining feature of it is the requirement of making a series of throws in order to start playing. It is similar to games such as Tab known in North Africa and Southwest Asia. ")
         (aliases {"Dèleb"})
-        (rules "Board of intersecting lines: four horizontal and up to 100 vertical. Twenty is typical. Played on two teams with even-numbered players. One piece per vertical line, lined up on the outer rows. Four sticks, white on one side and black on the other, used as dice. The value of the throw is the number of white sides that land face up, when only black are face up, the value is 6. Each player must progress through the following three stages of throws to begin playing. In the first stage, they throw four sticks. A throw of 2 or 3 ends the turn, a throw of 4 or 6 gives another throw. A throw of 1 allows the player to progress to the next stage and to add 1 to their score. In the second stage, the player throws three sticks. If the player throws two or three black, they add 1 to their score and keep throwing, three white up allows the player to add 4 to their score and keep playing; one black face up allows the player to pass to the third stage. In the third stage, the player throws two sticks. If two black are thrown, all of the previously tabulated score is lost, the turn ends and the player must start again from the first stage in their next turn. If the player throws two white, the player scores 4 and reverts back to the second phase. When the player scores one white and one black, the player enters the game and plays the pieces according to their accumulated score. Each piece must be unlocked with a throw of 1 before being  moved normally. From this point, players throw all four sticks. Throws of 2 or 3 end the turn, players continue to throw until they receive one of these values. Each throw must be assigned to move a piece and a single throw cannot be subdivided, though separate throws can be assigned to different pieces. Players may choose not to play a throw if they wish. Throws of 1 must be used to unlock a piece if there are any which are locked. Pieces move from left to right in their home row, right to left in the second row, left to right in the third row, right to left in their opponent's home row, returning to the third row and progressing from left to right, then to the second row progressing from right to left, and then back into the home row, proceeding from left to right, and so in a loop. Pieces may not pass the pieces of the opposing team. When a piece lands on the same space occupied by an opponent's piece, the opponent's piece is removed from the board. The team that captures all the pieces of the opposing team wins.")
+        (rules "Board of intersecting lines: four horizontal and up to 100 vertical. Twenty is typical. Played on two teams with even-numbered players. One piece per vertical line, lined up on the outer rows. Four sticks, white on one side and black on the other, used as dice. The value of the throw is the number of white sides that land face up, when only black are face up, the value is 6. Each player must progress through the following three stages of throws to begin playing. In the first stage, they throw four sticks. A throw of 2 or 3 ends the turn, a throw of 4 or 6 gives another throw. A throw of 1 allows the player to progress to the next stage and to add 1 to their score. In the second stage, the player throws three sticks. If the player throws two or three black, they add 1 to their score and keep throwing, three white up allows the player to add 4 to their score and keep playing; one black face up allows the player to pass to the third stage. In the third stage, the player throws two sticks. If two black are thrown, all of the previously tabulated score is lost, the turn ends and the player must start again from the first stage in their next turn. If the player throws two white, the player scores 4 and reverts back to the second phase. When the player scores one white and one black, the player enters the game and plays the pieces according to their accumulated score. Each piece must be unlocked with a throw of 1 before being moved normally. From this point, players throw all four sticks. Throws of 2 or 3 end the turn, players continue to throw until they receive one of these values. Each throw must be assigned to move a piece and a single throw cannot be subdivided, though separate throws can be assigned to different pieces. Players may choose not to play a throw if they wish. Throws of 1 must be used to unlock a piece if there are any which are locked. Pieces move from left to right in their home row, right to left in the second row, left to right in the third row, right to left in their opponent's home row, returning to the third row and progressing from left to right, then to the second row progressing from right to left, and then back into the home row, proceeding from left to right, and so in a loop. Pieces may not pass the pieces of the opposing team. When a piece lands on the same space occupied by an opponent's piece, the opponent's piece is removed from the board. The team that captures all the pieces of the opposing team wins.")
         (source "Marin 1931: 508-510.")
         (id "767")
         (version "1.3.4")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
-        (origin  "This game was played in Somalia, around 1931.")
+        (origin "This game was played in Somalia, around 1931.")
         }
     )
     

@@ -3,19 +3,19 @@
 //------------------------------------------------------------------------------
 
 (game "Unnee Tugalluulax" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         (mancalaBoard 2 6 store:None
             (track "Track" "5,W,N,E" loop:True)
         )
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     
     (rules 
-        (start (set Count 6 to:(sites Track)))		  
+        (start (set Count 6 to:(sites Track)))		 
         (play 
             (move Select 
                 (from 
@@ -45,7 +45,7 @@
     (item "No Moves" 
         <
         (no Moves Mover) 
-        >           
+        >      
     "The game ends if no moves.")
     (item "No Moves Or Repeating positions"
         <
@@ -90,7 +90,7 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Mongolia, around 1974.")
+        (origin "This game was played in Mongolia, around 1974.")
         }
     )
     

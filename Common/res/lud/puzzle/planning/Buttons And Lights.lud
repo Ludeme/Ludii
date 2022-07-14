@@ -7,12 +7,12 @@
 
 //------------------------------------------------------------------------------
 
-(game "Buttons And Lights"  
-    (players 1)  
+(game "Buttons And Lights" 
+    (players 1) 
     (equipment { 
         (board (rectangle 2 3)) 
         (piece "Light" Shared)
-    })  
+    }) 
     (rules
         (start (place "Light" (sites Top)))
         (play

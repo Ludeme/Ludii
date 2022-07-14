@@ -4,7 +4,7 @@
         (+
             (results
                 from:(forEach
-                    (difference (difference (sites Board) (sites Occupied by:#1)) (sites Occupied by:Neutral))    
+                    (difference (difference (sites Board) (sites Occupied by:#1)) (sites Occupied by:Neutral))  
                     if:("IsControlledBy" #1 (site))
                 )
                 to:(from) 
@@ -31,7 +31,7 @@
         (moveAgain)
         (and 
             ("ScoreFor" Mover)
-            ("ScoreFor" Next)  
+            ("ScoreFor" Next) 
 )))
 
 //-----------------------------------------------
@@ -95,7 +95,7 @@
                         (no Moves Next)
                         (and 
                             ("ScoreFor" Mover)
-                            ("ScoreFor" Next)  
+                            ("ScoreFor" Next) 
         )))))
         
         (end 
@@ -108,9 +108,9 @@
 // Defines for Options
 
 (define "LoSDirection" <Grid:connectivity>)
-(define "BoardUsed" <Grid:selected> )
+(define "BoardUsed" <Grid:selected>)
 
-(define "Hex2Limp" (board (dual (hex  (/ <BoardSize:smallSide> 2) (+ 2 (/ <BoardSize:smallSide> 2)))) use:Vertex))
+(define "Hex2Limp" (board (dual (hex (/ <BoardSize:smallSide> 2) (+ 2 (/ <BoardSize:smallSide> 2)))) use:Vertex))
 (define "SquareGrid" (board (square <BoardSize:smallSide>) use:Vertex))
 (define "SquareDiagonal" (board (square <BoardSize:smallSide>) use:Vertex))
 
@@ -131,8 +131,8 @@
 
 (option "Board Grid" <Grid> args:{<selected> <connectivity> <diagShow>} 
     {
-    (item "Hex Grid" <"Hex2Limp"> <Orthogonal> <Hidden>  "Hex N/N+2 grid w/even nodes, no center")**
-    (item "Square grid" <"SquareGrid"> <Orthogonal> <Hidden>  "Square 2N grid w/even nodes, no center")
+    (item "Hex Grid" <"Hex2Limp"> <Orthogonal> <Hidden> "Hex N/N+2 grid w/even nodes, no center")**
+    (item "Square grid" <"SquareGrid"> <Orthogonal> <Hidden> "Square 2N grid w/even nodes, no center")
     (item "Square Diagonal" <"SquareDiagonal"> <All> <ThinDotted> "Square 2N grid w/even nodes, no center")*
     }
 )
@@ -164,7 +164,7 @@
             
             Placement must be on empty nodes that are not controlled by the opponent, while removals are taken from nodes that the mover controls.
             
-            Control is determined by the difference in count between the two player's pieces in line-of-sight of the given node. This difference is the  parameter for the game.  When the its value is met or exceeded, the player with the excess LoS pieces controls the site.
+            Control is determined by the difference in count between the two player's pieces in line-of-sight of the given node. This difference is the parameter for the game. When the its value is met or exceeded, the player with the excess LoS pieces controls the site.
             
             In the original Situ this parameter is fixed at 2. In Double-move Situ it can be set from 1 to 4. The lower the number, the larger number of restricted nodes and possible captures, so the more tactical the game is. With higher numbers the game becomes more strategic. In any case, the game is finite, ending with one player running out of nodes to play upon.
             
@@ -217,13 +217,13 @@
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
         (show Edges Diagonal <Grid:diagShow> (colour DarkGrey))
-    (board Background fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.3 scaleY:1.3 )// offsetX:0.021 offsetY:-0.015 )   
+    (board Background fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.3 scaleY:1.3)// offsetX:0.021 offsetY:-0.015)  
     (piece Foreground P1 "Counter" image:"DoubleCounter" fillColour:(colour 120 36 0) edgeColour:(colour Black) scale:0.98)
     (piece Foreground P2 "Counter" image:"DoubleCounter" fillColour:(colour Cream) edgeColour:(colour VeryDarkGrey) scale:0.98)
-    (piece Foreground Neutral "X" image:"Cross" fillColour:(colour DarkBlue) edgeColour:(colour DarkBlue) scale:.45 offsetX:.16 offsetY:.2 )
+    (piece Foreground Neutral "X" image:"Cross" fillColour:(colour DarkBlue) edgeColour:(colour DarkBlue) scale:.45 offsetX:.16 offsetY:.2)
     (piece Background P1 "Counter" image:"Counter" fillColour:(colour 0 0 0 75) edgeColour:(colour 0 0 0 0) scale:1.0 offsetX:-.1 offsetY:.2)
     (piece Background P2 "Counter" image:"Counter" fillColour:(colour 0 0 0 75) edgeColour:(colour 0 0 0 0) scale:1.0 offsetX:-.15 offsetY:.3)
-(piece Background Neutral "X" image:"Counter" fillColour:"ColourBackground" edgeColour:(colour 0 0 0 0) scale:1.08 )// offsetX:-.16 offsetY:-.2 )
+(piece Background Neutral "X" image:"Counter" fillColour:"ColourBackground" edgeColour:(colour 0 0 0 0) scale:1.08)// offsetX:-.16 offsetY:-.2)
 
 }
 )

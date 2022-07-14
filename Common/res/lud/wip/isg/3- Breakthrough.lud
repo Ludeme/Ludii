@@ -21,7 +21,7 @@
         (piece "Pawn" Each (or ("StepForward") ("StepDiagonalForward")))
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Pawn1" (expand (sites Bottom)))

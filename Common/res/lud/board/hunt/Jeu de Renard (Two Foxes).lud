@@ -1,5 +1,5 @@
 (game "Jeu de Renard (Two Foxes)" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (square 8)) 
         (piece "Fox" P1
@@ -20,7 +20,7 @@
             )
         )
         (piece "Hen" P2 N ("StepToEmpty" (directions {FR FL})))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Fox1" (intersection (sites Top) (union (sites Left) (difference (expand (sites Right)) (sites Right)))) state:1)
@@ -62,7 +62,7 @@
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in France, around 1668.")
+        (origin "This game was played in France, around 1668.")
         }
     )
     

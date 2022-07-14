@@ -44,7 +44,7 @@
 )
 
 (define "GeneralEnemyCheck"
-    (is Threatened (if (is Next P2) (id "Cho2") (id "Han1")))  
+    (is Threatened (if (is Next P2) (id "Cho2") (id "Han1"))) 
 )
 
 (define "EnemyCannotMove"
@@ -79,8 +79,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Janggi"  
-    (players 2)  
+(game "Janggi" 
+    (players 2) 
     (equipment { 
         (board (rectangle 10 9) use:Vertex)
         
@@ -186,7 +186,7 @@
                     Orthogonal 
                     (between 
                         before:(count Rows) 
-                        after:(count Rows)  
+                        after:(count Rows) 
                         if:"NotEmptyAndNotAnotherPo"
                     ) 
                     (to 
@@ -195,14 +195,14 @@
                             if:"NotAFriendAndNotNextPo" 
                             (remove (to))
                         )
-                    )   
+                    )  
                 )
                 (move
                     Hop
                     Orthogonal
                     (between 
-                        before:(count Rows)  
-                        after:(count Rows)  
+                        before:(count Rows) 
+                        after:(count Rows) 
                         if:"NotEmptyAndNotAnotherPo"
                     ) 
                     (to if:(is Empty (to)))
@@ -222,7 +222,7 @@
                             (apply 
                                 (remove (to))
                             )
-                        )  
+                        ) 
                     )
                 )
             })
@@ -237,7 +237,7 @@
         (regions "PalaceP2" P2 { 66..68 75..77 84..86 })
         (regions "PalaceOrthoP2" P2 { 67 75 77 85 })
         }
-    )  
+    ) 
     
     (rules 
         (start
@@ -265,7 +265,7 @@
                 ) 
                 (result Mover Win)
             )
-            (if  (and 
+            (if (and 
                     ("GeneralSameColumnWithNoPieceBetween")
                     ("SinceOnTurn") 
                 )
@@ -287,7 +287,7 @@
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/xiangqi")
         (credit "Eric Piette")
-        (origin  "This game was played in Korea, around 1895.")
+        (origin "This game was played in Korea, around 1895.")
         }
     )
     

@@ -34,7 +34,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )   
+    )  
 )
 
 (define "DecideToCastle"
@@ -164,8 +164,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Level Chess"  
-    (players <NumOfPlayers:NumPlayers>)  
+(game "Level Chess" 
+    (players <NumOfPlayers:NumPlayers>) 
     (equipment { 
         (board 
             <NumOfPlayers:BoardShape>
@@ -265,7 +265,7 @@
         <NumOfPlayers:BoardRegions>
         
         }
-    )  
+    ) 
     (rules 
         (start
             { 
@@ -335,7 +335,7 @@
 
 (option "Players" <NumOfPlayers> args:{ <NumPlayers> <BoardShape> <BoardRegions> <PieceSetup> <CheckMate> }
     {
-    (item "4"    	
+    (item "4"  	
         <
         {(player N) (player S) (player E) (player W)}
         > 
@@ -383,7 +383,7 @@
         >
     "Four Players.")**
     
-    (item "2"    	
+    (item "2"  	
         <
         {(player N) (player S)}
         > 
@@ -420,7 +420,7 @@
         >
     "Two Players.")
     
-    (item "8"    	
+    (item "8"  	
         <
         {(player N) (player E) (player E) (player S) (player S) (player W) (player W) (player N)}
         > 

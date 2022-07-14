@@ -1,5 +1,5 @@
 (game "Dam Hariman"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board 
             (merge 
@@ -17,7 +17,7 @@
                 ("StepToEmpty")
             )
         )
-    })  
+    }) 
     (rules 
         (start { 
             (place "Marker1" (union {(sites Row 0) (sites Row 1) (sites Row 2) (sites Row 3)}))
@@ -51,7 +51,7 @@
         (version "1.3.4")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in Malaysia, from around 1886 to 1895.")
+        (origin "This game was played in Malaysia, from around 1886 to 1895.")
         }
     )
     

@@ -1,6 +1,6 @@
-(game "Magic Hexagon"  
+(game "Magic Hexagon" 
     
-    (players 1)  
+    (players 1) 
     
     (equipment { 
         (board (hex 3) (values Cell (range 1 19))) 
@@ -24,7 +24,7 @@
         (regions HintRegions) 
     })
     
-    (rules   
+    (rules  
         (play 
             (satisfy {
                 (all Different (sites Board))

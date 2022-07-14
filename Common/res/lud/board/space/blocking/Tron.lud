@@ -1,5 +1,5 @@
-(game "Tron"  
-    (players 2)  
+(game "Tron" 
+    (players 2) 
     (equipment { 
         (board (square 10)) 
         (piece "King" Each 
@@ -22,7 +22,7 @@
             )
         )
         (piece "Square" Each)
-    })  
+    }) 
     (rules 
         (start { 
             (place "King1" coord:"E5")

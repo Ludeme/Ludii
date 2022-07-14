@@ -1,5 +1,5 @@
-(game "Dam (Singapore)"  
-    (players 2)  
+(game "Dam (Singapore)" 
+    (players 2) 
     (equipment { 
         (board 
             (merge 
@@ -17,7 +17,7 @@
                 ("StepToEmpty")
             )
         )
-    })  
+    }) 
     (rules 
         (start { 
             (place "Marker1" (union {(sites Row 0) (sites Row 1) (sites Row 2) (sites Row 3)}))
@@ -45,7 +45,7 @@
         (version "1.3.4")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in Singapore, around 1889.")
+        (origin "This game was played in Singapore, around 1889.")
         }
     )
     

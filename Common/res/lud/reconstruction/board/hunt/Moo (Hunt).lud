@@ -1,10 +1,10 @@
 (game "Moo (Hunt)"
-    (players 2)  
+    (players 2) 
     (equipment {
         (board [#]) // Board shape is squared OR board tilings are squared.
         (piece "Marker" P1 (or ("StepToEmpty" ("HopCapture")))) // One black. 
         (piece "Marker" P2 ("StepToEmpty")) // Many black pieces.
-    })  
+    }) 
     (rules
         (start [#])
         (play (forEach Piece))

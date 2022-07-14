@@ -46,7 +46,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )   
+    )  
 )
 
 (define "DecideToCastle"
@@ -187,8 +187,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Chessgi"  
-    (players {(player N) (player S)})  
+(game "Chessgi" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -287,7 +287,7 @@
         })
         
         (hand Each size:5)
-    })  
+    }) 
     (rules 
         (start { 
             (place "Pawn1" (sites Row 1))

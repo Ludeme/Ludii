@@ -74,7 +74,7 @@
         }) 
         >
         "The rules of the game I."
-    )*  
+    )* 
     
     (item "Game II" 
         <
@@ -94,7 +94,7 @@
                 use:Vertex
             )
             
-            (piece "Foot" P1 (move Step Adjacent  (to if:(is Empty (to)))))
+            (piece "Foot" P1 (move Step Adjacent (to if:(is Empty (to)))))
             (piece "Gnome" P2 (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to)))))
             (hand P1)
             (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
@@ -149,7 +149,7 @@
                 use:Vertex
             )
             
-            (piece "Foot" P1 (move Step Adjacent  (to if:(is Empty (to)))))
+            (piece "Foot" P1 (move Step Adjacent (to if:(is Empty (to)))))
             (piece "Gnome" P2 (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to)))))
             (hand P1)
             (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
@@ -204,7 +204,7 @@
                 use:Vertex
             )
             
-            (piece "Foot" P1 (move Step Adjacent  (to if:(is Empty (to)))))
+            (piece "Foot" P1 (move Step Adjacent (to if:(is Empty (to)))))
             (piece "Gnome" P2 (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to)))))
             (hand P1)
             (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
@@ -253,7 +253,7 @@
                 use:Vertex
             )
             
-            (piece "Foot" P1 (move Step Adjacent  (to if:(is Empty (to)))))
+            (piece "Foot" P1 (move Step Adjacent (to if:(is Empty (to)))))
             (piece "Gnome" P2 (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to)))))
             (hand P1)
             (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
@@ -377,7 +377,7 @@
             
             (piece "Foot" P1 
                 (or
-                    (move Step Adjacent  (to if:(is Empty (to))))
+                    (move Step Adjacent (to if:(is Empty (to))))
                     (move Hop Adjacent
                         (between if:("IsEnemyAt" (between)))
                         (to if:(is Empty (to))

@@ -1,5 +1,5 @@
 (game "Sakko"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board 
             (rectangle 3 13)
@@ -8,7 +8,7 @@
         (dice d:6 from:0 num:3)
         (piece "Marker" Each)
         (piece "King" Each)
-    })  
+    }) 
     
     (rules 
         (start [#]) // 13 pieces per player + a king per player.

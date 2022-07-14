@@ -1,9 +1,9 @@
-(game "Lewthwaite's Game"  
-    (players 2)  
+(game "Lewthwaite's Game" 
+    (players 2) 
     (equipment { 
         (board (square 5) use:Vertex)
         (piece "Ball" Each (move Slide)) 
-    })  
+    }) 
     (rules 
         (start {
             (place "Ball1" (sites Phase 1))

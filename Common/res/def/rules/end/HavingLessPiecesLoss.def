@@ -1,0 +1,6 @@
+// Checks if a player has a less or equal number of pieces and lose. This ludemeplex can be used only in an ending condition.
+// @example ("HavingLessPiecesLoss" Next 2)
+
+(define "HavingLessPiecesLoss"
+		(if (<= (count Pieces #1) #2) (result #1 Loss))
+)

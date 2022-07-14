@@ -82,12 +82,12 @@
                 (shift 0 -1 (rectangle 1 4))
             })
             {
-            (track "Track1"     "20,W,N1,E" P1 directed:True)
-            (track "Track2"     "11,12,S2,E" P2 directed:True)
-            (track "Track3"     "6,E1,9,S1,W" P3 directed:True)
-            (track "Track4"     "0,1,2,3,4,W" P4 directed:True)
+            (track "Track1"   "20,W,N1,E" P1 directed:True)
+            (track "Track2"   "11,12,S2,E" P2 directed:True)
+            (track "Track3"   "6,E1,9,S1,W" P3 directed:True)
+            (track "Track4"   "0,1,2,3,4,W" P4 directed:True)
             (track "TrackRight" "14,E,W" directed:True) // Local state = 2
-            (track "TrackLeft"  "4,W,E"  directed:True) // Local state = 1
+            (track "TrackLeft" "4,W,E" directed:True) // Local state = 1
             }
         )
         (dice d:2 from:0 num:5)
@@ -129,7 +129,7 @@
                 (roll) next:(forEach Piece)
             )
         )
-        (end  (if (no Pieces Enemy) (result TeamMover Win)))
+        (end (if (no Pieces Enemy) (result TeamMover Win)))
     )
 )
 
@@ -147,7 +147,7 @@
         (version "1.3.4")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
-        (origin  "This game was played in Mexico, from around 1943 to 1953.")
+        (origin "This game was played in Mexico, from around 1943 to 1953.")
         }
     )
     

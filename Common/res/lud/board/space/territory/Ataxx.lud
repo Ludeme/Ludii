@@ -1,5 +1,5 @@
-(game "Ataxx"  
-    (players 2)  
+(game "Ataxx" 
+    (players 2) 
     (equipment { 
         (board (square 7)) 
         (piece "Marker" Each (or 
@@ -33,7 +33,7 @@
             )
         )
         }
-    )  
+    ) 
     (rules 
         (start {
             (set Score Each 2)
@@ -43,7 +43,7 @@
         (play (forEach Piece
                 (then 
                     (and 
-                        (set Score P1 (count Sites in:(sites Occupied by:P1)))	    
+                        (set Score P1 (count Sites in:(sites Occupied by:P1)))	  
                         (set Score P2 (count Sites in:(sites Occupied by:P2)))
                     )
                 )	

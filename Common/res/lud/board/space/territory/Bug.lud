@@ -11,7 +11,7 @@
 //-------------------------------
 // Bug matching Utility
 
-(define "IfThisRotationDo"  // compiles but sometimes misses
+(define "IfThisRotationDo" // compiles but sometimes misses
     (if
         (= 0
             (size Array
@@ -168,7 +168,7 @@
         ("SizeLargestBug")
 ))
 
-(define "RequiredGrowth"  
+(define "RequiredGrowth" 
     (move Add
         (to (sites Empty)
             if:(and ("PlacementDoesntMergeBugs") ("BugNot2Big"))
@@ -183,7 +183,7 @@
     (is In (to) (sites Around (sites Group at:(last From))))
 )
 
-(define "BonusGrowth"   
+(define "BonusGrowth"  
     (move Add
         (to (sites Empty)
             if:(and ("IsNext2BugThatAte") ("PlacementDoesntMergeBugs"))
@@ -252,7 +252,7 @@
                     (result Mover Loss)
                 )
                 (result Mover Win)
-))))   
+))))  
 
 //----------------------------------
 
@@ -261,7 +261,7 @@
         (set Score Mover 0)
         (set Score Next 
             (count Sites
-                in:(sites To ("RequiredGrowth" ~ ~ ))
+                in:(sites To ("RequiredGrowth" ~ ~))
 ))))
 
 //---------------
@@ -269,7 +269,7 @@
 (option "Board" <Board> args:{ <type> <graphics> }
     {
     (item "Hex3" <(hex Hexagon 3)> "3 Hexagon")**
-    (item "Hex 343434" <(hex Limping 3)>  "343434 Hexagon")
+    (item "Hex 343434" <(hex Limping 3)> "343434 Hexagon")
     (item "Hex4" <(hex Hexagon 4) > "4 Hexagon")
     (item "Hex 454545" <(hex Limping 4)> "454545 Hexagon")
     (item "Hex5" <(hex Hexagon 5)> "5 Hexagon")

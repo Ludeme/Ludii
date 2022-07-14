@@ -1,5 +1,5 @@
-(game "Pam Pait"  
-    (players 2)  
+(game "Pam Pait" 
+    (players 2) 
     (equipment { 
         (board
             (add
@@ -19,7 +19,7 @@
         )
         (piece "Marker" Each (or "HopCapture" "StepToEmpty"))
         }
-    )  
+    ) 
     (rules 
         (start {
             (place "Marker1" (union (sites {"A4" "E4"}) (expand (sites Bottom) steps:3)))
@@ -46,7 +46,7 @@
         (version "1.3.4")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1935.")
+        (origin "This game was played in India, around 1935.")
         }
     )
     

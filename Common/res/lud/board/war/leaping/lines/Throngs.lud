@@ -14,7 +14,7 @@
     (forEach Value 
         (union
             ("AStep" "S7" (exact 0))
-            (values Remembered "S7")  // These are to make sure that something is always yielded
+            (values Remembered "S7") // These are to make sure that something is always yielded
         )
         (remember Value "S6" (value) unique:True)
         (then ("Yields5"))
@@ -93,7 +93,7 @@
         )
         (remember Value "S1" (value) unique:True)
         (then ("Yields0"))
-))  
+)) 
 
 (define "Yields0"
     (forEach Value
@@ -106,7 +106,7 @@
             ("AStep" "S3" (exact 2))
             ("AStep" "S2" (exact 1))
             ("AStep" "S1" (exact 0))
-            (values Remembered "S1")          
+            (values Remembered "S1")     
             }
         )
         (remember Value "S0" (value) unique:True)
@@ -159,14 +159,14 @@
                 (and
                     (= 0 ("InfluenceAt" (to)))
                     (= 0 (count Sites in:(difference (sites Around (to)) (sites Occupied by:All))))
-        )))  
+        ))) 
         (then 
             (and
                 (set Var "PowerLeft" 0)
                 (set Value Mover 0)
 ))))
 
-(define "CanMoveElsewhere"  // Test to prevent selecting null moves when all destinations are blocked
+(define "CanMoveElsewhere" // Test to prevent selecting null moves when all destinations are blocked
     (can Move 
         (add
             (to 
@@ -191,7 +191,7 @@
                     (set Value Mover 0)
                     }
                 )
-                next:("FindDestinations"  //remove the last two characters to restore the included then conditions
+                next:("FindDestinations" //remove the last two characters to restore the included then conditions
                     (then 
                         (if 
                             (not ("CanMoveElsewhere")) 
@@ -232,7 +232,7 @@
                     (from)
                     (then
                         (add
-                            (to (last From))       
+                            (to (last From))    
                             (then
                                 (and
                                     {
@@ -251,7 +251,7 @@
 )) 
 // Continuation of the moves based on remaining influence
 
-(define "CompleteTheMove"  // shows as a destination selection in the listing for consistancy
+(define "CompleteTheMove" // shows as a destination selection in the listing for consistancy
     (do (remove (var "LastTo"))
         next:(move Select
             (from (sites (values Remembered "S0")))
@@ -259,12 +259,12 @@
                 (add
                     (to 
                         (last To)
-                    )     
+                    )   
                     (then 
                         (set Var "PowerLeft" 0)
 ))))))
 
-// Defining the structure of each individual Move: ie  movement selection, plus handling follow-up movement
+// Defining the structure of each individual Move: ie movement selection, plus handling follow-up movement
 // First some utilities: clearing the remembered values 
 // and testing for move restrictions that prevent cycling:- After a passed turn at least one player must place a piece.
 
@@ -358,7 +358,7 @@
                             (+ 2 (count Sites in:(sites Around (from))))
                             (* 2 (count Pieces #1 in:(sites Around (from))))
                         )
-                        1  
+                        1 
                         0
             )))
             
@@ -491,7 +491,7 @@
 
 (game "Throngs" 
     (players 2)
-    (equipment  
+    (equipment 
         {
         <Board:type>
         (piece "Ball" P1)
@@ -515,7 +515,7 @@
                         (count Sites in:(sites Board))
                         (* 2 (- (score Next) ("SafetyFigure")))
                 ))
-                (byScore)   
+                (byScore)  
     )))
 )
 
@@ -539,7 +539,7 @@
         (set Score P1 0)
         (set Score P2 0)
         (place "Ball1" state:7)
-        (place "Ball2" state:7)   
+        (place "Ball2" state:7)  
         }
 ))
 // Definitions of different Boards the game may be played on
@@ -552,25 +552,25 @@
         use:Vertex
 ))
 
-(define  "RaggedHex63"
+(define "RaggedHex63"
     (board
-        (remove (tri Limping  5 6)
+        (remove (tri Limping 5 6)
             vertices:{0 1 5 6 29 30 39 48 64 70 71 74}
         ) 
         use:Vertex
 ))
-(define  "RaggedHex87"
+(define "RaggedHex87"
     (board
         (trim
-            (remove (tri Limping 6 7)  
+            (remove (tri Limping 6 7) 
                 vertices:{0 1 2 6 7 8 15 33 44 45 55 56 67 77 87 95 96 102 103 104 107}
         )) 
         use:Vertex
 ))
 
-(define  "RaggedHex153"
+(define "RaggedHex153"
     (board
-        (remove (tri {8 9 8 12 6})  
+        (remove (tri {8 9 8 12 6}) 
             vertices:{0 1 2 3 7 8 9 10 11 18 19 20 30 54 68 69 82 83 84 98 99 100 113 114 128 141 154 165 166 175 176 177 183 184 185 186 187 190 191}
         ) 
         use:Vertex
@@ -578,22 +578,22 @@
 
 // ---------------------------------------------
 // Options for Board and Set-up/Pie
-// Hex 7-8  variants: <{143}> <{27 37}> ;  <{127}> <{40 47}>  and not as good - <{12}> <{103 111}> ;
+// Hex 7-8 variants: <{143}> <{27 37}> ; <{127}> <{40 47}> and not as good - <{12}> <{103 111}> ;
 // ---------------------------------------------
 
 (option "Boards" <Board> args:{ <type> <startP1> <startP2> <centering> }
     {
-    (item "RaggedHex 63-Node" <("RaggedHex63")>  <{13}> <{35 46}> <0.03> "Ragged edged centerless board for shorter plays.")**** //<{58}> <{15 18 }>
+    (item "RaggedHex 63-Node" <("RaggedHex63")> <{13}> <{35 46}> <0.03> "Ragged edged centerless board for shorter plays.")**** //<{58}> <{15 18 }>
     (item "Throngs 93-Node" <("ThrongsBoard")> <{85}> <{6 9}> <0.03> "Original board.")**
-    (item "Ragged Hex 87-Node" <("RaggedHex87")>  <{70}> <{13 47}> <0.03> "Ragged edged centerless board.")
-    (item "Ragged Hex 153-Node" <("RaggedHex153")>  <{36}> <{82 112}> <0.03> "Ragged edged centerless board for longer plays.") //<{13}> <{93 125}>
+    (item "Ragged Hex 87-Node" <("RaggedHex87")> <{70}> <{13 47}> <0.03> "Ragged edged centerless board.")
+    (item "Ragged Hex 153-Node" <("RaggedHex153")> <{36}> <{82 112}> <0.03> "Ragged edged centerless board for longer plays.") //<{13}> <{93 125}>
     }
 )
 
 (option "Starting" <Variants> args:{ <starting> <pieOrNot> }
     {
     (item "3-stone Pie rule" <("PieStart")> <("IncludingPiePhases")> "Black places 2 Black and one White as Pie offer, White can chose to move or to change their colors and pass.")
-    (item "Standard set-up" <("StdPieceStart")> <("WithoutPiePhases")>  "Standard set-up for learning (may change in future)")***
+    (item "Standard set-up" <("StdPieceStart")> <("WithoutPiePhases")> "Standard set-up for learning (may change in future)")***
     }
 )
 
@@ -610,7 +610,7 @@
             
             Strategy: Power to travel up to seven units per move can be developed during the game. As the offensive capacity develops, defensive measures are needed, first starting with limiting the mobility of enemy stones by approaching them, then by building walls, and thickening them along the axes of the opponent's catapulting sites (empty locations surrounded by many of that player's own stones.) These sites allow adding a stone and catapulting it up to a distance of 5, and are re-useable. In addition to these methods, defense is by scattering stones behind one's own lines to immobilise enemy stones that invade.
             
-            The majority of turns naturally involve placement as well as movement, due to the benefit of gaining material; even though newly placed stones travel a reduced distance due to the cost of their placement. Occasional moves without placement are used mainly to initiate difficult invasions, as they risk simultaneously opening up positional weaknesses.  
+            The majority of turns naturally involve placement as well as movement, due to the benefit of gaining material; even though newly placed stones travel a reduced distance due to the cost of their placement. Occasional moves without placement are used mainly to initiate difficult invasions, as they risk simultaneously opening up positional weaknesses. 
             
             Individual stones may be captured by replacement when they are sufficiently out-numbered at a location, which means that towards the end of the game, chains of stones not anchored to a triangle, loop, or board edge will be consumed one-by-one by captures. Thus the shape and nature of territorial walls is worth contesting.
             
@@ -641,7 +641,7 @@
             
             A standard setup is provided by default. To choose other positions, select the Pie option from the menu.
             
-            After the player's colors are determined, player alternate turns with each taking two moves in succession on their turn, beginning with Black.  
+            After the player's colors are determined, player alternate turns with each taking two moves in succession on their turn, beginning with Black. 
             
             Moves:
             A move begins on a site that has sufficient action-potential to be completed (calculated as described above). 
@@ -700,19 +700,19 @@
         (piece Scale P2 "Ball" 0.93)
         (piece Colour P1 "Ball" state:0 fillColour:(colour 90 90 90) secondaryColour:(colour 0 0 0 0))
         (piece Colour P2 "Ball" state:0 fillColour:(colour White) secondaryColour:(colour 0 0 0 0))
-        (piece Colour P1 "Ball" state:1 fillColour:(colour 40 40 40 80 ) secondaryColour:(colour 0 0 0))
+        (piece Colour P1 "Ball" state:1 fillColour:(colour 40 40 40 80) secondaryColour:(colour 0 0 0))
         (piece Colour P2 "Ball" state:1 fillColour:(colour 255 255 255 110) secondaryColour:(colour 0 0 0))
-        (piece Colour P1 "Ball" state:2 fillColour:(colour 40 40 40 80 ) secondaryColour:(colour 0 0 0))
+        (piece Colour P1 "Ball" state:2 fillColour:(colour 40 40 40 80) secondaryColour:(colour 0 0 0))
         (piece Colour P2 "Ball" state:2 fillColour:(colour 255 255 255 110) secondaryColour:(colour 0 0 0))
-        (piece Colour P1 "Ball" state:3 fillColour:(colour 40 40 40 80 ) secondaryColour:(colour 0 0 0))
+        (piece Colour P1 "Ball" state:3 fillColour:(colour 40 40 40 80) secondaryColour:(colour 0 0 0))
         (piece Colour P2 "Ball" state:3 fillColour:(colour 255 255 255 110) secondaryColour:(colour 0 0 0))
-        (piece Colour P1 "Ball" state:4 fillColour:(colour 40 40 40 80 ) secondaryColour:(colour 0 0 0))
+        (piece Colour P1 "Ball" state:4 fillColour:(colour 40 40 40 80) secondaryColour:(colour 0 0 0))
         (piece Colour P2 "Ball" state:4 fillColour:(colour 255 255 255 110) secondaryColour:(colour 0 0 0))
-        (piece Colour P1 "Ball" state:5 fillColour:(colour 40 40 40 80 ) secondaryColour:(colour 0 0 0))
+        (piece Colour P1 "Ball" state:5 fillColour:(colour 40 40 40 80) secondaryColour:(colour 0 0 0))
         (piece Colour P2 "Ball" state:5 fillColour:(colour 255 255 255 110) secondaryColour:(colour 0 0 0))
-        (piece Colour P1 "Ball" state:6 fillColour:(colour 40 40 40 80 ) secondaryColour:(colour 0 0 0))
+        (piece Colour P1 "Ball" state:6 fillColour:(colour 40 40 40 80) secondaryColour:(colour 0 0 0))
         (piece Colour P2 "Ball" state:6 fillColour:(colour 255 255 255 110) secondaryColour:(colour 0 0 0))
-        (piece Colour P1 "Ball" state:7 fillColour:(colour 40 40 40 80 ) secondaryColour:(colour 0 0 0))
+        (piece Colour P1 "Ball" state:7 fillColour:(colour 40 40 40 80) secondaryColour:(colour 0 0 0))
         (piece Colour P2 "Ball" state:7 fillColour:(colour 255 255 255 110) secondaryColour:(colour 0 0 0))
         (board Background image:"Disc.svg" fillColour:(colour 230 230 230) edgeColour:(colour 230 230 230) scale:1.26 rotation:150 offsetX:-.01 offsetY:<Board:centering>)
         (board StyleThickness InnerEdges 1.75)

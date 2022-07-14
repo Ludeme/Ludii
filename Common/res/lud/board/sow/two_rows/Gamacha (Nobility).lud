@@ -13,8 +13,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Gamacha (Nobility)"  
-    (players 2)  
+(game "Gamacha (Nobility)" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
@@ -24,7 +24,7 @@
         (regions P1 (sites Bottom)) 
         (regions P2 (sites Top)) 
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start (set Count 4 to:(sites Track)))
@@ -71,7 +71,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Gamacha is a term used by Hadiya and Kambati people of Ethiopia for mancala-style games. This is a two-row version that was typically played by male nobility of the Hadiya people.")
@@ -81,7 +81,7 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Ethiopia, around 1971.")
+        (origin "This game was played in Ethiopia, around 1971.")
         }
     )
     

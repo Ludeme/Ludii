@@ -58,11 +58,11 @@
 
 //-------------------------------------------------
 
-(game "Sijat El Taba"  
+(game "Sijat El Taba" 
     (players 2)
     (equipment {
         (board (rectangle <Row:num> 10)
-            {    
+            {  
             <Row:track>
             }
         )
@@ -137,14 +137,14 @@
 
 (option "Board Size" <Row> args:{ <num> <track>}
     {
-    (item "4x10"  
+    (item "4x10" 
         <4> 
         <
         (track "Track1" "0,E,N1,W,N1,E,N1,W" P1 directed:True)
         (track "Track2" "39,W,S1,E,S1,W,S1,E" P2 directed:True)
         > 
     "4 rows.") 
-    (item "6x10"  
+    (item "6x10" 
         <6>
         <
         (track "Track1" "0,E,N1,W,N1,E,N1,W,N1,E,N1,W" P1 directed:True)
@@ -179,7 +179,7 @@
         (version "1.3.4")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
-        (origin  "This game was played in Sudan, around 1925.")
+        (origin "This game was played in Sudan, around 1925.")
         }
     )
     

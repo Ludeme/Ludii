@@ -1,5 +1,5 @@
-(game "Geister"  
-    (players 2)  
+(game "Geister" 
+    (players 2) 
     
     (equipment { 
         (board (square 6)) 
@@ -18,7 +18,7 @@
             (pair (id "GhostGood" P1) (handSite P1)) (pair (id "GhostEvil" P1) (handSite P1 1)) 
             (pair (id "GhostGood" P2) (handSite P2)) (pair (id "GhostEvil" P2) (handSite P2 1)) 
         })
-    })  
+    }) 
     
     (rules 
         (start { 

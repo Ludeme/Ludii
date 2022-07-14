@@ -5,14 +5,14 @@
 (define "OneRowIsEmpty"
     (or
         (all Sites (sites P1) if:(= 0 (count at:(site))))
-        (all Sites (sites P2)  if:(= 0 (count at:(site))))
+        (all Sites (sites P2) if:(= 0 (count at:(site))))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Mangala (Bedouin)"  
-    (players 2)  
+(game "Mangala (Bedouin)" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
@@ -68,7 +68,7 @@
         (phase "SowingRestricted"
             (play
                 (move Select
-                    (from (mapEntry Mover)  if:(is Occupied (from)))
+                    (from (mapEntry Mover) if:(is Occupied (from)))
                     (then (sow))
                 )
             )
@@ -120,7 +120,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Mangala is a word which refers to many two-row mancala-style board games throughout Western Asia and North Africa. This game was played by the Bedouin of the Arabian Peninsula in the early twentieth century.")

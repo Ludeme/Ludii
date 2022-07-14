@@ -39,7 +39,7 @@
     (and 
         (is Empty (to)) 
         (not (is Threatened (id "King" Mover) at:(to) (forEach Piece)))
-    )   
+    )  
 )
 
 (define "DecideToCastle"
@@ -172,8 +172,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Stratomic"  
-    (players {(player N) (player S)})  
+(game "Stratomic" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 10)) 
         
@@ -263,7 +263,7 @@
         (map "RookRight" {(pair 1 "J2") (pair 2 "A9")})
         (regions "Promotion" P1 (sites Row 8))
         (regions "Promotion" P2 (sites Row 1))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Pawn1" (sites Row 2))

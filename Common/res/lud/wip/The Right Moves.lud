@@ -8,8 +8,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "The Right Moves"  
-    (players 2)  
+(game "The Right Moves" 
+    (players 2) 
     (equipment { 
         (board 
             (add
@@ -70,7 +70,7 @@
         )
         (piece "DoubleCounter" Each)
         (regions "SecondInnerMostCircle" (sites {4..11}))
-    })  
+    }) 
     
     (rules 
         (start {

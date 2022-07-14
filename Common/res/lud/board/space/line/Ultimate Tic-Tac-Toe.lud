@@ -28,8 +28,8 @@
 
 //-------------------------------------------------------------------------
 
-(game "Ultimate Tic-Tac-Toe"  
-    (players 2)  
+(game "Ultimate Tic-Tac-Toe" 
+    (players 2) 
     (equipment 
         { 
         (board 
@@ -38,37 +38,37 @@
                 (scale 3 (square 3))
             )
             use:Cell
-        )  
+        ) 
         
-        (piece "Disc"       P1) 
-        (piece "DiscLarge"  P1) 
-        (piece "Cross"      P2) 
+        (piece "Disc"    P1) 
+        (piece "DiscLarge" P1) 
+        (piece "Cross"   P2) 
         (piece "CrossLarge" P2) 
         
-        (regions "SubGames"  (sites { 0..80}))
-        (regions "SubGame0"  (sites { 0..2   9..11 18..20}))
-        (regions "SubGame1"  (sites { 3..5  12..14 21..23}))
-        (regions "SubGame2"  (sites { 6..8  15..17 24..26}))
-        (regions "SubGame3"  (sites {27..29 36..38 45..47}))
-        (regions "SubGame4"  (sites {30..32 39..41 48..50}))
-        (regions "SubGame5"  (sites {33..35 42..44 51..53}))
-        (regions "SubGame6"  (sites {54..56 63..65 72..74}))
-        (regions "SubGame7"  (sites {57..59 66..68 75..77}))
-        (regions "SubGame8"  (sites {60..62 69..71 78..80}))
+        (regions "SubGames" (sites { 0..80}))
+        (regions "SubGame0" (sites { 0..2  9..11 18..20}))
+        (regions "SubGame1" (sites { 3..5 12..14 21..23}))
+        (regions "SubGame2" (sites { 6..8 15..17 24..26}))
+        (regions "SubGame3" (sites {27..29 36..38 45..47}))
+        (regions "SubGame4" (sites {30..32 39..41 48..50}))
+        (regions "SubGame5" (sites {33..35 42..44 51..53}))
+        (regions "SubGame6" (sites {54..56 63..65 72..74}))
+        (regions "SubGame7" (sites {57..59 66..68 75..77}))
+        (regions "SubGame8" (sites {60..62 69..71 78..80}))
         (regions "SuperGame" (sites {81..89}))
         (map
             "SubToSuper"
             {0..80}
             {
-            81 81 81 82 82 82 83 83 83  
-            81 81 81 82 82 82 83 83 83  
-            81 81 81 82 82 82 83 83 83  
-            84 84 84 85 85 85 86 86 86  
-            84 84 84 85 85 85 86 86 86  
-            84 84 84 85 85 85 86 86 86  
-            87 87 87 88 88 88 89 89 89  
-            87 87 87 88 88 88 89 89 89  
-            87 87 87 88 88 88 89 89 89  
+            81 81 81 82 82 82 83 83 83 
+            81 81 81 82 82 82 83 83 83 
+            81 81 81 82 82 82 83 83 83 
+            84 84 84 85 85 85 86 86 86 
+            84 84 84 85 85 85 86 86 86 
+            84 84 84 85 85 85 86 86 86 
+            87 87 87 88 88 88 89 89 89 
+            87 87 87 88 88 88 89 89 89 
+            87 87 87 88 88 88 89 89 89 
             } 
         )
         (map
@@ -87,7 +87,7 @@
             } 
         )
         }
-    )  
+    ) 
     (rules 
         (play 
             (priority
@@ -142,7 +142,7 @@
                 )
                 }
                 (then 
-                    (if (is Line 3 if:("CheckLineRightSubGame"))  // add a piece in the supergame                                    
+                    (if (is Line 3 if:("CheckLineRightSubGame")) // add a piece in the supergame                  
                         (add 
                             (piece (if (= (mover) P1) (id "DiscLarge1") (id "CrossLarge2")))
                             (to (mapEntry "SubToSuper" (last To)))
@@ -162,7 +162,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata    
+(metadata  
     (info
         {
         (description "Ultimate Tic-Tac-Toe is a board game composed of nine Tic-Tac-Toe boards arranged in a 3x3 grid.")
@@ -178,9 +178,9 @@
     (graphics 
         {
         (board Style UltimateTicTacToe)
-        (piece Scale "Disc"       0.8)
-        (piece Scale "Cross"      0.8)
-        (piece Scale "DiscLarge"  2.5)
+        (piece Scale "Disc"    0.8)
+        (piece Scale "Cross"   0.8)
+        (piece Scale "DiscLarge" 2.5)
         (piece Scale "CrossLarge" 2.6)
         }
     )

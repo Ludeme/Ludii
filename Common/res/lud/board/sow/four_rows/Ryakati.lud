@@ -6,8 +6,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Ryakati"  
-    (players 2)  
+(game "Ryakati" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -16,19 +16,19 @@
             (track "Track2" "16,E,N1,W" loop:True P2)
             }
         )
-        (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
-        (regions "Home" P2 (sites Track "Track2"))                              // P2 home
+        (regions "Home" P1 (sites Track "Track1"))               // P1 Home
+        (regions "Home" P2 (sites Track "Track2"))               // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))   // P2 inner Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))  // P2 inner Home
         (map "RightMostOuter" {(pair P1 7) (pair P2 24)})
         (map "SecondHoleRightOuter" {(pair P1 6) (pair P2 25)})
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start 
-            (set Count 2 to:(sites Board )) 
+            (set Count 2 to:(sites Board)) 
         )
         
         phases:{
@@ -196,7 +196,7 @@
         (version "1.3.4")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
-        (origin  "This game was played in South Sudan, around 1939.")
+        (origin "This game was played in South Sudan, around 1939.")
         }
     )
     

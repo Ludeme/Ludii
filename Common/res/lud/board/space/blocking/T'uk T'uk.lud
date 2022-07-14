@@ -5,7 +5,7 @@
         (piece "Marker" Each "StepOrthogonalToEmpty")
     })
     (rules 
-        (start {  
+        (start { 
             (place "Marker1" (sites Bottom))
             (place "Marker2" (sites Top))
         })
@@ -18,10 +18,10 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "6"  <6>   "The board is 6x6.") 
-    (item "8"  <8>   "The board is 8x8.")  
-    (item "10" <10>  "The board is 10x10.")  
-    (item "12" <12>  "The board is 12x12.") 
+    (item "6" <6>  "The board is 6x6.") 
+    (item "8" <8>  "The board is 8x8.") 
+    (item "10" <10> "The board is 10x10.") 
+    (item "12" <12> "The board is 12x12.") 
     }
 )
 
@@ -51,7 +51,7 @@
         (version "1.3.4")
         (classification "board/space/blocking")
         (credit "Eric Piette")
-        (origin  "This game was played in West Africa, around 1955.")
+        (origin "This game was played in West Africa, around 1955.")
         }
     )
     

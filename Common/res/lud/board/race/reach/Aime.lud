@@ -118,7 +118,7 @@
         )
         }
         
-        (end  
+        (end 
             (if (!= (- (count Players) (count Active)) (count Sites in:(difference ("Centre") (sites Empty))))
                 {
                 (if (and (is Active P1) (is In (where "Marker" P1) ("Centre"))) (result P1 Win))
@@ -145,7 +145,7 @@
         (version "1.3.4")
         (classification "board/race/reach")
         (credit "Eric Piette")
-        (origin  "This game was played in Benin, around 1955.")
+        (origin "This game was played in Benin, around 1955.")
         }
     )
     

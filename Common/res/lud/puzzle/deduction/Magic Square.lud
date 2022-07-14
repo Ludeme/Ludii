@@ -1,14 +1,14 @@
-(game "Magic Square"  
-    (players 1)  
+(game "Magic Square" 
+    (players 1) 
     
     (equipment { 
         (board (square <Challenge:size>) (values Cell (range 1 <Challenge:maxVal>))) 
         (regions {Columns Rows Diagonals}) 
-    })  
+    }) 
     
-    (rules    
+    (rules  
         (play 
-            (satisfy  {
+            (satisfy {
                 (all Different (sites Board))
                 (is Sum <Challenge:sum>)
             })

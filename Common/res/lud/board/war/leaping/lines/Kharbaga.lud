@@ -1,4 +1,4 @@
-(define "PromotionIfOppositeSideReached"  
+(define "PromotionIfOppositeSideReached" 
     (then 
         (if (is In (last To) (sites Next))
             (move Promote (last To) (piece "DoubleCounter") Mover)
@@ -61,7 +61,7 @@
         (version "1.3.4")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in North Africa, from around 1952 to 2012.")
+        (origin "This game was played in North Africa, from around 1952 to 2012.")
         }
     )
     

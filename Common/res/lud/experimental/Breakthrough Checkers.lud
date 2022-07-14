@@ -24,11 +24,11 @@
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
         }
-    )  
+    ) 
     (rules 
         (start
             { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ))
+            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1) ))
             (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1)))
             }
         )
@@ -43,7 +43,7 @@
                     )
                     (move Pass)
                 )
-                (or  
+                (or 
                     (forEach Piece "Counter" 
                         ("HopMan" (from)
                             (then 

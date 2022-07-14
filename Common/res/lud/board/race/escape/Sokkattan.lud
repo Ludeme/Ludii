@@ -20,8 +20,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Sokkattan"  
-    (players 4)  
+(game "Sokkattan" 
+    (players 4) 
     (equipment { 
         ("PachisiBoard"
             {
@@ -37,7 +37,7 @@
         (regions "SafeSites" (sites {67 63 65 23 38 3 82 84 86 30 47 15}))
         (map "Throw" {(pair 0 6) (pair 1 10) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 25) (pair 6 12)})
         (map "Entry" {(pair P1 67) (pair P2 23) (pair P3 82) (pair P4 30)})
-    })  
+    }) 
     (rules 
         (start {
             (set Team 1 {P1 P3})
@@ -106,7 +106,7 @@
         (version "1.3.4")
         (classification "board/race/reach")
         (credit "Eric Piette")
-        (origin  "This game was played in Sri Lanka, around 1906.")
+        (origin "This game was played in Sri Lanka, around 1906.")
         }
     )
     

@@ -2,8 +2,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Press Ups"  
-    (players 2)  
+(game "Press Ups" 
+    (players 2) 
     (equipment { 
         (board (square 7)) 
         (piece "Disc" Each) 
@@ -11,13 +11,13 @@
         (regions P1 (difference (union (sites Bottom) (sites Top)) (union (sites Right) (sites Left))))
         (regions P2 (difference (union (sites Right) (sites Left)) (union (sites Bottom) (sites Top))))
         }
-    )  
+    ) 
     
     (rules 
         (start {
             (place "Disc1" (sites P1))
             (place "Disc2" (sites P2))
-            (place "Disc0" "AllSitesWithoutOwnedPiece" )
+            (place "Disc0" "AllSitesWithoutOwnedPiece")
         })
         
         phases:{

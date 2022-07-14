@@ -1,10 +1,10 @@
 (game "Damii"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (square 10))
         (piece "Disc" P1 (move [#])) 
         (piece "Disc" P2 (move [#])) 
-    })  
+    }) 
     (rules 
         (start [#]) // 20 pieces per player.
         (play [#])

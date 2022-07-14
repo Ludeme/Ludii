@@ -1,4 +1,4 @@
-(define "RememberSiteWithPossibleCapture"  
+(define "RememberSiteWithPossibleCapture" 
     (set Pending 
         (sites To
             (forEach Piece "Fox" 
@@ -8,7 +8,7 @@
     )
 )
 
-(define "RememberSiteWithPossibleMultiCapture"  
+(define "RememberSiteWithPossibleMultiCapture" 
     (set Pending 
         (sites To
             (if ("SameTurn")
@@ -26,7 +26,7 @@
 (define "ShouldCapturedButMoved" 
     (and
         (is Pending)
-        (not (is In (last To) ("SitesWithPossibleCaptureInPreviousTurn")))  
+        (not (is In (last To) ("SitesWithPossibleCaptureInPreviousTurn"))) 
     )
 )
 
@@ -67,7 +67,7 @@
     )
 )
 
-(define "DidNotCaptured"  (> (value Player Prev) 0))
+(define "DidNotCaptured" (> (value Player Prev) 0))
 
 (define "HenAdded" (set Value Prev (- (value Player Prev) 1)))
 
@@ -75,8 +75,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Renard et les Poules"  
-    (players 2)  
+(game "Renard et les Poules" 
+    (players 2) 
     (equipment { 
         ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
         (hand P1)
@@ -87,7 +87,7 @@
             ) 
         )
         (piece "Hen" P2 N ("StepToEmpty" (directions {Forwards Rightward Leftward}))) 
-    })  
+    }) 
     (rules 
         (start { 
             (place "Fox1" (centrePoint))
@@ -139,7 +139,7 @@
         )
         >
         "The fox can capture one single piece."
-    )*  
+    )* 
     
     (item "Multi Captures" 
         <("HopSequenceCapture")> 
@@ -163,9 +163,9 @@
         )
         >
         "The fox can capture many pieces in a sequence."
-    )  
+    ) 
     
-    (item "One Single Orthogonal Capture"  
+    (item "One Single Orthogonal Capture" 
         <("HopCapture" (directions {N S E W}))> 
         <("StepToEmpty" (directions {N S E W}))>
         <
@@ -181,7 +181,7 @@
         )
         >
         "The fox can capture orthogonally one single piece."
-    )   
+    )  
     
     (item "Multi Orthogonal Captures" 
         <("HopCustomSequenceCapture" (directions {N S E W}))> 
@@ -208,9 +208,9 @@
         )
         >
         "The fox can capture orthogonally many pieces in a sequence."
-    )   
+    )  
     
-    (item "One Single Diagonal Capture And Orthogonal Move"  
+    (item "One Single Diagonal Capture And Orthogonal Move" 
         <("HopCapture" (directions {NE SE NW SW}))> 
         <("StepToEmpty" (directions {N S E W}))>
         <
@@ -297,7 +297,7 @@
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in France, around 1840.")
+        (origin "This game was played in France, around 1840.")
         }
     )
     

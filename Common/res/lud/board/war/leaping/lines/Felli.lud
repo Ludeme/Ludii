@@ -2,8 +2,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Felli"  
-    (players 2)  
+(game "Felli" 
+    (players 2) 
     (equipment { 
         (board 
             (graph
@@ -18,7 +18,7 @@
         (piece "DoubleCounter" Each)
         (regions P1 (intersection (sites Corners) (sites Bottom)))
         (regions P2 (intersection (sites Corners) (sites Top)))
-    })  
+    }) 
     
     (rules 
         (start {
@@ -36,7 +36,7 @@
 
 (option "Play Rules" <Play> args:{ <rules> } 
     {
-    (item "Bouhajbane"             
+    (item "Bouhajbane"       
         <
         (or {
             (forEach Piece "Counter" ("HopCapture") 
@@ -60,7 +60,7 @@
         "Capturing is optional but pieces can promote."
     )*
     
-    (item "Simplified"             
+    (item "Simplified"       
         <
         (or {
             (forEach Piece "Counter" ("HopCapture"))
@@ -68,9 +68,9 @@
         })
         >
         "Capturing is optional."
-    )   
+    )  
     
-    (item "BoardGameGeek"             
+    (item "BoardGameGeek"       
         <
         (if "SameTurn"
             ("HopSequenceCaptureAgain")	
@@ -81,7 +81,7 @@
         )	
         >
         "Capturing is forced."
-    )     
+    )   
 })
 
 //------------------------------------------------------------------------------

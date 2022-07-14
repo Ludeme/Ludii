@@ -4,8 +4,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Chisolo"  
-    (players 2)  
+(game "Chisolo" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -16,15 +16,15 @@
             (track "TrackCW2" <Board:CW2> loop:True P2)
             }
         )
-        (regions "Home" P1 (sites Track "TrackCCW1"))                              // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))                              // P2 home
+        (regions "Home" P1 (sites Track "TrackCCW1"))               // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))               // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))   // P2 inner Home
-        (regions "FourLeftInner" P1 (sites {<Board:LeftInnerHolesP1>}))           // P1 four left inner holes
-        (regions "FourLeftInner" P2 (sites {<Board:LeftInnerHolesP2>}))           // P2 four left inner holes
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))  // P2 inner Home
+        (regions "FourLeftInner" P1 (sites {<Board:LeftInnerHolesP1>}))      // P1 four left inner holes
+        (regions "FourLeftInner" P2 (sites {<Board:LeftInnerHolesP2>}))      // P2 four left inner holes
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     (rules 
         
         <Start:rules>
@@ -129,57 +129,57 @@
 
 (option "Board Size" <Board> args:{ <rowSize> <CCW2> <CW1> <CW2> <LeftInnerHolesP1> <LeftInnerHolesP2> <InitOneSeed> <InitTwoSeeds>}
     {
-    (item "7"   <7> <"14,E,N1,W"> <"6,W,N1,E"> <"21,E,S1,W"> <7..10> <17..20> <8 19> <7 20> "Each player has 7 holes on each row.")*  
-    (item "8"   <8> <"16,E,N1,W"> <"7,W,N1,E"> <"24,E,S1,W"> <8..11> <20..23> <9 22> <8 23> "Each player has 8 holes on each row.")   
-    (item "9"   <9> <"18,E,N1,W"> <"8,W,N1,E"> <"27,E,S1,W"> <9..12> <23..26> <10 25> <9 26> "Each player has 9 holes on each row.")  
-    (item "10"   <10> <"20,E,N1,W"> <"9,W,N1,E"> <"30,E,S1,W"> <10..13> <26..29> <11 28> <10 29> "Each player has 10 holes on each row.")   
+    (item "7"  <7> <"14,E,N1,W"> <"6,W,N1,E"> <"21,E,S1,W"> <7..10> <17..20> <8 19> <7 20> "Each player has 7 holes on each row.")* 
+    (item "8"  <8> <"16,E,N1,W"> <"7,W,N1,E"> <"24,E,S1,W"> <8..11> <20..23> <9 22> <8 23> "Each player has 8 holes on each row.")  
+    (item "9"  <9> <"18,E,N1,W"> <"8,W,N1,E"> <"27,E,S1,W"> <9..12> <23..26> <10 25> <9 26> "Each player has 9 holes on each row.") 
+    (item "10"  <10> <"20,E,N1,W"> <"9,W,N1,E"> <"30,E,S1,W"> <10..13> <26..29> <11 28> <10 29> "Each player has 10 holes on each row.")  
 })
 
 (option "Start" <Start> args:{ <rules> }
     {
-    (item "Natatu"  
+    (item "Natatu" 
         <
         (start {
             (set Count 3 to:(difference (union (sites P1 "Home") (sites P2 "Home")) (union (sites P1 "FourLeftInner") (sites P2 "FourLeftInner"))))
             (set Count 1 to:(sites {"InitOneSeed"}))
             (set Count 2 to:(sites {"InitTwoSeed"}))
         })
-        >  
-    "Starting positions of the Natatu ruleset.")*  
+        > 
+    "Starting positions of the Natatu ruleset.")* 
     
-    (item "Nambidi"  
+    (item "Nambidi" 
         <
         (start 
             (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home")))
         )
-        >  
+        > 
     "Starting positions of the Nambidi ruleset.") 
     
-    (item "Namudilakunze"  
+    (item "Namudilakunze" 
         <
         (start 
             (set Count 1 to:(difference (union (sites P1 "Home") (sites P2 "Home")) (union (intersection (sites Left) (sites Bottom)) (intersection (sites Top) (sites Right)))))
         )
-        >  
+        > 
     "Starting positions of the Namudilakunze ruleset.") 
     
-    (item "One counter"  
+    (item "One counter" 
         <
         (start 
             (set Count 1 to:(union (sites P1 "Home") (sites P2 "Home")))
         )
-        >  
+        > 
     "Starting positions of the One counter ruleset.") 
 })
 
 (option "Phase" <Phase> args:{ <opening> }
     {
-    (item "No Opening"  
+    (item "No Opening" 
         <
-        >  
-    "No Opening.")*  
+        > 
+    "No Opening.")* 
     
-    (item "Opening"  
+    (item "Opening" 
         <
         (phase "Opening"
             (play
@@ -200,14 +200,14 @@
             )
             (nextPhase Mover (= (var "Opening") Undefined) "SowingCW")
         )
-        >  
+        > 
     "Has an opening to capture three opponent holes before to sow.") 
     
 })
 
 (option "Capture" <Capture> args:{ <type> }
     {
-    (item "All Opposites"  
+    (item "All Opposites" 
         <
         (if (< 1 (count at:(to)))
             (moveAgain)
@@ -232,10 +232,10 @@
                 )
             )
         )
-        >  
-    "Capture all the opposite holes.")*  
+        > 
+    "Capture all the opposite holes.")* 
     
-    (item "Only Outer"  
+    (item "Only Outer" 
         <
         (if (< 1 (count at:(to)))
             (moveAgain)
@@ -253,7 +253,7 @@
                 )
             )
         )
-        >  
+        > 
     "Capture only the outer holes.") 
     
 })
@@ -313,7 +313,7 @@
         (version "1.3.4")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Zambia, around 1920.")
+        (origin "This game was played in Zambia, around 1920.")
         }
     )
     

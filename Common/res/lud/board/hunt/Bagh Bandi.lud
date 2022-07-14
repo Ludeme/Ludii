@@ -13,8 +13,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Bagh Bandi"  
-    (players 2)  
+(game "Bagh Bandi" 
+    (players 2) 
     (equipment { 
         ("AlquerqueBoardWithBottomAndTopTriangles")
         (piece "Goat" P2 "StepToEmpty")
@@ -30,7 +30,7 @@
         )
         (regions "CentralSites" (sites {6 8 16 18}))
         (hand P1)
-    })  
+    }) 
     (rules 
         (start {
             (place Stack "Tiger1" (handSite P1) count:2)
@@ -84,7 +84,7 @@
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in South Asia, around 1935.")
+        (origin "This game was played in South Asia, around 1935.")
         }
     )
     

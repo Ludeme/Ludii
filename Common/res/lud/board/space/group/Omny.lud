@@ -22,7 +22,7 @@
                     (to (sites Empty))
                     <Balance>
                 )
-            )   
+            )  
         )
         (end 
             (if 
@@ -51,7 +51,7 @@
                                         )
                                     )
                                 )
-                            )   
+                            )  
                         )
                     )
                 )
@@ -65,26 +65,26 @@
 
 (option "Board Shape" <Shape> args:{ <shape> }
     {
-    (item "Hex"         <>  "A hex board is currently selected")*
-    (item "Triangle"    <Triangle>  "A triangluar board is currently selected")
-    (item "Diamond"     <Diamond>  "A diamond shaped board is currently selected")
-    (item "Star"        <Star>  "A star shaped board is currently selected")
-    (item "Limping Hex" <Limping>  "A limping hex board is currently selected")
+    (item "Hex"     <> "A hex board is currently selected")*
+    (item "Triangle"  <Triangle> "A triangluar board is currently selected")
+    (item "Diamond"   <Diamond> "A diamond shaped board is currently selected")
+    (item "Star"    <Star> "A star shaped board is currently selected")
+    (item "Limping Hex" <Limping> "A limping hex board is currently selected")
     }
 )
 
 (option "Board Size" <Size> args:{ <size> }
     {
-    (item "3"    <3>  "A size 3 board is currently selected")
-    (item "4"    <4>  "A size 4 board is currently selected")
-    (item "5"    <5>  "A size 5 board is currently selected")
-    (item "6"    <6>  "A size 6 board is currently selected")
-    (item "7"    <7>  "A size 7 board is currently selected")*
-    (item "8"    <8>  "A size 8 board is currently selected")
-    (item "9"    <9>  "A size 9 board is currently selected")
-    (item "10"    <10>  "A size 10 board is currently selected")
-    (item "11"    <11>  "A size 11 board is currently selected")
-    (item "12"    <12>  "A size 12 board is currently selected")
+    (item "3"  <3> "A size 3 board is currently selected")
+    (item "4"  <4> "A size 4 board is currently selected")
+    (item "5"  <5> "A size 5 board is currently selected")
+    (item "6"  <6> "A size 6 board is currently selected")
+    (item "7"  <7> "A size 7 board is currently selected")*
+    (item "8"  <8> "A size 8 board is currently selected")
+    (item "9"  <9> "A size 9 board is currently selected")
+    (item "10"  <10> "A size 10 board is currently selected")
+    (item "11"  <11> "A size 11 board is currently selected")
+    (item "12"  <12> "A size 12 board is currently selected")
     }
 )
 
@@ -93,26 +93,26 @@
         <(sites Board)> 
         "The currently selected star cells are all the cells on the board."
     )*
-    (item "Perimeter"  
-        <(sites Outer)>  
+    (item "Perimeter" 
+        <(sites Outer)> 
         "The currently selected star cells are the perimeter cells cells"
     )
-    (item "Corners"  
-        <(sites Corners)>  
+    (item "Corners" 
+        <(sites Corners)> 
         "The currently selected star cells are the corner cells"
     )
-    (item "Perimeter + center"  
-        <(union (sites Outer) (sites {(centrePoint)}))>  
+    (item "Perimeter + center" 
+        <(union (sites Outer) (sites {(centrePoint)}))> 
         "The currently selected star cells are the perimeter cells and the center cell"
     )
-    (item "Corners + center"  
+    (item "Corners + center" 
         <(union 
             (sites Corners) 
             (sites {(centrePoint)})
-        )>  
+        )> 
         "The currently selected star cells are the corner cells and the center cell"
     )
-    (item "Perimeter + central triangle"  
+    (item "Perimeter + central triangle" 
         <(union 
             (sites Outer) 
             (sites {
@@ -120,10 +120,10 @@
                 (ahead (centrePoint) WSW) 
                 (ahead (centrePoint) ESE)
             })
-        )>  
+        )> 
         "The currently selected star cells are the perimeter cells and a central triangle of cells"
     )
-    (item "Corners + central triangle"  
+    (item "Corners + central triangle" 
         <(union 
             (sites Corners) 
             (sites {
@@ -131,38 +131,38 @@
                 (ahead (centrePoint) WSW) 
                 (ahead (centrePoint) ESE)
             })
-        )>  
+        )> 
         "The currently selected star cells are the corner cells and a central triangle of cells"
     )
 })
 
 (option "Balance Rule" <Balance> args:{ <rule> }
     {
-    (item "Pie"   
+    (item "Pie"  
         <(then 
             (if
                 (= 1 (count Moves))
                 (set Var 1)
             )
-        )>  
+        )> 
         "The pie rule is currently in force"
     )*
-    (item "12*"  
+    (item "12*" 
         <(then
             (if
                 (= 1 (% (+ 1 (count Moves)) 2))
                 (moveAgain)
             )
-        )>  
+        )> 
     "The 12* placement protocol is currently in force")
-    (item "None"  <>  "No balance rule is currently in force")
+    (item "None" <> "No balance rule is currently in force")
     }
 )
 
 (option "End Rule" <Result> args:{ <rule> }
     {
-    (item "Standard" <Win>   "The standard win condition is currently selected.")*
-    (item "Misère"   <Loss>  "The misère win condition is currently selected")
+    (item "Standard" <Win>  "The standard win condition is currently selected.")*
+    (item "Misère"  <Loss> "The misère win condition is currently selected")
     }
 )
 

@@ -1,12 +1,12 @@
 (game "Test Caps"
-    (players 2)  
+    (players 2) 
     (equipment 
         { 
         (board (circle {1 8}) use:vertex)
         (hand Each)
         (piece "Marker" Each "StepToEmpty") 
         }
-    )  
+    ) 
     (rules 
         (start (place "Marker" "Hand" count:3))
         
@@ -34,7 +34,7 @@
 
 (option "Variant" <Variant> args:{ <type> }
     {
-    (item "Blumlein"   <>       "The rules are describing with the Blumlein ruleset.")   
+    (item "Blumlein"  <>    "The rules are describing with the Blumlein ruleset.")  
 })
 
 //------------------------------------------------------------------------------

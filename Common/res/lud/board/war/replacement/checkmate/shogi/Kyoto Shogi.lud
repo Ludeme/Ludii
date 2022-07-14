@@ -48,7 +48,7 @@
         #1 
         (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
-    )   	
+    )  	
 )
 
 (define "StepMove"
@@ -57,15 +57,15 @@
         #1
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
-    )   	
+    )  	
 )
 
 (define "GoldMove" ("StepMove" (directions {Forward Backward Rightward Leftward FL FR}) (then "Promote")))
 
 //------------------------------------------------------------------------------
 
-(game "Kyoto Shogi"  
-    (players {(player N) (player S)})  
+(game "Kyoto Shogi" 
+    (players {(player N) (player S)}) 
     
     (equipment { 
         (board (square 5))
@@ -77,18 +77,18 @@
         (piece "Fuhyo" Each 
             ("StepMove" 
                 Forward 
-                (then "Promote" )
+                (then "Promote")
             )
         )
         
         // Silver General
-        (piece "Ginsho" Each ("StepMove" (directions {Forward BL BR FL FR}) (then "Promote" )))
+        (piece "Ginsho" Each ("StepMove" (directions {Forward BL BR FL FR}) (then "Promote")))
         
         // Rook
-        (piece "Hisha" Each ("SlideMove" Orthogonal (then "Promote" )))
+        (piece "Hisha" Each ("SlideMove" Orthogonal (then "Promote")))
         
         // Bishop
-        (piece "Kakugyo" Each ("SlideMove" Diagonal (then "Promote" )))
+        (piece "Kakugyo" Each ("SlideMove" Diagonal (then "Promote")))
         
         // Knight
         (piece "Keima" Each 
@@ -117,7 +117,7 @@
                         )
                     )
                 ) 
-                (then "Promote" ) 
+                (then "Promote") 
             ) 
         )
         
@@ -150,7 +150,7 @@
             (pair (id "Fuhyo" P1) (id "Fuhyo" P2)) (pair (id "Fuhyo" P2) (id "Fuhyo" P1)) 
             (pair (id "Ginsho" P1) (id "Ginsho" P2)) (pair (id "Ginsho" P2) (id "Ginsho" P1))
             (pair (id "Kinsho" P1) (id "Kinsho" P2)) (pair (id "Kinsho" P2) (id "Kinsho" P1)) 
-            (pair (id "Tokin" P1) (id "Tokin" P2)) (pair (id "Tokin" P2) (id "Tokin" P1))  
+            (pair (id "Tokin" P1) (id "Tokin" P2)) (pair (id "Tokin" P2) (id "Tokin" P1)) 
             (pair (id "Hisha" P1) (id "Fuhyo" P2)) (pair (id "Hisha" P2) (id "Fuhyo" P1)) 
             (pair (id "Kakugyo" P1) (id "Ginsho" P2)) (pair (id "Kakugyo" P2) (id "Ginsho" P1)) 
             (pair (id "Keima" P1) (id "Kinsho" P2)) (pair (id "Keima" P2) (id "Kinsho" P1)) 

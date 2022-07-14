@@ -17,8 +17,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Trax"  
-    (players 2)  
+(game "Trax" 
+    (players 2) 
     (equipment { 
         (boardless Square) 
         (hand Shared size:2)
@@ -36,7 +36,7 @@
             (path from:2 to:3 colour:2)
             }
         )
-    })  
+    }) 
     (rules 
         
         (meta (automove))
@@ -53,7 +53,7 @@
         )
         
         (phase "Connection"
-            (play     
+            (play   
                 (do
                     ("PlaceATileTo" "AnotherConnectedTile")
                     ifAfterwards:(is SidesMatch)

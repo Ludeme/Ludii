@@ -1,9 +1,9 @@
 (game "Alquerque" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         ("AlquerqueBoard" 5 5)
         (piece "Counter" Each)
-    })  
+    }) 
     
     (rules 
         (start { 
@@ -13,7 +13,7 @@
         
         <Play>
         
-        (end ("NoMoves" Loss))  
+        (end ("NoMoves" Loss)) 
     )
 )
 
@@ -59,10 +59,10 @@
     
     (item "Force capture in sequence and huff rule" 
         <
-        (define "HasCaptured"  (set Value Mover 0))
+        (define "HasCaptured" (set Value Mover 0))
         (define "HasNotCaptured" (set Value Mover 1))
-        (define "DidNotCaptured"  (= (value Player Prev) 1))
-        (define "HasHuffed"  (= (last To) (last From)))
+        (define "DidNotCaptured" (= (value Player Prev) 1))
+        (define "HasHuffed" (= (last To) (last From)))
         
         (define "HopCounter" 
             (move
@@ -92,7 +92,7 @@
             ) 
         )
         
-        (define "RememberSiteWithPossibleCapture"  
+        (define "RememberSiteWithPossibleCapture" 
             (set Pending 
                 (sites From
                     (forEach Piece "Counter" 
@@ -109,7 +109,7 @@
                     if:(!= (what at:(from)) 0)
                 )
                 (then 
-                    (and  {
+                    (and {
                         (remove (last To)) 
                         (moveAgain) 
                         (set Value Prev 0)
@@ -119,7 +119,7 @@
         )
         (define "ShouldCapturedButMoved" 
             (and 
-                (is In (last From) ("SitesWithPossibleCaptureInPreviousTurn"))  
+                (is In (last From) ("SitesWithPossibleCaptureInPreviousTurn")) 
                 (is In (last From) (sites Empty))
             )
         )
@@ -217,7 +217,7 @@
         (version "1.3.4")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in Islamic World, from around 1221 to 1674.")
+        (origin "This game was played in Islamic World, from around 1221 to 1674.")
         }
     )
     

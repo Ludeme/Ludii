@@ -52,8 +52,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Dama (Kenya)"  
-    (players 2)  
+(game "Dama (Kenya)" 
+    (players 2) 
     (equipment { 
         (board (square 8)) 
         (piece "Counter" P1 N)
@@ -61,7 +61,7 @@
         (piece "DoubleCounter" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Counter1" (union (sites Row 1) (sites Row 2)))
@@ -139,7 +139,7 @@
         (version "1.3.4")
         (classification "board/war/leaping/orthogonal")
         (credit "Eric Piette")
-        (origin  "This game was played in Kenya, from around 1940 to 1980.")
+        (origin "This game was played in Kenya, from around 1940 to 1980.")
         }
     )
     

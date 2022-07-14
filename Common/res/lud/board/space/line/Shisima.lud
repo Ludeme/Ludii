@@ -1,11 +1,11 @@
 (game "Shisima"
-    (players 2)  
+    (players 2) 
     (equipment 
         { 
         (board (concentric {1 8}) use:Vertex)
         (piece "Marker" Each "StepToEmpty")
         }
-    )  
+    ) 
     (rules 
         (start 
             { 
@@ -23,7 +23,7 @@
                 ) 
                 (result Mover Win)
             )
-        )  
+        ) 
     )
 )
 
@@ -40,7 +40,7 @@
         (version "1.3.4")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in Kenya, around 1982.")
+        (origin "This game was played in Kenya, around 1982.")
         }
     )
     

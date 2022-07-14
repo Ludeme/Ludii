@@ -50,10 +50,10 @@
     (equipment {
         (board (rectangle 4 <Board:size>) 
             {
-            (track "Track1"  "0,E,N1,W,N1,E,N1,W" P1 directed:True)
-            (track "Track2"  <Board:trackTeam2> P2 directed:True)
-            (track "Track3"  "0,E,N1,W,N1,E,N1,W" P3 directed:True)
-            (track "Track4"  <Board:trackTeam2> P4 directed:True)
+            (track "Track1" "0,E,N1,W,N1,E,N1,W" P1 directed:True)
+            (track "Track2" <Board:trackTeam2> P2 directed:True)
+            (track "Track3" "0,E,N1,W,N1,E,N1,W" P3 directed:True)
+            (track "Track4" <Board:trackTeam2> P4 directed:True)
             }
             use:Vertex
         )
@@ -67,7 +67,7 @@
         (regions "Home" P4 (sites Top))
     })
     (rules 
-        (start {  
+        (start { 
             (set Team 1 {P1 P3})
             (set Team 2 {P2 P4})
             (place "Stick1" (sites Bottom))
@@ -99,12 +99,12 @@
 
 (option "Board Size" <Board> args:{ <size> <trackTeam2> }
     {
-    (item "20"  <20> <"79,W,S1,E,S1,W,S1,E"> "Each row has 20 holes.") 
-    (item "21"  <21> <"83,W,S1,E,S1,W,S1,E"> "Each row has 21 holes.") 
-    (item "22"  <22> <"87,W,S1,E,S1,W,S1,E"> "Each row has 22 holes.")   
-    (item "23"  <23> <"91,W,S1,E,S1,W,S1,E"> "Each row has 23 holes.") 
-    (item "24"  <24> <"94,W,S1,E,S1,W,S1,E"> "Each row has 24 holes.")   
-    (item "25"  <25> <"79,W,S1,E,S1,W,S1,E"> "Each row has 25 holes.") 
+    (item "20" <20> <"79,W,S1,E,S1,W,S1,E"> "Each row has 20 holes.") 
+    (item "21" <21> <"83,W,S1,E,S1,W,S1,E"> "Each row has 21 holes.") 
+    (item "22" <22> <"87,W,S1,E,S1,W,S1,E"> "Each row has 22 holes.")  
+    (item "23" <23> <"91,W,S1,E,S1,W,S1,E"> "Each row has 23 holes.") 
+    (item "24" <24> <"94,W,S1,E,S1,W,S1,E"> "Each row has 24 holes.")  
+    (item "25" <25> <"79,W,S1,E,S1,W,S1,E"> "Each row has 25 holes.") 
     }
 )
 
@@ -134,12 +134,12 @@
         (version "1.3.4")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
-        (origin  "This game was played in Western Sahara, around 1993.")
+        (origin "This game was played in Western Sahara, around 1993.")
         }
     )
     
     (graphics {
-        (show Edges Hidden)    
+        (show Edges Hidden)  
         (show Symbol "disc" "AllSites" Vertex fillColour:(colour White) edgeColour:(colour Black) scale:1)
         (piece Colour "Die" state:1 fillColour:(colour Red))
         (piece Scale "Stick" 0.5)

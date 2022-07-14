@@ -75,7 +75,7 @@
             (place "Marker2" (sites {1 3 5 7 9 11 13 15 17 19}) state:1)
         })
         (play 
-            (do  
+            (do 
                 (roll) 
                 next:(if (can Move (if (!= ("ThrowValue") 0) (forEach Piece)))
                     (forEach Piece (then (if (!= ("ThrowValue") 0) (moveAgain))))
@@ -113,7 +113,7 @@
         (version "1.3.4")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
-        (origin  "This game was played in South America, from around 1525 to 1558.")
+        (origin "This game was played in South America, from around 1525 to 1558.")
         }
     )
     

@@ -2,7 +2,7 @@
     (not (all Sites (difference (sites Occupied by:Shared) (sites #1))
             if:(and
                 (= 0 (count Sites in:(sites LineOfSight Farthest at:(site) #2)))
-                (!=  
+                (!= 
                     (what at:(site))
                     (what at:(regionSite (sites LineOfSight Piece at:(site) #2) index:0))
                 )
@@ -29,7 +29,7 @@
         (if (is Occupied (site))
             (if 
                 (and
-                    (=  
+                    (= 
                         (what at:(site))
                         (what at:("LineOfSightPiece" #3))
                     )
@@ -107,7 +107,7 @@
         (piece "Square256" Shared)
         (piece "Square512" Shared)
         (piece "Square1024" Shared)
-        (piece "Square2048" Shared)   
+        (piece "Square2048" Shared)  
         (map "Promotion" {
             (pair (id "Square2" Shared) (id "Square4" Shared))
             (pair (id "Square4" Shared) (id "Square8" Shared))

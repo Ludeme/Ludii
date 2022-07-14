@@ -2,8 +2,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Pachisi"  
-    (players 4)  
+(game "Pachisi" 
+    (players 4) 
     (equipment { 
         ("PachisiBoard"
             {
@@ -69,7 +69,7 @@
                 )
             )
         )
-    })  
+    }) 
     (rules 
         (start {
             (place Stack "Pawn1" (handSite P1) count:4)
@@ -134,7 +134,7 @@
 
 (option "Variant" <Variant> args:{ <wikipedia> }
     {
-    (item  "Wikipedia"  <> "")* 
+    (item "Wikipedia" <> "")* 
     }
 )
 
@@ -184,7 +184,7 @@
         (version "1.3.4")
         (classification "board/race/reach")
         (credit "Eric Piette")
-        (origin  "This game was played in South Asia, around 1832.")
+        (origin "This game was played in South Asia, around 1832.")
         }
     )
     

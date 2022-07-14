@@ -1,5 +1,5 @@
 (game "Lay Gwet Kyah"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board 
             (square 4)
@@ -8,7 +8,7 @@
         (piece "Tiger" P1 (and ("StepToEmpty") ("HopCapture")))
         (piece "Marker" P2 ("StepToEmpty"))
         (hand Each)
-    })  
+    }) 
     
     (rules 
         (start {
@@ -21,7 +21,7 @@
                 (move 
                     (from (handSite Mover)) 
                     (to (sites Empty)) 
-                )  
+                ) 
             ) 
             (nextPhase (and ("HandEmpty" P1)("HandEmpty" P2)) "Movement")
         )
@@ -49,7 +49,7 @@
         (version "1.3.4")
         (classification "board/hunt/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Southeast Asia, around 1882.")
+        (origin "This game was played in Southeast Asia, around 1882.")
         }
     )
     

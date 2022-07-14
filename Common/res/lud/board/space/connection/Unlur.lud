@@ -1,4 +1,4 @@
-// #1,#2 - sides ( S, N, NE, NW, SE, SW)
+// #1,#2 - sides (S, N, NE, NW, SE, SW)
 // #3 optional 3rd region
 (define "IsSidesConnected"
     (is Connected {(sites Side #1) (sites Side #2) #3})
@@ -21,12 +21,12 @@
 
 (define "IsPlayingPhase" (= 1 (var)))
 
-(game "Unlur"  
-    (players 2)  
+(game "Unlur" 
+    (players 2) 
     (equipment { 
         (board (hex <Board:size>)) 
         (piece "Disc" Each) 
-    })  
+    }) 
     (rules 
         phases:{
         (phase "Opening"

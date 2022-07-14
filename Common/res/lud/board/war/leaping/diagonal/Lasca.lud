@@ -29,7 +29,7 @@
                     (hop 
                         (from (last To)) 
                         #1 
-                        (between if:("IsEnemyAt" (between)) (apply (fromTo (from (between)) (to))))     	
+                        (between if:("IsEnemyAt" (between)) (apply (fromTo (from (between)) (to))))   	
                         (to if:(and 
                                 (is In (from) (sites Occupied by:Mover)) 
                                 (is Empty (to))
@@ -50,7 +50,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "Lasca"  
+(game "Lasca" 
     (players {(player N) (player S)}) 
     (equipment { 
         <Board:type> 
@@ -58,12 +58,12 @@
         (piece "CounterStar" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-    })  
+    }) 
     
     (rules 
         (start { 
-            (place "Counter1" <Board:startP1> )
-            (place "Counter2" <Board:startP2> )
+            (place "Counter1" <Board:startP1>)
+            (place "Counter2" <Board:startP2>)
         })
         
         (play
@@ -116,14 +116,14 @@
                             (if 
                                 (can Move 
                                     (hop 
-                                        (from (last To))  
+                                        (from (last To)) 
                                         Diagonal 
                                         (between if:("IsEnemyAt" (between)) (apply (fromTo (from (between)) (to)))) 
                                         (to if:(and 
                                                 (is In (from) (sites Occupied by:Mover)) 
                                                 (is Empty (to))
                                             )
-                                        )  
+                                        ) 
                                         stack:True
                                     )
                                 ) 
@@ -154,14 +154,14 @@
 
 (option "Board" <Board> args:{ <type> <startP1> <startP2> }
     {
-    (item "Chess"             
-        <(board (square 7))> <(difference (expand (sites Bottom) steps:2) (sites Phase 1)  )> <(difference (expand (sites Top) steps:2) (sites Phase 1)) >   
+    (item "Chess"       
+        <(board (square 7))> <(difference (expand (sites Bottom) steps:2) (sites Phase 1) )> <(difference (expand (sites Top) steps:2) (sites Phase 1)) >  
         "The game is played in a Chess board."
-    )*   
-    (item "Lasca"             
-        <"LascaBoard">  < (expand (sites Bottom) steps:2)> <(expand (sites Top) steps:2)>   
+    )*  
+    (item "Lasca"       
+        <"LascaBoard"> < (expand (sites Bottom) steps:2)> <(expand (sites Top) steps:2)>  
         "The game is played in the original lasca board."
-    )     
+    )   
 })
 
 //------------------------------------------------------------------------------

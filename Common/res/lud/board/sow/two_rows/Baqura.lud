@@ -4,18 +4,18 @@
 
 //------------------------------------------------------------------------------
 
-(game "Baqura"  
-    (players 2)  
+(game "Baqura" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 6 store:None
             (track "Track" "0,E,N,W" loop:True)
         )
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start {
@@ -129,7 +129,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Baqura is a two-row mancala-style board game reported in the seventeenth century by Thomas Hyde in his De Ludis Orientalibus. He describes the rules and states that it was played in Mesopotamia.")
@@ -139,7 +139,7 @@
         (version "1.3.4")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Mesopotamia, around 1694.")
+        (origin "This game was played in Mesopotamia, around 1694.")
         }
     )
     

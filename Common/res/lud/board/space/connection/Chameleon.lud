@@ -1,12 +1,12 @@
-(game "Chameleon"  
-    (players 2)  
+(game "Chameleon" 
+    (players 2) 
     (equipment { 
         (board (hex Diamond <Board>)) 
         (piece "Marker" Each)
         (hand Shared size:2)
         (regions P1 {(sites Side NE) (sites Side SW) })
         (regions P2 {(sites Side NW) (sites Side SE) })
-    })  
+    }) 
     (rules 
         (meta (swap))
         (start {
@@ -31,29 +31,29 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "3x3"    <3>    "The game is played on a 3x3 board")   
-    (item "4x4"    <4>    "The game is played on a 4x4 board")   
-    (item "5x5"    <5>   "The game is played on a 5x5 board")   
-    (item "6x6"    <6>    "The game is played on a 6x6 board")   
-    (item "7x7"    <7>    "The game is played on a 7x7 board")   
-    (item "8x8"    <8>    "The game is played on a 8x8 board")   
-    (item "9x9"    <9>    "The game is played on a 9x9 board")   
-    (item "10x10"  <10>  "The game is played on a 10x10 board")*   
-    (item "11x11"  <11>  "The game is played on a 11x11 board")**   
-    (item "12x12"  <12>  "The game is played on a 12x12 board")   
-    (item "13x13"  <13>  "The game is played on a 13x13 board")   
-    (item "14x14"  <14>  "The game is played on a 14x14 board")*   
-    (item "15x15"  <15>  "The game is played on a 15x15 board")   
-    (item "16x16"  <16>  "The game is played on a 16x16 board")   
-    (item "17x17"  <17>  "The game is played on a 17x17 board")*   
-    (item "18x18"  <18>  "The game is played on a 18x18 board")   
-    (item "19x19"  <19>  "The game is played on a 19x19 board")   
+    (item "3x3"  <3>  "The game is played on a 3x3 board")  
+    (item "4x4"  <4>  "The game is played on a 4x4 board")  
+    (item "5x5"  <5>  "The game is played on a 5x5 board")  
+    (item "6x6"  <6>  "The game is played on a 6x6 board")  
+    (item "7x7"  <7>  "The game is played on a 7x7 board")  
+    (item "8x8"  <8>  "The game is played on a 8x8 board")  
+    (item "9x9"  <9>  "The game is played on a 9x9 board")  
+    (item "10x10" <10> "The game is played on a 10x10 board")*  
+    (item "11x11" <11> "The game is played on a 11x11 board")**  
+    (item "12x12" <12> "The game is played on a 12x12 board")  
+    (item "13x13" <13> "The game is played on a 13x13 board")  
+    (item "14x14" <14> "The game is played on a 14x14 board")*  
+    (item "15x15" <15> "The game is played on a 15x15 board")  
+    (item "16x16" <16> "The game is played on a 16x16 board")  
+    (item "17x17" <17> "The game is played on a 17x17 board")*  
+    (item "18x18" <18> "The game is played on a 18x18 board")  
+    (item "19x19" <19> "The game is played on a 19x19 board")  
 })
 
-(option "End Rules" <Result> args:{ <mover>  <next>}
+(option "End Rules" <Result> args:{ <mover> <next>}
     {
-    (item "Standard"    <Win> <Win>    "The first player to connect his two sides wins.")*   
-    (item "Misere"    <Loss> <Loss>    "The first player to connect his two sides loses.")   
+    (item "Standard"  <Win> <Win>  "The first player to connect his two sides wins.")*  
+    (item "Misere"  <Loss> <Loss>  "The first player to connect his two sides loses.")  
 })
 
 //------------------------------------------------------------------------------

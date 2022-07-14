@@ -4,7 +4,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "Pancha Keliya"  
+(game "Pancha Keliya" 
     (players 2)
     (equipment {
         (board 
@@ -15,7 +15,7 @@
                     (shift 9 11
                         (graph
                             vertices:{ { 0 0 } { -0.75 0.55 } { -0.04 1.24 }{ 1 0 } } 
-                            edges:{ {0 1} {1 2}  {2 3} {3 0}} 
+                            edges:{ {0 1} {1 2} {2 3} {3 0}} 
                         )
                     )
                     (shift 9 5 (rectangle 6 1))
@@ -93,7 +93,7 @@
         (version "1.3.4")
         (classification "board/race/escape")
         (credit "Eric Piette")
-        (origin  "This game was played in South Asia, around 1909.")
+        (origin "This game was played in South Asia, around 1909.")
         }
     )
     (graphics {

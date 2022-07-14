@@ -1,5 +1,5 @@
-(game "Do Guti"  
-    (players 2)  
+(game "Do Guti" 
+    (players 2) 
     (equipment { 
         (board 
             (add
@@ -13,7 +13,7 @@
         )
         (hand Each)
         (piece "Disc" Each "StepToEmpty")
-    })  
+    }) 
     
     (rules 
         (start (place "Disc" "Hand" count:2))
@@ -26,11 +26,11 @@
                 )
             ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )  
+        ) 
         
         (phase "Movement" (play (forEach Piece)))
         }
-        (end ("NoMoves" Loss))  
+        (end ("NoMoves" Loss)) 
     )
 )
 
@@ -47,7 +47,7 @@
         (version "1.3.4")
         (classification "board/space/blocking")
         (credit "Eric Piette")
-        (origin  "This game was played in Pakistan, around 1926.")
+        (origin "This game was played in Pakistan, around 1926.")
         }
     )
     

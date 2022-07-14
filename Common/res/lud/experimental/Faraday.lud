@@ -91,7 +91,7 @@
 // Defines for Options
 
 (define "Connection" <BoardShape:directionsUsed>)
-(define "BoardUsed" <BoardShape:gridType> )
+(define "BoardUsed" <BoardShape:gridType>)
 
 (define "SquareGrid" (board (square <BoardSize:smallSide>) use:Vertex))
 (define "HexLimp" (board (tri Limping (- <BoardSize:smallSide> 1)) use:Vertex))
@@ -196,9 +196,9 @@
 
 (option "Scoring Variants" <Scoring> args:{ <calculation> }
     {
-    (item "Simple Orthogonal Scoring" <"SimpleOrthoScoring">  "Largest orthogonal group scores 1 point per piece.")**
+    (item "Simple Orthogonal Scoring" <"SimpleOrthoScoring"> "Largest orthogonal group scores 1 point per piece.")**
     (item "Special Orthogonal Scoring" <"SpecialOrthoScoring"> "Largest orthogonal group scores 1 point per piece times the total count of the opponent's pieces")
-    (item "Simple Scoring" <"SimpleScoring">  "Largest group scores 1 point per piece.")
+    (item "Simple Scoring" <"SimpleScoring"> "Largest group scores 1 point per piece.")
     (item "Special Scoring" <"SpecialScoring"> "Largest group scores 1 point per piece times the total count of the opponent's pieces")
     }
 )
@@ -255,7 +255,7 @@ Immediately after placing to a cell with 4 or more oppositely charged neighbors,
     (board Colour InnerVertices (colour DarkGrey))
     (board Colour InnerEdges (colour DarkGrey))
     (show Edges Diagonal <BoardShape:DiagShow> (colour DarkGrey))
-    (board Background image:"Disc" fillColour:(colour 155	160 195) edgeColour:(colour 155	160 195) scaleX:1.2 scaleY:1.15 offsetX:0.021 offsetY:-0.015 )
+    (board Background image:"Disc" fillColour:(colour 155	160 195) edgeColour:(colour 155	160 195) scaleX:1.2 scaleY:1.15 offsetX:0.021 offsetY:-0.015)
     }
 )
 (ai

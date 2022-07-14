@@ -1,5 +1,5 @@
-(game "Pulijudamu"  
-    (players 2)  
+(game "Pulijudamu" 
+    (players 2) 
     (equipment { 
         (board 
             (add
@@ -22,7 +22,7 @@
                 ("HopCapture")
             )
         )
-    })  
+    }) 
     (rules 
         (start {
             (place "Goat2" (handSite P2) count:<Goat:num>)
@@ -60,34 +60,34 @@
 
 (option "Start Rules Tiger" <Tiger> args:{ <num> }
     {
-    (item "1" <1>   "1 Tiger.")*   
-    (item "2" <2>   "2 Tigers.")*   
-    (item "3" <3>   "3 Tigers.")*   
-    (item "4" <4>   "4 Tigers.")*   
+    (item "1" <1>  "1 Tiger.")*  
+    (item "2" <2>  "2 Tigers.")*  
+    (item "3" <3>  "3 Tigers.")*  
+    (item "4" <4>  "4 Tigers.")*  
     }
 )
 
 (option "Start Rules Goat" <Goat> args:{ <num> }
     {
-    (item "5" <5>   "5 Goats.")*   
-    (item "6" <6>   "6 Goats.")   
-    (item "7" <7>   "7 Goats.")   
-    (item "8" <8>   "8 Goats.")   
-    (item "9" <9>   "9 Goats.")   
-    (item "10" <10>   "10 Goats.")   
-    (item "11" <11>   "11 Goats.")   
-    (item "12" <12>   "12 Goats.")   
-    (item "13" <13>   "13 Goats.")   
-    (item "14" <14>   "14 Goats.")   
-    (item "15" <15>   "15 Goats.")   
-    (item "16" <16>   "16 Goats.")   
-    (item "17" <17>   "17 Goats.")   
-    (item "18" <18>   "18 Goats.")   
-    (item "19" <19>   "19 Goats.")   
-    (item "20" <20>   "20 Goats.")   
-    (item "21" <21>   "21 Goats.")   
-    (item "22" <22>   "22 Goats.")   
-    (item "23" <23>   "23 Goats.")  
+    (item "5" <5>  "5 Goats.")*  
+    (item "6" <6>  "6 Goats.")  
+    (item "7" <7>  "7 Goats.")  
+    (item "8" <8>  "8 Goats.")  
+    (item "9" <9>  "9 Goats.")  
+    (item "10" <10>  "10 Goats.")  
+    (item "11" <11>  "11 Goats.")  
+    (item "12" <12>  "12 Goats.")  
+    (item "13" <13>  "13 Goats.")  
+    (item "14" <14>  "14 Goats.")  
+    (item "15" <15>  "15 Goats.")  
+    (item "16" <16>  "16 Goats.")  
+    (item "17" <17>  "17 Goats.")  
+    (item "18" <18>  "18 Goats.")  
+    (item "19" <19>  "19 Goats.")  
+    (item "20" <20>  "20 Goats.")  
+    (item "21" <21>  "21 Goats.")  
+    (item "22" <22>  "22 Goats.")  
+    (item "23" <23>  "23 Goats.") 
     }
 )
 
@@ -105,7 +105,7 @@
         (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in India, from around 1200 to 2003.")
+        (origin "This game was played in India, from around 1200 to 2003.")
         }
     )
     

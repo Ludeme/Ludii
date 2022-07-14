@@ -42,8 +42,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Quiela"  
-    (players 2)  
+(game "Quiela" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -52,16 +52,16 @@
             (track "TrackCCW2" "14,E,N1,W" loop:True P2)
             }
         )
-        (regions "Home" P1 (sites Track "TrackCCW1"))   // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))   // P2 home
-        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))        // P1 Inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))           // P2 Inner home
-        (regions "Outer" P1 (sites Bottom))             // P1 Home
-        (regions "Outer" P2 (sites Top))                // P2 home
+        (regions "Home" P1 (sites Track "TrackCCW1"))  // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))  // P2 home
+        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))    // P1 Inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))      // P2 Inner home
+        (regions "Outer" P1 (sites Bottom))       // P1 Home
+        (regions "Outer" P2 (sites Top))        // P2 home
         (piece "Seed" Shared)
         (map "LeftMost" {(pair P1 0) (pair P2 27)})
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start 

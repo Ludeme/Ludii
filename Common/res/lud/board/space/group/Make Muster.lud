@@ -9,7 +9,7 @@
     (equipment {
         (board 
             (rotate (- 90 <Orient:amount>)
-                (square <Board:poly> )
+                (square <Board:poly>)
             ) 
             use:Cell 
         )
@@ -33,7 +33,7 @@
                         ("IsSingleGroup" Mover All)
                         (< 1 (count Pieces Mover))
                         // Original rules disqualified winning condition if a placement could be made in the following turn. 
-                        //            ("NoPlacementAvailable")
+                        //      ("NoPlacementAvailable")
                     })
                     (< 1 (count Groups All if:(!= (mover) (who at:(to)))))
                 )
@@ -64,7 +64,7 @@
 (option "Orientation" <Orient> args:{<amount>}
     {
     (item "Orthogonal" <0> "Orthogonal")
-    (item "Angled" <62>  "Angled cells")**
+    (item "Angled" <62> "Angled cells")**
     } 
 )
 

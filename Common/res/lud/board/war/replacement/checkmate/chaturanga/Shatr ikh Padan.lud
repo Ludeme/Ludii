@@ -25,8 +25,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Shatr ikh Padan"  
-    (players {(player N) (player S)})  
+(game "Shatr ikh Padan" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -47,7 +47,7 @@
                 ) 
             )
         )
-    })  
+    }) 
     (rules 
         (start { 
             (place "Pawn1" (sites Row 1))
@@ -80,14 +80,14 @@
     
     (info
         {
-        (description "Shatr ikh Padan is a game from nineteenth century India that was described by Lala Raja Babu Sahib, Superintendent of the Palace Games Department of Patiala.. It is played  with only the Shah and eight Pawns.")
+        (description "Shatr ikh Padan is a game from nineteenth century India that was described by Lala Raja Babu Sahib, Superintendent of the Palace Games Department of Patiala.. It is played with only the Shah and eight Pawns.")
         (rules "8x8 board. Two players. Pieces and movement are as follows: King x1, placed on the fifth space from the left on one edge of the board: Moves one space orthogonally or diagonally. Pawns x8, arranged along the row in front of the king: moves one space forward orthogonally or one space forward diagonally to capture. The opponent's pieces are placed in the same position on the opposite side of the board. If the King can be taken on the next turn it is in check, it must not remain in check on the next turn. If the king cannot move out of check, checkmate is declared and the opponent wins.")
         (source "Murray 1913: 347.")
         (id "316")
         (version "1.3.4")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1901.")
+        (origin "This game was played in India, around 1901.")
         }
     )
     
