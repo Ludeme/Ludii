@@ -7,14 +7,6 @@
     )
 )
 
-(define "IfLine3MoveAgain" 
-    (then 
-        (if (is Line 3 if:("IsSingletonStack" (to))) 
-            (moveAgain)
-        )
-    )
-)
-
 (define "RemoveDeadPieces" 
     (forEach Site
         (forEach 
@@ -36,7 +28,11 @@
     (equipment { 
         (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
         (hand Each)
-        (piece "Marker" Each ("StepToEmpty" ~ "IfLine3MoveAgain")) 
+        (piece "Marker" Each 
+        	("StepToEmpty" ~ 
+        		(then ("ReplayIfLine3" if:("IsSingletonStack" (to))))
+        	)
+        ) 
     }) 
     
     (rules 
@@ -62,7 +58,7 @@
                             )
                         )
                         copy:True
-                        "IfLine3MoveAgain" 
+                        (then ("ReplayIfLine3" if:("IsSingletonStack" (to)))) 
                     )
                     (then 
                         (if 

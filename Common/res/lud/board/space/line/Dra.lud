@@ -1,19 +1,9 @@
-(define "IfLine3MoveAgain" 
-    (then 
-        (if 
-            (is Line 3 Orthogonal exact:True) 
-            (moveAgain)
-        )
-    )
-)
-
 (define "NoLine3" 
     (not (is Line 3 Orthogonal))
 )
 
 (define "RemoveEnemyPiece" 
-    (move
-        Remove
+    (move Remove
         (sites Occupied by:Next container:"Board") 
     )
 )
@@ -23,22 +13,15 @@
 (game "Dra"
     (players 2)
     
-    (equipment 
-        { 
+    (equipment { 
         (board (rectangle 5 6))
         (hand Each)
         (piece "Marker" Each 
-            (move
-                Step 
-                Orthogonal 
-                (to 
-                    if:(is Empty (to)) 
-                ) 
-                "IfLine3MoveAgain"
+            ("StepToEmpty" Orthogonal 
+                (then ("ReplayIfLine3" Orthogonal exact:True))
             )
         )
-        }
-    ) 
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:12))
         
@@ -64,7 +47,7 @@
                 )
             )
             
-            (end (if (= (count Pieces Next) 2) (result Mover Win)))
+            (end ("HavingLessPiecesLoss" Next 2))
         )
         }
     )

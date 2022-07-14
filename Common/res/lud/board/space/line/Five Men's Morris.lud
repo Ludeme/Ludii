@@ -1,6 +1,5 @@
 (define "RemoveEnemyPieceNotInLine3" 
-    (move
-        Remove
+    (move Remove
         (forEach 
             (sites Occupied by:Next container:"Board") 
             if:(not (is Line 3 Orthogonal through:(site)))
@@ -11,25 +10,8 @@
 (define "RemoveEnemyPieceInMillOnlyIfNoOtherChoice" 
     (if (can Move ("RemoveEnemyPieceNotInLine3"))
         ("RemoveEnemyPieceNotInLine3") 
-        (move
-            Remove
+        (move Remove
             (sites Occupied by:Next container:"Board") 
-        )
-    )
-)
-
-(define "RemoveEnemyPiece" 
-    (move
-        Remove
-        (sites Occupied by:Next container:"Board") 
-    )
-)
-
-(define "IfLine3MoveAgain" 
-    (then 
-        (if 
-            (is Line 3 Orthogonal exact:True) 
-            (moveAgain)
         )
     )
 )
@@ -43,10 +25,8 @@
         (board (concentric Square rings:2) use:Vertex)
         (hand Each)
         (piece "Marker" Each 
-            (move
-                Step 
-                (to if:(is Empty (to))) 
-                "IfLine3MoveAgain"
+            ("StepToEmpty" ~ 
+                (then ("ReplayIfLine3" Orthogonal exact:True))
             )
         ) 
     })
@@ -62,7 +42,7 @@
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
-                        "IfLine3MoveAgain"
+                        (then ("ReplayIfLine3" Orthogonal exact:True))
                     ) 
                 )
             ) 
@@ -92,7 +72,7 @@
 
 (option "Play Rules" <Remove> args:{<rule>}
     {
-    (item "Any Capture" <"RemoveEnemyPiece"> "Any Enemy piece can be captured.")**
+    (item "Any Capture" <("RemoveAnyNextPiece")> "Any Enemy piece can be captured.")**
     (item "Restriction on Capture" <"RemoveEnemyPieceInMillOnlyIfNoOtherChoice"> 
     "We cannot remove an opponent's piece that is in a three in a row formation unless there are no other options.")
     }
@@ -146,11 +126,7 @@
         }
     )
     
-    (graphics {
-        
-    })
     (ai
         "Five Men's Morris_ai"
     )
 )
-

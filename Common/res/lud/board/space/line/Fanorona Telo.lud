@@ -1,12 +1,10 @@
 (game "Fanorona Telo"
     (players 2) 
-    (equipment 
-        {
+    (equipment {
         ("AlquerqueBoard" 3 3)
         (hand Each)
         (piece "Marker" Each "StepToEmpty")
-        }
-    ) 
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:3))
         

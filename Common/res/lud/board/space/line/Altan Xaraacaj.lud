@@ -7,14 +7,6 @@
     )
 )
 
-(define "IfLine3MoveAgain" 
-    (then 
-        (if (is Line 3 Orthogonal exact:True) 
-            (moveAgain)
-        )
-    )
-)
-
 //------------------------------------------------------------------------------
 
 (game "Altan Xaraacaj"
@@ -23,7 +15,11 @@
     (equipment { 
         ("AlquerqueBoard" 5 5) 
         (hand Each)
-        (piece "Marker" Each ("StepToEmpty" ~ "IfLine3MoveAgain")) 
+        (piece "Marker" Each 
+        	("StepToEmpty" ~ 
+                (then ("ReplayIfLine3" Orthogonal exact:True))
+            )
+        ) 
     }) 
     (rules 
         (start (place "Marker" "Hand" count:6))
@@ -36,7 +32,7 @@
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
-                        "IfLine3MoveAgain"
+                        (then ("ReplayIfLine3" Orthogonal exact:True))
                     ) 
                 )
             ) 

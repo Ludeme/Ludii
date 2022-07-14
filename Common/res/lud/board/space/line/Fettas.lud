@@ -4,15 +4,6 @@
     )
 )
 
-(define "IfLine3MoveAgain" 
-    (then 
-        (if 
-            (is Line 3 Orthogonal exact:True) 
-            (moveAgain)
-        )
-    )
-)
-
 //------------------------------------------------------------------------------
 
 (game "Fettas"
@@ -22,10 +13,8 @@
         (board (concentric Square rings:3) use:Vertex) 
         (hand Each)
         (piece "Marker" Each 
-            (move
-                Step 
-                (to if:(is Empty (to))) 
-                "IfLine3MoveAgain" 
+            ("StepToEmpty" ~
+                (then ("ReplayIfLine3" Orthogonal exact:True))
             )
         ) 
     }) 
@@ -40,7 +29,7 @@
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
-                        "IfLine3MoveAgain" 
+                        (then ("ReplayIfLine3" Orthogonal exact:True)) 
                     ) 
                 )
             ) 
@@ -57,7 +46,7 @@
         )
         }
         
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 

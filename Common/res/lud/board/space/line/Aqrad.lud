@@ -4,14 +4,6 @@
     )
 )
 
-(define "IfLine3MoveAgain" 
-    (then 
-        (if (is Line 3 Orthogonal exact:True) 
-            (moveAgain)
-        )
-    )
-)
-
 //------------------------------------------------------------------------------
 
 (game "Aqrad"
@@ -20,7 +12,11 @@
     (equipment { 
         (board (rectangle 7 6)) 
         (hand Each)
-        (piece "Marker" Each ("StepToEmpty" Orthogonal "IfLine3MoveAgain")) 
+        (piece "Marker" Each 
+        	("StepToEmpty" Orthogonal 
+        			(then ("ReplayIfLine3" Orthogonal exact:True))
+        	)
+        ) 
     }) 
     (rules 
         (start (place "Marker" "Hand" count:18))
@@ -33,7 +29,7 @@
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
-                        "IfLine3MoveAgain" 
+                        (then ("ReplayIfLine3" Orthogonal exact:True)) 
                     ) 
                 )
             ) 
