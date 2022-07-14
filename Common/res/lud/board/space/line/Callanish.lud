@@ -5,7 +5,7 @@
         (is Empty (to))
         (and
             ("IsEnemyAt" (to))
-            (= 0 (topLevel at:(to)))
+            ("IsEmptyOrSingletonStack" (to))
         )
     )
 )
@@ -13,8 +13,7 @@
 // #1 - site
 (define "PossibleKnightSites"
     (sites To
-        (move
-            Leap
+        (move Leap
             (from #1)
             // Cannot use "KnightWalk" macro because it does not work in the "Missing Corners" option.
             { { F F R F } { F F L F } { F R F F } { F L F F } }
@@ -23,16 +22,11 @@
     )
 )
 
-(define "IsWeAreOnTop"
-    (= (topLevel at:(from)) (level))
-)
-
 (define "MoveCondemnPiece"
-    (move
-        Select
+    (move Select
         (from
             if:(and 
-                ("IsWeAreOnTop")
+                ("IsTopLevel" (from))
                 (<= 2 (count Sites in:("PossibleKnightSites" (from))))
             )
         )
@@ -88,16 +82,12 @@
     (players 2) 
     (equipment { 
         (board <Board:BoardDef>) 
-        (piece "Disc" Each
-            ("MoveCondemnPiece")
-        ) 
+        (piece "Disc" Each ("MoveCondemnPiece")) 
     }) 
     (rules 
         phases: {
         (phase "Opening"
-            (play
-                (move Add (to (sites Empty)))
-            )
+            (play (move Add (to (sites Empty))))
             (nextPhase (>= (count Turns) 2) "Playing")
         )
         (phase "Playing"

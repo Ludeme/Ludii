@@ -2,9 +2,9 @@
 
 (define "FreeCentreSites"
     (to 
-        (difference 
+        (forEach 
             (sites Centre) 
-            (sites Occupied by:All)
+            if:(is Empty (site))
         )
     ) 	
 )
@@ -19,8 +19,7 @@
 
 (define "IfLine3MoveAgain" 
     (then 
-        (if 
-            (is Line 3 Orthogonal exact:True) 
+        (if (is Line 3 Orthogonal exact:True) 
             (and
                 (moveAgain)
                 (addScore Mover 1)
@@ -30,8 +29,7 @@
 )
 
 (define "RemoveEnemyPiece" 
-    (move
-        Remove
+    (move Remove
         (sites Occupied by:Next container:"Board") 
         (then 
             (and
@@ -58,18 +56,12 @@
 (game "Dala"
     (players 2) 
     
-    (equipment 
-        { 
+    (equipment { 
         (board (square 6))
         (hand Each)
         (piece "Stick" Each 
             (if (is Line 4 Orthogonal through:(from) exact:True)
-                (move
-                    Step
-                    Orthogonal 
-                    (to 
-                        if:(is Empty (to)) 
-                    )
+                ("StepToEmpty" Orthogonal
                     (then
                         (and {
                             ("CheckLine3LastFrom" N)
@@ -79,18 +71,10 @@
                         })
                     )
                 )
-                (move
-                    Step
-                    Orthogonal 
-                    (to 
-                        if:(is Empty (to)) 
-                    )
-                    "IfLine3MoveAgain" 
-                )
+                ("StepToEmpty" Orthogonal "IfLine3MoveAgain")
             )
         )
-        }
-    ) 
+    }) 
     (rules 
         (start (place "Stick" "Hand" count:12))
         
@@ -118,7 +102,7 @@
                 )
             )
             
-            (end (if (= (count Pieces Next) 2) (result Mover Win)))
+            (end ("HavingLessPiecesLoss" Next 2))
         )
         }
     )

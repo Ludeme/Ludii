@@ -12,10 +12,7 @@
 (define "Hopping"    
     (forEach Piece 
         (or 
-            (move Hop 
-                (between if:(not (is Empty (between))))
-                (to if:(is Empty (to)))
-            )
+            ("HopAllPiecesToEmpty")
             ("StepToEmpty")
         )
     )
@@ -34,14 +31,7 @@
 
 (define "Jumping"
     (forEach Piece 
-        (move Hop
-            (between
-                (range 0 18)   // upper limit at least 2 times board order.
-                if:(not (is Empty (between)))
-            )
-            (to if:(is Empty (to)))
-            
-        )
+        ("HopAllPiecesToEmpty" ~ ~ (range 0 18))
     )
 )
 

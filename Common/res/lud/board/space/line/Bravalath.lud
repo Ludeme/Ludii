@@ -7,8 +7,7 @@
     (equipment { 
         (boardless <Tiling:type>) 
         (tile <Tiling:tile> Each <Tiling:numSides>) 
-        }
-    ) 
+     }) 
     
     (rules 
         (start {
@@ -17,8 +16,7 @@
         })
         
         (play 
-            (move
-                Add
+            (move Add
                 (to 
                     (sites Playable) 
                     if:(<= 1 

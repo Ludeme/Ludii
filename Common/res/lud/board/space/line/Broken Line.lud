@@ -1,12 +1,9 @@
 (game "Broken Line" 
     (players 2) 
     (equipment { 
-        (board 
-            (<Board:type> <BoardSize>)
-        ) 
+        (board (<Board:type> <BoardSize>)) 
         (piece "Marker" Each)
-        }
-    ) 
+    }) 
     (rules 
         <Meta:rule>
         (play (move Add (to (sites Empty))))

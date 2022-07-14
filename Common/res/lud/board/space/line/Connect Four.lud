@@ -30,8 +30,7 @@
         <(board (rectangle 1 7))>
         <  
         (play 
-            (move 
-                Add 
+            (move Add 
                 (to 
                     (forEach 
                         (sites Board) 
@@ -49,11 +48,8 @@
         <(board (rectangle 6 7))>
         <
         (play 
-            (move 
-                Add 
-                (to 
-                    ("EmptyTop") 
-                )
+            (move Add 
+                (to ("EmptyTop"))
                 (then "Drop")
             )
         )

@@ -1,17 +1,15 @@
 (define "RemoveEnemyPiece" 
-    (move
-        Remove
+    (move Remove
         (forEach
             (sites Occupied by:Next container:"Board") 
-            if:(= 1 (size Stack at:(site)))
+            if:("IsSingletonStack" (site))
         )
     )
 )
 
 (define "IfLine3MoveAgain" 
     (then 
-        (if 
-            (is Line 3 if:(= 1 (size Stack at:(to)))) 
+        (if (is Line 3 if:("IsSingletonStack" (to))) 
             (moveAgain)
         )
     )
@@ -38,13 +36,7 @@
     (equipment { 
         (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
         (hand Each)
-        (piece "Marker" Each 
-            (move 
-                Step 
-                (to if:(is Empty (to))) 
-                "IfLine3MoveAgain" 
-            )
-        ) 
+        (piece "Marker" Each ("StepToEmpty" ~ "IfLine3MoveAgain")) 
     }) 
     
     (rules 

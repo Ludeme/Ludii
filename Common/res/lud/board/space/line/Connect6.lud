@@ -1,11 +1,9 @@
 (game "Connect6" 
     (players 2) 
-    (equipment 
-        { 
+    (equipment { 
         (board (square 19) use:Vertex) 
         (piece "Marker" Each) 
-        }
-    ) 
+    }) 
     (rules 
         
         phases:{
@@ -15,8 +13,7 @@
         )
         (phase "Playing" 
             (play 
-                (move 
-                    Add
+                (move Add
                     (to (sites Empty)) 
                     (then 
                         (if 

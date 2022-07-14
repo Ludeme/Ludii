@@ -1,7 +1,6 @@
 (define "IfLine2OrthogonalMoveAgain" 
     (then 
-        (if 
-            (is Line 2 Orthogonal) 
+        (if (is Line 2 Orthogonal) 
             (moveAgain)
         )
     )
@@ -11,25 +10,13 @@
 
 (game "Bolotudu"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (square 6))
         (hand Each)
-        (piece "Marker" Each
-            (move 
-                Step Orthogonal
-                (to if:(is Empty (to))) 
-                "IfLine2OrthogonalMoveAgain" 
-            )
-        )
-        }
-    )
+        (piece "Marker" Each ("StepToEmpty" Orthogonal "IfLine2OrthogonalMoveAgain"))
+    })
     (rules
-        (start 
-            {
-            (place "Marker" "Hand" count:12) 
-            }
-        )
+        (start (place "Marker" "Hand" count:12))
         
         phases:{
         (phase "Placement"
@@ -45,8 +32,7 @@
         (phase "Movement"
             (play 
                 (if "SameTurn"
-                    (move
-                        Remove
+                    (move Remove
                         (sites Occupied by:Next)
                     )
                     (forEach Piece)
@@ -55,7 +41,7 @@
         )
         }
         
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )	
 )
 
