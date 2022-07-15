@@ -31,7 +31,7 @@ public class DFBoxDrawing
 
     public static final int MIN_NODE_GAP = 20;
 
-    private HashMap<Integer, Integer> gupDistances = new HashMap<>();
+    private final HashMap<Integer, Integer> gupDistances = new HashMap<>();
 
     /**
      * Constructor
@@ -158,6 +158,7 @@ public class DFBoxDrawing
      */
     private HashMap<Integer, Integer> findUpwardVisibilityGraph(List<List<Integer>> paths, iGraph graph)
     {
+        gupDistances.clear();
         // Initialize
         HashMap<Integer, Integer> Gup = new HashMap<>();
         List<Integer> LE = new ArrayList<>(paths.get(0));
@@ -271,13 +272,13 @@ public class DFBoxDrawing
             for (int j = 1; j < P.size(); j++)
             {
                 int nid = P.get(j);
-                if (gup.containsKey(nid)) {minDist = Math.min(minDist,
+                if (!subTree.contains(P.get(j)) && gup.containsKey(nid)) {minDist = Math.min(minDist,
                         GraphRoutines.computeNodeVerticalDistance(gup.get(nid), nid, graph));}
             }
             for (int j = 1; j < P.size(); j++)
             {
                 iGNode n = graph.getNode(P.get(j));
-                int dist = minDist - MIN_NODE_GAP;
+                int dist = Math.abs(minDist - MIN_NODE_GAP);
                 if (!subTree.contains(P.get(j)))
                 {
                     n.setPos(new Vector2D(n.pos().x(), n.pos().y() - Math.max(dist, 0)*compactness));

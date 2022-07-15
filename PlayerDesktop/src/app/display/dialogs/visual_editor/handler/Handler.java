@@ -528,13 +528,14 @@ public class Handler
                 return;
         if(DEBUG) System.out.println("[HANDLER] addEdge(graph, form, to, nodeArgument) -> Adding edge: " + from.title() + " -> " + to.title());
         graph.addEdge(from.id(), to.id());
-        // here form is the parent node
-        from.addChild(to);
-        to.setParent(from);
 
         // notify graph panel to draw edge
         IGraphPanel graphPanel = graphPanelMap.get(graph);
         graphPanel.notifyEdgeAdded(graphPanel.nodeComponent(from), graphPanel.nodeComponent(to), nodeArgument);
+
+        // here from is the parent node
+        from.addChild(to);
+        to.setParent(from);
     }
 
     /**
@@ -553,9 +554,6 @@ public class Handler
                 return;
         if(DEBUG) System.out.println("[HANDLER] addEdge(graph, form, to, nodeArgument, elementIndex) -> Adding edge: " + from.title() + " -> " + to.title() + ", elementIndex: " + elementIndex);
         graph.addEdge(from.id(), to.id());
-        // here form is the parent node
-        from.addChild(to);
-        to.setParent(from);
 
         // if the edge is part of a collection, adjust the collection size
         while(from.providedInputsMap().get(nodeArgument) == null || elementIndex+1>((Object[])from.providedInputsMap().get(nodeArgument)).length)
@@ -564,6 +562,10 @@ public class Handler
         // notify graph panel to draw edge
         IGraphPanel graphPanel = graphPanelMap.get(graph);
         graphPanel.notifyEdgeAdded(graphPanel.nodeComponent(from), graphPanel.nodeComponent(to), nodeArgument, elementIndex);
+
+        // here from is the parent node
+        from.addChild(to);
+        to.setParent(from);
     }
 
     /**
@@ -595,9 +597,6 @@ public class Handler
         if(DEBUG) System.out.println("[HANDLER] nodeArgument(graph, form, to, inputFieldIndex) -> Adding edge: " + from.title() + " -> " + to.title() + ", inputFieldIndex: " + inputFieldIndex);
 
         graph.addEdge(from.id(), to.id());
-        // here form is the parent node
-        from.addChild(to);
-        to.setParent(from);
 
         if(notify)
         {
@@ -605,6 +604,10 @@ public class Handler
             IGraphPanel graphPanel = graphPanelMap.get(graph);
             graphPanel.notifyEdgeAdded(graphPanel.nodeComponent(from), graphPanel.nodeComponent(to), inputFieldIndex);
         }
+
+        // here from is the parent node
+        from.addChild(to);
+        to.setParent(from);
     }
 
 

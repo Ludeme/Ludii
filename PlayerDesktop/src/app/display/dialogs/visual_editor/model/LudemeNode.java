@@ -750,26 +750,20 @@ public class LudemeNode implements iGNode
         // Checks if child nodes was already added
         if (!this.children.contains(child))
         {
-            this.children.add(child);
-            // get order of new child in current constructor
-            // TODO: something goes wrong for [optional] inputs
-            // TODO: keep track of number of connection components of a node
-            int order = -1;
-
-            for (ClauseArg arg : selectedClause.args())
-            {
-                if (arg.symbol().name().equals(child.symbol().name()))
+            children.clear();
+            providedInputsMap.forEach((k,v) -> {
+                if (v instanceof LudemeNode)
                 {
-                    order = selectedClause.args().indexOf(arg);
-                    break;
+                    children.add((LudemeNode) v);
                 }
-            }
-
-            childrenOrder.put(child, order);
-            // placing child in correct order
-            for (int i = this.children.size()-1; i > 0; i--)
-                if (childrenOrder.get(this.children.get(i-1)) > childrenOrder.get(this.children.get(i)))
-                    Collections.swap(this.children, i-1, i); // swap i-1 and i
+                else if (v instanceof Object[])
+                {
+                    for (Object obj: (Object[]) v)
+                    {
+                        if (obj instanceof LudemeNode) children.add((LudemeNode) obj);
+                    }
+                }
+            });
         }
     }
 
