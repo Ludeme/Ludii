@@ -1,8 +1,7 @@
 (game "Hujura"
     (players 2)
-    (equipment 
-        { 
-        (board (concentric Square rings:3) use:Vertex) 
+    (equipment { 
+        ("NineMensMorrisBoard")
         (hand Each)
         (piece "Disc" P1 (move [#])) 
         (piece "Disc" P2 (move [#])) 

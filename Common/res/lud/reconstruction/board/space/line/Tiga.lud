@@ -1,9 +1,8 @@
 (game "Tiga"
     (players 2)
     
-    (equipment 
-        { 
-        (board (concentric Square rings:3) use:Vertex) 
+    (equipment { 
+        ("NineMensMorrisBoard")
         (hand Each)
         (piece "Marker" Each (move [#])) 
     })

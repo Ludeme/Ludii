@@ -46,10 +46,7 @@
 (game "Shah"
     (players 2)
     (equipment {
-        (board
-            (concentric Square rings:3)
-            use:Vertex
-        ) 
+        ("NineMensMorrisBoard")
         (piece "Marker" Each ("StepToEmpty" ~ "IfLine3MoveAgain"))
         (hand Each)
     })

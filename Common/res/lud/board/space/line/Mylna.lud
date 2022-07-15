@@ -1,10 +1,7 @@
 (game "Mylna"
     (players 2)
     (equipment {
-        (board
-            (concentric Square rings:3)
-            use:Vertex
-        ) 
+        ("NineMensMorrisBoard")
         (piece "Marker" Each 
             ("StepToEmpty" Orthogonal (then ("ReplayIfLine3" Orthogonal)))
         )

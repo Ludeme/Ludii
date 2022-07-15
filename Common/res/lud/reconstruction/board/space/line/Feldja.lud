@@ -19,7 +19,7 @@
 (game "Feldja"
     (players 2)
     (equipment { 
-        (board (concentric Square rings:3) use:Vertex) 
+        ("NineMensMorrisBoard")
         (hand Each)
         (piece "Marker" Each 
             [#] // Probably stepping or sliding.... That's the most obvious....

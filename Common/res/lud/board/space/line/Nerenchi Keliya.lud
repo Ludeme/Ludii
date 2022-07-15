@@ -13,7 +13,7 @@
     (players 2)
     
     (equipment { 
-        (board (concentric Square rings:3) use:Vertex) 
+        ("NineMensMorrisBoard")
         (hand Each)
         (piece "Marker" Each ("StepToEmpty" ~ (then ("ReplayIfLine3")))) 
     }) 
