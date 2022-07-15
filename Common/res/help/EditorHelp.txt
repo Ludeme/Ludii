@@ -5415,8 +5415,8 @@ PARAM JAVADOC: [int]: Additional value to add to the index [0].
 EXAMPLE: (show SiteIndex Cell 5)
 NEW CTOR
 (show Symbol [<string>] [text:<string>] [<string>] [<roleType>] [<siteType>] ([{int}]  | [int]) [<region>] [<boardGraphicsType>] [fillColour:<colour>] [edgeColour:<colour>] [scale:<float>] [scaleX:<float>] [scaleY:<float>] [rotation:int] [offsetX:<float>] [offsetY:<float>])
-PARAM JAVADOC: [<string>]: Text string to show.
-PARAM JAVADOC: [text:<string>]: 
+PARAM JAVADOC: [<string>]: Name of the image to show.
+PARAM JAVADOC: [text:<string>]: Text string to show.
 PARAM JAVADOC: [<string>]: Draw image on all sites in this region.
 PARAM JAVADOC: [<roleType>]: Player whose index is to be matched (only for Region).
 PARAM JAVADOC: [<siteType>]: The GraphElementType for the specified sites [Cell].
@@ -5854,12 +5854,18 @@ DEFINE EXAMPLE: ("DieNotUsed")
 DEFINE: HandEmpty
 DEFINE JAVADOC: Checks if all the sites in a specific hand are empty. #1 = The owner of the hand, can be a RoleType or the index of the owner. 
 DEFINE EXAMPLE: ("HandEmpty" Mover)
+DEFINE: HasFreedom
+DEFINE JAVADOC: Checks if a group of pieces has some liberties around it. The specified directions (by default Adjacent) are the directions between the elements of the group. #1 = = Directions of the pieces in the group. 
+DEFINE EXAMPLE: ("HasFreedom" Orthogonal)
 DEFINE: IsEmptyAndNotVisited
 DEFINE JAVADOC: Checks if a site is empty and not visited so far in the same turn. #1 = The site. 
 DEFINE EXAMPLE: ("IsEmptyAndNotVisited" (to))
 DEFINE: IsPieceAt
 DEFINE JAVADOC: Checks if a piece #1 owned by #2 is at a site #3. #1 = The name of the piece. #2 = The owner of the piece. #3 = The site. #4 = The level. 
 DEFINE EXAMPLE: ("IsPieceAt" "Ball" Shared 32)
+DEFINE: IsSingleGroup
+DEFINE JAVADOC: Checks if only one single group with pieces owned by a player exists. #1 = The owner of the pieces in the group. #2 = The direction used to connect the pieces in the group (by default Adjacent). 
+DEFINE EXAMPLE: ("IsSingleGroup" Mover)
 DEFINE: NoPieceOnBoard
 DEFINE JAVADOC: Checks if the board is empty. This ludemeplex is not working for games involving stacks. 
 DEFINE EXAMPLE: ("NoPieceOnBoard)
@@ -5872,6 +5878,9 @@ DEFINE EXAMPLE: ("IsEmptyOrSingletonStack" (to))
 DEFINE: IsSingletonStack
 DEFINE JAVADOC: Checks if a stack has a size of 1 at a site. #1 = The site. 
 DEFINE EXAMPLE: ("IsSingletonStack" (to))
+DEFINE: IsTopLevel
+DEFINE JAVADOC: Checks if a level is at the top of a stack. #1 = The site. 
+DEFINE EXAMPLE: ("IsTopLevel" (to))
 DEFINE: NoEnemyOrOnlyOne
 DEFINE JAVADOC: Checks if no enemy or only one in a stack game. #1 = The site. 
 DEFINE EXAMPLE: ("NoEnemyOrOnlyOne" (to))
@@ -5899,6 +5908,9 @@ DEFINE EXAMPLE: ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
 DEFINE: LascaBoard
 DEFINE JAVADOC: Defines the original Lasca board. 
 DEFINE EXAMPLE: ("LascaBoard")
+DEFINE: NineMensMorrisBoard
+DEFINE JAVADOC: Defines a nine men's morris board. 
+DEFINE EXAMPLE: ("NineMensMorrisBoard")
 DEFINE: AlquerqueBoard
 DEFINE JAVADOC: Defines a rectangular board with Alquerque-style alternating diagonals. 
 DEFINE EXAMPLE: ("AlquerqueBoard" 5 5)
@@ -6040,12 +6052,30 @@ DEFINE EXAMPLE: ("OppositePit" (to))
 DEFINE: OppositePitTwoRows
 DEFINE JAVADOC: Returns the index of the opposite pit on a two rows mancala board. This ludemeplex is working only if the description is defining "Columns" as the number of holes of the board. #1 = The site. 
 DEFINE EXAMPLE: ("OppositePitTwoRows" (to))
-DEFINE: BlockWin
-DEFINE JAVADOC: If the next player has no legal moves, the mover is winning. This ludemeplex can be used only in an ending condition. 
-DEFINE EXAMPLE: ("BlockWin")
+DEFINE: CaptureAll
+DEFINE JAVADOC: Checks if a player has no piece and lose. This ludemeplex can be used only in an ending condition. 
+DEFINE EXAMPLE: ("CaptureAll" Next)
 DEFINE: Checkmate
 DEFINE JAVADOC: If the next player is checkmate, the mover is winning. This ludemeplex can be used only in an ending condition. #1 = The name of the piece to check. 
 DEFINE EXAMPLE: ("Checkmate" "King")
+DEFINE: HavingLessPiecesLoss
+DEFINE JAVADOC: Checks if a player has a less or equal number of pieces and lose. This ludemeplex can be used only in an ending condition. 
+DEFINE EXAMPLE: ("HavingLessPiecesLoss" Next 2)
+DEFINE: MancalaByScoreWhen
+DEFINE JAVADOC: Ends a mancala game when a condition is verified in computing the score of each player thanks to a ludemeplex called "PiecesOwnedBy" taking in input the role of P1 or P2. This ludemeplex can be used only in an ending condition. #1 The condition. 
+DEFINE EXAMPLE: ("MancalaByScoreWhen" (no Moves Next))
+DEFINE: NoMovesLossAndLessNumPiecesPlayerLoss
+DEFINE JAVADOC: Checks if the next player has no legal moves and the next player loses and checks if a specific player has less or equal than a number of pieces to lose. This ludemeplex can be used only in an ending condition. #1 = The owner of the pieces. #2 = The number of pieces. 
+DEFINE EXAMPLE: ("NoMovesLossAndLessNumPiecesPlayerLoss" P1 3)
+DEFINE: NoMovesLossAndNoPiecesPlayerLoss
+DEFINE JAVADOC: Checks if the next player has no legal moves and the next player loses and checks if a specific player has no pieces to lose. This ludemeplex can be used only in an ending condition. #1 = The owner of the pieces. 
+DEFINE EXAMPLE: ("NoMovesLossAndNoPiecesPlayerLoss" P1)
+DEFINE: NoMovesP1NoPiecesP2
+DEFINE JAVADOC: Checks if P1 has no moves and P2 wins and checks if P2 has no pieces and P1 wins. This ludemeplex can be used only in an ending condition. 
+DEFINE EXAMPLE: ("NoMovesP1NoPiecesP2")
+DEFINE: NoMovesP2NoPiecesP1
+DEFINE JAVADOC: Checks if P2 has no moves and P1 wins and checks if P1 has no pieces and P2 wins. This ludemeplex can be used only in an ending condition. 
+DEFINE EXAMPLE: ("NoMovesP2NoPiecesP1")
 DEFINE: EscapeTeamWin
 DEFINE JAVADOC: Checks if the team has no pieces and makes it win. This ludemeplex can be used only in an ending condition. 
 DEFINE EXAMPLE: ("EscapeTeamWin")
@@ -6055,24 +6085,36 @@ DEFINE EXAMPLE: ("EscapeWin")
 DEFINE: FillWin
 DEFINE JAVADOC: If the mover is filling all the spaces of a region with his pieces, the mover is winning. This ludemeplex can be used only in an ending condition. #1 = The name of the piece to check. 
 DEFINE EXAMPLE: ("FillWin" (sites Top))
+DEFINE: ReachWin
+DEFINE JAVADOC: If the mover is reaching a space of a region with his last movement, a player is winning. This ludemeplex can be used only in an ending condition. #1 = The region to reach. #2 = The player to win. 
+DEFINE EXAMPLE: ("ReachWin" (sites Top) P1)
+DEFINE: BlockWin
+DEFINE JAVADOC: If the next player has no legal moves, the mover is winning. This ludemeplex can be used only in an ending condition. 
+DEFINE EXAMPLE: ("BlockWin")
 DEFINE: ForEachNonMoverNoMovesLoss
 DEFINE JAVADOC: Makes a player losing when this player has no moves. This ludemeplex can be used only in an ending condition. 
 DEFINE EXAMPLE: ("ForEachNonMoverNoMovesLoss")
 DEFINE: ForEachPlayerNoMovesLoss
 DEFINE JAVADOC: Makes a player losing when this player has no moves. This ludemeplex can be used only in an ending condition. 
 DEFINE EXAMPLE: ("ForEachPlayerNoMovesLoss")
-DEFINE: MancalaByScoreWhen
-DEFINE JAVADOC: Ends a mancala game when a condition is verified in computing the score of each player thanks to a ludemeplex called "PiecesOwnedBy" taking in input the role of P1 or P2. This ludemeplex can be used only in an ending condition. #1 The condition. 
-DEFINE EXAMPLE: ("MancalaByScoreWhen" (no Moves Next))
+DEFINE: Line3Win
+DEFINE JAVADOC: If the mover has 3 pieces aligned, the mover is winning. This ludemeplex can be used only in an ending condition. #1 = Directions of the line (by default Adjacent). 
+DEFINE EXAMPLE: ("Line3Win")
+DEFINE: MisereBlockWin
+DEFINE JAVADOC: If the mover has no legal moves, the mover is winning. This ludemeplex can be used only in an ending condition. 
+DEFINE EXAMPLE: ("MisereBlockWin")
 DEFINE: NoMoves
 DEFINE JAVADOC: Checks if the next player has no legal moves and apply a specific result to the next player. This ludemeplex can be used only in an ending condition. #1 = The result to apply. 
 DEFINE EXAMPLE: ("NoMoves" Loss)
-DEFINE: ReachWin
-DEFINE JAVADOC: If the mover is reaching a space of a region with his last movement, a player is winning. This ludemeplex can be used only in an ending condition. #1 = The region to reach. #2 = The player to win. 
-DEFINE EXAMPLE: ("ReachWin" (sites Top) P1)
+DEFINE: SingleGroupWin
+DEFINE JAVADOC: Checks if only one single group with pieces owned by a player exists. This ludemeplex can be used only in an ending condition. #1 = The owner of the pieces in the group. #2 = The direction used to connect the pieces in the group (by default Adjacent). 
+DEFINE EXAMPLE: ("SingleGroupWin" Mover)
 DEFINE: CustodialCapture
-DEFINE JAVADOC: Defines a custodial capture in all the directions specified (by default Adjacent). The enemy piece is removed. #1 = Directions of the capture. #2 = The consequences. 
+DEFINE JAVADOC: Defines a custodial capture in all the directions specified (by default Adjacent). The enemy piece is removed. #1 = Directions of the capture. #2 = Contraints related to the number of pieces to capture. #3 = The consequences. 
 DEFINE EXAMPLE: ("CustodialCapture")
+DEFINE: EncloseCapture
+DEFINE JAVADOC: Defines a enclose capture by all the directions specified (by default Adjacent). The enemy pieces are removed. #1 = Directions of the capture. #2 = The consequences. 
+DEFINE EXAMPLE: ("EncloseCapture")
 DEFINE: HittingCapture
 DEFINE JAVADOC: Defines the capture of an enemy piece returning to a site. This ludemeplex can be used only as an effect. 
 DEFINE EXAMPLE: ("HittingCapture" (handSite (who at:(to))))
@@ -6082,6 +6124,12 @@ DEFINE EXAMPLE: ("HittingStackCapture" (handSite (who at:(to) level:(level))))
 DEFINE: InterveneCapture
 DEFINE JAVADOC: Defines an intervene capture in all the directions specified (by default Adjacent). The enemy piece is removed. #1 = Directions of the capture. #2 = The consequences. 
 DEFINE EXAMPLE: ("InterveneCapture")
+DEFINE: SurroundCapture
+DEFINE JAVADOC: Defines a surround capture in all the directions specified (by default Adjacent). The enemy piece is removed. #1 = Directions of the capture. #2 = Contraints related to the number of pieces to capture. #3 = The consequences. 
+DEFINE EXAMPLE: ("SurroundCapture")
+DEFINE: ReplayIfLine3
+DEFINE JAVADOC: Move again if the last `to' position just made a line of 3. #1 = The directions of the line (by default adjacent). #1 = If true, then lines cannot exceed minimum length (by default false). 
+DEFINE EXAMPLE: ("ReplayIfLine3")
 DEFINE: ReplayInMovingOn
 DEFINE JAVADOC: Move again if the last `to' position is on a specified region. #1 = The region. 
 DEFINE EXAMPLE: ("ReplayInMovingOn" (sites Top))
@@ -6094,6 +6142,9 @@ DEFINE EXAMPLE: ("RollEachNewTurnMove" (forEach Piece))
 DEFINE: RollMove
 DEFINE JAVADOC: Roll dice before to compute the legal moves. #1 = The legal moves. #2 = The consequences. 
 DEFINE EXAMPLE: ("RollMove" (forEach Piece))
+DEFINE: HopAllPiecesToEmpty
+DEFINE JAVADOC: Defines a hop move in all the directions specified (by default Adjacent) over any occupied site to an empty site. #1 = The from site. #2 = Directions of the hop. #3 = The range of the hop. #4 = The consequences. 
+DEFINE EXAMPLE: ("HopAllPiecesToEmpty")
 DEFINE: HopCapture
 DEFINE JAVADOC: Defines a hop move in all the directions specified (by default Adjacent) over an enemy to an empty site. The enemy piece is removed. #1 = The from site. #2 = Directions of the hop. #3 = The consequences. 
 DEFINE EXAMPLE: ("HopCapture")
@@ -6139,6 +6190,12 @@ DEFINE EXAMPLE: ("HopSequenceCaptureAgain" before:(count Rows) after:(count Rows
 DEFINE: LeapToEmpty
 DEFINE JAVADOC: Defines a leap move to an empty site. #1 = The walk. #2 = The consequences. 
 DEFINE EXAMPLE: ("LeapToEmpty" "KnightWalk")
+DEFINE: RemoveAnyEnemyPiece
+DEFINE JAVADOC: Allows to remove one piece of the enemy player. #1 = The consequences. 
+DEFINE EXAMPLE: ("RemoveAnyEnemyPiece")
+DEFINE: RemoveAnyEnemyPieceNotInLine3
+DEFINE JAVADOC: Allows to remove one piece of the enemy player which is not in a line 3. #1 = The directions of the line (by default adjacent). 
+DEFINE EXAMPLE: ("RemoveAnyEnemyPieceNotInLine3")
 DEFINE: SlideCapture
 DEFINE JAVADOC: Defines a slide move to capture an enemy piece. #1 = Directions of the slide. #2 = Between conditions to specify (by default sliding on empty sites). #3 = Consequences of the capture effect. #4 = The consequences of the moves. 
 DEFINE EXAMPLE: ("SlideCapture" Orthogonal)
