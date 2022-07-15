@@ -1,9 +1,8 @@
 (game "Roman Merels"
     (players 2)
     
-    (equipment 
-        { 
-        (board (concentric Square rings:3) use:Vertex) 
+    (equipment { 
+        ("NineMensMorrisBoard")
         (hand Each)
         (piece "Disc" Each (move [#])) 
     })
@@ -24,7 +23,7 @@
         (rules "Three concentric circles, with lines connecting the midpoints of the sides.")
         (source "DLP evidence.")
         (id "1080")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line/reconstruction")
         (credit "Eric Piette")
         (origin  "This game was played in Roman Empire, from around 100BCE to 40.")

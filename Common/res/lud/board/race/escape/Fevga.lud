@@ -1,37 +1,16 @@
-(define "NotAnEnemy"    
-    (not (is Enemy (who at:(to))))
-)
+(define "NotAnEnemy" (not ("IsEnemyAt" (to))))
 
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
-        steps:(pips)
-    )
-)
+(define "NextSiteFrom" ("NextSiteOnTrack" (pips) from:#1))
 
-(define "DieNotUsed" (!= (pips) 0))
+(define "AllPieceInHome" ("AllOwnedPiecesIn" (sites Mover "Home")))
 
-(define "AllPieceInHome" 
-    ("NoSites" 
-        (difference 
-            (sites Occupied by:Mover) 
-            (sites Mover "Home")
-        )
-    )
-)
-
-(define "RemoveAPiece" 
-    (move
-        Remove
-        (site) 
-    )		
-)
+(define "RemoveAPiece" (move Remove (site)))
 
 (define "DieNotUsedAndNoEscapeAndNotOffTheTrack" 
     (and { 
         ("DieNotUsed") 
-        (!= ("NextSiteFrom" (from)) Off) 
-        (!= ("NextSiteFrom" (from)) End) 
+        ("IsNotOffBoard" ("NextSiteFrom" (from))) 
+        ("IsNotEndTrack" ("NextSiteFrom" (from)))
     })		
 )
 
@@ -63,12 +42,12 @@
 
 (define "NumPiece" (size Stack in:(sites Occupied by:#1)))
 
-(define "CanEscape" (= ("NextSiteFrom" (site)) End))
+(define "CanEscape" ("IsEndTrack" ("NextSiteFrom" (site))))
 
 (define "NotEmptyAndNotOffTheBoard" 
     (and 
-        (!= (what at:(site)) 0) 
-        (!= ("NextSiteFrom" (site)) Off)
+        (is Occupied (site))
+        ("IsNotOffBoard" ("NextSiteFrom" (site)))
     )
 )
 
@@ -88,38 +67,23 @@
 
 (define "HaveAPieceAndCanEscape" 
     (and 
-        (is Friend (who at:(site))) 
-        (< (trackSite Move from:(site) steps:(pips)) 0)
+        ("IsFriendAt" (site)) 
+        (< ("NextSiteOnTrack" (pips) from:(site)) 0)
     )
 )
 
-(define "PieceInOpponentSide" 
-    (!= 
-        (count Sites in:(difference (sites Occupied by:Mover) (sites Mover "Side"))) 
-        0
-    ) 
-)
+(define "PieceInOpponentSide" (not ("AllOwnedPiecesIn" (sites Mover "Side"))))
 
-(define "InTheStartingPosition" 
-    (= (from) (mapEntry (mover)))  
-)
+(define "InTheStartingPosition" (= (from) (mapEntry (mover))))
 
-(define "Not14PiecesInThePosition"
-    (!= (topLevel at:(from)) 13)
-)
+(define "Not14PiecesInThePosition" (!= (topLevel at:(from)) 13))
 
 //-----------------------------------------------------------------------------
 
-(game "Fevga"  
-    (players 2)  
+(game "Fevga" 
+    (players 2) 
     (equipment { 
-        (board (rectangle 2 13) 
-            {
-            (track "Track1" {0..5 7..12 25..20 18..13 End} P1 directed:True)
-            (track "Track2" {25..20 18..13 0..5 7..12 End} P2 directed:True)
-            } 
-            use:Vertex
-        ) 
+        ("BackgammonBoard" ("BackgammonTracksSameDirectionOppositeCorners" End)) 
         (dice num:2)
         (regions "Home" P1 { 20..25 }) 
         (regions "Home" P2 { 7..12 }) 
@@ -127,7 +91,7 @@
         (regions "Side" P2 { 13..25 }) 
         (map {(pair 1 0) (pair 2 25)}) // The starting positions of each player.
         (piece "Disc" Each ("MoveAPieceIf" "DieNotUsedAndNoEscapeAndNotOffTheTrack" (from))) 
-    } )
+    })
     
     (rules
         (start { 
@@ -136,9 +100,8 @@
         })
         
         (play 
-            (do 
-                (if (not "SameTurn") (roll))
-                next:(if "AllPieceInHome"
+            ("RollEachNewTurnMove"
+                (if "AllPieceInHome"
                     (forEach Die 
                         replayDouble:True 
                         if:("DieNotUsed")
@@ -155,20 +118,12 @@
                                     "RemoveAPiece"
                                 )
                             )
-                            (then 
-                                (if (not (all DiceUsed))
-                                    (moveAgain)
-                                )
-                            )
+                            (then "ReplayNotAllDiceUsed")
                         )
                     )
                     (max Distance "Track" Mover
                         (forEach Piece top:True
-                            (then 
-                                (if (not (all DiceUsed))
-                                    (moveAgain)
-                                )
-                            )
+                            (then "ReplayNotAllDiceUsed")
                         )
                     )
                 )
@@ -180,7 +135,7 @@
                 (byScore { 
                     ("SetScoreOf" P1 P2)
                     ("SetScoreOf" P2 P1)
-                } )
+                })
             )
         )
     )
@@ -197,7 +152,7 @@
         (rules "Played on a standard Backgammon board. Each player has fifteen pieces, which all begin on the leftmost point on each player's side of the board. Both players move anti-clockwise around the board. Both players roll one die, and the player with the higher number plays first. If it is played after another game, the winner of the previous game goes first. The player rolls two die and begins play with that roll. Players move according to the number on each die by moving one piece the value on one die then another piece the value on the other die, or by moving one piece the value of one die and then the value of the other. When doubles are thrown, they are played twice. If a player can only play one number but not both, they must play the higher number, if possible. To begin, each player may only move one piece, until it passes the opponent's starting point, after which any pieces can be moved. Pieces may only be moved to an empty point or one occupied by another piece belonging to the player. Players may not block all six points in either player's starting quadrant. If a player has blocked six points in a row, and the opponent has moved all of their pieces to the point adjacent to the blocked points, the player must move to unblock one of the points. Once a player has moved all of their pieces into the final six points of their track, they may begin bearing off. They do so by rolling a number equal to the number of points left in the track, plus one. If they cannot bear off, they must make a legal move with a piece that cannot bear off. If no such move is available, then they must bear off the piece which is furthest from the goal. The first player to bear off all their pieces wins the game and gets one point. If the winner bears off all their pieces before the opponent bears off any, they get two points. ")
         (source "<a href=\"https://archive.org/details/fevga/mode/2up\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />archive.org</a>")
         (id "175")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/escape")
         (credit "Eric Piette")
         }

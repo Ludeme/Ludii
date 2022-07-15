@@ -1,19 +1,16 @@
-(game "Unfair"  
-    (players 2)  
-    (equipment 
-        { 
+(game "Unfair" 
+    (players 2) 
+    (equipment { 
         (board (square <Board:size>) use:Vertex) 
         (piece "Ball" Each) 
-        }
-    )  
+    }) 
     (rules 
         
         (play
             (or 
                 (move Add (to (sites Empty) if:(= (id P1) (mover)))
                     (then 
-                        (if 
-                            (= 0 (count MovesThisTurn)) 
+                        (if (= 0 (count MovesThisTurn)) 
                             (moveAgain)
                         )
                     )
@@ -29,28 +26,26 @@
             )
         )
         
-        (end 
-            {
+        (end {
             (if (and ((= (id P1) (mover)) (is Line 4 Orthogonal))) (result Mover Win))
             (if (and ((= (id P2) (mover)) (is Line 7 Orthogonal))) (result Mover Win))
-            }
-        )
+        })
     )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> }
-    {      
-    (item "11"  <11>  "Played on a size 11 board.")**   
-    (item "12"  <12>  "Played on a size 12 board.")   
-    (item "13"  <13>  "Played on a size 13 board.")   
-    (item "14"  <14>  "Played on a size 14 board.")   
-    (item "15"  <15>  "Played on a size 15 board.")   
-    (item "16"  <16>  "Played on a size 16 board.")   
-    (item "17"  <17>  "Played on a size 17 board.")   
-    (item "18"  <18>  "Played on a size 18 board.")   
-    (item "19"  <19>  "Played on a size 19 board.")   
+    {   
+    (item "11" <11> "Played on a size 11 board.")**  
+    (item "12" <12> "Played on a size 12 board.")  
+    (item "13" <13> "Played on a size 13 board.")  
+    (item "14" <14> "Played on a size 14 board.")  
+    (item "15" <15> "Played on a size 15 board.")  
+    (item "16" <16> "Played on a size 16 board.")  
+    (item "17" <17> "Played on a size 17 board.")  
+    (item "18" <18> "Played on a size 18 board.")  
+    (item "19" <19> "Played on a size 19 board.")  
     }
 )
 
@@ -64,7 +59,7 @@
         (rules "Played on a square grid 11x11 or larger.  White goes first and places two pieces every turn, Black places four pieces per turn.  White wins if they make an orthogonal line of four pieces; Black wins if they make an orthogonal line of 7 pieces.")
         (id "1401")
         (source "<a href=\"https://boardgamegeek.com/boardgame/175220/unfair\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line")
         (author "Stephen Tavener")
         (credit "Eric Silverman")

@@ -14,7 +14,7 @@
                 )
                 (move Step
                     (to 
-                        if:(is Enemy (who at:(to))) 
+                        if:("IsEnemyAt" (to)) 
                         (apply 
                             (and
                                 (if
@@ -74,9 +74,9 @@
 
 (option "Board Size" <Size> args:{ <size> }
     {
-    (item "6x6"    <6>  "A size 6 board is currently selected")*
-    (item "7x7"    <7>  "A size 7 board is currently selected")
-    (item "8x8"    <8>  "A size 8 board is currently selected")
+    (item "6x6"  <6> "A size 6 board is currently selected")*
+    (item "7x7"  <7> "A size 7 board is currently selected")
+    (item "8x8"  <8> "A size 8 board is currently selected")
     }
 )
 
@@ -112,7 +112,7 @@
         To make a step/capture move, you must drag or click the bottom piece.")
         (id "1993")
         (source "<a href=\"http://www.marksteeregames.com/King_and_Courtesan_rules.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Mark Steere Games</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/eliminate/target")
         (author "Mark Steere")
         (publisher "<a href=\"http://www.marksteeregames.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Mark Steere Games</a>")

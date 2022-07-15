@@ -1,5 +1,5 @@
 (game "Jeu de Renard" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (square 8)) 
         (piece "Fox" P1 
@@ -8,37 +8,25 @@
                 "HopDiagonalCapture"
             )
         )
-        (piece "Hen" P2 N
-            (move 
-                Step 
-                (directions {FR FL}) 
-                (to if:(is Empty (to)))
-            )
-        )
+        (piece "Hen" P2 N ("StepToEmpty" (directions {FR FL})))
         (hand P1)
-        }
-    )  
+    }) 
     (rules 
         (start { 
             (place "Fox1" (handSite P1))
-            (place "Hen2" (difference (expand (sites Bottom) steps:2) (sites Phase 0) ) )
+            (place "Hen2" (difference (expand (sites Bottom) steps:2) (sites Phase 0)))
         })
         
         phases:{
         (phase "Placement" P1
-            (play (move (from (handSite Mover)) (to (difference (sites Empty) (sites Phase 0) ))) )
+            (play (move (from (handSite Mover)) (to (difference (sites Empty) (sites Phase 0)))))
             (nextPhase "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
-        )
+        (phase "Movement" (play (forEach Piece)))
         }
         
-        (end {
-            (if (no Moves P1) (result P2 Win) )
-            (if (no Pieces P2) (result P1 Win) )
-        }) 
+        (end ("NoMovesP1NoPiecesP2")) 
     )
 )
 
@@ -52,7 +40,7 @@
         (rules "8x8 Draughts board. One player plays with a single fox, the other with twelve hens, played on the white squares. The hens begin on the first three rows; the fox may begin on whatever spot the player chooses. Hens move one space forward diagonally, the fox moves one space diagonally forward or backward. The fox may capture a hen by hopping over it to an empty space diagonally on the other side of it. The hens win by blocking the fox from being able to move; the fox wins by capturing all the hens.")
         (source "Mallet 1668: 445-447.")
         (id "877")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/hunt")
         (credit "Eric Piette")
         (origin  "This game was played in France, around 1668.")
@@ -62,7 +50,6 @@
     (graphics {
         (board Style Chess)
         (piece Families {"Abstract" "Themed"})
-        
     })
     
     (ai

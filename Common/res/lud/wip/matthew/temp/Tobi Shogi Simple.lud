@@ -1,5 +1,5 @@
-(game "Tobi Shogi"  
-    (players {(player N) (player S)})  
+(game "Tobi Shogi" 
+    (players {(player N) (player S)}) 
     (equipment
         {
         (board (square 9))
@@ -12,12 +12,12 @@
                 (move Hop 
                     (directions {Forward Rightward Leftward})
                     (between 
-                        if:(is Enemy (who at:(between))) 
+                        if:("IsEnemyAt" (between)) 
                         (apply (remove (between)))
                     )
                     (to if:(is Empty (to)))
                 )
-            )	        	
+            )	    	
         )
         }
     )

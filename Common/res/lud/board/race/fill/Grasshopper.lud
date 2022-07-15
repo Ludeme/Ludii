@@ -1,22 +1,14 @@
-(define "FromIsOnTheRegionToFill" (is In #1 (sites (player (mapEntry (mover)))) ))
+(define "FromIsOnTheRegionToFill" (is In #1 (sites (player (mapEntry (mover))))))
 
-(define "ToIsOnTheRegionToFill" (is In #1 (sites (player (mapEntry (mover)))) ))
-
-(define "EmptyAndNotVisited"     							  
-    (and 
-        (is Empty (to)) 
-        (not (is Visited (to))) 
-    ) 
-)
+(define "ToIsOnTheRegionToFill" (is In #1 (sites (player (mapEntry (mover))))))
 
 (define "Hop" 
-    (move
-        Hop
+    (move Hop
         (from #1)
         (between if:(not (is Empty (between))))
         (to 
             if:(and
-                "EmptyAndNotVisited"
+                ("IsEmptyAndNotVisited" (to))
                 (or
                     (not ("FromIsOnTheRegionToFill" #1))
                     ("ToIsOnTheRegionToFill" (to)) 
@@ -27,35 +19,31 @@
     )
 ) 
 
-(define "HopSequence" ("Hop" #1 (then (if (can Move ("Hop" (last To))) (moveAgain) ))))
-
-(define "RegionFilled" (= (sites (player (mapEntry (mover)))) (sites Occupied by:Mover)))
+(define "HopSequence" ("Hop" #1 (then (if (can Move ("Hop" (last To))) (moveAgain)))))
 
 //------------------------------------------------------------------------------
 
-(game "Grasshopper"  
-    (players 2)  
+(game "Grasshopper" 
+    (players 2) 
     (equipment { 
         (board <Board:size>) 
         (piece "Counter" Each)
         <Board:home>
         (map {(pair P1 P2) (pair P2 P1)})
-        }
-    )  
+    }) 
     (rules 
-        (start
-            { 
+        (start { 
             (place "Counter1" (sites P1))
             (place "Counter2" (sites P2))
-            }
-        )
+        })
         
         phases:{
-        (phase "Movement"  (play 
-                (forEach Piece (or 
+        (phase "Movement" 
+            (play 
+                (forEach Piece 
+                    (or 
                         ("HopSequence" (from)) 
-                        (move 
-                            Step 
+                        (move Step 
                             (to 
                                 if:(and
                                     (is Empty (to))
@@ -71,7 +59,8 @@
             ) 
             (nextPhase (is Mover (next)) "MultiJump")
         ) 
-        (phase "MultiJump" (play 
+        (phase "MultiJump" 
+            (play 
                 (or 
                     ("HopSequence" (last To)) 
                     (move Pass)
@@ -81,7 +70,7 @@
         ) 
         }
         
-        (end (if "RegionFilled" (result Mover Win) ) )
+        (end ("FillWin" (sites (player (mapEntry (mover))))))
     )
 )
 
@@ -91,15 +80,15 @@
     {
     (item "8x8" 
         <(square 8)>
-        <  
+        < 
         (regions "Home" P1 (expand origin:(coord "A1") steps:3 Orthogonal))
         (regions "Home" P2 (expand origin:(coord "H8") steps:3 Orthogonal))
         >
         "The game is played on a board 8x8."
-    )*   
-    (item "10x10"    
+    )*  
+    (item "10x10"  
         <(square 10)>
-        <  
+        < 
         (regions "Home" P1 (expand origin:(coord "A1") steps:4 Orthogonal))
         (regions "Home" P2 (expand origin:(coord "J10") steps:4 Orthogonal))
         >
@@ -117,7 +106,7 @@
         (rules "The rules are the same as for Halma. Pieces move one space orthogonally or diagonally. They may jump over a piece of any color. Multiple jumps in one turn are possible. Jumps do not capture. The player who first places all of their pieces in the opponent's starting position wins.")
         (source "<a href=\"http://www.cyningstan.com/game/71/grasshopper\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />cyningstan</a>")
         (id "402")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/fill")
         (credit "Eric Piette")
         }

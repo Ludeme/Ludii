@@ -1,4 +1,4 @@
-(define "ColumnSize" 6 )
+(define "ColumnSize" 6)
 
 (define "EmptyTop" (intersection (sites Top) (sites Empty)))
 
@@ -10,8 +10,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Connect Four"  
-    (players 2)  
+(game "Connect Four" 
+    (players 2) 
     (equipment { 
         <Model:board>
         (piece "Disc" Each)
@@ -26,12 +26,11 @@
 
 (option "Modelisation" <Model> args:{ <board> <rules> }
     {
-    (item "1D"      
+    (item "1D"   
         <(board (rectangle 1 7))>
-        <    
+        <  
         (play 
-            (move 
-                Add 
+            (move Add 
                 (to 
                     (forEach 
                         (sites Board) 
@@ -44,23 +43,20 @@
         (end (if (is Line 4 byLevel:True) (result Mover Win)))
         >
         ""
-    )**   
-    (item "2D"         
+    )**  
+    (item "2D"     
         <(board (rectangle 6 7))>
         <
         (play 
-            (move 
-                Add 
-                (to 
-                    ("EmptyTop") 
-                )
+            (move Add 
+                (to ("EmptyTop"))
                 (then "Drop")
             )
         )
         (end (if (is Line 4 through:(last To afterConsequence:True)) (result Mover Win)))
         >
         ""
-    )   
+    )  
 })
 
 (metadata
@@ -72,7 +68,7 @@
         (rules "Connect 4 is played on a vertically placed grid of 7x6, where colored disks are dropped from the top of the grid. Players alternate dropping discs, which fall to the bottom of the column in which they are dropped. The first player to create a row of four disks in their color wins.")
         (source "<a href=\"https://en.wikipedia.org/wiki/Connect_Four\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
         (id "87")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line")
         (author "Howard Wexler, Ned Strongin")
         (publisher "Milton Bradley / Hasbro")

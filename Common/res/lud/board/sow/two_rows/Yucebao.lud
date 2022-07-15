@@ -1,4 +1,4 @@
-(define "NextHole" (trackSite Move from:#1 #2 steps:#3))
+(define "NextHole" ("NextSiteOnTrack" #3 from:#1 #2))
 (define "NumBigPiecesCaptured" (count Cell in:(sites {(handSite P1 1) (handSite P2 1)})))
 
 (define "LeftMostEmpty" 
@@ -11,12 +11,12 @@
 
 (define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
-(define "NoPieceOnOwnedHoles"  (no Pieces All in:(sites #1)))
+(define "NoPieceOnOwnedHoles" (no Pieces All in:(sites #1)))
 
 //------------------------------------------------------------------------------
 
 (game "Yucebao"
-    (players 2)  
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 5 largeStack:True
@@ -29,12 +29,12 @@
         (piece "Ball" P1)
         (piece "Ball" P2)
         (hand Each size:2)
-        (regions P1 (sites Bottom))      // P1 home
-        (regions P2 (sites Top))         // P2 home
-        (map {(pair P1 LastSite) (pair P2 FirstSite)})  // kalah holes
-        (map "LeftMost" {(pair P1 1) (pair P2 10)})  // leftMost holes
+        (regions P1 (sites Bottom))   // P1 home
+        (regions P2 (sites Top))     // P2 home
+        (map {(pair P1 LastSite) (pair P2 FirstSite)}) // kalah holes
+        (map "LeftMost" {(pair P1 1) (pair P2 10)}) // leftMost holes
         (regions "EndHoles" (sites {"A1" "G1"}))
-    })  
+    }) 
     (rules 
         (start {
             (place Stack "Seed" (union (sites Bottom) (sites Top)) count:5)
@@ -312,7 +312,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Yucebao is a two-row mancala-style board game played by the Bai people of Yunnan, China. It is typically played by men and boys, and involves the use of special stones which effect captures in addition to the usual mancala-style capturing rules.")
@@ -320,7 +320,7 @@
         ")
         (source "Eagle 1995: 55-56.")
         (id "206")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         (origin  "This game was played in Yunnan, China, around 1992.")

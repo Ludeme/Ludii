@@ -33,7 +33,6 @@ import metadata.graphics.util.colour.ColourRoutines;
 import other.AI;
 import other.context.Context;
 import other.model.SimultaneousMove;
-import other.state.container.ContainerState;
 
 //-----------------------------------------------------------------------------
 
@@ -93,50 +92,6 @@ public class PlayerViewUser extends View
 
 			if (AIUtil.anyAIPlayer(app.manager()))
 				componentPushBufferX += playerView.playerNameFont.getSize()*3;
-		}
-		else
-		{
-			g2d.setColor(Color.BLACK);
-			g2d.setFont(new Font("Cantarell", Font.PLAIN, 30));
-			g2d.drawString("P1", 670, 140);
-			g2d.drawRect(725, 90, 450, 70);
-			g2d.drawString("P2", 670, 668);
-			g2d.drawRect(725, 618, 450, 70);
-			
-			if (context.game().equipment().containers().length == 4)
-			{
-				g2d.setColor(new Color(150,150,150));
-				g2d.setFont(new Font("Cantarell", Font.ITALIC, 22));
-				
-				boolean pieceOnHand1 = false;
-				final Container container = context.equipment().containers()[1];
-				final ContainerState cs = context.state().containerStates()[1];
-				for (int i = 0; i < container.numSites(); i++)
-				{
-					if (cs.what(context.sitesFrom()[1] + i, container.defaultSite()) > 0)
-					{
-						pieceOnHand1 = true;
-						break;
-					}
-				}
-				if (!pieceOnHand1)
-					g2d.drawString("Off board pieces can go here.", 800, 135);
-				
-				boolean pieceOnHand2 = false;
-				final Container container2 = context.equipment().containers()[2];
-				final ContainerState cs2 = context.state().containerStates()[2];
-				for (int i = 0; i < container2.numSites(); i++)
-				{
-					if (cs2.what(context.sitesFrom()[2] + i, container2.defaultSite()) > 0)
-					{
-						pieceOnHand2 = true;
-						break;
-					}
-				}
-				if (!pieceOnHand2)
-					g2d.drawString("Off board pieces can go here.", 800, 663);
-			}
-			
 		}
 
 		if (hand != null)

@@ -1,9 +1,10 @@
-//
 (define "GroupCount"
     (max 0
         (max
-            (sizes Group "ScoreConnectionDirection" #1 ) 
-)))
+            (sizes Group "ScoreConnectionDirection" #1) 
+        )
+    )
+)
 
 //---------------------
 // Defines for scoring options
@@ -11,10 +12,14 @@
 (define "GroupScore"
     (set Var "MoverScore" ("GroupCount" Mover)
         (then
-            (set Var "NextScore"  ("GroupCount" Next)
+            (set Var "NextScore" ("GroupCount" Next)
                 (then
                     <TieScoring:tiebreaker> 
-)))))
+                )
+            )
+        )
+    )
+)
 
 (define "BonusMover"
     (set Var "MoverScore"
@@ -30,7 +35,11 @@
                 )
                 (then
                     <TieScoring:tiebreaker> 
-)))))
+                )
+            )
+        )
+    )
+)
 
 (define "BonusOpponent"
     (set Var "MoverScore"
@@ -46,7 +55,11 @@
                 )
                 (then
                     <TieScoring:tiebreaker> 
-)))))
+                )
+            )
+        )
+    )
+)
 
 //---------------------------
 // Defines for Tiebreaker scoring option
@@ -57,13 +70,17 @@
             (difference
                 (sizes Group "ScoreConnectionDirection" #1)
                 (sizes Group "ScoreConnectionDirection" #2)
-))))
+            )
+        )
+    )
+)
 
 (define "NoTiebreaker"
     (and
         (set Score Mover (var "MoverScore")) 
-        (set Score Next  (var "NextScore")) 
-))
+        (set Score Next (var "NextScore")) 
+    )
+)
 
 (define "CascadeTiebreaker"
     (if 
@@ -73,7 +90,8 @@
             (set Score Next (* -1 ("CascadeScore" Next Mover)))
         )
         ("NoTiebreaker")
-))
+    )
+)
 
 //----------------------------
 (define "AllHave1Connection2Edge"
@@ -91,35 +109,32 @@
                     )
                     (site)
                     (difference (sites Outer) (site))
-)))))
+                )
+            )
+        )
+    )
+)
 
 //-----------------------------------------------
 // Main routine
 
 (game "Brain Coral"
     (players 2)
-    (equipment
-        {
+    (equipment {
         "BoardUsed"
         (piece "Ball" Each)
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
         (start (set Score Each 0))
         (play
             (do
-                (move 
-                    Add
-                    (to (sites Empty))
-                )
+                (move Add (to (sites Empty)))
                 ifAfterwards:("AllHave1Connection2Edge" (sites Around (last To) "ConnectionDirection" includeSelf:True)) 
-                (then <Scoring:selScoring>)   
+                (then <Scoring:selScoring>)  
         ))
         (end 
-            (if 
-                (no Moves Next)
-                {
+            (if (no Moves Next) {
                 (if 
                     (= (score Mover) (score Next))
                     <TieScoring:finalTie>
@@ -128,18 +143,20 @@
                     (!= (score Mover) (score Next))
                     (byScore)
                 )
-                }
-))))
+            })
+        )
+    )
+)
 
 //-------------------------------------------------
 // Defines for Options
 
 (define "ScoreConnectionDirection" <BoardShape:directionScored>)
 (define "ConnectionDirection" <BoardShape:directionUsed>)
-(define "BoardUsed" <BoardShape:gridType> )
+(define "BoardUsed" <BoardShape:gridType>)
 
 (define "HexLimp" (board (hex Limping (- <BoardSize:smallSide> 1)) use:Cell))
-(define "Hex2Limp" (board (hex  (- <BoardSize:smallSide> 1) (+ <BoardSize:smallSide> 1)) use:Cell))
+(define "Hex2Limp" (board (hex (- <BoardSize:smallSide> 1) (+ <BoardSize:smallSide> 1)) use:Cell))
 (define "HexCell" (board (hex Hexagon <BoardSize:smallSide>) use:Cell))
 (define "TriSquare" (board (tiling T33434 (- <BoardSize:smallSide> 2)) use:Vertex))
 
@@ -148,14 +165,14 @@
 
 (option "Size" <BoardSize> args:{<smallSide>} 
     {
-    (item "3  (5 moves each)" <3> "Order 3 board - about 5 moves each")
-    (item "4  (11 moves each)" <4> "Order 4 board - about 11 moves each")
-    (item "5  (20 moves each)" <5> "Order 5 board - about 20 moves each")*
-    (item "6  (31 moves each)" <6> "Order 6 board - about 31 moves each")
-    (item "7  (45 moves each)" <7> "Order 7 board - about 45 moves each")
-    (item "8  (60 moves each)" <8> "Order 8 board - about 60 moves each")
-    (item "9  (80 moves each)" <9> "Order 9 board - about 80 moves each")
-    (item "11  (120 moves each)" <11> "Order 11 board - about 120 moves each")
+    (item "3 (5 moves each)" <3> "Order 3 board - about 5 moves each")
+    (item "4 (11 moves each)" <4> "Order 4 board - about 11 moves each")
+    (item "5 (20 moves each)" <5> "Order 5 board - about 20 moves each")*
+    (item "6 (31 moves each)" <6> "Order 6 board - about 31 moves each")
+    (item "7 (45 moves each)" <7> "Order 7 board - about 45 moves each")
+    (item "8 (60 moves each)" <8> "Order 8 board - about 60 moves each")
+    (item "9 (80 moves each)" <9> "Order 9 board - about 80 moves each")
+    (item "11 (120 moves each)" <11> "Order 11 board - about 120 moves each")
     }
 )
 
@@ -171,11 +188,11 @@
     "Triangle-Square N-2 Orthogonal connections to edge - ALl direction form groups")
     
     (item "Hex Limping"
-        <"HexLimp"> <Orthogonal> <Hidden> <Orthogonal> <"Disc">  
+        <"HexLimp"> <Orthogonal> <Hidden> <Orthogonal> <"Disc"> 
     "Hex N / N-1 Grid, about 20% less moves")*
     
     (item "Hex Double Limping"
-        <"Hex2Limp"> <Orthogonal> <Hidden> <Orthogonal> <"Disc">  
+        <"Hex2Limp"> <Orthogonal> <Hidden> <Orthogonal> <"Disc"> 
     "Hex N+1 / N-1 Grid")
     
     (item "Hex Grid"
@@ -210,12 +227,12 @@
     {
     
     (item "A: Largest group, cascading LOSES"
-        <("CascadeTiebreaker")>  <(result Mover Win)> 
-    "Tiebreaker is largest group (excluding tied pairs) LOSES.  If all are paired, last placement wins.")**
+        <("CascadeTiebreaker")> <(result Mover Win)> 
+    "Tiebreaker is largest group (excluding tied pairs) LOSES. If all are paired, last placement wins.")**
     
     (item "B: Last to place"
-        <("NoTiebreaker")>  <(result Mover Win)> 
-    "Tiebreaker is last to place wins." )
+        <("NoTiebreaker")> <(result Mover Win)> 
+    "Tiebreaker is last to place wins.")
     
     }
 )
@@ -277,7 +294,7 @@
             A: Cascading largest group LOSES -- i.e. negative scores -- This excludes tied pairs; If all groups are paired, last to place. 
         B: Last player to have placed a stone.")
         (id "1548")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/group")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")
@@ -303,9 +320,7 @@
         (board Colour OuterEdges (colour Black))
         (show Edges Diagonal <BoardShape:diagShow> (colour DarkGrey))
         (show Piece Value "Disc" Middle)
-        (board Background image:<BoardShape:backgroundImage> fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.2 scaleY:1.15 ) 
+        (board Background image:<BoardShape:backgroundImage> fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.2 scaleY:1.15) 
         }
-    )
-    
+    )  
 )
-

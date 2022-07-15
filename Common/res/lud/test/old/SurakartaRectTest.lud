@@ -8,7 +8,7 @@
             )
         ) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply if:False (remove (to)))
         )
         (then (set Counter))
@@ -19,8 +19,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "SurakartaRectTest"  
-    (players 2)  
+(game "SurakartaRectTest" 
+    (players 2) 
     (equipment { 
         (surakartaBoard (rect 5 7)) 
         
@@ -30,7 +30,7 @@
                 ("SlideToCapture")						
             })
         )
-    })  
+    }) 
     (rules 
         (start {
             (place "Marker1" (expand (sites Bottom)))
@@ -70,7 +70,7 @@
         (source "https://en.wikipedia.org/wiki/Surakarta_(game)")
     })
     
-    (graphics (board Style Surakarta) )
+    (graphics (board Style Surakarta))
     
 )
 

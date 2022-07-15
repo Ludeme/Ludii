@@ -1,0 +1,182 @@
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #2 #1))
+
+(define "RightCentralAlly"
+    (if (is Mover P1)
+        (sites P3 "RightCentral")
+        (if (is Mover P3)
+            (sites P1 "RightCentral")
+            (if (is Mover P2)
+                (sites P4 "RightCentral")
+                (sites P2 "RightCentral")
+            )
+        )
+    )
+)
+
+(define "ValueAlly" 
+    (if (is Mover P1)
+        (value Player P3)
+        (if (is Mover P3)
+            (value Player P1)
+            (if (is Mover P2)
+                (value Player P4)
+                (value Player P2)
+            )
+        )
+    )
+)
+
+(define "SetValueAlly" 
+    (if (is Mover P1)
+        (set Value P3 #1)
+        (if (is Mover P3)
+            (set Value P1 #1)
+            (if (is Mover P2)
+                (set Value P4 #1)
+                (set Value P2 #1)
+            )
+        )
+    )
+)
+
+(define "Centre" 96)
+
+(define "PawnPiece" 
+    (if (= #1 1)
+        (id "Pawn" P1)
+        (if (= #1 2)
+            (id "Pawn" P2)
+            (if (= #1 3)
+                (id "Pawn" P3)
+                (id "Pawn" P4)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Pahada Keliya" 
+    (players 4) 
+    (equipment {
+        ("PachisiBoard"
+            {
+            (track "Track1" "96,9,S,E,N,11,E,N,W,53,N,W,S,42,W,S,E,8,S,E1,N7,End" P1 directed:True)
+            (track "Track2" "96,26,W,S,E,8,S,E,N,11,E,N,W,53,N,W,S,42,W,S1,E7,End" P2 directed:True)
+            (track "Track3" "96,52,N,W,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,W1,S7,End" P3 directed:True)
+            (track "Track4" "96,27,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W7,End" P4 directed:True)
+            }
+        )
+        (dice d:4 faces:{1 3 4 6} num:2)
+        (piece "Pawn" Each
+            (forEach Die 
+                if:("DieNotUsed")
+                (if ("IsEndTrack" ("SiteToMoveOnTrack" from:(from) (pips)))
+                    (move Remove (from) level:(level))
+                    (move 
+                        (from (from) level:(level))
+                        (to
+                            ("SiteToMoveOnTrack" from:(from) (pips))
+                            if:(if (not (is In (to) (sites Mover "CentralRow")))
+                                True
+                                (if (or (is In (from) (sites Mover "CentralRow")) (= (from) ("Centre")))
+                                    True
+                                    (<= 1 (value Player Mover))
+                                )
+                            )
+                            (apply
+                                (if ("IsEnemyAt" (to))
+                                    (forEach Level (to) FromTop
+                                        (and {
+                                            (if (= 1 (state at:(to) level:(level)))
+                                                ("SetValueAlly" (- ("ValueAlly") 1))
+                                            )
+                                            (remove (to) level:(level))
+                                            (add (piece ("PawnPiece" (who at:(to) level:(level)))) (to (centrePoint)))
+                                        })
+                                    )
+                                )
+                            )
+                        )
+                        (then
+                            (if (and (= 0 (state at:(last To) level:(last LevelTo))) (is In (last To) ("RightCentralAlly")))
+                                (and
+                                    (set State at:(last To) 1)
+                                    ("SetValueAlly" (+ 1 ("ValueAlly")))
+                                )
+                            )
+                        )
+                    )
+                )	
+                (then ("ReplayNotAllDiceUsed"))
+            )
+        )
+        (regions "CentralRow" P1 (sites Direction from:55 N included:True distance:7))
+        (regions "CentralRow" P2 (sites Direction from:19 E included:True distance:7))
+        (regions "CentralRow" P3 (sites Direction from:94 S included:True distance:7))
+        (regions "CentralRow" P4 (sites Direction from:34 W included:True distance:7))
+        (regions "RightCentral" P1 (sites Direction from:56 N included:True distance:7))
+        (regions "RightCentral" P2 (sites Direction from:0 E included:True distance:7))
+        (regions "RightCentral" P3 (sites Direction from:93 S included:True distance:7))
+        (regions "RightCentral" P4 (sites Direction from:50 W included:True distance:7))
+    }) 
+    (rules 
+        (start {
+            (set Team 1 {P1 P3})
+            (set Team 2 {P2 P4})
+            (place Stack "Pawn1" 61) (place Stack "Pawn1" 58)
+            (place Stack "Pawn1" 62 count:2)
+            (place Stack "Pawn2" 21) (place Stack "Pawn2" 20)
+            (place Stack "Pawn2" 2 count:2)
+            (place Stack "Pawn3" 88) (place Stack "Pawn3" 91)
+            (place Stack "Pawn3" 87 count:2)
+            (place Stack "Pawn4" 32) (place Stack "Pawn4" 33)
+            (place Stack "Pawn4" 48 count:2)
+        })
+        
+        (play 
+            ("RollEachNewTurnMove"
+                (forEach Piece)
+            )
+        )
+        
+        (end ("EscapeTeamWin"))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Pahada Keliya is a race game played in Sri Lanka that is similar to other games played on a cross-shaped board in South Asia. The game is typically played on a cloth that is embroidered with the game pattern on it. It involves a complex set of moves in order to allow a player to begin to end the game, which causes great excitement in the course of play. It was considered by many in Sri Lanka to be the finest game in the world.")
+        (rules "Four 3x8 rectangles, arranged in a cross shape with a large square space in the center. The outer corners of each square are marked with a cross, as are the third and sixth space from the same corner. Four players, playing on two teams. Four pieces per player. The pieces are red, green, yellow, and black. Players start with one piece on the sixth and seventh space of the central row in their arm, and two pieces on the third space in the outer row of their arm, to the right. Two rectangular four-sided dice, with the following throws: 1, 3, 4, 6. Players use the throw of a die to move a piece; they may therefore may move two pieces each the value of one of the dice, or one piece twice, using the value of each dice. Play moves down the central track of the player's arm, around the outer perimeter of the board in an anti-clockwise direction, and back up the central row of the player's arm, proceeding into the large central square. When a player's piece moves into a space occupied by an opponent's piece, the opponent's piece is sent to the central square, from which it must begin again. A player cannot move into their central row, approaching the end of the track, unless two of their team member's pieces have moved past the player's own pieces. If two or more of the team member's pieces remain behind the player's own pieces, the player's pieces may not advance past the final three spaces in the left hand track of their home arm of the board. Neither they, nor any of the team's pieces, can proceed until two of the team member's pieces are placed, by exact throws, on the left inner corner of the arm of the player wishing to advance. These two pieces must then proceed together; i.e., only on double throws of the dice, with the exception that a double they cannot be used if it would cause them to land on a space occupied by a team member waiting to move. Once a double throw is successfully made and both pieces moved, the waiting pieces may proceed up the central row. When players cannot move the throws, they pass their turn. Players must move into the central square with an exact throw. The first team to place all of their pieces in the central square wins.")
+        (source "Parker 1909: 611-614.")
+        (id "748")
+        (version "1.3.5")
+        (classification "board/race/escape")
+        (credit "Eric Piette")
+        (origin  "This game was played in Sri Lanka, around 1909.")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Red))
+        (player Colour P2 (colour Green))
+        (player Colour P3 (colour Yellow))
+        (player Colour P4 (colour Black))
+        (stackType site:96 Ring)
+        (stackType 0 Ground)
+        (stackType 1 Count)
+        (stackType 2 Count)
+        (stackType 3 Count)
+        (stackType 4 Count)
+        (show Symbol "thinCross" {54 63 72 56 65 74 18 15 12 44 47 50 95 86 77 75 84 93 35 38 41 0 3 6} scale:0.9)
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (piece Scale "Pawn" 0.5)
+    })
+    
+)

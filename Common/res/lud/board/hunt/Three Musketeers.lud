@@ -1,24 +1,19 @@
 (game "Three Musketeers"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (square 5))
         (piece "Musketeer" P1 
-            (move Step Orthogonal (to if:(is Enemy (who at:(to))) (apply (remove (to)))))
+            (move Step Orthogonal (to if:("IsEnemyAt" (to)) (apply (remove (to)))))
         )
-        (piece "Enemy" P2 (move Step Orthogonal (to if:(is Empty (to)))))
-        }
-    )
+        (piece "Enemy" P2 ("StepOrthogonalToEmpty"))
+    })
     (rules
-        (start
-            {
+        (start {
             (place "Musketeer1" {"A1" "C3" "E5"})
             (place "Enemy2" (difference (sites Board) (sites {"A1" "C3" "E5"})))
-            }
-        )
+        })
         (play (forEach Piece))
-        (end 
-            {
+        (end {
             (if (no Moves P1) (result P1 Win))
             (if 
                 (and 
@@ -27,8 +22,7 @@
                 )
                 (result P2 Win)
             )
-            }
-        )
+        })
     )
 )
 
@@ -42,7 +36,7 @@
         (rules "Played on a 5x5 board. There are 3 'Musketeer' pieces and 22 'Enemy' pieces. Musketeers can only move by capturing enemies on any adjacent space. Enemies can only move to empty adjacent spaces. Enemies win if all three musketeers are ever on the same line or column. Musketeers win as soon as they run out of legal moves.")
         (id "1242")
         (source "<a href=\"https://en.wikipedia.org/wiki/Three_Musketeers_(game)\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/hunt")
         (author "Haar Hoolim")
         (credit "Fabio Barbero")
@@ -52,7 +46,6 @@
     
     (graphics {
         (piece Families {"Abstract" "Themed"})
-        
     })
     (ai
         "Three Musketeers_ai"

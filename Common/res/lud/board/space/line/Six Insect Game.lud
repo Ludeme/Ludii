@@ -43,11 +43,7 @@
     (equipment {
         (board (square 4))
         (piece "Marker" Each
-            (move Step
-                Orthogonal
-                (to if:(is In (to) (sites Empty)))
-                (then ("Line3WithSingleOpponent"))
-            )
+            ("StepToEmpty" Orthogonal (then ("Line3WithSingleOpponent")))
         )
     })
     (rules 
@@ -56,7 +52,7 @@
             (place "Marker2" (union (intersection (union (sites Right) (sites Left)) (sites Row 2)) (sites Top)))
         })
         (play (forEach Piece))
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -71,7 +67,7 @@
         ")
         (source "Newell 1959: 29-30.")
         (id "1419")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line")
         (origin  "This game was played in China, around 1959.")
         }

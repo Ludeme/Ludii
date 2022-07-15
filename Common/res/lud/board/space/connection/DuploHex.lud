@@ -10,24 +10,23 @@
                         (= (what at:(to)) (id "Ring2"))
                     )
                 )
-                (then (promote (last To) (piece "DoubleCounter") Mover ))
+                (then (promote (last To) (piece "DoubleCounter") Mover))
             )
         )
         (piece "Ring" Each
             (move Step 
-                (to if:
-                    (or 
+                (to if:(or 
                         (= (what at:(to)) (id "Disc1"))
                         (= (what at:(to)) (id "Disc2"))
                     )
                 )
-                (then (promote (last To) (piece "DoubleCounter") Mover ))
+                (then (promote (last To) (piece "DoubleCounter") Mover))
             )
         )
         (hand Each size:2)
         
-        (regions P1 { (sites Side NE) (sites Side SW) })
-        (regions P2 { (sites Side NW) (sites Side SE) })
+        (regions P1 {(sites Side NE) (sites Side SW) })
+        (regions P2 {(sites Side NW) (sites Side SE) })
     })
     (rules
         (start {
@@ -37,7 +36,7 @@
             (place "Ring2" (handSite P2 1) count:25)
         })
         phases:{
-        (phase "Placement" (play (move (from (sites Hand P1)) (to (sites Empty)) (then (moveAgain)))) (nextPhase "Game") )
+        (phase "Placement" (play (move (from (sites Hand P1)) (to (sites Empty)) (then (moveAgain)))) (nextPhase "Game"))
         (phase "Game"
             (play 
                 (if (is Odd (count Moves))
@@ -82,7 +81,7 @@
         The disc-ring pair (a disc inside a ring) cannot be modified for the rest of the game.")
         (id "1272")
         (source "<a href=\"https://www.nestorgames.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/connection")
         (author "José Manuel Astilleros García-Monge")
         (publisher "<a href=\"https://www.nestorgames.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a> (used with permission)")

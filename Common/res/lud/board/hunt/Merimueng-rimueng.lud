@@ -1,6 +1,5 @@
 (define "BigHop" 
-    (move
-        Hop 
+    (move Hop 
         (between 
             (range 1 9)
             if:#1
@@ -12,41 +11,31 @@
 
 //-------------------------------------------------------------------------------
 
-(game "Merimueng-rimueng"  
-    (players 2)  
+(game "Merimueng-rimueng" 
+    (players 2) 
     (equipment { 
-        (board 
-            (merge { 
-                (shift 0 2 (square 5 diagonals:Alternating) ) 
-                (wedge 3) 
-                (shift 0 6 (rotate 180 (wedge 3))) 
-            }) 
-            use:Vertex
-        )
+        ("AlquerqueBoardWithBottomAndTopTriangles")
         (hand P2) 
         (piece "Tiger" P1 
             (or {
                 ("StepToEmpty")
-                ("BigHop" (is Enemy (who at:(between)))) 
+                ("BigHop" ("IsEnemyAt" (between))) 
             })
         ) 
         (piece "Sheep" P2 "StepToEmpty") 
-    })  
+    }) 
     (rules 
         (start {
             (place "Sheep2" (difference (expand (sites Centre)) (centrePoint)))
             (place Stack "Sheep2" (handSite P2) count:15)
             (place Stack "Tiger1" (sites Centre) counts:{2})
-        } )
+        })
         
         phases:{
         (phase "Movement"
             (play (forEach Piece top:True))
             
-            (end {
-                (if (no Moves P1) (result P2 Win))
-                (if (no Pieces P2)  (result P1 Win))
-            })
+            (end ("NoMovesP1NoPiecesP2"))
             
             (nextPhase 
                 (and 
@@ -87,7 +76,7 @@
         (rules "5x5 intersecting lines, with diagonals drawn in the four quadrants of the board. Two triangles, their apices intersecting the main board at opposite midpoints. The bast of the triangle is bisected by a line drawn from the apex, and this line is bisected and intersects with the other two sides of the triangle. one player plays as two tigers, which start on the central point. The other player has 23 sheep, eight of which start on the board, on the points immediately adjacent to the tigers. Pieces move one space along the lines to an empty adjacent spot. The tigers may capture an unbroken line of sheep in one direction, provided there is an unoccupied space at the opposite end of the line. The player with the sheep replaces any captured sheep from those remaining in their hand. The tigers win when they capture all of the sheep; the sheep win when they block the tigers from being able to move.")
         (source "Snouck Hurgronje 1906: 203-204.")
         (id "752")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/hunt")
         (credit "Eric Piette")
         (origin  "This game was played in Sumatra, around 1906.")
@@ -99,7 +88,6 @@
         (show Edges Diagonal Hidden)
         (stackType 1 Count)
         (stackType 2 Count)
-        
     })
     
 )

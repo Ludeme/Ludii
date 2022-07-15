@@ -3,8 +3,8 @@
         (from (last To)) 
         Orthogonal 
         (between 
-            if:(is Enemy (who at:(between))) 
-            (apply             
+            if:("IsEnemyAt" (between)) 
+            (apply       
                 (remove (between)) 
             ) 
         )
@@ -19,11 +19,11 @@
         (board (square 19) use:Vertex)
         (piece "Marker" Each)
     })
-    (rules  
+    (rules 
         (meta
             (no Repeat)
         )
-        (play         
+        (play     
             (or
                 (move 
                     Add
@@ -38,7 +38,7 @@
         (end
             (if (all Passed)
                 (byScore {
-                    (score P1 (+ (count Pieces P1)  (size Territory P1))) 
+                    (score P1 (+ (count Pieces P1) (size Territory P1))) 
                     (score P2 (+ (count Pieces P2) (size Territory P2)))
                 })
             )
@@ -58,7 +58,7 @@
         ")
         (source "<a href=\"https://en.wikipedia.org/wiki/Rules_of_Go#Chinese_rules\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
         (id "772")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/territory")
         (credit "Eric Piette")
         (origin  "This game was played in China, from around 500 to 599.")

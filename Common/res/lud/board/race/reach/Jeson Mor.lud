@@ -1,6 +1,6 @@
 (define "CaptureToPieceAndCheckVictory"
     (apply
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove (to))
         )
     ) 
@@ -8,21 +8,20 @@
 
 //------------------------------------------------------------------------------
 
-(game "Jeson Mor"  
-    (players 2)  
+(game "Jeson Mor" 
+    (players 2) 
     (equipment { 
         (board (square 9)) 
         (piece "Knight" Each 
-            (move
-                Leap 
+            (move Leap 
                 "KnightWalk"
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndCheckVictory"
                 ) 
             )
         )
-    })  
+    }) 
     (rules 
         (start {
             (place "Knight1" (sites Bottom))
@@ -39,8 +38,8 @@
 //------------------------------------------------------------------------------
 
 (option "Variants" <End> args:{ <rule>} {
-    (item "Original"  <(last To)>  "To win a knight as to reach the central square.")*   
-    (item "Wikipedia" <(last From)> "To win a knight as to leave the central square.")   
+    (item "Original" <(last To)> "To win a knight as to reach the central square.")*  
+    (item "Wikipedia" <(last From)> "To win a knight as to leave the central square.")  
 })
 
 //------------------------------------------------------------------------------
@@ -54,7 +53,7 @@
         (rules "9x9 board. Nine horse-shaped pieces per player. Pieces begin in the spaces along opposite sides of the board. Pieces move orthogonally one space and then diagonally another, jumping over any intervening pieces. A player may capture one of the opponent's pieces by moving onto a space occupied by the opponent's piece. The goal is to move to the central space on the board.")
         (source "Popova 1974: 32-35")
         (id "1035")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/reach")
         (credit "Nicholas Bamber")
         (origin  "This game was played in Mongolia, from around 1963 to 1966.")

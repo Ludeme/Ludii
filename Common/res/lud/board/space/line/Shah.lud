@@ -27,8 +27,7 @@
 )
 
 (define "RemoveEnemyPiece" 
-    (move
-        Remove
+    (move Remove
         (sites Occupied by:Next container:"Board") 
         #1
     )
@@ -47,17 +46,8 @@
 (game "Shah"
     (players 2)
     (equipment {
-        (board
-            (concentric Square rings:3)
-            use:Vertex
-        ) 
-        (piece "Marker" Each
-            (move
-                Step 
-                (to if:(is Empty (to))) 
-                "IfLine3MoveAgain" 
-            )		
-        )
+        ("NineMensMorrisBoard")
+        (piece "Marker" Each ("StepToEmpty" ~ "IfLine3MoveAgain"))
         (hand Each)
     })
     (rules 
@@ -89,12 +79,7 @@
                     )
                     (if (is Pending)
                         (do
-                            (forEach Piece
-                                (move
-                                    Step 
-                                    (to if:(is Empty (to))) 
-                                )
-                            ) 
+                            (forEach Piece ("StepToEmpty")) 
                             ifAfterwards:(can Move (forEach Piece Next))
                         )
                         (forEach Piece)
@@ -103,15 +88,15 @@
                         (if (= 2 (count Pieces P1))
                             (addScore P2 1 
                                 (then 
-                                    (if (!= (score P2) 5)  
-                                        ("ResetGame" )
+                                    (if (!= (score P2) 5) 
+                                        ("ResetGame")
                                     )
                                 )
                             )
                             (if (= 2 (count Pieces P2))
                                 (addScore P1 1 
                                     (then 
-                                        (if (!= (score P1) 5)  
+                                        (if (!= (score P1) 5) 
                                             ("ResetGame")
                                         )
                                     )
@@ -140,16 +125,13 @@
         ")
         (source "Marin 1931: 503-505.")
         (id "789")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line")
         (credit "Eric Piette")
         (origin  "This game was played in Horn of Africa, around 1931.")
         }
     )
     
-    (graphics {
-        
-    })
     (ai
         "Shah_ai"
     )

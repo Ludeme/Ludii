@@ -11,8 +11,8 @@
                 if:(is Empty (between))
             ) 
             (to 
-                if:(is Enemy (who at:(to))) 
-                (apply if:(not (is Friend (who at:(to)))) (remove (to)))
+                if:("IsEnemyAt" (to)) 
+                (apply if:(not ("IsFriendAt" (to))) (remove (to)))
             )
             (then
                 (if (= (state at:(last To)) 0)
@@ -32,8 +32,8 @@
             (add 
                 (merge {
                     (rectangle 1 8)
-                    (shift -4 1.5 (rectangle 1 12) )
-                    (shift 0 3 (rectangle 1 8) )
+                    (shift -4 1.5 (rectangle 1 12))
+                    (shift 0 3 (rectangle 1 8))
                 })
                 vertices:{{-1 0.1} {-2 0.3} {-2.9 0.5} {-3.6 0.8} {-1 2.9} {-2 2.7} {-2.9 2.5} {-3.6 2.2}}
             )
@@ -89,7 +89,7 @@
         ")
         (source "Næsheim 2001.")
         (id "759")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
         (origin  "This game was played in Norway, from around 1900 to 2001.")
@@ -97,7 +97,7 @@
     )
     
     (graphics {
-        (show Edges Hidden)  
+        (show Edges Hidden) 
         (show Symbol "disc" "AllSites" Vertex fillColour:(colour Grey) edgeColour:(colour Black) scale:0.5)
         (piece Foreground "Die" state:0 image:"star" fillColour:(colour White) scale:0.2)
         

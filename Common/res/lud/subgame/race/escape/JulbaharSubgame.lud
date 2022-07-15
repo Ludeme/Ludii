@@ -1,5 +1,5 @@
-(define "NotAnEnemy"    
-    (not (is Enemy (who at:(to))))
+(define "NotAnEnemy"  
+    (not ("IsEnemyAt" (to)))
 )
 
 (define "NextSiteFrom" 
@@ -109,8 +109,8 @@
 
 //-----------------------------------------------------------------------------
 
-(game "JulbaharSubgame"  
-    (players 2)  
+(game "JulbaharSubgame" 
+    (players 2) 
     (equipment { 
         (board (rectangle 2 13)
             {
@@ -148,7 +148,7 @@
                 (byScore { 
                     ("SetScoreOf" P1 P2)
                     ("SetScoreOf" P2 P1)
-                } )
+                })
             )
         )
     )

@@ -1,4 +1,4 @@
-(game "Patolli (Aztec)"  
+(game "Patolli (Aztec)" 
     (players [2 | 4])
     (equipment { 
         (board 
@@ -10,7 +10,7 @@
         (dice d:2 from:0 num:[4 | 5 | 10])
         (piece "Pawn" Each) // 6 pieces per players
         }
-    )  
+    ) 
     (rules 
         (play (do (roll) next:[#])) // doubled when all of the beans have the marked side face-up
         (end [#])
@@ -22,6 +22,14 @@
 (metadata 
     (info
         {
+        (description "Patolli is a game played by the Aztecs, forms of which survive today. It is a race game, though we do not know many of the details of its early forms.")
+        (rules "Cross-shaped board, marked with squares 2x9-10 in each arm. Two or four players. Four, five, or ten beans used as dice, marked on one side. The number of marked sides that land face-up indicate the score of the throw, doubled when all of the beans have the marked side face-up. Six pieces per player. ")
+        (source "DLP evidence.")
+        (id "139")
+        (version "1.3.5")
+        (classification "board/race/escape/reconstruction")
+        (credit "Eric Piette")
+        (origin  "This game was played in Mexico, from around 600 to 1614.")
         }
     )
     

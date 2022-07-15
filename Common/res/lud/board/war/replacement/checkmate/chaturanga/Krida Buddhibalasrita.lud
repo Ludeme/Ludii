@@ -1,6 +1,6 @@
 (define "CaptureEnemyToPiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove (to))
         )
     ) 
@@ -11,17 +11,17 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
 )
 
-(define "NextCanNotMove" (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next (forEach Piece))))) ))
+(define "NextCanNotMove" (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next (forEach Piece)))))))
 
 (define "KingMove"
     (move Step
-        (to if:(not (is Friend (who at:(to))))
+        (to if:(not ("IsFriendAt" (to)))
             ("CaptureEnemyToPiece")
         )
     )
@@ -32,7 +32,7 @@
         Leap 
         "KnightWalk" 
         (to 
-            if:(not (is Friend (who at:(to)))) 
+            if:(not ("IsFriendAt" (to))) 
             "CaptureEnemyToPiece"
         ) 
     )		
@@ -41,7 +41,7 @@
 (define "QueenMove" 
     (move Step
         Diagonal
-        (to if:(not (is Friend (who at:(to))))
+        (to if:(not ("IsFriendAt" (to)))
             ("CaptureEnemyToPiece")
         )
     ) 		
@@ -50,7 +50,7 @@
 (define "ElephantMove"
     (move Hop Diagonal 
         (between if:True) 
-        (to if:(not (is Friend (who at:(to)))) ("CaptureEnemyToPiece")) 
+        (to if:(not ("IsFriendAt" (to))) ("CaptureEnemyToPiece")) 
     )		
 )
 
@@ -59,7 +59,7 @@
         Slide 
         Orthogonal
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             "CaptureEnemyToPiece"
         ) 
     )	
@@ -80,7 +80,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "Krida Buddhibalasrita"  
+(game "Krida Buddhibalasrita" 
     (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
@@ -105,9 +105,9 @@
                 )
             )		
         )
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
-        (regions "PromotionMarked" (sites {"A1" "D1" "E1" "H1" "A8" "D8" "E8" "H8"}) )
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
+        (regions "PromotionMarked" (sites {"A1" "D1" "E1" "H1" "A8" "D8" "E8" "H8"}))
     })
     
     (rules 
@@ -135,8 +135,8 @@
                 )
                 (result Mover Win)
             ) 
-            (if (= (value Player P1) 64) (result P1 Win) ) 
-            (if (= (value Player P2) 64) (result P2 Win) ) 
+            (if (= (value Player P1) 64) (result P1 Win)) 
+            (if (= (value Player P2) 64) (result P2 Win)) 
         })
     )
 )
@@ -152,7 +152,7 @@
         ")
         (source "Murray 1913: 63-65.")
         (id "1446")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
         (origin  "This game was played in India, from around 1600 to 1699.")

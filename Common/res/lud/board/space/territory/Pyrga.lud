@@ -106,14 +106,14 @@
                     (then
                         (and
                             (forEach Site
-                                (sites Distance (step #1 (to (sites Board))) from:(last To) <TriangleAhead:typeA>)  
+                                (sites Distance (step #1 (to (sites Board))) from:(last To) <TriangleAhead:typeA>) 
                                 (remember Value (site))
                             ) 
                             (forEach Site
                                 <TriangleTails:typeB> 
                                 (remember Value (site))
         ))))))
-        ifAfterwards:(< 0 (size Array (values Remembered)))    // use remember to work around bug for (is Pending)
+        ifAfterwards:(< 0 (size Array (values Remembered)))  // use remember to work around bug for (is Pending)
 ))
 
 (define "EmptySite4" 
@@ -139,9 +139,9 @@
         {
         (board (square 4) use:Cell)
         (hand Each size:15)
-        (piece "Disc"  Each)
+        (piece "Disc" Each)
         (piece "SquareOrtho" Each)
-        (piece "SquareDiag"  Each)
+        (piece "SquareDiag" Each)
         (piece "TriangleN" Each)
         (piece "TriangleS" Each)
         (piece "TriangleE" Each)
@@ -155,7 +155,7 @@
             (priority
                 (or
                     {
-                    ("AddDisc" "Disc" ("ToSitesAllowedFor" "Disc" 1))      
+                    ("AddDisc" "Disc" ("ToSitesAllowedFor" "Disc" 1))   
                     ("AddSquare" <Square:rotation> ("ToSitesAllowedFor" "SquareOrtho" 2))
                     ("AddTriangle" N "TriangleN" ("ToSitesAllowedFor" "TriangleN" 3) SW SE)
                     ("AddTriangle" E "TriangleE" ("ToSitesAllowedFor" "TriangleN" 3) NW SW)
@@ -186,8 +186,8 @@
             (if
                 (or
                     {
-                    (>= (score Mover) 300 )
-                    (>= (score Next) 300 )
+                    (>= (score Mover) 300)
+                    (>= (score Next) 300)
                     (no Moves Next)
                     }
                 )
@@ -211,7 +211,7 @@
                         )
                         (/ (+ 1 (topLevel at:(site))) 2)
                     )
-                    (addScore (player #1) (^ 10 (topLevel at:(site))))  
+                    (addScore (player #1) (^ 10 (topLevel at:(site)))) 
 )))))
 
 (define "UpdateScoreOfTop"
@@ -233,8 +233,8 @@
 
 (define "RayTails"
     (union
-        (sites Distance (step (directions { #2 }) (to (sites Board))) from:(last To) #1 ) 
-        (sites Distance (step (directions { #3 }) (to (sites Board))) from:(last To) #1 ) 
+        (sites Distance (step (directions { #2 }) (to (sites Board))) from:(last To) #1) 
+        (sites Distance (step (directions { #3 }) (to (sites Board))) from:(last To) #1) 
 ))
 
 (define "KnightTails"
@@ -254,7 +254,7 @@
 (option "Control" <Control> args:{ <majorityOrTop> }
     {
     (item "Majority Control" <"UpdateScoreOfMajority"> "Stack is owned by player with majority of pieces there.")*** 
-    (item "Top Control" <"UpdateScoreOfTop"> "Stack is owned by player with piece on top.")  // my mis-reading - but reduces the connection between material on board and control. - more chaotic?
+    (item "Top Control" <"UpdateScoreOfTop"> "Stack is owned by player with piece on top.") // my mis-reading - but reduces the connection between material on board and control. - more chaotic?
     }
 ) 
 (option "Square Influence" <Square> args:{ <rotation> }
@@ -268,8 +268,8 @@
 (option "Triangle Ahead" <TriangleAhead> args:{ <typeA> }
     {
     (item "Any distance" <(range 1 Infinity)> "Next piece may be placed any distance ahead of triangle")**
-    (item "Adjacent only" <(exact 1)>  "Next piece may be placed directly in front of triangle")
-    (item "At distance 2 only" <(exact 2)>  "Next piece may be placed directly in front of triangle")
+    (item "Adjacent only" <(exact 1)> "Next piece may be placed directly in front of triangle")
+    (item "At distance 2 only" <(exact 2)> "Next piece may be placed directly in front of triangle")
     (item "Non-adjacent only" <(range 2 Infinity)> "Next piece may be placed at least 2 ahead of triangle")
     }
 )
@@ -278,11 +278,11 @@
     {
     (item "No tail placements" <"NoTails"> "but may not be placed around its tails.")**
     (item "Knight's Move" <("KnightTails" #1 #4 #5)> "and-or may be placed at a knight's distance from the tails.")
-    (item "Diagonal ray" <("RayTails" (range 1 Infinity) #4 #5)>  "and-or may be placed diagonally from the tails.")
+    (item "Diagonal ray" <("RayTails" (range 1 Infinity) #4 #5)> "and-or may be placed diagonally from the tails.")
     (item "Diagonal adjacent" <("RayTails" (exact 1) #4 #5)> "and-or may be placed diagonally adjacent to the tails.")*
     (item "Diagonal ray, non-adjacent" <("RayTails" (range 2 Infinity) #4 #5)> "and-or may be placed diagonally from the tails, but not adjacent.")*
     }
-)  
+) 
 
 //----------------------------
 
@@ -319,7 +319,7 @@
         If the active player has no possible moves the game ends with tiebreaks: most completed towers, or most two-piece towers, or most one-piece towers.")
         (id "1964")
         (source "<a href=\"https://boardgamegeek.com/boardgame/305723/pyrga\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/territory")
         (author "Mathias Daval")
         (publisher "<a href=\"http://www.argyxgames.com/pyrga\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Argyx Games</a>")
@@ -333,8 +333,8 @@
         (player Colour P2 (colour DarkRed))
         (player Colour P1 (colour Cream))
         (piece Scale "Disc" scaleX:.85 scaleY:.85)
-        (piece Scale "SquareOrtho"  scaleX:.75 scaleY:.75)
-        (piece Scale "SquareDiag"  scaleX:.75 scaleY:.75)
+        (piece Scale "SquareOrtho" scaleX:.75 scaleY:.75)
+        (piece Scale "SquareDiag" scaleX:.75 scaleY:.75)
         (piece Rotate "SquareDiag" degrees:45)
         (piece Scale "TriangleN" scaleX:.9 scaleY:.9)
         (piece Rotate "TriangleN" degrees:0)

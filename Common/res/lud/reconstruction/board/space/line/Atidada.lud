@@ -7,7 +7,7 @@
         (piece "Marker" Each 
             (move [#])
         ) 
-    })  
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:[3 | 6 | 20]))
         
@@ -36,6 +36,15 @@
     
     (info
         {
+        (description "Atidada is an alignment game played in what is now Togo and Ghana. The details are not completely described, but it can be played with three, six or 20 pieces per player. The board is made in the ground, and sticks are used as pieces. ")
+        (aliases {"Akidada"})
+        (rules "Similar to Merels games. The board is square in shape. Played with three, six, or twenty pieces per player. ")
+        (source "DLP evidence.")
+        (id "1303")
+        (version "1.3.5")
+        (classification "board/space/line/reconstruction")
+        (credit "Eric Piette")
+        (origin  "This game was played in West Africa, around 1908.")
         }
     )
     

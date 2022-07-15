@@ -10,16 +10,11 @@
             (place "Fox1" coord:"E7")
             (place "Geese2" 
                 (sites {"D1" "E1" "F1" "D2" "E2" "F2" "D3" "E3" "F3"
-                    "A4" "B4" "C4" "D4" "E4" "F4" "G4" "H4" "I4"
-                    }
-                )
+                "A4" "B4" "C4" "D4" "E4" "F4" "G4" "H4" "I4"})
             )
         })
         (play (forEach Piece))
-        (end {
-            (if (no Moves P1) (result P2 Win))
-            (if (no Pieces P2) (result P1 Win))
-        })
+        (end ("NoMovesP1NoPiecesP2")) 
     )
 )
 
@@ -35,7 +30,7 @@
         ")
         (source "Michaelsen 2009: 150.")
         (id "1085")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/hunt")
         (credit "Eric Piette")
         (origin  "This game was played in Denmark, from around 1848 to 1898.")
@@ -45,7 +40,6 @@
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai

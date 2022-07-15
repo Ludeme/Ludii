@@ -1,43 +1,34 @@
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
-        steps:#2
-    )
-)
+(define "NextSiteFrom" ("NextSiteOnTrack" #2 from:#1))
 
-(define "DieNotUsed" (!= (pips) 0))
-
-(define "NotEnemyOrOnlyOne"    
+(define "NotEnemyOrOnlyOne"  
     (or 
         (and {
-            (is Enemy (who at:(to))) 
+            ("IsEnemyAt" (to)) 
             (not (is In (to) (sites Mover "OppositeSide")))
-            (= (topLevel at:(to)) 0)
+            ("IsEmptyOrSingletonStack" (to))
         }) 
-        (not (is Enemy (who at:(to))))
+        (not ("IsEnemyAt" (to)))
     )
 )
 
-(define "AllPiecesInFinalQuadrant"
-    (no Pieces Mover in:(difference (sites Board) (sites Mover "FinalQuadrant")))
-)
+(define "AllPiecesInFinalQuadrant" ("AllOwnedPiecesIn" (sites Mover "FinalQuadrant")))
 
 (define "SpecialWin" 
     (if (is Mover P1)
         (and {
             (= 15 (count Pieces Mover in:(sites {0..5})))
-            (is Friend (who at:3))
-            (is Friend (who at:4))
-            (is Friend (who at:5))
+            ("IsFriendAt" 3)
+            ("IsFriendAt" 4)
+            ("IsFriendAt" 5)
             (= 3 (size Stack at:0))
             (= 3 (size Stack at:1))
             (= 3 (size Stack at:2))
         })
         (and {
             (= 15 (count Pieces Mover in:(sites {13..18})))
-            (is Friend (who at:16))
-            (is Friend (who at:17))
-            (is Friend (who at:18))
+            ("IsFriendAt" 16)
+            ("IsFriendAt" 17)
+            ("IsFriendAt" 18)
             (= 3 (size Stack at:13))
             (= 3 (size Stack at:14))
             (= 3 (size Stack at:15))
@@ -50,18 +41,12 @@
 (game "Schuster"
     (players 2)
     (equipment {
-        (board (rectangle 2 13) 
-            {
-            (track "Track1" {6 12..7 5..0 13..18 20..25 End} P1 directed:True)
-            (track "Track2" {19 25..20 18..13 0..5 7..12 End} P2 directed:True)
-            } 
-            use:Vertex
-        ) 
+        ("BackgammonBoard" ("BackgammonTracksWithBar" End)) 
         (dice d:6 num:2)
         (piece "Disc" Each
             (forEach Die
                 if:("DieNotUsed")
-                (if (= End ("NextSiteFrom" (from) (pips)))
+                (if ("IsEndTrack" ("NextSiteFrom" (from) (pips)))
                     (if ("AllPiecesInFinalQuadrant")
                         (move Remove (from))
                     )
@@ -70,22 +55,13 @@
                         (to 
                             ("NextSiteFrom" (from) (pips))
                             if:("NotEnemyOrOnlyOne")
-                            (apply 
-                                (if (is Enemy (who at:(to)))
-                                    (fromTo 
-                                        (from (to))
-                                        (to (mapEntry "Bar" Next))
-                                    )
-                                )
-                            )
+                            ("HittingCapture" (mapEntry "Bar" Next))
                         )
                     )
                 )
                 (then 
                     (and
-                        (if (not (all DiceUsed))
-                            (moveAgain)
-                        )
+                        ("ReplayNotAllDiceUsed")
                         (if ("SpecialWin")
                             (addScore Mover 2)
                         )
@@ -104,15 +80,11 @@
             (place Stack "Disc1" 12 count:15)
             (place Stack "Disc2" 25 count:15) 
         })
-        (play 
-            (do (if (not "SameTurn") (roll))
-                next:(forEach Piece top:True)
-            )		
-        )
+        (play ("RollEachNewTurnMove" (forEach Piece top:True)))
         
         (end {
             (if ("SpecialWin") (result Mover Win))
-            (if (no Pieces Mover) (result Mover Win))
+            ("EscapeWin")
         })
     )
 )
@@ -128,7 +100,7 @@
             ")
             (source "Fiske 1905: 318.")
             (id "1208")
-            (version "1.3.4")
+            (version "1.3.5")
             (classification "board/race/escape")
             (credit "Eric Piette")
             (origin  "This game was played in Sweden, around 1839.")
@@ -141,4 +113,3 @@
         })
         
     )
-    

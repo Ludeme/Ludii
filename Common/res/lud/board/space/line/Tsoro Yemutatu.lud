@@ -1,24 +1,22 @@
 (game "Tsoro Yemutatu"
-    (players 2)  
+    (players 2) 
     (equipment {
         ("AlquerqueBoard" 3 3)
         (hand Each)
         (piece "Marker" Each (move (from) (to (sites Empty))))
-    })  
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:3))
         
         phases:{
         (phase "Placement"
-            (play (move (from (handSite Mover)) (to (sites Empty))) )
+            (play (move (from (handSite Mover)) (to (sites Empty))))
             (nextPhase ("HandEmpty" P2) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
-        )
+        (phase "Movement" (play (forEach Piece)))
         }
-        (end (if (is Line 3) (result Mover Win)))
+        (end ("Line3Win"))
     )
 )
 
@@ -33,7 +31,7 @@
         ")
         (source "Matthew 1964: 68.")
         (id "1289")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line")
         (credit "Eric Piette")
         (origin  "This game was played in Zimbabwe, around 1964.")

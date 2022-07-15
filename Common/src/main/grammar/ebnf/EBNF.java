@@ -83,7 +83,6 @@ public class EBNF
 		}
 		
 //		System.out.println(rules.size() + " EBNF rules found.");		
-		
 //		for (final EBNFRule rule : rules.values())
 //			System.out.println(rule);		
 	}

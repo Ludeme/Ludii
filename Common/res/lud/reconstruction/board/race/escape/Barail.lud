@@ -17,7 +17,7 @@
             (place Stack "Disc2" 13 count:15)
         })
         (play (do (roll) next:[#]))
-        (end (if (no Pieces Mover) (result Mover Win)))
+        (end ("EscapeWin"))
     )
 )
 
@@ -32,7 +32,7 @@
         ")
         (source "DLP evidence.")
         (id "1301")
-        (version "1.3.2")
+        (version "1.3.5")
         (classification "board/race/escape/reconstruction")
         (credit "Eric Piette")
         (origin  "This game was played in Italy, from around 1275 to 1299.")

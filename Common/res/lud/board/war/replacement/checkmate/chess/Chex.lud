@@ -1,5 +1,5 @@
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
 )
 
 (define "CaptureToPiece"
@@ -15,7 +15,7 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
@@ -23,8 +23,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Chex"  
-    (players {(player N) (player S)})  
+(game "Chex" 
+    (players {(player N) (player S)}) 
     
     (equipment { 
         (boardless Square) 
@@ -42,7 +42,7 @@
                 Slide 
                 Orthogonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )
@@ -51,7 +51,7 @@
             (move
                 Step 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )
@@ -61,7 +61,7 @@
                 Slide 
                 Diagonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )
@@ -71,7 +71,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )
@@ -80,12 +80,12 @@
             (move
                 Slide 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             ) 
         )
-    })  
+    }) 
     
     (rules 
         (start {
@@ -118,7 +118,7 @@
             (forEach Value min:0 max:(topLevel at:(handSite 2)) 
                 (set Hidden What at:(handSite 2) level:(value) to:P2)		
             )
-        })    
+        })  
         (play 
             (if "SameTurn"
                 (if (= (count Moves) 1)
@@ -145,7 +145,7 @@
                                     (moveAgain) 
                                     (set Hidden What at:(last To) level:(topLevel at:(last To)) False to:P1)
                                     (set Hidden What at:(last To) level:(topLevel at:(last To)) False to:P2)
-                                } )
+                                })
                             )
                         )
                     )
@@ -228,7 +228,7 @@
             
         The game ends in checkmate or stalemate, with a stalemate occurring when you must place your king into check when you draw it.")
         (id "551")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chess")
         (author "David L. Smith")
         (publisher "IQ Products")

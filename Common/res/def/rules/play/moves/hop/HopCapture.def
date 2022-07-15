@@ -4,12 +4,12 @@
 // #3 = The consequences.
 // @example ("HopCapture")
 
-(define "HopCapture" 
-    (move Hop 
-    	#1
-    	#2
-        (between 
-            if:(is Enemy (who at:(between))) 
+(define "HopCapture"
+    (move Hop
+        #1
+        #2
+        (between
+            if:("IsEnemyAt" (between))
             (apply (remove (between)))
         )
         (to if:(is Empty (to)))

@@ -26,19 +26,12 @@
             (place "Ball2" (forEach (sites Top) if:(is Odd (site))))
         })
         phases:{
-        (phase "FirstMove"
-            (play ("PlaceStone"))
-            (nextPhase "Main")
-        )
+        (phase "FirstMove" (play ("PlaceStone")) (nextPhase "Main"))
         (phase "Main"
             (play 
                 (or 
-                    ("PlaceStone"
-                        (then
-                            (if (not (is Prev Mover)) (moveAgain))
-                        )
-                    )
-                    (if (is Prev Mover) (move Pass))
+                    ("PlaceStone" (then (if ("NewTurn") (moveAgain))))
+                    (if ("SameTurn") (move Pass))
                 )
             )
         )
@@ -46,12 +39,10 @@
         (end 
             (if 
                 (and (no Moves P1) (no Moves P2)) 
-                (byScore
-                    {		
+                (byScore {		
                     (score P1 (count Sites in:(forEach (sites Bottom) if:(= (who at:(site)) P1))))
                     (score P2 (count Sites in:(forEach (sites Bottom) if:(= (who at:(site)) P2))))
-                    }
-                )
+                })
             )
         )
     )
@@ -71,7 +62,7 @@
         GOAL - Wins the player with more stones on the bottom row.")
         (id "1800")
         (source "<a href=\"https://boardgamegeek.com/boardgame/27724/cascades\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/fill")
         (author "William Chang")
         (credit "Eric Piette")

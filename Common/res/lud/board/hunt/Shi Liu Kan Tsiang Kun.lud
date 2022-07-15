@@ -1,5 +1,5 @@
-(game "Shi Liu Kan Tsiang Kun"  
-    (players 2)  
+(game "Shi Liu Kan Tsiang Kun" 
+    (players 2) 
     (equipment { 
         (board
             (merge
@@ -9,16 +9,10 @@
             use:Vertex
         )
         (piece "General" P1 
-            (move Step 
-                (to if:(is Empty (to)))
+            ("StepToEmpty"
+                ~
                 (then 
-                    (intervene 
-                        (from (last To))
-                        (to 
-                            if:(is Enemy (who at:(to)))
-                            (apply (remove (to)))
-                        )
-                    )
+                    ("InterveneCapture")
                 )
             )
         )
@@ -26,27 +20,20 @@
             (move Step 
                 (to if:(and (not (is In (to) (expand (sites Top)))) (is Empty (to))))
                 (then 
-                    (custodial 
-                        (from (last To))
-                        (between 
-                            if:(is Enemy (who at:(between)))
-                            (apply (remove (between)))
-                        )
-                        (to if:(is Friend (who at:(to))))
-                    )
+                    ("CustodialCapture")
                 )
             )
         ) 
-    } )  
+    }) 
     (rules 
         (start { 
             (place "General1" (ahead (centrePoint) S))
             (place "Marker2" (difference (sites Outer) (expand (sites Top))))
-        } )
+        })
         
         (play (forEach Piece)) 
         
-        (end  {
+        (end {
             (if (no Pieces P2) (result P1 Win))
             (if (no Pieces P1) (result P2 Win))
             (if 
@@ -72,7 +59,7 @@
         (rules "Board with 5x5 lines, diagonals drawn in the four quadrants of the board, and a triangle at the top, connecting the apex with the three central points at the top edge, and a line perpendicularly bisecting the height of the triangle. One player plays as the general, placed in the central position. The other player plays with sixteen pieces, arranged on the perimeter points of the square. Pieces move one spot along the lines on the board. The general may capture pieces when it moves into a space that is surrounded on two opposite sides, along the lines on the board, thus capturing the pieces on either side of it. Conversely, the general can be captured by surrounding it on two opposite sides with pieces. Only the general may enter the triangle. The goal of the general is to capture all of the opponent's pieces, the goal of the person playing with sixteen pieces is to capture the general. If the general becomes trapped in the triangle, the opponent wins.")
         (source "Himly 1847: 469.")
         (id "169")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/hunt")
         (credit "Eric Piette")
         (origin  "This game was played in China, around 1876.")
@@ -82,8 +69,8 @@
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (show Edges Diagonal Hidden)
-        
     })
+    
     (ai
         "Shi Liu Kan Tsiang Kun_ai"
     )

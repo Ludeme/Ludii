@@ -1,7 +1,6 @@
 (game "Hyvn aetter Hare"
-    (players 2)  
-    (equipment 
-        {
+    (players 2) 
+    (equipment {
         (board 
             (splitCrossings
                 (merge
@@ -14,8 +13,7 @@
         (piece "Hare" P1 "StepToEmpty") 
         (piece "Dog" P2 "StepToEmpty") 
         (hand Each)
-        }
-    )  
+    }) 
     (rules 
         (start { 
             (place "Hare1" (handSite P1) count:1)
@@ -46,12 +44,12 @@
         
         (phase "Movement"
             (play (forEach Piece))
-            (end ("NoMoves" Loss) )
+            (end ("NoMoves" Loss))
         )
         }
         >
         "The First player moves only when all the pieces are placed."
-    )*  
+    )* 
     (item "White moves only when all placed and winning conditions for each player" 
         <
         phases:{
@@ -84,7 +82,7 @@
         >
         "The First player moves only when all the pieces are placed. The game has an ending condition for each player."
     )
-    (item "White moves only when his piece is placed"    
+    (item "White moves only when his piece is placed"  
         <
         phases:{
         (phase "Placement"
@@ -96,11 +94,9 @@
             )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
-        (phase "Movement"
-            (play (forEach Piece))
-        )
+        (phase "Movement" (play (forEach Piece)))
         }
-        (end ("NoMoves" Loss) ) 
+        (end ("NoMoves" Loss)) 
         > 
         "The First player can move after placing his piece."
     ) 
@@ -136,7 +132,7 @@
         (useFor "Ruleset/Hare Wins (Suggested)" (id "1955"))
         (source "Michaelsen 2014: 204.")
         (id "521")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/hunt")
         (credit "Eric Piette")
         (origin  "This game was played in Scandinavia, around 1860.")
@@ -145,7 +141,6 @@
     
     (graphics {
         (piece Families {"Abstract" "Themed"})
-        
     })
     
     (ai 

@@ -1,4 +1,4 @@
-(define "RememberSiteWithPossibleCapture"  
+(define "RememberSiteWithPossibleCapture" 
     (set Pending 
         (sites To
             (forEach Piece "Fox" 
@@ -8,7 +8,7 @@
     )
 )
 
-(define "RememberSiteWithPossibleMultiCapture"  
+(define "RememberSiteWithPossibleMultiCapture" 
     (set Pending 
         (sites To
             (if ("SameTurn")
@@ -26,23 +26,8 @@
 (define "ShouldCapturedButMoved" 
     (and
         (is Pending)
-        (not (is In (last To) ("SitesWithPossibleCaptureInPreviousTurn")))  
+        (not (is In (last To) ("SitesWithPossibleCaptureInPreviousTurn"))) 
     )
-)
-
-(define "HopCustomCapture"
-    (move Hop 
-        #1
-        (between 
-            if:(is Enemy (who at:(between))) 
-            (apply (remove (between)))
-        )
-        (to if:(is Empty (to)))
-    )
-)
-
-(define "StepCustomToEmpty"
-    (move Step #1 (to if:(is Empty (to))))
 )
 
 (define "HopCustomSequenceCapture" 
@@ -50,7 +35,7 @@
         #1
         #2
         (between 
-            if:(is Enemy (who at:(between))) 
+            if:("IsEnemyAt" (between)) 
             (apply (remove (between) #3))
         )
         (to if:(is Empty (to)))
@@ -62,7 +47,7 @@
                         (between 
                             if:(and 
                                 (not (is In (between) (sites ToClear))) 
-                                (is Enemy (who at:(between)))
+                                ("IsEnemyAt" (between))
                             )
                             (apply (remove (between) #3))
                         )
@@ -82,7 +67,7 @@
     )
 )
 
-(define "DidNotCaptured"  (> (value Player Prev) 0) )
+(define "DidNotCaptured" (> (value Player Prev) 0))
 
 (define "HenAdded" (set Value Prev (- (value Player Prev) 1)))
 
@@ -90,16 +75,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "Renard et les Poules"  
-    (players 2)  
+(game "Renard et les Poules" 
+    (players 2) 
     (equipment { 
-        (board 
-            (merge 
-                (shift 0 2 (rectangle 3 7 diagonals:Alternating) )
-                (shift 2 0 (rectangle 7 3 diagonals:Alternating) ) 
-            )
-            use:Vertex
-        )
+        ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
         (hand P1)
         (piece "Fox" P1 S
             (or 
@@ -107,14 +86,13 @@
                 <Fox:stepMove>
             ) 
         )
-        (piece "Hen" P2 N (move Step (directions {Forwards Rightward Leftward})(to if:(is Empty (to))))) 
-        }
-    )  
+        (piece "Hen" P2 N ("StepToEmpty" (directions {Forwards Rightward Leftward}))) 
+    }) 
     (rules 
         (start { 
             (place "Fox1" (centrePoint))
-            (place "Hen2" (union {(expand (sites Bottom)) (sites Row 2) (sites {"A4" "G4" "A5" "G5"})}) )
-        } )
+            (place "Hen2" (union {(expand (sites Bottom)) (sites Row 2) (sites {"A4" "G4" "A5" "G5"})}))
+        })
         
         phases:{
         (phase "FoxPhase" P1 
@@ -161,7 +139,7 @@
         )
         >
         "The fox can capture one single piece."
-    )*  
+    )* 
     
     (item "Multi Captures" 
         <("HopSequenceCapture")> 
@@ -185,14 +163,14 @@
         )
         >
         "The fox can capture many pieces in a sequence."
-    )  
+    ) 
     
-    (item "One Single Orthogonal Capture"  
-        <("HopCustomCapture" (directions {N S E W}))> 
-        <("StepCustomToEmpty" (directions {N S E W}))>
+    (item "One Single Orthogonal Capture" 
+        <("HopCapture" (directions {N S E W}))> 
+        <("StepToEmpty" (directions {N S E W}))>
         <
         (do 
-            ("RememberSiteWithPossibleCapture" ("HopCustomCapture" (directions {N S E W}))) 
+            ("RememberSiteWithPossibleCapture" ("HopCapture" (directions {N S E W}))) 
             next:(forEach Piece
                 (then 
                     (if ("ShouldCapturedButMoved")
@@ -203,11 +181,11 @@
         )
         >
         "The fox can capture orthogonally one single piece."
-    )   
+    )  
     
     (item "Multi Orthogonal Captures" 
         <("HopCustomSequenceCapture" (directions {N S E W}))> 
-        <("StepCustomToEmpty" (directions {N S E W}))>
+        <("StepToEmpty" (directions {N S E W}))>
         <
         (do 
             ("RememberSiteWithPossibleMultiCapture" 
@@ -230,14 +208,14 @@
         )
         >
         "The fox can capture orthogonally many pieces in a sequence."
-    )   
+    )  
     
-    (item "One Single Diagonal Capture And Orthogonal Move"  
-        <("HopCustomCapture" (directions {NE SE NW SW}))> 
-        <("StepCustomToEmpty" (directions {N S E W}))>
+    (item "One Single Diagonal Capture And Orthogonal Move" 
+        <("HopCapture" (directions {NE SE NW SW}))> 
+        <("StepToEmpty" (directions {N S E W}))>
         <
         (do 
-            ("RememberSiteWithPossibleCapture" ("HopCustomCapture" (directions {NE SE NW SW}))) 
+            ("RememberSiteWithPossibleCapture" ("HopCapture" (directions {NE SE NW SW}))) 
             next:(forEach Piece
                 (then 
                     (if ("ShouldCapturedButMoved")
@@ -252,7 +230,7 @@
     
     (item "Multi Diagonal Captures And Orthogonal Move" 
         <("HopCustomSequenceCapture" (directions {NE SE NW SW}))> 
-        <("StepCustomToEmpty" (directions {N S E W}))>
+        <("StepToEmpty" (directions {N S E W}))>
         <
         (do 
             ("RememberSiteWithPossibleMultiCapture" 
@@ -316,7 +294,7 @@
         (useFor "Ruleset/Orthogonal Fox Diagonal Capture (Described)" (id "990"))
         (source "Murray 1951: 104.")
         (id "988")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/hunt")
         (credit "Eric Piette")
         (origin  "This game was played in France, around 1840.")
@@ -328,7 +306,6 @@
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
         (piece Families {"Abstract" "Themed"})
-        
         }
     )
     

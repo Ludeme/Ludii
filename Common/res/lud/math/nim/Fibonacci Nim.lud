@@ -4,13 +4,13 @@
 
 //------------------------------------------------------------------------------
 
-(game "Fibonacci Nim"  
-    (players 2)  
+(game "Fibonacci Nim" 
+    (players 2) 
     (equipment { 
         (board (square 1)) 
         (piece "Marker" Neutral)
         }
-    )  
+    ) 
     (rules
         (start (set Count <Size:pile> at:0)) 
         
@@ -46,7 +46,7 @@
                 )
             )
         ) 
-        (end (if (no Moves Next) (result <Result> Win) ) )
+        (end (if (no Moves Next) (result <Result> Win)))
     )
 )
 
@@ -54,31 +54,31 @@
 
 (option "End Rules" <Result> args:{ <type> }
     {
-    (item "Last Mover Loses"   <Next>     "The last mover loses.")   
-    (item "Last Mover Wins"    <Mover>    "The last mover wins.")*   
+    (item "Last Mover Loses"  <Next>   "The last mover loses.")  
+    (item "Last Mover Wins"  <Mover>  "The last mover wins.")*  
 })
 
 (option "Number Piles" <Size> args:{ <pile> }
     {
-    (item "5"   <5>   "The game involves a pile of 5 pieces.")
-    (item "10"  <10>  "The game involves a pile of 10 pieces.")
-    (item "15"  <15>  "The game involves a pile of 15 pieces.")
-    (item "20"  <20>  "The game involves a pile of 20 pieces.")
-    (item "25"  <25>  "The game involves a pile of 25 pieces.")
-    (item "30"  <30>  "The game involves a pile of 30 pieces.")
-    (item "35"  <35>  "The game involves a pile of 35 pieces.")
-    (item "40"  <40>  "The game involves a pile of 40 pieces.")*
-    (item "45"  <45>  "The game involves a pile of 45 pieces.")
-    (item "50"  <50>  "The game involves a pile of 50 pieces.")
-    (item "55"  <55>  "The game involves a pile of 55 pieces.")
-    (item "60"  <60>  "The game involves a pile of 60 pieces.")
-    (item "65"  <65>  "The game involves a pile of 65 pieces.")
-    (item "70"  <70>  "The game involves a pile of 70 pieces.")
-    (item "75"  <75>  "The game involves a pile of 75 pieces.")
-    (item "80"  <80>  "The game involves a pile of 80 pieces.")
-    (item "85"  <85>  "The game involves a pile of 85 pieces.")
-    (item "90"  <90>  "The game involves a pile of 90 pieces.")
-    (item "95"  <95>  "The game involves a pile of 95 pieces.")
+    (item "5"  <5>  "The game involves a pile of 5 pieces.")
+    (item "10" <10> "The game involves a pile of 10 pieces.")
+    (item "15" <15> "The game involves a pile of 15 pieces.")
+    (item "20" <20> "The game involves a pile of 20 pieces.")
+    (item "25" <25> "The game involves a pile of 25 pieces.")
+    (item "30" <30> "The game involves a pile of 30 pieces.")
+    (item "35" <35> "The game involves a pile of 35 pieces.")
+    (item "40" <40> "The game involves a pile of 40 pieces.")*
+    (item "45" <45> "The game involves a pile of 45 pieces.")
+    (item "50" <50> "The game involves a pile of 50 pieces.")
+    (item "55" <55> "The game involves a pile of 55 pieces.")
+    (item "60" <60> "The game involves a pile of 60 pieces.")
+    (item "65" <65> "The game involves a pile of 65 pieces.")
+    (item "70" <70> "The game involves a pile of 70 pieces.")
+    (item "75" <75> "The game involves a pile of 75 pieces.")
+    (item "80" <80> "The game involves a pile of 80 pieces.")
+    (item "85" <85> "The game involves a pile of 85 pieces.")
+    (item "90" <90> "The game involves a pile of 90 pieces.")
+    (item "95" <95> "The game involves a pile of 95 pieces.")
     (item "100" <100> "The game involves a pile of 100 pieces.")
     }
 )
@@ -93,7 +93,7 @@
         (rules "Fibonacci Nim is played by two players, who alternate removing coins or other counters from a pile. On the first move, a player is not allowed to take all of the coins, and on each subsequent move, the number of coins removed can be any number that is at most twice the previous move. According to the normal play convention, the player who takes the last coin wins. Or according to the Misère game, the player who takes the last coin loses.")
         (id "1158")
         (source "<a href=\"https://en.wikipedia.org/wiki/Fibonacci_nim\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "math/nim")
         (author "Michael J. Whinihan")
         (credit "Eric Piette")

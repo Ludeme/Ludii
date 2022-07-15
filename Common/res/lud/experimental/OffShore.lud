@@ -134,7 +134,7 @@
                     (to
                         (difference
                             (union
-                                {  // "{}" needed because 2nd item might not exist...
+                                { // "{}" needed because 2nd item might not exist...
                                 (if
                                     (= 1 (mover)) 
                                     ("EmptySitesOutsideEnemyTerritoryFor" "P2")
@@ -233,7 +233,7 @@
         (rules "Definitions:
             -- Each of a player's stones belongs to exactly one group. 
             -- The group it belongs to contains all the stones that connect to it by virtue of being next to one another (across an edge).
-            -- A player's territory is the union of all the cells that are within the convex hulls of the player's groups. 
+            -- A player's territory is the union of all the cells that are within the convex grid-oriented hulls of the player's groups. 
             
             In simpler language:
             Imagine a line of cells that goes through just one stone of a group and leaves the rest of that group to one side. Surround the group with six of these lines and they will exactly contain all the territory of the stones of that group. A player's territory is then the combined territory of every group, counting cells only once where any of the group territories overlap.
@@ -254,7 +254,7 @@
     Various boards are optional. 
 Weak Territory, allowing placement next to a friendly group in enemy territory is optional.")
 (id "1988")
-(version "1.3.4")
+(version "1.3.5")
 (classification "experimental")
 (author "Dale Walton")
 (credit "Dale Walton")
@@ -274,9 +274,9 @@ Weak Territory, allowing placement next to a friendly group in enemy territory i
     (board Colour Symbols (colour Black))
     (player Colour P1 (colour Black))
     (player Colour P2 (colour LightOrange))
-    (region Colour ("P1Territory")     (colour  60 120 170 120)) 
-    (region Colour ("CommonTerritory") (colour 120 155 185 120))  
-    (region Colour ("P2Territory")     (colour 180 190 200 120))
+    (region Colour ("P1Territory")   (colour 60 120 170 120)) 
+    (region Colour ("CommonTerritory") (colour 120 155 185 120)) 
+    (region Colour ("P2Territory")   (colour 180 190 200 120))
     (show Piece Value Middle valueOutline:False scale:.8)
     (hand Placement P1 scale:.1 offsetX:0.05 offsetY:0.75 vertical:True)
     (hand Placement P2 scale:.1 offsetX:0.95 offsetY:0.75 vertical:True)

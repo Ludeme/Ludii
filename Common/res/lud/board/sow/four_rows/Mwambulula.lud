@@ -1,17 +1,15 @@
 (define "Columns" 8)
-(define "OppositePitInner" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
-(define "OppositeOuterPitInner" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
-(define "OppositePitOuter" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
-(define "OppositeOuterPitOuter" (if (is Mover P1) (+ (to) (* "Columns" 3)) (- (to) (* "Columns" 3)) ) )
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+(define "OppositePitInner" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
+(define "OppositeOuterPitInner" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
+(define "OppositeOuterPitOuter" (if (is Mover P1) (+ (to) (* "Columns" 3)) (- (to) (* "Columns" 3))))
 (define "NoSeedsInInner"
     (all Sites (sites Mover "Inner") if:(= 0 (count at:(site))))
 )
 
 //------------------------------------------------------------------------------
 
-(game "Mwambulula"  
-    (players 2)  
+(game "Mwambulula" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -20,16 +18,16 @@
             (track "Track2" "16,E,N1,W" loop:True P2)
             }
         )
-        (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
-        (regions "Home" P2 (sites Track "Track2"))                              // P2 home
+        (regions "Home" P1 (sites Track "Track1"))               // P1 Home
+        (regions "Home" P2 (sites Track "Track2"))               // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top) ))   // P2 inner Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))  // P2 inner Home
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     (rules 
         
-        (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home") ) ))
+        (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home"))))
         
         phases:{
         (phase "Opening"
@@ -49,8 +47,8 @@
                     (move Select
                         (from 
                             (if 
-                                (is Mover Prev) 
-                                "PlayFromLastHole" 
+                                ("SameTurn") 
+                                "LastHoleSowed" 
                                 (sites Mover "Home") 
                             ) 
                             if:(> (count at:(from)) 0)
@@ -84,12 +82,12 @@
                                             })
                                             (moveAgain)
                                         )
-                                        (if (is Occupied ("OppositePitOuter"))
+                                        (if (is Occupied ("OppositeOuterPit" (to)))
                                             (and {
                                                 (fromTo
-                                                    (from ("OppositePitOuter"))
+                                                    (from ("OppositeOuterPit" (to)))
                                                     (to (last From))
-                                                    count:(count at:("OppositePitOuter"))
+                                                    count:(count at:("OppositeOuterPit" (to)))
                                                 )
                                                 (if (is Occupied ("OppositeOuterPitOuter"))
                                                     (fromTo
@@ -100,7 +98,7 @@
                                                 )
                                                 (sow
                                                     (last From)
-                                                    count:(+ (count at:("OppositePitOuter")) (count at:("OppositeOuterPitOuter")))
+                                                    count:(+ (count at:("OppositeOuterPit" (to))) (count at:("OppositeOuterPitOuter")))
                                                     "Track"
                                                     owner:(mover)
                                                 )
@@ -112,7 +110,7 @@
                             )
                         )
                     )
-                    (if (and (not (is Mover Prev) ) (is Occupied Cell (handSite Mover)))
+                    (if (and (not ("SameTurn")) (is Occupied Cell (handSite Mover)))
                         (move Select
                             (from Cell (handSite Mover))
                             (then
@@ -128,15 +126,8 @@
                 )
             )
         )
-        
         }
-        
-        (end
-            (forEach NonMover
-                if:(no Moves Player)
-                (result Player Loss)
-            )
-        )
+        (end "ForEachNonMoverNoMovesLoss")
     )
 )
 
@@ -150,7 +141,7 @@
         (rules "4x8 board. Two counters in each hole, the holes in the inner row are then vacated. These counters become the \"store.\" Sowing occurs in an anti-clockwise direction in the player's two rows. When the final counter of a sowing lands in any occupied hole, the contents of the opponent's inner row holes opposite are captured. If there are also counters in the opponent's outer hole opposite, these are also captured, but only if there are counters in the opponent's inner hole. Captured counters are then sown from the hole that the sowing began. If the final counter lands in an occupied hole and capturing cannot happen, these counters are picked up and sowing continues. At any time during the game if a player is running low on counters, they may enter counters from the \"store\" and add one counter to each hole. The player who is unable to move loses.")
         (source "Chaplin 1956: 169.")
         (id "278")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         }

@@ -9,7 +9,7 @@
         )
         (to 
             if:(or {
-                (is Friend (who at:(to))) 
+                ("IsFriendAt" (to)) 
                 (is In (to) (sites "Fortresses")) 
                 (and 
                     (is In (to) (sites Centre)) 
@@ -20,7 +20,7 @@
     )
 )
 
-(define "CaptureJarl" (apply (trigger "Surrounded" P2) ))
+(define "CaptureJarl" (apply (trigger "Surrounded" P2)))
 
 (define "JarlWasCaptured" (is Triggered "Surrounded" P2))
 
@@ -33,19 +33,19 @@
 
 (define "AFriendOrTheCentre" 
     (or 
-        (is Friend (who at:(to))) 
+        ("IsFriendAt" (to)) 
         (is In (to) (sites Centre))
     )
 )
 
-(define "JarlAndExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (is In (between) (expand origin:(centrePoint)  Orthogonal))))
+(define "JarlAndExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (is In (between) (expand origin:(centrePoint) Orthogonal))))
 
-(define "JarlButNotTheExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (not (is In (between) (expand origin:(centrePoint)  Orthogonal)))))
+(define "JarlButNotTheExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (not (is In (between) (expand origin:(centrePoint) Orthogonal)))))
 
 //------------------------------------------------------------------------------
 
-(game "Alea Evangelii"  
-    (players 2)  
+(game "Alea Evangelii" 
+    (players 2) 
     (equipment { 
         (board (square 19)) 
         (regions "Fortresses" (expand (sites Corners)))
@@ -75,7 +75,7 @@
                                 if:"JarlButNotTheExpandedCentre" 
                                 "CaptureJarl"
                             )
-                            (to if:(is Friend (who at:(to)))) 
+                            (to if:("IsFriendAt" (to))) 
                         )
                     })
                 )
@@ -85,20 +85,20 @@
             (move
                 Slide
                 Orthogonal 
-                (between if:"EmptyButNotFortress")  
+                (between if:"EmptyButNotFortress") 
                 (to (apply if:(!= (to) (centrePoint)))) 
-                (then ("Custodial" "Thrall1") ) 
+                (then ("Custodial" "Thrall1")) 
             ) 
         )
         (piece "Jarl" P2 
             (move
                 Slide
                 Orthogonal 
-                (to (apply if:(!= (to) (centrePoint)) ))
+                (to (apply if:(!= (to) (centrePoint))))
             )
         )
         }
-    )  
+    ) 
     (rules 
         (start
             { 
@@ -120,8 +120,8 @@
         
         (end
             {
-            (if (is Within (id "Jarl2") in:(sites "Fortresses") ) (result P2 Win))
-            (if "JarlWasCaptured"  (result P1 Win))
+            (if (is Within (id "Jarl2") in:(sites "Fortresses")) (result P2 Win))
+            (if "JarlWasCaptured" (result P1 Win))
             }
         )
     )
@@ -131,7 +131,7 @@
 
 (option "Variant" <Variant> args:{ <type> }
     {
-    (item "Cyningstan"   <>       "The rules are describing with the Cyningstan ruleset.")   
+    (item "Cyningstan"  <>    "The rules are describing with the Cyningstan ruleset.")  
 })
 
 //--------------------------------------------------------------------------
@@ -164,7 +164,7 @@
         (useFor "Ruleset/Historical Information (Incomplete)" (id "575"))
         (source "Murray 1951: 61.")
         (id "380")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/custodial")
         (credit "Eric Piette")
         (origin  "This game was played in British Isles, from around 1100 to 1199.")

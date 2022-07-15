@@ -11,7 +11,7 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
@@ -19,7 +19,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "Chaturanga (Payagunda)"  
+(game "Chaturanga (Payagunda)" 
     (players 2) 
     (equipment 
         { 
@@ -40,7 +40,7 @@
                 Slide 
                 Orthogonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )
@@ -49,7 +49,7 @@
             (move
                 Step 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
                 )
             )
@@ -59,17 +59,17 @@
                 Slide 
                 Diagonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )		
-        )  
+        ) 
         (piece "Knight" Each // Turaja 
             (move
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )
@@ -77,7 +77,7 @@
         (piece "Ferz_noCross" Each // Ratha 
             (move Hop Diagonal 
                 (between if:True) 
-                (to if:(not (is Friend (who at:(to)))) (apply (remove (to)))) 
+                (to if:(not ("IsFriendAt" (to))) (apply (remove (to)))) 
             )
         )
         }
@@ -105,7 +105,7 @@
         (rules "8x8 board. Ratha start on the corers, with the Turaja next to them and the Dvipa next to the Horses. The Raja and Mantri are in the center. Ratha jump diagonally to the second space; Turaja move orthogonally one space and then diagonally another space, jumping over any intervening pieces; Dvipa moves orthogonally any distance; Mantri moves diagonally any distance; Raja moves one space orthogonally or diagonally, Padati move forward orthogonally one square or forward diagonally to capture.")
         (source "DLP evidence.")
         (id "1447")
-        (version "1.3.2")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chaturanga/reconstruction")
         (credit "Eric Piette")
         (origin  "This game was played in India, from around 1700 to 1750.")

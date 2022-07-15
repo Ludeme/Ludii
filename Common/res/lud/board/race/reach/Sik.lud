@@ -1,11 +1,11 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
 (define "Throw1" (= ("ThrowValue") 1))
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
-(define "BankorOnTrack" (trackSite Move from:("WhereBankor") #1 steps:#2))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #2 #1))
+(define "BankorOnTrack" ("NextSiteOnTrack" #2 from:("WhereBankor") #1))
 (define "BankorPhaseDone" (or 
         (= ("WhereBankor") ("Center"))
         (and
-            (!= 0 (what at:("Center")))
+            (is Occupied ("Center"))
             (>= 1 (count Sites in:(difference (sites Occupied by:All) ("WhereBankor"))))
         )
     )
@@ -62,7 +62,7 @@
             }
             use:Vertex
         )
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
         (map "Throw" {(pair 0 4) (pair 1 3) (pair 2 0) (pair 3 1) (pair 4 6)})
         (piece "Stick" Each
             (move
@@ -92,8 +92,8 @@
         })
         
         (play 
-            (do (roll) 
-                next:(if (= ("Center") (where "Stick" Mover))
+            ("RollMove"
+                (if (= ("Center") (where "Stick" Mover))
                     (if (< (value Player Mover) 2)
                         (move Pass (then (set Value Mover (+ 1 (value Player Mover)))))
                         (if (or (= (mover) ("StateBankor")) (= 0 ("StateBankor")))
@@ -122,8 +122,8 @@
 (option "Players" <Player> args:{ <number> <init>}
     {
     (item "2" <2> <{"Stick2" "Stick1"}> "The game has 2 players.") 
-    (item "3" <3> <{"Stick3" "Stick2" "Stick1"}> "The game has 3 players.")  
-    (item "4" <4> <{"Stick4" "Stick3" "Stick2" "Stick1"}> "The game has 4 players.")*  
+    (item "3" <3> <{"Stick3" "Stick2" "Stick1"}> "The game has 3 players.") 
+    (item "4" <4> <{"Stick4" "Stick3" "Stick2" "Stick1"}> "The game has 4 players.")* 
     (item "5" <5> <{"Stick5" "Stick4" "Stick3" "Stick2" "Stick1"}> "The game has 5 players.") 
     (item "6" <6> <{"Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"}> "The game has 6 players.") 
     (item "7" <7> <{"Stick7" "Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"}> "The game has 7 players.") 
@@ -154,7 +154,7 @@
         (rules "Spiral board of any number of spaces, rendered as holes in the sand. The first space is a mound. Any number of players. One piece per player, and one piece, the \"bankor,\" all of which begin on the first space on the outer ring of the spiral. Four sticks, with one green and one white side, used as dice. The throws are as follows: One white side up = 1; two white sides up = 0, or 8 when playing as the bankor; three white sides up = 3; four white sides up = 4; four green sides up = 6. A player must throw a 1 to begin moving their piece. Pieces proceed along the spiral toward the central spot. The first player to reach the spot allows the other players three turns, and then begins playing as  the bankor. When the bankor overtakes another player's piece, it drags them with it. When the bankor reaches the penultimate spot, the players it is dragging with them loses. ")
         (source "Voinot 1909: 133-134.")
         (id "1189")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/reach")
         (credit "Eric Piette")
         (origin  "This game was played in Algeria, from around 1899 to 1906.")

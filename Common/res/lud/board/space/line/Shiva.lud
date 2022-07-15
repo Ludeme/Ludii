@@ -1,19 +1,14 @@
 (game "Shiva"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (rectangle <Board:size>))
         (hand Each)
         (piece "Marker" Each
             (if 
                 (not (is Line 3 Orthogonal through:(from)))
-                (move 
-                    Step Orthogonal
-                    (to if:(is Empty (to))) 
-                    (then 
-                        (if 
-                            (is Line 3 Orthogonal)
-                            (if (= (value Player Mover) Off)
+                ("StepToEmpty" Orthogonal (then 
+                        (if (is Line 3 Orthogonal)
+                            (if ("IsOffBoard" (value Player Mover))
                                 (set Value Mover 1)
                                 (set Value Mover (+ (value Player Mover) 1))
                             )
@@ -22,14 +17,9 @@
                 )
             )
         )
-        }
-    )
+    })
     (rules
-        (start 
-            {
-            (place "Marker" "Hand" count:12) 
-            }
-        )
+        (start (place "Marker" "Hand" count:12))
         
         phases:{
         (phase "Placement"
@@ -44,8 +34,7 @@
         
         (phase "Movement"
             (play 
-                (do 
-                    (forEach Piece)
+                (do (forEach Piece)
                     ifAfterwards:(not (is Line 4 Orthogonal))
                 )
             )
@@ -76,7 +65,7 @@
         ")
         (source "Murray 1951: 49.")
         (id "185")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line")
         (credit "Eric Piette")
         (origin  "This game was played in Nigeria, around 1951.")

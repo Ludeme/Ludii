@@ -7,15 +7,15 @@ import metadata.recon.ReconItem;
 
 /**
  * Specifies the what concept values are required.
- * 
+ *
  * @author Matthew.Stephenson and Eric.Piette
  */
 public class Concept implements ReconItem
 {
-	
+
 	/** Concept name. */
 	private final String conceptName;
-	
+
 	/** Concept value. */
 	private final double value;
 
@@ -25,12 +25,12 @@ public class Concept implements ReconItem
 	 * @param conceptName The name of the concept.
 	 * @param valueDouble The double value.
 	 * @param valueBoolean The boolean value.
-	 * 
+	 *
 	 * @example (concept "Num Players" 6)
 	 */
 	public Concept
 	(
-			final String conceptName, 
+			final String conceptName,
 		@Or final Float valueDouble,
 		@Or final Boolean valueBoolean
 	)
@@ -45,14 +45,14 @@ public class Concept implements ReconItem
 	public String toString()
 	{
 		final StringBuilder sb = new StringBuilder();
-		
+
 		sb.append("    (concept \"" + conceptName + " value " + "\")\n");
-		
+
 		return sb.toString();
 	}
-	
+
 	//-------------------------------------------------------------------------
-	
+
 	/**
 	 * @return The name of the concept
 	 */
@@ -60,7 +60,7 @@ public class Concept implements ReconItem
 	{
 		return conceptName;
 	}
-	
+
 	/**
 	 * @return The value of the concept
 	 */
@@ -68,7 +68,7 @@ public class Concept implements ReconItem
 	{
 		return value;
 	}
-	
+
 	//-------------------------------------------------------------------------
 
 }

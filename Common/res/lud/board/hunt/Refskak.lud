@@ -1,13 +1,7 @@
 (game "Refskak"
     (players 2)
     (equipment {
-        (board 
-            (merge 
-                (shift 0 2 (rectangle 3 7 diagonals:Alternating) )
-                (shift 2 0 (rectangle 7 3 diagonals:Alternating) ) 
-            )
-            use:Vertex
-        )
+        ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
         (piece "Lamb" P1 "StepToEmpty")
         (piece "Fox" P2 (or "HopCapture" "StepToEmpty"))
     })
@@ -17,10 +11,7 @@
             (place "Lamb1" (union (expand (sites Bottom) steps:2) (sites {"A3" "B3" "F3" "G3"})))
         })
         (play (forEach Piece))
-        (end {
-            ("NoMoves" Loss)
-            (if (<= (count Pieces P1) 6) (result P2 Win))
-        })
+        (end ("NoMovesLossAndLessNumPiecesPlayerLoss" P1 6))
     )
 )
 
@@ -34,7 +25,7 @@
         (rules "Cross-shaped board, made of four 3x3 intersecting lines with diagonals. One player plays as the fox, which begins on the central space of the board. The other player plays as the lambs, who start in the spaces of one arm of the cross and the line of seven spots in front of that arm. Players alternate turns moving their pieces along the lines. The fox may capture one lamb by hopping over it in a straight line to an empty space on the opposite side of it. The fox wins by capturing seven lambs, the lambs win by blocking the fox so it cannot move.")
         (source " Arnarson, J and O. Daviðsson 1888-1892: 298-300.")
         (id "816")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/hunt")
         (credit "Eric Piette")
         (origin  "This game was played in Iceland, from around 1862 to 1889.")

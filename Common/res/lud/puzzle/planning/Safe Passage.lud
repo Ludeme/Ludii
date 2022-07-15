@@ -1,5 +1,5 @@
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
 )
 
 (define "KingInTheInitialPlace"
@@ -25,7 +25,7 @@
 
 (define "CaptureToPieceAndResetCounter"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
                 (then (set Counter))
@@ -38,7 +38,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )   
+    )  
 )
 
 (define "DoCastle"
@@ -102,7 +102,7 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
@@ -110,8 +110,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Safe Passage"  
-    (players {(player N) (player S)})  
+(game "Safe Passage" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -140,7 +140,7 @@
                 Slide 
                 Orthogonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
                 ) 
                 "RememberPieceHasMoved"
@@ -150,7 +150,7 @@
             (move
                 Step 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndResetCounter"
                 ) 
                 "RememberPieceHasMoved"
@@ -161,7 +161,7 @@
                 Slide 
                 Diagonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
                 ) 
             )
@@ -171,7 +171,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndResetCounter"
                 ) 
             )
@@ -180,7 +180,7 @@
             (move
                 Slide 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
                 ) 
             ) 
@@ -189,10 +189,10 @@
         (map "King" {(pair 1 "E1") (pair 2 "E8")})
         (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})
         (map "RookRight" {(pair 1 "H1") (pair 2 "H8")})
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
         }
-    )  
+    ) 
     (rules 
         (start
             { 
@@ -236,8 +236,8 @@
         )
         
         (end {
-            (if (is Threatened) (result All Loss) ) 
-            (if (and (= (what at:4) (id "King2")) (= (what at:60) (id "King1"))) (result All Win) ) 
+            (if (is Threatened) (result All Loss)) 
+            (if (and (= (what at:4) (id "King2")) (= (what at:60) (id "King1"))) (result All Win)) 
         })
     )
 )
@@ -251,7 +251,7 @@
         (rules "This Chess puzzle uses the same rules as Chess. To win this puzzle you have to swap the positions of the kings. However, if at any point it is possible to capture a piece, you lose.")
         (source "inspired by the puzzle presented here: <a href=\"https://www.chessvariants.com/rules/safe-passage\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />chessvariants.com</a>")
         (id "459")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "puzzle/planning")
         (author "Matthew Stephenson")
         }

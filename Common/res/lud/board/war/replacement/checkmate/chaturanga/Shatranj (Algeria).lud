@@ -11,20 +11,20 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
 )
 
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
 )
 
 //------------------------------------------------------------------------------
 
-(game "Shatranj (Algeria)"  
-    (players {(player N) (player S)})  
+(game "Shatranj (Algeria)" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -45,7 +45,7 @@
                 Slide 
                 Orthogonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )
@@ -55,7 +55,7 @@
                 (move
                     Step 
                     (to 
-                        if:(not (is Friend (who at:(to)))) 
+                        if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
                     )
                 )
@@ -76,7 +76,7 @@
                 Slide 
                 Diagonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )
@@ -86,7 +86,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )
@@ -95,14 +95,14 @@
             (move
                 Slide 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )
         )
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
-    })  
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
+    }) 
     (rules 
         (start { 
             (place "Pawn1" (sites Row 1))
@@ -134,8 +134,8 @@
                 ) 
                 (result Mover Win)
             ) 
-            (if (= (count Pieces Next) 1) (result Mover Win) ) 
-            (if (no Moves Next) (result Mover Win)) 
+            (if (= (count Pieces Next) 1) (result Mover Win)) 
+            ("BlockWin")
             }
         )
     )
@@ -151,7 +151,7 @@
         (rules "8x8 board. The pieces move as follows, with the number per player: 1 x Shah (king): moves one space orthogonally or diagonally. May move like an Asb if it is not in check and has never been in check. Place to a player's square right of center. 1 x Fers (counselor): Any distance orthogonally or diagonally; 2 x Rukh (rook): Any number of spaces orthogonally. 2 x Pil (elephant): Any distance diagonally. 2 x Asb (horse): Moves as a chess knight. 8 x Sarbaz (soldier): Moves one space forward orthogonally; one space forward diagonally to capture. Promoted to Fers when reaching the eighth rank. No en passant. No castling. An opponent's piece is captured by moving a player's own piece onto a space occupied by the opponent's piece. When a Shah can be captured on the next turn by an opponent's piece, it is in check. The Shah must not be in check at the end of the player's turn. If this is not possible, it is checkmate and the opponent wins. Stalemate results in a win for that player causing it. The game ends in a draw only when a player's final piece, being a Sarbaz, is lost, that player's Shah captures the opponent's only remaining piece, a Sarbaz.")
         (source "Unione dell'Accademia di scacchi di Firenze 1901: 36-38")
         (id "1433")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
         (origin  "This game was played in Algeria, around 1901.")

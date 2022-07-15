@@ -1,8 +1,7 @@
 (define "Columns" 7)
-(define "OppositePit" (if (is In #1 (sites Bottom)) (+ #1 "Columns") (- #1 "Columns") ) )
-(define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
+(define "NextHole" ("NextSiteOnTrack" #2 from:#1 "Track"))
 (define "PlayableSites" (sites (values Remembered "Playable")))
-(define "NoPieceOnBoard" (no Pieces All in:(forEach (sites Board) if:(= 0 (state at:(site))))))
+(define "NoPieceOnBoard" (all Sites (forEach (sites Board) if:(= 0 (state at:(site)))) if:(= 0 (count at:(site)))))
 (define "LeftMostEmpty" 
     (trackSite FirstSite "TrackCCW"
         from:(mapEntry "LeftMost" Mover)
@@ -11,8 +10,8 @@
 )
 //------------------------------------------------------------------------------
 
-(game "Mawkar Katiya"  
-    (players 2)  
+(game "Mawkar Katiya" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
@@ -23,14 +22,14 @@
         )
         (piece "Seed" Shared)
         (hand Each)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
         (map "LeftMost" {(pair P1 0) (pair P2 13)})
-    })  
+    }) 
     
     (rules 
         (start {
-            (set Count 5 to:(sites Track "TrackCW") ) 
+            (set Count 5 to:(sites Track "TrackCW")) 
             (set RememberValue "Playable" (union (sites Top) (sites Bottom)))
         })
         
@@ -41,7 +40,7 @@
                     (move Select
                         (from 
                             (if 
-                                (is Mover Prev) 
+                                ("SameTurn") 
                                 (sites {(var "Replay")}) 
                                 (sites Mover) 
                             ) 
@@ -64,14 +63,14 @@
                                             (moveAgain)
                                             (set Var "Replay" ("NextHole" (to) 1))
                                         )
-                                        (if (is Occupied ("OppositePit" ("NextHole" (to) 1)))
+                                        (if (is Occupied ("OppositePitTwoRows" ("NextHole" (to) 1)))
                                             (and
                                                 (fromTo
-                                                    (from ("OppositePit" ("NextHole" (to) 1)))
+                                                    (from ("OppositePitTwoRows" ("NextHole" (to) 1)))
                                                     (to (handSite Mover))
-                                                    count:(count at: ("OppositePit" ("NextHole" (to) 1)))
+                                                    count:(count at: ("OppositePitTwoRows" ("NextHole" (to) 1)))
                                                 )
-                                                (set State at:("OppositePit" ("NextHole" (to) 1)) (state at:("OppositePit" ("NextHole" (to) 1))))
+                                                (set State at:("OppositePitTwoRows" ("NextHole" (to) 1)) (state at:("OppositePitTwoRows" ("NextHole" (to) 1))))
                                             )
                                         )
                                     )
@@ -198,7 +197,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Mawkar Katiya is a two-row mancala-style board game that was played by the Khasi people of India in the early part of the twentieth century.")
@@ -207,7 +206,7 @@
         A new game begins. The players fill their holes with five counters in each, starting from their left. The player who has remaining counters after all of their holes are full puts the extra counters aside. The player who has fewer counters places the remainder in the next empty hole. Any empty holes are out of play for the round. Play begins with the same rules, with the following modifications: Each player, during their opponent's turn, also captures counters in any hole that are made to equal the number of extra counters they had at the beginning of this round (i.e., the number of counters set aside by the winning player or the number of counters less than five that placed in the final hole by the loser). The player who could fill their holes will capture one counter each time that player sows into the hole in which the opponent placed fewer than five counters at the beginning of the round. The opponent cannot sow in this hole. In addition, at the end of the round, the player who filled their holes at the beginning of the round will always capture pieces that accumulate in this hole. Subsequent rounds are played like this until one player captures all of the counters, and thus wins.")
         (source "Gupta 1923: 71-72.")
         (id "431")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }

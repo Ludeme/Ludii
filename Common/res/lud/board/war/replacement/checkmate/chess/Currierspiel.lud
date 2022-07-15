@@ -1,10 +1,10 @@
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
 )
 
 (define "CaptureToPiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
             )
@@ -17,7 +17,7 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
@@ -26,7 +26,7 @@
 //------------------------------------------------------------------------------
 
 (game "Currierspiel"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment {
         (board (rectangle 8 12))
         (regions "StartingPawnRookQueen" P1 (sites {"A2" "G2" "L2"}))
@@ -35,7 +35,7 @@
             (move
                 Step 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )
@@ -46,7 +46,7 @@
                     Step 
                     Diagonal
                     (to 
-                        if:(not (is Friend (who at:(to)))) 
+                        if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece"
                     ) 
                 )
@@ -55,7 +55,7 @@
                         (between 
                             if:True
                         )
-                        (to if:(not (is Friend (who at:(to))))
+                        (to if:(not ("IsFriendAt" (to)))
                             (apply (remove (to)))
                         )
                     )
@@ -67,7 +67,7 @@
             (move
                 Step 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )
@@ -77,7 +77,7 @@
                 Step 
                 Orthogonal
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )
@@ -88,7 +88,7 @@
                 Slide 
                 Diagonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )
@@ -98,7 +98,7 @@
                 (between 
                     if:True
                 )
-                (to if:(not (is Friend (who at:(to))))
+                (to if:(not ("IsFriendAt" (to)))
                     (apply (remove (to)))
                 )
             )
@@ -108,7 +108,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )
@@ -118,13 +118,13 @@
                 Slide 
                 Orthogonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )
         )
         (piece "Pawn" Each
-            (or  
+            (or 
                 "StepForwardToEmpty" 
                 "CaptureForwardDiagonal"
             )
@@ -150,12 +150,12 @@
                     )
                 )
             )
-            (nextPhase Mover  (= 0 (count Sites in:(intersection (sites Occupied by:Mover) (sites Mover)))) "Playing")
+            (nextPhase Mover (= 0 (count Sites in:(intersection (sites Occupied by:Mover) (sites Mover)))) "Playing")
         )
         (phase "Playing" 
             (play 
                 (do 
-                    (forEach Piece)  
+                    (forEach Piece) 
                     ifAfterwards:(not ("IsInCheck" "King" Mover))
                 )
             )
@@ -185,7 +185,7 @@
         (rules "8x12 board. Each player begins with a complement of pieces, each with their own powers of movement as follows: King (x1): may move one space in any direction; Queen (x1): moves one space diagonally, may leap two spaces diagonally on its first move over any intervening pieces; Man (x1): moves one space in any direction; Fool (x1): moves orthogonally one space; Courier (x2): moves diagonally any distance; Bishop (x2): moves diagonally two spaces, jumping over any intervening pieces; Knight (x2): moves orthogonally one space and then diagonally another space, jumping over any intervening pieces; Rook (x2): moves orthogonally any distance; Pawns (x12): move forward one space or diagonally forward one space to capture. Only the Rooks' and Queens' pawns may move forward two spaces for their first move. Each player must move the Rooks' Pawns and Queens' Pawn in this way in their first three moves. A piece is captured when an opponent's piece moves onto its space. The King is in check when it can be taken on the opponent's next turn; it must not remain in check at the end of the player's turn. When the king cannot move out of check, it is checkmated and the opponent wins.")
         (source "Selenus 1616: 425-432.")
         (id "821")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chess")
         (credit "Eric Piette")
         (origin  "This game was played in Germany, from around 1202 to 1616.")

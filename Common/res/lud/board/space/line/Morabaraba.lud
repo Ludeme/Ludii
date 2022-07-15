@@ -1,26 +1,7 @@
-(define "RemoveEnemyPiece" 
-    (move
-        Remove
-        (forEach (sites Occupied by:Next container:"Board") if:(not (is Line 3 through:(site))))
-    )
-)
-
-(define "IfLine3MoveAgain" 
-    (then 
-        (if 
-            (is Line 3) 
-            (moveAgain)
-        )
-    )
-)
-
-//------------------------------------------------------------------------------
-
 (game "Morabaraba"
     (players 2)
     
-    (equipment 
-        { 
+    (equipment { 
         (board
             (remove
                 (add 
@@ -35,19 +16,15 @@
         (hand Each)
         (piece "Marker" Each 
             (if (> (count Pieces Mover) 3)
-                (move 
-                    Step 
-                    (to if:(is Empty (to))) 
-                )
+                ("StepToEmpty")
                 (move
                     (from)
                     (to (sites Empty)) 
                 )
-                "IfLine3MoveAgain" 
+                (then ("ReplayIfLine3"))  
             )
         ) 
-        }
-    )  
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:12))
         
@@ -55,12 +32,12 @@
         (phase "Placement"
             (play
                 (if "SameTurn"
-                    "RemoveEnemyPiece"
+                    ("RemoveAnyEnemyPieceNotInLine3")
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
-                        "IfLine3MoveAgain" 
-                    )  
+                        (then ("ReplayIfLine3"))  
+                    ) 
                 )
             ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
@@ -69,14 +46,14 @@
         (phase "Movement" 
             (play 
                 (if "SameTurn"
-                    "RemoveEnemyPiece"
+                    ("RemoveAnyEnemyPieceNotInLine3")
                     (forEach Piece)
                 )
             )
         )
         }
         
-        (end (if (<= (count Pieces Next) 2) (result Mover Win)))
+        (end ("HavingLessPiecesLoss" Next 2))
     )
 )
 
@@ -91,16 +68,12 @@
         (rules "Three concentric squares, with lines connecting the midpoints of the squares with the center of the square and four lines connecting the corners of the outer two squares. Twelve pieces per player. In the first phase, players take turns placing pieces on an empty spot on the board. If they place three pieces so they are in a line, forming a \"meul.\" they remove one of the opponent's pieces that is not in a \"meul.\" Once all the pieces are placed, the second phase begins, in which players take turns moving one piece to an adjacent empty spot. When a \"meul\" is formed, the player removes one fo the opponent's pieces that is not in a \"meul.\" When one player is reduced to three pieces, they may move their pieces to any empty spot on the board. The player who reduces their opponent to two pieces wins. ")
         (source "Coertze 2002: 57-58.")
         (id "188")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line")
         (credit "Eric Piette")
         (origin  "This game was played in Lesotho, from around 1899 to 2002.")
         }
     )
-    
-    (graphics {
-        
-    })
     
     (ai
         "Morabaraba_ai"

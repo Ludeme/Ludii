@@ -11,7 +11,7 @@
             })
         )
     )
-)  
+) 
 
 (define "EmptyButNotVisitedWithEnemyIn"
     (and { 
@@ -30,7 +30,7 @@
 
 (define "RemoveEnemyPiece"
     (to 
-        if:(is Enemy (who at:(to))) 
+        if:("IsEnemyAt" (to)) 
         (apply (remove (to)))
     )
 )
@@ -72,7 +72,7 @@
     )
 )
 
-(define "CaptureFromLast"  		
+(define "CaptureFromLast" 		
     (or 
         ("MoveAgainIn" #1 (to) SameDirection (last To) (directions Vertex from:(last From) to:(last To)))
         ("MoveAgainIn" #1 (from) OppositeDirection (last From) (directions Vertex from:(last To) to:(last From)))
@@ -111,16 +111,16 @@
 //------------------------------------------------------------------------------
 
 (game "Fanorona" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         ("AlquerqueBoard" <Board:size>)
         (piece "Marker" Each)
-    })  
+    }) 
     
     (rules 
         (start { 
-            (place "Marker1" (union { <Board:startP1>} ) )
-            (place "Marker2" (union { <Board:startP2>} ) )
+            (place "Marker1" (union { <Board:startP1>}))
+            (place "Marker2" (union { <Board:startP2>}))
         })
         
         (play
@@ -151,9 +151,9 @@
 
 (option "Version" <Board> args:{ <size> <startP1> <startP2> }
     {
-    (item "Telo"  <3 3> <(union (sites Bottom) (sites {"C2"}))> <(union (sites {"A2"}) (sites Top))>                                                      "The game is played on a 3x3 board")   
-    (item "Dimy"  <5 5> <(union (expand (sites Bottom) ) (sites {"A3" "D3"}))> <(union (sites {"B3" "E3"}) (expand (sites Top) ))>                        "The game is played on a 5x5 board")   
-    (item "Tsivy" <5 9> <(union (expand (sites Bottom) ) (sites {"B3" "D3" "G3" "I3"}))> <(union (sites {"A3" "C3" "F3" "H3"}) (expand (sites Top) ) )>   "The game is played on a 5x9 board")**   
+    (item "Telo" <3 3> <(union (sites Bottom) (sites {"C2"}))> <(union (sites {"A2"}) (sites Top))>                           "The game is played on a 3x3 board")  
+    (item "Dimy" <5 5> <(union (expand (sites Bottom)) (sites {"A3" "D3"}))> <(union (sites {"B3" "E3"}) (expand (sites Top)))>            "The game is played on a 5x5 board")  
+    (item "Tsivy" <5 9> <(union (expand (sites Bottom)) (sites {"B3" "D3" "G3" "I3"}))> <(union (sites {"A3" "C3" "F3" "H3"}) (expand (sites Top)))>  "The game is played on a 5x9 board")**  
 })
 
 //------------------------------------------------------------------------------
@@ -166,7 +166,7 @@
         (rules "Fanorona-Tsivy is played on a board of 9x5 intersecting lines with diagonals. Each player has 22 pieces, starting on the intersections of the lines except in the centre position, placed on opposite rows of the board, but alternating in the central row.. Pieces move to an adjacent intersection along the lines. Players must capture pieces when possible. Capturing is accomplished by moving to an adjacent intersection to an opposing piece in the continuing direction of the capturing stones movement, or by moving away from an adjacent opposing pieces in such a direction. When an opponent's piece is captured, all other of the opponent's pieces in that line are also captured. Multiple captures can be made, but cannot be done by moving twice in the same direction. Multiple captures are optional. A player wins by capturing all of the other player's pieces.")
         (source "Montgomery 1896: 151–155.")
         (id "50")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/direction/linear")
         (credit "Eric Piette")
         (origin  "This game was played in Madagascar, around 1896.")

@@ -2,14 +2,10 @@
 (define "MinorPiece" 0)
 
 //#1 - region
-(define "PiecesInRegion"
-    ((intersection (sites #1) (sites Occupied by:All)))
-)
+(define "PiecesInRegion" (intersection (sites #1) (sites Occupied by:All)))
 
 //#1 - region
-(define "NumberOfPiecesInRegion"
-    (count Sites in:("PiecesInRegion" #1))
-)
+(define "NumberOfPiecesInRegion" (count Sites in:("PiecesInRegion" #1)))
 
 // #1 - region
 // #2 - state
@@ -36,7 +32,7 @@
 // #2 - to region
 (define "MoveStep"
     (move 	// standard move without capture
-        (from (from) if:(is In (from) #1) )
+        (from (from) if:(is In (from) #1))
         (to (intersection {(sites Around (from)) (sites Empty) #2 }))
     )
 )
@@ -59,7 +55,7 @@
 )
 (define "MajorPieceHopCondition"
     (and
-        (is Enemy (who at:(between)))
+        ("IsEnemyAt" (between))
         (is In (between) (sites "The Arena"))
     )
 )
@@ -186,7 +182,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "Suffragetto"  
+(game "Suffragetto" 
     (players 2)
     (equipment { 
         (board (square 17))
@@ -223,7 +219,7 @@
         ("PieceCore" "Policeman" P2 "Albert Hall" "Hospital Grounds" "Prison")
         ("PieceCore" "Leader" P1 "House of Commons" "Prison Yard" "Hospital")
         ("PieceCore" "Inspector" P2 "Albert Hall" "Hospital Grounds" "Prison")
-    })  
+    }) 
     (rules 
         (start {
             (place "Suffragette1" {57 61 73 74 78 79 88 89 90 91 92 94 95 96 97 98} state:("MinorPiece"))
@@ -348,7 +344,7 @@ Properly hopping over your opponent’s pieces results in arresting or disabling
 If at any point, the Prison andthe Hospital each contain 12 or more inmates, either player may propose a release. The other player accept or reject this. If accepted the proposer moves one of their disabled pieces to the Prison Yard [PY] or Hospital Grounds [HG] as appropriate. Then the other player does the same but the piece chosen must be of the same value as the one the proposer released. The proposer cannot release a major piece if the other player does not have any disabled major pieces. This is repeated until either the Prison Yard and Hospital Grounds are full or the proposer passes. No exchange can be proposed while any piece remains on the Prison Yard or the Hospital Grounds.")
 (id "1188")
 (source "<a href=\"https://www.playsuffragetto.com/print\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.playsuffragetto.com</a>")
-(version "1.3.4")
+(version "1.3.5")
 (classification "board/race/fill")
 (credit "Nicholas Bamber")
 (date "1909")
@@ -416,7 +412,6 @@ If at any point, the Prison andthe Hospital each contain 12 or more inmates, eit
     ("MinorPieceGraphics" "Policeman")
     ("MajorPieceGraphics" "Leader")
     ("MajorPieceGraphics" "Inspector")
-    
 })
 (ai
     "Suffragetto_ai"

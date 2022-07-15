@@ -7,14 +7,13 @@
 
 //------------------------------------------------------------------------------
 
-(game "Odd"  
+(game "Odd" 
     (players 2) 
     (equipment { 
         (board (rotate 90 (hex <Board>))) 
         (piece "Marker" Each)
         (hand Shared size:2)
-        }
-    )  
+    }) 
     (rules 
         (start {
             (place "Marker1" (handSite Shared)) 
@@ -48,37 +47,37 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "3"    <3>  "Played on a size 3 board.")   
-    (item "4"    <4>  "Played on a size 4 board.")   
-    (item "5"    <5>  "Played on a size 5 board.")*   
-    (item "6"    <6>  "Played on a size 6 board.")   
-    (item "7"    <7>  "Played on a size 7 board.")  
-    (item "8"    <8>  "Played on a size 8 board.")   
-    (item "9"    <9>  "Played on a size 9 board.")   
-    (item "10"  <10>  "Played on a size 10 board.")   
-    (item "11"  <11>  "Played on a size 11 board.")   
-    (item "12"  <12>  "Played on a size 12 board.")  
+    (item "3"  <3> "Played on a size 3 board.")  
+    (item "4"  <4> "Played on a size 4 board.")  
+    (item "5"  <5> "Played on a size 5 board.")*  
+    (item "6"  <6> "Played on a size 6 board.")  
+    (item "7"  <7> "Played on a size 7 board.") 
+    (item "8"  <8> "Played on a size 8 board.")  
+    (item "9"  <9> "Played on a size 9 board.")  
+    (item "10" <10> "Played on a size 10 board.")  
+    (item "11" <11> "Played on a size 11 board.")  
+    (item "12" <12> "Played on a size 12 board.") 
     }
 )
 
 (option "Minimum Group Size" <Group> args:{ <size> }
     {
-    (item "3"    <3>  "Min group size 3.")   
-    (item "4"    <4>  "Min group size 4.")   
-    (item "5"    <5>  "Min group size 5.")*   
-    (item "6"    <6>  "Min group size 6.")   
-    (item "7"    <7>  "Min group size 7.")  
-    (item "8"    <8>  "Min group size 8.")   
-    (item "9"    <9>  "Min group size 9.")   
-    (item "10"  <10>  "Min group size 10.")   
-    (item "11"  <11>  "Min group size 11.")   
-    (item "12"  <12>  "Min group size 12.")  
+    (item "3"  <3> "Min group size 3.")  
+    (item "4"  <4> "Min group size 4.")  
+    (item "5"  <5> "Min group size 5.")*  
+    (item "6"  <6> "Min group size 6.")  
+    (item "7"  <7> "Min group size 7.") 
+    (item "8"  <8> "Min group size 8.")  
+    (item "9"  <9> "Min group size 9.")  
+    (item "10" <10> "Min group size 10.")  
+    (item "11" <11> "Min group size 11.")  
+    (item "12" <12> "Min group size 12.") 
     }
 )
 
 //(rulesets {
-    //    (ruleset "Ruleset/Standard" { "Board Size/5" "Minimum Group Size/5"})*
-    //    (ruleset "Ruleset/Expert" { "Board Size/7" "Minimum Group Size/7"})   
+    //  (ruleset "Ruleset/Standard" { "Board Size/5" "Minimum Group Size/5"})*
+    //  (ruleset "Ruleset/Expert" { "Board Size/7" "Minimum Group Size/7"})  
 //})
 
 //------------------------------------------------------------------------------
@@ -92,7 +91,7 @@
         (rules "Players take turns placing one stone of either color on the board, until it is full. Player One wins if there is an odd number of groups with at least five pieces on the board, Player Two wins otherwise.")
         (source "<a href=\"https://boardgamegeek.com/boardgame/28527/odd\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
         (id "446")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/group")
         (author "Nick Bentley")
         (credit "Eric Piette")

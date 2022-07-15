@@ -3,13 +3,13 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
 )
 
-(define "ReachedTarget" (is In (last To) (sites Mover)) )
+(define "ReachedTarget" (is In (last To) (sites Mover)))
 
 (define "LastMoveWasKnight"
     (= (what at:(last To)) (id "Knight" Mover))
@@ -21,7 +21,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "Breakthrough Chess"  
+(game "Breakthrough Chess" 
     (players {(player N) (player S)})
     (equipment { 
         (board (square 8)) 
@@ -38,8 +38,8 @@
                 Slide 
                 Orthogonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
-                    (apply (remove (to) ))
+                    if:("IsEnemyAt" (to)) 
+                    (apply (remove (to)))
                 ) 
             )
         )
@@ -47,8 +47,8 @@
             (move
                 Step 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
-                    (apply (remove (to) ))
+                    if:(not ("IsFriendAt" (to))) 
+                    (apply (remove (to)))
                 ) 
             )
         )
@@ -57,8 +57,8 @@
                 Slide 
                 Diagonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
-                    (apply (remove (to) ))
+                    if:("IsEnemyAt" (to)) 
+                    (apply (remove (to)))
                 ) 
             )
         )
@@ -67,8 +67,8 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
-                    (apply (remove (to) ))
+                    if:(not ("IsFriendAt" (to))) 
+                    (apply (remove (to)))
                 ) 
             )
         )
@@ -76,15 +76,15 @@
             (move
                 Slide 
                 (to 
-                    if:(is Enemy (who at:(to)))
-                    (apply (remove (to) ))
+                    if:("IsEnemyAt" (to))
+                    (apply (remove (to)))
                 ) 
             ) 
         )
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
         }
-    )  
+    ) 
     (rules 
         (start
             { 
@@ -111,7 +111,7 @@
         (description "A variant of Breakthrough played with Chess pieces and rules (mostly).")
         (rules "Chess-Breakthrough is played using a regular chess board and pieces and from the standard chess start position. The first player to place a pawn or a knight on the opponent’s backrank wins (thus no promotions). The normal chess rules for piece movements have also been slightly modified to fit our simplified boardgame framework: castling, en-passant, and two-step pawn moves are not allowed; a king can be moved into and left in check (and thus captured); and the draw-by-threefold-repetition and 50-move rules do not apply.")
         (id "1012")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "experimental")
         (credit "Matthew Stephenson")
         }

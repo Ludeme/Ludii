@@ -4,7 +4,7 @@
         (from #1) 
         (directions {FR FL}) 
         (between 
-            if:(is Enemy (who at:(between))) 
+            if:("IsEnemyAt" (between)) 
             (apply (remove (between)))
         ) 
         (to if:(is Empty (to))) 
@@ -14,12 +14,12 @@
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
 
-(define "JumpToPromotionZone" (is In (last To) (sites Next)) )
+(define "JumpToPromotionZone" (is In (last To) (sites Next)))
 
 //------------------------------------------------------------------------------
 
 (game "Pleasant Draughts" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (square 8)) 
         (piece "Counter" P1 N)
@@ -28,12 +28,12 @@
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-    )  
+    ) 
     (rules 
         (start
             { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ) )
-            (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1) ) )
+            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1) ))
+            (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1)))
             }
         )
         
@@ -45,7 +45,7 @@
                             (then 
                                 (if "JumpToPromotionZone" 
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
-                                    (if (can Move ("HopMan" (last To))) (moveAgain) ) 
+                                    (if (can Move ("HopMan" (last To))) (moveAgain)) 
                                 ) 
                             ) 
                         )
@@ -53,14 +53,14 @@
                     )
                     (move Pass)
                 )
-                (or  
+                (or 
                     (forEach Piece "Counter" 
                         (or
                             ("HopMan" (from) 
                                 (then 
                                     (if "JumpToPromotionZone"
                                         (move Promote (last To) (piece "DoubleCounter") Mover) 
-                                        (if (can Move ("HopMan" (last To)) ) (moveAgain) ) 
+                                        (if (can Move ("HopMan" (last To))) (moveAgain)) 
                                     ) 
                                 ) 
                             ) 
@@ -102,7 +102,7 @@
         ")
         (source "van der Stoep 1984: 146-147.")
         (id "882")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/leaping/diagonal")
         (credit "Eric Piette")
         (origin  "This game was played in England, around 1605.")

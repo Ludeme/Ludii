@@ -1,10 +1,10 @@
-(define "SiteToMoveOnTrack" (trackSite Move steps:(count Pips)))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" (count Pips)))
 
-(define "RemoveAPiece" (move Remove (from) ) )
+(define "RemoveAPiece" (move Remove (from)))
 
 (define "CaptureEnemyPiece" 
     (apply 
-        if:(is Enemy (who at:(to))) 
+        if:("IsEnemyAt" (to)) 
         (fromTo 
             (from (to)) 
             (to (handSite (who at:(to))))
@@ -31,7 +31,7 @@
             (and {
                 ("SpecialThrow")
                 (not ("HandEmpty" Mover))
-                (or (is Empty "StartPoint") (is Friend (who at:("StartPoint"))))
+                (or (is Empty "StartPoint") ("IsFriendAt" ("StartPoint")))
             })
             (move 
                 (from (handSite (mover))) 
@@ -45,7 +45,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "Panchi"  
+(game "Panchi" 
     (players 2)
     (equipment {
         (board 
@@ -63,17 +63,13 @@
             }
         )
         (piece "Pawn" Each
-            (if (= "SiteToMoveOnTrack" End)
+            (if ("IsEndTrack" "SiteToMoveOnTrack")
                 "RemoveAPiece"
-                (if (!= "SiteToMoveOnTrack" Off) 	 			
-                    (if (or {
-                            (is In "SiteToMoveOnTrack" (sites Empty))
-                            (is Friend (who at:"SiteToMoveOnTrack"))
-                            (and 
-                                (is Enemy (who at:"SiteToMoveOnTrack"))
-                                (not (is In "SiteToMoveOnTrack" (sites "Protect")))
-                            )
-                        })
+                (if ("IsNotOffBoard" "SiteToMoveOnTrack") 	 			
+                    (if (if (not ("IsEnemyAt" "SiteToMoveOnTrack"))
+                            True
+                            (not (is In "SiteToMoveOnTrack" (sites "Protect")))
+                        )
                         (move 
                             (from (from) level:(level))
                             (to 
@@ -85,7 +81,7 @@
                 )
             )
         )
-        (dice d:2 from:0 num:7)
+        ("StickDice" 7)
         (hand Each)
         (regions "Protect" (sites {0 10 5 16 21 23 30 36 46 56 51 42}))
         (map {(pair P1 0) (pair P2 10)})
@@ -96,9 +92,8 @@
             (place Stack "Pawn2" (handSite P2) count:5)
         })
         (play 
-            (do 
-                (roll) 
-                next:(if (can Move ("Move"))
+            ("RollMove"
+                (if (can Move ("Move"))
                     ("Move")
                     (move Pass 
                         (then (if ("SpecialThrow") (moveAgain)))
@@ -106,7 +101,7 @@
                 )
             )
         )
-        (end (if (no Pieces Mover) (result Mover Win)))
+        (end ("EscapeWin"))
     )
 )
 
@@ -120,7 +115,7 @@
         ")
         (source "Vasantha 2006: 32.")
         (id "1125")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/escape")
         (credit "Eric Piette")
         (origin  "This game was played in India, from around 1794 to 1868.")

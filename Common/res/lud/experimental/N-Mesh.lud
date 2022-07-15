@@ -26,13 +26,13 @@
         index:0
 ))
 
-(define "EdgeIsOriented"     
+(define "EdgeIsOriented"   
     (= 
         (regionSite (sites Incident Cell of:Edge at:#1) index:0) 
         (ahead Cell (regionSite (sites Incident Cell of:Edge at:#1) index:1) #2)
 )) 
 
-(define "EdgeOrientationInteger"  (if (or ("EdgeIsOriented" #1 E) ("EdgeIsOriented" #1 W)) 0 2))  // of an edge
+(define "EdgeOrientationInteger" (if (or ("EdgeIsOriented" #1 E) ("EdgeIsOriented" #1 W)) 0 2)) // of an edge
 
 (define "AddConnector"
     (if 
@@ -48,7 +48,7 @@
                             if:("NeedsConnection")
                 )))
                 ("HalfWayEdge" (to) (last To))
-            )   
+            )  
             (add
                 (piece (id "I" Mover))
                 (to
@@ -64,7 +64,7 @@
 (define "RemoveConnector"
     (and
         {
-        (forEach Site  // edge between friends may not have opponent break.
+        (forEach Site // edge between friends may not have opponent break.
             (sites Around Cell (last To) Orthogonal)
             (apply if:(is Mover (who at:(site)))
                 (remove Edge ("BetweenEdge" (site) (last To)) count:2)
@@ -97,7 +97,7 @@
         }
 ))
 
-//--------------------------------------------------  
+//-------------------------------------------------- 
 // Connectivity
 
 (define "Twist"
@@ -130,9 +130,9 @@
         {
         (= (to) (from))
         (and
-            (is #1 (who at:(from)))       
+            (is #1 (who at:(from)))    
             (is #1 (who at:(to))) 
-        )  
+        ) 
         (not ("Break" (from) (to) #1))
         }
 ))
@@ -152,13 +152,13 @@
                     Orthogonal
                     (to 
                         if:(and
-                            //       {
+                            //    {
                             (or
                                 (is Empty (to))
-                                (is #2 (who at:(to)))       
+                                (is #2 (who at:(to)))    
                             )
-                            ("NotCrossingConnector" #2)  
-                            //       }
+                            ("NotCrossingConnector" #2) 
+                            //    }
                 )))
                 (#1) 
                 (difference ("Liberties" #2) #1)
@@ -211,8 +211,8 @@
         (then 
             (and 
                 {
-                ("AddConnector" 1  L )
-                ("AddConnector" 2  R )
+                ("AddConnector" 1 L)
+                ("AddConnector" 2 R)
                 ("RemoveConnector")
                 ("Scoring")
                 }
@@ -381,7 +381,7 @@
             Knight's connections can cross each other, but cease to exist when 2 pieces are placed in between.
         When a stone is placed on a shaded cell, that cell no longer serves as a liberty for either player.")
         (id "1666")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")
@@ -400,18 +400,18 @@
         (piece Scale "Ball" 0.78)
         
         (piece Colour P1 "I" state:0 fillColour:(colour Red) strokeColour:(colour Red)) 
-        (piece Colour P2 "I" state:0 fillColour:(colour Red) strokeColour:(colour Red))  
+        (piece Colour P2 "I" state:0 fillColour:(colour Red) strokeColour:(colour Red)) 
         (piece Rotate P1 "I" state:0 degrees:90) // debug test: state 0 only occurs in intermediate graphics processing
         (piece Rotate P2 "I" state:0 degrees:90) // debug test: state 0 only occurs in intermediate graphics processing
         
         (piece Colour P1 "I" state:1 fillColour:(colour 0 0 0 150) strokeColour:(colour 0 0 0 150)) 
-        (piece Colour P2 "I" state:1 fillColour:(colour 50 50 50 100) strokeColour:(colour 50 50 50 100))  
+        (piece Colour P2 "I" state:1 fillColour:(colour 50 50 50 100) strokeColour:(colour 50 50 50 100)) 
         (piece Colour P1 "I" state:2 fillColour:(colour 0 0 0 150) strokeColour:(colour 0 0 0 150)) 
-        (piece Colour P2 "I" state:2 fillColour:(colour 50 50 50 100) strokeColour:(colour 50 50 50 100))   
-        (piece Colour P1 "I" state:3 fillColour:(colour 0 0 0 150) strokeColour:(colour 0 0 0 150))  
-        (piece Colour P2 "I" state:3 fillColour:(colour 50 50 50 100) strokeColour:(colour 50 50 50 100))   
+        (piece Colour P2 "I" state:2 fillColour:(colour 50 50 50 100) strokeColour:(colour 50 50 50 100))  
+        (piece Colour P1 "I" state:3 fillColour:(colour 0 0 0 150) strokeColour:(colour 0 0 0 150)) 
+        (piece Colour P2 "I" state:3 fillColour:(colour 50 50 50 100) strokeColour:(colour 50 50 50 100))  
         (piece Colour P1 "I" state:4 fillColour:(colour 0 0 0 150) strokeColour:(colour 0 0 0 150)) 
-        (piece Colour P2 "I" state:4 fillColour:(colour 50 50 50 100) strokeColour:(colour 50 50 50 100))  
+        (piece Colour P2 "I" state:4 fillColour:(colour 50 50 50 100) strokeColour:(colour 50 50 50 100)) 
         (piece Rotate P1 "I" state:1 degrees:155) 
         (piece Rotate P1 "I" state:2 degrees:205) 
         (piece Rotate P1 "I" state:3 degrees:65) 
@@ -433,7 +433,7 @@
         (show Edges Diagonal Hidden (colour DarkGrey))
         (stackType None)
         (region Colour "Marked" (colour Grey))
-        //    (show Piece State "I")
+        //  (show Piece State "I")
         }
     )
     

@@ -40,8 +40,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Diamond"  
-    (players 2)  
+(game "Diamond" 
+    (players 2) 
     (equipment { 
         (board 
             (rotate 90 (tiling T33434 3))
@@ -72,9 +72,9 @@
         ) 
         (piece "Disc" Neutral)
         (hand Each)
-        (regions P1 { (sites Side W) (sites Side E) } )
-        (regions P2 { (sites Side N) (sites Side S) } )
-    })  
+        (regions P1 {(sites Side W) (sites Side E) })
+        (regions P2 {(sites Side N) (sites Side S) })
+    }) 
     (rules
         (meta (swap))
         
@@ -146,7 +146,7 @@
 - In the last 50 moves (25 moves per player) no capture has been made, nor neutral piece removed.")
 (id "1771")
 (source "<a href=\"https://en.wikipedia.org/wiki/Diamond_(game)\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-(version "1.3.4")
+(version "1.3.5")
 (classification "board/space/pattern")
 (author "Larry Back")
 (credit "Eric Piette")

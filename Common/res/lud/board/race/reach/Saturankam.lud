@@ -1,18 +1,16 @@
 (define "ThrowValue" (count Pips))
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #2 #1))
 
 (define "Move"
     (or
         (if (and {
                 (is Occupied (handSite Mover))
                 (all DiceEqual) 
-                (= 2 (value Player Mover ))
+                (= 2 (value Player Mover))
             })
             (move
                 (from (handSite Mover))
-                (to 
-                    (mapEntry "Entry" Mover)
-                )
+                (to (mapEntry "Entry" Mover))
                 (then
                     (and
                         (moveAgain)
@@ -74,7 +72,7 @@
                             if:True
                             (apply 
                                 (and
-                                    (if (and (not (is In (to) (sites "SafeSites"))) (is Enemy (who at:(to))))
+                                    (if (and (not (is In (to) (sites "SafeSites"))) ("IsEnemyAt" (to)))
                                         (forEach Level (to) FromTop
                                             (fromTo
                                                 (from (to) level:(level))
@@ -112,8 +110,8 @@
         <Players:start>
         (play 
             (if (or (= 1 (var "Double")) (not ("SameTurn")))
-                (do (roll) 
-                    next:(move Pass 
+                ("RollMove" 
+                    (move Pass 
                         (then 
                             (and {
                                 (set Value Mover ("ThrowValue"))
@@ -149,7 +147,7 @@
         >
         <(map "Entry" {(pair P1 4) (pair P2 76)})>
         "The game is played with 2 players."
-    )   
+    )  
     (item "3" <3> 
         <
         (start {
@@ -165,7 +163,7 @@
         >
         <(map "Entry" {(pair P1 4) (pair P2 36) (pair P3 76)})>
         "The game is played with 3 players."
-    )   
+    )  
     (item "4" <4> 
         <
         (start {
@@ -183,7 +181,7 @@
         >
         <(map "Entry" {(pair P1 4) (pair P2 36) (pair P3 76) (pair P4 44)})>
         "The game is played with 4 players."
-    )*   
+    )*  
 })
 
 //------------------------------------------------------------------------------
@@ -210,7 +208,7 @@
         ")
         (source "Parker 1909: 605-607.")
         (id "197")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/reach")
         (credit "Eric Piette")
         (origin  "This game was played in South Asia., around 1909.")

@@ -8,9 +8,7 @@
 
 (define "Remove"
     (move Select
-        (from 
-            (sites Occupied by:Enemy)
-        )
+        (from (sites Occupied by:Enemy))
         (then (forEach Site (sites Group at:(last From) Orthogonal) (remove (site))))
     )
 )
@@ -19,17 +17,14 @@
 
 (game "Gygoreg"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (square Diamond <Size>))
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
         (start {
             (place "Disc1" (forEach (sites Phase 0) if:(is Odd (site))))
             (place "Disc2" (forEach (sites Phase 0) if:(is Even (site))))
-            
         })
         (play
             (or
@@ -38,14 +33,8 @@
             )
         )
         (end {
-            (if 
-                (= 1 (count Groups Orthogonal if:(= 1 (who at:(to)))))
-                (result P1 Win)
-            ) 
-            (if 
-                (= 1 (count Groups Orthogonal if:(= 2 (who at:(to)))))
-                (result P2 Win)
-            ) 
+            ("SingleGroupWin" P1 Orthogonal)
+            ("SingleGroupWin" P2 Orthogonal)
         })
     )
 )
@@ -54,10 +43,10 @@
 
 (option "Board Size" <Size> args:{ <size> }
     {
-    (item "4"    <4>  "A size 4 board is currently selected")
-    (item "6"    <6>  "A size 6 board is currently selected")
-    (item "8"    <8>  "A size 8 board is currently selected")
-    (item "10"    <10>  "A size 10 board is currently selected")*
+    (item "4"  <4> "A size 4 board is currently selected")
+    (item "6"  <6> "A size 6 board is currently selected")
+    (item "8"  <8> "A size 8 board is currently selected")
+    (item "10"  <10> "A size 10 board is currently selected")*
     }
 )
 
@@ -74,7 +63,7 @@
             
         As soon as one player only has 1 group, the game is over and that player is the winner.")
         (id "1654")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/group")
         (author "Mike Zapawa")
         (credit "Michael Amundsen")

@@ -1,9 +1,9 @@
-(game "Grid Test"  
-    (players 2)  
+(game "Grid Test" 
+    (players 2) 
     (equipment { 
         (board <Board>) 
         (piece "Marker") 
-    })  
+    }) 
     (rules 
         (play (move Add (to (sites Empty))))
         (end (if (is Line 8) (result Mover Win)))
@@ -14,9 +14,9 @@
 
 (option "Board Type" <Board> args:{ <type> }
     {
-    (item "Square 4"   <(square 4)>   "Square.")
-    (item "Hex 4"      <(hex 4)>      "Hex.")
-    (item "Tri 8"      <(tri 8)>      "Tri.")
+    (item "Square 4"  <(square 4)>  "Square.")
+    (item "Hex 4"   <(hex 4)>   "Hex.")
+    (item "Tri 8"   <(tri 8)>   "Tri.")
     }
 )
 
@@ -33,7 +33,7 @@
         (version "1.1.15")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in England, from around 1850CE to 1883CE.")
+        (origin "This game was played in England, from around 1850CE to 1883CE.")
         }
-    )    
+    )  
 )

@@ -47,14 +47,13 @@
 
 //------------------------------------------------------------------------------
 
-(game "Hex Amazons"  
-    (players 2)  
+(game "Hex Amazons" 
+    (players 2) 
     (equipment { 
         (board (hex 7)) 
         (piece "Queen" Each ("QueenMove" (then (moveAgain))))
         (piece "Dot" Neutral)
-        }
-    )  
+    }) 
     (rules 
         (start { 
             (place "Queen1" {"B2" "G2" "E5" "B7"})
@@ -82,7 +81,7 @@
         )
         }
         
-        (end (if (no Moves Next)  (result Mover Win) ) )  
+        (end ("BlockWin")) 
     )
 )
 
@@ -102,7 +101,7 @@
         The first player to block the opponent wins.")
         (id "865")
         (source "<a href=\"https://boardgamegeek.com/thread/2501354/hex-amazons\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/blocking")
         (author "Clark Hunter")
         (credit "Eric Piette")

@@ -1,19 +1,11 @@
 (define "Columns" <Board:size>)
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
-
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
-
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "PlayFrom" 
     (play 
-        (move
-            Select 
+        (move Select 
             (from 
-                (if 
-                    (is Mover Prev) 
-                    "PlayFromLastHole" 
+                (if ("SameTurn") 
+                    "LastHoleSowed" 
                     (sites Mover #1) 
                 ) 
                 if:(> (count at:(from)) 0)
@@ -24,19 +16,19 @@
                     owner:(mover)
                     apply:(if (= (count at:(to)) 1)
                         (if (is In (to) (sites Mover "Inner"))
-                            (if (> (count at:"OppositePit") 0) 
+                            (if (> (count at:("OppositePit" (to))) 0) 
                                 (and
                                     (fromTo 
-                                        (from "OppositePit") 
+                                        (from ("OppositePit" (to))) 
                                         (to (handSite Mover)) 
-                                        count:(count at:"OppositePit")
+                                        count:(count at:("OppositePit" (to)))
                                     ) 
                                     (if 
-                                        (> (count at:"OppositeOuterPit") 0) 
+                                        (> (count at:("OppositeOuterPit" (to))) 0) 
                                         (fromTo 
-                                            (from "OppositeOuterPit") 
+                                            (from ("OppositeOuterPit" (to))) 
                                             (to (handSite Mover)) 
-                                            count:(count at:"OppositeOuterPit")
+                                            count:(count at:("OppositeOuterPit" (to)))
                                         ) 
                                     ) 
                                 ) 
@@ -54,8 +46,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Muvalavala (Luena)"  
-    (players 2)  
+(game "Muvalavala (Luena)" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -64,36 +56,27 @@
             (track "Track2" <Board:track2> loop:True P2)
             }
         )
-        (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
-        (regions "Home" P2 (sites Track "Track2"))                              // P2 home
+        (regions "Home" P1 (sites Track "Track1"))               // P1 Home
+        (regions "Home" P2 (sites Track "Track2"))               // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top) ))   // P2 inner Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))  // P2 inner Home
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+    }) 
     (rules 
         
-        (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home") ) ) )
+        (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home"))))
         
         phases:{
-        (phase "Opening" 			  	
+        (phase "Opening" 			 	
             ("PlayFrom" "Inner")
             (nextPhase (>= (count Turns) 2) "Playing")
         )
-        (phase "Playing"  
+        (phase "Playing" 
             ("PlayFrom" "Home")
         )
         }
-        
-        (end
-            (if (no Moves Mover) 
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (no Moves Mover)))
     )
 )
 
@@ -101,17 +84,17 @@
 
 (option "Board Size" <Board> args:{ <size> <track1> <track2> }
     {
-    (item "6"    <6>  <"5,W,N1,E"> <"17,W,N1,E"> "Each player has 6 holes.")*   
-    (item "7"    <7>  <"6,W,N1,E"> <"20,W,N1,E"> "Each player has 7 holes.")   
-    (item "8"    <8>  <"7,W,N1,E"> <"23,W,N1,E"> "Each player has 8 holes.")   
-    (item "9"    <9>  <"8,W,N1,E"> <"26,W,N1,E"> "Each player has 9 holes.")    
-    (item "10"   <10> <"9,W,N1,E"> <"29,W,N1,E"> "Each player has 10 holes.")     
-    (item "11"   <11> <"10,W,N1,E"> <"32,W,N1,E"> "Each player has 11 holes.") 
-    (item "12"   <12> <"11,W,N1,E"> <"35,W,N1,E"> "Each player has 12 holes.")  
-    (item "13"   <13> <"12,W,N1,E"> <"38,W,N1,E"> "Each player has 13 holes.")  
-    (item "14"   <14> <"13,W,N1,E"> <"41,W,N1,E"> "Each player has 14 holes.")   
-    (item "15"   <15> <"14,W,N1,E"> <"44,W,N1,E"> "Each player has 15 holes.")  
-    (item "16"   <16> <"15,W,N1,E"> <"47,W,N1,E"> "Each player has 16 holes.")   
+    (item "6"  <6> <"5,W,N1,E"> <"17,W,N1,E"> "Each player has 6 holes.")*  
+    (item "7"  <7> <"6,W,N1,E"> <"20,W,N1,E"> "Each player has 7 holes.")  
+    (item "8"  <8> <"7,W,N1,E"> <"23,W,N1,E"> "Each player has 8 holes.")  
+    (item "9"  <9> <"8,W,N1,E"> <"26,W,N1,E"> "Each player has 9 holes.")  
+    (item "10"  <10> <"9,W,N1,E"> <"29,W,N1,E"> "Each player has 10 holes.")   
+    (item "11"  <11> <"10,W,N1,E"> <"32,W,N1,E"> "Each player has 11 holes.") 
+    (item "12"  <12> <"11,W,N1,E"> <"35,W,N1,E"> "Each player has 12 holes.") 
+    (item "13"  <13> <"12,W,N1,E"> <"38,W,N1,E"> "Each player has 13 holes.") 
+    (item "14"  <14> <"13,W,N1,E"> <"41,W,N1,E"> "Each player has 14 holes.")  
+    (item "15"  <15> <"14,W,N1,E"> <"44,W,N1,E"> "Each player has 15 holes.") 
+    (item "16"  <16> <"15,W,N1,E"> <"47,W,N1,E"> "Each player has 16 holes.")  
 })
 
 //------------------------------------------------------------------------------
@@ -138,7 +121,7 @@
         (rules "4x6-16 board. Play begins with two counters in each hole. The first move must be from the inner row. Play begins from any of the player's holes, sowing clockwise. When the final counter lands in an occupied hole, these are picked up and sowing continues. Captures are made when the final counter falls into an empty hole in the inner row, and the opponent's hole opposite contains counters. If it is, they are captured, and if the hole in to outer row opposite also contains counters, these are also captured. If the final counter falls into an empty hole and a capture cannot happen, the turn is over. Play ends when one player cannot move.")
         (source "Silva 1995: 87.")
         (id "268")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         (origin  "This game was played in Southwest Africa, around 1995.")

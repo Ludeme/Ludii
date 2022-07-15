@@ -1,10 +1,10 @@
-(define "NotEnemyOrOnlyOne"    
+(define "NotEnemyOrOnlyOne"  
     (or 
         (and 
-            (is Enemy (who at:(to))) 
+            ("IsEnemyAt" (to)) 
             (= (topLevel at:(to)) 0)
         ) 
-        (not (is Enemy (who at:(to))))
+        (not ("IsEnemyAt" (to)))
     )
 )
 
@@ -81,7 +81,7 @@
 
 (define "HaveAPieceAndCanEscape" 
     (and 
-        (is Friend (who at:(site))) 
+        ("IsFriendAt" (site)) 
         (< (trackSite Move from:(site) steps:(pips)) 0)
     )
 )
@@ -94,7 +94,7 @@
 )
 
 (define "InTheStartingPosition" 
-    (= (from) (mapEntry (mover)))  
+    (= (from) (mapEntry (mover))) 
 )
 
 (define "Not14PiecesInThePosition"
@@ -103,8 +103,8 @@
 
 //-----------------------------------------------------------------------------
 
-(game "MahbousehSubgame"  
-    (players 2)  
+(game "MahbousehSubgame" 
+    (players 2) 
     (equipment { 
         (board (rectangle 2 13)
             {
@@ -118,7 +118,7 @@
         (regions "Home" P2 { 7..12 }) 
         (map {(pair 1 12) (pair 2 25)}) // The starting positions of each player.
         (piece "Disc" Each ("MoveAPieceIf" "DieNotUsedAndNoEscapeAndNotOffTheTrack" (from))) 
-    } )
+    })
     
     (rules
         (start { 
@@ -169,7 +169,7 @@
                 (byScore { 
                     ("SetScoreOf" P1 P2)
                     ("SetScoreOf" P2 P1)
-                } )
+                })
             )
         )
     )

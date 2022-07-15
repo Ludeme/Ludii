@@ -1,5 +1,5 @@
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next (forEach Piece))))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next (forEach Piece))))))
 )
 
 (define "KingInTheInitialPlace"
@@ -25,7 +25,7 @@
 
 (define "CaptureToPieceAndResetCounter"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
                 (then (set Counter))
@@ -38,7 +38,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )   
+    )  
 )
 
 (define "DoCastle"
@@ -103,7 +103,7 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
@@ -134,7 +134,7 @@
         Slide 
         Orthogonal 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             "CaptureToPieceAndResetCounter"
         ) 
         "RememberPieceHasMoved"
@@ -145,7 +145,7 @@
     (move
         Step 
         (to 
-            if:(not (is Friend (who at:(to)))) 
+            if:(not ("IsFriendAt" (to))) 
             "CaptureToPieceAndResetCounter"
         ) 
         "RememberPieceHasMoved"
@@ -157,7 +157,7 @@
         Slide 
         Diagonal 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             "CaptureToPieceAndResetCounter"
         ) 
     )		
@@ -168,7 +168,7 @@
         Leap 
         "KnightWalk" 
         (to 
-            if:(not (is Friend (who at:(to)))) 
+            if:(not ("IsFriendAt" (to))) 
             "CaptureToPieceAndResetCounter"
         ) 
     )	
@@ -178,7 +178,7 @@
     (move
         Slide 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             "CaptureToPieceAndResetCounter"
         ) 
     )	
@@ -186,8 +186,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Phase Chess"  
-    (players {(player N) (player S)})  
+(game "Phase Chess" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         (piece "Pawn" Each ("PawnMove"))
@@ -200,10 +200,10 @@
         (map "King" {(pair 1 "E1") (pair 2 "E8")})
         (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})
         (map "RookRight" {(pair 1 "H1") (pair 2 "H8")})
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
         }
-    )  
+    ) 
     (rules 
         (start
             { 
@@ -330,7 +330,7 @@
         (description "Phase Chess is a variant of Chess.")
         (rules "Phase Chess is a variant of Chess played on standard Chess board and Chess set, with same rules as Chess except the next player must move from a cell of the same colour just moved to if they can. It they can not, they can move any piece.")
         (id "1011")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chess")
         (author "Cameron Browne")
         (credit "Eric Piette")

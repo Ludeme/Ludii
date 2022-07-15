@@ -3,14 +3,14 @@
     (move Step (directions {FR FL} of:All) 
         (to if:(or 
                 (is Empty (to)) 
-                (is Enemy (who at:(to)))
+                ("IsEnemyAt" (to))
             ) 
             (apply (remove (to)))
         )
     )		
 )
 
-(define "ReachedTarget" (is In (last To) (sites Mover)) )
+(define "ReachedTarget" (is In (last To) (sites Mover)))
 
 //------------------------------------------------------------------------------
 
@@ -22,7 +22,7 @@
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
         (hand Each)
-    })  
+    }) 
     (rules 
         (start (place "Pawn" "Hand" count:18)) 
         (play 

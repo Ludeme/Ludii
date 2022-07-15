@@ -1,9 +1,9 @@
-(game "Graph Test - Circle"  
-    (players 2)  
+(game "Graph Test - Circle" 
+    (players 2) 
     (equipment { 
         <Board> 
         (piece "Disc") 
-    })  
+    }) 
     (rules 
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
@@ -14,33 +14,33 @@
 
 (option "Board" <Board> args:{ <board> }
     {
-    (item           ""         <(board (circle {}))>                      "Test.")
-    (item          "0"         <(board (circle {0}))>                     "Test.")
-    (item          "1"         <(board (circle {1}))>                     "Test.")
-    (item          "4"         <(board (circle {4}))>                     "Test.")
-    (item          "6"         <(board (circle {6}))>                     "Test.")
-    (item          "8"         <(board (circle {8}))>                     "Test.")*
-    (item        "0 6"         <(board (circle {0 6}))>                   "Test.")
-    (item        "1 4"         <(board (circle {1 4}))>                   "Test.")
-    (item        "4 4"         <(board (circle {4 4}))>                   "Test.")
-    (item        "4 8"         <(board (circle {4 8}))>                   "Test.")
-    (item      "0 4 8"         <(board (circle {0 4 8}))>                 "Test.")
-    (item          "8 stagger" <(board (circle {8} stagger:True))>        "Test.")
-    (item        "0 8 stagger" <(board (circle {0 8} stagger:True))>      "Test.")
-    (item        "1 4 stagger" <(board (circle {1 4} stagger:True))>      "Test.")
-    (item        "4 4 stagger" <(board (circle {4 4} stagger:True))>      "Test.")
-    (item        "4 8 stagger" <(board (circle {4 8} stagger:True))>      "Test.")
-    (item        "6 8 stagger" <(board (circle {6 8} stagger:True))>      "Test.")
-    (item      "0 4 8 stagger" <(board (circle {0 4 8} stagger:True))>    "Test.")
-    (item          "8 Vertex"  <(board (circle {8}) use:Vertex)>          "Test.")
-    (item        "0 8 Vertex"  <(board (circle {0 8}) use:Vertex)>        "Test.")
-    (item        "1 8 Vertex"  <(board (circle {1 8}) use:Vertex)>        "Test.")
-    (item      "1 1 4 Vertex"  <(board (circle {1 1 4}) use:Vertex)>      "Test.")
-    (item      "0 4 8 Vertex"  <(board (circle {0 4 8}) use:Vertex)>      "Test.")
-    (item      "1 4 8 Vertex"  <(board (circle {1 4 8}) use:Vertex)>      "Test.")
-    (item    "0 4 6 8 Vertex"  <(board (circle {0 4 6 8}) use:Vertex)>    "Test.")
-    (item   "1 4 4 20 Vertex"  <(board (circle {1 4 4 20}) use:Vertex)>   "Test.")
-    (item "1 -4 -4 20 Vertex"  <(board (circle {1 -4 -4 20}) use:Vertex)> "Test.")
+    (item      ""     <(board (circle {}))>           "Test.")
+    (item     "0"     <(board (circle {0}))>           "Test.")
+    (item     "1"     <(board (circle {1}))>           "Test.")
+    (item     "4"     <(board (circle {4}))>           "Test.")
+    (item     "6"     <(board (circle {6}))>           "Test.")
+    (item     "8"     <(board (circle {8}))>           "Test.")*
+    (item    "0 6"     <(board (circle {0 6}))>          "Test.")
+    (item    "1 4"     <(board (circle {1 4}))>          "Test.")
+    (item    "4 4"     <(board (circle {4 4}))>          "Test.")
+    (item    "4 8"     <(board (circle {4 8}))>          "Test.")
+    (item   "0 4 8"     <(board (circle {0 4 8}))>         "Test.")
+    (item     "8 stagger" <(board (circle {8} stagger:True))>    "Test.")
+    (item    "0 8 stagger" <(board (circle {0 8} stagger:True))>   "Test.")
+    (item    "1 4 stagger" <(board (circle {1 4} stagger:True))>   "Test.")
+    (item    "4 4 stagger" <(board (circle {4 4} stagger:True))>   "Test.")
+    (item    "4 8 stagger" <(board (circle {4 8} stagger:True))>   "Test.")
+    (item    "6 8 stagger" <(board (circle {6 8} stagger:True))>   "Test.")
+    (item   "0 4 8 stagger" <(board (circle {0 4 8} stagger:True))>  "Test.")
+    (item     "8 Vertex" <(board (circle {8}) use:Vertex)>     "Test.")
+    (item    "0 8 Vertex" <(board (circle {0 8}) use:Vertex)>    "Test.")
+    (item    "1 8 Vertex" <(board (circle {1 8}) use:Vertex)>    "Test.")
+    (item   "1 1 4 Vertex" <(board (circle {1 1 4}) use:Vertex)>   "Test.")
+    (item   "0 4 8 Vertex" <(board (circle {0 4 8}) use:Vertex)>   "Test.")
+    (item   "1 4 8 Vertex" <(board (circle {1 4 8}) use:Vertex)>   "Test.")
+    (item  "0 4 6 8 Vertex" <(board (circle {0 4 6 8}) use:Vertex)>  "Test.")
+    (item  "1 4 4 20 Vertex" <(board (circle {1 4 4 20}) use:Vertex)>  "Test.")
+    (item "1 -4 -4 20 Vertex" <(board (circle {1 -4 -4 20}) use:Vertex)> "Test.")
     }
 )
 

@@ -83,16 +83,14 @@ public final class OverlayView extends View
 			g2d.setColor(Color.BLUE);
 			g2d.drawString("Make Your Own Game", 40, 75);
 			
-			final Font exhbitionLabelFont = new Font("Cantarell", Font.PLAIN, 24);
-			g2d.setFont(exhbitionLabelFont);
-			if (app.manager().ref().context().equipment().containers().length > 3)
+			if (app.manager().ref().context().game().hasSharedPlayer())
 			{
+				final Font exhbitionLabelFont = new Font("Cantarell", Font.PLAIN, 24);
+				g2d.setFont(exhbitionLabelFont);
 				g2d.drawString("1. Choose a board", 30, 150);
-				g2d.drawString("2. Choose pieces (drag onto play area)", 30, 298);
-				g2d.drawString("Movement", 30, 455);
-				g2d.drawString("  Direction", 30, 503);
-				g2d.drawString("   Capture", 30, 551);
-				g2d.drawString("3. Choose goal(s)", 30, 600);
+				
+				if (app.manager().ref().context().board().numSites() > 1)
+					g2d.drawString("2. Drag pieces onto board", 30, 298);
 			}
 			else
 			{

@@ -1,15 +1,15 @@
-(define "SiteToMoveOnTrack" (trackSite Move from:#1 steps:(pips)))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" (pips) from:#1))
 
-(define "RemoveAPiece" (move Select (from #1) (then (if (= (count at:(last To)) 1) (remove (last To)) (set Count at:(last To) (- (count at:(last To)) 1))))) )
+(define "RemoveAPiece" (move Select (from #1) (then (if (= (count at:(last To)) 1) (remove (last To)) (set Count at:(last To) (- (count at:(last To)) 1))))))
 
 (define "PieceMove" 
     (forEach Die 
         combined:True 
         if:(and 
             (!= (pips) 0) 
-            (!= ("SiteToMoveOnTrack" #2) Off)
+            ("IsNotOffBoard" ("SiteToMoveOnTrack" #2))
         )
-        (if (= ("SiteToMoveOnTrack" #2) End)
+        (if ("IsEndTrack" ("SiteToMoveOnTrack" #2))
             ("RemoveAPiece" #1)
             (move 
                 (from #1) 
@@ -17,13 +17,13 @@
                     ("SiteToMoveOnTrack" #2) 
                     if:(not 
                         (and 
-                            (is Enemy (who at:(to))) 
+                            ("IsEnemyAt" (to)) 
                             (> (count at:(to)) 1)
                         )
                     ) 
                     (apply 
                         if:(and 
-                            (is Enemy (who at:(to))) 
+                            ("IsEnemyAt" (to)) 
                             (= (count at:(to)) 1)
                         ) 
                         (fromTo 
@@ -40,14 +40,14 @@
 //------------------------------------------------------------------------------
 
 (game "XII Scripta"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board 
             (add
                 (merge (rectangle 3 6) (shift 7 0 (rectangle 3 6))) 
                 edges:{{5 18} {11 24} {17 30}}
             )
-            {    
+            {  
             (track "Track1" "36,6,E,N1,W,0,E,End" P1 directed:True)
             (track "Track2" "38,6,E,S1,W,12,E,End" P2 directed:True)
             } 
@@ -55,21 +55,18 @@
         )
         (dice num:3)
         (hand Each size:2)
-        
         (piece "Disc" Each ("PieceMove" (from) (from))) 
-    })  
+    }) 
     
     (rules 
-        (start 
-            { 	
+        (start { 	
             (place "Disc1" (handSite P1) count:15)
             (place "Disc2" (handSite P2) count:15)
-            }
-        )	
+        })	
         
         (play 
-            (do (if (not "SameTurn") (roll))
-                next:(if (!= (what at:(handSite Mover 1)) 0)
+            ("RollEachNewTurnMove"
+                (if (!= (what at:(handSite Mover 1)) 0)
                     ("PieceMove" (handSite Mover 1) (handSite Mover))
                     (or (forEach Piece) (forEach Piece container:(mover)))
                     (then (if (can Move 
@@ -85,7 +82,7 @@
             )
         )
         
-        (end (if (no Pieces Mover) (result Mover Win)))
+        (end ("EscapeWin"))
     )
 )
 
@@ -93,7 +90,7 @@
 
 (option "Variant" <Variant> args:{ <type> }
     {
-    (item "Murray"   <>       "The rules are describing with the Murray ruleset.")   
+    (item "Murray"  <>    "The rules are describing with the Murray ruleset.")  
 })
 
 //------------------------------------------------------------------------------
@@ -126,7 +123,7 @@
         (useFor "Ruleset/Historical Information (Incomplete)" (id "533"))
         (source "Murray 1951: 30-31")
         (id "33")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/escape")
         (credit "Eric Piette")
         }

@@ -5,7 +5,7 @@
             (add
                 (add
                     (union
-                        //  external board
+                        // external board
                         (shift 3.45 6
                             (scale 3
                                 (remove
@@ -16,7 +16,7 @@
                                         )
                                         cells:{9}
                                     )
-                                    vertices:{26 30 34 39 35 40 36 31 27 22 18 14  9 13 8 12 17 21 25}
+                                    vertices:{26 30 34 39 35 40 36 31 27 22 18 14 9 13 8 12 17 21 25}
                                 )
                             )
                         )
@@ -135,8 +135,8 @@
             )
         )
         (piece "Marker" Each)
-        (regions P1 { (sites Side NW) (sites Side SE) } )
-        (regions P2 { (sites Side NE) (sites Side SW) } )
+        (regions P1 {(sites Side NW) (sites Side SE) })
+        (regions P2 {(sites Side NE) (sites Side SW) })
     })
     (rules
         (play (move Claim (to (sites Empty))))
@@ -156,7 +156,7 @@
         To win you must form a path of cells of your own color connecting the two border regions of your color.")
         (id "1768")
         (source "<a href=\"http://www.marksteeregames.com/Fractal_rules.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.marksteeregames.com</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/connection")
         (author "Mark Steere")
         (publisher "<a href=\"http://www.marksteeregames.com/Fractal_rules.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.marksteeregames.com</a>")

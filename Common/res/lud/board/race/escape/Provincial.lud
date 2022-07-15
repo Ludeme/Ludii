@@ -1,58 +1,25 @@
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
-        steps:(pips)
-    )
-)
+(define "NextSiteFrom" ("NextSiteOnTrack" (pips) from:#1))
 
-(define "NextSiteFromDist6" 
-    (trackSite Move 
-        from:#1 
-        steps:6
-    )
-)
+(define "NextSiteFromDist6" ("NextSiteOnTrack" 6 from:#1))
 
-(define "DieNotUsed" (!= (pips) 0))
-
-(define "RemoveAPiece" 
-    (move
-        Remove
-        (site) 
-    )		
-)
+(define "RemoveAPiece" (move Remove (site)))
 
 (define "Bar" (mapEntry (mover)))
 
-(define "NotEnemyOrOnlyOne"   
-    (or 
-        (and 
-            (is Enemy (who at:(to))) 
-            (= (topLevel at:(to)) 0)
-        ) 
-        (not (is Enemy (who at:(to))))
-    )
-)
-
 (define "AllPieceEscaped" (no Pieces Mover))
 
-(define "CanEscape" (= #1 Off))
+(define "CanEscape" ("IsOffBoard" #1))
 
 //-----------------------------------------------------------------------------
 
-(game "Provincial"  
-    (players 2)  
+(game "Provincial" 
+    (players 2) 
     (equipment { 
-        (board (rectangle 2 13) 
-            {
-            (track "Track1" {6 12..7 5..0 13..18 20..25} P1 directed:True)
-            (track "Track2" {19 25..20 18..13 0..5 7..12} P2 directed:True)
-            } 
-            use:Vertex
-        ) 
+        ("BackgammonBoard" ("BackgammonTracksWithBar")) 
         (dice num:3)
-        (map {(pair 1 19 ) (pair 2 6)}) // Bar
+        (map {(pair 1 19) (pair 2 6)}) // Bar
         (piece "Disc" Each) 
-    } )
+    })
     
     (rules
         (start { 
@@ -63,9 +30,8 @@
         })
         
         (play 
-            (do 
-                (if (not "SameTurn") (roll))
-                next:(forEach Die
+            ("RollEachNewTurnMove"
+                (forEach Die
                     if:("DieNotUsed")
                     (forEach Site
                         (sites Occupied by:Mover)
@@ -74,24 +40,13 @@
                             (move 
                                 (from (site))
                                 (to ("NextSiteFrom" (site))
-                                    if:("NotEnemyOrOnlyOne")
-                                    (apply 
-                                        if:(is Enemy (who at:(to))) 
-                                        (fromTo 
-                                            (from (to)) 
-                                            (to ("Bar"))
-                                        )
-                                    )
+                                    if:("NoEnemyOrOnlyOne" (to))
+                                    ("HittingCapture" ("Bar"))
                                 )
                             )
                         )
                     )
-                    (then 
-                        (if 
-                            (not (all DiceUsed)) 
-                            (moveAgain)
-                        )
-                    )
+                    (then ("ReplayNotAllDiceUsed"))
                 )
             )
         )
@@ -115,7 +70,7 @@
         ")
         (source "Murray 1951: 123.")
         (id "1115")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/escape")
         (credit "Eric Piette")
         (origin  "This game was played in England, from around 1300 to 1350.")

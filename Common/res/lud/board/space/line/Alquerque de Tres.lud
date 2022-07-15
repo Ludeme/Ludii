@@ -1,16 +1,14 @@
 (game "Alquerque de Tres"
-    (players 2)  
-    (equipment 
-        {
+    (players 2) 
+    (equipment {
         ("AlquerqueBoard" 3 3)
         (hand Each)
         (piece "Marker" Each)
-        }
-    )  
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:3))
-        (play (move (from (handSite Mover)) (to (sites Empty))) )
-        (end (if (is Line 3) (result Mover Win)))
+        (play (move (from (handSite Mover)) (to (sites Empty))))
+        (end ("Line3Win"))
     )
 )
 
@@ -23,7 +21,7 @@
         (rules "3x3 intersecting lines, with diagonal lines of the board. Three pieces per player. players alternate turns placing a piece on one of the empty spots. The player who places their pieces in a line wins.")
         (source "Libro de los Juegos 93.")
         (id "737")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line")
         (credit "Matthew Stephenson")
         }

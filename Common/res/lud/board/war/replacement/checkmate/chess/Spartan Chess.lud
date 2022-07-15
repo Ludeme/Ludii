@@ -1,4 +1,4 @@
-//----------------------- Kings  -------------------------------------------------------
+//----------------------- Kings -------------------------------------------------------
 
 // #1 - P1 or P2
 (define "SitesKings"
@@ -27,7 +27,7 @@
 )
 
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInOmnicheck" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInOmnicheck" Next)))))
 )
 
 //----------------------- Castling -------------------------------------------------------
@@ -62,7 +62,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )   
+    )  
 )
 
 // This macro defines one piece move of a castling manouvre
@@ -96,7 +96,7 @@
 
 (define "CaptureToPieceAndResetCounter"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
                 (then (set Counter))
@@ -112,7 +112,7 @@
         Slide 
         #1
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             "CaptureToPieceAndResetCounter"
         ) 
         #2
@@ -126,7 +126,7 @@
         Step 
         #1
         (to 
-            if:(not (is Friend (who at:(to)))) 
+            if:(not ("IsFriendAt" (to))) 
             "CaptureToPieceAndResetCounter"
         ) 
         #2
@@ -139,7 +139,7 @@
         Hop 
         #1 
         (to 
-            if:(or (is Enemy (who at:(to))) (is Empty (to)))
+            if:(or ("IsEnemyAt" (to)) (is Empty (to)))
             "CaptureToPieceAndResetCounter"
         ) 
     )
@@ -150,7 +150,7 @@
         Leap 
         "KnightWalk" 
         (to 
-            if:(not (is Friend (who at:(to)))) 
+            if:(not ("IsFriendAt" (to))) 
             "CaptureToPieceAndResetCounter"
         ) 
     )
@@ -175,7 +175,7 @@
         Step 
         #1
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
@@ -201,21 +201,21 @@
     )
 )
 
-(define "PawnDirections" (directions { FL FR }) )
+(define "PawnDirections" (directions { FL FR }))
 
 //----------------------- Core -------------------------------------------------------
 
-(game "Spartan Chess"  
-    (players {(player N) (player S)})  
+(game "Spartan Chess" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
         (piece "Pawn" P1 
             (or {
                 (if (is In (from) (sites Start (piece (what at:(from)))))
-                    ("PawnDoubleMove" Forward (between if:(is Empty (between))) )
+                    ("PawnDoubleMove" Forward (between if:(is Empty (between))))
                 )
-                ("PawnMove" Forward ) 
+                ("PawnMove" Forward) 
                 ("PawnCapture" ("PawnDirections"))
                 }
                 ("PawnPromotion")
@@ -224,7 +224,7 @@
         (piece "Hoplite" P2
             (or {
                 (if (is In (from) (sites Start (piece (what at:(from)))))
-                    ("PawnDoubleMove" ("PawnDirections") )
+                    ("PawnDoubleMove" ("PawnDirections"))
                 )
                 ("PawnMove" ("PawnDirections")) 
                 ("PawnCapture" Forward)
@@ -239,7 +239,7 @@
         (piece "General" P2
             (or
                 ("SlideMove" Orthogonal)
-                ("StepMove" Diagonal ) 
+                ("StepMove" Diagonal) 
             )
         )
         (piece "Warlord" P2
@@ -250,7 +250,7 @@
         )
         (piece "Lieutenant" P2
             (or {
-                ("StepMove" Diagonal ) 
+                ("StepMove" Diagonal) 
                 ("HopMove" Diagonal)
                 (move
                     Step 
@@ -263,7 +263,7 @@
         )
         (piece "Captain" P2
             (or
-                ("StepMove" Orthogonal ) 
+                ("StepMove" Orthogonal) 
                 ("HopMove" Orthogonal)
             )
         )
@@ -281,10 +281,10 @@
             ("SlideMove")
         )
         
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
         }
-    )  
+    ) 
     (rules 
         (start
             { 
@@ -305,7 +305,7 @@
         
         (play 
             (if "SameTurn"
-                (if (= (mover)  (id P1))
+                (if (= (mover) (id P1))
                     (move Promote (last To) (piece {"Queen" "Knight" "Bishop" "Rook"}) Mover)
                     (if (= 1 ("CountSpartanKings"))
                         (move Promote (last To) (piece {"King" "Captain" "General" "Warlord" "Lieutenant"}) Mover)
@@ -398,7 +398,7 @@
         Spartan Kings may not castle. Persian Kings may castle as normal.")
         (id "1396")
         (source "<a href=\"https://boardgamegeek.com/boardgame/86997/spartan-chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chess")
         (author "Steven Streetman")
         (credit "Nicholas Bamber (building on Eric Piette's implementation of chess)")

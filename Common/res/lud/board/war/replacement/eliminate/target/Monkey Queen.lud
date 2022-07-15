@@ -6,9 +6,9 @@
             (or {
                 (move Slide
                     (to 
-                        if:(is Enemy (who at:(to))) // Capturing Queen Move and Capturing Baby Monkey Move
+                        if:("IsEnemyAt" (to)) // Capturing Queen Move and Capturing Baby Monkey Move
                         (apply 
-                            if:(is Enemy (who at:(to)))
+                            if:("IsEnemyAt" (to))
                             (remove (to) count:(size Stack at:(to)))
                         )
                     )
@@ -94,7 +94,7 @@
         NOTE: There's no requirement to make a kill in Monkey Queen. ")
         (id "1765")
         (source "<a href=\"http://www.marksteeregames.com/Monkey_Queen_rules.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.marksteeregames.com</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/eliminate/target")
         (author "Mark Steere")
         (publisher "<a href=\"http://www.marksteeregames.com/Monkey_Queen_rules.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.marksteeregames.com</a>")

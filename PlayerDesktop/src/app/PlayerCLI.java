@@ -13,6 +13,7 @@ import supplementary.experiments.eval.EvalAgents;
 import supplementary.experiments.eval.EvalGames;
 import supplementary.experiments.eval.EvalGate;
 import supplementary.experiments.optim.EvolOptimHeuristics;
+import supplementary.experiments.scripts.GenerateBiasedMCTSEvalScripts;
 import supplementary.experiments.scripts.GenerateFeatureEvalScripts;
 import supplementary.experiments.scripts.GenerateGatingScripts;
 import supplementary.experiments.speed.PlayoutsPerSec;
@@ -68,6 +69,7 @@ public class PlayerCLI
 					"--tutorial-generation",
 					"--game-distance",
 					"--generate-feature-eval-scripts",
+					"--generate-biased-mcts-eval-scripts",
 					"--kilothon"
 				)
 				.withNumVals(1)
@@ -110,6 +112,8 @@ public class PlayerCLI
 			CompareAllDistanceMetrics.main(passArgs);
 		else if (command.equalsIgnoreCase("--generate-feature-eval-scripts"))
 			GenerateFeatureEvalScripts.main(passArgs);
+		else if (command.equalsIgnoreCase("--generate-biased-mcts-eval-scripts"))
+			GenerateBiasedMCTSEvalScripts.main(passArgs);
 		else if (command.equalsIgnoreCase("--kilothon"))
 			Kilothon.main(passArgs);
 		else

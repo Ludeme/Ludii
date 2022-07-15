@@ -1,6 +1,6 @@
 // Shape matching utility
 
-(define "IfThisRotationDo"  // compiles but sometimes misses
+(define "IfThisRotationDo" // compiles but sometimes misses
     (if
         (= 0
             (size Array
@@ -52,18 +52,18 @@
         ("IsSameSizeAsShapeAtValue" #2) 
         (priority 
             {
-            ("IfThisRotationDo" ("DRow")        ("DCol") #1 #2) 
-            ("IfThisRotationDo" ("DRow")        (- "DRow" "DCol") #1 #2) 
+            ("IfThisRotationDo" ("DRow")    ("DCol") #1 #2) 
+            ("IfThisRotationDo" ("DRow")    (- "DRow" "DCol") #1 #2) 
             ("IfThisRotationDo" (- "DRow" "DCol") ("DRow") #1 #2) 
-            ("IfThisRotationDo" ("DCol")        ("DRow") #1 #2) 
-            ("IfThisRotationDo" (- "DCol")        (- "DRow" "DCol") #1 #2) 
+            ("IfThisRotationDo" ("DCol")    ("DRow") #1 #2) 
+            ("IfThisRotationDo" (- "DCol")    (- "DRow" "DCol") #1 #2) 
             ("IfThisRotationDo" (- "DCol" "DRow") ("DCol") #1 #2) 
             
-            ("IfThisRotationDo" (- "DRow")        (- "DCol") #1 #2) 
-            ("IfThisRotationDo" (- "DRow")        (- "DCol" "DRow") #1 #2) 
+            ("IfThisRotationDo" (- "DRow")    (- "DCol") #1 #2) 
+            ("IfThisRotationDo" (- "DRow")    (- "DCol" "DRow") #1 #2) 
             ("IfThisRotationDo" (- "DCol" "DRow") (- "DRow") #1 #2) 
-            ("IfThisRotationDo" (- "DCol")        (- "DRow") #1 #2) 
-            ("IfThisRotationDo" ("DCol")        (- "DCol" "DRow") #1 #2) 
+            ("IfThisRotationDo" (- "DCol")    (- "DRow") #1 #2) 
+            ("IfThisRotationDo" ("DCol")    (- "DCol" "DRow") #1 #2) 
             ("IfThisRotationDo" (- "DRow" "DCol") (- "DCol") #1 #2) 
             }
         )
@@ -113,7 +113,7 @@
 (define "CountShapesOf"
     (forEach Value
         (values Remembered)
-        (and
+        (and 
             {
             (set Var "KeySite" (value)
                 (then
@@ -147,7 +147,7 @@
                     (then
                         (forEach Piece (addScore Mover (state at:(from))))
                     )
-                )     
+                )   
                 }
             )
         )
@@ -170,14 +170,12 @@
 //--------------------------------------------------------- 
 (game "Brood" 
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board <Board:size> use:Cell)
         (piece "Hex" Each maxState:7 maxValue:1023) // 32rows * 32columns for recording vectors
         (piece "Disc" Neutral)
         (hand Shared)
-        }
-    )
+    })
     (rules
         <Protocol:pie>
         <Protocol:setup>
@@ -185,13 +183,12 @@
             <Protocol:protocol>
         )
         (end
-            (if
-                <Protocol:endCondition>
+            (if <Protocol:endCondition>
                 (byScore)
             )
         )
     )
-)   
+)  
 
 //---------------
 
@@ -222,7 +219,7 @@
         (if 
             (or
                 (= 0 (count Moves))
-                (!= 0 (count MovesThisTurn))//(is Prev Mover)
+                (!= 0 (count MovesThisTurn))//("SameTurn")
             )
             ("PlaceHex")
             (or
@@ -277,6 +274,38 @@
 (metadata
     (info
         {
+        (description "Brood is a polyhex-matching game for two players – Black and White – played on an initially empty hexhex board. Michael Amundsen invented Brood in May 2022.")
+        (rules "Definitions:
+            1 A group is a stone along with all stones one can reach from it through a series of steps onto adjacent stones of the same color.
+            1.1 The size of a group is the number of stones in it.
+            
+            2 A brood is a group along with all other groups of identical color, size and shape. Shapes are considered identical across symmetries (just like in Bug).
+            2.1 The size of a brood is the number of groups in it.
+            2.2 The order of a brood is the size of the groups in it.
+            2.3 The mass of a brood is the number of stones in it (its size times its order).
+            
+            Play:
+            On your turn, you must take one of the following two actions:
+            • Place 1 stone of your color
+            • Place 2 stones of a neutral color
+            Placement is always onto empty cells.
+            
+            In this implementation, 
+            (i) to place a piece of your color, you simply click an empty cell,
+            (ii) to place two neutrals, first click the neutral piece above the board, then two empty cells.
+            
+            When the board is full, the player with the higher score wins.
+            
+            Scoring:
+            For each of your broods, you score its mass multiplied by the lesser of its size and its order.
+            
+        For example, if a brood consists of 2 groups of size 3, it is worth 12 points. Its order is 3, its size is 2 and its mass is 6. Since 2 is smaller than 3, the brood is worth 6*2 = 12.")
+        (id "1998")
+        (version "1.3.5")
+        (classification "board/space/group")
+        (author "Michael Admundsen")
+        (credit "Dale Walton")
+        (date "2022")
         }
     )
     (graphics

@@ -2,7 +2,7 @@
     (not (all Sites (difference (sites Occupied by:Shared) (sites #1))
             if:(and
                 (= 0 (count Sites in:(sites LineOfSight Farthest at:(site) #2)))
-                (!=  
+                (!= 
                     (what at:(site))
                     (what at:(regionSite (sites LineOfSight Piece at:(site) #2) index:0))
                 )
@@ -29,7 +29,7 @@
         (if (is Occupied (site))
             (if 
                 (and
-                    (=  
+                    (= 
                         (what at:(site))
                         (what at:("LineOfSightPiece" #3))
                     )
@@ -107,7 +107,7 @@
         (piece "Square256" Shared)
         (piece "Square512" Shared)
         (piece "Square1024" Shared)
-        (piece "Square2048" Shared)   
+        (piece "Square2048" Shared)  
         (map "Promotion" {
             (pair (id "Square2" Shared) (id "Square4" Shared))
             (pair (id "Square4" Shared) (id "Square8" Shared))
@@ -183,7 +183,7 @@
         (rules "2048 is played on a plain 4×4 grid, with numbered tiles that slide when a player moves them. Every turn, a new tile randomly appears in an empty spot on the board with a value of either 2 or 4. Tiles slide as far as possible in the chosen direction until they are stopped by either another tile or the edge of the grid. If two tiles of the same number collide while moving, they will merge into a tile with the total value of the two tiles that collided. The resulting tile cannot merge with another tile again in the same move. The game is won when a tile with a value of 2048 appears on the board.")
         (id "1979")
         (source "<a href=\"https://en.wikipedia.org/wiki/2048_(video_game)\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "puzzle/planning")
         (author "Gabriele Cirulli")
         (credit "Eric Piette")

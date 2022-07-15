@@ -1,4 +1,3 @@
-
 (define "WolfBeyondSheepRow"
     (= 0 
         (count Sites 
@@ -15,22 +14,14 @@
 
 //------------------------------------------------------------------------------
 
-(game "Wolf und Schaaf"  
-    (players 2)  
-    (equipment 
-        { 
+(game "Wolf und Schaaf" 
+    (players 2) 
+    (equipment { 
         (board (square 8)) 
-        (piece "Sheep" P2 N 
-            (move 
-                Step 
-                (directions {FR FL}) 
-                (to if:(is Empty (to)))
-            )
-        ) 
+        (piece "Sheep" P2 N ("StepToEmpty" (directions {FR FL}))) 
         (piece "Wolf" P1 "StepDiagonalToEmpty")
         (hand P1)
-        }
-    )  
+    }) 
     (rules 
         (start {
             (place "Wolf1" (handSite P1))
@@ -47,15 +38,13 @@
             )
             (nextPhase "Playing")
         )
-        (phase "Playing" 
-            (play (forEach Piece))
-        )	
+        (phase "Playing" (play (forEach Piece)))	
         }
         
         (end {
-            (if (and (no Moves P1) (is Mover P1)) (result P2 Win) )
-            (if ("WolfBeyondSheepRow") (result P1 Win) )
-        })  
+            (if (and (no Moves P1) (is Mover P1)) (result P2 Win))
+            (if ("WolfBeyondSheepRow") (result P1 Win))
+        }) 
     )
 )
 
@@ -70,7 +59,7 @@
         (rules "8x8 checkered board. One player plays as four sheep (white pieces), which begin on the four dark squares on one side of the board. The other player plays as one wolf (black piece), which can be placed on any dark space on the board. Players alternate turns moving a piece to an empty adjacent dark square on the board. The sheep move forward only but the wolf may also move backward. The goal of the sheep is to block the wolf from being able to move, the goal of the wolf is to move beyond the line of sheep.")
         (source "Alvensleben 1853: 645.")
         (id "1075")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/hunt")
         (credit "Eric Piette")
         (origin  "This game was played in Germany, around 1853.")

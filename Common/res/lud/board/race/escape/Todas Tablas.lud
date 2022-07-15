@@ -1,49 +1,32 @@
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
-        steps:#2
-    )
-)
-
-(define "DieNotUsed" (!= (pips) 0))
-
-(define "NotEnemyOrOnlyOne"    
-    (or 
-        (and 
-            (is Enemy (who at:(to))) 
-            (= (topLevel at:(to)) 0)
-        ) 
-        (not (is Enemy (who at:(to))))
-    )
-)
+(define "NextSiteFrom" ("NextSiteOnTrack" #2 from:#1))
 
 (define "GoBack" 
     (if (and (!= (to) (regionSite (sites #1 "StartQuadrant") index:0))
-            (not (is Friend (who at:(regionSite (sites #1 "StartQuadrant") index:0))))
+            (not ("IsFriendAt" (regionSite (sites #1 "StartQuadrant") index:0)))
         )
         (regionSite (sites #1 "StartQuadrant") index:0)
         (if (and (!= (to) (regionSite (sites #1 "StartQuadrant") index:1))
-                (not (is Friend (who at:(regionSite (sites #1 "StartQuadrant") index:1))))
+                (not ("IsFriendAt" (regionSite (sites #1 "StartQuadrant") index:1)))
             )
             (regionSite (sites #1 "StartQuadrant") index:1)
             (if (and (!= (to) (regionSite (sites #1 "StartQuadrant") index:2))
-                    (not (is Friend (who at:(regionSite (sites #1 "StartQuadrant") index:2))))
+                    (not ("IsFriendAt" (regionSite (sites #1 "StartQuadrant") index:2)))
                 )
                 (regionSite (sites #1 "StartQuadrant") index:2)
                 (if (and (!= (to) (regionSite (sites #1 "StartQuadrant") index:3))
-                        (not (is Friend (who at:(regionSite (sites #1 "StartQuadrant") index:3))))
+                        (not ("IsFriendAt" (regionSite (sites #1 "StartQuadrant") index:3)))
                     )
                     (regionSite (sites #1 "StartQuadrant") index:3)
                     (if (and (!= (to) (regionSite (sites #1 "StartQuadrant") index:4))
-                            (not (is Friend (who at:(regionSite (sites #1 "StartQuadrant") index:4))))
+                            (not ("IsFriendAt" (regionSite (sites #1 "StartQuadrant") index:4)))
                         )
                         (regionSite (sites #1 "StartQuadrant") index:4)
                         (if (and (!= (to) (regionSite (sites #1 "StartQuadrant") index:5))
-                                (not (is Friend (who at:(regionSite (sites #1 "StartQuadrant") index:5))))
+                                (not ("IsFriendAt" (regionSite (sites #1 "StartQuadrant") index:5)))
                             )
                             (regionSite (sites #1 "StartQuadrant") index:5)
                             (if (and (!= (to) (regionSite (sites #1 "StartQuadrant") index:6))
-                                    (not (is Friend (who at:(regionSite (sites #1 "StartQuadrant") index:6))))
+                                    (not ("IsFriendAt" (regionSite (sites #1 "StartQuadrant") index:6)))
                                 )
                                 (regionSite (sites #1 "StartQuadrant") index:6)
                                 Off
@@ -61,46 +44,23 @@
 (game "Todas Tablas"
     (players 2)
     (equipment {
-        (board 
-            (merge {
-                (rectangle 1 6) 
-                (shift 7 0 (rectangle 1 6) )
-                (shift 0 6 (rectangle 1 6) )
-                (shift 7 6 (rectangle 1 6) )
-            })
-            {
-            (track "Track1" {11..0 12..23} P1 directed:True)
-            (track "Track2" {23..12 0..11} P2 directed:True)
-            }
-            use:Vertex
-        )
+        ("TableBoard" "TableTracksOpposite2")
         (dice d:6 num:2)
         (piece "Disc" Each
             (forEach Die 
                 if:("DieNotUsed")
-                (if (= Off ("NextSiteFrom" (from) (pips)))
+                (if ("IsOffBoard" ("NextSiteFrom" (from) (pips)))
                     (move Remove (from))
                     (move 
                         (from (from))
                         (to 
                             ("NextSiteFrom" (from) (pips))
-                            if:("NotEnemyOrOnlyOne")
-                            (apply 
-                                (if (is Enemy (who at:(to)))
-                                    (fromTo 
-                                        (from (to))
-                                        (to ("GoBack" Next))
-                                    )
-                                )
-                            )
+                            if:("NoEnemyOrOnlyOne" (to))
+                            ("HittingCapture" ("GoBack" Next))
                         )
                     )
                 )
-                (then 
-                    (if (not (all DiceUsed))
-                        (moveAgain)
-                    )
-                )
+                (then ("ReplayNotAllDiceUsed"))
             )
         )
         (regions "StartQuadrant" P1 (sites {6..11}))
@@ -113,12 +73,12 @@
         })
         
         (play 
-            (do (if (not "SameTurn") (roll))
-                next:(forEach Piece)
+            ("RollEachNewTurnMove"
+                (forEach Piece)
             )
         )
         
-        (end (if (no Pieces Mover) (result Mover Win)))
+        (end ("EscapeWin"))
     )
 )
 
@@ -132,7 +92,7 @@
         (rules "2x12 board, divided in half. Spaces on each side take the form of semi-circular sockets, into which the pieces fit. The points form a continuous track in a horseshoe shape; each player progresses in opposite directions (one from their bottom right to the top right, the other from their bottom left to their top left). Fifteen pieces per player. The starting position is as such, number the points from the origin of each player's track: point six: five pieces; point 8: three pieces; point 13: five pieces; point 24: two pieces. Two dice. Players move according to the number on each die by moving one piece the value on one die then another piece the value on the other die, or by moving one piece the value of one die and then the value of the other. When a player's piece lands on a spot occupied by a single piece belonging to the opponent, the opponent's piece is sent back to the quadrant in which that player started with two pieces. Players bear off their pieces at the end of their track. The first player to bear off all their pieces wins.")
         (source "Libro de los Juegos 77-78.")
         (id "734")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/escape")
         (credit "Eric Piette")
         (origin  "This game was played in Spain, from around 1283 to 1674.")
@@ -146,4 +106,3 @@
     })
     
 )
-

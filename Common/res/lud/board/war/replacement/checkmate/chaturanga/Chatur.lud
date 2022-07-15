@@ -1,6 +1,6 @@
 (define "CaptureEnemyToPiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove (to))
         )
     ) 
@@ -11,14 +11,14 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
 )
 
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
 )
 
 (define "SitesNextToKing" (sites {"D1" "F1" "C8" "E8"}))
@@ -32,13 +32,13 @@
 //------------------------------------------------------------------------------
 
 (game "Chatur"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment {
-        (board (square 8) )
+        (board (square 8))
         (piece "King_noCross"
             (or
                 (move Step
-                    (to if:(not (is Friend (who at:(to))))
+                    (to if:(not ("IsFriendAt" (to)))
                         ("CaptureEnemyToPiece")
                     )
                     (then
@@ -55,7 +55,7 @@
                                 (exact 2)
                             )
                             (to 
-                                if:(is Enemy (who at:(to))) 
+                                if:("IsEnemyAt" (to)) 
                                 "CaptureEnemyToPiece"
                             ) 
                         )
@@ -63,7 +63,7 @@
                             Leap 
                             "KnightWalk" 
                             (to 
-                                if:(not (is Friend (who at:(to)))) 
+                                if:(not ("IsFriendAt" (to))) 
                                 "CaptureEnemyToPiece"
                             ) 
                         )
@@ -106,7 +106,7 @@
                 Slide 
                 Orthogonal
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureEnemyToPiece"
                 ) 
                 (then
@@ -124,7 +124,7 @@
                 Slide 
                 Diagonal
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureEnemyToPiece"
                 ) 
             )		
@@ -134,7 +134,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureEnemyToPiece"
                 ) 
             )		
@@ -148,7 +148,7 @@
                         (exact 3)
                     )
                     (to 
-                        if:(is Enemy (who at:(to))) 
+                        if:("IsEnemyAt" (to)) 
                         "CaptureEnemyToPiece"
                     ) 
                     (then
@@ -170,16 +170,16 @@
             (move
                 Slide 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureEnemyToPiece"
                 ) 
             ) 		
         )
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
     })
     (rules 
-        (start {   
+        (start {  
             (place "Pawn1" (sites Row 1))
             (place "Pawn2" (sites Row 6))
             (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Bishop_noCross1" {"C1" "F1"}) (place "Queen1" coord:"D1") (place "King_noCross1" coord:"E1") 
@@ -207,7 +207,7 @@
                 ) 
                 (result Mover Win)
             ) 
-            (if (= (count Pieces Next) 1) (result Mover Loss) ) 
+            (if (= (count Pieces Next) 1) (result Mover Loss)) 
         })
     )
 )
@@ -223,7 +223,7 @@
         (rules "8x8 board. Pieces have special moves, as follows: Rátu (king), moves one square in any direction, but on the first move, if it has not been checked, may move two spaces in any direction or like a Járan; Pateh (minister), moves orthogonally or diagonally any number of spaces; Mántri (x2); move diagonally any distance; Járan (horse) x2, moves orthogonally one space then diagonal one space from there, jumping over any intervening pieces; Práhu (vessel) x2, moves orthogonally any distance; Bídak (pawn) x8: moves one square forward or one square forward diagonally to capture. May move two spaces forward orthogonally if it is that piece's first move. Upon reaching the opposite edge of the board, the Bídak must move backward diagonally three spaces before being promoted to Pateh, unless it is in one of the corner spaces, in which case it is promoted immediately. There is no limit to the number of Patehs on the board. To castle, the Práhu moves next to the Rátu, and then at any turn in the future the Rátu may move to the space on the other side of it, provided the Rátu has not yet been checked and that the space to which it moves remains available. The Rátu cannot be in check at the end of its turn. When this is unavoidable, it is checkmate and the opponent wins. If the Rátu is the only piece belonging to the player on the board, that player wins.")
         (source "Raffles 1817: 390.")
         (id "813")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
         (origin  "This game was played in Java, around 1817.")

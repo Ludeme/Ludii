@@ -1,12 +1,12 @@
-(game "Pasakakrida (Type 5)"  
-    (players 2)  
+(game "Pasakakrida (Type 5)" 
+    (players 2) 
     (equipment { 
         (board 
             (merge {
                 (rectangle 1 6) 
-                (shift 7 0 (rectangle 1 6) )
-                (shift 0 6 (rectangle 1 6) )
-                (shift 7 6 (rectangle 1 6) )
+                (shift 7 0 (rectangle 1 6))
+                (shift 0 6 (rectangle 1 6))
+                (shift 7 6 (rectangle 1 6))
             })
             {
             (track "Track1" [#] P1 directed:True)
@@ -20,11 +20,11 @@
                 (from (from) level:(level))
                 (to ("NextSiteFrom" (from))
                     if:(or 
-                        (not (is Enemy (who at:(to)))) 
-                        (and (is Enemy (who at:(to))) (= 1 (size Stack at:(to))))
+                        (not ("IsEnemyAt" (to))) 
+                        (and ("IsEnemyAt" (to)) (= 1 (size Stack at:(to))))
                     )
                     (apply 
-                        (if (is Enemy (who at:(to))) 
+                        (if ("IsEnemyAt" (to)) 
                             (fromTo
                                 (from (to))
                                 (to (mapEntry Next))
@@ -34,7 +34,7 @@
                 )
             )
         )
-    })  
+    }) 
     (rules 
         (start {
             (place Stack "Disc1" 2 count:4)
@@ -55,7 +55,7 @@
                 (if (not "SameTurn") (roll))
                 next:(forEach Die 
                     if:("DieNotUsed")
-                    (forEach Piece top:True                
+                    (forEach Piece top:True        
                         (then 
                             (if (not (all DiceUsed))
                                 (moveAgain)
@@ -72,9 +72,9 @@
 //------------------------------------------------------------------------------
 
 (option "Dice" <Dice> args:{ <dice> } {
-    (item "Two Four-Sided Dice"    <(dice d:4 faces:{2 3 4 5} num:2) >   "The game is played with two four-sided dice.")  
-    (item "Two Cubic Dice"    <(dice d:6 num:2) >   "The game is played with two cubic dice.")   
-    (item "Three Cubic Dice"    <(dice d:6 num:3)>   "The game is played with three cubic dice.")   
+    (item "Two Four-Sided Dice"  <(dice d:4 faces:{2 3 4 5} num:2) >  "The game is played with two four-sided dice.") 
+    (item "Two Cubic Dice"  <(dice d:6 num:2) >  "The game is played with two cubic dice.")  
+    (item "Three Cubic Dice"  <(dice d:6 num:3)>  "The game is played with three cubic dice.")  
 })
 
 //------------------------------------------------------------------------------
@@ -112,7 +112,7 @@
         (useFor "Ruleset/Three Six-Sided Dice (Incomplete)" (source "Bock-Raming 1995a."))
         (useFor "Ruleset/Three Six-Sided Dice (Incomplete)" (id "1757"))
         (source "Bock-Raming 1995: 114-115.")
-        (version "1.3.2")
+        (version "1.3.5")
         (classification "board/race/escape/reconstruction")
         (origin  "This game was played in India, from around 1126 to 1138.")
         }

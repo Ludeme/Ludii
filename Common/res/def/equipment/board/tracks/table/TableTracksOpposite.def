@@ -1,0 +1,10 @@
+// Defines two opposite table tracks.
+// #1 = An optional End site.
+// @example ("TableTracksOpposite")
+
+(define "TableTracksOpposite"
+    {
+    (track "Track1" {0..11 23..12 #1} P1 directed:True)
+    (track "Track2" {12..23 11..0 #1} P2 directed:True)
+    }
+)

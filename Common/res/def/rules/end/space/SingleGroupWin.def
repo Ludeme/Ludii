@@ -1,0 +1,8 @@
+// Checks if only one single group with pieces owned by a player exists. This ludemeplex can be used only in an ending condition.
+// #1 = The owner of the pieces in the group.
+// #2 = The direction used to connect the pieces in the group (by default Adjacent).
+// @example ("SingleGroupWin" Mover)
+
+(define "SingleGroupWin"
+    (if ("IsSingleGroup" #1 #2) (result #1 Win))
+)

@@ -1,5 +1,5 @@
 (game "TestLoopTrack"
-    (players 1)  
+    (players 1) 
     (equipment 
         { 
         (board 
@@ -7,7 +7,7 @@
             {(track "Track1" "0,E4,N2,W2,S2,E6" P1 directed:True)}
         )
         (piece "Marker" P1
-            (if (not (= (trackSite Move steps:2) Off))  	 			
+            (if (not (= (trackSite Move steps:2) Off)) 	 			
                 (fromTo 
                     (from)
                     (to 
@@ -18,7 +18,7 @@
         )
         
         }
-    )  
+    ) 
     
     (rules 
         (start 

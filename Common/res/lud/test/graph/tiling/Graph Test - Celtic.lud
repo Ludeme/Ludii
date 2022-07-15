@@ -1,9 +1,9 @@
-(game "Graph Test - Celtic"  
-    (players 2)  
+(game "Graph Test - Celtic" 
+    (players 2) 
     (equipment { 
         (board <Board>) 
         (piece "Disc") 
-    })  
+    }) 
     (rules 
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
@@ -14,13 +14,13 @@
 
 (option "Tiling Type" <Board> args:{ <type> }
     {
-    (item "1"    <(celtic 1)>    "")  
-    (item "2"    <(celtic 2)>    "")  
-    (item "3"    <(celtic 3)>    "")  
-    (item "1x3"  <(celtic 1 3)>    "")  
-    (item "3x4"  <(celtic 3 4)>    "")  
-    (item "9x12" <(celtic 9 12)>    "")  
-    (item "Poly" <(celtic (poly {{0 0} {0 3} {2 3} {2 5} {5 5} {3 0}}))>    "")  
+    (item "1"  <(celtic 1)>  "") 
+    (item "2"  <(celtic 2)>  "") 
+    (item "3"  <(celtic 3)>  "") 
+    (item "1x3" <(celtic 1 3)>  "") 
+    (item "3x4" <(celtic 3 4)>  "") 
+    (item "9x12" <(celtic 9 12)>  "") 
+    (item "Poly" <(celtic (poly {{0 0} {0 3} {2 3} {2 5} {5 5} {3 0}}))>  "") 
     (item "Plus" 
         <(celtic 
             (poly {
@@ -34,7 +34,7 @@
                 {3 0} {3 6} {0 6} {0 9} {3 9} {3 13} {6 13} {6 9} {10 9} {10 6} {6 6} {6 0} 
             })
         )> ""
-    )  
+    ) 
 })
 
 //------------------------------------------------------------------------------
@@ -50,7 +50,7 @@
         (version "0.9.3")
         (classification "board/space/line")
         (credit "Cameron Browne 31/5/2020")
-        (origin  "This game was played in England, from around 1850CE to 1883CE.")
+        (origin "This game was played in England, from around 1850CE to 1883CE.")
         }
     )
 )

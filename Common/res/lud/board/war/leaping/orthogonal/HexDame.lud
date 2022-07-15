@@ -3,7 +3,7 @@
         Hop 
         (from #1) 
         (between 
-            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
+            if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
             (apply (remove (between) at:EndOfTurn))
         ) 
         (to if:(is Empty (to))) 
@@ -13,11 +13,11 @@
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
 
-(define "JumpToPromotionZone" (is In (last To) (sites Next)) )
+(define "JumpToPromotionZone" (is In (last To) (sites Next)))
 
 //------------------------------------------------------------------------------
 
-(game "HexDame"  
+(game "HexDame" 
     (players 2) 
     (equipment { 
         (board (rotate 90 (hex 5))) 
@@ -49,11 +49,11 @@
                             ) 
                         )
                     )
-                    (max Moves ("HopSequenceCaptureAgain" before:10 after:10 at:EndOfTurn) )
+                    (max Moves ("HopSequenceCaptureAgain" before:10 after:10 at:EndOfTurn))
                 )
                 (priority {
                     (max Moves
-                        (or  
+                        (or 
                             (forEach Piece "Counter"
                                 ("HopMan" (from) 
                                     (then 
@@ -69,7 +69,7 @@
                             (forEach Piece "DoubleCounter" ("HopSequenceCapture" before:10 after:10 at:EndOfTurn))
                         )
                     )
-                    (or  
+                    (or 
                         (forEach Piece "Counter" 
                             (move
                                 Step 
@@ -87,7 +87,7 @@
                 })
             )
         )
-        (end (if (no Moves Next) (result Mover Win) ) )
+        (end ("BlockWin"))
     )
 )
 
@@ -101,7 +101,7 @@
         (rules "Pieces move one step forward. Otherwise, the rules are the same as International Draughts: Pieces can jump an opponent's adjacent player to capture it. Pieces can move forward or backwards. When a piece reaches the opposite edge of the board from its starting position, it becomes a king and can may move and jump over any number of spaces diagonally. Captures are compulsory and the maximum number of jumps must be made. Winning is achieved by capturing all the opponent's pieces or by blocking them from moving.")
         (source "<a href=\"https://en.wikipedia.org/wiki/Hexdame\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
         (id "443")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/leaping/orthogonal")
         (author "Christian Freeling")
         (credit "Eric Piette")

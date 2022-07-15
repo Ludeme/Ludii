@@ -21,4 +21,20 @@ public class SuggestionInstance
 		this.javadoc = javadoc;
 	}
 
+	public String getClassPath() {
+		return classPath;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public String getSubstitution() {
+		return substitution;
+	}
+
+	public String getJavadoc() {
+		return javadoc;
+	}
+
 }

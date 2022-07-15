@@ -1,30 +1,26 @@
 (define "Columns" 6)
 
-(define "OppositePit" (if (is In #1 (sites P1)) (+ #1 "Columns") (- #1 "Columns") ) )
-
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
 
 //------------------------------------------------------------------------------
 
-(game "Baqura"  
-    (players 2)  
+(game "Baqura" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 6 store:None
             (track "Track" "0,E,N,W" loop:True)
         )
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start {
-            (set Count 36 at:(handSite P1) ) 
-            (set Count 36 at:(handSite P2) ) 
+            (set Count 36 at:(handSite P1)) 
+            (set Count 36 at:(handSite P2)) 
         })
         
         phases:{
@@ -39,13 +35,13 @@
         )
         (phase "Sowing" 
             (play 
-                (if (!= 0 (count in:(sites Mover)))
+                (if (not (all Sites (sites Mover) if:(= 0 (count at:(site)))))
                     (move
                         Select 
                         (from 
                             (if 
                                 "SameTurn" 
-                                "PlayFromLastHole" 
+                                "LastHoleSowed" 
                                 (sites Mover) 
                             ) 
                             if:(> (count at:(from)) 0)
@@ -56,11 +52,11 @@
                                 apply:(if (and (> (count at:(to)) 1) (is Odd (count at:(to))))
                                     (moveAgain)
                                     (and
-                                        (if (> (count at:("OppositePit" (to))) 0)
+                                        (if (> (count at:("OppositePitTwoRows" (to))) 0)
                                             (fromTo 
-                                                (from ("OppositePit" (to))) 
+                                                (from ("OppositePitTwoRows" (to))) 
                                                 (to (handSite Mover)) 
-                                                count:(count at:("OppositePit" (to)))
+                                                count:(count at:("OppositePitTwoRows" (to)))
                                             ) 
                                         )
                                         (fromTo 
@@ -70,7 +66,7 @@
                                         ) 
                                     )
                                 )
-                                backtracking:(and { (is In (to) (sites Mover)) (> (count at:(to)) 1) (is Even (count at:(to))) })
+                                backtracking:(and {(is In (to) (sites Mover)) (> (count at:(to)) 1) (is Even (count at:(to))) })
                             )
                         )
                     )
@@ -108,7 +104,7 @@
                                 (if (is Occupied (site))
                                     (fromTo 
                                         (from Cell (handSite Next))
-                                        (to ("OppositePit" (site)))
+                                        (to ("OppositePitTwoRows" (site)))
                                         count:(count at:(site))
                                     )
                                 )
@@ -122,23 +118,25 @@
         )
         }
         
-        (end {
-            (if (= 0 ("PiecesOwnedBy" P1)) (result P2 Win)) 
-            (if (= 0 ("PiecesOwnedBy" P2)) (result P1 Win)) 
-        })
+        (end 
+            (forEach Player
+                if:(= 0 ("PiecesOwnedBy" Player))
+                (result Player Loss)
+            )
+        )
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Baqura is a two-row mancala-style board game reported in the seventeenth century by Thomas Hyde in his De Ludis Orientalibus. He describes the rules and states that it was played in Mesopotamia.")
         (rules "2x6 board. Each player has 36 counters which they arrange however they like in their holes. Play begins from any hole in a player's row. Sowing occurs in an anti-clockwise direction. When the last counter falls makes an odd number of counters in the final hole of the sowing, these are picked up and sowing continues. If the last hole is made to be even, these are captured, as well as the contents of the opposite hole. If the previous hole is also even, those counters and those in the opposite hole are also taken, continuing until there is an odd or empty hole. If the final counter falls into an empty hole, play ends. The round ends when one player is unable to move. A new round begins. The player with the smaller number of counters distributes them as they like in their holes. The opponent then copies this arrangement, keeping the surplus of counters. Play continues as before. Rounds are played until one player has no remaining counters.")
         (source "Hyde 1694: 230-232.")
         (id "212")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         (origin  "This game was played in Mesopotamia, around 1694.")

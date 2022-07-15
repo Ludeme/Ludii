@@ -1,7 +1,4 @@
 (define "Columns" <Board:size>)
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 (define "LeftMostCounters"
     (all Sites (difference (sites Mover "Home") (mapEntry "LeftMost" Mover))
         if:(> (count at:(mapEntry Mover)) (count at:(site)))
@@ -31,8 +28,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Quela"  
-    (players 2)  
+(game "Quela" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -41,18 +38,18 @@
             (track "TrackCCW2" <Board:CCW2> loop:True P2)
             }
         )
-        (regions "Home" P1 (sites Track "TrackCCW1"))                                     // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))                                     // P2 home
-        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))        // P1 Inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))           // P2 Inner home
+        (regions "Home" P1 (sites Track "TrackCCW1"))                   // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))                   // P2 home
+        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))    // P1 Inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))      // P2 Inner home
         (map "LeftMost" {(pair P1 0) <Board:leftMostP2>})
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start 
-            (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home") ) )
+            (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home")))
         )
         
         phases:{
@@ -75,8 +72,8 @@
                 (move Select
                     (from 
                         (if 
-                            (is Mover Prev) 
-                            "PlayFromLastHole" 
+                            ("SameTurn") 
+                            "LastHoleSowed" 
                             (sites Mover "Home") 
                         ) 
                         if:(or ("SameTurn") 
@@ -93,18 +90,18 @@
                             apply:(if (< 1 (count at:(to)))
                                 (moveAgain)
                                 (if (is In (to) (sites Mover "Inner"))
-                                    (if (is Occupied ("OppositePit"))
+                                    (if (is Occupied ("OppositePit" (to)))
                                         (and
                                             (fromTo
-                                                (from ("OppositePit"))
+                                                (from ("OppositePit" (to)))
                                                 (to (handSite Mover))
-                                                count:(count at:("OppositePit"))
+                                                count:(count at:("OppositePit" (to)))
                                             )
-                                            (if (is Occupied ("OppositeOuterPit"))
+                                            (if (is Occupied ("OppositeOuterPit" (to)))
                                                 (fromTo
-                                                    (from ("OppositeOuterPit"))
+                                                    (from ("OppositeOuterPit" (to)))
                                                     (to (handSite Mover))
-                                                    count:(count at:("OppositeOuterPit"))
+                                                    count:(count at:("OppositeOuterPit" (to)))
                                                 )
                                             )
                                         )
@@ -134,18 +131,18 @@
                             apply:(if (< 1 (count at:(to)))
                                 (moveAgain)
                                 (if (is In (to) (sites Mover "Inner"))
-                                    (if (is Occupied ("OppositePit"))
+                                    (if (is Occupied ("OppositePit" (to)))
                                         (and
                                             (fromTo
-                                                (from ("OppositePit"))
+                                                (from ("OppositePit" (to)))
                                                 (to (handSite Mover))
-                                                count:(count at:("OppositePit"))
+                                                count:(count at:("OppositePit" (to)))
                                             )
-                                            (if (is Occupied ("OppositeOuterPit"))
+                                            (if (is Occupied ("OppositeOuterPit" (to)))
                                                 (fromTo
-                                                    (from ("OppositeOuterPit"))
+                                                    (from ("OppositeOuterPit" (to)))
                                                     (to (handSite Mover))
-                                                    count:(count at:("OppositeOuterPit"))
+                                                    count:(count at:("OppositeOuterPit" (to)))
                                                 )
                                             )
                                         )
@@ -164,8 +161,8 @@
                 (move Select
                     (from 
                         (if 
-                            (is Mover Prev) 
-                            "PlayFromLastHole" 
+                            ("SameTurn") 
+                            "LastHoleSowed" 
                             (sites Mover "Home") 
                         ) 
                         if:(is Occupied (from))
@@ -177,18 +174,18 @@
                             apply:(if (< 1 (count at:(to)))
                                 (moveAgain)
                                 (if (is In (to) (sites Mover "Inner"))
-                                    (if (is Occupied ("OppositePit"))
+                                    (if (is Occupied ("OppositePit" (to)))
                                         (and
                                             (fromTo
-                                                (from ("OppositePit"))
+                                                (from ("OppositePit" (to)))
                                                 (to (handSite Mover))
-                                                count:(count at:("OppositePit"))
+                                                count:(count at:("OppositePit" (to)))
                                             )
-                                            (if (is Occupied ("OppositeOuterPit"))
+                                            (if (is Occupied ("OppositeOuterPit" (to)))
                                                 (fromTo
-                                                    (from ("OppositeOuterPit"))
+                                                    (from ("OppositeOuterPit" (to)))
                                                     (to (handSite Mover))
-                                                    count:(count at:("OppositeOuterPit"))
+                                                    count:(count at:("OppositeOuterPit" (to)))
                                                 )
                                             )
                                         )
@@ -199,13 +196,9 @@
                     )
                 )
             )
-            (end {
-                (if (no Moves P1) (result P2 Win))
-                (if (no Moves P2) (result P1 Win))
-            })
+            (end ("BlockWin"))
         )
         }
-        
     )
 )
 
@@ -213,8 +206,8 @@
 
 (option "Board Size" <Board> args:{ <size> <CCW2> <leftMostP2>}
     {
-    (item "6"   <6>  <"12,E,N1,W"> <(pair P2 23)> "Each player has 6 holes by row.")*  
-    (item "7"   <7>  <"14,E,N1,W"> <(pair P2 27)> "Each player has 7 holes by row.") 
+    (item "6"  <6> <"12,E,N1,W"> <(pair P2 23)> "Each player has 6 holes by row.")* 
+    (item "7"  <7> <"14,E,N1,W"> <(pair P2 27)> "Each player has 7 holes by row.") 
 })
 
 //------------------------------------------------------------------------------
@@ -239,7 +232,7 @@
         (rules "4x6-7 board. Two counters in each hole; before beginning each player rearranges these as they wish, with the following rules: The leftmost hole in the outer row must have the most counters; holes in the inner row may only have one counter. Initial phase: In this phase, only holes with two or fewer counters may be used to sow. Sowing occurs in an anti-clockwise direction, and when a counter lands in an occupied hole the sowing continues. When the final counter lands in an empty hole, the turn ends. If the empty hole is in the player's inner row, counters in the opponent's inner row opposite are captured, and if there are also counters in the opponent's outer row hole opposite, these are also taken. The initial phase ends for a player when two of the player's counters have been taken. On the next turn they must play from the hole with the largest number of counters, and from that point they may move from any hole. The rules for play remain the same as in the initial phase otherwise. The player who captures all of the opponent's counters wins.")
         (source "Silva 1995: 97-102.")
         (id "270")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         }

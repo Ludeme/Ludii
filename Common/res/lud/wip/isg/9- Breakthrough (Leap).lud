@@ -1,10 +1,10 @@
 (define "Leap"
     (move Leap { {F F R F} {F F L F} }
-        (to if:(not (is Friend (who at:(to)))) (apply (remove (to))))
+        (to if:(not ("IsFriendAt" (to))) (apply (remove (to))))
     )		
 )
 
-(define "ReachedTarget" (is In (last To) (sites Mover)) )
+(define "ReachedTarget" (is In (last To) (sites Mover)))
 
 //------------------------------------------------------------------------------
 
@@ -16,7 +16,7 @@
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
         (hand Each)
-    })  
+    }) 
     (rules 
         (start (place "Knight" "Hand" count:18))
         

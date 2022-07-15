@@ -1292,6 +1292,9 @@ public class Grammar
 						andType = 2;
 					}
 				}
+				
+				final String actualParameterName = label;
+				
 				if (!isNamed)
 					label = null;
 
@@ -1303,7 +1306,7 @@ public class Grammar
 				
 				final ClauseArg arg = 	new ClauseArg
 									  	(
-									  		symbolP, label, optional, 
+									  		symbolP, actualParameterName, label, optional, 
 									  		(orType  == 0 ? 0 : orGroup), 
 									  		(andType == 0 ? 0 : andGroup)
 									  	);

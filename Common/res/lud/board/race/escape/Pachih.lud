@@ -1,0 +1,95 @@
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #2 #1))
+(define "IsSpecialThrow" (is In ("ThrowValue") (sites {7 25 30 14})))
+
+//------------------------------------------------------------------------------
+
+(game "Pachih" 
+    (players 4) 
+    (equipment {
+        ("PachisiBoard"
+            {
+            (track "Track1" "96,9,S,E,N,11,E,N,W,53,N,W,S,42,W,S,E,8,S,E1,N7,End" P1 directed:True)
+            (track "Track2" "96,26,W,S,E,8,S,E,N,11,E,N,W,53,N,W,S,42,W,S1,E7,End" P2 directed:True)
+            (track "Track3" "96,52,N,W,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,W1,S7,End" P3 directed:True)
+            (track "Track4" "96,27,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W7,End" P4 directed:True)
+            }
+        )
+        ("StickDice" 7)
+        (piece "Pawn" Each
+            (if ("IsEndTrack" ("SiteToMoveOnTrack" from:(from) ("ThrowValue")))
+                (move Remove (from) level:(level))
+                (move 
+                    (from (from) level:(level))
+                    (to
+                        ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
+                        if:True
+                        (apply
+                            (if (and (not (is In (to) (sites "SafeSites"))) ("IsEnemyAt" (to)))
+                                (forEach Level (to) FromTop
+                                    (fromTo
+                                        (from (to) level:(level))
+                                        (to (centrePoint))
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )		
+        )
+        (regions "SafeSites" (sites {60 62 2 37 87 89 16 48}))
+        (map "Throw" {(pair 0 7) (pair 1 10) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 25) (pair 6 30) (pair 7 14)})
+    }) 
+    (rules 
+        (start {
+            (place Stack "Pawn1" 9 count:4)
+            (place Stack "Pawn2" 26 count:4)
+            (place Stack "Pawn3" 52 count:4)
+            (place Stack "Pawn4" 27 count:4)
+        })
+        
+        (play 
+            ("RollMove"
+                (forEach Piece)
+                (then 
+                    (if (and (< (value Player Mover) 2) ("IsSpecialThrow"))
+                        (and (moveAgain) (set Value Mover (+ 1 (value Player Mover))))
+                        (set Value Mover Undefined)
+                    )
+                )
+            )
+        )
+        
+        (end ("EscapeWin"))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Pachih is a race game played by the Acehnese people of Sumatra played on a cross-shaped board. They recognize the origin of the game as being from India, and it is indeed similar to many games found in South Asia.")
+        (rules "Four 3x8 rectangles, arranged in a cross shape around a large central square. The third space, counting from the outer corner, in the two outer rows of each arm of the board are marked with an \"X.\" Four pieces per player. Seven cowrie shells used as dice, the throws as follows: Zero mouths up = 7; one = 10; two = 2; three = 3; four = 4; five = 25; six =30; seven = 14. Throws of 7, 25, 30, and 14 receive an extra throw. Three total throws is the maximum allowed. Pieces begin the game on the top square of the central row of the player's arm of the board. Pieces progress down the central row, then anti-clockwise around the circumference of the board, then up the central row again, to the central space. When a player's piece lands on a spot occupied by an opponent's piece, the opponent's piece is sent back to the starting space. Pieces resting on a marked space cannot be sent back to start; in this case the player's piece as well as the opponent's piece may occupy this space. The first player to bring all four of their pieces to the central space wins. ")
+        (source "Snouck Hurgronje 1906: 201-203.")
+        (id "751")
+        (version "1.3.5")
+        (classification "board/race/escape")
+        (credit "Eric Piette")
+        (origin  "This game was played in Sumatra, around 1906.")
+        }
+    )
+    
+    (graphics {
+        (stackType site:96 Ring)
+        (stackType 0 Ground)
+        (show Symbol "thinCross" {60 62 2 37 87 89 16 48} scale:0.9)
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (piece Scale "Pawn" 0.5)
+    })
+    
+)

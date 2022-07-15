@@ -1,10 +1,10 @@
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
 )
 
 (define "CaptureToPieceAndResetCounter"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
                 (then (set Counter))
@@ -15,8 +15,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Half Chess"  
-    (players 2)  
+(game "Half Chess" 
+    (players 2) 
     (equipment { 
         (board (rectangle 4 8)) 
         
@@ -25,7 +25,7 @@
                 Slide 
                 Orthogonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
                 ) 
             )
@@ -34,7 +34,7 @@
             (move 
                 Step 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndResetCounter"
                 ) 
             )
@@ -44,7 +44,7 @@
                 Slide 
                 Diagonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
                 ) 
             )
@@ -54,7 +54,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndResetCounter"
                 ) 
             )
@@ -63,13 +63,13 @@
             (move
                 Slide 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
                 ) 
             ) 
         )
         }
-    )  
+    ) 
     (rules 
         (start
             { 
@@ -104,7 +104,7 @@
         (rules "Half Chess is played with the same rules as chess.")
         (source "<a href=\"https://www.chessvariants.com/small.dir/halfchess.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />chessvariants.com</a>")
         (id "133")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chess")
         (credit "Eric Piette")
         }

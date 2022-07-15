@@ -1,10 +1,10 @@
-(game "Nim (stack version)"  
-    (players 2)  
+(game "Nim (stack version)" 
+    (players 2) 
     (equipment { 
         (board (rectangle 1 <Size:board>)) 
         (piece "Marker" Neutral)
         }
-    )  
+    ) 
     (rules
         (start {
             (place Stack "Marker0" (sites Bottom) counts:<Size:stacks>)
@@ -18,7 +18,7 @@
                         (last To)
                         (then 
                             (if 
-                                (not (is Empty (last To) )) 
+                                (not (is Empty (last To))) 
                                 (moveAgain) 
                             ) 
                         ) 
@@ -30,14 +30,14 @@
                     (sites Occupied by:Neutral)
                     (then 
                         (if 
-                            (not (is Empty (last To) )) 
+                            (not (is Empty (last To))) 
                             (moveAgain) 
                         ) 
                     ) 
                 )
             )
         ) 
-        (end (if (no Moves Next) (result <Result> Win) ) )
+        (end (if (no Moves Next) (result <Result> Win)))
     )
 )
 
@@ -45,21 +45,21 @@
 
 (option "End Rules" <Result> args:{ <type> }
     {
-    (item "Last Mover Loses"   <Next>     "The last mover loses.")*   
-    (item "Last Mover Wins"    <Mover>    "The last mover wins.")   
+    (item "Last Mover Loses"  <Next>   "The last mover loses.")*  
+    (item "Last Mover Wins"  <Mover>  "The last mover wins.")  
 })
 
 (option "Number Piles" <Size> args:{ <board> <stacks> }
     {
-    (item "3"    <3> <{1 2 1}>                                                       "The game involves 3 piles.")   
-    (item "5"    <5> <{3 4 5 4 3}>                                                   "The game involves 5 piles.")*     
-    (item "7"    <7> <{4 5 6 7 6 5 4}>                                               "The game involves 7 piles.")     
-    (item "9"    <9> <{5 6 7 8 9 8 7 6 5}>                                           "The game involves 9 piles.")     
-    (item "11"   <11> <{6 7 8 9 10 11 10 9 8 7 6}>                                   "The game involves 11 piles.")     
-    (item "13"   <13> <{7 8 9 10 11 12 13 12 11 10 9 8 7}>                           "The game involves 13 piles.")    
-    (item "15"   <15> <{8 9 10 11 12 13 14 15 14 13 12 11 10 9 8}>                   "The game involves 15 piles.")    
-    (item "17"   <17> <{9 10 11 12 13 14 15 16 17 16 15 14 13 12 11 10 9}>           "The game involves 17 piles.")    
-    (item "19"   <19> <{10 11 12 13 14 15 16 17 18 19 18 17 16 15 14 13 12 11 10}>   "The game involves 19 piles.")   
+    (item "3"  <3> <{1 2 1}>                            "The game involves 3 piles.")  
+    (item "5"  <5> <{3 4 5 4 3}>                          "The game involves 5 piles.")*   
+    (item "7"  <7> <{4 5 6 7 6 5 4}>                        "The game involves 7 piles.")   
+    (item "9"  <9> <{5 6 7 8 9 8 7 6 5}>                      "The game involves 9 piles.")   
+    (item "11"  <11> <{6 7 8 9 10 11 10 9 8 7 6}>                  "The game involves 11 piles.")   
+    (item "13"  <13> <{7 8 9 10 11 12 13 12 11 10 9 8 7}>              "The game involves 13 piles.")  
+    (item "15"  <15> <{8 9 10 11 12 13 14 15 14 13 12 11 10 9 8}>          "The game involves 15 piles.")  
+    (item "17"  <17> <{9 10 11 12 13 14 15 16 17 16 15 14 13 12 11 10 9}>      "The game involves 17 piles.")  
+    (item "19"  <19> <{10 11 12 13 14 15 16 17 18 19 18 17 16 15 14 13 12 11 10}>  "The game involves 19 piles.")  
     }
 )
 
@@ -75,11 +75,11 @@
         (version "1.0.2")
         (classification "math/nim")
         (credit "Eric Piette")
-        (origin  "This game was played in Europe?, from around 1496CE to 1517CE.")
+        (origin "This game was played in Europe?, from around 1496CE to 1517CE.")
         }
     )
     
     (graphics {
         (no Board)
-    })    
+    })  
 )

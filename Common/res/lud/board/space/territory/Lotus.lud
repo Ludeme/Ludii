@@ -5,8 +5,8 @@
         (from (last To)) 
         Orthogonal 
         (between 
-            if:(is Enemy (who at:(between))) 
-            (apply             
+            if:("IsEnemyAt" (between)) 
+            (apply       
                 (and 
                     (remove (between)) 
                     (add (to (between))) 
@@ -18,13 +18,13 @@
 
 //------------------------------------------------------------------------------
 
-(game "Lotus"  
+(game "Lotus" 
     (players 2) 
     (equipment { 
         (board (rotate 90 (tiling T3464 2)) use:Vertex)
         (piece "Marker" Each)
         }
-    )  
+    ) 
     
     (rules 
         (play 
@@ -65,7 +65,7 @@
         (rules "The game is played on the board of Kensington. It follows the rules of Go except when a capture is made, the pieces captured are flipped.")
         (source "Schmittberger, R. W. (1992) New Rules for Classic Games, John Wiley & Sons, New York. ")
         (id "550")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/territory")
         (author "Christian Freeling")
         (credit "Eric Piette")

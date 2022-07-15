@@ -37,9 +37,8 @@
     )
 )
 
-(define "TrackMove" (trackSite Move #1 #2 steps:#3))
+(define "TrackMove" ("NextSiteOnTrack" #3 #1 #2))
 
-(define "DieNotUsed" (!= (pips) 0))
 (define "StorePreviousPipsUsed" (set Var "Pips" #1))
 (define "PreviousPipsUsed" (var "Pips"))
 
@@ -101,7 +100,7 @@
                         (not ("MovedPair"))
                         (if (= 1 (state at:(last To) level:(last LevelTo))) 
                             (< (count MovesThisTurn) 1)
-                            (< (count MovesThisTurn ) 2)
+                            (< (count MovesThisTurn) 2)
                         )
                     )
                     (and
@@ -138,34 +137,24 @@
 
 //------------------------------------------------------------------------------
 
-(game "Chonpa"  
-    (players 4)  
+(game "Chonpa" 
+    (players 4) 
     (equipment { 
-        (board 
-            (add
-                (hole
-                    (merge 
-                        (shift 0 8 (rectangle 3 19)) 
-                        (shift 8 0 (rectangle 19 3))
-                    )
-                    (poly {{8 8} {8 11} {11 11} {11 8}})
-                )
-                cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9 } }
-            )
+        ("PachisiBoard" 
             {
             (track "TrackNormal1" "64,S,E,N,11,E,N,W,53,N,W,S,42,W,S,E,8,54,E1,N8" P1 directed:True)
             (track "TrackPaired1" "57,S,E,N,11,E,N,W,53,N,W,S,42,W,S,E,8,54,E1,N8" P1 directed:True)
-            (track "TrackNormal2" "22,W,S,E,8,S,E,N,11,E,N,W,53,N,W,S,42,W,S1,E8"  P2 directed:True)
-            (track "TrackPaired2" "36,W,S,E,8,S,E,N,11,E,N,W,53,N,W,S,42,W,S1,E8"  P2 directed:True)
-            (track "TrackNormal3" "85,N,W,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,W1,S8"  P3 directed:True)
-            (track "TrackPaired3" "92,N,W,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,W1,S8"  P3 directed:True)
-            (track "TrackNormal4" "31,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W8"  P4 directed:True)
-            (track "TrackPaired4" "17,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W8"  P4 directed:True)
+            (track "TrackNormal2" "22,W,S,E,8,S,E,N,11,E,N,W,53,N,W,S,42,W,S1,E8" P2 directed:True)
+            (track "TrackPaired2" "36,W,S,E,8,S,E,N,11,E,N,W,53,N,W,S,42,W,S1,E8" P2 directed:True)
+            (track "TrackNormal3" "85,N,W,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,W1,S8" P3 directed:True)
+            (track "TrackPaired3" "92,N,W,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,W1,S8" P3 directed:True)
+            (track "TrackNormal4" "31,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W8" P4 directed:True)
+            (track "TrackPaired4" "17,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W8" P4 directed:True)
             }
         )
         (dice d:4 faces:{1 2 5 6} num:3)
         (piece "Pawn" Each ("PieceMove" "TrackNormal" "TrackPaired"))
-    })  
+    }) 
     (rules 
         (start {
             (set Team 1 {P1 P3})
@@ -185,9 +174,8 @@
         })
         
         (play 
-            (do 
-                (if (not ("SameTurn")) (roll)) 
-                next:(if (can Move ("Move"))
+            ("RollEachNewTurnMove"
+                (if (can Move ("Move"))
                     ("Move") 
                     (move Pass 
                         (then (and
@@ -215,7 +203,7 @@
         (rules "Four 3x8 rectangles, arranged in a cross. No marked squares. Four players, each with four pieces, which are black, yellow, green, and red. Yellow seated at the bottom, red to their right, black to the right of red, green to the right of black. Green and red play on a team against black and yellow. Three four-sided rectangular dice, each marked 1, 2, 5, and 6. Pieces begin on the board, with one each in the sixth and seventh space of the central row of the player's arm, (counting from the top of the row), and in the seventh and eighth spaces of the left row of the arm belonging to the player to the right. The latter two pieces must move as a pair, I.e., they must always be moved together, and can only do so when doubles are thrown. The other two pieces belonging to a player may move singly. Throws may be split up as a player sees fit, but the value of one die must be used it its entirety by a piece. Pieces move around the board in an anti-clockwise direction until they reach their central row, at which point they move up the central row to the central spot. They must enter the central space by an exact throw. When a player moves all of their pieces to the center, they continue to throw the dice, and use these throws to move their partner's pieces. When all of the team's pieces reach the center, that team wins.")
         (source "Humphries 1906: 119-121.")
         (id "896")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/reach")
         (credit "Eric Piette")
         (origin  "This game was played in India, from around 1904 to 1905.")

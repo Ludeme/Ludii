@@ -63,7 +63,7 @@
     (players 2)
     (equipment
         {
-        (board "BoardUsed" use:Cell )
+        (board "BoardUsed" use:Cell)
         (piece "Disc" Each)
         }
     )
@@ -110,12 +110,12 @@
                     (all Passed)
                     (<= (score Mover) (score Next))
                 )
-                (result  Next Win)
+                (result Next Win)
             )
             }
         )
     )
-)      
+)   
 
 //---------------------------------------------
 
@@ -132,7 +132,7 @@
         The winner is the player with the most pieces in play. If equal, the last to pass loses.")
         (id "1142")
         (source "<a href=\"https://boardgamegeek.com/thread/2518705\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/territory")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")

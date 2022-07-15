@@ -163,7 +163,7 @@
 ))
 
 (define "AMSEnd" (if (no Moves Next) (result Mover Loss)))
-(define "Last2MoveEnd" (if (no Moves Next) (result Mover Win)))
+(define "Last2MoveEnd" ("BlockWin"))
 
 //-------------------------------------------------
 // Options
@@ -196,7 +196,7 @@
         <"Shakattrition"> <"AMSEnd"> 
         <"Fire"> 
         "Conflagration, Backfire Variant"
-    )  
+    ) 
     }
 )
 
@@ -265,7 +265,7 @@
             4. Conflagration, - Backfire Variant (shorter), 
         Rule restriction: A piece can only step to join a larger group when it cannot slide to capture.")
         (id "1732")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")
@@ -282,7 +282,7 @@
         (piece Colour P2 strokeColour:(colour DarkGrey))
         (piece Background "Disc" image:"Disc" fillColour:(colour 0 0 0 75) edgeColour:(colour 0 0 0 0) scale:0.95 offsetX:-1 offsetY:2)
         (piece Foreground "Disc1" image:<Game:token> fillColour:(colour VeryLightGrey) edgeColour:(colour DarkGrey) scale:0.70)
-        (piece Foreground "Disc2" image:<Game:token> fillColour:(colour 255 255 255 60) edgeColour:(colour 255 255 255 120) scale:0.70 )
+        (piece Foreground "Disc2" image:<Game:token> fillColour:(colour 255 255 255 60) edgeColour:(colour 255 255 255 120) scale:0.70)
         (board Colour Phase0 (colour 245 242 222))
         (board StyleThickness InnerEdges 1.6)
         (board StyleThickness OuterEdges 1.6)

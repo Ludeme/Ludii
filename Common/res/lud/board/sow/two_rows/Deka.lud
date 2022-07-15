@@ -1,10 +1,5 @@
-(define "NextHoleFrom" (trackSite Move from:#1 #2))
-(define "EnemySites"
-    (if (is Mover P1)
-        (sites P2)
-        (sites P1)
-    )
-)
+(define "NextHoleFrom" ("NextSiteOnTrack" #2 from:#1))
+(define "EnemySites" (if (is Mover P1) (sites P2) (sites P1)))
 
 //------------------------------------------------------------------------------
 
@@ -33,8 +28,8 @@
             (or {
                 (move Select
                     (from 
-                        (if (is Mover Prev)
-                            (sites { (var "Replay") })
+                        (if ("SameTurn")
+                            (sites {(var "Replay") })
                             (sites Mover)
                         )
                         if:(is Occupied (from))
@@ -46,11 +41,11 @@
                                     (and {
                                         (fromTo
                                             (from (to))
-                                            (to ("NextHoleFrom" (to) steps:1))
+                                            (to ("NextHoleFrom" (to) 1))
                                             count:3
                                         )
                                         (sow
-                                            ("NextHoleFrom" (to) steps:1)
+                                            ("NextHoleFrom" (to) 1)
                                             count:3
                                             skipIf:(and (is In (to) (sites Mover)) (= 1 (state at:(to))))
                                         )
@@ -86,10 +81,7 @@
             )
         )
         
-        (end { 
-            (if (no Moves P1) (result P2 Win))
-            (if (no Moves P2) (result P1 Win))
-        })
+        (end ("ForEachPlayerNoMovesLoss"))
     )
 )
 
@@ -103,7 +95,7 @@
         (rules "Two rows of six holes encircling a larger hole in the center. Two counters in each hole, except the center hole. Players move by removing the counters from one of the holes in their row and sowing them in an anti-clockwise direction. If the final counter of the sowing falls into an occupied hole, these counters are picked up and sowing continues. When the final counter falls into an empty hole, the turn ends. If the final counter falls into a hole already containing two others, the player takes these counters and covers the hole. The three counters are sown beginning with the following hole. When sowing, if a player reaches a covered hole in their row, they skip it and continue sowing with the next available hole. If the player reaches a covered hole in the opponent's row, the counter that would fall into it is instead deposited into the central hole. If this is the final counter, the turn ends. It is possible to sow a single counter. The player who can no longer sow from their row loses.")
         (source "Townshend 1977: 12-13.")
         (id "379")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         (origin  "This game was played in Democratic Republic of Congo., around 1977.")

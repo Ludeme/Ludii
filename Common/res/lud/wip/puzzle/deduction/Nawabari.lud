@@ -1,9 +1,9 @@
 (game "Nawabari"
-    (players 1)  
+    (players 1) 
     (equipment {
         (board (square <Challenge:size>) (values Edge (range 0 1)) use:Edge)
         (hints {<Challenge:hints>} Cell)
-    } )
+    })
     (rules
         (play
             (satisfy {
@@ -49,7 +49,7 @@
         (hint {58} 1)
         >
         ""
-    )   
+    )  
 })
 
 //------------------------------------------------------------------------------

@@ -1,12 +1,11 @@
-(game "Baghchal"  
-    (players 2)  
+(game "Baghchal" 
+    (players 2) 
     (equipment { 
         ("AlquerqueBoard" 5 5)
         (hand P1)
         (piece "Goat" P1 "StepToEmpty") 
-        (piece "Tiger" P2 (or "HopCapture" "StepToEmpty") )
-        }
-    )  
+        (piece "Tiger" P2 (or "HopCapture" "StepToEmpty"))
+    }) 
     (rules 
         (start { 
             (place "Tiger2" (sites Corners))
@@ -24,10 +23,7 @@
         )
         (phase "Movement" (play (forEach Piece)))
         }
-        (end {
-            ("NoMoves" Loss)
-            (if (= (count Pieces P1) <Num:tigers>) (result P2 Win))
-        })
+        (end ("NoMovesLossAndLessNumPiecesPlayerLoss" P1 <Num:tigers>))
     )
 )
 
@@ -35,7 +31,7 @@
 
 (option "End Rules" <Num> args:{ <tigers> }
     {
-    (item "Capture all the tigers"       <0> "The objective of the player 2 is to capture all the tigers.")*   
+    (item "Capture all the tigers"    <0> "The objective of the player 2 is to capture all the tigers.")*  
     (item "Capture at least five tigers" <15> "The objective of the player 2 is to capture at least five tigers.") 
     }
 )
@@ -69,7 +65,7 @@
         (useFor "Ruleset/Baghachal (Observed)" (id "715"))
         (source "Murray 1951: 112.")
         (id "38")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/hunt")
         (credit "Eric Piette")
         (origin  "This game was played in Nepal, from around 1933 to 1986.")

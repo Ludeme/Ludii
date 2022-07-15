@@ -62,6 +62,7 @@ public abstract class BaseComponentStyle implements ComponentStyle
 	protected ValueDisplayInfo showValue = new ValueDisplayInfo();
 	protected ValueDisplayInfo showLocalState = new ValueDisplayInfo();
 	
+	// Force all visuals to be drawn as strings (used for N puzzles)
 	protected boolean drawStringVisuals = false;
 	
 	//-------------------------------------------------------------------------
@@ -272,36 +273,38 @@ public abstract class BaseComponentStyle implements ComponentStyle
 		
 		for (final MetadataImageInfo backgroundImageInfo : metadataGraphics.pieceBackground(context, component.owner(), component.name(), containerIndex, localState, value))
 		{
- 	 		final String backgroundName = backgroundImageInfo.path();
- 	 		final String backgroundPath = ImageUtil.getImageFullPath(backgroundName);
- 		 	final double backgroundScale = backgroundImageInfo.scale();
- 		 	maxForegroundScale = Math.max(backgroundScale, maxBackgroundScale);
- 		 	Color backgroundColour = backgroundImageInfo.mainColour();
- 		 	Color backgroundEdgeColour = backgroundImageInfo.secondaryColour();
- 		 	final int rotation = backgroundImageInfo.rotation();
- 		 	final double offsetX = backgroundImageInfo.offestX();
- 		 	final double offsetY = backgroundImageInfo.offestY();
+ 	 		if (backgroundImageInfo.path() != null)
+ 	 		{
+	 	 		final String backgroundPath = ImageUtil.getImageFullPath(backgroundImageInfo.path());
+	 		 	final double backgroundScale = backgroundImageInfo.scale();
+	 		 	maxForegroundScale = Math.max(backgroundScale, maxBackgroundScale);
+	 		 	Color backgroundColour = backgroundImageInfo.mainColour();
+	 		 	Color backgroundEdgeColour = backgroundImageInfo.secondaryColour();
+	 		 	final int rotation = backgroundImageInfo.rotation();
+	 		 	final double offsetX = backgroundImageInfo.offestX();
+	 		 	final double offsetY = backgroundImageInfo.offestY();
  		 	
- 		 	if (backgroundPath == null && backgroundName.length() > 0)
- 			{
- 				final Font valueFont = new Font("Arial", Font.BOLD, (int) (backgroundScale));
- 				g2d.setColor(backgroundColour);
+	 		 	if (backgroundColour == null)
+	 		 		backgroundColour = bridge.settingsColour().playerColour(context, component.owner());
+	 		 	if (backgroundEdgeColour == null)
+	 		 		backgroundEdgeColour = Color.BLACK;
+	 		 	
+	 		 	final int tileSize = (int) (dim * backgroundScale);
+	 		 	final int offset = (dim-tileSize)/2;
+	 			SVGtoImage.loadFromFilePath
+	 			(
+	 				g2d, backgroundPath, new Rectangle((int) (offset + offset*offsetX), (int) (offset + offset*offsetY), tileSize, tileSize), 
+	 				backgroundEdgeColour, backgroundColour, rotation
+	 			);
+ 	 		}
+ 	 		
+ 	 		if (backgroundImageInfo.text() != null)
+ 	 		{
+ 	 			final Font valueFont = new Font("Arial", Font.BOLD, (int) (dim * backgroundImageInfo.scale()));
+ 				g2d.setColor(backgroundImageInfo.mainColour());
  				g2d.setFont(valueFont);
- 				StringUtil.drawStringAtPoint(g2d, backgroundName, null, new Point(g2d.getWidth()/2,g2d.getHeight()/2), true);
- 			}
- 		 	
- 		 	if (backgroundColour == null)
- 		 		backgroundColour = bridge.settingsColour().playerColour(context, component.owner());
- 		 	if (backgroundEdgeColour == null)
- 		 		backgroundEdgeColour = Color.BLACK;
- 		 	
- 		 	final int tileSize = (int) (dim * backgroundScale);
- 		 	final int offset = (dim-tileSize)/2;
- 			SVGtoImage.loadFromFilePath
- 			(
- 				g2d, backgroundPath, new Rectangle((int) (offset + offset*offsetX), (int) (offset + offset*offsetY), tileSize, tileSize), 
- 				backgroundEdgeColour, backgroundColour, rotation
- 			);
+ 				StringUtil.drawStringAtPoint(g2d, backgroundImageInfo.text(), null, new Point(g2d.getWidth()/2,g2d.getHeight()/2), true);
+ 	 		}
  	 	}
 		
 		return g2d;
@@ -318,36 +321,38 @@ public abstract class BaseComponentStyle implements ComponentStyle
 
 		for (final MetadataImageInfo foregroundImageInfo : metadataGraphics.pieceForeground(context, component.owner(), component.name(), containerIndex, localState, value))
 		{
- 	 		final String foregroundName = foregroundImageInfo.path();
- 	 		final String foregroundPath = ImageUtil.getImageFullPath(foregroundName);
- 		 	final double foregroundScale = foregroundImageInfo.scale();
- 		 	maxForegroundScale = Math.max(foregroundScale, maxForegroundScale);
- 		 	Color foregroundColour = foregroundImageInfo.mainColour();
- 		 	Color foregroundEdgeColour = foregroundImageInfo.secondaryColour();
- 		 	final int rotation = foregroundImageInfo.rotation();
- 		 	final double offsetX = foregroundImageInfo.offestX();
- 		 	final double offsetY = foregroundImageInfo.offestY();
- 		 	
- 		 	if (foregroundPath == null && foregroundName.length() > 0)
- 			{
- 				final Font valueFont = new Font("Arial", Font.BOLD, (int) (foregroundScale));
- 				g2d.setColor(foregroundColour);
+			if (foregroundImageInfo.path() != null)
+ 	 		{
+	 	 		final String foregroundPath = ImageUtil.getImageFullPath(foregroundImageInfo.path());
+	 		 	final double foregroundScale = foregroundImageInfo.scale();
+	 		 	maxForegroundScale = Math.max(foregroundScale, maxForegroundScale);
+	 		 	Color foregroundColour = foregroundImageInfo.mainColour();
+	 		 	Color foregroundEdgeColour = foregroundImageInfo.secondaryColour();
+	 		 	final int rotation = foregroundImageInfo.rotation();
+	 		 	final double offsetX = foregroundImageInfo.offestX();
+	 		 	final double offsetY = foregroundImageInfo.offestY();
+	 		 	
+	 		 	if (foregroundColour == null)
+	 		 		foregroundColour = bridge.settingsColour().playerColour(context, component.owner());
+	 		 	if (foregroundEdgeColour == null)
+	 		 		foregroundEdgeColour = Color.BLACK;
+	 		 	
+	 		 	final int tileSize = (int) (dim * foregroundScale);
+	 		 	final int offset = (dim-tileSize)/2;
+	 			SVGtoImage.loadFromFilePath
+	 			(
+	 				g2d, foregroundPath, new Rectangle((int) (offset + offset*offsetX), (int) (offset + offset*offsetY), tileSize, tileSize), 
+	 				foregroundEdgeColour, foregroundColour, rotation
+	 			);
+ 	 		}
+
+			if (foregroundImageInfo.text() != null)
+ 	 		{
+ 	 			final Font valueFont = new Font("Arial", Font.BOLD, (int) (dim * foregroundImageInfo.scale()));
+ 				g2d.setColor(foregroundImageInfo.mainColour());
  				g2d.setFont(valueFont);
- 				StringUtil.drawStringAtPoint(g2d, foregroundName, null, new Point(g2d.getWidth()/2,g2d.getHeight()/2), true);
- 			}
- 		 	
- 		 	if (foregroundColour == null)
- 		 		foregroundColour = bridge.settingsColour().playerColour(context, component.owner());
- 		 	if (foregroundEdgeColour == null)
- 		 		foregroundEdgeColour = Color.BLACK;
- 		 	
- 		 	final int tileSize = (int) (dim * foregroundScale);
- 		 	final int offset = (dim-tileSize)/2;
- 			SVGtoImage.loadFromFilePath
- 			(
- 				g2d, foregroundPath, new Rectangle((int) (offset + offset*offsetX), (int) (offset + offset*offsetY), tileSize, tileSize), 
- 				foregroundEdgeColour, foregroundColour, rotation
- 			);
+ 				StringUtil.drawStringAtPoint(g2d, foregroundImageInfo.text(), null, new Point(g2d.getWidth()/2,g2d.getHeight()/2), true);
+ 	 		}
  	 	}
 		
 		return g2d;

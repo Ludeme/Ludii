@@ -1,6 +1,5 @@
 (define "Columns" 6)
 
-(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns") ) )
 (define "PlayableSites" (sites (values Remembered "Playable")))
 
 (define "APlayerCanNotMove"
@@ -12,8 +11,6 @@
     )
 )
 
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
-
 (define "CapturedPiece"
     (+ {
         (count Cell at:(handSite #1))
@@ -24,27 +21,27 @@
 
 //------------------------------------------------------------------------------
 
-(game "Leyla Gobale (Gabradarre)"  
-    (players 2)  
+(game "Leyla Gobale (Gabradarre)" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 6 store:None
             (track "TrackCCW" "0,E,N,W" loop:True)
         )
         (piece "Seed" Shared)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
         (hand Each)
         (map "CorrespondingHoles" {
             (pair 0 11) (pair 1 10) (pair 2 9) (pair 3 8) (pair 4 7) (pair 5 6) 
             (pair 6 5) (pair 7 4) (pair 8 3) (pair 9 2) (pair 10 1) (pair 11 0)
         })
-    })  
+    }) 
     (rules 
         
         (start {
             (set RememberValue "Playable" (union (sites Top) (sites Bottom)))
-            (set Count 5 to:(sites Track) ) 
+            (set Count 5 to:(sites Track)) 
         })
         
         phases:{
@@ -53,7 +50,7 @@
                 (or {
                     (move Select
                         (from
-                            (if (is Mover Prev)
+                            (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 (sites Mover) 
                             )
@@ -73,22 +70,22 @@
                                         )
                                     )
                                     (if (is In (to) (sites Mover))
-                                        (if (!= 3 (count at:("OppositePit")))
-                                            (if (!= 0 (count at:("OppositePit")))
+                                        (if (!= 3 (count at:("OppositePitTwoRows" (to))))
+                                            (if (!= 0 (count at:("OppositePitTwoRows" (to))))
                                                 (fromTo
-                                                    (from ("OppositePit"))
+                                                    (from ("OppositePitTwoRows" (to)))
                                                     (to (handSite Mover))
-                                                    count:(count at:("OppositePit"))
+                                                    count:(count at:("OppositePitTwoRows" (to)))
                                                 )
                                             )
                                             (and {
                                                 (fromTo
-                                                    (from ("OppositePit"))
+                                                    (from ("OppositePitTwoRows" (to)))
                                                     (to (to))
                                                     count:1
                                                 )
                                                 (set State at:(to) (mover))
-                                                (set State at:("OppositePit") (mover))
+                                                (set State at:("OppositePitTwoRows" (to)) (mover))
                                             })
                                         )
                                     )
@@ -163,7 +160,7 @@
         (phase "BetweenRounds"
             (play
                 (move
-                    (from (handSite Mover))  
+                    (from (handSite Mover)) 
                     (to 
                         (forEach (sites Mover) 
                             if:(= (count at:(site)) 
@@ -200,21 +197,20 @@
             )
             (nextPhase (or (is Empty (handSite P1)) (is Empty (handSite P2))) "Sowing")
         )
-        
         }
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Leyla Gobale is a name that refers to mancala-style board games in the Horn of Africa. This is a two-row game that was played in the Gabradarre area of Ethiopia.")
         (rules "2x6 board. Five counters in each hole. Play begins from any hole in a player's row and sown anti-clockwise. When the final counter falls into an occupied hole, the counters in that hole are picked up and sowing continues. If the final counter falls into an empty hole, the turn ends; if this hole is in the player's own row, the contents of the opponent's hole are captured if they contain one, two, four, or more counters. If it contains three counters, one of the opponent's counters is taken and placed into the hole where sowing ended, so that each now has two counters. These holes cannot be sown from for the rest of the game and are owned by the player whose turn created them. Players cannot change their move mid-turn and counting of counters is forbidden. Play ends when one player can no longer play. The opponent then takes all of the counters in their own row, and each player takes the counters that have accumulated in their captured holes. A new game begins. The player with the fewest counters arranges them in their holes, distributing them as equally as possible. The opponent then mirrors this arrangement in their holes, placing aside any extras for use in subsequent games. If the player is reduced to four counters or less, these are arranged one to a hole and any empty holes are not used for the game (by either player). The player who captures all the counters wins.")
         (source "Pankhurst 1971: 181.")
         (id "241")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }

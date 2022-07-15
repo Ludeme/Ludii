@@ -1,10 +1,10 @@
 (define "NextCannotMove"
-    (not (can Move (do (or ("PlaceAPiece" Next Mover) (forEach Piece Next)) ifAfterwards:(not ("IsInCheck" "Osho" Next (or ("PlaceAPiece" Mover Next) (forEach Piece)))) )))
+    (not (can Move (do (or ("PlaceAPiece" Next Mover) (forEach Piece Next)) ifAfterwards:(not ("IsInCheck" "Osho" Next (or ("PlaceAPiece" Mover Next) (forEach Piece)))))))
 )
 
 (define "CapturePiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (add 
                 (piece (mapEntry "Captured" (what at:(to)))) 
                 (to (mapEntry "Where" (what at:(to))))
@@ -14,7 +14,7 @@
 )
 
 (define "InPromotionZone"
-    (is In #1 (sites Mover "Promotion") )	
+    (is In #1 (sites Mover "Promotion"))	
 )
 
 (define "Promote"
@@ -33,7 +33,7 @@
 (define "CanPromote"
     (then 
         (if 
-            (or ("InPromotionZone" (last To)) ("InPromotionZone" (last From)) ) 
+            (or ("InPromotionZone" (last To)) ("InPromotionZone" (last From))) 
             (moveAgain) 
         ) 
     )
@@ -43,18 +43,18 @@
     (move
         Slide 
         #1 
-        (to if:(is Enemy (who at:(to))) "CapturePiece")
+        (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
-    )   	
+    )  	
 )
 
 (define "StepMove"
     (move
         Step 
         #1
-        (to if:(not (is Friend (who at:(to)))) "CapturePiece") 
+        (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
-    )   	
+    )  	
 )
 
 (define "PlaceAPiece"
@@ -65,12 +65,12 @@
         ) 
         (do 
             (move 
-                (from (sites Occupied by:#1 container:"Hand" component:"Fuhyo" )) 
-                (to (difference (sites Empty) (sites #1 "Promotion") )) 
+                (from (sites Occupied by:#1 container:"Hand" component:"Fuhyo")) 
+                (to (difference (sites Empty) (sites #1 "Promotion"))) 
             ) 
             ifAfterwards:(not ("IsInCheck" "Osho" #2 (forEach Piece #1)))
         )
-    })   	
+    })  	
 )
 
 (define "CorrectColumn"
@@ -81,8 +81,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Dice Shogi"  
-    (players {(player N) (player S)})  
+(game "Dice Shogi" 
+    (players {(player N) (player S)}) 
     
     (equipment { 
         (board (square 5))
@@ -117,8 +117,8 @@
         // Promoted Bishop
         (piece "Ryuma" Each (or ("SlideMove" Diagonal) ("StepMove" Orthogonal)))
         
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
         (map "Where" { 
             (pair (id "Fuhyo" P1) (handSite P2)) (pair (id "Fuhyo" P2) (handSite P1)) 
             (pair (id "Ginsho" P1) (handSite P2 1)) (pair (id "Ginsho" P2) (handSite P1 1)) 
@@ -143,7 +143,7 @@
         })
         (map "Promoted" { 
             (pair (id "Fuhyo" P1) (id "Tokin" P1)) (pair (id "Fuhyo" P2) (id "Tokin" P2)) 
-            (pair (id "Ginsho" P1) (id "Narigin" P1)) (pair (id "Ginsho" P2) (id "Narigin" P2))  
+            (pair (id "Ginsho" P1) (id "Narigin" P1)) (pair (id "Ginsho" P2) (id "Narigin" P2)) 
             (pair (id "Hisha" P1) (id "Ryuo" P1)) (pair (id "Hisha" P2) (id "Ryuo" P2)) 
             (pair (id "Kakugyo" P1) (id "Ryuma" P1)) (pair (id "Kakugyo" P2) (id "Ryuma" P2)) 
         })
@@ -194,7 +194,7 @@
         
         (end {
             (if (and ("IsInCheck" "Osho" Next (or ("PlaceAPiece" Mover Next) (forEach Piece))) ("NextCannotMove")) (result Mover Win)) 
-            (if (no Moves Next) (result Mover Win)) 
+            ("BlockWin")
         })
     )
 )
@@ -209,7 +209,7 @@
         If there are no legal moves with the value of the die, or if the value of the die is equal to 6, you can move any piece according to the rules of Mini Shogi.")
         (id "492")
         (source "<a href=\"http://minerva.cs.uec.ac.jp/cgi-bin/uec55shogi/wiki.cgi?page=The+Rule+of+Dice%2DShogi\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />minerva.cs.uec.ac.jp</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/shogi")
         (credit "Eric Piette")
         }

@@ -3,7 +3,7 @@
         (from #1)	 
         Orthogonal
         (between (range 1 3) if:(is Empty (between)))
-        (to if:(is Enemy (who at:(to))) #2)
+        (to if:("IsEnemyAt" (to)) #2)
     ) 	
 )
 
@@ -16,16 +16,16 @@
             (intersection
                 (sites To
                     (if (= 1 (value Piece at:(from)))
-                        (step Orthogonal (to if:(not (is Friend (who at:(to))))))
+                        (step Orthogonal (to if:(not ("IsFriendAt" (to)))))
                         (forEach Site
-                            (sites To ("SlideStep" ~  (apply if:(is Empty (to)))))
+                            (sites To ("SlideStep" ~ (apply if:(is Empty (to)))))
                             ("SlideStep" (site))
                         )
                     )
                 )
                 (sites Distance Orthogonal from:(from) (exact (value Piece at:(from))))
             )
-            if:(not (is Friend (who at:(to)))) 
+            if:(not ("IsFriendAt" (to))) 
             (apply 
                 (set Value at:(from) (value Random (range 1 #1)))
             ) 
@@ -34,13 +34,13 @@
 )
 
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
 )
 
 //------------------------------------------------------------------------------
 
-(game "Shogun"  
-    (players {(player N) (player S)})  
+(game "Shogun" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -51,7 +51,7 @@
         (piece "King" Each 
             ("Move" 2)
         )
-    })  
+    }) 
     (rules 
         (start { 
             (place "Pawn1" coord:"A1" value:(value Random (range 1 4)))
@@ -92,7 +92,7 @@
 
 (option "Shogun Capture" <CheckmateRule> args:{ <Move> <Ending> }
     {
-    (item "Allowed"    	
+    (item "Allowed"  	
         <
         (forEach Piece)
         >
@@ -101,7 +101,7 @@
         >
     "1976 version")**
     
-    (item "Not Allowed"    	
+    (item "Not Allowed"  	
         <
         (do 
             (forEach Piece)
@@ -127,7 +127,7 @@
         (rules "<a href=\"https://boardgamegeek.com/image/1488366/shogun\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG rules</a>")
         (id "1653")
         (source "<a href=\"https://boardgamegeek.com/boardgame/2043/shogun\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG page</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/eliminate/target")
         (author "Michael Gray and Teruo Matsumoto")
         (credit "Matthew Stephenson and Eric Piette")

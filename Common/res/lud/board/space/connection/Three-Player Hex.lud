@@ -1,15 +1,15 @@
-(game "Three-Player Hex"  
-    (players 3)  
+(game "Three-Player Hex" 
+    (players 3) 
     (equipment { 
         (board (hex <Board>)) 
         (piece "Marker" Each)
-        (regions P1 { (sites Side N) (sites Side S) } )
-        (regions P2 { (sites Side NW) (sites Side SE) } )
-        (regions P3 { (sites Side SW) (sites Side NE) } )    
-    })  
-    (rules   	
+        (regions P1 {(sites Side N) (sites Side S) })
+        (regions P2 {(sites Side NW) (sites Side SE) })
+        (regions P3 {(sites Side SW) (sites Side NE) })  
+    }) 
+    (rules  	
         // (play <Swap:playRules>) 	
-        (play (move Add  (to (sites Empty)))) 
+        (play (move Add (to (sites Empty)))) 
         (end {
             (forEach NonMover if:(is Blocked Player) (result Player <Result:nonMover>))
             (if (is Connected Mover) (result Mover <Result:mover>))
@@ -21,83 +21,83 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "2x2"    <2>    "The game is played on a 2x2 board")   
-    (item "3x3"    <3>    "The game is played on a 3x3 board")   
-    (item "4x4"    <4>    "The game is played on a 4x4 board")*   
-    (item "5x5"    <5>    "The game is played on a 5x5 board")   
-    (item "6x6"    <6>    "The game is played on a 6x6 board")   
-    (item "7x7"    <7>    "The game is played on a 7x7 board")   
-    (item "8x8"    <8>    "The game is played on a 8x8 board")   
-    (item "9x9"    <9>    "The game is played on a 9x9 board")   
-    (item "10x10"  <10>   "The game is played on a 10x10 board")   
+    (item "2x2"  <2>  "The game is played on a 2x2 board")  
+    (item "3x3"  <3>  "The game is played on a 3x3 board")  
+    (item "4x4"  <4>  "The game is played on a 4x4 board")*  
+    (item "5x5"  <5>  "The game is played on a 5x5 board")  
+    (item "6x6"  <6>  "The game is played on a 6x6 board")  
+    (item "7x7"  <7>  "The game is played on a 7x7 board")  
+    (item "8x8"  <8>  "The game is played on a 8x8 board")  
+    (item "9x9"  <9>  "The game is played on a 9x9 board")  
+    (item "10x10" <10>  "The game is played on a 10x10 board")  
 })
 
 (option "End Rules" <Result> args:{ <nonMover> <mover>}
     {
-    (item "Standard"  <Loss> <Win>  "The first player to connect his two sides wins.")*   
-    (item "Misere"    <Win> <Loss> "The first player to connect his two sides loses.")   
+    (item "Standard" <Loss> <Win> "The first player to connect his two sides wins.")*  
+    (item "Misere"  <Win> <Loss> "The first player to connect his two sides loses.")  
 })
 
 //(option "Swap Rule" <Swap> args:{ <playRules> }
-    //    {
-    //    (item "No Swap" <(move Add  (to (sites Empty)))> "No swap rule.")*
-    //    (item "In-place Previous" 
-        //        <(or {
-            //            (move Add (to (sites Empty)))					// Can always just move normally
-            //            (if (and {
-                    //                    (> (count Moves) 0) 					// No swapping for first player in first turn
-                    //                    (<= (count Turns) (count Players))		// No swapping after everyone's had a turn
-                    //                    (not (= (mover) (prev)))			// No swapping if we just got swapped into our current role
-                //                })
-                //                (swap Players Mover Prev)		// Mover swaps with previous player
-            //            )
-        //        })> 
-        //        "In-place swap with previous."
-    //    )
-    //    (item "In-place Any" 
-        //        <(or {
-            //            (move Add (to (sites Empty)))					// Can always just move normally
-            //            (if (and {
-                    //                    (> (count Moves) 0) 					// No swapping for first player in first turn
-                    //                    (<= (count Turns) (count Players))		// No swapping after everyone's had a turn
-                    //                    (not (= (mover) (prev)))			// No swapping if we just got swapped into our current role
-                //                })
-                //                (select 
-                    //                    (from (forEach (sites Board) if:(and (< (to) (mover)) (>= (to) 1)))) 		// Select Player index lower than Mover index
-                    //                    (then (swap Players Mover (last To)))										// Swap mover with selected index
-                //                )
-            //            )
-        //        })> 
-        //        "In-place swap with any player with a lower index."
-    //    )
-    //    (item "Shift Previous" 
-        //        <(or {
-            //            (move Add (to (sites Empty)))					// Can always just move normally
-            //            (if (and {
-                    //                    (> (count Moves) 0) 					// No swapping for first player in first turn
-                    //                    (< (count Moves) (count Players))		// No swapping after everyone's had a move
-                //                })
-                //                (shiftPlayers Mover (- (mover) 1))		// Mover ''shift-swaps'' with index 1 lower than his own
-            //            )
-        //        })> 
-        //        "Move into previous position, move previous player to last spot, and shift all the players in between."
-    //    )
-    //    (item "Shift Any" 
-        //        <(or {
-            //            (move Add (to (sites Empty)))					// Can always just move normally
-            //            (if (and {
-                    //                    (> (count Moves) 0) 					// No swapping for first player in first turn
-                    //                    (< (count Moves) (count Players))		// No swapping after everyone's had a move
-                //                })
-                //                (select 
-                    //                    (from (forEach (sites Board) if:(and (< (to) (mover)) (>= (to) 1)))) 		// Select Player index lower than Mover index
-                    //                    (then (shiftPlayers Mover (last To)))										// "Shift-swap" mover with selected index
-                //                )
-            //            )
-        //        })> 
-        //        "Move into any lower-index position, move that player to last spot, and shift all the players in between."
-    //    )
-    //    }
+    //  {
+    //  (item "No Swap" <(move Add (to (sites Empty)))> "No swap rule.")*
+    //  (item "In-place Previous" 
+        //    <(or {
+            //      (move Add (to (sites Empty)))					// Can always just move normally
+            //      (if (and {
+                    //          (> (count Moves) 0) 					// No swapping for first player in first turn
+                    //          (<= (count Turns) (count Players))		// No swapping after everyone's had a turn
+                    //          (not (= (mover) (prev)))			// No swapping if we just got swapped into our current role
+                //        })
+                //        (swap Players Mover Prev)		// Mover swaps with previous player
+            //      )
+        //    })> 
+        //    "In-place swap with previous."
+    //  )
+    //  (item "In-place Any" 
+        //    <(or {
+            //      (move Add (to (sites Empty)))					// Can always just move normally
+            //      (if (and {
+                    //          (> (count Moves) 0) 					// No swapping for first player in first turn
+                    //          (<= (count Turns) (count Players))		// No swapping after everyone's had a turn
+                    //          (not (= (mover) (prev)))			// No swapping if we just got swapped into our current role
+                //        })
+                //        (select 
+                    //          (from (forEach (sites Board) if:(and (< (to) (mover)) (>= (to) 1)))) 		// Select Player index lower than Mover index
+                    //          (then (swap Players Mover (last To)))										// Swap mover with selected index
+                //        )
+            //      )
+        //    })> 
+        //    "In-place swap with any player with a lower index."
+    //  )
+    //  (item "Shift Previous" 
+        //    <(or {
+            //      (move Add (to (sites Empty)))					// Can always just move normally
+            //      (if (and {
+                    //          (> (count Moves) 0) 					// No swapping for first player in first turn
+                    //          (< (count Moves) (count Players))		// No swapping after everyone's had a move
+                //        })
+                //        (shiftPlayers Mover (- (mover) 1))		// Mover ''shift-swaps'' with index 1 lower than his own
+            //      )
+        //    })> 
+        //    "Move into previous position, move previous player to last spot, and shift all the players in between."
+    //  )
+    //  (item "Shift Any" 
+        //    <(or {
+            //      (move Add (to (sites Empty)))					// Can always just move normally
+            //      (if (and {
+                    //          (> (count Moves) 0) 					// No swapping for first player in first turn
+                    //          (< (count Moves) (count Players))		// No swapping after everyone's had a move
+                //        })
+                //        (select 
+                    //          (from (forEach (sites Board) if:(and (< (to) (mover)) (>= (to) 1)))) 		// Select Player index lower than Mover index
+                    //          (then (shiftPlayers Mover (last To)))										// "Shift-swap" mover with selected index
+                //        )
+            //      )
+        //    })> 
+        //    "Move into any lower-index position, move that player to last spot, and shift all the players in between."
+    //  )
+    //  }
 //)
 
 //------------------------------------------------------------------------------
@@ -109,7 +109,7 @@
         (rules "Three-Player Hex is played on the Hex board, typically with five cells per side. As in standard Hex, players take turn placing a piece of their color on an empty cell, and the first player to connect the opposite sides of the board marked his color with a chain of his pieces wins. As soon as it it no longer possible for a player to connect his edges, that player is eliminated from the game and may not place any more stones.")
         (source "Philip D. Straffin Jr. (1985) Three Person Winner-Take-All Games with McCarthy's Revenge Rule, The College Mathematics Journal, 16:5, pp. 386-394.")
         (id "555")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/connection")
         (author "Thomas Sibley")
         (date "01-01-1975")

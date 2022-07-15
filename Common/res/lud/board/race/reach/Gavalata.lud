@@ -1,16 +1,6 @@
 (define "ThrowValue" (count Pips))
 
-(define "SiteToMoveOnTrack" (trackSite Move steps:("ThrowValue")))
-
-(define "CaptureEnemyPiece" 
-    (apply 
-        if:(is Enemy (who at:(to))) 
-        (fromTo 
-            (from (to))
-            (to ("StartingPoint" (who at:(to))))
-        )
-    ) 
-)
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" ("ThrowValue")))
 
 (define "Goal" 12)
 
@@ -20,8 +10,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Gavalata"  
-    (players <Player:num>)  
+(game "Gavalata" 
+    (players <Player:num>) 
     (equipment { 
         (board 
             (square 5)
@@ -32,14 +22,14 @@
             <Player:trackP4>
             }
         )
-        (dice d:2 from:0 num:<Num:dice>)
+        ("StickDice" <Num:dice>)
         (piece "Paddle" Each
-            (if (!= "SiteToMoveOnTrack" Off)
+            (if ("IsNotOffBoard" "SiteToMoveOnTrack")
                 (move 
                     (from (from) level:(level))
                     (to 
                         "SiteToMoveOnTrack" 
-                        "CaptureEnemyPiece"
+                        ("HittingCapture" ("StartingPoint" (who at:(to))))
                     )
                 )
                 (then 
@@ -50,8 +40,7 @@
             )		
         )
         (map {(pair 1 "C1") (pair 2 "C5") (pair 3 "E3") (pair 4 "A3")})
-        }
-    )  
+    }) 
     (rules 
         (start {
             (place Stack "Paddle1" ("StartingPoint" 1) count:"NumInitPiece")
@@ -61,12 +50,12 @@
         })
         
         (play 
-            (do (roll) 
-                next:(if (!= 0 ("ThrowValue")) (forEach Piece) (move Pass))
+            ("RollMove"
+                (if (!= 0 ("ThrowValue")) (forEach Piece) (move Pass))
             )
         )
         
-        (end (if (no Pieces Mover) (result Mover Win)))
+        (end ("EscapeWin"))
     )
 )
 
@@ -74,27 +63,27 @@
 
 (option "Players" <Player> args:{ <num> <startP3> <trackP3> <startP4> <trackP4> }
     {
-    (item  "2"  <2> <> <> <> <> "The game involves 2 players.")  
-    (item  "4"  <4> 
+    (item "2" <2> <> <> <> <> "The game involves 2 players.") 
+    (item "4" <4> 
         <(place Stack "Paddle3" ("StartingPoint" 3) count:"NumInitPiece")> 
         <(track "Track3" "14,S,W,N,E,S1,W3,S2,E2,N1,W1" P3 directed:True)> 
         <(place Stack "Paddle4" ("StartingPoint" 4) count:"NumInitPiece")> 
         <(track "Track4" "10,N,E,S,W,N1,E3,N2,W2,S1,E1" P4 directed:True)> 
-    "The game involves 4 players.")*  
+    "The game involves 4 players.")* 
     }
 )
 
 (option "Start Rules" <Num> args:{ <pieces> }
     {
-    (item  "1"  <1> "The game involves 1 piece per player.")  
-    (item  "2"  <2> "The game involves 2 pieces per player.")*  
+    (item "1" <1> "The game involves 1 piece per player.") 
+    (item "2" <2> "The game involves 2 pieces per player.")* 
     }
 )
 
 (option "Dice" <Num> args:{ <dice> }
     {
-    (item  "4"  <4> "The game involves 4 dice.")*  
-    (item  "5"  <5> "The game involves 5 dice.")  
+    (item "4" <4> "The game involves 4 dice.")* 
+    (item "5" <5> "The game involves 5 dice.") 
     }
 )
 
@@ -118,7 +107,7 @@
         (rules "5x5 square. Nine squares are marked: the four central squares of each side, the central square of the board, and the squares which are diagonally between them. Two or four players; each player begins on one of the marked outer squares, beginning on opposite sides if two are playing. Players use one or two cowries as pieces. Four or five cowries are used as dice, with the value of the throw equalling the number of mouths which land face up. Players proceed in a clockwise direction around the board, until they reach the space before the one in which they began, moving to the marked square to the right of the direction of play, and proceeding around the inner square of spaces in an anti-clockwise direction, until arriving at the central space. When a player's piece lands on a space occupied by the opposing player, the opponent's piece is sent back to the starting point. The first player to bring all their pieces to the central square wins.")
         (source "Culin 1898: 851.")
         (id "977")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/reach")
         (credit "Eric Piette")
         (origin  "This game was played in India, around 1898.")

@@ -3,7 +3,7 @@
 )
 
 (define "KickerIsA" 
-    (and (= (what at:#2) (id #1 Mover)) (is In (where "Ball" Shared) (sites Around #2 #3)))
+    (and ("IsPieceAt" #1 Mover #2) (is In (where "Ball" Shared) (sites Around #2 #3)))
 )
 
 (define "InBottomOrTop"
@@ -77,12 +77,12 @@
 
 //------------------------------------------------------------------------------
 
-(game "Football Chess"  
-    (players 2)  
+(game "Football Chess" 
+    (players 2) 
     (equipment { 
         (board (square 9)) 
         
-        (piece "Rook" Each (move Slide Orthogonal (to (apply  if:(not (is In (to) (sites "Goals")))))))
+        (piece "Rook" Each (move Slide Orthogonal (to (apply if:(not (is In (to) (sites "Goals")))))))
         (piece "King" Each (move Step (to if:(and (is Empty (to)) (not (is In (to) (sites "Goals")))))))
         (piece "Bishop" Each (move Slide Diagonal (to (apply if:(not (is In (to) (sites "Goals")))))))
         (piece "Knight" Each (move Leap "KnightWalk" (to if:(and (is Empty (to)) (not (is In (to) (sites "Goals")))))))
@@ -90,7 +90,7 @@
         (piece "Ball" Shared)
         (regions "Goals" (sites {"E1" "E9"}))
         (map "Goal" {(pair P1 "E9") (pair P2 "E1")})
-    })  
+    }) 
     (rules 
         (meta (no Repeat PositionalInTurn))
         (start { 
@@ -100,7 +100,7 @@
         })
         
         (play 
-            (if (is Prev Mover)
+            (if ("SameTurn")
                 (or
                     (if ("KickBallAgainWithoutMoving")
                         (forEach Site (sites Around (where "Ball" Shared)) ("KickTheBall" (site))
@@ -154,7 +154,7 @@
         The object of the game is to kick to ball to the goal at the opponents side of the board. However, it is not allowed to kick the ball into or across the goal from a square on the 1st or 9th row.")
         (id "1793")
         (source "<a href=\"https://www.chessvariants.com/crossover.dir/football.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.chessvariants.com</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/reach")
         (author "Joseph Boyer")
         (credit "Eric Piette")

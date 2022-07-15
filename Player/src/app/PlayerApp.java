@@ -85,8 +85,6 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	public abstract void showOtherDialog(FastArrayList<Move> otherPossibleMoves);
 	public abstract void showInfoDialog();
 	
-	public abstract void checkButtonsEnabled();
-	
 	public abstract int width();
 	public abstract int height();
 	
@@ -190,34 +188,12 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	{
 		final State state = context.state();
 		final ContainerState cs = state.containerStates()[imageInfo.containerIndex()];
-		
 		final int hiddenValue = HiddenUtil.siteHiddenBitsetInteger(context, cs, imageInfo.site(), imageInfo.level(), context.state().mover(), imageInfo.graphElementType());
-
 		final BufferedImage componentImage = graphicsCache().getComponentImage(bridge, imageInfo.containerIndex(), imageInfo.component(), imageInfo.component().owner(), imageInfo.localState(), imageInfo.value(), imageInfo.site(), imageInfo.level(), imageInfo.graphElementType(), imageInfo.imageSize(), context, hiddenValue, imageInfo.rotation(), false);
-
-		// Exhibition glowing selected pieces
-		if (settingsPlayer().usingExhibitionApp() && imageInfo.component().equals(MoveHandler.getLastMovedPiece(this)) && context.game().equipment().containers().length == 4)
-		{
-			//g2d.setColor(new Color(253,253,150,100));
-			//g2d.fillOval(imageInfo.drawPosn().x, imageInfo.drawPosn().y, imageInfo.imageSize(), imageInfo.imageSize());
-			BufferedImage componentImageGlow = BufferedImageUtil.deepCopy(componentImage);
-			final int sizeExtension = (int) (componentImageGlow.getWidth()*0.2);
-			componentImageGlow = BufferedImageUtil.resize(componentImageGlow, componentImageGlow.getWidth() + sizeExtension, componentImageGlow.getHeight() + sizeExtension);
-			componentImageGlow = BufferedImageUtil.setPixelsToColour(componentImageGlow, new Color(253,253,50,100));
-			final Point drawPosnGlow = new Point(imageInfo.drawPosn().x - sizeExtension/2, imageInfo.drawPosn().y - sizeExtension/2);
-			graphicsCache().drawPiece(g2d, context,  componentImageGlow, drawPosnGlow, imageInfo.site(), imageInfo.level(), imageInfo.graphElementType(), imageInfo.transparency());
-			graphicsCache().drawPiece(g2d, context,  componentImage, imageInfo.drawPosn(), imageInfo.site(), imageInfo.level(), imageInfo.graphElementType(), imageInfo.transparency());	
-		}
-		else
-		{
-			graphicsCache().drawPiece(g2d, context,  componentImage, imageInfo.drawPosn(), imageInfo.site(), imageInfo.level(), imageInfo.graphElementType(), imageInfo.transparency());
-		}
-		
+		graphicsCache().drawPiece(g2d, context,  componentImage, imageInfo.drawPosn(), imageInfo.site(), imageInfo.level(), imageInfo.graphElementType(), imageInfo.transparency());
 		drawPieceCount(g2d, context, imageInfo, cs);
 	}
-	
-	
-	
+
 	//-----------------------------------------------------------------------------
 
 	private void drawPieceCount(final Graphics2D g2d, final Context context, final ImageInfo imageInfo, final ContainerState cs)

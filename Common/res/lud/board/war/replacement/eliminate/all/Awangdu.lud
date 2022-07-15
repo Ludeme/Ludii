@@ -7,7 +7,7 @@
 (define "RemovePiece" 
     (apply 
         (if 
-            (is Enemy (who at:(to)))
+            ("IsEnemyAt" (to))
             (remove (to))
         )
     )
@@ -16,11 +16,11 @@
 //------------------------------------------------------------------
 
 (game "Awangdu"
-    (players 2)  
+    (players 2) 
     (equipment 
         { 
         (board (rectangle 5 12) 
-            {    
+            {  
             (track "Track1" "0,E,N1,W,N1,E,N1,W,N1,E" P1 directed:True)
             (track "Track2" "59,W,S1,E,S1,W,S1,E,S1,W" P2 directed:True)
             }
@@ -40,7 +40,7 @@
         ) 
         (map {(pair 0 <High:value>) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 1) (pair 6 <High:value>)})
         }
-    )  
+    ) 
     
     (rules 
         (start 
@@ -81,7 +81,7 @@
 
 (option "High mouths value" <High> args:{ <value> }
     {
-    (item "10" <10> "0 or 6 mouths correspond to 10.")*   
+    (item "10" <10> "0 or 6 mouths correspond to 10.")*  
     (item "11" <11> "0 or 6 mouths correspond to 11.")
     (item "12" <12> "0 or 6 mouths correspond to 12.")
     (item "13" <13> "0 or 6 mouths correspond to 13.")
@@ -105,7 +105,7 @@
         (rules "5x12 board, played on the intersections of lines. Twelve pieces per player, arranged along the side of twelve closest to the player. Pieces move along a boustrophedon track, one player starting from left to right in their starting row and the other from right to left in their starting row. Moves are determined by the throw of six cowries: one mouth up = 1, two mouth up = 2, three mouths up = 3, four mouths up = 4, five mouths up = 1 (0 and 6 mouths up are not specified, but are between 10 and 20 and the move can be split to make captures). A player must roll 1 or (0 or 6) to begin. When a piece moves to a spot occupied by an opponent's piece, it is captured. The goal of the game is to reduce the other player to one or two pieces.")
         (source "Murray 1951: 97.")
         (id "168")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
         }

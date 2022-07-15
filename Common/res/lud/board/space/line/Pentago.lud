@@ -77,9 +77,7 @@
     (rules
         phases:{
         (phase "Place"
-            (play 
-                (move Add (to (sites Empty)) (then (moveAgain)))
-            )
+            (play (move Add (to (sites Empty)) (then (moveAgain))))
             (end (if (is Line 5 All) (result Mover Win)))
             (nextPhase Mover "Rotate")
         )
@@ -128,7 +126,7 @@
                                     ("CreateVariables" "D6" "F6" "F4" "D4" "E4" "D5" "E6" "F5")
                                     next:(and {
                                         ("RemoveOccupiedSites" "D6" "F6" "F4" "D4" "E4" "D5" "E6" "F5")
-                                        ("Rotation" "D4" "D6" "F6" "F4" "F5" "E4" "D5" "E6" )
+                                        ("Rotation" "D4" "D6" "F6" "F4" "F5" "E4" "D5" "E6")
                                     })
                                 )
                                 (if (= (last To) (coord "B5"))
@@ -185,7 +183,7 @@
         (rules "After placing a marble, the player has to twist one of the grids by 90°, thus changing the board after every turn. The first player to get five marbles in a row wins. In case of both players having five in a row in the same time, the game is a draw.")
         (id "1535")
         (source "<a href=\"https://boardgamegeek.com/boardgame/19841/pentago\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line")
         (author "Tomas Flodén")
         (credit "Eric Piette")

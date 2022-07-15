@@ -13,10 +13,8 @@
 )
 
 (define "OnlyPiecesInMarked" 
-    (no Pieces All in:(forEach (sites Board) if:(= 0 (state at:(site)))))
+    (all Sites (forEach (sites Board) if:(= 0 (state at:(site)))) if:(= 0 (count at:(site))))
 )
-
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
 (define "RightMostEmpty" 
     (trackSite FirstSite 
@@ -30,7 +28,7 @@
     (forEach (sites Board) if:(= #1 (state at:(site))))
 )
 
-(define "NextHole" (trackSite Move from:#1 #2 steps:#3))
+(define "NextHole" ("NextSiteOnTrack" #3 from:#1 #2))
 
 (define "RememberOwnedHolesRandom" 
     (if (< 50 (value Random (range 1 100)))
@@ -41,8 +39,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Gabata (Shoa I)"  
-    (players 2)  
+(game "Gabata (Shoa I)" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 <Board:size> store:None
@@ -53,16 +51,16 @@
         )
         (piece "Seed" Shared)
         (hand Each)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
         (map "RightMost" {(pair P1 5) (pair P2 6)})
-    })  
+    }) 
     (rules 
         
         (start {
             (set RememberValue "OwnedP1" (sites Bottom))
             (set RememberValue "OwnedP2" (sites Top))
-            (set Count 4 to:(sites Track) ) 
+            (set Count 4 to:(sites Track)) 
         })
         
         phases:{
@@ -73,7 +71,7 @@
                 (or {
                     (move Select
                         (from 
-                            (if (is Mover Prev)
+                            (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 ("OwnedHoles") 
                             )
@@ -218,9 +216,9 @@
 
 (option "Board Size" <Board> args:{ <size> <trackCW> <opening>}
     {
-    (item "5"   <5> <"4,W,N,E"> <> "Each row has 5 holes.")   
-    (item "6"   <6> <"5,W,N,E"> <> "Each row has 6 holes.")*    
-    (item "6 With Opening"  <6> <"5,W,N,E"> 
+    (item "5"  <5> <"4,W,N,E"> <> "Each row has 5 holes.")  
+    (item "6"  <6> <"5,W,N,E"> <> "Each row has 6 holes.")*  
+    (item "6 With Opening" <6> <"5,W,N,E"> 
         <
         (phase "Opening" 
             (play
@@ -254,8 +252,8 @@
             (nextPhase (= (last From) 4) "Sowing")
         )
         >
-    "Each row has 6 holes.")*   
-    (item "7"   <7> <"6,W,N,E"> 
+    "Each row has 6 holes.")*  
+    (item "7"  <7> <"6,W,N,E"> 
         <>
     "Each row has 7 holes.")
 })
@@ -284,7 +282,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Gabata is a name applied to many two-or three-row mancala-style board games played in the Horn of Africa. This one is the most commonly played, and has been attested in Ethiopia since the early twentieth century, but is likely to be much older.")
@@ -303,7 +301,7 @@
         (useFor "Ruleset/Gabata 3 (Observed)" (id "651"))
         (source "Cohen 1911: 491-495 Variant: Gabata II (Wuqro), Pankhurst 1971: 173 ")
         (id "354")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }

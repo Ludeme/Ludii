@@ -5,7 +5,7 @@
 (define "Checkmate"
     (if (and 
             ("IsInCheck" #1 Next)
-            (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" #1 Next)))) )
+            (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" #1 Next)))))
         ) 
         (result Mover Win)
     )

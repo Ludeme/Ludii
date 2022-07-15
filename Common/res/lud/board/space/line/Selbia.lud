@@ -1,14 +1,14 @@
 (game "Selbia"
-    (players 2)  
+    (players 2) 
     (equipment {
         ("AlquerqueBoard" 3 3)
         (hand Each)
         (piece "Marker" Each)
-    })  
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:3))
-        (play (move (from (handSite Mover)) (to (sites Empty))) )
-        (end (if (is Line 3) (result Mover Win)))
+        (play (move (from (handSite Mover)) (to (sites Empty))))
+        (end ("Line3Win"))
     )
 )
 
@@ -24,7 +24,7 @@
         (rules "3x3 intersecting lines with diagonals in the square. Three pieces per player. Players alternate turns placing a piece on the board. The player who places three pieces in a row along one of the lines of the board wins. ")
         (source "Robert 1921: 66.")
         (id "1948")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line")
         (credit "Eric Piette")
         (origin  "This game was played in Algeria, around 1921.")

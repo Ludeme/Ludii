@@ -11,14 +11,14 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
 )
 
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
 )
 
 (define "HasNeverMoved"
@@ -82,7 +82,7 @@
 //------------------------------------------------------------------------------
 
 (game "Main Chator (Selangor)"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -148,7 +148,7 @@
                 Slide 
                 Orthogonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )
@@ -160,14 +160,14 @@
                         Leap 
                         "KnightWalk" 
                         (to 
-                            if:(not (is Friend (who at:(to)))) 
+                            if:(not ("IsFriendAt" (to))) 
                             "CaptureToPiece"
                         ) 
                     )	
                     (move
                         Slide 
                         (to 
-                            if:(is Enemy (who at:(to))) 
+                            if:("IsEnemyAt" (to)) 
                             "CaptureToPiece"
                         ) 
                     )
@@ -176,7 +176,7 @@
                     (move
                         Step 
                         (to 
-                            if:(not (is Friend (who at:(to)))) 
+                            if:(not ("IsFriendAt" (to))) 
                             "CaptureToPiece" 
                         )
                     )
@@ -210,7 +210,7 @@
                 Slide 
                 Diagonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )		
@@ -220,7 +220,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )
@@ -229,13 +229,13 @@
             (move
                 Slide 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )
         )
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
     })
     (rules 
         (start { 
@@ -270,7 +270,7 @@
                 (result Mover Win)
             ) 
             (if (no Moves Mover) (result Mover Win)) 
-            (if (= (count Pieces Next) 1) (result Mover Win) ) 
+            (if (= (count Pieces Next) 1) (result Mover Win)) 
         })
     )
 )
@@ -297,7 +297,7 @@
         ")
         (source "Robinson 1904.")
         (id "1470")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
         (origin  "This game was played in Malaysia, around 1904.")

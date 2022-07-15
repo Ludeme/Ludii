@@ -3,7 +3,7 @@
         Hop
         (directions {Forwards Rightward Leftward} bySite:True) 
         (between 
-            if:(is Enemy (who at:(between))) 
+            if:("IsEnemyAt" (between)) 
             (apply (remove (between)))
         )
         (to if:(is Empty (to)))
@@ -19,7 +19,7 @@
 )
 
 (define "MoveChoice" 
-    (or  
+    (or 
         (forEach Piece "Counter" #1
             (then 
                 (if (is In (last To) (sites Mover)) 
@@ -33,8 +33,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Game of Solomon"  
-    (players {(player N) (player S)})  
+(game "Game of Solomon" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board
             (renumber 
@@ -42,11 +42,11 @@
             )
             use:Vertex
         ) 
-        (piece "Counter" Each)  
+        (piece "Counter" Each) 
         (piece "DoubleCounter" Each)
         (regions "Palace1" P1 (sites {"E7"})) 
         (regions "Palace2" P2 (sites {"E1"})) 
-    })  
+    }) 
     
     (rules 
         (start {
@@ -62,7 +62,7 @@
         )
         
         (end {
-            (if (no Moves Next) (result Mover Win))
+            ("BlockWin")
             (if 
                 (and {
                     (= 1 (count Pieces P1)) 
@@ -85,7 +85,7 @@
         (description "Small draughts-like game invented by Martin Gardner on an unusual board.")
         (rules "Players take turns moving one of their pieces to an adjacent empty point, forwards or sideways. A piece can hop over an adjacent enemy piece to an empty point immeidately beyond it, forwards or sideways, and must do so if possible. Only one hope per turn is allowed. If a piece reaches the far point of the board, it is promoted to a king which can also move and hop backwards. Win by eliminating all enemy pieces. The game is drawn if both players are reduced to a single king.")
         (id "604")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/leaping/lines")
         (author "Martin Gardner")
         (publisher "Kadon Enterprises (<a href=\"http://www.gamepuzzles.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />gamepuzzles</a>)")
@@ -98,7 +98,7 @@
         (show RegionOwner)
         (show Edges Diagonal Hidden)
         
-    })      
+    })   
     
     (ai
         "Game of Solomon_ai"

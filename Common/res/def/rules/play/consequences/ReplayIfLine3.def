@@ -1,0 +1,10 @@
+// Move again if the last `to' position just made a line of 3.
+// #1 = The directions of the line (by default adjacent).
+// #1 = If true, then lines cannot exceed minimum length (by default false).
+// @example ("ReplayIfLine3")
+
+(define "ReplayIfLine3"
+    (if (is Line 3 #1 #2) 
+        (moveAgain)
+    )
+)

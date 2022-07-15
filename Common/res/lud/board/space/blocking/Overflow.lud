@@ -1,8 +1,6 @@
 (define "OverflowMove"
     (move Select
-        (from 
-            (sites Occupied by:P1)
-        )
+        (from (sites Occupied by:P1))
         (to 
             (sites Around (from))
             if:(and
@@ -25,9 +23,7 @@
 
 (define "ContainedMove"
     (move Select
-        (from 
-            (sites Occupied by:P1)
-        )
+        (from (sites Occupied by:P1))
         (to
             (sites Around (from) NotEmpty)
             if:(and 
@@ -161,12 +157,10 @@
 
 (game "Overflow"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (square <Board>))
         (piece "Disc" P1)
-        }
-    )
+    })
     (rules
         (start {
             (place "Disc1" (sites Board))
@@ -201,12 +195,12 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "3"    <3>  "A 3x3 board is currently selected")
-    (item "4"    <4>  "A 4x4 board is currently selected")
-    (item "5"    <5>  "A 5x5 board is currently selected")
-    (item "6"    <6>  "A 6x6 board is currently selected")*
-    (item "7"    <7>  "A 7x7 board is currently selected")
-    (item "8"    <8>  "A 8x8 board is currently selected")
+    (item "3"  <3> "A 3x3 board is currently selected")
+    (item "4"  <4> "A 4x4 board is currently selected")
+    (item "5"  <5> "A 5x5 board is currently selected")
+    (item "6"  <6> "A 6x6 board is currently selected")*
+    (item "7"  <7> "A 7x7 board is currently selected")
+    (item "8"  <8> "A 8x8 board is currently selected")
     }
 )
 
@@ -234,7 +228,7 @@
             
         Note that no stack will have both a contained move and an overflow move available in the same direction. All moves are completely determined by the choice of stack and direction.")
         (id "1975")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/blocking")
         (author "Michael Amundsen")
         (credit "Michael Amundsen")

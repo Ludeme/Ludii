@@ -1,0 +1,10 @@
+// Defines two opposite table tracks and using hand sites.
+// #1 = An optional End site.
+// @example ("TableTracksOppositeWithHands")
+
+(define "TableTracksOppositeWithHands"
+    {
+    (track "Track1" {24 0..11 23..12 #1} P1 directed:True)
+    (track "Track2" {25 12..23 11..0 #1} P2 directed:True)
+    }
+)
