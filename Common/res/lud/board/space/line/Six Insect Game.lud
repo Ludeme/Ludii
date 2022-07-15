@@ -43,11 +43,7 @@
     (equipment {
         (board (square 4))
         (piece "Marker" Each
-            (move Step
-                Orthogonal
-                (to if:(is In (to) (sites Empty)))
-                (then ("Line3WithSingleOpponent"))
-            )
+            ("StepToEmpty" Orthogonal (then ("Line3WithSingleOpponent")))
         )
     })
     (rules 
@@ -56,7 +52,7 @@
             (place "Marker2" (union (intersection (union (sites Right) (sites Left)) (sites Row 2)) (sites Top)))
         })
         (play (forEach Piece))
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 

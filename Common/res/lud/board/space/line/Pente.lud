@@ -15,16 +15,12 @@
 
 (game "Pente" 
     (players 2) 
-    (equipment 
-        { 
+    (equipment { 
         (board <Board> use:Vertex) 
         (piece "Ball" Each) 
-        }
-    ) 
+    }) 
     (rules 
-        (start {
-            (set Score Each 0)
-        })
+        (start (set Score Each 0))
         <Play>
         (end 
             {

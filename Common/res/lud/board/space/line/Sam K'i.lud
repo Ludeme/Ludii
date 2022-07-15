@@ -1,10 +1,3 @@
-(define "RemoveEnemyPiece" 
-    (move
-        Remove
-        (sites Occupied by:Next container:"Board") 
-    )
-)
-
 (define "PlaceOnTop" 
     (move
         (from (handSite Mover))
@@ -13,15 +6,6 @@
                 (sites Occupied by:Next container:"Board")
                 if:(= (size Stack at:(site)) 1)
             )
-        )
-    )
-)
-
-(define "IfLine3MoveAgain" 
-    (then 
-        (if 
-            (is Line 3 if:(= 1 (size Stack at:(to)))) 
-            (moveAgain)
         )
     )
 )
@@ -45,11 +29,7 @@
         (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
         (hand Each)
         (piece "Marker" Each 
-            (move 
-                Step 
-                (to if:(is Empty (to))) 
-                "IfLine3MoveAgain" 
-            )
+            ("StepToEmpty" ~ (then ("ReplayIfLine3" if:("IsSingletonStack" (to)))))
         ) 
     }) 
     (rules 
@@ -67,7 +47,7 @@
                         (move 
                             (from (handSite Mover)) 
                             (to (sites Empty)) 
-                            "IfLine3MoveAgain" 
+                            (then ("ReplayIfLine3" if:("IsSingletonStack" (to)))) 
                         ) 
                     )
                     (then 
@@ -83,7 +63,7 @@
         (phase "Movement" 
             (play 
                 (if "SameTurn"
-                    "RemoveEnemyPiece"
+                    "RemoveAnyEnemyPiece"
                     (if (> (count Pieces Mover) 3)
                         (forEach Piece)
                         (move 
@@ -119,8 +99,6 @@
     (graphics {
         (stackType 1 Count)
         (stackType 2 Count)
-        
     })
     
 )
-

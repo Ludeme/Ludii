@@ -1,32 +1,15 @@
-(define "IfLine3MoveAgain" 
-    (then 
-        (if 
-            (is Line 3 Orthogonal exact:True) 
-            (moveAgain)
-        )
-    )
-)
-
-//------------------------------------------------------------------------------
-
 (game "Six-Penny Madell"
     (players 2) 
-    (equipment 
-        {
+    (equipment {
         (board
             (concentric Triangle rings:3 joinMidpoints:False joinCorners:True)
             use:Vertex
         )
         (hand Each)
         (piece "Marker" Each
-            (move
-                Step
-                (to if:(is Empty (to))) 
-                "IfLine3MoveAgain"
-            )
+            ("StepToEmpty" ~ (then ("ReplayIfLine3" Orthogonal exact:True)))
         )
-        }
-    ) 
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:6))
         
@@ -34,14 +17,11 @@
         (phase "Placement"
             (play
                 (if "SameTurn"
-                    (move
-                        Remove
-                        (sites Occupied by:Next container:"Board") 
-                    )
+                    ("RemoveAnyEnemyPiece")
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
-                        "IfLine3MoveAgain"
+                        (then ("ReplayIfLine3" Orthogonal exact:True))
                     ) 
                 )
             )
@@ -51,21 +31,13 @@
         (phase "Movement" 
             (play 
                 (if "SameTurn"
-                    (move
-                        Remove
-                        (sites Occupied by:Next container:"Board") 
-                    )
+                    ("RemoveAnyEnemyPiece")
                     (forEach Piece)
                 )
             )
         )
         }
-        (end 
-            (if 
-                (no Pieces Next) 
-                (result Mover Win)
-            )
-        )
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -89,7 +61,6 @@
     (graphics {
         (show Edges Diagonal Hidden)
         (piece Scale "Marker" 0.55)
-        
     })
     
     (ai

@@ -1,37 +1,20 @@
 (game "Wure Dune"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (square 3) use:Vertex)
         (hand Each)
-        (piece "Marker" Each
-            (move 
-                Step All
-                (to if:(is Empty (to))) 
-            )
-        )
-        }
-    )
+        (piece "Marker" Each ("StepToEmpty" All))
+    })
     (rules
-        (start 
-            {
-            (place "Marker" "Hand" count:3) 
-            }
-        )
+        (start (place "Marker" "Hand" count:3))
         
         phases:{
         (phase "Placement"
-            (play 
-                (move (from (handSite Mover)) (to (sites Empty))) 
-            )
+            (play (move (from (handSite Mover)) (to (sites Empty))))
             (nextPhase ("HandEmpty" P2) "Movement")
         )
         
-        (phase "Movement"
-            (play 
-                (forEach Piece)
-            )
-        )
+        (phase "Movement" (play (forEach Piece)))
         }
         
         (end ("Line3Win" Orthogonal))

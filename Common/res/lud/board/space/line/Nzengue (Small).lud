@@ -18,9 +18,7 @@
         (hand Each)
     })
     (rules 
-        (start 
-            (place "Marker" "Hand" count:3)
-        )
+        (start (place "Marker" "Hand" count:3))
         (play (move (from (handSite Mover)) (to (sites Empty))))
         (end ("Line3Win"))
     )
@@ -43,12 +41,7 @@
         }
     )
     
-    (graphics {
-        
-    })
-    
     (ai
         "Nzengue (Small)_ai"
     )
 )
-

@@ -44,10 +44,10 @@
         }
         
         (end
-        	(forEach Player
-        		if:(<= (count Pieces Player) 2)
-        		(result Player Loss)
-        	)
+            (forEach Player
+                if:(<= (count Pieces Player) 2)
+                (result Player Loss)
+            )
         )
     )
 )

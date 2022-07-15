@@ -3,13 +3,7 @@
     (equipment { 
         <Board>
         (hand Each)
-        (piece "Marker" Each 
-            (move
-                Step 
-                All
-                (to if:(is Empty (to)))
-            )
-        )
+        (piece "Marker" Each ("StepToEmpty" All))
     }) 
     (rules 
         (start (place "Marker" "Hand" count:3))
@@ -25,9 +19,7 @@
             (nextPhase ("HandEmpty" P2) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
-        )
+        (phase "Movement" (play (forEach Piece)))
         }
         (end ("Line3Win" All))
     )

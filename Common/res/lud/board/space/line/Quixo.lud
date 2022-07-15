@@ -11,8 +11,7 @@
 )
 
 (define "TakeAPieceInOuterSites" 
-    (move
-        Select 
+    (move Select 
         (from (sites Outer) if:(or (is Mover (who at:(from))) (= (who at:(from)) 0))) 
         (then 
             (and 
@@ -47,8 +46,7 @@
 )
 
 (define "Push" 
-    (move
-        Select 
+    (move Select 
         #1
         (then
             (and {
@@ -69,8 +67,7 @@
         (piece "Cross" P2) 
         (piece "Square" Neutral)
         (hand Each)
-        }
-    ) 
+    }) 
     
     (rules 
         (start (place "Square0" (sites Board)))
@@ -88,8 +85,7 @@
         (end {
             (if (is Line 5 throughAny:(sites LastTo) what:(next)) (result Next Win))
             (if (is Line 5 throughAny:(sites LastTo) what:(mover)) (result Mover Win))
-            }
-        )
+        })
     )
 )
 

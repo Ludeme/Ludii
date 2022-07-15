@@ -20,21 +20,16 @@
 (game "Triodi (Chios)"
     (players 2)
     
-    (equipment 
-        { 
+    (equipment { 
         (board (square 3) use:Vertex) 
         (hand Each)
         (piece "Marker" Each 
             (if 
                 (not ("Surrounded"))
-                (move
-                    Step 
-                    (to if:(is Empty (to))) 
-                )
+                ("StepToEmpty")
             )
         ) 
-        }
-    ) 
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:3))
         
@@ -74,7 +69,6 @@
     )
     
     (graphics {
-        
         (show Edges Diagonal Hidden)
     })
     

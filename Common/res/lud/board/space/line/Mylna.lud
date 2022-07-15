@@ -6,7 +6,7 @@
             use:Vertex
         ) 
         (piece "Marker" Each 
-        	("StepToEmpty" Orthogonal (then ("ReplayIfLine3" Orthogonal)))
+            ("StepToEmpty" Orthogonal (then ("ReplayIfLine3" Orthogonal)))
         )
         (hand Each)
     })
@@ -16,7 +16,7 @@
         (phase "Placement"
             (play 
                 (if "SameTurn"
-                	("RemoveAnyEnemyPieceNotInLine3" Orthogonal) 
+                    ("RemoveAnyEnemyPieceNotInLine3" Orthogonal) 
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty))
@@ -30,7 +30,7 @@
         (phase "Movement"
             (play 
                 (if "SameTurn"
-                		("RemoveAnyEnemyPieceNotInLine3" Orthogonal) 
+                    ("RemoveAnyEnemyPieceNotInLine3" Orthogonal) 
                     (forEach Piece)
                 )
             )

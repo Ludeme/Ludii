@@ -1,12 +1,10 @@
 (game "Nine Holes"
     (players 2) 
-    (equipment 
-        {
+    (equipment {
         (board (square 3) use:Vertex)
         (hand Each)
         (piece "Marker" Each (move (from) (to (sites Empty))))
-        }
-    ) 
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:3))
         
@@ -16,9 +14,7 @@
             (nextPhase ("HandEmpty" P2) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
-        )
+        (phase "Movement" (play (forEach Piece)))
         }
         (end ("Line3Win" Orthogonal))
     )
@@ -43,7 +39,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai

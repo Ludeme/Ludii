@@ -1,15 +1,12 @@
 (game "Score Four" 
     (players 2) 
-    (equipment 
-        { 
+    (equipment { 
         (board (skew .5 (scale 1 .5 (square 4))))
         (piece "discFlat" Each)
-        }
-    ) 
+    }) 
     (rules
         (play 
-            (move 
-                Add 
+            (move Add 
                 (to 
                     (forEach 
                         (sites Board) 

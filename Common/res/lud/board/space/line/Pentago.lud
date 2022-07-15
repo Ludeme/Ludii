@@ -77,9 +77,7 @@
     (rules
         phases:{
         (phase "Place"
-            (play 
-                (move Add (to (sites Empty)) (then (moveAgain)))
-            )
+            (play (move Add (to (sites Empty)) (then (moveAgain))))
             (end (if (is Line 5 All) (result Mover Win)))
             (nextPhase Mover "Rotate")
         )

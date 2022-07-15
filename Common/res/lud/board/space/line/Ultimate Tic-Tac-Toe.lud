@@ -30,8 +30,7 @@
 
 (game "Ultimate Tic-Tac-Toe" 
     (players 2) 
-    (equipment 
-        { 
+    (equipment { 
         (board 
             (union 
                 (square 9) 
@@ -86,16 +85,13 @@
             6 7 8 6 7 8 6 7 8 
             } 
         )
-        }
-    ) 
+    }) 
     (rules 
         (play 
-            (priority
-                {
+            (priority {
                 // Move at any empty cell in the designated subgame 
                 // whose supergame is undecided
-                (move
-                    Add
+                (move Add
                     (piece (if (= (mover) P1) (id "Disc" P1) (id "Cross" P2)))
                     (to 
                         (if (= 0 (mapEntry "SubToSub" (last To))) 

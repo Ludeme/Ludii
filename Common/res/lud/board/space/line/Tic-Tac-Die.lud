@@ -19,9 +19,8 @@
     }) 
     (rules 
         (play 
-            (do
-                (roll)
-                next:(if (is Empty (count Pips))
+            ("RollMove" 
+                (if (is Empty (count Pips))
                     (move Add ("PlayerPiece") (to (count Pips)))
                     <Play:choice>
                 )

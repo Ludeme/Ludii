@@ -27,8 +27,7 @@
 )
 
 (define "RemoveEnemyPiece" 
-    (move
-        Remove
+    (move Remove
         (sites Occupied by:Next container:"Board") 
         #1
     )
@@ -51,13 +50,7 @@
             (concentric Square rings:3)
             use:Vertex
         ) 
-        (piece "Marker" Each
-            (move
-                Step 
-                (to if:(is Empty (to))) 
-                "IfLine3MoveAgain" 
-            )		
-        )
+        (piece "Marker" Each ("StepToEmpty" ~ "IfLine3MoveAgain"))
         (hand Each)
     })
     (rules 
@@ -89,12 +82,7 @@
                     )
                     (if (is Pending)
                         (do
-                            (forEach Piece
-                                (move
-                                    Step 
-                                    (to if:(is Empty (to))) 
-                                )
-                            ) 
+                            (forEach Piece ("StepToEmpty")) 
                             ifAfterwards:(can Move (forEach Piece Next))
                         )
                         (forEach Piece)
@@ -147,9 +135,6 @@
         }
     )
     
-    (graphics {
-        
-    })
     (ai
         "Shah_ai"
     )

@@ -1,32 +1,13 @@
-(define "IfLine3OrthogonalMoveAgain" 
-    (then 
-        (if 
-            (is Line 3 Orthogonal) 
-            (moveAgain)
-        )
-    )
-)
-
-//------------------------------------------------------------------------------
-
 (game "Wali"
     (players 2)
     (equipment {
         (board (rectangle 5 6))
         (hand Each)
         (piece "Stick" P1
-            (move 
-                Step Orthogonal
-                (to if:(is Empty (to))) 
-                "IfLine3OrthogonalMoveAgain" 
-            )
+            ("StepToEmpty" Orthogonal (then ("ReplayIfLine3" Orthogonal)))
         )
         (piece "Ball" Each
-            (move 
-                Step Orthogonal
-                (to if:(is Empty (to))) 
-                "IfLine3OrthogonalMoveAgain" 
-            )
+            ("StepToEmpty" Orthogonal (then ("ReplayIfLine3" Orthogonal)))
         )
     })
     (rules
@@ -52,17 +33,14 @@
         (phase "Movement"
             (play 
                 (if "SameTurn"
-                    (move
-                        Remove
-                        (sites Occupied by:Next)
-                    )
+                    ("RemoveAnyEnemyPiece")
                     (forEach Piece)
                 )
             )
         )
         }
         
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )	
 )
 

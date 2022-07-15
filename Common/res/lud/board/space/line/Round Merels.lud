@@ -1,12 +1,10 @@
 (game "Round Merels"
     (players 2) 
-    (equipment 
-        { 
+    (equipment { 
         (board (concentric {1 8}) use:Vertex)
         (hand Each)
         (piece "Marker" Each "StepToEmpty") 
-        }
-    ) 
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:3))
         

@@ -1,23 +1,15 @@
 (game "Niranchy"
     (players 2)
     
-    (equipment 
-        { 
+    (equipment { 
         (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
         (hand Each)
-        (piece "Marker" Each 
-            (move 
-                Step 
-                (to if:(is Empty (to))) 
-            )
-        ) 
-        }
-    ) 
+        (piece "Marker" Each ("StepToEmpty")) 
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:12))
         
-        phases:
-        {
+        phases:{
         (phase "Placement"
             (play
                 (move 
@@ -28,19 +20,13 @@
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
         
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
+        (phase "Movement" (play (forEach Piece)))
         }
         
-        (end
-            {
+        (end {
             (if (no Moves <Players:player1>) (result <Players:player2> Win))
             (if (is Line 3 <Players:player1>) (result <Players:player1> Win))
-            }
-        )
+        })
     )
 )
 
@@ -70,11 +56,7 @@
         }
     )
     
-    (graphics {
-        
-    })
     (ai
         "Niranchy_ai"
     )
 )
-

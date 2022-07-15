@@ -5,18 +5,11 @@
             (concentric Square rings:3) 
             use:Vertex
         ) 
-        (piece "Marker" Each
-            (move 
-                Step Orthogonal
-                (to if:(is Empty (to))) 
-            )
-        )
+        (piece "Marker" Each ("StepToEmpty" Orthogonal))
         (hand Each)
     })
     (rules 
-        (start 
-            (place "Marker" "Hand" count:9)
-        )
+        (start (place "Marker" "Hand" count:9))
         (play
             (or
                 (if (not ("HandEmpty" Mover))
@@ -49,9 +42,6 @@
         }
     )
     
-    (graphics {
-        
-    })
     (ai
         "Sujjua_ai"
     )

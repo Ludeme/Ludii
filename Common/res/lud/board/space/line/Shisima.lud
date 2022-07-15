@@ -1,18 +1,14 @@
 (game "Shisima"
     (players 2) 
-    (equipment 
-        { 
+    (equipment { 
         (board (concentric {1 8}) use:Vertex)
         (piece "Marker" Each "StepToEmpty")
-        }
-    ) 
+    }) 
     (rules 
-        (start 
-            { 
+        (start { 
             (place "Marker1" {1 8 7})
             (place "Marker2" {3 4 5})
-            }
-        )
+        })
         
         (play (forEach Piece))
         (end 
@@ -46,7 +42,6 @@
     
     (graphics {
         (no Curves)
-        
     })
     
     (ai 

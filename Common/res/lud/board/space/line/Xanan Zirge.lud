@@ -1,8 +1,7 @@
 (define "SquarePattern" (is Pattern {F R F R F R F} #1))
 
 (define "RemoveEnemyPieceNotInLine3AndNotInSquare" 
-    (move
-        Remove
+    (move Remove
         (forEach 
             (sites Occupied by:Next container:"Board") 
             if:(and (not (is Line 3 All through:(site))) (not ("SquarePattern" from:(site))))
@@ -28,11 +27,7 @@
         (board (square 9) use:Vertex)
         (hand Each)
         (piece "Marker" Each 
-            (move
-                Step
-                (to if:(is Empty (to))) 
-                "IfLine3OrSquareMoveAgain"
-            )
+            ("StepToEmpty" ~ "IfLine3OrSquareMoveAgain")
         ) 
     }) 
     (rules 
@@ -63,12 +58,7 @@
         )
         }
         
-        (end 
-            (if 
-                (no Pieces Next) 
-                (result Mover Win)
-            )
-        )
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -91,7 +81,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai
