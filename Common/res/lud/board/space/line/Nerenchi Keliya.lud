@@ -1,24 +1,7 @@
-(define "RemoveEnemyPiece" 
-    (move
-        Remove
-        (sites Occupied by:Enemy container:"Board") 
-        (then (moveAgain))
-    )
-)
-
 (define "IfLine3MoveAgainPlacement" 
     (then 
         (if 
             (and (is Line 3) (not ("HandEmpty" Mover)))
-            (moveAgain)
-        )
-    )
-)
-
-(define "IfLine3MoveAgain" 
-    (then 
-        (if 
-            (is Line 3)
             (moveAgain)
         )
     )
@@ -29,24 +12,15 @@
 (game "Nerenchi Keliya"
     (players 2)
     
-    (equipment 
-        { 
+    (equipment { 
         (board (concentric Square rings:3) use:Vertex) 
         (hand Each)
-        (piece "Marker" Each 
-            (move
-                Step 
-                (to if:(is Empty (to))) 
-                "IfLine3MoveAgain" 
-            )
-        ) 
-        }
-    ) 
+        (piece "Marker" Each ("StepToEmpty" ~ (then ("ReplayIfLine3")))) 
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:9))
         
-        phases:
-        {
+        phases:{
         (phase "Placement"
             (play
                 (move 
@@ -59,24 +33,22 @@
         )
         
         (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
+            (play (forEach Piece))
             (nextPhase Mover (is Line 3) "Capture")
         )
         
         (phase "Capture" 
-            (play 
-                "RemoveEnemyPiece"
-            )
+            (play ("RemoveAnyNextPiece" (then (moveAgain))))
             (nextPhase Mover "Movement")
         )
         }
         
-        (end {
-            (if (<= (count Pieces P1) 2) (result P2 Win))
-            (if (<= (count Pieces P2) 2) (result P1 Win))
-        })
+        (end
+        	(forEach Player
+        		if:(<= (count Pieces Player) 2)
+        		(result Player Loss)
+        	)
+        )
     )
 )
 
@@ -96,9 +68,6 @@
         }
     )
     
-    (graphics {
-        
-    })
     (ai
         "Nerenchi Keliya_ai"
     )

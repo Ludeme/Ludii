@@ -1,37 +1,13 @@
-(define "RemoveEnemyPiece" 
-    (move
-        Remove
-        (sites Occupied by:Next container:"Board") 
-    )
-)
-
-(define "IfLine3MoveAgain" 
-    (then 
-        (if 
-            (is Line 3 Orthogonal exact:True) 
-            (moveAgain)
-        )
-    )
-)
-
-//------------------------------------------------------------------------------
-
 (game "Nao Guti"
     (players 2)
     
-    (equipment 
-        { 
+    (equipment { 
         (board (concentric Square rings:3) use:Vertex) 
         (hand Each)
         (piece "Marker" Each 
-            (move
-                Step 
-                (to if:(is Empty (to))) 
-                "IfLine3MoveAgain" 
-            )
+            ("StepToEmpty" ~ (then ("ReplayIfLine3" Orthogonal exact:True)))
         ) 
-        }
-    ) 
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:9))
         
@@ -39,11 +15,11 @@
         (phase "Placement"
             (play
                 (if "SameTurn"
-                    "RemoveEnemyPiece"
+                		"RemoveAnyNextPiece"
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
-                        "IfLine3MoveAgain" 
+                        (then ("ReplayIfLine3" Orthogonal exact:True)) 
                     ) 
                 )
             ) 
@@ -53,14 +29,14 @@
         (phase "Movement" 
             (play 
                 (if "SameTurn"
-                    "RemoveEnemyPiece"
+                		"RemoveAnyNextPiece"
                     (forEach Piece)
                 )
             )
         )
         }
         
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -80,10 +56,6 @@
         (origin "This game was played in South Asia, around 1926.")
         }
     )
-    
-    (graphics {
-        
-    })
     
     (ai
         "Nao Guti_ai"
