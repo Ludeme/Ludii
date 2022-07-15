@@ -31,4 +31,6 @@ public interface iGNode {
 
     boolean fixed();
 
+    boolean collapsed();
+
 }

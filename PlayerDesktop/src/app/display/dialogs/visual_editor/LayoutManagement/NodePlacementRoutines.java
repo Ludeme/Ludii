@@ -42,8 +42,11 @@ public final class NodePlacementRoutines
         {
             int nid = Q.remove(0);
             iGNode n = graph.getNode(nid);
-            n.setPos(n.pos().sub(t));
-            Q.addAll(n.children());
+            if (!n.collapsed())
+            {
+                n.setPos(n.pos().sub(t));
+                Q.addAll(n.children());
+            }
         }
     }
 

@@ -79,7 +79,6 @@ public class DFBoxDrawing
             }
             else
             {
-                System.out.println("ID: "+nodeId+" Height: "+graph.getNode(nodeId).height());
                 freeY += GraphRoutines.nodesMaxSpread() * (odsMetrics[2]) + graph.getNode(nodeId).height() + PADDING_X;
             }
             // update node position
@@ -87,7 +86,12 @@ public class DFBoxDrawing
         }
         else
         {
-            List<Integer> nodeCh = graph.getNode(nodeId).children();
+            List<Integer> nodeCh = new ArrayList<>(graph.getNode(nodeId).children());
+            graph.getNode(nodeId).children().forEach(v -> {
+                if (graph.getNode(v).collapsed()) nodeCh.remove((Object) v);
+            });
+            if (nodeCh.size() == 0) return;
+
             iGNode nFirst = graph.getNode(nodeCh.get(0));
             iGNode nLast = graph.getNode(nodeCh.get(nodeCh.size()-1));
 

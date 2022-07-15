@@ -89,7 +89,7 @@ public class LayoutHandler
     /**
      * Arranges layout of all components of a graph
      */
-    private void arrangeTreeComponents()
+    public void arrangeTreeComponents()
     {
         if (GraphAnimator.getGraphAnimator().updateCounter() != 0) return;
 

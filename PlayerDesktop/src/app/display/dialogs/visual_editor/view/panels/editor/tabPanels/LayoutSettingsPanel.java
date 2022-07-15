@@ -237,7 +237,7 @@ public class LayoutSettingsPanel extends JPanel
      */
     private void executeDFSLayout(IGraphPanel graphPanel)
     {
-        graphPanel.getLayoutHandler().executeLayout();
+        graphPanel.getLayoutHandler().arrangeTreeComponents();
     }
 
     /**
