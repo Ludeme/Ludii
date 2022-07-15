@@ -21,6 +21,7 @@ import static app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines.u
  */
 public class LayoutHandler
 {
+    private static final boolean RECORD_TIME = false;
 
     private final iGraph graph;
     private final DFBoxDrawing layout;
@@ -34,7 +35,7 @@ public class LayoutHandler
     public LayoutHandler(iGraph graph)
     {
         this.graph = graph;
-        layout = new DFBoxDrawing(graph);
+        layout = new DFBoxDrawing(graph, RECORD_TIME);
     }
 
     /**
@@ -59,7 +60,10 @@ public class LayoutHandler
      */
     public void evaluateGraphWeights()
     {
+        long startTime = System.nanoTime();
         double[] weights = GraphRoutines.computeLayoutMetrics(graph, graph.getRoot().id());
+        long endTime = System.nanoTime();
+        if (RECORD_TIME) System.out.println("Metric computation: "+ (endTime - startTime)/1E6);
         layout.updateWeights(weights);
         LayoutSettingsPanel.getLayoutSettingsPanel().updateSliderValues(weights[0], weights[1], weights[2]);
     }
@@ -156,9 +160,15 @@ public class LayoutHandler
         @Override
         public void actionPerformed(ActionEvent e)
         {
+            if (RECORD_TIME) System.out.println("Nodes: " + graph.getNodeList().size());
             GraphAnimator.getGraphAnimator().clearPositionHistory();
             evaluateGraphWeights();
+
+            long startTime = System.nanoTime();
             executeLayout();
+            long endTime = System.nanoTime();
+            if (RECORD_TIME) System.out.println("Total drawing time: "+ (endTime - startTime)/1E6);
+
             TreeLayoutMenu.redoP.setEnabled(false);
             TreeLayoutMenu.undoP.setEnabled(true);
             Handler.currentGraphPanel.deselectEverything();

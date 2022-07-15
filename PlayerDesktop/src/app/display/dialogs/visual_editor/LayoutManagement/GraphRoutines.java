@@ -257,7 +257,8 @@ public final class GraphRoutines
     {
         iGNode u = graph.getNode(upper);
         iGNode l = graph.getNode(lower);
-        return (int) (u.pos().y()+u.height() - l.pos().y());
+        int upperHeight = u.fixed() ? GraphRoutines.getSubtreeArea(graph, u.id()).height : u.height();
+        return (int) (l.pos().y() - u.pos().y() - upperHeight);
     }
 
     /**

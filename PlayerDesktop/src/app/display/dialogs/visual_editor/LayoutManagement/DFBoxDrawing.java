@@ -1,6 +1,5 @@
 package app.display.dialogs.visual_editor.LayoutManagement;
 
-
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
 
@@ -17,6 +16,7 @@ import static app.display.dialogs.visual_editor.LayoutManagement.NodePlacementRo
  */
 public class DFBoxDrawing
 {
+    private static boolean RECORD_TIME;
     private final iGraph graph;
     private int freeY;
 
@@ -25,19 +25,22 @@ public class DFBoxDrawing
     private static final double DEFAULT_DISTANCE = 0.1;
     private static final double DEFAULT_OFFSET = 0.1;
     private static final double DEFAULT_SPREAD = 0.1;
-    private double compactness = 0.5;
+    private double compactness = 1.0;
 
     private final int PADDING_X = 10;
 
     public static final int MIN_NODE_GAP = 20;
 
+    private HashMap<Integer, Integer> gupDistances = new HashMap<>();
+
     /**
      * Constructor
      * @param graph graph
      */
-    public DFBoxDrawing(iGraph graph)
+    public DFBoxDrawing(iGraph graph, boolean RECORD_TIME)
     {
         this.graph = graph;
+        DFBoxDrawing.RECORD_TIME = RECORD_TIME;
         freeY = 0;
         odsMetrics = new double[3];
         initWeights();
@@ -76,6 +79,7 @@ public class DFBoxDrawing
             }
             else
             {
+                System.out.println("ID: "+nodeId+" Height: "+graph.getNode(nodeId).height());
                 freeY += GraphRoutines.nodesMaxSpread() * (odsMetrics[2]) + graph.getNode(nodeId).height() + PADDING_X;
             }
             // update node position
@@ -121,6 +125,7 @@ public class DFBoxDrawing
             Vector2D piInit = new Vector2D(freeX, yCoord);
             // update node position
             nV.setPos(piInit);
+            freeY = Math.max(freeY, (int)(yCoord+nV.height()+PADDING_X));
         }
     }
 
@@ -173,7 +178,7 @@ public class DFBoxDrawing
                 int upperWidth = upper.fixed() ? GraphRoutines.getSubtreeArea(graph, upper.id()).width : upper.width();
                 int lowerWidth = lower.fixed() ? GraphRoutines.getSubtreeArea(graph, lower.id()).width : lower.width();
 
-                int nodeDist = (int)(lower.pos().y() - upper.pos().y() - upperHeight);
+                // int nodeDist = (int)(lower.pos().y() - upper.pos().y() - upperHeight);
                 // check all the cases for upper and lower nodes x coordinates intersecting
                 // add edges for upward visibility graph
                 // construct next LE
@@ -185,7 +190,7 @@ public class DFBoxDrawing
                     {
                         leCandidates.add(0, upper.id());
                     }
-                    addMinDistToGup(Gup, P, k, nodeDist);
+                    addMinDistToGup(Gup, upper, lower);
                     j--;
                     k--;
                 }
@@ -199,7 +204,7 @@ public class DFBoxDrawing
                     // CASE#2: left corner of upper is within lower
                     if ((int)(upper.pos().x()) <= (int)(lower.pos().x()+lowerWidth))
                     {
-                        addMinDistToGup(Gup, P, k, nodeDist);
+                        addMinDistToGup(Gup, upper, lower);
                     }
                     j--;
                 }
@@ -208,7 +213,7 @@ public class DFBoxDrawing
                     // CASE#2: right corner of upper is within lower
                     if ((int)(upper.pos().x()+ upperWidth) > (int)(lower.pos().x()))
                     {
-                        addMinDistToGup(Gup, P, k, nodeDist);
+                        addMinDistToGup(Gup, upper, lower);
                     }
                     k--;
                 }
@@ -223,14 +228,25 @@ public class DFBoxDrawing
     /**
      * Helper method to add new min distance to upward visibility graph
      * @param gup upward visibility graph - hashmap where key is node id and value is minimum distance to upper node
-     * @param p current path
-     * @param k local id on path for current node
-     * @param nodeDist distance from current node to upper node
+     * @param upper upper node
+     * @param lower lower node
      */
-    private void addMinDistToGup(HashMap<Integer, Integer> gup, List<Integer> p, int k, int nodeDist)
+    private void addMinDistToGup(HashMap<Integer, Integer> gup, iGNode upper, iGNode lower)
     {
-        if (gup.containsKey(p.get(k))) gup.put(p.get(k), Math.min(gup.get(p.get(k)), nodeDist));
-        else gup.put(p.get(k), nodeDist);
+        int newDist = GraphRoutines.computeNodeVerticalDistance(upper.id(), lower.id(), graph);
+        if (gup.containsKey(lower.id()))
+        {
+            if (newDist < gupDistances.get(lower.id()))
+            {
+                gup.put(lower.id(), upper.id());
+                gupDistances.put(lower.id(), newDist);
+            }
+        }
+        else
+        {
+            gup.put(lower.id(), upper.id());
+            gupDistances.put(lower.id(), newDist);
+        }
     }
 
     /**
@@ -251,8 +267,8 @@ public class DFBoxDrawing
             for (int j = 1; j < P.size(); j++)
             {
                 int nid = P.get(j);
-                // TODO: can improve compactness
-                if (gup.containsKey(nid)) {minDist = Math.min(minDist, gup.get(nid));}
+                if (gup.containsKey(nid)) {minDist = Math.min(minDist,
+                        GraphRoutines.computeNodeVerticalDistance(gup.get(nid), nid, graph));}
             }
             for (int j = 1; j < P.size(); j++)
             {
@@ -307,9 +323,22 @@ public class DFBoxDrawing
     {
         freeY = 0;
         Vector2D oPos = graph.getNode(root).pos();
+
+        long startTime = System.nanoTime();
         initPlacement(root,0);
+        long endTime = System.nanoTime();
+        if (RECORD_TIME) if (RECORD_TIME) System.out.println("Init placement: " + (endTime - startTime)/1E6);
+
+        startTime = System.nanoTime();
         compactBox(root);
+        endTime = System.nanoTime();
+        if (RECORD_TIME) System.out.println("Compact box: " + (endTime - startTime)/1E6);
+
+        startTime = System.nanoTime();
         translateByRoot(graph, root, oPos);
+        endTime = System.nanoTime();
+        if (RECORD_TIME) System.out.println("Translate by root: " + (endTime - startTime)/1E6);
+
     }
 
     /**

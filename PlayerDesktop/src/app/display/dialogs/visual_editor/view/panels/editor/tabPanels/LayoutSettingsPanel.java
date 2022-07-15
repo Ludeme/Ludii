@@ -54,6 +54,7 @@ public class LayoutSettingsPanel extends JPanel
         cSl = new JSlider(0, 100);
 
         updateSliderValues(DFBoxDrawing.defaultO(), DFBoxDrawing.defaultD(), DFBoxDrawing.defaultS());
+        cSl.setValue(100);
 
         JLabel offsetText = new JLabel("Offset: " + getSliderValue(oSl));
         JLabel distanceText = new JLabel("Distance: " + Math.round(getSliderValue(dSl)/GraphRoutines.odsTuning()[1]*100)/100.0);
