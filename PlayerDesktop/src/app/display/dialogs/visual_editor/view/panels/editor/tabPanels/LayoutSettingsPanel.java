@@ -7,12 +7,10 @@ import app.display.dialogs.visual_editor.LayoutManagement.NodePlacementRoutines;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorSidebar;
-import app.display.dialogs.visual_editor.view.panels.menus.TreeLayoutMenu;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionListener;
 
 /**
  * Class for the single instance of the Layout Settings Panel
