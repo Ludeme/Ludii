@@ -3,6 +3,7 @@ package supplementary.experiments.analysis;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -49,8 +50,8 @@ public class WriteGameRulesetCategories
 		final String[] gameCategoryLines = gameCategoriesFileContents.split(Pattern.quote("\n"));
 		for (final String line : gameCategoryLines)
 		{
-			final String[] splitLine = line.replace(Pattern.quote("\""), "").split(Pattern.quote(","));
-			final String gameName = splitLine[0];
+			final String[] splitLine = line.replaceAll(Pattern.quote("\""), "").split(Pattern.quote(","));
+			String gameName = StringRoutines.cleanGameName(splitLine[0]);
 			final String category = splitLine[1];
 			
 			if	(gameCategories.containsKey(gameName))
@@ -116,7 +117,7 @@ public class WriteGameRulesetCategories
 					continue;
 				
 				String baseDir = argParse.getValueString("--base-dir");
-				if (!baseDir.endsWith("/"))
+				if (baseDir.endsWith("/"))
 					baseDir = baseDir.substring(0, baseDir.length() - 1);
 				final File gameRulesetDir = 
 						new File
@@ -135,7 +136,16 @@ public class WriteGameRulesetCategories
 				if (!gameRulesetDir.exists() || !gameRulesetDir.isDirectory())
 					continue;
 				
-				// TODO
+				final String categoryFilepath = gameRulesetDir.getAbsolutePath() + "/Category.txt";
+				System.out.println("Writing: " + categoryFilepath + "...");
+				try (final PrintWriter writer = new PrintWriter(categoryFilepath, "UTF-8"))
+				{
+					writer.println(gameCategories.get(StringRoutines.cleanGameName((shortGameName).replaceAll(Pattern.quote(".lud"), ""))));
+				}
+				catch (final IOException e)
+				{
+					e.printStackTrace();
+				}
 			}
 		}
 	}
