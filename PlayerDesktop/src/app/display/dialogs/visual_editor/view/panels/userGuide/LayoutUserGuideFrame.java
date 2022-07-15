@@ -82,7 +82,7 @@ public class LayoutUserGuideFrame extends JFrame
         // Layout menu
         image = "layout_menu.png";
         paragraph = "<html> " +
-                "<i>Arrange Graph</i>: Executes arrangement procedure; tries to preserve induced layout metrics. <br>" +
+                "<i>Arrange Graph</i>: Arranges layout of graph on the current panel. <br>" +
                 " <br>" +
                 "<i>Undo Placement</i>: Moves nodes on their previous position - before layout arranged by user. <br>" +
                 " <br>" +
@@ -91,7 +91,9 @@ public class LayoutUserGuideFrame extends JFrame
                 "<i>Animation</i>: Animate transition of nodes' positions when arranging the graph. <br>" +
                 " <br>" +
                 "<i>Auto Placement</i>: Nodes are placed automatically according to arrangement procedure <br>" +
-                " with pre-specified metrics. <br>" +
+                " with pre-specified layout configurations. <br>" +
+                " <br>" +
+                "<i>Preserve Configurations</i>: Update of layout configurations to match user-placement. <br>" +
                 " <br>" +
                 "<i>Open Layout Settings</i>: Opens sidebar with extended layout settings." +
                 "</html>";

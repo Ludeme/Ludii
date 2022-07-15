@@ -7,8 +7,6 @@ import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSett
 import app.display.dialogs.visual_editor.view.panels.userGuide.LayoutUserGuideFrame;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class TreeLayoutMenu extends JMenu
 {
@@ -57,6 +55,7 @@ public class TreeLayoutMenu extends JMenu
             LayoutSettingsPanel.getLayoutSettingsPanel().autoPlacement().setSelected(((JCheckBoxMenuItem) e.getSource()).isSelected());
             Handler.autoplacement = ((JCheckBoxMenuItem) e.getSource()).isSelected();
         });
+        menuBar.addJCheckBoxMenuItem(this, "Preserve Configurations", Handler.autoplacement, e -> Handler.evaluateLayoutMetrics = ((JCheckBoxMenuItem) e.getSource()).isSelected());
 
         add(new JSeparator());
 

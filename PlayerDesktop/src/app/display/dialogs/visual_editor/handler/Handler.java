@@ -115,9 +115,11 @@ public class Handler
     /** Whether the layout-settings sidebar is visible */
     public static final boolean sidebarVisible = true;
     /** Whether layout-arrangement animations are enabled */
-    public static boolean animation = true;
+    public static boolean animation = false;
     /** Whether nodes should be placed arranged automatically */
-    public static boolean autoplacement = true;
+    public static boolean autoplacement = false;
+    /** Whether layout configurations should be evaluated from user-placement when arranging graph */
+    public static boolean evaluateLayoutMetrics = false;
 
 
     // Appearance Settings

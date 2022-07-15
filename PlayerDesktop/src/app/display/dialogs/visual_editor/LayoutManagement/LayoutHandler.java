@@ -11,7 +11,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines.updateNodeDepth;
@@ -69,9 +68,28 @@ public class LayoutHandler
     }
 
     /**
-     * Arranges layout of all components of a graph
+     * Executes layout management procedures of a graph
      */
     public void executeLayout()
+    {
+        if (RECORD_TIME) System.out.println("Nodes: " + graph.getNodeList().size());
+        GraphAnimator.getGraphAnimator().clearPositionHistory();
+        if (Handler.evaluateLayoutMetrics) evaluateGraphWeights();
+
+        long startTime = System.nanoTime();
+        arrangeTreeComponents();
+        long endTime = System.nanoTime();
+        if (RECORD_TIME) System.out.println("Total drawing time: "+ (endTime - startTime)/1E6);
+
+        TreeLayoutMenu.redoP.setEnabled(false);
+        TreeLayoutMenu.undoP.setEnabled(true);
+        Handler.currentGraphPanel.deselectEverything();
+    }
+
+    /**
+     * Arranges layout of all components of a graph
+     */
+    private void arrangeTreeComponents()
     {
         if (GraphAnimator.getGraphAnimator().updateCounter() != 0) return;
 
@@ -160,18 +178,7 @@ public class LayoutHandler
         @Override
         public void actionPerformed(ActionEvent e)
         {
-            if (RECORD_TIME) System.out.println("Nodes: " + graph.getNodeList().size());
-            GraphAnimator.getGraphAnimator().clearPositionHistory();
-            evaluateGraphWeights();
-
-            long startTime = System.nanoTime();
             executeLayout();
-            long endTime = System.nanoTime();
-            if (RECORD_TIME) System.out.println("Total drawing time: "+ (endTime - startTime)/1E6);
-
-            TreeLayoutMenu.redoP.setEnabled(false);
-            TreeLayoutMenu.undoP.setEnabled(true);
-            Handler.currentGraphPanel.deselectEverything();
         }
     }
 

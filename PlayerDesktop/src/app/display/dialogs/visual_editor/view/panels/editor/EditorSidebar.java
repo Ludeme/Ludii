@@ -28,6 +28,8 @@ public class EditorSidebar extends JTabbedPane
 
         // add other tabs here...
 
+        // invisible by default
+        setVisible(false);
     }
 
     /**

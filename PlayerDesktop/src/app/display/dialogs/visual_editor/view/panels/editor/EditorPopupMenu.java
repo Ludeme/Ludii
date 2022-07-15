@@ -22,15 +22,10 @@ public class EditorPopupMenu extends JPopupMenu
             graphPanel.deselectEverything();
         });
 
-        JMenu lmMenu = new JMenu("Graph Layout");
         JMenuItem compact = new JMenuItem("Arrange graph");
-        // JMenuItem settings = new JMenuItem("Layout Settings");
-
-        newLudeme.addActionListener(e -> graphPanel.showAllAvailableLudemes());
-
         compact.addActionListener(e -> graphPanel.getLayoutHandler().executeLayout());
 
-        lmMenu.add(compact);
+        newLudeme.addActionListener(e -> graphPanel.showAllAvailableLudemes());
 
         JMenuItem collapse = new JMenuItem("Collapse");
         collapse.addActionListener(e -> Handler.collapse(graphPanel.graph()));
@@ -59,7 +54,7 @@ public class EditorPopupMenu extends JPopupMenu
         }
 
         add(paste);
-        add(lmMenu);
+        add(compact);
         add(collapse);
 
         JMenuItem fix = new JMenuItem("Fix group");
