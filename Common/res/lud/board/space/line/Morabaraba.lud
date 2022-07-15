@@ -32,7 +32,7 @@
         (phase "Placement"
             (play
                 (if "SameTurn"
-                    ("RemoveAnyNextPieceNotInLine3")
+                    ("RemoveAnyEnemyPieceNotInLine3")
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
@@ -46,7 +46,7 @@
         (phase "Movement" 
             (play 
                 (if "SameTurn"
-                    ("RemoveAnyNextPieceNotInLine3")
+                    ("RemoveAnyEnemyPieceNotInLine3")
                     (forEach Piece)
                 )
             )

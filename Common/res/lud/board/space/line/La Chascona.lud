@@ -1,7 +1,7 @@
 (define "RemoveEnemyPiece" 
-    (if (can Move ("RemoveAnyNextPieceNotInLine3" Orthogonal) )
-        ("RemoveAnyNextPieceNotInLine3" Orthogonal) 
-        ("RemoveAnyNextPiece")
+    (if (can Move ("RemoveAnyEnemyPieceNotInLine3" Orthogonal) )
+        ("RemoveAnyEnemyPieceNotInLine3" Orthogonal) 
+        ("RemoveAnyEnemyPiece")
     )
 )
 

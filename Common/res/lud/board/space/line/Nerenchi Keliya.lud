@@ -38,7 +38,7 @@
         )
         
         (phase "Capture" 
-            (play ("RemoveAnyNextPiece" (then (moveAgain))))
+            (play ("RemoveAnyEnemyPiece" (then (moveAgain))))
             (nextPhase Mover "Movement")
         )
         }

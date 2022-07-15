@@ -1,7 +1,0 @@
-// Allows to remove one piece of the next player.
-// #1 = The consequences.
-// @example ("RemoveAnyNextPiece")
-
-(define "RemoveAnyNextPiece"
-    (move Remove (sites Occupied by:Next container:"Board") #1)
-)
