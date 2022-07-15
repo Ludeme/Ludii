@@ -233,7 +233,7 @@
         (rules "Definitions:
             -- Each of a player's stones belongs to exactly one group. 
             -- The group it belongs to contains all the stones that connect to it by virtue of being next to one another (across an edge).
-            -- A player's territory is the union of all the cells that are within the convex hulls of the player's groups. 
+            -- A player's territory is the union of all the cells that are within the convex grid-oriented hulls of the player's groups. 
             
             In simpler language:
             Imagine a line of cells that goes through just one stone of a group and leaves the rest of that group to one side. Surround the group with six of these lines and they will exactly contain all the territory of the stones of that group. A player's territory is then the combined territory of every group, counting cells only once where any of the group territories overlap.
@@ -254,7 +254,7 @@
     Various boards are optional. 
 Weak Territory, allowing placement next to a friendly group in enemy territory is optional.")
 (id "1988")
-(version "1.3.4")
+(version "1.3.5")
 (classification "experimental")
 (author "Dale Walton")
 (credit "Dale Walton")

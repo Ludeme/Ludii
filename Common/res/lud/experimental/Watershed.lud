@@ -197,7 +197,7 @@
         {
         (description "Watershed is a square board placement game based on Branching Coral, with the principle of placing pieces, such that, after placement, every site on the boards still has a connection via empty sites to an empty site at the perimeter. 
             
-            Scoring for the standard Plateau version is based on the size of the largest group plus a bonus factor for the number of opponent's pieces captured. This works to reward capture and thus encourages breaking up opponent's groups, while remaining straight forward in the need to enlarge your largest group, it allows creating come-back groups, or staging combacks by capturing material.
+            Scoring for the standard Plateau version is based on the size of the largest group plus a bonus factor for the number of opponent's pieces captured.  This works to reward capture and thus encourages breaking up opponent's groups, while remaining straight forward in the need to enlarge your largest group, it allows creating come-back groups, or staging combacks by capturing material.
             
             Ties are broken in favor of the underdog by considering only the largest group size as a negative score without including the capture bonus. Opponent-paired groups of the same size are excluded in this comparison. If all groups are paired in size with the opponent, last to play wins. 
             
@@ -215,7 +215,7 @@
             Capture 
             After placement, simultaneously remove all the stones adjacent to the placed stone that are no longer next to 2 empty sites.
             
-            There is no passing. The game ends when no more placements can be made. 
+            There is no passing. The game ends when no more placements can be made.  
             
             Ties are broken in favor of the underdog by compairing cascading largest groups (excluding tied pairs) Tie breaker scores are negative, so largest group LOSES.
             
@@ -231,7 +231,7 @@
             
         The player with the higher score wins.")
         (id "1661")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")

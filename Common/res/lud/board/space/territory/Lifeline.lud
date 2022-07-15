@@ -286,47 +286,44 @@
     (info
         {
         (description "Lifeline is a territorial elimination game for two players. It was invented by Michael Amundsen and Luis Bolanos Mures in February 2022, and was inspired by Go and Kanare Kato's Meridians.")
-        (rules "Lifeline is a territorial strategy game for two players (Black and White) that is played on the cells of a hexhex board. 
-            The game was invented by Michael Amundsen and Luis Bolaños Mures.
+        (rules "Lifeline is a territorial strategy game for two players (Black and White) that is played on the cells of an initially empty hexhex board. The recommended board sizes are between 3 and 12 cells per side.
             
-            Definitions
-            A group is an entire set of connected stones of the same color. 
-            A single stone, not connected to others of its color, is also a group.
+            Definitions:
             
+            A group is an entire set of connected stones of the same color. A single stone, not connected to others of its color, is also a group.
             A group is dead if there is no path of connected empty cells between that group and any other of its color.
             
-            Setup
-            Starting with Black, the players take turns placing stones of their own color on empty cells, one stone per turn.
-            The setup ends when each player has two stones on the board. These two stones must not be adjacent to each other.
+            Play:
             
-            Play
-            After the setup, the players continue taking turns in the same order. 
             On your turn, perform the following actions in the stated order:
             
-            1. Place a stone of your color on an empty cell.
+            1. Place a stone of your color on an empty cell. If it is your first turn of the game, perform this action twice.
             2. Remove all dead enemy groups.
             3. Remove all dead friendly groups.
             
             The board positions at the start and at the end of your turn must be different.
             
-            The last player to make a placement wins. Note that you will always have a placement available unless your turn starts with no groups of your color on the board.
+            The last player to make a placement wins. Note that, after your first turn, you will always have a placement available unless you have no groups on the board.
             
-            Optional meta-rules (for balance):
-            The pie rule:
-            When playing with the pie rule, White has the option to swap sides after Black's first move. If White chooses to swap, they become Black, and the player who started out as Black plays as White from the immediately next turn onwards.
+            To make the game fair, White will have the option, on their first turn only, to swap sides with Black instead of making a regular move.
             
-            12* protocol:
-            When playing with the 12* protocol, players make two placements each turn, except for Black's very first turn. To win you must be the last player to complete an entire turn by making both your placements.
+            Note that, in this implementation, the two stones you place on your first turn are only visible after both cells to place on have been selected.
             
-            Komi:
-            When playing with komi, a whole number of points is given to White as compensation for going second. 
-            Instead of making a normal placement, White has the option to spend one point of komi.
-            This has no other effect than reducing the number of points they have available to spend. This does not count as having made a placement, so you have lost if you have only pass-moves left while your opponent was the last player to place a stone.
-            In this implementation, komi is spent by clicking the shield icon next to White's name.
+            Alternative balancing methods:
             
-        The 12* protocol and the pie rule cannot be combined in this implementation, but komi is compatible with either choice.")
+            The balancing method described above is what is called 'strong pie' in the options. 
+            This implementation also offers two other methods, for players who would like to explore alternatives.
+            
+            Weak pie: Just like with strong pie, White will have the option, on their first turn only, to swap sides with Black instead of making a regular move.
+            But instead of placing twice on their first move, players alternate placing one piece each (with no removals) until 4 setup stones are placed.
+            Consequently, White's choice will be made after Black has placed only one stone.
+            
+            Komi pie: The first player chooses a whole number of komi (between 1 and 12) and the second player chooses whether to play as White (pass) or as Black (place a stone).
+            The first 4 stones are placed in the same order as with weak pie (Black, White, Black, White).
+            Throughout the game proper, White will have the option to spend a point of komi instead of making a placement.
+        A point of komi is spent by clicking the shield icon next to White's name.")
         (id "1936")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/territory")
         (author "Michael Amundsen and Luis Bolanos Mures")
         (credit "Michael Amundsen")

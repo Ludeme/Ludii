@@ -239,6 +239,31 @@
 (metadata
     (info
         {
+        (description "Manifold is a polyhex buliding game for two players – Black and White – played on an initially empty hexhex board. Michael Amundsen invented Manifold in May 2022.")
+        (rules "Definitions:
+            1 A group is a stone along with all stones one can reach from it through a series of steps onto adjacent stones of the same color.
+            1.1 The size of a group is the number of stones in it.
+            
+            2 A brood is a group along with all other groups of identical color, size and shape. Shapes are considered identical across rotational and mirror-symmetries.
+            2.1 The size of a brood is the number of groups in it.
+            2.2 The order of a brood is the size of the groups in it.
+            
+            Play:
+            On the very first turn of the game, Black places one stone of their color on any hex.
+            After, that – starting with White – take turns doing one of the following:
+            • Pass.
+            • Place two stones of your color on empty hexes.
+            
+            When the players pass consecutively, the winner is the player with the higher score.
+            
+            Scoring:
+        For each of your odd-sized broods, you score 1 point if its order is odd and 2 points if its order is even.")
+        (id "1997")
+        (version "1.3.5")
+        (classification "board/space/group")
+        (author "Michael Admundsen")
+        (credit "Dale Walton")
+        (date "2022")
         }
     )
     (graphics

@@ -123,7 +123,7 @@
             The reason for the opacity is that connection of groups must be accomplished through jumping opponent's pieces, which themselves are frequently changing position.
             
             To minimise this instability, no location on the board is allowed to have more than 3 adjacent friendly pieces. 
-            Also passing is allowed to avoid forced moves that de-optimise the scores.  
+            Also passing is allowed to avoid forced moves that de-optimise the scores.   
             
             Also, the standard version only allows a jump if the player made a placement on the previous turn.
         This significantly reduced the game complexity compared to allowing each piece to move once before the next placement turn.")
@@ -134,23 +134,28 @@
             
             Play:
             Boards starts empty. The darker color starts by placing anywhere.
-            Thereafter, a turn is either a placement or a jump (but not both) according to the following rules. There are no captures. Passing is allowed.
+            Thereafter, a turn is either a placement or a jump (but not both) according to the following rules. 
+            There are no captures. Passing is allowed.
             
             Placement: 
             Pieces must be placed on an empty site that is BOTH:
-            - adjacent to an opponent's stone(s) and 
-            - not adjacent to one's own stones. 
+            - next to an opponent's stone(s) and 
+            - away from one's own stones. 
             
             Jumping:
-            A stone jumps in a straight line over any number of opponent's stones. The piece must land at an empty site that is directly after the last opponent's piece in the jump. The stone may not pass over empty sites nor over sites occupied by friendly stones.
-            
-            Restrictions on play:
-        1) At no time during play may any stone be adjacent to more than 3 stones of the same color.
-    2) Jumps are limited by the Jumping restriction selected in the Options. (See below)
-    
-The game ends when both players pass. ")
+            Jumping is only allowed when a placement was made on the mover's last turn (but see Options) 
+            A stone jumps in a straight line over any number of opponent's stones. 
+            Jump Restrictions:
+        1) The piece must land at an empty site that is directly after the last opponent's piece in the jump. 
+    2) The stone may not pass over empty sites nor over sites occupied by friendly stones.
+3) The stone may not connect more than 3 of a player's stones, nor cause another stone to be connected to more than 3.
+
+The game ends when both players pass. 
+
+Available Options - Jumps:
+No individual piece may jump more than once before the mover takes a placement turn.")
 (id "1968")
-(version "1.3.4")
+(version "1.3.5")
 (classification "experimental")
 (author "Dale W. Walton")
 (credit "Dale W. Walton")
