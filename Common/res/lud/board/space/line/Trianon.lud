@@ -3,7 +3,7 @@
         (= 3 (count Sites in:
                 (forEach
                     (sites Row (row of:(last To)))
-                    if:(is Friend (who at:(site)))
+                    if:("IsFriendAt" (site))
                 )
             )
         )
@@ -11,21 +11,21 @@
                 (forEach
                     (sites Column (column of:(last To)))
                     
-                    if:(is Friend (who at:(site)))
+                    if:("IsFriendAt" (site))
                 )
             )
         )
         (= 3 (count Sites in:
                 (forEach
                     (union (sites Direction from:(last To) NE included:True) (sites Direction from:(last To) SW)) 
-                    if:(is Friend (who at:(site)))
+                    if:("IsFriendAt" (site))
                 )
             )
         )
         (= 3 (count Sites in:
                 (forEach
                     (union (sites Direction from:(last To) NW included:True) (sites Direction from:(last To) SE)) 
-                    if:(is Friend (who at:(site)))
+                    if:("IsFriendAt" (site))
                 )
             )
         )
@@ -37,9 +37,7 @@
 (game "Trianon"
     (players 2)
     (equipment {
-        (board (square 5)
-            use:Vertex
-        )
+        (board (square 5) use:Vertex)
         (piece "Ball" Each)
     })
     (rules
@@ -60,7 +58,7 @@
         GOAL - A player loses if he has 3 friendly stones on an orthogonal or diagonal line (they don't need to be adjacent to each other).")
         (id "1810")
         (source "<a href=\"http://www.di.fc.ul.pt/~jpn/gv/trianon.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.di.fc.ul.pt</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line")
         (author "Hans van Maanen")
         (credit "Eric Piette")

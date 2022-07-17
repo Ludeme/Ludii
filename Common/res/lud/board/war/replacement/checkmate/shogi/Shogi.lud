@@ -1,6 +1,6 @@
 (define "CapturePiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (add 
                 (piece (mapEntry "Captured" (what at:(to)))) 
                 (to (mapEntry "Where" (what at:(to))))
@@ -30,7 +30,7 @@
                     ("PlaceLance" Next)
                     ("PlaceKnight" Next) 
                     (forEach Piece Next) 
-                } )
+                })
                 ifAfterwards:(not ("IsInCheck" "Osho" Next))
             ) 
         )
@@ -99,26 +99,26 @@
     (move
         Slide
         #1 
-        (to if:(is Enemy (who at:(to))) "CapturePiece")
+        (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
-    )   	
+    )  	
 )
 
 (define "StepMove"
     (move
         Step
         #1
-        (to if:(not (is Friend (who at:(to)))) "CapturePiece") 
+        (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
-    )   	
+    )  	
 )
 
 (define "GoldMove" ("StepMove" (directions {Forward Backward Rightward Leftward FL FR})))
 
 //------------------------------------------------------------------------------
 
-(game "Shogi"  
-    (players {(player N) (player S)})  
+(game "Shogi" 
+    (players {(player N) (player S)}) 
     
     (equipment { 
         (board (square 9))
@@ -160,12 +160,12 @@
                         (forEach Direction 
                             (from (to)) 
                             (directions {FR FL}) 
-                            (if (not (is Friend (who at:(to)))) 
+                            (if (not ("IsFriendAt" (to))) 
                                 (move 
                                     (from) 
                                     (to 
                                         (apply 
-                                            if:(is Enemy (who at:(to)))
+                                            if:("IsEnemyAt" (to))
                                             (add 
                                                 (piece (mapEntry "Captured" (what at:(to)))) 
                                                 (to (mapEntry "Where" (what at:(to))))
@@ -294,7 +294,7 @@
                         ("PlaceLance" Mover)
                         ("PlaceKnight" Mover) 
                         (forEach Piece) 
-                    } )
+                    })
                     ifAfterwards:(not ("IsInCheck" "Osho" Mover))
                 )
             )
@@ -308,7 +308,7 @@
                 ) 
                 (result Mover Win)
             ) 
-            (if (no Moves Next) (result Mover Win)) 
+            ("BlockWin")
             }
         )
     )
@@ -325,7 +325,7 @@
         (rules "Pieces move as follows: Osho(1): moves one space in any direction Hisha(1): moves any number of spaces orthogonally. Kakugyo(1): moves any number of spaces diagonally. Kinsho(2): moves one square in any direction except diagonally backwards. Ginsho (2): moves one square diagonally or one square forward orthogonally. Keima(2): moves one space forward and then one space diagonally forward. Kyosha(2): moves any number of spaces only forward or backward. Fuhyo(9): moves one space forward. Pieces are promoted when reaching the opposite third of the board. Pieces are captured when an opponent's piece moves to the space it occupies. Captured pieces are held and can re-enter the game under the control of the capturing player as their turn. The goal is to capture the other player's king.")
         (source "Murray 1913: 138-148.")
         (id "46")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/shogi")
         (credit "Eric Piette")
         (origin  "This game was played in Japan, around 1058.")

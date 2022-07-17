@@ -6,7 +6,7 @@
 
 (define "Placement"
     (move Select
-        (from  #1 if:(> 2 (count Stack at:(from))))
+        (from #1 if:(> 2 (count Stack at:(from))))
         (to <Board:placementVector>
             if:(and
                 {
@@ -21,7 +21,7 @@
         (then
             (and
                 {
-                //     (remove (last From))
+                //   (remove (last From))
                 (add
                     (piece (id "Disc" Mover))
                     (to (last From))
@@ -33,7 +33,7 @@
                 )
                 }
 ))))
-(define "SwapSite"  (arrayValue (values Remembered) index:#1))
+(define "SwapSite" (arrayValue (values Remembered) index:#1))
 (define "SwapPiece" (what at:("SwapSite" #1) level:(topLevel at:("SwapSite" #1))))
 
 (define "MakeSwap"
@@ -108,7 +108,7 @@
                 )
                 (site)
                 (sites Outer)
-))))  
+)))) 
 
 //--------------------------------------
 
@@ -126,7 +126,7 @@
 (option "Move Protocol" <Protocol> args:{ <turn> }
     {
     (item "Alternating" < > "Turns alternate")
-    (item "122..." <(if (and (not (is Prev Mover)) (< -1 (counter))) (moveAgain))> " First player takes one turn, then players alternate taking 2 turns each")**
+    (item "122..." <(if (and (not ("SameTurn")) (< -1 (counter))) (moveAgain))> " First player takes one turn, then players alternate taking 2 turns each")**
     }
 )
 
@@ -156,21 +156,24 @@
             Then Black starts by taking one turn. After that players take DOUBLE turns in alternation.
             
             Play:  
-            Each turn has two parts, and both parts must be completed: A PLACEMENT and a SWAP.
+            Each turn has two parts that both must be completed: A PLACEMENT and a SWAP.
             
             -- The PLACEMENT is made a knight's leap away from a selected stone of the same color.
             
             -- The SWAP is done by exchanging the contents of the 2 squares that lie between the selected stone and the placed stone. For a SWAP to be valid, the contents of these squares must be different, i.e.: two stones of different color, or an empty space and a stone. 
             
-            If a turn cannot be completed with a placement to an empty position, the placement must be made by replacing an opponent's stone. The removed stone may be of either color. The diagonal placement and swap rules must still be followed.  Once a site has been used for replacement, that site cannot be used again.
+            If a turn cannot be completed with a placement to an empty position, the placement must be made by placing on top of an opponent's stone. 
+            The placement and swap rules apply to the visible stones and must still be followed.
             
-            Voluntary passing is not allowed. If both players must pass consecutively, the game ends in a draw.
+            Voluntary passing is not allowed. When neither player can move, the game ends in a draw.
+            
+            To help visualise the moves, the 'Show Last Move' option shows an arrow from the placement site to the supporting friendly piece and the swap pieces are to either side of this arrow. 
             
             Optional Variants: 
-            -- Larger Board to reduce the strategic effect of the edge squares. / Smaller board to focus on replacement play as a significant part of the game.
+            -- Larger Board to reduce the strategic effect of the edge squares. / Smaller board to focus on stacked play as a significant part of the game.
         -- Normal single turn alternation for a more fine-grained experience, but with a first player advantage.")
         (id "1983")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "experimental")
         (author "Dale Walton")
         (credit "Dale Walton")
@@ -191,7 +194,7 @@
         (player Colour P1 (colour Black))
         (player Colour P2 (colour LightOrange))
         (stackType Default .4)
-        //   (stackType None)
+        //  (stackType None)
         (region Colour (forEach (sites Board) if:(= 2 (count Stack at:(site)))) (colour 160 200 170))
         }
     )

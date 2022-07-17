@@ -23,7 +23,7 @@
 
 (define "CaptureEnemyPiece" 
     (apply 
-        if:(is Enemy (who at:(to))) 
+        if:("IsEnemyAt" (to)) 
         (remove (to) (then (addScore Mover 1)))
     ) 
 )
@@ -58,11 +58,11 @@
 
 //-------------------------------------------------
 
-(game "Sijat El Taba"  
+(game "Sijat El Taba" 
     (players 2)
     (equipment {
         (board (rectangle <Row:num> 10)
-            {    
+            {  
             <Row:track>
             }
         )
@@ -129,7 +129,7 @@
                 )
             )
         )
-        (end (if ("CapturesAreImpossible") (byScore) ))
+        (end (if ("CapturesAreImpossible") (byScore)))
     )
 )
 
@@ -137,14 +137,14 @@
 
 (option "Board Size" <Row> args:{ <num> <track>}
     {
-    (item "4x10"  
+    (item "4x10" 
         <4> 
         <
         (track "Track1" "0,E,N1,W,N1,E,N1,W" P1 directed:True)
         (track "Track2" "39,W,S1,E,S1,W,S1,E" P2 directed:True)
         > 
     "4 rows.") 
-    (item "6x10"  
+    (item "6x10" 
         <6>
         <
         (track "Track1" "0,E,N1,W,N1,E,N1,W,N1,E,N1,W" P1 directed:True)
@@ -176,7 +176,7 @@
         (rules "4 or 6x10 board. Six pieces per player, with one piece placed on each of the three spaces on either end of the long row closest to the player. Three casting sticks, each with a round and a flat side, are used as dice. The throws are as follows: One flat side up = 1; two flat sides up = 2; three flat sides up = 4, zero flat sides up = 6. A player must throw a 1 to move each piece for the first time. Players move according to the throws, except on throws of 1, which are tabulated for use later. Players continue to throw until they throw 2. Pieces move along a boustrophedon path, beginning from left to right in the row closest to them. Pieces are captured when an player's piece lands on a spot occupied by an opponent's piece. Players may used tabulated throws to supplement a throw in order to make a capture. The player who captured the most pieces wins.")
         (source "Davies 1925: 146-147.")
         (id "224")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
         (origin  "This game was played in Sudan, around 1925.")

@@ -11,7 +11,7 @@
     )
 )
 
-(define "CaptureJarl" (apply (trigger "Surrounded" P2) ))
+(define "CaptureJarl" (apply (trigger "Surrounded" P2)))
 
 (define "JarlWasCaptured" (is Triggered "Surrounded" P2))
 
@@ -19,12 +19,12 @@
     (and (not (is In (between) (union (sites Centre) (sites "Fortresses")))) (is Empty (between)))
 )
 
-(define "FriendOrCentreOrFortress" (or (is Friend (who at:(to))) (is In (to) (union (sites Centre) (sites "Fortresses")))))
+(define "FriendOrCentreOrFortress" (or ("IsFriendAt" (to)) (is In (to) (union (sites Centre) (sites "Fortresses")))))
 
 //------------------------------------------------------------------------------
 
-(game "Tawlbwrdd"  
-    (players 2)  
+(game "Tawlbwrdd" 
+    (players 2) 
     (equipment { 
         (board (square 11)) 
         (regions "Fortresses" (sites Corners))
@@ -53,18 +53,18 @@
                 Slide
                 Orthogonal 
                 (between if:"EmptyButNotCentreOrFortress")
-                (then ("Custodial" "Thrall1") ) 
+                (then ("Custodial" "Thrall1")) 
             ) 
         ) 
         (piece "Jarl" P2 
             (move
                 Slide
                 Orthogonal 
-                (then ("Custodial" "Thrall1") ) 
+                (then ("Custodial" "Thrall1")) 
             ) 
         ) 
         }
-    )  
+    ) 
     (rules 
         (start
             { 
@@ -78,8 +78,8 @@
         
         (end
             {
-            (if (is Within (id "Jarl2") in:(sites Outer) ) (result P2 Win))
-            (if "JarlWasCaptured"  (result P1 Win))
+            (if (is Within (id "Jarl2") in:(sites Outer)) (result P2 Win))
+            (if "JarlWasCaptured" (result P1 Win))
             }
         )
     )
@@ -89,7 +89,7 @@
 
 (option "Variant" <Variant> args:{ <type> }
     {
-    (item "Cyningstan"   <>       "The rules are describing with the Cyningstan ruleset.")   
+    (item "Cyningstan"  <>    "The rules are describing with the Cyningstan ruleset.")  
 })
 
 //------------------------------------------------------------------------------
@@ -121,7 +121,7 @@
         (useFor "Ruleset/Historical Information (Incomplete)" (id "593"))
         (source "Murray 1951: 62-63")
         (id "405")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/custodial")
         (credit "Eric Piette")
         (origin  "This game was played in Wales, from around 1587 to 1857.")

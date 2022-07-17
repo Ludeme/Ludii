@@ -1,9 +1,9 @@
-(game "Test"  
-    (players 2)  
+(game "Test" 
+    (players 2) 
     (equipment { 
         (board (square 3))
         (piece "Disc" Each) 
-    })  
+    }) 
     (rules 
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))

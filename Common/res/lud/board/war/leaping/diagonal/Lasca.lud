@@ -16,7 +16,7 @@
     (move
         Hop 
         #1 
-        (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to))))
+        (between if:("IsEnemyAt" (between)) (apply (fromTo (from (between)) (to))))
         (to if:(and 
                 (is In (from) (sites Occupied by:Mover)) 
                 (is Empty (to))
@@ -29,7 +29,7 @@
                     (hop 
                         (from (last To)) 
                         #1 
-                        (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to))))     	
+                        (between if:("IsEnemyAt" (between)) (apply (fromTo (from (between)) (to))))   	
                         (to if:(and 
                                 (is In (from) (sites Occupied by:Mover)) 
                                 (is Empty (to))
@@ -46,11 +46,11 @@
 
 (define "IsUnpromoted" (= (what at:(last To) level:(topLevel at:(last To))) (id "Counter" Mover)))
 
-(define "JumpToPromotionZone" (is In (last To) (sites Next)) )
+(define "JumpToPromotionZone" (is In (last To) (sites Next)))
 
 //------------------------------------------------------------------------------
 
-(game "Lasca"  
+(game "Lasca" 
     (players {(player N) (player S)}) 
     (equipment { 
         <Board:type> 
@@ -58,12 +58,12 @@
         (piece "CounterStar" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-    })  
+    }) 
     
     (rules 
         (start { 
-            (place "Counter1" <Board:startP1> )
-            (place "Counter2" <Board:startP2> )
+            (place "Counter1" <Board:startP1>)
+            (place "Counter2" <Board:startP2>)
         })
         
         (play
@@ -73,7 +73,7 @@
                         Hop 
                         (from (last To)) 
                         (directions {FR FL}) 
-                        (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to)))) 
+                        (between if:("IsEnemyAt" (between)) (apply (fromTo (from (between)) (to)))) 
                         (to if:(and 
                                 (is In (from) (sites Occupied by:Mover)) 
                                 (is Empty (to))
@@ -87,7 +87,7 @@
                                         (hop 
                                             (from (last To)) 
                                             (directions {FR FL}) 
-                                            (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to)))) 		
+                                            (between if:("IsEnemyAt" (between)) (apply (fromTo (from (between)) (to)))) 		
                                             (to if:(and 
                                                     (is In (from) (sites Occupied by:Mover)) 
                                                     (is Empty (to))
@@ -105,7 +105,7 @@
                         Hop
                         (from (last To)) 
                         Diagonal 
-                        (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to)))) 
+                        (between if:("IsEnemyAt" (between)) (apply (fromTo (from (between)) (to)))) 
                         (to if:(and 
                                 (is In (from) (sites Occupied by:Mover)) 
                                 (is Empty (to))
@@ -116,14 +116,14 @@
                             (if 
                                 (can Move 
                                     (hop 
-                                        (from (last To))  
+                                        (from (last To)) 
                                         Diagonal 
-                                        (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to)))) 
+                                        (between if:("IsEnemyAt" (between)) (apply (fromTo (from (between)) (to)))) 
                                         (to if:(and 
                                                 (is In (from) (sites Occupied by:Mover)) 
                                                 (is Empty (to))
                                             )
-                                        )  
+                                        ) 
                                         stack:True
                                     )
                                 ) 
@@ -134,19 +134,19 @@
                 )
                 (priority {
                     (or { 
-                        (forEach Piece "Counter" ("Hop" (directions {FR FL})) top:True (then (if "JumpToPromotionZone" (promote (last To) (piece "CounterStar") Mover))) )
+                        (forEach Piece "Counter" ("Hop" (directions {FR FL})) top:True (then (if "JumpToPromotionZone" (promote (last To) (piece "CounterStar") Mover))))
                         (forEach Piece "CounterStar" ("Hop" Diagonal) top:True)
                     })
                     
                     (or { 
-                        (forEach Piece "Counter" ("Step" (directions {FR FL})) top:True (then (if "JumpToPromotionZone" (promote (last To) (piece "CounterStar") Mover)) ))
+                        (forEach Piece "Counter" ("Step" (directions {FR FL})) top:True (then (if "JumpToPromotionZone" (promote (last To) (piece "CounterStar") Mover))))
                         (forEach Piece "CounterStar" ("Step" Diagonal) top:True)
                     })
                 })
             )
         ) 
         
-        (end (if (no Moves Next) (result Mover Win))) 
+        (end ("BlockWin"))
     )
 )
 
@@ -154,14 +154,14 @@
 
 (option "Board" <Board> args:{ <type> <startP1> <startP2> }
     {
-    (item "Chess"             
-        <(board (square 7))> <(difference (expand (sites Bottom) steps:2) (sites Phase 1)  )> <(difference (expand (sites Top) steps:2) (sites Phase 1) ) >   
+    (item "Chess"       
+        <(board (square 7))> <(difference (expand (sites Bottom) steps:2) (sites Phase 1) )> <(difference (expand (sites Top) steps:2) (sites Phase 1)) >  
         "The game is played in a Chess board."
-    )*   
-    (item "Lasca"             
-        <"LascaBoard">  < (expand (sites Bottom) steps:2)> <(expand (sites Top) steps:2)>   
+    )*  
+    (item "Lasca"       
+        <"LascaBoard"> < (expand (sites Bottom) steps:2)> <(expand (sites Top) steps:2)>  
         "The game is played in the original lasca board."
-    )     
+    )   
 })
 
 //------------------------------------------------------------------------------
@@ -175,7 +175,7 @@
         (rules "Played on a 7x7 board. Each player has 11 pieces. they move diagonally one space or can capture opposing pieces by jumping. When captured, a piece is placed underneath the capturing piece, creating columns. When columns are captured, only the piece at the top of the column is taken. Columns are controlled by the player whose piece is on top of the column. When a piece or column reaches the opposite side of the board they become promoted to officer and can move backwards. A player wins by capturing all of the opponent's pieces.")
         (source "<a href=\"https://en.wikipedia.org/wiki/Lasca\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
         (id "60")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/leaping/diagonal")
         (credit "Eric Piette")
         (date "1911")

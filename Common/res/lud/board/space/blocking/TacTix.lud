@@ -1,15 +1,15 @@
-(game "TacTix"  
-    (players 2)  
+(game "TacTix" 
+    (players 2) 
     (equipment { 
         (board (square 4))
         (piece "Ball" Shared) 
-    })  
+    }) 
     
     (rules 
         (start (place "Ball" (sites Board)))
         
         (play 
-            (if (is Prev Mover)
+            (if ("SameTurn")
                 (or
                     (if (= 1 (count MovesThisTurn))
                         (move Select
@@ -20,7 +20,7 @@
                                     (remove (last To))
                                     (if 
                                         (and
-                                            (is Occupied (ahead (last To) (directions Cell from:(last From) to:(last To))) ) 
+                                            (is Occupied (ahead (last To) (directions Cell from:(last From) to:(last To)))) 
                                             (!= (last To) (ahead (last To) (directions Cell from:(last From) to:(last To))))
                                         )
                                         (moveAgain)
@@ -34,8 +34,8 @@
                             (then 
                                 (and
                                     (remove (last To))
-                                    (if  (and
-                                            (is Occupied (ahead (last To) (directions Cell from:(last From) to:(last To))) ) 
+                                    (if (and
+                                            (is Occupied (ahead (last To) (directions Cell from:(last From) to:(last To)))) 
                                             (!= (last To) (ahead (last To) (directions Cell from:(last From) to:(last To))))
                                         )
                                         (moveAgain)
@@ -53,7 +53,7 @@
             )
         )
         
-        (end (if (no Moves Next) (result Next Win)))
+        (end ("NoMoves" Win))
     )
 )
 
@@ -73,7 +73,7 @@
         (source "<a href=\"https://boardgamegeek.com/boardgame/25895/tactix\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>
             
         <a href=\"http://www.di.fc.ul.pt/~jpn/gv/bulo.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.di.fc.ul.pt</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/blocking")
         (author "Piet Hein")
         (credit "Eric Piette")

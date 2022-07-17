@@ -2,7 +2,7 @@
 (define "GroupCount"
     (max 0
         (max
-            (sizes Group "ScoreConnectionDirection" #1 ) 
+            (sizes Group "ScoreConnectionDirection" #1) 
 )))
 
 //---------------------
@@ -11,12 +11,12 @@
 (define "GroupScore"
     (set Var "MoverScore" ("GroupCount" Mover)
         (then
-            (set Var "NextScore"  ("GroupCount" Next)
+            (set Var "NextScore" ("GroupCount" Next)
                 (then
                     <TieScoring:tiebreaker> 
 )))))
 
-(define "PlusCaptureScore"  // Captures + cascade scoring
+(define "PlusCaptureScore" // Captures + cascade scoring
     (set Var "MoverScore"
         (+
             (value Piece at:(handSite Mover))
@@ -78,7 +78,7 @@
 (define "NoTiebreaker"
     (and
         (set Score Mover (var "MoverScore")) 
-        (set Score Next  (var "NextScore")) 
+        (set Score Next (var "NextScore")) 
 ))
 
 (define "CascadeTiebreaker"
@@ -92,7 +92,7 @@
 ))
 
 //----------------------------
-(define "CaptureScores"  
+(define "CaptureScores" 
     (forEach Value
         (array #1)
         (if 
@@ -111,12 +111,12 @@
                             (set Value at:(handSite Mover) (+ 1 (value Piece at:(handSite Mover))))
 )))))))
 
-(define "Capture"  
+(define "Capture" 
     (forEach Value
         (array #1)
         (if 
             (> 2 (count Sites in:(sites Around (value) "ConnectionDirection" if:(is Empty (to)))))
-            (remove (value))         
+            (remove (value))     
 )))
 
 (define "AllHave1Connection2Edge"
@@ -197,10 +197,10 @@
 
 (define "ScoreConnectionDirection" <BoardShape:directionScored>)
 (define "ConnectionDirection" <BoardShape:directionUsed>)
-(define "BoardUsed" <BoardShape:gridType> )
+(define "BoardUsed" <BoardShape:gridType>)
 
 (define "HexLimp" (board (hex Limping (- <BoardSize:smallSide> 1)) use:Cell))
-(define "Hex2Limp" (board (hex  (- <BoardSize:smallSide> 1) (+ <BoardSize:smallSide> 1)) use:Cell))
+(define "Hex2Limp" (board (hex (- <BoardSize:smallSide> 1) (+ <BoardSize:smallSide> 1)) use:Cell))
 (define "HexCell" (board (hex Hexagon <BoardSize:smallSide>) use:Cell))
 (define "TriSquare" (board (tiling T33434 (- <BoardSize:smallSide> 2)) use:Vertex))
 
@@ -209,14 +209,14 @@
 
 (option "Size" <BoardSize> args:{<smallSide>} 
     {
-    (item "3  (5 moves each)" <3> "Order 3 board - about 5 moves each")
-    (item "4  (11 moves each)" <4> "Order 4 board - about 11 moves each")
-    (item "5  (17 moves each)" <5> "Order 5 board - about 17 moves each")*
-    (item "6  (27 moves each)" <6> "Order 6 board - about 27 moves each")
-    (item "7  (40 moves each)" <7> "Order 7 board - about 40 moves each")
-    (item "8  (55 moves each)" <8> "Order 8 board - about 55 moves each")
-    (item "9  (70 moves each)" <9> "Order 9 board - about 70 moves each")
-    (item "11  (105 moves each)" <11> "Order 11 board - about 105 moves each")
+    (item "3 (5 moves each)" <3> "Order 3 board - about 5 moves each")
+    (item "4 (11 moves each)" <4> "Order 4 board - about 11 moves each")
+    (item "5 (17 moves each)" <5> "Order 5 board - about 17 moves each")*
+    (item "6 (27 moves each)" <6> "Order 6 board - about 27 moves each")
+    (item "7 (40 moves each)" <7> "Order 7 board - about 40 moves each")
+    (item "8 (55 moves each)" <8> "Order 8 board - about 55 moves each")
+    (item "9 (70 moves each)" <9> "Order 9 board - about 70 moves each")
+    (item "11 (105 moves each)" <11> "Order 11 board - about 105 moves each")
     }
 )
 
@@ -232,11 +232,11 @@
     "Triangle-Square N-2 Orthogonal connections to edge - ALl direction form groups")
     
     (item "Hex Limping"
-        <"HexLimp"> <Orthogonal> <Hidden> <Orthogonal> <"Disc">  
+        <"HexLimp"> <Orthogonal> <Hidden> <Orthogonal> <"Disc"> 
     "Hex N / N-1 Grid, about 5% less moves")*
     
     (item "Hex Double Limping"
-        <"Hex2Limp"> <Orthogonal> <Hidden> <Orthogonal> <"Disc">  
+        <"Hex2Limp"> <Orthogonal> <Hidden> <Orthogonal> <"Disc"> 
     "Hex N+1 / N-1 Grid")
     
     (item "Hex Grid"
@@ -250,19 +250,19 @@
     {
     
     (item "Captured opponent's pieces"
-        <"PlusCaptureScore">  <(hand Each size:1)>  <"CaptureScores"> 
+        <"PlusCaptureScore"> <(hand Each size:1)> <"CaptureScores"> 
     "Scoring Option: Score a point for each piece in your largest group and each opponent piece you capture")***
     
     (item "Number of mover groups"
-        <"BonusMover">  <>  <"Capture"> 
+        <"BonusMover"> <> <"Capture"> 
     "Scoring Option: Score the size of your largest group, then score an additional point for every group you have on the board.")**
     
     (item "Number of opponent's groups"
-        <"BonusOpponent">  <>  <"Capture"> 
+        <"BonusOpponent"> <> <"Capture"> 
     "Scoring Option: Score the size of your largest group, then score an additional point for every opponent's group on the board.")
     
     (item "No Bonus: Largest group size only"
-        <"GroupScore">  <>  <"Capture"> 
+        <"GroupScore"> <> <"Capture"> 
     "Scoring Option: No bonus. Score a point only for each piece in your largest group")
     
     }
@@ -272,11 +272,11 @@
     {
     
     (item "A: Largest group, cascading LOSES"
-        <("CascadeTiebreaker")>  <(result Mover Win)> 
-    "Tiebreaker is largest group (excluding tied pairs) LOSES.  If all are paired, last placement wins.")**
+        <("CascadeTiebreaker")> <(result Mover Win)> 
+    "Tiebreaker is largest group (excluding tied pairs) LOSES. If all are paired, last placement wins.")**
     
     (item "B: Last to place"
-        <("NoTiebreaker")>  <(result Mover Win)> 
+        <("NoTiebreaker")> <(result Mover Win)> 
     "Tiebreaker is last to place wins.")
     
     }
@@ -332,7 +332,7 @@
             A: Cascading largest group LOSES -- i.e. negative scores -- This excludes tied pairs; If all groups are paired, last to place. 
         B: Last player to have placed a stone.")
         (id "1660")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")
@@ -358,7 +358,7 @@
         (board Colour OuterEdges (colour Black))
         (show Edges Diagonal <BoardShape:diagShow> (colour DarkGrey))
         (show Piece Value "Disc" Middle)
-        (board Background image:<BoardShape:backgroundImage> fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.2 scaleY:1.15 ) 
+        (board Background image:<BoardShape:backgroundImage> fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.2 scaleY:1.15) 
         }
 ))
 

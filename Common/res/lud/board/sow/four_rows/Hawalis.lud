@@ -1,10 +1,7 @@
 (define "Columns" 7)
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
-
 (define "Sow" 
-    (move
-        Select
+    (move Select
         (from (sites Mover "Home") if:#1)
         (then 
             (sow
@@ -13,12 +10,12 @@
                 if:(and { 
                     (= (count at:(to)) 1) 
                     (is In (to) (sites Mover "Inner")) 
-                    (> (count at:"OppositePit") 0) 
+                    (> (count at:("OppositePit" (to))) 0) 
                 })
                 apply:(fromTo 
-                    (from "OppositePit") 
+                    (from ("OppositePit" (to))) 
                     (to (handSite Mover)) 
-                    count:(count at:"OppositePit")
+                    count:(count at:("OppositePit" (to)))
                 ) 
             )
         )
@@ -29,8 +26,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Hawalis"  
-    (players 2)  
+(game "Hawalis" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -39,17 +36,16 @@
             (track "Track2" "14,E,N1,W" loop:True P2)
             }
         )
-        (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
-        (regions "Home" P2 (sites Track "Track2"))                              // P2 home
+        (regions "Home" P1 (sites Track "Track1"))               // P1 Home
+        (regions "Home" P2 (sites Track "Track2"))               // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top) ))   // P2 inner Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))  // P2 inner Home
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+    }) 
     (rules 
         
-        (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home") ) ) )
+        (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home"))))
         
         (play 
             (priority
@@ -58,14 +54,7 @@
             )
         )
         
-        (end
-            (if (no Moves Mover) 
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (no Moves Mover)))
     )
 )
 
@@ -79,7 +68,7 @@
         (rules "Play begins with two seeds in each hole. Each player owns the two rows closest to them. Play proceeds by taking the seeds from one hole and sowing them one by one in consecutive holes in an anti-clockwise direction. If the last seed falls in a hole in the inner row, and the opponent's hole opposite it is not empty, then the opponent's seeds in that hole are captured. Players can only play from holes with single counters when there is no other option, and they may not sow into another hole that already contains a counter. Play continues until one player no longer has any seeds.")
         (source "de Voogt 2003: 95-97.")
         (id "127")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         (origin  "This game was played in Oman? Zanzibar?, around 2003.")

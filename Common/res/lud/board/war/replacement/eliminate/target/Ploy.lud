@@ -7,11 +7,11 @@
             #1
             (between #2) 
             (to 
-                if:(is Enemy (who at:(to))) 
+                if:("IsEnemyAt" (to)) 
                 (apply "RemovePiece")
             )
         )
-        (move Set Rotation)  
+        (move Set Rotation) 
     ) 
 )
 
@@ -21,12 +21,12 @@
             Step
             #1 
             (to 
-                if:(not (is Friend (who at:(to)))) 
+                if:(not ("IsFriendAt" (to))) 
                 (apply "RemovePiece")
             )
             #2
         ) 
-        (move Set Rotation)  
+        (move Set Rotation) 
     ) 
 )
 
@@ -40,8 +40,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Ploy"  
-    (players <Version:numPlayers>)  
+(game "Ploy" 
+    (players <Version:numPlayers>) 
     (equipment { 
         (board (square 9) use:Vertex) 
         <Version:rulesCommander>
@@ -54,7 +54,7 @@
         (piece "ProbeI" Each ("SlideOrChangeDirection" (directions {Forward Backward} of:All) (max 2)))
         (piece "ProbeMinV" Each ("SlideOrChangeDirection" (directions {Forward FR} of:All) (max 2)))
         (piece "ProbeBigV" Each ("SlideOrChangeDirection" (directions {FR FL} of:All) (max 2)))
-    })  
+    }) 
     (rules 
         (start { 
             <Version:start>
@@ -83,12 +83,12 @@
         <
         (place "Commander1" coord:"E1" rotation:0) (place "Shield1" {"D3" "E3" "F3"} rotation:0) 
         (place "ProbeI1" coord:"E2" rotation:0) (place "ProbeBigV1" {"D2" "F2"} rotation:0) 
-        (place "ProbeMinV1" coord:"C2" rotation:0)  (place "ProbeMinV1" coord:"G2" rotation:7) (place "LanceW1" {"D1" "F1"} rotation:0) 
+        (place "ProbeMinV1" coord:"C2" rotation:0) (place "ProbeMinV1" coord:"G2" rotation:7) (place "LanceW1" {"D1" "F1"} rotation:0) 
         (place "LanceY1" {"C1" "G1"} rotation:0) (place "LanceT1" {"B1" "H1"} rotation:0)
         
         (place "Commander2" coord:"E9" rotation:4) (place "Shield2" {"D7" "E7" "F7"} rotation:4) 
         (place "ProbeI2" coord:"E8" rotation:4) (place "ProbeBigV2" {"D8" "F8"} rotation:4) 
-        (place "ProbeMinV2" coord:"C8" rotation:3)  (place "ProbeMinV2" coord:"G8" rotation:4) (place "LanceW2" {"D9" "F9"} rotation:4) 
+        (place "ProbeMinV2" coord:"C8" rotation:3) (place "ProbeMinV2" coord:"G8" rotation:4) (place "LanceW2" {"D9" "F9"} rotation:4) 
         (place "LanceY2" {"C9" "G9"} rotation:4) (place "LanceT2" {"B9" "H9"} rotation:4)
         >
         <>
@@ -112,10 +112,10 @@
         >
         <
         (and {
-            (if (= (what at:(to)) (id "Commander" P1) ) (and ("CaptureCommandeOf" P1) (take Control of:P1 by:Mover))) 
-            (if (= (what at:(to)) (id "Commander" P2) ) (and ("CaptureCommandeOf" P2) (take Control of:P2 by:Mover))) 
-            (if (= (what at:(to)) (id "Commander" P3) ) (and ("CaptureCommandeOf" P3) (take Control of:P3 by:Mover))) 
-            (if (= (what at:(to)) (id "Commander" P4) ) (and ("CaptureCommandeOf" P4) (take Control of:P4 by:Mover))) 
+            (if (= (what at:(to)) (id "Commander" P1)) (and ("CaptureCommandeOf" P1) (take Control of:P1 by:Mover))) 
+            (if (= (what at:(to)) (id "Commander" P2)) (and ("CaptureCommandeOf" P2) (take Control of:P2 by:Mover))) 
+            (if (= (what at:(to)) (id "Commander" P3)) (and ("CaptureCommandeOf" P3) (take Control of:P3 by:Mover))) 
+            (if (= (what at:(to)) (id "Commander" P4)) (and ("CaptureCommandeOf" P4) (take Control of:P4 by:Mover))) 
             (remove (to)) 
         })
         >
@@ -171,10 +171,10 @@
         >
         <
         (and {
-            (if (= (what at:(to)) (id "Commander" P1) ) ("CaptureCommandeOf" P1)) 
-            (if (= (what at:(to)) (id "Commander" P2) ) ("CaptureCommandeOf" P2))
-            (if (= (what at:(to)) (id "Commander" P3) ) ("CaptureCommandeOf" P3)) 
-            (if (= (what at:(to)) (id "Commander" P4) ) ("CaptureCommandeOf" P4)) 
+            (if (= (what at:(to)) (id "Commander" P1)) ("CaptureCommandeOf" P1)) 
+            (if (= (what at:(to)) (id "Commander" P2)) ("CaptureCommandeOf" P2))
+            (if (= (what at:(to)) (id "Commander" P3)) ("CaptureCommandeOf" P3)) 
+            (if (= (what at:(to)) (id "Commander" P4)) ("CaptureCommandeOf" P4)) 
             (remove (to)) 
         })
         >
@@ -216,8 +216,8 @@
         <
         (end 
             {
-            (if (and ("CommanderOfWasCapture" P2) ("CommanderOfWasCapture" P4))  (result Team1 Win))
-            (if (and ("CommanderOfWasCapture" P1) ("CommanderOfWasCapture" P3))  (result Team2 Win))
+            (if (and ("CommanderOfWasCapture" P2) ("CommanderOfWasCapture" P4)) (result Team1 Win))
+            (if (and ("CommanderOfWasCapture" P1) ("CommanderOfWasCapture" P3)) (result Team2 Win))
             }
         )
         >
@@ -235,7 +235,7 @@
         (rules "The goal is to capture the enemy Commander, or reduce the opponent army to a single Commander. Each piece has an indicator which determines at which directions the piece can move. This can be altered by rotating the piece 45 degrees= to the left or right. Rotating the piece costs a move. Each player has 3 Shields, 5 Probes, 6 Lances, and one Commander. The Shield moves one step and has only one movement freedom at any time. The Probe slides two steps and has two freedoms. The Lance slides three steps and has three freedoms. The Commander has four, but can only move one step. A player must either make a direction move or a motion move. The three Shields are the only pieces that can perform a direction move immediately after a motion move. Capture occurs by displacement.")
         (source "<a href=\"http://mlwi.magix.net/bg/ploy.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />mlwi.magix.net</a>")
         (id "408")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/eliminate/target")
         (author "Frank Thibault")
         (publisher "3M, Dujardin, Grow Jogos e Brinquedos, Schmid")

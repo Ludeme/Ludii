@@ -8,8 +8,8 @@
         }
     )
     (end { 
-        (if (and (= (count Trials) 3) (> (matchScore P1) (matchScore P2)))  (result P1 Win))
-        (if (and (= (count Trials) 3) (< (matchScore P1) (matchScore P2)))  (result P2 Win))
-        (if (and (= (count Trials) 3) (= (matchScore P1) (matchScore P2)))  (result P1 Draw))
+        (if (and (= (count Trials) 3) (> (matchScore P1) (matchScore P2))) (result P1 Win))
+        (if (and (= (count Trials) 3) (< (matchScore P1) (matchScore P2))) (result P2 Win))
+        (if (and (= (count Trials) 3) (= (matchScore P1) (matchScore P2))) (result P1 Draw))
     })
 )

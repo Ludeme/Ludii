@@ -13,6 +13,8 @@ import game.Game;
 import game.Game.StateConstructorLock;
 import game.equipment.container.Container;
 import game.equipment.container.other.Dice;
+import game.functions.ints.last.LastFrom;
+import game.functions.ints.last.LastTo;
 import game.rules.phase.Phase;
 import game.types.board.SiteType;
 import game.types.play.ModeType;
@@ -223,6 +225,8 @@ public class State implements Serializable
 	private long[][] playerSwitchHashes;
 	private long[][] teamHashes;
 	private long[][] numConsecutivePassesHashes;
+	private long[] lastFromHashes;
+	private long[] lastToHashes;
 
 	/** @param delta incremental hash to be xored with value */ 
 	public void updateStateHash(final long delta) 
@@ -323,6 +327,20 @@ public class State implements Serializable
 				;
 	}
 	
+	private static final LastFrom LAST_FROM_LUDEME = new LastFrom(null);
+	private static final LastTo LAST_TO_LUDEME = new LastTo(null);
+	
+	/**
+	 * @param context
+	 * @return Full hash value
+	 */
+	public long fullHash(final Context context)
+	{
+		final int lastFrom = LAST_FROM_LUDEME.eval(context);
+		final int lastTo = LAST_TO_LUDEME.eval(context);
+		return fullHash() ^ lastFromHashes[lastFrom + 1] ^ lastToHashes[lastTo + 1];
+	}
+	
 	//-------------------------------------------------------------------------
 
 	/**
@@ -388,6 +406,8 @@ public class State implements Serializable
 		numConsecutivePassesHashes = ZobristHashUtilities.getSequence(generator, 2, numConsecutivePassesHashCap);
 		
 		isPendingHashes = ZobristHashUtilities.getSequence(generator, game.equipment().totalDefaultSites() + 2);
+		lastFromHashes = ZobristHashUtilities.getSequence(generator, game.equipment().totalDefaultSites() + 2);
+		lastToHashes = ZobristHashUtilities.getSequence(generator, game.equipment().totalDefaultSites() + 2);
 		
 		stateHash = ZobristHashUtilities.INITIAL_VALUE;
 		scoreHash = ZobristHashUtilities.INITIAL_VALUE;
@@ -490,6 +510,8 @@ public class State implements Serializable
 		phaseHashes = other.phaseHashes;
 
 		isPendingHashes = other.isPendingHashes;
+		lastFromHashes = other.lastFromHashes;
+		lastToHashes = other.lastToHashes;
 		moverHashes = other.moverHashes;
 		nextHashes = other.nextHashes;
 		prevHashes = other.prevHashes;
@@ -893,6 +915,8 @@ public class State implements Serializable
 		phaseHashes = other.phaseHashes;
 
 		isPendingHashes = other.isPendingHashes;
+		lastFromHashes = other.lastFromHashes;
+		lastToHashes = other.lastToHashes;
 		moverHashes = other.moverHashes;
 		nextHashes = other.nextHashes;
 		prevHashes = other.prevHashes;

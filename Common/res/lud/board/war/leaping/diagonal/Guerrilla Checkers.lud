@@ -22,7 +22,7 @@
     (then
         (forEach Site
             ("VertexJumped" (last From) (last To))
-            (if (is Enemy (who at:(site)))
+            (if ("IsEnemyAt" (site))
                 (remove (site)
                     (then (if (can Move "CaptureJump") (moveAgain)))
                 )
@@ -35,7 +35,7 @@
     (!= 0 
         (count Sites in:(forEach 
                 ("VertexJumped" (site) (from))
-                if:(is Enemy (who at:(site)))
+                if:("IsEnemyAt" (site))
             )
         )
     )
@@ -56,7 +56,7 @@
         (then
             (forEach Site
                 ("VertexJumped" (last From) (last To))
-                (if (is Enemy (who at:(site)))
+                (if ("IsEnemyAt" (site))
                     (remove (site) #1)
                 )
             )
@@ -72,7 +72,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "Guerrilla Checkers"  
+(game "Guerrilla Checkers" 
     (players 2)
     (equipment
         {
@@ -104,7 +104,7 @@
                     (from (handSite Mover)) 
                     (to
                         Vertex 
-                        (difference (sites Empty Vertex) (sites Outer) )
+                        (difference (sites Empty Vertex) (sites Outer))
                     )
                     (then 
                         (moveAgain)
@@ -121,12 +121,12 @@
                         (from (handSite Mover)) 
                         (to
                             Vertex 
-                            (difference (sites Around (last To) Orthogonal if:(is Empty (to))) (sites Outer) )
+                            (difference (sites Around (last To) Orthogonal if:(is Empty (to))) (sites Outer))
                         )
                         (then 
                             (forEach
                                 Site
-                                (forEach (sites Occupied by:P2 on:Cell) if:(= 0 (count Sites in:(intersection (sites Empty)(sites Incident Vertex of:Cell at:(site)) )  )))
+                                (forEach (sites Occupied by:P2 on:Cell) if:(= 0 (count Sites in:(intersection (sites Empty)(sites Incident Vertex of:Cell at:(site))) )))
                                 (remove Cell (site))
                             )
                         )
@@ -142,7 +142,7 @@
                             (and
                                 (forEach
                                     Site
-                                    (forEach (sites Occupied by:P2 on:Cell) if:(= 0 (count Sites in:(intersection (sites Empty)(sites Incident Vertex of:Cell at:(site)) )  )))
+                                    (forEach (sites Occupied by:P2 on:Cell) if:(= 0 (count Sites in:(intersection (sites Empty)(sites Incident Vertex of:Cell at:(site))) )))
                                     (remove Cell (site))
                                 )
                                 (moveAgain)
@@ -164,7 +164,7 @@
         
         }
         
-        (end (if (no Moves Next) (result Mover Win))) 
+        (end ("BlockWin"))
     )
 )
 
@@ -190,7 +190,7 @@
         GOAL - The player who clears the board of all enemy pieces at the end of his turn wins. The Guerrilla player loses if he runs out of stones")
         (id "794")
         (source "<a href=\"http://www.di.fc.ul.pt/~jpn/gv/guerrilla.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.di.fc.ul.pt</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/leaping/diagonal")
         (author "Brian Train")
         (publisher "<a href=\"https://www.nestorgames.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a> (used with permission)")

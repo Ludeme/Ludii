@@ -9,7 +9,7 @@
         )
         (to 
             if:(or {
-                (is Friend (who at:(to))) 
+                ("IsFriendAt" (to)) 
                 (is In (to) (sites "Fortresses")) 
                 "EmptyCentre"
             })
@@ -17,26 +17,26 @@
     )
 )
 
-(define "JarlIsCaptured" (apply (trigger "Surrounded" P2) ))
+(define "JarlIsCaptured" (apply (trigger "Surrounded" P2)))
 
 (define "JarlWasCaptured" (is Triggered "Surrounded" P2))
 
 (define "CentreOrFortress" (is In (to) (union (sites Centre) (sites "Fortresses"))))
 
-(define "FriendOrFortress" (or (is Friend (who at:(to))) (is In (to) (sites "Fortresses"))))
+(define "FriendOrFortress" (or ("IsFriendAt" (to)) (is In (to) (sites "Fortresses"))))
 
-(define "FriendOrCentre" (or (is Friend (who at:(to))) (is In (to) (sites Centre))))
+(define "FriendOrCentre" (or ("IsFriendAt" (to)) (is In (to) (sites Centre))))
 
 (define "EmptyCentre" (and (is In (to) (sites Centre)) (is Empty (to))))
 
-(define "JarlAndExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (is In (between) (expand origin:(centrePoint)  Orthogonal))))
+(define "JarlAndExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (is In (between) (expand origin:(centrePoint) Orthogonal))))
 
-(define "JarlButNotTheExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (not (is In (between) (expand origin:(centrePoint)  Orthogonal)))))
+(define "JarlButNotTheExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (not (is In (between) (expand origin:(centrePoint) Orthogonal)))))
 
 //------------------------------------------------------------------------------
 
-(game "Brandub"  
-    (players 2)  
+(game "Brandub" 
+    (players 2) 
     (equipment { 
         (board (square 7)) 
         (regions "Fortresses" (sites Corners))
@@ -58,7 +58,7 @@
                         (custodial 
                             (from (last To)) 
                             Orthogonal 
-                            (between (max 1) if:"JarlButNotTheExpandedCentre" "JarlIsCaptured" )
+                            (between (max 1) if:"JarlButNotTheExpandedCentre" "JarlIsCaptured")
                             (to if:"FriendOrFortress")
                         )
                     })
@@ -70,7 +70,7 @@
                 Slide
                 Orthogonal 
                 (to (apply if:(not "CentreOrFortress"))) 
-                (then ("Custodial" "Thrall1") ) 
+                (then ("Custodial" "Thrall1")) 
             ) 
         ) 
         (piece "Jarl" P2 
@@ -78,11 +78,11 @@
                 Slide
                 Orthogonal 
                 (to (apply if:(not (= (to) (centrePoint))))) 
-                (then ("Custodial" "Thrall1") ) 
+                (then ("Custodial" "Thrall1")) 
             )
         )
         }
-    )  
+    ) 
     (rules 
         (start
             { 
@@ -96,8 +96,8 @@
         
         (end
             {
-            (if (is Within (id "Jarl2") in:(sites "Fortresses") ) (result P2 Win))
-            (if "JarlWasCaptured"  (result P1 Win))
+            (if (is Within (id "Jarl2") in:(sites "Fortresses")) (result P2 Win))
+            (if "JarlWasCaptured" (result P1 Win))
             }
         )
     )
@@ -107,7 +107,7 @@
 
 (option "Variant" <Variant> args:{ <type> }
     {
-    (item "Nielsen"   <>       "The rules are describing with the Nielsen ruleset.")   
+    (item "Nielsen"  <>    "The rules are describing with the Nielsen ruleset.")  
 })
 
 //------------------------------------------------------------------------------
@@ -140,7 +140,7 @@
         (useFor "Ruleset/Nielsen (Suggested)" (id "579"))
         (source "Murray 1951: 35.")
         (id "382")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/custodial")
         (credit "Eric Piette")
         (origin  "This game was played in Ireland, from around 1200 to 1640.")

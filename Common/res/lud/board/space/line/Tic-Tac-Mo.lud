@@ -1,15 +1,14 @@
-(game "Tic-Tac-Mo"  
-    (players 3)  
+(game "Tic-Tac-Mo" 
+    (players 3) 
     (equipment { 
         (board (rectangle 3 5)) 
         (piece "Disc" P1) 
         (piece "Cross" P2) 
         (piece "Y" P3) 
-        }
-    )  
+    }) 
     (rules 
         (play (move Add (to (sites Empty))))
-        (end (if (is Line 3) (result Mover Win)))
+        (end ("Line3Win"))
     )
 )
 
@@ -23,7 +22,7 @@
         (rules "Tic-Tac-Mo uses the same rules as Tic-Tac-Toe, but the third player plays with a \"y\". The first player to make three in a row wins.")
         (source "<a href=\"http://www.tictacmo.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />official website</a>")
         (id "99")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line")
         (author "Ken Mask")
         (credit "Eric Piette")

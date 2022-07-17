@@ -57,21 +57,21 @@
 
 //------------------------------------------------------------------------------
 
-(game "The Concentration Game"  
-    (players 2)  
+(game "The Concentration Game" 
+    (players 2) 
     (equipment { 
         (mancalaBoard 3 "Columns" store:None
             (track "Track" "0,N,E,S,W2" loop:True)
         )
         (piece "Seed" Shared)
-        (regions P1 (union (sites {4}) (sites Bottom)))                     // P1 home
-        (regions P2 (union (sites {7}) (sites Top)))                        // P2 home
-        (map {(pair P1 5) (pair P2 6)})  // kalahs (storage pits)
-    })  
+        (regions P1 (union (sites {4}) (sites Bottom)))           // P1 home
+        (regions P2 (union (sites {7}) (sites Top)))            // P2 home
+        (map {(pair P1 5) (pair P2 6)}) // kalahs (storage pits)
+    }) 
     (rules 
         
         (start {
-            (set Count 10 to:(sites Board) )
+            (set Count 10 to:(sites Board))
             (set RememberValue "NumToCaptureP1" <ToCapture:num>)
             (set RememberValue "NumToCaptureP2" <ToCapture:num>)
             (set RememberValue "NumCaptureTwoP1" 0)
@@ -85,7 +85,7 @@
                     if:(< 1 (count at:(from)))
                 )
                 (then 
-                    (sow  
+                    (sow 
                         if:(= (count at:(to)) ("NumCountersToCapture")) 
                         apply:(and
                             (fromTo 
@@ -104,14 +104,7 @@
             )		
         )
         
-        (end
-            (if (no Moves Next)
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (no Moves Next)))
     )
 )
 
@@ -119,16 +112,16 @@
 
 (option "Num Initial Seed To Capture" <ToCapture> args:{ <num> }
     {
-    (item "2"   <2>  "The number of counters to have in the hole to capture in the initial captures before the sequence is 2.")*   
-    (item "3"   <3>  "The number of counters to have in the hole to capture in the initial captures before the sequence is 3.")   
-    (item "4"   <4>  "The number of counters to have in the hole to capture in the initial captures before the sequence is 4.")   
-    (item "5"   <5>  "The number of counters to have in the hole to capture in the initial captures before the sequence is 5.")
+    (item "2"  <2> "The number of counters to have in the hole to capture in the initial captures before the sequence is 2.")*  
+    (item "3"  <3> "The number of counters to have in the hole to capture in the initial captures before the sequence is 3.")  
+    (item "4"  <4> "The number of counters to have in the hole to capture in the initial captures before the sequence is 4.")  
+    (item "5"  <5> "The number of counters to have in the hole to capture in the initial captures before the sequence is 5.")
 })
 
 (option "Num Initial Capture" <Sequence> args:{ <length> }
     {
-    (item "3"   <1>  "The number of initial captures before the sequence is 3.")   
-    (item "7"   <5>  "The number of initial captures before the sequence is 7.")*   
+    (item "3"  <1> "The number of initial captures before the sequence is 3.")  
+    (item "7"  <5> "The number of initial captures before the sequence is 7.")*  
 })
 
 //------------------------------------------------------------------------------
@@ -173,7 +166,7 @@
         (useFor "Ruleset/Five Counters (Described)" (id "1740"))
         (source "Murray 1951: 190-191.")
         (id "234")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/three rows")
         (credit "Eric Piette")
         (origin  "This game was played in Nigeria, around 1948.")

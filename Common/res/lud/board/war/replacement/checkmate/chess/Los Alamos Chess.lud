@@ -1,10 +1,10 @@
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
 )
 
 (define "CaptureToPieceAndResetCounter"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
                 (then (set Counter))
@@ -18,7 +18,7 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
@@ -26,7 +26,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "Los Alamos Chess"  
+(game "Los Alamos Chess" 
     (players {(player N) (player S)})
     (equipment { 
         (board (square 6)) 
@@ -51,7 +51,7 @@
                 Slide 
                 Orthogonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
                 ) 
             )
@@ -60,7 +60,7 @@
             (move
                 Step 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndResetCounter"
                 ) 
             )
@@ -70,7 +70,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndResetCounter"
                 ) 
             )
@@ -79,16 +79,16 @@
             (move
                 Slide 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
                 ) 
             ) 
         )
         
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
         }
-    )  
+    ) 
     (rules 
         (start
             { 
@@ -132,7 +132,7 @@
         (rules "The rules are the same as for Chess, except pawns cannot move two spaces on the first move, there is no castling, and no en-passant capture.")
         (source "<a href=\"https://en.wikipedia.org/wiki/Los_Alamos_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
         (id "462")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chess")
         (author "Paul Stein and Mark Wells")
         (credit "Eric Piette")

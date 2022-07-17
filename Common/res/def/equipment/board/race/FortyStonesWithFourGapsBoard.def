@@ -1,0 +1,16 @@
+// Defines a circle board defined with 40 stones, with a gap after each 10 stones. The board is playable on the edges.
+// @example ("FortyStonesWithFourGapsBoard")
+
+(define "FortyStonesWithFourGapsBoard"
+    (board
+        (add
+            (remove 
+                (concentric {44})
+                vertices:{43 21 0 22}
+            )
+            edges:{{20 18} {0 1} {19 21} {38 39}}
+        )
+        #1
+        use:Edge
+    )
+)

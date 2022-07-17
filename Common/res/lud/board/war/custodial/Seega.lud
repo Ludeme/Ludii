@@ -1,5 +1,5 @@
-(game "Seega"  
-    (players 2)  
+(game "Seega" 
+    (players 2) 
     (equipment { 
         (board (square <Board:size>)) 
         (hand Each) 
@@ -12,10 +12,10 @@
                         Orthogonal
                         (between
                             (max 1)
-                            if:(is Enemy (who at:(between)))
+                            if:("IsEnemyAt" (between))
                             (apply (remove (between)))
                         )
-                        (to if:(is Friend (who at:(to))))
+                        (to if:("IsFriendAt" (to)))
                     )
                 )
             )
@@ -55,9 +55,9 @@
 
 (option "Board Size" <Board> args:{ <size> <numPieces>}
     {
-    (item "5x5"    <5>  <12>  "The game is played on a 5x5 board.")**   
-    (item "7x7"    <7>  <24>  "The game is played on a 7x7 board.")   
-    (item "9x9"    <9>  <40>  "The game is played on a 9x9 board.")   
+    (item "5x5"  <5> <12> "The game is played on a 5x5 board.")**  
+    (item "7x7"  <7> <24> "The game is played on a 7x7 board.")  
+    (item "9x9"  <9> <40> "The game is played on a 9x9 board.")  
 })
 
 //------------------------------------------------------------------------------
@@ -103,7 +103,7 @@
         (useFor "Ruleset/Tisawee (Observed)" (id "590"))
         (source "Murray 1951: 54-55; Parker 1909: 603-604.")
         (id "150")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/custodial")
         (credit "Eric Piette")
         (origin  "This game was played in North Africa, from around 1825 to 1925.")

@@ -1,5 +1,5 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #2 #1))
 (define "ReplayThrow"
     (or 
         (= ("ThrowValue") 5)
@@ -22,7 +22,7 @@
 )
 
 (define "Move"
-    (if (= End ("SiteToMoveOnTrack" from:(from) ("ThrowValue")))
+    (if ("IsEndTrack" ("SiteToMoveOnTrack" from:(from) ("ThrowValue")))
         (move 
             (from (from))
             (to (mapEntry "Start" Mover))
@@ -39,7 +39,7 @@
                 ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
                 if:True
                 (apply
-                    (if (is Enemy (who at:(to)))
+                    (if ("IsEnemyAt" (to))
                         (and
                             (fromTo
                                 (from (to))
@@ -101,7 +101,7 @@
         (piece "Stick" P1 ("Move"))
         (piece "Stick" P3 ("Move"))
         (piece "Stick" Neutral)
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
         (hand P1)
         (hand P3)
         (map "Throw" {(pair 0 10) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 5)})
@@ -118,8 +118,8 @@
             (place "Stick0" (handSite P3) count:<Scoring:num>)
         })
         (play 
-            (do (roll) 
-                next:(if (or (is Mover P1) (is Mover P2))
+            ("RollMove"
+                (if (or (is Mover P1) (is Mover P2))
                     (forEach Piece P1)
                     (forEach Piece P3)
                 )
@@ -137,20 +137,20 @@
 //------------------------------------------------------------------------------
 
 (option "Start" <Scoring> args:{ <num> } {
-    (item "2"   <2>  "Each team has 2 scoring sticks.") 
-    (item "3"   <3>  "Each team has 3 scoring sticks.") 
-    (item "4"   <4>  "Each team has 4 scoring sticks.") 
-    (item "5"   <5>  "Each team has 5 scoring sticks.") 
-    (item "6"   <6>  "Each team has 6 scoring sticks.") 
-    (item "7"   <7>  "Each team has 7 scoring sticks.") 
-    (item "8"   <8>  "Each team has 8 scoring sticks.") 
-    (item "9"   <9>  "Each team has 9 scoring sticks.") 
-    (item "10"  <10> "Each team has 10 scoring sticks.")* 
-    (item "11"  <11> "Each team has 11 scoring sticks.") 
-    (item "12"  <12> "Each team has 12 scoring sticks.") 
-    (item "13"  <13> "Each team has 13 scoring sticks.") 
-    (item "14"  <14> "Each team has 14 scoring sticks.") 
-    (item "15"  <15> "Each team has 15 scoring sticks.") 
+    (item "2"  <2> "Each team has 2 scoring sticks.") 
+    (item "3"  <3> "Each team has 3 scoring sticks.") 
+    (item "4"  <4> "Each team has 4 scoring sticks.") 
+    (item "5"  <5> "Each team has 5 scoring sticks.") 
+    (item "6"  <6> "Each team has 6 scoring sticks.") 
+    (item "7"  <7> "Each team has 7 scoring sticks.") 
+    (item "8"  <8> "Each team has 8 scoring sticks.") 
+    (item "9"  <9> "Each team has 9 scoring sticks.") 
+    (item "10" <10> "Each team has 10 scoring sticks.")* 
+    (item "11" <11> "Each team has 11 scoring sticks.") 
+    (item "12" <12> "Each team has 12 scoring sticks.") 
+    (item "13" <13> "Each team has 13 scoring sticks.") 
+    (item "14" <14> "Each team has 14 scoring sticks.") 
+    (item "15" <15> "Each team has 15 scoring sticks.") 
 })
 
 //------------------------------------------------------------------------------
@@ -179,7 +179,7 @@
         ")
         (source "Culin 1898: 687-689.")
         (id "140")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/reach")
         (credit "Eric Piette")
         (origin  "This game was played in Great Plains, around 1898.")
@@ -195,4 +195,3 @@
     })
     
 )
-

@@ -7,7 +7,7 @@
         (forEach Site 
             (sites Occupied by:#1)
             (if
-                (> 3 (count Pieces #1 in:(sites Around (site) "GridDirection" )))
+                (> 3 (count Pieces #1 in:(sites Around (site) "GridDirection")))
                 (set State at:(site) 0)
                 (set State at:(site) 1)
             )
@@ -18,7 +18,7 @@
                 (remember Value 0)
                 (remember Value 0)
                 (forEach Group "GridDirection" 
-                    //   if:(is #1 (who at:(to)))
+                    //  if:(is #1 (who at:(to)))
                     (if
                         (no Pieces in:(intersection (sites) (sites State 1))) 
                         (remember Value 
@@ -32,7 +32,7 @@
                         (then
                             (set Score #1 (* (var "TopValue") (max (values Remembered)))
                                 (then
-                                    (forget Value All)       
+                                    (forget Value All)    
         )))))))
 ))
 
@@ -99,9 +99,9 @@
 
 (option "Board" <BoardShape> args:{<gridType> <directionsUsed> <DiagShow>} 
     {
-    (item "9" <(square 9)> <Orthogonal> <Hidden>  "Order 9, Square Ortho-Grid")**
-    (item "13" <(square 13)> <Orthogonal> <Hidden>  "Order 13, Square Ortho-Grid")
-    (item "19" <(square 19)> <Orthogonal> <Hidden>  "Order 19, Square Ortho-Grid")
+    (item "9" <(square 9)> <Orthogonal> <Hidden> "Order 9, Square Ortho-Grid")**
+    (item "13" <(square 13)> <Orthogonal> <Hidden> "Order 13, Square Ortho-Grid")
+    (item "19" <(square 19)> <Orthogonal> <Hidden> "Order 19, Square Ortho-Grid")
     }
 )
 
@@ -133,7 +133,7 @@
             
         The game ends when both players pass. ")
         (id "1970")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")
@@ -150,7 +150,7 @@
         (board StyleThickness InnerVertices .5)
         (show Edges Diagonal <BoardShape:DiagShow>)
         (piece Foreground "Disc" state:1 image:"square.svg" fillColour:(colour 0 0 0 50) scale:0.4)
-        //    (show Piece State)
+        //  (show Piece State)
         }
     )
     (ai (heuristics (score weight:2)))

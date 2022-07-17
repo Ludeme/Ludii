@@ -24,7 +24,7 @@
 
 (define "PieceMove"
     (or
-        (if (and { (= 0 (count MovesThisTurn)) ("Triple") ("HasASixThreeOrTwo") (= 3 ("CountPieceTypeInStack" (mover) (from))) })
+        (if (and {(= 0 (count MovesThisTurn)) ("Triple") ("HasASixThreeOrTwo") (= 3 ("CountPieceTypeInStack" (mover) (from))) })
             (move 
                 (from (from) level:(level))
                 (to ("NextSiteOnTrack" (* 2 ("Die1")) from:(from) #1))
@@ -85,21 +85,21 @@
 
 //------------------------------------------------------------------------------
 
-(game "Chaupar"  
-    (players 4)  
+(game "Chaupar" 
+    (players 4) 
     (equipment { 
         ("PachisiBoard" 
             {
             (track "Track1" "61,S,E,N,11,E,N,W,53,N,W,S,42,W,S,E,8,54,E1,N7,End" P1 directed:True)
-            (track "Track2" "21,W,S,E,8,S,E,N,11,E,N,W,53,N,W,S,42,W,S1,E7,End"  P2 directed:True)
-            (track "Track3" "88,N,W,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,W1,S7,End"  P3 directed:True)
-            (track "Track4" "32,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W7,End"  P4 directed:True)
+            (track "Track2" "21,W,S,E,8,S,E,N,11,E,N,W,53,N,W,S,42,W,S1,E7,End" P2 directed:True)
+            (track "Track3" "88,N,W,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,W1,S7,End" P3 directed:True)
+            (track "Track4" "32,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W7,End" P4 directed:True)
             }
         )
         (dice d:4 faces:{1 2 5 6} num:3)
         (map "Start" {(pair P1 61) (pair P2 21) (pair P3 88) (pair P4 32)})
         (piece "Pawn" Each ("PieceMove" "Track"))
-    })  
+    }) 
     (rules 
         (start {
             (set Team 1 {P1 P3})
@@ -129,7 +129,7 @@
         ")
         (source "Abu'l Fazl 1590: 303-304.")
         (id "200")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/escape")
         (credit "Eric Piette")
         (origin  "This game was played in South Asia, around 1590.")

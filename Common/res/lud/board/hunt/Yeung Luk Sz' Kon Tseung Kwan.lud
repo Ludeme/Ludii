@@ -1,5 +1,5 @@
-(game "Yeung Luk Sz' Kon Tseung Kwan"  
-    (players 2)  
+(game "Yeung Luk Sz' Kon Tseung Kwan" 
+    (players 2) 
     (equipment { 
         (board
             (merge
@@ -9,12 +9,12 @@
             use:Vertex
         )
         <Variant:pieceMoves>
-    })  
+    }) 
     (rules 
         (start { 
             (place "Marker1" (union {(sites Column 1) (difference (sites Column 3) (union (sites Centre) (expand (sites Top)))) (sites Column 5)}))
             (place "Marker2" (centrePoint))
-        } )
+        })
         
         (play (forEach Piece)) 
         
@@ -26,7 +26,7 @@
 
 (option "Variant" <Variant> args:{ <pieceMoves> <endRules> }
     {
-    (item "Described"     
+    (item "Described"   
         <
         (piece "Marker" P1 "StepToEmpty")
         (piece "Marker" P2 
@@ -37,14 +37,14 @@
         ) 
         > 
         <
-        (end  {
+        (end {
             (if (no Pieces P1) (result P2 Win))
             (if (no Moves P2) (result P1 Win))
         })
         > 
         "P1 wins in blocking P2 to move. P2 wins in capturing by hopping all the pieces of P1."
     ) 
-    (item "Murray"     
+    (item "Murray"   
         <
         (piece "Marker" P1 
             ("StepToEmpty"
@@ -64,12 +64,12 @@
         ) 
         > 
         <
-        (end  {
+        (end {
             (if (no Pieces P1) (result P2 Win))
             (if (no Pieces P2) (result P1 Win))
         })
         > 
-    "P1 and P2 win in capturing all the opponent pieces. P1 makes custodial captures and P2 makes intervention captures.")  
+    "P1 and P2 win in capturing all the opponent pieces. P1 makes custodial captures and P2 makes intervention captures.") 
 })
 
 //------------------------------------------------------------------------------
@@ -102,7 +102,7 @@
         (useFor "Ruleset/Murray (Suggested)" (id "709"))
         (source "Murray 1951: 101.")
         (id "171")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/hunt")
         (origin  "This game was played in China, around 1694.")
         }

@@ -33,25 +33,20 @@
 
 (game "Yoin"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (hex <Size>))
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
         (meta (swap))
         (play
             (move Add
-                (to 
-                    (sites Empty)
-                )
+                (to (sites Empty))
                 (then <Score>)
             )
         )
         (end 
-            (if 
-                (is Full) 
+            (if (is Full) 
                 {(if
                     (< 
                         (score P1)
@@ -90,8 +85,8 @@
 
 (option "Running Score" <Score> args:{ <score> }
     {
-    (item "On"  <("UpdateScore")>  "The score is currently updated after each move.")
-    (item "Off" <(if (is Full) ("UpdateScore"))>  "The score is currently updated only when the board is full. (This makes the AI stronger.)")*
+    (item "On" <("UpdateScore")> "The score is currently updated after each move.")
+    (item "Off" <(if (is Full) ("UpdateScore"))> "The score is currently updated only when the board is full. (This makes the AI stronger.)")*
     }
 )
 
@@ -118,7 +113,7 @@
         The pie rule is used in order to make the game fair. This means White will have the option, on their first turn only, to swap sides with their opponent instead of making a regular move.")
         (id "1978")
         (source "<a href=\"https://boardgamegeek.com/boardgame/358594/yoin\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/group")
         (author "Luis Bolaños Mures")
         (credit "Michael Amundsen")

@@ -43,10 +43,8 @@
             (place "Ball2" (difference (expand origin:(mapEntry "Port" P2) steps:4 Orthogonal) (sites {"A5" "A1" "E1"})))
         })
         (play
-            (if (is Prev Mover)
-                (move Slide
-                    (from (mapEntry "Port" Mover))
-                )
+            (if ("SameTurn")
+                (move Slide (from (mapEntry "Port" Mover)))
                 (or
                     (forEach Piece
                         (then
@@ -76,7 +74,7 @@
         (end 
             (if 
                 (and
-                    (is Friend (who at:(if (is Mover P1) (mapEntry "Port" P2) (mapEntry "Port" P1)))) 
+                    ("IsFriendAt" (if (is Mover P1) (mapEntry "Port" P2) (mapEntry "Port" P1)))
                     ("CapturingPortNotAttacked")
                 )
                 (result Mover Win)
@@ -110,7 +108,7 @@
         destroy it, the game continues.)")
         (id "1797")
         (source "<a href=\"https://boardgamegeek.com/boardgame/18698/archimedes\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/reach")
         (author "Scott Marley and Philip Cohen")
         (credit "Eric Piette")

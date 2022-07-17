@@ -1,0 +1,5 @@
+// Returns the index of the outer opposite pit on a mancala board with four rows. This ludemeplex is working only if the description is defining "Columns" as the number of holes of the board.
+// #1 = The site.
+// @example ("OppositeOuterPit" (to))
+
+(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2))))

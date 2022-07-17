@@ -1,9 +1,9 @@
-(game "Graph Test - Quadhex"  
-    (players 2)  
+(game "Graph Test - Quadhex" 
+    (players 2) 
     (equipment { 
         <Board> 
         (piece "Disc") 
-    })  
+    }) 
     (rules 
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
@@ -14,21 +14,21 @@
 
 (option "Board" <Board> args:{ <board> }
     {
-    (item "1 Layers" <(board (quadhex 1))>  "1 Layer")
-    (item "2 Layers" <(board (quadhex 2))>  "2 Layers")
-    (item "3 Layers" <(board (quadhex 3))>  "3 Layers")
-    (item "4 Layers" <(board (quadhex 4))>  "4 Layers")*
-    (item "5 Layers" <(board (quadhex 5))>  "5 Layers")
-    (item "8 Layers" <(board (quadhex 8))>  "8 Layers")
-    (item "16 Layers" <(board (quadhex 16))>  "16 Layers")
+    (item "1 Layers" <(board (quadhex 1))> "1 Layer")
+    (item "2 Layers" <(board (quadhex 2))> "2 Layers")
+    (item "3 Layers" <(board (quadhex 3))> "3 Layers")
+    (item "4 Layers" <(board (quadhex 4))> "4 Layers")*
+    (item "5 Layers" <(board (quadhex 5))> "5 Layers")
+    (item "8 Layers" <(board (quadhex 8))> "8 Layers")
+    (item "16 Layers" <(board (quadhex 16))> "16 Layers")
     
-    (item "3 Layers (Thirds)" <(board (quadhex 3 thirds:True))>  "3 Layers (Thirds)")
-    (item "4 Layers (Thirds)" <(board (quadhex 4 thirds:True))>  "4 Layers (Thirds)")
-    (item "5 Layers (Thirds)" <(board (quadhex 5 thirds:True))>  "5 Layers (Thirds)")
-    (item "8 Layers (Thirds)" <(board (quadhex 8 thirds:True))>  "8 Layers (Thirds)")
+    (item "3 Layers (Thirds)" <(board (quadhex 3 thirds:True))> "3 Layers (Thirds)")
+    (item "4 Layers (Thirds)" <(board (quadhex 4 thirds:True))> "4 Layers (Thirds)")
+    (item "5 Layers (Thirds)" <(board (quadhex 5 thirds:True))> "5 Layers (Thirds)")
+    (item "8 Layers (Thirds)" <(board (quadhex 8 thirds:True))> "8 Layers (Thirds)")
     
-    (item "4 Layers (Vertex)" <(board (quadhex 4) use:Vertex)>  "4 Layers (Vertex)")
-    (item "4 Layers (Thirds, Vertex)" <(board (quadhex 4 thirds:True) use:Vertex)>  "4 Layers (Thirds, Vertex)")
+    (item "4 Layers (Vertex)" <(board (quadhex 4) use:Vertex)> "4 Layers (Vertex)")
+    (item "4 Layers (Thirds, Vertex)" <(board (quadhex 4 thirds:True) use:Vertex)> "4 Layers (Thirds, Vertex)")
     
     }
 )
@@ -46,12 +46,12 @@
         (version "0.9.3")
         (classification "board/space/line")
         (credit "Cameron Browne 31/5/2020")
-        (origin  "This game was played in England, from around 1850CE to 1883CE.")
+        (origin "This game was played in England, from around 1850CE to 1883CE.")
         }
     )
     (graphics 
         {
-        //        (board Style Chess)
+        //    (board Style Chess)
         }
     )
 )

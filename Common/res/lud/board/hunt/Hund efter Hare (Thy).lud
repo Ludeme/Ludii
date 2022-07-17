@@ -43,7 +43,7 @@
         (end {
             (if (no Moves P1) (result P2 Win))
         }) 
-        >  
+        > 
         "The game has an ending condition only for P2."
     )*
     
@@ -59,7 +59,7 @@
                 (result P1 Win)
             )
         }) 
-        >  
+        > 
         "The game has an ending condition for each player."
     )
 })
@@ -92,7 +92,7 @@
         (useFor "Ruleset/Hare wins (Suggested)" (id "1953"))
         (source "Michaelsen 2014: 203-204.")
         (id "1082")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/hunt")
         (credit "Eric Piette")
         (origin  "This game was played in Denmark, from around 1948 to 1968.")

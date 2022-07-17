@@ -1,4 +1,4 @@
-(define "NextHoleFrom" (trackSite Move from:#1 steps:#2))
+(define "NextHoleFrom" ("NextSiteOnTrack" #2 from:#1))
 
 (define "LastHole" (last To afterConsequence:True))
 
@@ -18,13 +18,12 @@
         (hand Each)
     })
     (rules
-        (start (set Count 4 to:(sites Board) ) )
+        (start (set Count 4 to:(sites Board)))
         (play 
-            (move
-                Select 
+            (move Select 
                 (from 
                     (if 
-                        (is Mover Prev) 
+                        ("SameTurn") 
                         (sites {("NextHoleFrom" ("LastHole") 1)})
                         (if (= 0 (count Moves))
                             (sites Board) 
@@ -34,7 +33,7 @@
                     if:(> (count at:(from)) 0)
                 )
                 (then 
-                    (sow  
+                    (sow 
                         apply:(if (!= 0 (count at:("NextHoleFrom" (to) 1)))
                             (moveAgain)
                             (and
@@ -64,14 +63,7 @@
                 )
             )
         )
-        (end
-            (if (is Pending)
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (is Pending)))
     )
 )
 
@@ -85,7 +77,7 @@
         (rules "Seven holes, arranged in a circle. Four counters in each hole. Sowing occurs in an anti-clockwise direction. When the final counter lands in a hole, the contents of the next hole are picked up and sowing continues with those counters. When the hole from which this new sowing would occur is empty, the counters in the next hole are captured and the turn ends. The next player begins to sow from the next available hole with counters after the last one played by the opponent. Play continues until no further captures can be made, and the player with the most counters wins.")
         (source "Das Gupta 1924: 167-168.")
         (id "921")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow")
         (credit "Eric Piette")
         (origin  "This game was played in India, around 1924.")

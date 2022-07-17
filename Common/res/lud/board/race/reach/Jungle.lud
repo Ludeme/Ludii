@@ -1,6 +1,5 @@
 (define "StepMove"
-    (move
-        Step 
+    (move Step 
         Orthogonal 
         (to 
             if:(and 
@@ -13,20 +12,19 @@
 )
 
 (define "HopTheWater"
-    (move
-        Hop 
+    (move Hop 
         #1 
         (between 
             #2 
-            if:(is In (between) (difference (sites "Water") (sites Occupied by:All))) 
+            if:(is In (between) (forEach (sites "Water") if:(is Empty (site)))) 
             (apply (remove (between)))
         ) 
         (to if:(and { 
                 (not (is In (to) (sites "Water"))) 
-                (not (is Friend (who at:(to)))) 
+                (not ("IsFriendAt" (to))) 
                 (<= (state at:(to)) (state at:(from))) 
             })
-        )  
+        ) 
     )
 )
 
@@ -34,37 +32,34 @@
 
 (define "RestoredPower" (set State at:(last To) (mapEntry (what at:(last To)))))
 
-(define "GoalReached" (is In (last To) (sites Next)))
-
 //------------------------------------------------------------------------------
 
-(game "Jungle"  
-    (players 2)  
+(game "Jungle" 
+    (players 2) 
     (equipment { 
         (board (rectangle 9 7))
         
-        (piece "Elephant" Each "StepMove")  
+        (piece "Elephant" Each "StepMove") 
         (piece "Lion" Each 
             (or {
                 "StepMove" 
                 ("HopTheWater" (directions {W E}) (max 2))
                 ("HopTheWater" (directions {N S}) (max 3))
             })
-        )     
+        )   
         (piece "Tiger" Each 
             (or {
                 "StepMove"
                 ("HopTheWater" (directions {W E}) (max 2))
                 ("HopTheWater" (directions {N S}) (max 3))
             })
-        )     
-        (piece "Leopard" Each "StepMove")  
-        (piece "Dog" Each "StepMove")  
-        (piece "Wolf" Each "StepMove")  
-        (piece "Cat" Each "StepMove")  
+        )   
+        (piece "Leopard" Each "StepMove") 
+        (piece "Dog" Each "StepMove") 
+        (piece "Wolf" Each "StepMove") 
+        (piece "Cat" Each "StepMove") 
         (piece "Rat" Each 
-            (move
-                Step 
+            (move Step 
                 Orthogonal 
                 (to 
                     if:(and 
@@ -74,24 +69,24 @@
                             // A rat can capture an elephant if it is not in the water first.
                             (and 
                                 (not (is In (from) (sites "Water"))) 
-                                (= (what at:(to)) (id "Elephant" Next))
+                                ("IsPieceAt" "Elephant" Next (to))
                             )
                         ) 
                     ) 
                     (apply (remove (to)))
                 )
             )
-        )  
+        ) 
         
-        (regions "Water" (sites {"B4" "C4" "B5" "C5" "B6" "C6" "E4" "F4" "E5" "F5" "E6" "F6"}))  
-        (regions "Trap" (sites {"C1" "E1" "D2" "D8" "C9" "E9"}))  
-        (regions "Den" P1 (sites {"D1"}))  // The goal of P1
-        (regions "Den" P2 (sites {"D9"}))  // The goal of P2
+        (regions "Water" (sites {"B4" "C4" "B5" "C5" "B6" "C6" "E4" "F4" "E5" "F5" "E6" "F6"})) 
+        (regions "Trap" (sites {"C1" "E1" "D2" "D8" "C9" "E9"})) 
+        (regions "Den" P1 (sites {"D1"})) // The goal of P1
+        (regions "Den" P2 (sites {"D9"})) // The goal of P2
         
         // The original value of each piece (index/value)
-        (map { (pair 1 8) (pair 2 8) (pair 3 7) (pair 4 7) (pair 5 6) (pair 6 6) (pair 7 5) (pair 8 5) (pair 9 4) (pair 10 4) (pair 11 3) (pair 12 3) (pair 13 2) (pair 14 2) (pair 15 1) (pair 16 1)})  
+        (map {(pair 1 8) (pair 2 8) (pair 3 7) (pair 4 7) (pair 5 6) (pair 6 6) (pair 7 5) (pair 8 5) (pair 9 4) (pair 10 4) (pair 11 3) (pair 12 3) (pair 13 2) (pair 14 2) (pair 15 1) (pair 16 1)}) 
         }
-    )  
+    ) 
     (rules 
         (start {
             (place "Rat1" coord:"G3" state:1) (place "Rat2" coord:"A7" state:1)
@@ -121,7 +116,7 @@
             )
         )
         
-        (end (if "GoalReached" (result Mover Win)) )
+        (end ("ReachWin" (sites Next) Mover))
     )
 )
 
@@ -134,7 +129,7 @@
         (rules "Each turn consists of moving a piece one square orthogonally in any direction. An animal may eat any animal smaller than itself by moving on to its square. The only exception to this rule is that the rat can kill the elephant. If the same animals meet, the animal moving on to a square eats the animal already there. Three pieces have special powers. When the rat reaches the river it can enter it and move along those squares squares as if it were any other. If it is in the river no other animal can attack it. The rat is unable to attack the elephant from the river. If both rats meet in the river the moving piece eats the other one. When a lion or a tiger reaches a square on the edge of the river, at the next move it can jump over the river in any orthogonal direction, landing on the nearest land square. It captures any smaller animal on that square: if, however, there is a rat in the river in the line of the jump, it blocks this move. Each side has three trap-squares and the player's own pieces may move on and off them without restriction, but if an enemy animal occupies a trap-square, it loses all its power and becomes weaker than any defending piece. As soon as it moves out of the trap it regains its full strength. A player may not move any of his animals on to his own den. The player who moves any of their pieces into the enemy's den wins.")
         (source "<a href=\"https://en.wikipedia.org/wiki/Jungle_(board_game)\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
         (id "392")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/reach")
         (credit "Eric Piette")
         }

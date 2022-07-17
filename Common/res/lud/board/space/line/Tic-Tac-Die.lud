@@ -9,26 +9,25 @@
 
 //------------------------------------------------------------------------------
 
-(game "Tic-Tac-Die"  
-    (players 2)  
+(game "Tic-Tac-Die" 
+    (players 2) 
     (equipment { 
         (board (square 3)) 
         (piece "Disc" P1) 
         (piece "Cross" P2) 
         (dice d:9 from:0 num:1)
-    })  
+    }) 
     (rules 
         (play 
-            (do
-                (roll)
-                next:(if (is Empty (count Pips))
+            ("RollMove" 
+                (if (is Empty (count Pips))
                     (move Add ("PlayerPiece") (to (count Pips)))
                     <Play:choice>
                 )
             )
         )
         (end {
-            (if (is Line 3) (result Mover Win))
+            ("Line3Win")
             (if (is Full) (result Mover Draw))
         })
     )
@@ -38,13 +37,13 @@
 
 (option "Play Rules" <Play> args:{ <choice>} {
     (item "No Choice" 
-        <(move Pass (then (moveAgain)))>  
+        <(move Pass (then (moveAgain)))> 
         "Players reroll until they roll an empty cell."
-    )*   
+    )*  
     (item "Some Choice" 
         <(move Add ("PlayerPiece") (to (sites Empty)))> 
         "Player chooses if the rolled cell is occupied."
-    )   
+    )  
 })
 
 //------------------------------------------------------------------------------
@@ -55,7 +54,7 @@
         (description "Tic-Tac-Die is played as per Tic-Tac-Toe except that players roll a D9 dice each turn to dictate where they move (dice pips show cell index to move to).")
         (rules "Play occurs on a 3x3 grid. One player places an X, the other places an O and players take turns placing their marks in the grid, attempting to get three in a row. The die is showing the cell index to place a piece.")
         (id "1144")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line")
         (author "Cameron Browne")
         (credit "Eric Piette")

@@ -2,12 +2,12 @@
 
 //------------------------------------------------------------------------------
 
-(game "Andantino"  
-    (players 2)  
+(game "Andantino" 
+    (players 2) 
     (equipment { 
         (boardless <Tiling:type>) 
         (tile <Tiling:tile> Each <Tiling:numSides>) 
-    })  
+    }) 
     
     (rules 
         (start {
@@ -16,8 +16,7 @@
         })
         
         (play 
-            (move
-                Add
+            (move Add
                 (to 
                     (sites Playable) 
                     if:(<= 2 
@@ -38,9 +37,9 @@
 
 (option "Tiling" <Tiling> args:{ <type> <tile> <numSides> <piece1> <piece2> }
     {
-    (item "Hexagonal"      <Hexagonal>  <"Hex">   <numSides:6>   <"Hex1">      <"Hex2">     "The game uses hexagonal tiles.")**   
-    (item "Square"         <Square>     <"Square"> <numSides:4>  <"Square1">   <"Square2">    "The game uses square tiles")     
-    (item "Triangle"       <Triangular>  <"Triangle"> <numSides:3>  <"Triangle1">   <"Triangle2">    "The game uses triangle tiles")    
+    (item "Hexagonal"   <Hexagonal> <"Hex">  <numSides:6>  <"Hex1">   <"Hex2">   "The game uses hexagonal tiles.")**  
+    (item "Square"     <Square>   <"Square"> <numSides:4> <"Square1">  <"Square2">  "The game uses square tiles")   
+    (item "Triangle"    <Triangular> <"Triangle"> <numSides:3> <"Triangle1">  <"Triangle2">  "The game uses triangle tiles")  
 })
 
 //------------------------------------------------------------------------------
@@ -52,7 +51,7 @@
         (rules "The game starts with a tile of each color touching one another. Players take turns placing tiles which must touch at least two other tiles. A player wins by either completely surrounding one or more of the opponent's tiles, or by creating a straight line of five tiles.")
         (source "<a href=\"https://boardgamegeek.com/boardgame/11893/andantino\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
         (id "86")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line")
         (author "David L. Smith")
         (publisher "nestorgames (used with permission)")

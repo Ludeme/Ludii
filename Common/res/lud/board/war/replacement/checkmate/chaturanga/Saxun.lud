@@ -1,10 +1,10 @@
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
 )
 
 (define "CaptureToPiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
             )
@@ -17,7 +17,7 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
@@ -25,8 +25,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Saxun"  
-    (players {(player N) (player S)})  
+(game "Saxun" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -42,7 +42,7 @@
             (move
                 Slide Orthogonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )
@@ -52,7 +52,7 @@
             (move
                 Step 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )
@@ -63,7 +63,7 @@
                 Slide 
                 Diagonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )
@@ -74,7 +74,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )
@@ -84,13 +84,13 @@
             (move
                 Slide 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             ) 
         )
         }
-    )  
+    ) 
     (rules 
         (start
             { 
@@ -129,7 +129,7 @@
         (rules "8x8 checkered board. The pieces move as follows: Álix' (\"old man\"), x1: moves one space orthogonally or diagonally; Férsix' (\"fers\"), x1: moves any number of spaces orthogonally or diagonally; Lúdkax' (\"boat\"), x2: moves orthogonally any number of spaces; Slúnax' (\"elephant\"), x2: moves diagonally any number of spaces; Kúnax' (\"horse\"), x2: moves like a Chess knight; Layakúcan (\"little boys\"), x8: move forward one space, capture diagonally forward. Captures are made when a piece moves onto a space occupied by an opponent's piece. A player's Álix' is checked when it can be taken by the opponent on their next turn, and this possibility must be removed before the opponent plays. If a player's Álix' is checkmated, the opponent wins. ")
         (source "Jochelson 1933: 65-66.")
         (id "319")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
         }

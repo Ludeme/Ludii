@@ -11,20 +11,20 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
 )
 
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
 )
 
 //------------------------------------------------------------------------------
 
 (game "Cittabhramanrpasya Khelanam"
-    (players {(player S) (player N)})  
+    (players {(player S) (player N)}) 
     (equipment { 
         (board (square 8))
         
@@ -47,7 +47,7 @@
                 Slide 
                 Orthogonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )
@@ -56,7 +56,7 @@
             (move
                 Step 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
                 )
             )
@@ -66,7 +66,7 @@
                 Slide 
                 Diagonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )
@@ -76,7 +76,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )
@@ -85,7 +85,7 @@
             (move
                 Slide 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )
@@ -96,7 +96,7 @@
                     Leap 
                     "KnightWalk" 
                     (to 
-                        if:(and (not (is Friend (who at:(to)))) (not (is In (to) (sites Around (where "King-noCross" Next)))))
+                        if:(and (not ("IsFriendAt" (to))) (not (is In (to) (sites Around (where "King-noCross" Next)))))
                         "CaptureToPiece"
                     ) 
                 )
@@ -104,7 +104,7 @@
                 (move
                     Slide 
                     (to 
-                        if:(is Enemy (who at:(to))) 
+                        if:("IsEnemyAt" (to)) 
                         (apply 
                             if:(not (is In (to) (sites Around (where "King-noCross" Next))))
                             (remove 
@@ -115,8 +115,8 @@
                 )
             )
         )
-        (regions "Promotion" P1 (sites Bottom) )
-    })  
+        (regions "Promotion" P1 (sites Bottom))
+    }) 
     (rules 
         (start { 
             (place "Pawn1" (sites Row 6))
@@ -149,7 +149,7 @@
         (rules "8x8 board. One player plays with the following pieces: Raja (x1): moves one space in any direction; Mantri (x1): moves any distance orthogonally or diagonally; Ushtra (x2): moves diagonally any distance; Vaha (x2): move orthogonally one space and then diagonally another, jumping over any intervening pieces; Danti (x2): moves orthogonally any distance. Padati (x8): move forward orthogonally one space or one space diagonally forward to capture. When a Padati reaches the opposite edge of the board, it is promoted to a Mantri and is moved immediately to the space it last moved from. The opponent plays as one Raja, which can move as any of the other pieces. This Raja cannot move to a space adjacent to the opponent's Raja. An opponent's piece is captured by moving one of the player's own pieces onto the space occupied by the opponent's piece. If the Raja can be captured on the opponent's next turn, it is in check. The Raja cannot be in check at the end of the player's turn. If this is impossible, the opponent wins. Check and checkmate rules apply to the player with a single Raja.")
         (source "Iyer 1982: 51-52; Bock-Raming 1996: 116.")
         (id "1451")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
         (origin  "This game was played in India, around 1871.")

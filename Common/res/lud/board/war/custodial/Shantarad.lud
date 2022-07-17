@@ -1,6 +1,6 @@
 (define "EnemyOutsideCentre"
     (and 
-        (is Enemy (who at:(between))) 
+        ("IsEnemyAt" (between)) 
         (not (= (centrePoint) (between)))
     )
 )
@@ -41,14 +41,14 @@
             if:"EnemyOutsideCentre"
             #2
         )
-        (to if:(is Friend (who at:(to))))
+        (to if:("IsFriendAt" (to)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Shantarad"  
-    (players 2)  
+(game "Shantarad" 
+    (players 2) 
     (equipment { 
         (board (square 5)) 
         (hand Each) 
@@ -77,7 +77,7 @@
                         (to (difference (sites Empty) (centrePoint))) 
                         (then 
                             (if 
-                                (or (= (count Moves) 24) (not "SameTurn") )
+                                (or (= (count Moves) 24) (not "SameTurn"))
                                 (moveAgain)
                             )
                         )
@@ -96,10 +96,10 @@
                         (to if:(and 
                                 (is Empty (to)) 
                                 (or {
-                                    (and (is Enemy (who at:(ahead (to) W))) (is Friend (who at:(ahead (ahead (to) W) W))) )  
-                                    (and (is Enemy (who at:(ahead (to) E))) (is Friend (who at:(ahead (ahead (to) E) E))) )  
-                                    (and (is Enemy (who at:(ahead (to) N))) (is Friend (who at:(ahead (ahead (to) N) N))) )  
-                                    (and (is Enemy (who at:(ahead (to) S))) (is Friend (who at:(ahead (ahead (to) S) S))) )  
+                                    (and ("IsEnemyAt" (ahead (to) W)) ("IsFriendAt" (ahead (ahead (to) W) W))) 
+                                    (and ("IsEnemyAt" (ahead (to) E)) ("IsFriendAt" (ahead (ahead (to) E) E))) 
+                                    (and ("IsEnemyAt" (ahead (to) N)) ("IsFriendAt" (ahead (ahead (to) N) N))) 
+                                    (and ("IsEnemyAt" (ahead (to) S)) ("IsFriendAt" (ahead (ahead (to) S) S))) 
                                 }) 
                             )
                         )
@@ -131,7 +131,7 @@
         ")
         (source "Marin 1931: 505-506.")
         (id "191")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/custodial")
         (credit "Eric Piette")
         (origin  "This game was played in Somaliland, around 1931.")

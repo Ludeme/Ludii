@@ -1,6 +1,6 @@
-(define "IfEnemyBlotIt"    
+(define "IfEnemyBlotIt"  
     (apply 
-        if:(is Enemy (who at:(to))) 
+        if:("IsEnemyAt" (to)) 
         (fromTo 
             (from (to)) 
             (to (handSite (next)))
@@ -8,13 +8,13 @@
     )
 )
 
-(define "NotEnemyOrOnlyOne"    
+(define "NotEnemyOrOnlyOne"  
     (or 
         (and 
-            (is Enemy (who at:(to))) 
+            ("IsEnemyAt" (to)) 
             (= (topLevel at:(to)) 0)
         ) 
-        (not (is Enemy (who at:(to))))
+        (not ("IsEnemyAt" (to)))
     )
 )
 
@@ -68,12 +68,12 @@
 
 (define "MoveAPieceFromBar" 
     (fromTo 
-    (from (handSite (mover)))  //#1)
-    //      (to 
-    //        0 //("NextSiteFrom" (mapEntry (mover)))  //#1) 
-    //      if:("NotEnemyOrOnlyOne") 
-    //    ("IfEnemyBlotIt")
-//   )
+    (from (handSite (mover))) //#1)
+    //   (to 
+    //    0 //("NextSiteFrom" (mapEntry (mover))) //#1) 
+    //   if:("NotEnemyOrOnlyOne") 
+    //  ("IfEnemyBlotIt")
+// )
 (to (sites Empty)) 
 )
 )
@@ -88,10 +88,10 @@
 
 (define "MoveAPieceFromBarIf" 
     // (forEach Die 
-        //   replayDouble:True 
+        //  replayDouble:True 
         // if:#1
         ("MoveAPieceFromBar" #2)
-    //  )		
+    // )		
 )
 
 (define "AllPieceEscaped" (= 0 (count Pieces Mover)))
@@ -123,15 +123,15 @@
 
 (define "HaveAPieceAndCanEscape" 
     (and 
-        (is Friend (who at:(site))) 
+        ("IsFriendAt" (site)) 
         (< (trackSite Move from:(site) steps:(pips)) 0)
     )
 )
 
 //-----------------------------------------------------------------------------
 
-(game "Backgammon"  
-    (players 2)  
+(game "Backgammon" 
+    (players 2) 
     (equipment { 
         (board (rect 2 13) 
             {
@@ -142,11 +142,11 @@
         ) 
         (hand Each)
         (dice num:2)
-        (map {(pair 1 6 ) (pair 2 19)}) // Bar
+        (map {(pair 1 6) (pair 2 19)}) // Bar
         (regions P1 { 20..25 }) // P1 Home
-        (regions P2 { 7..12 })  // P2 Home
+        (regions P2 { 7..12 }) // P2 Home
         (piece "Disc" Each ("MoveAPieceIf" "DieNotUsedAndNoEscapeAndNotOffTheTrack" (from))) 
-    } )
+    })
     
     (rules
         (start { 

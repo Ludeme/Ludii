@@ -1,6 +1,6 @@
 (define "CaptureToPiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
             )
@@ -13,14 +13,14 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
 )
 
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
 )
 
 //------------------------------------------------------------------------------
@@ -35,7 +35,7 @@
                 Slide 
                 Orthogonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )		
@@ -46,7 +46,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )		
@@ -57,7 +57,7 @@
                 Slide 
                 Diagonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )		
@@ -67,7 +67,7 @@
             (move
                 Slide 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )			
@@ -78,7 +78,7 @@
                 (move
                     Slide 
                     (to 
-                        if:(is Enemy (who at:(to))) 
+                        if:("IsEnemyAt" (to)) 
                         "CaptureToPiece"
                     ) 
                 )
@@ -86,7 +86,7 @@
                     Leap 
                     "KnightWalk" 
                     (to 
-                        if:(not (is Friend (who at:(to)))) 
+                        if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece"
                     ) 
                 )	
@@ -97,7 +97,7 @@
             (move
                 Step 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )		
@@ -108,7 +108,7 @@
                 (move
                     Slide 
                     (to 
-                        if:(is Enemy (who at:(to))) 
+                        if:("IsEnemyAt" (to)) 
                         "CaptureToPiece"
                     ) 
                 )
@@ -116,7 +116,7 @@
                     Leap 
                     "KnightWalk" 
                     (to 
-                        if:(not (is Friend (who at:(to)))) 
+                        if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece"
                     ) 
                 )	
@@ -128,7 +128,7 @@
                 (move
                     Step 
                     (to 
-                        if:(not (is Friend (who at:(to)))) 
+                        if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece"
                     ) 
                 )
@@ -191,7 +191,7 @@
         (rules "10x10 board. 22 pieces per player. Pieces begin on the board in the following  arrangement, and with the following movements: Outer row, from  left corner: Rukh: moves orthogonally any distance; Ghora: moves orthogonally one space and then diagonally another  space, jumping over the first space;  Fil: moves diagonally any distance; Wazir: moves diagonally or orthogonally any distance; Shahzada: can move like the Wazir and like the Ghora; Padshah: moves one space in any direction; Kotwal: moves like the Shahzada; Fil, Ghora, Rukh. In the next row, the central two squares are occupied by the Urdabegini: move one space in the direction of the opponent's Padshah; the other spaces are occupied by Paidal: moves one square forward orthogonally or one diagonally to capture. The central two squares of the third row contain two more Ghora. Players alternate turns moving a piece to a space on the board. If one of the opponent's pieces is on the space to which a player moves their piece, the opponent's piece is captured. If  the Padshah can be captured on the opponent's next turn, it is in check. The Padshah cannot remain in check at the end of the player's turn. If this is not possible, it is checkmate and the opponent wins.  ")
         (source "Murray 1913: 347; Sahib 1901: 320.")
         (id "1621")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
         (origin  "This game was played in India, around 1901.")

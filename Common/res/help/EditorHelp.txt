@@ -4794,7 +4794,7 @@ NEW CTOR
 (features [{<featureSet>}])
 PARAM JAVADOC: [{<featureSet>}]: A sequence of multiple feature sets (typically each applying to a different player).
 EXAMPLE: (features { (featureSet P1 { (pair "rel:to=<{}>:pat=<els=[-{}]>" 1.0) }) (featureSet P2 { (pair "rel:to=<{}>:pat=<els=[-{}]>" -1.0) }) })
-REMARKS: The basic format of these features is described in: Browne, C., Soemers, D. J. N. J., and Piette, E. (2019). ``Strategic features for general games.'' In Proceedings of the 2nd Workshop on Knowledge Extraction from Games (KEG) (pp. 70ï¿½75).
+REMARKS: The basic format of these features is described in: Browne, C., Soemers, D. J. N. J., and Piette, E. (2019). ``Strategic features for general games.'' In Proceedings of the 2nd Workshop on Knowledge Extraction from Games (KEG) (pp. 70–75).
 TYPE: metadata.ai.features.trees.FeatureTrees
 TYPE JAVADOC: Describes one or more sets of features (local, geometric patterns),   represented as decision / regression trees.
 NEW CTOR
@@ -5262,14 +5262,15 @@ NEW CTOR
 PARAM JAVADOC: {<string>}: Set of family names for the pieces used in the game.
 EXAMPLE: (piece Families {"Defined" "Microsoft" "Pragmata" "Symbola"})
 NEW CTOR
-(piece <pieceGroundType> [<roleType>] [<string>] [container:int] [state:int] [value:int] image:<string> [fillColour:<colour>] [edgeColour:<colour>] [scale:<float>] [scaleX:<float>] [scaleY:<float>] [rotation:int] [offsetX:<float>] [offsetY:<float>])
+(piece <pieceGroundType> [<roleType>] [<string>] [container:int] [state:int] [value:int] [image:<string>] [text:<string>] [fillColour:<colour>] [edgeColour:<colour>] [scale:<float>] [scaleX:<float>] [scaleY:<float>] [rotation:int] [offsetX:<float>] [offsetY:<float>])
 PARAM JAVADOC: <pieceGroundType>: The type of data to apply to the pieces.
 PARAM JAVADOC: [<roleType>]: Player whose index is to be matched.
 PARAM JAVADOC: [<string>]: Base piece name to match.
 PARAM JAVADOC: [container:int]: Container index to match.
 PARAM JAVADOC: [state:int]: State to match.
 PARAM JAVADOC: [value:int]: Value to match.
-PARAM JAVADOC: image:<string>: Name of the image to draw.
+PARAM JAVADOC: [image:<string>]: Name of the image to draw.
+PARAM JAVADOC: [text:<string>]: Text string to draw.
 PARAM JAVADOC: [fillColour:<colour>]: Colour for the inner sections of the image. Default value is the fill colour of the component.
 PARAM JAVADOC: [edgeColour:<colour>]: Colour for the edges of the image. Default value is the edge colour of the component.
 PARAM JAVADOC: [scale:<float>]: Scale for the drawn image relative to the cell size of the container [1.0].
@@ -5413,8 +5414,9 @@ PARAM JAVADOC: [<siteType>]: Site Type [Cell].
 PARAM JAVADOC: [int]: Additional value to add to the index [0].
 EXAMPLE: (show SiteIndex Cell 5)
 NEW CTOR
-(show Symbol <string> [<string>] [<roleType>] [<siteType>] ([{int}]  | [int]) [<region>] [<boardGraphicsType>] [fillColour:<colour>] [edgeColour:<colour>] [scale:<float>] [scaleX:<float>] [scaleY:<float>] [rotation:int] [offsetX:<float>] [offsetY:<float>])
-PARAM JAVADOC: <string>: Name of the image to show.
+(show Symbol [<string>] [text:<string>] [<string>] [<roleType>] [<siteType>] ([{int}]  | [int]) [<region>] [<boardGraphicsType>] [fillColour:<colour>] [edgeColour:<colour>] [scale:<float>] [scaleX:<float>] [scaleY:<float>] [rotation:int] [offsetX:<float>] [offsetY:<float>])
+PARAM JAVADOC: [<string>]: Name of the image to show.
+PARAM JAVADOC: [text:<string>]: Text string to show.
 PARAM JAVADOC: [<string>]: Draw image on all sites in this region.
 PARAM JAVADOC: [<roleType>]: Player whose index is to be matched (only for Region).
 PARAM JAVADOC: [<siteType>]: The GraphElementType for the specified sites [Cell].
@@ -5438,7 +5440,7 @@ PARAM JAVADOC: [<siteType>]: The GraphElementType for the specified sites [Verte
 PARAM JAVADOC: [<lineStyle>]: Line style [Thin].
 PARAM JAVADOC: [<colour>]: The colour of the line.
 PARAM JAVADOC: [scale:<float>]: The scale of the line.
-PARAM JAVADOC: [curve:{<float>}]: The control points for the line to create a Bï¿½zier curve with (4 values: x1, y1, x2, y2, between 0 and 1).
+PARAM JAVADOC: [curve:{<float>}]: The control points for the line to create a Bézier curve with (4 values: x1, y1, x2, y2, between 0 and 1).
 PARAM JAVADOC: [<curveType>]: Type of curve [Spline].
 EXAMPLE: (show Line { {1 0} {2 4} })
 NEW CTOR
@@ -5538,7 +5540,7 @@ CONST JAVADOC: OuterVertices: Intersections of lines on the board, along the per
 TYPE: metadata.graphics.util.ComponentStyleType
 TYPE JAVADOC: Supported style types for rendering particular components.
 CONST JAVADOC: Piece: Style for pieces.
-CONST JAVADOC: Text: Style for text/numbers.
+CONST JAVADOC: Text: Style for text/numbers (e.g. N Puzzles).
 CONST JAVADOC: Tile: Style for tiles (components that fill a cell and may have marked paths).
 CONST JAVADOC: Card: Style for playing cards.
 CONST JAVADOC: Die: Style for die components used as playing pieces.
@@ -5833,6 +5835,16 @@ PARAM JAVADOC: <string>: The name of the concept.
 PARAM JAVADOC: <float>: The double value.
 PARAM JAVADOC: <boolean>: The boolean value.
 EXAMPLE: (concept "Num Players" 6)
+DEFINE: IsInCheck
+DEFINE JAVADOC: Checks if a specific piece is threatened by any other enemy piece. #1 = The name of the piece (without the number). #2 = The roleType of the owner of the piece. #3 = The location where is the piece or The specific moves used to threat. This parameter is optional. If not specify the current location of the piece is used and all the legal moves are used. 
+DEFINE EXAMPLE: ("IsInCheck" "Osho" Next)
+DEFINE EXAMPLE: ("IsInCheck" "King" Mover at:(to))
+DEFINE: IsEnemyAt
+DEFINE JAVADOC: Checks if an enemy is on a site. #1 = The site. #2 = The level [the topest]. 
+DEFINE EXAMPLE: ("IsEnemyAt" (to))
+DEFINE: IsFriendAt
+DEFINE JAVADOC: Checks if a friend is on a site. #1 = The site. #2 = The level [the topest]. 
+DEFINE EXAMPLE: ("IsFriendAt" (to))
 DEFINE: AllOwnedPiecesIn
 DEFINE JAVADOC: Checks if all pieces on the board owned by the mover are in a region. #1 = The region. 
 DEFINE EXAMPLE: ("AllOwnedPiecesIn" (sites Top))
@@ -5842,37 +5854,63 @@ DEFINE EXAMPLE: ("DieNotUsed")
 DEFINE: HandEmpty
 DEFINE JAVADOC: Checks if all the sites in a specific hand are empty. #1 = The owner of the hand, can be a RoleType or the index of the owner. 
 DEFINE EXAMPLE: ("HandEmpty" Mover)
-DEFINE: IsInCheck
-DEFINE JAVADOC: Checks if a specific piece is threatened by any other enemy piece. #1 = The name of the piece (without the number). #2 = The roleType of the owner of the piece. #3 = The location where is the piece or The specific moves used to threat. This parameter is optional. If not specify the current location of the piece is used and all the legal moves are used. 
-DEFINE EXAMPLE: ("IsInCheck" "Osho" Next)
-DEFINE EXAMPLE: ("IsInCheck" "King" Mover at:(to))
+DEFINE: HasFreedom
+DEFINE JAVADOC: Checks if a group of pieces has some liberties around it. The specified directions (by default Adjacent) are the directions between the elements of the group. #1 = = Directions of the pieces in the group. 
+DEFINE EXAMPLE: ("HasFreedom" Orthogonal)
+DEFINE: IsEmptyAndNotVisited
+DEFINE JAVADOC: Checks if a site is empty and not visited so far in the same turn. #1 = The site. 
+DEFINE EXAMPLE: ("IsEmptyAndNotVisited" (to))
+DEFINE: IsPieceAt
+DEFINE JAVADOC: Checks if a piece #1 owned by #2 is at a site #3. #1 = The name of the piece. #2 = The owner of the piece. #3 = The site. #4 = The level. 
+DEFINE EXAMPLE: ("IsPieceAt" "Ball" Shared 32)
+DEFINE: IsSingleGroup
+DEFINE JAVADOC: Checks if only one single group with pieces owned by a player exists. #1 = The owner of the pieces in the group. #2 = The direction used to connect the pieces in the group (by default Adjacent). 
+DEFINE EXAMPLE: ("IsSingleGroup" Mover)
+DEFINE: NoPieceOnBoard
+DEFINE JAVADOC: Checks if the board is empty. This ludemeplex is not working for games involving stacks. 
+DEFINE EXAMPLE: ("NoPieceOnBoard)
 DEFINE: NoSites
 DEFINE JAVADOC: Checks if a region has no sites. #1 = The region. 
 DEFINE EXAMPLE: ("NoSites" (sites Empty))
-DEFINE: IsEnemyOn
-DEFINE JAVADOC: Checks if an enemy is on a site. #1 = The site. 
-DEFINE EXAMPLE: ("IsEnemyAt" (to))
-DEFINE: IsFriendOn
-DEFINE JAVADOC: Checks if a friend is on a site. #1 = The site. 
-DEFINE EXAMPLE: ("IsFriendAt" (to))
 DEFINE: IsEmptyOrSingletonStack
-DEFINE JAVADOC: Checks if a stack has a size of 1 at a site. #1 = The site. 
+DEFINE JAVADOC: Checks if a stack has a size of 1 at a site or if the site is empty. #1 = The site. 
 DEFINE EXAMPLE: ("IsEmptyOrSingletonStack" (to))
+DEFINE: IsSingletonStack
+DEFINE JAVADOC: Checks if a stack has a size of 1 at a site. #1 = The site. 
+DEFINE EXAMPLE: ("IsSingletonStack" (to))
+DEFINE: IsTopLevel
+DEFINE JAVADOC: Checks if a level is at the top of a stack. #1 = The site. 
+DEFINE EXAMPLE: ("IsTopLevel" (to))
 DEFINE: NoEnemyOrOnlyOne
 DEFINE JAVADOC: Checks if no enemy or only one in a stack game. #1 = The site. 
 DEFINE EXAMPLE: ("NoEnemyOrOnlyOne" (to))
 DEFINE: IsEndTrack
 DEFINE JAVADOC: Checks if a site returned by a track is the ending site of the track. #1 = The site. 
 DEFINE EXAMPLE: ("IsEndTrack" ("NextSiteOnTrack" 3))
+DEFINE: IsNotEndTrack
+DEFINE JAVADOC: Checks if a site returned by a track is not the ending site of the track. #1 = The site. 
+DEFINE EXAMPLE: ("IsNotEndTrack" ("NextSiteOnTrack" 3))
 DEFINE: IsNotOffBoard
-DEFINE JAVADOC: Checks if a site returned by a track is off board. #1 = The site. 
+DEFINE JAVADOC: Checks if a site returned by a track is not off board. #1 = The site. 
 DEFINE EXAMPLE: ("IsNotOffBoard" ("NextSiteOnTrack" 3))
+DEFINE: IsOffBoard
+DEFINE JAVADOC: Checks if a site returned by a track is off board. #1 = The site. 
+DEFINE EXAMPLE: ("IsOffBoard" ("NextSiteOnTrack" 3))
 DEFINE: NewTurn
 DEFINE JAVADOC: Checks if this is new turn, i.e. the current move is not the previous mover. 
 DEFINE EXAMPLE: ("NewTurn")
 DEFINE: SameTurn
 DEFINE JAVADOC: Checks if the previous mover is the same player than the current mover, consequently this is the same turn. 
 DEFINE EXAMPLE: ("SameTurn")
+DEFINE: CrossBoard
+DEFINE JAVADOC: Defines a regular cross board tilled by squares (example: Pachisi). #1 = The dimension of an arm of the cross. #2 = The full dimension of the board. #3 = The default site type of the board. #4 = The type of the diagonals of each tiling. 
+DEFINE EXAMPLE: ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
+DEFINE: LascaBoard
+DEFINE JAVADOC: Defines the original Lasca board. 
+DEFINE EXAMPLE: ("LascaBoard")
+DEFINE: NineMensMorrisBoard
+DEFINE JAVADOC: Defines a nine men's morris board. 
+DEFINE EXAMPLE: ("NineMensMorrisBoard")
 DEFINE: AlquerqueBoard
 DEFINE JAVADOC: Defines a rectangular board with Alquerque-style alternating diagonals. 
 DEFINE EXAMPLE: ("AlquerqueBoard" 5 5)
@@ -5885,33 +5923,84 @@ DEFINE EXAMPLE: ("AlquerqueBoardWithBottomTriangle")
 DEFINE: AlquerqueBoardWithFourTriangles
 DEFINE JAVADOC: Defines a rectangular board with Alquerque-style alternating diagonals with four triangle extensions on each side. 
 DEFINE EXAMPLE: ("AlquerqueBoardWithFourTriangles")
-DEFINE: BackgammonBoard
-DEFINE JAVADOC: Defines a backgammon board (without the style). #1 = The tracks of the players. 
-DEFINE EXAMPLE: ("BackgammonBoard")
-DEFINE: CrossBoard
-DEFINE JAVADOC: Defines a regular cross board tilled by squares (example: Pachisi). #1 = The dimension of an arm of the cross. #2 = The full dimension of the board. #3 = The default site type of the board. #4 = The type of the diagonals of each tiling. 
-DEFINE EXAMPLE: ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
-DEFINE: HoundsAndJackalsBoard
-DEFINE JAVADOC: Defines the standard 58 Holes or Hounds & Jackals board. This board defines tracks for two players, hardcoded in a particular shape. 
-DEFINE EXAMPLE: ("HoundsAndJackalsBoard")
-DEFINE: LascaBoard
-DEFINE JAVADOC: Defines the original Lasca board. 
-DEFINE EXAMPLE: ("LascaBoard")
 DEFINE: ThreeMenMorrisBoard
 DEFINE JAVADOC: Defines a Three Men's Morris board. 
 DEFINE EXAMPLE: ("ThreeMenMorrisBoard")
 DEFINE: ThreeMenMorrisBoardWithLeftAndRightTriangles
 DEFINE JAVADOC: Defines a Three Men's Morris board with two triangle extensions at the left and right. 
 DEFINE EXAMPLE: ("ThreeMenMorrisBoard")
+DEFINE: BackgammonBoard
+DEFINE JAVADOC: Defines a backgammon board (without the style). #1 = The tracks of the players. 
+DEFINE EXAMPLE: ("BackgammonBoard")
+DEFINE: FortyStonesWithFourGapsBoard
+DEFINE JAVADOC: Defines a circle board defined with 40 stones, with a gap after each 10 stones. The board is playable on the edges. 
+DEFINE EXAMPLE: ("FortyStonesWithFourGapsBoard")
+DEFINE: HoundsAndJackalsBoard
+DEFINE JAVADOC: Defines the standard 58 Holes or Hounds & Jackals board. This board defines tracks for two players, hardcoded in a particular shape. 
+DEFINE EXAMPLE: ("HoundsAndJackalsBoard")
+DEFINE: KintsBoard
+DEFINE JAVADOC: Defines a rectangular board with some arcs used in some native american games such as Kints. #1 = The tracks of the players. 
+DEFINE EXAMPLE: ("KintsBoard")
+DEFINE: PachisiBoard
+DEFINE JAVADOC: Defines a pachisi board. 
+DEFINE EXAMPLE: ("PachisiBoard")
+DEFINE: TableBoard
+DEFINE JAVADOC: Defines a table board (without the style). #1 = The tracks of the players. 
+DEFINE EXAMPLE: ("TableBoard")
+DEFINE: BackgammonTracks
+DEFINE JAVADOC: Defines the most popular backgammon tracks. #1 = An optional End site. 
+DEFINE EXAMPLE: ("BackgammonTracks")
+DEFINE: BackgammonTracksSameDirectionOppositeCorners
+DEFINE JAVADOC: Defines backgammon tracks following the same direction for each player but starting from opposite corners. #1 = An optional End site. 
+DEFINE EXAMPLE: ("BackgammonTracksSameDirectionOppositeCorners")
+DEFINE: BackgammonTracksSameDirectionOppositeCornersWithBars
+DEFINE JAVADOC: Defines backgammon tracks following the same direction for each player but starting from opposite corners in using the bar of the board. #1 = An optional End site. 
+DEFINE EXAMPLE: ("BackgammonTracksSameDirectionOppositeCornersWithBars")
+DEFINE: BackgammonTracksSameDirectionOppositeCornersWithBars2
+DEFINE JAVADOC: Defines backgammon tracks following the same direction for each player but starting from opposite corners in using the bar of the board. #1 = An optional End site. 
+DEFINE EXAMPLE: ("BackgammonTracksSameDirectionOppositeCornersWithBars2")
 DEFINE: BackgammonTracksSameDirectionWithBar
-DEFINE JAVADOC: Defines backgammon tracks following the same direction for each player in using the bar of the board. 
+DEFINE JAVADOC: Defines backgammon tracks following the same direction for each player in using the bar of the board. #1 = An optional End site. 
 DEFINE EXAMPLE: ("BackgammonTracksSameDirectionWithBar")
+DEFINE: BackgammonTracksSameDirectionWithHands
+DEFINE JAVADOC: Defines backgammon tracks following the same direction for each player in using the hands of the players. #1 = An optional End site. 
+DEFINE EXAMPLE: ("BackgammonTracksSameDirectionWithHands")
 DEFINE: BackgammonTracksWithBar
-DEFINE JAVADOC: Defines the most popular backgammon tracks in using the bar of the board. 
+DEFINE JAVADOC: Defines the most popular backgammon tracks in using the bar of the board. #1 = An optional End site. 
 DEFINE EXAMPLE: ("BackgammonTracksWithBar")
+DEFINE: BackgammonTracksWithHands
+DEFINE JAVADOC: Defines the most popular backgammon tracks in using the hands of the players. #1 = An optional End site. 
+DEFINE EXAMPLE: ("BackgammonTracksWithHands")
+DEFINE: TableTracksOpposite
+DEFINE JAVADOC: Defines two opposite table tracks. #1 = An optional End site. 
+DEFINE EXAMPLE: ("TableTracksOpposite")
+DEFINE: TableTracksOpposite2
+DEFINE JAVADOC: Defines two opposite table tracks. #1 = An optional End site. 
+DEFINE EXAMPLE: ("TableTracksOpposite2")
+DEFINE: TableTracksOppositeWithHands
+DEFINE JAVADOC: Defines two opposite table tracks and using hand sites. #1 = An optional End site. 
+DEFINE EXAMPLE: ("TableTracksOppositeWithHands")
+DEFINE: TableTracksOppositeWithHands2
+DEFINE JAVADOC: Defines two opposite table tracks and using hand sites. #1 = An optional End site. 
+DEFINE EXAMPLE: ("TableTracksOppositeWithHands2")
+DEFINE: TableTracksSameDirectionOppositeCorners
+DEFINE JAVADOC: Defines table tracks following the same direction for each player but starting from opposite corners. #1 = An optional End site. 
+DEFINE EXAMPLE: ("TableTracksSameDirectionOppositeCorners")
+DEFINE: TableTracksSameDirectionWithHands
+DEFINE JAVADOC: Defines two table tracks following the same directions and using hand sites. #1 = An optional End site. 
+DEFINE EXAMPLE: ("TableTracksSameDirectionWithHands")
 DEFINE: StickDice
 DEFINE JAVADOC: Defines a specified number of D2 dice with values 0 and 1. 
 DEFINE EXAMPLE: ("StickDice" 4)
+DEFINE: CrossGraph
+DEFINE JAVADOC: Defines a regular cross graph tilled by squares (example: Pachisi). #1 = The dimension of an arm of the cross. #2 = The full dimension of the board. #3 = The type of the diagonals of each tiling. 
+DEFINE EXAMPLE: ("CrossGraph" 3 7 diagonals:Alternating)
+DEFINE: HoundsAndJackalsGraph
+DEFINE JAVADOC: Defines the standard 58 Holes or Hounds & Jackals graph. 
+DEFINE EXAMPLE: ("HoundsAndJackalsGraph")
+DEFINE: LascaGraph
+DEFINE JAVADOC: Defines the original Lasca graph. 
+DEFINE EXAMPLE: ("LascaGraph")
 DEFINE: AlquerqueGraph
 DEFINE JAVADOC: Defines a rectangular graph with Alquerque-style alternating diagonals. 
 DEFINE EXAMPLE: ("AlquerqueGraph" 5 5)
@@ -5924,15 +6013,6 @@ DEFINE EXAMPLE: ("AlquerqueGraphWithBottomTriangle")
 DEFINE: AlquerqueGraphWithFourTriangles
 DEFINE JAVADOC: Defines a rectangular graph with Alquerque-style alternating diagonals with four triangle extension on each side. 
 DEFINE EXAMPLE: ("AlquerqueGraphWithFourTriangles")
-DEFINE: CrossGraph
-DEFINE JAVADOC: Defines a regular cross graph tilled by squares (example: Pachisi). #1 = The dimension of an arm of the cross. #2 = The full dimension of the board. #3 = The type of the diagonals of each tiling. 
-DEFINE EXAMPLE: ("CrossGraph" 3 7 diagonals:Alternating)
-DEFINE: HoundsAndJackalsGraph
-DEFINE JAVADOC: Defines the standard 58 Holes or Hounds & Jackals graph. 
-DEFINE EXAMPLE: ("HoundsAndJackalsGraph")
-DEFINE: LascaGraph
-DEFINE JAVADOC: Defines the original Lasca graph. 
-DEFINE EXAMPLE: ("LascaGraph")
 DEFINE: ThreeMenMorrisGraphWithLeftAndRightTriangles
 DEFINE JAVADOC: Defines a Three Men's Morris graph with two triangle extensions at the left and right. 
 DEFINE EXAMPLE: ("ThreeMenMorrisGraphWithLeftAndRightTriangles")
@@ -5960,18 +6040,96 @@ DEFINE EXAMPLE: ("NextSiteOnTrack" 3)
 DEFINE: OccupiedNbors
 DEFINE JAVADOC: Returns the number of pieces owned by a player around a given site. #1 = The site to test around. #2 = The owner of the pieces to count. 
 DEFINE EXAMPLE: ("OccupiedNbors" (to) Mover)
+DEFINE: LastHoleSowed
+DEFINE JAVADOC: Returns a region of one site corresponding to the last `to' position after applying the consequences. In the mancala games, this site is the last hole in which a seed was sowed. 
+DEFINE EXAMPLE: ("LastHoleSowed")
+DEFINE: OppositeOuterPit
+DEFINE JAVADOC: Returns the index of the outer opposite pit on a mancala board with four rows. This ludemeplex is working only if the description is defining "Columns" as the number of holes of the board. #1 = The site. 
+DEFINE EXAMPLE: ("OppositeOuterPit" (to))
+DEFINE: OppositePit
+DEFINE JAVADOC: Returns the index of the opposite pit on a mancala board. This ludemeplex is working only if the description is defining "Columns" as the number of holes of the board. #1 = The site. 
+DEFINE EXAMPLE: ("OppositePit" (to))
+DEFINE: OppositePitTwoRows
+DEFINE JAVADOC: Returns the index of the opposite pit on a two rows mancala board. This ludemeplex is working only if the description is defining "Columns" as the number of holes of the board. #1 = The site. 
+DEFINE EXAMPLE: ("OppositePitTwoRows" (to))
+DEFINE: CaptureAll
+DEFINE JAVADOC: Checks if a player has no piece and lose. This ludemeplex can be used only in an ending condition. 
+DEFINE EXAMPLE: ("CaptureAll" Next)
 DEFINE: Checkmate
 DEFINE JAVADOC: If the next player is checkmate, the mover is winning. This ludemeplex can be used only in an ending condition. #1 = The name of the piece to check. 
 DEFINE EXAMPLE: ("Checkmate" "King")
+DEFINE: HavingLessPiecesLoss
+DEFINE JAVADOC: Checks if a player has a less or equal number of pieces and lose. This ludemeplex can be used only in an ending condition. 
+DEFINE EXAMPLE: ("HavingLessPiecesLoss" Next 2)
+DEFINE: MancalaByScoreWhen
+DEFINE JAVADOC: Ends a mancala game when a condition is verified in computing the score of each player thanks to a ludemeplex called "PiecesOwnedBy" taking in input the role of P1 or P2. This ludemeplex can be used only in an ending condition. #1 The condition. 
+DEFINE EXAMPLE: ("MancalaByScoreWhen" (no Moves Next))
+DEFINE: NoMovesLossAndLessNumPiecesPlayerLoss
+DEFINE JAVADOC: Checks if the next player has no legal moves and the next player loses and checks if a specific player has less or equal than a number of pieces to lose. This ludemeplex can be used only in an ending condition. #1 = The owner of the pieces. #2 = The number of pieces. 
+DEFINE EXAMPLE: ("NoMovesLossAndLessNumPiecesPlayerLoss" P1 3)
+DEFINE: NoMovesLossAndNoPiecesPlayerLoss
+DEFINE JAVADOC: Checks if the next player has no legal moves and the next player loses and checks if a specific player has no pieces to lose. This ludemeplex can be used only in an ending condition. #1 = The owner of the pieces. 
+DEFINE EXAMPLE: ("NoMovesLossAndNoPiecesPlayerLoss" P1)
+DEFINE: NoMovesP1NoPiecesP2
+DEFINE JAVADOC: Checks if P1 has no moves and P2 wins and checks if P2 has no pieces and P1 wins. This ludemeplex can be used only in an ending condition. 
+DEFINE EXAMPLE: ("NoMovesP1NoPiecesP2")
+DEFINE: NoMovesP2NoPiecesP1
+DEFINE JAVADOC: Checks if P2 has no moves and P1 wins and checks if P1 has no pieces and P2 wins. This ludemeplex can be used only in an ending condition. 
+DEFINE EXAMPLE: ("NoMovesP2NoPiecesP1")
+DEFINE: EscapeTeamWin
+DEFINE JAVADOC: Checks if the team has no pieces and makes it win. This ludemeplex can be used only in an ending condition. 
+DEFINE EXAMPLE: ("EscapeTeamWin")
+DEFINE: EscapeWin
+DEFINE JAVADOC: Checks if the mover has no pieces and makes it win. This ludemeplex can be used only in an ending condition. 
+DEFINE EXAMPLE: ("EscapeWin")
+DEFINE: FillWin
+DEFINE JAVADOC: If the mover is filling all the spaces of a region with his pieces, the mover is winning. This ludemeplex can be used only in an ending condition. #1 = The name of the piece to check. 
+DEFINE EXAMPLE: ("FillWin" (sites Top))
+DEFINE: ReachWin
+DEFINE JAVADOC: If the mover is reaching a space of a region with his last movement, a player is winning. This ludemeplex can be used only in an ending condition. #1 = The region to reach. #2 = The player to win. 
+DEFINE EXAMPLE: ("ReachWin" (sites Top) P1)
+DEFINE: BlockWin
+DEFINE JAVADOC: If the next player has no legal moves, the mover is winning. This ludemeplex can be used only in an ending condition. 
+DEFINE EXAMPLE: ("BlockWin")
+DEFINE: ForEachNonMoverNoMovesLoss
+DEFINE JAVADOC: Makes a player losing when this player has no moves. This ludemeplex can be used only in an ending condition. 
+DEFINE EXAMPLE: ("ForEachNonMoverNoMovesLoss")
+DEFINE: ForEachPlayerNoMovesLoss
+DEFINE JAVADOC: Makes a player losing when this player has no moves. This ludemeplex can be used only in an ending condition. 
+DEFINE EXAMPLE: ("ForEachPlayerNoMovesLoss")
+DEFINE: Line3Win
+DEFINE JAVADOC: If the mover has 3 pieces aligned, the mover is winning. This ludemeplex can be used only in an ending condition. #1 = Directions of the line (by default Adjacent). 
+DEFINE EXAMPLE: ("Line3Win")
+DEFINE: MisereBlockWin
+DEFINE JAVADOC: If the mover has no legal moves, the mover is winning. This ludemeplex can be used only in an ending condition. 
+DEFINE EXAMPLE: ("MisereBlockWin")
 DEFINE: NoMoves
 DEFINE JAVADOC: Checks if the next player has no legal moves and apply a specific result to the next player. This ludemeplex can be used only in an ending condition. #1 = The result to apply. 
 DEFINE EXAMPLE: ("NoMoves" Loss)
+DEFINE: SingleGroupWin
+DEFINE JAVADOC: Checks if only one single group with pieces owned by a player exists. This ludemeplex can be used only in an ending condition. #1 = The owner of the pieces in the group. #2 = The direction used to connect the pieces in the group (by default Adjacent). 
+DEFINE EXAMPLE: ("SingleGroupWin" Mover)
 DEFINE: CustodialCapture
-DEFINE JAVADOC: Defines a custodial capture in all the directions specified (by default Adjacent). The enemy piece is removed. #1 = Directions of the capture. #2 = The consequences. 
+DEFINE JAVADOC: Defines a custodial capture in all the directions specified (by default Adjacent). The enemy piece is removed. #1 = Directions of the capture. #2 = Contraints related to the number of pieces to capture. #3 = The consequences. 
 DEFINE EXAMPLE: ("CustodialCapture")
+DEFINE: EncloseCapture
+DEFINE JAVADOC: Defines a enclose capture by all the directions specified (by default Adjacent). The enemy pieces are removed. #1 = Directions of the capture. #2 = The consequences. 
+DEFINE EXAMPLE: ("EncloseCapture")
+DEFINE: HittingCapture
+DEFINE JAVADOC: Defines the capture of an enemy piece returning to a site. This ludemeplex can be used only as an effect. 
+DEFINE EXAMPLE: ("HittingCapture" (handSite (who at:(to))))
+DEFINE: HittingStackCapture
+DEFINE JAVADOC: Defines the capture of a stack with an enemy piece at the top returning to a site. This ludemeplex can be used only as an effect. 
+DEFINE EXAMPLE: ("HittingStackCapture" (handSite (who at:(to) level:(level))))
 DEFINE: InterveneCapture
 DEFINE JAVADOC: Defines an intervene capture in all the directions specified (by default Adjacent). The enemy piece is removed. #1 = Directions of the capture. #2 = The consequences. 
 DEFINE EXAMPLE: ("InterveneCapture")
+DEFINE: SurroundCapture
+DEFINE JAVADOC: Defines a surround capture in all the directions specified (by default Adjacent). The enemy piece is removed. #1 = Directions of the capture. #2 = Contraints related to the number of pieces to capture. #3 = The consequences. 
+DEFINE EXAMPLE: ("SurroundCapture")
+DEFINE: ReplayIfLine3
+DEFINE JAVADOC: Move again if the last `to' position just made a line of 3. #1 = The directions of the line (by default adjacent). #1 = If true, then lines cannot exceed minimum length (by default false). 
+DEFINE EXAMPLE: ("ReplayIfLine3")
 DEFINE: ReplayInMovingOn
 DEFINE JAVADOC: Move again if the last `to' position is on a specified region. #1 = The region. 
 DEFINE EXAMPLE: ("ReplayInMovingOn" (sites Top))
@@ -5984,6 +6142,9 @@ DEFINE EXAMPLE: ("RollEachNewTurnMove" (forEach Piece))
 DEFINE: RollMove
 DEFINE JAVADOC: Roll dice before to compute the legal moves. #1 = The legal moves. #2 = The consequences. 
 DEFINE EXAMPLE: ("RollMove" (forEach Piece))
+DEFINE: HopAllPiecesToEmpty
+DEFINE JAVADOC: Defines a hop move in all the directions specified (by default Adjacent) over any occupied site to an empty site. #1 = The from site. #2 = Directions of the hop. #3 = The range of the hop. #4 = The consequences. 
+DEFINE EXAMPLE: ("HopAllPiecesToEmpty")
 DEFINE: HopCapture
 DEFINE JAVADOC: Defines a hop move in all the directions specified (by default Adjacent) over an enemy to an empty site. The enemy piece is removed. #1 = The from site. #2 = Directions of the hop. #3 = The consequences. 
 DEFINE EXAMPLE: ("HopCapture")
@@ -6026,6 +6187,15 @@ DEFINE: HopSequenceCaptureAgain
 DEFINE JAVADOC: Defines a sequence of hop move in all the adjacent directions over an enemy to an empty site from the last ``to'' location of the previous move. The enemy pieces are removed. #1 = Maximum distance before the hop [0]. #2 = Maximum distance after the hop [0]. #3 = When to perform the capture (immediately or at the end of the turn) [immediately]. 
 DEFINE EXAMPLE: ("HopSequenceCaptureAgain")
 DEFINE EXAMPLE: ("HopSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn)
+DEFINE: LeapToEmpty
+DEFINE JAVADOC: Defines a leap move to an empty site. #1 = The walk. #2 = The consequences. 
+DEFINE EXAMPLE: ("LeapToEmpty" "KnightWalk")
+DEFINE: RemoveAnyEnemyPiece
+DEFINE JAVADOC: Allows to remove one piece of the enemy player. #1 = The consequences. 
+DEFINE EXAMPLE: ("RemoveAnyEnemyPiece")
+DEFINE: RemoveAnyEnemyPieceNotInLine3
+DEFINE JAVADOC: Allows to remove one piece of the enemy player which is not in a line 3. #1 = The directions of the line (by default adjacent). 
+DEFINE EXAMPLE: ("RemoveAnyEnemyPieceNotInLine3")
 DEFINE: SlideCapture
 DEFINE JAVADOC: Defines a slide move to capture an enemy piece. #1 = Directions of the slide. #2 = Between conditions to specify (by default sliding on empty sites). #3 = Consequences of the capture effect. #4 = The consequences of the moves. 
 DEFINE EXAMPLE: ("SlideCapture" Orthogonal)

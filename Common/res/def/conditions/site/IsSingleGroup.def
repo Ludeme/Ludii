@@ -1,0 +1,8 @@
+// Checks if only one single group with pieces owned by a player exists.
+//#1 = The owner of the pieces in the group.
+//#2 = The direction used to connect the pieces in the group (by default Adjacent).
+//@example ("IsSingleGroup" Mover)
+
+(define "IsSingleGroup"
+    (= 1 (count Groups #2 if:(= (who at:(to)) #1)))
+)

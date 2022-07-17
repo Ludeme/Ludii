@@ -15,7 +15,7 @@
                             (remember Value "Tied" (player))
                             (set Score Player #1)
                         )
-                        (set Score Player #1)   
+                        (set Score Player #1)  
                 ))
                 next:(do
                     (forEach Value
@@ -48,7 +48,7 @@
         (max
             (difference 
                 (values Remembered "Scores") 
-                #1  // This is causing a non-fatal null pointer exception at compilation
+                #1 // This is causing a non-fatal null pointer exception at compilation
 ))))
 
 (define "GroupCount"
@@ -56,15 +56,15 @@
 )
 
 (define "StoneCount" // change to score Most pieces placed
-(count Sites in:(sites Occupied by:Player))   // (forEach (sites Occupied) if:(= (who at:(site)) #1)))
+(count Sites in:(sites Occupied by:Player))  // (forEach (sites Occupied) if:(= (who at:(site)) #1)))
 )
 
 //----------------------------
 
-(define "LessQtyAroundSiteThanAnother"  
+(define "LessQtyAroundSiteThanAnother" 
     (>
-        (max 0 (count Pieces of:#1 in:(sites Around (site) "ConnectionDirection" )))
-        (max 0 (count Pieces of:(mover) in:(sites Around (site) "ConnectionDirection" )))
+        (max 0 (count Pieces of:#1 in:(sites Around (site) "ConnectionDirection")))
+        (max 0 (count Pieces of:(mover) in:(sites Around (site) "ConnectionDirection")))
 ))
 
 (define "Anemone" 
@@ -84,7 +84,7 @@
                         (claim (to (last To)))
         ))))
         }
-        (then <SType:selScoring>)  
+        (then <SType:selScoring>) 
 ))
 
 //-----------------------------------------------
@@ -109,7 +109,7 @@
             (if 
                 (all Passed)
                 (byScore)
-            )              
+            )       
 )))
 
 //-------------------------------------------------
@@ -117,10 +117,10 @@
 
 (define "ScoreConnection" <BoardShape:directionScored>)
 (define "ConnectionDirection" <BoardShape:directionUsed>)
-(define "BoardUsed" <BoardShape:gridType> )
+(define "BoardUsed" <BoardShape:gridType>)
 
 (define "HexLimp" (board (hex Limping (- <BoardSize:smallSide> 1)) use:Cell))
-(define "Hex2Limp" (board (hex  (- <BoardSize:smallSide> 1) (+ <BoardSize:smallSide> 1)) use:Cell))
+(define "Hex2Limp" (board (hex (- <BoardSize:smallSide> 1) (+ <BoardSize:smallSide> 1)) use:Cell))
 (define "HexCell" (board (hex Hexagon <BoardSize:smallSide>) use:Cell))
 (define "TriSquare" (board (tiling T33434 (- <BoardSize:smallSide> 2)) use:Vertex))
 (define "SquareGrid" (board (square <BoardSize:smallSide>) use:Cell))
@@ -128,13 +128,13 @@
 
 //-----------------------------------------
 // Options
-// Notes: Opponent scoring on odd square diagonal grid leads to 1st player win by  diagonals only.
+// Notes: Opponent scoring on odd square diagonal grid leads to 1st player win by diagonals only.
 
 (option "Board Size" <BoardSize> args:{<smallSide> <backgroundSize>} 
     {
-    (item "3 (20 moves)"  <3>  <1.30> "Order 3 board")
-    (item "4 (45 moves)"  <4>  <1.20> "Order 4 board")*
-    (item "5 (75 moves)"  <5>  <1.15> "Order 5 board")
+    (item "3 (20 moves)" <3> <1.30> "Order 3 board")
+    (item "4 (45 moves)" <4> <1.20> "Order 4 board")*
+    (item "5 (75 moves)" <5> <1.15> "Order 5 board")
     }
 )
 
@@ -142,7 +142,7 @@
     args:{<gridType> <directionUsed> <diagShow> <directionScored> <backgroundImage>} 
     {
     (item "Hex Double Limping"
-        <"Hex2Limp"> <Orthogonal> <Hidden> <Orthogonal> <"Disc">  
+        <"Hex2Limp"> <Orthogonal> <Hidden> <Orthogonal> <"Disc"> 
     "Hex N+1 / N-1 Grid")
     
     (item "TriSquare 7 direction majorities"
@@ -170,17 +170,17 @@
     }
 )
 
-(option "Players" <HowMany>  args:{<playerCount>}
+(option "Players" <HowMany> args:{<playerCount>}
     {
-    (item "2"  <2> "2 players")*
-    (item "3"  <3> "3 players")
-    (item "4"  <4> "4 players")
+    (item "2" <2> "2 players")*
+    (item "3" <3> "3 players")
+    (item "4" <4> "4 players")
     }
 )
 
 //---------------------------------------------
 
-(define "ColourBackground"  (colour 136 175 96)) //meadow (colour 146 175 86)) // tawny: (colour 175 146 86)) 
+(define "ColourBackground" (colour 136 175 96)) //meadow (colour 146 175 86)) // tawny: (colour 175 146 86)) 
 
 (metadata
     (info
@@ -235,7 +235,7 @@
             The winner of the game is decided by these amended scores.
         Ties may still remain.  Also ties between non-leading players are not resolved.")
         (id "1549")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")
@@ -249,7 +249,7 @@
         (player Colour P2 (colour Cream))
         (player Colour P3 (colour BabyBlue))
         (player Colour P4 (colour Gold))
-        (piece Scale "Ball" 0.92 )
+        (piece Scale "Ball" 0.92)
         (piece Background "Ball" image:"Disc" fillColour:(colour 0 0 0 140) edgeColour:(colour 0 0 0 0)) 
         (board Colour Phase0 "ColourBackground")
         (board StyleThickness InnerEdges 0.4)
@@ -262,7 +262,7 @@
         (board Colour OuterEdges (colour Black))
         (show Edges Diagonal <BoardShape:diagShow> (colour DarkGrey))
         
-        (board Background image:<BoardShape:backgroundImage> fillColour:"ColourBackground" edgeColour:(colour 180 180 180 80)  scale:<BoardSize:backgroundSize>) 
+        (board Background image:<BoardShape:backgroundImage> fillColour:"ColourBackground" edgeColour:(colour 180 180 180 80) scale:<BoardSize:backgroundSize>) 
         }
     )
 )

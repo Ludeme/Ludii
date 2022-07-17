@@ -12,25 +12,24 @@
     )
 )
 
-(define "ThreeSlideInARow" (= (counter) 5) )
+(define "ThreeSlideInARow" (= (counter) 5))
 
-(define "SurroundedOver" (is Triggered "Surrounded" #1) )
+(define "SurroundedOver" (is Triggered "Surrounded" #1))
 
-(define "SurroundedMySelf" ("NoSites" (sites Around (last To) if:(is Empty (to))) ))
+(define "SurroundedMySelf" ("NoSites" (sites Around (last To) if:(is Empty (to)))))
 
 //------------------------------------------------------------------------------
 
-(game "Susan"  
+(game "Susan" 
     (players 2) 
     (equipment { 
         (board (hex 5)) 
         (piece "Marker" Each "StepOrthogonalToEmpty")
-    })  
+    }) 
     
     (rules 
         (play (or
-                (move 
-                    Add 
+                (move Add 
                     (to (sites Empty)) 
                     (then (set Counter)) // To know this move was not a slide.
                 )
@@ -47,9 +46,9 @@
         (end {
             (if "ThreeSlideInARow" (result Mover Draw))
             (if "SurroundedMySelf" (result Next Win))
-            (if ("SurroundedOver" P1) (result P2 Win) ) 
-            (if ("SurroundedOver" P2) (result P1 Win) ) 
-        })  
+            (if ("SurroundedOver" P1) (result P2 Win)) 
+            (if ("SurroundedOver" P2) (result P1 Win)) 
+        }) 
     )
 )
 
@@ -63,7 +62,7 @@
         (rules "Players alternate turns. A player's turn consists on either placing piece on an empty field on board, or sliding one of their pieces into an empty one on the board. Players cannot pass. If each player performs three slides in a row then the game ends immediately as a draw. A player wins when any of the opponent's pieces are surrounded and cannot move. If one of a player's own pieces is surrounded on their turn, they lose even if an opponent's stone is surrounded at the same time.")
         (source "<a href=\"https://boardgamegeek.com/boardgame/26135/susan\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
         (id "451")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/blocking")
         (author "Stephen Linhart")
         (credit "Eric Piette")

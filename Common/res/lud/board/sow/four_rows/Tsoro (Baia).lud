@@ -1,13 +1,11 @@
 (define "Columns" <Row:size>)
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
-(define "NoPiece" (= (count in:(sites Player)) 0))
-(define "PreviousHole" (trackSite Move from:(from) "TrackCW" steps:1))
+(define "NoPiece" (all Sites (sites Player) if:(= 0 (count at:(site)))))
+(define "PreviousHole" ("NextSiteOnTrack" 1 from:(from) "TrackCW"))
 
 //------------------------------------------------------------------------------
 
-(game "Tsoro (Baia)"  
-    (players 2)  
+(game "Tsoro (Baia)" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -18,17 +16,17 @@
             (track "TrackCW2" <Row:trackCW2> loop:True P2)
             }
         )
-        (regions "Home" P1 (sites Track "TrackCCW1"))                              // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))                              // P2 home
+        (regions "Home" P1 (sites Track "TrackCCW1"))               // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))               // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top) ))   // P2 inner Home
-        (regions "Outer" P1 (sites Bottom))                                        // P1 outer Home
-        (regions "Outer" P2 (sites Top))                                           // P2 outer Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))  // P2 inner Home
+        (regions "Outer" P1 (sites Bottom))                    // P1 outer Home
+        (regions "Outer" P2 (sites Top))                      // P2 outer Home
         (regions "FirstMove" P1 (difference (expand (intersection (difference (sites Track "TrackCCW1") (sites Bottom)) (sites Left)) steps:2 E) (expand (intersection (difference (sites Track "TrackCCW1") (sites Bottom)) (sites Left)) E))) // P1 first Hole
-        (regions "FirstMove" P2 (difference (expand (intersection (difference (sites Track "TrackCCW2") (sites Top)) (sites Right)) steps:2 W) (expand (intersection (difference (sites Track "TrackCCW2") (sites Top)) (sites Right)) W)))     // P2 first Hole
+        (regions "FirstMove" P2 (difference (expand (intersection (difference (sites Track "TrackCCW2") (sites Top)) (sites Right)) steps:2 W) (expand (intersection (difference (sites Track "TrackCCW2") (sites Top)) (sites Right)) W)))   // P2 first Hole
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start {
@@ -52,18 +50,18 @@
                                 owner:(mover)
                                 apply:(if (is In (to) (sites Mover "Inner"))
                                     (if 
-                                        (is Occupied ("OppositePit"))
+                                        (is Occupied ("OppositePit" (to)))
                                         (and {
                                             (fromTo
-                                                (from ("OppositePit"))
+                                                (from ("OppositePit" (to)))
                                                 (to (handSite Mover))
-                                                count: (count at:("OppositePit"))
+                                                count: (count at:("OppositePit" (to)))
                                             )
-                                            (if (is Occupied ("OppositeOuterPit"))
+                                            (if (is Occupied ("OppositeOuterPit" (to)))
                                                 (fromTo
-                                                    (from ("OppositeOuterPit"))
+                                                    (from ("OppositeOuterPit" (to)))
                                                     (to (handSite Mover))
-                                                    count: (count at:("OppositeOuterPit"))
+                                                    count: (count at:("OppositeOuterPit" (to)))
                                                 )
                                             )
                                             (set Value Mover (+ 1 (value Player Mover)))
@@ -102,13 +100,13 @@
                     (or
                         (move Select
                             (from 
-                                (if (is Mover Prev)
+                                (if ("SameTurn")
                                     (sites {(var "Replay")})
                                     (sites Mover "Home") 
                                 )
                                 if:(and 
                                     (< 1 (count at:(from)))
-                                    (if (is Mover Prev)
+                                    (if ("SameTurn")
                                         True
                                         (is Empty ("PreviousHole"))	
                                     )
@@ -125,18 +123,18 @@
                                         })
                                         (if (is In (to) (sites Mover "Inner"))
                                             (if 
-                                                (is Occupied ("OppositePit"))
+                                                (is Occupied ("OppositePit" (to)))
                                                 (and {
                                                     (fromTo
-                                                        (from ("OppositePit"))
+                                                        (from ("OppositePit" (to)))
                                                         (to (handSite Mover))
-                                                        count: (count at:("OppositePit"))
+                                                        count: (count at:("OppositePit" (to)))
                                                     )
-                                                    (if (is Occupied ("OppositeOuterPit"))
+                                                    (if (is Occupied ("OppositeOuterPit" (to)))
                                                         (fromTo
-                                                            (from ("OppositeOuterPit"))
+                                                            (from ("OppositeOuterPit" (to)))
                                                             (to (handSite Mover))
-                                                            count: (count at:("OppositeOuterPit"))
+                                                            count: (count at:("OppositeOuterPit" (to)))
                                                         )
                                                     )
                                                     (set Value Mover (+ 1 (value Player Mover)))
@@ -154,13 +152,13 @@
                         )
                         (move Select
                             (from 
-                                (if (is Mover Prev)
+                                (if ("SameTurn")
                                     (sites {(var "Replay")})
                                     (sites Mover "Home") 
                                 )
                                 if:(and 
                                     (= 1 (count at:(from)))
-                                    (if (is Mover Prev)
+                                    (if ("SameTurn")
                                         True
                                         (is Empty ("PreviousHole"))	
                                     )
@@ -214,13 +212,13 @@
 
 (option "Board Size" <Row> args:{ <size> <trackCCW2> <trackCW1> <trackCW2>}
     {
-    (item "13"   <13> <"26,E,N1,W"> <"12,W,N1,E"> <"39,E,S1,W"> "Each row has 13 holes.")*   
-    (item "14"   <14> <"28,E,N1,W"> <"13,W,N1,E"> <"42,E,S1,W"> "Each row has 14 holes.")   
-    (item "15"   <15> <"30,E,N1,W"> <"14,W,N1,E"> <"45,E,S1,W"> "Each row has 15 holes.")   
-    (item "16"   <16> <"32,E,N1,W"> <"15,W,N1,E"> <"48,E,S1,W"> "Each row has 16 holes.")   
-    (item "17"   <17> <"34,E,N1,W"> <"16,W,N1,E"> <"51,E,S1,W"> "Each row has 17 holes.")   
-    (item "18"   <18> <"36,E,N1,W"> <"17,W,N1,E"> <"54,E,S1,W"> "Each row has 18 holes.")   
-    (item "19"   <19> <"38,E,N1,W"> <"18,W,N1,E"> <"57,E,S1,W"> "Each row has 19 holes.")   
+    (item "13"  <13> <"26,E,N1,W"> <"12,W,N1,E"> <"39,E,S1,W"> "Each row has 13 holes.")*  
+    (item "14"  <14> <"28,E,N1,W"> <"13,W,N1,E"> <"42,E,S1,W"> "Each row has 14 holes.")  
+    (item "15"  <15> <"30,E,N1,W"> <"14,W,N1,E"> <"45,E,S1,W"> "Each row has 15 holes.")  
+    (item "16"  <16> <"32,E,N1,W"> <"15,W,N1,E"> <"48,E,S1,W"> "Each row has 16 holes.")  
+    (item "17"  <17> <"34,E,N1,W"> <"16,W,N1,E"> <"51,E,S1,W"> "Each row has 17 holes.")  
+    (item "18"  <18> <"36,E,N1,W"> <"17,W,N1,E"> <"54,E,S1,W"> "Each row has 18 holes.")  
+    (item "19"  <19> <"38,E,N1,W"> <"18,W,N1,E"> <"57,E,S1,W"> "Each row has 19 holes.")  
 })
 
 //------------------------------------------------------------------------------
@@ -234,7 +232,7 @@
         (rules "4x13-19 board. Two counters in every hole, except the leftmost in both of a player's rows, which are empty, and the second from the left in the inner row, which has one. Sowing occurs in an anti-clockwise direction. When the final counter lands in an occupied hole, these counters are picked up and sowing continues. Captures are made when the final counters lands in an empty hole in the inner row, capturing the contents of the opponent's opposite inner row hole, as well as the contents of the outer row hole only if there was a capture from the inner row hole. Captures from extra holes are also made, which are graduated based on the number of captures the player has made. On their first turn, players sow from the third hole from the left in the front row. This triggers a capture of the counters in the opposite holes in the opponent's inner and outer rows, plus the contents of any other five holes on the opponent's side of the board. In subsequent turns, sowing must occur from a hole which follows an empty hole according to the circuit of the holes. On their second capture, the player captures three extra holes. All other subsequent captures capture from two extra holes. Sowing a single counter cannot result in a capture. The player who captures all of their opponent's counters wins.")
         (source "Tracey 1931.")
         (id "1319")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         (origin  "This game was played in Zimbabwe, around 1931.")

@@ -1,5 +1,5 @@
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next (forEach Piece))))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next (forEach Piece))))))
 )
 
 (define "KingInTheInitialPlace"
@@ -25,7 +25,7 @@
 
 (define "CaptureToPieceAndResetCounter"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
                 (then (set Counter))
@@ -38,7 +38,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )   
+    )  
 )
 
 (define "DoCastle"
@@ -102,7 +102,7 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
@@ -133,7 +133,7 @@
         Slide 
         Orthogonal 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             "CaptureToPieceAndResetCounter"
         ) 
         "RememberPieceHasMoved"
@@ -144,7 +144,7 @@
     (move
         Step 
         (to 
-            if:(not (is Friend (who at:(to)))) 
+            if:(not ("IsFriendAt" (to))) 
             "CaptureToPieceAndResetCounter"
         ) 
         "RememberPieceHasMoved"
@@ -156,7 +156,7 @@
         Slide 
         Diagonal 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             "CaptureToPieceAndResetCounter"
         ) 
     )		
@@ -167,7 +167,7 @@
         Leap 
         "KnightWalk" 
         (to 
-            if:(not (is Friend (who at:(to)))) 
+            if:(not ("IsFriendAt" (to))) 
             "CaptureToPieceAndResetCounter"
         ) 
     )	
@@ -177,7 +177,7 @@
     (move
         Slide 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             "CaptureToPieceAndResetCounter"
         ) 
     )	
@@ -201,8 +201,8 @@
 )
 //------------------------------------------------------------------------------
 
-(game "Ultimate Chess"  
-    (players {(player N) (player S)})  
+(game "Ultimate Chess" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 9)) 
         (piece "Pawn" Each ("PawnMove"))
@@ -215,10 +215,10 @@
         (map "King" {(pair 1 "E1") (pair 2 "E9")})
         (map "RookLeft" {(pair 1 "A1") (pair 2 "A9")})
         (map "RookRight" {(pair 1 "I1") (pair 2 "I9")})
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
         }
-    )  
+    ) 
     (rules 
         (start
             { 
@@ -348,7 +348,7 @@
             - Kings can make a large casting in either side.
         - The next player must move from the sub-grid corresponding to the cell just moved to (if they have a legal move from there).")
         (id "1014")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chess")
         (author "Cameron Browne")
         (credit "Eric Piette")

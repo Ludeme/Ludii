@@ -1,11 +1,11 @@
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
 )
 
 (define "CaptureToPiece"
     (apply 
         if:(not (is In (to) (sites "BlackenedSquares")))
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
             )
@@ -15,8 +15,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Chessence"  
-    (players 2)  
+(game "Chessence" 
+    (players 2) 
     (equipment { 
         (board (rectangle 9 6)) 
         (piece "Pawn" Each
@@ -29,7 +29,7 @@
                             if:(and (is Empty (between)) (not (is In (between) (sites "BlackenedSquares"))))
                         )
                         (to 
-                            if:(is Enemy (who at:(to))) 
+                            if:("IsEnemyAt" (to)) 
                             "CaptureToPiece"
                         ) 
                     )
@@ -42,7 +42,7 @@
                             if:(and (is Empty (between)) (not (is In (between) (sites "BlackenedSquares"))))
                         )
                         (to 
-                            if:(is Enemy (who at:(to))) 
+                            if:("IsEnemyAt" (to)) 
                             "CaptureToPiece"
                         ) 
                     )
@@ -64,7 +64,7 @@
                         Leap 
                         "KnightWalk" 
                         (to 
-                            if:(and (not (is Friend (who at:(to)))) (not (is In (to) (sites "BlackenedSquares"))))
+                            if:(and (not ("IsFriendAt" (to))) (not (is In (to) (sites "BlackenedSquares"))))
                             "CaptureToPiece"
                         ) 
                     )
@@ -76,7 +76,7 @@
         (regions "BlackenedSquares" (sites {"A2" "B3" "B5" "C6" "D4" "E5" "E7" "F8"}))
         (regions "PawnStart" P1 (sites {"E1" "E2" "F2" "D2" "D3" "E3"}))
         (regions "PawnStart" P2 (sites {"B9" "B8" "A8" "C8" "C7" "B7"}))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Pawn" "Hand" count:3)
@@ -102,7 +102,7 @@
         )
         
         (end {
-            (if  (and 
+            (if (and 
                     ("IsInCheck" "King" Next)
                     ("NextCanNotMove")
                 )
@@ -134,7 +134,7 @@
         Checks, checkmate, and captures are as in standard chess. If a player has no legal moves, they lose the game.")
         (id "1784")
         (source "<a href=\"https://en.wikipedia.org/wiki/Chessence\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chess")
         (author "Jim Winslow")
         (credit "Eric Piette")

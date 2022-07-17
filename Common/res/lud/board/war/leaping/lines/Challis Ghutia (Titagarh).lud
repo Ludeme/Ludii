@@ -1,4 +1,4 @@
-(game "Challis Ghutia (Titagarh)"  
+(game "Challis Ghutia (Titagarh)" 
     (players {(player N) (player S)})
     (equipment { 
         ("AlquerqueBoard" 9 9)
@@ -8,7 +8,7 @@
                 ("HopCapture") 
             )
         )
-    })  
+    }) 
     
     (rules 
         (start { 
@@ -25,122 +25,122 @@
 
 (option "Start Rules" <Start> args:{<rule>}
     {
-    (item "24 pieces"  
+    (item "24 pieces" 
         <
-        (place "Marker1"  (union (expand (sites Bottom) steps:1) (expand origin:(coord "I3") steps:5 W)))
-        (place "Marker2"  (union (expand (sites Top) steps:1) (expand origin:(coord "A7") steps:5 E)))
+        (place "Marker1" (union (expand (sites Bottom) steps:1) (expand origin:(coord "I3") steps:5 W)))
+        (place "Marker2" (union (expand (sites Top) steps:1) (expand origin:(coord "A7") steps:5 E)))
         > 
         "The game starts with 24 pieces by player."
     )**
-    (item "25 pieces"  
+    (item "25 pieces" 
         <
-        (place "Marker1"  (union (expand (sites Bottom) steps:1) (expand origin:(coord "I3") steps:6 W)))
-        (place "Marker2"  (union (expand (sites Top) steps:1) (expand origin:(coord "A7") steps:6 E)))
+        (place "Marker1" (union (expand (sites Bottom) steps:1) (expand origin:(coord "I3") steps:6 W)))
+        (place "Marker2" (union (expand (sites Top) steps:1) (expand origin:(coord "A7") steps:6 E)))
         > 
         "The game starts with 25 pieces by player."
     )
-    (item "26 pieces"  
+    (item "26 pieces" 
         <
-        (place "Marker1"  (union (expand (sites Bottom) steps:1) (expand origin:(coord "I3") steps:7 W)))
-        (place "Marker2"  (union (expand (sites Top) steps:1) (expand origin:(coord "A7") steps:7 E)))
+        (place "Marker1" (union (expand (sites Bottom) steps:1) (expand origin:(coord "I3") steps:7 W)))
+        (place "Marker2" (union (expand (sites Top) steps:1) (expand origin:(coord "A7") steps:7 E)))
         > 
         "The game starts with 26 pieces by player."
     )
-    (item "27 pieces"  
+    (item "27 pieces" 
         <
-        (place "Marker1"  (expand (sites Bottom) steps:2))
-        (place "Marker2"  (expand (sites Top) steps:2))
+        (place "Marker1" (expand (sites Bottom) steps:2))
+        (place "Marker2" (expand (sites Top) steps:2))
         > 
         "The game starts with 27 pieces by player."
     )
-    (item "28 pieces"  
+    (item "28 pieces" 
         <
-        (place "Marker1"  (union (expand (sites Bottom) steps:2) (sites {"I4"})))
-        (place "Marker2"  (union (expand (sites Top) steps:2) (sites {"A6"})))
+        (place "Marker1" (union (expand (sites Bottom) steps:2) (sites {"I4"})))
+        (place "Marker2" (union (expand (sites Top) steps:2) (sites {"A6"})))
         > 
         "The game starts with 28 pieces by player."
     )
-    (item "29 pieces"  
+    (item "29 pieces" 
         <
-        (place "Marker1"  (union (expand (sites Bottom) steps:2) (expand origin:(coord "I4") W)))
-        (place "Marker2"  (union (expand (sites Top) steps:2) (expand origin:(coord "A6") E)))
+        (place "Marker1" (union (expand (sites Bottom) steps:2) (expand origin:(coord "I4") W)))
+        (place "Marker2" (union (expand (sites Top) steps:2) (expand origin:(coord "A6") E)))
         > 
         "The game starts with 29 pieces by player."
     )
-    (item "30 pieces"  
+    (item "30 pieces" 
         <
-        (place "Marker1"  (union (expand (sites Bottom) steps:2) (expand origin:(coord "I4") steps:2 W)))
-        (place "Marker2"  (union (expand (sites Top) steps:2) (expand origin:(coord "A6") steps:2 E)))
+        (place "Marker1" (union (expand (sites Bottom) steps:2) (expand origin:(coord "I4") steps:2 W)))
+        (place "Marker2" (union (expand (sites Top) steps:2) (expand origin:(coord "A6") steps:2 E)))
         > 
         "The game starts with 30 pieces by player."
     )
-    (item "31 pieces"  
+    (item "31 pieces" 
         <
-        (place "Marker1"  (union (expand (sites Bottom) steps:2) (expand origin:(coord "I4") steps:3 W)))
-        (place "Marker2"  (union (expand (sites Top) steps:2) (expand origin:(coord "A6") steps:3 E)))
+        (place "Marker1" (union (expand (sites Bottom) steps:2) (expand origin:(coord "I4") steps:3 W)))
+        (place "Marker2" (union (expand (sites Top) steps:2) (expand origin:(coord "A6") steps:3 E)))
         > 
         "The game starts with 31 pieces by player."
     )
-    (item "32 pieces"  
+    (item "32 pieces" 
         <
-        (place "Marker1"  (union (expand (sites Bottom) steps:2) (expand origin:(coord "I4") steps:4 W)))
-        (place "Marker2"  (union (expand (sites Top) steps:2) (expand origin:(coord "A6") steps:4 E)))
+        (place "Marker1" (union (expand (sites Bottom) steps:2) (expand origin:(coord "I4") steps:4 W)))
+        (place "Marker2" (union (expand (sites Top) steps:2) (expand origin:(coord "A6") steps:4 E)))
         > 
         "The game starts with 32 pieces by player."
     )
-    (item "33 pieces"  
+    (item "33 pieces" 
         <
-        (place "Marker1"  (union (expand (sites Bottom) steps:2) (expand origin:(coord "I4") steps:5 W)))
-        (place "Marker2"  (union (expand (sites Top) steps:2) (expand origin:(coord "A6") steps:5 E)))
+        (place "Marker1" (union (expand (sites Bottom) steps:2) (expand origin:(coord "I4") steps:5 W)))
+        (place "Marker2" (union (expand (sites Top) steps:2) (expand origin:(coord "A6") steps:5 E)))
         > 
         "The game starts with 33 pieces by player."
     )
-    (item "34 pieces"  
+    (item "34 pieces" 
         <
-        (place "Marker1"  (union (expand (sites Bottom) steps:2) (expand origin:(coord "I4") steps:6 W)))
-        (place "Marker2"  (union (expand (sites Top) steps:2) (expand origin:(coord "A6") steps:6 E)))
+        (place "Marker1" (union (expand (sites Bottom) steps:2) (expand origin:(coord "I4") steps:6 W)))
+        (place "Marker2" (union (expand (sites Top) steps:2) (expand origin:(coord "A6") steps:6 E)))
         > 
         "The game starts with 34 pieces by player."
     )
-    (item "35 pieces"  
+    (item "35 pieces" 
         <
-        (place "Marker1"  (union (expand (sites Bottom) steps:2) (expand origin:(coord "I4") steps:7 W)))
-        (place "Marker2"  (union (expand (sites Top) steps:2) (expand origin:(coord "A6") steps:7 E)))
+        (place "Marker1" (union (expand (sites Bottom) steps:2) (expand origin:(coord "I4") steps:7 W)))
+        (place "Marker2" (union (expand (sites Top) steps:2) (expand origin:(coord "A6") steps:7 E)))
         > 
         "The game starts with 35 pieces by player."
     )
-    (item "36 pieces"  
+    (item "36 pieces" 
         <
-        (place "Marker1"  (expand (sites Bottom) steps:3))
-        (place "Marker2"  (expand (sites Top) steps:3))
+        (place "Marker1" (expand (sites Bottom) steps:3))
+        (place "Marker2" (expand (sites Top) steps:3))
         > 
         "The game starts with 36 pieces by player."
     )
-    (item "37 pieces"  
+    (item "37 pieces" 
         <
-        (place "Marker1"  (union (expand (sites Bottom) steps:3) (sites {"I5"})))
-        (place "Marker2"  (union (expand (sites Top) steps:3) (sites {"A5"})))
+        (place "Marker1" (union (expand (sites Bottom) steps:3) (sites {"I5"})))
+        (place "Marker2" (union (expand (sites Top) steps:3) (sites {"A5"})))
         > 
         "The game starts with 37 pieces by player."
     )
-    (item "38 pieces"  
+    (item "38 pieces" 
         <
-        (place "Marker1"  (union (expand (sites Bottom) steps:3) (expand origin:(coord "I5") W)))
-        (place "Marker2"  (union (expand (sites Top) steps:3) (expand origin:(coord "A5") E)))
+        (place "Marker1" (union (expand (sites Bottom) steps:3) (expand origin:(coord "I5") W)))
+        (place "Marker2" (union (expand (sites Top) steps:3) (expand origin:(coord "A5") E)))
         > 
         "The game starts with 38 pieces by player."
     )
-    (item "39 pieces"  
+    (item "39 pieces" 
         <
-        (place "Marker1"  (union (expand (sites Bottom) steps:3) (expand origin:(coord "I5") steps:2 W)))
-        (place "Marker2"  (union (expand (sites Top) steps:3) (expand origin:(coord "A5") steps:2 E)))
+        (place "Marker1" (union (expand (sites Bottom) steps:3) (expand origin:(coord "I5") steps:2 W)))
+        (place "Marker2" (union (expand (sites Top) steps:3) (expand origin:(coord "A5") steps:2 E)))
         > 
         "The game starts with 39 pieces by player."
     )
-    (item "40 pieces"  
+    (item "40 pieces" 
         <
-        (place "Marker1"  (union (expand (sites Bottom) steps:3) (expand origin:(coord "I5") steps:3 W)))
-        (place "Marker2"  (union (expand (sites Top) steps:3) (expand origin:(coord "A5") steps:3 E)))
+        (place "Marker1" (union (expand (sites Bottom) steps:3) (expand origin:(coord "I5") steps:3 W)))
+        (place "Marker2" (union (expand (sites Top) steps:3) (expand origin:(coord "A5") steps:3 E)))
         > 
         "The game starts with 40 pieces by player."
     )
@@ -170,7 +170,7 @@
         (rules "9x9 board played on the intersections, with diagonals for each 3x3 square. Typically played with 24 pieces, but any number up to 40 is possible. Pieces are arranged on the spots in the rows closest to the player, with those unable to fill a row placed on the right points of the next available row. Players alternate turns by moving a piece to an adjacent empty spot along the lines on the board. A player may capture an opponent's piece by hopping over one adjacent piece if there is an empty spot behind it along a line on the board. The player who captures all of the opponent's pieces wins.")
         (source "Datta 1939: 258.")
         (id "912")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
         (origin  "This game was played in India, around 1939.")

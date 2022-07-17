@@ -1,18 +1,10 @@
 (define "Columns" 8)
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
-
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
-
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "Sow" 
-    (move
-        Select
+    (move Select
         (from 
-            (if 
-                (is Mover Prev) 
-                (if #1 "PlayFromLastHole") 
+            (if ("SameTurn") 
+                (if #1 "LastHoleSowed") 
                 (sites Mover "Home") 
             ) 
             if:(> (count at:(from)) 0)
@@ -25,19 +17,19 @@
                     (if (is In (to) (sites Mover "Inner"))
                         (and
                             (if 
-                                (> (count at:"OppositePit") 0) 
+                                (> (count at:("OppositePit" (to))) 0) 
                                 (fromTo 
-                                    (from "OppositePit") 
+                                    (from ("OppositePit" (to))) 
                                     (to (handSite Mover)) 
-                                    count:(count at:"OppositePit")
+                                    count:(count at:("OppositePit" (to)))
                                 ) 
                             ) 
                             (if 
-                                (> (count at:"OppositeOuterPit") 0) 
+                                (> (count at:("OppositeOuterPit" (to))) 0) 
                                 (fromTo 
-                                    (from "OppositeOuterPit") 
+                                    (from ("OppositeOuterPit" (to))) 
                                     (to (handSite Mover)) 
-                                    count:(count at:"OppositeOuterPit")
+                                    count:(count at:("OppositeOuterPit" (to)))
                                 ) 
                             ) 
                         )
@@ -53,8 +45,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Bao Ki Arabu (Zanzibar 1)"  
-    (players 2)  
+(game "Bao Ki Arabu (Zanzibar 1)" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -65,33 +57,25 @@
             (track "TrackCW2" "24,E,S1,W" loop:True P2)
             }
         )
-        (regions "Home" P1 (sites Track "TrackCCW1"))                              // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))                              // P2 home
+        (regions "Home" P1 (sites Track "TrackCCW1"))               // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))               // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top) ))   // P2 inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))  // P2 inner Home
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+    }) 
     (rules 
         
-        (start (set Count 3 to:(union (sites P1 "Home") (sites P2 "Home") ) ) )
+        (start (set Count 3 to:(sites Board)))
         
         (play 
             (or
-                ("Sow" (is Pending) "TrackCW"  (and (moveAgain) (set Pending) ))
-                ("Sow" (not (is Pending)) "TrackCCW"  (moveAgain))
+                ("Sow" (is Pending) "TrackCW" (and (moveAgain) (set Pending)))
+                ("Sow" (not (is Pending)) "TrackCCW" (moveAgain))
             )
         )
         
-        (end
-            (if (no Moves Mover) 
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (no Moves Mover)))
     )
 )
 
@@ -106,7 +90,7 @@
         (rules "4x8 board. Three counters in each hole. Players pick up counters from any of their holes and sow them in either direction. If the last counter falls into an occupied hole, they pick the counters in this hole up and continue sowing. Sowing ends when the last counter falls into an empty hole. If the empty hole is in the inner row, the player captures any of the counters in the opponent's two holes opposite it. Play ends when all of one player's seeds have been captured.")
         (source "Ingrams 1931: 256-257.")
         (id "262")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         (origin  "This game was played in Zanzibar, around 1931.")

@@ -1,10 +1,10 @@
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
 )
 
 (define "CaptureToPiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
             )
@@ -26,7 +26,7 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
@@ -35,7 +35,7 @@
 //------------------------------------------------------------------------------
 
 (game "Shatranj al-Husun"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment {
         (board
             (merge {
@@ -50,7 +50,7 @@
             (move
                 Step 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )		
@@ -60,7 +60,7 @@
                 Step 
                 Diagonal
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )		
@@ -70,7 +70,7 @@
                 Slide 
                 Orthogonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )		
@@ -80,7 +80,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )		
@@ -91,7 +91,7 @@
                 (to 
                     if:(or 
                         (is Empty (to)) 
-                        (and (is Enemy (who at:(to))) (!= (what at:(to)) (id "Elephant" Next)))
+                        (and ("IsEnemyAt" (to)) (!= (what at:(to)) (id "Elephant" Next)))
                     ) 
                     (apply (remove (to)))
                 ) 
@@ -102,7 +102,7 @@
                 Slide 
                 Diagonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )		
@@ -122,10 +122,10 @@
                 )
             )		
         )
-        (regions "Promotion" P1 (sites Row 10) )
-        (regions "Promotion" P2 (sites Row 1) )
-        (regions "OppositeExtraSquares" P1 (sites Top) )
-        (regions "OppositeExtraSquares" P2 (sites Bottom) )
+        (regions "Promotion" P1 (sites Row 10))
+        (regions "Promotion" P2 (sites Row 1))
+        (regions "OppositeExtraSquares" P1 (sites Top))
+        (regions "OppositeExtraSquares" P2 (sites Bottom))
     })
     (rules 
         (start {
@@ -150,7 +150,7 @@
                 ) 
                 (result Mover Win)
             ) 
-            (if (no Moves Next) (result Mover Win))
+            ("BlockWin")
         })
     )
 )
@@ -167,7 +167,7 @@
         ")
         (source "Murray 1913: 3343-44.")
         (id "311")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
         (origin  "This game was played in Persia, around 1352.")

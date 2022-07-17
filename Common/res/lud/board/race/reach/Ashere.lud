@@ -1,13 +1,13 @@
-(define "NextSite" (trackSite Move #1 steps:1))
+(define "NextSite" ("NextSiteOnTrack" 1 #1 #2))
 
 (define "NextSitePrev"
     (if (is Prev P1)
-        (trackSite Move from:(where "Marker" Prev) "Track1" steps:1)
+        ("NextSite" from:(where "Marker" Prev) "Track1")
         (if (is Prev P2)
-            (trackSite Move from:(where "Marker" Prev) "Track2" steps:1)
+            ("NextSite" from:(where "Marker" Prev) "Track2")
             (if (is Prev P3)
-                (trackSite Move from:(where "Marker" Prev) "Track3" steps:1)
-                (trackSite Move from:(where "Marker" Prev) "Track4" steps:1)
+                ("NextSite" from:(where "Marker" Prev) "Track3")
+                ("NextSite" from:(where "Marker" Prev) "Track4")
             )
         )
     )
@@ -41,7 +41,6 @@
         })
         
         phases:{
-        
         (phase "Hiding"
             (play
                 (move Add
@@ -87,15 +86,12 @@
         
         }
         
-        (end  
-            (if (!= (- (count Players) (count Active)) (count Sites in:(difference (sites Centre) (sites Empty))))
+        (end 
+            (if (!= (- (count Players) (count Active)) (count Sites in:(forEach (sites Centre) if:(is Occupied (site)))))
                 {
                 (if (and (is Active P1) (is In (where "Marker" P1) (sites Centre))) (result P1 Win))
-                
                 (if (and (is Active P2) (is In (where "Marker" P2) (sites Centre))) (result P2 Win))
-                
                 (if (and (is Active P3) (is In (where "Marker" P3) (sites Centre))) (result P3 Win))
-                
                 (if (and (is Active P4) (is In (where "Marker" P4) (sites Centre))) (result P4 Win))
                 }
             )
@@ -113,7 +109,7 @@
         (rules "Seven concentric circles or squares. Four players. One piece per player. One player has a stick, which is hidden in their fist. The next player attempts to guess which hand holds the stick. If the player guessing guesses correctly, they enter their piece in the first circle or advances it to the next circle, and the stick is passed to them. If the guessing player guesses incorrectly, the player holding the stick moves their piece into the first circle or advances it to the next circle. The player with the stick keeps it until the next player guesses the hand holding the stick. The first player to reach the central circle wins. ")
         (source "Murray 1951: 14.")
         (id "1483")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/reach")
         (credit "Eric Piette")
         (origin  "This game was played in Nigeria, around 1951.")

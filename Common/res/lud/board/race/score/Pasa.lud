@@ -8,14 +8,12 @@
 
 (game "Pasa" 
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (rectangle 10 2))
         (piece "Disc" Each)
         (dice d:7 from:0 num:1)
         (map {(pair 0 -10) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 5) (pair 6 6) (pair 7 10)})
-        }
-    )
+    })
     (rules
         (play 
             (do 
@@ -49,7 +47,7 @@
         (rules "The board is a double-headed eagle, with two lines of ten holes. One seven-sided die. One side has a special mark, one is blank, and the others are numbered 1-5. The special mark scores 10, the blank side scores -10. Players roll the die, and add up their scores as they go, placing a peg in a hole to mark ten points. The player who reaches 100 points first wins.")
         (source "Juan and Ulloa 1748: 549; Bollaert 1860: 168; Depaulis 1998: 32.")
         (id "334")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/score")
         (credit "Eric Piette")
         (origin  "This game was played in Andes, from around 1735 to 1854.")

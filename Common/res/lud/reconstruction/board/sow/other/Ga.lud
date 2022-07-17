@@ -10,7 +10,7 @@
 //------------------------------------------------------------------------------
 
 (game "Ga"
-    (players ("NumPlayers"))  
+    (players ("NumPlayers")) 
     (equipment { 
         (board 
             (concentric {"NumHolesCircle"}) 
@@ -20,7 +20,7 @@
             use:Vertex
         )
         (piece "Seed" Each)
-    })  
+    }) 
     
     (rules
         
@@ -47,7 +47,7 @@
                 (move
                     (from ("LeftMost"))
                     (to 
-                        (trackSite FirstSite from:(from) if:(is Enemy (who at:(to))))
+                        (trackSite FirstSite from:(from) if:("IsEnemyAt" (to)))
                         (apply
                             (and
                                 (remove (to) count:(count at:(to)))
@@ -70,10 +70,26 @@
 
 //------------------------------------------------------------------------------
 
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        
+    })
+    
+})
+
 (metadata 
     
     (info
         {
+        (description "Ga is a children's game played in the Republic of Congo.")
+        (rules "Pits are created in a circle or rectangle. Two or more players. A player takes counters from their first hole and sows them toward the right (anticlockwise). When counters are placed in an opponent's hole, the hole is captured. When one player can circuit the entire board, thus capturing all of the holes, they win.")
+        (source "DLP evidence.")
+        (id "1350")
+        (version "1.3.5")
+        (classification "board/sow/reconstruction")
+        (credit "Eric Piette")
+        (origin  "This game was played in Republic of Congo, around 1971.")
         }
     )
     

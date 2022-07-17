@@ -1,5 +1,5 @@
 (game "Sakko"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board 
             (rectangle 3 13)
@@ -8,7 +8,7 @@
         (dice d:6 from:0 num:3)
         (piece "Marker" Each)
         (piece "King" Each)
-    })  
+    }) 
     
     (rules 
         (start [#]) // 13 pieces per player + a king per player.
@@ -27,7 +27,7 @@
         (rules "3x13 intersecting lines. Thirteen pieces per player, plus one king. Three six-sided dice, marked with a cross, 1, 2, 3, 4, and the sixth left blank.")
         (source "DLP evidence.")
         (id "1406")
-        (version "1.3.2")
+        (version "1.3.5")
         (classification "board/race/reconstruction")
         (credit "Eric Piette")
         }

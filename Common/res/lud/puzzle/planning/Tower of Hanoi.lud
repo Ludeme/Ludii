@@ -1,10 +1,10 @@
-(game "Tower of Hanoi"  
-    (players 1)  
+(game "Tower of Hanoi" 
+    (players 1) 
     (equipment { 
         (board (rectangle 1 3)) 
         <Version:pieces>
         }
-    )  
+    ) 
     (rules
         (start {
             <Version:start>
@@ -44,7 +44,7 @@
 
 (option "Stack Size" <Version> args:{ <pieces> <start> <order> <limit>}
     {
-    (item "2x2 (3 moves)"   
+    (item "2x2 (3 moves)"  
         <
         (piece "Counter4" P1)
         (piece "Counter9" P1)
@@ -57,7 +57,7 @@
         ""
     )
     
-    (item "3x3 (7 moves)"   
+    (item "3x3 (7 moves)"  
         <
         (piece "Counter3" P1)
         (piece "Counter6" P1)
@@ -71,7 +71,7 @@
         ""
     )**
     
-    (item "4x4 (15 moves)"   
+    (item "4x4 (15 moves)"  
         <
         (piece "Counter3" P1)
         (piece "Counter5" P1)
@@ -86,7 +86,7 @@
         ""
     )
     
-    (item "5x5 (31 moves)"   
+    (item "5x5 (31 moves)"  
         <
         (piece "Counter1" P1)
         (piece "Counter3" P1)
@@ -102,7 +102,7 @@
         ""
     )
     
-    (item "6x6 (63 moves)"   
+    (item "6x6 (63 moves)"  
         <
         (piece "Counter1" P1)
         (piece "Counter2" P1)
@@ -119,7 +119,7 @@
         ""
     )
     
-    (item "7x7 (127 moves)"   
+    (item "7x7 (127 moves)"  
         <
         (piece "Counter1" P1)
         (piece "Counter2" P1)
@@ -137,7 +137,7 @@
         ""
     )
     
-    (item "8x8 (255 moves)"   
+    (item "8x8 (255 moves)"  
         <
         (piece "Counter1" P1)
         (piece "Counter2" P1)
@@ -156,7 +156,7 @@
         ""
     )
     
-    (item "9x9 (511 moves)"   
+    (item "9x9 (511 moves)"  
         <
         (piece "Counter1" P1)
         (piece "Counter2" P1)
@@ -188,7 +188,7 @@
         (rules "A player moves one disk at a time to an empty rod or on a rod where it rests on a larker disk. The goal is to place all of the disks on one rod in decreasing size with the largest on the bottom and the smallest on top.")
         (source "<a href=\"https://en.wikipedia.org/wiki/Tower_of_Hanoi\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
         (id "125")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "puzzle/planning")
         (credit "Eric Piette")
         (date "1883")

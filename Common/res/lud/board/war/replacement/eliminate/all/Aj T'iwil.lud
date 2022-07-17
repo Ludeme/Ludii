@@ -42,7 +42,7 @@
                         )
                         (to 
                             ("SiteToMoveOnTrack" from:(from) "Track" (value))
-                            (apply (and  ("CaptureMove") (forget Value "Throws" (value))))
+                            (apply (and ("CaptureMove") (forget Value "Throws" (value))))
                         )
                     )
                 )
@@ -94,7 +94,7 @@
         )
         }
         
-        (end  (if (no Pieces Enemy) (result TeamMover Win)))
+        (end (if (no Pieces Enemy) (result TeamMover Win)))
     )
 )
 
@@ -124,7 +124,7 @@
         } 
         >
         "The game has 6 players."
-    )   
+    )  
     (item "8" <8> <20>
         <
         (set Team 1 {P1 P2 P3 P4})
@@ -151,7 +151,7 @@
         } 
         >
         "The game has 8 players."
-    )   
+    )  
     (item "10" <10> <25>
         <
         (set Team 1 {P1 P2 P3 P4 P5})
@@ -182,7 +182,7 @@
         } 
         >
         "The game has 10 players."
-    )   
+    )  
     (item "12" <12> <25>
         <
         (set Team 1 {P1 P2 P3 P4 P5 P6})
@@ -217,7 +217,7 @@
         } 
         >
         "The game has 12 players."
-    )   
+    )  
     (item "14" <14> <25>
         <
         (set Team 1 {P1 P2 P3 P4 P5 P6 P7})
@@ -256,7 +256,7 @@
         } 
         >
         "The game has 14 players."
-    )   
+    )  
     (item "16" <16> <30>
         <
         (set Team 1 {P1 P2 P3 P4 P5 P6 P7 P8})
@@ -299,7 +299,7 @@
         } 
         >
         "The game has 16 players."
-    )   
+    )  
 })
 
 //------------------------------------------------------------------------------
@@ -325,7 +325,7 @@
         ")
         (source "Verbeeck 1998: 87-90.")
         (id "644")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
         }

@@ -1,0 +1,21 @@
+// Defines a surround capture in all the directions specified (by default Adjacent). The enemy piece is removed.
+// #1 = Directions of the capture.
+// #2 = Contraints related to the number of pieces to capture.
+// #3 = The consequences.
+// @example ("SurroundCapture")
+
+(define "SurroundCapture"
+    (surround 
+        (from (last To)) 
+        #1
+        (between 
+            #2
+            if:("IsEnemyAt" (between)) 
+            (apply (remove (between)))
+        ) 
+        (to 
+            if:("IsFriendAt" (to))
+        )
+        #3
+    )
+)

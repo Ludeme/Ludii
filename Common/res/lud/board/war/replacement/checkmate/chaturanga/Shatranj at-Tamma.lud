@@ -11,20 +11,20 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
 )
 
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
 )
 
 //------------------------------------------------------------------------------
 
 (game "Shatranj at-Tamma" 
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment {
         (piece "Pawn" Each
             (or 
@@ -44,7 +44,7 @@
             (move
                 Step 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
                 )
             )		
@@ -54,7 +54,7 @@
                 Step 
                 Diagonal
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
                 )
             )		
@@ -64,7 +64,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )			
@@ -73,7 +73,7 @@
             (move
                 Step 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
                 )
             )		
@@ -83,7 +83,7 @@
                 Slide 
                 Orthogonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )		
@@ -96,14 +96,14 @@
                 (to 
                     if:(or 
                         (is Empty (to)) 
-                        (and (is Enemy (who at:(to))) (!= (what at:(to)) (id "Elephant" Next)))
+                        (and ("IsEnemyAt" (to)) (!= (what at:(to)) (id "Elephant" Next)))
                     ) 
                     "CaptureToPiece"
                 )
             )		
         )
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
         (board (square 10))
     })
     (rules
@@ -137,7 +137,7 @@
                 ) 
                 (result Mover Win)
             ) 
-            (if (no Moves Next) (result Mover Win))
+            ("BlockWin")
         })
     )
 )
@@ -153,7 +153,7 @@
         (rules "10x10 board. The pieces move as follows, with the number per player: 1 x Shah (king): one space orthogonally or diagonally; 1 x Fers (counselor): one square diagonally; 2 x Rukh (rook): any number of spaces orthogonally; 2x Dabbaba: one space orthogonally or diagonally; 2 x Pil (elephant): two squares diagonally, jumping over the first. Cannot capture another Pil; 2 x Asb (horse): one square orthogonally, and then one square diagonally, jumping over any intervening pieces; 10 x Sarbaz (soldier): one space forward orthogonally or one space forward diagonally to capture. No en passant. Sarbaz begins in the third rank, and is promoted to Fers when reaching the tenth rank, only if the Fers has been captured. Otherwise, the other player captures it. No castling. Stalemate results in win for player causing it. The player who checkmates the king wins.")
         (source "Murray 1913: 341-342.")
         (id "308")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
         }

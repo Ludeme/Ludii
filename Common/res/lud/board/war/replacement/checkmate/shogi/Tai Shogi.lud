@@ -1,7 +1,7 @@
 (define "CaptureEnemyAndPromote"
     (apply 
         (if 
-            (is Enemy (who at:(to))) 
+            ("IsEnemyAt" (to)) 
             (and
                 (remove (to))
                 ("Promote")
@@ -20,7 +20,7 @@
             )
             (set State at:(from) 1)	
         )
-    )  
+    ) 
 )
 
 (define "SlideMove" 
@@ -29,7 +29,7 @@
         #1
         #2 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             ("CaptureEnemyAndPromote")
         ) 
         #3
@@ -41,7 +41,7 @@
         Step
         #1
         (to 
-            if:(not (is Friend (who at:(to)))) 
+            if:(not ("IsFriendAt" (to))) 
             ("CaptureEnemyAndPromote")
         ) 
         #2 
@@ -56,7 +56,7 @@
             if:True
         )
         (to 
-            if:(not (is Friend (who at:(to)))) 
+            if:(not ("IsFriendAt" (to))) 
             ("CaptureEnemyAndPromote")
         ) 
         #2 
@@ -74,7 +74,7 @@
             if:True
         )
         (to 
-            if:(not (is Friend (who at:(to)))) 
+            if:(not ("IsFriendAt" (to))) 
             ("CaptureEnemyAndPromote")
         ) 
         #5 
@@ -86,7 +86,7 @@
         Step
         #1
         (to 
-            if:(not (is Friend (who at:(to)))) 
+            if:(not ("IsFriendAt" (to))) 
             ("CaptureEnemyAndPromote")
         ) 
         (then 
@@ -94,7 +94,7 @@
                 (from (last To))
                 #2
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     ("CaptureEnemyAndPromote")
                 )	
             )
@@ -111,7 +111,7 @@
                 (forEach Direction 
                     (from (to)) 
                     (directions {FR FL}) 
-                    (if (not (is Friend (who at:(to)))) 
+                    (if (not ("IsFriendAt" (to))) 
                         (move 
                             (from) 
                             (to 
@@ -128,7 +128,7 @@
 //------------------------------------------------------------------------------
 
 (game "Tai Shogi"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 25))
         
@@ -157,7 +157,7 @@
                     Leap 
                     "KnightWalk" 
                     (to 
-                        if:(not (is Friend (who at:(to)))) 
+                        if:(not ("IsFriendAt" (to))) 
                         ("CaptureEnemyAndPromote")
                     ) 
                 )
@@ -201,14 +201,14 @@
                     Adjacent 
                     (between 
                         (exact 3)	
-                        if:(not (is Friend (who at:(between))))
+                        if:(not ("IsFriendAt" (between)))
                         (apply (remove (between)))
                     )
                     (to 
                         (apply 
-                            if:(not (is Friend (who at:(to))))
+                            if:(not ("IsFriendAt" (to)))
                             (if 
-                                (is Enemy (who at:(to))) 
+                                ("IsEnemyAt" (to)) 
                                 (and
                                     (remove (to))
                                     ("Promote")
@@ -226,7 +226,7 @@
                         if:True
                     )
                     (to 
-                        if:(not (is Friend (who at:(to)))) 
+                        if:(not ("IsFriendAt" (to))) 
                         ("CaptureEnemyAndPromote")
                     ) 
                 )
@@ -238,7 +238,7 @@
                         if:True
                     )
                     (to 
-                        if:(not (is Friend (who at:(to)))) 
+                        if:(not ("IsFriendAt" (to))) 
                         ("CaptureEnemyAndPromote")
                     ) 
                 )
@@ -251,9 +251,9 @@
                     )
                     (to 
                         if:(and {
-                            (not (is Friend (who at:(to))))
+                            (not ("IsFriendAt" (to)))
                             (!= (to) (ahead (to) (directions Cell from:(from) to:(to))))
-                            (not (is Friend (who at:(ahead (to) (directions Cell from:(from) to:(to))))))
+                            (not ("IsFriendAt" (ahead (to) (directions Cell from:(from) to:(to)))))
                         }) 
                         ("CaptureEnemyAndPromote")
                     )
@@ -274,8 +274,8 @@
                     (to 
                         if:(and {
                             (!= (to) (ahead (to) (directions Cell from:(to) to:(from))))
-                            (not (is Friend (who at:(ahead (to) (directions Cell from:(to) to:(from))))))
-                            (not (is Friend (who at:(to)))) 
+                            (not ("IsFriendAt" (ahead (to) (directions Cell from:(to) to:(from)))))
+                            (not ("IsFriendAt" (to))) 
                         })
                         ("CaptureEnemyAndPromote")
                     )
@@ -367,8 +367,8 @@
                     (to 
                         if:(and {
                             (!= (to) (ahead (to) (directions Cell from:(to) to:(from))))
-                            (not (is Friend (who at:(ahead (to) (directions Cell from:(to) to:(from))))))
-                            (not (is Friend (who at:(to)))) 
+                            (not ("IsFriendAt" (ahead (to) (directions Cell from:(to) to:(from)))))
+                            (not ("IsFriendAt" (to))) 
                         })
                         ("CaptureEnemyAndPromote")
                     )
@@ -400,8 +400,8 @@
                     (to 
                         if:(and {
                             (!= (to) (ahead (to) (directions Cell from:(to) to:(from))))
-                            (not (is Friend (who at:(ahead (to) (directions Cell from:(to) to:(from))))))
-                            (not (is Friend (who at:(to)))) 
+                            (not ("IsFriendAt" (ahead (to) (directions Cell from:(to) to:(from)))))
+                            (not ("IsFriendAt" (to))) 
                         })
                         ("CaptureEnemyAndPromote")
                     )
@@ -489,7 +489,7 @@
                     Leap 
                     "KnightWalk" 
                     (to 
-                        if:(not (is Friend (who at:(to)))) 
+                        if:(not ("IsFriendAt" (to))) 
                         ("CaptureEnemyAndPromote")
                     ) 
                 )
@@ -497,9 +497,9 @@
             )
         )
         
-        (piece "WhiteHorse" Each ("SlideMove" (directions {Forwards Backward})) )
+        (piece "WhiteHorse" Each ("SlideMove" (directions {Forwards Backward})))
         
-        (piece "Whale" Each ("SlideMove" (directions {Forward Backwards})) )
+        (piece "Whale" Each ("SlideMove" (directions {Forward Backwards})))
         
         (piece "StandardBearer" Each
             (or 
@@ -578,7 +578,7 @@
         (piece "GoldenBird" Each
             (or {
                 ("SlideMove" (directions {Rightward Leftward}) (between (max 2)))
-                ("SlideMove"  Diagonal (between (max 3)))
+                ("SlideMove" Diagonal (between (max 3)))
                 ("SlideMove" (directions {Forward Backward}))
                 }
             )
@@ -587,7 +587,7 @@
         (piece "GreatDragon" Each
             (or {
                 ("SlideMove" (directions {Forward Backward}) (between (max 2)))
-                ("SlideMove"  (directions {BR BL}) (between (max 3)))
+                ("SlideMove" (directions {BR BL}) (between (max 3)))
                 ("SlideMove" (directions {Rightward Leftward}))
                 (move // jump to two steps.
                     Hop
@@ -597,7 +597,7 @@
                         if:True
                     )
                     (to 
-                        if:(not (is Friend (who at:(to)))) 
+                        if:(not ("IsFriendAt" (to))) 
                         ("CaptureEnemyAndPromote")
                     ) 
                 )
@@ -619,14 +619,14 @@
                     Adjacent 
                     (between 
                         (exact 3)	
-                        if:(not (is Friend (who at:(between))))
+                        if:(not ("IsFriendAt" (between)))
                         (apply (remove (between)))
                     )
                     (to 
                         (apply 
-                            if:(not (is Friend (who at:(to))))
+                            if:(not ("IsFriendAt" (to)))
                             (if 
-                                (is Enemy (who at:(to))) 
+                                ("IsEnemyAt" (to)) 
                                 (and
                                     (remove (to))
                                     ("Promote")
@@ -644,7 +644,7 @@
                         if:True
                     )
                     (to 
-                        if:(not (is Friend (who at:(to)))) 
+                        if:(not ("IsFriendAt" (to))) 
                         ("CaptureEnemyAndPromote")
                     ) 
                 )
@@ -656,7 +656,7 @@
                         if:True
                     )
                     (to 
-                        if:(not (is Friend (who at:(to)))) 
+                        if:(not ("IsFriendAt" (to))) 
                         ("CaptureEnemyAndPromote")
                     ) 
                 )
@@ -669,9 +669,9 @@
                     )
                     (to 
                         if:(and {
-                            (not (is Friend (who at:(to))))
+                            (not ("IsFriendAt" (to)))
                             (!= (to) (ahead (to) (directions Cell from:(from) to:(to))))
-                            (not (is Friend (who at:(ahead (to) (directions Cell from:(from) to:(to))))))
+                            (not ("IsFriendAt" (ahead (to) (directions Cell from:(from) to:(to)))))
                         }) 
                         ("CaptureEnemyAndPromote")
                     )
@@ -692,8 +692,8 @@
                     (to 
                         if:(and {
                             (!= (to) (ahead (to) (directions Cell from:(to) to:(from))))
-                            (not (is Friend (who at:(ahead (to) (directions Cell from:(to) to:(from))))))
-                            (not (is Friend (who at:(to)))) 
+                            (not ("IsFriendAt" (ahead (to) (directions Cell from:(to) to:(from)))))
+                            (not ("IsFriendAt" (to))) 
                         })
                         ("CaptureEnemyAndPromote")
                     )
@@ -757,13 +757,13 @@
             )			
         )
         
-        (piece "ViolentOx" Each ("SlideMove" Orthogonal (between (max 2)) ))
+        (piece "ViolentOx" Each ("SlideMove" Orthogonal (between (max 2))))
         
-        (piece "FlyingDragon" Each ("SlideMove" Diagonal (between (max 2)) ))
+        (piece "FlyingDragon" Each ("SlideMove" Diagonal (between (max 2))))
         
-        (piece "OldRat" Each ("SlideMove" (directions {Backward FR FL}) (between (max 2)) ))
+        (piece "OldRat" Each ("SlideMove" (directions {Backward FR FL}) (between (max 2))))
         
-        (piece "EnchantedBadger" Each ("SlideMove" (directions {Forward Rightward Leftward}) (between (max 2)) ))
+        (piece "EnchantedBadger" Each ("SlideMove" (directions {Forward Rightward Leftward}) (between (max 2))))
         
         (piece "FlyingHorse" Each
             (or 
@@ -814,7 +814,7 @@
             )		
         )
         
-        (piece "ReverseChariot" Each ("SlideMove" (directions {Backward Forward}) ))
+        (piece "ReverseChariot" Each ("SlideMove" (directions {Backward Forward})))
         
         (piece "PoisonSnake" Each
             (or 
@@ -858,83 +858,83 @@
             )		
         )
         
-        (piece "DrunkenElephant" Each ("StepMove" (difference Adjacent Backward) ))
+        (piece "DrunkenElephant" Each ("StepMove" (difference Adjacent Backward)))
         
-        (piece "NeighborKing" Each ("StepMove" (difference Adjacent Backward) ))
+        (piece "NeighborKing" Each ("StepMove" (difference Adjacent Backward)))
         
-        (piece "BlindTiger" Each ("StepMove" (difference Adjacent Forward) ))
+        (piece "BlindTiger" Each ("StepMove" (difference Adjacent Forward)))
         
-        (piece "FreeTiger" Each ("SlideMove" (difference Adjacent Forward) ))
+        (piece "FreeTiger" Each ("SlideMove" (difference Adjacent Forward)))
         
-        (piece "BlindMonkey" Each ("StepMove" (directions {Rightwards Leftwards}) ))
+        (piece "BlindMonkey" Each ("StepMove" (directions {Rightwards Leftwards})))
         
-        (piece "FerociousLeopard" Each ("StepMove" (directions {Backwards Forwards}) ))
+        (piece "FerociousLeopard" Each ("StepMove" (directions {Backwards Forwards})))
         
-        (piece "FreeLeopard" Each ("SlideMove" (directions {Backwards Forwards}) ))
+        (piece "FreeLeopard" Each ("SlideMove" (directions {Backwards Forwards})))
         
-        (piece "RecliningDragon" Each ("StepMove" (directions {Backwards Forward Rightward Leftward}) ))
+        (piece "RecliningDragon" Each ("StepMove" (directions {Backwards Forward Rightward Leftward})))
         
-        (piece "FreeDragon" Each ("SlideMove" (directions {Backwards Forward Rightward Leftward}) ))
+        (piece "FreeDragon" Each ("SlideMove" (directions {Backwards Forward Rightward Leftward})))
         
-        (piece "ChineseCock" Each ("StepMove" (directions {Backward FR FL Rightward Leftward}) ))
+        (piece "ChineseCock" Each ("StepMove" (directions {Backward FR FL Rightward Leftward})))
         
-        (piece "OldMonkey" Each ("StepMove" (directions {Backwards FR FL}) ))
+        (piece "OldMonkey" Each ("StepMove" (directions {Backwards FR FL})))
         
-        (piece "EvilWolf" Each ("StepMove" (directions {Forwards Rightward Leftward}) ))
+        (piece "EvilWolf" Each ("StepMove" (directions {Forwards Rightward Leftward})))
         
-        (piece "FreeWolf" Each ("SlideMove" (directions {Forwards Rightward Leftward}) ))
+        (piece "FreeWolf" Each ("SlideMove" (directions {Forwards Rightward Leftward})))
         
-        (piece "AngryBoar" Each ("StepMove" Orthogonal ))
+        (piece "AngryBoar" Each ("StepMove" Orthogonal))
         
-        (piece "CatSword" Each ("StepMove" Diagonal ))
+        (piece "CatSword" Each ("StepMove" Diagonal))
         
-        (piece "FreeCat" Each ("SlideMove" Diagonal ))
+        (piece "FreeCat" Each ("SlideMove" Diagonal))
         
-        (piece "CoiledSerpent" Each ("StepMove" (directions {Forward Backwards}) ))
+        (piece "CoiledSerpent" Each ("StepMove" (directions {Forward Backwards})))
         
-        (piece "FreeSerpent" Each ("SlideMove" (directions {Forward Backwards}) ))
+        (piece "FreeSerpent" Each ("SlideMove" (directions {Forward Backwards})))
         
-        (piece "DarkSpirit" Each ("StepMove" (directions {Rightward FR FL BR}) ))
+        (piece "DarkSpirit" Each ("StepMove" (directions {Rightward FR FL BR})))
         
-        (piece "Deva" Each ("StepMove" (directions {Leftward FR FL BL}) ))
+        (piece "Deva" Each ("StepMove" (directions {Leftward FR FL BL})))
         
-        (piece "RightGeneral" Each ("StepMove" (difference Adjacent Rightward) ))
+        (piece "RightGeneral" Each ("StepMove" (difference Adjacent Rightward)))
         
-        (piece "LeftGeneral" Each ("StepMove" (difference Adjacent Leftward) ))
+        (piece "LeftGeneral" Each ("StepMove" (difference Adjacent Leftward)))
         
-        (piece "GoldGeneral" Each ("StepMove" (directions {Forwards Rightward Leftward Backward}) ))
+        (piece "GoldGeneral" Each ("StepMove" (directions {Forwards Rightward Leftward Backward})))
         
-        (piece "FreeGold" Each ("SlideMove" (directions {Forwards Rightward Leftward Backward})  ))
+        (piece "FreeGold" Each ("SlideMove" (directions {Forwards Rightward Leftward Backward}) ))
         
-        (piece "SilverGeneral" Each ("StepMove" (directions {Forwards BR BL}) ))
+        (piece "SilverGeneral" Each ("StepMove" (directions {Forwards BR BL})))
         
-        (piece "FreeSilver" Each ("SlideMove" (directions {Forwards BR BL}) ))
+        (piece "FreeSilver" Each ("SlideMove" (directions {Forwards BR BL})))
         
-        (piece "CopperGeneral" Each ("StepMove" (directions {Forwards Backward}) ))
+        (piece "CopperGeneral" Each ("StepMove" (directions {Forwards Backward})))
         
-        (piece "FreeCopper" Each ("SlideMove" (directions {Forwards Backward})  ))
+        (piece "FreeCopper" Each ("SlideMove" (directions {Forwards Backward}) ))
         
-        (piece "TileGeneral" Each ("StepMove" (directions {FR FL Backward}) ))
+        (piece "TileGeneral" Each ("StepMove" (directions {FR FL Backward})))
         
-        (piece "FreeTile" Each ("SlideMove" (directions {FR FL Backward})  ))
+        (piece "FreeTile" Each ("SlideMove" (directions {FR FL Backward}) ))
         
-        (piece "IronGeneral" Each ("StepMove" Forwards ))
+        (piece "IronGeneral" Each ("StepMove" Forwards))
         
-        (piece "FreeIron" Each ("SlideMove" Forwards ))
+        (piece "FreeIron" Each ("SlideMove" Forwards))
         
-        (piece "WoodGeneral" Each ("SlideMove" (directions {FR FL}) (between (max 2)) ))
+        (piece "WoodGeneral" Each ("SlideMove" (directions {FR FL}) (between (max 2))))
         
-        (piece "StoneGeneral" Each ("StepMove" (directions {FR FL}) ))
+        (piece "StoneGeneral" Each ("StepMove" (directions {FR FL})))
         
-        (piece "FreeStone" Each ("SlideMove" (directions {FR FL})  ))
+        (piece "FreeStone" Each ("SlideMove" (directions {FR FL}) ))
         
-        (piece "EarthGeneral" Each ("StepMove" (directions {Forward Backward}) ))
+        (piece "EarthGeneral" Each ("StepMove" (directions {Forward Backward})))
         
-        (piece "GoBetween" Each ("StepMove" (directions {Forward Backward}) ))
+        (piece "GoBetween" Each ("StepMove" (directions {Forward Backward})))
         
-        (piece "FreeEarth" Each ("SlideMove" (directions {Forward Backward}) ))
+        (piece "FreeEarth" Each ("SlideMove" (directions {Forward Backward})))
         
-        (piece "FreeGoer" Each ("SlideMove" (directions {Forward Backward}) ))
+        (piece "FreeGoer" Each ("SlideMove" (directions {Forward Backward})))
         
         (piece "Knight" Each ("ForwardKnightMove"))
         
@@ -952,9 +952,9 @@
             )
         )
         
-        (piece "RamsHeadSoldier" Each ("SlideMove" (directions {FR FL}) ))
+        (piece "RamsHeadSoldier" Each ("SlideMove" (directions {FR FL})))
         
-        (piece "Lance" Each ("SlideMove" Forward ))
+        (piece "Lance" Each ("SlideMove" Forward))
         
         (piece "Pawn" Each ("StepMove" Forward))
         
@@ -1199,7 +1199,7 @@
 
 (option "Variant" <Variant> args:{ <type> }
     {
-    (item "Wikipedia"   <>       "The rules are describing from wikipedia.")   
+    (item "Wikipedia"  <>    "The rules are describing from wikipedia.")  
 })
 
 //------------------------------------------------------------------------------
@@ -1231,7 +1231,7 @@
         (useFor "Ruleset/Wikipedia (Suggested)" (id "1452"))
         (source "Banaschak 2001: 144.")
         (id "1452")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/shogi")
         (credit "Eric Piette")
         }

@@ -1,31 +1,27 @@
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "PiecesOwnedBy" (+ (count at:(mapEntry #1)) (count in:(sites #1))))
 
 //------------------------------------------------------------------------------
 
 (game "Whyo"
-    (players 2)  
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 6
             (track "TrackCCW" "1,E,N,W" loop:True)
         )
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
         (piece "Seed" Shared)
-        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
-    })  
+        (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
+    }) 
     (rules 
-        (start (set Count 4 to:(sites Track) ) )
+        (start (set Count 4 to:(sites Track)))
         
         (play 
-            (move
-                Select 
+            (move Select 
                 (from 
-                    (if 
-                        (is Mover Prev) 
-                        "PlayFromLastHole" 
+                    (if ("SameTurn") 
+                        "LastHoleSowed" 
                         (if (= (score P1) 1)
                             (if (is Mover P1)
                                 (union (sites Mover) (sites {12}))
@@ -98,7 +94,7 @@
         )
         
         (end
-            (if  (= (var) 1)
+            (if (= (var) 1)
                 (byScore)
             )
         )
@@ -107,14 +103,14 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Whyo is a two-row mancala-style board game played in Oron, Nigeria. The name is reportedly taken from the English \"Why oh!\", an exclamation made when referring to smart tricks.")
         (rules "Two rows of six holes with two stores. Four counters in each hole. Players sow in an anti-clockwise direction from a hole in their row. Sowing ends when the last counter falls into a hole, making it contain four counters, which are taken. Sowing also ends when the last counter falls into an empty hole. Sowing continues in any other scenario by picking up the contents of the hole where the last counter was dropped and continuing to sow. The game ends when one player can no longer move. The remaining counters are taken by the last player that was able to move and put into the store. A new round begins: The winner of the previous round now owns seven holes - the six in his row and the next hole in the opponent's row. Player takes fours from the extra hole.")
         (source "Murray 1951: 186.")
         (id "229")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }

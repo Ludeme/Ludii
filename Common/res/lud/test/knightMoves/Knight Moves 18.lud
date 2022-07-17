@@ -1,6 +1,6 @@
 // Description of the knight move with a diagonal step, then an orthogonal step but not around the original site.
 
-(define "RegionReached" (is In (last To) (sites Mover)) )
+(define "RegionReached" (is In (last To) (sites Mover)))
 
 //------------------------------------------------------------------------------
 
@@ -21,14 +21,14 @@
                                 if:(not (is In (to) (sites Around (from))))
                                 (apply 
                                     (if (and 
-                                            (not (is Friend (who at:(to))))
+                                            (not ("IsFriendAt" (to)))
                                             (not (is In (to) (sites To (slide (between if:True)))))
                                         )
                                         (move 
                                             (from) 
                                             (to 
                                                 (apply 
-                                                    if:(is Enemy (who at:(to)))
+                                                    if:("IsEnemyAt" (to))
                                                     (remove (to))
                                                 )
                                             )
@@ -44,16 +44,16 @@
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
         }
-    )  
+    ) 
     (rules 
         (start
             { 
-            (place "Knight1" (expand (sites Bottom)) )
-            (place "Knight2" (expand (sites Top)) )
+            (place "Knight1" (expand (sites Bottom)))
+            (place "Knight2" (expand (sites Top)))
             }
         )
         
-        (play (forEach Piece) )
+        (play (forEach Piece))
         
         (end (if "RegionReached" (result Mover Win)))
     )

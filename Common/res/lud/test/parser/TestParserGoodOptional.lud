@@ -1,10 +1,10 @@
-(game "Tic-Tac-Toe"  
-    (players 2)  
+(game "Tic-Tac-Toe" 
+    (players 2) 
     (equipment { 
         (board (square)) 
         (piece "Disc" P1) 
         (piece "Cross" P2) 
-    })  
+    }) 
     (rules 
         (play (add to:(sites Empty)))
         (end (if (is Line 3) (result Mover Win)))
@@ -24,7 +24,7 @@
         (version "0.9.3")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in England, from around 1850CE to 1883CE.")
+        (origin "This game was played in England, from around 1850CE to 1883CE.")
         }
     )
     

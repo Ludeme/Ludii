@@ -1,6 +1,6 @@
 (define "CaptureToPiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
             )
@@ -11,7 +11,7 @@
 //------------------------------------------------------------------------------
 
 (game "Shakhmaty (Early Modern)" 
-    (players 2)  
+    (players 2) 
     (equipment { // Each player has one king, one queen, two bishops, two knights, two rooks, and eight pawns.
         (board (square 8))
         (piece "King" Each (move [#])) 
@@ -20,7 +20,7 @@
                 (move
                     Slide 
                     (to 
-                        if:(is Enemy (who at:(to))) 
+                        if:("IsEnemyAt" (to)) 
                         "CaptureToPiece"
                     ) 
                 ) 
@@ -28,7 +28,7 @@
                     Leap 
                     "KnightWalk" 
                     (to 
-                        if:(not (is Friend (who at:(to)))) 
+                        if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece"
                     ) 
                 )
@@ -52,6 +52,15 @@
     
     (info
         {
+        (description "This version of Shakhmaty appears during the early modern period as a method for speeding up the game. ")
+        (aliases {"Shakhmaty"})
+        (rules "8x8 board. Each player has one king, one queen, two bishops, two knights, two rooks, and eight pawns. The Queen moves any distance orthogonally or diagonally, or one space orthogonally and then another space diagonally, jumping over any intervening pieces.")
+        (source "DLP evidence.")
+        (id "1429")
+        (version "1.3.5")
+        (classification "board/war/replacement/checkmate/chaturanga/reconstruction")
+        (credit "Eric Piette")
+        (origin  "This game was played in Russia., from around 1500 to 1799.")
         }
     )
     

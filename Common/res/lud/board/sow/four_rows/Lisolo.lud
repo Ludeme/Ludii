@@ -1,14 +1,11 @@
 (define "Columns" 8)
 
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
 (define "PiecesOwnedBy" (count in:(sites #1 "Home")))
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 
 //------------------------------------------------------------------------------
 
-(game "Lisolo"  
-    (players 2)  
+(game "Lisolo" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 ("Columns") store:None
@@ -18,15 +15,14 @@
             }		
         )
         (piece "Seed" Shared)
-        (regions "Home" P1 (sites Track "Track1"))  // P1 Home
-        (regions "Home" P2 (sites Track "Track2"))  // P2 home
+        (regions "Home" P1 (sites Track "Track1")) // P1 Home
+        (regions "Home" P2 (sites Track "Track2")) // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top) ))   // P2 inner Home
-        }
-    )  
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))  // P2 inner Home
+    }) 
     (rules 
         
-        (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home") ) ))
+        (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home"))))
         
         phases:{
         (phase "Opening"
@@ -51,12 +47,11 @@
         )
         (phase "Sowing"
             (play
-                (move
-                    Select
+                (move Select
                     (from 
                         (if 
-                            (is Mover Prev) 
-                            "PlayFromLastHole" 
+                            ("SameTurn") 
+                            "LastHoleSowed" 
                             (sites Mover) 
                         ) 
                         if:(> (count at:(from)) 0)
@@ -66,24 +61,24 @@
                             "Track"
                             owner:(mover)
                             apply:(if (> (count at:(to)) 1)
-                                (if  (not (is In (to) (sites Mover "Inner")))
+                                (if (not (is In (to) (sites Mover "Inner")))
                                     (moveAgain)
                                     (if (and 
-                                            (= 0 (count at:"OppositePit"))
-                                            (= 0 (count at:"OppositeOuterPit"))
+                                            (= 0 (count at:("OppositePit" (to))))
+                                            (= 0 (count at:("OppositeOuterPit" (to))))
                                         )
                                         (moveAgain)
                                         (and
-                                            (if (!= 0 (count at:"OppositePit"))
+                                            (if (!= 0 (count at:("OppositePit" (to))))
                                                 (remove 
-                                                    ("OppositePit") 
-                                                    count:(count at:"OppositePit" )
+                                                    ("OppositePit" (to)) 
+                                                    count:(count at:("OppositePit" (to)))
                                                 ) 
                                             )
-                                            (if (!= 0 (count at:"OppositeOuterPit"))
+                                            (if (!= 0 (count at:("OppositeOuterPit" (to))))
                                                 (remove 
-                                                    ("OppositeOuterPit") 
-                                                    count:(count at:"OppositeOuterPit" )
+                                                    ("OppositeOuterPit" (to)) 
+                                                    count:(count at:("OppositeOuterPit" (to)))
                                                 ) 
                                             )
                                         )
@@ -92,28 +87,30 @@
                             )
                         )
                     )
-                )	  
+                )	 
             )
         )
         }
         
-        (end {
-            (if (= 0 ("PiecesOwnedBy" P1)) (result P2 Win))
-            (if (= 0 ("PiecesOwnedBy" P2)) (result P1 Win))
-        })
+        (end 
+            (forEach Player
+                if:(= 0 ("PiecesOwnedBy" Player))
+                (result Player Loss)
+            )		
+        )
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Lisolo is a four-row mancala-stly eboard game played by the Bemba people of central Africa.")
         (rules "4x8 board. Two counters in each hole. Before play, players may arrange their counters as they see fit in their holes. Players alternate turns sowing the counters from one of their holes in an anticlockwise direction. When the final counter lands in an empty hole, their turn is over. If the final counter lands in an occupied hole, the contents of the two opposite hole in the opponent's rows are captured. If both do not have counters, then the player picks up the counters from the hole the last counter fell into and continues sowing. The player who captures all of the opponent's counters wins.")
         (source "Edmé 1946: 160.")
         (id "1384")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         (origin  "This game was played in Democratic Republic of Congo, around 1946.")

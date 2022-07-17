@@ -1,10 +1,10 @@
-(game "Adugo"  
-    (players 2)  
+(game "Adugo" 
+    (players 2) 
     (equipment { 
         ("AlquerqueBoardWithBottomTriangle") 
-        (piece "Jaguar" P1 (or "HopCapture" "StepToEmpty") )
+        (piece "Jaguar" P1 (or "HopCapture" "StepToEmpty"))
         (piece "Dog" P2 "StepToEmpty") 
-    })  
+    }) 
     (rules 
         (start { 
             (place "Dog2" (difference (expand (sites Top) steps:2) (sites {"C5"})))
@@ -13,10 +13,7 @@
         
         (play (forEach Piece)) 
         
-        (end {
-            ("NoMoves" Loss)
-            (if (<= (count Pieces P2) <Num:dogs>) (result P1 Win))
-        })
+        (end ("NoMovesLossAndLessNumPiecesPlayerLoss" P2 <Num:dogs>))
     )
 )
 
@@ -24,7 +21,7 @@
 
 (option "End Rules" <Num> args:{ <dogs> }
     {
-    (item "Capture all the dogs"       <0> "The objective of the player 1 is to capture all the dogs.")*   
+    (item "Capture all the dogs"    <0> "The objective of the player 1 is to capture all the dogs.")*  
     (item "Capture at least five dogs" <9> "The objective of the player 1 is to capture at least five dogs.") 
     }
 )
@@ -40,7 +37,7 @@
         (rules "5x5 intersecting lines, forming a grid Diagonals in each quadrant. A triangular appendage, the apex being the midpoint of one of the sides of the grid. A line from the apex to the midpoint of the base, and a line bisecting this line and intersecting with the midpoints of the two sides of the triangle. There are fourteen \"dog\" pieces and one \"jaguar\" piece. The jaguar attempts to capture all of the dogs by hopping over them. The dogs attempt to surround the jaguar and block it from moving. Pieces move from the points where lines intersect to adjacent points along the lines on the board.")
         (source "Lima 2004.")
         (id "37")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/hunt")
         (credit "Eric Piette")
         }

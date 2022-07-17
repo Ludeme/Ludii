@@ -1,0 +1,10 @@
+// Checks if a site is empty and not visited so far in the same turn.
+// #1 = The site.
+// @example ("IsEmptyAndNotVisited" (to))
+
+(define "IsEmptyAndNotVisited"
+    (and 
+        (is Empty #1) 
+        (not (is Visited #1)) 
+    )
+)

@@ -91,14 +91,14 @@
 // Defines for Options
 
 (define "Connection" <BoardShape:directionsUsed>)
-(define "BoardUsed" <BoardShape:gridType> )
+(define "BoardUsed" <BoardShape:gridType>)
 
 (define "SquareGrid" (board (square <BoardSize:smallSide>) use:Vertex))
 (define "HexLimp" (board (tri Limping (- <BoardSize:smallSide> 1)) use:Vertex))
 (define "TriSquare" (board (tiling T33434 (- <BoardSize:smallSide> 2)) use:Vertex))
 (define "HexHex" (board (tri Hexagon <BoardSize:smallSide>) use:Vertex))
 (define "HexCell" (board (hex Hexagon <BoardSize:smallSide>) use:Cell))
-(define "Icosahedron" (board (add (remove (tri Limping 4) vertices:{0 1 3 4 5 6 7 8 9 10 11 13 15 17 18 19 20 23 24 25 26 27 31 32 34 35 36 37 39 40 42 43 44 45 46 47}) edges:{ {0 1} {0 2} {0 3} {0 9} {0 10} {1 2} {1 4} {1 6} {6 11} {7 11} {8 11} {1 9} {2 3} {3 5} {3 8} {3 10} {6 9} {8 10} {9 10} {9 11} {10 11} } ) use:Vertex))
+(define "Icosahedron" (board (add (remove (tri Limping 4) vertices:{0 1 3 4 5 6 7 8 9 10 11 13 15 17 18 19 20 23 24 25 26 27 31 32 34 35 36 37 39 40 42 43 44 45 46 47}) edges:{ {0 1} {0 2} {0 3} {0 9} {0 10} {1 2} {1 4} {1 6} {6 11} {7 11} {8 11} {1 9} {2 3} {3 5} {3 8} {3 10} {6 9} {8 10} {9 10} {9 11} {10 11} }) use:Vertex))
 
 //-----------------------------------------------
 // Main routine
@@ -196,9 +196,9 @@
 
 (option "Scoring Variants" <Scoring> args:{ <calculation> }
     {
-    (item "Simple Orthogonal Scoring" <"SimpleOrthoScoring">  "Largest orthogonal group scores 1 point per piece.")**
+    (item "Simple Orthogonal Scoring" <"SimpleOrthoScoring"> "Largest orthogonal group scores 1 point per piece.")**
     (item "Special Orthogonal Scoring" <"SpecialOrthoScoring"> "Largest orthogonal group scores 1 point per piece times the total count of the opponent's pieces")
-    (item "Simple Scoring" <"SimpleScoring">  "Largest group scores 1 point per piece.")
+    (item "Simple Scoring" <"SimpleScoring"> "Largest group scores 1 point per piece.")
     (item "Special Scoring" <"SpecialScoring"> "Largest group scores 1 point per piece times the total count of the opponent's pieces")
     }
 )
@@ -235,7 +235,7 @@
     Exception for Surplus Charge
 Immediately after placing to a cell with 4 or more oppositely charged neighbors, the player MUST, if possible, place the next stone on an otherwise unplayable empty cell with an equal number of both types of charge around it.")
 (id "1531")
-(version "1.3.4")
+(version "1.3.5")
 (classification "experimental")
 (author "Dale W. Walton")
 (credit "Dale W. Walton")
@@ -255,7 +255,7 @@ Immediately after placing to a cell with 4 or more oppositely charged neighbors,
     (board Colour InnerVertices (colour DarkGrey))
     (board Colour InnerEdges (colour DarkGrey))
     (show Edges Diagonal <BoardShape:DiagShow> (colour DarkGrey))
-    (board Background image:"Disc" fillColour:(colour 155	160 195) edgeColour:(colour 155	160 195) scaleX:1.2 scaleY:1.15 offsetX:0.021 offsetY:-0.015 )
+    (board Background image:"Disc" fillColour:(colour 155	160 195) edgeColour:(colour 155	160 195) scaleX:1.2 scaleY:1.15 offsetX:0.021 offsetY:-0.015)
     }
 )
 (ai

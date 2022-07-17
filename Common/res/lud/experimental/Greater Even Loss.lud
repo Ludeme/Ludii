@@ -1,15 +1,15 @@
 (define "LastStateRemove" (value Player Mover))
 
-(define "StoreStateRemoved" (set Value Mover (state at:(last To)) ))
+(define "StoreStateRemoved" (set Value Mover (state at:(last To))))
 
 //------------------------------------------------------------------------------
 
-(game "Greater Even Loss"  
-    (players 2)  
+(game "Greater Even Loss" 
+    (players 2) 
     (equipment { 
         (board (square 4)) 
         (piece "Disc" Each) 
-    })  
+    }) 
     (rules 
         (start {
             (place "Disc1" {"A1"} state:1) 
@@ -64,7 +64,7 @@
         (description "Greater Even Loss is a theoretical game designed to demonstrate Monte Carlo resistance. Each turn there is one strategically optimal move against a competent opponent and many losing moves.")
         (rules "Players take turns removing a piece of their colour whose number is higher than the last piece they removed (free choice of first piece). The mover loses if they remove an even numbered piece.")
         (id "1355")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "experimental")
         (author "Cameron Browne")
         (credit "Cameron Browne and Eric Piette")

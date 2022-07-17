@@ -1,13 +1,9 @@
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "OwnedHoles" 
     (if (is Mover P1)
         (sites (values Remembered "OwnedP1"))
         (sites (values Remembered "OwnedP2"))
     )
 )
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
-
 (define "RightMostEmpty" 
     (trackSite FirstSite "TrackCW"
         from:(mapEntry "RightMost" Mover)
@@ -24,8 +20,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Lam Waladach"  
-    (players 2)  
+(game "Lam Waladach" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 6 store:None
@@ -36,14 +32,14 @@
         )
         (piece "Seed" Shared)
         (hand Each)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
         (map "RightMost" {(pair P1 5) (pair P2 6)})
-    })  
+    }) 
     (rules 
         
         (start { 
-            (set Count 4 to:(sites Track) )
+            (set Count 4 to:(sites Track))
             (set RememberValue "OwnedP1" (sites Bottom))
             (set RememberValue "OwnedP2" (sites Top))
         })
@@ -86,7 +82,7 @@
                     (move Select 
                         (from 
                             (if 
-                                (and (not (is Pending)) (is Mover Prev))
+                                (and (not (is Pending)) ("SameTurn"))
                                 (sites {(var "Replay")})
                                 ("OwnedHoles") 
                             ) 
@@ -130,7 +126,7 @@
                     }
                     (then
                         (if ("NoPieceOnBoard")
-                            (and  
+                            (and 
                                 (forget Value "OwnedP1" All)
                                 (forget Value "OwnedP2" All)
                             )
@@ -167,13 +163,12 @@
             (nextPhase (all Passed) "Sowing")
         )
         }
-        
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Lam Waladach is a two-row mancala-style board game played in central Ethiopia. It begins with a stylized move.")
@@ -181,7 +176,7 @@
         ")
         (source "Pankhurst 1971: 177.")
         (id "360")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         (origin  "This game was played in Horn of Africa, around 1971.")

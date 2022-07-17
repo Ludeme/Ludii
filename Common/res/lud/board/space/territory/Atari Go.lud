@@ -1,12 +1,10 @@
-(define "HasFreedom" (> (count Liberties Orthogonal) 0))
-
 (define "CaptureSurroundedPiece"
     (enclose 
         (from (last To)) 
         Orthogonal 
         (between 
-            if:(is Enemy (who at:(between))) 
-            (apply         
+            if:("IsEnemyAt" (between)) 
+            (apply     
                 (and
                     (trigger "CaptureMade" Next)
                     (remove (between)) 
@@ -22,7 +20,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "Atari Go"  
+(game "Atari Go" 
     (players 2) 
     (equipment { 
         (board <Board> use:Vertex) 
@@ -32,12 +30,11 @@
     (rules 
         (play 
             (do
-                (move 
-                    Add
+                (move Add
                     (to (sites Empty))
                     (then ("CaptureSurroundedPiece"))
                 )
-                ifAfterwards:("HasFreedom")
+                ifAfterwards:("HasFreedom" Orthogonal)
             )
         )
         (end (if "HasMadeACapture" (result Mover Win)))
@@ -48,10 +45,10 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "9x9"      <(square 9)>     "The game is played on a 9x9 board.")   
-    (item "13x13"    <(square 13)>    "The game is played on a 13x13 board.")   
-    (item "15x15"    <(square 15)>    "The game is played on a 15x15 board.")   
-    (item "19x19"    <(square 19)>    "The game is played on a 19x19 board.")**   
+    (item "9x9"   <(square 9)>   "The game is played on a 9x9 board.")  
+    (item "13x13"  <(square 13)>  "The game is played on a 13x13 board.")  
+    (item "15x15"  <(square 15)>  "The game is played on a 15x15 board.")  
+    (item "19x19"  <(square 19)>  "The game is played on a 19x19 board.")**  
 })
 
 //------------------------------------------------------------------------------
@@ -64,7 +61,7 @@
         (rules "The rules are identical to Go, except the winning condition is to be the first to capture a stone.")
         (source "<a href=\"https://boardgamegeek.com/boardgame/188/go\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
         (id "440")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/territory")
         (credit "Eric Piette")
         }

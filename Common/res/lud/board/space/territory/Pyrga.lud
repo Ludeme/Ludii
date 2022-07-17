@@ -5,8 +5,7 @@
 // but this meant setting restrictions for next placement locations could not be based on piece orientation.
 
 (define "SetupHands"
-    (start
-        {
+    (start {
         (place "Disc1" (handSite P1 0))
         (place "Disc1" (handSite P1 1))
         (place "Disc1" (handSite P1 2))
@@ -38,8 +37,8 @@
         (place "TriangleN2" (handSite P2 12))
         (place "TriangleN2" (handSite P2 13))
         (place "TriangleN2" (handSite P2 14))
-        }
-))
+    })
+)
 
 (define "RemoveFromHand" 
     (remove (min (array (forEach (sites Hand Mover) if:(= (id #1 Mover) (what at:(site)))))))
@@ -51,29 +50,29 @@
         #2 
         stack:True 
         (then
-            (and
-                {
+            (and {
                 (forget Value All)
                 (set State at:(last To) level:(topLevel at:(last To)) 1)
                 ("RemoveFromHand" #1)
                 (remember Value (last To))
-                }
-))))
+            })
+        )
+    )
+)
 
 (define "AddSquare"
     (forEach Value (array #1)
         (move Add
             (piece
-                (if
-                    (= 0 (value))
+                (if (= 0 (value))
                     (id "SquareOrtho" Mover) 
                     (id "SquareDiag" Mover)
-            )) 
+                )
+            ) 
             #2 
             stack:True 
             (then
-                (and
-                    {
+                (and {
                     (forget Value All)
                     (set State at:(last To) level:(topLevel at:(last To)) 2)
                     ("RemoveFromHand" "SquareOrtho")
@@ -86,9 +85,13 @@
                         (forEach Site
                             (sites Around (last To) Diagonal)
                             (remember Value (site))
-                    ))
-                    }
-)))))
+                        )
+                    )
+                })
+            )
+        )
+    )
+)
 
 (define "AddTriangle"
     (do
@@ -97,8 +100,7 @@
             #3 
             stack:True 
             (then
-                (and
-                    {
+                (and {
                     (forget Value All)
                     (set State at:(last To) level:(topLevel at:(last To)) 3)
                     ("RemoveFromHand" "TriangleN")
@@ -106,15 +108,21 @@
                     (then
                         (and
                             (forEach Site
-                                (sites Distance (step #1 (to (sites Board))) from:(last To) <TriangleAhead:typeA>)  
+                                (sites Distance (step #1 (to (sites Board))) from:(last To) <TriangleAhead:typeA>) 
                                 (remember Value (site))
                             ) 
                             (forEach Site
                                 <TriangleTails:typeB> 
                                 (remember Value (site))
-        ))))))
-        ifAfterwards:(< 0 (size Array (values Remembered)))    // use remember to work around bug for (is Pending)
-))
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        ifAfterwards:(< 0 (size Array (values Remembered)))  // use remember to work around bug for (is Pending)
+    )
+)
 
 (define "EmptySite4" 
     (to (sites Empty) if:(< 0 (count Pieces Mover #1 in:(sites Hand Mover))))
@@ -123,76 +131,71 @@
 (define "ToSitesAllowedFor"
     (to
         (sites (values Remembered))
-        if:(and
-            {
+        if:(and {
             (> 3 (count Stack at:(to)))
             (!= #2 (state at:(to) level:0))
             (!= #2 (state at:(to) level:1))
             (< 0 (count Pieces Mover #1 in:(sites Hand Mover)))
-            }
-)))
+        })
+    )
+)
 
 //------------------------------------------------------------
 (game "Pyrga"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (square 4) use:Cell)
         (hand Each size:15)
-        (piece "Disc"  Each)
+        (piece "Disc" Each)
         (piece "SquareOrtho" Each)
-        (piece "SquareDiag"  Each)
+        (piece "SquareDiag" Each)
         (piece "TriangleN" Each)
         (piece "TriangleS" Each)
         (piece "TriangleE" Each)
         (piece "TriangleW" Each)
-        }
-    )
+    })
     (rules
         ("SetupHands")
         (play
             
             (priority
-                (or
-                    {
-                    ("AddDisc" "Disc" ("ToSitesAllowedFor" "Disc" 1))      
+                (or {
+                    ("AddDisc" "Disc" ("ToSitesAllowedFor" "Disc" 1))   
                     ("AddSquare" <Square:rotation> ("ToSitesAllowedFor" "SquareOrtho" 2))
                     ("AddTriangle" N "TriangleN" ("ToSitesAllowedFor" "TriangleN" 3) SW SE)
                     ("AddTriangle" E "TriangleE" ("ToSitesAllowedFor" "TriangleN" 3) NW SW)
                     ("AddTriangle" S "TriangleS" ("ToSitesAllowedFor" "TriangleN" 3) NW NE)
                     ("AddTriangle" W "TriangleW" ("ToSitesAllowedFor" "TriangleN" 3) NE SE)
-                    }
-                )
-                (or
-                    {
+                })
+                (or {
                     ("AddDisc" "Disc" ("EmptySite4" "Disc"))
                     ("AddSquare" <Square:rotation> ("EmptySite4" "SquareOrtho"))
                     ("AddTriangle" N "TriangleN" ("EmptySite4" "TriangleN") SW SE)
                     ("AddTriangle" E "TriangleE" ("EmptySite4" "TriangleN") NW SW)
                     ("AddTriangle" S "TriangleS" ("EmptySite4" "TriangleN") NW NE)
                     ("AddTriangle" W "TriangleW" ("EmptySite4" "TriangleN") NE SE)
-                    }
-                )
+                })
                 (then 
-                    (and
-                        {
+                    (and {
                         (<Control:majorityOrTop> (mover))
                         (<Control:majorityOrTop> (next))
-                        } 
-            )))
+                    })
+                )
+            )
             
         )
         (end
             (if
-                (or
-                    {
-                    (>= (score Mover) 300 )
-                    (>= (score Next) 300 )
+                (or {
+                    (>= (score Mover) 300)
+                    (>= (score Next) 300)
                     (no Moves Next)
-                    }
-                )
+                })
                 (byScore)
-))))
+            )
+        )
+    )
+)
 // -------------------
 // Scoring
 (define "UpdateScoreOfMajority"
@@ -202,17 +205,19 @@
                 (sites Board) // bug work-around Addscore was picking up the empty sites before I added the difference...
                 (if
                     (>
-                        (+
-                            {
+                        (+ {
                             (if (= #1 (who at:(site) level:0)) 1 0)
                             (if (= #1 (who at:(site) level:1)) 1 0)
                             (if (= #1 (who at:(site) level:2)) 1 0)
-                            }
-                        )
+                        })
                         (/ (+ 1 (topLevel at:(site))) 2)
                     )
-                    (addScore (player #1) (^ 10 (topLevel at:(site))))  
-)))))
+                    (addScore (player #1) (^ 10 (topLevel at:(site)))) 
+                )
+            )
+        )
+    )
+)
 
 (define "UpdateScoreOfTop"
     (set Score (player #1) 0
@@ -222,7 +227,11 @@
                 (if
                     (= #1 (who at:(site)))
                     (addScore (player #1) (^ 10 (topLevel at:(site)))) 
-)))))
+                )
+            )
+        )
+    )
+)
 
 //-----------------------------------------
 //Defines for Options
@@ -233,20 +242,20 @@
 
 (define "RayTails"
     (union
-        (sites Distance (step (directions { #2 }) (to (sites Board))) from:(last To) #1 ) 
-        (sites Distance (step (directions { #3 }) (to (sites Board))) from:(last To) #1 ) 
-))
+        (sites Distance (step (directions { #2 }) (to (sites Board))) from:(last To) #1) 
+        (sites Distance (step (directions { #3 }) (to (sites Board))) from:(last To) #1) 
+    )
+)
 
 (define "KnightTails"
     (difference
-        (sites
-            {
+        (sites {
             (ahead (ahead (ahead (last To) #2) #1) #2)
             (ahead (ahead (ahead (last To) #3) #1) #3)
-            }
-        )
+        })
         (sites Around (last To)) // to reject the cases where the off-board sites are relocated by (ahead)
-))
+    )
+)
 
 //----------------------------
 // Options
@@ -254,7 +263,7 @@
 (option "Control" <Control> args:{ <majorityOrTop> }
     {
     (item "Majority Control" <"UpdateScoreOfMajority"> "Stack is owned by player with majority of pieces there.")*** 
-    (item "Top Control" <"UpdateScoreOfTop"> "Stack is owned by player with piece on top.")  // my mis-reading - but reduces the connection between material on board and control. - more chaotic?
+    (item "Top Control" <"UpdateScoreOfTop"> "Stack is owned by player with piece on top.") // my mis-reading - but reduces the connection between material on board and control. - more chaotic?
     }
 ) 
 (option "Square Influence" <Square> args:{ <rotation> }
@@ -268,8 +277,8 @@
 (option "Triangle Ahead" <TriangleAhead> args:{ <typeA> }
     {
     (item "Any distance" <(range 1 Infinity)> "Next piece may be placed any distance ahead of triangle")**
-    (item "Adjacent only" <(exact 1)>  "Next piece may be placed directly in front of triangle")
-    (item "At distance 2 only" <(exact 2)>  "Next piece may be placed directly in front of triangle")
+    (item "Adjacent only" <(exact 1)> "Next piece may be placed directly in front of triangle")
+    (item "At distance 2 only" <(exact 2)> "Next piece may be placed directly in front of triangle")
     (item "Non-adjacent only" <(range 2 Infinity)> "Next piece may be placed at least 2 ahead of triangle")
     }
 )
@@ -278,11 +287,11 @@
     {
     (item "No tail placements" <"NoTails"> "but may not be placed around its tails.")**
     (item "Knight's Move" <("KnightTails" #1 #4 #5)> "and-or may be placed at a knight's distance from the tails.")
-    (item "Diagonal ray" <("RayTails" (range 1 Infinity) #4 #5)>  "and-or may be placed diagonally from the tails.")
+    (item "Diagonal ray" <("RayTails" (range 1 Infinity) #4 #5)> "and-or may be placed diagonally from the tails.")
     (item "Diagonal adjacent" <("RayTails" (exact 1) #4 #5)> "and-or may be placed diagonally adjacent to the tails.")*
     (item "Diagonal ray, non-adjacent" <("RayTails" (range 2 Infinity) #4 #5)> "and-or may be placed diagonally from the tails, but not adjacent.")*
     }
-)  
+) 
 
 //----------------------------
 
@@ -319,7 +328,7 @@
         If the active player has no possible moves the game ends with tiebreaks: most completed towers, or most two-piece towers, or most one-piece towers.")
         (id "1964")
         (source "<a href=\"https://boardgamegeek.com/boardgame/305723/pyrga\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/territory")
         (author "Mathias Daval")
         (publisher "<a href=\"http://www.argyxgames.com/pyrga\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Argyx Games</a>")
@@ -333,8 +342,8 @@
         (player Colour P2 (colour DarkRed))
         (player Colour P1 (colour Cream))
         (piece Scale "Disc" scaleX:.85 scaleY:.85)
-        (piece Scale "SquareOrtho"  scaleX:.75 scaleY:.75)
-        (piece Scale "SquareDiag"  scaleX:.75 scaleY:.75)
+        (piece Scale "SquareOrtho" scaleX:.75 scaleY:.75)
+        (piece Scale "SquareDiag" scaleX:.75 scaleY:.75)
         (piece Rotate "SquareDiag" degrees:45)
         (piece Scale "TriangleN" scaleX:.9 scaleY:.9)
         (piece Rotate "TriangleN" degrees:0)

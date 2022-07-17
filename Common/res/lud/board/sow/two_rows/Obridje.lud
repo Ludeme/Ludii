@@ -2,27 +2,25 @@
 
 //------------------------------------------------------------------------------
 
-(game "Obridje"  
-    (players 2)  
+(game "Obridje" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 6
             (track "Track" "1,E,N,W" loop:True)
         )
         (piece "Seed" Shared)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
-    })  
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
+    }) 
     (rules 
-        (start (set Count 4 to:(sites Track) ) )
+        (start (set Count 4 to:(sites Track)))
         
         (play 
-            (move
-                Select 
+            (move Select 
                 (from 
-                    (if 
-                        (is Mover Prev) 
+                    (if ("SameTurn") 
                         (sites {(var "Replay")})
                         (sites Mover) 
                     ) 
@@ -62,20 +60,13 @@
             )
         )
         
-        (end
-            (if (no Moves Next) 
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (no Moves Next)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Obridje is a two-row mancala-style board game that was played in Ghana and among the Ijaw people of Nigeria in the early twentieth century.")
@@ -83,7 +74,7 @@
         (rules "2x6 board with two stores. Four counters in each hole. Play may begin from any of the player's holes. Counters are sown anti-clockwise. If the last counter falls into an empty hole or a hole in either row, making that hole contain four counters, play ends, and the four counters are taken. Also, if at any time during the sowing a hole contains four counters, the player on whose row this occurs takes those counters. Otherwise, the player lifts the counters in the hole in which the final counter lands and continues sowing. Play ends when one player can no longer move. The player with the most counters wins.")
         (source "Murray 1951: 185-186.")
         (id "228")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }

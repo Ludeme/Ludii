@@ -1,0 +1,161 @@
+(define "ThrowValue" (mapEntry "ThrowDiceValue" (count Pips)))
+
+(define "SiteToMoveOnSelectedTrack" 
+    (if (= (value Player Mover) 2)
+        ("NextSiteOnTrack" ("ThrowValue") "TrackCCW")
+        ("NextSiteOnTrack" ("ThrowValue") "TrackCW")
+    )
+)
+
+(define "SiteToMoveOnTrackCW" ("NextSiteOnTrack" ("ThrowValue") "TrackCW"))
+(define "SiteToMoveOnTrackCCW" ("NextSiteOnTrack" ("ThrowValue") "TrackCCW"))
+
+(define "SelectCW" (set Value Mover 1))
+
+(define "SelectCCW" (set Value Mover 2))
+
+(define "RememberSelectedTrack"
+    (then 
+        (if 
+            ("IsOffBoard" (value Player Mover)) 
+            #1
+        )
+    )
+)
+
+(define "Goal" 0)
+
+(define "CaptureEnemyPiece" 
+    (apply 
+        if:("IsEnemyAt" (to)) 
+        (and (fromTo (from (to)) (to "Goal")) (set Value (player (who at:(to))) Off))
+    ) 
+)
+
+(define "MoveOn" 
+    (if ("IsNotOffBoard" #1)
+        (if (or
+                (is Empty #1)
+                (and 
+                    ("IsEnemyAt" #1)
+                    (or 
+                        (= (value Player Mover) (value Player (who at:#1))) 
+                        ("IsOffBoard" (value Player Mover))
+                    ) 
+                )
+            )
+            (move 
+                (from (from) level:(level)) 
+                (to 
+                    #1 
+                    "CaptureEnemyPiece"
+                )
+            )
+        )
+        #2
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Tugi-Epfe"
+    (players <Player:num>)
+    (equipment {
+        (board 
+            (merge {
+                (rectangle 1 11)
+                (rectangle 11 1)
+                (shift 0 10 (rectangle 1 11))
+                (shift 10 0 (rectangle 11 1))
+            })
+            {
+            (track "TrackCW" {0 10..19 20..29 39..30 9..0} directed:True)
+            (track "TrackCCW" {0..9 30..39 29..20 19..10 0} directed:True)
+            }
+            use:Edge
+        ) 
+        (dice d:2 facesByDie:{{0 10} {0 1} {0 1}} num:3) // 10 is the notched stick
+        (map "ThrowDiceValue" {
+            (pair 0 5) // All flat sides up
+            (pair 12 5) // All round sides up
+            (pair 2 1) // One flat and two round with no notches
+            (pair 1 3) // Two flat and one round with no notches
+            (pair 10 15) (pair 11 15) // Two flat or Two round with notches up
+        })
+        (piece "Horse" Each
+            (if ("IsOffBoard" (value Player Mover))
+                (or 
+                    ("MoveOn" ("SiteToMoveOnTrackCW") ("RememberSelectedTrack" ("SelectCW")))
+                    ("MoveOn" ("SiteToMoveOnTrackCCW") ("RememberSelectedTrack" ("SelectCCW")))
+                )
+                ("MoveOn" "SiteToMoveOnSelectedTrack")
+            )
+        )
+        (regions "AllSites" (sites Board))
+    })
+    (rules 
+        (start 
+            (place Stack items:{<Player:initHorse>} 0)
+        )
+        (play 
+            ("RollMove"
+                (forEach Piece)
+                (then 
+                    (if 
+                        (= (last To) ("Goal"))
+                        (remove (last To))
+                    )
+                )
+            )
+        )
+        (end ("EscapeWin"))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Players" <Player> args:{ <num> <initHorse>}
+    {
+    (item "2" <2> <"Horse2" "Horse1"> "The game has 2 players.")  
+    (item "3" <3> <"Horse3" "Horse2" "Horse1"> "The game has 3 players.") 
+    (item "4" <4> <"Horse4" "Horse3" "Horse2" "Horse1"> "The game has 4 players.") 
+    (item "5" <5> <"Horse5" "Horse4" "Horse3" "Horse2" "Horse1"> "The game has 5 players.") 
+    (item "6" <6> <"Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1"> "The game has 6 players.") 
+    (item "7" <7> <"Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1"> "The game has 7 players.") 
+    (item "8" <8> <"Horse8" "Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1"> "The game has 8 players.") 
+    (item "9" <9> <"Horse9" "Horse8" "Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1"> "The game has 9 players.") 
+    (item "10" <10> <"Horse10" "Horse9" "Horse8" "Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1"> "The game has 10 players.") 
+    (item "11" <11> <"Horse11" "Horse10" "Horse9" "Horse8" "Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1"> "The game has 11 players.") 
+    (item "12" <12> <"Horse12" "Horse11" "Horse10" "Horse9" "Horse8" "Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1"> "The game has 12 players.") 
+    (item "13" <13> <"Horse13" "Horse12" "Horse11" "Horse10" "Horse9" "Horse8" "Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1"> "The game has 13 players.") 
+    (item "14" <14> <"Horse14" "Horse13" "Horse12" "Horse11" "Horse10" "Horse9" "Horse8" "Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1"> "The game has 14 players.") 
+    (item "15" <15> <"Horse15" "Horse14" "Horse13" "Horse12" "Horse11" "Horse10" "Horse9" "Horse8" "Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1"> "The game has 15 players.") 
+    (item "16" <16> <"Horse16" "Horse15" "Horse14" "Horse13" "Horse12" "Horse11" "Horse10" "Horse9" "Horse8" "Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1"> "The game has 16 players.") 
+})
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Tugi-Épfe is a race game played by Tewa speaking Puebloan people of New Mexico around the turn of the twentieth century. The pieces represent horses, which race around the board, and may send one another back to start.")
+        (aliases {"Tugi-Épfe" "Quince" "Tadipwa Nopfe" "Juego de Pastor" "Tugi'-E-Pfe"})
+        (rules "Stones are placed on the ground to make a square with ten spaces per side, the spaces between the stones being the place where the pieces are played. One piece per player. Three sticks used as dice, one side flat, the other round. One of the sticks is notched on the round side. Throws are as follows: All flat sides up = 5; all round sides up = 10; one flat and two round, with no notches up = 1, two flat and one round, with no notches up = 3, two flat or two round, with notches up = 15. Pieces begin in one corner of the board. Players may move in opposite directions around the board, or in the same direction. When players move in the same direction, they may send the opponent's piece back to the beginning if they land on their spot. When the opponent is sent back to the beginning, they may then choose their direction of play. When players are moving in opposite directions, the opponent's piece may not be sent to start. The first player to travel around the board and land in the starting space wins.")
+        (source "Culin 1907: 194.")
+        (id "141")
+        (version "1.3.5")
+        (classification "board/race/escape")
+        (credit "Eric Piette")
+        (origin  "This game was played in New Mexico., around 1907.")
+        }
+    )
+    
+    (graphics {
+        (show Symbol "disc" "AllSites" Vertex fillColour:(colour White) edgeColour:(colour Black) scale:0.3)
+        (piece Families {"Abstract" "Themed"})
+        (piece Scale "Horse" 0.4)
+        (stackType 0 Ring 0.5)
+        (show Edges Hidden)
+    })
+    
+)

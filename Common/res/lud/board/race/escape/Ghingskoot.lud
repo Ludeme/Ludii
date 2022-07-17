@@ -13,7 +13,7 @@
 (define "CaptureEnemyPiece" 
     (apply 
         if:("IsEnemyAt" (to))
-        (and (set State at:(to) 0) (fromTo (from (to)) (to (handSite Next))) )
+        (and (set State at:(to) 0) (fromTo (from (to)) (to (handSite Next))))
     ) 
 )
 
@@ -62,22 +62,7 @@
 (game "Ghingskoot"
     (players <Players:num>)
     (equipment {
-        (board
-            (add
-                (merge {  
-                    (shift -1.25 -0.34 (rotate 30 (rectangle 6 1)))
-                    (rectangle 1 5)
-                    (rectangle 5 1)
-                    (shift 0 6 (rectangle 5 1))
-                    (shift 0 10 (rectangle 1 5))
-                    (shift 7 0 (rectangle 1 5))
-                    (shift 7 10 (rectangle 1 5))
-                    (shift 11 0 (rectangle 5 1))
-                    (shift 11 6 (rectangle 5 1))
-                    (shift 12.25 5.33 (rotate 30 (rectangle 6 1)))
-                })
-                edges:{{13 14} {22 28} {37 36} {9 23}}
-            )
+        ("KintsBoard"
             {
             (track "TrackCW1" "46,5,SSE,N,E,S,W,NNW,End" P1 directed:True)
             (track "TrackCCW1" "46,5,SSE,E,N,W,S,NNW,End" P1 directed:True)
@@ -86,7 +71,6 @@
             <Players:track3>
             <Players:track4>
             }
-            use:Vertex
         )
         (regions "AllSites" (sites Board))
         (regions "Arc" P1 (sites {1..5}))
@@ -96,7 +80,7 @@
         (regions "AllSitesDifferentThanArc" 
             (difference 
                 (sites Board) 
-                (union { (sites P1 "Arc") (sites P2 "Arc") (sites {0 32})})
+                (union {(sites P1 "Arc") (sites P2 "Arc") (sites {0 32})})
             )
         )
         (dice d:2 facesByDie:{{0 4} {0 6} {0 14} {0 15}} num:4)
@@ -130,13 +114,13 @@
 
 (option "Players" <Players> args:{ <num> <arc3> <arc4> <track3> <track4> }
     {
-    (item  "2"  <2>
+    (item "2" <2>
         <>
         <>
         <>
         <>
-    "2 players.")**  
-    (item  "3"  <3>
+    "2 players.")** 
+    (item "3" <3>
         <(regions "Arc" P3 (sites {1..5}))>
         <>
         <
@@ -145,7 +129,7 @@
         >
         <>
     "3 players.") 
-    (item  "4"  <4> 
+    (item "4" <4> 
         <(regions "Arc" P3 (sites {1..5}))>
         <(regions "Arc" P4 (sites {41..45}))>
         <
@@ -156,14 +140,14 @@
         (track "TrackCW4" "49,41,NNW,S,W,N,E,SSE,End" P4 directed:True)
         (track "TrackCCW4" "49,41,NNW,W,S,E,N,SSE,End" P4 directed:True)
         >
-    "4 players.")  
+    "4 players.") 
     }
 )
 
 (option "Start Rules" <Num> args:{ <piece> }
     {
-    (item  "1"  <1> "Each player has 1 piece.")  
-    (item  "2"  <2> "Each player has 2 pieces.")**  
+    (item "1" <1> "Each player has 1 piece.") 
+    (item "2" <2> "Each player has 2 pieces.")** 
     }
 )
 
@@ -193,7 +177,7 @@
         Player must make an exact throw to get a piece off the board after reentering the arc from the spot where the player entered the board. The player to get both of their pieces off the board first wins.")
         (source "Culin 1907: 146-148.")
         (id "204")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/escape")
         (credit "Eric Piette")
         }
@@ -202,7 +186,11 @@
     (graphics {
         (show Edges Hidden)
         (show Symbol "disc" "AllSites" Vertex fillColour:(colour Grey) edgeColour:(colour Black) scale:0.5)
-        (no DicePips)
+        (piece Rename piece:"Die1" "KintsDice1")
+        (piece Rename piece:"Die2" "KintsDice2")
+        (piece Rename piece:"Die3" "KintsDice3")
+        (piece Rename piece:"Die4" "KintsDice4")
+        (piece Style "Die" NativeAmericanDice)
     })
     
     (ai

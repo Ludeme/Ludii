@@ -1,0 +1,9 @@
+// Checks if P1 has no moves and P2 wins and checks if P2 has no pieces and P1 wins. This ludemeplex can be used only in an ending condition.
+// @example ("NoMovesP1NoPiecesP2")
+
+(define "NoMovesP1NoPiecesP2"
+    {
+    (if (no Moves P1) (result P2 Win))
+    (if (no Pieces P2) (result P1 Win))
+    }
+)

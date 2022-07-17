@@ -1,6 +1,6 @@
 // Description of the knight move with intersection between phases sites and adjacent distance of 2.
 
-(define "RegionReached" (is In (last To) (sites Mover)) )
+(define "RegionReached" (is In (last To) (sites Mover)))
 
 //------------------------------------------------------------------------------
 
@@ -17,7 +17,7 @@
                             (sites Distance from:(from) (exact 2)) 
                             (sites Phase (% (+ 1 (phase of:(from))) 2))
                         )
-                        if:(or (is Empty (site)) (is Enemy (who at:(site))))
+                        if:(or (is Empty (site)) ("IsEnemyAt" (site)))
                     )
                 )
             )
@@ -25,16 +25,16 @@
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
         }
-    )  
+    ) 
     (rules 
         (start
             { 
-            (place "Knight1" (expand (sites Bottom)) )
-            (place "Knight2" (expand (sites Top)) )
+            (place "Knight1" (expand (sites Bottom)))
+            (place "Knight2" (expand (sites Top)))
             }
         )
         
-        (play (forEach Piece) )
+        (play (forEach Piece))
         
         (end (if "RegionReached" (result Mover Win)))
     )

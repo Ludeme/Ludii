@@ -1,6 +1,6 @@
 (define "CaptureEnemyToPiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove (to))
         )
     ) 
@@ -11,8 +11,8 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(and (is Enemy (who at:(to))) 
-                (if (not (is In (to) (sites Next "Promotion")) )
+            if:(and ("IsEnemyAt" (to)) 
+                (if (not (is In (to) (sites Next "Promotion")))
                     True
                     (!= (what at:(to)) (id "Pawn" Next))
                 )
@@ -32,7 +32,7 @@
 )
 
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
 )
 
 (define "SpecialStartingPawns" (sites {"A2" "D2" "H2" "A7" "H7" "E7"}))
@@ -40,13 +40,13 @@
 //------------------------------------------------------------------------------
 
 (game "Welschschach"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment {
-        (board (square 8) )
+        (board (square 8))
         (piece "King_noCross"
             (move Step
-                (to if:(and (not (is Friend (who at:(to))))
-                        (if (not (is In (to) (sites Next "Promotion")) )
+                (to if:(and (not ("IsFriendAt" (to)))
+                        (if (not (is In (to) (sites Next "Promotion")))
                             True
                             (!= (what at:(to)) (id "Pawn" Next))
                         )
@@ -58,8 +58,8 @@
         (piece "Queen"
             (move Step
                 Diagonal
-                (to if:(and (not (is Friend (who at:(to))))
-                        (if (not (is In (to) (sites Next "Promotion")) )
+                (to if:(and (not ("IsFriendAt" (to)))
+                        (if (not (is In (to) (sites Next "Promotion")))
                             True
                             (!= (what at:(to)) (id "Pawn" Next))
                         )
@@ -71,8 +71,8 @@
         (piece "Bishop_noCross"
             (move Hop Diagonal 
                 (between if:True) 
-                (to if:(and (not (is Friend (who at:(to))))
-                        (if (not (is In (to) (sites Next "Promotion")) )
+                (to if:(and (not ("IsFriendAt" (to)))
+                        (if (not (is In (to) (sites Next "Promotion")))
                             True
                             (!= (what at:(to)) (id "Pawn" Next))
                         )
@@ -86,8 +86,8 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(and (not (is Friend (who at:(to))))
-                        (if (not (is In (to) (sites Next "Promotion")) )
+                    if:(and (not ("IsFriendAt" (to)))
+                        (if (not (is In (to) (sites Next "Promotion")))
                             True
                             (!= (what at:(to)) (id "Pawn" Next))
                         )
@@ -101,8 +101,8 @@
                 Slide 
                 Orthogonal
                 (to 
-                    if:(and (not (is Friend (who at:(to))))
-                        (if (not (is In (to) (sites Next "Promotion")) )
+                    if:(and (not ("IsFriendAt" (to)))
+                        (if (not (is In (to) (sites Next "Promotion")))
                             True
                             (!= (what at:(to)) (id "Pawn" Next))
                         )
@@ -129,11 +129,11 @@
                 )
             )
         ) 
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
     })
     (rules 
-        (start {   
+        (start {  
             (place "Pawn1" (sites Row 1))
             (place "Pawn2" (sites Row 6))
             (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Bishop_noCross1" {"C1" "F1"}) (place "Queen1" coord:"D1") (place "King_noCross1" coord:"E1") 
@@ -149,8 +149,8 @@
                         (if (is In (from) (sites Start (piece (what at:(from)))))
                             (move Hop Diagonal 
                                 (between (exact 1) if:True) 
-                                (to if:(and (not (is Friend (who at:(to))))
-                                        (if (not (is In (to) (sites Next "Promotion")) )
+                                (to if:(and (not ("IsFriendAt" (to)))
+                                        (if (not (is In (to) (sites Next "Promotion")))
                                             True
                                             (!= (what at:(to)) (id "Pawn" Next))
                                         )
@@ -202,7 +202,7 @@
         (rules "8x8. Each player begins with a complement of pieces, each with their own powers of movement as follows: King (x1): may move one space in any direction; Queen (x1): moves one space diagonally, may leap two spaces diagonally on its first move over any intervening pieces; Bishop (x2): moves diagonally two spaces, jumping over any intervening pieces; Knight (x2): moves orthogonally one space and then diagonally another space, jumping over any intervening pieces; Rook (x2): moves orthogonally any distance; Pawns (x8): move forward one space or diagonally forward one space to capture. Only the Rooks' and Queens' pawns may move forward two spaces for their first move. When a Pawn reaches the row on the opposite side of the board from which it began, it must move two spaces backward to the sixth row, then to the fourth, and then to the second, and then is promoted to Queen. It cannot jump over any pieces or taken a piece during these moves. A Pawn is immune from capture on the eight rank, but not on the others while making these promotion moves. Each player must move the Rooks' Pawns and Queens' Pawn in this way, as well as the jump of the Queen, in their first four moves. There is no castling. A piece is captured when an opponent's piece moves onto its space. The King is in check when it can be taken on the opponent's next turn; it must not remain in check at the end of the player's turn. When the king cannot move out of check, it is checkmated and the opponent wins.")
         (source "Murray 1913: 392.")
         (id "1431")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chess")
         (credit "Eric Piette")
         (origin  "This game was played in Germany, around 1661.")

@@ -5,12 +5,12 @@
         (piece "Marker" Each "StepOrthogonalToEmpty")
     })
     (rules 
-        (start {  
+        (start { 
             (place "Marker1" (sites Bottom))
             (place "Marker2" (sites Top))
         })
         (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (end ("BlockWin"))
     )
 )
 
@@ -18,10 +18,10 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "6"  <6>   "The board is 6x6.") 
-    (item "8"  <8>   "The board is 8x8.")  
-    (item "10" <10>  "The board is 10x10.")  
-    (item "12" <12>  "The board is 12x12.") 
+    (item "6" <6>  "The board is 6x6.") 
+    (item "8" <8>  "The board is 8x8.") 
+    (item "10" <10> "The board is 10x10.") 
+    (item "12" <12> "The board is 12x12.") 
     }
 )
 
@@ -48,7 +48,7 @@
         (rules "Square grid of 36, 64, 100, or 144 squares. Each player has one piece lined up in each square on opposite sides of the square. Players may move their piece forward or backwards orthogonally. The player who blocks the opponent from being able to move wins.")
         (source "Béart 1955: 470-471.")
         (id "773")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/blocking")
         (credit "Eric Piette")
         (origin  "This game was played in West Africa, around 1955.")

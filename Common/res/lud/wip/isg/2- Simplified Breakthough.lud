@@ -3,7 +3,7 @@
     (equipment { 
         (board (square 8)) 
         (piece "Pawn" Each (move Step (to if:(is Empty (to)))))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Pawn1" (expand (sites Bottom)))

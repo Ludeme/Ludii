@@ -1,12 +1,12 @@
 (game "Round Merels"
-    (players 2)  
+    (players 2) 
     (equipment 
         { 
         (wheelBoard cells:{1 8})
         (hand Each)
         (piece "Marker" Each "StepToEmpty") 
         }
-    )  
+    ) 
     (rules 
         (start (place "Marker" "Hand" count:3))
         
@@ -43,7 +43,7 @@
         (version "0.9.3")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in Rome?, from around 250CE to 550CE.")
+        (origin "This game was played in Rome?, from around 250CE to 550CE.")
         }
     )
     

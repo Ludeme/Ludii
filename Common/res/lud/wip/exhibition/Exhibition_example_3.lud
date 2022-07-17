@@ -26,8 +26,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Exhibition_example_3"  
-    (players 2)  
+(game "Exhibition_example_3" 
+    (players 2) 
     (equipment { 
         (board (concentric {1 8}))
         (hand Each size:7)
@@ -38,7 +38,7 @@
         (piece "Jarl" P1)
         (piece "Jarl" P2)
         (hand Shared size:6)
-    })  
+    }) 
     (rules 
         (start {
             (place "Pawn1" (handSite Shared 0))

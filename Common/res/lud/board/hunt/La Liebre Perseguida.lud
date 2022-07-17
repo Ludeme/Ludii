@@ -5,7 +5,7 @@
 //------------------------------------------------------------------------------
 
 (game "La Liebre Perseguida"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board 
             (rotate 90 ("ThreeMenMorrisGraphWithLeftAndRightTriangles"))
@@ -22,11 +22,11 @@
         )
         (regions "Home" P2 (sites {"B1" "C2" "A2"}))
         (regions "Home" P1 (sites {"B2"}))
-    })  
+    }) 
     
     (rules 
         (start {
-            (place "Hare1" (sites P1) )
+            (place "Hare1" (sites P1))
             (place "Rabbit2" (sites P2) state:1)
         })
         (play (forEach Piece))
@@ -47,7 +47,7 @@
         (rules "A square, with diagonals and lines connecting the midpoints. Two triangles on opposite sides of the triangle. One player plays as three galgos, which are placed on the three points of one of the triangles. The other player plays as one hare, which begins on the point between two of the galgos. The hare may move in any direction along the lines on the board, but must move to the central point of the board on its first move. The galgos may move forward orthogonally or diagonally; they may never move horizontally and may only move backwards if the galgo which starts on the apex of the triangle has moved and the piece to move backwards has not yet moved. If the galgos block the hare from being able to move, they win, if the hare moves past the galgos it wins.")
         (source "Santos Hernández 1901/1904: 183.")
         (id "1494")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/hunt")
         (credit "Eric Piette")
         (origin  "This game was played in Spain, from around 1901 to 1904.")

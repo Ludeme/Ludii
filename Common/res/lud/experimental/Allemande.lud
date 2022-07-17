@@ -32,7 +32,7 @@
             (to (sites Empty))
             (then
                 (if
-                    (not (is Prev Mover)) 
+                    (not ("SameTurn")) 
                     (remember Value (last To))
         )))
         (move Select
@@ -49,11 +49,11 @@
                             (to (site))
                         )
                         (if
-                            (not (is Prev Mover))
+                            (not ("SameTurn"))
                             (remember Value (site))
         )))))
         (if
-            (is Prev Mover)
+            ("SameTurn")
             (move Pass) // allows playing less than 2 pieces
         )
         }
@@ -63,7 +63,7 @@
 
 (define "GamePlay"
     (if
-        (not (is Prev Mover))
+        (not ("SameTurn"))
         (do
             ("Placements") 
             ifAfterwards:(or
@@ -129,7 +129,7 @@
                 (sites Row (+ "Order" 1))
                 (sites Row 0)
         ))
-    (piece "Square" Each ) // ("Placements" ~) )    
+    (piece "Square" Each) // ("Placements" ~))  
     (hand Each size:4)
     }
 )
@@ -250,7 +250,7 @@
             2. Restricting successive placements in the turn to locations around the previous placement.
         This keeps all the pieces played in one turn, as a group.")
         (id "1961")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")
@@ -268,7 +268,7 @@
         (region Colour "EW" P1 (colour 255 0 0 50))
         (region Colour "NS" P2 (colour 200 200 50 50))
         (region Colour P2 (sites State 2) (colour 0 0 0 160))
-        //   (show Piece State)
+        //  (show Piece State)
         (hand Placement P2 scale:0.222 offsetX:0.95 offsetY:0.10 vertical:True)
         (hand Placement P1 scale:0.222 offsetX:0.05 offsetY:0.10 vertical:True)
         }

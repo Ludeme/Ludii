@@ -1,6 +1,6 @@
 (define "CapturePiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (add 
                 (piece (mapEntry "Captured" (what at:(to)))) 
                 (to (mapEntry "Where" (what at:(to))))
@@ -30,7 +30,7 @@
                     ("PlaceLance" Next)
                     ("PlaceKnight" Next) 
                     (forEach Piece Next) 
-                } )
+                })
                 ifAfterwards:(not ("IsInCheck" "Osho" Next))
             ) 
         )
@@ -40,7 +40,7 @@
 (define "OnePawnPerColumn" 
     (= 
         (count Sites in:(sites Occupied by:#1 container:"Board" component:"Fuhyo")) 
-        (count Sites in:(difference (sites Occupied by:#1 container:"Board" component:"Fuhyo") (union (sites Direction from:(to) N) (sites Direction from:(to) S)) ))
+        (count Sites in:(difference (sites Occupied by:#1 container:"Board" component:"Fuhyo") (union (sites Direction from:(to) N) (sites Direction from:(to) S))))
     )
 )
 
@@ -99,18 +99,18 @@
     (move
         Slide
         #1 
-        (to if:(is Enemy (who at:(to))) "CapturePiece")
+        (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
-    )   	
+    )  	
 )
 
 (define "StepMove"
     (move
         Step
         #1
-        (to if:(not (is Friend (who at:(to)))) "CapturePiece") 
+        (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
-    )   	
+    )  	
 )
 
 (define "GoldMove"
@@ -118,8 +118,8 @@
         Leap
         { {F} {F L F} {F R F} {L F} {R F} {L L F} {R R F} {L L L F}}
         rotations:False
-        (to if:(not (is Friend (who at:(to)))) "CapturePiece") 
-    )   	
+        (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
+    )  	
 )
 
 (define "SilverMove"
@@ -127,14 +127,14 @@
         Leap
         { {F} {F L F} {F R F} {L F L F} {R F R F} {L L F L F} {R R F R F}}
         rotations:False
-        (to if:(not (is Friend (who at:(to)))) "CapturePiece") 
-    )   	
+        (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
+    )  	
 )
 
 //------------------------------------------------------------------------------
 
-(game "Hexshogi"  
-    (players {(player N) (player S)})  
+(game "Hexshogi" 
+    (players {(player N) (player S)}) 
     
     (equipment { 
         (board (rotate 90 (remove (hex Rectangle 9 11) cells:{0 10 21 31 42 52 63 73 84 94})))
@@ -173,9 +173,9 @@
                 "KnightWalk"
                 rotations:False
                 (to 
-                    if: (not (is Friend (who at:(to)))) 
+                    if: (not ("IsFriendAt" (to))) 
                     (apply 
-                        if:(is Enemy (who at:(to)))
+                        if:("IsEnemyAt" (to))
                         (add 
                             (piece (mapEntry "Captured" (what at:(to)))) 
                             (to (mapEntry "Where" (what at:(to))))
@@ -299,7 +299,7 @@
                         ("PlaceLance" Mover)
                         ("PlaceKnight" Mover) 
                         (forEach Piece) 
-                    } )
+                    })
                     ifAfterwards:(not ("IsInCheck" "Osho" Mover))
                 )
             )
@@ -312,8 +312,8 @@
                     ("NextCannotMove")
                 ) 
                 (result Mover Win)
-            ) 
-            (if (no Moves Next) (result Mover Win)) 
+            )
+            ("BlockWin")
             }
         )
     )
@@ -329,7 +329,7 @@
         (rules "Piece movement has been updated to work on hexagonal cells, but all other rules remain the same.")
         (id "1616")
         (source "<a href=\"http://wikipedia.org/wiki/Hexshogi\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/shogi")
         (author "George R. Dekle Sr.")
         (credit "Matthew Stephenson")

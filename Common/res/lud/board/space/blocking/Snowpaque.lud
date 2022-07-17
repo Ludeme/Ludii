@@ -10,13 +10,12 @@
 
 //------------------------------------------------------------------------------
 
-(game "Snowpaque"  
-    (players 2)  
+(game "Snowpaque" 
+    (players 2) 
     (equipment { 
         (board (hex 5)) 
         (piece "Marker" Neutral) 
-        }
-    )  
+    }) 
     (rules 
         
         phases:{
@@ -24,10 +23,9 @@
             (play (move Add (piece (id "Marker0")) (to (sites Empty)))) 
             (nextPhase "play")
         )
-        (phase "play"   
+        (phase "play"  
             (play 
-                (move 
-                    Add 
+                (move Add 
                     (piece "Marker0") 
                     (to 
                         (sites Empty) 
@@ -51,7 +49,7 @@
         (rules "Player 1 marks a cell. Then Players take turns marking any unmarked cell with exactly one marked neighbour. Player who can't move loses.")
         (source "<a href=\"http://mrraow.com/index.php/aiai-home/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />AiAi</a>")
         (id "407")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/blocking")
         (author "Stephen Tavener")
         (credit "Eric Piette")

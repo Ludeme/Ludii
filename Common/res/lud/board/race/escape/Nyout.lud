@@ -52,8 +52,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Nyout"  
-    (players <Players:num>)  
+(game "Nyout" 
+    (players <Players:num>) 
     (equipment { 
         (board (concentric {1 -4 -4 20}) 
             {
@@ -73,7 +73,7 @@
         (dice d:2 from:0 num:4)
         (hand Each)
         (map "Throw" {(pair 0 4) (pair 1 3) (pair 2 2) (pair 3 1) (pair 4 5)})
-    })  
+    }) 
     
     (rules 
         (start { 
@@ -118,7 +118,7 @@
         (place Stack "Counter1" (handSite P1) count:1)
         (place Stack "Counter2" (handSite P2) count:1)
         >
-    "2 players involved with one piece per player.")  
+    "2 players involved with one piece per player.") 
     (item "2 (four pieces)" <2> 
         <
         (track "Track1" {29 9..28} P1 directed:True)
@@ -145,7 +145,7 @@
         (place Stack "Counter2" (handSite P2) count:3)
         (place Stack "Counter3" (handSite P3) count:3)
         >
-    "3 players involved.")   
+    "3 players involved.")  
     (item "4" <4> 
         <
         (track "Track1" {29 9..28} P1 directed:True)
@@ -161,7 +161,7 @@
         (place Stack "Counter3" (handSite P3) count:4)
         (place Stack "Counter4" (handSite P4) count:4)
         >
-    "4 players involved.")   
+    "4 players involved.")  
 })
 
 //------------------------------------------------------------------------------
@@ -203,7 +203,7 @@
         (useFor "Ruleset/Four players. (Described)" (id "677"))
         (source "Murray 1951: 142")
         (id "203")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/escape")
         (credit "Eric Piette")
         (origin  "This game was played in Korea, around 1895.")
@@ -212,8 +212,8 @@
     
     (graphics {
         (show Edges Hidden)
-        (show Symbol "disc" Vertex (difference (sites Board) (union { (sites Centre) (sites Top) (sites Bottom) (sites Left) (sites Right)})) fillColour:(colour White) edgeColour:(colour Black) scale:0.5)
-        (show Symbol "disc" Vertex (union { (sites Centre) (sites Top) (sites Bottom) (sites Left) (sites Right)}) fillColour:(colour White) edgeColour:(colour Black) scale:0.8)
+        (show Symbol "disc" Vertex (difference (sites Board) (union {(sites Centre) (sites Top) (sites Bottom) (sites Left) (sites Right)})) fillColour:(colour White) edgeColour:(colour Black) scale:0.5)
+        (show Symbol "disc" Vertex (union {(sites Centre) (sites Top) (sites Bottom) (sites Left) (sites Right)}) fillColour:(colour White) edgeColour:(colour Black) scale:0.8)
         (piece Colour "Die" state:1 fillColour:(colour Black))
         (stackType Count)
     })

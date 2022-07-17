@@ -13,7 +13,7 @@
 (define "NumDiceSix" (count Value 6 in:("AllDiceValues")))
 (define "Palace" 0)
 (define "NumberOfPossibleMove"
-    (+ { (size Array (values Remembered "Te")) (size Array (values Remembered "Cung")) (size Array (values Remembered "Chang")) })		
+    (+ {(size Array (values Remembered "Te")) (size Array (values Remembered "Cung")) (size Array (values Remembered "Chang")) })		
 )
 
 (define "MovePiece"
@@ -32,7 +32,7 @@
                 )
                 (move 
                     (from (where "Pawn" Mover))
-                    (to (trackSite Move from:(where "Pawn" Mover) steps:1))
+                    (to ("NextSiteOnTrack" 1 from:(where "Pawn" Mover)))
                     (then
                         (and
                             (forget Value "Te" 1)
@@ -185,8 +185,8 @@
         phases:{
         (phase "Opening"
             (play
-                (do (roll)
-                    next:(or {
+                ("RollMove"
+                    (or {
                         (if (= 2 "NumDiceOne") 
                             (move 
                                 (from (handSite Mover))
@@ -223,13 +223,13 @@
                                 (to (mapEntry "Site" 6))
                             )
                         )
-                        (if (or { (= 5 "NumDiceOne") (= 5 "NumDiceTwo") (= 5 "NumDiceThree") (= 5 "NumDiceFour") (= 5 "NumDiceFive") (= 5 "NumDiceSix") })
+                        (if (or {(= 5 "NumDiceOne") (= 5 "NumDiceTwo") (= 5 "NumDiceThree") (= 5 "NumDiceFour") (= 5 "NumDiceFive") (= 5 "NumDiceSix") })
                             (move 
                                 (from (handSite Mover))
                                 (to (mapEntry "Site" 7))
                             )
                         )
-                        (if (or { (= 6 "NumDiceOne") (= 6 "NumDiceTwo") (= 6 "NumDiceThree") (= 6 "NumDiceFour") (= 6 "NumDiceFive") (= 6 "NumDiceSix") })
+                        (if (or {(= 6 "NumDiceOne") (= 6 "NumDiceTwo") (= 6 "NumDiceThree") (= 6 "NumDiceFour") (= 6 "NumDiceFive") (= 6 "NumDiceSix") })
                             (move 
                                 (from (handSite Mover))
                                 (to (mapEntry "Site" 8))
@@ -329,8 +329,8 @@
                             )
                         )
                     )
-                    (do (roll)
-                        next:(move Pass)
+                    ("RollMove"
+                        (move Pass)
                         (then
                             (and {
                                 (moveAgain)
@@ -446,7 +446,7 @@
 
 (option "Players" <Players> args:{ <num> <start>}
     {
-    (item "2"    <2>  
+    (item "2"  <2> 
         <
         (start {
             (place Stack "Pawn1" (handSite P1))
@@ -454,7 +454,7 @@
         })	
         >
     "The game is played with 2 players.") 
-    (item "3"    <3>   
+    (item "3"  <3>  
         <
         (start {
             (place Stack "Pawn1" (handSite P1))
@@ -463,7 +463,7 @@
         })	
         >
     "The game is played with 3 players.")
-    (item "4"    <4> 
+    (item "4"  <4> 
         <
         (start {
             (place Stack "Pawn1" (handSite P1))
@@ -473,7 +473,7 @@
         })	
         >
     "The game is played with 4 players.")
-    (item "5"    <5>  
+    (item "5"  <5> 
         <
         (start {
             (place Stack "Pawn1" (handSite P1))
@@ -484,7 +484,7 @@
         })	
         >
     "The game is played with 5 players.")
-    (item "6"    <6>   
+    (item "6"  <6>  
         <
         (start {
             (place Stack "Pawn1" (handSite P1))
@@ -496,7 +496,7 @@
         })	
         >
     "The game is played with 6 players.")
-    (item "7"    <7>   
+    (item "7"  <7>  
         <
         (start {
             (place Stack "Pawn1" (handSite P1))
@@ -509,7 +509,7 @@
         })	
         >
     "The game is played with 7 players.")
-    (item "8"    <8>   
+    (item "8"  <8>  
         <
         (start {
             (place Stack "Pawn1" (handSite P1))
@@ -523,7 +523,7 @@
         })	
         >
     "The game is played with 8 players.")
-    (item "9"    <9>  
+    (item "9"  <9> 
         <
         (start {
             (place Stack "Pawn1" (handSite P1))
@@ -538,7 +538,7 @@
         })	
         >
     "The game is played with 9 players.")
-    (item "10"   <10>  
+    (item "10"  <10> 
         <
         (start {
             (place Stack "Pawn1" (handSite P1))
@@ -554,7 +554,7 @@
         })	
         >
     "The game is played with 10 players.")
-    (item "11"   <11>  
+    (item "11"  <11> 
         <
         (start {
             (place Stack "Pawn1" (handSite P1))
@@ -571,7 +571,7 @@
         })	
         >
     "The game is played with 11 players.")
-    (item "12"   <12>  
+    (item "12"  <12> 
         <
         (start {
             (place Stack "Pawn1" (handSite P1))
@@ -589,7 +589,7 @@
         })	
         >
     "The game is played with 12 players.")
-    (item "13"   <13>  
+    (item "13"  <13> 
         <
         (start {
             (place Stack "Pawn1" (handSite P1))
@@ -608,7 +608,7 @@
         })	
         >
     "The game is played with 13 players.")
-    (item "14"   <14>  
+    (item "14"  <14> 
         <
         (start {
             (place Stack "Pawn1" (handSite P1))
@@ -628,7 +628,7 @@
         })	
         >
     "The game is played with 14 players.")
-    (item "15"   <15>  
+    (item "15"  <15> 
         <
         (start {
             (place Stack "Pawn1" (handSite P1))
@@ -649,7 +649,7 @@
         })	
         >
     "The game is played with 15 players.")
-    (item "16"   <16>  
+    (item "16"  <16> 
         <
         (start {
             (place Stack "Pawn1" (handSite P1))
@@ -670,7 +670,7 @@
             (place Stack "Pawn16" (handSite P16))
         })	
         >
-    "The game is played with 16 players.")*  
+    "The game is played with 16 players.")* 
 })
 
 //------------------------------------------------------------------------------
@@ -729,7 +729,7 @@
         The player who throws Te while in  space 97 or 98 first moves to the palace and wins.")
         (source "Hyde 1694: 70-101.")
         (id "180")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/reach")
         (credit "Eric Piette")
         (origin  "This game was played in China, around 1694.")

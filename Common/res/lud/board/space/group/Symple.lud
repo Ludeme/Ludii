@@ -93,13 +93,11 @@
 
 (game "Symple"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (square <Size>) use:Vertex)
         (piece "Marker" Each)
         (piece "Marker" Neutral)
-        }
-    )
+    })
     (rules
         (play
             (if
@@ -116,8 +114,7 @@
             )
         )
         (end 
-            (if 
-                (is Full) 
+            (if (is Full) 
                 (byScore)
             )
         )
@@ -128,25 +125,25 @@
 
 (option "Board Size" <Size> args:{ <size> }
     {
-    (item "7"    <7>  "A size 7 board is currently selected")
-    (item "9"    <9>  "A size 9 board is currently selected")
-    (item "11"    <11>  "A size 11 board is currently selected")
-    (item "13"    <13>  "A size 13 board is currently selected")
-    (item "15"    <15>  "A size 15 board is currently selected")
-    (item "17"    <17>  "A size 17 board is currently selected")
-    (item "19"    <19>  "A size 19 board is currently selected")*
+    (item "7"  <7> "A size 7 board is currently selected")
+    (item "9"  <9> "A size 9 board is currently selected")
+    (item "11"  <11> "A size 11 board is currently selected")
+    (item "13"  <13> "A size 13 board is currently selected")
+    (item "15"  <15> "A size 15 board is currently selected")
+    (item "17"  <17> "A size 17 board is currently selected")
+    (item "19"  <19> "A size 19 board is currently selected")*
     }
 )
 
 (option "Group Penalty" <P> args:{ <p> }
     {
-    (item "0"    <0>  "A group penalty of 0 points is currently selected")
-    (item "2"    <2>  "A group penalty of 2 points is currently selected")
-    (item "4"    <4>  "A group penalty of 4 points is currently selected")
-    (item "6"    <6>  "A group penalty of 6 points is currently selected")
-    (item "8"    <8>  "A group penalty of 8 points is currently selected")
-    (item "10"    <10>  "A group penalty of 10 points is currently selected")*
-    (item "12"    <12>  "A group penalty of 12 points is currently selected")
+    (item "0"  <0> "A group penalty of 0 points is currently selected")
+    (item "2"  <2> "A group penalty of 2 points is currently selected")
+    (item "4"  <4> "A group penalty of 4 points is currently selected")
+    (item "6"  <6> "A group penalty of 6 points is currently selected")
+    (item "8"  <8> "A group penalty of 8 points is currently selected")
+    (item "10"  <10> "A group penalty of 10 points is currently selected")*
+    (item "12"  <12> "A group penalty of 12 points is currently selected")
     }
 )
 
@@ -163,7 +160,7 @@
 The game ends when the board is filled in. The score is the number of stones each player has on the board minus 'P' times the number of groups he has, where 'P' is en even number of 4 or higher (the Ludii implementation also allows 0 and 2 as values of 'P'). With an even penalty and an odd boardsize, draws are not possible.")
 (id "1962")
 (source "<a href=\"https://boardgamegeek.com/boardgame/106341/symple\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-(version "1.3.4")
+(version "1.3.5")
 (classification "board/space/group")
 (author "Christian Feeling, Benedick Rosenau")
 (credit "Michael Amundsen")

@@ -1,13 +1,11 @@
 (define "Columns" <Board:rowSize>)
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
-(define "OppositePitOuter" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
-(define "OppositeOuterPitOuter" (if (is Mover P1) (+ (to) (* "Columns" 3)) (- (to) (* "Columns" 3)) ) )
+(define "OppositePitOuter" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
+(define "OppositeOuterPitOuter" (if (is Mover P1) (+ (to) (* "Columns" 3)) (- (to) (* "Columns" 3))))
 
 //------------------------------------------------------------------------------
 
-(game "Hus (Nama)"  
-    (players 2)  
+(game "Hus (Nama)" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -16,21 +14,21 @@
             (track "TrackCCW2" <Board:CCW2> loop:True P2)
             }
         )
-        (regions "Home" P1 (sites Track "TrackCCW1"))                                     // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))                                     // P2 home
-        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))        // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top) ))          // P2 inner Home
-        (regions "Outer" P1 (difference (sites Track "TrackCCW1") (sites P1 "Inner")))    // P1 outer Home
-        (regions "Outer" P2 (difference (sites Track "TrackCCW2") (sites P2 "Inner") ))   // P2 outer Home
-        (regions "HalfRightInner" P1 (sites {<Board:HalfRightInnerP1>}) )                 // P1 half right inner row
-        (regions "HalfRightInner" P2 (sites {<Board:HalfRightInnerP2>}) )                 // P2 half right inner row
+        (regions "Home" P1 (sites Track "TrackCCW1"))                   // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))                   // P2 home
+        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))    // P1 inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))     // P2 inner Home
+        (regions "Outer" P1 (difference (sites Track "TrackCCW1") (sites P1 "Inner")))  // P1 outer Home
+        (regions "Outer" P2 (difference (sites Track "TrackCCW2") (sites P2 "Inner")))  // P2 outer Home
+        (regions "HalfRightInner" P1 (sites {<Board:HalfRightInnerP1>}))         // P1 half right inner row
+        (regions "HalfRightInner" P2 (sites {<Board:HalfRightInnerP2>}))         // P2 half right inner row
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start 
-            (set Count 2 to:(union { (sites P1 "Outer") (sites P2 "Outer") (sites P1 "HalfRightInner")  (sites P2 "HalfRightInner") }) ) 
+            (set Count 2 to:(union {(sites P1 "Outer") (sites P2 "Outer") (sites P1 "HalfRightInner") (sites P2 "HalfRightInner") })) 
         )
         
         phases:{
@@ -170,7 +168,7 @@
             (play
                 (move Select
                     (from
-                        (if (is Mover Prev)
+                        (if ("SameTurn")
                             (sites {(var "Replay")})
                             (sites Mover "Home")
                         )
@@ -182,19 +180,19 @@
                             owner:(mover)
                             apply:(if (< 1 (count at:(to)))
                                 (if (is In (to) (sites Mover "Inner"))
-                                    (if (is Occupied ("OppositePit"))
+                                    (if (is Occupied ("OppositePit" (to)))
                                         (and {
                                             (fromTo
-                                                (from ("OppositePit"))
+                                                (from ("OppositePit" (to)))
                                                 (to (to))
-                                                count:(count at:("OppositePit"))
+                                                count:(count at:("OppositePit" (to)))
                                             )
-                                            (if (is Occupied ("OppositeOuterPit"))
+                                            (if (is Occupied ("OppositeOuterPit" (to)))
                                                 (and 
                                                     (fromTo
-                                                        (from ("OppositeOuterPit"))
+                                                        (from ("OppositeOuterPit" (to)))
                                                         (to (to))
-                                                        count:(count at:("OppositeOuterPit"))
+                                                        count:(count at:("OppositeOuterPit" (to)))
                                                     )
                                                     (sow
                                                         (to)
@@ -206,7 +204,7 @@
                                                 )
                                                 (sow
                                                     (to)
-                                                    count:(count at:("OppositePit"))
+                                                    count:(count at:("OppositePit" (to)))
                                                     "TrackCCW"
                                                     owner:(mover)	
                                                 )
@@ -258,12 +256,7 @@
                     )
                 )
             )
-            (end
-                (forEach NonMover
-                    if:(no Moves Player)
-                    (result Player Loss)
-                )
-            )
+            (end "ForEachNonMoverNoMovesLoss")
         )
         }
         
@@ -274,10 +267,10 @@
 
 (option "Board Size" <Board> args:{ <rowSize> <CCW2> <HalfRightInnerP1> <HalfRightInnerP2> }
     {
-    (item "16"   <16> <"32,E,N1,W"> <24..31> <32..39> "Each player has 16 holes on each row.")*  
-    (item "18"   <18> <"36,E,N1,W"> <27..35> <36..44> "Each player has 18 holes on each row.")  
-    (item "20"   <20> <"40,E,N1,W"> <30..39> <40..49> "Each player has 20 holes on each row.")   
-    (item "22"   <22> <"44,E,N1,W"> <33..43> <44..54> "Each player has 22 holes on each row.")   
+    (item "16"  <16> <"32,E,N1,W"> <24..31> <32..39> "Each player has 16 holes on each row.")* 
+    (item "18"  <18> <"36,E,N1,W"> <27..35> <36..44> "Each player has 18 holes on each row.") 
+    (item "20"  <20> <"40,E,N1,W"> <30..39> <40..49> "Each player has 20 holes on each row.")  
+    (item "22"  <22> <"44,E,N1,W"> <33..43> <44..54> "Each player has 22 holes on each row.")  
 })
 
 //------------------------------------------------------------------------------
@@ -313,7 +306,7 @@
         Players then sow from any of their holes in an anti-clockwise direction. If the last counter of a sowing lands in an empty hole, the turn ends. If the last counter falls into an occupied hole, the counters in that hole are picked up and sowing continues, unless the hole in the inner row on the opponent's side opposite the one the player last sowed into is occupied, in which case any counters in this hole and any in the opponent's opposite outer row hole are captured. The captured counters are then sown on the player's side of the board, starting with the hole following the one from which the capture was made. Sowing cannot occur from holes with single counters. The game ends when one player can no longer move.")
         (source "Schultze 1907: 313-315.")
         (id "254")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         (origin  "This game was played in Namibia, around 1907.")

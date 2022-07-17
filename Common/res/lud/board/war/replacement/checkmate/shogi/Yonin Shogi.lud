@@ -1,6 +1,6 @@
 (define "CapturePiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (add 
                 (piece ("Captured" (what at:(to)))) 
                 (to (mapEntry "Where" ("Captured" (what at:(to)))))
@@ -30,7 +30,7 @@
                     ("PlaceLance" Next)
                     ("PlaceKnight" Next) 
                     (forEach Piece Next) 
-                } )
+                })
                 ifAfterwards:(not ("IsInCheck" "Osho" Next))
             ) 
         )
@@ -38,7 +38,7 @@
 )
 
 (define "CanNotMove"
-    (not (can Move (do (and (forEach Piece #1) (set NextPlayer (player #2))) ifAfterwards:(not ("IsInCheck" "Osho" #1)))) )
+    (not (can Move (do (and (forEach Piece #1) (set NextPlayer (player #2))) ifAfterwards:(not ("IsInCheck" "Osho" #1)))))
 )
 
 (define "OnePawnPerColumn" 
@@ -103,18 +103,18 @@
     (move
         Slide
         #1 
-        (to if:(is Enemy (who at:(to))) "CapturePiece")
+        (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
-    )   	
+    )  	
 )
 
 (define "StepMove"
     (move
         Step
         #1
-        (to if:(not (is Friend (who at:(to)))) "CapturePiece") 
+        (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
-    )   	
+    )  	
 )
 
 (define "GoldMove" ("StepMove" (directions {Forward Backward Rightward Leftward FL FR})))
@@ -302,8 +302,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Yonin Shogi"  
-    (players {(player N) (player W) (player S) (player E)})  
+(game "Yonin Shogi" 
+    (players {(player N) (player W) (player S) (player E)}) 
     
     (equipment { 
         (board (square 9))
@@ -345,12 +345,12 @@
                         (forEach Direction 
                             (from (to)) 
                             (directions {FR FL}) 
-                            (if (not (is Friend (who at:(to)))) 
+                            (if (not ("IsFriendAt" (to))) 
                                 (move 
                                     (from) 
                                     (to 
                                         (apply 
-                                            if:(is Enemy (who at:(to)))
+                                            if:("IsEnemyAt" (to))
                                             (add 
                                                 (piece ("Captured" (what at:(to)))) 
                                                 (to (mapEntry "Where" ("Captured" (what at:(to)))))
@@ -469,7 +469,7 @@
                         ("PlaceLance" Mover)
                         ("PlaceKnight" Mover) 
                         (forEach Piece) 
-                    } )
+                    })
                     ifAfterwards:(not ("IsInCheck" "Osho" Mover))
                 )
                 (then
@@ -497,7 +497,7 @@
 
 (option "Setup" <PiecePlacement> args:{ <PiecePlacement> }
     {
-    (item "1993"    	
+    (item "1993"  	
         <
         (place "Osho1" coord:"E1") (place "Kinsho1" {"D1" "F1"}) (place "Ginsho1" {"C1" "G1"}) (place "Fuhyo1" {"D2" "F2" "E3"}) (place "Hisha1" coord:"E2")
         (place "Osho2" coord:"I5") (place "Kinsho2" {"I4" "I6"}) (place "Ginsho2" {"I3" "I7"}) (place "Fuhyo2" {"H4" "H6" "G5"}) (place "Hisha2" coord:"H5")
@@ -506,7 +506,7 @@
         >
     "Setup by Ota Mitsuyasu in 1993")**
     
-    (item "1991"    	
+    (item "1991"  	
         <
         (place "Osho1" coord:"E1") (place "Kinsho1" {"D1" "F1"}) (place "Ginsho1" {"C1" "G1"}) (place "Keima1" {"B1" "H1"}) (place "Kyosha1" coord:"A1") (place "Fuhyo1" {"D3" "F3" "E3" "G3" "H3"}) (place "Hisha1" coord:"G2") (place "Kakugyo1" coord:"B2")
         (place "Osho2" coord:"I5") (place "Kinsho2" {"I4" "I6"}) (place "Ginsho2" {"I3" "I7"}) (place "Keima2" {"I2" "I8"}) (place "Kyosha2" coord:"I1") (place "Fuhyo2" {"G4" "G5" "G6" "G7" "G8"}) (place "Hisha2" coord:"H7") (place "Kakugyo2" coord:"H2")
@@ -526,7 +526,7 @@
         (rules "Pieces move the same as in normal Shogi. Once a player is checkmated their Osho is removed, but all their other pieces remain on the board as neutral obstacles. Neutral pieces cannot help checkmate other players.")
         (id "1586")
         (source "<a href=\\"http://wikipedia.org/wiki/Yonin_shogi/\\" target=\\"_blank\\" class=\\"style1\\" style=\\"color: #0000EE\\" />Yonin shogi</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/shogi")
         (author "Ota Mitsuyasu")
         (credit "Matthew Stephenson")

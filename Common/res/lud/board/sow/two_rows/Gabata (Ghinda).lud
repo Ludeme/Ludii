@@ -1,7 +1,6 @@
-(define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
-(define "NoPieceOnOwnedHolesP1" (no Pieces All in:(sites (values Remembered "OwnedP1"))))
-(define "NoPieceOnOwnedHolesP2" (no Pieces All in:(sites (values Remembered "OwnedP2"))))
+(define "NextHole" ("NextSiteOnTrack" #2 from:#1 "Track"))
+(define "NoPieceOnOwnedHolesP1" (all Sites (sites (values Remembered "OwnedP1")) if:(= 0 (count at:(site)))))
+(define "NoPieceOnOwnedHolesP2" (all Sites (sites (values Remembered "OwnedP2")) if:(= 0 (count at:(site)))))
 (define "RemmemberOwnedHoles" 
     (if (is Mover P1)
         (remember Value "OwnedP1" #1)
@@ -32,8 +31,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Gabata (Ghinda)"  
-    (players 2)  
+(game "Gabata (Ghinda)" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 6 store:None
@@ -41,16 +40,16 @@
         )
         (piece "Seed" Shared)
         (hand Each)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
         (map "LeftMost" {(pair P1 0) (pair P2 11)})
-    })  
+    }) 
     (rules 
         
         (start {
             (set RememberValue "OwnedP1" (sites Bottom))
             (set RememberValue "OwnedP2" (sites Top))
-            (set Count 4 to:(sites Track "Track" ) ) 
+            (set Count 4 to:(sites Track "Track")) 
         })
         
         phases:{
@@ -59,7 +58,7 @@
                 (or {
                     (move Select 
                         (from
-                            (if (is Mover Prev)
+                            (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 (if (= 1 (value Player Mover))
                                     ("OwnedHoles")
@@ -195,22 +194,20 @@
             )
             (nextPhase (and (is Empty (handSite P1)) (is Empty (handSite P2))) "Sowing")
         )
-        
         }
-        
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Gabata is a term for many games played throughout the Horn of Africa. This version is played in Ghinda, and is similar to others played throughout Eritrea.")
         (rules "2x6 board. Four counters per hole. Each player takes their first turn from their leftmost hole. Sowing occurs in an anti-clockwise direction. If the final counter falls into an occupied hole, these are picked up and sowing continues. If the final counter falls into an empty hole, the turn ends. At any time during the sowing, if a hole is made to contain four counters, the owner of the hole in which the four counters are located captures them, unless it is the final hole of the sowing, in which case the player who is sowing captures them. The captures happen immediately. If a player does not capture when they should have, and a subsequent sowing causes this hole to contain five counters, it becomes a Jen. Players can no longer capture from a Jen in the same manner as before. Captures are made from it when the final counter of a sowing lands in it, in which case the final counter and one counter from the Jen are captured by the player who is sowing. Play continues until a player can no longer move because there are no counters in their row, and the opponent captures the remaining counters. Players then count their pieces by placing four in each hole, and the player who has more than their original number takes ownership of one of the opponent's holes for every four counters more than the original number that have been taken. If no player took four more than the original, the player with three extra gets the hole, if each player has two extra the weaker player is given the two extra counters. Play then begins again as before. The game ends when one player owns all of the counters, and thus all of the holes.")
         (source "Pankhurst 1971: 172.")
         (id "661")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         (origin  "This game was played in Horn of Africa, around 1971.")

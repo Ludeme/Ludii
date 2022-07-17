@@ -9,8 +9,8 @@
                     ) 
                     (do 
                         (move 
-                            (from (sites Occupied by:Next container:"Hand" component:"Fuhyo" )) 
-                            (to (difference (sites Empty) (sites Next "Promotion") )
+                            (from (sites Occupied by:Next container:"Hand" component:"Fuhyo")) 
+                            (to (difference (sites Empty) (sites Next "Promotion"))
                                 if:("OnePawnPerColumn" Next)
                             ) 
                         ) 
@@ -26,7 +26,7 @@
 
 (define "CapturePiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (add 
                 (piece (mapEntry "Captured" (what at:(to)))) 
                 (to (mapEntry "Where" (what at:(to))))
@@ -43,7 +43,7 @@
 )
 
 (define "InPromotionZone"
-    (is In #1 (sites Mover "Promotion") )	
+    (is In #1 (sites Mover "Promotion"))	
 )
 
 (define "Promote"
@@ -62,7 +62,7 @@
 (define "CanPromote"
     (then 
         (if 
-            (or ("InPromotionZone" (last To)) ("InPromotionZone" (last From)) ) 
+            (or ("InPromotionZone" (last To)) ("InPromotionZone" (last From))) 
             (moveAgain) 
         ) 
     )
@@ -72,26 +72,26 @@
     (move
         Slide
         #1 
-        (to if:(is Enemy (who at:(to))) "CapturePiece")
+        (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
-    )   	
+    )  	
 )
 
 (define "StepMove"
     (move
         Step
         #1
-        (to if:(not (is Friend (who at:(to)))) "CapturePiece") 
+        (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
-    )   	
+    )  	
 )
 
 (define "GoldMove" ("StepMove" (directions {Forward Backward Rightward Leftward FL FR})))
 
 //------------------------------------------------------------------------------
 
-(game "Minishogi"  
-    (players {(player N) (player S)})  
+(game "Minishogi" 
+    (players {(player N) (player S)}) 
     
     (equipment { 
         (board (square 5))
@@ -126,8 +126,8 @@
         // Promoted Bishop
         (piece "Ryuma" Each (or ("SlideMove" Diagonal) ("StepMove" Orthogonal)))
         
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
         (map "Where" { 
             (pair (id "Fuhyo" P1) (handSite P2)) (pair (id "Fuhyo" P2) (handSite P1)) 
             (pair (id "Ginsho" P1) (handSite P2 1)) (pair (id "Ginsho" P2) (handSite P1 1)) 
@@ -152,7 +152,7 @@
         })
         (map "Promoted" { 
             (pair (id "Fuhyo" P1) (id "Tokin" P1)) (pair (id "Fuhyo" P2) (id "Tokin" P2)) 
-            (pair (id "Ginsho" P1) (id "Narigin" P1)) (pair (id "Ginsho" P2) (id "Narigin" P2))  
+            (pair (id "Ginsho" P1) (id "Narigin" P1)) (pair (id "Ginsho" P2) (id "Narigin" P2)) 
             (pair (id "Hisha" P1) (id "Ryuo" P1)) (pair (id "Hisha" P2) (id "Ryuo" P2)) 
             (pair (id "Kakugyo" P1) (id "Ryuma" P1)) (pair (id "Kakugyo" P2) (id "Ryuma" P2)) 
         })
@@ -180,8 +180,8 @@
                         ) 
                         (do 
                             (move 
-                                (from (sites Occupied by:Mover container:"Hand" component:"Fuhyo" )) 
-                                (to (difference (sites Empty) (sites Mover "Promotion") )
+                                (from (sites Occupied by:Mover container:"Hand" component:"Fuhyo")) 
+                                (to (difference (sites Empty) (sites Mover "Promotion"))
                                     if:("OnePawnPerColumn" Mover)
                                 ) 
                             ) 
@@ -196,7 +196,7 @@
         
         (end {
             (if (and ("IsInCheck" "Osho" Next) ("NextCannotMove")) (result Mover Win)) 
-            (if (no Moves Next) (result Mover Win)) 
+            ("BlockWin")
         })
     )
 )
@@ -209,7 +209,7 @@
         (rules "The rules are identical to those of standard Shogi, except that it is played with a reduced number of pieces on a 5x5 board, and each player's promotion zone consists only of the rank furthest from the player.")
         (source "<a href=\"https://brainking.com/en/GameRules?tp=91\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />brainking</a>")
         (id "463")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/shogi")
         (author "Shigenobu Kusumoto")
         (credit "Eric Piette")

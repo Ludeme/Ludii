@@ -1,5 +1,5 @@
 (game "Yut Nori"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board 
             (merge {
@@ -12,7 +12,7 @@
             })
             use:Vertex
         )
-    })  
+    }) 
     
     (rules 
         (play (forEach Piece))
@@ -39,7 +39,7 @@
             
             If a mal lands on a station occupied by the opponent's team, the opponent's mal is removed from the course and returned to the starting position, and the current player is allowed to cast again.
             
-            If a mal lands on a station occupied by the own team, these mals can form a group and travel together from that point on.  However, this bears a risk: If an opponent lands their mal on a station occupied by a group of mals of the opponent, all mals in the group are removed from the course.
+            If a mal lands on a station occupied by the own team, these mals can form a group and travel together from that point on. However, this bears a risk: If an opponent lands their mal on a station occupied by a group of mals of the opponent, all mals in the group are removed from the course.
             
             For example, if one casts two yuts and one do at his/her first turn in the game, possible moves would include (see The Stations below for the station names):
             

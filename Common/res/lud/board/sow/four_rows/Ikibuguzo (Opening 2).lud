@@ -1,8 +1,6 @@
 (define "Columns" 8)
-(define "OuterPhaseOppositePit" (if (is Mover P1) (+ (to) (* 3 ("Columns"))) (- (to) (* ("Columns") 3)) ) )
-(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns") ) )
-(define "OuterOppositePit" (if (is Mover P1) (+ #1 (* 2 ("Columns"))) (- #1 (* ("Columns") 2)) ) )
-(define "NextHole" (trackSite Move from:#1 #2 steps:#3))
+(define "OuterPhaseOppositePit" (if (is Mover P1) (+ (to) (* 3 ("Columns"))) (- (to) (* ("Columns") 3))))
+(define "NextHole" ("NextSiteOnTrack" #3 from:#1 #2))
 
 (define "RightMostWithFour" 
     (trackSite FirstSite Mover
@@ -14,8 +12,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Ikibuguzo (Opening 2)"  
-    (players 2)  
+(game "Ikibuguzo (Opening 2)" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -26,16 +24,16 @@
             (track "TrackCW2" "24,E,S1,W" loop:True P2)
             }
         )
-        (regions "Home" P1 (sites Track "TrackCCW1"))                              // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))                              // P2 home
+        (regions "Home" P1 (sites Track "TrackCCW1"))               // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))               // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top) ))   // P2 inner Home
-        (map "RightMost" { (pair P1 7) (pair P2 24)})
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))  // P2 inner Home
+        (map "RightMost" {(pair P1 7) (pair P2 24)})
         (map "LeftMostOuter" {(pair P1 0) (pair P2 31)})
         (map "SecondLeftInner" {(pair P1 9) (pair P2 22)})
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start (set Count 4 to:(union (sites Bottom) (sites Top))))
@@ -84,7 +82,7 @@
                                 (is In (from) (sites {(mapEntry "LeftMostOuter" Mover) (mapEntry "SecondLeftInner" Mover)}))
                                 (is In ("NextHole" (from) "TrackCW" (count at:(from))) (sites Mover "Inner"))
                                 (is Occupied ("OppositePit" ("NextHole" (from) "TrackCW" (count at:(from)))))
-                                (is Occupied ("OuterOppositePit" ("NextHole" (from) "TrackCW" (count at:(from)))))
+                                (is Occupied ("OppositeOuterPit" ("NextHole" (from) "TrackCW" (count at:(from)))))
                             })
                         )
                         (then 
@@ -97,9 +95,9 @@
                                         (moveAgain)
                                         (if (and {
                                                 (is Occupied ("OppositePit" (to)))
-                                                (is Occupied ("OuterOppositePit" (to)))
+                                                (is Occupied ("OppositeOuterPit" (to)))
                                                 (is In (to) (sites Mover "Inner"))
-                                            } )
+                                            })
                                             (and {
                                                 (fromTo
                                                     (from ("OppositePit" (to)))
@@ -107,9 +105,9 @@
                                                     count:(count at:("OppositePit" (to)))
                                                 )
                                                 (fromTo
-                                                    (from ("OuterOppositePit" (to)))
+                                                    (from ("OppositeOuterPit" (to)))
                                                     (to (last From))
-                                                    count:(count at:("OuterOppositePit" (to)))
+                                                    count:(count at:("OppositeOuterPit" (to)))
                                                 )
                                                 (set Var "Replay" (from))
                                             })
@@ -141,9 +139,9 @@
                                         (moveAgain)
                                         (if (and {
                                                 (is Occupied ("OppositePit" (to)))
-                                                (is Occupied ("OuterOppositePit" (to)))
+                                                (is Occupied ("OppositeOuterPit" (to)))
                                                 (is In (to) (sites Mover "Inner"))
-                                            } )
+                                            })
                                             (and {
                                                 (fromTo
                                                     (from ("OppositePit" (to)))
@@ -151,9 +149,9 @@
                                                     count:(count at:("OppositePit" (to)))
                                                 )
                                                 (fromTo
-                                                    (from ("OuterOppositePit" (to)))
+                                                    (from ("OppositeOuterPit" (to)))
                                                     (to (last From))
-                                                    count:(count at:("OuterOppositePit" (to)))
+                                                    count:(count at:("OppositeOuterPit" (to)))
                                                 )
                                                 (set Var "Replay" (from))
                                             })
@@ -166,10 +164,8 @@
                     )
                 )
             )
-            
-            (end (if (no Moves Next) (result Mover Win)))
+            (end ("BlockWin"))
         )
-        
         }
     )
 )
@@ -188,7 +184,7 @@
         ")
         (source "Murray 1951: 217.")
         (id "1663")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/four rows")
         (origin  "This game was played in African Great Lakes, around 1951.")
         }

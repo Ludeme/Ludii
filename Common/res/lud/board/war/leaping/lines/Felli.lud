@@ -1,9 +1,9 @@
-(define "OnPromotionZone" (is In (last To) (sites Next)) )
+(define "OnPromotionZone" (is In (last To) (sites Next)))
 
 //------------------------------------------------------------------------------
 
-(game "Felli"  
-    (players 2)  
+(game "Felli" 
+    (players 2) 
     (equipment { 
         (board 
             (graph
@@ -18,7 +18,7 @@
         (piece "DoubleCounter" Each)
         (regions P1 (intersection (sites Corners) (sites Bottom)))
         (regions P2 (intersection (sites Corners) (sites Top)))
-    })  
+    }) 
     
     (rules 
         (start {
@@ -36,7 +36,7 @@
 
 (option "Play Rules" <Play> args:{ <rules> } 
     {
-    (item "Bouhajbane"             
+    (item "Bouhajbane"       
         <
         (or {
             (forEach Piece "Counter" ("HopCapture") 
@@ -60,7 +60,7 @@
         "Capturing is optional but pieces can promote."
     )*
     
-    (item "Simplified"             
+    (item "Simplified"       
         <
         (or {
             (forEach Piece "Counter" ("HopCapture"))
@@ -68,9 +68,9 @@
         })
         >
         "Capturing is optional."
-    )   
+    )  
     
-    (item "BoardGameGeek"             
+    (item "BoardGameGeek"       
         <
         (if "SameTurn"
             ("HopSequenceCaptureAgain")	
@@ -81,7 +81,7 @@
         )	
         >
         "Capturing is forced."
-    )     
+    )   
 })
 
 //------------------------------------------------------------------------------
@@ -126,7 +126,7 @@
         (useFor "Ruleset/Bouhajbane (Observed)" (id "1934"))
         (source "Lhôte 1994: 481.")
         (id "1934")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
         }
