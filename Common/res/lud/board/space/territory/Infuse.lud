@@ -1,6 +1,5 @@
 (define "PlaceOutOfSight"
-    (move
-        Add
+    (move Add
         (to (sites Empty) 
             if:(not (is Within (id "Disc" Mover) in:(sites LineOfSight Piece at:(to))))
         )
@@ -9,15 +8,13 @@
 )
 
 (define "StepMoves"
-    (or
-        {
+    (or {
         ("StepIteration" "S1" 1)
         ("StepIteration" "S2" 2)
         ("StepIteration" "S3" 3)
         ("StepIteration" "S4" 4)
         ("StepIteration" "S5" 5)
-        }
-    )
+    })
 )
 
 (define "S1" (intersection (sites Empty) (sites Around (from))))
@@ -61,17 +58,14 @@
 
 (game "Infuse"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board "BoardUsed" use:Cell)
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
         (start (set Score Each 0))
         (play
-            (if 
-                (was Pass)
+            (if (was Pass)
                 (or
                     (move Pass)
                     (priority 
@@ -87,17 +81,14 @@
                         )
                     )
                 )
-                (or
-                    {
+                (or {
                     ("PlaceOutOfSight")
                     (forEach Piece ("StepMoves"))
                     (move Pass)
-                    }
-                )
+                })
             )
         )
-        (end 
-            {
+        (end {
             (if 
                 (and
                     (all Passed)
@@ -112,8 +103,7 @@
                 )
                 (result Next Win)
             )
-            }
-        )
+        })
     )
 )   
 

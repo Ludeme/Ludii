@@ -1,4 +1,5 @@
-(define "Nbors" (count Sites in:(intersection
+(define "Nbors" 
+    (count Sites in:(intersection
             (sites Around #1)
             (sites Occupied by:#2)  
         )
@@ -9,12 +10,10 @@
 
 (game "Trike"
     (players 2)
-    (equipment 
-        {
+    (equipment {
         (board (hex Triangle <Board>))
         (piece "Marker" Each)
-        }
-    )
+    })
     
     (rules
         (meta (swap))
@@ -22,12 +21,9 @@
         phases:{
         (phase "Opening" P1
             (play
-                (move 
-                    Add 
+                (move Add 
                     (to (sites Empty)) 
-                    (then 
-                        (set Var (last To))
-                    )
+                    (then (set Var (last To)))
                 )
             )
             (nextPhase)
@@ -35,12 +31,9 @@
         
         (phase "Play"
             (play
-                (move 
-                    Add 
+                (move Add 
                     (to (sites LineOfSight Empty at:(var)))
-                    (then
-                        (set Var (last To))
-                    )
+                    (then (set Var (last To)))
                 )
             )
         )
@@ -49,12 +42,10 @@
         (end
             (if
                 (no Moves Next)
-                (byScore
-                    {
+                (byScore {
                     (score P1 (+ (if (is Mover P1) 1 0) ("Nbors" (last To) P1)))
                     (score P2 (+ (if (is Mover P2) 1 0) ("Nbors" (last To) P2)))
-                    }
-                )
+                })
             )
         )
     )

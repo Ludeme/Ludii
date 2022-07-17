@@ -26,8 +26,7 @@
             )
         )
         (piece "Disc" Neutral (flips 1 2))
-        }
-    ) 
+    }) 
     (rules 
         
         <Rules:start> 
@@ -84,8 +83,7 @@
         <
         (phase "Placement"
             (play
-                (move
-                    Add
+                (move Add
                     (piece
                         "Disc0" 
                         state:(mover)

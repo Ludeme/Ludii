@@ -39,8 +39,7 @@
             (place "Ball2" (sites {"C3" "K3" "C11" "G15" "O15" "O7"}) state:1)
         })
         (play 
-            (move 
-                Add
+            (move Add
                 (to (sites Empty) if:(= (state at:(to)) 0))
                 (then 
                     (and

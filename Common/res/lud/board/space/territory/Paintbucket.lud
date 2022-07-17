@@ -66,32 +66,23 @@
 
 (game "Paintbucket"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (square <Board>))
         (tile "Square" Each)
-        }
-    )
+    })
     (rules
-        (start 
-            {
+        (start {
             (place "Square1" (sites Phase 0))
             (place "Square2" (sites Phase 1))
             <Score:start>
-            }
-        )
+        })
         (play
             (move Select
                 (from (sites Occupied by:Next))
                 (then <Score:running>)
             )
         )
-        (end 
-            (if 
-                (no Pieces Next) 
-                (result Mover Win)
-            )
-        )
+        (end ("CaptureAll" Next Loss))
     )
 )
 

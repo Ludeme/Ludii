@@ -35,12 +35,10 @@
 
 (game "Cavity" 
     (players 2) 
-    (equipment 
-        { 
+    (equipment { 
         (board <Board> use:Vertex) 
         (piece "Marker" Each)
-        }
-    )
+    })
     (rules 
         (meta (swap))
         phases:{
@@ -56,8 +54,7 @@
         )
         (phase "Play"
             (play 
-                (move 
-                    Add
+                (move Add
                     (to 
                         (sites Empty)
                         if:("ReachesRegion" 
@@ -77,22 +74,15 @@
         )
         }
         
-        (end {
-            (if 
-                (and
+        (end 
+            (forEach Player
+                if:(and
                     (< 2 (count Moves))
-                    (no Pieces Next) 
+                    (no Pieces Player) 
                 )
-                (result Next Loss)
+                (result Player Loss)
             )
-            (if 
-                (and
-                    (< 2 (count Moves))
-                    (no Pieces Mover) 
-                )
-                (result Mover Loss)
-            )
-        })
+        )
     )
 )
 

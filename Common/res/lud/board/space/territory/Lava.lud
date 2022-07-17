@@ -45,9 +45,7 @@
             (place "Disc1" (min (array (sites Board))))
             (place "Disc2" (max (array (sites Board))))
         })
-        (play
-            ("Select" (then ("Move")))
-        )
+        (play ("Select" (then ("Move"))))
         (end 
             (if (is Full) 
                 (byScore {

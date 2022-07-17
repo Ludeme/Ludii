@@ -2,7 +2,8 @@
     (players 2) 
     (equipment { 
         (board (square 7)) 
-        (piece "Marker" Each (or 
+        (piece "Marker" Each 
+            (or 
                 (move 
                     (from) 
                     (to (sites Around (from)) if:(is Empty (to))) 

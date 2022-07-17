@@ -122,12 +122,10 @@
 
 (game "Mity"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (hex <Board>))
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
         (meta (swap))
         (play
@@ -138,12 +136,7 @@
                 )
             )
         )
-        (end 
-            (if 
-                (no Moves Next) 
-                (result Mover Win)
-            )
-        )
+        (end ("BlockWin"))
     )
 )
 

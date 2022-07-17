@@ -1,5 +1,3 @@
-(define "HasFreedom" (> (count Liberties Orthogonal) 0))
-
 (define "CaptureSurroundedPiece"
     (enclose 
         (from (last To)) 
@@ -39,7 +37,7 @@
                 })
             )
         )
-        ifAfterwards:"HasFreedom"
+        ifAfterwards:("HasFreedom" Orthogonal)
     )
 )
 
@@ -55,8 +53,7 @@
     (rules 
         (play 
             (or 
-                (move
-                    Select
+                (move Select
                     (from
                         (union 
                             (sites Empty) 
@@ -64,18 +61,15 @@
                         )
                     )
                     (then 
-                        (priority 
-                            {
-                            (if 
-                                ("NotEmpty")
+                        (priority {
+                            (if ("NotEmpty")
                                 ("IllegalMove")
                             )
                             
                             ("MadeALegalMove")
                             
                             ("IllegalMove")
-                            }
-                        )
+                        })
                     )
                 )
                 (move Pass)

@@ -7,9 +7,7 @@
     })
     (rules
         (meta (swap))
-        (start {
-            (place "Disc0" (sites Outer))
-        })
+        (start (place "Disc0" (sites Outer)))
         (play
             (move Add
                 (to (sites Empty))
@@ -25,8 +23,7 @@
             )
         )
         (end 
-            (if 
-                (is Full) 
+            (if (is Full) 
                 (byScore)
             )
         )

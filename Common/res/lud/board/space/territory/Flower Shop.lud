@@ -1,3 +1,34 @@
+(define "Score" 
+    (+
+        (results
+            from:(intersection
+                (sites Occupied by:#1)
+                (sites Around (sites Occupied by:Neutral) Orthogonal)
+            )
+            to:1
+            (* 
+                (to)
+                (size Group
+                    at:(+
+                        (results
+                            from:(intersection
+                                (sites Around (from) Orthogonal)
+                                (sites Occupied by:Neutral)
+                            )
+                            to:1
+                            (* (from) (to))
+                        )
+                    )
+                    Orthogonal
+                    if:(= (id "Disc0") (what at:(to)))
+                )
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
 (game "Flower Shop"
     (players 2)
     (equipment {
@@ -79,65 +110,10 @@
             )
         )
         (end 
-            (if 
-                (all Passed) 
+            (if (all Passed) 
                 (byScore {
-                    (score P1
-                        (+
-                            (results
-                                from:(intersection
-                                    (sites Occupied by:P1)
-                                    (sites Around (sites Occupied by:Neutral) Orthogonal)
-                                )
-                                to:1
-                                (* 
-                                    (to)
-                                    (size Group
-                                        at:(+
-                                            (results
-                                                from:(intersection
-                                                    (sites Around (from) Orthogonal)
-                                                    (sites Occupied by:Neutral)
-                                                )
-                                                to:1
-                                                (* (from) (to))
-                                            )
-                                        )
-                                        Orthogonal
-                                        if:(= (id "Disc0") (what at:(to)))
-                                    )
-                                )
-                            )
-                        )
-                    )
-                    (score P2
-                        (+
-                            (results
-                                from:(intersection
-                                    (sites Occupied by:P2)
-                                    (sites Around (sites Occupied by:Neutral) Orthogonal)
-                                )
-                                to:1
-                                (* 
-                                    (to)
-                                    (size Group
-                                        at:(+
-                                            (results
-                                                from:(intersection
-                                                    (sites Around (from) Orthogonal)
-                                                    (sites Occupied by:Neutral)
-                                                )
-                                                to:1
-                                                (* (from) (to))
-                                            )
-                                        )
-                                        Orthogonal
-                                        if:(= (id "Disc0") (what at:(to)))
-                                    )
-                                )
-                            )
-                        )
-                    )
+                    (score P1 ("Score" P1))
+                    (score P2 ("Score" P2))
                 })
             )
         )

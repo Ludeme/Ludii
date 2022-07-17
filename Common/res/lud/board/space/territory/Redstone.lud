@@ -60,9 +60,7 @@
 
 (define "PlaceNonRed"
     (do
-        (move Add 
-            (to (sites Empty))
-        )
+        (move Add (to (sites Empty)))
         ifAfterwards:(not
             (or
                 ("SomeSite"
@@ -90,13 +88,11 @@
 
 (game "Redstone"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (square <Size>) use:Vertex)
         (piece "Disc" Each)
         (piece "Disc" Neutral)
-        }
-    )
+    })
     (rules
         (meta (swap))
         (play

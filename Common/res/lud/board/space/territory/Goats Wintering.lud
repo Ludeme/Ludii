@@ -1,29 +1,33 @@
 (define "Capture" 
-    (forEach
-        Site
+    (forEach Site
         (sites Board)
         (apply 
             if:(and
                 (is Next (who at:(site)))
-                (= 
-                    0 
+                (= 0 
                     (count Sites 
                         in:(intersection 
                             (sites Empty) 
                             (sites Around (site) includeSelf:True)
-            ))))
+                        )
+                    )
+                )
+            )
             (remove (site))
-)))
+        )
+    )
+)
 
 (define "PlaceOutOfSight"
-    (move
-        Add
+    (move Add
         (to (sites Empty) 
             if:(not "TooClose")
         )
         (then 
             (do ("Capture") next:("UpdateScore"))
-)))
+        )
+    )
+)
 
 (define "TooClose"
     (is 
@@ -31,7 +35,9 @@
         in:(intersection
             (sites LineOfSight Piece at:(to))
             (sites Direction from:(to) distance:<Placement:distance>)
-)))
+        )
+    )
+)
 
 (define "Move2Friends"
     (move Step
@@ -40,10 +46,14 @@
                 (is Empty (to))
                 (< (count Pieces Mover in:(sites Around (from)))
                     (- (count Pieces Mover in:(sites Around (to))) 1)
-        )))
+                )
+            )
+        )
         (then 
             (do ("Capture") next:("UpdateScore"))
-)))
+        )
+    )
+)
 
 (define "MoveFromEnemies"
     (move Step
@@ -52,10 +62,14 @@
                 (is Empty (to))
                 (> (count Pieces Next in:(sites Around (from)))
                     (count Pieces Next in:(sites Around (to)))
-        )))
+                )
+            )
+        )
         (then 
             (do ("Capture") next:("UpdateScore"))
-)))
+        )
+    )
+)
 
 (define "UpdateScore"
     (and 
@@ -104,18 +118,15 @@
 
 (game "Goats Wintering"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board <BoardSize:gridType> use:Cell)
         (piece "Disc" P1)
         (piece "Disc" P2)
-        }
-    )
+    })
     (rules
         (start (set Score Each 0))
         (play
-            (or
-                {
+            (or {
                 (move Pass)
                 ("PlaceOutOfSight")     
                 (forEach Piece 
@@ -127,9 +138,12 @@
                                 (not (can Move ("Move2Friends")))
                             ) 
                             ("MoveFromEnemies")
-                )))
+                        )
+                    )
+                )
                 }
-        ))
+            )
+        )
         (end 
             {
             (if 
@@ -147,7 +161,9 @@
                 (result Next Win)
             )
             }
-)))
+        )
+    )
+)
 
 //------------------------------------------------------------------------------
 

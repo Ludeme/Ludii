@@ -1,12 +1,10 @@
 (game "Inkblots"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (tri Hexagon <Board>))
         (tile "Triangle" Each) 
         (tile "Triangle" Neutral) 
-        }
-    )
+    })
     (rules
         (meta (swap))
         (start (place Random {"Triangle1" "Triangle2" "Triangle0"}))
@@ -33,7 +31,6 @@
                 })
             )
         )
-        
     )
 )
 

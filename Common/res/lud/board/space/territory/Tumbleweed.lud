@@ -50,19 +50,13 @@
 
 (game "Tumbleweed"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (hex <Board>))
         (piece "Disc" Each)
         (piece "Disc" Neutral)
-        }
-    )
+    })
     (rules
-        (start 
-            {
-            (place Stack "Disc0" (centrePoint) count:2)
-            }
-        )
+        (start (place Stack "Disc0" (centrePoint) count:2))
         phases:{
         (phase "Opening" 
             (play
@@ -99,12 +93,10 @@
         (end
             (if
                 (all Passed)
-                (byScore
-                    {
+                (byScore {
                     (score P1 "TerritoryP1")
                     (score P2 "TerritoryP2")
-                    }
-                )
+                })
             )
         )
     )

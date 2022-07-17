@@ -1,8 +1,6 @@
 // Defines for Integers
 
-(define "TieBreaker" 
-    (count Pieces #1)
-)
+(define "TieBreaker" (count Pieces #1))
 
 (define "Unfriendlies" // Cannot use NonMover for this
     (count Sites 
@@ -125,31 +123,26 @@
 
 (game "Refugia" 
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (hex <Board:size>))
         (piece "Disc" P1)
         (piece "Disc" P2)
         (piece "Fan" Neutral)
-        }
-    )
+    })
     (rules  
         (start (set Score Each 0))
         (play
-            (or
-                {
+            (or {
                 ("StepMove")
                 ("HopEnemy")
                 ("HopNeutral")
                 ("Placement")
                 (move Pass) 
-                }
-            )
+            })
         )
         (end 
             (if 
-                (all Passed)
-                {
+                (all Passed) {
                 (if 
                     (> (score Mover) (score Next))
                     (result Mover Win)

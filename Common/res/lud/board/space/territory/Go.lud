@@ -1,5 +1,3 @@
-(define "HasFreedom" (> (count Liberties Orthogonal) 0))
-
 (define "CaptureSurroundedPiece"
     (enclose 
         (from (last To)) 
@@ -20,28 +18,21 @@
 
 (game "Go" 
     (players 2) 
-    (equipment 
-        { 
+    (equipment { 
         (board <Board> use:Vertex) 
         (piece "Marker" Each)
-        }
-    )
+    })
     
     (rules 
-        (meta
-            (no Repeat)
-        )
+        (meta (no Repeat))
         (play 
             (or
                 (do
-                    (move 
-                        Add
+                    (move Add
                         (to (sites Empty))
-                        (then 
-                            "CaptureSurroundedPiece"
-                        )
+                        (then "CaptureSurroundedPiece")
                     )
-                    ifAfterwards:"HasFreedom"
+                    ifAfterwards:("HasFreedom" Orthogonal)
                 )
                 (move Pass)
             )
