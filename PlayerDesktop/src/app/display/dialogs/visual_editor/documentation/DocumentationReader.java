@@ -17,21 +17,27 @@ import java.util.*;
 public class DocumentationReader
 {
     private static DocumentationReader instance = null;
-    private static File helpFile = null;
+    private static String helpFilePath = "/help/EditorHelp.txt";
+    private static InputStream helpFile = openHelpFile();
     private static final HashMap<Symbol, HelpInformation> documentation = new HashMap<>();
     private static final Grammar grammar = Grammar.grammar();
+
+    private static InputStream openHelpFile()
+    {
+        return DocumentationReader.class.getResourceAsStream(helpFilePath);
+    }
 
     private static final HashMap<Clause, EBNFClause> clauseMap = new HashMap<>();
 
 
     public static void main(String[] args)
     {
-        helpFile = new File(System.getProperty("user.dir")+"\\Common\\res\\help\\EditorHelp.txt");
         try
         {
+        	//helpFilePath = DocumentationReader.class.getResource("/help/EditorHelp.txt").toURI().getPath();
             readDoc();
         }
-        catch (IOException e)
+        catch (Exception e)
         {
             throw new RuntimeException(e);
         }
@@ -40,7 +46,8 @@ public class DocumentationReader
     public static void readDoc() throws IOException
     {
         // read helpFile by line
-        BufferedReader reader = new BufferedReader(new FileReader(helpFile));
+        //BufferedReader reader = new BufferedReader(new FileReader(new File(helpFilePath)));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(helpFile));
 
         HelpInformation currentHelpInfo = null;
         Clause currentClause = null;
@@ -285,16 +292,15 @@ public class DocumentationReader
 
     DocumentationReader()
     {
-        helpFile = new File("..\\Common\\res\\help\\EditorHelp.txt");
         try
         {
+        	//helpFilePath = DocumentationReader.class.getResource("/help/EditorHelp.txt").toURI().getPath();
             readDoc();
         }
-        catch (IOException e)
+        catch (Exception e)
         {
             throw new RuntimeException(e);
         }
-        System.out.println();
     }
 
     public HashMap<Symbol, HelpInformation> documentation()
