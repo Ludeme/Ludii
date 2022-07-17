@@ -22,7 +22,6 @@ import app.display.dialogs.visual_editor.view.panels.editor.selections.Selection
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 import grammar.Grammar;
 import main.grammar.Symbol;
-import sun.jvm.hotspot.debugger.cdbg.Sym;
 
 import javax.swing.*;
 import java.awt.*;
