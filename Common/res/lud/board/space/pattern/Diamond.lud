@@ -3,8 +3,7 @@
 )
 
 (define "SquareFilled"
-    (= 
-        4 
+    (=  4 
         (count Sites in:(forEach ("AllVerticesOfCell") if:(is Mover (who at:(site)))))
     )
 )
@@ -48,7 +47,7 @@
             use:Vertex
         ) 
         (piece "Disc" Each 
-            (move Step (to if:(is Empty (to)))
+            ("StepToEmpty" ~
                 (then
                     (if (= 1 (count Sites in:("TrianglesWithCaptures")))
                         (forEach Site (sites Incident Cell of:Vertex at:(last To))

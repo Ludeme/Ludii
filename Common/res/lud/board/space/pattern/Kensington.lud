@@ -7,15 +7,13 @@
 )
 
 (define "HexFilled"
-    (= 
-        6 
+    (=  6 
         (count Sites in:"AllVerticesOfCell")
     )
 )
 
 (define "SquareFilled"
-    (= 
-        4 
+    (=  4 
         (count Sites in:"AllVerticesOfCell")
     )
 )
@@ -75,8 +73,7 @@
         (play
             (if "SameTurn"
                 "MoveAnEnemyPiece"
-                (if 
-                    ("HandEmpty" Mover)
+                (if ("HandEmpty" Mover)
                     (forEach Piece)
                     "PlaceAPiece"
                     (then 

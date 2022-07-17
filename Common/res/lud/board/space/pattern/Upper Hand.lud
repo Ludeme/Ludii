@@ -55,17 +55,18 @@
 )
 
 (define "APieceCanGoOnTop" 
-    (!= 0 
-        (count Sites in:(forEach (sites Board) 
-                if:(can Move 
-                    (or 
-                        ("AddOnTopSquareIfLegal" P1)
-                        ("AddOnTopSquareIfLegal" P2)
+    (not 
+            (all Sites 
+            	    (sites Board) 
+                    if:(not (can Move 
+                        (or 
+                            ("AddOnTopSquareIfLegal" P1)
+                            ("AddOnTopSquareIfLegal" P2)
+                        )
                     )
-                )
+                    		)
             )
         )
-    )		
 )
 
 (define "PutOnTop" 
@@ -91,12 +92,9 @@
         (piece "Ball" Neutral)
     })
     (rules 
-        (start 
-            (place "Ball0" (centrePoint))
-        )
+        (start (place "Ball0" (centrePoint)))
         (play 
-            (move 
-                Add 
+            (move Add 
                 (to (sites Empty) 
                     if:(is Flat)
                 )
