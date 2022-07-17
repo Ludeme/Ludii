@@ -37,7 +37,7 @@
                         (to (sites Empty))
                         (then "CaptureSurroundedPiece")
                     )
-                    ifAfterwards:("HasFreedom" (to))
+                    ifAfterwards:("HasFreedom" Orthogonal)
                 )
                 (move Pass)
             )
