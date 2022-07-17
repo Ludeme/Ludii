@@ -34,7 +34,7 @@ public class StartVisualEditor
 		}
 		catch(Exception ignored){}
 
-		controller = new NGramController(5);
+		//controller = new NGramController(5);
 		//MainFrame f = new MainFrame(editPanel);
 		VisualEditorFrame f = new VisualEditorFrame();
 		f.requestFocus();

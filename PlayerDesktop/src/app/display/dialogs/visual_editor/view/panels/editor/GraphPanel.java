@@ -22,6 +22,7 @@ import app.display.dialogs.visual_editor.view.panels.editor.selections.Selection
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 import grammar.Grammar;
 import main.grammar.Symbol;
+import sun.jvm.hotspot.debugger.cdbg.Sym;
 
 import javax.swing.*;
 import java.awt.*;
@@ -604,7 +605,8 @@ public class GraphPanel extends JPanel implements IGraphPanel
         long start = System.nanoTime();
         List<Symbol> possibleSymbols = connectionHandler().selectedComponent().possibleSymbolInputs();
         String gameDescription = connectionHandler().selectedComponent().inputField().inputArea().LNC().node().toLudCodeCompletion(connectionHandler().selectedComponent().inputField().nodeArguments());
-        List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription, StartVisualEditor.controller(),possibleSymbols);
+        List<Symbol> typeMatched = possibleSymbols;
+        // TODO: Filip , List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription, StartVisualEditor.controller(),possibleSymbols);
         long finish = System.nanoTime();
         long latency = finish - start;
         latencies.add(latency);
