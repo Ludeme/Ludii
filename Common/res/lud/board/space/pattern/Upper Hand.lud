@@ -56,17 +56,17 @@
 
 (define "APieceCanGoOnTop" 
     (not 
-            (all Sites 
-            	    (sites Board) 
-                    if:(not (can Move 
-                        (or 
-                            ("AddOnTopSquareIfLegal" P1)
-                            ("AddOnTopSquareIfLegal" P2)
-                        )
+        (all Sites 
+            (sites Board) 
+            if:(not (can Move 
+                    (or 
+                        ("AddOnTopSquareIfLegal" P1)
+                        ("AddOnTopSquareIfLegal" P2)
                     )
-                    		)
+                )
             )
         )
+    )
 )
 
 (define "PutOnTop" 
