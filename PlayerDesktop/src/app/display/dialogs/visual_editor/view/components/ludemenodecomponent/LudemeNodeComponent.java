@@ -409,7 +409,8 @@ public class LudemeNodeComponent extends JPanel
         }
     };
 
-    private void handleNodeComponentSelection(MouseEvent e)
+    @SuppressWarnings("boxing")
+	private void handleNodeComponentSelection(MouseEvent e)
     {
         if (e.getClickCount() == 1 && !selected)
         {

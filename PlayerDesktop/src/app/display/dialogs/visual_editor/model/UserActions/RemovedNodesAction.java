@@ -54,6 +54,7 @@ public class RemovedNodesAction implements IUserAction
         return copiedInputs1;
     }
 
+    @SuppressWarnings("boxing")
     private LinkedHashMap<NodeArgument, Integer> copyIds(LudemeNode node)
     {
         LinkedHashMap<NodeArgument, Integer> copiedIds = new LinkedHashMap<>();
@@ -71,6 +72,7 @@ public class RemovedNodesAction implements IUserAction
         return copiedIds;
     }
 
+    @SuppressWarnings("boxing")
     private LinkedHashMap<NodeArgument, Object[]> copyCollectionIds(LudemeNode node)
     {
         LinkedHashMap<NodeArgument, Object[]> copiedIds = new LinkedHashMap<>();
@@ -126,6 +128,7 @@ public class RemovedNodesAction implements IUserAction
             Handler.addNode(graph, node);
     }
 
+    @SuppressWarnings("boxing")
     private void assignParent(LudemeNode node)
     {
         if(node.parentNode() != null) return;
@@ -147,7 +150,6 @@ public class RemovedNodesAction implements IUserAction
                 if(Arrays.asList(ids.get(arg)).contains(node.id()))
                 {
                     node.setParent(ln);
-                    //Handler.addEdge(graph, ln, node, arg);
                     return;
                 }
             }

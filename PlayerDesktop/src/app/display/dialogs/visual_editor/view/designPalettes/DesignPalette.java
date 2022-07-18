@@ -148,8 +148,10 @@ public class DesignPalette
             try (@SuppressWarnings("resource")
 			BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(DesignPalette.class.getResourceAsStream(PALETTE_FILE_PATH)))))
 			{
+                System.out.println("Loading palettes...");
 				br.lines().forEach(line ->
 				{
+                    System.out.println(line);
 				    if(line.endsWith(".json"))
 				    {
 				        names.add(line.replace(".json", ""));
