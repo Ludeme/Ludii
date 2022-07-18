@@ -1,10 +1,10 @@
-(define "Custodial" 
+(define "Custodial"
     (custodial 
         (from (last To)) 
         Orthogonal
         (between 
             (max 1) 
-            if:(= (what at:(between)) (id #1)) 
+            if:("IsPieceAt" #1 Next (between))
             (apply (remove (between))) 
         )
         (to 
