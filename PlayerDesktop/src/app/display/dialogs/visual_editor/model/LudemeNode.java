@@ -796,31 +796,42 @@ public class LudemeNode implements iGNode
         if(isDefineNode)
             return toLudDefineNode();
 
+        StringBuilder sb = new StringBuilder();
+        if(parentNode() != null)
+            sb.append("\n");
+        int depth = 0;
+        LudemeNode parent = this;
+        while(parent.parentNode() != null)
+        {
+            parent = parent.parentNode();
+            depth++;
+        }
+        for(int i = 0 ; i < depth; i++)
+            sb.append("\t");
+
         if(is1DCollectionNode())
         {
             // get collection
             Object[] collection = (Object[]) providedInputsMap().get(providedInputsMap().keySet().iterator().next());
             if(collection == null)
                 return "{ } ";
-            StringBuilder b = new StringBuilder();
-            b.append("{");
+            sb.append("{");
             for (Object in : collection)
             {
                 if (in == null)
                     continue;
                 if (in instanceof String)
-                    b.append("\"").append(in).append("\"");
+                    sb.append("\"").append(in).append("\"");
                 else if (in instanceof LudemeNode)
-                    b.append(((LudemeNode) in).toLud());
+                    sb.append(((LudemeNode) in).toLud());
                 else
-                    b.append(in);
-                b.append(" ");
+                    sb.append(in);
+                sb.append(" ");
             }
-            b.append("} ");
-            return b.toString();
+            sb.append("} ");
+            return sb.toString();
         }
 
-        StringBuilder sb = new StringBuilder();
         sb.append("(");
         sb.append(tokenTitle());
         // append all inputs
@@ -851,6 +862,15 @@ public class LudemeNode implements iGNode
                 sb.append("\"").append(input).append("\"");
             else
                 sb.append(input);
+        }
+        if(numberOfMandatoryLudemeInputs() > 1)
+        {
+            System.out.println(numberOfMandatoryLudemeInputs());
+            for(int i = 0 ; i < depth; i++)
+            {
+                sb.append("\t");
+            }
+            sb.append("\n");
         }
         sb.append(")");
         return sb.toString();
@@ -987,6 +1007,16 @@ public class LudemeNode implements iGNode
         return rootLud.replace(thisLud, sb.toString());
     }
 
+    private int numberOfMandatoryLudemeInputs()
+    {
+        int n = 0;
+        for(NodeArgument arg : providedInputsMap().keySet())
+        {
+            if(!arg.optional() && !arg.isTerminal())
+                n++;
+        }
+        return n;
+    }
 
     /**
      * The title consists of the symbol and any Constants followed by the constructor

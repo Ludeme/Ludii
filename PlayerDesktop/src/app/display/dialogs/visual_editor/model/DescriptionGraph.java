@@ -231,7 +231,6 @@ public class DescriptionGraph implements iGraph
             return defineLud();
     }
 
-
     // Methods for define graphs
 
 

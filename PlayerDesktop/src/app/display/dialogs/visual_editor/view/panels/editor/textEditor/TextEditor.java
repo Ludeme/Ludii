@@ -4,29 +4,40 @@ import app.display.dialogs.visual_editor.handler.Handler;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 public class TextEditor extends JPanel
 {
 
-    JLabel label = new JLabel("");
+    JTextArea textArea = new JTextArea("");
 
         public TextEditor()
         {
             super();
             setLayout(new BorderLayout());
-            label.setText("");
-            add(label, BorderLayout.CENTER);
+            textArea.setText("");
+            textArea.addFocusListener(new FocusListener()
+            {
+                @Override
+                public void focusLost(FocusEvent e)
+                {
+                    textArea.setEditable(true);
+                }
+
+                @Override
+                public void focusGained(FocusEvent e)
+                {
+                    textArea.setEditable(false);
+                }
+            });
+            updateLud();
+            add(textArea, BorderLayout.CENTER);
         }
 
-        @Override
-        public void paintComponent(Graphics g)
+        public void updateLud()
         {
-            super.paintComponent(g);
-            String lud = Handler.toLud();
-            if(lud != null)
-                label.setText(lud);
-            else
-                label.setText("");
+            textArea.setText(Handler.toLud());
         }
 
 }

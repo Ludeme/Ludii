@@ -61,6 +61,7 @@ public class VisualEditorPanel extends JPanel
     {
         remove(ACTIVE_EDITOR);
         ACTIVE_EDITOR = textEditor;
+        textEditor.updateLud();
         add(ACTIVE_EDITOR, BorderLayout.CENTER);
         repaint();
         revalidate();

@@ -7,6 +7,7 @@ import app.display.dialogs.visual_editor.model.GameParser;
 import app.display.dialogs.visual_editor.recs.display.ProgressBar;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import main.FileHandling;
+import main.grammar.Description;
 import other.GameLoader;
 
 import javax.swing.*;
@@ -95,7 +96,6 @@ public class FileMenu extends JMenu
             FileHandling.saveStringToFile(lud, path, "");
         }
 
-        // TODO: select where to export etc
         System.out.println("\n\n## GAME DESCRIPTION .lud ###");
         System.out.println(lud);
         System.out.println("############################\n\n");
