@@ -175,6 +175,8 @@ public final class GraphRoutines
         double avg = 0.0;
         for (int i = 0; i < keys.size(); i++)
         {
+            if(keys.size() - i > 1)
+                layerWeight /= 2.0;
             double layerAvg = 0.0;
             int k = keys.get(i);
             List<Double> list = weightMap.get(k);
