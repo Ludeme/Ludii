@@ -144,6 +144,7 @@ public class LudemeNode implements iGNode
         // package name
         this.PACKAGE_NAME = initPackageName();
 
+        clauses.sort(Comparator.comparing(Clause::toString));
 
         // Create a map of symbols and their corresponding clauses, used in the pick-a-constructor menu to group clauses by symbols
         for(Clause c : clauses)
@@ -196,6 +197,8 @@ public class LudemeNode implements iGNode
         providedInputsMap = new LinkedHashMap<>();
         for(NodeArgument na : currentNodeArguments)
             providedInputsMap.put(na, null);
+
+        clauses.sort(Comparator.comparing(Clause::toString));
 
         // package name
         this.PACKAGE_NAME = initPackageName();
