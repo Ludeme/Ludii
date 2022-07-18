@@ -179,7 +179,6 @@ public class DFBoxDrawing
                 iGNode lower = graph.getNode(P.get(k));
                 if (upper.equals(lower)) break;
 
-                int upperHeight = upper.fixed() ? GraphRoutines.getSubtreeArea(graph, upper.id()).height : upper.height();
                 int upperWidth = upper.fixed() ? GraphRoutines.getSubtreeArea(graph, upper.id()).width : upper.width();
                 int lowerWidth = lower.fixed() ? GraphRoutines.getSubtreeArea(graph, lower.id()).width : lower.width();
 
@@ -332,7 +331,7 @@ public class DFBoxDrawing
         long startTime = System.nanoTime();
         initPlacement(root,0);
         long endTime = System.nanoTime();
-        if (RECORD_TIME) if (RECORD_TIME) System.out.println("Init placement: " + (endTime - startTime)/1E6);
+        if (RECORD_TIME) System.out.println("Init placement: " + (endTime - startTime)/1E6);
 
         startTime = System.nanoTime();
         compactBox(root);

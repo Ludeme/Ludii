@@ -48,7 +48,6 @@ public class GraphAnimator
 
     /**
      * Returns single instance of GraphAnimator
-     * @return
      */
     public static GraphAnimator getGraphAnimator()
     {
@@ -114,8 +113,6 @@ public class GraphAnimator
 
     /**
      * Preserves initial/previous positions of nodes of a subtree that starts with provided root
-     * @param graph
-     * @param root
      */
     public void preserveInitPositions(iGraph graph, int root)
     {
@@ -133,7 +130,6 @@ public class GraphAnimator
 
     /**
      * Preserves initial/previous positions of a given list of nodes
-     * @param nodes
      */
     public void preserveInitPositions(List<iGNode> nodes)
     {

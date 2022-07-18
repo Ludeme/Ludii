@@ -71,17 +71,9 @@ public class LayoutSettingsPanel extends JPanel
 
         redraw.addActionListener(lh.getEvaluateAndArrange());
 
-        alignX.addActionListener(e -> {
-            NodePlacementRoutines.alignNodes(Handler.currentGraphPanel.selectedNodes(), NodePlacementRoutines.X_AXIS, Handler.currentGraphPanel);
-            // graphPanel.updateNodePositions();
-            // graphPanel.deselectEverything();
-        });
+        alignX.addActionListener(e -> NodePlacementRoutines.alignNodes(Handler.currentGraphPanel.selectedNodes(), NodePlacementRoutines.X_AXIS, Handler.currentGraphPanel));
 
-        alignY.addActionListener(e -> {
-            NodePlacementRoutines.alignNodes(Handler.currentGraphPanel.selectedNodes(), NodePlacementRoutines.Y_AXIS, Handler.currentGraphPanel);
-            // graphPanel.updateNodePositions();
-            // graphPanel.deselectEverything();
-        });
+        alignY.addActionListener(e -> NodePlacementRoutines.alignNodes(Handler.currentGraphPanel.selectedNodes(), NodePlacementRoutines.Y_AXIS, Handler.currentGraphPanel));
 
         ChangeListener sliderUpdateListener = e -> {
             offsetText.setText("Offset: " + getSliderValue(oSl));
@@ -162,8 +154,6 @@ public class LayoutSettingsPanel extends JPanel
 
     /**
      * Adds a JButton of specified size to container
-     * @param button
-     * @param container
      */
     private static void addAButton(JButton button, Container container)
     {
@@ -175,9 +165,6 @@ public class LayoutSettingsPanel extends JPanel
 
     /**
      * Creates a JButton with specified text and size
-     * @param text
-     * @param size
-     * @return
      */
     private JButton createButton(String text, Dimension size)
     {
@@ -190,7 +177,6 @@ public class LayoutSettingsPanel extends JPanel
 
     /**
      * Singleton getter method for layout settings panel
-     * @return
      */
     public static LayoutSettingsPanel getLayoutSettingsPanel()
     {
@@ -211,9 +197,6 @@ public class LayoutSettingsPanel extends JPanel
 
     /**
      * Update slider values for layout metrics
-     * @param o
-     * @param d
-     * @param s
      */
     public void updateSliderValues(double o, double d, double s)
     {
@@ -226,14 +209,11 @@ public class LayoutSettingsPanel extends JPanel
 
     /**
      * Get slider value for arrangement
-     * @param slider
-     * @return
      */
     private double getSliderValue(JSlider slider) {return slider.getValue() / 100.0;}
 
     /**
      * Executes arrangement procedure of graph in a specified panel
-     * @param graphPanel
      */
     private void executeDFSLayout(IGraphPanel graphPanel)
     {
@@ -242,8 +222,6 @@ public class LayoutSettingsPanel extends JPanel
 
     /**
      * Display name of selected ludeme node
-     * @param node
-     * @param subtree
      */
     public void setSelectedComponent(String node, boolean subtree)
     {
