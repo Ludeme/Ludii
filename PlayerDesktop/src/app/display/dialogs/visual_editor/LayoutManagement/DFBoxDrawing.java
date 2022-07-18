@@ -153,10 +153,10 @@ public class DFBoxDrawing
     /**
      * Finds upward visibility graph
      * @param paths paths of graph
-     * @param graph graph in operation
+     * @param graph1 graph in operation
      * @return hashmap where keys correspond to node ids and value to their minimum distance from upper node
      */
-    private HashMap<Integer, Integer> findUpwardVisibilityGraph(List<List<Integer>> paths, iGraph graph)
+    private HashMap<Integer, Integer> findUpwardVisibilityGraph(List<List<Integer>> paths, iGraph graph1)
     {
         gupDistances.clear();
         // Initialize
@@ -175,12 +175,12 @@ public class DFBoxDrawing
             while (j != 0 && k != 0)
             {
                 int currentPk = P.get(k);
-                iGNode upper = graph.getNode(LE.get(j));
-                iGNode lower = graph.getNode(P.get(k));
+                iGNode upper = graph1.getNode(LE.get(j));
+                iGNode lower = graph1.getNode(P.get(k));
                 if (upper.equals(lower)) break;
 
-                int upperWidth = upper.fixed() ? GraphRoutines.getSubtreeArea(graph, upper.id()).width : upper.width();
-                int lowerWidth = lower.fixed() ? GraphRoutines.getSubtreeArea(graph, lower.id()).width : lower.width();
+                int upperWidth = upper.fixed() ? GraphRoutines.getSubtreeArea(graph1, upper.id()).width : upper.width();
+                int lowerWidth = lower.fixed() ? GraphRoutines.getSubtreeArea(graph1, lower.id()).width : lower.width();
 
                 // int nodeDist = (int)(lower.pos().y() - upper.pos().y() - upperHeight);
                 // check all the cases for upper and lower nodes x coordinates intersecting
@@ -257,9 +257,9 @@ public class DFBoxDrawing
      * Move nodes upward according to upward visibility graph
      * @param paths paths of tree/subtree
      * @param gup upward visibility graph - hashmap where key is node id and value is minimum distance to upper node
-     * @param graph graph in operation
+     * @param graph1 graph in operation
      */
-    private void moveNodeUpward(List<List<Integer>> paths, HashMap<Integer, Integer> gup, iGraph graph)
+    private void moveNodeUpward(List<List<Integer>> paths, HashMap<Integer, Integer> gup, iGraph graph1)
     {
         List<Integer> subTree = new ArrayList<>();
         List<Integer> P;
@@ -272,11 +272,11 @@ public class DFBoxDrawing
             {
                 int nid = P.get(j);
                 if (!subTree.contains(P.get(j)) && gup.containsKey(nid)) {minDist = Math.min(minDist,
-                        GraphRoutines.computeNodeVerticalDistance(gup.get(nid), nid, graph));}
+                        GraphRoutines.computeNodeVerticalDistance(gup.get(nid), nid, graph1));}
             }
             for (int j = 1; j < P.size(); j++)
             {
-                iGNode n = graph.getNode(P.get(j));
+                iGNode n = graph1.getNode(P.get(j));
                 int dist = Math.abs(minDist - MIN_NODE_GAP);
                 if (!subTree.contains(P.get(j)))
                 {

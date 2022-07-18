@@ -166,7 +166,7 @@ public class LayoutSettingsPanel extends JPanel
     /**
      * Creates a JButton with specified text and size
      */
-    private JButton createButton(String text, Dimension size)
+    private static JButton createButton(String text, Dimension size)
     {
         JButton button = new JButton(text);
         button.setPreferredSize(size);
