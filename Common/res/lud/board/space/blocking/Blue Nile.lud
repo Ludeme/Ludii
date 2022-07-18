@@ -1,20 +1,18 @@
 (define "AdjacentNotEmptySites"
-    (sites 
-        Around 
+    (sites Around 
         (to) 
-        if:(not (is In (to) (sites Empty) ))
+        if:(not (is In (to) (sites Empty)))
     )
 )
 
 //------------------------------------------------------------------------------
 
 (game "Blue Nile" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (hex 5)) 
         (piece "Marker" Neutral) 
-        }
-    )  
+    }) 
     
     (rules 
         
@@ -24,16 +22,15 @@
             (nextPhase "play")
         )
         
-        (phase "play"     
+        (phase "play"   
             (play 
-                (move 
-                    Add 
+                (move Add 
                     (piece "Marker0") 
                     (to 
                         (sites Around 
                             (last To) 
                             if:(and 
-                                (is Empty (to))  
+                                (is Empty (to)) 
                                 // not adjacent to any other piece except the last one placed.
                                 ("NoSites" (difference ("AdjacentNotEmptySites") (last To)))
                             ) 
@@ -44,7 +41,7 @@
         )
         }
         
-        (end ("NoMoves" Loss) )  
+        (end ("NoMoves" Loss)) 
     )
 )
 
@@ -57,7 +54,7 @@
         (rules "Played on a hexagonal board with five spaces per side. Players take turns placing stones on an empty space. The stone must be adjacent to the last stone played but cannot be adjacent to any other. The last player to be able to make a legal move wins.")
         (source "<a href=\"https://boardgamegeek.com/boardgame/33046/blue-nile\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
         (id "381")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/blocking")
         (author "Dan Troyka")
         (credit "Eric Piette")

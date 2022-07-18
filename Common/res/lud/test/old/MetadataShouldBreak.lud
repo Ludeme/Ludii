@@ -1,5 +1,5 @@
-(game "Backgammon"  
-    (players 2)  
+(game "Backgammon" 
+    (players 2) 
     (equipment { 
         (board (square 2) 13 {
             (track "Track1" {6 12..7 5..0 13..18 20..25 End} 1 directed:True)
@@ -8,7 +8,7 @@
         (dice num:2)
         (regions P1 { 20..25 })
         (regions P2 { 7..12 })
-        (map {(pair 1 6 ) (pair 2 19)})
+        (map {(pair 1 6) (pair 2 19)})
         (piece "Disc" Each
             (forEach Die 
                 replayDouble:True 
@@ -22,18 +22,18 @@
                     (to 
                         (trackSite Move steps:(pips)) 
                         if:(or 
-                            (and (is Enemy (who at:(to))) (= (topLevel at:(to)) 0)) 
-                            (not (is Enemy (who at:(to))))
+                            (and ("IsEnemyAt" (to)) (= (topLevel at:(to)) 0)) 
+                            (not ("IsEnemyAt" (to)))
                         ) 
                         (apply 
-                            if:(is Enemy (who at:(to))) 
-                            (fromTo (from (to)) (to (mapEntry (next) )))
+                            if:("IsEnemyAt" (to)) 
+                            (fromTo (from (to)) (to (mapEntry (next))))
                         )
                     )
                 )
             )
         ) 
-    } )
+    })
     
     (rules
         (start { 
@@ -67,16 +67,16 @@
                                             (trackSite Move from:(site) steps:(pips))
                                             if:(or 
                                                 (and 
-                                                    (is Enemy (who at:(to))) 
+                                                    ("IsEnemyAt" (to)) 
                                                     (= (topLevel at:(to)) 0)
                                                 ) 
-                                                (not (is Enemy (who at:(to))))
+                                                (not ("IsEnemyAt" (to)))
                                             )
                                             (apply 
-                                                if:(is Enemy (who at:(to)))
+                                                if:("IsEnemyAt" (to))
                                                 (fromTo 
                                                     (from (to)) 
-                                                    (to (mapEntry (next) ))
+                                                    (to (mapEntry (next)))
                                                 )
                                             )
                                         ) 
@@ -87,19 +87,19 @@
                             // Can be improved with a new ludeme or a constraint in a region I assume (Eric)
                             noMoveYet:(if (> (- (pips) 1) 0) 
                                 (if (!= (what at:(if (is Mover P1) (- 24 (- (pips) 1)) (+ Off (- (pips) 1)))) 0)
-                                    (select (from (if (is Mover P1) (- 24 (- (pips) 1)) (+ Off (- (pips) 1)))) (then (remove (last To)) ))
+                                    (select (from (if (is Mover P1) (- 24 (- (pips) 1)) (+ Off (- (pips) 1)))) (then (remove (last To))))
                                     (if (> (- (pips) 2) 0) 
                                         (if (!= (what at:(if (is Mover P1) (- 24 (- (pips) 2)) (+ Off (- (pips) 2)))) 0)
-                                            (select (from (if (is Mover P1) (- 24 (- (pips) 2)) (+ Off (- (pips) 2)))) (then (remove (last To)) ))
+                                            (select (from (if (is Mover P1) (- 24 (- (pips) 2)) (+ Off (- (pips) 2)))) (then (remove (last To))))
                                             (if (> (- (pips) 3) 0) 
                                                 (if (!= (what at:(if (is Mover P1) (- 24 (- (pips) 3)) (+ Off (- (pips) 3)))) 0)
-                                                    (select (from (if (is Mover P1) (- 24 (- (pips) 3)) (+ Off (- (pips) 3)))) (then (remove (last To)) ))
+                                                    (select (from (if (is Mover P1) (- 24 (- (pips) 3)) (+ Off (- (pips) 3)))) (then (remove (last To))))
                                                     (if (> (- (pips) 4) 0) 
                                                         (if (!= (what at:(if (is Mover P1) (- 24 (- (pips) 4)) (+ Off (- (pips) 4)))) 0)
-                                                            (select (from (if (is Mover P1) (- 24 (- (pips) 4)) (+ Off (- (pips) 4)))) (then (remove (last To)) ))
+                                                            (select (from (if (is Mover P1) (- 24 (- (pips) 4)) (+ Off (- (pips) 4)))) (then (remove (last To))))
                                                             (if (> (- (pips) 5) 0) 
                                                                 (if (!= (what at:(if (is Mover P1) (- 24 (- (pips) 5)) (+ Off (- (pips) 5)))) 0)
-                                                                    (select (from (if (is Mover P1) (- 24 (- (pips) 5)) (+ Off (- (pips) 5)))) (then (remove (last To)) ))
+                                                                    (select (from (if (is Mover P1) (- 24 (- (pips) 5)) (+ Off (- (pips) 5)))) (then (remove (last To))))
                                                                 )
                                                             )
                                                         )
@@ -116,7 +116,7 @@
                             )
                         )
                     )
-                    //                    //(max Distance
+                    //          //(max Distance
                         (if (= (what at:(mapEntry (mover))) 0)
                             (forEach Piece top:True)
                             (forEach Die replayDouble:True (!= (pips) 0)
@@ -126,12 +126,12 @@
                                         (trackSite Move from:(mapEntry (mover)) steps:(pips)) 
                                         if:(or 
                                             (and 
-                                                (is Enemy (who at:(to))) 
+                                                ("IsEnemyAt" (to)) 
                                                 (= (topLevel at:(to)) 0)
                                             ) 
-                                            (not (is Enemy (who at:(to))))
+                                            (not ("IsEnemyAt" (to)))
                                         ) 
-                                        (apply if:(is Enemy (who at:(to))))
+                                        (apply if:("IsEnemyAt" (to)))
                                     )
                                 )
                             )
@@ -146,12 +146,12 @@
                                                             (trackSite Move from:(mapEntry (mover)) steps:(pips)) 
                                                             if:(or 
                                                                 (and 
-                                                                    (is Enemy (who at:(to))) 
+                                                                    ("IsEnemyAt" (to)) 
                                                                     (= (topLevel at:(to)) 0)
                                                                 ) 
-                                                                (not (is Enemy (who at:(to))))
+                                                                (not ("IsEnemyAt" (to)))
                                                             ) 
-                                                            (apply if:(is Enemy (who at:(to))))
+                                                            (apply if:("IsEnemyAt" (to)))
                                                         )
                                                     )
                                                 ) 

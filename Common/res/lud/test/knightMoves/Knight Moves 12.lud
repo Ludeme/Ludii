@@ -1,6 +1,6 @@
 // Description of the knight move with a walk 2 steps forwards then an orthogonal step and filtering to keep only the sites at adjacent distance of 2..
 
-(define "RegionReached" (is In (last To) (sites Mover)) )
+(define "RegionReached" (is In (last To) (sites Mover)))
 
 //------------------------------------------------------------------------------
 
@@ -16,7 +16,7 @@
                         (sites Around 
                             (sites { {F F} })
                             Orthogonal
-                            if:(not (is Friend (who at:(to))))
+                            if:(not ("IsFriendAt" (to)))
                         )
                         if:(= 2 (count Steps (from) (site)))
                     )
@@ -26,16 +26,16 @@
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
         }
-    )  
+    ) 
     (rules 
         (start
             { 
-            (place "Knight1" (expand (sites Bottom)) )
-            (place "Knight2" (expand (sites Top)) )
+            (place "Knight1" (expand (sites Bottom)))
+            (place "Knight2" (expand (sites Top)))
             }
         )
         
-        (play (forEach Piece) )
+        (play (forEach Piece))
         
         (end (if "RegionReached" (result Mover Win)))
     )

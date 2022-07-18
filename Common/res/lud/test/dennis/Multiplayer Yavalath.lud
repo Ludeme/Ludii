@@ -1,16 +1,16 @@
-(game "Multiplayer Yavalath"  
+(game "Multiplayer Yavalath" 
     (players <Version:numPlayers>) 
     (equipment { 
         (board (rotate 90 (hex 5))) 
         (piece "Marker" Each) 
         }
-    )  
+    ) 
     (rules 
         (play <Swap:playRules>)
         (end {
             (if (is Line 4 Mover) (result Mover Win))
             (if (is Line 3 Mover) (result Mover Loss)) 
-        })  
+        }) 
     )
 )
 

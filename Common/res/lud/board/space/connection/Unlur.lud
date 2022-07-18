@@ -1,7 +1,7 @@
-// #1,#2 - sides ( S, N, NE, NW, SE, SW)
+// #1,#2 - sides (S, N, NE, NW, SE, SW)
 // #3 optional 3rd region
 (define "IsSidesConnected"
-    (is Connected { (sites Side #1) (sites Side #2) #3})
+    (is Connected {(sites Side #1) (sites Side #2) #3})
 )
 
 (define "WhiteVC" 
@@ -19,33 +19,27 @@
     )
 )
 
-(define "IsPlayingPhase" (= 1 (var)) )
+(define "IsPlayingPhase" (= 1 (var)))
 
-(game "Unlur"  
-    (players 2)  
+(game "Unlur" 
+    (players 2) 
     (equipment { 
         (board (hex <Board:size>)) 
         (piece "Disc" Each) 
-    })  
+    }) 
     (rules 
-        phases: {
+        phases:{
         (phase "Opening"
             (play
                 (or
-                    (move
-                        Add
+                    (move Add
                         (piece (id "Disc" P2))
                         (to <Edge:target_zone>)
                     )
-                    (move
-                        Pass
+                    (move Pass
                         (then
-                            (if
-                                (is Mover P1)
-                                (swap
-                                    Players
-                                    P1
-                                    P2
+                            (if (is Mover P1)
+                                (swap Players P1 P2
                                     (then
                                         (note "Player 1 is now Black. Player 2 is now White." to:All)
                                     )
@@ -105,7 +99,7 @@
         (rules "This game is played on a hexagonal board made up of hexagonal squares, usually 6 squares per side, although other sizes are possible. Initially the board is empty and black pieces are placed in turns until one player passes. The player who passed becomes Black. The other player becomes White and takes the next turn. Play continues, with each player in turn placing pieces of their colour on unoccupied squares on the board. White wins if they manage to connect two opposite sides of the board. Black wins if they manage to connect three non-adjacent sides of the board. To avoid ties, if a player meets the opponent's goal with their pieces, they lose the game.")
         (id "1226")
         (source "<a href=\"https://fr.wikipedia.org/wiki/Unlur\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/connection")
         (author "Jorge Gómez Arrausi")
         (credit "Nicholas Bamber")

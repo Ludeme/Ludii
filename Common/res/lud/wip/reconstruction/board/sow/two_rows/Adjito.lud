@@ -1,5 +1,5 @@
-(game "Adjito"  
-    (players 2)  
+(game "Adjito" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 <Board:size> store:None
@@ -7,15 +7,15 @@
         )
         (piece "Seed" Shared)
         }
-    )  
+    ) 
     (rules 
         
-        (start (set Count 3 to:(sites Track) ) )
+        (start (set Count 3 to:(sites Track)))
         
         (play (forEach Piece))
         
         (end
-            (if  (no Moves Next)
+            (if (no Moves Next)
                 (result Mover Win)
             )
         )
@@ -26,14 +26,14 @@
 
 (option "Board Size" <Board> args:{ <size>}
     {
-    (item "8"   <8>  "Each Row has 8 holes.")*  
-    (item "9"   <9>  "Each Row has 9 holes.")  
-    (item "10"  <10> "Each Row has 10 holes.")  
+    (item "8"  <8> "Each Row has 8 holes.")* 
+    (item "9"  <9> "Each Row has 9 holes.") 
+    (item "10" <10> "Each Row has 10 holes.") 
 })
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Adjito is a two-row mancala-style board game played in the Kingdom of Dahomey in the nineteenth century. ")
@@ -43,7 +43,7 @@
         (version "1.3.2")
         (classification "board/sow/two rows/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Benin, from around 1891 to 1894.")
+        (origin "This game was played in Benin, from around 1891 to 1894.")
         }
     )
     

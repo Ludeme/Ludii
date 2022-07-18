@@ -51,7 +51,7 @@ public class TestTrialsIntegrityERIC
 
 		final List<File> entries = new ArrayList<File>();
 
-		// final String moreSpecificFolder = "../Common/res/lud/board/sow";
+		//final String moreSpecificFolder = "../Common/res/lud/board/space/line";
 		final String moreSpecificFolder = "";
 		
 		for (int i = 0; i < gameDirs.size(); ++i)
@@ -115,7 +115,7 @@ public class TestTrialsIntegrityERIC
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getName().contains("Quinze Tablas"))
+			if (fileEntry.getName().contains("HexGo"))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
 					gameReached = true;

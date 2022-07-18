@@ -1,12 +1,12 @@
-(game "GIPF"  
-    (players 2)  
+(game "GIPF" 
+    (players 2) 
     (equipment { 
         (board (rotate 90 (tri Hexagon 5)) use:Vertex) 
         (hand Each)
         (regions "OuterVertices" (sites Outer Vertex))
         //(regions "InnerCells" (sites Inner Cell))
         (piece "Disc" Each)
-    })  
+    }) 
     (rules 
         (start {
             (place "Disc1" {"E3" "B12" "H12"})

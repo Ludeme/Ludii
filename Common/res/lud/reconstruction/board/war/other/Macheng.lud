@@ -16,8 +16,8 @@
     (custodial 
         (from (last To)) 
         Orthogonal
-        (between (max 1) if:(is Enemy (who at:(between))) (apply (remove (between))))
-        (to if:(is Friend (who at:(to)))) 
+        (between (max 1) if:("IsEnemyAt" (between)) (apply (remove (between))))
+        (to if:("IsFriendAt" (to))) 
     )
 )
 
@@ -26,7 +26,7 @@
         (from (last To))
         Orthogonal
         (to 
-            if:(is Enemy (who at:(to)))
+            if:("IsEnemyAt" (to))
             (apply (remove (to)))
         )
     )		
@@ -53,7 +53,7 @@
                 )
             )
         ) 
-    })  
+    }) 
     (rules 
         (start (place "Marker" "Hand" count:9))
         
@@ -72,7 +72,7 @@
                                 "IfLine3MoveAgain" 
                             })
                         )
-                    )  
+                    ) 
                 )
             ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
@@ -101,6 +101,14 @@
     
     (info
         {
+        (description "Macheng is a capturing game played in Ming Dynasty China. It was described as a game commonly played in alleys.")
+        (rules "Played on a merels board. Players place their pieces on the board. When three pieces are in a straight line, one of the opponent's pieces is removed from the board. When a player surrounds an opponent's piece with two of their pieces, the opponent's piece is  removed. When a player places their piece between two of the opponent's pieces, the opponent's pieces are removed.")
+        (source "DLP evidence.")
+        (id "1239")
+        (version "1.3.5")
+        (classification "board/war/reconstruction")
+        (credit "Eric Piette")
+        (origin  "This game was played in China, from around 1567 to 1624.")
         }
     )
     

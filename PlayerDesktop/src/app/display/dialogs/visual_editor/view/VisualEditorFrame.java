@@ -38,8 +38,8 @@ public class VisualEditorFrame extends JFrame
             @Override
             public void windowClosing(WindowEvent e)
             {
-                DocHandler.getInstance().close();
-                StartVisualEditor.controller().close();
+                //DocHandler.getInstance().close();
+                //StartVisualEditor.controller().close();
 
                 // TODO: For Filip's testing
                 /*

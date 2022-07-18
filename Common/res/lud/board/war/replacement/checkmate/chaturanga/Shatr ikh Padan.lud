@@ -1,10 +1,10 @@
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
 )
 
 (define "CaptureToPiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
             )
@@ -17,7 +17,7 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
@@ -25,8 +25,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Shatr ikh Padan"  
-    (players {(player N) (player S)})  
+(game "Shatr ikh Padan" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -42,12 +42,12 @@
             (move
                 Step 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )
         )
-    })  
+    }) 
     (rules 
         (start { 
             (place "Pawn1" (sites Row 1))
@@ -84,7 +84,7 @@
         (rules "8x8 board. Two players. Pieces and movement are as follows: King x1, placed on the fifth space from the left on one edge of the board: Moves one space orthogonally or diagonally. Pawns x8, arranged along the row in front of the king: moves one space forward orthogonally or one space forward diagonally to capture. The opponent's pieces are placed in the same position on the opposite side of the board. If the King can be taken on the next turn it is in check, it must not remain in check on the next turn. If the king cannot move out of check, checkmate is declared and the opponent wins.")
         (source "Murray 1913: 347.")
         (id "316")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
         (origin  "This game was played in India, around 1901.")

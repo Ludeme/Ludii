@@ -4,12 +4,12 @@
         if:(is Mover (who at:(to)))
     )
 )
-(define "NextHoleFrom" (trackSite Move from:#1 #2 #3))
+(define "NextHoleFrom" ("NextSiteOnTrack" #3 from:#1 #2))
 
 //------------------------------------------------------------------------------
 
-(game "Ngulungu"  
-    (players 2)  
+(game "Ngulungu" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 7 store:None
@@ -17,10 +17,10 @@
             (track "Track" "0,E,27,W" loop:True)
             (track "TrackCorner" "0,6,27,21" loop:True)
             (track "ReverseTrack" "6,W,21,E" loop:True)
-            }  		
+            } 		
         )
         (piece "Seed" Each)
-    })  
+    }) 
     (rules 
         (start {
             (place "Seed1" (sites Bottom) counts:{3})
@@ -32,7 +32,7 @@
                 (move
                     (from ("LeftMost"))
                     (to 
-                        (trackSite FirstSite "TrackCorner" from:(from) if:(is Enemy (who at:(to))))
+                        (trackSite FirstSite "TrackCorner" from:(from) if:("IsEnemyAt" (to)))
                         (apply
                             (and
                                 (remove (to) count:(count at:(to)))
@@ -41,8 +41,7 @@
                         )	
                     )
                 )
-                (move
-                    Select 
+                (move Select 
                     (from 
                         ("LeftMost") 
                     )
@@ -54,7 +53,7 @@
                                     (add (piece (id "Seed" Mover)) (to (to)) count:(count at:(to)))
                                 )
                             )
-                            apply:(if (and (= 1 (count at:("NextHoleFrom" (to) "ReverseTrack" steps:1))) (= 1 (count at:(to))))
+                            apply:(if (and (= 1 (count at:("NextHoleFrom" (to) "ReverseTrack" 1))) (= 1 (count at:(to))))
                                 (moveAgain)
                             )
                         )
@@ -74,14 +73,14 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Ngulungu is a board game played by Basanga and Baluba children in the Katanga province of the Democratic Republic of Congo. The game has a predetermined outcome, but often children will make a mistake, making the game somewhat unpredictable for them.")
         (rules "4x7 board, using only the outer two rows. Three counters in each hole. Sowing occurs in an anticlockwise direction. The first player takes the counters out of their leftmost hole and sows them. Instead of each player owning a row of holes, they own the series of holes which currently contain their counters. Players always sow from the rearmost of their holes. When the frontmost two holes of a player's sequence contain one counter each, the player gets another turn. When a player sows into the rear holes of the opponent, the player takes ownership of those holes. When one player is reduced to one counter, they jump to the nearest corner hole in the direction of play, and continue jumping from corner to corner until they capture counters belonging to the opponent, at which point they revert to the normal playing style. The first player to capture all their opponent's pieces wins.")
         (source "Centner 1963: 377-378.")
         (id "1383")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         (origin  "This game was played in Deocratic Republic of Congo, from around 1955 to 1960.")

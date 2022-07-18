@@ -1,0 +1,5 @@
+// Returns the index of the opposite pit on a two rows mancala board. This ludemeplex is working only if the description is defining "Columns" as the number of holes of the board.
+// #1 = The site.
+// @example ("OppositePitTwoRows" (to))
+
+(define "OppositePitTwoRows" (if (is In #1 (sites Bottom)) (+ #1 "Columns") (- #1 "Columns")))

@@ -1,10 +1,3 @@
-(define "RemoveEnemyPiece" 
-    (move
-        Remove
-        (sites Occupied by:Next container:"Board") 
-    )
-)
-
 (define "PlaceOnTop" 
     (move
         (from (handSite Mover))
@@ -17,22 +10,13 @@
     )
 )
 
-(define "IfLine3MoveAgain" 
-    (then 
-        (if 
-            (is Line 3 if:(= 1 (size Stack at:(to)))) 
-            (moveAgain)
-        )
-    )
-)
-
 (define "RemoveDeadPieces" 
     (forEach Site
         (forEach 
             (sites Occupied by:#1 container:"Board")
             if:(= (size Stack at:(site)) 2)
         )
-        (and { (remove (site)) (remove (site)) (add (piece (id "Marker" #1)) (to (site)))})
+        (and {(remove (site)) (remove (site)) (add (piece (id "Marker" #1)) (to (site)))})
     )
 )
 
@@ -45,13 +29,9 @@
         (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
         (hand Each)
         (piece "Marker" Each 
-            (move 
-                Step 
-                (to if:(is Empty (to))) 
-                "IfLine3MoveAgain" 
-            )
+            ("StepToEmpty" ~ (then ("ReplayIfLine3" if:("IsSingletonStack" (to)))))
         ) 
-    })  
+    }) 
     (rules 
         (start {
             (place Stack "Marker1" (handSite P1) count:12)
@@ -67,8 +47,8 @@
                         (move 
                             (from (handSite Mover)) 
                             (to (sites Empty)) 
-                            "IfLine3MoveAgain" 
-                        )  
+                            (then ("ReplayIfLine3" if:("IsSingletonStack" (to)))) 
+                        ) 
                     )
                     (then 
                         (if (and (not (is Next Mover)) (and ("HandEmpty" P1) ("HandEmpty" P2)))
@@ -83,7 +63,7 @@
         (phase "Movement" 
             (play 
                 (if "SameTurn"
-                    "RemoveEnemyPiece"
+                    "RemoveAnyEnemyPiece"
                     (if (> (count Pieces Mover) 3)
                         (forEach Piece)
                         (move 
@@ -93,7 +73,7 @@
                     )
                 )
             )
-            (end (if (no Moves Next) (result Mover Win)))
+            (end ("BlockWin"))
         )
         }
     )
@@ -109,7 +89,7 @@
         (rules "Three concentric squares, with lines connecting the corners and the midpoints of the sides. Twelve pieces per player. Players alternate turns placing a piece on the board. When a player places three pieces in a row along the lines of the board, the player places another of their pieces on top of one of the opponent's pieces; the opponent's piece is considered \"dead.\" Once all of the pieces have been placed on the board, all \"dead\" pieces are removed from the board. Players then alternate moving pieces to an empty adjacent spot along the lines. When three are placed in a row, one of the opponent's pieces is taken. A player wins by capturing all of the opponent's pieces or by blocking them from being able to move.")
         (source "Culin 1895: 102.")
         (id "953")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line")
         (credit "Eric Piette")
         (origin  "This game was played in China, around 1895.")
@@ -119,8 +99,6 @@
     (graphics {
         (stackType 1 Count)
         (stackType 2 Count)
-        
     })
     
 )
-

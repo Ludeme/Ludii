@@ -2,7 +2,7 @@
 
 (define "RemoveAPiece" (move Remove (from)))
 
-(define "PieceStacked" (= (state at:#1) 1) )
+(define "PieceStacked" (= (state at:#1) 1))
 (define "Unstack" (set State at:(last To) 0))
 
 (define "StackSizeLessThan2" (< (size Stack at:("NextSiteOnTrack" (pips))) 2))
@@ -84,7 +84,7 @@
         ")
         (source "Libro de los Juegos 74.")
         (id "724")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/escape")
         (credit "Eric Piette")
         (origin  "This game was played in Spain, around 1283.")

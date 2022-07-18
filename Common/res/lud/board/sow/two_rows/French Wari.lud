@@ -1,37 +1,31 @@
 (define "Columns" 6)
 
-(define "OppositePit" (if (is In (to) (sites P1)) (+ (to) "Columns") (- (to) "Columns") ) )
-
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
 
 //------------------------------------------------------------------------------
 
-(game "French Wari"  
-    (players 2)  
+(game "French Wari" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
             (track "Track" "0,E,N,W" loop:True)
         )
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+    }) 
     (rules 
         
-        (start (set Count 4 to:(sites Track) ) )
+        (start (set Count 4 to:(sites Track)))
         
         (play 
-            (move
-                Select 
+            (move Select 
                 (from 
                     (if 
-                        (is Mover Prev) 
-                        "PlayFromLastHole" 
+                        ("SameTurn") 
+                        "LastHoleSowed" 
                         (sites Mover) 
                     ) 
                     if:(> (count at:(from)) 0)
@@ -40,11 +34,11 @@
                     (sow
                         apply:(if (> (count at:(to)) 1)
                             (moveAgain)
-                            (if (> (count at:"OppositePit") 0)
+                            (if (> (count at:("OppositePitTwoRows" (to))) 0)
                                 (fromTo 
-                                    (from "OppositePit") 
+                                    (from ("OppositePitTwoRows" (to))) 
                                     (to (handSite Mover)) 
-                                    count:(count at:"OppositePit" )
+                                    count:(count at:("OppositePitTwoRows" (to)))
                                 ) 
                             )
                         )
@@ -53,15 +47,7 @@
             )
         )
         
-        (end
-            (if (no Moves Mover) 
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
-        
+        (end ("MancalaByScoreWhen" (no Moves Mover)))
     )
 )
 
@@ -75,7 +61,7 @@
         (rules "2x6 board. Play begins with four counters in each hole. Moves begin from any hole in the player's row and sowing proceeds in an anti-clockwise direction. If the final counter of a sowing lands in an occupied hole, these counters are lifted and sowing continues. If the final counter lands in an empty hole, any counters in the opposite hole are taken and the turn ends. Play continues until one player cannot move. When this happens, the other player captures the remaining counters and the game ends. The player with the most counters wins.")
         (source "Herskovits 1932: 32.")
         (id "249")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         (origin  "This game was played in Barbados, around 1932.")

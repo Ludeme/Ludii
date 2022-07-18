@@ -1,5 +1,5 @@
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
 )
 
 (define "HasNeverMoved"
@@ -21,7 +21,7 @@
 
 (define "CaptureToPieceAndResetCounter"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
                 (then (set Counter))
@@ -34,7 +34,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )   
+    )  
 )
 
 (define "DecideToCastle"
@@ -118,7 +118,7 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
@@ -126,8 +126,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Symmetric Chess"  
-    (players {(player N) (player S)})  
+(game "Symmetric Chess" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (rectangle 8 9)) 
         
@@ -156,7 +156,7 @@
                 Slide 
                 Orthogonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
                 ) 
                 "RememberPieceHasMoved"
@@ -166,7 +166,7 @@
             (move
                 Step 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndResetCounter"
                 ) 
                 "RememberPieceHasMoved"
@@ -182,7 +182,7 @@
                     )
                     Diagonal 
                     (to 
-                        if:(is Enemy (who at:(to))) 
+                        if:("IsEnemyAt" (to)) 
                         "CaptureToPieceAndResetCounter"
                     )
                     (then
@@ -198,7 +198,7 @@
                     Step 
                     Orthogonal
                     (to 
-                        if:(and (not (is Friend (who at:(to)))) (!= (state at:(from)) 0)) 
+                        if:(and (not ("IsFriendAt" (to))) (!= (state at:(from)) 0)) 
                         "CaptureToPieceAndResetCounter"
                     ) 
                     (then
@@ -215,7 +215,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndResetCounter"
                 ) 
             )
@@ -224,7 +224,7 @@
             (move
                 Slide 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
                 ) 
             ) 
@@ -233,9 +233,9 @@
         (map "King" {(pair 1 "E1") (pair 2 "E8")})
         (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})
         (map "RookRight" {(pair 1 "I1") (pair 2 "I8")})
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
-    })  
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
+    }) 
     (rules 
         (start { 
             (place "Pawn1" (sites Row 1))
@@ -297,7 +297,7 @@
 (rules "1) When castling king moves 3 squares towards either rook. 2) Both bishops of each player cannot run along squares of a same color. One of them must change in such a manner that it transits through squares of the other color. Being in its original square without having been moved before, it will take an orthogonal step towards any of the 3 surrounding squares that are of the other color, provided that these are empty. This special move is called conversion and it must be done as an ordinary move during the game.")
 (id "1668")
 (source "<a href=\"https://www.chessvariants.com/invention/symmetric-chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />ChessVariants</a>")
-(version "1.3.4")
+(version "1.3.5")
 (classification "board/war/replacement/checkmate/chess")
 (credit "Matthew Stephenson")
 }

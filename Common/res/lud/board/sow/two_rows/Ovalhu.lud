@@ -1,13 +1,12 @@
 (define "Columns" 8)
-(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns") ) )
 (define "PlayableSites" (sites (values Remembered "Playable")))
 (define "NoPieceOnBoard" (no Pieces All in:(union (sites Top) (sites Bottom))))
 (define "Stores" (sites {(mapEntry P1) (mapEntry P2)}))
 
 //------------------------------------------------------------------------------
 
-(game "Ovalhu"  
-    (players 2)  
+(game "Ovalhu" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns"
@@ -17,10 +16,10 @@
             }
         )
         (piece "Seed" Shared)
-        (map {(pair P1 LastSite) (pair P2 FirstSite)})  // kalahs (storage pits)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-    })  
+        (map {(pair P1 LastSite) (pair P2 FirstSite)}) // kalahs (storage pits)
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+    }) 
     (rules 
         
         (start {
@@ -34,7 +33,7 @@
                 (or {
                     (move Select
                         (from 
-                            (if (and (is Pending) (is Mover Prev))
+                            (if (and (is Pending) ("SameTurn"))
                                 (sites {(var "Replay")})
                                 (sites Mover) 
                             )
@@ -54,11 +53,11 @@
                                             )
                                         )
                                     )
-                                    (if (is Occupied ("OppositePit"))
+                                    (if (is Occupied ("OppositePitTwoRows" (to)))
                                         (fromTo
-                                            (from ("OppositePit"))
+                                            (from ("OppositePitTwoRows" (to)))
                                             (to (mapEntry Mover))
-                                            count:(count at:("OppositePit"))
+                                            count:(count at:("OppositePitTwoRows" (to)))
                                         )
                                     )
                                 )
@@ -101,22 +100,20 @@
             )
             (nextPhase (all Passed) "Sowing")
         )
-        
         }
-        
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Ovalhu is a two-row mancala-style board game played in the Maldives.")
         (rules "2x8 board, with a store on either end. Each player owns the store to their right. Eight counters in each hole. Players alternate turns sowing in an anti-clockwise direction from one of the holes on their side of the board. Sowing always includes the player's store (but not the opponent's store), and sowing cannot begin from the store. When the final counter lands in an occupied hole, the contents of that hole are picked up and sowing continues. If the last counter lands in the player's store, they may choose any of the holes on their side of the board and continue sowing from it. When the final counter lands in an empty hole, the counters in the opposite hole are captured. Play continues until all of the counters are captured. A new round begins. Players fill the holes on their side of the board with their captured counters. If a player cannot fill a hole with the required number of counters, the hole is closed and is out of play for that round. Play continues as before. Play continues in successive rounds until one player closes all of their opponent's holes and wins. ")
         (source "de Voogt 2000: 178-179.")
         (id "1254")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         (origin  "This game was played in Maldives, around 2000.")

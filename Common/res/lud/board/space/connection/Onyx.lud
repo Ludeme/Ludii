@@ -27,7 +27,7 @@
     (count Sites 
         in:(forEach 
             (sites Around (site)) 
-            if:(is Enemy (who at:(site)))
+            if:("IsEnemyAt" (site))
         )
     )
 )
@@ -38,7 +38,7 @@
             (sites Around (site)) 
             if:(and 
                 (is In (site) (sites Around (last To))) 
-                (is Enemy (who at:(site)))
+                ("IsEnemyAt" (site))
             )
         )
     )
@@ -46,8 +46,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Onyx"  
-    (players 2)  
+(game "Onyx" 
+    (players 2) 
     (equipment { 
         (board 
             (keep
@@ -57,9 +57,9 @@
             use:Vertex
         ) 
         (piece "Disc" Each) 
-        (regions P1 { (sites Side W) (sites Side E) } )
-        (regions P2 { (sites Side N) (sites Side S) } )
-    })  
+        (regions P1 {(sites Side W) (sites Side E) })
+        (regions P2 {(sites Side N) (sites Side S) })
+    }) 
     (rules
         (start {
             (place "Disc1" (sites {15 24 119 128}))
@@ -84,7 +84,7 @@
                             (remove
                                 (forEach 
                                     (sites Around (site)) 
-                                    if:(is Enemy (who at:(site)))
+                                    if:("IsEnemyAt" (site))
                                 )
                             )
                         )
@@ -116,7 +116,7 @@
         Black tries to connect the two horizontal (black) sides with an unbroken chain of black pieces, while White tries to connect the two vertical (white) sides with an unbroken chain of white pieces. The first to do so wins the game.")
         (id "1770")
         (source "<a href=\"https://en.wikipedia.org/wiki/Onyx_(game)\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/connection")
         (author "Larry Back")
         (credit "Eric Piette")

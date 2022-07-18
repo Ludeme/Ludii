@@ -2,8 +2,8 @@
     (players 2)
     (games (subgame "MahbousehSubgame" result:(score Mover)))
     (end { 
-        (if (>= (matchScore P1) 31)  (result P1 Win))
-        (if (>= (matchScore P2) 31)  (result P2 Win))
+        (if (>= (matchScore P1) 31) (result P1 Win))
+        (if (>= (matchScore P2) 31) (result P2 Win))
     })
 )
 
@@ -17,7 +17,7 @@
             ")
             (source "Barakat 1974: 18-19.")
             (id "1062")
-            (version "1.3.4")
+            (version "1.3.5")
             (classification "board/race/escape")
             (credit "Eric Piette")
             (origin  "This game was played in Southwest Asia, around 1974.")

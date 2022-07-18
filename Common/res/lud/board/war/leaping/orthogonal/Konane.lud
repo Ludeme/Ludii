@@ -4,7 +4,7 @@
         (from #1)
         #2
         (between 
-            if:(is Enemy (who at:(between)))
+            if:("IsEnemyAt" (between))
             (apply (remove (between)))
         )
         (to if:(is Empty (to)))
@@ -16,16 +16,16 @@
 
 //------------------------------------------------------------------------------
 
-(game "Konane"  
-    (players 2)  
+(game "Konane" 
+    (players 2) 
     (equipment { 
         <Board>
         (piece "Marker" Each)
-    })  
+    }) 
     (rules 
         (start { 
-            (place "Marker1" (sites Phase 1) )
-            (place "Marker2" (sites Phase 0) )
+            (place "Marker1" (sites Phase 1))
+            (place "Marker2" (sites Phase 0))
         })
         
         phases:{ 
@@ -59,7 +59,7 @@
                         ("HopSequence" (last To) SameDirection)
                         (move Pass)
                     )
-                    (forEach Piece "Marker" ("HopSequence" (from) Orthogonal) ) 
+                    (forEach Piece "Marker" ("HopSequence" (from) Orthogonal)) 
                 )
             )
         )
@@ -73,12 +73,12 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "6x6"   <(board (square 6))>         "The game is played on a 6x6 board.")  
-    (item "8x8"   <(board (square 8))>         "The game is played on a 8x8 board.")  
-    (item "10x10" <(board (square 10))>        "The game is played on a 10x10 board.")* 
-    (item "12x12" <(board (square 12))>        "The game is played on a 12x12 board.")  
-    (item "14x14" <(board (square 14))>        "The game is played on a 14x14 board.")   
-    (item "16x16" <(board (square 16))>        "The game is played on a 16x16 board.")  
+    (item "6x6"  <(board (square 6))>     "The game is played on a 6x6 board.") 
+    (item "8x8"  <(board (square 8))>     "The game is played on a 8x8 board.") 
+    (item "10x10" <(board (square 10))>    "The game is played on a 10x10 board.")* 
+    (item "12x12" <(board (square 12))>    "The game is played on a 12x12 board.") 
+    (item "14x14" <(board (square 14))>    "The game is played on a 14x14 board.")  
+    (item "16x16" <(board (square 16))>    "The game is played on a 16x16 board.") 
 })
 
 //------------------------------------------------------------------------------
@@ -242,7 +242,7 @@
         (useFor "Ruleset/15x15 Konane (Incomplete)" (id "1643"))
         (source "Murray 1951: 97")
         (id "59")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/leaping/orthogonal")
         (credit "Eric Piette")
         (origin  "This game was played in Hawaii, from around 1779 to 1924.")

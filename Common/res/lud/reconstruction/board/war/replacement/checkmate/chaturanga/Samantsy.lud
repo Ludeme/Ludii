@@ -1,6 +1,6 @@
 (define "CaptureToPiece"
     (apply 
-        (if (and (is Enemy (who at:(to))) (!= (what at:(to)) (id "King" Next)))
+        (if (and ("IsEnemyAt" (to)) (!= (what at:(to)) (id "King" Next)))
             (remove 
                 (to) 
             )
@@ -13,7 +13,7 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(and (is Enemy (who at:(to))) (!= (what at:(to)) (id "King" Next)))
+            if:(and ("IsEnemyAt" (to)) (!= (what at:(to)) (id "King" Next)))
             (apply (remove (to)))
         )
     )
@@ -22,7 +22,7 @@
 //------------------------------------------------------------------------------
 
 (game "Samantsy"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8))
         (piece "King" Each 
@@ -32,7 +32,7 @@
             (move
                 Slide 
                 (to 
-                    if:(and (is Enemy (who at:(to))) (!= (what at:(to)) (id "King" Next)))
+                    if:(and ("IsEnemyAt" (to)) (!= (what at:(to)) (id "King" Next)))
                     "CaptureToPiece"
                 ) 
             )
@@ -54,7 +54,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(or (is Empty (to)) (and (is Enemy (who at:(to))) (!= (what at:(to)) (id "King" Next))))
+                    if:(or (is Empty (to)) (and ("IsEnemyAt" (to)) (!= (what at:(to)) (id "King" Next))))
                     "CaptureToPiece"
                 ) 
             )		
@@ -64,7 +64,7 @@
                 Slide 
                 Orthogonal 
                 (to 
-                    if:(and (is Enemy (who at:(to))) (!= (what at:(to)) (id "King" Next)))
+                    if:(and ("IsEnemyAt" (to)) (!= (what at:(to)) (id "King" Next)))
                     "CaptureToPiece"
                 ) 
             )		
@@ -78,15 +78,15 @@
                     if:(is Empty (between))
                 )
                 (to 
-                    if:(and (is Enemy (who at:(to))) (!= (what at:(to)) (id "King" Next)))
+                    if:(and ("IsEnemyAt" (to)) (!= (what at:(to)) (id "King" Next)))
                     "CaptureToPiece"
                 ) 
             )		
         )
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
     })
-    (rules         
+    (rules     
         (start { 
             (place "Pawn1" (sites Row 1))
             (place "Pawn2" (sites Row 6))
@@ -105,10 +105,10 @@
     (info
         {
         (description "Samantsy is a capturing game played in Madagascar. ")
-        (rules "8x8 board. Pieces with the following movement, for each player: Hova (x1): moves one space orthogonally or diagonally, is not taken by other pieces and does not take other pieces; Anakova (x1): moves one space diagonally; Farasy (x2): moves one space orthogonally and one space diagonally, jumping over any intervening pieces; Basy (x2): moves diagonally to the second space, but does not jump over the first; Vorona (2): moves orthogonally any number of spaces; Zaza (x8): move one space forward orthogonally, captures one space forward diagonally to capture. When a Zaza reaches the opposite edge of the board, they are promoted to Anakova. The pieces are set up on the last row of the player's side of the board, from left to right, as follows: Vorona, Farasy, Basy, Hova, Anakova, Basy, Farasy, Vorona, except the Hova and Anakova are swapped for the opponent. The Zaza are placed in the row in front of these pieces. ")
+        (rules "8x8 board. Pieces with the following movement, for each player: Hova (x1): moves one space orthogonally or diagonally, is not taken by other pieces and does not take other pieces; Anakova (x1): moves one space diagonally; Farasy (x2): moves one space orthogonally and one space diagonally, jumping over any intervening pieces; Basy (x2): moves diagonally to the second space, but does not jump over the first; Vorona (2): moves orthogonally any number of spaces; Zaza (x8): move one space forward orthogonally, captures one space forward diagonally to capture. When a Zaza reaches the opposite edge of the board, they are promoted to Anakova. The pieces are set up on the last row of the player's side of the board, from left to right, as follows: Vorona, Farasy, Basy, Hova, Anakova, Basy, Farasy, Vorona, except the Hova and Anakova are swapped for the opponent. The Zaza are placed in the row in front of these pieces.  Replacement capture.")
         (source "DLP evidence.")
         (id "1328")
-        (version "1.3.2")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chaturanga/reconstruction")
         (credit "Eric Piette")
         (origin  "This game was played in Madagascar, around 1912.")

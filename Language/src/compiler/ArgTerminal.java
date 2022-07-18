@@ -115,11 +115,7 @@ public class ArgTerminal extends Arg
 				try
 				{
 					// Load class from Core (is outside build path)
-					object = Compiler.loadExternalClass
-							 (
-								"../Core/src/game/functions/ints/",		 
-								"game.functions.ints.IntConstant"		 
-							 )
+					object = Class.forName("game.functions.ints.IntConstant")
 							 .getDeclaredConstructor(int.class)
 							 .newInstance(Integer.valueOf(value));
 				} 
@@ -136,11 +132,7 @@ public class ArgTerminal extends Arg
 				try
 				{
 					// Load class from Core (is outside build path)
-					object = Compiler.loadExternalClass
-							 (
-								"../Core/src/game/functions/dim/",		 
-								"game.functions.dim.DimConstant"		 
-							 )
+					object = Class.forName("game.functions.dim.DimConstant")
 							 .getDeclaredConstructor(int.class)
 							 .newInstance(Integer.valueOf(value));
 				} 
@@ -174,11 +166,7 @@ public class ArgTerminal extends Arg
 				try
 				{
 					// Load class from Core (is outside build path)
-					object = Compiler.loadExternalClass
-							 (
-								"../Core/src/game/functions/booleans/",		 
-								"game.functions.booleans.BooleanConstant"		 
-							 )
+					object = Class.forName("game.functions.booleans.BooleanConstant")
 							 .getDeclaredConstructor(boolean.class)
 							 .newInstance(Boolean.valueOf(value));
 				} 
@@ -242,11 +230,7 @@ public class ArgTerminal extends Arg
 				try
 				{
 					// Load class from Core (is outside build path)
-					object = Compiler.loadExternalClass
-							 (
-								"../Core/src/game/functions/floats/",		 
-								"game.functions.floats.FloatConstant"		 
-							 )
+					object = Class.forName("game.functions.floats.FloatConstant")
 							 .getDeclaredConstructor(float.class)
 							 .newInstance(Float.valueOf(value));
 				} 

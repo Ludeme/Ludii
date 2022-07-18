@@ -1,4 +1,4 @@
-(define "PromoteIfBorderReached"  
+(define "PromoteIfBorderReached" 
     (if (is In (last To) (sites Next))
         (move Promote (last To) (piece "DoubleCounter") Mover)
     )
@@ -9,7 +9,7 @@
         Hop 
         (directions {Forwards Rightward Leftward})
         (between 
-            if:(is Enemy (who at:(between)))
+            if:("IsEnemyAt" (between))
             (apply (remove (between)))
         ) 
         (to if:(is Empty (to))) 
@@ -28,7 +28,7 @@
         (between 
             before:9
             after:9
-            if:(is Enemy (who at:(between))) 
+            if:("IsEnemyAt" (between)) 
             (apply (remove (between)))
         )
         (to if:(is Empty (to)))
@@ -36,10 +36,10 @@
     )
 )
 
-(define "HasCaptured"  (set Value Mover 0))
+(define "HasCaptured" (set Value Mover 0))
 (define "HasNotCaptured" (set Value Mover 1))
-(define "DidNotCaptured"  (= (value Player Prev) 1) )
-(define "RememberSiteWithPossibleCapture"  
+(define "DidNotCaptured" (= (value Player Prev) 1))
+(define "RememberSiteWithPossibleCapture" 
     (set Pending 
         (sites From
             (or 
@@ -52,7 +52,7 @@
                         (between 
                             before:9
                             after:9
-                            if:(is Enemy (who at:(between))) 
+                            if:("IsEnemyAt" (between)) 
                             (apply (remove (between)))
                         )
                         (to if:(is Empty (to)))
@@ -72,7 +72,7 @@
             if:(!= (what at:(from)) 0)
         )
         (then 
-            (and  {
+            (and {
                 (remove (last To)) 
                 (moveAgain) 
                 (set Value Prev 0)
@@ -83,7 +83,7 @@
 
 (define "ShouldCapturedButMoved" 
     (and 
-        (is In (last From) ("SitesWithPossibleCaptureInPreviousTurn"))  
+        (is In (last From) ("SitesWithPossibleCaptureInPreviousTurn")) 
         (is In (last From) (sites Empty))
     )
 )
@@ -114,12 +114,12 @@
         )
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-    })  
+    }) 
     
     (rules 
         (start { 
-            (place "Counter1" (union { (expand (sites Bottom)) (sites {"D3" "E3"}) } ) )
-            (place "Counter2" (union { (sites {"A3" "B3"}) (expand (sites Top)) } ) )
+            (place "Counter1" (union {(expand (sites Bottom)) (sites {"D3" "E3"}) }))
+            (place "Counter2" (union {(sites {"A3" "B3"}) (expand (sites Top)) }))
         })
         
         (play 
@@ -139,7 +139,7 @@
             )
         ) 
         
-        (end (if (no Pieces Mover) (result Next Win)))  
+        (end (if (no Pieces Mover) (result Next Win))) 
     )
 )
 
@@ -150,10 +150,10 @@
     (info
         {
         (description "Dama is a word used for several capturing games throughout the world. This version is played on the Alquerque board in Comoros, and involves promotion to a long king and played on lines drawn on the ground.")
-        (rules "5x5 intersectinv lines with diagonals drawn in the four quadrants. Twelve pieces per player. which begin on two rows closest to the player and the two spaces in the central row on the player's right. Players alternate turns moving a piece to an empty adjacent point on the board, along the lines in a forward or sideways direction. A player may capture an opponent's piece by hopping over it to an empty space on immediately on the opposite side of it along the lines on the board. Captures are compulsory, and if the opponent realizes that the player did not make a possible capture, the opponent immediately captures the player's piece that could have captured but didn't. Regular pieces cannot capture backwards. When a piece reaches the farthest row on the opposite side of the board from where they started, it is promoted to a king, which can move and capture any distance along the lines of the board. The player who captures all of their opponent's pieces wins.")
+        (rules "5x5 intersecting lines with diagonals drawn in the four quadrants. Twelve pieces per player. which begin on two rows closest to the player and the two spaces in the central row on the player's right. Players alternate turns moving a piece to an empty adjacent point on the board, along the lines in a forward or sideways direction. A player may capture an opponent's piece by hopping over it to an empty space on immediately on the opposite side of it along the lines on the board. Captures are compulsory, and if the opponent realizes that the player did not make a possible capture, the opponent immediately captures the player's piece that could have captured but didn't. Regular pieces cannot capture backwards. When a piece reaches the farthest row on the opposite side of the board from where they started, it is promoted to a king, which can move and capture any distance along the lines of the board. The player who captures all of their opponent's pieces wins.")
         (source "de Voogt 2019: 6.")
         (id "1992")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
         (origin  "This game was played in Comoros, around 2018.")

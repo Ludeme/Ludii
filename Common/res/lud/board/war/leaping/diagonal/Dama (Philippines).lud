@@ -2,9 +2,9 @@
     (move
         Hop 
         (from #1) 
-        (directions {FR FL})  
+        (directions {FR FL}) 
         (between 
-            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
+            if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
             (apply (remove (between)))
         ) 
         (to if:(is Empty (to))) 
@@ -19,7 +19,7 @@
         (between 
             before:(count Rows) 
             after:(count Rows)
-            if:(is Enemy (who at:(between))) 
+            if:("IsEnemyAt" (between)) 
             (apply (remove (between)))
         )
         (to if:(is Empty (to)))
@@ -33,7 +33,7 @@
                             after:(count Rows)
                             if:(and 
                                 (not (is In (between) (sites ToClear))) 
-                                (is Enemy (who at:(between)))
+                                ("IsEnemyAt" (between))
                             )
                             (apply (remove (between)))
                         )
@@ -48,12 +48,12 @@
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Disc" Mover)))
 
-(define "JumpToPromotionZone" (is In (last To) (sites Next)) )
+(define "JumpToPromotionZone" (is In (last To) (sites Next)))
 
 //------------------------------------------------------------------------------
 
 (game "Dama (Philippines)" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board 
             (rotate 45
@@ -72,7 +72,7 @@
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-    )  
+    ) 
     (rules 
         (start
             { 
@@ -130,7 +130,7 @@
             )
         ) 
         
-        (end (if (no Moves Next) (result Mover Win))) 
+        (end ("BlockWin"))
     )
 )
 
@@ -145,7 +145,7 @@
         ")
         (source "Culin 1900: 648-649.")
         (id "875")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/leaping/diagonal")
         (credit "Eric Piette")
         (origin  "This game was played in Philippines, around 1892.")

@@ -1,15 +1,15 @@
 (define "LastStateRemove" (value Player Mover))
 
-(define "StoreStateRemoved" (set Value Mover (state at:(last To)) ))
+(define "StoreStateRemoved" (set Value Mover (state at:(last To))))
 
 //------------------------------------------------------------------------------
 
-(game "Greater"  
-    (players 2)  
+(game "Greater" 
+    (players 2) 
     (equipment { 
         (board (square 4)) 
         (piece "Disc" Each) 
-    })  
+    }) 
     (rules 
         (start {
             (place "Disc1" {"A1"} state:1) 
@@ -67,7 +67,7 @@
         (description "Greater is a theoretical game designed to demonstrate Monte Carlo resistance. There is one optimal (non-losing) move per turn against a competent opponent.")
         (rules "Players take turns removing a piece of their colour whose number is higher than the last piece they removed (free choice of first piece). A player with no legal moves passes. The game ends when neither player has any legal moves and is won by the player with the fewest remaining pieces (draw if equal).")
         (id "1316")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "experimental")
         (author "Cameron Browne")
         (credit "Cameron Browne and Eric Piette")

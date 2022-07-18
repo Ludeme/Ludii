@@ -5,12 +5,12 @@
         if:(is Mover (who at:(to)))
     )
 )
-(define "NextHoleFrom" (trackSite Move from:#1 #2))
+(define "NextHoleFrom" ("NextSiteOnTrack" #2 from:#1))
 
 //------------------------------------------------------------------------------
 
-(game "Mwendo"  
-    (players 4)  
+(game "Mwendo" 
+    (players 4) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -18,7 +18,7 @@
         )
         (piece "Seed" Each)
         <Board:regions>
-    })  
+    }) 
     (rules 
         (start {
             (place "Seed1" (sites P1) counts:{3})
@@ -30,11 +30,8 @@
         (play 
             (if (!= 1 (count Pieces Mover))
                 (or
-                    (move
-                        Select 
-                        (from 
-                            ("RightMost") 
-                        )
+                    (move Select 
+                        (from ("RightMost"))
                         (then 
                             (sow
                                 numPerHole:(if (is Empty (to)) 2 1)
@@ -50,10 +47,10 @@
                             )
                         )
                     )
-                    (if (not (is Mover Prev))
+                    (if (not ("SameTurn"))
                         (move
                             (from ("RightMost"))
-                            (to ("NextHoleFrom" ("RightMost") steps:1)
+                            (to ("NextHoleFrom" ("RightMost") 1)
                                 (apply 
                                     (if (and (!= (mover) (what at:(to))) (is Occupied (to)))
                                         (and
@@ -70,7 +67,7 @@
                 (move
                     (from ("RightMost"))
                     (to 
-                        (trackSite FirstSite from:(from) if:(is Enemy (who at:(to))))
+                        (trackSite FirstSite from:(from) if:("IsEnemyAt" (to)))
                         (apply
                             (and
                                 (remove (to) count:(count at:(to)))
@@ -95,8 +92,8 @@
 
 (option "Board Size" <Board> args:{ <size> <track> <regions>}
     {
-    (item "4"   <4>   
-        <(track "Track" "4,N,E,S,W" loop:True)>  
+    (item "4"  <4>  
+        <(track "Track" "4,N,E,S,W" loop:True)> 
         <
         (regions P1 (sites {0..2}))
         (regions P2 (sites {3 7 11}))
@@ -104,8 +101,8 @@
         (regions P4 (sites {12 8 4}))
         >
     "Each row has 4 holes.") 
-    (item "6"   <6>   
-        <(track "Track" "6,N,E,S,W" loop:True)>  
+    (item "6"  <6>  
+        <(track "Track" "6,N,E,S,W" loop:True)> 
         <
         (regions P1 (sites {0..3}))
         (regions P2 (sites {4 5 11 17}))
@@ -113,8 +110,8 @@
         (regions P4 (sites {19 18 12 6}))
         >
     "Each row has 6 holes.") 
-    (item "8"   <8>   
-        <(track "Track" "8,N,E,S,W" loop:True)>  
+    (item "8"  <8>  
+        <(track "Track" "8,N,E,S,W" loop:True)> 
         <
         (regions P1 (sites {0..4}))
         (regions P2 (sites {5..7 15 23}))
@@ -122,7 +119,7 @@
         (regions P4 (sites {26..24 16 8}))
         >
     "Each row has 8 holes.") 
-    (item "10"   <10> 
+    (item "10"  <10> 
         <(track "Track" "10,N,E,S,W" loop:True)> 
         <
         (regions P1 (sites {0..5}))
@@ -131,7 +128,7 @@
         (regions P4 (sites {33..30 20 10}))
         >
     "Each row has 10 holes.")* 
-    (item "12"   <12> 
+    (item "12"  <12> 
         <(track "Track" "12,N,E,S,W" loop:True)> 
         <
         (regions P1 (sites {0..6}))
@@ -140,7 +137,7 @@
         (regions P4 (sites {40..36 24 12}))
         >
     "Each row has 12 holes.") 
-    (item "14"   <14> 
+    (item "14"  <14> 
         <(track "Track" "14,N,E,S,W" loop:True)> 
         <
         (regions P1 (sites {0..7}))
@@ -148,8 +145,8 @@
         (regions P3 (sites {55..48}))
         (regions P4 (sites {47..42 28 14}))
         >
-    "Each row has 14 holes.")  
-    (item "16"   <16> 
+    "Each row has 14 holes.") 
+    (item "16"  <16> 
         <(track "Track" "16,N,E,S,W" loop:True)> 
         <
         (regions P1 (sites {0..8}))
@@ -157,7 +154,7 @@
         (regions P3 (sites {63..55}))
         (regions P4 (sites {54..48 32 16}))
         >
-    "Each row has 16 holes.")  
+    "Each row has 16 holes.") 
 })
 
 //------------------------------------------------------------------------------
@@ -182,7 +179,7 @@
         (rules "4x4-16 board, played only along the perimeter. Three counters per hole. Any number of players. Holes are distributed equally among the players. Sowing occurs in a clockwise direction. Counters are sown one per occupied hole, two per empty hole. Each player owns the holes in which their counters are located at the beginning of their turn, and they must sow from the rightmost hole. If the final counter of a sowing falls into an empty hole, the player sows again from the rightmost hole. Alternatively, a player may place all of the counters from the rightmost counter into the next hole, but this cannot be done after a move. When counters fall into holes belonging to an opponent, these hole and the counters in it are captured by the player, but remain in play. When a player has a single counter and empty holes in from of it, this counter leaps to the next hole occupied by the opponent. The player who captures all of the opponent's holes wins.")
         (source "Silva 1995: 111-112.")
         (id "274")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         (origin  "This game was played in Angola, around 1995.")

@@ -342,7 +342,7 @@ public class EvalMCTSDecisionTreesNormalGamesMulticlassSnellius
 								(
 									";", 
 									"algorithm=MCTS",
-									"selection=noisyag0selection",			// noisy variant here because we're using playout policy in selection
+									"selection=noisyag0selection",		// Noisy variant here because we're using playout policy in selection
 									StringRoutines.join
 									(
 										",", 

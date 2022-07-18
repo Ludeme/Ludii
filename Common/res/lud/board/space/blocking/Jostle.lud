@@ -5,9 +5,9 @@
             to:(sites Around #1 Orthogonal)
             (if (= (from) (to))
                 0
-                (if (is Friend (who at:(to))) 
+                (if ("IsFriendAt" (to)) 
                     1 
-                    (if (is Enemy (who at:(to)))
+                    (if ("IsEnemyAt" (to))
                         -1 
                         0
                     )
@@ -35,31 +35,30 @@
     })
     (rules
         <Board:start>
-        
         (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (end ("BlockWin"))
     )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board" <Board> args:{ <board> <start>} {
-    (item "Square 10x10"    <(board (square 10))>   
+    (item "Square 10x10"  <(board (square 10))>  
         <
         (start {
             (place "Marker1" (sites {23 25 27 32 34 36 43 47 52 63 72 74 76 65 67 56}))
             (place "Marker2" (sites {22 24 26 33 35 37 42 46 53 57 62 64 66 73 75 77}))
         })
         >
-    "The game is played on a 10x10 square board.")*   
-    (item "Hex 6x6"    	  <(board (hex 6))>   
+    "The game is played on a 10x10 square board.")*  
+    (item "Hex 6x6"  	 <(board (hex 6))>  
         <
         (start {
             (place "Marker1" (sites {16 18 37 58 75 73 63 42 23 55 46 34}))
             (place "Marker2" (sites {15 17 27 48 67 74 72 53 32 56 35 44}))
         })
         >
-    "The game is played on a 6x6 hex board.")   
+    "The game is played on a 6x6 hex board.")  
 })
 
 //------------------------------------------------------------------------------
@@ -84,7 +83,7 @@
         There is no capturing in Jostle, only jostling.")
         (id "1766")
         (source "<a href=\"http://www.marksteeregames.com/Jostle_Go_rules.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.marksteeregames.com</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/blocking")
         (author "Mark Steere")
         (publisher "<a href=\"http://www.marksteeregames.com/Jostle_Go_rules.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.marksteeregames.com</a>")

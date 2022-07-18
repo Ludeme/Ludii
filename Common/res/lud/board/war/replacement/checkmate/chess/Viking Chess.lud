@@ -1,10 +1,10 @@
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
 )
 
 (define "CaptureToPiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
             )
@@ -17,7 +17,7 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
@@ -25,8 +25,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Viking Chess"  
-    (players {(player N) (player N)})   
+(game "Viking Chess" 
+    (players {(player N) (player N)})  
     (equipment { 
         (board (rectangle 7 12)) 
         
@@ -51,7 +51,7 @@
                 Slide 
                 Orthogonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )
@@ -60,7 +60,7 @@
             (move 
                 Step 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )
@@ -70,7 +70,7 @@
                 Slide 
                 Diagonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )
@@ -80,7 +80,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )
@@ -89,16 +89,16 @@
             (move
                 Slide 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             ) 
         )
         
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Top) )
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Top))
         }
-    )  
+    ) 
     (rules 
         (start
             { 
@@ -138,7 +138,7 @@
         (rules "Viking Chess is played on a board with 12 files and 7 ranks. The pieces are set up with both sides starting on the same side of board. Both sides' Pawns move in the same direction, and all Pawns promote normally upon reaching the (same) 7th rank. There is no Pawn double-move or en passant capture. There is no castling.")
         (id "1657")
         (source "<a href=\"https://www.chessvariants.com/large.dir/contest84/vikingchess.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />chessvariants.com</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chess")
         (credit "Matthew Stephenson")
         }

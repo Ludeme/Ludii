@@ -1,6 +1,6 @@
 (define "CaptureEnemyToPiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove (to))
         )
     ) 
@@ -11,14 +11,14 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
 )
 
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
 )
 
 (define "OnlyRajaAndPadati"
@@ -40,12 +40,12 @@
 //------------------------------------------------------------------------------
 
 (game "Chaturanga (Kridakausalya)"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 	
         (piece "King_noCross"
             (move Step
-                (to if:(not (is Friend (who at:(to))))
+                (to if:(not ("IsFriendAt" (to)))
                     ("CaptureEnemyToPiece")
                 )
             )
@@ -54,7 +54,7 @@
             (move
                 Slide 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureEnemyToPiece"
                 ) 
             ) 			
@@ -64,7 +64,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureEnemyToPiece"
                 ) 
             )		
@@ -74,7 +74,7 @@
                 Slide 
                 Diagonal
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureEnemyToPiece"
                 ) 
             )		
@@ -83,7 +83,7 @@
             (move
                 Slide 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureEnemyToPiece"
                 ) 
             ) 		
@@ -102,8 +102,8 @@
                 )
             )		
         )
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
     })
     (rules 
         (start { 
@@ -142,7 +142,7 @@
         (rules "8x8 board. Pieces move as follows: Raja (x1): moves one space in any direction; Mantri (x1): moves any distance orthogonally or diagonally; Ushtra (x2): moves diagonally any distance; Vaha (x2): move orthogonally one space and then diagonally another, jumping over any intervening pieces; Danti (x2): moves orthogonally any distance. Padati (x8): move forward orthogonally one space or one space diagonally forward to capture. When a Padati reaches the opposite edge of the board, it is promoted to a Mantri and is moved immediately to the space it last moved from. An opponent's piece is captured by moving one of the player's own pieces onto the space occupied by the opponent's piece. If the Raja can be captured on the opponent's next turn, it is in check. The Raja cannot be in check at the end of the player's turn. If this is impossible, the opponent wins. When a player is reduced to only their Raja and Padati, the opponent wins. In the case of a stalemate, the player in stalemate may remove any of the opponent's pieces (except their Raja). ")
         (source "Bock-Raming 1995: 319-320.")
         (id "1450")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
         (origin  "This game was played in India, around 1871.")

@@ -4,14 +4,14 @@
             (from) 
             Orthogonal 
             if:(and 
-                (is Enemy (who at:(to))) 
+                ("IsEnemyAt" (to)) 
                 (> (value Piece at:(to)) (value Piece at:(from))) 
             )
         )
     ) 
 )
 
-(define "Frozen" (not "NotFrozen") )
+(define "Frozen" (not "NotFrozen"))
 
 (define "NotProtectedBy" 
     ("NoSites" 
@@ -31,14 +31,13 @@
     (and { 
         "NotMyLastMove"
         (not ("NoSites" (sites Around (to) Orthogonal if:(is Empty (to))))) // Not if the to location is orthogonally surrounded 
-        (is Enemy (who at:(to))) // if on the to location, an enemy is there
+        ("IsEnemyAt" (to)) // if on the to location, an enemy is there
         (< (value Piece at:(to)) (value Piece at:(from))) // Only if the from value is higher to the to value
     })
 )
 
 (define "PieceMove" 
-    (move
-        Step
+    (move Step
         #1 
         (to if:(and (or 
                     "NotFrozen"
@@ -71,12 +70,12 @@
     )
 )
 
-(define "HasToPushAPiece" (!= (what at:(handSite Mover)) 0))
+(define "HasToPushAPiece" (is Occupied (handSite Mover)))
 
 (define "PushThePiece" 
     (move 
         (from (handSite Mover)) 
-        (to (sites Around (last To) Orthogonal if:(and (!= (last From) (to)) (is Empty (to)) ) )) // Any empty site around but not the previous position of the piece pushing.
+        (to (sites Around (last To) Orthogonal if:(and (!= (last From) (to)) (is Empty (to))))) // Any empty site around but not the previous position of the piece pushing.
         (then 
             (and
                 "AllPieceInATrapAreRemoved"
@@ -96,7 +95,7 @@
                 (last From) 
                 Orthogonal 
                 if:(and 
-                    (is Enemy (who at:(to))) // An enemy piece.
+                    ("IsEnemyAt" (to)) // An enemy piece.
                     (if (and (is In (last To) (sites "Traps")) (is Pending))
                         (< (value Piece at:(to)) (value Pending)) // With a lower value of mine.
                         (< (value Piece at:(to)) (value Piece at:(last To))) // With a lower value of mine.
@@ -127,7 +126,7 @@
 (define "NoRabbit" 
     (if 
         (and 
-            (!= (what at:(handSite #2)) (id "Rabbit" #1)) 
+            (not ("IsPieceAt" "Rabbit" #1 (handSite #2))) 
             ("NoSites" (sites Occupied by:#1 component:"Rabbit"))
         ) 
         (result #2 #3)
@@ -155,7 +154,7 @@
         (regions "Goal" P1 (sites Top))
         (regions "Goal" P2 (sites Bottom))
         }
-    )  
+    ) 
     (rules 
         (start { 
             (place "Rabbit" "Hand" count:8 value:1)
@@ -167,13 +166,12 @@
         })
         
         phases:{
-        
         (phase "PlacementP1"
             (play 
                 (move 
-                    (from (sites Occupied by:Mover container:(mover)))  // pieces in the hand of P1.
-                    (to (intersection (sites Mover "Home") (sites Empty))) 
-                    (then (if (not ("HandEmpty" P1)) (moveAgain) )) 
+                    (from (sites Occupied by:Mover container:(mover))) // pieces in the hand of P1.
+                    (to (forEach (sites Mover "Home") if:(is Empty (site)))) 
+                    (then (if (not ("HandEmpty" P1)) (moveAgain))) 
                 ) 
             ) 
             (nextPhase ("HandEmpty" P1) "PlacementP2")
@@ -182,15 +180,15 @@
         (phase "PlacementP2"
             (play 
                 (move 
-                    (from (sites Occupied by:Mover container:(mover)))  // pieces in the hand of P2.
-                    (to (intersection (sites Mover "Home") (sites Empty))) 
+                    (from (sites Occupied by:Mover container:(mover))) // pieces in the hand of P2.
+                    (to (forEach (sites Mover "Home") if:(is Empty (site)))) 
                     (then (if ("HandEmpty" P2) (remember State) (moveAgain))) 
                 ) 
             ) 
             (nextPhase ("HandEmpty" P2) "Movement")
         )
         
-        (phase "Movement"  
+        (phase "Movement" 
             (play
                 (avoidStoredState
                     (if "HasToPushAPiece"
@@ -247,7 +245,7 @@
         (rules "Played on an 8x8 board with \"trap\" squares at C6, F6, C3 and F3. Each player has 16 pieces, in order from strongest to weakest: Elephant (1) Camel (1) Horse (2) Dog (2) Cat(2) Rabbit (8) Each player places their pieces in any configuration on their side of the board. Pieces can move one space orthogonally, except rabbits cannot move backward. The goal is for one of a player's rabbits to reach the opposing player's edge of the board. Players can capture an opponent's pieces by pulling or pushing them into one of the trap squares as long as there is no piece friendly to the piece being pulled or pushed adjacent to the trap square. Pieces can only push and pull adjacent opponent's pieces of a lower rank than the piece making the move. Pushing and pulling cannot happen simultaneously. Pieces can be frozen, or prevented from moving, when they are adjacent to an opposing stronger piece.")
         (source "<a href=\"https://en.wikipedia.org/wiki/Arimaa\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
         (id "43")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/reach")
         (author "Omar Syed and Aamir Syed")
         (credit "Eric Piette")

@@ -1,10 +1,10 @@
-(game "Graph Test - T3464"  
-    (players 2)  
+(game "Graph Test - T3464" 
+    (players 2) 
     (equipment { 
         (board <Board>) 
         (piece "Disc" P1) 
         (piece "Cross" P2) 
-    })  
+    }) 
     (rules 
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
@@ -15,18 +15,18 @@
 
 (option "Tiling Type" <Board> args:{ <type> }
     {
-    (item "2" <(tiling T3464 2)>    "")  
-    (item "3" <(tiling T3464 3)>    "")  
-    (item "5x6" <(tiling T3464 5 6)>    "")  
-    (item "4x4" <(tiling T3464 4 4)>    "")  
-    (item "Poly" <(tiling T3464 (poly {{1 0} {1 9} {9 0}}) )>    "")  
-    (item "2, Dual" <(dual (tiling T3464 2))>  "")  
-    (item "2, Dualx2" <(dual (dual (tiling T3464 2)))>  "")  
-    (item "2, Dualx3" <(dual (dual (dual (tiling T3464 2))))>  "")  
-    (item "2, Dualx4" <(dual (dual (dual (dual (tiling T3464 2)))))>  "")  
-    (item "2, Dualx5" <(dual (dual (dual (dual (dual (tiling T3464 2))))))>  "")  
-    (item "2, Dualx6" <(dual (dual (dual (dual (dual (dual (tiling T3464 2)))))))>  "")  
-    (item "2, Dualx7" <(dual (dual (dual (dual (dual (dual (dual (tiling T3464 2))))))))>  "")  
+    (item "2" <(tiling T3464 2)>  "") 
+    (item "3" <(tiling T3464 3)>  "") 
+    (item "5x6" <(tiling T3464 5 6)>  "") 
+    (item "4x4" <(tiling T3464 4 4)>  "") 
+    (item "Poly" <(tiling T3464 (poly {{1 0} {1 9} {9 0}}))>  "") 
+    (item "2, Dual" <(dual (tiling T3464 2))> "") 
+    (item "2, Dualx2" <(dual (dual (tiling T3464 2)))> "") 
+    (item "2, Dualx3" <(dual (dual (dual (tiling T3464 2))))> "") 
+    (item "2, Dualx4" <(dual (dual (dual (dual (tiling T3464 2)))))> "") 
+    (item "2, Dualx5" <(dual (dual (dual (dual (dual (tiling T3464 2))))))> "") 
+    (item "2, Dualx6" <(dual (dual (dual (dual (dual (dual (tiling T3464 2)))))))> "") 
+    (item "2, Dualx7" <(dual (dual (dual (dual (dual (dual (dual (tiling T3464 2))))))))> "") 
 })
 
 //------------------------------------------------------------------------------
@@ -42,7 +42,7 @@
         (version "0.9.3")
         (classification "board/space/line")
         (credit "Cameron Browne 31/5/2020")
-        (origin  "This game was played in England, from around 1850CE to 1883CE.")
+        (origin "This game was played in England, from around 1850CE to 1883CE.")
         }
     )
 )

@@ -482,7 +482,7 @@ public class GenerateFeatureEvalScripts
 			e.printStackTrace();
 		}
 		
-		// Now write all the job scripts
+		// Now write all the eval job scripts
 		final List<EvalProcessData> evalProcessDataList = new ArrayList<EvalProcessData>();
 		for (final ProcessData processData : processDataList)
 		{

@@ -1,5 +1,5 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
-(define "SiteToMoveOnTrack" (trackSite Move steps:#1))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #1))
 
 //------------------------------------------------------------------------------
 
@@ -11,7 +11,7 @@
             <Player:tracks>
             use:Vertex
         )
-        (dice d:2 from:0 num:2)
+        ("StickDice" 2)
         (piece "Marker" Each
             (move
                 (from (from))
@@ -33,8 +33,8 @@
     (rules
         <Player:start>
         (play 
-            (do (roll)
-                next:(if (!= ("ThrowValue") 0) (forEach Piece))
+            ("RollMove"
+                (if (!= ("ThrowValue") 0) (forEach Piece))
             )
         )
         (end (if (= (score Mover) 3) (result Mover Win)))
@@ -53,13 +53,13 @@
         })
         > 
         <(map "Center" {(pair P1 0) (pair P2 1)})>
-        <           
+        <      
         {
         (track "Track1" {18 16 14 12 10 8 6 4 2 0 2 4 6 8 10 12 14 16 18 16 14 12 10 8 6 4 2 0 2 4 6 8 10 12 14 16 18 16 14 12 10 8 6 4 2 0 2 4 6 8 10 12 14 16} P1 directed:True)
         (track "Track2" {19 17 15 13 11 9 7 5 3 1 3 5 7 9 11 13 15 17 19 17 15 13 11 9 7 5 3 1 3 5 7 9 11 13 15 17 19 17 15 13 11 9 7 5 3 1 3 5 7 9 11 13 15 17} P2 directed:True)
         }
         >
-    "The game involves 2 players.")  
+    "The game involves 2 players.") 
     
     (item "4" <4> 
         <
@@ -71,7 +71,7 @@
         })
         > 
         <(map "Center" {(pair P1 0) (pair P2 1) (pair P3 2) (pair P4 3) })>
-        <           
+        <      
         {
         (track "Track1" {36 32 28 24 20 16 12 8 4 0 4 8 12 16 20 24 28 32 36 32 28 24 20 16 12 8 4 0 4 8 12 16 20 24 28 32 36 32 28 24 20 16 12 8 4 0 4 8 12 16 20 24 28 32} P1 directed:True)
         (track "Track2" {37 33 29 25 21 17 13 9 5 1 5 9 13 17 21 25 29 33 37 33 29 25 21 17 13 9 5 1 5 9 13 17 21 25 29 33 37 33 29 25 21 17 13 9 5 1 5 9 13 17 21 25 29 33} P2 directed:True)
@@ -79,7 +79,7 @@
         (track "Track4" {39 35 31 27 23 19 15 11 7 3 7 11 15 19 23 27 31 35 39 35 31 27 23 19 15 11 7 3 7 11 15 19 23 27 31 35 39 35 31 27 23 19 15 11 7 3 7 11 15 19 23 27 31 35} P4 directed:True)
         }
         >
-    "The game involves 4 players.")  
+    "The game involves 4 players.") 
     
     (item "6" <6> 
         <
@@ -93,7 +93,7 @@
         })
         > 
         <(map "Center" {(pair P1 0) (pair P2 1) (pair P3 2) (pair P4 3) (pair P5 4) (pair P6 5) })>
-        <           
+        <      
         {
         (track "Track1" {54 48 42 36 30 24 18 12 6 0 6 12 18 24 30 36 42 48 54 48 42 36 30 24 18 12 6 0 6 12 18 24 30 36 42 48 54 48 42 36 30 24 18 12 6 0 6 12 18 24 30 36 42 48} P1 directed:True)
         (track "Track2" {55 49 43 37 31 25 19 13 7 1 7 13 19 25 31 37 43 49 55 49 43 37 31 25 19 13 7 1 7 13 19 25 31 37 43 49 55 49 43 37 31 25 19 13 7 1 7 13 19 25 31 37 43 49} P2 directed:True)
@@ -131,7 +131,7 @@
         (track "Track8" {79 71 63 55 47 39 31 23 15 7 15 23 31 39 47 55 63 71 79 71 63 55 47 39 31 23 15 7 15 23 31 39 47 55 63 71 79 71 63 55 47 39 31 23 15 7 15 23 31 39 47 55 63 71} P8 directed:True)
         }
         >
-    "The game involves 8 players.")*  
+    "The game involves 8 players.")* 
     
     (item "10" <10> 
         <
@@ -149,7 +149,7 @@
         })
         > 
         <(map "Center" {(pair P1 0) (pair P2 1) (pair P3 2) (pair P4 3) (pair P5 4) (pair P6 5) (pair P7 6) (pair P8 7) (pair P9 8) (pair P10 9)})>
-        <           
+        <      
         {
         (track "Track1" {90 80 70 60 50 40 30 20 10 0 10 20 30 40 50 60 70 80 90 80 70 60 50 40 30 20 10 0 10 20 30 40 50 60 70 80 90 80 70 60 50 40 30 20 10 0 10 20 30 40 50 60 70 80} P1 directed:True)
         (track "Track2" {91 81 71 61 51 41 31 21 11 1 11 21 31 41 51 61 71 81 91 81 71 61 51 41 31 21 11 1 11 21 31 41 51 61 71 81 91 81 71 61 51 41 31 21 11 1 11 21 31 41 51 61 71 81} P2 directed:True)
@@ -163,7 +163,7 @@
         (track "Track10" {99 89 79 69 59 49 39 29 19 9 19 29 39 49 59 69 79 89 99 89 79 69 59 49 39 29 19 9 19 29 39 49 59 69 79 89 99 89 79 69 59 49 39 29 19 9 19 29 39 49 59 69 79 89} P10 directed:True)
         }
         >
-    "The game involves 10 players.")  
+    "The game involves 10 players.") 
     
 })
 
@@ -191,7 +191,7 @@
         (rules "Nine concentric circles. Any number of players. Each player plays as one piece. Two nut shells, used as dice. The values are as follows: two round sides = 2; two hollow sides = 1; one of each side = 0. Players move their pieces from outside the circles into progressive rings until they reach Paradise at the center, at which point the piece goes back to the outside of the board. The first player to reach Paradise three times wins.")
         (source "Béart 1955: 432.")
         (id "1197")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/reach")
         (credit "Eric Piette")
         (origin  "This game was played in Mali, around 1955.")

@@ -1,10 +1,9 @@
 (define "Moves" 
     (or {
         "StepForwardToEmpty" 
-        (move
-            Step 
+        (move Step 
             Forward 
-            (to if:(and (is Enemy (who at:(to))) (is Hidden at:(to) to:Mover)))
+            (to if:(and ("IsEnemyAt" (to)) (is Hidden at:(to) to:Mover)))
             (then 
                 (fromTo 
                     (from (last To)) 
@@ -19,21 +18,19 @@
                 )
             )
         ) 
-        (move
-            Step
+        (move Step
             (directions {FR FL}) 
             (to if:(is Empty (to)) (apply (remove (to))))
         )
-        (move
-            Step
+        (move Step
             (directions {FR FL}) 
-            (to if:(is Enemy (who at:(to))) (apply (remove (to)))) 
+            (to if:("IsEnemyAt" (to)) (apply (remove (to)))) 
             (then (set Hidden at:(last To) to:Next))
         )
     }) 
 )
 
-(define "RegionReached" (not (= (count Sites in:(sites Occupied by:Mover) ) (count Sites in:(difference (sites Occupied by:Mover) (sites Next))))) )
+(define "RegionReached" (not (= (count Sites in:(sites Occupied by:Mover)) (count Sites in:(difference (sites Occupied by:Mover) (sites Next))))))
 
 //------------------------------------------------------------------------------
 
@@ -44,7 +41,7 @@
         (piece "Pawn" P2 S "Moves")
         (regions P2 (sites Top))
         (regions P1 (sites Bottom))
-    })  
+    }) 
     (rules 
         (start { 
             (place "Pawn1" (expand (sites Bottom)))
@@ -73,7 +70,7 @@
         (description "Sneakthrough is a Chess variant that was invented for Ludii. It is BreakThrough, but the opponent's pieces are hidden.")
         (rules "When a capture is made, the capturing piece is revealed to the opponent. If an orthogonal move is attempted to a spot with a hidden piece of the opponent, the move is not completed and the enemy piece is revealed. The goal is to reach the opposite side of the board like in Breakthrough.")
         (id "75")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/reach")
         (author "Cameron Browne")
         (publisher "Ludii")

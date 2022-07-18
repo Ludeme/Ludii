@@ -2,22 +2,22 @@
 
 //------------------------------------------------------------------------------
 
-(game "I Pere"  
-    (players 2)  
+(game "I Pere" 
+    (players 2) 
     (equipment { 
         (mancalaBoard 2 5 store:None
             (track "Track" "0,E,N,W" loop:True)
         )
         (piece "Seed" Shared)
         (hand Each)
-        (regions P1 (sites Bottom))      // P1 home
-        (regions P2 (sites Top))         // P2 home
-        (map {(pair P1 4) (pair P2 5)})  // kalahs (storage pits)
-        (map "Fourth" {(pair P1 3) (pair P2 6)})  // fourth hole
-    })  
+        (regions P1 (sites Bottom))   // P1 home
+        (regions P2 (sites Top))     // P2 home
+        (map {(pair P1 4) (pair P2 5)}) // kalahs (storage pits)
+        (map "Fourth" {(pair P1 3) (pair P2 6)}) // fourth hole
+    }) 
     (rules 
         
-        (start (set Count 4 to:(sites Track) ) )
+        (start (set Count 4 to:(sites Track)))
         
         phases:{
         (phase "Opening"
@@ -95,27 +95,20 @@
         )
         }
         
-        (end
-            (if  (no Moves Next)
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (no Moves Next)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "I Pere is a two-row mancala-style game board from West Africa. It is similar to other two-row games from the region, and was documented in the early twentieth century.")
         (rules "2x5 board, the right-most hole is the store. Four counters in each hole. Sowing in an anti-clockwise direction, including the store. Play begins by each player placing the counters in their fourth hole into their store. Moves may begin from any of a player's holes except the store. If the last counter of a sowing drops into a hole making it contain two or three counters, these are taken and placed in the store. As soon as a player has at least thirteen counters in their store, they are picked up and sown, omitting each player's store and takes any counters in the opponent's holes which now contain two or three counters. Each player performs this move only once. The player who captures the most counters wins.")
         (source "Griaule 1938: 169.")
         (id "370")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }

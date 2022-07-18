@@ -1,12 +1,10 @@
-(define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
+(define "NextHole" ("NextSiteOnTrack" #2 from:#1 "Track"))
 (define "OwnedHoles" 
     (if (is Mover P1)
         (sites (values Remembered "OwnedP1"))
         (sites (values Remembered "OwnedP2"))
     )
 )
-
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
 (define "RightMostEmpty" 
     (trackSite FirstSite "TrackCW"
@@ -33,8 +31,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Lamosh"  
-    (players 2)  
+(game "Lamosh" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 6 store:None
@@ -45,14 +43,14 @@
         )
         (piece "Seed" Shared)
         (hand Each)
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
         (map "RightMost" {(pair P1 5) (pair P2 6)})
-    })  
+    }) 
     (rules 
         
         (start { 
-            (set Count 4 to:(sites Track) ) 
+            (set Count 4 to:(sites Track)) 
             (set RememberValue "OwnedP1" (sites Bottom))
             (set RememberValue "OwnedP2" (sites Top))
         })
@@ -62,7 +60,7 @@
             (play
                 (move
                     (from
-                        (if (is Mover Prev)
+                        (if ("SameTurn")
                             (var "Replay")
                             11
                         )
@@ -96,7 +94,7 @@
                     {
                     (move Select 
                         (from
-                            (if (is Mover Prev)
+                            (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 ("OwnedHoles") 
                             )
@@ -202,7 +200,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Lamosh is a two-row mancala-style board game played in Ethiopia. It is similar to the many other games played in the area.")
@@ -211,7 +209,7 @@
         ")
         (source "Pankhurst 1971: 178.")
         (id "362")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         (origin  "This game was played in Ethiopia, around 1971.")

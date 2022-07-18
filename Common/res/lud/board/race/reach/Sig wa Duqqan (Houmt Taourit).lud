@@ -8,17 +8,17 @@
 
 (define "Sig" (= ("ThrowValue") 1))
 
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
-(define "GhoulaOnTrack" (trackSite Move from:("WhereGhoula") #1 steps:#2))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #2 #1))
+(define "GhoulaOnTrack" ("NextSiteOnTrack" #2 from:("WhereGhoula") #1))
 
 (define "IsSpecialThrow" (is In ("ThrowValue") (sites {1 6 4})))
 
-(define "GhoulaPhaseDone" (and (= 1 (size Stack at:("WhereGhoula"))) (= ("EndTrack") ("WhereGhoula"))))
+(define "GhoulaPhaseDone" (and ("IsSingletonStack" ("WhereGhoula")) (= ("EndTrack") ("WhereGhoula"))))
 
-(define "WhereGhoula" (if (!= Off (where "Ghoula" Neutral)) (where "Ghoula" Neutral) (handSite P1)))
+(define "WhereGhoula" (if ("IsNotOffBoard" (where "Ghoula" Neutral)) (where "Ghoula" Neutral) (handSite P1)))
 
 (define "MoveGhoula"
-    (if (= 1 (size Stack at:("WhereGhoula")))
+    (if ("IsSingletonStack" ("WhereGhoula"))
         (move
             (from ("WhereGhoula") level:(where Level "Ghoula" Neutral at:("WhereGhoula")))
             (to ("GhoulaOnTrack" "GhoulaTrack" 1))
@@ -67,7 +67,7 @@
             }
             use:Vertex
         )
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
         (map "Throw" {(pair 0 4) (pair 1 3) (pair 2 0) (pair 3 1) (pair 4 6)})
         (piece "Stick" Each
             (if (= (from) ("EndTrack"))
@@ -169,8 +169,8 @@
 (option "Players" <Player> args:{ <number> <init>}
     {
     (item "2" <2> <{"Stick2" "Stick1"}> "The game has 2 players.") 
-    (item "3" <3> <{"Stick3" "Stick2" "Stick1"}> "The game has 3 players.")  
-    (item "4" <4> <{"Stick4" "Stick3" "Stick2" "Stick1"}> "The game has 4 players.")*  
+    (item "3" <3> <{"Stick3" "Stick2" "Stick1"}> "The game has 3 players.") 
+    (item "4" <4> <{"Stick4" "Stick3" "Stick2" "Stick1"}> "The game has 4 players.")* 
     (item "5" <5> <{"Stick5" "Stick4" "Stick3" "Stick2" "Stick1"}> "The game has 5 players.") 
     (item "6" <6> <{"Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"}> "The game has 6 players.") 
     (item "7" <7> <{"Stick7" "Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"}> "The game has 7 players.") 
@@ -200,7 +200,7 @@
         (rules "86 spaces in a spiral track. Any number of players, each having one piece, which starts on the first space in the outer ring of the spiral. A lump of charcoal, the Ghoula, also is placed on this space. Four sticks, with one green side and one white side, used as dice. The throws are as follows: One white side up = 1, this throw is known as \"sig\"; two white sides up = 0; three white sides up = 3; four white sides up = 4; all green sides up = 6. Throws of sig, 6, and 4 grant the player another throw. Players move their pieces along the track toward the central space. when they reach the sixth space from the end, they must make seven throws of sig before moving on, moving to the sixteenth spot on the seventh throw. After reaching the next spot, only throws of sig and 3 are used; sig to move one space, and 3 to move the Ghoula three spaces. When players reach the central space, Players control the Ghoula. When controlling the Ghoula, throws of 0 count as 6. Any pieces which have not moved from the starting space when the Ghoula is first moved are dragged with the Ghoula, and then may move normally on their next turn. The Ghoula, when reaching a space occupied by a player, continues their turn dragging the player back to the starting space. A player that is forced back to the starting space by any means loses. All players reaching the central space of the board win.")
         (source "Akkari-Weriemmi 1990: 315-318.")
         (id "809")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/reach")
         (credit "Eric Piette")
         (origin  "This game was played in Tunisia, around 1990.")

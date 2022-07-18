@@ -1,6 +1,7 @@
-(define "Nbors" (count Sites in:(intersection
+(define "Nbors" 
+    (count Sites in:(intersection
             (sites Around #1)
-            (sites Occupied by:#2)   
+            (sites Occupied by:#2)  
         )
     )
 )
@@ -9,12 +10,10 @@
 
 (game "Trike"
     (players 2)
-    (equipment 
-        {
+    (equipment {
         (board (hex Triangle <Board>))
         (piece "Marker" Each)
-        }
-    )
+    })
     
     (rules
         (meta (swap))
@@ -22,12 +21,9 @@
         phases:{
         (phase "Opening" P1
             (play
-                (move 
-                    Add 
+                (move Add 
                     (to (sites Empty)) 
-                    (then 
-                        (set Var (last To))
-                    )
+                    (then (set Var (last To)))
                 )
             )
             (nextPhase)
@@ -35,12 +31,9 @@
         
         (phase "Play"
             (play
-                (move 
-                    Add 
+                (move Add 
                     (to (sites LineOfSight Empty at:(var)))
-                    (then
-                        (set Var (last To))
-                    )
+                    (then (set Var (last To)))
                 )
             )
         )
@@ -49,12 +42,10 @@
         (end
             (if
                 (no Moves Next)
-                (byScore
-                    {
+                (byScore {
                     (score P1 (+ (if (is Mover P1) 1 0) ("Nbors" (last To) P1)))
                     (score P2 (+ (if (is Mover P2) 1 0) ("Nbors" (last To) P2)))
-                    }
-                )
+                })
             )
         )
     )
@@ -64,23 +55,23 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "3"    <3>  "Played on a size 3 board.")   
-    (item "4"    <4>  "Played on a size 4 board.")   
-    (item "5"    <5>  "Played on a size 5 board.")   
-    (item "6"    <6>  "Played on a size 6 board.")   
-    (item "7"    <7>  "Played on a size 7 board.")   
-    (item "8"    <8>  "Played on a size 8 board.")   
-    (item "9"    <9>  "Played on a size 9 board.")   
-    (item "10"  <10>  "Played on a size 10 board.")   
-    (item "11"  <11>  "Played on a size 11 board.")   
-    (item "12"  <12>  "Played on a size 12 board.")   
-    (item "13"  <13>  "Played on a size 13 board.")*   
-    (item "14"  <14>  "Played on a size 14 board.")   
-    (item "15"  <15>  "Played on a size 15 board.")   
-    (item "16"  <16>  "Played on a size 16 board.")   
-    (item "17"  <17>  "Played on a size 17 board.")   
-    (item "18"  <18>  "Played on a size 18 board.")   
-    (item "19"  <19>  "Played on a size 19 board.")   
+    (item "3"  <3> "Played on a size 3 board.")  
+    (item "4"  <4> "Played on a size 4 board.")  
+    (item "5"  <5> "Played on a size 5 board.")  
+    (item "6"  <6> "Played on a size 6 board.")  
+    (item "7"  <7> "Played on a size 7 board.")  
+    (item "8"  <8> "Played on a size 8 board.")  
+    (item "9"  <9> "Played on a size 9 board.")  
+    (item "10" <10> "Played on a size 10 board.")  
+    (item "11" <11> "Played on a size 11 board.")  
+    (item "12" <12> "Played on a size 12 board.")  
+    (item "13" <13> "Played on a size 13 board.")*  
+    (item "14" <14> "Played on a size 14 board.")  
+    (item "15" <15> "Played on a size 15 board.")  
+    (item "16" <16> "Played on a size 16 board.")  
+    (item "17" <17> "Played on a size 17 board.")  
+    (item "18" <18> "Played on a size 18 board.")  
+    (item "19" <19> "Played on a size 19 board.")  
     }
 )
 
@@ -94,7 +85,7 @@
         (rules "Play on an equilateral triangular hexagon-tessellated grid. Use a neutral pawn and black/white checkers. Players take turns moving a neutral pawn around on the board (passing is not allowed). The neutral pawn can move any number of empty points, in any direction in a straight line, but cannot move onto, or jump over occupied points. When a player moves the pawn, first they place a checker of their own color, onto the destination point. Then they move the pawn on top of it. When the pawn is trapped, the game is over. At the end of the game, each player gets a point for each checker of their own color adjacent to, or underneath, the pawn. The person with the highest score wins.")
         (id "706")
         (source "<a href=\"https://boardgamegeek.com/boardgame/307379/trike\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/territory")
         (author "Alek Erickson")
         (publisher "Alek Erickson")

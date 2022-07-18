@@ -21,7 +21,7 @@
 
 (define "CaptureEnemyPiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
             )
@@ -34,7 +34,7 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
@@ -66,7 +66,7 @@
                 (from (ahead (from) #1))
                 #2 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                 ) 
             )
         )
@@ -75,14 +75,14 @@
 
 (define "EagleMovement" 
     (sites To
-        (if (and (!= (ahead (from) #1) Off) (not (is Friend (who at:(ahead (from) #1)))))
+        (if (and (!= (ahead (from) #1) Off) (not ("IsFriendAt" (ahead (from) #1))))
             (or
                 (fromTo (from) (to (ahead (from) #1)))
                 (slide 
                     (from (ahead (from) #1))
                     #2 
                     (to 
-                        if:(is Enemy (who at:(to))) 
+                        if:("IsEnemyAt" (to)) 
                     ) 
                 )
             )
@@ -95,7 +95,7 @@
         Leap 
         #1 
         (to 
-            if:(not (is Friend (who at:(to)))) 
+            if:(not ("IsFriendAt" (to))) 
             "CaptureEnemyPiece"
         ) 
     )
@@ -106,7 +106,7 @@
         Slide 
         #1 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             "CaptureEnemyPiece"
         ) 
     )
@@ -114,7 +114,7 @@
 
 //----------------------------------------------------------------
 
-(game "Grande Acedrex"  
+(game "Grande Acedrex" 
     (players {(player N) (player S)})
     (equipment {
         (board (square 12))
@@ -142,7 +142,7 @@
                         ("EagleMovement" SE (directions {E S}))
                     })
                     (apply 
-                        if:(is Enemy (who at:(to)))
+                        if:("IsEnemyAt" (to))
                         (remove (to))
                     ) 
                 )
@@ -153,13 +153,13 @@
                 (from)
                 (to
                     (union {
-                        ("RhinoMovement" N (directions  {NE NW})) 
-                        ("RhinoMovement" W (directions  {NW SW})) 
-                        ("RhinoMovement" S (directions  {SW SE})) 
-                        ("RhinoMovement" E (directions  {SE NE})) 
+                        ("RhinoMovement" N (directions {NE NW})) 
+                        ("RhinoMovement" W (directions {NW SW})) 
+                        ("RhinoMovement" S (directions {SW SE})) 
+                        ("RhinoMovement" E (directions {SE NE})) 
                     })
                     (apply 
-                        if:(is Enemy (who at:(to)))
+                        if:("IsEnemyAt" (to))
                         (remove (to))
                     ) 
                 )
@@ -173,7 +173,7 @@
                 (move
                     Step 
                     (to 
-                        if:(not (is Friend (who at:(to)))) 
+                        if:(not ("IsFriendAt" (to))) 
                         "CaptureEnemyPiece"
                     ) 
                 )
@@ -183,7 +183,7 @@
                         Forwards
                         (between if:True)
                         (to
-                            if:(not (is Friend (who at:(to)))) 
+                            if:(not ("IsFriendAt" (to))) 
                             "CaptureEnemyPiece"
                         )
                     )
@@ -191,8 +191,8 @@
                 "RememberPieceHasMoved"
             )
         )
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
     })
     (rules
         (start {
@@ -204,12 +204,12 @@
             (place "Pawn2" (sites Row 8)) (place "Rook2" (sites {"A12" "L12"}))
             (place "Lion2" (sites {"B12" "K12"})) (place "Rhino2" (sites {"C12" "J12"}))
             (place "Giraffe2" (sites {"D12" "I12"})) (place "Crocodile2" (sites {"E12" "H12"}))
-            (place "Eagle2" coord:"F12")  (place "King2" coord:"G12" state:1)
+            (place "Eagle2" coord:"F12") (place "King2" coord:"G12" state:1)
         })
         (play
             <Variant:movement>
         )
-        (end             
+        (end       
             (if (and 
                     ("IsInCheck" "King" Next (forEach Piece))
                     ("NextCanNotMove")
@@ -240,7 +240,7 @@
             ifAfterwards:(not ("IsInCheck" "King" Mover))
         )
         > 
-    "The rules of Alfonso X without dice.")*   
+    "The rules of Alfonso X without dice.")*  
     (item "With Dice" 
         <
         (dice d:8 num:1) 
@@ -275,7 +275,7 @@
             ifAfterwards:(not ("IsInCheck" "King" Mover (forEach Piece)))
         )
         > 
-    "The rules of Alfonso X with a die.")   
+    "The rules of Alfonso X with a die.")  
 })
 
 //------------------------------------------------
@@ -304,7 +304,7 @@
         (useFor "Ruleset/Dice (Described)" (source "Libro de los Juegos 83."))
         (useFor "Ruleset/Dice (Described)" (id "652"))
         (id "312")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chess")
         (credit "Eric Piette")
         }

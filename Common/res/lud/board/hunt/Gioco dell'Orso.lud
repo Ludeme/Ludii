@@ -1,5 +1,5 @@
 (game "Gioco dell'Orso"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board
             (add
@@ -11,7 +11,7 @@
         (piece "Human" Each ("StepToEmpty"))
         (piece "Bear" Each ("StepToEmpty"))
         (hand Each)
-    })  
+    }) 
     
     (rules 
         (start {
@@ -89,7 +89,7 @@
             (end (if (!= 0 (score P1)) (byScore)))
         )
         }
-        >  
+        > 
         "The game has two rounds."
     )*
     
@@ -120,7 +120,7 @@
             }) 
         )
         }
-        >  
+        > 
         "The game has only one round."
     )
 })
@@ -152,7 +152,7 @@
         (useFor "Ruleset/Bear Wins One Round (Suggested)" (id "1956"))
         (source "Michaelsen 2014: 212.")
         (id "1163")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/hunt")
         (credit "Eric Piette")
         (origin  "This game was played in Italy, from around 1910 to 1994.")

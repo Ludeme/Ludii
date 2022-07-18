@@ -7,8 +7,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Go with the Floe"  
-    (players 2)  
+(game "Go with the Floe" 
+    (players 2) 
     (equipment { 
         (board 
             (keep 
@@ -17,39 +17,34 @@
             ) 
         )
         (piece "Seal" P1 N (or 
-                (move
-                    Slide
+                (move Slide
                     (between 
                         (max 2) 
                         trail:(id "Disc0")
                     ) 
                 ) 
-                (move
-                    Hop
-                    (between if:(= (what at:(between)) (id "Disc0"))) 
+                (move Hop
+                    (between if:("IsPieceAt" "Disc0" Neutral (between)))
                     (to if:(is Empty (to))) 
                     (then "LetADiscOnTheFromLocation")
                 )
             )
         )
         (piece "Bear" P2 (or {
-                (move
-                    Slide
+                (move Slide
                     (between 
                         (max 2) 
                         trail:(id "Disc0")
                     ) 
                 ) 
-                (move
-                    Hop
-                    (between if:(= (what at:(between)) (id "Disc0"))) 
+                (move Hop
+                    (between if:("IsPieceAt" "Disc0" Neutral (between))) 
                     (to if:(is Empty (to))) 
                     (then "LetADiscOnTheFromLocation")
                 )
-                (move
-                    Step
+                (move Step
                     (to 
-                        if:(= (what at:(to)) (id "Seal1")) 
+                        if:("IsPieceAt" "Seal1" P1 (to))
                         (apply (remove (to)))
                     )
                     (then 
@@ -80,7 +75,7 @@
                     (not (can Move 
                             (forEach Piece "Bear" 
                                 (step 
-                                    (to if:(= (what at:(to)) (id "Seal1")))
+                                    (to if:("IsPieceAt" "Seal1" P1 (to)))
                                 )
                             )
                     ))
@@ -102,7 +97,7 @@
         (rules "Players take turns moving their pieces. Black starts. Players may: Move one or two empty spaces in any direction, or hop over one ring marker in any direction into an empty space. multiple jumps. White may capture an opponent's piece by moving onto its space from an adjacent one. Both the white and black pieces are removed from play. After moving or capturing, the moving player places a hole-in-the-ice ring marker on the moving tokens starting space and any empty space passed over. The goal for the white player is to capture both black tokens. The goal for the black player is to isolate at least one of their pieces so that it cannot be captured. If both players cannot play, black wins.")
         (source "<a href=\"https://nestorgames.com/rulebooks/GOWITHTHEFLOE_EN.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a>")
         (id "388")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/hunt")
         (author "Phil Leduc")
         (publisher "<a href=\"https://www.nestorgames.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a> (used with permission)")

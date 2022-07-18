@@ -7,18 +7,18 @@
         (move Hop 
             (directions {Forward Rightward Leftward})
             (between 
-                if:(is Enemy (who at:(between))) 
+                if:("IsEnemyAt" (between)) 
                 (apply (remove (between)))
             )
             (to if:(is Empty (to)))
         )
-    )	   
+    )	  
 )
 
 //------------------------------------------------------------------------------
 
-(game "Tobi Shogi"  
-    (players {(player N) (player S)})  
+(game "Tobi Shogi" 
+    (players {(player N) (player S)}) 
     (equipment
         {
         (board (square 9))
@@ -52,7 +52,7 @@
         (rules "9x9 board. Played with the full complement of Shogi pieces, placed in the first and second rows. All pieces move only one space orthogonally forward or laterally. Pieces capture by hopping over an opponent's piece. The player to capture all of the opponent's pieces wins.")
         (source "Murray 1951: 147.")
         (id "305")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/shogi")
         (credit "Matthew Stephenson")
         (origin  "This game was played in Japan, around 1913.")

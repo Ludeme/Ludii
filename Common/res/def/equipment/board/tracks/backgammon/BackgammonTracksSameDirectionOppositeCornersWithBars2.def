@@ -1,0 +1,10 @@
+// Defines backgammon tracks following the same direction for each player but starting from opposite corners in using the bar of the board.
+// #1 = An optional End site.
+// @example ("BackgammonTracksSameDirectionOppositeCornersWithBars2")
+
+(define "BackgammonTracksSameDirectionOppositeCornersWithBars2"
+    {
+    (track "Track1" {6 25..20 18..13 0..5 7..12 #1} P1 directed:True)
+    (track "Track2" {19 0..5 7..12 25..20 18..13 #1} P2 directed:True)
+    } 
+)

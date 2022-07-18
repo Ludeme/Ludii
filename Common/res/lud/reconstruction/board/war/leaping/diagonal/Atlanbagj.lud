@@ -1,9 +1,9 @@
 (game "Atlanbagj"
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (square 8))
         (piece "Counter" Each (move [#])) // Pieces moves Ortho or Diago to capture. Need the concepts...
-    })  
+    }) 
     
     (rules 
         (start {
@@ -26,7 +26,7 @@
         (rules "8x8 board. Sixteen pieces per player, which begin on the two rows closest to each player. Pieces move orthogonally, or diagonally to capture.")
         (source "DLP evidence.")
         (id "1512")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/leaping/diagonal/reconstruction")
         (credit "Eric Piette")
         (origin  "This game was played in Turkey, around 1694.")

@@ -1,6 +1,6 @@
 // Description of the knight move in checking the column and row indices.
 
-(define "RegionReached" (is In (last To) (sites Mover)) )
+(define "RegionReached" (is In (last To) (sites Mover)))
 
 (define "RightLineColumn" 
     (or
@@ -29,7 +29,7 @@
                         (sites Board)
                         if:(and 
                             ("RightLineColumn")
-                            (or (is Empty (site)) (is Enemy (who at:(site))))
+                            (or (is Empty (site)) ("IsEnemyAt" (site)))
                         )
                     )
                 )
@@ -38,16 +38,16 @@
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
         }
-    )  
+    ) 
     (rules 
         (start
             { 
-            (place "Knight1" (expand (sites Bottom)) )
-            (place "Knight2" (expand (sites Top)) )
+            (place "Knight1" (expand (sites Bottom)))
+            (place "Knight2" (expand (sites Top)))
             }
         )
         
-        (play (forEach Piece) )
+        (play (forEach Piece))
         
         (end (if "RegionReached" (result Mover Win)))
     )

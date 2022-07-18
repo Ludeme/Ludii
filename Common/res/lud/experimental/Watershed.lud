@@ -2,7 +2,7 @@
 (define "GroupCount"
     (max 0
         (max
-            (sizes Group "ScoreConnectionDirection" #1 ) 
+            (sizes Group "ScoreConnectionDirection" #1) 
 )))
 
 //---------------------------
@@ -19,7 +19,7 @@
 (define "CascadeTie"
     (and
         (set Score Mover (var "MoverScore")) 
-        (set Score Next  (var "NextScore")) 
+        (set Score Next (var "NextScore")) 
 ))
 
 (define "CascadeTiebreaker"
@@ -35,7 +35,7 @@
 //---------------------
 // Defines for scoring options
 
-(define "Scoring"  // Captures + cascade scoring
+(define "Scoring" // Captures + cascade scoring
     (set Var "MoverScore"
         (+
             (value Piece at:(handSite Mover))
@@ -52,7 +52,7 @@
 )))))
 
 //----------------------------
-(define "CapturingAtScoreWhat4Who"  
+(define "CapturingAtScoreWhat4Who" 
     (forEach Value
         (array #1)
         (if 
@@ -131,7 +131,7 @@
                                 (sites Occupied by:All) 
                                 (sites Around (last To) "ConnectionDirection") 
                             )
-                            Next  // which pieces score: Mover, Next, All, None
+                            Next // which pieces score: Mover, Next, All, None
                             <Variant:bonus2> // who gets their value
                         )
                         next:("Scoring")
@@ -155,7 +155,7 @@
 
 (define "ScoreConnectionDirection" <Variant:directionScored>)
 (define "ConnectionDirection" <Variant:directionUsed>)
-(define "BoardUsed" <Variant:gridType> )
+(define "BoardUsed" <Variant:gridType>)
 
 (define "SquareGrid" (board (square <BoardSize:smallSide>) use:Cell))
 (define "SquareDiagonal" (board (square <BoardSize:smallSide>) use:Vertex))
@@ -164,7 +164,7 @@
 // Options
 (option "Board Size" <BoardSize> args:{<smallSide> <backgroundSize>} 
     {
-    (item "Order 5" <5> <1.4>  "Order 5 board")
+    (item "Order 5" <5> <1.4> "Order 5 board")
     (item "Order 7" <7> <1.3> "Order 7 board")
     (item "Order 9" <9> <1.23> "Order 9 board")**
     (item "Order 11" <11> <1.2> "Order 11 board")
@@ -231,7 +231,7 @@
             
         The player with the higher score wins.")
         (id "1661")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")

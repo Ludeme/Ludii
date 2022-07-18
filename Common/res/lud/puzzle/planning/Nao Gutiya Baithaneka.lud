@@ -1,5 +1,5 @@
 (game "Nao Gutiya Baithaneka"
-    (players 1)  
+    (players 1) 
     (equipment { 
         (board 
             (splitCrossings (regular Star 5))
@@ -9,14 +9,14 @@
         (piece "Marker" P1
             (move Hop 
                 (between 
-                    if:(is Friend (who at:(between)))
+                    if:("IsFriendAt" (between))
                     (apply (remove (between)))
                 )
                 (to if:(is Empty (to)))
             )
         ) 
         }
-    )  
+    ) 
     (rules 
         (start 
             (place "Marker" (handSite P1) count:9)
@@ -33,7 +33,7 @@
                     (if (= (from) (last To))
                         (move Hop 
                             (between 
-                                if:(or (is Friend (who at:(between))) (is Empty (between)))
+                                if:(or ("IsFriendAt" (between)) (is Empty (between)))
                             )
                             (to if:(is Empty (to)))
                         )
@@ -59,7 +59,7 @@
         ")
         (source "Das Gupta 1935: 415-416.")
         (id "919")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "puzzle/planning")
         (credit "Eric Piette")
         (origin  "This game was played in India, around 1935.")

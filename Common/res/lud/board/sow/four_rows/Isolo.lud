@@ -1,13 +1,10 @@
 (define "Columns" 8)
 (define "InnerToOuter" (if (is Mover P1) (- #1 ("Columns")) (+ #1 ("Columns"))))
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
 
 //------------------------------------------------------------------------------
 
-(game "Isolo"  
-    (players 2)  
+(game "Isolo" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -16,22 +13,22 @@
             (track "TrackCCW2" "16,E,N1,W" loop:True P2)
             }
         )
-        (regions "Home" P1 (sites Track "TrackCCW1"))                              // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))                              // P2 home
+        (regions "Home" P1 (sites Track "TrackCCW1"))               // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))               // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top) ))   // P2 inner Home
-        (regions "Outer" P1 (sites Bottom))                                        // P1 outer Home
-        (regions "Outer" P2 (sites Top) )                                          // P2 outer Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))  // P2 inner Home
+        (regions "Outer" P1 (sites Bottom))                    // P1 outer Home
+        (regions "Outer" P2 (sites Top))                     // P2 outer Home
         (piece "Seed" Shared)
         (hand Each)
         (map "RightmostOuter" {(pair P1 7) (pair P2 24)})
         (map "RightmostInner" {(pair P1 15) (pair P2 16)})
         (map "SecondRightmostInner" {(pair P1 14) (pair P2 17)})
-    })  
+    }) 
     (rules 
         
         (start 
-            (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home") ) )
+            (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home")))
         )
         
         phases:{
@@ -69,9 +66,9 @@
             (play
                 (move Select 
                     (from
-                        (if (is Mover Prev)
-                            ("PlayFromLastHole") 
-                            (sites { (mapEntry "RightmostInner" Mover)})
+                        (if ("SameTurn")
+                            ("LastHoleSowed") 
+                            (sites {(mapEntry "RightmostInner" Mover)})
                         )
                     )
                     (then 
@@ -97,8 +94,8 @@
             (play
                 (move Select
                     (from
-                        (if (is Mover Prev)
-                            ("PlayFromLastHole") 
+                        (if ("SameTurn")
+                            ("LastHoleSowed") 
                             (sites Mover "Home")
                         )
                         if:(is Occupied (from))
@@ -109,25 +106,25 @@
                             owner:(mover)
                             apply:(if (< 1 (count at:(to)))
                                 (if (is In (to) (sites Mover "Inner"))
-                                    (if (or (is Occupied ("OppositePit")) (is Occupied ("OppositeOuterPit")))
+                                    (if (or (is Occupied ("OppositePit" (to))) (is Occupied ("OppositeOuterPit" (to))))
                                         (and {
-                                            (if (is Occupied ("OppositePit"))
+                                            (if (is Occupied ("OppositePit" (to)))
                                                 (fromTo
-                                                    (from ("OppositePit"))	
+                                                    (from ("OppositePit" (to)))	
                                                     (to (last From))
-                                                    count:(count at:("OppositePit"))
+                                                    count:(count at:("OppositePit" (to)))
                                                 )
                                             )
-                                            (if (is Occupied ("OppositeOuterPit"))
+                                            (if (is Occupied ("OppositeOuterPit" (to)))
                                                 (fromTo
-                                                    (from ("OppositeOuterPit"))	
+                                                    (from ("OppositeOuterPit" (to)))	
                                                     (to (last From))
-                                                    count:(count at:("OppositeOuterPit"))
+                                                    count:(count at:("OppositeOuterPit" (to)))
                                                 )
                                             )
                                             (sow
                                                 (last From)
-                                                count:(+ (count at:("OppositeOuterPit")) (count at:("OppositePit")))
+                                                count:(+ (count at:("OppositeOuterPit" (to))) (count at:("OppositePit" (to))))
                                                 "TrackCCW"
                                                 owner:(mover)
                                                 skipIf:(is In (to) (sites {(mapEntry "RightmostOuter" Mover) (mapEntry "RightmostInner" Mover)}))
@@ -160,25 +157,25 @@
                             owner:(mover)
                             apply:(if (< 1 (count at:(to)))
                                 (if (is In (to) (sites Mover "Inner"))
-                                    (if (or (is Occupied ("OppositePit")) (is Occupied ("OppositeOuterPit")))
+                                    (if (or (is Occupied ("OppositePit" (to))) (is Occupied ("OppositeOuterPit" (to))))
                                         (and {
-                                            (if (is Occupied ("OppositePit"))
+                                            (if (is Occupied ("OppositePit" (to)))
                                                 (fromTo
-                                                    (from ("OppositePit"))	
+                                                    (from ("OppositePit" (to)))	
                                                     (to (last From))
-                                                    count:(count at:("OppositePit"))
+                                                    count:(count at:("OppositePit" (to)))
                                                 )
                                             )
-                                            (if (is Occupied ("OppositeOuterPit"))
+                                            (if (is Occupied ("OppositeOuterPit" (to)))
                                                 (fromTo
-                                                    (from ("OppositeOuterPit"))	
+                                                    (from ("OppositeOuterPit" (to)))	
                                                     (to (last From))
-                                                    count:(count at:("OppositeOuterPit"))
+                                                    count:(count at:("OppositeOuterPit" (to)))
                                                 )
                                             )
                                             (sow
                                                 (last From)
-                                                count:(+ (count at:("OppositeOuterPit")) (count at:("OppositePit")))
+                                                count:(+ (count at:("OppositeOuterPit" (to))) (count at:("OppositePit" (to))))
                                                 "TrackCCW"
                                                 owner:(mover)
                                             )
@@ -194,12 +191,7 @@
             )
         )
         }
-        
-        (end {
-            (if (no Moves P1) (result P2 Win))
-            (if (no Moves P2) (result P1 Win))
-        })
-        
+        (end ("ForEachPlayerNoMovesLoss"))
     )
 )
 
@@ -213,7 +205,7 @@
         (rules "4x8 board. Play begins with two counters in each hole. Opening moves: Players place all of the counters in the outer row into their rightmost hole. They then take one counter from each of the holes in the inner row and redistribute them into the outer row, one in each hole. Then, each player sows counters in an anti-clockwise direction beginning from the rightmost hole in the inner row, proceeding, picking up the contents of holes when the last counter falls into an occupied hole and continuing sowing. However, the final counter that would fall into the rightmost hole in the outer row (which should now contain 17 counters) is not placed there, but rather on the second to right hole in the inner row, which should now contain one counter. Initial phase: In the initial phase, the rightmost hole in the inner and outer row for each player are out of play. All sowing and capturing only occurs on the remaining holes. Sowing occurs in an anti-clockwise direction. When the final counter of a sowing lands in an empty hole, the turn ends. When it falls into an occupied hole in the player's inner row the contents of the opponent's opposite holes in the inner and outer row are captured. These are then sown in the player's holes beginning with the hole from where the previous sowing began. If the final counter of a sowing falls into an occupied hole that cannot make a capture, then the counters in this hole are picked up and sowing continues. Second phase: The initial phase ends when a player plays from the rightmost hole in the outer row. This can be by necessity or by choice. Once this happens, that player must play in all of their holes. The opponent may remain in the initial phase after this point until they play from their rightmost hole. The same sowing and capturing rules as before. Play continues until one player can no longer move.")
         (source "Popova 1979: 114-115.")
         (id "376")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         (origin  "This game was played in Tanzania, around 1979.")

@@ -10,7 +10,7 @@
             Leap 
             "KnightWalk" 
             (to 
-                if:(not ("IsFriendAt" (to)) ) 
+                if:(not ("IsFriendAt" (to))) 
                 (apply 
                     (if ("IsEnemyAt" (to)) 
                         (remove 

@@ -2,13 +2,13 @@
 
 //------------------------------------------------------------------------------
 
-(game "Tic-Tac-Toe-Random"  
-    (players 2)  
+(game "Tic-Tac-Toe-Random" 
+    (players 2) 
     (equipment { 
         (board (square 3)) 
         (piece "Disc" P1) 
         (piece "Cross" P2) 
-    })  
+    }) 
     (rules 
         (play
             (if (<= 50 (value Random (range 1 100)))
@@ -33,7 +33,7 @@
         (version "1.2.1")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in England, from around 1850 to 1883.")
+        (origin "This game was played in England, from around 1850 to 1883.")
         }
     )
     

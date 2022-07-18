@@ -11,14 +11,14 @@
 
 //------------------------------------------------------------------------------
 
-(game "Exhibition_example_1"  
-    (players 2)  
+(game "Exhibition_example_1" 
+    (players 2) 
     (equipment { 
         (board (square 6) use:Vertex)
         (piece "Marker" P1)
         (piece "Marker" P2)
         (hand Shared size:2)
-    })  
+    }) 
     (rules 
         (start {
             (place "Marker1" (handSite Shared 0))

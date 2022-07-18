@@ -1,23 +1,21 @@
-(define "NotAllPieceInHome" (not ("NoSites" (difference (sites Occupied by:Mover) (sites Mover)))) )
+(define "NotAllPieceInHome" (not (all Sites (sites Occupied by:Mover) if:(is In (site) (sites Mover)))))
 
 //------------------------------------------------------------------------------
 
 (game "Tant Fant"
-    (players 2)  
-    (equipment 
-        { 
+    (players 2) 
+    (equipment { 
         ("AlquerqueBoard" 3)
         (piece "Marker" Each "StepToEmpty")
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-        }
-    )  
+    }) 
     (rules 
         (start { 
             (place "Marker1" (sites P1)) 
             (place "Marker2" (sites P2)) 
         })
-        (play (forEach Piece) )
+        (play (forEach Piece))
         
         (end 
             (if 
@@ -27,7 +25,7 @@
                 ) 
                 (result Mover Win)
             )
-        )  
+        ) 
     )
 )
 
@@ -41,7 +39,7 @@
         (rules "3x3 intersecting lines with diagonals. Play occurs on the intersections of the lines. Players each have three pieces, initially placed on the sides closest to the player. Players move the pieces to an adjacent unoccupied intersection along the lines. The goal is to make three in a row which cannot be in the starting position. An alternate version requires the three in a row to be diagonal.")
         (source "Datta 1933: 167.")
         (id "97")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line")
         (credit "Eric Piette")
         (origin  "This game was played in South Asia, from around 1863 to 1933.")

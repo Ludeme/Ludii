@@ -8,8 +8,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "The Right Moves"  
-    (players 2)  
+(game "The Right Moves" 
+    (players 2) 
     (equipment { 
         (board 
             (add
@@ -29,7 +29,7 @@
                     (move Step (to if:(is Empty (to))))
                     (move Hop
                         Rotational
-                        (between if:(is Enemy (who at:(between)))
+                        (between if:("IsEnemyAt" (between))
                             (apply (remove (between)))
                         )
                         (to if:(is Empty (to))
@@ -40,7 +40,7 @@
                     (move Step (to if:(and ("TowardCentre") (is Empty (to)))))
                     (move Hop
                         Rotational
-                        (between if:(is Enemy (who at:(between)))
+                        (between if:("IsEnemyAt" (between))
                             (apply (remove (between)))		
                         )
                         (to if:(and ("TowardCentre") (is Empty (to))))
@@ -50,13 +50,13 @@
                                         (hop
                                             (from (last To))
                                             Rotational
-                                            (between if:(is Enemy (who at:(between))))
+                                            (between if:("IsEnemyAt" (between)))
                                             (to if:(is Empty (to)))
                                         )
                                         (hop
                                             (from (last To))
                                             Rotational
-                                            (between if:(is Enemy (who at:(between))))
+                                            (between if:("IsEnemyAt" (between)))
                                             (to if:(and ("TowardCentre") (is Empty (to))))
                                         )
                                     )
@@ -70,7 +70,7 @@
         )
         (piece "DoubleCounter" Each)
         (regions "SecondInnerMostCircle" (sites {4..11}))
-    })  
+    }) 
     
     (rules 
         (start {
@@ -78,14 +78,14 @@
             (place "Counter2" (sites {44..46 28..30 12..14 52..54 36..38 20..22}))
         })
         (play 
-            (if (is Prev Mover)
+            (if ("SameTurn")
                 (or
                     (if (is In (last To) (sites "SecondInnerMostCircle"))
                         (move Hop
                             (from (last To))
                             Rotational
                             (between 
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
                             (to if:(is Empty (to)))
@@ -94,7 +94,7 @@
                             (from (last To))
                             Rotational
                             (between 
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
                             (to if:(and ("TowardCentre") (is Empty (to))))

@@ -36,27 +36,11 @@
 (game "Kints"
     (players 2)
     (equipment {
-        (board
-            (add
-                (merge {  
-                    (shift -1.25 -0.34 (rotate 30 (rectangle 6 1)))
-                    (rectangle 1 5)
-                    (rectangle 5 1)
-                    (shift 0 6 (rectangle 5 1))
-                    (shift 0 10 (rectangle 1 5))
-                    (shift 7 0 (rectangle 1 5))
-                    (shift 7 10 (rectangle 1 5))
-                    (shift 11 0 (rectangle 5 1))
-                    (shift 11 6 (rectangle 5 1))
-                    (shift 12.25 5.33 (rotate 30 (rectangle 6 1)))
-                })
-                edges:{{13 14} {22 28} {37 36} {9 23}}
-            )
+        ("KintsBoard"
             {
             (track "Track1" "46,5,SSE,N,E,S,W,NNW2,End" P1 directed:True)
             (track "Track2" "47,41,NNW,W,S,E,N,SSE2,End" P2 directed:True)
             }
-            use:Vertex
         )
         (regions "AllSites" (sites Board))
         (regions "Arc" P1 (sites {1..5}))
@@ -86,8 +70,8 @@
 
 (option "Start Rules" <Num> args:{ <piece> }
     {
-    (item  "1"  <1> "Each player has 1 piece.")  
-    (item  "2"  <2> "Each player has 2 pieces.")**  
+    (item "1" <1> "Each player has 1 piece.") 
+    (item "2" <2> "Each player has 2 pieces.")** 
     }
 )
 
@@ -113,7 +97,7 @@
         (rules "Played on a board with 36 holes arranged in a square, with a gap in the center of each side. There are two semi circles of five holes on the outside of two opposite corners of the board. The central space of these semicircles is marked. One or two pieces per player. Four stick dice are used, with one marked side. Each die is marked differently for a different value: 4, 6, 14, 15. The throws are as follows: All marked sides up = 5; three marked sides up = 3; two marked sides up = 2, one marked side up = the value of the marked side; zero marked sides up = 10. Players’ pieces enter on the branching arcs. The second piece cannot enter before the first one leaves the arc. Players move in opposite directions around the board. If a player lands on the same spot as the opponent, the opponent’s piece is removed from the board and must re-enter. Player must make an exact throw to get a piece off the board. The player to get both of their pieces around the board, and then to reach the marked space with an exact throw. When a piece is in the hole before the marked space, they may throw anything but 14 or 15 to exit the board. The first player to remove their piece(s) from the board wins.")
         (source "Culin 1907: 150-152.")
         (id "705")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/escape")
         (credit "Eric Piette")
         }

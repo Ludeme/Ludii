@@ -1,5 +1,5 @@
-(game "Hat Diviyan Keliya"  
-    (players 2)  
+(game "Hat Diviyan Keliya" 
+    (players 2) 
     (equipment { 
         (board 
             <Board:type>
@@ -8,10 +8,10 @@
         (hand Each) 
         (piece "Tiger" P1 (or "HopCapture" "StepToEmpty")) 
         (piece "Leopard" P2 "StepToEmpty") 
-    })  
+    }) 
     
     (rules 
-        (start  {
+        (start {
             (place "Tiger1" (handSite P1) count:<Board:initTiger>)
             (place "Leopard2" (handSite P2) count:<Board:initLeopard>)
         })
@@ -29,13 +29,7 @@
         
         (phase "Movement"
             (play (forEach Piece))
-            (end {
-                ("NoMoves" Loss)
-                (if 
-                    (= (count Pieces P2) <Board:leopardGoal>) 
-                    (result P1 Win)
-                )
-            })
+            (end ("NoMovesLossAndLessNumPiecesPlayerLoss" P2 <Board:leopardGoal>))
         )
         }
     )
@@ -51,8 +45,8 @@
         <7>
         <3>
         "Played on the board described in Ludovici and Parker."
-    )*   
-    (item "Large"    
+    )*  
+    (item "Large"  
         <(scale 1 2 (wedge 5))>
         <2>
         <8>
@@ -72,7 +66,7 @@
         (rules "The game is played on a triangle board divided in half on its height and then in thirds with lines crossing the height perpendicularly. One player plays as the tiger, and the other plays as seven leopards. The tiger plays their piece on a point where lines intersect first, and then on subsequent turns the leopards are placed one-by-one. Moves occur along the lines to an adjacent intersection. The tiger captures may capture a leopard by hopping over it. The tiger's goal is to capture four of the leopards; the leopards' goal is to block the tiger so it cannot move.")
         (source "Ludovisi 1873: 33-34.")
         (id "390")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/hunt")
         (credit "Eric Piette")
         (origin  "This game was played in South Asia, around 1873.")

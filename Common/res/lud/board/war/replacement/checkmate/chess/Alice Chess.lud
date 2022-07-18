@@ -1,5 +1,5 @@
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
 )
 
 (define "HasNeverMoved"
@@ -24,10 +24,10 @@
 
 (define "CaptureToPieceAndResetCounter"
     (apply 
-        if: (or (and (is Enemy (who at:(to))) (= (value Piece at:(from)) (value Piece at:(to)))) (is Empty (to)))
+        if: (or (and ("IsEnemyAt" (to)) (= (value Piece at:(from)) (value Piece at:(to)))) (is Empty (to)))
         (if 
             (and 
-                (is Enemy (who at:(to)))
+                ("IsEnemyAt" (to))
                 (= (value Piece at:(from)) (value Piece at:(to)))
             )
             (remove 
@@ -42,7 +42,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )   
+    )  
 )
 
 (define "DecideToCastle"
@@ -116,7 +116,7 @@
         (directions {FR FL}) 
         (to 
             if:(and 
-                (is Enemy (who at:(to)))
+                ("IsEnemyAt" (to))
                 (= (value Piece at:(from)) (value Piece at:(to)))
             ) 
             (apply (remove (to)))
@@ -126,8 +126,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Alice Chess"  
-    (players {(player N) (player S)})  
+(game "Alice Chess" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -163,7 +163,7 @@
                     )
                 ) 
                 (to 
-                    if:(and (is Enemy (who at:(to))) (= (value Piece at:(from)) (value Piece at:(to))))
+                    if:(and ("IsEnemyAt" (to)) (= (value Piece at:(from)) (value Piece at:(to))))
                     "CaptureToPieceAndResetCounter"
                 ) 
                 "RememberPieceHasMoved"
@@ -173,7 +173,7 @@
             (move
                 Step 
                 (to 
-                    if:(and (not (is Friend (who at:(to)))) (or (is Empty (to)) (= (value Piece at:(from)) (value Piece at:(to)))))
+                    if:(and (not ("IsFriendAt" (to))) (or (is Empty (to)) (= (value Piece at:(from)) (value Piece at:(to)))))
                     "CaptureToPieceAndResetCounter"
                 ) 
                 "RememberPieceHasMoved"
@@ -190,7 +190,7 @@
                     )
                 ) 
                 (to 
-                    if:(and (is Enemy (who at:(to))) (= (value Piece at:(from)) (value Piece at:(to))))
+                    if:(and ("IsEnemyAt" (to)) (= (value Piece at:(from)) (value Piece at:(to))))
                     "CaptureToPieceAndResetCounter"
                 ) 
                 (then
@@ -203,7 +203,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(and (not (is Friend (who at:(to)))) (or (is Empty (to)) (= (value Piece at:(from)) (value Piece at:(to)))))
+                    if:(and (not ("IsFriendAt" (to))) (or (is Empty (to)) (= (value Piece at:(from)) (value Piece at:(to)))))
                     "CaptureToPieceAndResetCounter"
                 ) 
                 (then
@@ -221,7 +221,7 @@
                     )
                 ) 
                 (to 
-                    if:(and (is Enemy (who at:(to))) (= (value Piece at:(from)) (value Piece at:(to))))
+                    if:(and ("IsEnemyAt" (to)) (= (value Piece at:(from)) (value Piece at:(to))))
                     "CaptureToPieceAndResetCounter"
                 ) 
                 (then
@@ -233,9 +233,9 @@
         (map "King" {(pair 1 "E1") (pair 2 "E8")})
         (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})
         (map "RookRight" {(pair 1 "H1") (pair 2 "H8")})
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
-    })  
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
+    }) 
     (rules 
         (start { 
             (place "Pawn1" (sites Row 1))
@@ -309,7 +309,7 @@
         (rules "A move in Alice chess has two basic stipulations: the move must be legal on the board on which it is played, and the square transferred to on the opposite board must be vacant. (Consequently, capture is possible only on the board upon which a piece currently stands). The en passant rule is removed.")
         (id "1667")
         (source "<a href=\"https://en.wikipedia.org/wiki/Alice_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chess")
         (author "Vernon Rylands Parton")
         (credit "Matthew Stephenson")

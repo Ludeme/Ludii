@@ -3,32 +3,32 @@
 //------------------------------------------------------------------------------
 
 (game "Oware" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         (mancalaBoard 2 6
             (track "Track" "1,E,N,W" loop:True)
         )
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
         (piece "Seed" Shared)
-    })  
+    }) 
     
     (rules 
-        (start (set Count 4 to:(sites Track)))		  
+        (start (set Count 4 to:(sites Track)))		 
         (play 
             (if (is Proposed "End")
                 (or (move Vote "End") (move Vote "No"))
                 (or
                     (if (is Cycle) (move Propose "End")) 
-                    (do  
+                    (do 
                         (move Select 
                             (from 
                                 (sites Mover) 
                                 if:(< 0 (count at:(from)))
                             )
                             (then 
-                                (sow  
+                                (sow 
                                     if:(and 
                                         (is In (to) (sites Next)) 
                                         (or 
@@ -60,22 +60,22 @@
 
 (option "Play Rules" <Skip> args:{ <rule> }
     {
-    (item "No limit by hole"  
+    (item "No limit by hole" 
         <
-        >     
+        >   
         ""
     )
-    (item "12 counters max by hole"  
+    (item "12 counters max by hole" 
         <
         skipIf:(>= (count at:(to)) 12)
-        >     
+        >   
         "12 counters max by hole."
     )
 })
 
 (option "End Rules" <End> args:{ <rule> }
     {
-    (item "No Piece"  
+    (item "No Piece" 
         <
         (end
             (if (or (no Moves Mover) (is Decided "End"))
@@ -85,10 +85,10 @@
                 })
             )
         )
-        >     
+        >   
         "The game ended when a player has no piece on his side or if the two players are agree on the end of the game in case a cycle."
-    )  
-    (item "25 Counters"  
+    ) 
+    (item "25 Counters" 
         <
         (end
             {
@@ -100,7 +100,7 @@
             )
             }
         )
-        >     
+        >   
         "A player wins when he captures 25 (or more) counters."
     ) 
 })
@@ -134,7 +134,7 @@
         (useFor "Ruleset/Awari (Suggested)" (id "628"))
         (source "Murray 1951: 181–182.")
         (id "69")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         (origin  "This game was played in West Africa, around 1927.")

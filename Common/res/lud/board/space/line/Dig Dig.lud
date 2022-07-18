@@ -1,18 +1,8 @@
 (define "RemoveEnemyPiece" 
-    (move
-        Remove
+    (move Remove
         (forEach
             (sites Occupied by:Next container:"Board") 
-            if:(= 1 (size Stack at:(site)))
-        )
-    )
-)
-
-(define "IfLine3MoveAgain" 
-    (then 
-        (if 
-            (is Line 3 if:(= 1 (size Stack at:(to)))) 
-            (moveAgain)
+            if:("IsSingletonStack" (site))
         )
     )
 )
@@ -23,7 +13,7 @@
             (sites Occupied by:#1 container:"Board")
             if:(= (size Stack at:(site)) 2)
         )
-        (and  
+        (and 
             (remove (site)) 
             (remove (site)) 
         )
@@ -39,13 +29,11 @@
         (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
         (hand Each)
         (piece "Marker" Each 
-            (move 
-                Step 
-                (to if:(is Empty (to))) 
-                "IfLine3MoveAgain" 
+            ("StepToEmpty" ~ 
+                (then ("ReplayIfLine3" if:("IsSingletonStack" (to))))
             )
         ) 
-    } )  
+    }) 
     
     (rules 
         (start {
@@ -70,7 +58,7 @@
                             )
                         )
                         copy:True
-                        "IfLine3MoveAgain" 
+                        (then ("ReplayIfLine3" if:("IsSingletonStack" (to)))) 
                     )
                     (then 
                         (if 
@@ -94,7 +82,7 @@
                     (forEach Piece)
                 )
             )
-            (end (if (no Pieces Next in:(sites Board)) (result Mover Win)))
+            (end (if (all Sites (sites Occupied by:Next) if:(not (is In (site) (sites Board)))) (result Mover Win)))
         )
         }
     )
@@ -110,7 +98,7 @@
         (rules "Three concentric squares, with lines connecting the corners and midpoints of the squares. Two players. Players alternate turns placing one of their pieces on one of the spots on the board. A player may place a piece on top of a piece belonging to their opponent during this phase of the game, and they are both canceled out. When three uncanceled pieces form a row along the lines on the board, the player may capture one of the opponent's pieces. Once all of the spots have been occupied, the canceled pieces are removed. Players alternate turns moving one of their pieces to an empty adjacent spot on the board.The player who captures all of the opponent's pieces wins.")
         (source "Newell 1959: 29.")
         (id "1418")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line")
         (credit "Eric Piette")
         (origin  "This game was played in Malaysia, around 1959.")
@@ -120,8 +108,6 @@
     (graphics {
         (stackType 1 Count)
         (stackType 2 Count)
-        
     })
     
 )
-

@@ -1,14 +1,12 @@
-(define "DieNotUsed" (!= (pips) 0))
+(define "SiteToSelect" ("NextSiteOnTrack" (- (pips) 1) from:(mapEntry "StartTrack" (mover))))
 
-(define "SiteToSelect" (trackSite Move from:(mapEntry "StartTrack" (mover)) steps:(- (pips) 1)))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" (pips)))
 
-(define "SiteToMoveOnTrack" (trackSite Move steps:(pips)))
+(define "RemoveAPiece" (move Remove (from)))
 
-(define "RemoveAPiece" (move Remove (from) ) )
-
-(define "PieceUnstacked" (= (state at:#1) 2) )
-(define "PieceFullStacked" (= (state at:#1) 0) )
-(define "PieceHalfStacked" (= (state at:#1) 1) )
+(define "PieceUnstacked" (= (state at:#1) 2))
+(define "PieceFullStacked" (= (state at:#1) 0))
+(define "PieceHalfStacked" (= (state at:#1) 1))
 (define "PieceStacked" 
     (or
         ("PieceFullStacked" #1) 
@@ -39,18 +37,17 @@
 (game "Yahoudieh"
     (players 2)
     (equipment {
-        (board (rectangle 2 13) 
+        ("BackgammonBoard"
             {
             (track "Track1" {7..12} P1 directed:True)
             (track "Track2" {18..13} P2 directed:True)
             } 
-            use:Vertex
         ) 
         (dice d:6 num:2)
         (piece "Disc" Each
             (forEach Die 
                 if:("DieNotUsed")
-                (if (= "SiteToMoveOnTrack" Off)
+                (if ("IsOffBoard" "SiteToMoveOnTrack")
                     "RemoveAPiece"
                     (move 
                         (from) 
@@ -72,10 +69,8 @@
         })
         phases:{
         (phase "UnStacking" 
-            (play 
-                (do 
-                    (if (not "SameTurn") (roll)) 
-                    next:
+            (play
+                ("RollEachNewTurnMove"
                     (forEach Die 
                         if:("DieNotUsed")
                         (or
@@ -84,9 +79,7 @@
                                     (then 
                                         (and 
                                             (if (= 3 (size Stack at:(last To))) ("UnstackHalf") ("UnstackFull"))
-                                            (if (not (all DiceUsed))
-                                                (moveAgain)
-                                            )
+                                            ("ReplayNotAllDiceUsed")
                                         )
                                     )
                                 )
@@ -96,9 +89,7 @@
                                     (then 
                                         (and 
                                             ("UnstackFull")
-                                            (if (not (all DiceUsed))
-                                                (moveAgain)
-                                            )
+                                            ("ReplayNotAllDiceUsed")
                                         )
                                     )
                                 )
@@ -108,15 +99,13 @@
                 )
             )
             (nextPhase Mover 
-                (= 0 (count Sites in:(forEach (sites Occupied by:Mover) if:("PieceStacked" (site))))) 
+                (all Sites (sites Occupied by:Mover) if:(not ("PieceStacked" (site)))) 
                 "Stacking"
             )
         )
         (phase "Stacking" 
             (play 
-                (do 
-                    (if (not "SameTurn") (roll)) 
-                    next:
+                ("RollEachNewTurnMove"
                     (forEach Die 
                         if:("DieNotUsed")
                         (or
@@ -125,9 +114,7 @@
                                     (then 
                                         (and {
                                             (if (= 3 (size Stack at:(last To))) ("UnstackHalf") ("Stack"))
-                                            (if (not (all DiceUsed))
-                                                (moveAgain)
-                                            )
+                                            ("ReplayNotAllDiceUsed")
                                         })
                                     )
                                 )
@@ -137,9 +124,7 @@
                                     (then 
                                         (and 
                                             ("Stack")
-                                            (if (not (all DiceUsed))
-                                                (moveAgain)
-                                            )
+                                            ("ReplayNotAllDiceUsed")
                                         )
                                     )
                                 )
@@ -149,15 +134,16 @@
                 )
             )
             (nextPhase Mover 
-                (= 0 (count Sites in:(forEach (sites Occupied by:Mover) if:("PieceUnstacked" (site))))) 
+                (all Sites (sites Occupied by:Mover) if:(not ("PieceUnstacked" (site)))) 
                 "BearingOff"
             )
         )
-        (phase "BearingOff" (play 
+        (phase "BearingOff" 
+            (play 
                 (do 
                     (if (or (all DiceEqual) (not "SameTurn")) (roll)) 
                     next:(forEach Piece top:True)
-                    (then (if (not (all DiceUsed)) (moveAgain)))
+                    (then ("ReplayNotAllDiceUsed"))
                 )
             )
             (end ("EscapeWin"))
@@ -177,7 +163,7 @@
         ")
         (source "Barakat 1974: 19-21.")
         (id "1063")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/escape")
         (credit "Eric Piette")
         (origin  "This game was played in Southwest Asia, around 1974.")

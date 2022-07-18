@@ -1,9 +1,9 @@
-(game "Latin Square"  
-    (players 1)  
+(game "Latin Square" 
+    (players 1) 
     (equipment { 
         (board (square <Size>) (values Cell (range 1 <Size>))) 
         (regions {Columns Rows})
-    })  
+    }) 
     (rules 
         (play (satisfy (all Different)))
         (end (if (is Solved) (result P1 Win)))
@@ -12,9 +12,9 @@
 
 //------------------------------------------------------------------------------
 
-(option "Board Size" <Size> args:{ <size>  }
+(option "Board Size" <Size> args:{ <size> }
     {
-    (item "2x2" <2> "")  
+    (item "2x2" <2> "") 
     (item "3x3" <3> "")
     (item "4x4" <4> "")
     (item "5x5" <5> "")**
@@ -59,7 +59,7 @@
         (rules "A Latin Square puzzle is one in which an n x n grid is filled with n symbols, which cannot repeat in a row or column of the grid.")
         (source "<a href=\"https://en.wikipedia.org/wiki/Latin_square\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
         (id "70")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "puzzle/deduction")
         (credit "Eric Piette")
         }

@@ -66,27 +66,27 @@
 
 (define "MotherCheckerP1Pinned" 
     (and 
-        (= (id "Disc1") (what at:12 level:0)) 
-        (= (id "Disc2") (what at:12 level:1))
+        ("IsPieceAt" "Disc1" P1 12 level:0)
+        ("IsPieceAt" "Disc2" P2 12 level:1)
     )
 ) 
 
 (define "MotherCheckerP2Pinned" 
     (and 
-        (= (id "Disc2") (what at:25 level:0)) 
-        (= (id "Disc1") (what at:25 level:1))
+        ("IsPieceAt" "Disc2" P2 25 level:0)
+        ("IsPieceAt" "Disc1" P1 25 level:1)
     )
 )
 
 //-----------------------------------------------------------------------------
 
-(game "Plakoto"  
-    (players 2)  
+(game "Plakoto" 
+    (players 2) 
     (equipment { 
         ("BackgammonBoard" "BackgammonTracks")
         (dice num:2)
         (regions P1 { 20..25 }) // P1 Home
-        (regions P2 { 7..12 })  // P2 Home
+        (regions P2 { 7..12 }) // P2 Home
         (piece "Disc" Each ("MoveAPieceIf" "DieNotUsedAndNoEscapeAndNotOffTheTrack" (from))) 
     })
     
@@ -119,7 +119,7 @@
                         )
                     )
                     (max Distance "Track" Mover
-                        (forEach Piece top:True   
+                        (forEach Piece top:True  
                             (then ("ReplayNotAllDiceUsed"))
                         )
                     )
@@ -132,19 +132,19 @@
                 (byScore { 
                     ("SetScoreOf" P1 P2)
                     ("SetScoreOf" P2 P1)
-                } )
+                })
             )
             (if ("MotherCheckerP1Pinned")
                 (byScore { 
                     (score P1 0)
                     (score P2 2)
-                } )
+                })
             )
             (if ("MotherCheckerP2Pinned")
                 (byScore { 
                     (score P1 2)
                     (score P2 0)
-                } )
+                })
             )
         })
     )
@@ -175,7 +175,7 @@
         The game is also typically played with a point system, where points are lost based on the winning conditions. Players lose two points by losing if they haven't yet borne off any of their pieces, or one point if they have borne off at least one piece. A player who loses because their final piece in the starting position was trapped loses two points.")
         (source "<a href=\"https://bkgm.com/articles/Mamoun/PlakotoBoardGameStrategy.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />bkgm.com</a>")
         (id "176")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/escape")
         (credit "Eric Piette")
         }

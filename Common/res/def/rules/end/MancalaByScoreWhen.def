@@ -1,0 +1,12 @@
+// Ends a mancala game when a condition is verified in computing the score of each player thanks to a ludemeplex called "PiecesOwnedBy" taking in input the role of P1 or P2. This ludemeplex can be used only in an ending condition.
+// #1 The condition.
+// @example ("MancalaByScoreWhen" (no Moves Next))
+
+(define "MancalaByScoreWhen"
+    (if #1 
+        (byScore {
+            (score P1 ("PiecesOwnedBy" P1)) 
+            (score P2 ("PiecesOwnedBy" P2))
+        })
+    )
+)

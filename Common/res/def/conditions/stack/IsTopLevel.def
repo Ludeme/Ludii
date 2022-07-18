@@ -1,0 +1,5 @@
+// Checks if a level is at the top of a stack.
+// #1 = The site.
+// @example ("IsTopLevel" (to))
+
+(define "IsTopLevel" (= (topLevel at:#1) (level)))

@@ -1,17 +1,15 @@
 (define "CaptureToPiece"
     (apply 
         (if (is Occupied (to))
-            (remove 
-                (to) 
-            )
+            (remove (to))
         )
     ) 
 )
 
 (define "EmptySitesInHome" 
-    (intersection 
+    (forEach 
         (sites Mover "Home") 
-        (sites Empty)
+        if:(is Empty (site))
     )
 )
 
@@ -20,17 +18,14 @@
 )
 
 (define "GoalReached" 
-    ("NoSites" 
-        (difference 
-            (sites Mover "Goal") 
-            (sites Occupied by:Mover)
-        )
+    (all Sites 
+        (sites Mover "Goal") 
+        if:(is In (site) (sites Occupied by:Mover))
     )
 )
 
 (define "MoveForwards" 
-    (move
-        Step
+    (move Step
         Forwards
         (to 
             if:True
@@ -43,12 +38,40 @@
     (= (state at:(from)) (count Pips))
 )
 
-(define "ValueCloseToOne" 
-    (= 1 (abs (- (state at:(from)) (count Pips))))
+(define "ValueNextHigher" 
+    (if ("IsNotOffBoard" (where "Square" Mover state:(+ (count Pips) 1)))
+        (= (state at:(from)) (+ (count Pips) 1))
+        (if ("IsNotOffBoard" (where "Square" Mover state:(+ (count Pips) 2)))
+            (= (state at:(from)) (+ (count Pips) 2))
+            (if ("IsNotOffBoard" (where "Square" Mover state:(+ (count Pips) 3)))
+                (= (state at:(from)) (+ (count Pips) 3))
+                (if ("IsNotOffBoard" (where "Square" Mover state:(+ (count Pips) 4)))
+                    (= (state at:(from)) (+ (count Pips) 4))
+                    (= (state at:(from)) (+ (count Pips) 5))
+                )
+            )
+        )
+    )
+)
+
+(define "ValueNextLower" 
+    (if ("IsNotOffBoard" (where "Square" Mover state:(- (count Pips) 1)))
+        (= (state at:(from)) (- (count Pips) 1))
+        (if ("IsNotOffBoard" (where "Square" Mover state:(- (count Pips) 2)))
+            (= (state at:(from)) (- (count Pips) 2))
+            (if ("IsNotOffBoard" (where "Square" Mover state:(- (count Pips) 3)))
+                (= (state at:(from)) (- (count Pips) 3))
+                (if ("IsNotOffBoard" (where "Square" Mover state:(- (count Pips) 4)))
+                    (= (state at:(from)) (- (count Pips) 4))
+                    (= (state at:(from)) (- (count Pips) 5))
+                )
+            )
+        )
+    )
 )
 
 (define "MoveAPieceOf" 
-    (forEach Piece       
+    (forEach Piece    
         (if 
             #1
             ("MoveForwards")
@@ -57,13 +80,13 @@
 )
 
 (define "PieceIsOnTheBoard" 
-    (!= (where "Square" Mover state:(count Pips)) Off)
+    ("IsNotOffBoard" (where "Square" Mover state:(count Pips)))
 )
 
 //------------------------------------------------------------------------------
 
-(game "EinStein Wurfelt Nicht"  
-    (players {(player SE) (player NW)})  
+(game "EinStein Wurfelt Nicht" 
+    (players {(player SE) (player NW)}) 
     (equipment { 
         (board (square <Board:size>)) 
         (piece "Square" Each) 
@@ -73,13 +96,13 @@
         (regions "Home" P2 (expand (intersection (sites Bottom) (sites Right)) steps:<Board:sizeHome> Orthogonal))
         (regions "Goal" P1 (intersection (sites Bottom) (sites Right)))
         (regions "Goal" P2 (intersection (sites Top) (sites Left)))
-    })  
+    }) 
     (rules 
         (start {
             <Board:start>
         })
         phases:{
-        (phase "Placement" 	        
+        (phase "Placement" 	    
             (play 
                 (move 
                     (from ("CubeInHand")) 
@@ -88,13 +111,15 @@
             )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
-        (phase "Movement" 	        
+        (phase "Movement" 	    
             (play 
-                (do 
-                    (roll)
-                    next:(if ("PieceIsOnTheBoard")
+                ("RollMove"
+                    (if ("PieceIsOnTheBoard")
                         ("MoveAPieceOf" ("SameValue"))
-                        ("MoveAPieceOf" ("ValueCloseToOne"))
+                        (or
+                            ("MoveAPieceOf" ("ValueNextHigher"))
+                            ("MoveAPieceOf" ("ValueNextLower"))
+                        )
                     )
                 )
             )
@@ -122,7 +147,7 @@
         <6>
         <1>
         <2>
-        <  
+        < 
         (place "Square1" (handSite P1) state:1) 
         (place "Square1" (handSite P1 1) state:2) 
         (place "Square1" (handSite P1 2) state:3) 
@@ -138,13 +163,13 @@
         (place "Square2" (handSite P2 5) state:6) 
         >
         "The version of the game played on 5x5 board."
-    )*   
-    (item "6"    
+    )*  
+    (item "6"  
         <6>
         <10>
         <2>
         <3>
-        <  
+        < 
         (place "Square1" (handSite P1) state:2) 
         (place "Square1" (handSite P1 1) state:3) 
         (place "Square1" (handSite P1 2) state:4) 
@@ -187,7 +212,7 @@
         The objective of the game is for a player to either get one of their cubes to the far corner square in the grid (where their opponent started) or to remove all of their opponent's cubes from the board.")
         (source "<a href=\"https://en.wikipedia.org/wiki/EinStein_würfelt_nicht!\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
         (id "472")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/reach")
         (author "Ingo Althöfer")
         (publisher "3-Hirn-Verlag")
@@ -203,6 +228,7 @@
         (show Piece State Middle)
         (show RegionOwner)
     })
+    
     (ai
         "EinStein Wurfelt Nicht_ai"
     )

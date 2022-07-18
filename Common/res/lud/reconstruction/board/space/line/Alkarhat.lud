@@ -5,7 +5,7 @@
         (board (square 6)) 
         (hand Each) // Do we have an hand here?
         (piece "Marker" Each) 
-    })  
+    }) 
     (rules 
         (start [#]) // 13 pieces per player
         (play [#]) // Surrounding the opponent in an alignement game?
@@ -23,7 +23,7 @@
         (rules "6x6 board. Thirteen pieces per player. Players attempt to surround another player's piece.")
         (source "DLP evidence.")
         (id "1201")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line/reconstruction")
         (credit "Eric Piette")
         (origin  "This game was played in Niger, around 1922.")

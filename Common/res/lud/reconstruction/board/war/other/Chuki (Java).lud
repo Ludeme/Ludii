@@ -1,9 +1,9 @@
 (game "Chuki (Java)"
-    (players 2)  
-    (equipment [#])  // probably 12x10 lines 
+    (players 2) 
+    (equipment [#]) // probably 12x10 lines 
     (rules
         (start [#]) // Pieces are starting on the board and 60 pieces per player. Pieces move in all directions.
-        (play [#]) //  Players capture one, three, or five of the opponent's pieces at a time, and continue their turn until they are unable to do so
+        (play [#]) // Players capture one, three, or five of the opponent's pieces at a time, and continue their turn until they are unable to do so
         (end (if (no Pieces Next) (result Mover Win)))
     )
 )
@@ -14,6 +14,14 @@
     
     (info
         {
+        (description "Chuki is a game that was played in Java during the nineteenth century, which was incompletely documented. ")
+        (rules "Board made of crossed lines, with 120 intersections. Two players, sixty pieces per player. The pieces begin on the board. Pieces move in all directions. Players capture one, three, or five of the opponent's pieces at a time, and continue their turn until they are unable to do so. The player who captures all of the opponent's pieces wins.")
+        (source "DLP evidence.")
+        (id "994")
+        (version "1.3.5")
+        (classification "board/war/reconstruction")
+        (credit "Eric Piette")
+        (origin  "This game was played in Java, around 1817.")
         }
     )
     

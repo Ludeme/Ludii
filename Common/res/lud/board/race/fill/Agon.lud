@@ -7,7 +7,7 @@
 (define "AllPawnsInInnerRing"
     (all Sites 
         (difference (sites Around (sites Centre)) (sites Centre))
-        if:(= (id "Pawn" Mover) (what at:(site)))
+        if:("IsPieceAt" "Pawn" Mover (site))
     )	
 )
 
@@ -15,8 +15,8 @@
     (custodial 
         (from (last To)) 
         Orthogonal
-        (between (max 1) if:(is Enemy (who at:(between))) (apply (set State at:(between) 1)))
-        (to if:(is Friend (who at:(to)))) 
+        (between (max 1) if:("IsEnemyAt" (between)) (apply (set State at:(between) 1)))
+        (to if:("IsFriendAt" (to))) 
     )
 )
 
@@ -35,8 +35,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Agon"  
-    (players 2)  
+(game "Agon" 
+    (players 2) 
     (equipment { 
         (board (hex 6))
         (piece "Pawn" Each 
@@ -60,7 +60,7 @@
                 (then ("CapturePiece"))
             )		
         ) 
-    })  
+    }) 
     (rules 
         (start {
             (place "Pawn1" (sites {89 60 20 3 6 51}))
@@ -74,11 +74,7 @@
                 ("ReleaseCapturePiece" "Pawn" Outer)
                 (do (forEach Piece)
                     ifAfterwards:(not (can Move
-                            (intervene 
-                                (from (last To)) 
-                                Orthogonal
-                                (to if:(is Enemy (who at:(to))))
-                            )
+                            ("InterveneCapture" Orthogonal)
                     ))
                 )
                 
@@ -89,11 +85,11 @@
             (if ("AllPawnsInInnerRing")
                 {
                 (if 
-                    (= (id "Queen" Mover) (what at:(centrePoint)))
+                    ("IsPieceAt" "Queen" Mover (centrePoint))
                     (result Mover Win)
                 )
                 (if 
-                    (!= (id "Queen" Mover) (what at:(centrePoint)))
+                    (not ("IsPieceAt" "Queen" Mover (centrePoint)))
                     (result Mover Loss)
                 )
                 }
@@ -134,7 +130,7 @@
         13. A player has lost the game if his six guards are adjacent to the central space but his queen is not between them, as this configuration prevents either player from ever winning the game.")
         (id "1764")
         (source "<a href=\"https://en.wikipedia.org/wiki/Agon_(game)\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/fill")
         (author "Anthony Peacock")
         (credit "Eric Piette")

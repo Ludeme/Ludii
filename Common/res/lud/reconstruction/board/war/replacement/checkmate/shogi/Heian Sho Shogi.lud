@@ -4,8 +4,8 @@
         #1
         #2 
         (to 
-            if:(is Enemy (who at:(to))) 
-            (apply (remove (to)) )
+            if:("IsEnemyAt" (to)) 
+            (apply (remove (to)))
         ) 
         #3
     )
@@ -16,8 +16,8 @@
         Step
         #1
         (to 
-            if:(not (is Friend (who at:(to)))) 
-            (apply (if (is Enemy (who at:(to))) (remove (to))))
+            if:(not ("IsFriendAt" (to))) 
+            (apply (if ("IsEnemyAt" (to)) (remove (to))))
         ) 
         #2 
     )
@@ -48,12 +48,12 @@
                         (forEach Direction 
                             (from (to)) 
                             (directions {FR FL}) 
-                            (if (not (is Friend (who at:(to)))) 
+                            (if (not ("IsFriendAt" (to))) 
                                 (move 
                                     (from) 
                                     (to 
                                         (apply 
-                                            if:(is Enemy (who at:(to)))
+                                            if:("IsEnemyAt" (to))
                                             (add 
                                                 (piece (mapEntry "Captured" (what at:(to)))) 
                                                 (to (mapEntry "Where" (what at:(to))))
@@ -113,7 +113,7 @@
         (rules "8x8 or 8x9 board. Pieces are as follows: Osho (king): Moves in every direction; Ginsho (gold general): does not move left, right, or backward; Keima (knight): moves orthogonally one square and then diagonally another square; Kosha (lance)moves forward any distance; Fuhyo (soldier) moves one square. If the Fuhyo enters the third rank on the opponent's side of the board, they are promoted to Ginsho. A player wins when the opponent is reduced to the Osho and one Ginsho.")
         (source "DLP evidence.")
         (id "1341")
-        (version "1.3.2")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/shogi/reconstruction")
         (credit "Eric Piette")
         (origin  "This game was played in Japan, around 1230.")

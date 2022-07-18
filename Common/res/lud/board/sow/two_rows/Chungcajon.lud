@@ -1,13 +1,11 @@
 (define "PiecesOwnedBy" (count at:(mapEntry #1)))
 
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "NotMoverStore" (!= (to) (mapEntry Mover)))
 
 //------------------------------------------------------------------------------
 
 (game "Chungcajon" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         (mancalaBoard 2 7
             {
@@ -15,27 +13,26 @@
             (track "Track2" "8,E,ESE,WSW,W" loop:True P2)
             }
         )
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
-        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+        (regions P1 (sites Bottom))           // P1 home
+        (regions P2 (sites Top))            // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
         (piece "Seed" Shared)
-    })  
+    }) 
     
     (rules 
-        (start (set Count 7 to:(union (sites P1) (sites P2))))		  
+        (start (set Count 7 to:(union (sites P1) (sites P2))))		 
         (play 
-            (move
-                Select 
+            (move Select 
                 (from 
                     (if 
-                        (is Mover Prev) 
-                        "PlayFromLastHole" 
+                        ("SameTurn") 
+                        "LastHoleSowed" 
                         (sites Mover) 
                     ) 
                     if:(> (count at:(from)) 0)
                 )
                 (then 
-                    (sow  
+                    (sow 
                         "Track"
                         owner:(mover)
                         if:(and 
@@ -47,14 +44,7 @@
                 )
             )
         )
-        (end
-            (if (= 0 (count Sites in:(intersection (sites Occupied by:All) (union (sites P1) (sites P2)))))
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
-        )
+        (end ("MancalaByScoreWhen" (all Sites (union (sites P1) (sites P2)) if:(= 0 (count at:(site))))))
     )
 )
 
@@ -68,7 +58,7 @@
         (rules "2x7 board, with two stores. Seven counters in each hole. Players sow from any hole on their side of the board, in a clockwise direction, and sow into the store on their left, but not the one on the right. When the final counter of a sowing lands in an occupied hole that is not the store, the player picks up these counters and continues sowing. When then final counter lands in an empty hole, the turn ends. When the final counter lands in the store, the turn ends. Play continues until all of the counters are in the stores, and the player with the most counters in their store wins.")
         (source "Culin 1900: 653.")
         (id "1003")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         (origin  "This game was played in Philippines, around 1900.")

@@ -1,14 +1,10 @@
 (define "Columns" <Row:size>)
 
-(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns") ) )
+(define "OppositeMiddlePit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2))))
 
-(define "OppositeMiddlePit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2)) ) )
+(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 3)) (- #1 (* "Columns" 3))))
 
-(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 3)) (- #1 (* "Columns" 3)) ) )
-
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
-(define "NoPiece" (= (count in:(sites Player "Home")) 0))
+(define "NoPiece" (all Sites (sites Player "Home") if:(= 0 (count at:(site)))))
 
 (define "OneSingePieceInTheMiddle" (and (= (count in:(sites Mover "Home")) 1) (= (count in:(sites Mover "Middle")) 1)))
 (define "OneSingePieceInTheOuter" (and (= (count in:(sites Mover "Home")) 1) (= (count in:(sites Mover "Outer")) 1)))
@@ -25,37 +21,34 @@
 
 //------------------------------------------------------------------------------
 
-(game "Katro"  
-    (players 2)  
+(game "Katro" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 6 "Columns" store:None
             <Row:tracks>	
         )
         (piece "Seed" Shared)
-        (regions "Home" P1 (sites Track "TrackCCW1"))   // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))   // P2 home
-        (regions "Inner" P1 (sites Row 2))              // P1 inner Home
-        (regions "Inner" P2 (sites Row 3))              // P2 inner Home
-        (regions "Middle" P1 (sites Row 1))             // P1 inner Home
-        (regions "Middle" P2 (sites Row 4))             // P2 inner Home
-        (regions "Outer" P1 (sites Bottom))             // P1 inner Home
-        (regions "Outer" P2 (sites Top))                // P2 inner Home
-        }
-    )  
+        (regions "Home" P1 (sites Track "TrackCCW1"))  // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))  // P2 home
+        (regions "Inner" P1 (sites Row 2))       // P1 inner Home
+        (regions "Inner" P2 (sites Row 3))       // P2 inner Home
+        (regions "Middle" P1 (sites Row 1))       // P1 inner Home
+        (regions "Middle" P2 (sites Row 4))       // P2 inner Home
+        (regions "Outer" P1 (sites Bottom))       // P1 inner Home
+        (regions "Outer" P2 (sites Top))        // P2 inner Home
+    }) 
     (rules 
         
-        (start (set Count 2 to:(sites Board)) )
+        (start (set Count 2 to:(sites Board)))
         
         (play 
             (or {
-                (if (or (= (value Player Mover) 1) (<= (value Player Mover) 0) )
-                    (move
-                        Select
+                (if (or (= (value Player Mover) 1) (<= (value Player Mover) 0))
+                    (move Select
                         (from 
-                            (if 
-                                (is Mover Prev) 
-                                "PlayFromLastHole" 
+                            (if ("SameTurn") 
+                                "LastHoleSowed" 
                                 ("OuterMostRowWithPieces") 
                             ) 
                             if:(> (count at:(from)) 0)
@@ -100,13 +93,11 @@
                         )
                     )
                 )
-                (if (or (= (value Player Mover) 2) (<= (value Player Mover) 0) )
-                    (move
-                        Select
+                (if (or (= (value Player Mover) 2) (<= (value Player Mover) 0))
+                    (move Select
                         (from 
-                            (if 
-                                (is Mover Prev) 
-                                "PlayFromLastHole" 
+                            (if ("SameTurn") 
+                                "LastHoleSowed" 
                                 ("OuterMostRowWithPieces") 
                             ) 
                             if:(> (count at:(from)) 0)
@@ -186,17 +177,17 @@
                                     (fromTo
                                         (from ("OppositePit" (last To)))
                                         (to (last To))
-                                        count:(count at:("OppositePit"  (last To)))
+                                        count:(count at:("OppositePit" (last To)))
                                     )
-                                    (if (!= 0 (count at:("OppositeMiddlePit"  (last To))))
+                                    (if (!= 0 (count at:("OppositeMiddlePit" (last To))))
                                         (fromTo
-                                            (from ("OppositeMiddlePit"  (last To)))
+                                            (from ("OppositeMiddlePit" (last To)))
                                             (to (last To))
-                                            count:(count at:("OppositeMiddlePit"  (last To)))
+                                            count:(count at:("OppositeMiddlePit" (last To)))
                                         )
-                                        (if (!= 0 (count at:("OppositeOuterPit"  (last To))))
+                                        (if (!= 0 (count at:("OppositeOuterPit" (last To))))
                                             (fromTo
-                                                (from ("OppositeOuterPit"  (last To)))
+                                                (from ("OppositeOuterPit" (last To)))
                                                 (to (last To))
                                                 count:(count at:("OppositeOuterPit" (last To)))
                                             )
@@ -224,8 +215,8 @@
 
 (option "Board Size" <Row> args:{ <size> <tracks>}
     {
-    (item "3"   
-        <3>  
+    (item "3"  
+        <3> 
         <
         {
         (track "TrackCCW1" "0,E,N1,W,N1,E" loop:True P1)
@@ -234,9 +225,9 @@
         (track "TrackCCW2" "11,W,N1,E,N1,W" loop:True P2)
         }
         >
-    "3 Holes per row.")   
-    (item "6"   
-        <6>  
+    "3 Holes per row.")  
+    (item "6"  
+        <6> 
         <
         {
         (track "TrackCCW1" "0,E,N1,W,N1,E" loop:True P1)
@@ -245,7 +236,7 @@
         (track "TrackCCW2" "23,W,N1,E,N1,W" loop:True P2)
         }
         >
-    "6 Holes per row.")**   
+    "6 Holes per row.")**  
 })
 
 //------------------------------------------------------------------------------
@@ -270,7 +261,7 @@
         (rules "6x3 or 6 board. Two counters in each hole. Sowing occurs from one of the holes in the player's outermost row which contains counters, in either direction. Sowing moves in a boustrophedon path along the holes, moving from the last hole in the innermost row to the beginning of the outer row. When the final counter lands in an occupied hole, the contents of this hole are picked up and sowing continues. If this hole is in the player's inner row, the contents of the opponent's hole opposite it are captured, and these counters are also used along with the hole in which the last counter fell for the sowing to continue. If the opponent's inner row hole is empty, counters may be captured from their central row, and if both the inner and central rows are empty, captures may be made from the outer hole. Sowing ends when the final counter lands in an empty hole. When a player has only one counter on their side of the board, it may capture by moving from the central row directly to the inner row hole above it to make a capture (i.e., without following the normal track), and on the move prior to the capture, from the outer to the central row. Play continues until one player has captured all of the counters.")
         (source "de Voogt 1999: 112-113.")
         (id "1258")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow")
         (credit "Eric Piette")
         (origin  "This game was played in Madagascar, around 1998.")

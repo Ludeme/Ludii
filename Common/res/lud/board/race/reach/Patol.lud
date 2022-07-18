@@ -2,45 +2,34 @@
 
 (define "SiteToMoveOnSelectedTrack" 
     (if (= (value Player Mover) 2)
-        (trackSite Move "TrackCCW" steps:("ThrowValue"))
-        (trackSite Move "TrackCW" steps:("ThrowValue"))
+        ("NextSiteOnTrack" ("ThrowValue") "TrackCCW")
+        ("NextSiteOnTrack" ("ThrowValue") "TrackCW")
     )
 )
 
-(define "NextSite" (trackSite Move from:#1 #2 steps:1))
+(define "NextSite" ("NextSiteOnTrack" 1 from:#1 #2))
 
-(define "SiteToMoveOnTrackCW" (trackSite Move "TrackCW" steps:("ThrowValue")))
-(define "SiteToMoveOnTrackCCW" (trackSite Move "TrackCCW" steps:("ThrowValue")))
+(define "SiteToMoveOnTrackCW" ("NextSiteOnTrack" ("ThrowValue") "TrackCW"))
+(define "SiteToMoveOnTrackCCW" ("NextSiteOnTrack" ("ThrowValue") "TrackCCW"))
 
-(define "SelectCW" 
-    (set Value Mover 1)
-)
+(define "SelectCW" (set Value Mover 1))
 
-(define "SelectCCW" 
-    (set Value Mover 2)
-)
+(define "SelectCCW" (set Value Mover 2))
 
 (define "RememberSelectedTrack"
     (then 
         (if 
-            (= (value Player Mover) Off) 
+            ("IsOffBoard" (value Player Mover)) 
             #1
         )
     )
 )
 
-(define "CaptureEnemyPiece" 
-    (apply 
-        if:(is Enemy (who at:(to))) 
-        (fromTo (from (to)) (to (value Piece at:(to))))
-    ) 
-)
-
 (define "MoveOn" 
-    (if (!= #1 Off)
+    (if ("IsNotOffBoard" #1)
         (if (or
                 (is In #1 (sites Empty))
-                (is Enemy (who at:#1))
+                ("IsEnemyAt" #1)
             )
             (move 
                 (from (from) level:(level))
@@ -66,23 +55,15 @@
 (game "Patol"
     (players <Player:num>)
     (equipment {
-        (board
-            (add
-                (remove 
-                    (concentric {44})
-                    vertices:{43 21 0 22}
-                )
-                edges:{{20 18} {0 1} {19 21} {38 39}}
-            )
+        ("FortyStonesWithFourGapsBoard"
             {
             (track "TrackCW" {39 35 33 31 29 27 25 23 21 19 38 17 15 13 11 9 7 5 3 1 37 0 2 4 6 8 10 12 14 16 36 18 20 22 24 26 28 30 32 34} loop:True)
             (track "TrackCCW" {39 34 32 30 28 26 24 22 20 18 36 16 14 12 10 8 6 4 2 0 37 1 3 5 7 9 11 13 15 17 38 19 21 23 25 27 29 31 33 35} loop:True)
             }
-            use:Edge
         )
         (regions "Gates" (sites {36..39}))
         (piece "Marker" Each
-            (if (= Off (value Player Mover))
+            (if ("IsOffBoard" (value Player Mover))
                 (or 
                     ("MoveOn" ("SiteToMoveOnTrackCW") ("RememberSelectedTrack" ("SelectCW")))
                     ("MoveOn" ("SiteToMoveOnTrackCCW") ("RememberSelectedTrack" ("SelectCCW")))
@@ -90,7 +71,7 @@
                 ("MoveOn" "SiteToMoveOnSelectedTrack")
             )
         )
-        (dice d:2 from:0 num:3)
+        ("StickDice" 3)
         (map "ThrowDiceValue" {(pair 0 5) (pair 1 3) (pair 2 2) (pair 3 10)})
         (hand Each)
     })
@@ -109,9 +90,8 @@
         )
         (phase "Playing"
             (play 
-                (do 
-                    (roll) 
-                    next:(forEach Piece)
+                ("RollMove"
+                    (forEach Piece)
                 )
             )	
             (end 
@@ -129,27 +109,27 @@
 
 (option "Players" <Player> args:{ <num>}
     {
-    (item "2" <2>   "The game has 2 players.")*   
-    (item "3" <3>   "The game has 3 players.")  
-    (item "4" <4>   "The game has 4 players.") 
-    (item "5" <5>   "The game has 5 players.")  
-    (item "6" <6>   "The game has 6 players.")  
-    (item "7" <7>   "The game has 7 players.")  
-    (item "8" <8>   "The game has 8 players.")  
-    (item "9" <9>   "The game has 9 players.")  
-    (item "10" <10>   "The game has 10 players.")  
-    (item "11" <11>   "The game has 11 players.")  
-    (item "12" <12>   "The game has 12 players.")  
-    (item "13" <13>   "The game has 13 players.")  
-    (item "14" <14>   "The game has 14 players.")  
-    (item "15" <15>   "The game has 15 players.")  
-    (item "16" <16>   "The game has 16 players.")   
+    (item "2" <2>  "The game has 2 players.")*  
+    (item "3" <3>  "The game has 3 players.") 
+    (item "4" <4>  "The game has 4 players.") 
+    (item "5" <5>  "The game has 5 players.") 
+    (item "6" <6>  "The game has 6 players.") 
+    (item "7" <7>  "The game has 7 players.") 
+    (item "8" <8>  "The game has 8 players.") 
+    (item "9" <9>  "The game has 9 players.") 
+    (item "10" <10>  "The game has 10 players.") 
+    (item "11" <11>  "The game has 11 players.") 
+    (item "12" <12>  "The game has 12 players.") 
+    (item "13" <13>  "The game has 13 players.") 
+    (item "14" <14>  "The game has 14 players.") 
+    (item "15" <15>  "The game has 15 players.") 
+    (item "16" <16>  "The game has 16 players.")  
 })
 
 (option "Play Rules" <Play> args:{ <capture>}
     {
-    (item "Capture"    <"CaptureEnemyPiece"> "Captures are possible.")*   
-    (item "No Capture" <>   "No Capture.")  
+    (item "Capture"  <("HittingCapture" (value Piece at:(to)))> "Captures are possible.")*  
+    (item "No Capture" <>  "No Capture.") 
 })
 
 //------------------------------------------------------------------------------
@@ -195,7 +175,7 @@
         (useFor "Ruleset/Captureless (Observed)" (id "832"))
         (source "Culin 1898: 763-765; 1907: 191; Murray 1951: 190-192.")
         (id "830")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/reach")
         (credit "Eric Piette")
         (origin  "This game was played in New Mexico, around 1891.")
@@ -209,7 +189,6 @@
         (piece Foreground "Die" state:1 image:"star" fillColour:(colour White) scale:0.2)
         (stackType 0 Ground)
         (piece Scale "Marker" 0.5)
-        
     })
     
 )

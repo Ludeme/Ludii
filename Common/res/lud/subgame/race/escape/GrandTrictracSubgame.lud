@@ -15,10 +15,10 @@
 
 (define "CanMove2PiecesToHucke" 
     (if (= ("Die1") ("Die2"))
-        (<= 2 (count Pieces Mover in:(sites { ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")) })))
+        (<= 2 (count Pieces Mover in:(sites {("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")) })))
         (and
-            (<= 1 (count Pieces Mover in:(sites { ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die1")) })))
-            (<= 1 (count Pieces Mover in:(sites { ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")) })))	
+            (<= 1 (count Pieces Mover in:(sites {("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die1")) })))
+            (<= 1 (count Pieces Mover in:(sites {("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")) })))	
         )
     )
 )
@@ -27,7 +27,7 @@
     (forEach Site (sites Occupied by:Mover)
         (and
             (if 
-                (and  
+                (and 
                     (is Enemy (who at:("NextSiteFrom" (site) "Track" ("Die1"))))
                     (= 1 (size Stack at:("NextSiteFrom" (site) "Track" ("Die1"))))
                 )
@@ -37,7 +37,7 @@
                 )
             )
             (if 
-                (and  
+                (and 
                     (is Enemy (who at:("NextSiteFrom" (site) "Track" ("Die2"))))
                     (= 1 (size Stack at:("NextSiteFrom" (site) "Track" ("Die2"))))
                 )
@@ -97,7 +97,7 @@
         (play 
             (do (if (not "SameTurn") (roll))
                 next:(do (if (not "SameTurn") ("UpdateScore"))
-                    next:(or  
+                    next:(or 
                         (if (>= 0 (var "MovingToHucke")) (forEach Piece top:True))
                         
                         (if (or (< 0 (var "MovingToHucke")) ("CanMove2PiecesToHucke"))
@@ -142,7 +142,7 @@
         (version "1.2.1")
         (classification "race/WishlistDLP")
         (credit "Eric Piette")
-        (origin  "This game was played in France, around 1766.")
+        (origin "This game was played in France, around 1766.")
         }
     )
     

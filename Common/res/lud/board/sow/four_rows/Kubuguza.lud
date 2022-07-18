@@ -1,43 +1,40 @@
 (define "Columns" 8)
-(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns") ) )
-(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2)) ) )
-(define "NextHoleFrom" (trackSite Move from:#1 #2 #3))
+(define "NextHoleFrom" ("NextSiteOnTrack" #3 from:#1 #2))
 
 //------------------------------------------------------------------------------
 
-(game "Kubuguza"  
-    (players 2)  
+(game "Kubuguza" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
             { 
             (track "TrackCCW1" "0,E,N1,W" loop:True P1)
             (track "TrackCCW2" "16,E,N1,W" loop:True P2)
-            (track "TrackCW1"  "7,W,N1,E" loop:True P1)
+            (track "TrackCW1" "7,W,N1,E" loop:True P1)
             (track "TrackCW2" "23,W,N1,E" loop:True P2)
             }
         )
-        (regions "Home" P1 (sites Track "TrackCCW1"))                                     // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))                                     // P2 home
-        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))        // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top) ))          // P2 inner Home
+        (regions "Home" P1 (sites Track "TrackCCW1"))                   // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))                   // P2 home
+        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))    // P1 inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))     // P2 inner Home
         (regions "HolesCW" P1 (sites {15 8 1 6}))
         (regions "HolesCW" P2 (sites {16 23 25 30}))
         (piece "Seed" Shared)
         (hand Each)
-    })  
+    }) 
     (rules 
         
         (start 
-            (set Count 3 to:(union (sites P1 "Inner") (sites P2 "Inner") ) )
+            (set Count 3 to:(union (sites P1 "Inner") (sites P2 "Inner")))
         )
         
         (play 
             (or
                 (move Select
                     (from 
-                        (if 
-                            (is Mover Prev) 
+                        (if ("SameTurn") 
                             (sites {(var "Replay")})
                             (sites Mover "Home") 
                         ) 
@@ -47,7 +44,7 @@
                         (sow
                             "TrackCCW"
                             owner:(mover)
-                            apply:(if  (< 1 (count at:(to)))
+                            apply:(if (< 1 (count at:(to)))
                                 (and
                                     (if (and {
                                             (> (count Turns) 2)
@@ -78,18 +75,17 @@
                 )
                 (move Select
                     (from 
-                        (if 
-                            (is Mover Prev) 
+                        (if ("SameTurn") 
                             (sites {(var "Replay")})
                             (sites Mover "HolesCW") 
                         ) 
                         if:(and {
                             (> (count at:(from)) 1)
                             (is In (from) (sites Mover "HolesCW"))
-                            (if (is In ("NextHoleFrom" (from) "TrackCW" steps:(count at:(from))) (sites Mover "Inner"))
+                            (if (is In ("NextHoleFrom" (from) "TrackCW" (count at:(from))) (sites Mover "Inner"))
                                 (and
-                                    (is Occupied ("OppositeOuterPit" ("NextHoleFrom" (from) "TrackCW" steps:(count at:(from)))))
-                                    (is Occupied ("OppositePit" ("NextHoleFrom" (from) "TrackCW" steps:(count at:(from)))))
+                                    (is Occupied ("OppositeOuterPit" ("NextHoleFrom" (from) "TrackCW" (count at:(from)))))
+                                    (is Occupied ("OppositePit" ("NextHoleFrom" (from) "TrackCW" (count at:(from)))))
                                 )
                                 False
                             )
@@ -99,7 +95,7 @@
                         (sow
                             "TrackCW"
                             owner:(mover)
-                            apply:(if  (< 1 (count at:(to)))
+                            apply:(if (< 1 (count at:(to)))
                                 (and
                                     (if (and {
                                             (> (count Turns) 2)
@@ -131,10 +127,7 @@
             )
         )
         
-        (end {
-            (if (no Moves P1) (result P2 Win))
-            (if (no Moves P2) (result P1 Win))
-        })
+        (end ("ForEachPlayerNoMovesLoss"))
     )
 )
 
@@ -148,7 +141,7 @@
         (rules "4x8 board. Four pieces in each of the holes in the inner two rows. Sowing occurs in an anti-clockwise direction. Single counters cannot be sown. When the final counter of a sowing falls into an occupied hole, these counters are picked up and the sowing continues. If this hole is in the player's inner row, the counters in the opponent's opposite holes in both rows are captured. Both the inner and outer opposite holes must contain counters for a capture to occur. Play continues with the captured counters, and the player sows these beginning with the next hole after the last one on the player's side from which they picked up holes. Captures cannot be made on the first move. Clockwise sowing can begin from the following holes only if it will allow a capture to occur: the rightmost and leftmost holes of the outer row, the second from the right and second from the left holes in the inner row. Direction can be changed in the middle of a turn if the final counter lands in one of these holes and a clockwise move will result in a capture. When no capture is available, the player must resume in an anti-clockwise direction. When the final counter falls into an empty hole, the turn ends. ")
         (source "Merriam 1953.")
         (id "276")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         (origin  "This game was played in Rwanda, around 1953.")

@@ -1,4 +1,4 @@
-(define "NextHole" (trackSite Move from:#1 #2 steps:#3))
+(define "NextHole" ("NextSiteOnTrack" #3 from:#1 #2))
 (define "NumBigPiecesCaptured" (count Cell in:(sites {(handSite P1 1) (handSite P2 1)})))
 
 (define "LeftMostEmpty" 
@@ -9,14 +9,12 @@
     )
 )
 
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
-
-(define "NoPieceOnOwnedHoles"  (no Pieces All in:(sites #1)))
+(define "NoPieceOnOwnedHoles" (all Sites (sites #1) if:(= 0 (count at:(site)))))
 
 //------------------------------------------------------------------------------
 
-(game "Laomuzhu"  
-    (players 2)  
+(game "Laomuzhu" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 5 store:None largeStack:True
@@ -29,10 +27,10 @@
         (piece "Ball" P1)
         (piece "Ball" P2)
         (hand Each size:2)
-        (regions P1 (sites Bottom))      // P1 home
-        (regions P2 (sites Top))         // P2 home
-        (map {(pair P1 0) (pair P2 9)})  // left most holes
-    })  
+        (regions P1 (sites Bottom))   // P1 home
+        (regions P2 (sites Top))     // P2 home
+        (map {(pair P1 0) (pair P2 9)}) // left most holes
+    }) 
     (rules 
         
         (start {
@@ -326,14 +324,14 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Laomuzhu is a two-row mancala-style board game from the Yunnan region of China. It is similar to other mancala games from Asia, but it has extra capturing rules determined by the movement of specialized stones.")
         (rules "2x5 board. Five counters per hole. Each player has a larger stone, which they place in any hole on their side of the board. Sowing proceeds in either direction, the first player chooses which and all sowing for the rest of the game proceeds in that direction. Players may sow from any hole on the board.  If the last counter falls into a hole with counters, the counters in the next hole are picked up and sowing continues, and if this hole is empty, the counters in the hole following the empty hole are captured. If there is an unbroken sequence of alternating empty and occupied holes, the counters in the occupied holes are captured until there are two empty or two occupied holes. If the final counter falls into an empty hole the turn ends. Also, if a large stone is dropped into an occupied hole during sowing, the contents of that hole are captured by the owner of the large stone, even if it is not the current player. If a player captures the other player's large stone, it is kept by the capturing player in subsequent rounds until it is captured. The game ends when one player's holes are empty, the opponent claiming the remainder of the counters. The players then attempt to fill all of the holes on their side of the board with either five counters or the large stone. Both large stones must be used to fill holes. Any holes that cannot be filled with five counters or a large stone are left empty, but may be sown into and played from as normal. Play continues in this fashion until one player cannot fill any holes. ")
         (source "Eagle 1995: 56.")
         (id "207")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         (origin  "This game was played in Yunnan, around 1995.")

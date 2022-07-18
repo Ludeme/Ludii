@@ -1,23 +1,19 @@
 (define "Columns" <Row:size>)
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+(define "NoPiece" (all Sites (sites Player "Home") if:(= 0 (count at:(site)))))
 
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
-
-(define "NoPiece" (= (count in:(sites Player "Home")) 0))
-
-(define "PlayFromLastHole" (sites {(var)}))
+(define "LastHoleSowed" (sites {(var)}))
 
 (define "AHoleHasMoreThanOneCounter" 
-    (!= 0 (count Sites in:(forEach (sites Mover) if:(< 1 (count at:(site))))))
+    (not (all Sites (forEach (sites Mover) if:(< 1 (count at:(site)))) if:(= 0 (count at:(site)))))
 )
 
-(define "NextHoleFrom" (trackSite Move from:#1 #2 steps:1))
+(define "NextHoleFrom" ("NextSiteOnTrack" 1 from:#1 #2))
 
 //------------------------------------------------------------------------------
 
-(game "Misoro Tsoro"  
-    (players 2)  
+(game "Misoro Tsoro" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
@@ -26,15 +22,14 @@
             (track "Track2" <Row:track2> loop:True P2)
             }
         )
-        (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
-        (regions "Home" P2 (sites Track "Track2"))                              // P2 home
+        (regions "Home" P1 (sites Track "Track1"))               // P1 Home
+        (regions "Home" P2 (sites Track "Track2"))               // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top) ))   // P2 inner Home
-        (regions "Outer" P1  (sites Bottom))                                    // P1 outer Home
-        (regions "Outer" P2 (sites Top))                                        // P2 outer Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))  // P2 inner Home
+        (regions "Outer" P1 (sites Bottom))                  // P1 outer Home
+        (regions "Outer" P2 (sites Top))                    // P2 outer Home
         (piece "Seed" Shared)
-        }
-    )  
+    }) 
     (rules 
         
         <Start:rules>
@@ -44,15 +39,13 @@
         (phase "Playing"
             (play 
                 (or
-                    (if (and (!= 0 (state at:(var))) (is Mover Prev))
+                    (if (and (!= 0 (state at:(var))) ("SameTurn"))
                         (move Pass)
                     )
-                    (move
-                        Select
+                    (move Select
                         (from 
-                            (if 
-                                (is Mover Prev)
-                                "PlayFromLastHole" 
+                            (if ("SameTurn")
+                                "LastHoleSowed" 
                                 (sites Mover "Home") 
                             ) 
                             if:(if "AHoleHasMoreThanOneCounter"
@@ -67,12 +60,12 @@
                                     owner:(mover)
                                     apply:(if (= (count at:(to)) 1)
                                         (if (is In (to) (sites Mover "Inner"))
-                                            (if (> (count at:"OppositePit") 0) 
+                                            (if (> (count at:("OppositePit" (to))) 0) 
                                                 (and
-                                                    (remove ("OppositePit")) 
+                                                    (remove ("OppositePit" (to))) 
                                                     (if 
-                                                        (> (count at:"OppositeOuterPit") 0) 
-                                                        (remove "OppositeOuterPit") 
+                                                        (> (count at:("OppositeOuterPit" (to))) 0) 
+                                                        (remove ("OppositeOuterPit" (to))) 
                                                     ) 
                                                 ) 
                                             ) 
@@ -107,9 +100,9 @@
 
 (option "Start Rules" <Start> args:{<rules> <misoroPhase>}
     {
-    (item "Misoro Choice"   
+    (item "Misoro Choice"  
         <
-        (start (set Count 2 to:(union (sites Top) (sites Bottom ))))
+        (start (set Count 2 to:(union (sites Top) (sites Bottom))))
         >
         <
         (phase "Misoro" 
@@ -122,21 +115,21 @@
             )
             (nextPhase (= 4 (count Turns)) "Playing")
         )
-        >  
+        > 
         "Players choose the misoro holes."
-    )*  
-    (item "Fixed Misoro"   
+    )* 
+    (item "Fixed Misoro"  
         <
         (start {
             (place "Seed" (intersection (sites Bottom) (sites Left)) counts:{2} state:1)
             (place "Seed" (intersection (sites Top) (sites Right)) counts:{2} state:2)
             (place "Seed" (intersection (sites Top) (sites Left)) counts:{3} state:2)
             (place "Seed" (intersection (sites Bottom) (sites Right)) counts:{3} state:1)
-            (set Count 2 to:(difference (union (sites Top) (sites Bottom )) (union (sites Left) (sites Right ))))
+            (set Count 2 to:(difference (union (sites Top) (sites Bottom)) (union (sites Left) (sites Right))))
         })
         >
         <
-        >  
+        > 
         "The misoro holes are fixed."
     )*
     }
@@ -144,22 +137,22 @@
 
 (option "Board Size" <Row> args:{ <size> <track2>}
     {
-    (item "6"   <6>  <"12,E,N1,W">  "6 Holes per row.")   
-    (item "7"   <7>  <"14,E,N1,W">  "7 Holes per row.")   
-    (item "8"   <8>  <"16,E,N1,W">  "8 Holes per row.")**   
-    (item "9"   <9>  <"18,E,N1,W">  "9 Holes per row.")   
-    (item "10"  <10> <"20,E,N1,W"> "10 Holes per row.")   
-    (item "11"  <11> <"22,E,N1,W"> "11 Holes per row.")   
-    (item "12"  <12> <"24,E,N1,W"> "12 Holes per row.")*   
-    (item "13"  <13> <"26,E,N1,W"> "13 Holes per row.")   
-    (item "14"  <14> <"28,E,N1,W"> "14 Holes per row.")   
-    (item "15"  <15> <"30,E,N1,W"> "15 Holes per row.")*   
-    (item "16"  <16> <"32,E,N1,W"> "16 Holes per row.")  
-    (item "17"  <17> <"34,E,N1,W"> "17 Holes per row.")  
-    (item "18"  <18> <"36,E,N1,W"> "18 Holes per row.")*  
-    (item "19"  <19> <"38,E,N1,W"> "19 Holes per row.")  
-    (item "20"  <20> <"40,E,N1,W"> "20 Holes per row.")  
-    (item "21"  <21> <"42,E,N1,W"> "21 Holes per row.")
+    (item "6"  <6> <"12,E,N1,W"> "6 Holes per row.")  
+    (item "7"  <7> <"14,E,N1,W"> "7 Holes per row.")  
+    (item "8"  <8> <"16,E,N1,W"> "8 Holes per row.")**  
+    (item "9"  <9> <"18,E,N1,W"> "9 Holes per row.")  
+    (item "10" <10> <"20,E,N1,W"> "10 Holes per row.")  
+    (item "11" <11> <"22,E,N1,W"> "11 Holes per row.")  
+    (item "12" <12> <"24,E,N1,W"> "12 Holes per row.")*  
+    (item "13" <13> <"26,E,N1,W"> "13 Holes per row.")  
+    (item "14" <14> <"28,E,N1,W"> "14 Holes per row.")  
+    (item "15" <15> <"30,E,N1,W"> "15 Holes per row.")*  
+    (item "16" <16> <"32,E,N1,W"> "16 Holes per row.") 
+    (item "17" <17> <"34,E,N1,W"> "17 Holes per row.") 
+    (item "18" <18> <"36,E,N1,W"> "18 Holes per row.")* 
+    (item "19" <19> <"38,E,N1,W"> "19 Holes per row.") 
+    (item "20" <20> <"40,E,N1,W"> "20 Holes per row.") 
+    (item "21" <21> <"42,E,N1,W"> "21 Holes per row.")
 })
 
 //------------------------------------------------------------------------------
@@ -200,7 +193,7 @@
         (useFor "Ruleset/Extra Counters (Observed)" (id "1292"))
         (source "Matthews 1964: 65-66.")
         (id "1290")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         (origin  "This game was played in Zimbabwe, around 1964.")

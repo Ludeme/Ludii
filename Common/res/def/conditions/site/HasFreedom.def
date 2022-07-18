@@ -1,0 +1,5 @@
+// Checks if a group of pieces has some liberties around it. The specified directions (by default Adjacent) are the directions between the elements of the group.
+// #1 = = Directions of the pieces in the group.
+// @example ("HasFreedom" Orthogonal)
+
+(define "HasFreedom" (> (count Liberties #1) 0))

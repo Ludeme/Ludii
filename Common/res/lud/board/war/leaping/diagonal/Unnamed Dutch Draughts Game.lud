@@ -4,7 +4,7 @@
         (from #1) 
         Diagonal 
         (between 
-            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
+            if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
             (apply (remove (between) at:EndOfTurn))
         ) 
         (to if:(is Empty (to))) 
@@ -19,7 +19,7 @@
         (between 
             #2
             #3
-            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
+            if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
             (apply (remove (between) #4))
         )
         (to if:(is Empty (to)))
@@ -33,7 +33,7 @@
                             #3
                             if:(and 
                                 (not (is In (between) (sites ToClear))) 
-                                (is Enemy (who at:(between)))
+                                ("IsEnemyAt" (between))
                             )
                             (apply (remove (between) #4))
                         )
@@ -53,12 +53,12 @@
 
 (define "IsQueen" (= (what at:(last To)) (id "DoubleCounter" Mover)))
 
-(define "JumpToPromotionZone" (is In (last To) (sites Next)) )
+(define "JumpToPromotionZone" (is In (last To) (sites Next)))
 
 //------------------------------------------------------------------------------
 
 (game "Unnamed Dutch Draughts Game" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         (board (square 10)) 
         (piece "Counter" P1 N)
@@ -67,14 +67,14 @@
         (piece "Counterstar" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-    })  
+    }) 
     
     (rules 
         (start { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:3) (union (sites Bottom) (sites Phase 1))  ) )
-            (place "Counter2" (difference (expand (sites Top) steps:3) (union (sites Top) (sites Phase 1) )) )
-            (place "DoubleCounter1" (difference (sites Bottom) (sites Phase 1) ))
-            (place "DoubleCounter2" (difference (sites Top) (sites Phase 1) ))
+            (place "Counter1" (difference (expand (sites Bottom) steps:3) (union (sites Bottom) (sites Phase 1)) ))
+            (place "Counter2" (difference (expand (sites Top) steps:3) (union (sites Top) (sites Phase 1))))
+            (place "DoubleCounter1" (difference (sites Bottom) (sites Phase 1)))
+            (place "DoubleCounter2" (difference (sites Top) (sites Phase 1)))
         })
         
         (play 
@@ -93,8 +93,8 @@
                         )
                     )
                     (if ("IsQueen")
-                        (max Moves ("HopDoubleCounter" (from (last To)) before:(count Rows) after:(count Rows) at:EndOfTurn) )
-                        (max Moves ("HopSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn) )
+                        (max Moves ("HopDoubleCounter" (from (last To)) before:(count Rows) after:(count Rows) at:EndOfTurn))
+                        (max Moves ("HopSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn))
                     )
                 )
                 (priority {
@@ -143,7 +143,7 @@
             )
         ) 
         
-        (end (if (no Moves Next) (result Mover Win))) 
+        (end ("BlockWin"))
     )
 )
 
@@ -157,7 +157,7 @@
         (rules "10x10 board. Twenty pieces per player, which begin on the four rows closest to the player. The row of pieces on the edge of the board closest to each player begins with the pieces already as Queens. Pieces move diagonally one space forward, or can jump an adjacent piece belonging to the opponent to capture it. Captures are mandatory, and the maximum number of captures possible must be taken. When pieces reach the opposite edge of the board from where they started, they are promoted to Queen. Queens move any number of spaces diagonally, and jump over any number of opponents' pieces over any distance. When a Queen reaches that edge of the board a second time (or, for the first time if one of those which began the game as a Queen), they are further promoted, gaining the power to move and take orthogonally over any distance. The player who captures all of the opponent's pieces wins.  ")
         (source "Twiss 1805: 174-175.")
         (id "890")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/leaping/diagonal")
         (credit "Eric Piette")
         (origin  "This game was played in Holland, around 1805.")

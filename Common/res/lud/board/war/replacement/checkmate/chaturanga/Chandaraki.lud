@@ -1,5 +1,5 @@
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
 )
 
 (define "HasNeverMoved"
@@ -21,7 +21,7 @@
 
 (define "CaptureToPiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
             )
@@ -43,7 +43,7 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
@@ -51,8 +51,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Chandaraki"  
-    (players {(player N) (player S)})  
+(game "Chandaraki" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -72,7 +72,7 @@
                 Slide 
                 Orthogonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )
@@ -81,7 +81,7 @@
             (move
                 Step 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )
@@ -91,7 +91,7 @@
                 Slide 
                 Diagonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )
@@ -101,7 +101,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )
@@ -110,15 +110,15 @@
             (move
                 Slide 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             ) 
         )
         
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
-    })  
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
+    }) 
     (rules 
         (start { 
             (place "Pawn1" (sites Row 1))
@@ -158,7 +158,7 @@
         ")
         (source "van der Linde 1874: 134-135.")
         (id "1411")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
         (origin  "This game was played in Tibet, around 1775.")

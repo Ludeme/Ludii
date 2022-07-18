@@ -1,5 +1,5 @@
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
 )
 
 (define "HasNeverMoved"
@@ -21,7 +21,7 @@
 
 (define "CaptureToPiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
             )
@@ -33,7 +33,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )   
+    )  
 )
 
 (define "DecideToCastle"
@@ -117,7 +117,7 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
@@ -125,8 +125,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Shakhmaty"  
-    (players {(player N) (player S)})  
+(game "Shakhmaty" 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         
@@ -152,7 +152,7 @@
                 Slide 
                 Orthogonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
                 "RememberPieceHasMoved"
@@ -162,7 +162,7 @@
             (move
                 Step 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
                 "RememberPieceHasMoved"
@@ -173,7 +173,7 @@
                 Slide 
                 Diagonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )
@@ -183,7 +183,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )
@@ -192,7 +192,7 @@
             (move
                 Slide 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             ) 
@@ -201,11 +201,11 @@
         (map "King" {(pair 1 "E1") (pair 2 "E8")})
         (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})
         (map "RookRight" {(pair 1 "H1") (pair 2 "H8")})
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
-        (regions "Half" P1 (expand (sites Bottom) steps:3) )
-        (regions "Half" P2 (expand (sites Top) steps:3) )
-    })  
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
+        (regions "Half" P1 (expand (sites Bottom) steps:3))
+        (regions "Half" P2 (expand (sites Top) steps:3))
+    }) 
     (rules 
         (start { 
             (place "Pawn1" (sites Row 1))
@@ -281,7 +281,7 @@
         ")
         (source "Murray 1913: 385.")
         (id "1426")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chess")
         (credit "Eric Piette")
         (origin  "This game was played in Russia, from around 1821 to 1854.")

@@ -2,24 +2,18 @@
 
 (define "Columns" 6)
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
-
-(define "NextHoleFrom" (trackSite Move from:#1 #2))
-
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+(define "NextHoleFrom" ("NextSiteOnTrack" #2 from:#1))
 
 (define "OneRowIsEmpty"
     (or 
-        (no Pieces All in:(sites P1))
-        (no Pieces All in:(sites P2))
+        (all Sites (sites P1) if:(= 0 (count at:(site))))
+        (all Sites (sites P2) if:(= 0 (count at:(site))))
     )
 )
 
 (define "NoPiecesInP1Side" 
-    (no Pieces All in:(sites P1))
+    (all Sites (sites P1) if:(= 0 (count at:(site))))
 )
-
-(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
 (define "LeftMostEmpty" 
     (trackSite FirstSite 
@@ -30,8 +24,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Gabata (Ansaba)"  
-    (players 2)  
+(game "Gabata (Ansaba)" 
+    (players 2) 
     
     (equipment { 
         (mancalaBoard 2 "Columns" store:None
@@ -43,22 +37,20 @@
         (hand Each)
         (map "LeftMost" {(pair P1 0) (pair P2 11)})
         (map "CorrespondingHoles" {(pair 0 11) (pair 1 10) (pair 2 9) (pair 3 8) (pair 4 7) (pair 5 6) (pair 6 5) (pair 7 4) (pair 8 3) (pair 9 2) (pair 10 1) (pair 11 0)})
-        }
-    )  
+    }) 
     (rules 
         
-        (start (set Count 3 to:(sites Track) ) )
+        (start (set Count 3 to:(sites Track)))
         
         phases:{
         (phase "Sowing"
-            (play         
+            (play     
                 (or {
-                    (move 
-                        Select 
+                    (move Select 
                         (from 
                             (if 
-                                (is Mover Prev) 
-                                "PlayFromLastHole" 
+                                ("SameTurn") 
+                                "LastHoleSowed" 
                                 (sites Mover) 
                             ) 
                             if:(> (count at:(from)) 0)
@@ -68,12 +60,12 @@
                                 apply:(if (> (count at:(to)) 1)
                                     (moveAgain)
                                     (if (is In (to) (sites Mover))
-                                        (if (!= 0 (count at:("OppositePit")))
+                                        (if (!= 0 (count at:("OppositePit" (to))))
                                             (and
                                                 (fromTo
-                                                    (from ("OppositePit"))
+                                                    (from ("OppositePit" (to)))
                                                     (to (handSite Mover))
-                                                    count:(count at:("OppositePit"))
+                                                    count:(count at:("OppositePit" (to)))
                                                 )
                                                 (moveAgain)
                                             )
@@ -176,21 +168,20 @@
             )
             (nextPhase (or (is Empty (handSite P1)) (is Empty (handSite P2))) "Sowing")
         )
-        
         }
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Gabata is a term used for many mancala-style games in the Horn of Africa. This two-row version is played in the Ansaba region of Eritrea, and employs the simultaneous beginning phase that is seen among several games in the region.")
         (rules "2x6 board. Three counters in each hole. The players begin the game simultaneously sowing first from their rightmost hole, racing to be the first one to drop the last counter of a sowing into an empty hole. This player then begins the next phase where they alternate play. Sowing occurs in an anti-clockwise direction. When the final counter falls into an occupied hole, the contents of this hole are picked up and sowing continues. When the final counter lands into an empty hole in the row belonging to the player, the counters in the opposite hole belonging to the opponent are captured, and the counter that triggered the capture is moved to the following hole. This could trigger the further capture of more of the opponent's counters if the hole in which the counter is placed was empty and the opponent's opposite hole contains counters. If the hole is occupied, sowing continues. If the hole is empty and the opposite hole is unoccupied or it is one of the opponent's holes, sowing ends. When one player can no longer play because the holes on their side are empty, the opponent captures the remaining counters on the board. A new round begins. The losing player places three counters in each hole, beginning on the rightmost hole. If the player has remaining counters but cannot fill their holes with three, they must distribute the remainder to fill as many of the remaining holes as possible with at least one counter. The winning player from the previous round then matches this starting configuration, keeping any surplus for use in future rounds. Play continues until one player has one or zero counters, the opponent being the winner.")
         (source "Pankhurst 1971: 169.")
         (id "342")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         (origin  "This game was played in Eritrea, around 1971.")

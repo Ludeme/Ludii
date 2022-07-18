@@ -13,7 +13,7 @@
 
 (define "CaptureToPiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove 
                 (to)
             )
@@ -26,7 +26,7 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to)))
+            if:("IsEnemyAt" (to))
             (apply 
                 (remove 
                     (to)
@@ -37,7 +37,7 @@
 )
 
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
 )
 
 (define "DoubleStep"
@@ -52,7 +52,7 @@
 //------------------------------------------------------------------------------
 
 (game "Lombard Chess"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         (piece "King" Each
@@ -60,7 +60,7 @@
                 (move
                     Step 
                     (to 
-                        if:(not (is Friend (who at:(to)))) 
+                        if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
                     )
                 )
@@ -70,7 +70,7 @@
                             Hop 
                             (between 
                                 (range 1 2)
-                                if:(not (is Enemy (who at:(between))))
+                                if:(not ("IsEnemyAt" (between)))
                             ) 
                             (to 
                                 if:(is Empty (to))
@@ -93,7 +93,7 @@
                 Slide 
                 Orthogonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )		
@@ -104,7 +104,7 @@
                 Diagonal 
                 (between if:True) 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
                 )
             )		
@@ -114,7 +114,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
                 ) 
             )			
@@ -125,7 +125,7 @@
                     Step 
                     Diagonal
                     (to 
-                        if:(not (is Friend (who at:(to)))) 
+                        if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece" 
                     )
                     "RememberPieceHasMoved"
@@ -164,7 +164,7 @@
                 )
             )		
         )
-        (regions "Promotion" P1 (sites Top) )
+        (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     })
     (rules 
@@ -209,7 +209,7 @@
         ")
         (source "Murray 1913: 461-462.")
         (id "1330")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chess")
         (credit "Eric Piette")
         (origin  "This game was played in Italy, from around 1250 to 1322.")

@@ -8,7 +8,7 @@
 // Source: Chess.lud - CaptureToPieceAndResetCounter
 (define "CaptureToPieceAndResetCounter"
     (apply
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove (to)
                 (then (set Counter))
             )
@@ -27,7 +27,7 @@
 
 (define "IsToEmptyOrEnemy"
     (or "IsToEmpty"
-        (is Enemy (who at:(to)))
+        ("IsEnemyAt" (to))
     )
 )
 
@@ -49,7 +49,7 @@
     (move
         Slide
         #1
-        (to if:(is Enemy (who at:(to)))
+        (to if:("IsEnemyAt" (to))
             "CaptureToPieceAndResetCounter"
         )
         #2
@@ -111,7 +111,7 @@
     (move
         Step
         #1
-        (to if:(is Enemy (who at:(to)))
+        (to if:("IsEnemyAt" (to))
             (apply (remove (to)))
         )
     )
@@ -119,8 +119,8 @@
 
 //----------------------------------------
 // Pawn Movement: En passant
-//   - Save skipped-over spaces in Pending
-//   - Save location of last-moved Pawn in Var.
+//  - Save skipped-over spaces in Pending
+//  - Save location of last-moved Pawn in Var.
 // Note: Counter is reset in (piece "Pawn" ...).
 //----------------------------------------
 
@@ -162,9 +162,9 @@
         {
         (board (rotate 90 (hex 6)))
         
-        (piece "King"   Each ("KingCaptureStep"  All ~))
-        (piece "Queen"  Each ("SlideCaptureMove" All ~))
-        (piece "Rook"   Each ("SlideCaptureMove" Orthogonal ~))
+        (piece "King"  Each ("KingCaptureStep" All ~))
+        (piece "Queen" Each ("SlideCaptureMove" All ~))
+        (piece "Rook"  Each ("SlideCaptureMove" Orthogonal ~))
         (piece "Bishop" Each ("SlideCaptureMove" Diagonal ~))
         (piece "Knight" Each (move Leap
                 "KnightWalk"
@@ -195,8 +195,8 @@
         (regions "PromotionZone" P1 (union (sites Side NW) (sites Side NE)))
         (regions "PromotionZone" P2 (union (sites Side SW) (sites Side SE)))
         
-        (regions "Region-Dark"   (sites Phase 0))
-        (regions "Region-Light"  (sites Phase 2))
+        (regions "Region-Dark"  (sites Phase 0))
+        (regions "Region-Light" (sites Phase 2))
         (regions "Region-Medium" (sites Phase 1))
         }
     )
@@ -297,7 +297,7 @@
         Variations: Shift the innermost 3 or 5 Pawns toward the edge of the board by one space, as proposed in A Player's Guide to Table Games, by John Jackson, Stackpole Books, 1975.")
         (id "855")
         (source "For a comparison of popular versions of hexagonal chess, see <a href=\"https://en.wikipedia.org/wiki/Hexagonal_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>. For more details on other chess variants, see The Classified Encyclopedia of Chess Variants, by D. B. Pritchard (2nd edition, completed and edited by John Beasley, 2007).")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chess")
         (author "Władysław Gliński")
         (credit "Jay Coskey, with some small functions drawn from Chess.lud, by Eric Piette")
@@ -314,8 +314,8 @@
         (piece Scale "Rook" 0.8)
         (board Style Chess)
         
-        (region Colour "Region-Dark"   (colour "#b5651d"))
-        (region Colour "Region-Light"  (colour "#fff8dc"))
+        (region Colour "Region-Dark"  (colour "#b5651d"))
+        (region Colour "Region-Light" (colour "#fff8dc"))
         (region Colour "Region-Medium" (colour "#daae7c"))
     })
     

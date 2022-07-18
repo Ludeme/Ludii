@@ -1,12 +1,10 @@
 package app.display.dialogs.visual_editor.view.designPalettes;
 
-import app.display.dialogs.visual_editor.handler.Handler;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import java.io.File;
-import java.net.URISyntaxException;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -33,12 +31,6 @@ public class DesignPalette
     public static final Dimension DEFAULT_GRAPHPANEL_SIZE = new Dimension(10000,10000);
 
     public static float SCALAR = 1f;
-
-    public static final float MAX_SCALAR = 2.5f;
-    public static final float MIN_SCALAR = 0.3f;
-
-
-
 
 
     // SIZES ================================================================
@@ -151,18 +143,18 @@ public class DesignPalette
         List<String> names = new ArrayList<>();
         try
         {
-            File dir = new File(DesignPalette.class.getResource(PALETTE_FILE_PATH).toURI());
-            for (File file : dir.listFiles())
+            BufferedReader br = new BufferedReader(new InputStreamReader(DesignPalette.class.getResourceAsStream(PALETTE_FILE_PATH)));
+            br.lines().forEach(line ->
             {
-                if(file.getName().endsWith(".json"))
+                if(line.endsWith(".json"))
                 {
-                    names.add(file.getName().replace(".json", ""));
+                    names.add(line.replace(".json", ""));
                 }
-            }
+            });
         }
-        catch (URISyntaxException e)
+        catch(Exception e)
         {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return names;
     }
