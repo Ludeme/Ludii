@@ -23,7 +23,7 @@ public interface iGraph
      *
      * @return
      */
-    HashMap<Integer, iGNode> getNodeList(); //TODO: do we need this?
+    HashMap<Integer, iGNode> getNodeList();
 
     /**
      * get node by id

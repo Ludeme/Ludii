@@ -106,7 +106,6 @@ public class NodePopupMenu extends JPopupMenu
         collapse.addActionListener(e -> Handler.collapseNode(graphPanel.graph(), nodeComponent.node(), true));
 
         delete.addActionListener(e -> {
-            // TODO: maybe a handler for that?
             if(nodeComponent.selected() && graphPanel.selectedLnc().size() > 1)
             {
                 List<LudemeNode> nodes = new ArrayList<>();

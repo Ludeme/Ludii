@@ -38,25 +38,9 @@ public class VisualEditorFrame extends JFrame
             @Override
             public void windowClosing(WindowEvent e)
             {
+                // [UNCOMMENT FILIP]
                 //DocHandler.getInstance().close();
                 //StartVisualEditor.controller().close();
-
-                // TODO: For Filip's testing
-                /*
-                String header = "latency_nano,selected_index";
-                List<Long> latencies = editor_panel.latencies();
-                List<Integer> selectedCompletion = editor_panel.selectedCompletion();
-                List<String> lines = new ArrayList<>();
-
-                for(int i = 0; i < latencies.size() && i < selectedCompletion.size(); i++) {
-                    lines.add(latencies.get(i)+","+selectedCompletion.get(i));
-                }
-
-                String path = "src/app/display/dialogs/visual_editor/resources/recs/validation/user_tests/";
-                String fileName = "test_"+System.currentTimeMillis()+".csv";
-
-                CSVUtils.writeCSV(path+fileName,header,lines);
-                */
                 super.windowClosing(e);
             }
         });

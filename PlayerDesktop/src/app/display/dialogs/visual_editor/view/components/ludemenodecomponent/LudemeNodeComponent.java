@@ -33,7 +33,7 @@ import java.util.List;
 public class LudemeNodeComponent extends JPanel
 {
     /** X, Y coordinates of the node */
-    protected int x, y; // TODO: figure out this nonsense
+    protected int x, y;
     /** Position of the node */
     private final ImmutablePoint position = new ImmutablePoint(x, y);
     /** The Ludeme Node LN this component represents */
@@ -50,7 +50,7 @@ public class LudemeNodeComponent extends JPanel
     /** Sub-Components of the node */
     private final LHeader header;
     private final LInputArea inputArea;
-    /** Check if ctrl is pressed */ //TODO: change value of ctlrPressed when ctrl is pressed or released
+    /** Check if ctrl is pressed */
     public static boolean cltrPressed = false;
 
     /**
@@ -356,7 +356,6 @@ public class LudemeNodeComponent extends JPanel
      * Mouse Listener for the node component
      * - When the node is right-clicked, open a popup menu with options
      * - When the node is double-clicked, select it and it's subtrees
-     *          TODO: When double-clicking it multiple times -> Weird behaviour
      * - When currently connecting and this node is left-clicked, try to connect to this node
      */
     final MouseListener mouseListener = new MouseAdapter()

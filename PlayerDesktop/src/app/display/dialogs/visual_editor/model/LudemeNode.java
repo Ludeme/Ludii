@@ -865,7 +865,6 @@ public class LudemeNode implements iGNode
         }
         if(numberOfMandatoryLudemeInputs() > 1)
         {
-            System.out.println(numberOfMandatoryLudemeInputs());
             for(int i = 0 ; i < depth; i++)
             {
                 sb.append("\t");

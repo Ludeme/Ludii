@@ -605,7 +605,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
         List<Symbol> possibleSymbols = connectionHandler().selectedComponent().possibleSymbolInputs();
         String gameDescription = connectionHandler().selectedComponent().inputField().inputArea().LNC().node().toLudCodeCompletion(connectionHandler().selectedComponent().inputField().nodeArguments());
         List<Symbol> typeMatched = possibleSymbols;
-        // TODO: Filip , List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription, StartVisualEditor.controller(),possibleSymbols);
+        //[UNCOMMENT FILIP] List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription, StartVisualEditor.controller(),possibleSymbols);
         long finish = System.nanoTime();
         long latency = finish - start;
         latencies.add(latency);

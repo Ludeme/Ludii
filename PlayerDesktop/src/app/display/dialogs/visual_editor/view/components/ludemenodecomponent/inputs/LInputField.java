@@ -1063,7 +1063,7 @@ public class LInputField extends JComponent
             {
                 Object[] in = new Object[1];
                 in[0] = getUserInput();
-                Handler.updateInput(LIA.LNC().graphPanel().graph(), LIA.LNC().node(), nodeArgument(0), in); // TODO: Verify this works
+                Handler.updateInput(LIA.LNC().graphPanel().graph(), LIA.LNC().node(), nodeArgument(0), in);
             }
             else
             {

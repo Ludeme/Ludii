@@ -186,13 +186,6 @@ public class LConnectionComponent extends JComponent
         return inputField().possibleSymbolInputs();
     }
 
-    @Override
-    public void paintComponent(Graphics g)
-    {
-        super.paintComponent(g);
-        // TODO: need that?
-    }
-
     /**
      *
      * @return whether the input field is optional
