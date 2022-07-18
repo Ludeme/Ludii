@@ -21,7 +21,7 @@ public class LayoutUserGuideFrame extends JFrame
 	 * 
 	 */
 	private static final long serialVersionUID = 8439659036667946213L;
-	List<UserGuideContentPanel> panels = new ArrayList<>();
+	final List<UserGuideContentPanel> panels = new ArrayList<>();
     UserGuideContentPanel currentPanel;
     JScrollPane scrollPane;
     int currentIndex;

@@ -63,7 +63,8 @@ public class DFBoxDrawing
      * @param nodeId root node of tree/sub-tree to arrange
      * @param freeX initial x position
      */
-    private void initPlacement(int nodeId, int freeX)
+    @SuppressWarnings("boxing")
+	private void initPlacement(int nodeId, int freeX)
     {
         if (graph.getNode(nodeId).children() == null ||
                 graph.getNode(nodeId).children().size() == 0 ||
@@ -156,7 +157,8 @@ public class DFBoxDrawing
      * @param graph1 graph in operation
      * @return hashmap where keys correspond to node ids and value to their minimum distance from upper node
      */
-    private HashMap<Integer, Integer> findUpwardVisibilityGraph(List<List<Integer>> paths, iGraph graph1)
+    @SuppressWarnings("boxing")
+	private HashMap<Integer, Integer> findUpwardVisibilityGraph(List<List<Integer>> paths, iGraph graph1)
     {
         gupDistances.clear();
         // Initialize
@@ -235,7 +237,8 @@ public class DFBoxDrawing
      * @param upper upper node
      * @param lower lower node
      */
-    private void addMinDistToGup(HashMap<Integer, Integer> gup, iGNode upper, iGNode lower)
+    @SuppressWarnings("boxing")
+	private void addMinDistToGup(HashMap<Integer, Integer> gup, iGNode upper, iGNode lower)
     {
         int newDist = GraphRoutines.computeNodeVerticalDistance(upper.id(), lower.id(), graph);
         if (gup.containsKey(lower.id()))
@@ -259,7 +262,8 @@ public class DFBoxDrawing
      * @param gup upward visibility graph - hashmap where key is node id and value is minimum distance to upper node
      * @param graph1 graph in operation
      */
-    private void moveNodeUpward(List<List<Integer>> paths, HashMap<Integer, Integer> gup, iGraph graph1)
+    @SuppressWarnings("boxing")
+	private void moveNodeUpward(List<List<Integer>> paths, HashMap<Integer, Integer> gup, iGraph graph1)
     {
         List<Integer> subTree = new ArrayList<>();
         List<Integer> P;
@@ -294,7 +298,8 @@ public class DFBoxDrawing
      * @param distance relative distance between subtrees and their root
      * @param spread inner distance between nodes in a subtree
      */
-    public void updateWeights(Double offset, Double distance, Double spread)
+    @SuppressWarnings("boxing")
+	public void updateWeights(Double offset, Double distance, Double spread)
     {
         odsMetrics[0] = offset;
         odsMetrics[1] = distance;

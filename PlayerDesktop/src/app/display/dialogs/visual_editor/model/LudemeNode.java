@@ -622,7 +622,8 @@ public class LudemeNode implements iGNode
      *
      * @return the list of children of this node
      */
-    @Override
+    @SuppressWarnings("boxing")
+	@Override
     public List<Integer> children()
     {
         List<Integer> children_ids = new ArrayList<>();

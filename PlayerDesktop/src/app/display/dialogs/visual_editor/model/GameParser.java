@@ -30,7 +30,8 @@ public class GameParser
      * @param description valid partial game description (brackets match)
      * @return call tree with dummy root
      */
-    private static Call createPartialCallTree(String description)
+    @SuppressWarnings("unused")
+	private static Call createPartialCallTree(String description)
     {
         Token tokenTree_test = new Token(description, new Report());
         Grammar gm = grammar.Grammar.grammar();

@@ -49,7 +49,8 @@ public class LayoutHandler
     /**
      * Explicitly update layout metrics
      */
-    public void updateDFSWeights(double offset, double distance, double spread)
+    @SuppressWarnings("boxing")
+	public void updateDFSWeights(double offset, double distance, double spread)
     {
         layout.updateWeights(offset, distance, spread);
     }
@@ -89,7 +90,8 @@ public class LayoutHandler
     /**
      * Arranges layout of all components of a graph
      */
-    public void arrangeTreeComponents()
+    @SuppressWarnings("boxing")
+	public void arrangeTreeComponents()
     {
         if (GraphAnimator.getGraphAnimator().updateCounter() != 0) return;
 

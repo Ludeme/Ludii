@@ -32,7 +32,8 @@ public final class NodePlacementRoutines
      * @param oPos original root position
      * @param graph graph in operation
      */
-    public static void translateByRoot(iGraph graph, int r, Vector2D oPos)
+    @SuppressWarnings("boxing")
+	public static void translateByRoot(iGraph graph, int r, Vector2D oPos)
     {
         Vector2D t = graph.getNode(r).pos().sub(oPos);
         // iterate through descendants of a root node

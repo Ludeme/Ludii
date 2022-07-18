@@ -31,7 +31,8 @@ public final class GraphRoutines
      * @param graph graph in operation
      * @param r root id
      */
-    public static void updateNodeDepth(iGraph graph, int r)
+    @SuppressWarnings("boxing")
+	public static void updateNodeDepth(iGraph graph, int r)
     {
         List<Integer> layer = new ArrayList<>();
         List<Integer> nextLayer = new ArrayList<>();
@@ -81,7 +82,8 @@ public final class GraphRoutines
      * @param root starting from a root
      * @return layout metrics
      */
-    public static double[] computeLayoutMetrics(iGraph graph, int root)
+    @SuppressWarnings("boxing")
+	public static double[] computeLayoutMetrics(iGraph graph, int root)
     {
         double[] odsWeights = new double[3];
         HashMap<Integer, List<Double>> layerOffset = new HashMap<>();
@@ -162,13 +164,15 @@ public final class GraphRoutines
         return odsWeights;
     }
 
-    private static void addWeight(int d, double w, HashMap<Integer, List<Double>> weightMap)
+    @SuppressWarnings("boxing")
+	private static void addWeight(int d, double w, HashMap<Integer, List<Double>> weightMap)
     {
         if (!weightMap.containsKey(d)) weightMap.put(d, new ArrayList<>());
         weightMap.get(d).add(w);
     }
 
-    private static double getAvgWeight(HashMap<Integer, List<Double>> weightMap)
+    @SuppressWarnings("boxing")
+	private static double getAvgWeight(HashMap<Integer, List<Double>> weightMap)
     {
         List<Integer> keys = new ArrayList<>(weightMap.keySet());
         double layerWeight = 1.0;
@@ -196,7 +200,8 @@ public final class GraphRoutines
      * @param root starting node
      * @param pprime helper parameter for recursion; provide empty list at the beginning
      */
-    public static void findAllPaths(ArrayList<List<Integer>> paths, iGraph graph, int root, List<Integer> pprime)
+    @SuppressWarnings("boxing")
+	public static void findAllPaths(ArrayList<List<Integer>> paths, iGraph graph, int root, List<Integer> pprime)
     {
         // current node
         iGNode node = graph.getNode(root);
@@ -224,7 +229,8 @@ public final class GraphRoutines
      * @param root starting root
      * @return Rectangle object
      */
-    public static Rectangle getSubtreeArea(iGraph graph, int root)
+    @SuppressWarnings("boxing")
+	public static Rectangle getSubtreeArea(iGraph graph, int root)
     {
         int ltX = (int) graph.getNode(root).pos().x();
         int ltY = (int) graph.getNode(root).pos().y();
