@@ -24,8 +24,8 @@
 
 (option "Version" <Piece> args:{<move>}
     {
-    (item "Nine Holes"  <(move (from) (to (sites Empty)))> "The pieces can move to any empty sites.")
-    (item "Small Merels" <"StepToEmpty">        "The pieces can move to any empty adjacent sites.")**
+    (item "Nine Holes" <(move (from) (to (sites Empty)))> "The pieces can move to any empty sites.")
+    (item "Small Merels" <"StepToEmpty">    "The pieces can move to any empty adjacent sites.")**
     }
 )
 
@@ -35,7 +35,7 @@
     
     (info
         {
-        (description "Three Men's Morris is a simple alignment game that is still played today, that has been played in Europe for centuries. It may also appear in  Roman sources, and similar boards have been found as graffiti at Roman sites.")
+        (description "Three Men's Morris is a simple alignment game that is still played today, that has been played in Europe for centuries. It may also appear in Roman sources, and similar boards have been found as graffiti at Roman sites.")
         (aliases {"Smell Merels" "Castro" "Pedreria" "Marro" "Smerelli" "Mulino" "Semplice Mulinello" "Filo" "Filetto" "Tavoletta" "Riga de Tre" "Mérelles" "Marelles" "Carree Chinois" "Cashlan Gherra" "Qirq" "Dris" "Hujura" "Three Men" "Three Pin" "Three Penny" "Three Peg" "Copped Crown" "Corsi Crown."})
         (rules "3x3 intersecting lines with diagonals. Play occurs on the intersections of the lines. Each player has three pieces. Play begins with each player placing pieces on empty points. If they make three in a row along the lines, they win. Once all pieces are place, players take turns moving pieces one spot to an adjacent point along the lines trying to make three in a row.")
         (source "Murray 1951: 40-41.")

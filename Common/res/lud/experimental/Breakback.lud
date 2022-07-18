@@ -45,21 +45,21 @@
 
 (option "Board" <Tiling> args:{ <type> }
     {
-    (item "Square" <square> "The board is tiling by square.")*  
+    (item "Square" <square> "The board is tiling by square.")* 
     (item "Hexagon" <hex> "The board is tiling by hexagon.") 
 })
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "4x4"  <4> "The game is played on a 4x4 board.")  
-    (item "5x5"  <5> "The game is played on a 5x5 board.")  
-    (item "6x6"  <6> "The game is played on a 6x6 board.")  
-    (item "7x7"  <7> "The game is played on a 7x7 board.")  
-    (item "8x8"  <8> "The game is played on a 8x8 board.")*  
-    (item "9x9"  <9> "The game is played on a 9x9 board.")  
-    (item "10x10" <10> "The game is played on a 10x10 board.")  
-    (item "11x11" <11> "The game is played on a 11x11 board.")  
-    (item "12x12" <12> "The game is played on a 12x12 board.")  
+    (item "4x4" <4> "The game is played on a 4x4 board.") 
+    (item "5x5" <5> "The game is played on a 5x5 board.") 
+    (item "6x6" <6> "The game is played on a 6x6 board.") 
+    (item "7x7" <7> "The game is played on a 7x7 board.") 
+    (item "8x8" <8> "The game is played on a 8x8 board.")* 
+    (item "9x9" <9> "The game is played on a 9x9 board.") 
+    (item "10x10" <10> "The game is played on a 10x10 board.") 
+    (item "11x11" <11> "The game is played on a 11x11 board.") 
+    (item "12x12" <12> "The game is played on a 12x12 board.") 
 })
 
 //------------------------------------------------------------------------------

@@ -21,7 +21,7 @@
 
 (option "Start Rules" <Start> args:{ <start> <play> }
     {
-    (item "Tigers Start in hand"    
+    (item "Tigers Start in hand"  
         <
         (start {
             (place "human2" (difference (expand (sites Centre)) (centrePoint)))
@@ -75,7 +75,7 @@
         )
         }
         > 
-    "The two tigers start in the hand.")*  
+    "The two tigers start in the hand.")* 
     (item "Tigers start at the centre" 
         <
         (start {
@@ -140,7 +140,7 @@
         (version "1.3.5")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in Singapore, around 1889.")
+        (origin "This game was played in Singapore, around 1889.")
         }
     )
     

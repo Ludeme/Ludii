@@ -53,7 +53,7 @@
         )
         
         (phase "Connection"
-            (play   
+            (play  
                 (do
                     ("PlaceATileTo" "AnotherConnectedTile")
                     ifAfterwards:(is SidesMatch)

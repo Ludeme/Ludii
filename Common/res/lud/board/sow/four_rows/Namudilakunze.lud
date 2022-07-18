@@ -13,10 +13,10 @@
             }
         )
         (piece "Seed" Shared)
-        (regions "Home" P1 (sites Track "TrackCCW1"))               // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))               // P2 home
+        (regions "Home" P1 (sites Track "TrackCCW1"))        // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))        // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))  // P2 inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top))) // P2 inner Home
         (hand Each)
     }) 
     (rules 
@@ -145,7 +145,7 @@
 
 (option "Board Size" <Board> args:{ <size> <tracks> }
     {
-    (item "7"  <7> 
+    (item "7" <7> 
         <
         (track "TrackCCW1" "0,E,N1,W" loop:True P1)
         (track "TrackCCW2" "14,E,N1,W" loop:True P2)
@@ -153,7 +153,7 @@
         (track "TrackCW2" "20,W,N1,E" loop:True P2)
         >
     "Each player has 7 holes.")* 
-    (item "8"  <8>  
+    (item "8" <8> 
         <
         (track "TrackCCW1" "0,E,N1,W" loop:True P1)
         (track "TrackCCW2" "16,E,N1,W" loop:True P2)
@@ -161,7 +161,7 @@
         (track "TrackCW2" "23,W,N1,E" loop:True P2)
         >
     "Each player has 8 holes.") 
-    (item "9"  <9>  
+    (item "9" <9> 
         <
         (track "TrackCCW1" "0,E,N1,W" loop:True P1)
         (track "TrackCCW2" "18,E,N1,W" loop:True P2)

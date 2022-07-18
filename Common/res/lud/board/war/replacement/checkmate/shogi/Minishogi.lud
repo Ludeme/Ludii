@@ -74,7 +74,7 @@
         #1 
         (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
-    )  	
+    ) 	
 )
 
 (define "StepMove"
@@ -83,7 +83,7 @@
         #1
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
-    )  	
+    ) 	
 )
 
 (define "GoldMove" ("StepMove" (directions {Forward Backward Rightward Leftward FL FR})))
@@ -213,7 +213,7 @@
         (classification "board/war/replacement/checkmate/shogi")
         (author "Shigenobu Kusumoto")
         (credit "Eric Piette")
-        (origin  "This game is from Japan, on 1970.")
+        (origin "This game is from Japan, on 1970.")
         }
     )
     

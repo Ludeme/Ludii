@@ -106,7 +106,7 @@
             ("AStep" "S3" (exact 2))
             ("AStep" "S2" (exact 1))
             ("AStep" "S1" (exact 0))
-            (values Remembered "S1")     
+            (values Remembered "S1")   
             }
         )
         (remember Value "S0" (value) unique:True)
@@ -232,7 +232,7 @@
                     (from)
                     (then
                         (add
-                            (to (last From))    
+                            (to (last From))  
                             (then
                                 (and
                                     {
@@ -259,7 +259,7 @@
                 (add
                     (to 
                         (last To)
-                    )   
+                    )  
                     (then 
                         (set Var "PowerLeft" 0)
 ))))))
@@ -515,7 +515,7 @@
                         (count Sites in:(sites Board))
                         (* 2 (- (score Next) ("SafetyFigure")))
                 ))
-                (byScore)  
+                (byScore) 
     )))
 )
 
@@ -539,7 +539,7 @@
         (set Score P1 0)
         (set Score P2 0)
         (place "Ball1" state:7)
-        (place "Ball2" state:7)  
+        (place "Ball2" state:7) 
         }
 ))
 // Definitions of different Boards the game may be played on
@@ -610,7 +610,7 @@
             
             Strategy: Power to travel up to seven units per move can be developed during the game. As the offensive capacity develops, defensive measures are needed, first starting with limiting the mobility of enemy stones by approaching them, then by building walls, and thickening them along the axes of the opponent's catapulting sites (empty locations surrounded by many of that player's own stones.) These sites allow adding a stone and catapulting it up to a distance of 5, and are re-useable. In addition to these methods, defense is by scattering stones behind one's own lines to immobilise enemy stones that invade.
             
-            The majority of turns naturally involve placement as well as movement, due to the benefit of gaining material; even though newly placed stones travel a reduced distance due to the cost of their placement. Occasional moves without placement are used mainly to initiate difficult invasions, as they risk simultaneously opening up positional weaknesses.  
+            The majority of turns naturally involve placement as well as movement, due to the benefit of gaining material; even though newly placed stones travel a reduced distance due to the cost of their placement. Occasional moves without placement are used mainly to initiate difficult invasions, as they risk simultaneously opening up positional weaknesses. 
             
             Individual stones may be captured by replacement when they are sufficiently out-numbered at a location, which means that towards the end of the game, chains of stones not anchored to a triangle, loop, or board edge will be consumed one-by-one by captures. Thus the shape and nature of territorial walls is worth contesting.
             
@@ -641,7 +641,7 @@
             
             A standard setup is provided by default. To choose other positions, select the Pie option from the menu.
             
-            After the player's colors are determined, player alternate turns with each taking two moves in succession on their turn, beginning with Black.  
+            After the player's colors are determined, player alternate turns with each taking two moves in succession on their turn, beginning with Black. 
             
             Moves:
             A move begins on a site that has sufficient action-potential to be completed (calculated as described above). 

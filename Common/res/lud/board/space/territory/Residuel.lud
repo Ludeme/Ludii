@@ -29,7 +29,7 @@
                                     (sites Around (site) Empty Orthogonal)
                                     (is Related Orthogonal (site) (from))
                                 )
-                            )          
+                            )     
                         )
                     )
                 )
@@ -48,7 +48,7 @@
                     (sites Around (site) Empty Orthogonal)
                     (is Related Orthogonal (site) (from))
                 )
-            )          
+            )     
         )
         (to
             (sites Around (from) Empty Orthogonal)
@@ -106,7 +106,7 @@
         (tile "Rhombus" Each)
     })
     (rules
-        (play  
+        (play 
             ("Select" 
                 (then
                     (do
@@ -196,7 +196,7 @@
     (info
         {
         (description "Fight over left-overs in this quick territorial game.")
-        (rules "On your turn, you place a hexagonal tile of your color that covers three mutually orthogonally adjacent rhombuses. In Ludii this is done by first selecting one of the rhombuses the tile will cover, then another. The third one is determined by these two selections. When no more placements  are possible, the game is over and the winner is the player with the higher score.
+        (rules "On your turn, you place a hexagonal tile of your color that covers three mutually orthogonally adjacent rhombuses. In Ludii this is done by first selecting one of the rhombuses the tile will cover, then another. The third one is determined by these two selections. When no more placements are possible, the game is over and the winner is the player with the higher score.
             
             The general idea behind the scoring is simple: You get 1 point per empty rhombus that ends up adjacent to more of your hexagons than your opponent's hexagons. However, two slight complications are necessary to exclude all draws in as fair a manner as possible:
             

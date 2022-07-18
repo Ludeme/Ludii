@@ -51,8 +51,8 @@
         )
         (piece "Seed" Shared)
         (hand Each)
-        (regions P1 (sites Bottom))           // P1 home
-        (regions P2 (sites Top))            // P2 home
+        (regions P1 (sites Bottom))      // P1 home
+        (regions P2 (sites Top))      // P2 home
         (map "RightMost" {(pair P1 5) (pair P2 6)})
     }) 
     (rules 
@@ -216,8 +216,8 @@
 
 (option "Board Size" <Board> args:{ <size> <trackCW> <opening>}
     {
-    (item "5"  <5> <"4,W,N,E"> <> "Each row has 5 holes.")  
-    (item "6"  <6> <"5,W,N,E"> <> "Each row has 6 holes.")*  
+    (item "5" <5> <"4,W,N,E"> <> "Each row has 5 holes.") 
+    (item "6" <6> <"5,W,N,E"> <> "Each row has 6 holes.")* 
     (item "6 With Opening" <6> <"5,W,N,E"> 
         <
         (phase "Opening" 
@@ -252,8 +252,8 @@
             (nextPhase (= (last From) 4) "Sowing")
         )
         >
-    "Each row has 6 holes.")*  
-    (item "7"  <7> <"6,W,N,E"> 
+    "Each row has 6 holes.")* 
+    (item "7" <7> <"6,W,N,E"> 
         <>
     "Each row has 7 holes.")
 })

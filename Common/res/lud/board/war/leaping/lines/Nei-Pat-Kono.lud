@@ -35,9 +35,9 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "4x4"  <(square 4)> "The game is played on a 4x4 board.")*  
-    (item "6x6"  <(square 6)> "The game is played on a 6x6 board.") 
-    (item "8x8"  <(square 8)> "The game is played on a 8x8 board.") 
+    (item "4x4" <(square 4)> "The game is played on a 4x4 board.")* 
+    (item "6x6" <(square 6)> "The game is played on a 6x6 board.") 
+    (item "8x8" <(square 8)> "The game is played on a 8x8 board.") 
     (item "10x10" <(square 10)> "The game is played on a 10x10 board.") 
     (item "12x12" <(square 12)> "The game is played on a 12x12 board.") 
     (item "14x14" <(square 14)> "The game is played on a 14x14 board.") 
@@ -46,8 +46,8 @@
 
 (option "Start Rules" <Start> args:{ <rules> }
     {
-    (item "Half"    <(place "Marker1" (expand (sites Bottom) steps:(- (/ (count Rows) 2) 1))) (place "Marker2" (expand (sites Top) steps:(- (/ (count Rows) 2) 1)))>         "The game starts with half the board owned by each player.")*  
-    (item "Empty Line" <(place "Marker1" (expand (sites Bottom) steps:(- (/ (count Rows) 2) 2))) (place "Marker2" (expand (sites Top) steps:(- (/ (count Rows) 2) 2)))>  "The game starts with half the board owned by each player but with the two middle lines empty.")   
+    (item "Half"  <(place "Marker1" (expand (sites Bottom) steps:(- (/ (count Rows) 2) 1))) (place "Marker2" (expand (sites Top) steps:(- (/ (count Rows) 2) 1)))>     "The game starts with half the board owned by each player.")* 
+    (item "Empty Line" <(place "Marker1" (expand (sites Bottom) steps:(- (/ (count Rows) 2) 2))) (place "Marker2" (expand (sites Top) steps:(- (/ (count Rows) 2) 2)))> "The game starts with half the board owned by each player but with the two middle lines empty.")  
 })
 
 //------------------------------------------------------------------------------
@@ -64,7 +64,7 @@
         (version "1.3.5")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in Korea, around 1895.")
+        (origin "This game was played in Korea, around 1895.")
         }
     )
     

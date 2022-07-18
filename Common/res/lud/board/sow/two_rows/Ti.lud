@@ -12,8 +12,8 @@
         (mancalaBoard 2 "Columns"
             (track "Track" "1,E,N,W" loop:True)
         )
-        (regions "Home" P1 (sites Bottom))           // P1 home
-        (regions "Home" P2 (sites Top))            // P2 home
+        (regions "Home" P1 (sites Bottom))      // P1 home
+        (regions "Home" P2 (sites Top))      // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
         (piece "Seed" Shared)
     }) 
@@ -105,7 +105,7 @@
         (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Sierra Leone, from around 1924 to 1925.")
+        (origin "This game was played in Sierra Leone, from around 1924 to 1925.")
         }
     )
     

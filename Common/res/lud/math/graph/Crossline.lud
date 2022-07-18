@@ -18,19 +18,19 @@
                 {7 9}}
             )
         use:Edge) 
-        (piece "Marker" Each)  
+        (piece "Marker" Each) 
         (piece "Disc" Shared)
     }) 
     
     (rules 
         (start
-            (set Shared Edge (sites {0..9}))            
+            (set Shared Edge (sites {0..9}))      
         ) 
         phases:{
         (phase "Init" P1 
             (play 
                 (move Add 
-                    (to Edge (sites Empty Edge))	          	
+                    (to Edge (sites Empty Edge))	     	
                 )
             )
             (nextPhase "Cross") 
@@ -40,21 +40,21 @@
             (play
                 (do 
                     (move Add 
-                        (to Edge (sites Empty Edge))      				
+                        (to Edge (sites Empty Edge))   				
                     )
                     ifAfterwards:"CrossLine"
                 )
-            )	      
+            )	   
         )
         (phase "Continue" P2 
             (play
                 (do 
                     (move Add 
-                        (to Edge (sites Empty Edge))      				
+                        (to Edge (sites Empty Edge))   				
                     )
                     ifAfterwards:"CrossLine"
                 )
-            )	      
+            )	   
         )
         
         } 
@@ -81,7 +81,7 @@
         }
     )
     
-    (graphics {     
+    (graphics {   
         (player Colour P1 (colour Red))
         (player Colour P2 (colour Blue))
         (player Colour Shared (colour Black))

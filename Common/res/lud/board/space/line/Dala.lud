@@ -95,7 +95,7 @@
         )
         
         (phase "Movement"
-            (play     
+            (play   
                 (if (!= 0 (score Mover))
                     "RemoveEnemyPiece"
                     (forEach Piece) 

@@ -7,8 +7,8 @@
     })
     (rules 
         (play
-            (if  // want to add that if p1 mover one p2 piece in play option to swap players
-                (= -1 (counter))  
+            (if // want to add that if p1 mover one p2 piece in play option to swap players
+                (= -1 (counter)) 
                 (or 
                     (move Pass)
                     (move Add (piece "Disc0") (to (sites Board)))
@@ -30,18 +30,18 @@
                         (to 
                             (difference
                                 (union
-                                    (sites Outer)               // place on an edge
+                                    (sites Outer)        // place on an edge
                                     (sites Around (sites Occupied by:Mover)) // or next to a friendly piece
                                 )
                                 (union { 
                                     (sites Around (sites Occupied by:Enemy)) // but not next to an enemy piece 
-                                    (sites Around "SitesTooDense")      // nor next to pieces with too many neighbors
+                                    (sites Around "SitesTooDense")   // nor next to pieces with too many neighbors
                                     (sites Around (sites Occupied by:Neutral)) // but not next to an enemy piece 
                                 })
                             )
                             if:(and
                                 (is Empty (to)) // place on empty location
-                                (>=       // with a limit on friendly neighbors
+                                (>=    // with a limit on friendly neighbors
                                     <PlaceBy:qtyMax> 
                                     (count Pieces Mover in:(sites Around (to))) 
                                 )
@@ -51,7 +51,7 @@
                     )
                     }
                 )
-            )  
+            ) 
         )
         (end 
             (if (all Passed) 

@@ -26,13 +26,13 @@
 
 (option "Start Rules" <Rules> args:{ <start> <play> }
     {
-    (item "Placed"   
+    (item "Placed"  
         <{(place "Disc1" {"A3" "C3"}) (place "Disc2" {"A1" "C1"})}> 
         <(play (forEach Piece))> 
         "The piece are already placed on the board."
     )*
     
-    (item "To place"   
+    (item "To place"  
         <(place "Disc" "Hand" count:2)> 
         <phases:{
         (phase "Placement" 
@@ -48,7 +48,7 @@
         (phase "Movement" 
             (play (forEach Piece))
         )
-        }>  
+        }> 
         "The pieces have to place before to play."
     )
     }
@@ -68,7 +68,7 @@
         (version "1.3.5")
         (classification "board/space/blocking")
         (credit "Eric Piette")
-        (origin  "This game was played in Asia, around 1895.")
+        (origin "This game was played in Asia, around 1895.")
         }
     )
     

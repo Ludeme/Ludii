@@ -37,7 +37,7 @@
 
 (option "Play" <To> args:{<where>}
     {
-    (item "Anywhere" <(sites Empty)>                "The pieces can be placed to any empty site.")*
+    (item "Anywhere" <(sites Empty)>        "The pieces can be placed to any empty site.")*
     (item "Not Middle" <(difference (sites Empty) (sites Centre))> "The pieces can be placed to any empty site except the middle.")
     }
 )
@@ -81,7 +81,7 @@
         (version "1.3.5")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in Southwest United States, around 1907.")
+        (origin "This game was played in Southwest United States, around 1907.")
         }
     )
     

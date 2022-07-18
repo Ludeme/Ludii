@@ -71,7 +71,7 @@
 )
 
 (define "MoveAPieceOf" 
-    (forEach Piece    
+    (forEach Piece  
         (if 
             #1
             ("MoveForwards")
@@ -102,7 +102,7 @@
             <Board:start>
         })
         phases:{
-        (phase "Placement" 	    
+        (phase "Placement" 	  
             (play 
                 (move 
                     (from ("CubeInHand")) 
@@ -111,7 +111,7 @@
             )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
-        (phase "Movement" 	    
+        (phase "Movement" 	  
             (play 
                 ("RollMove"
                     (if ("PieceIsOnTheBoard")
@@ -163,8 +163,8 @@
         (place "Square2" (handSite P2 5) state:6) 
         >
         "The version of the game played on 5x5 board."
-    )*  
-    (item "6"  
+    )* 
+    (item "6" 
         <6>
         <10>
         <2>

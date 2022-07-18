@@ -1,5 +1,5 @@
 (game "Diviyan Keliya" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         ("AlquerqueBoardWithFourTriangles") 
         (hand Each)
@@ -44,9 +44,9 @@
 
 (option "Play Rules" <Move> args:{ <leopard> }
     {
-    (item "No multiple hops" <(forEach Piece "Leopard" (or "HopCapture" "StepToEmpty"))> "The leopard can jump to capture.")*  
+    (item "No multiple hops" <(forEach Piece "Leopard" (or "HopCapture" "StepToEmpty"))> "The leopard can jump to capture.")* 
     (item 
-        "Multiple hops and Force to hop"  
+        "Multiple hops and Force to hop" 
         <
         (if "SameTurn"
             ("HopSequenceCaptureAgain")
@@ -75,7 +75,7 @@
         (version "1.3.5")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in South Asia, around 1909.")
+        (origin "This game was played in South Asia, around 1909.")
         }
     )
     

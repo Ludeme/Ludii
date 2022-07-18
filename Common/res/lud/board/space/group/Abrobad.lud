@@ -1,4 +1,4 @@
-(define "Shooting"    
+(define "Shooting"  
     (forEach Piece 
         (move 
             (from)
@@ -9,7 +9,7 @@
     )
 )
 
-(define "Hopping"    
+(define "Hopping"  
     (forEach Piece 
         (or 
             ("HopAllPiecesToEmpty")
@@ -18,12 +18,12 @@
     )
 )
 
-(define "Sliding"    
+(define "Sliding"  
     (forEach Piece 
         (move Slide)
     )
 )
-(define "Stepping"    
+(define "Stepping"  
     (forEach Piece 
         ("StepToEmpty")
     )
@@ -72,8 +72,8 @@
                         )
                     )
                 ) 
-            )   
-        )  
+            )  
+        ) 
         (end 
             (if 
                 (is Proposed "Conclude") 

@@ -16,10 +16,10 @@
             }
         )
         (piece "Seed" Shared)
-        (regions "Home" P1 (sites Track "TrackCCW1"))                   // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))                   // P2 Home
-        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))     // P1 Inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))      // P2 Inner Home
+        (regions "Home" P1 (sites Track "TrackCCW1"))          // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))          // P2 Home
+        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))   // P1 Inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))   // P2 Inner Home
         (regions "Left" P1 (intersection (sites Track "TrackCCW1") (expand (sites Left)))) // P1 Left Holes
         (regions "Left" P2 (intersection (sites Track "TrackCCW2") (expand (sites Right)))) // P2 Left Holes
         (hand Each)
@@ -183,7 +183,7 @@
         (version "1.3.5")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Uganda, around 1912.")
+        (origin "This game was played in Uganda, around 1912.")
         }
     )
     

@@ -20,12 +20,12 @@
             }
         )
         (piece "Seed" Shared)
-        (regions "Home" P1 (sites Bottom))           // P1 home
-        (regions "Home" P2 (sites Top))            // P2 home
+        (regions "Home" P1 (sites Bottom))      // P1 home
+        (regions "Home" P2 (sites Top))      // P2 home
         (regions "RightHome" P1 (intersection (expand (sites Right) steps:2) (sites Bottom))) // P1 home
-        (regions "RightHome" P2 (intersection (expand (sites Right) steps:2) (sites Top)))   // P2 home
+        (regions "RightHome" P2 (intersection (expand (sites Right) steps:2) (sites Top)))  // P2 home
         (regions "LeftHome" P1 (intersection (expand (sites Left) steps:2) (sites Bottom))) // P1 home
-        (regions "LeftHome" P2 (intersection (expand (sites Left) steps:2) (sites Top)))   // P2 home
+        (regions "LeftHome" P2 (intersection (expand (sites Left) steps:2) (sites Top)))  // P2 home
         (hand Each)
     }) 
     (rules 
@@ -141,7 +141,7 @@
         (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Horn of Africa, around 1971.")
+        (origin "This game was played in Horn of Africa, around 1971.")
         }
     )
     

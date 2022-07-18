@@ -216,7 +216,7 @@
                                     (sites LineOfSight Piece at:(from) Orthogonal)
                                     if:("IsEnemyAt" (to))
                                 )
-                                (then  
+                                (then 
                                     (and
                                         (if (and 
                                                 (!= (what at:(last To)) (id "Bomb" Next)) 

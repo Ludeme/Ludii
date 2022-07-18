@@ -34,8 +34,8 @@
             }
         )
         (piece "Seed" Shared)
-        (regions P1 (sites Bottom))           // P1 home
-        (regions P2 (sites Top))            // P2 home
+        (regions P1 (sites Bottom))      // P1 home
+        (regions P2 (sites Top))      // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
     }) 
     (rules 
@@ -332,7 +332,7 @@
         {
         (description "Daramuti is a two-row mancala-style board game from Sri Lanka. It was documented by Henry Parker in the early twentieth century. ")
         (aliases {"Ellaewala-kanda"})
-        (rules "2x7 board with two stores. Four counters in each hole. Sowing occurs in either a clockwise or anti-clockwise direction; the first player chooses the direction and all subsequent moves are made in that direction. Players sow beginning from holes their row. If the final counter falls into an empty hole, the contents of the opposite hole in the other row are captured. If the last counter falls into a hole with counters, these are picked up and sowing continues.  Throughout the game, singletons cannot be moved if a player has a hole with multiple counters, and a singleton in the front hole cannot be moved if there are other singletons in the player's row. The round ends when one player's holes are empty. 
+        (rules "2x7 board with two stores. Four counters in each hole. Sowing occurs in either a clockwise or anti-clockwise direction; the first player chooses the direction and all subsequent moves are made in that direction. Players sow beginning from holes their row. If the final counter falls into an empty hole, the contents of the opposite hole in the other row are captured. If the last counter falls into a hole with counters, these are picked up and sowing continues. Throughout the game, singletons cannot be moved if a player has a hole with multiple counters, and a singleton in the front hole cannot be moved if there are other singletons in the player's row. The round ends when one player's holes are empty. 
             
             A second round begins with the winner of the first round placing four counters in each of their holes, leaving any surplus in the store. The loser of round one places four counters in as many consecutive holes on their side of the board as possible, and any remaining counters in the next hole. If this hole contains one, it is called puta, if two, naga, if three, wala. Holes with no counters are excluded from play for this round. If the loser has a puta hole, the opponent removes three counters from their hole opposite; if a naga, the opponent removes two from the opposite hole, if a wala, the opponent removes one. The removed counters go into their store. Puta and naga holes are marked with a piece of paper or straw in them. Empty holes are excluded from play in this round. The losing player begins the round, moving in the direction of the excluded holes, and played in the same way as the first round. The player with empty holes begins play in the direction of the empty hole. Counters cannot be sown or captured from puta or naga holes. Play continues as before, but when the final counter falls into a puta or naga hole, the contents of the opposite hole in the other row are captured.
             
@@ -344,7 +344,7 @@
         (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Sri Lanka, around 1909.")
+        (origin "This game was played in Sri Lanka, around 1909.")
         }
     )
     

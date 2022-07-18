@@ -7,7 +7,7 @@
         (if ("IsEnemyAt" (ahead (last To) ("Direction" (last To))))
             (moveAgain)
         )
-    )  
+    ) 
 )
 
 (define "Slide" 
@@ -16,7 +16,7 @@
         (between (exact #1))
         (to if:(is Empty (to)))
         #2
-    )  
+    ) 
 )
 
 (define "MoveThree"
@@ -94,7 +94,7 @@
         })
         
         (play 
-            (if ("SameTurn")  
+            (if ("SameTurn") 
                 (move Hop
                     (from (last To))
                     (between 

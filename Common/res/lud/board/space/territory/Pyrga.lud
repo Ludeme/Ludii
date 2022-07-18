@@ -120,7 +120,7 @@
                 )
             )
         )
-        ifAfterwards:(< 0 (size Array (values Remembered)))  // use remember to work around bug for (is Pending)
+        ifAfterwards:(< 0 (size Array (values Remembered))) // use remember to work around bug for (is Pending)
     )
 )
 
@@ -160,7 +160,7 @@
             
             (priority
                 (or {
-                    ("AddDisc" "Disc" ("ToSitesAllowedFor" "Disc" 1))   
+                    ("AddDisc" "Disc" ("ToSitesAllowedFor" "Disc" 1))  
                     ("AddSquare" <Square:rotation> ("ToSitesAllowedFor" "SquareOrtho" 2))
                     ("AddTriangle" N "TriangleN" ("ToSitesAllowedFor" "TriangleN" 3) SW SE)
                     ("AddTriangle" E "TriangleE" ("ToSitesAllowedFor" "TriangleN" 3) NW SW)

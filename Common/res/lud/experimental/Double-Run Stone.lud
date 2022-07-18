@@ -98,7 +98,7 @@
             (is Within (id "2Dot" P1) in:(difference (sites Around (#1) "Connection") (#2)))
             (is Within (id "2Dot" P2) in:(difference (sites Around (#1) "Connection") (#2)))
         ) 
-        (or  
+        (or 
             (is Within (id "3Dot" P1) in:(difference (sites Around (#1) "Connection") (#2)))
             (is Within (id "3Dot" P2) in:(difference (sites Around (#1) "Connection") (#2)))
         )
@@ -220,7 +220,7 @@
         (end 
             (if 
                 (!= 0 (count Sites in:(sites State 1)))
-                //  (< 0 (+ (score Mover) (score Next)))
+                // (< 0 (+ (score Mover) (score Next)))
                 (byScore)
 ))))
 
@@ -272,7 +272,7 @@
             
             These tactics are mostly at odds with setting up your own double-run. For example, completely running out of one type of piece prevents one from forming a double run at all. 
             
-        The game is intended to be played in sets and different wins produce different scores so that this is interesting.  Each player's stock of pieces is weighted to make higher scores less likely than lower scores.")
+        The game is intended to be played in sets and different wins produce different scores so that this is interesting. Each player's stock of pieces is weighted to make higher scores less likely than lower scores.")
         (rules "Dual Goals: 
         A) Create an isolated group of 4 that contains a single pair. This is called a double-run, but it only scores for the pair depending on its value: (1+1) (2+2) or (3+3); 
     B) Force the opponent to stalemate you. This scores one point for each of your pieces on the board, with out regard to their value.
@@ -332,7 +332,7 @@ A double-run belong to the opponent is scored by the opponent, and has twice the
     (board Style Graph)
     (board StyleThickness InnerVertices 1.5)
     (show Edges Diagonal <BoardShape:DiagShow>)
-    //  (show Piece State)
+    // (show Piece State)
     
     (hand Placement P2 offsetX:0.95 vertical:True)
     (hand Placement P1 offsetX:0.05 vertical:True)

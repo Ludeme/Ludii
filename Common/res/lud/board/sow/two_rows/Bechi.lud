@@ -115,8 +115,8 @@
         (mancalaBoard 2 ("Column") store:None
             <Board:tracks>
         )
-        (regions "Home" P1 (sites Bottom))           // P1 home
-        (regions "Home" P2 (sites Top))            // P2 home
+        (regions "Home" P1 (sites Bottom))      // P1 home
+        (regions "Home" P2 (sites Top))      // P2 home
         <Board:regions>
         (piece "Seed" Shared) 
         (hand Each)
@@ -190,7 +190,7 @@
 (option "Variant" <Board> args:{ <size> <tracks> <regions> <centreMove>}
     {
     (item "Kunama" 
-        <4>   
+        <4>  
         <
         {
         (track "TrackCW" "3,W,N,E" loop:True)

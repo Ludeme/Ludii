@@ -27,7 +27,7 @@
             }	
             use:Vertex
         )
-        (piece "Disc" Each    
+        (piece "Disc" Each  
             (or {
                 (move
                     Step
@@ -50,20 +50,20 @@
 
 (option "Start Rules" <Start> args:{ <rules> }
     {
-    (item "Corners"   
+    (item "Corners"  
         <
         (place "Disc1" {"A3" "B3" "A4" "B4"})
         (place "Disc2" {"C1" "D1" "C2" "D2"})
-        >  
+        > 
         "The pieces are placed in the corners."
-    )**  
-    (item "Not corners"  
+    )** 
+    (item "Not corners" 
         <
         (place "Disc1" {"C4" "B3" "A4" "D3"})
         (place "Disc2" {"B1" "D1" "B2" "D2"})
         > 
         "The pieces are placed are specific positions."
-    )  
+    ) 
 })
 
 //------------------------------------------------------------------------------

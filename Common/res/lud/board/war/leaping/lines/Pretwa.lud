@@ -34,8 +34,8 @@
 
 (option "End Rules" <End> args:{ <rules> }
     {
-    (item "No Pieces" <(if (no Pieces Next) (result Next Loss))>  "The player loses when he has no piece.")*  
-    (item "No Moves" <("NoMoves" Loss)>               "A player loses when he can not move.")  
+    (item "No Pieces" <(if (no Pieces Next) (result Next Loss))> "The player loses when he has no piece.")* 
+    (item "No Moves" <("NoMoves" Loss)>        "A player loses when he can not move.") 
 })
 
 //------------------------------------------------------------------------------
@@ -51,7 +51,7 @@
         (version "1.3.5")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in South Asia, around 1951.")
+        (origin "This game was played in South Asia, around 1951.")
         }
     )
     

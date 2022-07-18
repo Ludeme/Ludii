@@ -20,7 +20,7 @@
     
     (define "ShiftTokenFromToAndScore"
         (and
-            (set Score #2 (size Array ("PairSitesOf" #2)))  
+            (set Score #2 (size Array ("PairSitesOf" #2))) 
             (if
                 (>
                     (size Array ("PairSitesOf" #2))
@@ -74,12 +74,12 @@
     (if
         (= (var "LF") (ahead (var "PairedSite") "PushDirection"))
         (push
-            (from (var "PairedSite"))       
+            (from (var "PairedSite"))    
             "PushDirection"
         )
         (and
             (push
-                (from (var "LF"))       
+                (from (var "LF"))    
                 "PushDirection"
             )
             (push
@@ -284,10 +284,10 @@
         (heuristics
             {
             (score weight:.3)
-            //  (influence weight:.4)
-            //  (influenceAdvanced weight:.4)
-            //  (mobilityAdvanced weight:.1)
-            //   (mobilitySimple weight:.1)
+            // (influence weight:.4)
+            // (influenceAdvanced weight:.4)
+            // (mobilityAdvanced weight:.1)
+            //  (mobilitySimple weight:.1)
             } 
     ))
 )

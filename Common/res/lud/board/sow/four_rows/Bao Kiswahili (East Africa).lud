@@ -75,10 +75,10 @@
         (piece "Seed" Shared)
         (hand Each)
         (regions "Home" P1 (expand (sites Bottom))) // P1 Home
-        (regions "Home" P2 (expand (sites Top)))   // P2 Home
-        (regions "Inner" P1 (sites Row 1))      // P1 Inner
-        (regions "Inner" P2 (sites Row 2))      // P2 Inner
-        (regions "SquaresHoles" (sites {12 19}))   // Square Holes
+        (regions "Home" P2 (expand (sites Top)))  // P2 Home
+        (regions "Inner" P1 (sites Row 1))   // P1 Inner
+        (regions "Inner" P2 (sites Row 2))   // P2 Inner
+        (regions "SquaresHoles" (sites {12 19}))  // Square Holes
         (map "LeftMostInner" {(pair P1 8) (pair P2 23)})
         (map "RightMostInner" {(pair P1 15) (pair P2 16)})
         (map "AdjacentLeftMostInner" {(pair P1 9) (pair P2 22)})

@@ -9,7 +9,7 @@
 
 (define "AllPieceEscaped" ("NoSites" (sites Occupied by:#1 top:False)))
 
-(define "NotEnemyOrOnlyOne"  
+(define "NotEnemyOrOnlyOne" 
     (or 
         (and 
             ("IsEnemyAt" (to)) 
@@ -90,7 +90,7 @@
         (version "1.3.5")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
-        (origin  "This game was played in Spain, around 1283.")
+        (origin "This game was played in Spain, around 1283.")
         }
     )
     

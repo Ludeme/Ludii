@@ -15,7 +15,7 @@
         (hand Each)
         (piece "Marker" Each 
             ("StepToEmpty" ~ (then ("ReplayIfLine3" Orthogonal exact:True)))
-        )  
+        ) 
     }) 
     (rules 
         (start (place "Marker" "Hand" count:12))
@@ -59,8 +59,8 @@
 
 (option "Board" <Board> args:{<type>}
     {
-    (item "Without Diagonal" <(concentric Square rings:4)>         "The board has no diagonal.")
-    (item "With Diagonal"  <(concentric Square rings:3 joinCorners:True)>  "The board has some diagonals.")**
+    (item "Without Diagonal" <(concentric Square rings:4)>     "The board has no diagonal.")
+    (item "With Diagonal" <(concentric Square rings:3 joinCorners:True)> "The board has some diagonals.")**
     }
 )
 
@@ -101,7 +101,7 @@
         (version "1.3.5")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in Unknown, from around 600 to 799.")
+        (origin "This game was played in Unknown, from around 600 to 799.")
         }
     )
     

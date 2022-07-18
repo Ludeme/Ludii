@@ -4,7 +4,7 @@
         Orthogonal 
         (between 
             if:("IsEnemyAt" (between)) 
-            (apply       
+            (apply    
                 (and 
                     (addScore Mover 1) 
                     (remove (between)) 
@@ -41,7 +41,7 @@
                 )
                 (move Pass)
             )
-        )    
+        )  
         (end
             (if (all Passed)
                 (byScore {
@@ -58,7 +58,7 @@
 
 (option "Board Grid" <BoardShape> args:{<gridType> <directionsUsed> <DiagShow> <directionsWin>} 
     {
-    (item "Hex Grid" <"HexHex"> <Orthogonal>   <Hidden>  <Orthogonal>    "Hex Grid - Standard")
+    (item "Hex Grid" <"HexHex"> <Orthogonal>  <Hidden> <Orthogonal>  "Hex Grid - Standard")
     }
 )
 
@@ -94,7 +94,7 @@
     )
     
     (graphics 
-        {    
+        {  
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
         (piece Scale 0.8)

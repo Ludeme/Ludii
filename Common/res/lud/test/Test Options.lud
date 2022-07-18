@@ -176,7 +176,7 @@
         (is Even (count Sites in:("CaptureDirection" #1)))
         (= (mover) (who at:(last To)))
         
-        (<Rule>  //= //< 
+        (<Rule> //= //< 
             (size Stack at:(last To))
             (size Stack 
                 at:(ahead (last To) 
@@ -186,7 +186,7 @@
             )
         )
         
-        (<Rule>  //= //< 
+        (<Rule> //= //< 
             (size Stack 
                 at:(ahead (last To) 
                     steps:(count Sites in:("CaptureDirection" #1)) 
@@ -335,9 +335,9 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "4"  <4> "4")
-    (item "5"  <5> "5")* 
-    (item "6"  <6> "6") 
+    (item "4" <4> "4")
+    (item "5" <5> "5")* 
+    (item "6" <6> "6") 
     }
 )
 

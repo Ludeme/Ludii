@@ -10,7 +10,7 @@
             (remember Value 0)
             (remember Value 0)
             (forEach Group "GridDirection" 
-                //   if:(is Mover (who at:(to))) // this appears to be the default, and it ceases to work when the boolean is included.
+                //  if:(is Mover (who at:(to))) // this appears to be the default, and it ceases to work when the boolean is included.
                 (remember Value (count Sites in:(sites)))
             )
             }
@@ -21,7 +21,7 @@
                     (then
                         (set Score Mover (* (var "TopValue") (max (values Remembered)))
                             (then
-                                (forget Value All)    
+                                (forget Value All)  
         ))))))
 ))
 
@@ -123,7 +123,7 @@
             The reason for the opacity is that connection of groups must be accomplished through jumping opponent's pieces, which themselves are frequently changing position.
             
             To minimise this instability, no location on the board is allowed to have more than 3 adjacent friendly pieces. 
-            Also passing is allowed to avoid forced moves that de-optimise the scores.   
+            Also passing is allowed to avoid forced moves that de-optimise the scores.  
             
             Also, the standard version only allows a jump if the player made a placement on the previous turn.
         This significantly reduced the game complexity compared to allowing each piece to move once before the next placement turn.")
@@ -173,7 +173,7 @@ No individual piece may jump more than once before the mover takes a placement t
     (board StyleThickness InnerVertices .5)
     (show Edges Diagonal <BoardShape:DiagShow>)
     (piece Foreground "Disc" state:1 image:"square.svg" fillColour:(colour 0 0 0 50) scale:0.4)
-    //  (show Piece State)
+    // (show Piece State)
     }
 )
 

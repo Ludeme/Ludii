@@ -29,7 +29,7 @@
                     (hop 
                         (from (last To)) 
                         #1 
-                        (between if:("IsEnemyAt" (between)) (apply (fromTo (from (between)) (to))))   	
+                        (between if:("IsEnemyAt" (between)) (apply (fromTo (from (between)) (to))))  	
                         (to if:(and 
                                 (is In (from) (sites Occupied by:Mover)) 
                                 (is Empty (to))
@@ -154,14 +154,14 @@
 
 (option "Board" <Board> args:{ <type> <startP1> <startP2> }
     {
-    (item "Chess"       
-        <(board (square 7))> <(difference (expand (sites Bottom) steps:2) (sites Phase 1) )> <(difference (expand (sites Top) steps:2) (sites Phase 1)) >  
+    (item "Chess"    
+        <(board (square 7))> <(difference (expand (sites Bottom) steps:2) (sites Phase 1) )> <(difference (expand (sites Top) steps:2) (sites Phase 1)) > 
         "The game is played in a Chess board."
-    )*  
-    (item "Lasca"       
-        <"LascaBoard"> < (expand (sites Bottom) steps:2)> <(expand (sites Top) steps:2)>  
+    )* 
+    (item "Lasca"    
+        <"LascaBoard"> < (expand (sites Bottom) steps:2)> <(expand (sites Top) steps:2)> 
         "The game is played in the original lasca board."
-    )   
+    )  
 })
 
 //------------------------------------------------------------------------------

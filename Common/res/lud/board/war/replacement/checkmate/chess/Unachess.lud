@@ -17,7 +17,7 @@
     (and 
         (is Empty (to)) 
         (or (not ("IsInCheck" "King" Mover at:(to))) (no Pieces Next "King" in:(sites Board)))
-    )  
+    ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -167,13 +167,13 @@
 
 (option "Setup" <PlacementConditions> args:{ <PlacementConditions> }
     {
-    (item "v1"  	
+    (item "v1" 	
         <
         ifAfterwards:True
         >
     "Original")**
     
-    (item "v2"  	
+    (item "v2" 	
         <
         ifAfterwards:(not ("IsInCheck" "King" Next))
         >

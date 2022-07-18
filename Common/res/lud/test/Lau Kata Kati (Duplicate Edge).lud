@@ -33,8 +33,8 @@
 
 (option "End Rules" <End> args:{ <rules> }
     {
-    (item "No Pieces" <(if (no Pieces Next) (result Next Loss))>  "The player loses when he has no piece.")*  
-    (item "No Moves" <("NoMoves" Loss)>               "A player loses when he can not move.")  
+    (item "No Pieces" <(if (no Pieces Next) (result Next Loss))> "The player loses when he has no piece.")* 
+    (item "No Moves" <("NoMoves" Loss)>        "A player loses when he can not move.") 
 })
 
 //------------------------------------------------------------------------------

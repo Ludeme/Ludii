@@ -1,4 +1,4 @@
-(define "IfEnemyBlotIt"  
+(define "IfEnemyBlotIt" 
     (apply 
         if:("IsEnemyAt" (to)) 
         (fromTo 
@@ -8,7 +8,7 @@
     )
 )
 
-(define "NotEnemyOrOnlyOne"  
+(define "NotEnemyOrOnlyOne" 
     (or 
         (and 
             ("IsEnemyAt" (to)) 
@@ -69,10 +69,10 @@
 (define "MoveAPieceFromBar" 
     (fromTo 
     (from (handSite (mover))) //#1)
-    //   (to 
-    //    0 //("NextSiteFrom" (mapEntry (mover))) //#1) 
-    //   if:("NotEnemyOrOnlyOne") 
-    //  ("IfEnemyBlotIt")
+    //  (to 
+    //  0 //("NextSiteFrom" (mapEntry (mover))) //#1) 
+    //  if:("NotEnemyOrOnlyOne") 
+    // ("IfEnemyBlotIt")
 // )
 (to (sites Empty)) 
 )
@@ -88,7 +88,7 @@
 
 (define "MoveAPieceFromBarIf" 
     // (forEach Die 
-        //  replayDouble:True 
+        // replayDouble:True 
         // if:#1
         ("MoveAPieceFromBar" #2)
     // )		

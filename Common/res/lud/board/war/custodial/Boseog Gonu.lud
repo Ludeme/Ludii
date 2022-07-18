@@ -39,7 +39,7 @@
 
 (option "Variant" <Disc> args:{ <move> }
     {
-    (item "Original"     
+    (item "Original"   
         <
         (move
             Step
@@ -60,7 +60,7 @@
         "The game is played according to the rules of the source."
     )** 
     
-    (item "No diagonal capture"     
+    (item "No diagonal capture"   
         <
         (move
             Step
@@ -80,8 +80,8 @@
         ) 
         >
         "The game is played according to the rules of the source but the capture is allowed only horizontally and vertically."
-    )*  
-    (item "No diagonal capture and slide"  
+    )* 
+    (item "No diagonal capture and slide" 
         <
         (move
             Slide
@@ -99,7 +99,7 @@
             ) 
         )
         > 
-    "The game is played according to the rules described in Youtube. The two differences with the source is: Capture possible only horizontally and vertically and the pieces can slide.")  
+    "The game is played according to the rules described in Youtube. The two differences with the source is: Capture possible only horizontally and vertically and the pieces can slide.") 
 })
 
 //------------------------------------------------------------------------------

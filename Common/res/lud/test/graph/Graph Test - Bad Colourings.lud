@@ -27,13 +27,13 @@
             (merge 
                 { 
                 (shift 2 2 (square 5 diagonals:Alternating)) 
-                (shift 2.2 0.0       (scale .9 1 (wedge 3))) 
+                (shift 2.2 0.0    (scale .9 1 (wedge 3))) 
                 (shift 5.2 3.0 (rotate 90 (scale .9 1 (wedge 3)))) 
                 (shift 2.2 6.0 (rotate 180 (scale .9 1 (wedge 3)))) 
                 (shift -0.8 3.0 (rotate 270 (scale .9 1 (wedge 3)))) 
                 
                 (shift 0.09 0.79 (rotate -45 (scale .707 .707 (wedge 3))))
-                (shift 5.09 0.79 (rotate  45 (scale .707 .707 (wedge 3))))
+                (shift 5.09 0.79 (rotate 45 (scale .707 .707 (wedge 3))))
                 (shift 0.09 5.79 (rotate -135 (scale .707 .707 (wedge 3))))
                 (shift 5.09 5.79 (rotate 135 (scale .707 .707 (wedge 3))))
                 } 
@@ -44,9 +44,9 @@
     (item "D" <(repeat 2 2 step:{{2 1} {-1 2}} 
             {
             (poly {{0 0} { 0 1} { .5 1.5} { 1 1} { 1 0}})
-            (poly {{0 0} { 1 0} { 1.5 -.5}  { 1 -1} { 0 -1}})
+            (poly {{0 0} { 1 0} { 1.5 -.5} { 1 -1} { 0 -1}})
             (poly {{0 0} { 0 -1} { -.5 -1.5} {-1 -1} {-1 0}})
-            (poly {{0 0} {-1 0} {-1.5  .5}  {-1 1} { 0 1}})
+            (poly {{0 0} {-1 0} {-1.5 .5} {-1 1} { 0 1}})
             }
     )> "")
     
@@ -65,5 +65,5 @@
         (board StyleThickness OuterEdges 0)
         (board StyleThickness InnerEdges 0)
         
-    })  
+    }) 
 )

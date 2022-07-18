@@ -104,9 +104,9 @@
         {
         (board (rotate 90 (hex 4)))
         
-        (piece "King"  Each ("KingCaptureStep" All ~))
+        (piece "King" Each ("KingCaptureStep" All ~))
         (piece "Queen" Each ("SlideCaptureMove" All ~))
-        (piece "Rook"  Each ("SlideCaptureMove" Orthogonal ~))
+        (piece "Rook" Each ("SlideCaptureMove" Orthogonal ~))
         (piece "Bishop" Each ("SlideCaptureMove" Diagonal ~))
         (piece "Knight" Each
             (move Leap
@@ -136,7 +136,7 @@
         (regions "PromotionZone" P1 (union (sites Side NW) (sites Side NE)))
         (regions "PromotionZone" P2 (union (sites Side SW) (sites Side SE)))
         
-        (regions "Region-Dark"  (sites Phase 2))
+        (regions "Region-Dark" (sites Phase 2))
         (regions "Region-Light" (sites Phase 1))
         (regions "Region-Medium" (sites Phase 0))
         }
@@ -145,13 +145,13 @@
     (rules
         (start
             {
-            (place "King1"  coord:"B2")
-            (place "Rook1"  coord:"B1")
+            (place "King1" coord:"B2")
+            (place "Rook1" coord:"B1")
             (place "Bishop1" coord:"A1")
             (place "Knight1" coord:"A2")
             
-            (place "King2"  coord:"F6")
-            (place "Rook2"  coord:"F7")
+            (place "King2" coord:"F6")
+            (place "Rook2" coord:"F7")
             (place "Bishop2" coord:"G7")
             (place "Knight2" coord:"G6")
             
@@ -229,7 +229,7 @@
         (piece Scale "Pawn" 0.825)
         (board Style Chess)
         
-        (region Colour "Region-Dark"  (colour "#b5651d"))
+        (region Colour "Region-Dark" (colour "#b5651d"))
         (region Colour "Region-Light" (colour "#fff8dc"))
         (region Colour "Region-Medium" (colour "#daae7c"))
     })

@@ -101,7 +101,7 @@
         #1 
         (to if:(and ("IsEnemyAt" (to)) (= (count Pieces Mover "Osho" in:(sites Board)) 1)) "CapturePiece")
         #2 
-    )  	
+    ) 	
 )
 
 (define "StepMove"
@@ -110,7 +110,7 @@
         #1
         (to if:(and (not ("IsFriendAt" (to))) (or (not ("IsEnemyAt" (to))) (= (count Pieces Mover "Osho" in:(sites Board)) 1))) "CapturePiece") 
         #2 
-    )  	
+    ) 	
 )
 
 (define "GoldMove" ("StepMove" (directions {Forward Backward Rightward Leftward FL FR})))

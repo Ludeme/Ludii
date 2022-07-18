@@ -18,11 +18,11 @@
             (track "TrackCCW" "0,E,N,W" loop:True)
         )
         (piece "Seed" Shared)
-        (regions "Home" P1 (sites Bottom))                           // P1 home
-        (regions "Home" P2 (sites Top))                            // P2 home
+        (regions "Home" P1 (sites Bottom))              // P1 home
+        (regions "Home" P2 (sites Top))              // P2 home
         (regions "Right Half" P1 (intersection (sites Bottom) (expand (sites Right) steps:5))) // P1 right half
-        (regions "Right Half" P2 (intersection (sites Top) (expand (sites Left) steps:5)))   // P2 right half
-        (map {(pair P1 0) (pair P2 23)})                            // First holes
+        (regions "Right Half" P2 (intersection (sites Top) (expand (sites Left) steps:5)))  // P2 right half
+        (map {(pair P1 0) (pair P2 23)})              // First holes
     }) 
     (rules 
         (start (set Count 3 to:(sites {1 2 4 5 7 8 10 11 22 21 19 18 16 15 13 12})))
@@ -108,7 +108,7 @@
         (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Horn of Africa, around 1971.")
+        (origin "This game was played in Horn of Africa, around 1971.")
         }
     )
     

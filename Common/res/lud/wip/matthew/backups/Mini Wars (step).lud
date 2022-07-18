@@ -187,7 +187,7 @@
                     })
                     
                 )
-            )      
+            )   
         )
     )
 )
@@ -486,7 +486,7 @@
         (pair 23 5) (pair 24 5) (pair 25 4) (pair 26 4) (pair 27 4) (pair 28 4)
         (pair 29 5) (pair 30 5) (pair 31 7) (pair 32 7) (pair 33 6) (pair 34 6)
         (pair 35 6) (pair 36 6) (pair 37 6) (pair 38 6) (pair 39 5) (pair 40 5)
-        (pair 41 7) (pair 42 7) (pair 43 7) (pair 44 7) (pair 45 7) (pair 46 7) (pair 47 7) (pair 48 7) (pair 49 7) (pair 50 7)  
+        (pair 41 7) (pair 42 7) (pair 43 7) (pair 44 7) (pair 45 7) (pair 46 7) (pair 47 7) (pair 48 7) (pair 49 7) (pair 50 7) 
     })
     
     // value (health)
@@ -497,7 +497,7 @@
         (pair 23 50) (pair 24 50) (pair 25 50) (pair 26 50) (pair 27 40) (pair 28 40)
         (pair 29 40) (pair 30 40) (pair 31 100) (pair 32 100) (pair 33 100) (pair 34 100)
         (pair 35 70) (pair 36 70) (pair 37 100) (pair 38 100) (pair 39 120) (pair 40 120)
-        (pair 41 100) (pair 42 100) (pair 43 100) (pair 44 100) (pair 45 100) (pair 46 100) (pair 47 100) (pair 48 100) (pair 49 100) (pair 50 100)  
+        (pair 41 100) (pair 42 100) (pair 43 100) (pair 44 100) (pair 45 100) (pair 46 100) (pair 47 100) (pair 48 100) (pair 49 100) (pair 50 100) 
     })
     
     (map "DamageMultiplier" { 
@@ -507,7 +507,7 @@
         (pair 23 100) (pair 24 100) (pair 25 50) (pair 26 50) (pair 27 100) (pair 28 100)
         (pair 29 70) (pair 30 70) (pair 31 100) (pair 32 100) (pair 33 80) (pair 34 80)
         (pair 35 50) (pair 36 50) (pair 37 80) (pair 38 80) (pair 39 50) (pair 40 50)
-        (pair 41 0) (pair 42 0) (pair 43 0) (pair 44 0) (pair 45 0) (pair 46 0) (pair 47 0) (pair 48 0) (pair 49 0) (pair 50 0)  
+        (pair 41 0) (pair 42 0) (pair 43 0) (pair 44 0) (pair 45 0) (pair 46 0) (pair 47 0) (pair 48 0) (pair 49 0) (pair 50 0) 
     })
 )
 
@@ -663,7 +663,7 @@
         (piece "Factory" Each) 
         (piece "Town" Each) 
         (piece "Airport" Each) 
-        (piece "Dock" Each)     
+        (piece "Dock" Each)   
         
         (piece "Soldier" Each (or {"HumanMove" "CloseCombatAttack" "HealMove"}))
         (piece "Motorbike" Each (or {"HumanMove" "CloseCombatAttack" "HealMove"}))
@@ -697,7 +697,7 @@
     }) 
     (rules 
         (meta (passEnd NoEnd))
-        (start {   
+        (start {  
             <Scenario:buildingSetup>
             <Scenario:pieceSetup>
             <Scenario:shopSetup>
@@ -785,10 +785,10 @@
         (place "Dock0" (sites {"I7"}) state:7 value:100)
         (place "Base1" (sites {"A4"}) state:7 value:100) 
         (place "Base2" (sites {"J4"}) state:7 value:100)
-        >    
+        >  
         <
         
-        >   
+        >  
         <
         (place "Soldier1" (handSite 1 0) count:30 state:1 value:30) (place "Soldier2" (handSite 2 0) count:30 state:1 value:30)
         (place "Motorbike1" (handSite 1 1) count:50 state:1 value:40) (place "Motorbike2" (handSite 2 1) count:50 state:1 value:40)
@@ -812,11 +812,11 @@
         >
         <
         100
-        >         
+        >     
         <
         (hand Placement P1 scale:0.9 offsetX:0.05 offsetY:0.85)
         (hand Placement P2 scale:0.9 offsetX:0.05 offsetY:0.17)
-        >   
+        >  
         "Basic Scenario"
     )**
     
@@ -849,10 +849,10 @@
         (place "Factory2" (sites {"N3" "N6" "L5"}) state:7 value:100)
         (place "Base1" (sites {"A4"}) state:7 value:100) 
         (place "Base2" (sites {"N4"}) state:7 value:100)
-        >    
+        >  
         <
         
-        >  
+        > 
         <
         (place "Soldier1" (handSite 1 0) count:30 state:1 value:30) (place "Soldier2" (handSite 2 0) count:30 state:1 value:30)
         (place "Motorbike1" (handSite 1 1) count:50 state:1 value:40) (place "Motorbike2" (handSite 2 1) count:50 state:1 value:40)
@@ -868,11 +868,11 @@
         > 
         <
         100
-        >   
+        >  
         <
         (hand Placement P1 scale:0.9 offsetX:0.05 offsetY:0.83)
         (hand Placement P2 scale:0.9 offsetX:0.05 offsetY:0.2)
-        >           
+        >      
         "Basic Scenario"
     )
     
@@ -905,10 +905,10 @@
         "F2" "F4" "F6" "F8" "I2" "I4" "I6" "I8"}) state:7 value:100) 
         (place "Base1" (sites {"B8"}) state:7 value:100) 
         (place "Base2" (sites {"M2"}) state:7 value:100)
-        >    
+        >  
         <
         
-        >   
+        >  
         <
         (place "Soldier1" (handSite 1 0) count:30 state:1 value:30) (place "Soldier2" (handSite 2 0) count:30 state:1 value:30)
         (place "Motorbike1" (handSite 1 1) count:50 state:1 value:40) (place "Motorbike2" (handSite 2 1) count:50 state:1 value:40)
@@ -924,11 +924,11 @@
         >
         <
         100
-        >   
+        >  
         <
         (hand Placement P1 scale:0.9 offsetX:0.05 offsetY:0.85)
         (hand Placement P2 scale:0.9 offsetX:0.05 offsetY:0.18)
-        >           
+        >      
         "Basic Scenario"
     )
     
@@ -966,10 +966,10 @@
         (place "Base2" (sites {"K4"}) state:7 value:100)
         (place "Dock1" (sites {"C3" "C6"}) state:7 value:100) 
         (place "Dock2" (sites {"K3" "K6"}) state:7 value:100)
-        >    
+        >  
         <
         
-        >   
+        >  
         <
         (place "Soldier1" (handSite 1 0) count:30 state:1 value:30) (place "Soldier2" (handSite 2 0) count:30 state:1 value:30)
         (place "Motorbike1" (handSite 1 1) count:50 state:1 value:40) (place "Motorbike2" (handSite 2 1) count:50 state:1 value:40)
@@ -979,11 +979,11 @@
         >
         <
         100
-        >   
+        >  
         <
         (hand Placement P1 scale:0.4 offsetX:0.3 offsetY:0.83)
         (hand Placement P2 scale:0.4 offsetX:0.3 offsetY:0.2)
-        >           
+        >      
         "Basic Scenario"
     )
     
@@ -1011,10 +1011,10 @@
         (place "Base2" (sites {"M4"}) state:7 value:100)
         (place "Airport1" (sites {"C3" "C6"}) state:7 value:100) 
         (place "Airport2" (sites {"K3" "K6"}) state:7 value:100)
-        >    
+        >  
         <
         
-        >   
+        >  
         <
         (place "Soldier1" (handSite 1 0) count:30 state:1 value:30) (place "Soldier2" (handSite 2 0) count:30 state:1 value:30)
         (place "Motorbike1" (handSite 1 1) count:50 state:1 value:40) (place "Motorbike2" (handSite 2 1) count:50 state:1 value:40)
@@ -1024,11 +1024,11 @@
         >
         <
         100
-        >   
+        >  
         <
         (hand Placement P1 scale:0.5 offsetX:0.29 offsetY:0.83)
         (hand Placement P2 scale:0.5 offsetX:0.29 offsetY:0.2)
-        >           
+        >      
         "Basic Scenario"
     )
     
@@ -1065,10 +1065,10 @@
         (place "Base2" (sites {"G6"}) state:7 value:100)
         (place "Base3" (sites {"F7"}) state:7 value:100) 
         (place "Base4" (sites {"F5"}) state:7 value:100)
-        >    
+        >  
         <
         
-        >   
+        >  
         <
         (place "Soldier1" (handSite 1 0) count:30 state:1 value:30) (place "Soldier2" (handSite 2 0) count:30 state:1 value:30)
         (place "Soldier3" (handSite 3 0) count:30 state:1 value:30) (place "Soldier4" (handSite 4 0) count:30 state:1 value:30)
@@ -1093,10 +1093,10 @@
         >
         <
         100
-        >         
+        >     
         <
         
-        >   
+        >  
         "Basic Scenario"
     )
     
@@ -1107,78 +1107,78 @@
 
 (option "Player 1 Doctrine" <Doctrine1> args:{ <doctrine> }
     {
-    (item "None"  			<"NoDoctrine">  		"The game is played on a 3x3 board.")**
-    (item "Special Forces"  	<"SpecialForces">  	"The game is played on a 4x4 board.")
-    (item "Brute Strength"		<"BruteStrength">  	"The game is played on a 5x5 board.")
-    (item "Sharpshooter"  	<"Sharpshooter">  	"The game is played on a 6x6 board.")
-    (item "Ace Pilot"  		<"AcePilot">  			"The game is played on a 7x7 board.")
-    (item "Sea Dog"  			<"SeaDog">  			"The game is played on an 8x8 board.")
+    (item "None" 			<"NoDoctrine"> 		"The game is played on a 3x3 board.")**
+    (item "Special Forces" 	<"SpecialForces"> 	"The game is played on a 4x4 board.")
+    (item "Brute Strength"		<"BruteStrength"> 	"The game is played on a 5x5 board.")
+    (item "Sharpshooter" 	<"Sharpshooter"> 	"The game is played on a 6x6 board.")
+    (item "Ace Pilot" 		<"AcePilot"> 			"The game is played on a 7x7 board.")
+    (item "Sea Dog" 			<"SeaDog"> 			"The game is played on an 8x8 board.")
     (item "Guerrilla Warfare" 	<"GuerrillaWarfare"> 	"The game is played on a 3x3 board.")
-    (item "Foreign Invader"  	<"ForeignInvader">  	"The game is played on a 3x3 board.")
-    (item "Conscription"  	<"Conscription">  	"The game is played on a 3x3 board.")
-    (item "Elite Training"  	<"EliteTraining">  	"The game is played on a 3x3 board.")
-    (item "Glass Cannon"  	<"GlassCannon">  		"The game is played on a 3x3 board.")
-    (item "Hardened Resolve"  <"HardenedResolve"> 	"The game is played on a 3x3 board.")
+    (item "Foreign Invader" 	<"ForeignInvader"> 	"The game is played on a 3x3 board.")
+    (item "Conscription" 	<"Conscription"> 	"The game is played on a 3x3 board.")
+    (item "Elite Training" 	<"EliteTraining"> 	"The game is played on a 3x3 board.")
+    (item "Glass Cannon" 	<"GlassCannon"> 		"The game is played on a 3x3 board.")
+    (item "Hardened Resolve" <"HardenedResolve"> 	"The game is played on a 3x3 board.")
     (item "Preemptive Strike" 	<"PreemptiveStrike"> 	"The game is played on a 3x3 board.")
-    (item "Retaliation"  		<"Retaliation">  		"The game is played on a 3x3 board.")
-    (item "Lady Luck"  		<"LadyLuck">  		"The game is played on a 3x3 board.")
+    (item "Retaliation" 		<"Retaliation"> 		"The game is played on a 3x3 board.")
+    (item "Lady Luck" 		<"LadyLuck"> 		"The game is played on a 3x3 board.")
 })
 
 (option "Player 2 Doctrine" <Doctrine2> args:{ <doctrine> }
     {
-    (item "None"  			<"NoDoctrine">  		"The game is played on a 3x3 board.")**
-    (item "Special Forces"  	<"SpecialForces">  	"The game is played on a 4x4 board.")
-    (item "Brute Strength"		<"BruteStrength">  	"The game is played on a 5x5 board.")
-    (item "Sharpshooter"  	<"Sharpshooter">  	"The game is played on a 6x6 board.")
-    (item "Ace Pilot"  		<"AcePilot">  			"The game is played on a 7x7 board.")
-    (item "Sea Dog"  			<"SeaDog">  			"The game is played on an 8x8 board.")
+    (item "None" 			<"NoDoctrine"> 		"The game is played on a 3x3 board.")**
+    (item "Special Forces" 	<"SpecialForces"> 	"The game is played on a 4x4 board.")
+    (item "Brute Strength"		<"BruteStrength"> 	"The game is played on a 5x5 board.")
+    (item "Sharpshooter" 	<"Sharpshooter"> 	"The game is played on a 6x6 board.")
+    (item "Ace Pilot" 		<"AcePilot"> 			"The game is played on a 7x7 board.")
+    (item "Sea Dog" 			<"SeaDog"> 			"The game is played on an 8x8 board.")
     (item "Guerrilla Warfare" 	<"GuerrillaWarfare"> 	"The game is played on a 3x3 board.")
-    (item "Foreign Invader"  	<"ForeignInvader">  	"The game is played on a 3x3 board.")
-    (item "Conscription"  	<"Conscription">  	"The game is played on a 3x3 board.")
-    (item "Elite Training"  	<"EliteTraining">  	"The game is played on a 3x3 board.")
-    (item "Glass Cannon"  	<"GlassCannon">  		"The game is played on a 3x3 board.")
-    (item "Hardened Resolve"  <"HardenedResolve"> 	"The game is played on a 3x3 board.")
+    (item "Foreign Invader" 	<"ForeignInvader"> 	"The game is played on a 3x3 board.")
+    (item "Conscription" 	<"Conscription"> 	"The game is played on a 3x3 board.")
+    (item "Elite Training" 	<"EliteTraining"> 	"The game is played on a 3x3 board.")
+    (item "Glass Cannon" 	<"GlassCannon"> 		"The game is played on a 3x3 board.")
+    (item "Hardened Resolve" <"HardenedResolve"> 	"The game is played on a 3x3 board.")
     (item "Preemptive Strike" 	<"PreemptiveStrike"> 	"The game is played on a 3x3 board.")
-    (item "Retaliation"  		<"Retaliation">  		"The game is played on a 3x3 board.")
-    (item "Lady Luck"  		<"LadyLuck">  		"The game is played on a 3x3 board.")
+    (item "Retaliation" 		<"Retaliation"> 		"The game is played on a 3x3 board.")
+    (item "Lady Luck" 		<"LadyLuck"> 		"The game is played on a 3x3 board.")
 })
 
 (option "Player 3 Doctrine" <Doctrine3> args:{ <doctrine> }
     {
-    (item "None"  			<"NoDoctrine">  		"The game is played on a 3x3 board.")**
-    (item "Special Forces"  	<"SpecialForces">  	"The game is played on a 4x4 board.")
-    (item "Brute Strength"		<"BruteStrength">  	"The game is played on a 5x5 board.")
-    (item "Sharpshooter"  	<"Sharpshooter">  	"The game is played on a 6x6 board.")
-    (item "Ace Pilot"  		<"AcePilot">  			"The game is played on a 7x7 board.")
-    (item "Sea Dog"  			<"SeaDog">  			"The game is played on an 8x8 board.")
+    (item "None" 			<"NoDoctrine"> 		"The game is played on a 3x3 board.")**
+    (item "Special Forces" 	<"SpecialForces"> 	"The game is played on a 4x4 board.")
+    (item "Brute Strength"		<"BruteStrength"> 	"The game is played on a 5x5 board.")
+    (item "Sharpshooter" 	<"Sharpshooter"> 	"The game is played on a 6x6 board.")
+    (item "Ace Pilot" 		<"AcePilot"> 			"The game is played on a 7x7 board.")
+    (item "Sea Dog" 			<"SeaDog"> 			"The game is played on an 8x8 board.")
     (item "Guerrilla Warfare" 	<"GuerrillaWarfare"> 	"The game is played on a 3x3 board.")
-    (item "Foreign Invader"  	<"ForeignInvader">  	"The game is played on a 3x3 board.")
-    (item "Conscription"  	<"Conscription">  	"The game is played on a 3x3 board.")
-    (item "Elite Training"  	<"EliteTraining">  	"The game is played on a 3x3 board.")
-    (item "Glass Cannon"  	<"GlassCannon">  		"The game is played on a 3x3 board.")
-    (item "Hardened Resolve"  <"HardenedResolve"> 	"The game is played on a 3x3 board.")
+    (item "Foreign Invader" 	<"ForeignInvader"> 	"The game is played on a 3x3 board.")
+    (item "Conscription" 	<"Conscription"> 	"The game is played on a 3x3 board.")
+    (item "Elite Training" 	<"EliteTraining"> 	"The game is played on a 3x3 board.")
+    (item "Glass Cannon" 	<"GlassCannon"> 		"The game is played on a 3x3 board.")
+    (item "Hardened Resolve" <"HardenedResolve"> 	"The game is played on a 3x3 board.")
     (item "Preemptive Strike" 	<"PreemptiveStrike"> 	"The game is played on a 3x3 board.")
-    (item "Retaliation"  		<"Retaliation">  		"The game is played on a 3x3 board.")
-    (item "Lady Luck"  		<"LadyLuck">  		"The game is played on a 3x3 board.")
+    (item "Retaliation" 		<"Retaliation"> 		"The game is played on a 3x3 board.")
+    (item "Lady Luck" 		<"LadyLuck"> 		"The game is played on a 3x3 board.")
 })
 
 (option "Player 4 Doctrine" <Doctrine4> args:{ <doctrine> }
     {
-    (item "None"  			<"NoDoctrine">  		"The game is played on a 3x3 board.")**
-    (item "Special Forces"  	<"SpecialForces">  	"The game is played on a 4x4 board.")
-    (item "Brute Strength"		<"BruteStrength">  	"The game is played on a 5x5 board.")
-    (item "Sharpshooter"  	<"Sharpshooter">  	"The game is played on a 6x6 board.")
-    (item "Ace Pilot"  		<"AcePilot">  			"The game is played on a 7x7 board.")
-    (item "Sea Dog"  			<"SeaDog">  			"The game is played on an 8x8 board.")
+    (item "None" 			<"NoDoctrine"> 		"The game is played on a 3x3 board.")**
+    (item "Special Forces" 	<"SpecialForces"> 	"The game is played on a 4x4 board.")
+    (item "Brute Strength"		<"BruteStrength"> 	"The game is played on a 5x5 board.")
+    (item "Sharpshooter" 	<"Sharpshooter"> 	"The game is played on a 6x6 board.")
+    (item "Ace Pilot" 		<"AcePilot"> 			"The game is played on a 7x7 board.")
+    (item "Sea Dog" 			<"SeaDog"> 			"The game is played on an 8x8 board.")
     (item "Guerrilla Warfare" 	<"GuerrillaWarfare"> 	"The game is played on a 3x3 board.")
-    (item "Foreign Invader"  	<"ForeignInvader">  	"The game is played on a 3x3 board.")
-    (item "Conscription"  	<"Conscription">  	"The game is played on a 3x3 board.")
-    (item "Elite Training"  	<"EliteTraining">  	"The game is played on a 3x3 board.")
-    (item "Glass Cannon"  	<"GlassCannon">  		"The game is played on a 3x3 board.")
-    (item "Hardened Resolve"  <"HardenedResolve"> 	"The game is played on a 3x3 board.")
+    (item "Foreign Invader" 	<"ForeignInvader"> 	"The game is played on a 3x3 board.")
+    (item "Conscription" 	<"Conscription"> 	"The game is played on a 3x3 board.")
+    (item "Elite Training" 	<"EliteTraining"> 	"The game is played on a 3x3 board.")
+    (item "Glass Cannon" 	<"GlassCannon"> 		"The game is played on a 3x3 board.")
+    (item "Hardened Resolve" <"HardenedResolve"> 	"The game is played on a 3x3 board.")
     (item "Preemptive Strike" 	<"PreemptiveStrike"> 	"The game is played on a 3x3 board.")
-    (item "Retaliation"  		<"Retaliation">  		"The game is played on a 3x3 board.")
-    (item "Lady Luck"  		<"LadyLuck">  		"The game is played on a 3x3 board.")
+    (item "Retaliation" 		<"Retaliation"> 		"The game is played on a 3x3 board.")
+    (item "Lady Luck" 		<"LadyLuck"> 		"The game is played on a 3x3 board.")
 })
 
 //------------------------------------------------------------------------------

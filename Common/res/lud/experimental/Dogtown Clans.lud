@@ -10,7 +10,7 @@
         (+
             (results
                 from:(forEach
-                    (difference (difference (sites Board) (sites Occupied by:#1)) (sites Occupied by:Neutral))  
+                    (difference (difference (sites Board) (sites Occupied by:#1)) (sites Occupied by:Neutral)) 
                     if:("IsControlledBy" #1 (site))
                 )
                 to:(from) 
@@ -193,8 +193,8 @@
         (player Colour P2 (colour Cream))
         (piece Scale P1 "Counter" 0.98)
         (piece Scale P2 "Counter" 0.98)
-        //  (piece Colour P1 "Counter" fillColour:(colour 0 0 0 0) strokeColour:(colour 0 0 0 0)) 
-        //  (piece Colour P2 "Counter" fillColour:(colour 0 0 0 0) strokeColour:(colour 0 0 0 0)) 
+        // (piece Colour P1 "Counter" fillColour:(colour 0 0 0 0) strokeColour:(colour 0 0 0 0)) 
+        // (piece Colour P2 "Counter" fillColour:(colour 0 0 0 0) strokeColour:(colour 0 0 0 0)) 
         (piece Colour Neutral "X" fillColour:(colour 0 0 0 0) strokeColour:(colour 0 0 0 0)) 
         (board Colour Phase0 "ColourBackground")
         (board StyleThickness InnerEdges 0.4)
@@ -206,9 +206,9 @@
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
         (show Edges Diagonal <Grid:diagShow> (colour DarkGrey))
-    (board Background fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.3 scaleY:1.3)// offsetX:0.021 offsetY:-0.015)  
-    //  (piece Foreground P1 "Counter" image:"Counter" fillColour:(colour 120 36 0) edgeColour:(colour Black) scale:0.98)
-    //  (piece Foreground P2 "Counter" image:"Counter" fillColour:(colour Cream) edgeColour:(colour VeryDarkGrey) scale:0.98)
+    (board Background fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.3 scaleY:1.3)// offsetX:0.021 offsetY:-0.015) 
+    // (piece Foreground P1 "Counter" image:"Counter" fillColour:(colour 120 36 0) edgeColour:(colour Black) scale:0.98)
+    // (piece Foreground P2 "Counter" image:"Counter" fillColour:(colour Cream) edgeColour:(colour VeryDarkGrey) scale:0.98)
     (piece Foreground P1 "Counter" image:"Hyena" fillColour:(colour 240	240	170 60) edgeColour:(colour Black) scale:0.43 offsetY:0.1)
     (piece Foreground P2 "Counter" image:"Hyena" fillColour:(colour 120 36 0 60) edgeColour:(colour VeryDarkGrey) scale:0.42 offsetY:0.1)
     (piece Foreground Neutral "X" image:"Cross" fillColour:(colour DarkBlue) edgeColour:(colour DarkBlue) scale:.45 offsetX:.16 offsetY:.2)

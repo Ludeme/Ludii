@@ -16,12 +16,12 @@
             (track "TrackCW2" "24,E,S1,W" loop:True P2)
             }
         )
-        (regions "Home" P1 (sites Track "TrackCCW1"))               // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))               // P2 home
+        (regions "Home" P1 (sites Track "TrackCCW1"))        // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))        // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))  // P2 inner Home
-        (regions "Outer" P1 (sites Bottom))                    // P1 outer Home
-        (regions "Outer" P2 (sites Top))                      // P2 outer Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top))) // P2 inner Home
+        (regions "Outer" P1 (sites Bottom))          // P1 outer Home
+        (regions "Outer" P2 (sites Top))           // P2 outer Home
         (piece "Seed" Shared)
         (map "LeftMostOuter" {(pair P1 0) (pair P2 31)})
         (map "SecondLeftInner" {(pair P1 9) (pair P2 22)})

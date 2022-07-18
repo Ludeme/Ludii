@@ -45,7 +45,7 @@
         #1 
         (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
-    )  	
+    ) 	
 )
 
 (define "StepMove"
@@ -54,7 +54,7 @@
         #1
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
-    )  	
+    ) 	
 )
 
 (define "PlaceAPiece"
@@ -70,7 +70,7 @@
             ) 
             ifAfterwards:(not ("IsInCheck" "Osho" #2 (forEach Piece #1)))
         )
-    })  	
+    }) 	
 )
 
 (define "CorrectColumn"

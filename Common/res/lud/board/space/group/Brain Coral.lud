@@ -131,7 +131,7 @@
             (do
                 (move Add (to (sites Empty)))
                 ifAfterwards:("AllHave1Connection2Edge" (sites Around (last To) "ConnectionDirection" includeSelf:True)) 
-                (then <Scoring:selScoring>)  
+                (then <Scoring:selScoring>) 
         ))
         (end 
             (if (no Moves Next) {
@@ -279,7 +279,7 @@
             
             There is no passing. 
             
-            The game ends when no more placements can be made.  
+            The game ends when no more placements can be made. 
             
             Players score one point for every stone in their largest group, then, if applicable, score bonus points according to the selected option.
             
@@ -322,5 +322,5 @@
         (show Piece Value "Disc" Middle)
         (board Background image:<BoardShape:backgroundImage> fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.2 scaleY:1.15) 
         }
-    )  
+    ) 
 )

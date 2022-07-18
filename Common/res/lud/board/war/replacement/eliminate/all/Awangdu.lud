@@ -20,7 +20,7 @@
     (equipment 
         { 
         (board (rectangle 5 12) 
-            {  
+            { 
             (track "Track1" "0,E,N1,W,N1,E,N1,W,N1,E" P1 directed:True)
             (track "Track2" "59,W,S1,E,S1,W,S1,E,S1,W" P2 directed:True)
             }
@@ -81,7 +81,7 @@
 
 (option "High mouths value" <High> args:{ <value> }
     {
-    (item "10" <10> "0 or 6 mouths correspond to 10.")*  
+    (item "10" <10> "0 or 6 mouths correspond to 10.")* 
     (item "11" <11> "0 or 6 mouths correspond to 11.")
     (item "12" <12> "0 or 6 mouths correspond to 12.")
     (item "13" <13> "0 or 6 mouths correspond to 13.")

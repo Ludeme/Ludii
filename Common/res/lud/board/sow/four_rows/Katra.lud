@@ -16,8 +16,8 @@
         )
         (regions "Home" P1 (sites Track "TrackCCW1")) // P1 Home
         (regions "Home" P2 (sites Track "TrackCCW2")) // P2 home
-        (regions "Outer" P1 (sites Bottom))      // P1 outer Home
-        (regions "Outer" P2 (sites Top))       // P2 outer Home
+        (regions "Outer" P1 (sites Bottom))   // P1 outer Home
+        (regions "Outer" P2 (sites Top))    // P2 outer Home
         (piece "Seed" Shared)
         (hand Each)
     }) 
@@ -145,8 +145,8 @@
 
 (option "Board Size" <Board> args:{ <rowSize> <CCW2> <CW1> <CW2> }
     {
-    (item "6"  <6> <"12,E,N1,W"> <"5,W,N1,E"> <"18,E,S1,W"> "Each player has 6 holes on each row.") 
-    (item "8"  <8> <"16,E,N1,W"> <"7,W,N1,E"> <"24,E,S1,W"> "Each player has 8 holes on each row.")*  
+    (item "6" <6> <"12,E,N1,W"> <"5,W,N1,E"> <"18,E,S1,W"> "Each player has 6 holes on each row.") 
+    (item "8" <8> <"16,E,N1,W"> <"7,W,N1,E"> <"24,E,S1,W"> "Each player has 8 holes on each row.")* 
     (item "10" <10> <"20,E,N1,W"> <"9,W,N1,E"> <"30,E,S1,W"> "Each player has 10 holes on each row.") 
 })
 

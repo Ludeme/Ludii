@@ -42,8 +42,8 @@
             (track "TrackCW" "6,E,S,W" loop:True)
             }
         )
-        (regions P1 (sites Bottom))          // P1 home
-        (regions P2 (sites Top))            // P2 home
+        (regions P1 (sites Bottom))     // P1 home
+        (regions P2 (sites Top))      // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
         (piece "Seed" Shared)
         }
@@ -69,13 +69,13 @@
 
 (option "Play Rules" <Capture> args:{ <doneSoFar> <numCounters> <ruleSecondCapture> }
     {
-    (item "First capture = 1"  
+    (item "First capture = 1" 
         <1> 
         <1>
         <>
         "The first capture must be of one counter."
-    )  
-    (item "First capture = 3, Second Capture = 1"  
+    ) 
+    (item "First capture = 3, Second Capture = 1" 
         <2> 
         <3>
         <(and (= "NumCaptureDone" 1) (= (count at:(to)) 1))>

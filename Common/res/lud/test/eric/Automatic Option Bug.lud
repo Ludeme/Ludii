@@ -215,7 +215,7 @@
                         
                         The goal is to have the higher total piece value in play when the board is full. However, pieces on the outermost cells don't score because they are invulnerable.
                         
-                        The idea originated in a search for a playable game based on using surrounding of pieces by triangular formations.  
+                        The idea originated in a search for a playable game based on using surrounding of pieces by triangular formations. 
                         "
                     )
                     (rules "Definitions:
@@ -261,7 +261,7 @@
                     (piece Colour P1 state:0 fillColour:(colour Black) strokeColour:(colour 100 100 100))
                     (piece Colour P1 state:1 fillColour:(colour 110 120 110 50) strokeColour:(colour 100 100 100))
                     (piece Colour P1 state:2 fillColour:(colour Black) strokeColour:(colour 100 100 100))
-                    (piece Colour P2 state:0 fillColour:(colour LightOrange) strokeColour:(colour 100 100 100))  
+                    (piece Colour P2 state:0 fillColour:(colour LightOrange) strokeColour:(colour 100 100 100)) 
                     (piece Colour P2 state:1 fillColour:(colour 255 170 55 90) strokeColour:(colour 100 100 100))
                     (piece Colour P2 state:2 fillColour:(colour LightOrange) strokeColour:(colour 100 100 100))
                     (piece Background value:1 image:"disc.svg"fillColour:(colour 0 0 0 100) edgeColour:(colour 0 0 0 0) scale:.7)
@@ -272,7 +272,7 @@
                     (region Colour (sites State 1) (colour 160 200 170 150))
                     (region Colour (sites State 2) (colour 160 200 170))
                 (show Piece Value Middle scale:.7 offsetX:.28 offsetY:.2) // valueOutline:True scale:.8)
-                //  (show Piece State) 
+                // (show Piece State) 
                 }
             )
             (ai (heuristics (score weight:3)))

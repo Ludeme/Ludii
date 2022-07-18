@@ -16,8 +16,8 @@
             }
         )
         (piece "Seed" Shared) 
-        (regions P1 (sites Bottom))          // P1 home
-        (regions P2 (sites Top))            // P2 home  
+        (regions P1 (sites Bottom))     // P1 home
+        (regions P2 (sites Top))      // P2 home 
         <Track:stores> // kalahs (storage pits)
     }) 
     (rules 
@@ -71,7 +71,7 @@
 
 (option "Direction" <Track> args:{ <directionP1> <directionP2> <stores> }
     {
-    (item "CCW" <"1,E,ENE,WNW,W"> <"1,E,N,W,WSW"> <(map {(pair P1 LastSite) (pair P2 FirstSite)})> "Sowing occurs in CCW.")*  
+    (item "CCW" <"1,E,ENE,WNW,W"> <"1,E,N,W,WSW"> <(map {(pair P1 LastSite) (pair P2 FirstSite)})> "Sowing occurs in CCW.")* 
     (item "CW" <"7,W,WNW,ENE,E"> <"7,W,N,E,ESE"> <(map {(pair P1 FirstSite) (pair P2 LastSite)})> "Sowing occurs in CW.")
 })
 
@@ -101,7 +101,7 @@
         (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Sri Lanka., around 1909.")
+        (origin "This game was played in Sri Lanka., around 1909.")
         }
     )
     

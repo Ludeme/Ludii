@@ -44,7 +44,7 @@
         (play (forEach Piece
                 (then 
                     (and 
-                        (set Score P1 (count Sites in:(sites Occupied by:P1)))	  
+                        (set Score P1 (count Sites in:(sites Occupied by:P1)))	 
                         (set Score P2 (count Sites in:(sites Occupied by:P2)))
                     )
                 )	

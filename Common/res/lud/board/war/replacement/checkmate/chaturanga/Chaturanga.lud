@@ -114,18 +114,18 @@
 
 (option "Play Rules" <Elephant> args:{ <move> }
     {
-    (item "Elephant Move is Orthogonal Jump"       
-        <(move Hop Orthogonal (between if:True) (to if:(not ("IsFriendAt" (to))) (apply (remove (to)))))>  
+    (item "Elephant Move is Orthogonal Jump"    
+        <(move Hop Orthogonal (between if:True) (to if:(not ("IsFriendAt" (to))) (apply (remove (to)))))> 
         "The elephants can jump only orthogonally."
     )
-    (item "Elephant Move is Diagonal Jump"       
-        <(move Hop Diagonal (between if:True) (to if:(not ("IsFriendAt" (to))) (apply (remove (to)))))>  
+    (item "Elephant Move is Diagonal Jump"    
+        <(move Hop Diagonal (between if:True) (to if:(not ("IsFriendAt" (to))) (apply (remove (to)))))> 
         "The elephants can jump only diagonally."
     ) 
-    (item "Elephant Move is like a Silver in Shogi"       
-        <(move Step (directions {Forward BL BR FL FR}) (to if:(not ("IsFriendAt" (to))) (apply (remove (to)))))>  
+    (item "Elephant Move is like a Silver in Shogi"    
+        <(move Step (directions {Forward BL BR FL FR}) (to if:(not ("IsFriendAt" (to))) (apply (remove (to)))))> 
         "The elephants can move like a Silver in Shogi."
-    )   
+    )  
 })
 
 //------------------------------------------------------------------------------
@@ -166,7 +166,7 @@
         (version "1.3.5")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in India, from around 621 to 1138.")
+        (origin "This game was played in India, from around 621 to 1138.")
         }
     )
     

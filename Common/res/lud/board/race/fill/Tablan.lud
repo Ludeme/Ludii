@@ -141,12 +141,12 @@
         (version "1.3.5")
         (classification "board/race/fill")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1979.")
+        (origin "This game was played in India, around 1979.")
         }
     )
     
     (graphics {
-        (show Edges Hidden)  
+        (show Edges Hidden) 
         (show Symbol "disc" Vertex (sites Board) fillColour:(colour White) edgeColour:(colour Black) scale:1)
         (piece Colour "Die" state:1 fillColour:(colour Black))
         (piece Scale "Stick" 0.5)

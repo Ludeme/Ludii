@@ -39,11 +39,11 @@
     (item "No Choice" 
         <(move Pass (then (moveAgain)))> 
         "Players reroll until they roll an empty cell."
-    )*  
+    )* 
     (item "Some Choice" 
         <(move Add ("PlayerPiece") (to (sites Empty)))> 
         "Player chooses if the rolled cell is occupied."
-    )  
+    ) 
 })
 
 //------------------------------------------------------------------------------

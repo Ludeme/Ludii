@@ -26,9 +26,9 @@
 
 (option "Modelisation" <Model> args:{ <board> <rules> }
     {
-    (item "1D"   
+    (item "1D"  
         <(board (rectangle 1 7))>
-        <  
+        < 
         (play 
             (move Add 
                 (to 
@@ -43,8 +43,8 @@
         (end (if (is Line 4 byLevel:True) (result Mover Win)))
         >
         ""
-    )**  
-    (item "2D"     
+    )** 
+    (item "2D"   
         <(board (rectangle 6 7))>
         <
         (play 
@@ -56,7 +56,7 @@
         (end (if (is Line 4 through:(last To afterConsequence:True)) (result Mover Win)))
         >
         ""
-    )  
+    ) 
 })
 
 (metadata

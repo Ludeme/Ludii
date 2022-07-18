@@ -21,7 +21,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )  
+    ) 
 )
 
 (define "DecideToCastle"
@@ -211,5 +211,5 @@
         (piece Scale "Pawn" 0.825)
         (piece Families {"Defined" "Microsoft" "Pragmata" "Symbola"})
         (board Style Chess)
-    })  
+    }) 
 )

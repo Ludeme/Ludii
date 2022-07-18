@@ -22,8 +22,8 @@
             (and
                 {
                 // use stacking concept instead of replace concept -
-                // physical boards would use stacks to track which can be played onto  
-                //   (remove (last From)) // not used
+                // physical boards would use stacks to track which can be played onto 
+                //  (remove (last From)) // not used
                 (add
                     (piece (id "Disc" Mover))
                     (to (last From))
@@ -147,18 +147,18 @@
             
             The game, when played by competitive players, typically needs only a limited space. This is enforced with a minimal board. The board, in turn, affects play by providing greater security for pieces along the edges, and by forcing the board to reach densities that limit move choices.
             
-            This area restriction is offset by a soft phase change that allows placement over existing opponent's pieces when no placement to an empty site would allow swapping. This phase greatly increases the opportunity for game-ending moves by opening up many move choices, but it also allows cycles. To ensure the game is finite, any given site may only be stacked to level 2, and only the visible pieces are swapped.  (On a physical board this would be tracked by stacking)
+            This area restriction is offset by a soft phase change that allows placement over existing opponent's pieces when no placement to an empty site would allow swapping. This phase greatly increases the opportunity for game-ending moves by opening up many move choices, but it also allows cycles. To ensure the game is finite, any given site may only be stacked to level 2, and only the visible pieces are swapped. (On a physical board this would be tracked by stacking)
             
             If there are no moves left for either player, the game is a draw. However, on all but the smallest board sizes offered here, games typically end with a winner, even before the piece replacement phase is reached. 
             
-        The larger size boards additionally minimize the edge effects and the transition to the replacement phase.  Playing on even larger boards, does not affect play very much, other thanto minimize stacking.")
+        The larger size boards additionally minimize the edge effects and the transition to the replacement phase. Playing on even larger boards, does not affect play very much, other thanto minimize stacking.")
         (rules "Goal: Form an orthogonally connected path of friendly stones that surrounds at least one non-friendly stone.
             
             Set-up:
             Two stones, one of each colour, are placed next to each other adjacent to the center of the board. 
             Then Black starts.
             
-            Play:  
+            Play: 
             Each turn has two parts that both must be completed: A PLACEMENT and a SWAP.
             
             -- The PLACEMENT is made diagonally from a selected stone of the same color.

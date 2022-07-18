@@ -67,8 +67,8 @@
         (piece "Seed" Shared)
         (piece "Ball" Shared)
         (hand Each size:2)
-        (regions P1 (sites Bottom))           // P1 home
-        (regions P2 (sites Top))            // P2 home
+        (regions P1 (sites Bottom))      // P1 home
+        (regions P2 (sites Top))      // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
         (regions "EndHoles" (sites {"A1" "G1"}))
     }) 
@@ -376,8 +376,8 @@
 //------------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <variant> }
-    {   
-    (item "Mancala World" <> "The rules come from the Mancala World.")**  
+    {  
+    (item "Mancala World" <> "The rules come from the Mancala World.")** 
     }
 )
 

@@ -47,8 +47,8 @@
         )
         (piece "Seed" Shared)
         (hand Each)
-        (regions P1 (sites Bottom))           // P1 home
-        (regions P2 (sites Top))            // P2 home
+        (regions P1 (sites Bottom))      // P1 home
+        (regions P2 (sites Top))      // P2 home
         (map "LeftMost" {(pair P1 0) (pair P2 11)})
     }) 
     (rules 
@@ -167,7 +167,7 @@
                                 (and {
                                     (forget Value "OwnedP1" All)
                                     (forget Value "OwnedP2" All)
-                                    (set Var "Round" (+ 1 (var "Round")))            		  
+                                    (set Var "Round" (+ 1 (var "Round")))      		 
                                 })
                             )
                         )

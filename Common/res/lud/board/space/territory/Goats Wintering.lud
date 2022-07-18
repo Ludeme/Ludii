@@ -128,7 +128,7 @@
         (play
             (or {
                 (move Pass)
-                ("PlaceOutOfSight")     
+                ("PlaceOutOfSight")   
                 (forEach Piece 
                     (or
                         ("Move2Friends") 
@@ -169,18 +169,18 @@
 
 (option "Board Size" <BoardSize> args:{<gridType>} 
     {
-    (item "2 Limp" <(hex Limping 2)>  "Edge 2,3 Hex board")
-    (item "3 Limp" <(hex Limping 3)>  "Edge 3,4 Hex board")**
-    (item "4 Limp" <(hex Limping 4)>  "Edge 4,5 Hex board")
-    (item "5 Limp" <(hex Limping 5)>  "Edge 5,6 Hex board")
-    (item "6 Limp" <(hex Limping 6)>  "Edge 6,7 Hex board")
-    (item "10 limp" <(hex Limping 10)>  "Edge 10,11 Hex board")
-    (item "4x4"  <(rotate 45 (square 4))>  "Order 4 Diamond board")*
-    (item "5x5"  <(rotate 45 (square 5))>  "Order 5 Diamond board")
-    (item "6x6"  <(rotate 45 (square 6))>  "Order 6 Diamond board")
-    (item "7x7"  <(rotate 45 (square 7))>  "Order 7 Diamond board")
-    (item "8x8"  <(rotate 45 (square 8))>  "Order 8 Diamond board")
-    (item "9x9"  <(rotate 45 (square 9))>  "Order 9 Diamond board")
+    (item "2 Limp" <(hex Limping 2)> "Edge 2,3 Hex board")
+    (item "3 Limp" <(hex Limping 3)> "Edge 3,4 Hex board")**
+    (item "4 Limp" <(hex Limping 4)> "Edge 4,5 Hex board")
+    (item "5 Limp" <(hex Limping 5)> "Edge 5,6 Hex board")
+    (item "6 Limp" <(hex Limping 6)> "Edge 6,7 Hex board")
+    (item "10 limp" <(hex Limping 10)> "Edge 10,11 Hex board")
+    (item "4x4" <(rotate 45 (square 4))> "Order 4 Diamond board")*
+    (item "5x5" <(rotate 45 (square 5))> "Order 5 Diamond board")
+    (item "6x6" <(rotate 45 (square 6))> "Order 6 Diamond board")
+    (item "7x7" <(rotate 45 (square 7))> "Order 7 Diamond board")
+    (item "8x8" <(rotate 45 (square 8))> "Order 8 Diamond board")
+    (item "9x9" <(rotate 45 (square 9))> "Order 9 Diamond board")
     (item "6 Tri" <(hex Triangle 6)> "Order 4 Near Triangle board")
     (item "7 Tri" <(hex Triangle 7)> "Order 5 Near Triangle board")
     (item "8 Tri" <(hex Triangle 8)> "Order 6 Near Triangle board")
@@ -223,7 +223,7 @@
             The game is inspired from Infuse by the same Author, but the clumping here is more open and pronounced and clumps are distance-limited, not line-of-sight limited. 
             
         It may be played on either hex grids with adjacent movement, or square grids with ortho-diagonal diagonal movement.")
-        (rules "--- Goal: Have the warmest goats at end.  The warmth of you goats is the total number of contacts they have with other goats. To find the winner, it is only necessary to count goat-to-goat contacts between their own kind.
+        (rules "--- Goal: Have the warmest goats at end. The warmth of you goats is the total number of contacts they have with other goats. To find the winner, it is only necessary to count goat-to-goat contacts between their own kind.
             
             The game start on an empty board. Play alternates.
             
@@ -237,7 +237,7 @@
             -- the goat must gain more contacts with adjacent goats of its own kind than before; or 
             
             4. Use the following alternate condition to step-move a goat that cannot move using the previous rule: 
-            -- the step must reduce your goat's net contact with enemy goats.  
+            -- the step must reduce your goat's net contact with enemy goats. 
             
             Exception: Moves using rule 4. are not allowed immediately after the previous player has passed.
             

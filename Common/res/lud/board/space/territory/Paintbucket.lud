@@ -90,8 +90,8 @@
 
 (option "Board Size" <Board> args:{ <board> }
     {
-    (item "6x6"  <6> "A 6x6 board is currently selected")
-    (item "8x8"  <8> "An 8x8 board is currently selected.")*
+    (item "6x6" <6> "A 6x6 board is currently selected")
+    (item "8x8" <8> "An 8x8 board is currently selected.")*
     (item "10x10" <10> "A 10x10 board is currently selected")
     (item "12x12" <12> "A 12x12 board is currently selected")
     }
@@ -99,10 +99,10 @@
 
 (option "Heuristic" <Score> args:{ <running> <start> }
     {
-    (item "Maximize # of Friendly Groups"  <("FlipGroupAndCountFriendly")> <(set Score P1 (count Sites in:(sites Occupied by:P1))) (set Score P2 (count Sites in:(sites Occupied by:P2)))> "A running count of your number of groups is show as a heuristic.")
-    (item "Minimize # of Enemy Groups"  <("FlipGroupAndCountEnemy")> <(set Score P1 (* -1 (count Sites in:(sites Occupied by:P2)))) (set Score P2 (* -1 (count Sites in:(sites Occupied by:P1))))> "A running count of (the inverse of) the number of enemy groups is show as a heuristic.")
-    (item "Maximize Friendly Minus Enemy Groups"  <("FlipGroupAndCalculateDifference")> <> "A running count of your number of groups minus the number of enemy groups is kept.")
-    (item "None"  <("FlipGroup")> <> "No heuristic is used.")*
+    (item "Maximize # of Friendly Groups" <("FlipGroupAndCountFriendly")> <(set Score P1 (count Sites in:(sites Occupied by:P1))) (set Score P2 (count Sites in:(sites Occupied by:P2)))> "A running count of your number of groups is show as a heuristic.")
+    (item "Minimize # of Enemy Groups" <("FlipGroupAndCountEnemy")> <(set Score P1 (* -1 (count Sites in:(sites Occupied by:P2)))) (set Score P2 (* -1 (count Sites in:(sites Occupied by:P1))))> "A running count of (the inverse of) the number of enemy groups is show as a heuristic.")
+    (item "Maximize Friendly Minus Enemy Groups" <("FlipGroupAndCalculateDifference")> <> "A running count of your number of groups minus the number of enemy groups is kept.")
+    (item "None" <("FlipGroup")> <> "No heuristic is used.")*
     }
 )
 

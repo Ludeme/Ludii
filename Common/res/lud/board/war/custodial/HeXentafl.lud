@@ -116,16 +116,16 @@
 
 (option "Board Size" <Board> args:{ <size> <start> <kingMove>}
     {
-    (item "4x4"  
+    (item "4x4" 
         <4> 
         <				
         (place "Thrall2" (sites "Fortresses"))
         (place "Thrall1" {"D3" "C4" "E5"})
-        >    
+        >  
         <Step (to if:(is Empty (to)))>
         "The game is played on a 4x4 hex board."
-    )*  
-    (item "5x5"  
+    )* 
+    (item "5x5" 
         <5> 
         <
         (place "Thrall2" (union (sites {"B2" "B5" "E8" "H8" "E2" "H5"}) (sites "Fortresses")))
@@ -133,7 +133,7 @@
         > 
         <Slide>
         "The game is played on a 5x5 hex board. The King can slide."
-    )  
+    ) 
 })
 
 //-----------------------------------------------------------------

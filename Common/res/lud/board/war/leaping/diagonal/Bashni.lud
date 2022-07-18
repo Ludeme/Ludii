@@ -39,7 +39,7 @@
                             #3
                             if:(and (not (is In (between) (last Between))) ("IsEnemyAt" (between))) 
                             (apply (fromTo (from (between)) (to)))
-                        )   	
+                        )  	
                         (to if:(and 
                                 (is In (from) (sites Occupied by:Mover)) 
                                 (is Empty (to))
@@ -187,7 +187,7 @@
         (version "1.3.5")
         (classification "board/war/leaping/diagonal")
         (credit "Eric Piette")
-        (origin  "This game was played in Russia, around 1875.")
+        (origin "This game was played in Russia, around 1875.")
         }
     )
     

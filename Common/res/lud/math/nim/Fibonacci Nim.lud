@@ -54,13 +54,13 @@
 
 (option "End Rules" <Result> args:{ <type> }
     {
-    (item "Last Mover Loses"  <Next>   "The last mover loses.")  
-    (item "Last Mover Wins"  <Mover>  "The last mover wins.")*  
+    (item "Last Mover Loses" <Next>  "The last mover loses.") 
+    (item "Last Mover Wins" <Mover> "The last mover wins.")* 
 })
 
 (option "Number Piles" <Size> args:{ <pile> }
     {
-    (item "5"  <5>  "The game involves a pile of 5 pieces.")
+    (item "5" <5> "The game involves a pile of 5 pieces.")
     (item "10" <10> "The game involves a pile of 10 pieces.")
     (item "15" <15> "The game involves a pile of 15 pieces.")
     (item "20" <20> "The game involves a pile of 20 pieces.")

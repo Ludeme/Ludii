@@ -209,7 +209,7 @@
         (play
             <Variant:movement>
         )
-        (end       
+        (end    
             (if (and 
                     ("IsInCheck" "King" Next (forEach Piece))
                     ("NextCanNotMove")
@@ -240,7 +240,7 @@
             ifAfterwards:(not ("IsInCheck" "King" Mover))
         )
         > 
-    "The rules of Alfonso X without dice.")*  
+    "The rules of Alfonso X without dice.")* 
     (item "With Dice" 
         <
         (dice d:8 num:1) 
@@ -275,7 +275,7 @@
             ifAfterwards:(not ("IsInCheck" "King" Mover (forEach Piece)))
         )
         > 
-    "The rules of Alfonso X with a die.")  
+    "The rules of Alfonso X with a die.") 
 })
 
 //------------------------------------------------

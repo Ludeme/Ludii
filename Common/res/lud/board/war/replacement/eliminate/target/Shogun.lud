@@ -92,7 +92,7 @@
 
 (option "Shogun Capture" <CheckmateRule> args:{ <Move> <Ending> }
     {
-    (item "Allowed"  	
+    (item "Allowed" 	
         <
         (forEach Piece)
         >
@@ -101,7 +101,7 @@
         >
     "1976 version")**
     
-    (item "Not Allowed"  	
+    (item "Not Allowed" 	
         <
         (do 
             (forEach Piece)

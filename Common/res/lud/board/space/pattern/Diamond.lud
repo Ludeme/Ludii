@@ -3,7 +3,7 @@
 )
 
 (define "SquareFilled"
-    (=  4 
+    (= 4 
         (count Sites in:(forEach ("AllVerticesOfCell") if:(is Mover (who at:(site)))))
     )
 )

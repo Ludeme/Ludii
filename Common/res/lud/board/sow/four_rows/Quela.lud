@@ -38,10 +38,10 @@
             (track "TrackCCW2" <Board:CCW2> loop:True P2)
             }
         )
-        (regions "Home" P1 (sites Track "TrackCCW1"))                   // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))                   // P2 home
-        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))    // P1 Inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))      // P2 Inner home
+        (regions "Home" P1 (sites Track "TrackCCW1"))          // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))          // P2 home
+        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))  // P1 Inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))   // P2 Inner home
         (map "LeftMost" {(pair P1 0) <Board:leftMostP2>})
         (piece "Seed" Shared)
         (hand Each)
@@ -206,8 +206,8 @@
 
 (option "Board Size" <Board> args:{ <size> <CCW2> <leftMostP2>}
     {
-    (item "6"  <6> <"12,E,N1,W"> <(pair P2 23)> "Each player has 6 holes by row.")* 
-    (item "7"  <7> <"14,E,N1,W"> <(pair P2 27)> "Each player has 7 holes by row.") 
+    (item "6" <6> <"12,E,N1,W"> <(pair P2 23)> "Each player has 6 holes by row.")* 
+    (item "7" <7> <"14,E,N1,W"> <(pair P2 27)> "Each player has 7 holes by row.") 
 })
 
 //------------------------------------------------------------------------------

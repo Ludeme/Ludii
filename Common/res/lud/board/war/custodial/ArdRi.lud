@@ -73,8 +73,8 @@
 
 (option "Play Rules" <Capture> args:{ <type> <distance> }
     {
-    (item "Common"    <surround (from (last To)) Orthogonal> <>     "The game is played with the common rules.")  
-    (item "Corrected"  <custodial (from (last To)) Orthogonal> <(max 1)>  "The game is played with the corrected rules.")  
+    (item "Common"  <surround (from (last To)) Orthogonal> <>   "The game is played with the common rules.") 
+    (item "Corrected" <custodial (from (last To)) Orthogonal> <(max 1)> "The game is played with the corrected rules.") 
 })
 
 //------------------------------------------------------------------------------

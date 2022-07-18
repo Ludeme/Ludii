@@ -21,9 +21,9 @@
             (track "Track" <Board:track> loop:True)
         )
         (piece "Seed" Shared)
-        (regions P1 (sites Bottom))           // P1 home
-        (regions P2 (sites Top))            // P2 home
-        (hand Each)    
+        (regions P1 (sites Bottom))      // P1 home
+        (regions P2 (sites Top))      // P2 home
+        (hand Each)  
     }) 
     (rules 
         
@@ -133,9 +133,9 @@
 
 (option "Board Size" <Board> args:{ <size> <track> }
     {
-    (item "6"  <6> <"5,W,N,E"> "Each player has 6 holes.") 
-    (item "8"  <8> <"7,W,N,E"> "Each player has 8 holes.")  
-    (item "12" <12> <"11,W,N,E"> "Each player has 12 holes.")  
+    (item "6" <6> <"5,W,N,E"> "Each player has 6 holes.") 
+    (item "8" <8> <"7,W,N,E"> "Each player has 8 holes.") 
+    (item "12" <12> <"11,W,N,E"> "Each player has 12 holes.") 
 })
 
 //------------------------------------------------------------------------------

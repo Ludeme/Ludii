@@ -1,10 +1,10 @@
 (define "DistInColumn" (count Sites in:(difference (sites Column (column of:(from))) (sites Empty))))
 
-(define "DistInRow"  (count Sites in:(difference (sites Row (row of:(from))) (sites Empty))))
+(define "DistInRow" (count Sites in:(difference (sites Row (row of:(from))) (sites Empty))))
 
-(define "DistInNESW"  (count Sites in:(difference (sites Direction from:(from) (directions {NE SW}) included:True) (sites Empty))))
+(define "DistInNESW" (count Sites in:(difference (sites Direction from:(from) (directions {NE SW}) included:True) (sites Empty))))
 
-(define "DistInNWSE"  (count Sites in:(difference (sites Direction from:(from) (directions {NW SE}) included:True) (sites Empty))))
+(define "DistInNWSE" (count Sites in:(difference (sites Direction from:(from) (directions {NW SE}) included:True) (sites Empty))))
 
 (define "MoveTo" 
     (move Hop
@@ -57,8 +57,8 @@
 
 (option "End rules" <End> args:{ <result> }
     {
-    (item "Simultaneous Group = Draw"  <Draw>  "If the two players make a group in the same turn, the game ends in a draw.")* 
-    (item "Simultaneous Group = Mover Win"  <Win>  "If the two players make a group in the same turn, the mover wins.") 
+    (item "Simultaneous Group = Draw" <Draw> "If the two players make a group in the same turn, the game ends in a draw.")* 
+    (item "Simultaneous Group = Mover Win" <Win> "If the two players make a group in the same turn, the mover wins.") 
 })
 
 //------------------------------------------------------------------------------

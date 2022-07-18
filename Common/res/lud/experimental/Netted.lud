@@ -126,7 +126,7 @@
             (step Orthogonal 
                 (to
                     if:("NotBlockedBy" #1)
-                    //   if:(or (= (to) (var "SitePlaced")) ("NotBlockedBy" #1))
+                    //  if:(or (= (to) (var "SitePlaced")) ("NotBlockedBy" #1))
             ))
             #2
             #3
@@ -174,7 +174,7 @@
         (= (id "Ball" #3) (what at:(site)))
         (and
             (set State at:(site) #2)
-            (if  
+            (if 
                 (= 2 #2)
                 (trigger "Enmeshed" Next)
         ))
@@ -188,8 +188,8 @@
 
 //--------------------------------------------------
 // Find lists of sites to update
-//  ("UpdateListStateAroundPlayerBlocker" #1 #2 (value) Next Mover)
-//  ("UpdateListStateAroundPlayerBlocker" "SuicideP1" 1 (var "SitePlaced") Mover Next)
+// ("UpdateListStateAroundPlayerBlocker" #1 #2 (value) Next Mover)
+// ("UpdateListStateAroundPlayerBlocker" "SuicideP1" 1 (var "SitePlaced") Mover Next)
 
 (define "UpdateListStateAroundPlayerBlocker"
     (if 
@@ -372,7 +372,7 @@
             (apply
                 (and
                     (remove (to) level:(where Level (id "I" Mover) Cell at:(to)))
-                    (set Var "SitePlaced" (to))  
+                    (set Var "SitePlaced" (to)) 
         )))
         stack:True
         (then
@@ -401,7 +401,7 @@
             (apply
                 (and
                     {
-                    (apply (set Var "SitePlaced" (to)))  
+                    (apply (set Var "SitePlaced" (to))) 
                     (remove (to) level:(where Level (id "I" Mover) Cell at:(to)))
                     (remove (to) level:(where Level (id "I" Next) Cell at:(to)))
                     }
@@ -479,7 +479,7 @@
                     (no Moves Mover)
                     }
                 )
-                (if   
+                (if  
                     (is Triggered "Enmeshed" Next)
                     (result Mover Win)
                 )
@@ -511,11 +511,11 @@
     (item "Order 4" <4> "Order 4 board")
     (item "Order 5" <5> "Order 5 board")
     (item "Order 6" <6> "Order 6 board")
-    //  (item "Order 7" <7> "Order 7 board")
-    //  (item "Order 8" <8> "Order 8 board")
-    //  (item "Order 9" <9> "Order 9 board")
-    //  (item "Order 10" <10> "Order 10 board")
-    //  (item "Order 11" <11> "Order 11 board")
+    // (item "Order 7" <7> "Order 7 board")
+    // (item "Order 8" <8> "Order 8 board")
+    // (item "Order 9" <9> "Order 9 board")
+    // (item "Order 10" <10> "Order 10 board")
+    // (item "Order 11" <11> "Order 11 board")
     }
 )
 
@@ -526,9 +526,9 @@
 (metadata
     (info
         {
-        (description "Netted is a race to surround the opponent  Nets include Hex diagonals and single empty spaces, and so can cross each other. It is placement only and so can be played as a paper and pencil game. However the computer version adds markers for the empty space connections which must be removed when the spaces are filled.
+        (description "Netted is a race to surround the opponent Nets include Hex diagonals and single empty spaces, and so can cross each other. It is placement only and so can be played as a paper and pencil game. However the computer version adds markers for the empty space connections which must be removed when the spaces are filled.
             
-    The distinctive features are  1) a novel type of liberty for live groups that involves the count of available edge sites, and 2) the novel definitions for surrounding that include diagonals that cut groups, and connections across single empty spaces that can be broken by the opponent's placement.
+    The distinctive features are 1) a novel type of liberty for live groups that involves the count of available edge sites, and 2) the novel definitions for surrounding that include diagonals that cut groups, and connections across single empty spaces that can be broken by the opponent's placement.
     
     Moves are forced, suicide is prohibited, stalemate is a loss for the player who is stalemated.
     
@@ -591,7 +591,7 @@ A player who cannot place on their turn, loses.")
 (piece Rotate "I" state:3 degrees:0)
 (piece Rotate "I" state:4 degrees:150)
 (piece Rotate "I" state:5 degrees:120)
-//  (piece Rotate "I" state:6 degrees:90)
+// (piece Rotate "I" state:6 degrees:90)
 (piece Scale "I" 1.2) //0.9)
 (board Colour Phase0 "ColourBackground")
 (board StyleThickness InnerEdges 0.4)
@@ -604,7 +604,7 @@ A player who cannot place on their turn, loses.")
 (board Colour OuterEdges (colour Black))
 (show Edges Diagonal Hidden (colour DarkGrey))
 (stackType None)
-//  (show Piece State "I")
+// (show Piece State "I")
 
 }
 )

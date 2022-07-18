@@ -68,8 +68,8 @@
 
 (option "Start Rules" <Rules> args:{ <start> <play> }
     {
-    (item "Othello Mode"   
-        <  (start { 
+    (item "Othello Mode"  
+        < (start { 
             (place "Disc0" {27 36 43} state:1)
             (place "Disc0" {28 35 44} state:2)
         })
@@ -110,7 +110,7 @@
     
     (info
         {
-        (description "MacBeth is a hexagonal translation of Reversi/Othello.  Players alternately place stones of their colour so as to cause custodial capture of lines of opposing pieces, which then flip to the player's colour.  The player who has the most stones on the board when no more moves are possible wins the game.")
+        (description "MacBeth is a hexagonal translation of Reversi/Othello. Players alternately place stones of their colour so as to cause custodial capture of lines of opposing pieces, which then flip to the player's colour. The player who has the most stones on the board when no more moves are possible wins the game.")
         (rules "Reversi is played on a hexhex-6 board with some cells removed. Pieces are double-sided, with each side distinct in some way from the other. Each side designates ownership of that pieces to a certain player when face-up. In Reversi Mode, play begins with the players taking turns placing pieces into the central six hexagons until they are full; in Othello mode, the central six hexagons are pre-filled with alternating Black and White discs. Then players may place their pieces next to an opponent's piece, as long as a straight line can be drawn between the new piece and an existing piece belonging to that player that goes through the opponent's piece. The opponent's pieces between the new piece and the old piece are then flipped and now belong to the player who just played. If a player cannot make a legal move, they pass. Play continues until the board is full or neither player can make a legal move. The player with the most pieces on the board wins.")
         (id "1437")
         (source "<a href=\"https://mindsports.nl/index.php/the-pit/539-macbeth\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />mindsports.nl</a>")

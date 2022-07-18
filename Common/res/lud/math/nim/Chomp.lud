@@ -29,7 +29,7 @@
     (equipment { 
         (board (rectangle <Rows:num> <Columns:num>)) 
         (piece "Chocolate" Shared)
-    })  
+    }) 
     (rules 
         (start (place "Chocolate" (sites Board)))
         (play ("EatChocolate")) 
@@ -92,7 +92,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Chomp is a two-player strategy game played on a rectangular grid made up of smaller square cells, which can be thought of as the blocks of a chocolate bar.")
@@ -111,7 +111,7 @@
         (player Colour Shared (colour 102 61 20))
         (piece Scale "Chocolate" 1.1)
         (no Board)
-    })  
+    }) 
     (ai
         "Chomp_ai"
     )

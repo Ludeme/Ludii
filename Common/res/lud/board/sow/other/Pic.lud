@@ -76,13 +76,13 @@
 
 (option "Start" <Start> args:{ <numSeeds> }
     {
-    (item "9"  <9> "Each hole contains initially 9 seeds.")  
-    (item "12"  <12> "Each hole contains initially 12 seeds.")*  
+    (item "9" <9> "Each hole contains initially 9 seeds.") 
+    (item "12" <12> "Each hole contains initially 12 seeds.")* 
 })
 
 (option "Players" <Player> args:{ <num> <track> <regions> <scores>}
     {
-    (item "2"  <2> <{0 2 4 5 3 1}> 
+    (item "2" <2> <{0 2 4 5 3 1}> 
         <
         (regions P1 (sites {0 2 4}))
         (regions P2 (sites {5 3 1}))
@@ -91,8 +91,8 @@
         (score P1 ("PiecesOwnedBy" P1)) 
         (score P2 ("PiecesOwnedBy" P2))
         >
-    "The game is played with 2 players.")  
-    (item "3"  <3> <{0 1 3 5 7 8 6 4 2}> 
+    "The game is played with 2 players.") 
+    (item "3" <3> <{0 1 3 5 7 8 6 4 2}> 
         <
         (regions P1 (sites {0 1 3}))
         (regions P2 (sites {5 7 8}))
@@ -103,8 +103,8 @@
         (score P2 ("PiecesOwnedBy" P2))
         (score P3 ("PiecesOwnedBy" P3))
         >
-    "The game is played with 3 players.")  
-    (item "4"  <4> <{0 2 4 6 8 10 11 9 7 5 3 1}> 
+    "The game is played with 3 players.") 
+    (item "4" <4> <{0 2 4 6 8 10 11 9 7 5 3 1}> 
         <
         (regions P1 (sites {0 2 4}))
         (regions P2 (sites {6 8 10}))
@@ -117,8 +117,8 @@
         (score P3 ("PiecesOwnedBy" P3))
         (score P4 ("PiecesOwnedBy" P4))
         >
-    "The game is played with 4 players.")  
-    (item "5"  <5> <{0 1 3 5 7 9 11 13 14 12 10 8 6 4 2}> 
+    "The game is played with 4 players.") 
+    (item "5" <5> <{0 1 3 5 7 9 11 13 14 12 10 8 6 4 2}> 
         <
         (regions P1 (sites {0 1 3}))
         (regions P2 (sites {5 7 9}))
@@ -133,7 +133,7 @@
         (score P4 ("PiecesOwnedBy" P4))
         (score P5 ("PiecesOwnedBy" P5))
         >
-    "The game is played with 5 players.")*  
+    "The game is played with 5 players.")* 
 })
 
 //------------------------------------------------------------------------------
@@ -171,7 +171,7 @@
         (version "1.3.5")
         (classification "board/sow")
         (credit "Eric Piette")
-        (origin  "This game was played in Turkey, around 1979.")
+        (origin "This game was played in Turkey, around 1979.")
         }
     )
     

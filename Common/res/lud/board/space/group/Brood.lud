@@ -52,18 +52,18 @@
         ("IsSameSizeAsShapeAtValue" #2) 
         (priority 
             {
-            ("IfThisRotationDo" ("DRow")    ("DCol") #1 #2) 
-            ("IfThisRotationDo" ("DRow")    (- "DRow" "DCol") #1 #2) 
+            ("IfThisRotationDo" ("DRow")  ("DCol") #1 #2) 
+            ("IfThisRotationDo" ("DRow")  (- "DRow" "DCol") #1 #2) 
             ("IfThisRotationDo" (- "DRow" "DCol") ("DRow") #1 #2) 
-            ("IfThisRotationDo" ("DCol")    ("DRow") #1 #2) 
-            ("IfThisRotationDo" (- "DCol")    (- "DRow" "DCol") #1 #2) 
+            ("IfThisRotationDo" ("DCol")  ("DRow") #1 #2) 
+            ("IfThisRotationDo" (- "DCol")  (- "DRow" "DCol") #1 #2) 
             ("IfThisRotationDo" (- "DCol" "DRow") ("DCol") #1 #2) 
             
-            ("IfThisRotationDo" (- "DRow")    (- "DCol") #1 #2) 
-            ("IfThisRotationDo" (- "DRow")    (- "DCol" "DRow") #1 #2) 
+            ("IfThisRotationDo" (- "DRow")  (- "DCol") #1 #2) 
+            ("IfThisRotationDo" (- "DRow")  (- "DCol" "DRow") #1 #2) 
             ("IfThisRotationDo" (- "DCol" "DRow") (- "DRow") #1 #2) 
-            ("IfThisRotationDo" (- "DCol")    (- "DRow") #1 #2) 
-            ("IfThisRotationDo" ("DCol")    (- "DCol" "DRow") #1 #2) 
+            ("IfThisRotationDo" (- "DCol")  (- "DRow") #1 #2) 
+            ("IfThisRotationDo" ("DCol")  (- "DCol" "DRow") #1 #2) 
             ("IfThisRotationDo" (- "DRow" "DCol") (- "DCol") #1 #2) 
             }
         )
@@ -147,7 +147,7 @@
                     (then
                         (forEach Piece (addScore Mover (state at:(from))))
                     )
-                )   
+                )  
                 }
             )
         )
@@ -188,7 +188,7 @@
             )
         )
     )
-)  
+) 
 
 //---------------
 

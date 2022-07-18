@@ -1,18 +1,18 @@
-(game "Oriath"  
+(game "Oriath" 
     (players 1)
     (equipment 
         { 
         (board <Board:type> use:Edge) 
         }
-    )  
+    ) 
     
-    (rules   	 
-        (play       
+    (rules  	 
+        (play    
             (move Add 
-                (to Edge (sites Empty Edge))	      
-            )        
+                (to Edge (sites Empty Edge))	   
+            )    
         )
-        (end {     
+        (end {   
             <Version:result>
             }
         )
@@ -23,21 +23,21 @@
 
 (option "Board" <Board> args:{ <type> <start> }
     {
-    (item "Graph1"       
+    (item "Graph1"    
         <
         (complete (regular Star 7))
-        >    
+        >  
         "The game is played on the Graph1."
     )* 
     
-    (item "Graph2"       
+    (item "Graph2"    
         <
         (remove (complete (regular Star 8)) edges:{ {0 1} {2 3}})
-        >    
+        >  
         "The game is played on the Graph2."
     ) 
     
-    (item "Graph3"       
+    (item "Graph3"    
         <
         (graph
             vertices:{ 
@@ -58,9 +58,9 @@
             {11 12} {11 13} {12 13}
             }
         )
-        >    
+        >  
         "The game is played on the Graph3."
-    )  
+    ) 
     
 })
 
@@ -74,9 +74,9 @@
     )* 
     
     (item "Parameter-k" 
-        <    
+        <  
         (if (is RegularGraph Mover k:4) (result Mover Win))
-        >      
+        >   
         "Parameter-k version"
     )
 })

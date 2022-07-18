@@ -101,7 +101,7 @@
         #1 
         (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
-    )  	
+    ) 	
 )
 
 (define "StepMove"
@@ -110,7 +110,7 @@
         #1
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
-    )  	
+    ) 	
 )
 
 (define "GoldMove" ("StepMove" (directions {Forward Backward Rightward Leftward FL FR})))
@@ -328,7 +328,7 @@
         (version "1.3.5")
         (classification "board/war/replacement/checkmate/shogi")
         (credit "Eric Piette")
-        (origin  "This game was played in Japan, around 1058.")
+        (origin "This game was played in Japan, around 1058.")
         }
     )
     
