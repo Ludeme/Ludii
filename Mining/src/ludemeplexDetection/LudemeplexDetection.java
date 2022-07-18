@@ -110,7 +110,7 @@ public class LudemeplexDetection
 		
 		System.out.println("//-------------------------------------------------------------------------");
 		
-		// Record ludemes  across all rulesets.
+		// Record ludemes across all rulesets.
 		DatabaseFunctions.storeLudemeInfo();
 		DatabaseFunctions.storeLudemesInGames(GetLudemeInfo.getLudemeInfo(), chosenGames);
 		System.out.println("Ludemes Recorded");
@@ -124,11 +124,11 @@ public class LudemeplexDetection
 		DatabaseFunctions.storeLudemesInLudemeplex(allLudemeplexes);
 		DatabaseFunctions.storeLudemeplexRulesetPairs(allLudemeplexes);
 		System.out.println("Ludemeplexes Recorded");
-			
+		
 		System.out.println("//-------------------------------------------------------------------------");
-	
-		// Record possible define ludemeplexes.
-//		final Map<String, Set<String>> allDefineLudemeplexes = DatabaseFunctions.storeDefineLudemeplexInfo(allLudemeplexes, allLudemeplexesCount, 4);
+		
+//		// Record possible define ludemeplexes.
+//		final Map<String, Set<String>> allDefineLudemeplexes = DatabaseFunctions.storeDefineLudemeplexInfo(allLudemeplexes, allLudemeplexesCount, 1);
 //		DatabaseFunctions.storeDefineLudemeplexRulesetPairs(allDefineLudemeplexes);
 //		System.out.println("Define Ruleset Ludemeplexes Recorded");
 		

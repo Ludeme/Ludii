@@ -259,7 +259,7 @@ public class DatabaseFunctions
 					}
 					else
 					{
-						System.out.println("could not find game name: " + name);
+						System.out.println("could not find game name_1: " + name);
 					}
 				}
 				ludemeplexId++;
@@ -296,7 +296,7 @@ public class DatabaseFunctions
 					}
 					else
 					{
-						System.out.println("could not find game name: " + name);
+						System.out.println("could not find game name_2: " + name);
 					}
 				}
 				defineLudemeplexId++;
@@ -378,7 +378,7 @@ public class DatabaseFunctions
 					}
 					else
 					{
-						System.out.println("could not find game name: " + name);
+						System.out.println("could not find game name_3: " + name);
 					}
 				}
 			}
