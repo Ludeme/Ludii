@@ -91,9 +91,9 @@ public class GraphPanel extends JPanel implements IGraphPanel
     /**
      * Initializes the graph panel.
      */
-    public void initialize(JScrollPane parentScrollPane)
+    public void initialize(JScrollPane parentScrollPane1)
     {
-        this.parentScrollPane = parentScrollPane;
+        this.parentScrollPane = parentScrollPane1;
         addMouseListener(clickListener);
         addMouseMotionListener(motionListener);
         addMouseWheelListener(wheelListener);

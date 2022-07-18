@@ -40,9 +40,9 @@ public class AddedCollectionAction implements IUserAction
         this.collectionInput = input;
     }
 
-    public boolean isUpdated(LudemeNode node, NodeArgument nodeArgument, int elementIndex)
+    public boolean isUpdated(LudemeNode node, NodeArgument nodeArgument1, int elementIndex1)
     {
-        return node==affectedNode && nodeArgument==this.nodeArgument && elementIndex==this.elementIndex;
+        return node==affectedNode && nodeArgument1==this.nodeArgument && elementIndex1==this.elementIndex;
     }
 
     public void setInput(Object input)

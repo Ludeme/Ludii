@@ -36,9 +36,9 @@ public class HelpInformation
         examples.put(clause, example);
     }
 
-    public void addParameter(ClauseArg arg, String description)
+    public void addParameter(ClauseArg arg, String description1)
     {
-        parameters.put(arg, description);
+        parameters.put(arg, description1);
     }
 
     public void setRemark(String remark)

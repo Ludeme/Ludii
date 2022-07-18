@@ -180,9 +180,9 @@ public class AddArgumentPanel extends JPanel
         searchField.getDocument().addDocumentListener(searchListener);
     }
 
-    public void updateList(LInputField initiator, List<Symbol> symbolList)
+    public void updateList(LInputField initiator1, List<Symbol> symbolList)
     {
-        this.initiator = initiator;
+        this.initiator = initiator1;
         // remove duplicates
         List<Symbol> symbolList2 = symbolList;
         symbolList2 = symbolList.stream().distinct().collect(java.util.stream.Collectors.toList());

@@ -593,11 +593,11 @@ public class LInputField extends JComponent
 
     /**
      * Constructs a new collection child/element input field , below the last child of the collection root/parent
-     * @param parent
+     * @param parent1
      */
-    private void constructCollection(LInputField parent)
+    private void constructCollection(LInputField parent1)
     {
-        NodeArgument nodeArgument = parent.nodeArgument(0);
+        NodeArgument nodeArgument = parent1.nodeArgument(0);
         if(nodeArgument.canBePredefined() && !nodeArgument.collection2D())
             constructHybridCollection(nodeArgument);
         else if(!nodeArgument.isTerminal() || nodeArgument.collection2D())

@@ -1,5 +1,6 @@
 package app.display.dialogs.visual_editor.view.designPalettes;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -8,6 +9,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -143,7 +145,8 @@ public class DesignPalette
         List<String> names = new ArrayList<>();
         try
         {
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(DesignPalette.class.getResourceAsStream(PALETTE_FILE_PATH)))))
+            try (@SuppressWarnings("resource")
+			BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(DesignPalette.class.getResourceAsStream(PALETTE_FILE_PATH)))))
 			{
 				br.lines().forEach(line ->
 				{
@@ -178,10 +181,28 @@ public class DesignPalette
 
     private static JSONObject readPaletteJSON(String paletteName)
     {
-        InputStream is = DesignPalette.class.getResourceAsStream(PALETTE_FILE_PATH + paletteName + ".json");
-        if(is == null)
-            return null;
-        return new JSONObject(new JSONTokener(is));
+        try (InputStream is = DesignPalette.class.getResourceAsStream(PALETTE_FILE_PATH + paletteName + ".json"))
+		{
+			if(is == null)
+			    return null;
+			JSONObject obj = new JSONObject(new JSONTokener(is));
+			try
+			{
+				is.close();
+			}
+			catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return obj;
+		}
+		catch (JSONException | IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
     }
 
     private static void setColours(Map<String, Object> palette)

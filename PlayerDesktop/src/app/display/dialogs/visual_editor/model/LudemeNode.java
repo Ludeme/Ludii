@@ -125,12 +125,13 @@ public class LudemeNode implements iGNode
         }
 
         // Create a NodeArgument for each ClauseArg, if not provided as parameter
-        if(nodeArguments == null)
-            nodeArguments = generateNodeArguments();
-        this.nodeArguments = nodeArguments;
+        HashMap<Clause, List<NodeArgument>> nodeArguments2 = nodeArguments;
+		if(nodeArguments2 == null)
+			nodeArguments2 = generateNodeArguments();
+        this.nodeArguments = nodeArguments2;
 
         // get the NodeArguments of the currently selected clause
-        currentNodeArguments = nodeArguments.get(selectedClause());
+        currentNodeArguments = nodeArguments2.get(selectedClause());
         if(currentNodeArguments == null)
             currentNodeArguments = new ArrayList<>();
 
@@ -305,9 +306,9 @@ public class LudemeNode implements iGNode
     }
 
 
-    public void updateDefineNode(LudemeNode macroNode)
+    public void updateDefineNode(LudemeNode macroNode1)
     {
-        this.macroNode = macroNode;
+        this.macroNode = macroNode1;
     }
     /**
      *
@@ -769,11 +770,11 @@ public class LudemeNode implements iGNode
 
     /**
      * Removes a child from this node
-     * @param children the child to remove
+     * @param children1 the child to remove
      */
-    public void removeChildren(LudemeNode children)
+    public void removeChildren(LudemeNode children1)
     {
-        this.children.remove(children);
+        this.children.remove(children1);
     }
 
     /**

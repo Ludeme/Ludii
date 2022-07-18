@@ -17,9 +17,9 @@ public class SelectionBox
         SelectionBox.A = A;
     }
 
-    public static void drawSelectionArea(Point A, Point B, Graphics2D g2d)
+    public static void drawSelectionArea(Point A1, Point B, Graphics2D g2d)
     {
-        if (sb == null) sb = new SelectionBox(A);
+        if (sb == null) sb = new SelectionBox(A1);
 
         float[] dashingPattern = {10f, 4f};
         Stroke stroke = new BasicStroke(2f, BasicStroke.CAP_BUTT,
