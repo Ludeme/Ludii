@@ -89,7 +89,7 @@ public class DescriptionGraph implements iGraph
     }
 
     @Override
-    public LudemeNode getNode(int id)
+    public LudemeNode getNode(Integer id)
     {
         return (LudemeNode) nodeMap.get(id);
     }
@@ -100,10 +100,10 @@ public class DescriptionGraph implements iGraph
     }
 
     @Override
-    public int addNode(iGNode ludemeNode)
+    public Integer addNode(iGNode ludemeNode)
     {
         this.allLudemeNodes.add((LudemeNode) ludemeNode);
-        int id = ludemeNode.id();
+        Integer id = ludemeNode.id();
         nodeMap.put(id, ludemeNode);
         addConnectedComponentRoot(id);
         return id;
@@ -119,7 +119,7 @@ public class DescriptionGraph implements iGraph
     }
 
     @Override
-    public void addEdge(int from, int to)
+    public void addEdge(Integer from, Integer to)
     {
         Edge e = new Edge(from, to);
         for(Edge edge : edgeList)
@@ -130,7 +130,7 @@ public class DescriptionGraph implements iGraph
     }
 
     @Override
-    public void removeEdge(int from, int to)
+    public void removeEdge(Integer from, Integer to)
     {
         for(Edge e : edgeList)
             if(e.getNodeA() == from && e.getNodeB() == to)
@@ -148,27 +148,27 @@ public class DescriptionGraph implements iGraph
     }
 
     @Override
-    public void addConnectedComponentRoot(int root)
+    public void addConnectedComponentRoot(Integer root)
     {
         if (!connectedComponentRoots.contains(root) && getNode(root) != null)
             connectedComponentRoots.add(root);
     }
 
     @Override
-    public void removeConnectedComponentRoot(int root)
+    public void removeConnectedComponentRoot(Integer root)
     {
         if (connectedComponentRoots.contains(root))
             connectedComponentRoots.remove((Object)root);
     }
 
     @Override
-    public int selectedRoot()
+    public Integer selectedRoot()
     {
         return selectedRoot;
     }
 
     @Override
-    public void setSelectedRoot(int root)
+    public void setSelectedRoot(Integer root)
     {
         this.selectedRoot = root;
     }

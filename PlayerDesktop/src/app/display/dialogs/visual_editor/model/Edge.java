@@ -7,21 +7,21 @@ package app.display.dialogs.visual_editor.model;
 
 public class Edge {
 
-    private final int nodeA;
-    private final int nodeB;
+    private final Integer nodeA;
+    private final Integer nodeB;
 
-    public Edge(int nodeA, int nodeB)
+    public Edge(Integer nodeA, Integer nodeB)
     {
         this.nodeA = nodeA;
         this.nodeB = nodeB;
     }
 
-    public int getNodeA()
+    public Integer getNodeA()
     {
         return nodeA;
     }
 
-    public int getNodeB()
+    public Integer getNodeB()
     {
         return nodeB;
     }

@@ -87,11 +87,8 @@ public interface IGraphPanel {
     LayoutHandler getLayoutHandler();
     /** Updates the Graph (position of nodes, etc.) */
     void updateGraph();
-
     /** */
     void syncNodePositions();
     /** Repaints the graph */
     void repaint();
-    /** */
-    void addSelectionIndex(int index);
 }

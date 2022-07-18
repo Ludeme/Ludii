@@ -25,7 +25,7 @@ public class LudemeNode implements iGNode
     /** ID of last node */
     private static int LAST_ID = 0;
     /** ID of this node */
-    private final int ID;
+    private final Integer ID;
     /** Symbol/Ludeme this node represents */
     private Symbol symbol;
     /** The Node Argument which created this node */
@@ -594,7 +594,7 @@ public class LudemeNode implements iGNode
      * @return the id of this node
      */
     @Override
-    public int id()
+    public Integer id()
     {
         return ID;
     }
@@ -604,7 +604,7 @@ public class LudemeNode implements iGNode
      * @return the id of this node's parent
      */
     @Override
-    public int parent()
+    public Integer parent()
     {
         return parent.id();
     }
@@ -665,7 +665,7 @@ public class LudemeNode implements iGNode
      * @return the width of this node in the graph
      */
     @Override
-    public int width()
+    public Integer width()
     {
         return width;
     }
@@ -684,7 +684,7 @@ public class LudemeNode implements iGNode
      * @return the height of this node in the graph
      */
     @Override
-    public int height()
+    public Integer height()
     {
         return height;
     }
@@ -694,7 +694,7 @@ public class LudemeNode implements iGNode
      * @param depth the depth to set
      */
     @Override
-    public void setDepth(int depth)
+    public void setDepth(Integer depth)
     {
         this.depth = depth;
     }
@@ -704,7 +704,7 @@ public class LudemeNode implements iGNode
      * @return the depth of this node
      */
     @Override
-    public int depth()
+    public Integer depth()
     {
         return depth;
     }

@@ -15,13 +15,13 @@ public interface iGNode {
      * Returns node id
      * @return node id
      */
-    int id();
+    Integer id();
 
     /**
      * Returns id of a parent node
      * @return id of a parent node
      */
-    int parent();
+    Integer parent();
 
     /**
      * Returns list of children id's order by connection components
@@ -45,25 +45,25 @@ public interface iGNode {
      * Get width of a node box
      * @return width
      */
-    int width();
+    Integer width();
 
     /**
      * Get height of a node box
      * @return height
      */
-    int height();
+    Integer height();
 
     /**
      * Set depth of a node
      * @param depth depth
      */
-    void setDepth(int depth);
+    void setDepth(Integer depth);
 
     /**
      * Get depth of a node
      * @return depth
      */
-    int depth();
+    Integer depth();
 
     /**
      * Get boolean flag to check if node is fixed
