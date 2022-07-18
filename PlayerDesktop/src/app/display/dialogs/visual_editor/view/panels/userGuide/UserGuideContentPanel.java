@@ -7,7 +7,11 @@ import java.util.List;
 public class UserGuideContentPanel extends JPanel
 {
 
-    private JLabel titleLabel = new JLabel();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3924543171342069471L;
+	private JLabel titleLabel = new JLabel();
 
     public UserGuideContentPanel(String title, List<UserGuideContent> contents)
     {

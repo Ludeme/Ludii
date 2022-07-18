@@ -13,24 +13,27 @@ import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.Lud
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
 import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
-import app.display.dialogs.visual_editor.view.panels.editor.defineEditor.DefineEditor;
-import app.display.dialogs.visual_editor.view.panels.editor.defineEditor.DefineGraphPanel;
-import app.display.dialogs.visual_editor.view.panels.editor.gameEditor.GameGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.backgrounds.CartesianGridBackground;
 import app.display.dialogs.visual_editor.view.panels.editor.backgrounds.DotGridBackground;
 import app.display.dialogs.visual_editor.view.panels.editor.backgrounds.EmptyBackground;
 import app.display.dialogs.visual_editor.view.panels.editor.backgrounds.IBackground;
+import app.display.dialogs.visual_editor.view.panels.editor.defineEditor.DefineEditor;
+import app.display.dialogs.visual_editor.view.panels.editor.defineEditor.DefineGraphPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.gameEditor.GameGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 import app.display.dialogs.visual_editor.view.panels.header.ToolsPanel;
 import app.utils.GameUtil;
 import game.Game;
-import main.grammar.*;
+import main.grammar.Clause;
+import main.grammar.Description;
+import main.grammar.Report;
+import main.grammar.Symbol;
 import main.options.UserSelections;
 
-import java.util.*;
-import java.util.List;
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
+import java.util.*;
 
 
 /**
@@ -129,8 +132,9 @@ public class Handler
     public static final IBackground CartesianGridBackground = new CartesianGridBackground();
     /** Currently active Background */
     private static IBackground currentBackground = DotGridBackground;
-    /** Instanstantiate the DesignPalette */
-    private static final DesignPalette designPalette = DesignPalette.instance();
+    /** Instantiate the DesignPalette */
+    @SuppressWarnings("unused")
+	private static final DesignPalette designPalette = DesignPalette.instance();
 
 
     /** Whether there is any output to the console */
@@ -975,7 +979,8 @@ public class Handler
         }
         if(output[0] == null && openDialog)
         {
-            java.util.List<String> errors = (List<String>) output[1];
+            @SuppressWarnings("unchecked")
+			java.util.List<String> errors = (List<String>) output[1];
             String errorMessage;
             if (errors.isEmpty())
             {

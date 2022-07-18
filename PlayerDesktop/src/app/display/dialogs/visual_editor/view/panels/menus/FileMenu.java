@@ -23,6 +23,11 @@ public class FileMenu extends JMenu
 {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6694747737057742537L;
+
+	/**
      * Constructor
      */
     public FileMenu(EditorMenuBar menuBar)

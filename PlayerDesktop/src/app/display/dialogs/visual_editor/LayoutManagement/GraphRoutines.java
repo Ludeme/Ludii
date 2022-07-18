@@ -5,7 +5,8 @@ import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
 
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static java.lang.Math.abs;
@@ -174,8 +175,6 @@ public final class GraphRoutines
         double avg = 0.0;
         for (int i = 0; i < keys.size(); i++)
         {
-            if (keys.size() - i > 1) layerWeight /= 2.0;
-
             double layerAvg = 0.0;
             int k = keys.get(i);
             List<Double> list = weightMap.get(k);

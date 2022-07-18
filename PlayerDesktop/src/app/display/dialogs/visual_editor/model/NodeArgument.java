@@ -120,15 +120,15 @@ public class NodeArgument
         for(ClauseArg ca : args)
             computePossibleArguments(ca);
 
-        Set<Symbol> possibleArguments = new HashSet<>();
+        Set<Symbol> possibleArguments1 = new HashSet<>();
         for(PossibleArgument pa : this.possibleArguments)
-            possibleArguments.addAll(expandPossibleArgument(pa));
+            possibleArguments1.addAll(expandPossibleArgument(pa));
         for(ClauseArg a : args())
             if(terminalDropdown(a))
-                possibleArguments.add(a.symbol());
+                possibleArguments1.add(a.symbol());
 
         Set<Symbol> possibleSymbols = new HashSet<>();
-        for(Symbol s : possibleArguments)
+        for(Symbol s : possibleArguments1)
             if(!s.ludemeType().equals(Symbol.LudemeType.Constant))
                 possibleSymbols.add(s);
 
@@ -169,12 +169,12 @@ public class NodeArgument
         for(Symbol s : viableInputs)
             computePossibleArguments(s);
 
-        Set<Symbol> possibleArguments = new HashSet<>();
-        for(PossibleArgument pa : this.possibleArguments) possibleArguments.addAll(expandPossibleArgument(pa));
-        for(ClauseArg a : args()) if(terminalDropdown(a)) possibleArguments.add(a.symbol());
+        Set<Symbol> possibleArguments1 = new HashSet<>();
+        for(PossibleArgument pa : this.possibleArguments) possibleArguments1.addAll(expandPossibleArgument(pa));
+        for(ClauseArg a : args()) if(terminalDropdown(a)) possibleArguments1.add(a.symbol());
 
         Set<Symbol> possibleSymbols = new HashSet<>();
-        for(Symbol s : possibleArguments)
+        for(Symbol s : possibleArguments1)
         {
             if(s.ludemeType().equals(Symbol.LudemeType.Constant)) continue;
             possibleSymbols.add(s);
@@ -234,7 +234,7 @@ public class NodeArgument
     }
 
 
-    private boolean terminalDropdown(ClauseArg arg)
+    private static boolean terminalDropdown(ClauseArg arg)
     {
         if(arg.symbol().rule() == null) return false;
         if(arg.symbol().rule().rhs().size() == 0) return false;

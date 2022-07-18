@@ -32,7 +32,11 @@ import java.util.List;
 
 public class LudemeNodeComponent extends JPanel
 {
-    /** X, Y coordinates of the node */
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7213640452305410215L;
+	/** X, Y coordinates of the node */
     protected int x, y;
     /** Position of the node */
     private final ImmutablePoint position = new ImmutablePoint(x, y);
@@ -46,7 +50,6 @@ public class LudemeNodeComponent extends JPanel
     private boolean selected = false;
     private boolean doubleSelected = false;
     private boolean subtree = false;
-    private final Rectangle subtreeArea = null;
     /** Sub-Components of the node */
     private final LHeader header;
     private final LInputArea inputArea;

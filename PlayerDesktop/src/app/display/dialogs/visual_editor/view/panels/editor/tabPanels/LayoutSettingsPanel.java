@@ -210,12 +210,12 @@ public class LayoutSettingsPanel extends JPanel
     /**
      * Get slider value for arrangement
      */
-    private double getSliderValue(JSlider slider) {return slider.getValue() / 100.0;}
+    private static double getSliderValue(JSlider slider) {return slider.getValue() / 100.0;}
 
     /**
      * Executes arrangement procedure of graph in a specified panel
      */
-    private void executeDFSLayout(IGraphPanel graphPanel)
+    private static void executeDFSLayout(IGraphPanel graphPanel)
     {
         graphPanel.getLayoutHandler().arrangeTreeComponents();
     }

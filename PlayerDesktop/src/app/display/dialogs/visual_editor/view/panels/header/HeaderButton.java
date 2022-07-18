@@ -11,7 +11,11 @@ import java.awt.event.MouseListener;
 
 public class HeaderButton extends JButton {
 
-    public Color ACTIVE_COLOR;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1030696490446456185L;
+	public Color ACTIVE_COLOR;
     public Color INACTIVE_COLOR;
     public Color HOVER_COLOR;
 

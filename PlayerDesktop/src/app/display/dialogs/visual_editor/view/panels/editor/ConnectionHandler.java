@@ -2,7 +2,6 @@ package app.display.dialogs.visual_editor.view.panels.editor;
 
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
-import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.ImmutablePoint;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeConnection;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
@@ -83,14 +82,15 @@ public class ConnectionHandler
     public void addConnection(LConnectionComponent source, LIngoingConnectionComponent target)
     {
         // update the positions of the connection components
-        source.updatePosition();
+        LConnectionComponent source2 = source;
+		source2.updatePosition();
         target.updatePosition();
 
         // If the InputField was merged, notify the InputArea to remove the NodeArgument from the merged list
-        if(source.inputField().isMerged())
+        if(source2.inputField().isMerged())
         {
-            source.fill(false);
-            LInputField singledOutField = source.lnc().inputArea().addedConnection(target.getHeader().ludemeNodeComponent(), source.inputField());
+            source2.fill(false);
+            LInputField singledOutField = source2.lnc().inputArea().addedConnection(target.getHeader().ludemeNodeComponent(), source2.inputField());
             if(singledOutField.connectionComponent() == null)
             {
                 for(ClauseArg arg : singledOutField.nodeArgument(0).args())
@@ -103,39 +103,39 @@ public class ConnectionHandler
                     }
                 }
             }
-            source = singledOutField.connectionComponent();
+            source2 = singledOutField.connectionComponent();
         }
         // Otherwise notify the InputArea about the added connection
         else
         {
-            source.lnc().inputArea().addedConnection(target.getHeader().ludemeNodeComponent(), source.inputField());
+            source2.lnc().inputArea().addedConnection(target.getHeader().ludemeNodeComponent(), source2.inputField());
         }
 
         // update creator argument of the target node
         // find correct NodeArgument
-        target.getHeader().ludemeNodeComponent().node().setCreatorArgument(source.inputField().nodeArgument(0));
+        target.getHeader().ludemeNodeComponent().node().setCreatorArgument(source2.inputField().nodeArgument(0));
 
         // update the positions of the source connection component again (for the case that the InputField was merged)
-        source.updatePosition();
+        source2.updatePosition();
 
         // fill the connection components
-        source.fill(true);
+        source2.fill(true);
         target.setFill(true);
 
         // update the connection in the source
-        source.setConnectedTo(target.getHeader().ludemeNodeComponent());
-        target.setInputField(source.inputField());
+        source2.setConnectedTo(target.getHeader().ludemeNodeComponent());
+        target.setInputField(source2.inputField());
 
         // Add an edge
-        LudemeConnection connection = new LudemeConnection(source, target);
+        LudemeConnection connection = new LudemeConnection(source2, target);
         edges.add(connection);
 
         // Update the provided input via the Handler
         // differentiate between an input provided to a collection and otherwise
-        if(source.inputField().nodeArgument(0).collection())
-            Handler.updateCollectionInput(graphPanel.graph(), source.lnc().node(), source.inputField().nodeArgument(0), target.getHeader().ludemeNodeComponent().node(), source.inputField().elementIndex());
+        if(source2.inputField().nodeArgument(0).collection())
+            Handler.updateCollectionInput(graphPanel.graph(), source2.lnc().node(), source2.inputField().nodeArgument(0), target.getHeader().ludemeNodeComponent().node(), source2.inputField().elementIndex());
         else
-            Handler.updateInput(graphPanel.graph(), source.lnc().node(), source.inputField().nodeArgument(0), target.getHeader().ludemeNodeComponent().node());
+            Handler.updateInput(graphPanel.graph(), source2.lnc().node(), source2.inputField().nodeArgument(0), target.getHeader().ludemeNodeComponent().node());
 
         if(Handler.autoplacement) graphPanel.getLayoutHandler().executeLayout();
         //TODO: check if menu is opened; if yes - close

@@ -11,7 +11,11 @@ import javax.swing.*;
  */
 public class EditorSidebar extends JTabbedPane
 {
-    private static EditorSidebar editorSidebar;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7035094102486105836L;
+	private static EditorSidebar editorSidebar;
 
     /**
      * Constructor

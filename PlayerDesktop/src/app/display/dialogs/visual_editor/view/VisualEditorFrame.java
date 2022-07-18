@@ -1,8 +1,6 @@
 package app.display.dialogs.visual_editor.view;
 
-import app.display.dialogs.visual_editor.StartVisualEditor;
 import app.display.dialogs.visual_editor.handler.Handler;
-import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.DocHandler;
 import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.panels.menus.EditorMenuBar;
 
@@ -14,7 +12,11 @@ import java.awt.event.WindowEvent;
 public class VisualEditorFrame extends JFrame
 {
 
-    // Frame Properties
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8610284030834361704L;
+	// Frame Properties
     private static final String TITLE = "Ludii Visual Editor";
     private static final Dimension DEFAULT_FRAME_SIZE = DesignPalette.DEFAULT_FRAME_SIZE;
     private static final ImageIcon FRAME_ICON = DesignPalette.LUDII_ICON;

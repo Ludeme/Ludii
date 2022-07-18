@@ -3,13 +3,13 @@ package app.display.dialogs.visual_editor.view.designPalettes;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -143,14 +143,17 @@ public class DesignPalette
         List<String> names = new ArrayList<>();
         try
         {
-            BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(DesignPalette.class.getResourceAsStream(PALETTE_FILE_PATH))));
-            br.lines().forEach(line ->
-            {
-                if(line.endsWith(".json"))
-                {
-                    names.add(line.replace(".json", ""));
-                }
-            });
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(DesignPalette.class.getResourceAsStream(PALETTE_FILE_PATH)))))
+			{
+				br.lines().forEach(line ->
+				{
+				    if(line.endsWith(".json"))
+				    {
+				        names.add(line.replace(".json", ""));
+				    }
+				});
+				br.close();
+			}
         }
         catch(Exception e)
         {

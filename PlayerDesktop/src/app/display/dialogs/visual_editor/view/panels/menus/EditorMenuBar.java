@@ -12,7 +12,12 @@ import java.awt.event.ActionListener;
  */
 public class EditorMenuBar extends JMenuBar {
 
-    public EditorMenuBar() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1223558045694729428L;
+
+	public EditorMenuBar() {
 
         JMenu settings = new JMenu("Settings"); // adjust editor settings e.g. font size, colors ect.
         // adding settings menu items

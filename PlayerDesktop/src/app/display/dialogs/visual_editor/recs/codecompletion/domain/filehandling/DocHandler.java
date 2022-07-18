@@ -3,10 +3,11 @@ package app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandlin
 import app.display.dialogs.visual_editor.recs.utils.FileUtils;
 import app.display.dialogs.visual_editor.recs.utils.StringUtils;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 /**
  * Class is a singleton

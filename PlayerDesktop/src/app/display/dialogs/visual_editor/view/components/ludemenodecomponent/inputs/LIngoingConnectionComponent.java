@@ -1,6 +1,5 @@
 package app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs;
 
-import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.ImmutablePoint;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LHeader;
 import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
@@ -11,7 +10,11 @@ import java.awt.*;
 public class LIngoingConnectionComponent extends JComponent
 {
 
-    private final LHeader lHeader;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4899501888400568564L;
+	private final LHeader lHeader;
     private boolean fill;
     private int RADIUS;
     private final ConnectionPointComponent connectionPointComponent;
@@ -79,7 +82,7 @@ public class LIngoingConnectionComponent extends JComponent
     public void setFill(boolean fill)
     {
         this.fill = fill;
-        connectionPointComponent.fill = fill;
+        connectionPointComponent.filled = fill;
         connectionPointComponent.repaint();
         connectionPointComponent.revalidate();
     }
@@ -97,13 +100,17 @@ public class LIngoingConnectionComponent extends JComponent
 
     class ConnectionPointComponent extends JComponent
     {
-        public boolean fill;
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 2683408596975730858L;
+		public boolean filled;
         private final int x = 0;
         private final int y = 0;
 
         public ConnectionPointComponent(boolean fill)
         {
-            this.fill = fill;
+            this.filled = fill;
             setSize(getRadius()*2,getRadius()*2);
             revalidate();
             repaint();
@@ -122,7 +129,7 @@ public class LIngoingConnectionComponent extends JComponent
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
             // if fill = true, draw a filled circle. otherwise, the contour only
-            if(fill)
+            if(filled)
             {
                 g2.setColor(DesignPalette.LUDEME_CONNECTION_POINT());
                 g2.fillOval(x, y, getRadius()*2, getRadius()*2);

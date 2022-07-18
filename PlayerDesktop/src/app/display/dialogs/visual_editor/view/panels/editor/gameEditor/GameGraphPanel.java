@@ -16,7 +16,11 @@ import java.util.List;
 public class GameGraphPanel extends GraphPanel
 {
 
-    private final AddArgumentPanel addDefinePanel = new AddArgumentPanel(new ArrayList<>(), this, false, true);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8032967124439631423L;
+	private final AddArgumentPanel addDefinePanel = new AddArgumentPanel(new ArrayList<>(), this, false, true);
     public GameGraphPanel(int width, int height)
     {
         super(width, height);

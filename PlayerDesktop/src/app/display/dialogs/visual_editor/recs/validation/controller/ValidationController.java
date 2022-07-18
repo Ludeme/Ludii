@@ -1,8 +1,11 @@
 package app.display.dialogs.visual_editor.recs.validation.controller;
 
-import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.*;
 import app.display.dialogs.visual_editor.recs.codecompletion.controller.NGramController;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.LudiiGameDatabase;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Instance;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.ModelCreator;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.NGram;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Preprocessing;
 import app.display.dialogs.visual_editor.recs.utils.StringUtils;
 
 import java.util.ArrayList;

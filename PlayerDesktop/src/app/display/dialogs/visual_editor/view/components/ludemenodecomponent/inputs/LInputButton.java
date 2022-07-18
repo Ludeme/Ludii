@@ -1,7 +1,6 @@
 package app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs;
 
 
-import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 
 import javax.swing.*;
@@ -12,7 +11,11 @@ import java.awt.event.MouseListener;
 
 public class LInputButton extends JButton {
 
-    public Color ACTIVE_COLOR;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6627034885726770235L;
+	public Color ACTIVE_COLOR;
     private final Color HOVER_COLOR = new Color(127,191,255);
 
     public ImageIcon ACTIVE_ICON;

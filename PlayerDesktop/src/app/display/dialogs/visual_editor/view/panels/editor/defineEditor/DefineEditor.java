@@ -3,15 +3,19 @@ package app.display.dialogs.visual_editor.view.panels.editor.defineEditor;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 
-import java.util.HashMap;
-import java.util.Map;
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DefineEditor extends JPanel
 {
 
-    private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5720022256564467244L;
+	private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
     private final Map<JScrollPane, DefineGraphPanel> defineGraphPanels = new HashMap<>();
     private final Map<DefineGraphPanel, JScrollPane> defineScrollPanes = new HashMap<>();
 
@@ -99,7 +103,7 @@ public class DefineEditor extends JPanel
     }
 
 
-    private void centerScrollPane(JScrollPane scrollPane)
+    private static void centerScrollPane(JScrollPane scrollPane)
     {
         Rectangle rect = scrollPane.getViewport().getViewRect();
         int centerX = (scrollPane.getViewport().getViewSize().width - rect.width) / 2;

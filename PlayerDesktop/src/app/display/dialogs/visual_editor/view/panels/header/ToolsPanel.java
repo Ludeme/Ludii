@@ -9,7 +9,12 @@ import java.util.Stack;
 
 public class ToolsPanel extends JPanel {
 
-    private final HeaderButton selectBtn = new HeaderButton(DesignPalette.SELECT_ACTIVE(), DesignPalette.SELECT_INACTIVE(), DesignPalette.SELECT_HOVER(), "Select", false, true);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8204545001319914476L;
+
+	private final HeaderButton selectBtn = new HeaderButton(DesignPalette.SELECT_ACTIVE(), DesignPalette.SELECT_INACTIVE(), DesignPalette.SELECT_HOVER(), "Select", false, true);
 
     private final HeaderButton undoBtn = new HeaderButton(DesignPalette.UNDO_ACTIVE(), DesignPalette.UNDO_INACTIVE(), DesignPalette.UNDO_HOVER(), "Undo", false, false);
     private final HeaderButton redoBtn = new HeaderButton(DesignPalette.REDO_ACTIVE(), DesignPalette.REDO_INACTIVE(), DesignPalette.REDO_HOVER(), "Redo", false, false);

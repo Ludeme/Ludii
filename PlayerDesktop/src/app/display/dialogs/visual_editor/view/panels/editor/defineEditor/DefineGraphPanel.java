@@ -10,7 +10,11 @@ import javax.swing.*;
 public class DefineGraphPanel extends GraphPanel
 {
 
-    private final DescriptionGraph GRAPH;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 493013782396870985L;
+	private final DescriptionGraph GRAPH;
 
     public DefineGraphPanel(String name, int width, int height)
     {

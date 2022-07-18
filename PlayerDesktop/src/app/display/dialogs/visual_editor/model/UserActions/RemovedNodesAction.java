@@ -40,18 +40,18 @@ public class RemovedNodesAction implements IUserAction
         }
     }
 
-    private LinkedHashMap<NodeArgument, Object> copyInputs(LudemeNode node)
+    private static LinkedHashMap<NodeArgument, Object> copyInputs(LudemeNode node)
     {
-        LinkedHashMap<NodeArgument, Object> copiedInputs = new LinkedHashMap<>(node.providedInputsMap());
+        LinkedHashMap<NodeArgument, Object> copiedInputs1 = new LinkedHashMap<>(node.providedInputsMap());
         for(NodeArgument arg : node.providedInputsMap().keySet())
         {
-            if(copiedInputs.get(arg) instanceof Object[])
+            if(copiedInputs1.get(arg) instanceof Object[])
             {
-                Object[] copy = Arrays.copyOf((Object[])copiedInputs.get(arg), ((Object[])copiedInputs.get(arg)).length);
-                copiedInputs.put(arg, copy);
+                Object[] copy = Arrays.copyOf((Object[])copiedInputs1.get(arg), ((Object[])copiedInputs1.get(arg)).length);
+                copiedInputs1.put(arg, copy);
             }
         }
-        return copiedInputs;
+        return copiedInputs1;
     }
 
     private LinkedHashMap<NodeArgument, Integer> copyIds(LudemeNode node)

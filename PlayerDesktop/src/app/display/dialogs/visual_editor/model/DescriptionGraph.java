@@ -7,9 +7,9 @@ import app.display.dialogs.visual_editor.model.interfaces.iGraph;
 import main.grammar.Description;
 import main.grammar.Symbol;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Graph of LudemeNode objects
@@ -40,9 +40,6 @@ public class DescriptionGraph implements iGraph
     private LudemeNode defineMacroNode;
     /** The parameters of the define */
     private List<NodeArgument> defineParameters = new ArrayList<>();
-    /** The define node to be used in other graphs, to access the define */
-    private LudemeNode defineNode;
-
 
     /**
      * Constructor. Used for non-define graphs without a predefined root node

@@ -1,10 +1,10 @@
 package app.display.dialogs.visual_editor;
 
-import javax.swing.*;
-
 import app.PlayerApp;
 import app.display.dialogs.visual_editor.recs.codecompletion.controller.NGramController;
 import app.display.dialogs.visual_editor.view.VisualEditorFrame;
+
+import javax.swing.*;
 
 //-----------------------------------------------------------------------------
 

@@ -3,13 +3,11 @@ package app.display.dialogs.visual_editor.view.panels.editor;
 import app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines;
 import app.display.dialogs.visual_editor.LayoutManagement.LayoutHandler;
 import app.display.dialogs.visual_editor.LayoutManagement.Vector2D;
-import app.display.dialogs.visual_editor.StartVisualEditor;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
-import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.TypeMatch;
 import app.display.dialogs.visual_editor.view.components.AddArgumentPanel;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LConnectionComponent;
@@ -33,7 +31,11 @@ import java.util.Map;
 
 public class GraphPanel extends JPanel implements IGraphPanel
 {
-    // The graph this panel is displaying
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7514241007809349985L;
+	// The graph this panel is displaying
     private final DescriptionGraph GRAPH = new DescriptionGraph();
     // The parent JScrollPane
     private JScrollPane parentScrollPane;
@@ -188,7 +190,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
         connectionHandler().addConnection(source, target);
     }
 
-    private LInputField findInputField(LudemeNodeComponent lnc, NodeArgument inputFieldArgument)
+    private static LInputField findInputField(LudemeNodeComponent lnc, NodeArgument inputFieldArgument)
     {
         for(LInputField ii : lnc.inputArea().currentInputFields)
             if(ii.nodeArguments().contains(inputFieldArgument))
@@ -603,7 +605,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
                 upUntilIndex = ii.index();
         long start = System.nanoTime();
         List<Symbol> possibleSymbols = connectionHandler().selectedComponent().possibleSymbolInputs();
-        String gameDescription = connectionHandler().selectedComponent().inputField().inputArea().LNC().node().toLudCodeCompletion(connectionHandler().selectedComponent().inputField().nodeArguments());
+        //[UNCOMMENT FILIP] String gameDescription = connectionHandler().selectedComponent().inputField().inputArea().LNC().node().toLudCodeCompletion(connectionHandler().selectedComponent().inputField().nodeArguments());
         List<Symbol> typeMatched = possibleSymbols;
         //[UNCOMMENT FILIP] List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription, StartVisualEditor.controller(),possibleSymbols);
         long finish = System.nanoTime();
@@ -719,10 +721,10 @@ public class GraphPanel extends JPanel implements IGraphPanel
     /**
      * @return A list of symbols which can be created without an ingoing connection
      */
-    private List<Symbol> symbolsWithoutConnection()
+    private static List<Symbol> symbolsWithoutConnection()
     {
         List<Symbol> allSymbols = Grammar.grammar().symbols();
-        List<Symbol> symbolsWithoutConnection = new ArrayList<>();
+        List<Symbol> symbolsWithoutConnection1 = new ArrayList<>();
         for (Symbol symbol : allSymbols)
         {
             if(symbol.ludemeType().equals(Symbol.LudemeType.Constant) ||
@@ -731,9 +733,9 @@ public class GraphPanel extends JPanel implements IGraphPanel
                     symbol.ludemeType().equals(Symbol.LudemeType.Primitive) ||
                     symbol.ludemeType().equals(Symbol.LudemeType.SubLudeme))
                 continue;
-            symbolsWithoutConnection.add(symbol);
+            symbolsWithoutConnection1.add(symbol);
         }
-        return symbolsWithoutConnection;
+        return symbolsWithoutConnection1;
     }
 
     @Override

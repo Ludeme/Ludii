@@ -7,7 +7,12 @@ import java.awt.event.ActionListener;
 
 public class EditMenu extends JMenu
 {
-    public EditMenu(EditorMenuBar menuBar)
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3590839696737937583L;
+
+	public EditMenu(EditorMenuBar menuBar)
     {
         super("Edit");
         menuBar.addJMenuItem(this, "Undo", undo, KeyStroke.getKeyStroke("control Z"));

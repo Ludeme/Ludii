@@ -8,7 +8,11 @@ import javax.swing.*;
 public class EditorPickerPanel extends JPanel
 {
 
-    private final HeaderButton gameEditorBtn;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6411018044454485107L;
+	private final HeaderButton gameEditorBtn;
     private final HeaderButton defineEditorBtn;
     private final HeaderButton textEditorBtn;
 

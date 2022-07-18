@@ -17,7 +17,11 @@ import java.util.List;
 public class LayoutUserGuideFrame extends JFrame
 {
 
-    List<UserGuideContentPanel> panels = new ArrayList<>();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8439659036667946213L;
+	List<UserGuideContentPanel> panels = new ArrayList<>();
     UserGuideContentPanel currentPanel;
     JScrollPane scrollPane;
     int currentIndex;

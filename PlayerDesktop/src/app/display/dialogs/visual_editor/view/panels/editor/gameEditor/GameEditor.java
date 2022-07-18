@@ -12,7 +12,11 @@ import java.awt.*;
 
 public class GameEditor extends JPanel
 {
-    private final JScrollPane SCROLL_PANE;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7742630637240183L;
+	private final JScrollPane SCROLL_PANE;
     private final GameGraphPanel GRAPH_PANEL;
 
     public GameEditor()

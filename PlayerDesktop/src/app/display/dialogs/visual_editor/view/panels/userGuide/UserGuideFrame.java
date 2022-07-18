@@ -16,7 +16,11 @@ import java.util.List;
 public class UserGuideFrame extends JFrame
 {
 
-    List<UserGuideContentPanel> panels = new ArrayList<>();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6195079005810201411L;
+	List<UserGuideContentPanel> panels = new ArrayList<>();
     UserGuideContentPanel currentPanel;
     JScrollPane scrollPane;
     int currentIndex;
@@ -73,7 +77,6 @@ public class UserGuideFrame extends JFrame
     {
 
         String image;
-        List<String> images = new ArrayList<>();
         String paragraph = "";
         UserGuideContent content;
         List<UserGuideContent> contents;

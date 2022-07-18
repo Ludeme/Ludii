@@ -7,7 +7,6 @@ import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inp
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
 import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import main.grammar.Clause;
-import main.grammar.ClauseArg;
 import main.grammar.Symbol;
 
 import javax.swing.*;
@@ -24,7 +23,11 @@ import java.util.List;
  */
 public class LHeader extends JComponent
 {
-    /** LudemeNodeComponent this header belongs to */
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6153442303344307027L;
+	/** LudemeNodeComponent this header belongs to */
     private final LudemeNodeComponent LNC;
     /** Ludeme Node */
     private final LudemeNode LN;
@@ -163,7 +166,7 @@ public class LHeader extends JComponent
         return popup;
     }
 
-    private String clauseTitle(Clause c)
+    private static String clauseTitle(Clause c)
     {
         /*
         if(c.args() == null || c.args().size() == 0)

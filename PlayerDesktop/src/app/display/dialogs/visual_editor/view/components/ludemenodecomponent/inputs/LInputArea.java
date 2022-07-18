@@ -29,7 +29,11 @@ import java.util.List;
 
 public class LInputArea extends JPanel
 {
-    /** LudemeNodeComponent that this LInputAreaNew is associated with */
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7019971564269120999L;
+	/** LudemeNodeComponent that this LInputAreaNew is associated with */
     private final LudemeNodeComponent LNC;
     /** List of NodeArguments for the current Clause of the associated LudemeNodeComponent */
     private List<NodeArgument> currentNodeArguments;
@@ -436,6 +440,11 @@ public class LInputArea extends JPanel
         drawInputFields();
     }
 
+    /**
+     * Checks whether an input field in the input area contains a given node argument.
+     * @param na
+     * @return
+     */
     private boolean containsNodeArgument(NodeArgument na)
     {
         for(List<NodeArgument> lna : currentNodeArgumentsLists)
@@ -444,23 +453,6 @@ public class LInputArea extends JPanel
         return false;
     }
 
-    private LInputField inputField(NodeArgument na)
-    {
-        for(LInputField lif : currentInputFields)
-            if(lif.nodeArguments().contains(na))
-                return lif;
-        return null;
-    }
-
-    public void addInputField(NodeArgument nodeArgument)
-    {
-
-    }
-
-    public void removeInputField(NodeArgument nodeArgument)
-    {
-
-    }
 
     /**
      * Adds a new InputField above another InputField

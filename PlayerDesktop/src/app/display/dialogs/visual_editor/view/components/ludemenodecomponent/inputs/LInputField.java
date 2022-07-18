@@ -26,7 +26,11 @@ import java.util.List;
 
 public class LInputField extends JComponent
 {
-    /** LInputAreaNew that this LInputFieldNew is associated with */
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2836300174342385636L;
+	/** LInputAreaNew that this LInputFieldNew is associated with */
     private final LInputArea LIA;
     /** NodeArguments that this LInputField is associated with */
     private final List<NodeArgument> nodeArguments;

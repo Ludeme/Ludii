@@ -7,7 +7,11 @@ import java.awt.event.ActionListener;
 
 public class RunMenu extends JMenu
 {
-    public RunMenu(EditorMenuBar menuBar)
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7766009187364586583L;
+	public RunMenu(EditorMenuBar menuBar)
     {
         super("Run");
         menuBar.addJMenuItem(this, "Compile", compile, KeyStroke.getKeyStroke("control shift R"));

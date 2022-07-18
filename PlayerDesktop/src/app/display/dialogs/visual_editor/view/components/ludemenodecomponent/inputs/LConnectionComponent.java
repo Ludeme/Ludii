@@ -1,6 +1,5 @@
 package app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs;
 
-import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.ImmutablePoint;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
@@ -209,7 +208,11 @@ public class LConnectionComponent extends JComponent
      */
     class ConnectionPointComponent extends JComponent
     {
-        public boolean fill;
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 4910328438056546197L;
+		public boolean fill;
         private final int x = 0;
         private final int y = 0;
 

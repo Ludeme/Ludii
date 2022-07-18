@@ -24,7 +24,11 @@ import java.util.List;
 
 public class AddArgumentPanel extends JPanel
 {
-    final DefaultListModel<ReadableSymbol> listModel = new DefaultListModel<ReadableSymbol>();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2621063598425008191L;
+	final DefaultListModel<ReadableSymbol> listModel = new DefaultListModel<ReadableSymbol>();
     final JList<ReadableSymbol> list = new JList<ReadableSymbol>(listModel)
     {
         /**
@@ -180,11 +184,12 @@ public class AddArgumentPanel extends JPanel
     {
         this.initiator = initiator;
         // remove duplicates
-        symbolList = symbolList.stream().distinct().collect(java.util.stream.Collectors.toList());
+        List<Symbol> symbolList2 = symbolList;
+        symbolList2 = symbolList.stream().distinct().collect(java.util.stream.Collectors.toList());
         currentSymbols = new ArrayList<>();
         searchField.setText("");
         listModel.clear();
-        for(Symbol symbol : symbolList)
+        for(Symbol symbol : symbolList2)
         {
             ReadableSymbol rs = new ReadableSymbol(symbol);
             listModel.addElement(rs);
@@ -200,11 +205,12 @@ public class AddArgumentPanel extends JPanel
     {
         this.defineNodes = nodes;
         // remove duplicates
-        symbolList = symbolList.stream().distinct().collect(java.util.stream.Collectors.toList());
+        List<Symbol> symbolList2 = symbolList;
+        symbolList2 = symbolList.stream().distinct().collect(java.util.stream.Collectors.toList());
         currentSymbols = new ArrayList<>();
         searchField.setText("");
         listModel.clear();
-        for(Symbol symbol : symbolList)
+        for(Symbol symbol : symbolList2)
         {
             ReadableSymbol rs = new ReadableSymbol(symbol);
             listModel.addElement(rs);
@@ -233,7 +239,7 @@ public class AddArgumentPanel extends JPanel
     }
 
 
-    private boolean isConstantTerminal(Symbol s)
+    private static boolean isConstantTerminal(Symbol s)
     {
         if(s.rule() == null) return false;
         if(s.rule().rhs().size() == 1 && (s.rule().rhs().get(0).args().isEmpty() || s.rule().rhs().get(0).args().get(0).symbol() == s)) return false;

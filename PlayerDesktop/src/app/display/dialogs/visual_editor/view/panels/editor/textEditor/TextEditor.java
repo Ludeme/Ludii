@@ -10,7 +10,11 @@ import java.awt.event.FocusListener;
 public class TextEditor extends JPanel
 {
 
-    JTextArea textArea = new JTextArea("");
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6330942893371205110L;
+	JTextArea textArea = new JTextArea("");
 
         public TextEditor()
         {

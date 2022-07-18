@@ -11,7 +11,12 @@ import java.awt.*;
 public class EditorPopupMenu extends JPopupMenu
 {
 
-    public EditorPopupMenu(IGraphPanel graphPanel, int x, int y)
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5378508370225281683L;
+
+	public EditorPopupMenu(IGraphPanel graphPanel, int x, int y)
     {
         JMenuItem newLudeme = new JMenuItem("New Ludeme");
         JMenuItem paste = new JMenuItem("Paste");

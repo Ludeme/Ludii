@@ -9,7 +9,11 @@ import java.util.List;
 
 public class ViewMenu extends JMenu
 {
-    public ViewMenu(EditorMenuBar menuBar)
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5378448276139884202L;
+	public ViewMenu(EditorMenuBar menuBar)
     {
         super("View");
 

@@ -10,7 +10,11 @@ import java.awt.*;
 public class HeaderPanel extends JPanel
 {
 
-    private final EditorPickerPanel editorPickerPanel;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3999066959490436008L;
+	private final EditorPickerPanel editorPickerPanel;
     private final ToolsPanel toolsPanel;
 
     public HeaderPanel(VisualEditorPanel visualEditorPanel)

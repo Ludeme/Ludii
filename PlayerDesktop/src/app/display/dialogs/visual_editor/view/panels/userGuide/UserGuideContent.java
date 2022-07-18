@@ -25,7 +25,7 @@ public class UserGuideContent
     public UserGuideContent(String paragraph, List<String> imageNames)
     {
         this.paragraph = paragraph;
-        List<Image> images = new ArrayList<>();
+        images = new ArrayList<>();
         for(String imageName : imageNames)
         {
             String path = "/visual_editor/user_guide/" + imageName;
@@ -38,7 +38,6 @@ public class UserGuideContent
                 throw new RuntimeException(e);
             }
         }
-        this.images = images;
     }
 
     public UserGuideContent(String paragraph, String image)
@@ -47,20 +46,19 @@ public class UserGuideContent
         List<String> imageNames = new ArrayList<>();
         imageNames.add(image);
 
-        List<Image> images = new ArrayList<>();
+        images = new ArrayList<>();
         for(String imageName : imageNames)
         {
             String path = "/visual_editor/user_guide/" + imageName;
             try
             {
-                images.add(ImageIO.read(getClass().getResource(path)));
+            	images.add(ImageIO.read(getClass().getResource(path)));
             }
             catch (IOException e)
             {
                 throw new RuntimeException(e);
             }
         }
-        this.images = images;
     }
 
     public List<Image> images()

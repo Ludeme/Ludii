@@ -13,7 +13,11 @@ import java.awt.*;
 public class VisualEditorPanel extends JPanel
 {
 
-    // Game Editor
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6776888899354090758L;
+	// Game Editor
     private final GameEditor gameEditor = new GameEditor();
     // Define Editor
     private final DefineEditor defineEditor = new DefineEditor();

@@ -37,8 +37,6 @@ public class LudemeNode implements iGNode
     private Clause selectedClause = null;
     /** Map of NodeArgument and its corresponding input */
     private LinkedHashMap<NodeArgument, Object> providedInputsMap;
-    /** HashMap of Nodes this node is connected to (as a parent) and their order */
-    private final HashMap<LudemeNode, Integer> childrenOrder = new HashMap<>();
     /** Depth in the graph/tree */
     private int depth = 0;
     /** Width and height of the node in its graphical representation */
@@ -271,15 +269,15 @@ public class LudemeNode implements iGNode
     /**
      * Updates the symbol of a define node.
      * Called when the define name was modified.
-     * @param symbol
+     * @param symbol1
      */
-    public void updateDefineNode(Symbol symbol)
+    public void updateDefineNode(Symbol symbol1)
     {
         assert isDefineNode();
         List<NodeArgument> oldArgs = nodeArguments.get(selectedClause());
-        this.symbol = symbol;
+        this.symbol = symbol1;
         this.clauses.remove(0);
-        Clause c = new Clause(symbol, new ArrayList<>(), true);
+        Clause c = new Clause(symbol1, new ArrayList<>(), true);
         this.clauses.add(c);
         this.selectedClause = c;
         nodeArguments.clear();
@@ -374,15 +372,15 @@ public class LudemeNode implements iGNode
 
     private List<Clause> expandClauses(Symbol s)
     {
-        List<Clause> clauses = new ArrayList<>();
+        List<Clause> clauses1 = new ArrayList<>();
         for(Clause clause : s.rule().rhs())
-            if(clauses.contains(clause) || this.clauses().contains(clause))
+            if(clauses1.contains(clause) || this.clauses().contains(clause))
             {}
             else if(clause.symbol() == s)
-                clauses.add(clause);
+                clauses1.add(clause);
             else
-                clauses.addAll(expandClauses(clause.symbol()));
-        return clauses;
+                clauses1.addAll(expandClauses(clause.symbol()));
+        return clauses1;
     }
 
     /**
@@ -539,12 +537,12 @@ public class LudemeNode implements iGNode
      */
     private HashMap<Clause, List<NodeArgument>> generateNodeArguments()
     {
-        HashMap<Clause, List<NodeArgument>> nodeArguments = new HashMap<>();
+        HashMap<Clause, List<NodeArgument>> nodeArguments1 = new HashMap<>();
         if(clauses() == null)
-            return nodeArguments;
+            return nodeArguments1;
         for (Clause clause : clauses())
-            nodeArguments.put(clause, generateNodeArguments(clause));
-        return nodeArguments;
+            nodeArguments1.put(clause, generateNodeArguments(clause));
+        return nodeArguments1;
     }
 
     /**
@@ -552,28 +550,28 @@ public class LudemeNode implements iGNode
      * @param clause Clause to generate the list of lists of NodeArguments for
      * @return List of lists of NodeArguments for the given Clause
      */
-    private List<NodeArgument> generateNodeArguments(Clause clause)
+    private static List<NodeArgument> generateNodeArguments(Clause clause)
     {
-        List<NodeArgument> nodeArguments = new ArrayList<>();
+        List<NodeArgument> nodeArguments1 = new ArrayList<>();
         if(clause.symbol().ludemeType().equals(Symbol.LudemeType.Predefined))
         {
             NodeArgument nodeArgument = new NodeArgument(clause);
-            nodeArguments.add(nodeArgument);
-            return nodeArguments;
+            nodeArguments1.add(nodeArgument);
+            return nodeArguments1;
         }
         List<ClauseArg> clauseArgs = clause.args();
         for(int i = 0; i < clauseArgs.size(); i++)
         {
             ClauseArg clauseArg = clauseArgs.get(i);
             // Some clauses have Constant clauseArgs followed by the constructor keyword. They should not be included in the InputArea
-            if(nodeArguments.isEmpty() && clauseArg.symbol().ludemeType().equals(Symbol.LudemeType.Constant))
+            if(nodeArguments1.isEmpty() && clauseArg.symbol().ludemeType().equals(Symbol.LudemeType.Constant))
                 continue;
             NodeArgument nodeArgument = new NodeArgument(clause, clauseArg);
-            nodeArguments.add(nodeArgument);
+            nodeArguments1.add(nodeArgument);
             // if the clauseArg is part of a OR-Group, they all are added to the NodeArgument automatically, and hence can be skipped in the next iteration
             i = i + nodeArgument.originalArgs.size() - 1;
         }
-        return nodeArguments;
+        return nodeArguments1;
     }
 
 
@@ -801,14 +799,14 @@ public class LudemeNode implements iGNode
         StringBuilder sb = new StringBuilder();
         if(parentNode() != null)
             sb.append("\n");
-        int depth = 0;
-        LudemeNode parent = this;
-        while(parent.parentNode() != null)
+        int depth1 = 0;
+        LudemeNode n = this;
+        while(n.parentNode() != null)
         {
-            parent = parent.parentNode();
-            depth++;
+            n = n.parentNode();
+            depth1++;
         }
-        for(int i = 0 ; i < depth; i++)
+        for(int i = 0 ; i < depth1; i++)
             sb.append("\t");
 
         if(is1DCollectionNode())
@@ -867,7 +865,7 @@ public class LudemeNode implements iGNode
         }
         if(numberOfMandatoryLudemeInputs() > 1)
         {
-            for(int i = 0 ; i < depth; i++)
+            for(int i = 0 ; i < depth1; i++)
             {
                 sb.append("\t");
             }

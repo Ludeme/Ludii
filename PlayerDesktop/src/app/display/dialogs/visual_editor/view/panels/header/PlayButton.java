@@ -6,12 +6,15 @@ import game.Game;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 
 public class PlayButton extends JButton
 {
 
-    private boolean compilable = true;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2525022058118158573L;
+	private boolean compilable = true;
     public PlayButton()
     {
         super("Play");
@@ -25,40 +28,53 @@ public class PlayButton extends JButton
         setBackground(DesignPalette.COMPILABLE_COLOR());
         setForeground(DesignPalette.PLAY_BUTTON_FOREGROUND());
         // try to compile
-        ActionListener actionListener = e ->
-        {
-            if (!compilable) {
+     
+        addActionListener(e -> {
+            if (!compilable) 
+            {
                 Handler.markUncompilable();
-                java.util.List<String> errors = (java.util.List<String>) Handler.lastCompile[1];
+                @SuppressWarnings("unchecked")
+				java.util.List<String> errors = (java.util.List<String>) Handler.lastCompile[1];
                 String errorMessage = "";
                 if (errors.isEmpty())
-                    errorMessage = "Could not create \"game\" ludeme from description.";
-                else {
+                    {
+                	errorMessage = "Could not create \"game\" ludeme from description.";
+                    }
+                else 
+                {
                     errorMessage = errors.toString();
                     errorMessage = errorMessage.substring(1, errorMessage.length() - 1);
                 }
                 JOptionPane.showMessageDialog(null, errorMessage, "Couldn't compile", JOptionPane.ERROR_MESSAGE);
-            } else {
+            } 
+            else 
+            {
                 // try to compile
                 Object[] output = Handler.compile();
-                if (output[0] != null) {
+                if (output[0] != null) 
+                {
                     setCompilable();
                     setToolTipText(null);
                     Handler.play((Game) output[0]);
-                } else {
-                    java.util.List<String> errors = (java.util.List<String>) output[1];
+                } 
+                else 
+                {
+                    @SuppressWarnings("unchecked")
+					java.util.List<String> errors = (java.util.List<String>) output[1];
                     String errorMessage = "";
                     if (errors.isEmpty())
-                        errorMessage = "Could not create \"game\" ludeme from description.";
-                    else {
+                        {
+                    	errorMessage = "Could not create \"game\" ludeme from description.";
+                        }
+                    else 
+                    {
                         errorMessage = errors.toString();
                         errorMessage = errorMessage.substring(1, errorMessage.length() - 1);
                     }
                     JOptionPane.showMessageDialog(this, errorMessage, "Couldn't compile", JOptionPane.ERROR_MESSAGE);
                 }
             }
-        };
-        addActionListener(actionListener);
+        });
     }
 
     public void paintComponent(Graphics g)
@@ -106,7 +122,8 @@ public class PlayButton extends JButton
         }
         else
         {
-            java.util.List<String> errors = (java.util.List<String>) output[1];
+            @SuppressWarnings("unchecked")
+			java.util.List<String> errors = (java.util.List<String>) output[1];
             String errorMessage = "";
             if (errors.isEmpty())
                 errorMessage = "Could not create \"game\" ludeme from description.";

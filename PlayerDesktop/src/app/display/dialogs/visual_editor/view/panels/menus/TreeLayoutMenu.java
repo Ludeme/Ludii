@@ -10,7 +10,11 @@ import javax.swing.*;
 
 public class TreeLayoutMenu extends JMenu
 {
-    public static final JMenuItem undoP = new JMenuItem("Undo Placement");
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -9127390803169376994L;
+	public static final JMenuItem undoP = new JMenuItem("Undo Placement");
     public static final JMenuItem redoP = new JMenuItem("Redo Placement");
 
     /**
