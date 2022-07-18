@@ -30,14 +30,14 @@ public interface iGraph
      * @param id node id
      * @return node instance
      */
-    iGNode getNode(Integer id);
+    iGNode getNode(int id);
 
     /**
      * Adds instance of a node to the graph
      * @param node valid instance of a node
      * @return node id
      */
-    Integer addNode(iGNode node);
+    int addNode(iGNode node);
 
     /**
      * Removes instance of a node from the graph
@@ -50,14 +50,14 @@ public interface iGraph
      * @param from parent node
      * @param to child node
      */
-    void addEdge(Integer from, Integer to);
+    void addEdge(int from, int to);
 
     /**
      * remove edge
      * @param from starting node of an edge
      * @param to end node of an
      */
-    void removeEdge(Integer from, Integer to);
+    void removeEdge(int from, int to);
 
     /**
      *
@@ -70,26 +70,26 @@ public interface iGraph
      * Add node to the list on creation, on removal and on the deletion of parent connection
      * @param root id
      */
-    void addConnectedComponentRoot(Integer root);
+    void addConnectedComponentRoot(int root);
 
     /**
      * Remove root id from the connected components list
      * Call on adding a parent node
      * @param root id
      */
-    void removeConnectedComponentRoot(Integer root);
+    void removeConnectedComponentRoot(int root);
 
     /**
      * returns id of a selected root
      * @return selected root/sub-root
      */
-    Integer selectedRoot();
+    int selectedRoot();
 
     /**
      * sets selected root
      * @param root selected root/sub-root
      */
-    void setSelectedRoot(Integer root);
+    void setSelectedRoot(int root);
 
     /**
      * sets main root of graph

@@ -92,6 +92,8 @@ public class AddArgumentPanel extends JPanel
                 if (index == -1)
                     return;
 
+                graphPanel.addSelectionIndex(index + 1); // plus one because we want the position, but indices start at 0. For Code Completion Log
+
                 Symbol s = listModel.getElementAt(index).getSymbol();
 
                 // if adds define
