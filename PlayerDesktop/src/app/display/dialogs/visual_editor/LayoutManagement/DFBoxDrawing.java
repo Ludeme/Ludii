@@ -22,10 +22,10 @@ public class DFBoxDrawing
 
     private double[] odsMetrics;
 
-    private static final double DEFAULT_DISTANCE = 0.1;
-    private static final double DEFAULT_OFFSET = 0.1;
+    private static final double DEFAULT_DISTANCE = 0.4;
+    private static final double DEFAULT_OFFSET = 0.2;
     private static final double DEFAULT_SPREAD = 0.1;
-    private double compactness = 1.0;
+    private double compactness = 0.9;
 
     private final int PADDING_X = 10;
 
@@ -74,12 +74,12 @@ public class DFBoxDrawing
             {
                 freeY += (graph.getNode(nodeId).pos().y() - GraphRoutines.getSubtreeArea(graph, nodeId).y);
                 piInit = new Vector2D(freeX, freeY);
-                freeY += GraphRoutines.nodesMaxSpread() * (odsMetrics[2]) + GraphRoutines.getSubtreeArea(graph, nodeId).height + PADDING_X;
+                freeY += GraphRoutines.nodesMaxSpread() * (odsMetrics[2] * (1.0 - compactness)) + GraphRoutines.getSubtreeArea(graph, nodeId).height + PADDING_X;
                 translateByRoot(graph, nodeId, piInit);
             }
             else
             {
-                freeY += GraphRoutines.nodesMaxSpread() * (odsMetrics[2]) + graph.getNode(nodeId).height() + PADDING_X;
+                freeY += GraphRoutines.nodesMaxSpread() * (odsMetrics[2] * (1.0 - compactness)) + graph.getNode(nodeId).height() + PADDING_X;
             }
             // update node position
             graph.getNode(nodeId).setPos(piInit);
@@ -124,7 +124,7 @@ public class DFBoxDrawing
             double wOffset = odsMetrics[0];
             double yCoord;
 
-            yCoord = (X1 - X0) * wOffset + X0;
+            yCoord = (X1 - X0) * wOffset * (0.5 * (2.0 - compactness)) + X0;
 
             Vector2D piInit = new Vector2D(freeX, yCoord);
             // update node position
@@ -179,7 +179,6 @@ public class DFBoxDrawing
                 iGNode lower = graph.getNode(P.get(k));
                 if (upper.equals(lower)) break;
 
-                int upperHeight = upper.fixed() ? GraphRoutines.getSubtreeArea(graph, upper.id()).height : upper.height();
                 int upperWidth = upper.fixed() ? GraphRoutines.getSubtreeArea(graph, upper.id()).width : upper.width();
                 int lowerWidth = lower.fixed() ? GraphRoutines.getSubtreeArea(graph, lower.id()).width : lower.width();
 
@@ -332,7 +331,7 @@ public class DFBoxDrawing
         long startTime = System.nanoTime();
         initPlacement(root,0);
         long endTime = System.nanoTime();
-        if (RECORD_TIME) if (RECORD_TIME) System.out.println("Init placement: " + (endTime - startTime)/1E6);
+        if (RECORD_TIME) System.out.println("Init placement: " + (endTime - startTime)/1E6);
 
         startTime = System.nanoTime();
         compactBox(root);

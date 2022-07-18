@@ -29,37 +29,34 @@ public class FileMenu extends JMenu
     public FileMenu(EditorMenuBar menuBar)
     {
         super("File");
+        // TODO: unfortunately we did not managed to complete all functionalities for this menu in time;
+
         // adding file menu items
-        menuBar.addJMenuItem(this, "New", null);
-        menuBar.addJMenuItem(this, "Open...", e -> openDescriptionFile());
-        menuBar.addJMenuItem(this, "Open recent", null);
-        menuBar.addJMenuItem(this, "Close file", null);
+        // menuBar.addJMenuItem(this, "New", null);
+        // menuBar.addJMenuItem(this, "Open...", e -> openDescriptionFile());
+        // menuBar.addJMenuItem(this, "Open recent", null);
+        // menuBar.addJMenuItem(this, "Close file", null);
 
-        add(new JSeparator());
+        // add(new JSeparator());
 
-        menuBar.addJMenuItem(this, "Save", null);
-        menuBar.addJMenuItem(this, "Save as...", null);
+        // menuBar.addJMenuItem(this, "Save", null);
+        // menuBar.addJMenuItem(this, "Save as...", null);
         menuBar.addJMenuItem(this, "Export as .lud", e -> exportAsLud());
 
-        add(new JSeparator());
+        // add(new JSeparator());
 
-        menuBar.addJMenuItem(this, "Exit", null);
+        // menuBar.addJMenuItem(this, "Exit", null);
     }
 
-    private void openDescriptionFile()
+    /**
+     * Opens selection menu of .lud game description to be imported into graph panel
+     * TODO: utilized due to parsing issues
+     */
+    private static void openDescriptionFile()
     {
         // reused code from class GameLoading method loadGameFromMemory
         final String[] choices = FileHandling.listGames();
-
         String initialChoice = choices[0];
-        //for (final String choice : choices)
-        //{
-        //    if (app.manager().savedLudName() != null && app.manager().savedLudName().endsWith(choice.replaceAll(Pattern.quote("\\"), "/")))
-        //    {
-        //        initialChoice = choice;
-        //        break;
-        //    }
-        //}
         final String choice = GameLoaderDialog.showDialog(DesktopApp.frame(), choices, initialChoice);
 
         if (choice != null)
@@ -77,7 +74,10 @@ public class FileMenu extends JMenu
         }
     }
 
-    private void exportAsLud()
+    /**
+     * Export game graph to .lud
+     */
+    private static void exportAsLud()
     {
         String lud = Handler.toLud();
 
@@ -101,10 +101,13 @@ public class FileMenu extends JMenu
         System.out.println("############################\n\n");
     }
 
-    private void StartGraphParsingThread(File file, IGraphPanel panel, ProgressBar progressBar)
+    /**
+     * Initiates parsing of ludeme description to graph
+     */
+    private static void StartGraphParsingThread(File file, IGraphPanel panel, ProgressBar progressBar)
     {
 
-        SwingWorker swingWorker = new SwingWorker()
+        SwingWorker<?, ?> swingWorker = new SwingWorker<Object, Object>()
         {
             @Override
             protected Object doInBackground()

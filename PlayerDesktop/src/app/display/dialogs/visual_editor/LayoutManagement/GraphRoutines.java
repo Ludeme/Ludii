@@ -185,7 +185,7 @@ public final class GraphRoutines
 
             avg += layerAvg*layerWeight;
         }
-        return avg / keys.size();
+        return avg;
     }
 
     /**
