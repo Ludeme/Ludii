@@ -22,9 +22,8 @@ public class RemovedNodeAction implements IUserAction
     private final IGraphPanel graphPanel;
     private final DescriptionGraph graph;
     private final LudemeNode removedNode;
-    private boolean isUndone = false;
-    private LudemeNode parent; // remembers the parent of the node
-    private LinkedHashMap<NodeArgument, Object> removedData; // Inputs that were removed when the node was removed
+    private final LudemeNode parent; // remembers the parent of the node
+    private final LinkedHashMap<NodeArgument, Object> removedData; // Inputs that were removed when the node was removed
     private int collectionIndex = -1; // If the node was removed from a collection, this is the index of the node in the collection
 
 
@@ -52,9 +51,13 @@ public class RemovedNodeAction implements IUserAction
         }
 
         // find collection index
-        if(parent==null) return;
+        if(parent==null)
+            return;
         LinkedHashMap<NodeArgument, Object> parentInputs = parent.providedInputsMap();
-        if(parentInputs.containsValue(removedNode)) collectionIndex = -1;
+        if(parentInputs.containsValue(removedNode))
+        {
+            collectionIndex = -1;
+        }
         else
         {
             for(NodeArgument arg : parentInputs.keySet())
@@ -110,32 +113,44 @@ public class RemovedNodeAction implements IUserAction
     }
 
     /**
-     * @return Whether the action was undone
-     */
-    @Override
-    public boolean isUndone() {
-        return isUndone;
-    }
-
-    /**
      * Undoes the action
      */
     @Override
     public void undo()
     {
         Handler.addNode(graph, removedNode);
-        for (NodeArgument arg : removedData.keySet()) {
+        for (NodeArgument arg : removedData.keySet())
+        {
             Object input = removedData.get(arg);
-            if (input == null) continue;
-            if (input instanceof LudemeNode) Handler.addEdge(graph, removedNode, (LudemeNode) input, arg);
-            else if (input instanceof Object[]) {
+            if (input == null)
+            {
+                continue;
+            }
+            if (input instanceof LudemeNode)
+            {
+                Handler.addEdge(graph, removedNode, (LudemeNode) input, arg);
+            }
+            else if (input instanceof Object[])
+            {
                 Object[] collection = (Object[]) input;
                 Handler.updateInput(graph, removedNode, arg, input);
-                for (int i = 0; i < collection.length; i++) {
-                    if (!(collection[i] instanceof LudemeNode)) continue;
+                for(int i = 0; i < collection.length-1; i++)
+                {
+                    Handler.addCollectionElement(graph, removedNode, arg);
+                }
+                for (int i = 0; i < collection.length; i++)
+                {
+                    if (!(collection[i] instanceof LudemeNode))
+                    {
+                        continue;
+                    }
                     Handler.addEdge(graph, removedNode, (LudemeNode) collection[i], arg, i);
                 }
-            } else Handler.updateInput(graph, removedNode, arg, input);
+            }
+            else
+            {
+                Handler.updateInput(graph, removedNode, arg, input);
+            }
             removedNode.setProvidedInput(arg, removedData.get(arg));
         }
 
@@ -152,7 +167,6 @@ public class RemovedNodeAction implements IUserAction
         lncs.add(graphPanel.nodeComponent(removedNode));
         graphPanel.updateCollapsed(lncs);
 
-        isUndone = false;
     }
 
     /**
@@ -162,7 +176,6 @@ public class RemovedNodeAction implements IUserAction
     public void redo() {
         Handler.removeNode(graph, removedNode);
         graphPanel().repaint();
-        isUndone = true;
     }
 
     @Override

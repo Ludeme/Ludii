@@ -2,7 +2,10 @@ package app.display.dialogs.visual_editor.recs.codecompletion.controller;
 
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.DocHandler;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.ModelLibrary;
-import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.*;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Context;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Instance;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.NGram;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Preprocessing;
 import app.display.dialogs.visual_editor.recs.interfaces.codecompletion.controller.iController;
 import app.display.dialogs.visual_editor.recs.utils.*;
 

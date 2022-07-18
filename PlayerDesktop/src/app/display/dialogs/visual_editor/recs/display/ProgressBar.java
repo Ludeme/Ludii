@@ -27,13 +27,8 @@ public class ProgressBar {
         int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
         int screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
         progress = 0.0;
-        TextEditor textEditor = TextEditor.getInstance();
-        if (textEditor == null) {
-            dialog = new JDialog();
-            dialog.setTitle(operationName);
-        } else {
-            dialog = new JDialog(textEditor.getFrame(), operationName);
-        }
+        dialog = new JDialog();
+        dialog.setTitle(operationName);
         panel = new JPanel();
         progressBar = new JProgressBar((int) progress);
         label = new JLabel(operationDescription);

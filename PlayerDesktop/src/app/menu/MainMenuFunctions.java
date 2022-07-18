@@ -41,7 +41,7 @@ import app.display.dialogs.SettingsDialog;
 import app.display.dialogs.TestLudemeDialog;
 import app.display.dialogs.MoveDialog.PossibleMovesDialog;
 import app.display.dialogs.editor.EditorDialog;
-import app.display.dialogs.visual_editor.VisualEditorPanel;
+import app.display.dialogs.visual_editor.StartVisualEditor;
 import app.display.screenCapture.ScreenCapture;
 import app.display.util.Thumbnails;
 import app.display.views.tabs.TabView;
@@ -228,7 +228,7 @@ public class MainMenuFunctions extends JMenuBar
 		else if (source.getText().equals("Visual Editor (Beta)"))
 		{
 			// Create and lauch an instance of the visual editor
-			final VisualEditorPanel visual = new VisualEditorPanel(app);
+			final StartVisualEditor visual = new StartVisualEditor(app);
 		}
 		// IMPORTANT These next four menu functions are just for us, not the user
 		else if (source.getText().equals("Export Thumbnails"))

@@ -9,32 +9,25 @@ public class Edge {
 
     private final int nodeA;
     private final int nodeB;
-    private int field;
 
-    public Edge(int nodeA, int nodeB) {
+    public Edge(int nodeA, int nodeB)
+    {
         this.nodeA = nodeA;
         this.nodeB = nodeB;
     }
 
-    public Edge(int nodeA, int nodeB, int field) {
-        this.nodeA = nodeA;
-        this.nodeB = nodeB;
-        this.field = field;
-    }
-
-    public int getField() {
-        return field;
-    }
-
-    public int getNodeA() {
+    public int getNodeA()
+    {
         return nodeA;
     }
 
-    public int getNodeB() {
+    public int getNodeB()
+    {
         return nodeB;
     }
 
-    public boolean equals(Edge e){
+    public boolean equals(Edge e)
+    {
         return this.nodeA == e.getNodeA() && this.nodeB == e.getNodeB();
     }
 }

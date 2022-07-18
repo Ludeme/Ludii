@@ -5,15 +5,16 @@ import app.display.dialogs.visual_editor.recs.utils.StringUtils;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 /**
  * Class is a singleton
  */
 public class DocHandler {
     // TODO: refactor paths in similar way
-    public static final String DOC_LOCATION = System.getProperty("user.dir")+"\\src\\app\\display\\dialogs\\visual_editor\\resources\\recs\\documents.txt"; // TODO: not absolute path
-            //Objects.requireNonNull(DocHandler.class.getResource("resources/recs/documents.txt")).getPath(); TODO: [FILIP] CHANGED
+    public static final String DOC_LOCATION = "../Common/res/recs/documents.txt";
     public static final String GRAMMAR = "grammar_location";
     public static final String GAMES = "games_location";
     public static final String MODELS = "models_location";

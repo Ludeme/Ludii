@@ -19,8 +19,6 @@ public class AddedConnectionAction implements IUserAction
     private final LudemeNode from;
     private final LudemeNode to;
     private final NodeArgument nodeArgument;
-    //private final int index;
-    private boolean isUndone = false;
 
     public AddedConnectionAction(IGraphPanel graphPanel, LudemeNode from, LudemeNode to, NodeArgument nodeArgument)
     {
@@ -57,14 +55,6 @@ public class AddedConnectionAction implements IUserAction
     }
 
     /**
-     * @return Whether the action was undone
-     */
-    @Override
-    public boolean isUndone() {
-        return isUndone;
-    }
-
-    /**
      * Undoes the action
      */
     @Override
@@ -72,7 +62,6 @@ public class AddedConnectionAction implements IUserAction
         //Handler.updateInput(graph, from, index, null);
         Handler.removeEdge(graph, from, to);
         Handler.updateInput(graph, from, nodeArgument, null);
-        isUndone = true;
     }
 
     /**
@@ -83,6 +72,5 @@ public class AddedConnectionAction implements IUserAction
         //Handler.updateInput(graph, from, index, to);
         Handler.addEdge(graph, from, to, nodeArgument);
         Handler.updateInput(graph, from, nodeArgument, to);
-        isUndone = true;
     }
 }

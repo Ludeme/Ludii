@@ -17,7 +17,6 @@ public class PasteAction implements IUserAction
     private final IGraphPanel graphPanel;
     private final DescriptionGraph graph;
     private final List<LudemeNode> pastedNodes;
-    private boolean isUndone = false;
     private  RemovedNodesAction removedNodesAction;
 
     public PasteAction(IGraphPanel graphPanel, List<LudemeNode> pastedNodes)
@@ -52,21 +51,12 @@ public class PasteAction implements IUserAction
     }
 
     /**
-     * @return Whether the action was undone
-     */
-    @Override
-    public boolean isUndone() {
-        return isUndone;
-    }
-
-    /**
      * Undoes the action
      */
     @Override
     public void undo() {
         removedNodesAction = new RemovedNodesAction(graphPanel, pastedNodes);
         Handler.removeNodes(graph, pastedNodes);
-        isUndone = false;
     }
 
     /**
@@ -75,6 +65,5 @@ public class PasteAction implements IUserAction
     @Override
     public void redo() {
         removedNodesAction.undo();
-        isUndone = true;
     }
 }

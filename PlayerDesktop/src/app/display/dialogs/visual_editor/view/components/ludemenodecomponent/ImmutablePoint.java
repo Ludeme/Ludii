@@ -1,6 +1,6 @@
 package app.display.dialogs.visual_editor.view.components.ludemenodecomponent;
 
-import java.awt.Point;
+import java.awt.*;
 
 public class ImmutablePoint {
     public int x, y;
