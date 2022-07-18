@@ -608,9 +608,6 @@ public class GraphPanel extends JPanel implements IGraphPanel
         //[UNCOMMENT FILIP] String gameDescription = connectionHandler().selectedComponent().inputField().inputArea().LNC().node().toLudCodeCompletion(connectionHandler().selectedComponent().inputField().nodeArguments());
         List<Symbol> typeMatched = possibleSymbols;
         //[UNCOMMENT FILIP] List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription, StartVisualEditor.controller(),possibleSymbols);
-        long finish = System.nanoTime();
-        long latency = finish - start;
-        latencies.add(latency);
 
         connectArgumentPanel.updateList(connectionHandler().selectedComponent().inputField(), typeMatched);
         connectArgumentPanel.setVisible(true);
@@ -1001,17 +998,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
         // return translated back to java swing scaled coordinates
         return new Vector2D(xp+viewportX+W/2, -1*yp+H/2+viewportY);
     }
-
-    public void addSelectionIndex(int index)
-    {
-        selectedCompletion.add(index);
-    }
-
-    public List<Long> latencies()
-    {
-        return latencies;
-    }
-
+    
     public List<Integer> selectedCompletion()
     {
         return selectedCompletion;

@@ -92,6 +92,4 @@ public interface IGraphPanel {
     void syncNodePositions();
     /** Repaints the graph */
     void repaint();
-    /** */
-    void addSelectionIndex(int index);
 }
