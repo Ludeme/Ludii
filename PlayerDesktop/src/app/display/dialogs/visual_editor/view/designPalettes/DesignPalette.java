@@ -122,7 +122,7 @@ public class DesignPalette
     // TOOL PANEL
     private static Color HEADER_BUTTON_ACTIVE_COLOR;
     private static Color HEADER_BUTTON_INACTIVE_COLOR;
-    private static Color HEADER_BUTTON_HOVER_COLOR = new Color(127,191,255);
+    private static final Color HEADER_BUTTON_HOVER_COLOR = new Color(127,191,255);
 
 
 
@@ -143,7 +143,7 @@ public class DesignPalette
         List<String> names = new ArrayList<>();
         try
         {
-            BufferedReader br = new BufferedReader(new InputStreamReader(DesignPalette.class.getResourceAsStream(PALETTE_FILE_PATH)));
+            BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(DesignPalette.class.getResourceAsStream(PALETTE_FILE_PATH))));
             br.lines().forEach(line ->
             {
                 if(line.endsWith(".json"))
@@ -178,8 +178,7 @@ public class DesignPalette
         InputStream is = DesignPalette.class.getResourceAsStream(PALETTE_FILE_PATH + paletteName + ".json");
         if(is == null)
             return null;
-        JSONObject palette = new JSONObject(new JSONTokener(is));
-        return palette;
+        return new JSONObject(new JSONTokener(is));
     }
 
     private static void setColours(Map<String, Object> palette)
@@ -315,7 +314,7 @@ public class DesignPalette
                 REDO_ACTIVE = getIcon("editor/inactive/redo.png");
 
                 break;
-            case "light": ;
+            case "light":
             default:
                 CHOICE_ICON_ACTIVE = getIcon("node/active/choice.png");
                 COLLECTION_ICON_ACTIVE = getIcon("node/active/collection_add.png");
@@ -675,13 +674,11 @@ public class DesignPalette
 
     // LUDEME BLOCK //
     private static ImageIcon CHOICE_ICON_ACTIVE = getIcon("node/active/choice.png");
-    private static ImageIcon CHOICE_ICON_HOVER = getIcon("node/hover/choice.png");
+    private static final ImageIcon CHOICE_ICON_HOVER = getIcon("node/hover/choice.png");
     private static ImageIcon COLLECTION_ICON_ACTIVE = getIcon("node/active/collection_add.png");
-    private static ImageIcon COLLECTION_ICON_HOVER = getIcon("node/hover/collection_add.png");
-    private static ImageIcon COLLECTION_REMOVE_ICON_HOVER = getIcon("node/hover/collection_remove.png");
+    private static final ImageIcon COLLECTION_ICON_HOVER = getIcon("node/hover/collection_add.png");
+    private static final ImageIcon COLLECTION_REMOVE_ICON_HOVER = getIcon("node/hover/collection_remove.png");
     private static ImageIcon COLLECTION_REMOVE_ICON_ACTIVE = getIcon("node/active/collection_remove.png");
-    private static ImageIcon OPTIONAL_ICON_ACTIVE =getIcon("node/active/optional.png");
-    private static ImageIcon OPTIONAL_ICON_HOVER = getIcon("node/hover/optional.png");
     private static ImageIcon DOWN_ICON = getIcon("node/active/down.png");
 
     private static ImageIcon UNCOLLAPSE_ICON = getIcon("node/active/uncollapse.png");
@@ -719,15 +716,6 @@ public class DesignPalette
         return COLLECTION_REMOVE_ICON_HOVER;
     }
 
-    public static ImageIcon OPTIONAL_ICON_ACTIVE()
-    {
-        return OPTIONAL_ICON_ACTIVE;
-    }
-
-    public static ImageIcon OPTIONAL_ICON_HOVER()
-    {
-        return OPTIONAL_ICON_HOVER;
-    }
 
     public static ImageIcon DOWN_ICON()
     {
@@ -744,10 +732,6 @@ public class DesignPalette
         return UNCOLLAPSE_ICON;
     }
 
-    public static ImageIcon COLLAPSE_ICON_HOVER()
-    {
-        return COLLAPSE_ICON;
-    }
 
     public static ImageIcon UNCOLLAPSE_ICON_HOVER()
     {
