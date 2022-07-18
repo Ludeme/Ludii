@@ -14,20 +14,20 @@ public interface iGraph
 {
 
     /**
-     *
-     * @return
+     * Returns a list of edges in graph
+     * @return list of edges
      */
     List<Edge> getEdgeList();
 
     /**
-     *
-     * @return
+     * Returns a list on nodes in graph
+     * @return hashmap where key stands for a node id and value is a node object
      */
-    HashMap<Integer, iGNode> getNodeList(); //TODO: do we need this?
+    HashMap<Integer, iGNode> getNodeList();
 
     /**
      * get node by id
-     * @param id
+     * @param id node id
      * @return node instance
      */
     iGNode getNode(int id);
@@ -35,23 +35,15 @@ public interface iGraph
     /**
      * Adds instance of a node to the graph
      * @param node valid instance of a node
-     * @return id
+     * @return node id
      */
     int addNode(iGNode node);
 
     /**
      * Removes instance of a node from the graph
      * @param node valid instance of a node
-     * @return id
      */
-    int removeNode(iGNode node);
-
-    /**
-     * Removes instance of a node from the graph
-     * @param id valid id of a node
-     * @return id
-     */
-    int removeNode(int id);
+    void removeNode(iGNode node);
 
     /**
      * add edge
@@ -60,9 +52,12 @@ public interface iGraph
      */
     void addEdge(int from, int to);
 
+    /**
+     * remove edge
+     * @param from starting node of an edge
+     * @param to end node of an
+     */
     void removeEdge(int from, int to);
-
-    void removeEdge(int containsId);
 
     /**
      *
@@ -85,19 +80,27 @@ public interface iGraph
     void removeConnectedComponentRoot(int root);
 
     /**
-     *
+     * returns id of a selected root
      * @return selected root/sub-root
      */
     int selectedRoot();
 
     /**
-     *
+     * sets selected root
      * @param root selected root/sub-root
      */
     void setSelectedRoot(int root);
 
+    /**
+     * sets main root of graph
+     * @param root node instance (typically 'game' node)
+     */
     void setRoot(iGNode root);
 
+    /**
+     * returns instance of main graph root
+     * @return node instance
+     */
     iGNode getRoot();
 
 }

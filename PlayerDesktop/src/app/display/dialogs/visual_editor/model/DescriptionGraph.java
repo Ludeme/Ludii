@@ -113,22 +113,12 @@ public class DescriptionGraph implements iGraph
     }
 
     @Override
-    public int removeNode(iGNode node)
+    public void removeNode(iGNode node)
     {
         this.allLudemeNodes.remove((LudemeNode) node);
         nodeMap.remove(node.id());
         removeConnectedComponentRoot(node.id());
-        return node.id();
-    }
-
-    @Override
-    public int removeNode(int id)
-    {
-        iGNode node = getNode(id);
-        nodeMap.remove(id);
-        this.allLudemeNodes.remove(node);
-        removeConnectedComponentRoot(node.id());
-        return node.id();
+        node.id();
     }
 
     @Override
@@ -151,17 +141,6 @@ public class DescriptionGraph implements iGraph
                 edgeList.remove(e);
                 addConnectedComponentRoot(to);
                 return;
-            }
-    }
-
-    @Override
-    public void removeEdge(int containsId)
-    {
-        for(Edge e : new ArrayList<>(edgeList))
-            if(e.getNodeA() == containsId ||e.getNodeB() == containsId)
-            {
-                edgeList.remove(e);
-                addConnectedComponentRoot(e.getNodeB());
             }
     }
 
