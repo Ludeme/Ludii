@@ -132,7 +132,7 @@ public class NodePopupMenu extends JPopupMenu
             message += "# Clauses: " + node.clauses().size() + "\n";
             message += "Creator: " + node.creatorArgument() + "\n";
             message += "Package: " + node.packageName() + "\n";
-            message += ".lud : " + graphPanel.graph().toLud() + "\n";
+            message += ".lud : " + node.toLud() + "\n";
 
 
 
