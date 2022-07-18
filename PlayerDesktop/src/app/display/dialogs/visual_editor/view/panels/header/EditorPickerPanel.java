@@ -1,6 +1,5 @@
 package app.display.dialogs.visual_editor.view.panels.header;
 
-import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.view.VisualEditorPanel;
 import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 

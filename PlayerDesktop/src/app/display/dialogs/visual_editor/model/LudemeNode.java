@@ -2,18 +2,17 @@ package app.display.dialogs.visual_editor.model;
 
 
 import app.display.dialogs.visual_editor.LayoutManagement.Vector2D;
+import app.display.dialogs.visual_editor.documentation.DocumentationReader;
+import app.display.dialogs.visual_editor.documentation.HelpInformation;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Preprocessing;
-import app.display.dialogs.visual_editor.documentation.DocumentationReader;
-import app.display.dialogs.visual_editor.documentation.HelpInformation;
 import grammar.Grammar;
 import main.grammar.Clause;
 import main.grammar.ClauseArg;
 import main.grammar.Symbol;
 
 import java.util.*;
-import java.util.List;
 
 /**
  * Node representation of a ludeme in the current description

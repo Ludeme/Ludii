@@ -7,7 +7,6 @@ import app.display.dialogs.visual_editor.model.GameParser;
 import app.display.dialogs.visual_editor.recs.display.ProgressBar;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import main.FileHandling;
-import main.grammar.Description;
 import other.GameLoader;
 
 import javax.swing.*;

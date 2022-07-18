@@ -24,10 +24,15 @@ import java.util.List;
 
 public class AddArgumentPanel extends JPanel
 {
-    final DefaultListModel<ReadableSymbol> listModel = new DefaultListModel();
-    final JList list = new JList(listModel)
+    final DefaultListModel<ReadableSymbol> listModel = new DefaultListModel<ReadableSymbol>();
+    final JList<ReadableSymbol> list = new JList<ReadableSymbol>(listModel)
     {
-        @Override
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		@Override
         public String getToolTipText(MouseEvent e)
         {
             String htmlTip = "<html>";
