@@ -126,17 +126,13 @@ public class NodePopupMenu extends JPopupMenu
             String message = "";
             message += "ID: " + node.id() + "\n";
             message += "Name: " + node.symbol().name() + "\n";
-            message += node.toLud() + "\n";
             message += "Grammar Label: " + node.symbol().grammarLabel() + "\n";
-            message += "Constructor: " + node.selectedClause() + "\n";
+            message += "Token: " + node.symbol().token() + "\n";
+            message += "Selected Constructor: " + node.selectedClause() + "\n";
             message += "# Clauses: " + node.clauses().size() + "\n";
             message += "Creator: " + node.creatorArgument() + "\n";
             message += "Package: " + node.packageName() + "\n";
-            message += "Provided Inputs: " + (node.providedInputsMap().values()) + "\n";
-            message += "Fields: " + nodeComponent.inputArea().currentInputFields + "\n";
-            message += "Unsatisfied : " + Handler.isComplete(graphPanel.graph()) + "\n";
             message += ".lud : " + graphPanel.graph().toLud() + "\n";
-            message += ".lud 2 : " + node.toLud(true) + "\n";
 
 
 
@@ -153,10 +149,7 @@ public class NodePopupMenu extends JPopupMenu
             add(removeDefine);
         }
 
-        JMenuItem help = new JMenuItem("Help");
-        help.addActionListener(e -> new NodeHelp(nodeComponent.node()));
         add(observe);
-        add(help);
 
     }
 }
