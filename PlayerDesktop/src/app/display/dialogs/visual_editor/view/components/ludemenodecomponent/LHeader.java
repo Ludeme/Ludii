@@ -247,8 +247,6 @@ public class LHeader extends JComponent
             clauseBtn.setSize(new Dimension(iconHeight, iconHeight));
             clauseBtn.repaint();
             clauseBtn.revalidate();
-
-            System.out.println("icon height: "+iconHeight);
         }
         if(title.getForeground() != DesignPalette.FONT_LUDEME_TITLE_COLOR())
         {

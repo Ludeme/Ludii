@@ -91,7 +91,7 @@ public class Handler
     /** The last compile */
     public static Object[] lastCompile;
     /** Whether the game should be compiled after each change */
-    public static boolean liveCompile = true;
+    public static boolean liveCompile = false;
 
 
     // Sensitivity to changes

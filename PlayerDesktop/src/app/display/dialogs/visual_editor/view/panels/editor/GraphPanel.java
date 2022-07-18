@@ -165,8 +165,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
      *
      * @param lnc
      */
-    @SuppressWarnings("boxing")
-	@Override
+    @Override
     public void notifyNodeRemoved(LudemeNodeComponent lnc)
     {
         NODE_COMPONENTS.remove(lnc);
@@ -417,8 +416,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
      * @param node
      * @param connect
      */
-    @SuppressWarnings("boxing")
-	private void addLudemeNodeComponent(LudemeNode node, boolean connect)
+    private void addLudemeNodeComponent(LudemeNode node, boolean connect)
     {
         LudemeNodeComponent lc = new LudemeNodeComponent(node, this);
         hideAllAddArgumentPanels();
@@ -472,8 +470,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
      *
      * @param node
      */
-    @SuppressWarnings("boxing")
-	@Override
+    @Override
     public LudemeNodeComponent nodeComponent(LudemeNode node)
     {
         LudemeNodeComponent lnc = NODE_COMPONENTS_BY_ID.get(node.id());
@@ -599,8 +596,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
         revalidate();
     }
 
-    @SuppressWarnings("boxing")
-	public void showCurrentlyAvailableLudemes()
+    public void showCurrentlyAvailableLudemes()
     {
         // get game description up to current point
         int upUntilIndex = connectionHandler().selectedComponent().inputField().nodeArguments().get(0).index();
@@ -612,9 +608,6 @@ public class GraphPanel extends JPanel implements IGraphPanel
         //[UNCOMMENT FILIP] String gameDescription = connectionHandler().selectedComponent().inputField().inputArea().LNC().node().toLudCodeCompletion(connectionHandler().selectedComponent().inputField().nodeArguments());
         List<Symbol> typeMatched = possibleSymbols;
         //[UNCOMMENT FILIP] List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription, StartVisualEditor.controller(),possibleSymbols);
-        long finish = System.nanoTime();
-        long latency = finish - start;
-        latencies.add(latency);
 
         connectArgumentPanel.updateList(connectionHandler().selectedComponent().inputField(), typeMatched);
         connectArgumentPanel.setVisible(true);
@@ -1005,18 +998,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
         // return translated back to java swing scaled coordinates
         return new Vector2D(xp+viewportX+W/2, -1*yp+H/2+viewportY);
     }
-
-    @SuppressWarnings("boxing")
-	public void addSelectionIndex(int index)
-    {
-        selectedCompletion.add(index);
-    }
-
-    public List<Long> latencies()
-    {
-        return latencies;
-    }
-
+    
     public List<Integer> selectedCompletion()
     {
         return selectedCompletion;

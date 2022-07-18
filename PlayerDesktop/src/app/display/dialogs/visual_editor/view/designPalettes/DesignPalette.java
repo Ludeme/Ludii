@@ -412,7 +412,6 @@ public class DesignPalette
     {
         SCALAR *= scalar;
         SCALAR = (float) Math.min(2.0, Math.max(0.85, SCALAR));
-        System.out.println("[SCALING] SCALAR: " + SCALAR);
         NODE_WIDTH = (int) (DEFAULT_NODE_WIDTH * (1.0/SCALAR));
         TERMINAL_INPUT_HEIGHT = (int) (DEFAULT_TERMINAL_INPUT_HEIGHT * (1.0/SCALAR));
         LUDEME_INPUT_FONT_SIZE = (int) (DEFAULT_LUDEME_INPUT_FONT_SIZE * (1.0/SCALAR));
