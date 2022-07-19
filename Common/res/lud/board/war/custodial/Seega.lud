@@ -5,17 +5,11 @@
         (hand Each) 
         
         (piece "Marker" Each 
-            (move Step Orthogonal (to if:(is Empty (to)))
-                (then 
-                    (custodial 
-                        (from (last To))
+            ("StepToEmpty" Orthogonal
+                (then
+                    ("CustodialCapture"
                         Orthogonal
-                        (between
-                            (max 1)
-                            if:("IsEnemyAt" (between))
-                            (apply (remove (between)))
-                        )
-                        (to if:("IsFriendAt" (to)))
+                        (max 1)
                     )
                 )
             )
@@ -32,7 +26,7 @@
                     (to (difference (sites Empty) (centrePoint))) 
                     (then 
                         (if 
-                            (not "SameTurn") 
+                            ("NewTurn") 
                             (moveAgain)
                         )
                     )
@@ -43,7 +37,7 @@
         ("PhaseMovePiece" "Movement")
         }
         
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -112,7 +106,6 @@
         (board Colour OuterEdges (colour Black))
         (board StyleThickness InnerEdges 0.5)
         (board StyleThickness OuterEdges 0.5)
-        
     })
     
     (ai 

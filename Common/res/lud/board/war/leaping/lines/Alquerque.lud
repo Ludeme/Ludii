@@ -142,7 +142,7 @@
         
         (play 
             (or
-                (if (and (not "SameTurn") ("DidNotCaptured"))
+                (if (and ("NewTurn") ("DidNotCaptured"))
                     (or
                         (if ("ShouldCapturedButMoved") 
                             ("HuffOnePieceOf" (last To))

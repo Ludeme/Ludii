@@ -163,7 +163,7 @@
         <Board:start>
         
         (play 
-            (do (if (not "SameTurn") (roll))
+            (do (if ("NewTurn") (roll))
                 next:(if ("SameTurn")
                     (if (= (count Pips) 1)
                         (or {

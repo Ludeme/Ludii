@@ -140,7 +140,7 @@
                 (rules
                     (play
                         (if
-                            (not ("SameTurn"))
+                            ("NewTurn")
                             
                             (do
                                 (forEach Site (difference (sites Board) (sites State 0)) (set State at:(site) 0))

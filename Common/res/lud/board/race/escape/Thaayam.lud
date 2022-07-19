@@ -51,7 +51,7 @@
 )
 
 (define "Move" 
-    (if (or (not "SameTurn") ("HasToThrowAgain")) 
+    (if (or ("NewTurn") ("HasToThrowAgain")) 
         ("RollMove"
             (move Pass 
                 (then 

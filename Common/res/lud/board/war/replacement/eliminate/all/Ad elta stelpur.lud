@@ -112,7 +112,7 @@
         (play 
             (do 
                 (if 
-                    (not "SameTurn") 
+                    ("NewTurn") 
                     (roll)
                     (if 
                         (and 

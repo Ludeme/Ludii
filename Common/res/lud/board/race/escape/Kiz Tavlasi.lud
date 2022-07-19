@@ -97,7 +97,7 @@
         )
         (phase "BearingOff" (play 
                 (do 
-                    (if (or (all DiceEqual) (not "SameTurn")) (roll)) 
+                    (if (or (all DiceEqual) ("NewTurn")) (roll)) 
                     next:(forEach Piece top:True)
                     (then (if (not (all DiceUsed)) (moveAgain)))
                 )

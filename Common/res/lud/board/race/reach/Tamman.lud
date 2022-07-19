@@ -63,7 +63,7 @@
             ("RollMove"
                 (forEach Piece)
                 (then
-                    (if (and ("Throw4") (not ("SameTurn")))
+                    (if (and ("Throw4") ("NewTurn"))
                         (moveAgain)
                     )
                 )

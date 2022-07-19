@@ -114,7 +114,7 @@
         })
         
         (play 
-            (do (if (not "SameTurn") (roll))
+            (do (if ("NewTurn") (roll))
                 next:"PlayAPiece"
                 (then 
                     (if 

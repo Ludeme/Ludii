@@ -256,7 +256,7 @@
                         (if (and ("TwoKingsMoverOneKingEnemy") (= Undefined (value Player Mover)))
                             (set Value Mover 0)
                         )
-                        (if (and (not ("SameTurn")) (!= Undefined (value Player Mover)))
+                        (if (and ("NewTurn") (!= Undefined (value Player Mover)))
                             (set Value Mover (+ 1 (value Player Mover)))
                         )
                     )

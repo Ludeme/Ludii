@@ -46,7 +46,7 @@
         })
         (play
             (do 
-                (if (not "SameTurn") (roll))
+                (if ("NewTurn") (roll))
                 next:(forEach Die
                     if:("DieNotUsed")
                     (forEach Site

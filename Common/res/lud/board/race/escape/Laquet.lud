@@ -34,7 +34,7 @@
         })
         (play 
             (do 
-                (if (and (not (is Pending)) (not "SameTurn")) (roll)) 
+                (if (and (not (is Pending)) ("NewTurn")) (roll)) 
                 next:(if (can Move (forEach Piece))
                     (forEach Piece 
                         top:True

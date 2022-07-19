@@ -26,8 +26,7 @@
         (board (square 9)) 
         
         (piece "Thrall" P1 
-            (move
-                Slide
+            (move Slide
                 Orthogonal 
                 (between if:(and (!= (between) ("Castle")) (is Empty (between))))
                 (then 
@@ -40,8 +39,7 @@
         )
         
         (piece "Thrall" P2 
-            (move
-                Slide
+            (move Slide
                 Orthogonal 
                 (between if:(and (!= (between) ("Castle")) (is Empty (between))))
                 (then ("Custodial" "Thrall1")) 
@@ -49,8 +47,7 @@
         ) 
         
         (piece "Jarl" P2 
-            (move
-                Slide
+            (move Slide
                 Orthogonal 
                 (between if:(and (!= (between) ("Castle")) (is Empty (between))))
                 (then ("Custodial" "Thrall1")) 

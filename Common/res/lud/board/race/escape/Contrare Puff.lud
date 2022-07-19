@@ -86,7 +86,7 @@
         })
         
         (play 
-            (do (if (or (is Pending) (not "SameTurn")) (roll))
+            (do (if (or (is Pending) ("NewTurn")) (roll))
                 next:(if (= 1 (var "PlayOpposite"))
                     (or { 
                         (forEach Piece ("MoveOppositeDice") top:True) 

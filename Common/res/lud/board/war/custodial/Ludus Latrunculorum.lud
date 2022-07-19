@@ -934,7 +934,7 @@
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty))
-                        (then (if (not ("SameTurn")) (moveAgain)))
+                        (then (if ("NewTurn") (moveAgain)))
                     )
                 ) 
                 (nextPhase Mover (is Empty (handSite Mover 0)) "DuxPlacement")
@@ -1021,7 +1021,7 @@
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty))
-                        (then (if (not ("SameTurn")) (moveAgain)))
+                        (then (if ("NewTurn") (moveAgain)))
                     )
                 ) 
                 (nextPhase Mover (is Empty (handSite Mover 0)) "DuxPlacement")
@@ -1099,7 +1099,7 @@
                         (from (handSite Mover))
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
-                            (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
+                            (if (and (is Occupied (handSite Mover)) ("NewTurn")) (moveAgain))
                         )
                     )
                 )
@@ -1107,7 +1107,7 @@
             )
             ("PhaseMovePiece" "Capture")
             }
-            (end (if (<= (count Pieces Next) 1) (result Mover Win)))
+            (end ("HavingLessPiecesLoss" Next 1))
         )
         >
         "Rules for Kharebga applied to a 6x6 Ludus Latrunculorum board."
@@ -1147,7 +1147,7 @@
                         (from (handSite Mover))
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
-                            (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
+                            (if (and (is Occupied (handSite Mover)) ("NewTurn")) (moveAgain))
                         )
                     )
                 )
@@ -1155,7 +1155,7 @@
             )
             ("PhaseMovePiece" "Capture")
             }
-            (end (if (<= (count Pieces Next) 1) (result Mover Win)))
+            (end ("HavingLessPiecesLoss" Next 1))
         )
         >
         "Rules for Seega applied to a 6x6 Ludus Latrunculorum board."
@@ -1195,7 +1195,7 @@
                         (from (handSite Mover))
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
-                            (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
+                            (if (and (is Occupied (handSite Mover)) ("NewTurn")) (moveAgain))
                         )
                     )
                 )
@@ -1203,7 +1203,7 @@
             )
             ("PhaseMovePiece" "Capture")
             }
-            (end (if (<= (count Pieces Next) 1) (result Mover Win)))
+            (end ("HavingLessPiecesLoss" Next 1))
         )
         >
         "Rules for Kharebga applied to a 6x7 Ludus Latrunculorum board."
@@ -1243,7 +1243,7 @@
                         (from (handSite Mover))
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
-                            (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
+                            (if (and (is Occupied (handSite Mover)) ("NewTurn")) (moveAgain))
                         )
                     )
                 )
@@ -1251,7 +1251,7 @@
             )
             ("PhaseMovePiece" "Capture")
             }
-            (end (if (<= (count Pieces Next) 1) (result Mover Win)))
+            (end ("HavingLessPiecesLoss" Next 1))
         )
         >
         "Rules for Seega applied to a 6x7 Ludus Latrunculorum board."
@@ -1291,7 +1291,7 @@
                         (from (handSite Mover))
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
-                            (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
+                            (if (and (is Occupied (handSite Mover)) ("NewTurn")) (moveAgain))
                         )
                     )
                 )
@@ -1299,7 +1299,7 @@
             )
             ("PhaseMovePiece" "Capture")
             }
-            (end (if (<= (count Pieces Next) 1) (result Mover Win)))
+            (end ("HavingLessPiecesLoss" Next 1))
         )
         >
         "Rules for Kharebga applied to a 6x8 Ludus Latrunculorum board."
@@ -1339,7 +1339,7 @@
                         (from (handSite Mover))
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
-                            (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
+                            (if (and (is Occupied (handSite Mover)) ("NewTurn")) (moveAgain))
                         )
                     )
                 )
@@ -1347,7 +1347,7 @@
             )
             ("PhaseMovePiece" "Capture")
             }
-            (end (if (<= (count Pieces Next) 1) (result Mover Win)))
+            (end ("HavingLessPiecesLoss" Next 1))
         )
         >
         "Rules for Seega applied to a 6x8 Ludus Latrunculorum board."
@@ -1387,7 +1387,7 @@
                         (from (handSite Mover))
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
-                            (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
+                            (if (and (is Occupied (handSite Mover)) ("NewTurn")) (moveAgain))
                         )
                     )
                 )
@@ -1395,7 +1395,7 @@
             )
             ("PhaseMovePiece" "Capture")
             }
-            (end (if (<= (count Pieces Next) 1) (result Mover Win)))
+            (end ("HavingLessPiecesLoss" Next 1))
         )
         >
         "Rules for Kharebga applied to a 7x8 Ludus Latrunculorum board."
@@ -1435,7 +1435,7 @@
                         (from (handSite Mover))
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
-                            (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
+                            (if (and (is Occupied (handSite Mover)) ("NewTurn")) (moveAgain))
                         )
                     )
                 )
@@ -1443,7 +1443,7 @@
             )
             ("PhaseMovePiece" "Capture")
             }
-            (end (if (<= (count Pieces Next) 1) (result Mover Win)))
+            (end ("HavingLessPiecesLoss" Next 1))
         )
         >
         "Rules for Seega applied to a 7x8 Ludus Latrunculorum board."
@@ -1483,7 +1483,7 @@
                         (from (handSite Mover))
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
-                            (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
+                            (if (and (is Occupied (handSite Mover)) ("NewTurn")) (moveAgain))
                         )
                     )
                 )
@@ -1491,7 +1491,7 @@
             )
             ("PhaseMovePiece" "Capture")
             }
-            (end (if (<= (count Pieces Next) 1) (result Mover Win)))
+            (end ("HavingLessPiecesLoss" Next 1))
         )
         >
         "Rules for Kharebga applied to a 8x8 Ludus Latrunculorum board."
@@ -1531,7 +1531,7 @@
                         (from (handSite Mover))
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
-                            (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
+                            (if (and (is Occupied (handSite Mover)) ("NewTurn")) (moveAgain))
                         )
                     )
                 )
@@ -1539,7 +1539,7 @@
             )
             ("PhaseMovePiece" "Capture")
             }
-            (end (if (<= (count Pieces Next) 1) (result Mover Win)))
+            (end ("HavingLessPiecesLoss" Next 1))
         )
         >
         "Rules for Seega applied to a 8x8 Ludus Latrunculorum board."
@@ -1579,7 +1579,7 @@
                         (from (handSite Mover))
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
-                            (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
+                            (if (and (is Occupied (handSite Mover)) ("NewTurn")) (moveAgain))
                         )
                     )
                 )
@@ -1587,7 +1587,7 @@
             )
             ("PhaseMovePiece" "Capture")
             }
-            (end (if (<= (count Pieces Next) 1) (result Mover Win)))
+            (end ("HavingLessPiecesLoss" Next 1))
         )
         >
         "Rules for Kharebga applied to a 8x9 Ludus Latrunculorum board."
@@ -1627,7 +1627,7 @@
                         (from (handSite Mover))
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
-                            (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
+                            (if (and (is Occupied (handSite Mover)) ("NewTurn")) (moveAgain))
                         )
                     )
                 )
@@ -1635,7 +1635,7 @@
             )
             ("PhaseMovePiece" "Capture")
             }
-            (end (if (<= (count Pieces Next) 1) (result Mover Win)))
+            (end ("HavingLessPiecesLoss" Next 1))
         )
         >
         "Rules for Seega applied to a 8x9 Ludus Latrunculorum board."
@@ -1675,7 +1675,7 @@
                         (from (handSite Mover))
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
-                            (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
+                            (if (and (is Occupied (handSite Mover)) ("NewTurn")) (moveAgain))
                         )
                     )
                 )
@@ -1683,7 +1683,7 @@
             )
             ("PhaseMovePiece" "Capture")
             }
-            (end (if (<= (count Pieces Next) 1) (result Mover Win)))
+            (end ("HavingLessPiecesLoss" Next 1))
         )
         >
         "Rules for Kharebga applied to a 10x10 Ludus Latrunculorum board."
@@ -1723,7 +1723,7 @@
                         (from (handSite Mover))
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
-                            (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
+                            (if (and (is Occupied (handSite Mover)) ("NewTurn")) (moveAgain))
                         )
                     )
                 )
@@ -1731,7 +1731,7 @@
             )
             ("PhaseMovePiece" "Capture")
             }
-            (end (if (<= (count Pieces Next) 1) (result Mover Win)))
+            (end ("HavingLessPiecesLoss" Next 1))
         )
         >
         "Rules for Seega applied to a 10x10 Ludus Latrunculorum board."
@@ -1771,7 +1771,7 @@
                         (from (handSite Mover))
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
-                            (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
+                            (if (and (is Occupied (handSite Mover)) ("NewTurn")) (moveAgain))
                         )
                     )
                 )
@@ -1779,7 +1779,7 @@
             )
             ("PhaseMovePiece" "Capture")
             }
-            (end (if (<= (count Pieces Next) 1) (result Mover Win)))
+            (end ("HavingLessPiecesLoss" Next 1))
         )
         >
         "Rules for Kharebga applied to a 11x16 Ludus Latrunculorum board."
@@ -1819,7 +1819,7 @@
                         (from (handSite Mover))
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
-                            (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
+                            (if (and (is Occupied (handSite Mover)) ("NewTurn")) (moveAgain))
                         )
                     )
                 )
@@ -1827,7 +1827,7 @@
             )
             ("PhaseMovePiece" "Capture")
             }
-            (end (if (<= (count Pieces Next) 1) (result Mover Win)))
+            (end ("HavingLessPiecesLoss" Next 1))
         )
         >
         "Rules for Seega applied to a 11x16 Ludus Latrunculorum board."
@@ -1867,7 +1867,7 @@
                         (from (handSite Mover))
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
-                            (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
+                            (if (and (is Occupied (handSite Mover)) ("NewTurn")) (moveAgain))
                         )
                     )
                 )
@@ -1875,7 +1875,7 @@
             )
             ("PhaseMovePiece" "Capture")
             }
-            (end (if (<= (count Pieces Next) 1) (result Mover Win)))
+            (end ("HavingLessPiecesLoss" Next 1))
         )
         >
         "Rules for Kharebga applied to a 9x10 Ludus Latrunculorum board."
@@ -1915,7 +1915,7 @@
                         (from (handSite Mover))
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
-                            (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
+                            (if (and (is Occupied (handSite Mover)) ("NewTurn")) (moveAgain))
                         )
                     )
                 )
@@ -1923,7 +1923,7 @@
             )
             ("PhaseMovePiece" "Capture")
             }
-            (end (if (<= (count Pieces Next) 1) (result Mover Win)))
+            (end ("HavingLessPiecesLoss" Next 1))
         )
         >
         "Rules for Seega applied to a 9x10 Ludus Latrunculorum board."
@@ -1961,7 +1961,7 @@
                         (from (handSite Mover))
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
-                            (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
+                            (if (and (is Occupied (handSite Mover)) ("NewTurn")) (moveAgain))
                         )
                     )
                 )
@@ -1969,7 +1969,7 @@
             )
             ("PhaseMovePiece" "Capture")
             }
-            (end (if (<= (count Pieces Next) 1) (result Mover Win)))
+            (end ("HavingLessPiecesLoss" Next 1))
         )
         >
         "Rules for Kharebga applied to a 11x12 Ludus Latrunculorum board."
@@ -2009,7 +2009,7 @@
                         (from (handSite Mover))
                         (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                         (then
-                            (if (and (is Occupied (handSite Mover)) (not ("SameTurn"))) (moveAgain))
+                            (if (and (is Occupied (handSite Mover)) ("NewTurn")) (moveAgain))
                         )
                     )
                 )
@@ -2017,7 +2017,7 @@
             )
             ("PhaseMovePiece" "Capture")
             }
-            (end (if (<= (count Pieces Next) 1) (result Mover Win)))
+            (end ("HavingLessPiecesLoss" Next 1))
         )
         >
         "Rules for Seega applied to a 11x12 Ludus Latrunculorum board."

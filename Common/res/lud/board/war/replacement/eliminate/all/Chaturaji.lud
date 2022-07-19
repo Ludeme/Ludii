@@ -118,7 +118,7 @@
         })
         
         (play 
-            (do (if (not "SameTurn") (roll))
+            (do (if ("NewTurn") (roll))
                 next:(if (and ("SameTurn") (is Pending))
                     (or {
                         ("PromoteTo" "Boat" (set Value at:(last To) 2))

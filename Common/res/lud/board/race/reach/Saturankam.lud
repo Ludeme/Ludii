@@ -109,7 +109,7 @@
     (rules 
         <Players:start>
         (play 
-            (if (or (= 1 (var "Double")) (not ("SameTurn")))
+            (if (or (= 1 (var "Double")) ("NewTurn"))
                 ("RollMove" 
                     (move Pass 
                         (then 

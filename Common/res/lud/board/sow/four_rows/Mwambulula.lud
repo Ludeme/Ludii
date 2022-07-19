@@ -110,7 +110,7 @@
                             )
                         )
                     )
-                    (if (and (not ("SameTurn")) (is Occupied Cell (handSite Mover)))
+                    (if (and ("NewTurn") (is Occupied Cell (handSite Mover)))
                         (move Select
                             (from Cell (handSite Mover))
                             (then

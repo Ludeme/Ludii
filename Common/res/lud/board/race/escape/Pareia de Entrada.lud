@@ -34,7 +34,7 @@
             (place Stack "Disc2" (handSite P2) count:15)
         })
         (play 
-            (do (if (or (is Pending) (not "SameTurn")) (roll)) 
+            (do (if (or (is Pending) ("NewTurn")) (roll)) 
                 next:(or (forEach Piece top:True) (forEach Piece container:(mover) top:True)
                     (then 
                         (and
