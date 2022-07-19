@@ -83,7 +83,7 @@
                 )
                 (then 
                     (and
-                        (if (and (not (is Empty "BigHole")) (!= "BigHole" (last To)))
+                        (if (and (is Occupied "BigHole") (!= "BigHole" (last To)))
                             (remove "BigHole")
                         )
                         (if (= (last To) ("EndSiteOfTrack"))

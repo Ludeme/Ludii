@@ -42,7 +42,7 @@
                         )
                         if:(> (count at:(from)) 0)
                     )
-                    (then (sow (then (if (not (is Empty ("NextHole" ("PlayFromLastHole")))) (moveAgain)))))
+                    (then (sow (then (if (is Occupied ("NextHole" ("PlayFromLastHole"))) (moveAgain)))))
                 )	
             )
             

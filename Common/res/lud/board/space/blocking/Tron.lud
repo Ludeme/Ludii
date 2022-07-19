@@ -8,7 +8,7 @@
                 (to 
                     (apply 
                         (if 
-                            (not (is Empty (to))) 
+                            (is Occupied (to)) 
                             (trigger "Collision" (mover))
                         )
                     )

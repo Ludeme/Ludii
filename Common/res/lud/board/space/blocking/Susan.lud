@@ -7,7 +7,7 @@
             (apply #2)
         ) 
         (to 
-            if:(not (is Empty (to)))
+            if:(is Occupied (to))
         )
     )
 )

@@ -26,7 +26,7 @@
 
 (define "GeneralSameColumnWithNoPieceBetween"
     (if (= (column of:(where "Han" P1)) (column of:(where "Cho" P2))) 
-        ("NoSites" (forEach (sites Direction from:(where "Han" P1) N stop:(= (to) (where "Cho" P2))) if:(not (is Empty (site)))))
+        ("NoSites" (forEach (sites Direction from:(where "Han" P1) N stop:(= (to) (where "Cho" P2))) if:(is Occupied (site))))
         False
     )
 )
@@ -55,7 +55,7 @@
     (and { 
         (!= (what at:(between)) (id "Po1")) 
         (!= (what at:(between)) (id "Po2"))
-        (not (is Empty (between)))
+        (is Occupied (between))
     })
 )
 

@@ -5,7 +5,7 @@
                 (sites Incident Cell of:Cell at:(if (!= (between) Off) (between) (from))) 
                 (sites Incident Cell of:Cell at:(to))
             )
-            if:(not (is Empty (site)))
+            if:(is Occupied (site))
         )
     )
 )

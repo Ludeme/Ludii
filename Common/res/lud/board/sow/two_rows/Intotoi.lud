@@ -93,7 +93,7 @@
                     (then 
                         (sow
                             apply:(if (= 1 (count at:(to)))
-                                (if (and (not (is Empty ("OppositePit" (to)))) (is In (to) (sites Mover)))
+                                (if (and (is Occupied ("OppositePit" (to))) (is In (to) (sites Mover)))
                                     (fromTo 
                                         (from ("OppositePit" (to))) 
                                         (to (handSite Mover)) 
@@ -119,7 +119,7 @@
                     (then 
                         (sow
                             apply:(if (= 1 (count at:(to)))
-                                (if (and (not (is Empty ("OppositePit" (to)))) (is In (to) (sites Mover)))
+                                (if (and (is Occupied ("OppositePit" (to))) (is In (to) (sites Mover)))
                                     (fromTo 
                                         (from ("OppositePit" (to))) 
                                         (to (handSite Mover)) 

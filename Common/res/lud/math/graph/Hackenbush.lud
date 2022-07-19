@@ -9,7 +9,7 @@
     (= 0 
         (count Sites in:(intersection 
                 ("Ground")
-                (sites Group Edge at:(site) if:(not (is Empty (to))))
+                (sites Group Edge at:(site) if:(is Occupied (to)))
             )
         )
     )

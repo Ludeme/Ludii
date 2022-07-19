@@ -156,7 +156,7 @@
         (phase "Placing" 
             (play 
                 ("RollEachNewTurnMove"
-                    (if (not (is Empty (handSite Mover)))
+                    (if (is Occupied (handSite Mover))
                         (forEach Die 
                             if:("DieNotUsed")
                             (if (if (< (pips) 4) (< (size Stack at:"SiteToSelect") 2) (< (size Stack at:"SiteToSelect") 3))

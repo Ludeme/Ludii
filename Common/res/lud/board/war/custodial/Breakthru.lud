@@ -1,28 +1,17 @@
-(define "DiagonalCapture" 
-    (move Step Diagonal 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )		
-)
-
-//-------------------------------------------------------------------------
-
 (game "Breakthru"
     (players 2)
     (equipment {
         (board (square 11))
         (piece "Disc" Each 
             (or 
-                (if ("NewTurn") ("DiagonalCapture"))
+                (if ("NewTurn") ("StepToEnemy" Diagonal))
                 (move Slide Orthogonal (then (if ("NewTurn") (moveAgain))))
             )
         )
         (piece "Commander" P1 
             (if ("NewTurn") 
                 (or 
-                    ("DiagonalCapture")
+                	("StepToEnemy" Diagonal)
                     (move Slide Orthogonal)
                 )
             )
@@ -43,7 +32,7 @@
                 (move 
                     (from (handSite P1))
                     (to (intersection (sites "CentreSites") (sites Empty)))
-                    (then (if (not (is Empty (handSite P1))) (moveAgain)))
+                    (then (if (is Occupied (handSite P1)) (moveAgain)))
                 )
             )
             (nextPhase (is Empty (handSite P1)) "PlacementP2")
@@ -54,7 +43,7 @@
                 (move 
                     (from (handSite P2))
                     (to (difference (sites Empty) (sites "CentreSites")))
-                    (then (if (not (is Empty (handSite P2))) (moveAgain)))
+                    (then (if (is Occupied (handSite P2)) (moveAgain)))
                 )
             )
             (nextPhase (is Empty (handSite P2)) "Movement")
@@ -64,7 +53,7 @@
             (play (forEach Piece))
             (end {
                 (if (is In (where "Commander" P1) (sites Outer)) (result P1 Win))
-                (if (= (where "Commander" P1) Off) (result P2 Win))
+                (if ("IsOffBoard" (where "Commander" P1)) (result P2 Win))
             })
         )
         }

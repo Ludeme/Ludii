@@ -161,7 +161,7 @@
         (play 
             (do (roll) 
                 next:(or {
-                    (if (not (is Empty (handSite Mover)))
+                    (if (is Occupied (handSite Mover))
                         ("EnterAPiece")
                     )
                     (forEach Piece)

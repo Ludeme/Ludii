@@ -3,7 +3,7 @@
 (define "NotEmptyAndNoCastle"
     (and 
         (!= (what at:(between)) (id "Castle0")) 
-        (not (is Empty (between)))
+        (is Occupied (between))
     )
 )
 

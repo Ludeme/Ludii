@@ -111,7 +111,7 @@
 )
 
 (define "PlayRulesHuff"
-    (if (and ("SameTurn") (not (is Empty (last To))))
+    (if (and ("SameTurn") (is Occupied (last To)))
         (if "IsUnpromoted"
             ("HopCounter" (last To)
                 (then 

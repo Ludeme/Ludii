@@ -5,7 +5,7 @@
 (define "Hop" 
     (move Hop 
         (from #1)
-        (between if:(not (is Empty (between))))
+        (between if:(is Occupied (between)))
         (to 
             if:(and
                 ("IsEmptyAndNotVisited" (to))

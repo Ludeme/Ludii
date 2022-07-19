@@ -33,7 +33,7 @@
                 (then 
                     (sow
                         if:True
-                        apply:(if (not (is Empty ("NextHole")))
+                        apply:(if (is Occupied ("NextHole"))
                             (and {
                                 (set Pending (to))
                                 (fromTo 
@@ -43,7 +43,7 @@
                                 )
                                 (moveAgain)
                             })
-                            (if (not (is Empty ("NextNextHole")))
+                            (if (is Occupied ("NextNextHole"))
                                 (fromTo 
                                     (from ("NextNextHole")) 
                                     (to (handSite Mover)) 

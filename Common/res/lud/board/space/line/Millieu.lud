@@ -167,7 +167,7 @@
         )
         ifAfterwards:(all Sites
             (sites {(var "LastMove1") (var "LastMove2") }) 
-            if:(not (is Empty (site))) // not allowed to remove the pieces moved to make the mill
+            if:(is Occupied (site)) // not allowed to remove the pieces moved to make the mill
         )
     )
 )

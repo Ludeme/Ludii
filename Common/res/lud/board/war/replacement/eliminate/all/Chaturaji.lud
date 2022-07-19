@@ -1,6 +1,6 @@
 (define "CaptureToPieceAndAddScore"
     (apply
-        (if (not (is Empty (to)))
+        (if (is Occupied (to))
             (and 
                 (addScore Mover (value Piece at:(to))) 
                 (remove (to)) 

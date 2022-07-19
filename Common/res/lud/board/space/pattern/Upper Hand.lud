@@ -24,7 +24,7 @@
 
 (define "TopExistAndEmptySite"
     (and
-        (not (is Empty (site)))
+        (is Occupied (site))
         (is Empty (ahead (site) #1))
     )
 )

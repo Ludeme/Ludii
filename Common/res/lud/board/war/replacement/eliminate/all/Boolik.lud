@@ -149,7 +149,7 @@
         (play 
             (do (roll) 
                 next:(or {
-                    (if (and ("NoPieceOnBoard") (not (is Empty (handSite Mover))))
+                    (if (and ("NoPieceOnBoard") (is Occupied (handSite Mover)))
                         ("EnterAPiece")
                     )
                     (forEach Piece)

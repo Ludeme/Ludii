@@ -1,6 +1,6 @@
 (define "JiangSameColumnWithNoPieceBetween"
     (if (= (column of:(where "Jiang" P1)) (column of:(where "Jiang" P2)))
-        (not ("NoSites" (forEach (sites Direction from:(where "Jiang" P1) N stop:(= (to) (where "Jiang" P2))) if:(not (is Empty (site))))))
+        (not ("NoSites" (forEach (sites Direction from:(where "Jiang" P1) N stop:(= (to) (where "Jiang" P2))) if:(is Occupied (site)))))
         True
     )
 )
@@ -104,7 +104,7 @@
                     (between 
                         before:(count Rows) 
                         after:(count Rows) 
-                        if:(not (is Empty (between)))
+                        if:(is Occupied (between))
                     )
                     (to 
                         if:(is Empty (to)) 

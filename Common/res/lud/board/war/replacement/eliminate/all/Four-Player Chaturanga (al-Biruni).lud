@@ -2,7 +2,7 @@
 
 (define "CaptureToPieceAndAddScore"
     (apply
-        (if (not (is Empty (to)))
+        (if (is Occupied (to))
             (and {
                 (if (is In (to) (sites {(where "King" P1) (where "King" P2) (where "King" P3) (where "King" P4)}))
                     (set Value Mover (+ (value Player Mover) 1))

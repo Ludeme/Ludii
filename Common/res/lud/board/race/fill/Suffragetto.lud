@@ -72,7 +72,7 @@
             if:(is In (from) #1)
         )
         (between
-            if:(not (is Empty (between)))
+            if:(is Occupied (between))
             (apply 
                 (if
                     (if (= ("MinorPiece") (state at: (from)))

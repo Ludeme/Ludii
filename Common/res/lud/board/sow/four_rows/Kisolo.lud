@@ -6,7 +6,7 @@
 
 (define "InnerPitsWithPossibleCapture"
     (forEach (difference (sites Mover "Inner") (sites Empty))
-        if:(not (is Empty ("OppositePit" (site))))
+        if:(is Occupied ("OppositePit" (site)))
     )		
 )
 
@@ -50,7 +50,7 @@
                                 (from ("OppositePit" (last To)))
                                 (to ("InnerPit" (last To)))
                             )
-                            (if (not (is Empty ("OppositeOuterPit" (last To))))
+                            (if (is Occupied ("OppositeOuterPit" (last To)))
                                 (fromTo 
                                     (from ("OppositeOuterPit" (last To)))
                                     (to ("InnerPit" (last To)))
@@ -78,15 +78,15 @@
                         (sow
                             "TrackCCW"
                             owner:(mover)
-                            apply:(if (not (is Empty ("NextHole" (to))))
+                            apply:(if (is Occupied ("NextHole" (to)))
                                 (and { 
-                                    (if (and (is In ("NextHole" (to)) (sites Mover "Inner")) (not (is Empty ("OppositePit" ("NextHole" (to))))))
+                                    (if (and (is In ("NextHole" (to)) (sites Mover "Inner")) (is Occupied ("OppositePit" ("NextHole" (to)))))
                                         (and
                                             (fromTo 
                                                 (from ("OppositePit" ("NextHole" (to))))
                                                 (to ("InnerPit" ("NextHole" (to))))
                                             )
-                                            (if (not (is Empty ("OppositeOuterPit" ("NextHole" (to)))))
+                                            (if (is Occupied ("OppositeOuterPit" ("NextHole" (to))))
                                                 (fromTo 
                                                     (from ("OppositeOuterPit" ("NextHole" (to))))
                                                     (to ("InnerPit" ("NextHole" (to))))

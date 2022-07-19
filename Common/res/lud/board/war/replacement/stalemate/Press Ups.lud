@@ -37,7 +37,7 @@
                     Select
                     (from 
                         (sites Around (last To)) 
-                        if:(not (is Empty (from)))
+                        if:(is Occupied (from))
                     ) 
                     (then (remove (last To)))
                 )
