@@ -52,7 +52,9 @@ public class DatabaseFunctions
 			for (final Map.Entry<Call, Set<String>> entry : allLudemeplexes.entrySet())
 			{
 				String outputLine = ludemeplexId + ",";
-				final List<String> ludemeplexStringList = entry.getKey().ludemeFormat(0);
+				
+				final List<String> ludemeplexStringList = entry.getKey().ludemeFormat(0, false);
+				
 				final String ludemeplexString = String.join("", ludemeplexStringList);
 
 				// Try to compile ludemeplex
@@ -108,19 +110,24 @@ public class DatabaseFunctions
 		// Map of all ludemeplexes (lud format) and the original Ludemeplexes that they relate to.
 		final Map<String, Set<Call>> allDefineLudemeplexesOriginalLudemeplexes = new HashMap<>();
 	
-		int counter = 1;
-		
 		// Record all Define ludemeplexes
+		int counter1 = 1;
 		for (final Map.Entry<Call, Set<String>> ludemeplexEntry : allLudemeplexes.entrySet())
 		{
-			System.out.println("" + counter + " / " + allLudemeplexes.entrySet().size());
-			counter++;
+			System.out.println("" + counter1 + " / " + allLudemeplexes.entrySet().size());
+			counter1++;
 			
-			final List<String> ludemeplexStringList = ludemeplexEntry.getKey().ludemeFormat(0);
-			
+			final List<String> ludemeplexStringList = ludemeplexEntry.getKey().ludemeFormat(0, false);
+
+			int counter2 = 1;
 			for (final Map.Entry<Call, Set<String>> entry : allLudemeplexes.entrySet())
 			{
-				final List<String> storedLudemeplexStringList = entry.getKey().ludemeFormat(0);
+				// Skip any pairs of ludemeplexes that have already been compared.
+				counter2++;
+				if (counter1 > counter2)
+					continue;
+				
+				final List<String> storedLudemeplexStringList = entry.getKey().ludemeFormat(0, false);
 				
 				if (storedLudemeplexStringList.size() != ludemeplexStringList.size())
 					continue;
