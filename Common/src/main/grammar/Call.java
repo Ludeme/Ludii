@@ -218,7 +218,7 @@ public class Call
 	@Override
 	public String toString()
 	{
-		return format(0, true);
+		return format(0, false);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -498,7 +498,7 @@ public class Call
 			if (constant != null)
 				stringList.add(constant + " ");
 			else if (object().getClass().getSimpleName().equals("String"))
-				stringList.add("\"" + object() + "\" ");
+				stringList.add("\"\"" + object() + "\"\" ");
 			else
 				stringList.add(object() + " ");
 
