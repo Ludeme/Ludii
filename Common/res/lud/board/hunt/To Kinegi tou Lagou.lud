@@ -58,7 +58,7 @@
                 (move 
                     (from (sites Hand P1) if:(is Occupied (from)))
                     (to (sites {1..8}) if:(is Empty (to)))
-                    (then (if (not ("HandEmpty" P1)) (moveAgain)))
+                    (then (if ("HandOccupied" P1) (moveAgain)))
                 )
             )
             (nextPhase ("HandEmpty" P1) "HuntingP2")
@@ -93,7 +93,7 @@
                 (move 
                     (from (sites Hand P2) if:(is Occupied (from)))
                     (to (intersection (sites Empty) (sites {1..8})) if:(is Empty (to)))
-                    (then (if (not ("HandEmpty" P2)) (moveAgain)))
+                    (then (if ("HandOccupied" P2) (moveAgain)))
                 )
             )
             (nextPhase ("HandEmpty" P2) "HuntingP1")
@@ -130,7 +130,7 @@
                 (move 
                     (from (sites Hand P1) if:(is Occupied (from)))
                     (to (sites {1..8}) if:(is Empty (to)))
-                    (then (if (not ("HandEmpty" P1)) (moveAgain)))
+                    (then (if ("HandOccupied" P1) (moveAgain)))
                 )
             )
             (nextPhase ("HandEmpty" P1) "HuntingP2")

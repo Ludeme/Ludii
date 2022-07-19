@@ -115,7 +115,7 @@
                         )
                     )
                     // Enter a new piece
-                    (if (not ("HandEmpty" Mover))
+                    (if ("HandOccupied" Mover)
                         (forEach Die 
                             if:("DieNotUsed")
                             (move 

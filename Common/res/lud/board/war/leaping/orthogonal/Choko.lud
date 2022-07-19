@@ -14,7 +14,7 @@
             (if (is Pending)
                 (move (from (handSite Mover)) (to (sites Empty)))
                 (or
-                    (if (not ("HandEmpty" Mover))
+                    (if ("HandOccupied" Mover)
                         (move (from (handSite Mover)) (to (sites Empty)) (then (set Pending)))
                     )
                     (forEach Piece)

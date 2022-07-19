@@ -9,7 +9,7 @@
         (start (place "Marker" "Hand" count:9))
         (play
             (or
-                (if (not ("HandEmpty" Mover))
+                (if ("HandOccupied" Mover)
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty))

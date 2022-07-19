@@ -67,7 +67,7 @@
     {
     (item "No Capture" 
         <
-        (if (and (not ("HandEmpty" Mover)) (is Empty ("EnterToBoard")))
+        (if (and ("HandOccupied" Mover) (is Empty ("EnterToBoard")))
             (move (from (handSite Mover)) (to ("EnterToBoard")))
         )
         >
@@ -83,7 +83,7 @@
     )* 
     (item "Capture" 
         <
-        (if (and (not ("HandEmpty" Mover)) (or ("IsEnemyAt" "EnterToBoard") (is Empty ("EnterToBoard"))))
+        (if (and ("HandOccupied" Mover) (or ("IsEnemyAt" "EnterToBoard") (is Empty ("EnterToBoard"))))
             (move 
                 (from (handSite Mover)) 
                 (to 

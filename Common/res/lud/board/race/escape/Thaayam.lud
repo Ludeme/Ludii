@@ -74,7 +74,7 @@
         (or 
             (forEach Value (values Remembered)
                 (or 
-                    (if (and (not ("HandEmpty" Mover)) (= 1 (value)))
+                    (if (and ("HandOccupied" Mover) (= 1 (value)))
                         (move 
                             (from (handSite Mover))
                             (to ("StartPos")

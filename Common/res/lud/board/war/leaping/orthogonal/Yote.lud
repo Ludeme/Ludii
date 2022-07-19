@@ -32,7 +32,7 @@
             (if "SameTurn"
                 "RemoveEnemyPiece"
                 (or
-                    (if (not ("HandEmpty" Mover))
+                    (if ("HandOccupied" Mover)
                         (move 
                             (from (handSite Mover)) 
                             (to (sites Empty)) 

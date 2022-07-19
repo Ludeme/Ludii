@@ -752,7 +752,7 @@
         
         (define "HasEnteredAPieceOrNewTurn" (or ("HasEnteredAPiece") (and (!= (last From) (handSite Mover)) (or ("HasAnAdditionalThrow") ("NewTurn")))))
         
-        (define "CanEnterAPiece" (and {(or ("HasAnAdditionalThrow") ("NewTurn")) (not ("HandEmpty" Mover)) (= ("Throw") 1) }))
+        (define "CanEnterAPiece" (and {(or ("HasAnAdditionalThrow") ("NewTurn")) ("HandOccupied" Mover) (= ("Throw") 1) }))
         
         (define "AutoCaptureLastPiece" 
             (move (from (last To)) (to (handSite Mover)) 

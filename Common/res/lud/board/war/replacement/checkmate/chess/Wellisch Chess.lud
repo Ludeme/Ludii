@@ -352,7 +352,7 @@
         (phase "Movement"
             (play
                 (if ("SameTurn")
-                    (if (not ("HandEmpty" Mover))
+                    (if ("HandOccupied" Mover)
                         "PromoteFromHand"
                     )
                     (do

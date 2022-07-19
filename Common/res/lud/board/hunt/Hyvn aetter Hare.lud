@@ -32,7 +32,7 @@
         phases:{
         (phase "Placement"
             (play 
-                (if (not ("HandEmpty" Mover)) 
+                (if ("HandOccupied" Mover)
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty))
@@ -55,7 +55,7 @@
         phases:{
         (phase "Placement"
             (play 
-                (if (not ("HandEmpty" Mover)) 
+                (if ("HandOccupied" Mover)
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty))

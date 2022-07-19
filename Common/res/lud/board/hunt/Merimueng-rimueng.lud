@@ -39,7 +39,7 @@
             
             (nextPhase 
                 (and 
-                    (not ("HandEmpty" P2)) 
+                    ("HandOccupied" P2) 
                     (< (count Sites in:(sites Occupied by:P2 container:"Board")) 8)
                 ) 
                 "Placement"

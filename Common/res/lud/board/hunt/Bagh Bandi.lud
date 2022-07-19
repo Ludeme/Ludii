@@ -45,7 +45,7 @@
                 (move 
                     (from (handSite P1)) 
                     (to (sites Empty)) 
-                    (then (if (not ("HandEmpty" Mover)) (moveAgain)))
+                    (then (if ("HandOccupied" Mover) (moveAgain)))
                 )
             ) 
             (nextPhase Mover ("HandEmpty" Mover) "Playing")

@@ -32,7 +32,7 @@
         
         phases:{
         (phase "Opening" P1
-            (play (move (from (handSite Mover)) (to (sites Empty)) (then (if (not ("HandEmpty" Mover)) (moveAgain)))))
+            (play (move (from (handSite Mover)) (to (sites Empty)) (then (if ("HandOccupied" Mover) (moveAgain)))))
             (nextPhase Mover ("HandEmpty" Mover) "Playing")
         )
         (phase "Opening" P2

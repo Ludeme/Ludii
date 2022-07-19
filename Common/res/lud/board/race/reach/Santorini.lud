@@ -49,7 +49,7 @@
                     (to (sites Empty)) 
                     (then 
                         (if 
-                            (not ("HandEmpty" Mover)) 
+                            ("HandOccupied" Mover) 
                             (moveAgain)
                         )
                     )

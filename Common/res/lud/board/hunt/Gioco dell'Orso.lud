@@ -36,7 +36,7 @@
                 (move 
                     (from (handSite P1))
                     (to (intersection (sites Empty) (sites {1..4})))
-                    (then (if (not ("HandEmpty" P1)) (moveAgain)))
+                    (then (if ("HandOccupied" P1) (moveAgain)))
                 )
             )
             (nextPhase ("HandEmpty" P1) "HuntingP2")
@@ -67,7 +67,7 @@
                 (move 
                     (from (handSite P2))
                     (to (intersection (sites Empty) (sites {1..4})))
-                    (then (if (not ("HandEmpty" P2)) (moveAgain)))
+                    (then (if ("HandOccupied" P2) (moveAgain)))
                 )
             )
             (nextPhase ("HandEmpty" P2) "HuntingP1")
@@ -101,7 +101,7 @@
                 (move 
                     (from (handSite P1))
                     (to (intersection (sites Empty) (sites {1..4})))
-                    (then (if (not ("HandEmpty" P1)) (moveAgain)))
+                    (then (if ("HandOccupied" P1) (moveAgain)))
                 )
             )
             (nextPhase ("HandEmpty" P1) "HuntingP2")

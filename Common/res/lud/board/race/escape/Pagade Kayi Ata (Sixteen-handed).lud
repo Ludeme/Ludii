@@ -161,7 +161,7 @@
                         (or
                             (if 
                                 (and 
-                                    (not ("HandEmpty" Mover))
+                                    ("HandOccupied" Mover)
                                     (= (pips) "ValueToEnter")
                                 )
                                 (move
@@ -177,7 +177,7 @@
                                         (or
                                             (if 
                                                 (and 
-                                                    (not ("HandEmpty" Mover))
+                                                    ("HandOccupied" Mover)
                                                     (= (pips) "ValueToEnter")
                                                 )
                                                 (fromTo 

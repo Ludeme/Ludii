@@ -40,7 +40,7 @@
                             (intersection (sites Empty) (sites {1 2 3}))
                         )
                     ) 
-                    (then (if (not ("HandEmpty" Mover)) (moveAgain)))
+                    (then (if ("HandOccupied" Mover) (moveAgain)))
                 )
             )
             (nextPhase Mover ("HandEmpty" Mover) "Playing")

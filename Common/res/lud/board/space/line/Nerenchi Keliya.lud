@@ -1,7 +1,7 @@
 (define "IfLine3MoveAgainPlacement" 
     (then 
         (if 
-            (and (is Line 3) (not ("HandEmpty" Mover)))
+            (and (is Line 3) ("HandOccupied" Mover))
             (moveAgain)
         )
     )

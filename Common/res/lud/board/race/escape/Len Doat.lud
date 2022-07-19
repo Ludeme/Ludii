@@ -22,12 +22,12 @@
 (define "IfMoveAgain" (= (value Player Mover) -2))
 
 (define "Move" 
-    (if (and (= "ThrowValue" 1) (not ("HandEmpty" Mover)))
+    (if (and (= "ThrowValue" 1) ("HandOccupied" Mover))
         (move (from (handSite Mover))
             (to (mapEntry "EntrySite" (mover)))
             (then ("ThrowAgainAndPlay"))
         )
-        (if (and (= "ThrowValue" 5) (not ("HandEmpty" Mover)))
+        (if (and (= "ThrowValue" 5) ("HandOccupied" Mover))
             (move (from (handSite Mover))
                 (to (mapEntry "EntrySite" (mover)))
                 count:(count Cell at:(handSite Mover))

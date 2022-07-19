@@ -26,7 +26,7 @@
     )
 )
 
-(define "LargePieveAvailable" (not ("HandEmpty" Mover)))
+(define "LargePieveAvailable" ("HandOccupied" Mover))
 
 (define "ReplaceByLargePiece" (fromTo (from (handSite Mover)) (to (between))))
 

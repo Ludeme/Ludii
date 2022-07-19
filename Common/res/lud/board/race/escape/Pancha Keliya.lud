@@ -62,7 +62,7 @@
         (play 
             ("RollMove"
                 (if 
-                    (and (is In (count Pips) (sites "SpecialDiceValues")) (not ("HandEmpty" Mover)))
+                    (and (is In (count Pips) (sites "SpecialDiceValues")) ("HandOccupied" Mover))
                     (or
                         (move 
                             (from (handSite Mover)) 

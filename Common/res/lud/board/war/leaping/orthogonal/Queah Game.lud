@@ -1,4 +1,4 @@
-(define "HaveRemainingSticks" (not ("HandEmpty" Mover)))
+(define "HaveRemainingSticks" ("HandOccupied" Mover))
 
 (define "LessThanFourSticksOnBoard" (< (count Sites in:(sites Occupied by:Mover container:"Board")) 4))
 

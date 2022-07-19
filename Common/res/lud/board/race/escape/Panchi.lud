@@ -30,7 +30,7 @@
         (if 
             (and {
                 ("SpecialThrow")
-                (not ("HandEmpty" Mover))
+                ("HandOccupied" Mover)
                 (or (is Empty "StartPoint") ("IsFriendAt" ("StartPoint")))
             })
             (move 

@@ -43,7 +43,7 @@
             (play
                 (if "SameTurn"
                     "PlaceOnTop"
-                    (if (not ("HandEmpty" Mover))
+                    (if ("HandOccupied" Mover)
                         (move 
                             (from (handSite Mover)) 
                             (to (sites Empty)) 
