@@ -445,7 +445,7 @@ public class Call
 	/**
 	 * @return String representation of callTree for database storing purposes (mimics game description style).
 	 */
-	public List<String> ludemeFormat(final int depth)
+	public List<String> ludemeFormat(final int depth, final boolean ludemesOnly)
 	{
 		List<String> stringList = new ArrayList<String>();
 		
@@ -454,15 +454,17 @@ public class Call
 		case Null:
 			break;
 		case Array:
-			if (label != null && depth > 0)
+			if (label != null && depth > 0 && !ludemesOnly)
 				stringList.add(label + ":");
 			
-			stringList.add("{");
+			if (!ludemesOnly)
+				stringList.add("{");
 			
 			for (final Call arg : args)
 			{
-				stringList.addAll(arg.ludemeFormat(depth));
-				stringList.add(" ");
+				stringList.addAll(arg.ludemeFormat(depth, ludemesOnly));
+				if (!ludemesOnly)
+					stringList.add(" ");
 			}
 			break;
 		case Class:
@@ -473,26 +475,30 @@ public class Call
 					name = ((Alias)annotation).alias();
 			name = Character.toLowerCase(name.charAt(0)) + name.substring(1);
 			
-			if (label != null && depth > 0)
+			if (label != null && depth > 0 && !ludemesOnly)
 				stringList.add(label + ":");
 			
-			stringList.add("(");
+			if (!ludemesOnly)
+				stringList.add("(");
+			
 			stringList.add(name);
 
 			if (args.size() > 0)
 			{
-				stringList.add(" ");
+				if (!ludemesOnly)
+					stringList.add(" ");
 				
 				for (final Call arg : args)
-					stringList.addAll(arg.ludemeFormat(depth + 1));
+					stringList.addAll(arg.ludemeFormat(depth + 1, ludemesOnly));
 
 				stringList = removeCharsFromStringList(stringList, 1);
 			}
 			
-			stringList.add(") ");
+			if (!ludemesOnly)
+				stringList.add(") ");
 			break;
 		case Terminal:
-			if (label != null)
+			if (label != null && !ludemesOnly)
 				stringList.add(label + ":");
 			
 			if (constant != null)
@@ -510,10 +516,12 @@ public class Call
 			
 		if (type == CallType.Array)
 		{
-			if (!stringList.get(stringList.size()-1).equals("{"))
-					stringList = removeCharsFromStringList(stringList, 2);
+			if (!ludemesOnly)
+				if (!stringList.get(stringList.size()-1).equals("{"))
+						stringList = removeCharsFromStringList(stringList, 2);
 			
-			stringList.add("} ");
+			if (!ludemesOnly)
+				stringList.add("} ");
 		}
 		
 		return stringList;
