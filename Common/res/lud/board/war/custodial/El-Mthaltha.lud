@@ -2,24 +2,7 @@
     (players 2) 
     (equipment { 
         ("AlquerqueBoard" 3 3)
-        (piece "Marker" Each 
-            (move
-                Step 
-                (to if:(is Empty (to)))
-                (then 
-                    (custodial 
-                        (from (last To))
-                        Orthogonal
-                        (between
-                            (max 1)
-                            if:("IsEnemyAt" (between))
-                            (apply (remove (between)))
-                        )
-                        (to if:("IsFriendAt" (to)))
-                    )
-                )
-            )
-        )
+        (piece "Marker" Each ("StepToEmpty" ~ (then ("CustodialCapture" Orthogonal (max 1)))))
     }) 
     (rules 
         (start {
@@ -27,7 +10,7 @@
             (place "Marker2" (sites Top))
         })
         (play (forEach Piece))
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
