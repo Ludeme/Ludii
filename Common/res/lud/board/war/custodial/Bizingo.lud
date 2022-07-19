@@ -21,7 +21,7 @@
                     (= 1 (phase of:(between))) 
                 )
             )
-            (= (what at:(between)) (id "Thrall" Next))
+            ("IsPieceAt" "Thrall" Next (between))
         ) 
     )
 )
@@ -36,7 +36,7 @@
                     (= 1 (phase of:(between))) 
                 )
             )
-            (= (what at:(between)) (id "Jarl" Next))
+            ("IsPieceAt" "Jarl" Next (between))
         ) 
         with:(piece (id "Jarl" Mover))
     )
@@ -44,13 +44,11 @@
 
 (define "SurroundedEnemyOnOuterEdge" 
     ("Surrounded" 
-        if:(and 
-            {
+        if:(and {
             (is In (between) (sites Outer)) 
             (= 0 (phase of:(between))) 
-            (is Enemy (what at:(between)))
-            }
-        ) 
+            ("IsEnemyAt" (between))
+        }) 
         with:(piece (id "Jarl" Mover))
     )
 )
@@ -69,13 +67,11 @@
 (define "SuicideSurrounded" 
     (if (not 
             (can Move 
-                (or 
-                    {
+                (or {
                     ("SurroundedEnemyOnOuterEdge") 
                     ("SurroundedThrall")
                     ("SurroundedJarl")
-                    }
-                )
+                    })
             )
         )
         (if 
@@ -94,14 +90,12 @@
             )
         )
         (then
-            (and
-                {
+            (and {
                 ("SuicideSurrounded")
                 ("SurroundedEnemyOnOuterEdge")
                 ("SurroundedThrall")
                 ("SurroundedJarl")
-                }
-            )
+            })
         )
     )	
 )
@@ -121,14 +115,12 @@
         (piece "Jarl" Each ("PieceMove"))
     }) 
     (rules 
-        (start
-            {
+        (start {
             (place "Thrall1" (sites {32..36 53..58 72 74..76 78}))
             (place "Jarl1" (sites {73 77}))
             (place "Thrall2" (sites {137..139 126..129 113..117 98 100 101 103}))
             (place "Jarl2" (sites {99 102}))
-            }
-        )
+        })
         (play (forEach Piece)) 
         (end 
             (forEach Player 
@@ -165,6 +157,7 @@
     (graphics {
         (board Style Chess)
     })
+    
     (ai
         "Bizingo_ai"
     )
