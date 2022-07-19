@@ -53,7 +53,7 @@ public class DatabaseFunctions
 			{
 				String outputLine = ludemeplexId + ",";
 				
-				final List<String> ludemeplexStringList = entry.getKey().ludemeFormat(0, false);
+				final List<String> ludemeplexStringList = entry.getKey().ludemeFormat(0);
 				
 				final String ludemeplexString = String.join("", ludemeplexStringList);
 
@@ -117,7 +117,7 @@ public class DatabaseFunctions
 			System.out.println("" + counter1 + " / " + allLudemeplexes.entrySet().size());
 			counter1++;
 			
-			final List<String> ludemeplexStringList = ludemeplexEntry.getKey().ludemeFormat(0, false);
+			final List<String> ludemeplexStringList = ludemeplexEntry.getKey().ludemeFormat(0);
 
 			int counter2 = 1;
 			for (final Map.Entry<Call, Set<String>> entry : allLudemeplexes.entrySet())
@@ -127,7 +127,7 @@ public class DatabaseFunctions
 				if (counter1 > counter2)
 					continue;
 				
-				final List<String> storedLudemeplexStringList = entry.getKey().ludemeFormat(0, false);
+				final List<String> storedLudemeplexStringList = entry.getKey().ludemeFormat(0);
 				
 				if (storedLudemeplexStringList.size() != ludemeplexStringList.size())
 					continue;

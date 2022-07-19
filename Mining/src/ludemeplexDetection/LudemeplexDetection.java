@@ -24,8 +24,8 @@ import utils.DBGameInfo;
 public class LudemeplexDetection 
 {
 	
-	final static int MINLUDMEPLEXSIZE = 3;
-	final static int MAXLUDEMEPLEXSIZE = 5;
+	final static int MINLUDMEPLEXSIZE = 4;
+	final static int MAXLUDEMEPLEXSIZE = 6;
 	
 	//-------------------------------------------------------------------------
 	// Stored results
@@ -60,8 +60,8 @@ public class LudemeplexDetection
 	{		
 		// Don't store Arrays.
 		final String ludemeplexString = c.toString();
-		final List<String> ludemeplexStringList = c.ludemeFormat(0, true);
-		if (ludemeplexString.charAt(0) != '{' && ludemeplexStringList.size() >= MINLUDMEPLEXSIZE && ludemeplexStringList.size() <= MAXLUDEMEPLEXSIZE)
+		final int numTokens = c.count();
+		if (ludemeplexString.charAt(0) != '{' && numTokens >= MINLUDMEPLEXSIZE && numTokens <= MAXLUDEMEPLEXSIZE)
 		{
 			Set<String> gameNameArray = new HashSet<>();
 			if (allLudemeplexes.containsKey(c))
