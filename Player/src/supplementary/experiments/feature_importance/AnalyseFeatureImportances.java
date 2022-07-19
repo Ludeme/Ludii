@@ -17,6 +17,7 @@ import main.CommandLineArgParse.OptionTypes;
 import main.StringRoutines;
 import main.collections.ArrayUtils;
 import main.collections.FVector;
+import main.collections.ScoredObject;
 import other.GameLoader;
 import policies.softmax.SoftmaxPolicyLinear;
 import search.mcts.MCTS;
@@ -29,6 +30,11 @@ import utils.data_structures.experience_buffers.UniformExperienceBuffer;
 
 public class AnalyseFeatureImportances
 {
+	
+	//-------------------------------------------------------------------------
+	
+	/** Minimum samples we must have per leaf to consider a split */
+	private static final int MIN_SAMPLES_PER_LEAF = 5;
 	
 	//-------------------------------------------------------------------------
 	
@@ -124,7 +130,7 @@ public class AnalyseFeatureImportances
 		final BaseFeatureSet featureSet = featureSets[1];
 		final LinearFunction linFunc = linearFunctions[1];
 		
-		final WeightVector oracleWeightVector = linearFunctions[1].effectiveParams();
+		final WeightVector oracleWeightVector = linFunc.effectiveParams();
 		final ExItExperience[] samples = buffer.allExperience();
 		final List<FeatureVector> allFeatureVectors = new ArrayList<FeatureVector>();
 		final TFloatArrayList allTargetLabels = new TFloatArrayList();
@@ -268,30 +274,53 @@ public class AnalyseFeatureImportances
 				meanProbsIfTrueSpatial[i] = sumProbsIfTrueSpatial[i] / numTrueSpatial[i];
 		}
 		
-		
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * Pair of a feature and a score (for sorting)
-	 * 
-	 * @author Dennis Soemers
-	 */
-	private static class ScoredFeature
-	{
-		public final double score;
-		public final Feature feature;
-		
-		/**
-		 * Constructor
-		 * @param score
-		 * @param feature
-		 */
-		public ScoredFeature(final double score, final Feature feature)
+		// Use sum of squared errors as score (which we'll want to minimise)
+		final List<ScoredObject<Feature>> scoredFeatures = new ArrayList<ScoredObject<Feature>>();
+
+		for (int i = 0; i < numAspatialFeatures; ++i)
 		{
-			this.score = score;
-			this.feature = feature;
+			if (numFalseAspatial[i] < MIN_SAMPLES_PER_LEAF || numTrueAspatial[i] < MIN_SAMPLES_PER_LEAF)
+				continue;
+
+			double sumSquaredErrors = 0.0;
+			for (int j = 0; j < allFeatureVectors.size(); ++j)
+			{
+				final FeatureVector featureVector = allFeatureVectors.get(j);
+				final float targetProb = allTargetLabels.getQuick(j);
+				final double error;
+
+				if (featureVector.aspatialFeatureValues().get(i) != 0.f)
+					error = targetProb - meanProbsIfTrueAspatial[i];
+				else
+					error = targetProb - meanProbsIfFalseAspatial[i];
+
+				sumSquaredErrors += (error * error);
+			}
+			
+			scoredFeatures.add(new ScoredObject<Feature>(featureSet.aspatialFeatures()[i], sumSquaredErrors));
+		}
+
+		for (int i = 0; i < numSpatialFeatures; ++i)
+		{
+			if (numFalseSpatial[i] < MIN_SAMPLES_PER_LEAF || numTrueSpatial[i] < MIN_SAMPLES_PER_LEAF)
+				continue;
+
+			double sumSquaredErrors = 0.0;
+			for (int j = 0; j < allFeatureVectors.size(); ++j)
+			{
+				final FeatureVector featureVector = allFeatureVectors.get(j);
+				final float targetProb = allTargetLabels.getQuick(j);
+				final double error;
+
+				if (featureVector.activeSpatialFeatureIndices().contains(i))
+					error = targetProb - meanProbsIfTrueSpatial[i];
+				else
+					error = targetProb - meanProbsIfFalseSpatial[i];
+
+				sumSquaredErrors += (error * error);
+			}
+			
+			scoredFeatures.add(new ScoredObject<Feature>(featureSet.spatialFeatures()[i], sumSquaredErrors));
 		}
 	}
 	
