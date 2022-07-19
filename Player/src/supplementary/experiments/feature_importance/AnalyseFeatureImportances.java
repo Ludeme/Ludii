@@ -405,6 +405,7 @@ public class AnalyseFeatureImportances
 				for (int a = 0; a < numActions; ++a)
 				{
 					row.sumExpectedRegrets += (policy.get(a) * (1.0 - targets.getQuick(a)));
+					row.sumExpectedSquaredRegrets += (policy.get(a) * (1.0 - targets.getQuick(a)) * (1.0 - targets.getQuick(a)));
 				}
 			}
 			
@@ -431,6 +432,7 @@ public class AnalyseFeatureImportances
 				for (int a = 0; a < numActions; ++a)
 				{
 					row.sumExpectedRegrets += (policy.get(a) * (1.0 - targets.getQuick(a)));
+					row.sumExpectedRegrets += (policy.get(a) * (1.0 - targets.getQuick(a)) * (1.0 - targets.getQuick(a)));
 				}
 			}
 		}
@@ -457,7 +459,12 @@ public class AnalyseFeatureImportances
 		try (final PrintWriter writer = new PrintWriter(argParse.getValueString("--out-file"), "UTF-8"))
 		{
 			// Write the header
-			writer.println("Feature,SSE,ReductionSSE,SseFalse,SseTrue,SampleSizeFalse,SampleSizeTrue,MeanTargetFalse,MeanTargetTrue,SumExpectedRegrets");
+			writer.println
+			(
+				"Feature,SSE,ReductionSSE,SseFalse,SseTrue,SampleSizeFalse,SampleSizeTrue,MeanTargetFalse,"
+				+ 
+				"MeanTargetTrue,SumExpectedRegrets,SumExpectedSquaredRegrets"
+			);
 			
 			for (final Row row : rows)
 			{
@@ -491,6 +498,7 @@ public class AnalyseFeatureImportances
 		public double meanTargetFalse;
 		public double meanTargetTrue;
 		public double sumExpectedRegrets;
+		public double sumExpectedSquaredRegrets;
 		
 		/**
 		 * Constructor
@@ -517,7 +525,8 @@ public class AnalyseFeatureImportances
 						Double.valueOf(sampleSizeTrue),
 						Double.valueOf(meanTargetFalse),
 						Double.valueOf(meanTargetTrue),
-						Double.valueOf(sumExpectedRegrets)
+						Double.valueOf(sumExpectedRegrets),
+						Double.valueOf(sumExpectedSquaredRegrets)
 					);
 		}
 	}
