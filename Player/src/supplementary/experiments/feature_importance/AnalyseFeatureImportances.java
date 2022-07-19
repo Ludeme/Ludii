@@ -3,6 +3,7 @@ package supplementary.experiments.feature_importance;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -133,6 +134,9 @@ public class AnalyseFeatureImportances
 		final List<FeatureVector> allFeatureVectors = new ArrayList<FeatureVector>();
 		final TFloatArrayList allTargetLabels = new TFloatArrayList();
 		
+		final List<List<FeatureVector>> featureVectorsPerState = new ArrayList<List<FeatureVector>>();
+		final List<TFloatArrayList> targetsPerState = new ArrayList<TFloatArrayList>();
+		
 		for (final ExItExperience sample : samples)
 		{
 			if (sample != null && sample.moves().size() > 1)
@@ -157,7 +161,7 @@ public class AnalyseFeatureImportances
 					final FeatureVector featureVector = featureVectors[i];
 					allFeatureVectors.add(featureVector);
 				}
-				
+
 				// Maximise logits for winning moves and minimise for losing moves
 				for (int i = sample.winningMoves().nextSetBit(0); i >= 0; i = sample.winningMoves().nextSetBit(i + 1))
 				{
@@ -184,6 +188,9 @@ public class AnalyseFeatureImportances
 				{
 					allTargetLabels.add(target);
 				}
+				
+				featureVectorsPerState.add(Arrays.asList(featureVectors));
+				targetsPerState.add(TFloatArrayList.wrap(targets));
 			}
 		}
 		
@@ -369,6 +376,65 @@ public class AnalyseFeatureImportances
 			row.meanTargetTrue = meanProbsIfTrueSpatial[i];
 		}
 		
+		for (int s = 0; s < featureVectorsPerState.size(); ++s)
+		{
+			final List<FeatureVector> featureVectors = featureVectorsPerState.get(s);
+			final TFloatArrayList targets = targetsPerState.get(s);
+			final int numActions = targets.size();
+			
+			for (int i = 0; i < numAspatialFeatures; ++i)
+			{
+				final int rowIdx = i;
+				final Row row = rows.get(rowIdx);
+				
+				// Compute policy for this state if we were to use only this feature
+				final FVector policy = new FVector(numActions);
+				
+				for (int a = 0; a < numActions; ++a)
+				{
+					final FeatureVector featureVector = featureVectors.get(a);
+					
+					if (featureVector.aspatialFeatureValues().get(i) != 0.f)
+						policy.set(a, (float) meanProbsIfTrueAspatial[i]);
+					else
+						policy.set(a, (float) meanProbsIfFalseAspatial[i]);
+				}
+				
+				policy.normalise();
+				
+				for (int a = 0; a < numActions; ++a)
+				{
+					row.sumExpectedRegrets += (policy.get(a) * (1.0 - targets.getQuick(a)));
+				}
+			}
+			
+			for (int i = 0; i < numSpatialFeatures; ++i)
+			{
+				final int rowIdx = i + numAspatialFeatures;
+				final Row row = rows.get(rowIdx);
+				
+				// Compute policy for this state if we were to use only this feature
+				final FVector policy = new FVector(numActions);
+				
+				for (int a = 0; a < numActions; ++a)
+				{
+					final FeatureVector featureVector = featureVectors.get(a);
+					
+					if (featureVector.activeSpatialFeatureIndices().contains(i))
+						policy.set(a, (float) meanProbsIfTrueSpatial[i]);
+					else
+						policy.set(a, (float) meanProbsIfFalseSpatial[i]);
+				}
+				
+				policy.normalise();
+				
+				for (int a = 0; a < numActions; ++a)
+				{
+					row.sumExpectedRegrets += (policy.get(a) * (1.0 - targets.getQuick(a)));
+				}
+			}
+		}
+		
 		Collections.sort
 		(
 			rows, new Comparator<Row>()
@@ -391,7 +457,7 @@ public class AnalyseFeatureImportances
 		try (final PrintWriter writer = new PrintWriter(argParse.getValueString("--out-file"), "UTF-8"))
 		{
 			// Write the header
-			writer.println("Feature,SSE,ReductionSSE,SseFalse,SseTrue,SampleSizeFalse,SampleSizeTrue,MeanTargetFalse,MeanTargetTrue");
+			writer.println("Feature,SSE,ReductionSSE,SseFalse,SseTrue,SampleSizeFalse,SampleSizeTrue,MeanTargetFalse,MeanTargetTrue,SumExpectedRegrets");
 			
 			for (final Row row : rows)
 			{
@@ -424,6 +490,7 @@ public class AnalyseFeatureImportances
 		public int sampleSizeTrue;
 		public double meanTargetFalse;
 		public double meanTargetTrue;
+		public double sumExpectedRegrets;
 		
 		/**
 		 * Constructor
@@ -449,7 +516,8 @@ public class AnalyseFeatureImportances
 						Double.valueOf(sampleSizeFalse),
 						Double.valueOf(sampleSizeTrue),
 						Double.valueOf(meanTargetFalse),
-						Double.valueOf(meanTargetTrue)
+						Double.valueOf(meanTargetTrue),
+						Double.valueOf(sumExpectedRegrets)
 					);
 		}
 	}
