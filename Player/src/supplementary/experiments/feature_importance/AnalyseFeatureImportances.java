@@ -1,6 +1,10 @@
 package supplementary.experiments.feature_importance;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import features.Feature;
@@ -17,7 +21,6 @@ import main.CommandLineArgParse.OptionTypes;
 import main.StringRoutines;
 import main.collections.ArrayUtils;
 import main.collections.FVector;
-import main.collections.ScoredObject;
 import other.GameLoader;
 import policies.softmax.SoftmaxPolicyLinear;
 import search.mcts.MCTS;
@@ -30,11 +33,6 @@ import utils.data_structures.experience_buffers.UniformExperienceBuffer;
 
 public class AnalyseFeatureImportances
 {
-	
-	//-------------------------------------------------------------------------
-	
-	/** Minimum samples we must have per leaf to consider a split */
-	private static final int MIN_SAMPLES_PER_LEAF = 5;
 	
 	//-------------------------------------------------------------------------
 	
@@ -274,15 +272,35 @@ public class AnalyseFeatureImportances
 				meanProbsIfTrueSpatial[i] = sumProbsIfTrueSpatial[i] / numTrueSpatial[i];
 		}
 		
-		// Use sum of squared errors as score (which we'll want to minimise)
-		final List<ScoredObject<Feature>> scoredFeatures = new ArrayList<ScoredObject<Feature>>();
-
+		// Allocate our rows
+		final List<Row> rows = new ArrayList<Row>();
 		for (int i = 0; i < numAspatialFeatures; ++i)
 		{
-			if (numFalseAspatial[i] < MIN_SAMPLES_PER_LEAF || numTrueAspatial[i] < MIN_SAMPLES_PER_LEAF)
-				continue;
+			rows.add(new Row(featureSet.aspatialFeatures()[i]));
+		}
+		for (int i = 0; i < numSpatialFeatures; ++i)
+		{
+			rows.add(new Row(featureSet.spatialFeatures()[i]));
+		}
+		
+		// Compute baseline SSE
+		double baselineSSE = 0.0;
+		final double baselinePrediction = allTargetLabels.sum() / allTargetLabels.size();
+		for (int i = 0; i < allTargetLabels.size(); ++i)
+		{
+			final double error = allTargetLabels.getQuick(i) - baselinePrediction;
+			baselineSSE += (error * error);
+		}
+		
+		// Compute sums of squared errors
+		for (int i = 0; i < numAspatialFeatures; ++i)
+		{
+			final int rowIdx = i;
+			final Row row = rows.get(rowIdx);
 
 			double sumSquaredErrors = 0.0;
+			double sumSquaredErrorsFalse = 0.0;
+			double sumSquaredErrorsTrue = 0.0;
 			for (int j = 0; j < allFeatureVectors.size(); ++j)
 			{
 				final FeatureVector featureVector = allFeatureVectors.get(j);
@@ -290,22 +308,35 @@ public class AnalyseFeatureImportances
 				final double error;
 
 				if (featureVector.aspatialFeatureValues().get(i) != 0.f)
+				{
 					error = targetProb - meanProbsIfTrueAspatial[i];
+					sumSquaredErrorsTrue += (error * error);
+				}
 				else
+				{
 					error = targetProb - meanProbsIfFalseAspatial[i];
+					sumSquaredErrorsFalse += (error * error);
+				}
 
 				sumSquaredErrors += (error * error);
 			}
 			
-			scoredFeatures.add(new ScoredObject<Feature>(featureSet.aspatialFeatures()[i], sumSquaredErrors));
+			row.sse = sumSquaredErrors;
+			row.reductionSSE = baselineSSE - sumSquaredErrors;
+			row.sseFalse = sumSquaredErrorsFalse;
+			row.sseTrue = sumSquaredErrorsTrue;
+			row.sampleSizeFalse = numFalseAspatial[i];
+			row.sampleSizeTrue = numTrueAspatial[i];
 		}
 
 		for (int i = 0; i < numSpatialFeatures; ++i)
 		{
-			if (numFalseSpatial[i] < MIN_SAMPLES_PER_LEAF || numTrueSpatial[i] < MIN_SAMPLES_PER_LEAF)
-				continue;
+			final int rowIdx = i + numAspatialFeatures;
+			final Row row = rows.get(rowIdx);
 
 			double sumSquaredErrors = 0.0;
+			double sumSquaredErrorsFalse = 0.0;
+			double sumSquaredErrorsTrue = 0.0;
 			for (int j = 0; j < allFeatureVectors.size(); ++j)
 			{
 				final FeatureVector featureVector = allFeatureVectors.get(j);
@@ -313,14 +344,105 @@ public class AnalyseFeatureImportances
 				final double error;
 
 				if (featureVector.activeSpatialFeatureIndices().contains(i))
+				{
 					error = targetProb - meanProbsIfTrueSpatial[i];
+					sumSquaredErrorsTrue += (error * error);
+				}
 				else
+				{
 					error = targetProb - meanProbsIfFalseSpatial[i];
+					sumSquaredErrorsFalse += (error * error);
+				}
 
 				sumSquaredErrors += (error * error);
 			}
 			
-			scoredFeatures.add(new ScoredObject<Feature>(featureSet.spatialFeatures()[i], sumSquaredErrors));
+			row.sse = sumSquaredErrors;
+			row.reductionSSE = baselineSSE - sumSquaredErrors;
+			row.sseFalse = sumSquaredErrorsFalse;
+			row.sseTrue = sumSquaredErrorsTrue;
+			row.sampleSizeFalse = numFalseSpatial[i];
+			row.sampleSizeTrue = numTrueSpatial[i];
+		}
+		
+		Collections.sort
+		(
+			rows, new Comparator<Row>()
+			{
+
+				@Override
+				public int compare(final Row o1, final Row o2) 
+				{
+					if (o1.reductionSSE > o2.reductionSSE)
+						return - 1;
+					
+					if (o1.reductionSSE < o2.reductionSSE)
+						return 1;
+					
+					return 0;
+				}
+
+			});
+		
+		try (final PrintWriter writer = new PrintWriter(argParse.getValueString("--out-file"), "UTF-8"))
+		{
+			// Write the header
+			writer.println("Feature,SSE,ReductionSSE,SseFalse,SseTrue,SampleSizeFalse,SampleSizeTrue");
+			
+			for (final Row row : rows)
+			{
+				if (row.sampleSizeFalse > 0 && row.sampleSizeTrue > 0)
+					writer.println(row);
+			}
+		}
+		catch (final IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * A row in the dataset we're creating
+	 * 
+	 * @author Dennis Soemers
+	 */
+	private static class Row
+	{
+		
+		public final Feature feature;
+		public double sse;
+		public double reductionSSE;
+		public double sseFalse;
+		public double sseTrue;
+		public int sampleSizeFalse;
+		public int sampleSizeTrue;
+		
+		/**
+		 * Constructor
+		 * 
+		 * @param feature
+		 */
+		public Row(final Feature feature)
+		{
+			this.feature = feature;
+		}
+
+		@Override
+		public String toString()
+		{
+			return StringRoutines.join
+					(
+						",", 
+						StringRoutines.quote(feature.toString()),
+						Double.valueOf(sse),
+						Double.valueOf(reductionSSE),
+						Double.valueOf(sseFalse),
+						Double.valueOf(sseTrue),
+						Double.valueOf(sampleSizeFalse),
+						Double.valueOf(sampleSizeTrue)
+					);
 		}
 	}
 	
@@ -350,6 +472,13 @@ public class AnalyseFeatureImportances
 		argParse.addOption(new ArgOption()
 				.withNames("--game-name")
 				.help("Name of the game.")
+				.withNumVals(1)
+				.withType(OptionTypes.String)
+				.setRequired());
+		
+		argParse.addOption(new ArgOption()
+				.withNames("--out-file")
+				.help("Filepath to write data to.")
 				.withNumVals(1)
 				.withType(OptionTypes.String)
 				.setRequired());
