@@ -12,21 +12,10 @@
 )
 
 (define "PiecesSurroundingAreNotAdjacent"
-    (= 0
-        (count Sites
-            in:(forEach
-                (sites Around (between) Own)
-                if:(!= 0 
-                    (count Sites 
-                        in:(sites 
-                            Around 
-                            (site) 
-                            Own 
-                            if:(is In (to) (sites Around (between) Own))
-                        )
-                    )
-                )
-            )
+    (all Sites
+        (sites Around (between) Own)
+        if:(all Sites (sites Around (site) Own) 
+            if:(not (is In (to) (sites Around (between) Own)))
         )
     )
 )
@@ -40,8 +29,7 @@
                 (is In (between) (sites "Fortresses")) 
                 ("IsEnemyAt" (between))
                 ("PiecesSurroundingAreNotAdjacent")
-                }
-            )
+            })
             (apply (remove (between)))
         )
         (to if:("IsFriendAt" (to)))
@@ -56,10 +44,9 @@
         (between 
             if:(and {
                 (= (between) ("Throne")) 
-                (= (what at:(between)) (id "Jarl" P1))
+                ("IsPieceAt" "Jarl" P1 (between))
                 ("PiecesSurroundingAreNotAdjacent")
-                }
-            )
+            })
             (apply (remove (between)))
         )
         (to if:("IsFriendAt" (to)))
@@ -67,7 +54,7 @@
     )
 )
 
-(define "JarlWasCaptured" (= (where "Jarl" P1) Off))
+(define "JarlWasCaptured" ("IsOffBoard" (where "Jarl" P1)))
 
 (define "Throne" (centrePoint))
 
@@ -103,12 +90,10 @@
             <Board:start>
         })
         (play (forEach Piece))
-        (end
-            {
+        (end {
             (if (is Within (id "Jarl1") in:(sites "Fortresses")) (result P1 Win))
             (if "JarlWasCaptured" (result P2 Win))
-            }
-        )
+        })
     )
 )
 

@@ -1,10 +1,7 @@
 (game "Gundru"
     (players 2)
     (equipment {
-        (board
-            (square 9)
-            use:Vertex
-        )
+        (board (square 9) use:Vertex)
         (piece "Marker" Each 
             (or
                 (if (= 1 (+ (count Cell at:(handSite Mover)) (count Pieces Mover)))
@@ -67,7 +64,6 @@
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai

@@ -11,7 +11,7 @@
         (piece "Commander" P1 
             (if ("NewTurn") 
                 (or 
-                	("StepToEnemy" Diagonal)
+                    ("StepToEnemy" Diagonal)
                     (move Slide Orthogonal)
                 )
             )
