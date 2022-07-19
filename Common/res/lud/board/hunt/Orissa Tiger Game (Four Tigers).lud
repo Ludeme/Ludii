@@ -16,9 +16,9 @@
         phases:{
         (phase "Placement" P1 
             (play (move (from (handSite P1)) (to (sites Empty)) (then (if (< 16 (count Cell at:(handSite P1))) (moveAgain))))) 
-            (nextPhase Mover ("HandEmpty" Mover) "Playing") 
+            (nextPhase Mover ("HandEmpty" Mover) "Movement") 
         )
-        (phase "Playing" (play (forEach Piece)))
+        ("PhaseMovePiece" "Movement")
         }
         
         (end ("NoMovesP2NoPiecesP1"))

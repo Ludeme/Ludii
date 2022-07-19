@@ -48,9 +48,9 @@
                     (then (if ("HandOccupied" Mover) (moveAgain)))
                 )
             ) 
-            (nextPhase Mover ("HandEmpty" Mover) "Playing")
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
-        (phase "Playing" 
+        (phase "Movement" 
             (play 
                 (if ("SameTurn")
                     (or 

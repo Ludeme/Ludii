@@ -19,8 +19,8 @@
         })
         
         phases:{
-        (phase "Opening" P1 (play (move (from (handSite Mover)) (to (sites Empty)))) (nextPhase "Playing"))
-        (phase "Playing" (play (forEach Piece top:True)))
+        (phase "Opening" P1 (play (move (from (handSite Mover)) (to (sites Empty)))) (nextPhase "Movement"))
+        (phase "Movement" (play (forEach Piece top:True)))
         }
         
         (end ("NoMovesP1NoPiecesP2"))

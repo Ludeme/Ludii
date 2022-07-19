@@ -36,9 +36,9 @@
                     (to (intersection (sites Phase 0) (sites Empty)))
                 )
             )
-            (nextPhase "Playing")
+            (nextPhase "Movement")
         )
-        (phase "Playing" (play (forEach Piece)))	
+        ("PhaseMovePiece" "Movement")
         }
         
         (end {
