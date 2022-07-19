@@ -7,78 +7,43 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * An interface to be adopted by a main graph
+ * An interface to be adopted by displayable graph
  * @author nic0gin
  */
 public interface iGraph
 {
-    /**
-     * Retrieves the root of the graph
-     * @return
-     */
-    iGNode getRoot();
 
     /**
-     * In case you want to change the current root node
-     * @param id new root id
-     */
-    void setRoot(int id);
-
-    void setRoot(iGNode node);
-
-    /**
-     *
-     * @return
-     */
-    HashMap<Integer, List<Integer>> getAdjacencyList();
-
-    /**
-     *
-     * @return
+     * Returns a list of edges in graph
+     * @return list of edges
      */
     List<Edge> getEdgeList();
 
     /**
-     *
-     * @return
+     * Returns a list on nodes in graph
+     * @return hashmap where key stands for a node id and value is a node object
      */
-    HashMap<Integer, iGNode> getNodeList(); //TODO: change to node interface
+    HashMap<Integer, iGNode> getNodeList();
 
     /**
      * get node by id
-     * @param id
+     * @param id node id
      * @return node instance
      */
     iGNode getNode(int id);
 
     /**
-     * Adds disconnected empty node to the graph
-     * @return id
-     */
-    int addNode();
-
-    int addNode(String label);
-
-    /**
      * Adds instance of a node to the graph
      * @param node valid instance of a node
-     * @return id
+     * @return node id
      */
     int addNode(iGNode node);
 
     /**
      * Removes instance of a node from the graph
      * @param node valid instance of a node
-     * @return id
      */
-    int removeNode(iGNode node);
-
-    /**
-     * Removes instance of a node from the graph
-     * @param id valid id of a node
-     * @return id
-     */
-    int removeNode(int id);
+    void removeNode(iGNode node);
 
     /**
      * add edge
@@ -87,16 +52,55 @@ public interface iGraph
      */
     void addEdge(int from, int to);
 
+    /**
+     * remove edge
+     * @param from starting node of an edge
+     * @param to end node of an
+     */
     void removeEdge(int from, int to);
 
-    void removeEdge(int containsId);
+    /**
+     *
+     * @return list of roots id of all connected components in the graph
+     */
+    List<Integer> connectedComponentRoots();
 
     /**
-     * add edge
-     * @param from
-     * @param to
-     * @param field
+     * Add root id to the connected components list
+     * Add node to the list on creation, on removal and on the deletion of parent connection
+     * @param root id
      */
-    void addEdge(int from, int to, int field);
+    void addConnectedComponentRoot(int root);
+
+    /**
+     * Remove root id from the connected components list
+     * Call on adding a parent node
+     * @param root id
+     */
+    void removeConnectedComponentRoot(int root);
+
+    /**
+     * returns id of a selected root
+     * @return selected root/sub-root
+     */
+    int selectedRoot();
+
+    /**
+     * sets selected root
+     * @param root selected root/sub-root
+     */
+    void setSelectedRoot(int root);
+
+    /**
+     * sets main root of graph
+     * @param root node instance (typically 'game' node)
+     */
+    void setRoot(iGNode root);
+
+    /**
+     * returns instance of main graph root
+     * @return node instance
+     */
+    iGNode getRoot();
 
 }

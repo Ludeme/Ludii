@@ -6,7 +6,6 @@ import main.grammar.ClauseArg;
 
 import javax.swing.*;
 import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.util.HashMap;
 
 /**
@@ -17,8 +16,8 @@ public class NodeHelp extends JDialog
 {
 	private static final long serialVersionUID = 1L;
 
-	private LudemeNode node;
-    private JLabel parameterDescriptions = new JLabel();
+    private final LudemeNode node;
+    private final JLabel parameterDescriptions = new JLabel();
 
     public NodeHelp(LudemeNode node)
     {
@@ -38,24 +37,21 @@ public class NodeHelp extends JDialog
         JLabel description = new JLabel(node.description());
         // add dropdown of clauses
         JLabel clauses = new JLabel("Clauses:");
-        JList<String> clauseList = new JList<String>();
+        JList<String> clauseList = new JList<>();
         String[] clauseStrings = new String[node.clauses().size()];
-        HashMap<String, Clause> clauseMap = new HashMap<String, Clause>();
+        HashMap<String, Clause> clauseMap = new HashMap<>();
         for (int i = 0; i < node.clauses().size(); i++)
         {
             clauseStrings[i] = node.clauses().get(i).toString();
             clauseMap.put(clauseStrings[i], node.clauses().get(i));
         }
         clauseList.setListData(clauseStrings);
-        JComboBox<String> clauseDropdown = new JComboBox<String>(clauseStrings);
-        clauseDropdown.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED)
-                {
-                    Clause selectedClause = clauseMap.get(clauseDropdown.getSelectedItem());
-                    updateParameterPanel(selectedClause);
-                }
+        JComboBox<String> clauseDropdown = new JComboBox<>(clauseStrings);
+        clauseDropdown.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED)
+            {
+                Clause selectedClause = clauseMap.get(clauseDropdown.getSelectedItem());
+                updateParameterPanel(selectedClause);
             }
         });
 
@@ -72,7 +68,7 @@ public class NodeHelp extends JDialog
 
     private void updateParameterPanel(Clause c)
     {
-        String newDescription = "";
+        StringBuilder newDescription = new StringBuilder();
         if(c.args() == null)
         {
             parameterDescriptions.setText("");
@@ -80,14 +76,13 @@ public class NodeHelp extends JDialog
             return;
         }
         for (ClauseArg arg : c.args())
-        {
-            newDescription += (arg.toString()) + (": ") + (node.helpInformation().parameter(arg)) + ("\n");
-        }
-        newDescription = newDescription.replaceAll("<", "&lt;");
-        newDescription = newDescription.replaceAll(">", "&gt;");
-        newDescription = newDescription.replaceAll("\n", "<br>");
-        newDescription = "<html>" + newDescription + "</html>";
-        parameterDescriptions.setText(newDescription);
+            newDescription.append(arg.toString()).append(": ").append(node.helpInformation().parameter(arg)).append("\n");
+
+        newDescription = new StringBuilder(newDescription.toString().replaceAll("<", "&lt;"));
+        newDescription = new StringBuilder(newDescription.toString().replaceAll(">", "&gt;"));
+        newDescription = new StringBuilder(newDescription.toString().replaceAll("\n", "<br>"));
+        newDescription = new StringBuilder("<html>" + newDescription + "</html>");
+        parameterDescriptions.setText(newDescription.toString());
         repaint();
     }
 

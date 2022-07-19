@@ -6110,8 +6110,11 @@ DEFINE: SingleGroupWin
 DEFINE JAVADOC: Checks if only one single group with pieces owned by a player exists. This ludemeplex can be used only in an ending condition. #1 = The owner of the pieces in the group. #2 = The direction used to connect the pieces in the group (by default Adjacent). 
 DEFINE EXAMPLE: ("SingleGroupWin" Mover)
 DEFINE: CustodialCapture
-DEFINE JAVADOC: Defines a custodial capture in all the directions specified (by default Adjacent). The enemy piece is removed. #1 = Directions of the capture. #2 = Contraints related to the number of pieces to capture. #3 = The consequences. 
+DEFINE JAVADOC: Defines a custodial capture in all the directions specified (by default Adjacent) to capture an enemy piece. The enemy piece is removed. #1 = Directions of the capture. #2 = Contraints related to the number of pieces to capture. #3 = The consequences. 
 DEFINE EXAMPLE: ("CustodialCapture")
+DEFINE: CustodialCapturePieceType
+DEFINE JAVADOC: Defines a custodial capture in all the directions specified (by default Adjacent) to capture a specific piece type owned by the next player. The piece is removed. #1 = The name of the piece type. #2 = Directions of the capture. #3 = Contraints related to the number of pieces to capture. #4 = The consequences. 
+DEFINE EXAMPLE: ("CustodialCapturePieceType" "Jarl")
 DEFINE: EncloseCapture
 DEFINE JAVADOC: Defines a enclose capture by all the directions specified (by default Adjacent). The enemy pieces are removed. #1 = Directions of the capture. #2 = The consequences. 
 DEFINE EXAMPLE: ("EncloseCapture")
