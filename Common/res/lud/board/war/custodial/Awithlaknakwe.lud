@@ -1,4 +1,4 @@
-(define "StepMove" (move Step #1 (to if:(is Empty (to)))))
+(define "StepMove" ("StepToEmpty" #1))
 
 (define "ScoreTeam1" (+ (score P1) (score P4)))
 
@@ -13,26 +13,16 @@
 (define "StartSitesTeam2" (union (sites P2) (sites P3)))
 
 (define "Team1OnlyOnStartSitesTeam2"
-    (= 0 
-        (count
-            Sites
-            in:(difference 
-                ("SitesOccupiedTeam1")
-                ("StartSitesTeam2") 
-            )
-        )
+    (all Sites 
+        ("SitesOccupiedTeam1")
+        if:(is In (site) ("StartSitesTeam2"))
     )
 )
 
 (define "Team2OnlyOnStartSitesTeam1"
-    (= 0 
-        (count
-            Sites
-            in:(difference 
-                ("SitesOccupiedTeam2")
-                ("StartSitesTeam1") 
-            )
-        )
+    (all Sites 
+        ("SitesOccupiedTeam2")
+        if:(is In (site) ("StartSitesTeam1"))
     )
 )
 
