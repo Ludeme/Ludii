@@ -41,13 +41,11 @@
 )
 
 (define "JumpAgain"
-    (move
-        Hop
+    (move Hop
         (from (last To)) 
         Orthogonal 
         (between 
-            if:(if 
-                (< (counter) "NumMaxCapture") 
+            if:(if (< (counter) "NumMaxCapture") 
                 "NotEmptyAndNoCastle" 
                 ("IsFriendAt" (between))
             ) 
@@ -55,8 +53,7 @@
         )
         (to if:"EmptyAndNotVisited")
         (then 
-            (if 
-                "CanJumpAgain" 
+            (if "CanJumpAgain" 
                 (moveAgain) 
                 (set Counter) 
             ) 
@@ -91,8 +88,7 @@
         (board (rectangle 15 21)) 
         (piece "Pawn" Each 
             (or 
-                (move
-                    Hop
+                (move Hop
                     Orthogonal
                     (between 
                         if:"NotEmptyAndNoCastle" 
@@ -100,14 +96,13 @@
                     )
                     (to if:(is Empty (to)))
                     (then 
-                        (if 
-                            "CanJumpAgain" 
+                        (if "CanJumpAgain" 
                             (moveAgain) 
                             (set Counter)
                         ) 
                     )
                 )
-                (move Step Orthogonal (to if:(is Empty (to)))) 
+                ("StepToEmpty" Orthogonal) 
             )
         ) 
         (piece "Castle" Neutral)
@@ -115,8 +110,7 @@
         (regions "LeftPart" (expand (sites Left) steps:6))
         (regions "RightPart" (expand (sites Right) steps:6))
         (regions "Middle" (expand (sites Centre)))
-        }
-    ) 
+    }) 
     (rules 
         (start {
             (place "Pawn1" (expand (sites Left)))
@@ -151,13 +145,8 @@
             )
         )
         (end {
-            (if (< (count Pieces Next) 3) (result Mover Win)) 
-            (if 
-                (> (count in:(sites Hand Mover)) 
-                    3
-                ) 
-                (result Mover Win)
-            )
+            ("HavingLessPiecesLoss" Next 3) 
+            (if (> (count in:(sites Hand Mover)) 3) (result Mover Win))
         }) 
     )
 )
