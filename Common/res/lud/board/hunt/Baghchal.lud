@@ -21,7 +21,7 @@
             ) 
             (nextPhase ("HandEmpty" P1))
         )
-        (phase "Movement" (play (forEach Piece)))
+        ("PhaseMovePiece" "Movement")
         }
         (end ("NoMovesLossAndLessNumPiecesPlayerLoss" P1 <Num:tigers>))
     )
