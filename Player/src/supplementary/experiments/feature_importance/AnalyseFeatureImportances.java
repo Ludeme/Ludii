@@ -432,7 +432,7 @@ public class AnalyseFeatureImportances
 				for (int a = 0; a < numActions; ++a)
 				{
 					row.sumExpectedRegrets += (policy.get(a) * (1.0 - targets.getQuick(a)));
-					row.sumExpectedRegrets += (policy.get(a) * (1.0 - targets.getQuick(a)) * (1.0 - targets.getQuick(a)));
+					row.sumExpectedSquaredRegrets += (policy.get(a) * (1.0 - targets.getQuick(a)) * (1.0 - targets.getQuick(a)));
 				}
 			}
 		}
