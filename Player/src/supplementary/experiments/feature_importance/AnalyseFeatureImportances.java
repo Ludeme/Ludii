@@ -327,6 +327,8 @@ public class AnalyseFeatureImportances
 			row.sseTrue = sumSquaredErrorsTrue;
 			row.sampleSizeFalse = numFalseAspatial[i];
 			row.sampleSizeTrue = numTrueAspatial[i];
+			row.meanTargetFalse = meanProbsIfFalseAspatial[i];
+			row.meanTargetTrue = meanProbsIfTrueAspatial[i];
 		}
 
 		for (int i = 0; i < numSpatialFeatures; ++i)
@@ -363,6 +365,8 @@ public class AnalyseFeatureImportances
 			row.sseTrue = sumSquaredErrorsTrue;
 			row.sampleSizeFalse = numFalseSpatial[i];
 			row.sampleSizeTrue = numTrueSpatial[i];
+			row.meanTargetFalse = meanProbsIfFalseSpatial[i];
+			row.meanTargetTrue = meanProbsIfTrueSpatial[i];
 		}
 		
 		Collections.sort
@@ -387,7 +391,7 @@ public class AnalyseFeatureImportances
 		try (final PrintWriter writer = new PrintWriter(argParse.getValueString("--out-file"), "UTF-8"))
 		{
 			// Write the header
-			writer.println("Feature,SSE,ReductionSSE,SseFalse,SseTrue,SampleSizeFalse,SampleSizeTrue");
+			writer.println("Feature,SSE,ReductionSSE,SseFalse,SseTrue,SampleSizeFalse,SampleSizeTrue,MeanTargetFalse,MeanTargetTrue");
 			
 			for (final Row row : rows)
 			{
@@ -418,6 +422,8 @@ public class AnalyseFeatureImportances
 		public double sseTrue;
 		public int sampleSizeFalse;
 		public int sampleSizeTrue;
+		public double meanTargetFalse;
+		public double meanTargetTrue;
 		
 		/**
 		 * Constructor
@@ -441,7 +447,9 @@ public class AnalyseFeatureImportances
 						Double.valueOf(sseFalse),
 						Double.valueOf(sseTrue),
 						Double.valueOf(sampleSizeFalse),
-						Double.valueOf(sampleSizeTrue)
+						Double.valueOf(sampleSizeTrue),
+						Double.valueOf(meanTargetFalse),
+						Double.valueOf(meanTargetTrue)
 					);
 		}
 	}
