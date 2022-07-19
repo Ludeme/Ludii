@@ -1,0 +1,7 @@
+// Checks if a site is phase 1.
+// #1 = The site.
+// @example ("IsPhaseOne" (between))
+
+(define "IsPhaseOne"
+	(= 1 (phase of:#1))
+)

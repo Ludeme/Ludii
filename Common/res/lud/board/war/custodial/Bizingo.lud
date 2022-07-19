@@ -18,7 +18,7 @@
                 (not (is In (between) (sites Outer)))
                 (and
                     (is In (between) (sites Outer)) 
-                    (= 1 (phase of:(between))) 
+                    ("IsPhaseOne" (between))
                 )
             )
             ("IsPieceAt" "Thrall" Next (between))
@@ -32,8 +32,8 @@
             (or
                 (not (is In (between) (sites Outer)))
                 (and
-                    (is In (between) (sites Outer)) 
-                    (= 1 (phase of:(between))) 
+                    (is In (between) (sites Outer))
+                    ("IsPhaseOne" (between)) 
                 )
             )
             ("IsPieceAt" "Jarl" Next (between))
@@ -46,7 +46,7 @@
     ("Surrounded" 
         if:(and {
             (is In (between) (sites Outer)) 
-            (= 0 (phase of:(between))) 
+            ("IsPhaseZero" (between))
             ("IsEnemyAt" (between))
         }) 
         with:(piece (id "Jarl" Mover))

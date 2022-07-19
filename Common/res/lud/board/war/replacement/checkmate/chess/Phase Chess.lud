@@ -251,7 +251,7 @@
                                         ("PawnMove")
                                     )
                                 )
-                                (if (= 0 (phase of:(last To)))
+                                (if ("IsPhaseZero" (last To))
                                     (if (and {
                                             "KingInTheInitialPlace" 
                                             ("HasNeverMoved" "King")
