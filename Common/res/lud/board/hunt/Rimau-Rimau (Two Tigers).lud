@@ -66,8 +66,7 @@
             )
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
+        ("PhaseMovePiece" "Movement"
             (end {
                 (if (no Moves P1) (result P2 Win))
                 (if (no Pieces P2) (result P1 Win))
@@ -99,8 +98,7 @@
             )
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
+        ("PhaseMovePiece" "Movement"
             (end ("NoMovesP1NoPiecesP2"))
         )
         }

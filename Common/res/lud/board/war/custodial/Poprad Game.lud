@@ -55,9 +55,7 @@
                 )
                 (nextPhase Mover (is Empty (handSite Mover)) "Capture")
             )
-            (phase "Capture"
-                (play (forEach Piece))	
-            )
+            ("PhaseMovePiece" "Capture")
             }
             (end (if (<= (count Pieces Next) 1) (result Mover Win)))
         )
@@ -105,9 +103,7 @@
                 )
                 (nextPhase Mover (is Empty (handSite Mover)) "Capture")
             )
-            (phase "Capture"
-                (play (forEach Piece))	
-            )
+            ("PhaseMovePiece" "Capture")
             }
             (end (if (<= (count Pieces Next) 1) (result Mover Win)))
         )
@@ -155,9 +151,7 @@
                 )
                 (nextPhase Mover (is Empty (handSite Mover)) "Capture")
             )
-            (phase "Capture"
-                (play (forEach Piece))	
-            )
+            ("PhaseMovePiece" "Capture")
             }
             (end (if (<= (count Pieces Next) 1) (result Mover Win)))
         )
@@ -205,9 +199,7 @@
                 )
                 (nextPhase Mover (is Empty (handSite Mover)) "Capture")
             )
-            (phase "Capture"
-                (play (forEach Piece))	
-            )
+            ("PhaseMovePiece" "Capture")
             }
             (end (if (<= (count Pieces Next) 1) (result Mover Win)))
         )

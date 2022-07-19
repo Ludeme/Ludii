@@ -22,7 +22,7 @@
             ) 
             (nextPhase ("HandEmpty" P1))
         )
-        (phase "Movement" (play (forEach Piece)))
+        ("PhaseMovePiece" "Movement")
         }
         
         (end ("NoMovesP2NoPiecesP1"))

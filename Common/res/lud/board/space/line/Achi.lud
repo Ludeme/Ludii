@@ -77,9 +77,7 @@
                 (nextPhase (>= (count Moves) 6) "Movement")
             )
             
-            (phase "Movement"
-                (play (forEach Piece))
-            )
+            ("PhaseMovePiece" "Movement")
             }
             (end ("Line3Win"))
         )
@@ -108,9 +106,7 @@
                 (nextPhase (>= (count Moves) 6) "Movement")
             )
             
-            (phase "Movement"
-                (play (forEach Piece))
-            )
+            ("PhaseMovePiece" "Movement")
             }
             (end ("Line3Win"))
         )

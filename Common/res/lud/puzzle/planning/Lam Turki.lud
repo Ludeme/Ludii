@@ -51,8 +51,7 @@
             (nextPhase Mover (and (is Even (count Moves)) ("HandEmpty" Mover)) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
+        ("PhaseMovePiece" "Movement"
             (end {
                 (if (= (count Pieces) 1) (result Mover Win))
                 (if (no Moves Next) (result Mover Loss))

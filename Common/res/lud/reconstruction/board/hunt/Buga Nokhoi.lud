@@ -35,7 +35,7 @@
             (nextPhase Mover ("HandEmpty" P1) "Movement")
         )
         
-        (phase "Movement" (play (forEach Piece)))
+        ("PhaseMovePiece" "Movement")
         }
         
         (end {
