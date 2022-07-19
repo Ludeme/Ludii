@@ -8,6 +8,7 @@ import java.util.Set;
 
 import game.Game;
 import main.grammar.Call;
+import main.grammar.LudemeInfo;
 import other.GameLoader;
 import utils.DBGameInfo;
 
@@ -58,10 +59,15 @@ public class LudemeplexDetection
 	 */
 	private static void storeludemeplexes(final Call c, final String gameName)
 	{		
-		// Don't store Arrays.
-		final String ludemeplexString = c.toString();
-		final int numTokens = c.count();
-		if (ludemeplexString.charAt(0) != '{' && numTokens >= MINLUDMEPLEXSIZE && numTokens <= MAXLUDEMEPLEXSIZE)
+		// Count the number of ludemes used in the ludemeplex.
+		//final int numTokens = c.countClassesAndTerminals();
+		int ludemeCount = 0;
+		final Map<LudemeInfo, Integer> ludemInfoMap = c.analysisFormat(0, GetLudemeInfo.getLudemeInfo());
+		for (final LudemeInfo key : c.analysisFormat(0, GetLudemeInfo.getLudemeInfo()).keySet())
+			ludemeCount += ludemInfoMap.get(key);
+		
+		// Don't store arrays.
+		if (c.toString().charAt(0) != '{' && ludemeCount >= MINLUDMEPLEXSIZE && ludemeCount <= MAXLUDEMEPLEXSIZE)
 		{
 			Set<String> gameNameArray = new HashSet<>();
 			if (allLudemeplexes.containsKey(c))
