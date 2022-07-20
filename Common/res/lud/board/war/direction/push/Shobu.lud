@@ -2,10 +2,6 @@
     (directions Cell from:(last From) to:(last To))
 )
 
-(define "LastDistance" 
-    (count Steps (last From) (last To))
-)
-
 (define "AgressiveRegion"
     (if (is In (last To) (sites "Dark"))
         (sites "Light")

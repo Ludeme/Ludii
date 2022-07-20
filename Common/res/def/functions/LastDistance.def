@@ -1,0 +1,7 @@
+// Returns the number of pieces owned by a player around a given site.
+// #1 = The relation type to use between the sites [Adjacent].
+// @example ("LastDistance")
+
+(define "LastDistance" 
+    (count Steps #1 (last From) (last To))
+)
