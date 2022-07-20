@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import game.Game;
+import main.StringRoutines;
 import main.grammar.Call;
 import other.GameLoader;
 import utils.DBGameInfo;
@@ -58,21 +59,10 @@ public class LudemeplexDetection
 	 */
 	private static void storeludemeplexes(final Call c, final String gameName)
 	{		
-		// Count the number of non-format tokens (ludemes) used in the ludemeplex.
+		// Count the number of ludemes used in the ludemeplex.
 		//final int numTokens = c.countClassesAndTerminals();
-		int ludemeCount = 0;
-		final List<String> tokenList = c.ludemeFormat(0);
-		for (final String string : tokenList)
-		{
-			for (final char ch : string.toCharArray())
-			{
-				if (Character.isDigit(ch) || Character.isLetter(ch))
-				{
-					ludemeCount++;
-					break;
-				}
-			}
-		}
+		final String ludemeList = StringRoutines.join("", c.ludemeFormat(0));
+		final int ludemeCount = ludemeList.split(" ").length;
 		
 		// Don't store arrays.
 		if (c.toString().charAt(0) != '{' && ludemeCount >= MINLUDMEPLEXSIZE && ludemeCount <= MAXLUDEMEPLEXSIZE)
@@ -146,7 +136,7 @@ public class LudemeplexDetection
 		System.out.println("//-------------------------------------------------------------------------");
 		
 		// Record possible define ludemeplexes.
-		final Map<String, Set<String>> allDefineLudemeplexes = DatabaseFunctions.storeDefineLudemeplexInfo(allLudemeplexes, allLudemeplexesCount, 1);
+		final Map<String, Set<String>> allDefineLudemeplexes = DatabaseFunctions.storeDefineLudemeplexInfo(allLudemeplexes, allLudemeplexesCount, 2);
 		DatabaseFunctions.storeDefineLudemeplexRulesetPairs(allDefineLudemeplexes);
 		System.out.println("Define Ruleset Ludemeplexes Recorded");
 		
