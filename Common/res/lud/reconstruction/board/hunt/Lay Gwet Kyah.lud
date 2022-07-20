@@ -25,8 +25,7 @@
             ) 
             (nextPhase (and ("HandEmpty" P1)("HandEmpty" P2)) "Movement")
         )
-        (phase "Movement"
-            (play (forEach Piece))
+        ("PhaseMovePiece" "Movement"
             (end {
                 (if (no Pieces P2) (result P1 Win))
                 (if (no Moves P1) (result P2 Win))

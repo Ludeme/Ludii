@@ -157,7 +157,7 @@
                                 )
                                 (moveAgain)
                             )
-                            (if (and (not ("SameTurn")) (<= (count Turns) 2))
+                            (if (and ("NewTurn") (<= (count Turns) 2))
                                 (and
                                     (set Pending)
                                     (moveAgain)

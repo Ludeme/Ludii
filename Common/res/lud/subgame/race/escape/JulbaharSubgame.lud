@@ -134,7 +134,7 @@
         
         (play 
             (do 
-                (if (not "SameTurn") (roll))
+                (if ("NewTurn") (roll))
                 next:
                 (if (can Move ("Move"))
                     ("Move")

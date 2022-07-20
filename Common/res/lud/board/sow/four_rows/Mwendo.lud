@@ -47,7 +47,7 @@
                             )
                         )
                     )
-                    (if (not ("SameTurn"))
+                    (if ("NewTurn")
                         (move
                             (from ("RightMost"))
                             (to ("NextHoleFrom" ("RightMost") 1)

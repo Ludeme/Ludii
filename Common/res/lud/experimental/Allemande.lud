@@ -32,7 +32,7 @@
             (to (sites Empty))
             (then
                 (if
-                    (not ("SameTurn")) 
+                    ("NewTurn") 
                     (remember Value (last To))
         )))
         (move Select
@@ -49,7 +49,7 @@
                             (to (site))
                         )
                         (if
-                            (not ("SameTurn"))
+                            ("NewTurn")
                             (remember Value (site))
         )))))
         (if
@@ -63,7 +63,7 @@
 
 (define "GamePlay"
     (if
-        (not ("SameTurn"))
+        ("NewTurn")
         (do
             ("Placements") 
             ifAfterwards:(or

@@ -220,7 +220,7 @@
                 (do 
                     (forEach Piece)
                     ifAfterwards:(and (is In (last To) (sites Mover "Half")) (not ("IsInCheck" "King" Mover)))
-                    (then (if (not "SameTurn") (moveAgain)))
+                    (then (if ("NewTurn") (moveAgain)))
                 )
             )
             (nextPhase Mover ("SameTurn") "Playing")

@@ -6,23 +6,8 @@
             (move Slide Orthogonal
                 (then 
                     (and
-                        (intervene 
-                            (from (last To))
-                            Orthogonal
-                            (to 
-                                if:("IsEnemyAt" (to))
-                                (apply (remove (to)))
-                            )
-                        )
-                        (custodial 
-                            (from (last To))
-                            Orthogonal
-                            (between
-                                if:("IsEnemyAt" (between))
-                                (apply (remove (between)))
-                            )
-                            (to if:("IsFriendAt" (to)))
-                        )
+                        ("InterveneCapture" Orthogonal)
+                        ("CustodialCapture" Orthogonal)
                     )
                 )
             )
@@ -34,7 +19,7 @@
             (place "Marker2" (union (sites Row 5) (sites Row 7)))
         })
         (play (forEach Piece))
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 

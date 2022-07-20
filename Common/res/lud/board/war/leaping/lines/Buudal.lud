@@ -31,11 +31,7 @@
             ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
+        ("PhaseMovePiece" "Movement")
         }
         (end (if (no Pieces Next) (result Mover Win)))
     )

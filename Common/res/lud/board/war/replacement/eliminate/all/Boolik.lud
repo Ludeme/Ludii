@@ -155,7 +155,7 @@
                     (forEach Piece)
                 })
                 (then
-                    (if (and (not (no Pieces Mover)) (not ("SameTurn")))
+                    (if (and (not (no Pieces Mover)) ("NewTurn"))
                         (moveAgain)
                     )
                 )

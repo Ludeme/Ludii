@@ -81,7 +81,7 @@
             ) 
             (nextPhase "Movement")
         )
-        (phase "Movement" (play (forEach Piece)))
+        ("PhaseMovePiece" "Movement")
         }
         >
         "The game is played according to the rules of Martin Gardner. The army can be placed anywhere."
@@ -106,7 +106,7 @@
             ) 
             (nextPhase "Movement")
         )
-        (phase "Movement" (play (forEach Piece)))
+        ("PhaseMovePiece" "Movement")
         }
         >
         "The game is played according to the rules of Martin Gardner with a slightly difference. The army can be placed anywhere except in the middle of the towers."

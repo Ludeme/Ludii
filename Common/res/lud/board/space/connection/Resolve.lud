@@ -35,7 +35,7 @@
         (then 
             (if 
                 (and
-                    (not ("SameTurn"))
+                    ("NewTurn")
                     ("HasCrosscuts" (last To))
                 )
                 (set Var "LT" (last To) (then (moveAgain)))

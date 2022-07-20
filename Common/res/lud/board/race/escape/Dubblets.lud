@@ -119,7 +119,7 @@
         (phase "BearingOff" 
             (play 
                 (do 
-                    (if (not "SameTurn") (roll))
+                    (if ("NewTurn") (roll))
                     next:(if (or (< 0 (var "Double")) (all DiceEqual)) // Move thanks to double.
                         (do (if (>= 0 (var "Double")) (set Var "Double" (count Pips)))
                             next:(forEach Site (sites Occupied by:Mover)

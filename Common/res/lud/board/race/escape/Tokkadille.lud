@@ -136,7 +136,7 @@
         })
         (play 
             ("RollEachNewTurnMove"
-                (do (if (not "SameTurn") ("UpdateScore"))
+                (do (if ("NewTurn") ("UpdateScore"))
                     next:(or { 
                         (if (and (>= 0 (var "MovingFromHucke")) (>= 0 (var "MovingToHucke"))) (forEach Piece))
                         

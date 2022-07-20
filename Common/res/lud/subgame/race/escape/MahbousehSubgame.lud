@@ -128,7 +128,7 @@
         
         (play 
             (do 
-                (if (not "SameTurn") (roll))
+                (if ("NewTurn") (roll))
                 next:(if "AllPieceInHome"
                     (forEach Die 
                         replayDouble:True 

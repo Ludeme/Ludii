@@ -45,9 +45,7 @@
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         ) 
         
-        (phase "Movement" 
-            (play (forEach Piece))
-        )
+        ("PhaseMovePiece" "Movement")
         }> 
         "The pieces have to place before to play."
     )

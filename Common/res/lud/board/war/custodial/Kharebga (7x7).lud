@@ -4,18 +4,7 @@
         (board (square 7))
         (piece "Marker" Each 
             (move Slide Orthogonal
-                (then 
-                    (custodial 
-                        (from (last To))
-                        Orthogonal
-                        (between
-                            (max 1)
-                            if:("IsEnemyAt" (between))
-                            (apply (remove (between)))
-                        )
-                        (to if:("IsFriendAt" (to)))
-                    )
-                )
+                (then ("CustodialCapture" Orthogonal (max 1)))
             )
         )
         (hand Each)
@@ -29,17 +18,15 @@
                     (from (handSite Mover))
                     (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
                     (then
-                        (if (not ("SameTurn")) (moveAgain))
+                        (if ("NewTurn") (moveAgain))
                     )
                 )
             )
             (nextPhase Mover (is Empty (handSite Mover)) "Capture")
         )
-        (phase "Capture"
-            (play (forEach Piece))	
-        )
+        ("PhaseMovePiece" "Capture")
         }
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )	
 )
 

@@ -167,7 +167,7 @@
                     (forEach Piece)
                 })
                 (then
-                    (if (not ("SameTurn"))
+                    (if ("NewTurn")
                         (moveAgain)
                     )
                 )

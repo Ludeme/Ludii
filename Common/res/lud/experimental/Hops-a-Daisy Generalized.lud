@@ -183,7 +183,7 @@
 
 (define "PlaceDisc" 
     (if
-        (not ("SameTurn"))
+        ("NewTurn")
         (move Add 
             (piece (id "Disc" Mover))
             (to (forEach <PlaceDisc:suicideOption> if:<PlaceDisc:location>))

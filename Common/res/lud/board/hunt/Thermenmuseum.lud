@@ -164,9 +164,7 @@
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
-        )
+        ("PhaseMovePiece" "Movement")
         }
         
         (end {
@@ -246,9 +244,7 @@
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
-        )
+        ("PhaseMovePiece" "Movement")
         }
         
         (end {
@@ -290,9 +286,7 @@
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
-        )
+        ("PhaseMovePiece" "Movement")
         }
         
         (end {
@@ -334,9 +328,7 @@
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
-        )
+        ("PhaseMovePiece" "Movement")
         }
         
         (end {
@@ -378,9 +370,7 @@
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
-        )
+        ("PhaseMovePiece" "Movement")
         }
         
         (end {
@@ -422,9 +412,7 @@
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
-        )
+        ("PhaseMovePiece" "Movement")
         }
         
         (end {
@@ -514,9 +502,7 @@
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
-        )
+        ("PhaseMovePiece" "Movement")
         }
         
         (end ("BlockWin"))
@@ -545,9 +531,7 @@
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
-        )
+        ("PhaseMovePiece" "Movement")
         }
         
         (end ("Line3Win"))
@@ -727,9 +711,7 @@
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
-        )
+        ("PhaseMovePiece" "Movement")
         }
         (end ("BlockWin"))
     )		

@@ -52,7 +52,7 @@
         })
         (play 
             (do 
-                (if (not "SameTurn") 
+                (if ("NewTurn") 
                     (roll) 
                 )
                 next:(forEach Die 

@@ -21,9 +21,9 @@
         phases:{
         (phase "Opening" 
             (play (move (from (handSite Mover)) (to (sites Empty))))
-            (nextPhase Mover ("HandEmpty" Mover) "Playing")
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
-        (phase "Playing" (play (forEach Piece)))
+        ("PhaseMovePiece" "Movement")
         }
         
         (end ("NoMovesP1NoPiecesP2"))

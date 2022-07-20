@@ -53,7 +53,7 @@
         phases:{
         (phase "UnStacking" (play 
                 (do 
-                    (if (or (is Pending) (not "SameTurn")) (roll)) 
+                    (if (or (is Pending) ("NewTurn")) (roll)) 
                     next:
                     (forEach Die 
                         if:("DieNotUsed")
@@ -75,7 +75,7 @@
         )
         (phase "Stacking" (play 
                 (do 
-                    (if (or (is Pending) (not "SameTurn")) (roll)) 
+                    (if (or (is Pending) ("NewTurn")) (roll)) 
                     next:
                     (forEach Die 
                         if:("DieNotUsed")
@@ -98,7 +98,7 @@
         (phase "BearingOff" 
             (play 
                 (do 
-                    (if (or (all DiceEqual) (not "SameTurn")) (roll)) 
+                    (if (or (all DiceEqual) ("NewTurn")) (roll)) 
                     next:(forEach Piece top:True)
                     (then (if (or (not (all DiceUsed)) (all DiceEqual)) (moveAgain)))
                 )

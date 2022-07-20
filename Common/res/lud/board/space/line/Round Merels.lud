@@ -19,9 +19,7 @@
             (nextPhase ("HandEmpty" P2) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
-        )
+        ("PhaseMovePiece" "Movement")
         }
         
         (end (if (is Line 3 through:(centrePoint) what:(mover)) (result Mover Win))) 

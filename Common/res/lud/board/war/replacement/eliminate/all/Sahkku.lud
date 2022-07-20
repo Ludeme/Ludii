@@ -222,7 +222,7 @@
         (phase "PlayingPips"
             (play 
                 (do
-                    (if (not ("SameTurn")) (roll))
+                    (if ("NewTurn") (roll))
                     next:(or (forEach Piece "MovePieceWithStoredPips") (forEach Piece "MoveGonagasWithStoredPips" Shared))
                 )
             )
@@ -230,7 +230,7 @@
         )
         (phase "Playing"
             (play 
-                (do (if (not ("SameTurn")) (roll))
+                (do (if ("NewTurn") (roll))
                     next:(or (forEach Piece) (forEach Piece Shared))
                 )
             )
