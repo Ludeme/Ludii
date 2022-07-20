@@ -1,7 +1,3 @@
-(define "LastDirection" 
-    (directions Cell from:(last From) to:(last To))
-)
-
 (define "AgressiveRegion"
     (if (is In (last To) (sites "Dark"))
         (sites "Light")
@@ -14,7 +10,7 @@
         (if (is In (from) ("AgressiveRegion"))
             (or
                 (move Slide 
-                    "LastDirection" 
+                	("LastDirection" Cell)
                     (between 
                         (exact "LastDistance")
                         if:(is Empty (between))
@@ -25,18 +21,18 @@
                             (and 
                                 ("IsEnemyAt" (to))
                                 (or 
-                                    (is Empty (ahead (to) "LastDirection"))
-                                    (= (ahead (to) "LastDirection") (to))
+                                    (is Empty (ahead (to) ("LastDirection" Cell)))
+                                    (= (ahead (to) ("LastDirection" Cell)) (to))
                                 )
                             )
                         )
                         (apply
                             (if ("IsEnemyAt" (to))
-                                (if (= (ahead (to) "LastDirection") (to))
+                                (if (= (ahead (to) ("LastDirection" Cell)) (to))
                                     (remove (to))
                                     (fromTo 
                                         (from (to))
-                                        (to (ahead (to) "LastDirection"))
+                                        (to (ahead (to) ("LastDirection" Cell)))
                                     )
                                 )
                             )
@@ -45,24 +41,24 @@
                 )
                 (if (and {
                         (= ("LastDistance") 2) 
-                        (is Enemy (who at:(ahead (from) "LastDirection")))
-                        (is Empty (ahead (from) steps:2 "LastDirection"))
-                        (if (= (from) (ahead (from) steps:3 "LastDirection"))
+                        (is Enemy (who at:(ahead (from) ("LastDirection" Cell))))
+                        (is Empty (ahead (from) steps:2 ("LastDirection" Cell)))
+                        (if (= (from) (ahead (from) steps:3 ("LastDirection" Cell)))
                             True
-                            (is Empty (ahead (from) steps:3 "LastDirection"))
+                            (is Empty (ahead (from) steps:3 ("LastDirection" Cell)))
                         )
                     })
                     (move
                         (from (from))
                         (to 
-                            (ahead (from) steps:2 "LastDirection")
+                            (ahead (from) steps:2 ("LastDirection" Cell))
                         )
                         (then
-                            (if (= (ahead (last To) "LastDirection") (last To))
-                                (remove (ahead (last From) "LastDirection"))
+                            (if (= (ahead (last To) ("LastDirection" Cell)) (last To))
+                                (remove (ahead (last From) ("LastDirection" Cell)))
                                 (fromTo 
-                                    (from (ahead (last From) "LastDirection"))
-                                    (to (ahead (last To) "LastDirection"))
+                                    (from (ahead (last From) ("LastDirection" Cell)))
+                                    (to (ahead (last To) ("LastDirection" Cell)))
                                 )
                             )	
                         )

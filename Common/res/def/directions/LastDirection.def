@@ -1,0 +1,7 @@
+// Returns the direction between the last `from' location and the last `to' location.
+// #1 = The site type of the sites.
+// @example ("LastDirection" Cell)
+
+(define "LastDirection" 
+	(directions #1 from:(last From) to:(last To))
+)
