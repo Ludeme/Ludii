@@ -12,7 +12,7 @@
             (forEach Site
                 (sites Direction 
                     from:(last From)
-                    (directions Cell from:(last From) to:(last To))
+                    ("LastDirection" Cell)
                     distance:(size Stack at:(last From))
                 )
                 (add (piece "Disc1") (to (site)) stack:True)
@@ -66,7 +66,7 @@
             (forEach Site
                 (sites Direction
                     from:(last From)
-                    (directions Cell from:(last From) to:(last To))
+                    ("LastDirection" Cell)
                     stop:(is Empty (to))
                     distance:(size Stack at:(last From))
                 )
@@ -125,7 +125,7 @@
     (count Sites
         in:(sites Direction
             from:(last From)
-            (directions Cell from:(last From) to:(last To))
+            ("LastDirection" Cell)
             stop:(is Empty (to))
             distance:(size Stack at:(last From))
         )

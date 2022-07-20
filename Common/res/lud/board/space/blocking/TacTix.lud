@@ -20,8 +20,8 @@
                                     (remove (last To))
                                     (if 
                                         (and
-                                            (is Occupied (ahead (last To) (directions Cell from:(last From) to:(last To)))) 
-                                            (!= (last To) (ahead (last To) (directions Cell from:(last From) to:(last To))))
+                                            (is Occupied (ahead (last To) ("LastDirection" Cell)))
+                                            (!= (last To) (ahead (last To) ("LastDirection" Cell)))
                                         )
                                         (moveAgain)
                                     )
@@ -30,13 +30,13 @@
                         )
                         (move Select
                             (from (last To))
-                            (to (ahead (last To) (directions Cell from:(last From) to:(last To))))
+                            (to (ahead (last To) ("LastDirection" Cell)))
                             (then 
                                 (and
                                     (remove (last To))
                                     (if (and
-                                            (is Occupied (ahead (last To) (directions Cell from:(last From) to:(last To)))) 
-                                            (!= (last To) (ahead (last To) (directions Cell from:(last From) to:(last To))))
+                                            (is Occupied (ahead (last To) ("LastDirection" Cell)))
+                                            (!= (last To) (ahead (last To) ("LastDirection" Cell)))
                                         )
                                         (moveAgain)
                                     )

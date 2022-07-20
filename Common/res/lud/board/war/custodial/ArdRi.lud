@@ -63,7 +63,7 @@
         (play (forEach Piece)) 
         
         (end {
-        	("PieceTypeReachWin" "Jarl2" (sites Outer) P2)
+            ("PieceTypeReachWin" "Jarl2" (sites Outer) P2)
             (if "JarlWasCaptured" (result P1 Win))
         })
     )

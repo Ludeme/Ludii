@@ -72,7 +72,7 @@
 
 (define "CaptureFromLast" 		
     (or 
-        ("MoveAgainIn" #1 (to) SameDirection (last To) (directions Vertex from:(last From) to:(last To)))
+        ("MoveAgainIn" #1 (to) SameDirection (last To) ("LastDirection" Vertex))
         ("MoveAgainIn" #1 (from) OppositeDirection (last From) (directions Vertex from:(last To) to:(last From)))
     )
 )
@@ -130,7 +130,7 @@
                 (priority {
                     (if (is Mover P1)
                         (or 
-                            ("MoveIn" (to) SameDirection (last To) (directions Vertex from:(last From) to:(last To)))
+                            ("MoveIn" (to) SameDirection (last To) ("LastDirection" Vertex))
                             ("MoveIn" (from) OppositeDirection (last From) (directions Vertex from:(last To) to:(last From)))
                         )
                     )
@@ -152,7 +152,7 @@
                     )
                     (priority {
                         (or 
-                            ("MoveIn" (to) SameDirection (last To) (directions Vertex from:(last From) to:(last To)) "MoveAgain")
+                            ("MoveIn" (to) SameDirection (last To) ("LastDirection" Vertex) "MoveAgain")
                             ("MoveIn" (from) OppositeDirection (last From) (directions Vertex from:(last To) to:(last From)) "MoveAgain")
                         )
                         (forEach Piece "StepToEmpty")

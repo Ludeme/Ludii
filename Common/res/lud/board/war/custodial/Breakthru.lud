@@ -51,7 +51,7 @@
         
         ("PhaseMovePiece" "Movement"
             (end {
-            	("PieceTypeReachWin" "Commander1" (sites Outer) P1)
+                ("PieceTypeReachWin" "Commander1" (sites Outer) P1)
                 (if ("IsOffBoard" (where "Commander" P1)) (result P2 Win))
             })
         )

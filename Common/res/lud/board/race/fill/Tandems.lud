@@ -48,7 +48,7 @@
                 (forEach Site (difference (sites Occupied by:Mover) (last To))
                     (move Step 
                         (from (site))
-                        (directions Cell from:(last From) to:(last To))
+                        ("LastDirection" Cell)
                         (to 
                             if:(and 
                                 (is Empty (to))

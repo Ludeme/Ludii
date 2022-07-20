@@ -91,7 +91,7 @@
         })
         (play (forEach Piece))
         (end {
-        	("PieceTypeReachWin" "Jarl1" (sites "Fortresses") P1)
+            ("PieceTypeReachWin" "Jarl1" (sites "Fortresses") P1)
             (if "JarlWasCaptured" (result P2 Win))
         })
     )

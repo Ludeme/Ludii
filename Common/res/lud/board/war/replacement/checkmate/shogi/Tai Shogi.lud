@@ -260,7 +260,7 @@
                     (then 
                         (fromTo
                             (from (last To))
-                            (to (ahead (last To) (directions Cell from:(last From) to:(last To))))
+                            (to (ahead (last To) ("LastDirection" Cell)))
                         )
                     )
                 )
@@ -379,7 +379,7 @@
                         )
                     )
                 )
-                ("DoubleStep" (directions {FR FL}) (directions Cell from:(last From) to:(last To)))
+                ("DoubleStep" (directions {FR FL}) ("LastDirection" Cell))
                 ("DoubleStep" (directions {FR FL}) (directions Cell from:(last To) to:(last From)))
                 ("HopMove" (directions {FR FL}))
                 ("SlideMove" (difference Adjacent (directions {FR FL})))
@@ -412,7 +412,7 @@
                         )
                     )
                 )
-                ("DoubleStep" Forward (directions Cell from:(last From) to:(last To)))
+                ("DoubleStep" Forward ("LastDirection" Cell))
                 ("DoubleStep" Forward (directions Cell from:(last To) to:(last From)))
                 ("HopMove" Forward)
                 ("SlideMove" (difference Adjacent Forward))
@@ -678,7 +678,7 @@
                     (then 
                         (fromTo
                             (from (last To))
-                            (to (ahead (last To) (directions Cell from:(last From) to:(last To))))
+                            (to (ahead (last To) ("LastDirection" Cell)))
                         )
                     )
                 )
@@ -1171,7 +1171,7 @@
                             (from (last To))
                             (difference 
                                 (difference (if (= (what at:(last To)) (id "HookMover" Mover)) Orthogonal Diagonal)
-                                    (directions Cell from:(last From) to:(last To))
+                                    ("LastDirection" Cell)
                                 ) 
                                 (directions Cell from:(last To) to:(last From))
                             )

@@ -5,7 +5,7 @@
     (!= (last To) ("NextSite" #1))
 )
 (define "NextSite"
-    (ahead (last To) steps:#1 (directions Vertex from:(last From) to:(last To)))	
+    (ahead (last To) steps:#1 ("LastDirection" Vertex))
 )
 (define "SowAgainMove" 
     (move Select

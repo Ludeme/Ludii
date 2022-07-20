@@ -10,7 +10,7 @@
         (if (is In (from) ("AgressiveRegion"))
             (or
                 (move Slide 
-                	("LastDirection" Cell)
+                    ("LastDirection" Cell)
                     (between 
                         (exact "LastDistance")
                         if:(is Empty (between))

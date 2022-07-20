@@ -9,7 +9,7 @@
                     if:(not (is In (to) (sites Around (from))))		
                 )
                 (then
-                    (if (!= (ahead (last To) (directions Cell from:(last From) to:(last To))) (last To))
+                    (if (!= (ahead (last To) ("LastDirection" Cell)) (last To))
                         (remove
                             (sites Around (last To) includeSelf:True)
                         )

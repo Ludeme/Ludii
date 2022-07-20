@@ -5,5 +5,5 @@
 // @example ("PieceTypeReachWin" "Jarl2" (sites Corners) P2)
 
 (define "PieceTypeReachWin"
-	(if (is Within (id #1) in:#2) (result #3 Win))
+    (if (is Within (id #1) in:#2) (result #3 Win))
 )
