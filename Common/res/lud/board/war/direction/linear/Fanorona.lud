@@ -1,30 +1,29 @@
 (define "CaptureAgainIn"
-    (move
-        Select
+    (move Select
         (from #1) 
         (to 
             (sites Around #1) 
             if:(and { 
                 (not (is Visited (to))) 
                 (is Empty (to)) 
-                (is Enemy (who at:(ahead #2 #3)))
+                ("IsEnemyAt" (ahead #2 #3))
             })
         )
     )
-) 
+)
 
 (define "EmptyButNotVisitedWithEnemyIn"
     (and { 
         (not (is Visited (to))) 
         (is Empty (to)) 
-        (is Enemy (who at:(ahead #1 #2)))
+        ("IsEnemyAt" (ahead #1 #2))
     })
 )
 
 (define "EmptyWithEnemyIn"
     (and 
         (is Empty (to)) 
-        (is Enemy (who at:(ahead #1 #2)))
+        ("IsEnemyAt" (ahead #1 #2))
     )
 )
 
@@ -43,8 +42,7 @@
 )
 
 (define "MoveAgainIn"
-    (move
-        Select
+    (move Select
         (from #1) 
         (to 
             (sites Around #1) 
@@ -81,8 +79,7 @@
 
 (define "MoveIn"
     (forEach Piece 
-        (move
-            Select
+        (move Select
             (from) 
             (to 
                 (sites Around (from)) 
@@ -126,8 +123,7 @@
         (play
             (if "SameTurn"
                 (or 
-                    (if 
-                        (!= (what at:(last To)) 0) 
+                    (if (is Occupied (last To)) 
                         ("CaptureFromLast" (last To)) 
                         ("CaptureFromLast" (last From))
                     )
@@ -172,10 +168,6 @@
         (origin "This game was played in Madagascar, around 1896.")
         }
     )
-    
-    (graphics {
-        
-    })
     
     (ai
         "Fanorona_ai"
