@@ -227,13 +227,12 @@ public class Call
 	public boolean equals(final Object o)
 	{
 		return ludemeFormat(0).equals(((Call) o).ludemeFormat(0));
-		//return format(0, false).equals(((Call) o).format(0, false));
 	}
 	
 	@Override
 	public int hashCode()
 	{
-		return toString().hashCode();
+		return ludemeFormat(0).hashCode();
 	}
 	
 	//-------------------------------------------------------------------------
