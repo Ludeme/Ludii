@@ -218,7 +218,7 @@ public class Call
 	@Override
 	public String toString()
 	{
-		return format(0, false);
+		return format(0, true);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -226,7 +226,8 @@ public class Call
 	@Override
 	public boolean equals(final Object o)
 	{
-		return toString().equals(((Call) o).toString());
+		return ludemeFormat(0).equals(((Call) o).ludemeFormat(0));
+		//return format(0, false).equals(((Call) o).format(0, false));
 	}
 	
 	@Override
@@ -498,7 +499,7 @@ public class Call
 			if (constant != null)
 				stringList.add(constant + " ");
 			else if (object().getClass().getSimpleName().equals("String"))
-				stringList.add("\"\"" + object() + "\"\" ");
+				stringList.add("\"" + object() + "\" ");
 			else
 				stringList.add(object() + " ");
 

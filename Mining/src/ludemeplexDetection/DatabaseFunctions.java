@@ -56,7 +56,6 @@ public class DatabaseFunctions
 				final List<String> ludemeplexStringList = entry.getKey().ludemeFormat(0);
 				
 				final String ludemeplexString = String.join("", ludemeplexStringList);
-
 				// Try to compile ludemeplex
 				try
 				{
@@ -77,7 +76,10 @@ public class DatabaseFunctions
 				}
 				
 				String defineLudemeplexString = ludemeplexString.trim();
-				defineLudemeplexString = "(define \"\"DLP.Ludemeplexes." + ludemeplexId + "\"\" " + defineLudemeplexString + ")";
+				defineLudemeplexString = "(define \"DLP.Ludemeplexes." + ludemeplexId + "\" " + defineLudemeplexString + ")";
+				
+				// Replace all quotes with double quotes for database importing
+				defineLudemeplexString = defineLudemeplexString.replaceAll("\"", "\"\"");
 				
 				outputLine += "\"" + defineLudemeplexString + "\"";					// define version in .lud format
 				//outputLine += "\"" + entry.getKey().toString() + "\"";			// call tree string
@@ -198,7 +200,10 @@ public class DatabaseFunctions
 				String outputLine = ludemeplexId + ",";
 				
 				String defineLudemeplexString = entry.getKey().trim();
-				defineLudemeplexString = "(define \"\"DLP.Ludemeplexes." + ludemeplexId + "\"\" " + defineLudemeplexString + ")";
+				defineLudemeplexString = "(define \"DLP.Ludemeplexes." + ludemeplexId + "\" " + defineLudemeplexString + ")";
+				
+				// Replace all quotes with double quotes for database importing
+				defineLudemeplexString = defineLudemeplexString.replaceAll("\"", "\"\"");
 				
 				int totalCount = 0;
 				for (final Call c : allDefineLudemeplexesOriginalLudemeplexes.get(entry.getKey()))
