@@ -16,6 +16,7 @@ import java.util.Map;
 import main.StringRoutines;
 //import main.StringRoutines;
 import main.grammar.Report;
+import parser.Expander;
 
 //-----------------------------------------------------------------------------
 
@@ -33,8 +34,11 @@ public class Completer
 		
 	//-------------------------------------------------------------------------
 
-	public static boolean needsCompleting(final String str)  //Description description)
+	public static boolean needsCompleting(final String desc)
 	{
+		// Remove comments first, so that recon syntax can be commented out 
+		// to not trigger a reconstruction without totally removing it.
+		final String str = Expander.removeComments(desc);
 		return str.contains("[") && str.contains("]");
 	}
 	
