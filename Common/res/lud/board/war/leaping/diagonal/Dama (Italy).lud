@@ -1,16 +1,3 @@
-(define "HopMan" 
-    (move Hop 
-        (from #1) 
-        (directions {FR FL}) 
-        (between 
-            if:("IsPieceAt" "Counter" Next (between))
-            (apply (remove (between)))
-        ) 
-        (to if:(is Empty (to))) 
-        #2
-    ) 
-)
-
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
 
 (define "JumpToPromotionZone" (is In (last To) (sites Next)))
@@ -27,11 +14,11 @@
             (if "SameTurn"
                 (if "IsUnpromoted"
                     (max Moves 
-                        ("HopMan" (last To) 
+                    		("HopOnlyCounters" (from (last To)) (directions {FR FL})
                             (then 
                                 (if "JumpToPromotionZone" 
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
-                                    (if (can Move ("HopMan" (last To))) (moveAgain)) 
+                                    (if (can Move ("HopOnlyCounters" (from (last To)) (directions {FR FL}))) (moveAgain)) 
                                 ) 
                             ) 
                         )
@@ -43,11 +30,11 @@
                         (priority {
                             (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture"))
                             (forEach Piece "Counter" 
-                                ("HopMan" (from) 
+                                ("HopOnlyCounters" (from) (directions {FR FL}) 
                                     (then 
                                         (if "JumpToPromotionZone"
                                             (move Promote (last To) (piece "DoubleCounter") Mover) 
-                                            (if (can Move ("HopMan" (last To))) (moveAgain)) 
+                                            (if (can Move ("HopOnlyCounters" (from (last To)) (directions {FR FL}))) (moveAgain)) 
                                         ) 
                                     ) 
                                 ) 
