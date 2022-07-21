@@ -17,12 +17,12 @@ public class FileUtils {
     /**
      * returns the contents of the file as a string where
      * @param f
-     * @return
      */
     public static String getContents(File f) throws FileNotFoundException {
         boolean verbose = false;
         String content = "";
-        Scanner sc = new Scanner(f);
+        try(Scanner sc = new Scanner(f);)
+        {
         while(sc.hasNextLine()) {
             String l = sc.nextLine();
             if(l.contains("//"))
@@ -55,6 +55,7 @@ public class FileUtils {
             content = content.substring(0,j + 1) + " " + content.substring(j + 1);
         }
         return content;
+        }
     }
 
     /**

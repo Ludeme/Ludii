@@ -1231,7 +1231,6 @@ public class LInputField extends JComponent
      *
      * @return list of all node argument indices
      */
-    @SuppressWarnings("boxing")
     public List<Integer> inputIndices() {
         List<Integer> indices = new ArrayList<>();
         for (NodeArgument nodeArgument : nodeArguments)

@@ -114,7 +114,6 @@ public class GraphAnimator
     /**
      * Preserves initial/previous positions of nodes of a subtree that starts with provided root
      */
-    @SuppressWarnings("boxing")
 	public void preserveInitPositions(iGraph graph, int root)
     {
         List<Integer> Q = new ArrayList<>();

@@ -176,7 +176,6 @@ public class LInputArea extends JPanel
      * Method which syncs the Ludeme Node Component with provided inputs (stored in the Ludeme Node).
      * Called when drawing a graph.
      */
-    @SuppressWarnings("boxing")
     public void updateProvidedInputs()
     {
         // Fill existing inputs

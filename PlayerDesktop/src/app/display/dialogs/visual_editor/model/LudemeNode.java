@@ -622,7 +622,6 @@ public class LudemeNode implements iGNode
      *
      * @return the list of children of this node
      */
-    @SuppressWarnings("boxing")
 	@Override
     public List<Integer> children()
     {

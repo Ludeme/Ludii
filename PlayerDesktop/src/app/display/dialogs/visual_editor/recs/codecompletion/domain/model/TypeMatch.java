@@ -42,11 +42,11 @@ public class TypeMatch implements iTypeMatch {
         // 1. get the picklist from the NGram model
         List<Instance> instancePicklist = controller.getPicklist(gameDescription);
         if(verbose)System.out.println(" # Ordered Picklist by N-Gram");
-        for(Instance instance : instancePicklist) {
+        for(Instance instance : instancePicklist) 
+        {
             String prediction = instance.getPrediction();
-            if(prediction.startsWith("(")) {
+            if(prediction.startsWith("(")) 
                 prediction = prediction.replaceAll("\\(","");
-            }
             if(verbose)System.out.println("Completion: " + prediction);
         }
 

@@ -166,7 +166,6 @@ public class GraphPanel extends JPanel implements IGraphPanel
      * @param lnc
      */
     @Override
-    @SuppressWarnings("boxing")
     public void notifyNodeRemoved(LudemeNodeComponent lnc)
     {
         NODE_COMPONENTS.remove(lnc);
@@ -417,7 +416,6 @@ public class GraphPanel extends JPanel implements IGraphPanel
      * @param node
      * @param connect
      */
-    @SuppressWarnings("boxing")
     private void addLudemeNodeComponent(LudemeNode node, boolean connect)
     {
         LudemeNodeComponent lc = new LudemeNodeComponent(node, this);
@@ -473,7 +471,6 @@ public class GraphPanel extends JPanel implements IGraphPanel
      * @param node
      */
     @Override
-    @SuppressWarnings("boxing")
     public LudemeNodeComponent nodeComponent(LudemeNode node)
     {
         LudemeNodeComponent lnc = NODE_COMPONENTS_BY_ID.get(node.id());

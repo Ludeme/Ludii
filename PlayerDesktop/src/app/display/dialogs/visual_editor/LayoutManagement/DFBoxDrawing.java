@@ -63,7 +63,6 @@ public class DFBoxDrawing
      * @param nodeId root node of tree/sub-tree to arrange
      * @param freeX initial x position
      */
-    @SuppressWarnings("boxing")
 	private void initPlacement(int nodeId, int freeX)
     {
         if (graph.getNode(nodeId).children() == null ||
@@ -157,7 +156,6 @@ public class DFBoxDrawing
      * @param graph1 graph in operation
      * @return hashmap where keys correspond to node ids and value to their minimum distance from upper node
      */
-    @SuppressWarnings("boxing")
 	private HashMap<Integer, Integer> findUpwardVisibilityGraph(List<List<Integer>> paths, iGraph graph1)
     {
         gupDistances.clear();
@@ -237,7 +235,6 @@ public class DFBoxDrawing
      * @param upper upper node
      * @param lower lower node
      */
-    @SuppressWarnings("boxing")
 	private void addMinDistToGup(HashMap<Integer, Integer> gup, iGNode upper, iGNode lower)
     {
         int newDist = GraphRoutines.computeNodeVerticalDistance(upper.id(), lower.id(), graph);
@@ -262,7 +259,6 @@ public class DFBoxDrawing
      * @param gup upward visibility graph - hashmap where key is node id and value is minimum distance to upper node
      * @param graph1 graph in operation
      */
-    @SuppressWarnings("boxing")
 	private void moveNodeUpward(List<List<Integer>> paths, HashMap<Integer, Integer> gup, iGraph graph1)
     {
         List<Integer> subTree = new ArrayList<>();
@@ -275,8 +271,10 @@ public class DFBoxDrawing
             for (int j = 1; j < P.size(); j++)
             {
                 int nid = P.get(j);
-                if (!subTree.contains(P.get(j)) && gup.containsKey(nid)) {minDist = Math.min(minDist,
-                        GraphRoutines.computeNodeVerticalDistance(gup.get(nid), nid, graph1));}
+                if (!subTree.contains(P.get(j)) && gup.containsKey(nid)) 
+                {
+                	minDist = Math.min(minDist, GraphRoutines.computeNodeVerticalDistance(gup.get(nid), nid, graph1));
+                }
             }
             for (int j = 1; j < P.size(); j++)
             {
@@ -298,7 +296,6 @@ public class DFBoxDrawing
      * @param distance relative distance between subtrees and their root
      * @param spread inner distance between nodes in a subtree
      */
-    @SuppressWarnings("boxing")
 	public void updateWeights(Double offset, Double distance, Double spread)
     {
         odsMetrics[0] = offset;

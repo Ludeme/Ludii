@@ -52,13 +52,15 @@ public class DocHandler {
      */
     private DocHandler() {
         modelLocations = new HashMap<>();
-        Scanner sc = FileUtils.readFile(DOC_LOCATION);
-        while (sc.hasNext()) {
-            String nextLine = sc.nextLine();
-            if(DEBUG)System.out.println(nextLine);
-            parseDocumentsLine(nextLine);
+        try(Scanner sc = FileUtils.readFile(DOC_LOCATION);)
+        {
+	        while (sc.hasNext()) {
+	            String nextLine = sc.nextLine();
+	            if(DEBUG)System.out.println(nextLine);
+	            parseDocumentsLine(nextLine);
+	        }
+	        sc.close();
         }
-        sc.close();
     }
 
     /**
@@ -67,7 +69,6 @@ public class DocHandler {
      * -games location
      * -model location
      * @param line
-     * @return
      */
     private void parseDocumentsLine(String line) {
         String[] split = line.split(SEPARATOR);
@@ -103,8 +104,7 @@ public class DocHandler {
      * @throws IOException
      */
     public void writeDocumentsFile() {
-        FileWriter fw = FileUtils.writeFile(DOC_LOCATION);
-        try {
+        try (FileWriter fw = FileUtils.writeFile(DOC_LOCATION);){
             if(grammarLocation != null) {
                     fw.write(GRAMMAR +SEPARATOR+grammarLocation+"\n");
             }

@@ -36,16 +36,20 @@ public class ValidationController {
                 case 7:
                 case 8:
                     validate(TRAINING_PROPORTION,REPLICATIONS,ITERATIONS,N);
+                    break;
                 case 9:
                 case 10:
                     validate(TRAINING_PROPORTION,15,2*ITERATIONS,N);
+                    break;
                 case 11:
                 case 12:
                     validate(TRAINING_PROPORTION,5,6*ITERATIONS,N);
+                    break;
                 case 13:
                 case 14:
                 case 15:
                     validate(TRAINING_PROPORTION,2,10*ITERATIONS,N);
+                    break;
             }
         }
     }

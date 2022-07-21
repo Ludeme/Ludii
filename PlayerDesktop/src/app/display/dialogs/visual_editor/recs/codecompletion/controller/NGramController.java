@@ -176,10 +176,10 @@ public class NGramController implements iController {
      */
     @Override
     public void close() {
-        DocHandler docHandler = DocHandler.getInstance();
+        DocHandler docHandlerInstance = DocHandler.getInstance();
         //find all files in res/models that end in .csv and delete them
         //because models are stored compressed as .gz
-        String modelsLocation = docHandler.getModelsLocation();
+        String modelsLocation = docHandlerInstance.getModelsLocation();
         List<File> allFilesModels = FileUtils.listFilesForFolder(modelsLocation);
         for(File f : allFilesModels) {
             String fPath = f.getPath();
@@ -188,13 +188,11 @@ public class NGramController implements iController {
             }
         }
 
-        docHandler.close();
+        docHandlerInstance.close();
     }
 
     /**
      * Get the value of N for the current model
-     *
-     * @return
      */
     @Override
     public int getN() {

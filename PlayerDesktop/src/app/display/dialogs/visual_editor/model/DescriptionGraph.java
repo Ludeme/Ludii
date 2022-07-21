@@ -88,7 +88,6 @@ public class DescriptionGraph implements iGraph
         return nodeMap;
     }
 
-    @SuppressWarnings("boxing")
 	@Override
     public LudemeNode getNode(int id)
     {
@@ -100,7 +99,6 @@ public class DescriptionGraph implements iGraph
         return allLudemeNodes;
     }
 
-    @SuppressWarnings("boxing")
 	@Override
     public int addNode(iGNode ludemeNode)
     {
@@ -111,7 +109,6 @@ public class DescriptionGraph implements iGraph
         return id;
     }
 
-    @SuppressWarnings("boxing")
     @Override
     public void removeNode(iGNode node)
     {
@@ -150,7 +147,6 @@ public class DescriptionGraph implements iGraph
         return connectedComponentRoots;
     }
 
-    @SuppressWarnings("boxing")
     @Override
     public void addConnectedComponentRoot(int root)
     {
@@ -158,7 +154,6 @@ public class DescriptionGraph implements iGraph
             connectedComponentRoots.add(root);
     }
 
-    @SuppressWarnings("boxing")
     @Override
     public void removeConnectedComponentRoot(int root)
     {

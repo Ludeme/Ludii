@@ -738,7 +738,6 @@ public class Completer
 	 * @param content Completed string to print.
 	 * @throws IOException 
 	 */
-	@SuppressWarnings("boxing")
 	public static void saveReconstruction
 	(
 		final String name, final Completion completion
