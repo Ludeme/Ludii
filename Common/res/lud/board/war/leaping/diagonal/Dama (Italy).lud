@@ -1,7 +1,5 @@
 (define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
 
-(define "JumpToPromotionZone" (is In (last To) (sites Next)))
-
 //------------------------------------------------------------------------------
 
 (game "Dama (Italy)" 
@@ -16,8 +14,7 @@
                     (max Moves 
                     		("HopOnlyCounters" (from (last To)) (directions {FR FL})
                             (then 
-                                (if "JumpToPromotionZone" 
-                                    (move Promote (last To) (piece "DoubleCounter") Mover)
+                            	("PromoteIfReach" (sites Next) "DoubleCounter"
                                     ("ReplayIfCanMove" ("HopOnlyCounters" (from (last To)) (directions {FR FL}))) 
                                 ) 
                             ) 
@@ -32,9 +29,8 @@
                             (forEach Piece "Counter" 
                                 ("HopOnlyCounters" (from) (directions {FR FL}) 
                                     (then 
-                                        (if "JumpToPromotionZone"
-                                            (move Promote (last To) (piece "DoubleCounter") Mover) 
-                                            (if (can Move ("HopOnlyCounters" (from (last To)) (directions {FR FL}))) (moveAgain)) 
+                                    	("PromoteIfReach" (sites Next) "DoubleCounter"
+                                            ("ReplayIfCanMove" ("HopOnlyCounters" (from (last To)) (directions {FR FL}))) 
                                         ) 
                                     ) 
                                 ) 
@@ -44,11 +40,7 @@
                     (or 
                         (forEach Piece "Counter" 
                             ("StepToEmpty" (directions {FR FL})) 
-                            (then 
-                                (if "JumpToPromotionZone"
-                                    (move Promote (last To) (piece "DoubleCounter") Mover)
-                                )
-                            )
+                            (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
                         )
                         (forEach Piece "DoubleCounter" "StepDiagonalToEmpty")
                     )

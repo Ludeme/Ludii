@@ -1,0 +1,12 @@
+// Promote the last piece moving if this piece reached a region.
+// #1 = The region.
+// #2 = The name of the piece to promote to.
+// #3 = The movement to allow if the piece did not reach the region (Optional).
+// @example ("PromoteIfReach" (sites Next) "DoubleCounter")
+
+(define "PromoteIfReach"
+        (if (is In (last To) #1) 
+                (move Promote (last To) (piece #2) Mover)
+                #3 
+            )
+)
