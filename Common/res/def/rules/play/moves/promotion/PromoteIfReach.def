@@ -5,8 +5,8 @@
 // @example ("PromoteIfReach" (sites Next) "DoubleCounter")
 
 (define "PromoteIfReach"
-        (if (is In (last To) #1) 
-                (promote (last To) (piece #2) Mover)
-                #3 
-            )
+    (if (is In (last To) #1) 
+        (promote (last To) (piece #2) Mover)
+        #3 
+    )
 )

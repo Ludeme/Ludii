@@ -5,14 +5,14 @@
 // @example ("HopOnlyCounters" (from (last To)) (directions {FR FL}))
 
 (define "HopOnlyCounters"
-	    (move Hop 
-	            #1 
-	            #2 
-	            (between 
-	                if:("IsPieceAt" "Counter" Next (between))
-	                (apply (remove (between)))
-	            ) 
-	            (to if:(is Empty (to))) 
-	            #3
-	        )
+    (move Hop 
+        #1 
+        #2 
+        (between 
+            if:("IsPieceAt" "Counter" Next (between))
+            (apply (remove (between)))
+        ) 
+        (to if:(is Empty (to))) 
+        #3
+    )
 )

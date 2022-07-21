@@ -1,7 +1,5 @@
 (define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
 
-(define "JumpToPromotionZone" (is In (last To) (sites Next)))
-
 //------------------------------------------------------------------------------
 
 (game "Brazilian Draughts" 
@@ -9,16 +7,16 @@
     ("DraughtsEquipment" (square 8))
     
     (rules 
-    	("BlackCellsSetup" 3)
+        ("BlackCellsSetup" 3)
         
         (play 
             (if "SameTurn"
                 (if "IsUnpromoted"
                     (max Moves
-                    	("HopInternationalDraughtsStyle" (from (last To)) 
+                        ("HopInternationalDraughtsStyle" (from (last To)) 
                             (then 
-                            	("ReplayIfCanMove" ("HopInternationalDraughtsStyle" (from (last To)))
-                            		("PromoteIfReach" (sites Next) "DoubleCounter")
+                                ("ReplayIfCanMove" ("HopInternationalDraughtsStyle" (from (last To)))
+                                    ("PromoteIfReach" (sites Next) "DoubleCounter")
                                 ) 
                             ) 
                         )
@@ -29,10 +27,10 @@
                     (max Moves
                         (or 
                             (forEach Piece "Counter"
-                            	("HopInternationalDraughtsStyle" (from) 
+                                ("HopInternationalDraughtsStyle" (from) 
                                     (then 
-                                    	("ReplayIfCanMove" ("HopInternationalDraughtsStyle" (from (last To)))
-                                    		("PromoteIfReach" (sites Next) "DoubleCounter")
+                                        ("ReplayIfCanMove" ("HopInternationalDraughtsStyle" (from (last To)))
+                                            ("PromoteIfReach" (sites Next) "DoubleCounter")
                                         ) 
                                     ) 
                                 ) 

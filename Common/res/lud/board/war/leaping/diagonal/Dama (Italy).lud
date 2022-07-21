@@ -12,9 +12,9 @@
             (if "SameTurn"
                 (if "IsUnpromoted"
                     (max Moves 
-                    		("HopOnlyCounters" (from (last To)) (directions {FR FL})
+                        ("HopOnlyCounters" (from (last To)) (directions {FR FL})
                             (then 
-                            	("PromoteIfReach" (sites Next) "DoubleCounter"
+                                ("PromoteIfReach" (sites Next) "DoubleCounter"
                                     ("ReplayIfCanMove" ("HopOnlyCounters" (from (last To)) (directions {FR FL}))) 
                                 ) 
                             ) 
@@ -29,7 +29,7 @@
                             (forEach Piece "Counter" 
                                 ("HopOnlyCounters" (from) (directions {FR FL}) 
                                     (then 
-                                    	("PromoteIfReach" (sites Next) "DoubleCounter"
+                                        ("PromoteIfReach" (sites Next) "DoubleCounter"
                                             ("ReplayIfCanMove" ("HopOnlyCounters" (from (last To)) (directions {FR FL}))) 
                                         ) 
                                     ) 

@@ -1,7 +1,7 @@
 // Move again if the player can do the move specified.
 // #1 = The moves.
 // #2 = The movement to allow if the piece did not reach the region (Optional).
-// @example ("ReplayIfCanMove")
+// @example ("ReplayIfCanMove" (forEach Piece))
 
 (define "ReplayIfCanMove"
     (if (can Move #1) (moveAgain) #2) 

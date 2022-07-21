@@ -70,9 +70,9 @@
         ) 
         
         (end 
-        	(forEach Player
-        		if:(no Pieces Player) 
-        		(result Player Win)
+            (forEach Player
+                if:(no Pieces Player) 
+                (result Player Win)
             )
         ) 
     )

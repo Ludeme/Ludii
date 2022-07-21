@@ -27,24 +27,24 @@
         )
         stack:True 
         (then 
-        		("ReplayIfCanMove"
-                    (hop 
-                        (from (last To)) 
-                        #1 
-                        (between 
-                            #2
-                            #3
-                            if:(and (not (is In (between) (last Between))) ("IsEnemyAt" (between))) 
-                            (apply (fromTo (from (between)) (to)))
-                        )  	
-                        (to if:(and 
-                                (is In (from) (sites Occupied by:Mover)) 
-                                (is Empty (to))
-                            )
+            ("ReplayIfCanMove"
+                (hop 
+                    (from (last To)) 
+                    #1 
+                    (between 
+                        #2
+                        #3
+                        if:(and (not (is In (between) (last Between))) ("IsEnemyAt" (between))) 
+                        (apply (fromTo (from (between)) (to)))
+                    )  	
+                    (to if:(and 
+                            (is In (from) (sites Occupied by:Mover)) 
+                            (is Empty (to))
                         )
-                        stack:True
                     )
-                ) 
+                    stack:True
+                )
+            ) 
         )
     ) 
 )
@@ -80,22 +80,22 @@
                         )
                         stack:True 
                         (then 
-                        	("PromoteIfReach" (sites Next) "CounterStar"
-                        		("ReplayIfCanMove"
-                                        (hop 
-                                            (from (last To)) 
-                                            (directions {FR FL}) 
-                                            (between 
-                                                if:("IsEnemyAt" (between)) 
-                                                (apply (fromTo (from (between)) (to)))
-                                            ) 		
-                                            (to if:(and 
-                                                    (is In (from) (sites Occupied by:Mover)) 
-                                                    (is Empty (to))
-                                                )
+                            ("PromoteIfReach" (sites Next) "CounterStar"
+                                ("ReplayIfCanMove"
+                                    (hop 
+                                        (from (last To)) 
+                                        (directions {FR FL}) 
+                                        (between 
+                                            if:("IsEnemyAt" (between)) 
+                                            (apply (fromTo (from (between)) (to)))
+                                        ) 		
+                                        (to if:(and 
+                                                (is In (from) (sites Occupied by:Mover)) 
+                                                (is Empty (to))
                                             )
-                                            stack:True
                                         )
+                                        stack:True
+                                    )
                                 )
                             ) 
                         )
@@ -116,24 +116,24 @@
                         ) 
                         stack:True 
                         (then
-                        		("ReplayIfCanMove"
-                                    (hop 
-                                        (from (last To)) 
-                                        Diagonal 
-                                        (between 
-                                            before:(count Rows)
-                                            after:(count Rows)
-                                            if:(and (not (is In (between) (last Between))) ("IsEnemyAt" (between)))
-                                            (apply (fromTo (from (between)) (to)))
-                                        ) 
-                                        (to if:(and 
-                                                (is In (from) (sites Occupied by:Mover)) 
-                                                (is Empty (to))
-                                            )
-                                        ) 
-                                        stack:True
-                                    )
-                                ) 
+                            ("ReplayIfCanMove"
+                                (hop 
+                                    (from (last To)) 
+                                    Diagonal 
+                                    (between 
+                                        before:(count Rows)
+                                        after:(count Rows)
+                                        if:(and (not (is In (between) (last Between))) ("IsEnemyAt" (between)))
+                                        (apply (fromTo (from (between)) (to)))
+                                    ) 
+                                    (to if:(and 
+                                            (is In (from) (sites Occupied by:Mover)) 
+                                            (is Empty (to))
+                                        )
+                                    ) 
+                                    stack:True
+                                )
+                            ) 
                         )
                     ) 
                 )

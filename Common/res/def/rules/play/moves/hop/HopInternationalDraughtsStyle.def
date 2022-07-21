@@ -4,17 +4,17 @@
 // @example ("HopInternationalDraughtsStyle")
 
 (define "HopInternationalDraughtsStyle"
-		(move Hop 
-		        #1 
-		        Diagonal 
-		        (between 
-		            if:(and 
-		                (not (is In (between) (sites ToClear))) 
-		                ("IsEnemyAt" (between))
-		            )
-		            (apply (remove (between) at:EndOfTurn))
-		        ) 
-		        (to if:(is Empty (to))) 
-		        #2
-		    )
+    (move Hop 
+        #1 
+        Diagonal 
+        (between 
+            if:(and 
+                (not (is In (between) (sites ToClear))) 
+                ("IsEnemyAt" (between))
+            )
+            (apply (remove (between) at:EndOfTurn))
+        ) 
+        (to if:(is Empty (to))) 
+        #2
+    )
 )
