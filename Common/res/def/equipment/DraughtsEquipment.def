@@ -3,12 +3,12 @@
 // @example ("DraughtsEquipment" 8)
 
 (define "DraughtsEquipment"
-	    (equipment { 
-	        (board #1) 
-	        (piece "Counter" P1 N)
-	        (piece "Counter" P2 S) 
-	        (piece "DoubleCounter" Each)
-	        (regions P1 (sites Bottom))
-	        (regions P2 (sites Top))
-	    })
+    (equipment { 
+        (board #1) 
+        (piece "Counter" P1 N)
+        (piece "Counter" P2 S) 
+        (piece "DoubleCounter" Each)
+        (regions P1 (sites Bottom))
+        (regions P2 (sites Top))
+    })
 )

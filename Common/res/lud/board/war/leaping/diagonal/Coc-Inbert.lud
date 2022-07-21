@@ -1,19 +1,4 @@
-(define "HopMan" 
-    (move Hop 
-        (from #1) 
-        (directions {FR FL}) 
-        (between 
-            if:("IsPieceAt" "Counter" Next (between))
-            (apply (remove (between)))
-        ) 
-        (to if:(is Empty (to))) 
-        #2
-    ) 
-)
-
 (define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
-
-(define "JumpToPromotionZone" (is In (last To) (sites Next)))
 
 //------------------------------------------------------------------------------
 
@@ -27,11 +12,10 @@
             (if "SameTurn"
                 (if "IsUnpromoted"
                     (max Moves 
-                        ("HopMan" (last To) 
+                    		("HopOnlyCounters" (from (last To)) (directions {FR FL})
                             (then 
-                                (if "JumpToPromotionZone" 
-                                    (move Promote (last To) (piece "DoubleCounter") Mover)
-                                    (if (can Move ("HopMan" (last To))) (moveAgain)) 
+                            	("PromoteIfReach" (sites Next) "DoubleCounter"
+                                	("ReplayIfCanMove" ("HopOnlyCounters" (from (last To)) (directions {FR FL})))
                                 ) 
                             ) 
                         )
@@ -43,11 +27,10 @@
                         (priority {
                             (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture"))
                             (forEach Piece "Counter" 
-                                ("HopMan" (from) 
+                            		("HopOnlyCounters" (from) (directions {FR FL})
                                     (then 
-                                        (if "JumpToPromotionZone"
-                                            (move Promote (last To) (piece "DoubleCounter") Mover) 
-                                            (if (can Move ("HopMan" (last To))) (moveAgain)) 
+                                    		("PromoteIfReach" (sites Next) "DoubleCounter"
+                                        	("ReplayIfCanMove" ("HopOnlyCounters" (from (last To)) (directions {FR FL})))
                                         ) 
                                     ) 
                                 ) 
@@ -57,11 +40,7 @@
                     (or 
                         (forEach Piece "Counter" 
                             ("StepToEmpty" (directions {FR FL}))
-                            (then 
-                                (if "JumpToPromotionZone"
-                                    (move Promote (last To) (piece "DoubleCounter") Mover)
-                                )
-                            )
+                            (then ("PromoteIfReach" (sites Next) "DoubleCounter")) 
                         )
                         (forEach Piece "DoubleCounter" "StepDiagonalToEmpty")
                     )
