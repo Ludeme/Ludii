@@ -72,7 +72,7 @@ public class ReconstructionTest
 			List<Completion> completions = null;
 			try
 			{
-				completions = Completer.complete(desc, true, null);
+				completions = Completer.complete(desc, 1, null);
 			}
 			catch (final Exception e)
 			{

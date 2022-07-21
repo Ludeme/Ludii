@@ -52,7 +52,7 @@ public class Completer
 	 */
 	public static List<Completion> complete(final String raw, final int maxCompletions, final Report report)
 	{
-//		System.out.println("Completing description...");
+		System.out.println("Completer.complete(): Completing at most " + maxCompletions + " descriptions...");
 
 		final List<Completion> completions = new ArrayList<Completion>();
 
