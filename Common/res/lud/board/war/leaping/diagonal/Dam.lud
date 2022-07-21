@@ -13,7 +13,7 @@
         )
         (to if:(is Empty (to)))
         (then 
-            (if (can Move 
+        	("ReplayIfCanMove" 
                     (hop 
                         (from (last To)) 
                         (if (is In (last To) (sites Outer)) (difference Diagonal OppositeDirection) SameDirection)
@@ -28,8 +28,6 @@
                         (to if:(is Empty (to)))
                     )
                 ) 
-                (moveAgain)
-            )
         )
     )
 )
@@ -45,14 +43,7 @@
 //------------------------------------------------------------------------------
 (game "Dam" 
     (players 2)
-    (equipment { 
-        (board (square 12)) 
-        (piece "Counter" P1 N)
-        (piece "Counter" P2 S) 
-        (piece "DoubleCounter" Each)
-        (regions P1 (sites Bottom))
-        (regions P2 (sites Top))
-    }) 
+    ("DraughtsEquipment" (square 12)) 
     (rules 
         ("WhiteCellsSetup" 5)
         
@@ -81,7 +72,7 @@
                 )
                 (then 
                     (if (and "IsUnpromoted" "JumpToPromotionZone")
-                        (move Promote (last To) (piece "DoubleCounter") Mover)
+                        (promote (last To) (piece "DoubleCounter") Mover)
                     )
                 )	
             )
