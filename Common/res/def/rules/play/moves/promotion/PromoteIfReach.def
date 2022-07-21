@@ -6,7 +6,7 @@
 
 (define "PromoteIfReach"
         (if (is In (last To) #1) 
-                (move Promote (last To) (piece #2) Mover)
+                (promote (last To) (piece #2) Mover)
                 #3 
             )
 )

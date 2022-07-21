@@ -1,7 +1,5 @@
 (define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
 
-(define "JumpToPromotionZone" (is In (last To) (sites Next)))
-
 //------------------------------------------------------------------------------
 
 (game "American Pool Checkers"
@@ -15,11 +13,8 @@
                 (if "IsUnpromoted"
                     ("HopInternationalDraughtsStyle" (from (last To))
                         (then 
-                            (if (can Move ("HopInternationalDraughtsStyle" (from (last To))))
-                                (moveAgain)
-                                (if "JumpToPromotionZone" 
-                                    (move Promote (last To) (piece "DoubleCounter") Mover)
-                                )
+                        	("ReplayIfCanMove" ("HopInternationalDraughtsStyle" (from (last To)))
+                                ("PromoteIfReach" (sites Next) "DoubleCounter")
                             ) 
                         ) 
                     )
@@ -30,11 +25,8 @@
                         (forEach Piece "Counter"
                             ("HopInternationalDraughtsStyle" (from) 
                                 (then 
-                                    (if (can Move ("HopInternationalDraughtsStyle" (from (last To))))
-                                        (moveAgain) 
-                                        (if "JumpToPromotionZone" 
-                                            (move Promote (last To) (piece "DoubleCounter") Mover)
-                                        )
+                                	("ReplayIfCanMove" ("HopInternationalDraughtsStyle" (from (last To)))
+                                        ("PromoteIfReach" (sites Next) "DoubleCounter")
                                     ) 
                                 ) 
                             ) 
@@ -46,11 +38,7 @@
                     (or 
                         (forEach Piece "Counter" 
                             ("StepToEmpty" (directions {FR FL}))
-                            (then 
-                                (if "JumpToPromotionZone"
-                                    (move Promote (last To) (piece "DoubleCounter") Mover)
-                                )
-                            )
+                            (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
                         )
                         (forEach Piece "DoubleCounter" (move Slide Diagonal))
                     )
