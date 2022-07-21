@@ -3,7 +3,7 @@
         (from #1) 
         (directions {FR FL}) 
         (between 
-            if:(and ("IsEnemyAt" (between)) (not ("IsPieceAt" "DoubleCounter" Next (between))))
+            if:("IsPieceAt" "Counter" Next (between))
             (apply (remove (between)))
         ) 
         (to if:(is Empty (to))) 
