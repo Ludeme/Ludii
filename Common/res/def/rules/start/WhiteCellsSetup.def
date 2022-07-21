@@ -1,0 +1,10 @@
+// Defines starting rules placing one counter on each white cell of a square board (e.g. Starting rules of Draughts).
+// #1 = The number of rows to place pieces for each player.
+// @example ("WhiteCellsSetup" 3)
+
+(define "WhiteCellsSetup"
+        (start { 
+            (place "Counter1" (difference (expand (sites Bottom) steps:(- #1 1)) (sites Phase 0)))
+            (place "Counter2" (difference (expand (sites Top) steps:(- #1 1)) (sites Phase 0)))
+        })
+)

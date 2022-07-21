@@ -1,4 +1,4 @@
-(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
+(define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
 
 (define "JumpToPromotionZone" (is In (last To) (sites Next)))
 
@@ -45,23 +45,16 @@
 //------------------------------------------------------------------------------
 (game "Dam" 
     (players 2)
-    (equipment 
-        { 
+    (equipment { 
         (board (square 12)) 
         (piece "Counter" P1 N)
         (piece "Counter" P2 S) 
         (piece "DoubleCounter" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-        }
-    ) 
+    }) 
     (rules 
-        (start
-            { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:4) (sites Phase 0) ))
-            (place "Counter2" (difference (expand (sites Top) steps:4) (sites Phase 0)))
-            }
-        )
+        ("WhiteCellsSetup" 5)
         
         (play 
             (if "SameTurn"
