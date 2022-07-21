@@ -59,7 +59,7 @@ public class Parser
 		final boolean        isVerbose
 	)
 	{
-		return expandAndParse(description, userSelections, report, isVerbose);
+		return expandAndParse(description, userSelections, report, true, isVerbose);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -68,6 +68,7 @@ public class Parser
 	 * @param description
 	 * @param userSelections
 	 * @param report
+	 * @param firstCompletionsOnly Only generate first completion (if any).
 	 * @param isVerbose
 	 * @return Whether the .lud can be parsed.
 	 */
@@ -80,8 +81,7 @@ public class Parser
 	)
 	{
 		final boolean allowExamples = false;
-		final boolean firstCompletionOnly = true;
-		return expandAndParse(description, userSelections, report, allowExamples, firstCompletionOnly, isVerbose);
+		return expandAndParse(description, userSelections, report, allowExamples, isVerbose);
 	}
 
 	/**
@@ -99,7 +99,6 @@ public class Parser
 		final UserSelections userSelections,
 		final Report         report,
 		final boolean		 allowExamples,
-		final boolean        firstCompletionOnly,
 		final boolean        isVerbose
 	)
 	{
@@ -108,7 +107,7 @@ public class Parser
 			final String rawGame = description.rawGameDescription();
 			System.out.println("Raw game description is: \n" + rawGame);
 		
-			final List<Completion> completions = Completer.complete(rawGame, firstCompletionOnly, report);
+			final List<Completion> completions = Completer.complete(rawGame, description.maxReconstructions(), report);
 			System.out.println(completions.size() + " completions found.");
 			
 			if (!completions.isEmpty())

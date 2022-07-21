@@ -49,6 +49,9 @@ public class Description
   	// Whether this description was completed as a reconstruction
   	private boolean isReconstruction = false;
   	
+  	// Maximum number of reconstructions to generate (if using reconstruction syntax).
+  	private int maxReconstructions = 1;
+  	
   	//-------------------------------------------------------------------------
 
   	public Description(final String raw)
@@ -144,6 +147,19 @@ public class Description
    	public void setIsRecontruction(final boolean value)
    	{
    		isReconstruction = value;
+   	}
+	
+	/**
+	 * @return Maximum number of reconstructions to generate (if using reconstruction syntax).
+	 */
+   	public int maxReconstructions()
+  	{
+  		return maxReconstructions;
+  	}
+   	
+   	public void setMaxReconstructions(final int num)
+   	{
+   		maxReconstructions = num;
    	}
 
 	//-------------------------------------------------------------------------

@@ -46,11 +46,11 @@ public class Completer
 	
 	/**
 	 * @param raw       Partial raw game description.
-	 * @param firstOnly Stop after the first completion (for Travis tests).
+	 * @param maxCompletions Maximum number of completions to make (default is 1, e.g. for Travis tests).
 	 * @param report    Report log for warnings and errors.
 	 * @return List of completed (raw) game descriptions ready for expansion and parsing.        
 	 */
-	public static List<Completion> complete(final String raw, final boolean firstOnly, final Report report)
+	public static List<Completion> complete(final String raw, final int maxCompletions, final Report report)
 	{
 //		System.out.println("Completing description...");
 
@@ -71,7 +71,7 @@ public class Completer
 				// Completed!
 				completions.add(comp);
 				
-				if (firstOnly)
+				if (completions.size() >= maxCompletions)
 					return completions;
 
 				continue;

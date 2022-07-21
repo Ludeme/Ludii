@@ -1094,7 +1094,6 @@ public class GenerateLudiiDocTex
 						new UserSelections(new ArrayList<String>()), 
 						report, 
 						true,  // allow examples
-						true,  // first completion only
 						false
 					);
 
