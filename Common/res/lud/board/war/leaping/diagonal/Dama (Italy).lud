@@ -3,7 +3,7 @@
         (from #1) 
         (directions {FR FL}) 
         (between 
-            if:(and ("IsEnemyAt" (between)) (!= (what at:(between)) (id "DoubleCounter" Next)))
+            if:("IsPieceAt" "Counter" Next (between))
             (apply (remove (between)))
         ) 
         (to if:(is Empty (to))) 
@@ -19,22 +19,9 @@
 
 (game "Dama (Italy)" 
     (players 2) 
-    (equipment { 
-        (board (square 8)) 
-        (piece "Counter" P1 N)
-        (piece "Counter" P2 S) 
-        (piece "DoubleCounter" Each)
-        (regions P1 (sites Bottom))
-        (regions P2 (sites Top))
-        }
-    ) 
+    ("DraughtsEquipment" (square 8)) 
     (rules 
-        (start
-            { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1) ))
-            (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1)))
-            }
-        )
+        ("BlackCellsSetup" 3)
         
         (play 
             (if "SameTurn"

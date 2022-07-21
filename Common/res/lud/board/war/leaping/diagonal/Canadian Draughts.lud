@@ -180,14 +180,7 @@
 
 (game "Canadian Draughts" 
     (players 2) 
-    (equipment { 
-        (board (square 12)) 
-        (piece "Counter" P1 N)
-        (piece "Counter" P2 S) 
-        (piece "DoubleCounter" Each)
-        (regions P1 (sites Bottom))
-        (regions P2 (sites Top))
-    }) 
+    ("DraughtsEquipment" (square 12))
     
     (rules 
         ("BlackCellsSetup" 5)

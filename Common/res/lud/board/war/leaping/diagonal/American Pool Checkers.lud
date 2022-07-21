@@ -6,14 +6,7 @@
 
 (game "American Pool Checkers"
     (players 2)
-    (equipment {
-        (board (square 8))
-        (piece "Counter" P1 N)
-        (piece "Counter" P2 S) 
-        (piece "DoubleCounter" Each)
-        (regions P1 (sites Bottom))
-        (regions P2 (sites Top))
-    })
+    ("DraughtsEquipment" (square 8))
     (rules 
     	("BlackCellsSetup" 3)
         
