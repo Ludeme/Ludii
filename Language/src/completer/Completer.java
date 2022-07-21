@@ -45,23 +45,24 @@ public class Completer
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param raw    Partial raw game description.
-	 * @param report Report log for warnings and errors.
+	 * @param raw       Partial raw game description.
+	 * @param firstOnly Stop after the first completion (for Travis tests).
+	 * @param report    Report log for warnings and errors.
 	 * @return List of completed (raw) game descriptions ready for expansion and parsing.        
 	 */
-	public static List<Completion> complete(final String raw, final Report report)
+	public static List<Completion> complete(final String raw, final boolean firstOnly, final Report report)
 	{
 //		System.out.println("Completing description...");
-		
-		// Create list of alternative Descriptions, as each will need to be expanded
+
 		final List<Completion> completions = new ArrayList<Completion>();
-		
+
+		// Create list of alternative Descriptions, as each will need to be expanded
 		final Map<String, String> ludMap = getAllLudContents();
 		final Map<String, String> defMap = getAllLudContents();
 		
 		final List<Completion> queue = new ArrayList<Completion>();
 		queue.add(new Completion(new String(raw)));
-		
+				
 		while (!queue.isEmpty())
 		{
 			final Completion comp = queue.remove(0);
@@ -69,11 +70,15 @@ public class Completer
 			{
 				// Completed!
 				completions.add(comp);
+				
+				if (firstOnly)
+					return completions;
+
 				continue;
 			}
 			
 			// Complete the next completion clause
-			nextCompletion(comp, queue, ludMap, defMap, report);
+			nextCompletion(comp, queue, ludMap, defMap, report);		
 		}
 				
 		return completions;
@@ -744,7 +749,7 @@ public class Completer
 	) throws IOException
 	{
 		final String outFileName = "../Common/res/out/recons/" + name + "-" + 
-									String.format("%.3f", completion.score()) + ".lud";	
+									String.format("%.3f", Double.valueOf(completion.score())) + ".lud";	
 		// Prepare the output file
 		final File file = new File(outFileName);
 		if (!file.exists())
