@@ -126,7 +126,7 @@ public class TestCompleter
 				final String outFileName = fileName.substring(0, suffixAt) + "-" + n; 			
 				try
 				{
-					Completer.saveReconstruction(outFileName, completion);
+					Completer.saveCompletion(outFileName, completion);
 				} 
 				catch (IOException e)
 				{
