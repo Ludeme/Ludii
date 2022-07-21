@@ -1,0 +1,7 @@
+// Move again if the player can do the move specified.
+// #1 = The moves.
+// @example ("ReplayIfCanMove")
+
+(define "ReplayIfCanMove"
+    (if (can Move #1) (moveAgain)) 
+)
