@@ -741,7 +741,7 @@ public class Completer
 	 * @param name    Reconstruction name for file.
 	 * @throws IOException 
 	 */
-	public static void saveReconstruction
+	public static void saveCompletion
 	(
 		final String name, final Completion completion
 	) throws IOException
