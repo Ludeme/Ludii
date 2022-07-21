@@ -41,7 +41,7 @@
                 )
                 (if (and {
                         (= ("LastDistance") 2) 
-                        (is Enemy (who at:(ahead (from) ("LastDirection" Cell))))
+                        ("IsEnemyAt" (ahead (from) ("LastDirection" Cell)))
                         (is Empty (ahead (from) steps:2 ("LastDirection" Cell)))
                         (if (= (from) (ahead (from) steps:3 ("LastDirection" Cell)))
                             True
@@ -50,9 +50,7 @@
                     })
                     (move
                         (from (from))
-                        (to 
-                            (ahead (from) steps:2 ("LastDirection" Cell))
-                        )
+                        (to (ahead (from) steps:2 ("LastDirection" Cell)))
                         (then
                             (if (= (ahead (last To) ("LastDirection" Cell)) (last To))
                                 (remove (ahead (last From) ("LastDirection" Cell)))
@@ -70,7 +68,7 @@
 )
 
 (define "NextNoPieceInRegion" 
-    (= 0 (count Sites in:(intersection (sites Occupied by:Next) #1)))
+    (all Sites (sites Occupied by:Next) if:(not (is In (site) #1)))
 )
 
 //-------------------------------------------------------------------------
@@ -101,6 +99,7 @@
             (place "Ball1" (union (sites Bottom) (sites Row 4)))
             (place "Ball2" (union (sites Top) (sites Row 3)))
         })
+        
         phases:{
         (phase "Passive"
             (play 
@@ -122,9 +121,7 @@
             (nextPhase Mover "Agressive")
         )
         (phase "Agressive"
-            (play 
-                ("AgressiveMoves")
-            )
+            (play ("AgressiveMoves"))
             (nextPhase Mover "Passive")
         )
         }
@@ -165,6 +162,7 @@
         (region Colour "Dark" (colour 185 130 85))
         (region Colour "Light" (colour 225 182 130))
     })
+    
     (ai
         "Shobu_ai"
     )
