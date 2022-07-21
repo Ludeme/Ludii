@@ -12,10 +12,9 @@ import java.util.regex.Pattern;
 
 import org.junit.Test;
 
-import game.Game;
-import compiler.Compiler;
+import completer.Completer;
+import completer.Completion;
 import main.FileHandling;
-import main.grammar.Description;
 import other.GameLoader;
 
 /**
@@ -69,11 +68,11 @@ public class ReconstructionTest
 				e1.printStackTrace();
 			}
 
-			// Parse and compile the game
-			Game game = null;
+			// Parse and reconstruct one instance of a game
+			List<Completion> completions = null;
 			try
 			{
-				game = (Game)Compiler.compileTest(new Description(desc), false);
+				completions = Completer.complete(desc, true, null);
 			}
 			catch (final Exception e)
 			{
@@ -81,9 +80,9 @@ public class ReconstructionTest
 				e.printStackTrace();
 			}
 
-			if (game != null)
+			if (completions != null)
 			{
-				System.out.println("Compiled " + game.name() + ".");
+				System.out.println("Compiled " + fileName + ".");
 			}
 			else
 			{
