@@ -69,20 +69,13 @@
                     (forEach Piece "Counter" 
                         (or
                             ("HopDiagonalSequenceCapture") 
-                            (move
-                                Step 
-                                Diagonal
-                                (to if:(is Empty (to)))
-                            )
+                            ("StepToEmpty" Diagonal)
                         )
                     )
                     (forEach Piece "DoubleCounter"
                         (or
                             ("DoubleCounterHop")
-                            (move
-                                Slide 
-                                (directions Diagonal) 
-                            ) 
+                            (move Slide (directions Diagonal)) 
                         )
                     )
                 )
