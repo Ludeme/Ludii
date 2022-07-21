@@ -36,6 +36,7 @@ import app.display.dialogs.AboutDialog;
 import app.display.dialogs.DeveloperDialog;
 import app.display.dialogs.EvaluationDialog;
 import app.display.dialogs.GameLoaderDialog;
+import app.display.dialogs.ReconstructionDialog;
 import app.display.dialogs.SVGViewerDialog;
 import app.display.dialogs.SettingsDialog;
 import app.display.dialogs.TestLudemeDialog;
@@ -1271,6 +1272,10 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			Generator.testGamesEric(1, true, false);
 		}
+		else if (source.getText().equals("Reconstruction Dialog"))
+		{
+			ReconstructionDialog.createAndShowGUI();
+		}
 		else if (((JMenu)((JPopupMenu) source.getParent()).getInvoker()).getText().equals("Load Recent"))
 		{
 			// Check if a recent game has been selected
@@ -1634,7 +1639,7 @@ public class MainMenuFunctions extends JMenuBar
 		return startVisualEditor;
 	}
 
-	public static void setStartVisualEditor(StartVisualEditor startVisualEditor)
+	public static void setStartVisualEditor(final StartVisualEditor startVisualEditor)
 	{
 		MainMenuFunctions.startVisualEditor = startVisualEditor;
 	}
