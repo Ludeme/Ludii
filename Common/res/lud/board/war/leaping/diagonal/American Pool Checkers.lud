@@ -1,16 +1,3 @@
-(define "HopCounter" 
-    (move Hop 
-        (from #1) 
-        Diagonal 
-        (between 
-            if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
-            (apply (remove (between) at:EndOfTurn))
-        ) 
-        (to if:(is Empty (to))) 
-        #2
-    ) 
-)
-
 (define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
 
 (define "JumpToPromotionZone" (is In (last To) (sites Next)))
@@ -33,9 +20,9 @@
         (play 
             (if "SameTurn"
                 (if "IsUnpromoted"
-                    ("HopCounter" (last To)
+                    ("HopInternationalDraughtsStyle" (from (last To))
                         (then 
-                            (if (can Move ("HopCounter" (last To))) 
+                            (if (can Move ("HopInternationalDraughtsStyle" (from (last To))))
                                 (moveAgain)
                                 (if "JumpToPromotionZone" 
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
@@ -48,9 +35,9 @@
                 (priority {
                     (or 
                         (forEach Piece "Counter"
-                            ("HopCounter" (from) 
+                            ("HopInternationalDraughtsStyle" (from) 
                                 (then 
-                                    (if (can Move ("HopCounter" (last To))) 
+                                    (if (can Move ("HopInternationalDraughtsStyle" (from (last To))))
                                         (moveAgain) 
                                         (if "JumpToPromotionZone" 
                                             (move Promote (last To) (piece "DoubleCounter") Mover)
