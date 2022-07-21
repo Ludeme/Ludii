@@ -1,5 +1,5 @@
 (game "Forge" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (rectangle 8 6) use:Vertex)
         (piece "Ball" Each (move Slide (directions Forwards of:All))) 

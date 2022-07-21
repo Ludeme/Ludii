@@ -187,7 +187,7 @@
 //------------------------------------------------------------------------------
 
 (game "Phase Chess" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8)) 
         (piece "Pawn" Each ("PawnMove"))

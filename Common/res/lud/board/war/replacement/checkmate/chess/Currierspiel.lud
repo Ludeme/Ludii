@@ -26,7 +26,7 @@
 //------------------------------------------------------------------------------
 
 (game "Currierspiel"
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment {
         (board (rectangle 8 12))
         (regions "StartingPawnRookQueen" P1 (sites {"A2" "G2" "L2"}))

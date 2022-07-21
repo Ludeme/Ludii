@@ -1,5 +1,5 @@
 (game "El Zorro" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
         (piece "Fox" P1 (or ("HopCapture") "StepToEmpty"))

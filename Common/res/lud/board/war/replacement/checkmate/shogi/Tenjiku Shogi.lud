@@ -166,7 +166,7 @@
 //------------------------------------------------------------------------------
 
 (game "Tenjiku Shogi"
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 16))
         (piece "Pawn" ("StepMove" Forward))

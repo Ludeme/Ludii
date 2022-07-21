@@ -3,7 +3,7 @@
 //------------------------------------------------------------------------------
 
 (game "Breakthrough (No AI)" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (<Tiling:type> <Board:size>)) 
         (piece "Pawn" Each 

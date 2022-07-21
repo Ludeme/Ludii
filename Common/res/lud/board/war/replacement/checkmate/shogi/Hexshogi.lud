@@ -134,7 +134,7 @@
 //------------------------------------------------------------------------------
 
 (game "Hexshogi" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     
     (equipment { 
         (board (rotate 90 (remove (hex Rectangle 9 11) cells:{0 10 21 31 42 52 63 73 84 94})))

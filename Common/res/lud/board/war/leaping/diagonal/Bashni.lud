@@ -1,6 +1,5 @@
 (define "Step" 
-    (move 
-        Step 
+    (move Step 
         #1 
         (to 
             if:(and 
@@ -13,8 +12,7 @@
 )
 
 (define "Hop" 
-    (move
-        Hop 
+    (move Hop 
         #1 
         (between 
             #2
@@ -54,14 +52,14 @@
     ) 
 )
 
-(define "IsUnpromoted" (= (what at:(last To) level:(topLevel at:(last To))) (id "Counter" Mover)))
+(define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To) level:(topLevel at:(last To))))
 
 (define "JumpToPromotionZone" (is In (last To) (sites Next)))
 
 //------------------------------------------------------------------------------
 
 (game "Bashni"
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8))
         (piece "Counter" Each)

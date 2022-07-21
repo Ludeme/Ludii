@@ -222,7 +222,7 @@
 //------------------------------------------------------------------------------
 
 (game "Seesaw"
-    (players {(player N) (player S)})
+    ("TwoPlayersNorthSouth")
     (equipment
         {
         (board (rotate 30 (hex <Board>)))

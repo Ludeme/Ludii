@@ -26,7 +26,7 @@
 //------------------------------------------------------------------------------
 
 (game "Xiang Hex" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (renumber Cell (rotate 90 (remove (hex Rectangle 9 11) cells:{0 1 11 21 63 74 85 84 94 93 83 73 31 20 9 10}))))
         

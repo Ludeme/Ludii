@@ -32,7 +32,7 @@
 //------------------------------------------------------------------------------
 
 (game "Let's Catch the Lion"
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment {
         (board (rectangle 4 3))
         (tile "Giraffe" Each ("StepMove" Orthogonal))

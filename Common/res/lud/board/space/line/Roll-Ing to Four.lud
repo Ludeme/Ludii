@@ -1,5 +1,5 @@
 (game "Roll-Ing to Four"
-    (players {(player N) (player S)})
+    ("TwoPlayersNorthSouth")
     (equipment {
         (board (rectangle 10 4) use:Vertex)
         (piece "Ball" Each ("StepToEmpty" (directions Forwards of:All)))

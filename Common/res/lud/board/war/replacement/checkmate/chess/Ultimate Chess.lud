@@ -202,7 +202,7 @@
 //------------------------------------------------------------------------------
 
 (game "Ultimate Chess" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 9)) 
         (piece "Pawn" Each ("PawnMove"))
