@@ -1,6 +1,5 @@
 (define "HopCounter" 
-    (move
-        Hop 
+    (move Hop 
         (from #1) 
         Diagonal 
         (between 
@@ -12,10 +11,10 @@
         ) 
         (to if:(is Empty (to))) 
         #2
-    ) 
+    )
 )
 
-(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
+(define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
 
 (define "JumpToPromotionZone" (is In (last To) (sites Next)))
 
@@ -56,11 +55,7 @@
             )
             (or 
                 (forEach Piece "Counter" 
-                    (move 
-                        Step 
-                        (directions {FR FL}) 
-                        (to if:(is Empty (to)))
-                    )
+                	("StepToEmpty" (directions {FR FL}))
                     (then 
                         (if "JumpToPromotionZone"
                             (move Promote (last To) (piece "DoubleCounter") Mover)
@@ -147,11 +142,7 @@
                 (then ("HasCaptured"))
             )
             (forEach Piece "Counter" 
-                (move 
-                    Step 
-                    (directions {FR FL}) 
-                    (to if:(is Empty (to)))
-                )
+            	("StepToEmpty" (directions {FR FL}))
                 (then 
                     (and
                         (if "JumpToPromotionZone"
@@ -180,10 +171,9 @@
 (define "SitesWithPossibleCaptureInPreviousTurn" (sites Pending))
 
 (define "HuffOnePieceOf" 
-    (move
-        Select 
+    (move Select 
         (from #1
-            if:(!= (what at:(from)) 0)
+            if:(is Occupied (from))
         )
         (then 
             (and {
@@ -216,14 +206,9 @@
     }) 
     
     (rules 
-        (start { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:4) (sites Phase 1) ))
-            (place "Counter2" (difference (expand (sites Top) steps:4) (sites Phase 1)))
-        })
+        ("BlackCellsSetup" 5)
         
-        (play 
-            <Rules:rule>
-        )
+        (play <Rules:rule>)
         
         (end ("BlockWin"))
     )
