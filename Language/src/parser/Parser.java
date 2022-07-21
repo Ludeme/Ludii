@@ -103,7 +103,7 @@ public class Parser
 		if (Completer.needsCompleting(description.rawGameDescription()))
 		{
 			final String rawGame = description.rawGameDescription();
-			System.out.println("Raw game description is:\n" + rawGame);
+			System.out.println("Raw game description is: \n" + rawGame);
 		
 			final List<Completion> completions = Completer.complete(rawGame, false, report);
 			System.out.println(completions.size() + " completions found.");
