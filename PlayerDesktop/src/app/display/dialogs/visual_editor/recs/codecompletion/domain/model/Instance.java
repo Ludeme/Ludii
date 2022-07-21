@@ -50,7 +50,6 @@ public class Instance implements iInstance {
      * starting at the back.
      *
      * @param c
-     * @return
      */
     @Override
     public int matchingWords(Context c) {

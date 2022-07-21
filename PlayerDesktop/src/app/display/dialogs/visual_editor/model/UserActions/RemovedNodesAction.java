@@ -189,8 +189,8 @@ public class RemovedNodesAction implements IUserAction
                         {
                             continue;
                         }
-                        Handler.updateCollectionInput(graph, node, arg, nodeId.get((Integer)cid[i]), i);
-                        Handler.addEdge(graph, node, nodeId.get((Integer) cid[i]), arg, i);
+                        Handler.updateCollectionInput(graph, node, arg, nodeId.get(cid[i]), i);
+                        Handler.addEdge(graph, node, nodeId.get(cid[i]), arg, i);
                     }
                     else
                     {

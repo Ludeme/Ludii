@@ -15,7 +15,7 @@ public class DefineEditor extends JPanel
 	 * 
 	 */
 	private static final long serialVersionUID = -5720022256564467244L;
-	private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+	private final JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
     private final Map<JScrollPane, DefineGraphPanel> defineGraphPanels = new HashMap<>();
     private final Map<DefineGraphPanel, JScrollPane> defineScrollPanes = new HashMap<>();
 
@@ -55,7 +55,7 @@ public class DefineEditor extends JPanel
                 tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
             }
             // update current graph panel
-            IGraphPanel graphPanel = defineGraphPanels.get((JScrollPane) tabbedPane.getSelectedComponent());
+            IGraphPanel graphPanel = defineGraphPanels.get(tabbedPane.getSelectedComponent());
             Handler.updateCurrentGraphPanel(graphPanel);
         });
 

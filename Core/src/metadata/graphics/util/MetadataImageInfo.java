@@ -400,7 +400,7 @@ public class MetadataImageInfo
 	}
 	
 	/**
-	 * @param path The text.
+	 * @param text The text to set.
 	 */
 	public void setText(final String text) 
 	{

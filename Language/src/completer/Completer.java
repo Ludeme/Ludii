@@ -88,7 +88,6 @@ public class Completer
 
 	/**
 	 * Process next completion and add results to queue.
-	 * @param raw
 	 * @param queue
 	 * @param report
 	 */
@@ -740,7 +739,6 @@ public class Completer
 	/**
 	 * Save reconstruction to file.
 	 * @param name    Reconstruction name for file.
-	 * @param content Completed string to print.
 	 * @throws IOException 
 	 */
 	public static void saveReconstruction

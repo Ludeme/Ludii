@@ -19,7 +19,6 @@ public class Model2CSV {
      * storing mechanism that is based on the N parameter.
      *
      * @param model
-     * @return
      */
     public static void model2csv(NGram model, String location) {
         Map<String, List<Instance>> dictionary = model.getDictionary();

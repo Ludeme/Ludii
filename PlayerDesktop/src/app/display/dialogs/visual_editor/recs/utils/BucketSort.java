@@ -18,7 +18,6 @@ public class BucketSort {
      * Then it sorts those buckets by multiplicity and ravels everything into one list again.
      *
      * @param unorderedPicklist
-     * @return
      */
     public static List<Instance> sort(List<Pair<Instance,Integer>> unorderedPicklist, int limit) {
         //use a bucket sort to sort after matched words

@@ -50,7 +50,10 @@ public class AddArgumentPanel extends JPanel
                 description = DocumentationReader.instance().documentation().get((listModel.getElementAt(index).getSymbol())).description();
                 remark = DocumentationReader.instance().documentation().get((listModel.getElementAt(index).getSymbol())).remark();
             }
-            catch(Exception ignored) {}
+            catch(Exception ignored) 
+            {
+            	// Nothing to do
+            }
 
             FontMetrics fontMetrics = searchField.getFontMetrics(searchField.getFont());
 

@@ -13,7 +13,6 @@ public interface iGrammar {
      * This method takes a list of instances with matching keys to the context and filters out the ones
      * that do not match the context, leaving only valid choices behind.
      * @param match
-     * @return
      */
 
     List<SuggestionInstance> filterOutInvalid(String contextString, List<Instance> match);

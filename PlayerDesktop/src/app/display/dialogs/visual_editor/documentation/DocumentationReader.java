@@ -122,7 +122,10 @@ public class DocumentationReader
         {
             ec = new EBNFClause(string.replaceAll("\\s+", " "));
         }
-        catch(Exception ignored){}
+        catch(Exception ignored)
+        {
+        	// Nothing to do
+        }
 
         String string2 = string;
 

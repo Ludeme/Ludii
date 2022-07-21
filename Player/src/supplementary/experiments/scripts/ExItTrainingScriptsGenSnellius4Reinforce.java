@@ -364,7 +364,6 @@ public class ExItTrainingScriptsGenSnellius4Reinforce
 		 * Constructor
 		 * @param gameName
 		 * @param numPlayers
-		 * @param trainingVariant
 		 */
 		public ProcessData(final String gameName, final int numPlayers)
 		{

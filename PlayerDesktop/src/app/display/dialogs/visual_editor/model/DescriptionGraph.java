@@ -112,7 +112,7 @@ public class DescriptionGraph implements iGraph
     @Override
     public void removeNode(iGNode node)
     {
-        this.allLudemeNodes.remove((LudemeNode) node);
+        this.allLudemeNodes.remove(node);
         nodeMap.remove(node.id());
         removeConnectedComponentRoot(node.id());
         node.id();

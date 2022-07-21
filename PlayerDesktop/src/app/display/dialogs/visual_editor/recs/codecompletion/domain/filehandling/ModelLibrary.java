@@ -46,7 +46,6 @@ public class ModelLibrary implements iModelLibrary {
      * Adds it to the model locations. Also in the documents.txt
      *
      * @param N
-     * @return
      */
     @Override
     public NGram getModel(int N) {
@@ -65,8 +64,6 @@ public class ModelLibrary implements iModelLibrary {
 
     /**
      * Returns all model locations, is updated everytime it is called
-     *
-     * @return
      */
     @Override
     public List<String> allModelLocations() {
@@ -83,8 +80,6 @@ public class ModelLibrary implements iModelLibrary {
 
     /**
      * Returns the amount of models stored currently
-     *
-     * @return
      */
     @Override
     public int getAmountModels() {

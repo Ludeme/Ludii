@@ -376,7 +376,9 @@ public class LudemeNode implements iGNode
         List<Clause> clauses1 = new ArrayList<>();
         for(Clause clause : s.rule().rhs())
             if(clauses1.contains(clause) || this.clauses().contains(clause))
-            {}
+            {
+            	// Nothing to do
+            }
             else if(clause.symbol() == s)
                 clauses1.add(clause);
             else

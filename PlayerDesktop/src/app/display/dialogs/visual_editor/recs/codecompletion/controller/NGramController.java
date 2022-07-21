@@ -121,7 +121,6 @@ public class NGramController implements iController {
      *
      * @param context
      * @param begunWord
-     * @return
      */
     @Override
     public List<Instance> getPicklist(String context, String begunWord) {
@@ -145,7 +144,6 @@ public class NGramController implements iController {
      * @param context
      * @param begunWord
      * @param maxLength
-     * @return
      */
     @Override
     public List<Instance> getPicklist(String context, String begunWord, int maxLength) {

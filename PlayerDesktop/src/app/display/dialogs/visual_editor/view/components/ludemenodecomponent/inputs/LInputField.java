@@ -188,7 +188,10 @@ public class LInputField extends JComponent
             {
                 inputArea().removeInputField(child);
             }
-            catch (Exception ignored) {}
+            catch (Exception ignored) 
+            {
+            	// Nothing to do
+            }
         children.clear();
         inputArea().drawInputFields();
         if(handlerRecording)
@@ -941,6 +944,7 @@ public class LInputField extends JComponent
         @Override
         public void keyPressed(KeyEvent e)
         {
+        	// Nothing to do
         }
 
         @Override

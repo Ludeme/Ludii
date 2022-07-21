@@ -101,7 +101,6 @@ public class DocHandler {
 
     /**
      * This method writes the stored data about documents to the documents.txt
-     * @throws IOException
      */
     public void writeDocumentsFile() {
         try (FileWriter fw = FileUtils.writeFile(DOC_LOCATION);){

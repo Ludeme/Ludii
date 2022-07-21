@@ -30,7 +30,6 @@ public class TypeMatch implements iTypeMatch {
      *
      * @param gameDescription
      * @param possibleSymbols
-     * @return
      */
     @Override
     public List<Symbol> typematch(String gameDescription, NGramController controller, List<Symbol> possibleSymbols) {

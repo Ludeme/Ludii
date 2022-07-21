@@ -5,7 +5,8 @@ import java.awt.*;
 public class EmptyBackground implements IBackground
 {
     @Override
-    public void paint(Rectangle viewRectangle, int width, int height, Graphics2D g2) {
-
+    public void paint(Rectangle viewRectangle, int width, int height, Graphics2D g2) 
+    {
+    	// Nothing to do
     }
 }

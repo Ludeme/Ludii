@@ -83,7 +83,6 @@ public class FileUtils {
     /**
      * Takes in an absolute path and reformats it into a path from the root of the repository
      * @param absolutePath
-     * @return
      */
     public static String reformatPathToRepository(String absolutePath) {
         int i = absolutePath.indexOf("src");
@@ -106,7 +105,6 @@ public class FileUtils {
      * It is very important to close the FileWriter at the end of the writing process!:
      * fw.close();
      * @param pathname
-     * @return
      */
     public static FileWriter writeFile(String pathname) {
         try {

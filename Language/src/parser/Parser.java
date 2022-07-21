@@ -132,7 +132,7 @@ public class Parser
 					return false;  // failed to expand -- return error
 				}
 				
-				if (defineInstances != null && isVerbose)
+				if (isVerbose)
 				{
 					System.out.println("Define instances:");
 					for (final DefineInstances defIn : defineInstances.values())

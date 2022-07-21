@@ -88,7 +88,7 @@ public class DFBoxDrawing
         {
             List<Integer> nodeCh = new ArrayList<>(graph.getNode(nodeId).children());
             graph.getNode(nodeId).children().forEach(v -> {
-                if (graph.getNode(v).collapsed()) nodeCh.remove((Object) v);
+                if (graph.getNode(v).collapsed()) nodeCh.remove(v);
             });
             if (nodeCh.size() == 0) return;
 

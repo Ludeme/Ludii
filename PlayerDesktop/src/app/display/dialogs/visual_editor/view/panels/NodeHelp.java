@@ -27,7 +27,7 @@ public class NodeHelp extends JDialog
         setLocationRelativeTo(null);
         setModal(true);
         setResizable(false);
-        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
 

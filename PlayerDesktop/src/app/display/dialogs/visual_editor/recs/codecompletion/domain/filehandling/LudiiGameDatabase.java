@@ -102,8 +102,6 @@ public class LudiiGameDatabase implements iLudiiGameDatabase {
 
     /**
      * Returns a list of all the locations of game descriptions in the database.
-     *
-     * @return
      */
     @Override
     public List<String> getLocations() {
@@ -112,8 +110,6 @@ public class LudiiGameDatabase implements iLudiiGameDatabase {
 
     /**
      * Returns the amount of games in the database
-     *
-     * @return
      */
     @Override
     public int getAmountGames() {
@@ -124,7 +120,6 @@ public class LudiiGameDatabase implements iLudiiGameDatabase {
      * Returns the description of the game with the id in the locations list
      *
      * @param id
-     * @return
      */
     @Override
     public String getDescription(int id) {
@@ -144,7 +139,6 @@ public class LudiiGameDatabase implements iLudiiGameDatabase {
      * ids and use the other method.
      *
      * @param name
-     * @return
      */
     @Override
     public String getDescription(String name) {

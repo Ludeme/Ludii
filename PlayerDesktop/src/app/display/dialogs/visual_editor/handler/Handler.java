@@ -966,7 +966,9 @@ public class Handler
             }
         }
         catch(Exception ignored)
-        {}
+        {
+        	// Nothing to do
+        }
 
         output[1] = r.errors();
         if(liveCompile)
@@ -1176,7 +1178,6 @@ public class Handler
     /**
      * Copies the given nodes and returns a list of the copied nodes.
      * @param nodes
-     * @return
      */
     public static List<LudemeNode> copyTemporarily(List<LudemeNode> nodes)
     {
@@ -1568,7 +1569,6 @@ public class Handler
 
     /**
      * Sets the current active design palette
-     * @param
      */
     public static void setPalette(String paletteName)
     {
@@ -1625,7 +1625,6 @@ public class Handler
     /**
      * If the graph is complete (all required inputs filled)
      * @param graph
-     * @return
      */
     public static List<LudemeNode> isComplete(DescriptionGraph graph)
     {
@@ -1641,7 +1640,6 @@ public class Handler
      * Whether a node has a path to the root
      * @param graph
      * @param node
-     * @return
      */
     public static boolean isConnectedToRoot(DescriptionGraph graph, LudemeNode node)
     {

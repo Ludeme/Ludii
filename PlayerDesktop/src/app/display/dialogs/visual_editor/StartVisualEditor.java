@@ -32,7 +32,10 @@ public class StartVisualEditor
 		{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		}
-		catch(Exception ignored){}
+		catch(Exception ignored)
+        {
+        	// Nothing to do
+        }
 
 		//controller = new NGramController(5);
 		//MainFrame f = new MainFrame(editPanel);

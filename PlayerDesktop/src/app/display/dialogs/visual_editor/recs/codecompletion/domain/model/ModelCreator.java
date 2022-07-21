@@ -26,7 +26,6 @@ public class ModelCreator {
      * @param N
      * @param gameIDs List of game descriptions to be included in the model
      * @param validation If true, the model will not be written to a file
-     * @return
      */
     public static NGram createModel(int N, List<Integer> gameIDs, boolean validation) {
 
@@ -113,7 +112,6 @@ public class ModelCreator {
      * The location is according to the internal storing mechanism that is based on the N parameter.
      * This method adds all game descriptions to the model and is therefore not for validation purposes.
      * @param N
-     * @return
      */
     public static NGram createModel(int N) {
         List<Integer> gameIDs = new ArrayList<>();
