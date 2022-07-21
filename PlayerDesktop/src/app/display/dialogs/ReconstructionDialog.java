@@ -189,7 +189,7 @@ public class ReconstructionDialog extends JDialog
 					{
 						final String outputPath = txtcommonresoutput.getText();
 						final Integer maxRecons = Integer.valueOf(textFieldMaxRecons.getText());
-						final Boolean rankByContext = chckbxRankByContext.isSelected();
+						final boolean rankByContext = chckbxRankByContext.isSelected();
 						final Double csnScore = Double.valueOf(textFieldCSNScore.getText());
 						final Double conceptScore = Double.valueOf(textFieldConceptScore.getText());
 						final Double playabilityScore = Double.valueOf(textFieldPlayability.getText());
