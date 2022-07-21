@@ -1,0 +1,18 @@
+// Defines a hop move in the specified directions (by default Adjacent) over an enemy counter to an empty site. The enemy counter is removed.
+// #1 = The from site.
+// #2 = The direction of the hop.
+// #3 = The consequences.
+// @example ("HopOnlyCounters" (from (last To)) (directions {FR FL}))
+
+(define "HopOnlyCounters"
+	    (move Hop 
+	            #1 
+	            #2 
+	            (between 
+	                if:("IsPieceAt" "Counter" Next (between))
+	                (apply (remove (between)))
+	            ) 
+	            (to if:(is Empty (to))) 
+	            #3
+	        )
+)
