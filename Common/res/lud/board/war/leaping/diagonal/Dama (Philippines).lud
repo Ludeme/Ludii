@@ -1,6 +1,5 @@
-(define "HopDisc" 
-    (move
-        Hop 
+(define "HopCounter" 
+    (move Hop 
         (from #1) 
         (directions {FR FL}) 
         (between 
@@ -12,7 +11,7 @@
     ) 
 )
 
-(define "HopDiscDouble" 
+(define "HopDoubleCounter" 
     (move Hop
         (from #1)
         #2
@@ -46,7 +45,7 @@
     )
 )
 
-(define "IsUnpromoted" (= (what at:(last To)) (id "Disc" Mover)))
+(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
 
 (define "JumpToPromotionZone" (is In (last To) (sites Next)))
 
@@ -54,78 +53,64 @@
 
 (game "Dama (Philippines)" 
     (players 2) 
-    (equipment { 
-        (board 
-            (rotate 45
-                (merge {
-                    (rectangle 5 4)
-                    (shift -1 1 (rectangle 3 6))
-                    (shift -2 2 (rectangle 1 8))
-                    (shift 1 -1 (rectangle 7 2))
-                })
-            )
-            use:Vertex
-        ) 
-        (piece "Disc" P1 N)
-        (piece "Disc" P2 S) 
-        (piece "DiscDouble" Each)
-        (regions P1 (sites Bottom))
-        (regions P2 (sites Top))
-        }
+    ("DraughtsEquipment" 
+    	            (rotate 45
+    	                (merge {
+    	                    (rectangle 5 4)
+    	                    (shift -1 1 (rectangle 3 6))
+    	                    (shift -2 2 (rectangle 1 8))
+    	                    (shift 1 -1 (rectangle 7 2))
+    	                })
+    	            )
+    	            use:Vertex
     ) 
     (rules 
-        (start
-            { 
-            (place "Disc1" (expand (sites Bottom) steps:2))
-            (place "Disc2" (expand (sites Top) steps:2))
-            }
-        )
+        (start { 
+            (place "Counter1" (expand (sites Bottom) steps:2))
+            (place "Counter2" (expand (sites Top) steps:2))
+        })
         
         (play 
             (if "SameTurn"
                 (or
                     (if "IsUnpromoted"
-                        ("HopDisc" (last To)
+                        ("HopCounter" (last To)
                             (then 
-                                (if (can Move ("HopDisc" (last To))) 
+                                (if (can Move ("HopCounter" (last To))) 
                                     (moveAgain)
                                     (if "JumpToPromotionZone" 
-                                        (move Promote (last To) (piece "DiscDouble") Mover)
+                                        (move Promote (last To) (piece "DoubleCounter") Mover)
                                     )
                                 ) 
                             ) 
                         )
-                        ("HopDiscDouble" (last To) SameDirection)
+                        ("HopDoubleCounter" (last To) SameDirection)
                     )
                     (move Pass)
                 )
                 (or {
-                    (forEach Piece "Disc"
-                        ("HopDisc" (from) 
+                    (forEach Piece "Counter"
+                        ("HopCounter" (from) 
                             (then 
-                                (if (can Move ("HopDisc" (last To))) 
+                                (if (can Move ("HopCounter" (last To))) 
                                     (moveAgain) 
                                     (if "JumpToPromotionZone" 
-                                        (move Promote (last To) (piece "DiscDouble") Mover)
+                                        (move Promote (last To) (piece "DoubleCounter") Mover)
                                     )
                                 ) 
                             ) 
                         ) 
                     )
-                    (forEach Piece "DiscDouble" ("HopDiscDouble"))
-                    (forEach Piece "Disc" 
-                        (move
-                            Step 
-                            (directions {FR FL}) 
-                            (to if:(is Empty (to)))
-                        )
+                    (forEach Piece "DoubleCounter" ("HopDoubleCounter"))
+                    (forEach Piece "Counter" 
+                        ("StepToEmpty" (directions {FR FL}) )
                         (then 
                             (if "JumpToPromotionZone"
-                                (move Promote (last To) (piece "DiscDouble") Mover)
+                                (move Promote (last To) (piece "DoubleCounter") Mover)
                             )
                         )
                     )
-                    (forEach Piece "DiscDouble" (move Slide))
+                    (forEach Piece "DoubleCounter" (move Slide))
                 })
             )
         ) 
@@ -154,7 +139,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai
