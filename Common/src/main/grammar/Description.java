@@ -46,6 +46,9 @@ public class Description
   	// File path that the description came from.
   	private String filePath = null;
 
+  	// Whether this description was completed as a reconstruction
+  	private boolean isReconstruction = false;
+  	
   	//-------------------------------------------------------------------------
 
   	public Description(final String raw)
@@ -130,6 +133,19 @@ public class Description
 		this.filePath = filePath;
 	}
 	
+	/**
+	 * @return Whether this description was completed as a reconstruction.
+	 */
+   	public boolean isReconstruction()
+  	{
+  		return isReconstruction;
+  	}
+   	
+   	public void setIsRecontruction(final boolean value)
+   	{
+   		isReconstruction = value;
+   	}
+
 	//-------------------------------------------------------------------------
 
 	public void clearRulesets()

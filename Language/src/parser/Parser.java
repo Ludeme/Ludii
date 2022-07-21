@@ -113,6 +113,8 @@ public class Parser
 				// Replace raw description string passed in with best completion 
 				description.setRaw(completions.get(0).raw());
 			}
+			
+			description.setIsRecontruction(true);
 		}
 		
 		try
