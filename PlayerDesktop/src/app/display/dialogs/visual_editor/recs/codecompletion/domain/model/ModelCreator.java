@@ -49,7 +49,7 @@ public class ModelCreator {
 
             @Override
             protected NGram doInBackground() throws Exception {
-                NGram model = new NGram(N);
+                NGram ngramModel = new NGram(N);
                 for(int i = 0; i < amountGames; i++) {
                     int gameID = gameIDs.get(i);
                     String curGameDescription = db.getDescription(gameID);
@@ -63,7 +63,7 @@ public class ModelCreator {
                         for(List<String> substring : substrings) {
                             Instance curInstance = NGramUtils.createInstance(substring);
                             if(curInstance != null) {
-                                model.addInstanceToModel(curInstance);
+                                ngramModel.addInstanceToModel(curInstance);
                             }
                         }
                     }
@@ -73,7 +73,7 @@ public class ModelCreator {
                     setProgress(progress);
                     Thread.sleep(125);
                 }
-                return model;
+                return ngramModel;
             }
 
             @Override

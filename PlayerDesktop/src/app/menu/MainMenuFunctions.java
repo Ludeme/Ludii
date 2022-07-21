@@ -119,6 +119,9 @@ public class MainMenuFunctions extends JMenuBar
 	/** Thread in which we're comparing agents. */
 	private static Thread agentComparisonThread = null;
 
+	/** The visual editor. */
+	private static StartVisualEditor startVisualEditor;
+
 	//-------------------------------------------------------------------------
 	
 	public static void checkActionsPerformed(final DesktopApp app, final ActionEvent e)
@@ -228,7 +231,7 @@ public class MainMenuFunctions extends JMenuBar
 		else if (source.getText().equals("Visual Editor (Beta)"))
 		{
 			// Create and lauch an instance of the visual editor
-			final StartVisualEditor visual = new StartVisualEditor(app);
+			setStartVisualEditor(new StartVisualEditor(app));
 		}
 		// IMPORTANT These next four menu functions are just for us, not the user
 		else if (source.getText().equals("Export Thumbnails"))
@@ -1624,6 +1627,16 @@ public class MainMenuFunctions extends JMenuBar
 			currentContainer = ((JMenu)((JPopupMenu) currentContainer.getParent()).getInvoker());
 		
 		return ((JMenu)currentContainer).getText();
+	}
+
+	public static StartVisualEditor getStartVisualEditor()
+	{
+		return startVisualEditor;
+	}
+
+	public static void setStartVisualEditor(StartVisualEditor startVisualEditor)
+	{
+		MainMenuFunctions.startVisualEditor = startVisualEditor;
 	}
 	
 	//---------------------------------------------------------------------

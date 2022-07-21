@@ -6,7 +6,8 @@ import java.awt.*;
 public class DotGridBackground implements IBackground
 
 {
-    public void paint(Rectangle viewRectangle, int width, int height, Graphics2D g2)
+    @Override
+	public void paint(Rectangle viewRectangle, int width, int height, Graphics2D g2)
     {
         // draw background points
         // every 50 pixel a circle

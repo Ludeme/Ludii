@@ -81,6 +81,7 @@ public class Model2CSV {
      * @param location
      * @return
      */
+    @SuppressWarnings("all")
     public static NGram csv2model(String location) {
         List<String> lines = CSVUtils.readCSV(location);
         // start the reading

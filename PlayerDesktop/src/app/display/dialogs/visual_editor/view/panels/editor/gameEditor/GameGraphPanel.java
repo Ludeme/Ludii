@@ -30,7 +30,8 @@ public class GameGraphPanel extends GraphPanel
         add(addDefinePanel);
     }
 
-    public void initialize(JScrollPane scrollPane)
+    @Override
+	public void initialize(JScrollPane scrollPane)
     {
         super.initialize(scrollPane);
 

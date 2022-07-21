@@ -1,19 +1,13 @@
 package app.display.dialogs.visual_editor.view.panels.menus;
 
-import app.DesktopApp;
-import app.display.dialogs.GameLoaderDialog;
-import app.display.dialogs.visual_editor.handler.Handler;
-import app.display.dialogs.visual_editor.model.GameParser;
-import app.display.dialogs.visual_editor.recs.display.ProgressBar;
-import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
-import main.FileHandling;
-import other.GameLoader;
-
-import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
-import java.util.Objects;
-import java.util.regex.Pattern;
+
+import javax.swing.JFileChooser;
+import javax.swing.JMenu;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import app.display.dialogs.visual_editor.handler.Handler;
+import main.FileHandling;
 
 /**
  * File menu for visual editor
@@ -52,31 +46,31 @@ public class FileMenu extends JMenu
         // menuBar.addJMenuItem(this, "Exit", null);
     }
 
-    /**
-     * Opens selection menu of .lud game description to be imported into graph panel
-     * TODO: utilized due to parsing issues
-     */
-    private static void openDescriptionFile()
-    {
-        // reused code from class GameLoading method loadGameFromMemory
-        final String[] choices = FileHandling.listGames();
-        String initialChoice = choices[0];
-        final String choice = GameLoaderDialog.showDialog(DesktopApp.frame(), choices, initialChoice);
-
-        if (choice != null)
-        {
-            String path = choice.replaceAll(Pattern.quote("\\"), "/");
-            path = path.substring(path.indexOf("/lud/"));
-
-            path = Objects.requireNonNull(GameLoader.class.getResource(path)).getPath();
-            path = path.replaceAll(Pattern.quote("%20"), " ");
-
-            File file = new File(path);
-            ProgressBar progressBar = new ProgressBar("Loading game from file",
-                    null, 8);
-            StartGraphParsingThread(file, Handler.gameGraphPanel, progressBar);
-        }
-    }
+//    /**
+//     * Opens selection menu of .lud game description to be imported into graph panel
+//     * TODO: utilized due to parsing issues
+//     */
+//    private static void openDescriptionFile()
+//    {
+//        // reused code from class GameLoading method loadGameFromMemory
+//        final String[] choices = FileHandling.listGames();
+//        String initialChoice = choices[0];
+//        final String choice = GameLoaderDialog.showDialog(DesktopApp.frame(), choices, initialChoice);
+//
+//        if (choice != null)
+//        {
+//            String path = choice.replaceAll(Pattern.quote("\\"), "/");
+//            path = path.substring(path.indexOf("/lud/"));
+//
+//            path = Objects.requireNonNull(GameLoader.class.getResource(path)).getPath();
+//            path = path.replaceAll(Pattern.quote("%20"), " ");
+//
+//            File file = new File(path);
+//            ProgressBar progressBar = new ProgressBar("Loading game from file",
+//                    null, 8);
+//            StartGraphParsingThread(file, Handler.gameGraphPanel, progressBar);
+//        }
+//    }
 
     /**
      * Export game graph to .lud
@@ -105,30 +99,30 @@ public class FileMenu extends JMenu
         System.out.println("############################\n\n");
     }
 
-    /**
-     * Initiates parsing of ludeme description to graph
-     */
-    private static void StartGraphParsingThread(File file, IGraphPanel panel, ProgressBar progressBar)
-    {
-
-        SwingWorker<?, ?> swingWorker = new SwingWorker<Object, Object>()
-        {
-            @Override
-            protected Object doInBackground()
-            {
-                GameParser.ParseFileToGraph(file, Handler.gameGraphPanel, progressBar);
-                return null;
-            }
-
-            @Override
-            protected void done()
-            {
-                super.done();
-                progressBar.close();
-                panel.getLayoutHandler().executeLayout();
-            }
-        };
-
-        swingWorker.execute();
-    }
+//    /**
+//     * Initiates parsing of ludeme description to graph
+//     */
+//    private static void StartGraphParsingThread(File file, IGraphPanel panel, ProgressBar progressBar)
+//    {
+//
+//        SwingWorker<?, ?> swingWorker = new SwingWorker<Object, Object>()
+//        {
+//            @Override
+//            protected Object doInBackground()
+//            {
+//                GameParser.ParseFileToGraph(file, Handler.gameGraphPanel, progressBar);
+//                return null;
+//            }
+//
+//            @Override
+//            protected void done()
+//            {
+//                super.done();
+//                progressBar.close();
+//                panel.getLayoutHandler().executeLayout();
+//            }
+//        };
+//
+//        swingWorker.execute();
+//    }
 }

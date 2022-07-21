@@ -1,11 +1,10 @@
 package app.display.dialogs.visual_editor.recs;
 
+import java.util.List;
+
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.DocHandler;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.ModelLibrary;
-import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.NGram;
 import app.display.dialogs.visual_editor.recs.validation.controller.ValidationController;
-
-import java.util.List;
 
 public class CodeCompletionValidationMain {
 
@@ -54,8 +53,8 @@ public class CodeCompletionValidationMain {
     }
 
     public static void testModelCreation() {
-        ModelLibrary lib = ModelLibrary.getInstance();
-        NGram model = lib.getModel(5);
+       // ModelLibrary lib = ModelLibrary.getInstance();
+        //NGram model = lib.getModel(5);
         DocHandler.getInstance().close();
     }
 

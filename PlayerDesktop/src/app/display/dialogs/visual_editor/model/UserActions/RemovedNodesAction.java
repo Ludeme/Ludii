@@ -203,7 +203,8 @@ public class RemovedNodesAction implements IUserAction
         }
     }
 
-    public void undo()
+    @Override
+	public void undo()
     {
         addAllNodes(removedNodesSorted);
         for(LudemeNode n : removedNodesSorted)

@@ -74,7 +74,7 @@ public class ModelLibrary implements iModelLibrary {
         for(int N = 2; N <= 20; N++) {
             String location = docHandler.getModelLocation(N);
             //if the model exists
-            if(!StringUtils.equals(location,docHandler.MODEL_DOES_NOT_EXIST)) {
+            if(!StringUtils.equals(location,DocHandler.MODEL_DOES_NOT_EXIST)) {
                 modelLocations.add(location);
             }
         }

@@ -491,7 +491,8 @@ public class LudemeNode implements iGNode
      *
      * @return whether this node is collapsed
      */
-    public boolean collapsed(){
+    @Override
+	public boolean collapsed(){
         return collapsed;
     }
 

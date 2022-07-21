@@ -93,8 +93,7 @@ public class FileUtils {
         // character in regular expressions – each of this uses need doubling the character, in effect needing 4 \ in
         // row."
         // This helped me in replacing backslashes
-        absolutePath = absolutePath.replaceAll("\\\\","/");
-        return absolutePath.substring(i);
+        return absolutePath.replaceAll("\\\\","/").substring(i);
     }
 
     /**
@@ -111,7 +110,7 @@ public class FileUtils {
      */
     public static FileWriter writeFile(String pathname) {
         try {
-            File f = new File(pathname);
+            //File f = new File(pathname);
             FileWriter fw = new FileWriter(pathname);
             return fw;
         } catch (IOException e) {

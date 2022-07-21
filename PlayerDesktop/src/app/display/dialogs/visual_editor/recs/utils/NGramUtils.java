@@ -119,7 +119,7 @@ public class NGramUtils {
         for(Map.Entry<String, List<Pair<Instance, Integer>>> entry : pmEntrySet) {
             int pMultiplicity = 0;
             int maxMatchingWords = 0;
-            String entryPrediction = entry.getKey();
+           // String entryPrediction = entry.getKey();
             Instance firstInstance = entry.getValue().get(0).getR();
             //not all instances have the same words, but same key bcs of NGram.getMatch and same prediction because of predictionMatch
             //therefore the resulting instance must have words equal to {key,prediction}

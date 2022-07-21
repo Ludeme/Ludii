@@ -32,7 +32,8 @@ public class HeaderPanel extends JPanel
         setPreferredSize(new Dimension(getPreferredSize().width, preferredHeight+20));
     }
 
-    public void paintComponent(Graphics g)
+    @Override
+	public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
         if(getBackground() != DesignPalette.BACKGROUND_HEADER_PANEL())

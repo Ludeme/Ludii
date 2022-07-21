@@ -113,4 +113,10 @@ public class Instance implements iInstance {
         }
         return false;
     }
+
+	@Override
+	public int hashCode()
+	{
+		return super.hashCode();
+	}
 }

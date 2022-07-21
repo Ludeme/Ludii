@@ -21,6 +21,7 @@ public class HumanReadable {
         return symbolString;
     }
 
+    @SuppressWarnings("all")
     public static String makeReadable(String clauseString) {
         // remove <>
         clauseString = clauseString.replaceAll("<","");

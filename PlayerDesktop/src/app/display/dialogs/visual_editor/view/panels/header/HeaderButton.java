@@ -124,13 +124,15 @@ public class HeaderButton extends JButton {
                 }
         }
 
-        public void mouseEntered(MouseEvent e)
+        @Override
+		public void mouseEntered(MouseEvent e)
         {
             if((selectable && !active) || (!selectable && active))
                 setHover();
         }
 
-        public void mouseExited(MouseEvent e)
+        @Override
+		public void mouseExited(MouseEvent e)
         {
             if(!active)
                 setInactive();

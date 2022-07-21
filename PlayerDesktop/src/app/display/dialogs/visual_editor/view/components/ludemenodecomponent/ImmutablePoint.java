@@ -18,7 +18,8 @@ public class ImmutablePoint {
         this.y = (int) p.getY();
     }
 
-    public String toString(){
+    @Override
+	public String toString(){
         return "[" + x + ", " + y + "]";
     }
 }

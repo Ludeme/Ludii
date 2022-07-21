@@ -29,7 +29,8 @@ public class DefineGraphPanel extends GraphPanel
         return GRAPH;
     }
 
-    public void initialize(JScrollPane scrollPane)
+    @Override
+	public void initialize(JScrollPane scrollPane)
     {
         super.initialize(scrollPane);
 

@@ -71,7 +71,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
     private List<LudemeNodeComponent> selectedLnc = new ArrayList<>();
 
     // latencies for user testing code completion (Filip)
-    private final List<Long> latencies = new ArrayList<>();
+   // private final List<Long> latencies = new ArrayList<>();
     private final List<Integer> selectedCompletion = new ArrayList<>();
 
 
@@ -603,7 +603,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
         for(NodeArgument ii : connectionHandler().selectedComponent().inputField().nodeArguments())
             if(ii.index() < upUntilIndex)
                 upUntilIndex = ii.index();
-        long start = System.nanoTime();
+        //long start = System.nanoTime();
         List<Symbol> possibleSymbols = connectionHandler().selectedComponent().possibleSymbolInputs();
         //[UNCOMMENT FILIP] String gameDescription = connectionHandler().selectedComponent().inputField().inputArea().LNC().node().toLudCodeCompletion(connectionHandler().selectedComponent().inputField().nodeArguments());
         List<Symbol> typeMatched = possibleSymbols;
@@ -837,7 +837,8 @@ public class GraphPanel extends JPanel implements IGraphPanel
             super.mouseDragged(e);
         }
 
-        public void mousePressed(MouseEvent e)
+        @Override
+		public void mousePressed(MouseEvent e)
         {
             if(e.getButton() == MouseEvent.BUTTON3)
             {
@@ -858,7 +859,8 @@ public class GraphPanel extends JPanel implements IGraphPanel
          * - Select nodes that fall within selection area
          * @param e mouse event
          */
-        public void mouseReleased(MouseEvent e)
+        @Override
+		public void mouseReleased(MouseEvent e)
         {
             if(e.getButton() == MouseEvent.BUTTON3)
                 openPopupMenu(e);

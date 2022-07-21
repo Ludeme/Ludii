@@ -63,10 +63,12 @@ public class LInputButton extends JButton {
     }
 
     final MouseListener hoverMouseListener = new MouseAdapter() {
-        public void mouseEntered(MouseEvent e) {
+        @Override
+		public void mouseEntered(MouseEvent e) {
             setHover();
         }
-        public void mouseExited(MouseEvent e) {
+        @Override
+		public void mouseExited(MouseEvent e) {
             setActive();
         }
     };

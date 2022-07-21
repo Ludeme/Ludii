@@ -18,23 +18,22 @@ public interface iInstance {
      * If it is another instance object, only the words need to be compared.
      * This must be done with the String comparator
      * @param o
-     * @return
      */
-    boolean equals(Object o);
+    @Override
+	boolean equals(Object o);
 
     /**
      * This method simply counts up the number of words this instance has in common with the context,
      * starting at the back.
      * @param c
-     * @return
      */
     int matchingWords(Context c);
 
     /**
      * This method produces a string that represents the instance with all its fields.
-     * @return
      */
-    String toString();
+    @Override
+	String toString();
 
     String getPrediction();
 

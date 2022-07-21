@@ -67,6 +67,7 @@ public class NGramController implements iController {
      * @param contextString
      * @return list of candidate predictions sort after matching words with context, multiplicity
      */
+    @SuppressWarnings("all")
     @Override
     public List<Instance> getPicklist(String contextString) {
         // 0. if there is the wildcard COMPLETION_WILDCARD in there and cut it and everything after it off
@@ -124,9 +125,9 @@ public class NGramController implements iController {
      */
     @Override
     public List<Instance> getPicklist(String context, String begunWord) {
-        String cleanBegunWord = Preprocessing.preprocessBegunWord(begunWord);
+        //String cleanBegunWord = Preprocessing.preprocessBegunWord(begunWord);
         System.out.println("CONTROLLER: context -> "+context);
-        List<Instance> preliminaryPicklist = getPicklist(context);
+        //List<Instance> preliminaryPicklist = getPicklist(context);
         //List<Symbol> picklist = NGramUtils.filterByBegunWord(cleanBegunWord,preliminaryPicklist);//TODO
         return null;
     }
@@ -163,12 +164,12 @@ public class NGramController implements iController {
     /**
      * This method switches out the current model, remember to update the N parameter
      *
-     * @param model
+     * @param ngramModel
      */
     @Override
-    public void changeModel(NGram model) {
-        this.model = model;
-        this.N = model.getN();
+    public void changeModel(NGram ngramModel) {
+        this.model = ngramModel;
+        this.N = ngramModel.getN();
     }
 
     /**
@@ -197,5 +198,13 @@ public class NGramController implements iController {
     @Override
     public int getN() {
         return N;
+    }
+    
+    /**
+     * @return a docHandler.
+     */
+    public DocHandler getDocHandler()
+    {
+    	return docHandler;
     }
 }
