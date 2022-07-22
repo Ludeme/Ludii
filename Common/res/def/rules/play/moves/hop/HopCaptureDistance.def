@@ -1,0 +1,20 @@
+// Defines a hop move in all the directions specified (by default Adjacent) over an enemy to an empty site at any distance. The enemy piece is removed.
+// #1 = The from site.
+// #2 = Directions of the hop.
+// #3 = The consequences.
+// @example ("HopCaptureDistance" (from (last To)) Diagonal)
+
+(define "HopCaptureDistance"
+    (move Hop
+        #1
+        #2
+        (between
+                before:(count Rows) 
+                after:(count Rows)
+            if:("IsEnemyAt" (between))
+            (apply (remove (between)))
+        )
+        (to if:(is Empty (to)))
+        #3
+    )
+)

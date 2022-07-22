@@ -3,34 +3,27 @@
 )
 
 (define "HopDoubleCounter" 
-    (move Hop
-        (from #1)
-        #2
-        (between 
-            before:(count Rows) 
-            after:(count Rows)
-            if:("IsEnemyAt" (between)) 
-            (apply (remove (between)))
-        )
-        (to if:(is Empty (to)))
-        (then 
-            (if (can Move 
-                    (hop 
-                        (from (last To)) 
-                        SameDirection
-                        (between 
-                            before:(count Rows) 
-                            after:(count Rows)
-                            if:("IsEnemyAt" (between))
-                            (apply (remove (between)))
-                        )
-                        (to if:(is Empty (to)))
-                    )
-                ) 
-                (moveAgain)
-            )
-        )
-    )
+		("HopCaptureDistance" 
+				#1 
+				#2
+			        (then 
+			                (if (can Move 
+			                        (hop 
+			                            (from (last To)) 
+			                            SameDirection
+			                            (between 
+			                                before:(count Rows) 
+			                                after:(count Rows)
+			                                if:("IsEnemyAt" (between))
+			                                (apply (remove (between)))
+			                            )
+			                            (to if:(is Empty (to)))
+			                        )
+			                    ) 
+			                    (moveAgain)
+			                )
+			            )
+			)
 )
 
 (define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
@@ -69,7 +62,7 @@
                                 ) 
                             ) 
                         )
-                        ("HopDoubleCounter" (last To) SameDirection)
+                        ("HopDoubleCounter" (from (last To)) SameDirection)
                     )
                     (move Pass)
                 )
@@ -86,7 +79,7 @@
                             ) 
                         ) 
                     )
-                    (forEach Piece "DoubleCounter" ("HopDoubleCounter"))
+                    (forEach Piece "DoubleCounter" ("HopDoubleCounter" (from) Orthogonal))
                     (forEach Piece "Counter" 
                         ("StepToEmpty" (directions {FR FL}) )
                         (then 
