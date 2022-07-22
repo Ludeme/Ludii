@@ -3,50 +3,32 @@
 )
 
 (define "HopDoubleCounter" 
-		("HopCaptureDistance" 
-				#1 
-				#2
-			        (then 
-			                (if (can Move 
-			                        (hop 
-			                            (from (last To)) 
-			                            SameDirection
-			                            (between 
-			                                before:(count Rows) 
-			                                after:(count Rows)
-			                                if:("IsEnemyAt" (between))
-			                                (apply (remove (between)))
-			                            )
-			                            (to if:(is Empty (to)))
-			                        )
-			                    ) 
-			                    (moveAgain)
-			                )
-			            )
-			)
+    ("HopCaptureDistance" 
+        #1 
+        #2
+        (then ("ReplayIfCanMove" ("HopCaptureDistance" (from (last To)) SameDirection)))
+    )
 )
 
 (define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
-
-(define "JumpToPromotionZone" (is In (last To) (sites Next)))
 
 //------------------------------------------------------------------------------
 
 (game "Dama (Philippines)" 
     (players 2) 
     ("DraughtsEquipment" 
-    	            (rotate 45
-    	                (merge {
-    	                    (rectangle 5 4)
-    	                    (shift -1 1 (rectangle 3 6))
-    	                    (shift -2 2 (rectangle 1 8))
-    	                    (shift 1 -1 (rectangle 7 2))
-    	                })
-    	            )
-    	            use:Vertex
+        (rotate 45
+            (merge {
+                (rectangle 5 4)
+                (shift -1 1 (rectangle 3 6))
+                (shift -2 2 (rectangle 1 8))
+                (shift 1 -1 (rectangle 7 2))
+            })
+        )
+        use:Vertex
     ) 
     (rules 
-    	("BottomTopSetup" 3 "Counter1" "Counter2")
+        ("BottomTopSetup" 3 "Counter1" "Counter2")
         
         (play 
             (if "SameTurn"
@@ -54,11 +36,8 @@
                     (if "IsUnpromoted"
                         ("HopCounter" (last To)
                             (then 
-                                (if (can Move ("HopCounter" (last To))) 
-                                    (moveAgain)
-                                    (if "JumpToPromotionZone" 
-                                        (move Promote (last To) (piece "DoubleCounter") Mover)
-                                    )
+                                ("ReplayIfCanMove" ("HopCounter" (last To))
+                                    ("PromoteIfReach" (sites Next) "DoubleCounter")
                                 ) 
                             ) 
                         )
@@ -70,11 +49,8 @@
                     (forEach Piece "Counter"
                         ("HopCounter" (from) 
                             (then 
-                                (if (can Move ("HopCounter" (last To))) 
-                                    (moveAgain) 
-                                    (if "JumpToPromotionZone" 
-                                        (move Promote (last To) (piece "DoubleCounter") Mover)
-                                    )
+                                ("ReplayIfCanMove" ("HopCounter" (last To))
+                                    ("PromoteIfReach" (sites Next) "DoubleCounter")
                                 ) 
                             ) 
                         ) 
@@ -82,11 +58,7 @@
                     (forEach Piece "DoubleCounter" ("HopDoubleCounter" (from) Orthogonal))
                     (forEach Piece "Counter" 
                         ("StepToEmpty" (directions {FR FL}) )
-                        (then 
-                            (if "JumpToPromotionZone"
-                                (move Promote (last To) (piece "DoubleCounter") Mover)
-                            )
-                        )
+                        (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
                     )
                     (forEach Piece "DoubleCounter" (move Slide))
                 })
