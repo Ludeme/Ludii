@@ -13,21 +13,21 @@
         )
         (to if:(is Empty (to)))
         (then 
-        	("ReplayIfCanMove" 
-                    (hop 
-                        (from (last To)) 
-                        (if (is In (last To) (sites Outer)) (difference Diagonal OppositeDirection) SameDirection)
-                        (between 
-                            before:(count Rows)
-                            if:(and 
-                                (not (is In (between) (sites ToClear))) 
-                                ("IsEnemyAt" (between))
-                            )
-                            (apply (remove (between)))
+            ("ReplayIfCanMove" 
+                (hop 
+                    (from (last To)) 
+                    (if (is In (last To) (sites Outer)) (difference Diagonal OppositeDirection) SameDirection)
+                    (between 
+                        before:(count Rows)
+                        if:(and 
+                            (not (is In (between) (sites ToClear))) 
+                            ("IsEnemyAt" (between))
                         )
-                        (to if:(is Empty (to)))
+                        (apply (remove (between)))
                     )
-                ) 
+                    (to if:(is Empty (to)))
+                )
+            ) 
         )
     )
 )

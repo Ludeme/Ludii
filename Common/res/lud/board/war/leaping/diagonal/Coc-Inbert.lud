@@ -12,10 +12,10 @@
             (if "SameTurn"
                 (if "IsUnpromoted"
                     (max Moves 
-                    		("HopOnlyCounters" (from (last To)) (directions {FR FL})
+                        ("HopOnlyCounters" (from (last To)) (directions {FR FL})
                             (then 
-                            	("PromoteIfReach" (sites Next) "DoubleCounter"
-                                	("ReplayIfCanMove" ("HopOnlyCounters" (from (last To)) (directions {FR FL})))
+                                ("PromoteIfReach" (sites Next) "DoubleCounter"
+                                    ("ReplayIfCanMove" ("HopOnlyCounters" (from (last To)) (directions {FR FL})))
                                 ) 
                             ) 
                         )
@@ -27,10 +27,10 @@
                         (priority {
                             (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture"))
                             (forEach Piece "Counter" 
-                            		("HopOnlyCounters" (from) (directions {FR FL})
+                                ("HopOnlyCounters" (from) (directions {FR FL})
                                     (then 
-                                    		("PromoteIfReach" (sites Next) "DoubleCounter"
-                                        	("ReplayIfCanMove" ("HopOnlyCounters" (from (last To)) (directions {FR FL})))
+                                        ("PromoteIfReach" (sites Next) "DoubleCounter"
+                                            ("ReplayIfCanMove" ("HopOnlyCounters" (from (last To)) (directions {FR FL})))
                                         ) 
                                     ) 
                                 ) 

@@ -9,8 +9,8 @@
         #1
         #2
         (between
-                before:(count Rows) 
-                after:(count Rows)
+            before:(count Rows) 
+            after:(count Rows)
             if:("IsEnemyAt" (between))
             (apply (remove (between)))
         )
