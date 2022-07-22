@@ -1,14 +1,5 @@
 (define "HopCounter" 
-    (move Hop 
-        (from #1) 
-        (directions {FR FL}) 
-        (between 
-            if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
-            (apply (remove (between)))
-        ) 
-        (to if:(is Empty (to))) 
-        #2
-    ) 
+    ("HopCapture" (from #1) (directions {FR FL}) #2)
 )
 
 (define "HopDoubleCounter" 
@@ -30,10 +21,7 @@
                         (between 
                             before:(count Rows) 
                             after:(count Rows)
-                            if:(and 
-                                (not (is In (between) (sites ToClear))) 
-                                ("IsEnemyAt" (between))
-                            )
+                            if:("IsEnemyAt" (between))
                             (apply (remove (between)))
                         )
                         (to if:(is Empty (to)))
@@ -45,7 +33,7 @@
     )
 )
 
-(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
+(define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
 
 (define "JumpToPromotionZone" (is In (last To) (sites Next)))
 
@@ -65,10 +53,7 @@
     	            use:Vertex
     ) 
     (rules 
-        (start { 
-            (place "Counter1" (expand (sites Bottom) steps:2))
-            (place "Counter2" (expand (sites Top) steps:2))
-        })
+    	("BottomTopSetup" 3 "Counter1" "Counter2")
         
         (play 
             (if "SameTurn"
