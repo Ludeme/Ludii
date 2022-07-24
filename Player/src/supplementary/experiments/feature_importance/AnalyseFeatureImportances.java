@@ -376,66 +376,107 @@ public class AnalyseFeatureImportances
 			row.meanTargetTrue = meanProbsIfTrueSpatial[i];
 		}
 		
-		for (int s = 0; s < featureVectorsPerState.size(); ++s)
+		// For every feature, compute urgency
+		for (int i = 0; i < numAspatialFeatures; ++i)
 		{
-			final List<FeatureVector> featureVectors = featureVectorsPerState.get(s);
-			final TFloatArrayList targets = targetsPerState.get(s);
-			final int numActions = targets.size();
+			final int rowIdx = i;
+			final Row row = rows.get(rowIdx);
 			
-			for (int i = 0; i < numAspatialFeatures; ++i)
-			{
-				final int rowIdx = i;
-				final Row row = rows.get(rowIdx);
-				
-				// Compute policy for this state if we were to use only this feature
-				final FVector policy = new FVector(numActions);
-				
-				for (int a = 0; a < numActions; ++a)
-				{
-					final FeatureVector featureVector = featureVectors.get(a);
-					
-					if (featureVector.aspatialFeatureValues().get(i) != 0.f)
-						policy.set(a, (float) meanProbsIfTrueAspatial[i]);
-					else
-						policy.set(a, (float) meanProbsIfFalseAspatial[i]);
-				}
-				
-				policy.normalise();
-				
-				for (int a = 0; a < numActions; ++a)
-				{
-					row.sumExpectedRegrets += (policy.get(a) * (1.0 - targets.getQuick(a)));
-					row.sumExpectedSquaredRegrets += (policy.get(a) * (1.0 - targets.getQuick(a)) * (1.0 - targets.getQuick(a)));
-				}
-			}
+			final double falseUrgency = Math.max(meanProbsIfFalseAspatial[i] / baselinePrediction, baselinePrediction / meanProbsIfFalseAspatial[i]);
+			final double trueUrgency = Math.max(meanProbsIfTrueAspatial[i] / baselinePrediction, baselinePrediction / meanProbsIfTrueAspatial[i]);
+			final double urgency = Math.max(falseUrgency, trueUrgency);
 			
-			for (int i = 0; i < numSpatialFeatures; ++i)
-			{
-				final int rowIdx = i + numAspatialFeatures;
-				final Row row = rows.get(rowIdx);
-				
-				// Compute policy for this state if we were to use only this feature
-				final FVector policy = new FVector(numActions);
-				
-				for (int a = 0; a < numActions; ++a)
-				{
-					final FeatureVector featureVector = featureVectors.get(a);
-					
-					if (featureVector.activeSpatialFeatureIndices().contains(i))
-						policy.set(a, (float) meanProbsIfTrueSpatial[i]);
-					else
-						policy.set(a, (float) meanProbsIfFalseSpatial[i]);
-				}
-				
-				policy.normalise();
-				
-				for (int a = 0; a < numActions; ++a)
-				{
-					row.sumExpectedRegrets += (policy.get(a) * (1.0 - targets.getQuick(a)));
-					row.sumExpectedSquaredRegrets += (policy.get(a) * (1.0 - targets.getQuick(a)) * (1.0 - targets.getQuick(a)));
-				}
-			}
+			row.urgency = urgency;
+			
+			final double weightedFalseUrgency = Math.log10(numFalseAspatial[i]) * Math.max(meanProbsIfFalseAspatial[i] / baselinePrediction, baselinePrediction / meanProbsIfFalseAspatial[i]);
+			final double weightedTrueUrgency = Math.log10(numTrueAspatial[i]) * Math.max(meanProbsIfTrueAspatial[i] / baselinePrediction, baselinePrediction / meanProbsIfTrueAspatial[i]);
+			final double weightedUrgency = Math.max(weightedFalseUrgency, weightedTrueUrgency);
+			
+			row.weightedUrgency = weightedUrgency;
+			
+			row.urgencyRatio = Math.max(falseUrgency / trueUrgency, trueUrgency / falseUrgency);
 		}
+
+		for (int i = 0; i < numSpatialFeatures; ++i)
+		{
+			final int rowIdx = i + numAspatialFeatures;
+			final Row row = rows.get(rowIdx);
+			
+			final double falseUrgency = Math.max(meanProbsIfFalseSpatial[i] / baselinePrediction, baselinePrediction / meanProbsIfFalseSpatial[i]);
+			final double trueUrgency = Math.max(meanProbsIfTrueSpatial[i] / baselinePrediction, baselinePrediction / meanProbsIfTrueSpatial[i]);
+			final double urgency = Math.max(falseUrgency, trueUrgency);
+			
+			row.urgency = urgency;
+			
+			final double weightedFalseUrgency = Math.log10(numFalseSpatial[i]) * Math.max(meanProbsIfFalseSpatial[i] / baselinePrediction, baselinePrediction / meanProbsIfFalseSpatial[i]);
+			final double weightedTrueUrgency = Math.log10(numTrueSpatial[i]) * Math.max(meanProbsIfTrueSpatial[i] / baselinePrediction, baselinePrediction / meanProbsIfTrueSpatial[i]);
+			final double weightedUrgency = Math.max(weightedFalseUrgency, weightedTrueUrgency);
+			
+			row.weightedUrgency = weightedUrgency;
+			
+			row.urgencyRatio = Math.max(falseUrgency / trueUrgency, trueUrgency / falseUrgency);
+		}
+		
+//		for (int s = 0; s < featureVectorsPerState.size(); ++s)
+//		{
+//			final List<FeatureVector> featureVectors = featureVectorsPerState.get(s);
+//			final TFloatArrayList targets = targetsPerState.get(s);
+//			final int numActions = targets.size();
+//			
+//			for (int i = 0; i < numAspatialFeatures; ++i)
+//			{
+//				final int rowIdx = i;
+//				final Row row = rows.get(rowIdx);
+//				
+//				// Compute policy for this state if we were to use only this feature
+//				final FVector policy = new FVector(numActions);
+//				
+//				for (int a = 0; a < numActions; ++a)
+//				{
+//					final FeatureVector featureVector = featureVectors.get(a);
+//					
+//					if (featureVector.aspatialFeatureValues().get(i) != 0.f)
+//						policy.set(a, (float) meanProbsIfTrueAspatial[i]);
+//					else
+//						policy.set(a, (float) meanProbsIfFalseAspatial[i]);
+//				}
+//				
+//				policy.normalise();
+//				
+//				for (int a = 0; a < numActions; ++a)
+//				{
+//					row.sumExpectedRegrets += (policy.get(a) * (1.0 - targets.getQuick(a)));
+//					row.sumExpectedSquaredRegrets += (policy.get(a) * (1.0 - targets.getQuick(a)) * (1.0 - targets.getQuick(a)));
+//				}
+//			}
+//			
+//			for (int i = 0; i < numSpatialFeatures; ++i)
+//			{
+//				final int rowIdx = i + numAspatialFeatures;
+//				final Row row = rows.get(rowIdx);
+//				
+//				// Compute policy for this state if we were to use only this feature
+//				final FVector policy = new FVector(numActions);
+//				
+//				for (int a = 0; a < numActions; ++a)
+//				{
+//					final FeatureVector featureVector = featureVectors.get(a);
+//					
+//					if (featureVector.activeSpatialFeatureIndices().contains(i))
+//						policy.set(a, (float) meanProbsIfTrueSpatial[i]);
+//					else
+//						policy.set(a, (float) meanProbsIfFalseSpatial[i]);
+//				}
+//				
+//				policy.normalise();
+//				
+//				for (int a = 0; a < numActions; ++a)
+//				{
+//					row.sumExpectedRegrets += (policy.get(a) * (1.0 - targets.getQuick(a)));
+//					row.sumExpectedSquaredRegrets += (policy.get(a) * (1.0 - targets.getQuick(a)) * (1.0 - targets.getQuick(a)));
+//				}
+//			}
+//		}
 		
 		Collections.sort
 		(
@@ -463,7 +504,9 @@ public class AnalyseFeatureImportances
 			(
 				"Feature,SSE,ReductionSSE,SseFalse,SseTrue,SampleSizeFalse,SampleSizeTrue,MeanTargetFalse,"
 				+ 
-				"MeanTargetTrue,SumExpectedRegrets,SumExpectedSquaredRegrets"
+				"MeanTargetTrue,"
+				//+ "SumExpectedRegrets,SumExpectedSquaredRegrets,"
+				+ "Urgency,WeightedUrgency,UrgencyRatio"
 			);
 			
 			for (final Row row : rows)
@@ -497,8 +540,11 @@ public class AnalyseFeatureImportances
 		public int sampleSizeTrue;
 		public double meanTargetFalse;
 		public double meanTargetTrue;
-		public double sumExpectedRegrets;
-		public double sumExpectedSquaredRegrets;
+		//public double sumExpectedRegrets;
+		//public double sumExpectedSquaredRegrets;
+		public double urgency;
+		public double weightedUrgency;
+		public double urgencyRatio;
 		
 		/**
 		 * Constructor
@@ -525,8 +571,11 @@ public class AnalyseFeatureImportances
 						Double.valueOf(sampleSizeTrue),
 						Double.valueOf(meanTargetFalse),
 						Double.valueOf(meanTargetTrue),
-						Double.valueOf(sumExpectedRegrets),
-						Double.valueOf(sumExpectedSquaredRegrets)
+						//Double.valueOf(sumExpectedRegrets),
+						//Double.valueOf(sumExpectedSquaredRegrets),
+						Double.valueOf(urgency),
+						Double.valueOf(weightedUrgency),
+						Double.valueOf(urgencyRatio)
 					);
 		}
 	}
