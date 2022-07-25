@@ -3,29 +3,12 @@
     (equipment { 
         (board (rectangle 1 3)) 
         <Version:pieces>
-        }
-    ) 
+    }) 
     (rules
         (start {
             <Version:start>
         }) 
-        (play 
-            (move 
-                (from (sites Occupied by:Mover))
-                (to 
-                    (sites Board)
-                    if:(and 
-                        (not (= (from) (to))) 
-                        (or (= (what at:(to)) 0) 
-                            (< 
-                                (what at:(from) level:(topLevel at:(from))) 
-                                (what at:(to) level:(topLevel at:(to)))
-                            )
-                        )
-                    )
-                )
-            )
-        )
+        (play ("MoveToEmptyOrOccupiedByLargerPiece" (sites Occupied by:Mover)))
         
         (end {
             (if 
@@ -175,7 +158,6 @@
         <511>
         ""
     )
-    
     }
 )
 
