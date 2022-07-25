@@ -376,6 +376,9 @@ public class AnalyseFeatureImportances
 			row.meanTargetTrue = meanProbsIfTrueSpatial[i];
 		}
 		
+		final double negativeRange = baselinePrediction;
+		final double positiveRange = 1.0 - baselinePrediction;
+		
 		// For every feature, compute urgency
 		for (int i = 0; i < numAspatialFeatures; ++i)
 		{
@@ -395,6 +398,20 @@ public class AnalyseFeatureImportances
 			row.weightedUrgency = weightedUrgency;
 			
 			row.urgencyRatio = Math.max(falseUrgency / trueUrgency, trueUrgency / falseUrgency);
+			
+			final double scaledUrgencyFalse;
+			if (meanProbsIfFalseAspatial[i] > baselinePrediction)
+				scaledUrgencyFalse = (meanProbsIfFalseAspatial[i] - baselinePrediction) / positiveRange;
+			else
+				scaledUrgencyFalse = (baselinePrediction - meanProbsIfFalseAspatial[i]) / negativeRange;
+			
+			final double scaledUrgencyTrue;
+			if (meanProbsIfTrueAspatial[i] > baselinePrediction)
+				scaledUrgencyTrue = (meanProbsIfTrueAspatial[i] - baselinePrediction) / positiveRange;
+			else
+				scaledUrgencyTrue = (baselinePrediction - meanProbsIfTrueAspatial[i]) / negativeRange;
+			
+			row.scaledUrgency = Math.max(scaledUrgencyFalse, scaledUrgencyTrue);
 		}
 
 		for (int i = 0; i < numSpatialFeatures; ++i)
@@ -415,6 +432,20 @@ public class AnalyseFeatureImportances
 			row.weightedUrgency = weightedUrgency;
 			
 			row.urgencyRatio = Math.max(falseUrgency / trueUrgency, trueUrgency / falseUrgency);
+			
+			final double scaledUrgencyFalse;
+			if (meanProbsIfFalseSpatial[i] > baselinePrediction)
+				scaledUrgencyFalse = (meanProbsIfFalseSpatial[i] - baselinePrediction) / positiveRange;
+			else
+				scaledUrgencyFalse = (baselinePrediction - meanProbsIfFalseSpatial[i]) / negativeRange;
+			
+			final double scaledUrgencyTrue;
+			if (meanProbsIfTrueSpatial[i] > baselinePrediction)
+				scaledUrgencyTrue = (meanProbsIfTrueSpatial[i] - baselinePrediction) / positiveRange;
+			else
+				scaledUrgencyTrue = (baselinePrediction - meanProbsIfTrueSpatial[i]) / negativeRange;
+			
+			row.scaledUrgency = Math.max(scaledUrgencyFalse, scaledUrgencyTrue);
 		}
 		
 //		for (int s = 0; s < featureVectorsPerState.size(); ++s)
@@ -506,7 +537,7 @@ public class AnalyseFeatureImportances
 				+ 
 				"MeanTargetTrue,"
 				//+ "SumExpectedRegrets,SumExpectedSquaredRegrets,"
-				+ "Urgency,WeightedUrgency,UrgencyRatio"
+				+ "Urgency,WeightedUrgency,UrgencyRatio,ScaledUrgency"
 			);
 			
 			for (final Row row : rows)
@@ -545,6 +576,7 @@ public class AnalyseFeatureImportances
 		public double urgency;
 		public double weightedUrgency;
 		public double urgencyRatio;
+		public double scaledUrgency;
 		
 		/**
 		 * Constructor
@@ -575,7 +607,8 @@ public class AnalyseFeatureImportances
 						//Double.valueOf(sumExpectedSquaredRegrets),
 						Double.valueOf(urgency),
 						Double.valueOf(weightedUrgency),
-						Double.valueOf(urgencyRatio)
+						Double.valueOf(urgencyRatio),
+						Double.valueOf(scaledUrgency)
 					);
 		}
 	}
