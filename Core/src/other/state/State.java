@@ -336,9 +336,22 @@ public class State implements Serializable
 	 */
 	public long fullHash(final Context context)
 	{
-		final int lastFrom = LAST_FROM_LUDEME.eval(context);
-		final int lastTo = LAST_TO_LUDEME.eval(context);
-		return fullHash() ^ lastFromHashes[lastFrom + 1] ^ lastToHashes[lastTo + 1];
+		final int lastFrom = LAST_FROM_LUDEME.eval(context) + 1;
+		final int lastTo = LAST_TO_LUDEME.eval(context) + 1;
+		
+		long hash = fullHash();
+		
+		if (lastFrom < lastFromHashes.length)
+			hash ^= lastFromHashes[lastFrom];
+		else
+			hash ^= lastFromHashes[lastFrom % lastFromHashes.length];
+		
+		if (lastTo < lastToHashes.length)
+			hash ^= lastToHashes[lastTo];
+		else
+			hash ^= lastToHashes[lastTo % lastToHashes.length];
+		
+		return hash;
 	}
 	
 	//-------------------------------------------------------------------------
