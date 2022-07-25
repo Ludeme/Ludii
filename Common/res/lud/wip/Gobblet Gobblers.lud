@@ -1,0 +1,43 @@
+(game "Gobblet Gobblers" // To finish https://boardgamegeek.com/boardgame/13230/gobblet-gobblers
+    (players 2) 
+    (equipment { 
+        (board (square 3))
+        (piece "discFlat1" Each)
+        (piece "discFlat2" Each)
+        (piece "discFlat3" Each)
+        (hand Each size:3)
+    }) 
+    (rules 
+    	(start {
+    		(place Stack "discFlat11" (handSite P1) count:3)
+    		(place Stack "discFlat12" (handSite P2) count:3)
+    		(place Stack "discFlat21" (handSite P1 1) count:3)
+    		(place Stack "discFlat22" (handSite P2 1) count:3)
+    		(place Stack "discFlat31" (handSite P1 2) count:3)
+    		(place Stack "discFlat32" (handSite P2 2) count:3)
+    	})
+        (play ("MoveToEmptyOrOccupiedByLargerPiece" (sites Hand Mover) if:(is Occupied (from))))
+        (end ("Line3Win" Mover))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Blue))
+        (player Colour P2 (colour Red))
+        (piece Scale "discFlat11" 0.3)
+        (piece Scale "discFlat21" 0.6)
+        (piece Scale "discFlat31" 1.0)
+        (piece Scale "discFlat12" 0.3)
+        (piece Scale "discFlat22" 0.6)
+        (piece Scale "discFlat32" 1.0)
+    })
+)
