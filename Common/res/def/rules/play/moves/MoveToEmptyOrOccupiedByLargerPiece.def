@@ -1,5 +1,6 @@
 // Defines a move from a region to any empty sites or sites occupied by a larger pieces on the board. This ludemeplex involves stacks and the size of the piece are related to the indexes of the pieces (in the hypothesis that each player has the same number of pieces). Some graphic metadata will be needed to scale the pieces according to this.
 // #1 = The from region.
+// #2 = A condition on the from location (optional).
 // @example ("MoveToEmptyOrOccupiedByLargerPiece" (sites Hand Mover))
 
 (define "MoveToEmptyOrOccupiedByLargerPiece"
@@ -11,8 +12,8 @@
                         (!= (from) (to)) 
                         (or (is Empty (to)) 
                             (< 
-                                (/ (what at:(from) level:(topLevel at:(from))) (count Players)) 
-                                (/ (what at:(to) level:(topLevel at:(to))) (count Players)) 
+                                (- (what at:(from) level:(topLevel at:(from))) (who at:(from) level:(topLevel at:(from)))) 
+                                (- (what at:(to) level:(topLevel at:(to))) (who at:(to) level:(topLevel at:(to)))) 
                             )
                         )
                     )

@@ -520,7 +520,23 @@ public class IsLine extends BaseBooleanFunction
 		final TIntArrayList whats = new TIntArrayList();
 		if (whatFn == null)
 		{
-			whats.add(state.what(locn, realType));
+			if (whoFn == null)
+			{
+				whats.add(state.what(locn, realType));
+			}
+			else
+			{
+				if (whoFn != null)
+				{
+					final int who = whoFn.eval(context);
+					for (int i = 1; i < context.components().length; i++)
+					{
+						final Component component = context.components()[i];
+						if (component.owner() == who)
+							whats.add(component.index());
+					}
+				}
+			}
 		}
 		else
 		{

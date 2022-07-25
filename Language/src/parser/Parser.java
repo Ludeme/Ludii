@@ -671,7 +671,7 @@ public class Parser
 							continue;  // not a numbered variant
 						
 						// Check player index is in player range
-						final int pid = StringRoutines.numberAtEnd(str);
+//						final int pid = StringRoutines.numberAtEnd(str);
 						//System.out.println("pid=" + pid + ", numPlayers=" + numPlayers);
 //						if (pid < 0 || pid > numPlayers + 1)
 //						{
@@ -679,8 +679,8 @@ public class Parser
 //							return;
 //						}
 						
-						if (pid > numPlayers && !str.contains("Hand"))
-							report.addWarning("Item '" + str + "' is numbered " + pid + " but only " + numPlayers + " players.");
+//						if (pid > numPlayers && !str.contains("Hand"))
+//							report.addWarning("Item '" + str + "' is numbered " + pid + " but only " + numPlayers + " players.");
 						
 						match = true;
 						break;
