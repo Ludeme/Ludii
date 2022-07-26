@@ -4,19 +4,19 @@
 // @example ("MoveToEmptyOrOccupiedByLargerPiece" (sites Hand Mover))
 
 (define "MoveToEmptyOrOccupiedByLargerPiece"
-        (move 
-                (from #1)
-                (to 
-                    (sites Board)
-                    if:(and 
-                        (!= (from) (to)) 
-                        (or (is Empty (to)) 
-                            (< 
-                                (- (what at:(from) level:(topLevel at:(from))) (who at:(from) level:(topLevel at:(from)))) 
-                                (- (what at:(to) level:(topLevel at:(to))) (who at:(to) level:(topLevel at:(to)))) 
-                            )
-                        )
+    (move 
+        (from #1)
+        (to 
+            (sites Board)
+            if:(and 
+                (!= (from) (to)) 
+                (or (is Empty (to)) 
+                    (< 
+                        (- (what at:(from) level:(topLevel at:(from))) (who at:(from) level:(topLevel at:(from)))) 
+                        (- (what at:(to) level:(topLevel at:(to))) (who at:(to) level:(topLevel at:(to)))) 
                     )
                 )
             )
+        )
+    )
 )

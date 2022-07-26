@@ -6,7 +6,7 @@
             (max Moves
                 (or
                     (forEach Piece "Counter"
-                    	("HopCapture" (from) (directions {FR FL})
+                        ("HopCapture" (from) (directions {FR FL})
                             (then
                                 (if (is In (last To) (sites Next))
                                     (and
@@ -19,7 +19,7 @@
                         )
                     )
                     (forEach Piece "DoubleCounter"
-                    	("HopCaptureDistance" (from) Diagonal
+                        ("HopCaptureDistance" (from) Diagonal
                             (then ("ReplayIfCanMove" ("HopCaptureDistance" (from (last To)) Diagonal)))
                         )
                     )
@@ -45,7 +45,7 @@
             (if ("SameTurn")
                 (if "IsUnpromoted"
                     (max Moves
-                    	("HopCapture" (from (last To)) (directions {FR FL})
+                        ("HopCapture" (from (last To)) (directions {FR FL})
                             (then
                                 (if (is In (last To) (sites Next))
                                     (and
@@ -58,7 +58,7 @@
                         )
                     )
                     (max Moves 
-                    	("HopCaptureDistance" (from (last To)) Diagonal
+                        ("HopCaptureDistance" (from (last To)) Diagonal
                             (then ("ReplayIfCanMove" ("HopCaptureDistance" (from (last To)) Diagonal)))
                         ) 
                     )
@@ -70,7 +70,7 @@
                         // Capture moves.
                         (forEach Piece "Counter"
                             (max Moves
-                            	("HopCapture" (from) (directions {FR FL})
+                                ("HopCapture" (from) (directions {FR FL})
                                     (then
                                         (and
                                             "StoreCapturingPiece"
@@ -88,11 +88,11 @@
                         )
                         (forEach Piece "DoubleCounter"
                             (max Moves 
-                            	("HopCaptureDistance" (from) Diagonal
+                                ("HopCaptureDistance" (from) Diagonal
                                     (then 
                                         (and
                                             "StoreCapturingPiece"
-                                        	("ReplayIfCanMove" ("HopCaptureDistance" (from (last To)) Diagonal))
+                                            ("ReplayIfCanMove" ("HopCaptureDistance" (from (last To)) Diagonal))
                                         )
                                     )	
                                 )

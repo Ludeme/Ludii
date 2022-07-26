@@ -1,8 +1,8 @@
 (define "HopDiagonalCounter" 
-		("HopCapture" (from) Diagonal
+    ("HopCapture" (from) Diagonal
         (then 
-        	("PromoteIfReach" (sites Next) "DoubleCounter"
-        		("ReplayIfCanMove" ("HopCapture" (from (last To)) Diagonal))
+            ("PromoteIfReach" (sites Next) "DoubleCounter"
+                ("ReplayIfCanMove" ("HopCapture" (from (last To)) Diagonal))
             )
         )
     )
@@ -55,7 +55,7 @@
         (play 
             (if	("SameTurn")
                 (if ("IsUnpromoted")
-                	("HopCapture"
+                    ("HopCapture"
                         (from (last To)) 
                         Diagonal
                         (then 
