@@ -16,8 +16,20 @@
     		(place Stack "discFlat31" (handSite P1 2) count:3)
     		(place Stack "discFlat32" (handSite P2 2) count:3)
     	})
-        (play ("MoveToEmptyOrOccupiedByLargerPiece" (sites Hand Mover) if:(is Occupied (from))))
-        (end ("Line3Win" Mover))
+        (play
+        	(or
+        			("MoveToEmptyOrOccupiedByLargerPiece" (sites Hand Mover) if:(is Occupied (from)))
+        			("MoveToEmptyOrOccupiedByLargerPiece" 
+        				(sites Occupied by:Mover top:True) 
+        			)
+        	)
+        )
+        (end 
+        	(forEach Player
+        	if:(is Line 3 Player)
+        	(result Player Win)
+        	)
+        )
     )
 )
 
