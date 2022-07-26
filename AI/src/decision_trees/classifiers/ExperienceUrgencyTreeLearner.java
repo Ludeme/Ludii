@@ -247,7 +247,10 @@ public class ExperienceUrgencyTreeLearner
 				meanProbsIfTrueSpatial[i] = sumProbsIfTrueSpatial[i] / numTrueSpatial[i];
 		}
 
-		// Find features with maximum urgency
+		// Find features with maximum scaled urgency	
+		final double negativeRange = baselineProb;
+		final double positiveRange = 1.0 - baselineProb;
+		
 		double maxUrgency = 0.0;
 		final TIntArrayList bestIndices = new TIntArrayList();
 
@@ -256,17 +259,27 @@ public class ExperienceUrgencyTreeLearner
 			if (numFalseAspatial[i] < minSamplesPerLeaf || numTrueAspatial[i] < minSamplesPerLeaf)
 				continue;
 			
-			final double falseUrgency = Math.max(meanProbsIfFalseAspatial[i] / baselineProb, baselineProb / meanProbsIfFalseAspatial[i]);
-			final double trueUrgency = Math.max(meanProbsIfTrueAspatial[i] / baselineProb, baselineProb / meanProbsIfTrueAspatial[i]);
-			final double urgency = Math.max(falseUrgency, trueUrgency);
+			final double scaledUrgencyFalse;
+			if (meanProbsIfFalseAspatial[i] > baselineProb)
+				scaledUrgencyFalse = (meanProbsIfFalseAspatial[i] - baselineProb) / positiveRange;
+			else
+				scaledUrgencyFalse = (baselineProb - meanProbsIfFalseAspatial[i]) / negativeRange;
 			
-			if (urgency > maxUrgency)
+			final double scaledUrgencyTrue;
+			if (meanProbsIfTrueAspatial[i] > baselineProb)
+				scaledUrgencyTrue = (meanProbsIfTrueAspatial[i] - baselineProb) / positiveRange;
+			else
+				scaledUrgencyTrue = (baselineProb - meanProbsIfTrueAspatial[i]) / negativeRange;
+			
+			final double scaledUrgency = Math.max(scaledUrgencyFalse, scaledUrgencyTrue);
+			
+			if (scaledUrgency > maxUrgency)
 			{
 				bestIndices.reset();
 				bestIndices.add(i);
-				maxUrgency = urgency;
+				maxUrgency = scaledUrgency;
 			}
-			else if (urgency == maxUrgency)
+			else if (scaledUrgency == maxUrgency)
 			{
 				bestIndices.add(i);
 			}
@@ -277,23 +290,33 @@ public class ExperienceUrgencyTreeLearner
 			if (numFalseSpatial[i] < minSamplesPerLeaf || numTrueSpatial[i] < minSamplesPerLeaf)
 				continue;
 			
-			final double falseUrgency = Math.max(meanProbsIfFalseSpatial[i] / baselineProb, baselineProb / meanProbsIfFalseSpatial[i]);
-			final double trueUrgency = Math.max(meanProbsIfTrueSpatial[i] / baselineProb, baselineProb / meanProbsIfTrueSpatial[i]);
-			final double urgency = Math.max(falseUrgency, trueUrgency);
+			final double scaledUrgencyFalse;
+			if (meanProbsIfFalseSpatial[i] > baselineProb)
+				scaledUrgencyFalse = (meanProbsIfFalseSpatial[i] - baselineProb) / positiveRange;
+			else
+				scaledUrgencyFalse = (baselineProb - meanProbsIfFalseSpatial[i]) / negativeRange;
 			
-			if (urgency > maxUrgency)
+			final double scaledUrgencyTrue;
+			if (meanProbsIfTrueSpatial[i] > baselineProb)
+				scaledUrgencyTrue = (meanProbsIfTrueSpatial[i] - baselineProb) / positiveRange;
+			else
+				scaledUrgencyTrue = (baselineProb - meanProbsIfTrueSpatial[i]) / negativeRange;
+			
+			final double scaledUrgency = Math.max(scaledUrgencyFalse, scaledUrgencyTrue);
+			
+			if (scaledUrgency > maxUrgency)
 			{
 				bestIndices.reset();
 				bestIndices.add(i + numAspatialFeatures);
-				maxUrgency = urgency;
+				maxUrgency = scaledUrgency;
 			}
-			else if (urgency == maxUrgency)
+			else if (scaledUrgency == maxUrgency)
 			{
 				bestIndices.add(i + numAspatialFeatures);
 			}
 		}
 
-		if (bestIndices.isEmpty() || maxUrgency == 1.0)
+		if (bestIndices.isEmpty() || maxUrgency == 0.0)
 		{
 			// No point in making any split at all, so just make leaf		TODO could in theory use remaining features to compute a model again
 			return new BinaryLeafNode((float) baselineProb);
