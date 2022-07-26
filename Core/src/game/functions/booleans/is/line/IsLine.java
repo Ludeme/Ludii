@@ -72,6 +72,9 @@ public class IsLine extends BaseBooleanFunction
 	/** To detect The line only by level in a stack. */
 	private final BooleanFunction byLevelFn;
 
+	/** To detect The line only in using the top level in a stack. */
+	private final BooleanFunction topFn;
+
 	/** Condition for every piece in the line. */
 	private final BooleanFunction condition;
 	
@@ -98,6 +101,8 @@ public class IsLine extends BaseBooleanFunction
 	 * @param If         The condition on each site on the line [True].
 	 * @param byLevel    If true, then lines are detected in using the level in a
 	 *                   stack [False].
+	 * @param top        If true, then lines are detected in using only the top level 
+	 *                   in a stack [False].
 	 */
 	public IsLine
 	(
@@ -112,7 +117,8 @@ public class IsLine extends BaseBooleanFunction
 		@Opt      @Name final BooleanFunction   exact,
 		@Opt 	  @Name final BooleanFunction   contiguous,
 		@Opt  	  @Name final BooleanFunction   If, 
-		@Opt  	  @Name final BooleanFunction   byLevel
+		@Opt  	  @Name final BooleanFunction   byLevel,
+		@Opt  	  @Name final BooleanFunction   top
 	)
 	{
 		this.length  = length;
@@ -140,6 +146,7 @@ public class IsLine extends BaseBooleanFunction
 
 		this.type = type;
 		byLevelFn = (byLevel == null) ? new BooleanConstant(false) : byLevel;
+		topFn = (top == null) ? new BooleanConstant(false) : top;
 		contiguousFn = (contiguous == null) ? new BooleanConstant(true) : contiguous;
 	} 
 
@@ -503,6 +510,7 @@ public class IsLine extends BaseBooleanFunction
 	private boolean evalStack(final Context context)
 	{
 		final int locn = through.eval(context);
+		final boolean top = topFn.eval(context);
 		if (locn == Constants.UNDEFINED)
 			return false;
 
@@ -756,16 +764,26 @@ public class IsLine extends BaseBooleanFunction
 		else
 		{
 			int count = 0;
-			final int sizeStack = state.sizeStack(locn, realType);
-			for (int level = 0; level < sizeStack; level++)
+			if (top)
 			{
-				final int whatLevel = state.what(locn, level, realType);
-				if (whats.contains(whatLevel))
-				{
+				if (whats.contains(state.what(locn, realType)))
 					count++;
-					break;
+				}
+			else
+			{
+				final int sizeStack = state.sizeStack(locn, realType);
+				for (int level = 0; level < sizeStack; level++)
+				{
+					final int whatLevel = state.what(locn, level, realType);
+					if (whats.contains(whatLevel))
+					{
+						count++;
+						break;
+					}
 				}
 			}
+			
+
 
 			if (count == 0)
 				return false;
@@ -782,16 +800,25 @@ public class IsLine extends BaseBooleanFunction
 					context.setTo(index);
 
 					boolean whatFound = false;
-					final int sizeStackTo = state.sizeStack(index, realType);
-					for (int level = 0; level < sizeStackTo; level++)
+					if (top)
 					{
-						final int whatLevel = state.what(index, level, realType);
-						if (whats.contains(whatLevel))
-						{
+						if (whats.contains(state.what(index, realType)))
 							whatFound = true;
-							break;
+					}
+					else
+					{
+						final int sizeStackTo = state.sizeStack(index, realType);
+						for (int level = 0; level < sizeStackTo; level++)
+						{
+							final int whatLevel = state.what(index, level, realType);
+							if (whats.contains(whatLevel))
+							{
+								whatFound = true;
+								break;
+							}
 						}
 					}
+
 
 					if (whatFound && condition.eval(context))
 					{
@@ -817,14 +844,22 @@ public class IsLine extends BaseBooleanFunction
 							final int index = oppositeRadial.steps()[indexPath].id();
 
 							boolean whatFound = false;
-							final int sizeStackTo = state.sizeStack(index, realType);
-							for (int level = 0; level < sizeStackTo; level++)
+							if (top)
 							{
-								final int whatLevel = state.what(index, level, realType);
-								if (whats.contains(whatLevel))
-								{
+								if (whats.contains(state.what(index, realType)))
 									whatFound = true;
-									break;
+							}
+							else
+							{
+								final int sizeStackTo = state.sizeStack(index, realType);
+								for (int level = 0; level < sizeStackTo; level++)
+								{
+									final int whatLevel = state.what(index, level, realType);
+									if (whats.contains(whatLevel))
+									{
+										whatFound = true;
+										break;
+									}
 								}
 							}
 
@@ -896,6 +931,7 @@ public class IsLine extends BaseBooleanFunction
 		
 		flags |= condition.gameFlags(game);
 		flags |= byLevelFn.gameFlags(game);
+		flags |= topFn.gameFlags(game);
 		
 		if (throughAny != null)
 			flags |= throughAny.gameFlags(game);
@@ -925,6 +961,7 @@ public class IsLine extends BaseBooleanFunction
 
 		concepts.or(condition.concepts(game));
 		concepts.or(byLevelFn.concepts(game));
+		concepts.or(topFn.concepts(game));
 
 		if (throughAny != null)
 			concepts.or(throughAny.concepts(game));
@@ -956,6 +993,7 @@ public class IsLine extends BaseBooleanFunction
 
 		writeEvalContext.or(condition.writesEvalContextRecursive());
 		writeEvalContext.or(byLevelFn.writesEvalContextRecursive());
+		writeEvalContext.or(topFn.writesEvalContextRecursive());
 
 		if (throughAny != null)
 			writeEvalContext.or(throughAny.writesEvalContextRecursive());
@@ -986,6 +1024,7 @@ public class IsLine extends BaseBooleanFunction
 
 		readEvalContext.or(condition.readsEvalContextRecursive());
 		readEvalContext.or(byLevelFn.readsEvalContextRecursive());
+		readEvalContext.or(topFn.readsEvalContextRecursive());
 
 		if (throughAny != null)
 			readEvalContext.or(throughAny.readsEvalContextRecursive());
@@ -1018,6 +1057,7 @@ public class IsLine extends BaseBooleanFunction
 			whoFn.preprocess(game);
 		
 		byLevelFn.preprocess(game);
+		topFn.preprocess(game);
 
 		condition.preprocess(game);
 		
@@ -1049,6 +1089,12 @@ public class IsLine extends BaseBooleanFunction
 
 		if (throughAny != null)
 			missingRequirement |= throughAny.missingRequirement(game);
+		
+		if (byLevelFn != null)
+			missingRequirement |= byLevelFn.missingRequirement(game);
+		
+		if (topFn != null)
+			missingRequirement |= topFn.missingRequirement(game);
 		return missingRequirement;
 	}
 
@@ -1076,6 +1122,12 @@ public class IsLine extends BaseBooleanFunction
 
 		if (throughAny != null)
 			willCrash |= throughAny.willCrash(game);
+		
+		if (byLevelFn != null)
+			willCrash |= byLevelFn.willCrash(game);
+		
+		if (topFn != null)
+			willCrash |= topFn.willCrash(game);
 		return willCrash;
 	}
 
