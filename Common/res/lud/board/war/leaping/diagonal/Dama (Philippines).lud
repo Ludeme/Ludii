@@ -6,6 +6,7 @@
     ("HopCaptureDistance" 
         #1 
         #2
+        ~
         (then ("ReplayIfCanMove" ("HopCaptureDistance" (from (last To)) SameDirection)))
     )
 )
