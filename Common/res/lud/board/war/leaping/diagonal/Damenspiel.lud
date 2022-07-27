@@ -16,8 +16,6 @@
 
 (define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
 
-(define "JumpToPromotionZone" (is In (last To) (sites Next)))
-
 //------------------------------------------------------------------------------
 
 (game "Damenspiel" 
@@ -29,9 +27,7 @@
         (play 
             (if	("SameTurn")
                 (if ("IsUnpromoted")
-                    ("HopCapture"
-                        (from (last To)) 
-                        Diagonal
+                    ("HopCapture" (from (last To))  Diagonal
                         (then 
                             ("PromoteIfReach" (sites Next) "DoubleCounter"
                                 ("ReplayIfCanMove" ("HopCapture" (from (last To)) Diagonal))
