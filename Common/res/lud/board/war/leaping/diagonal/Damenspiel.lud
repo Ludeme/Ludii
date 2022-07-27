@@ -9,34 +9,8 @@
 )
 
 (define "HopDiagonalDoubleCounter" 
-    (move Hop 
-        Diagonal
-        (between 
-            before:(count Rows)
-            (range 1 (count Rows))
-            after:(count Rows)
-            if:("IsEnemyAt" (between)) 
-            (apply (remove (between)))
-        )
-        (to if:(is Empty (to)))
-        (then 
-            (if (can Move 
-                    (hop 
-                        (from (last To)) 
-                        Diagonal
-                        (between 
-                            before:(count Rows)
-                            (range 1 (count Rows))
-                            after:(count Rows)
-                            if:("IsEnemyAt" (between)) 
-                            (apply (remove (between)))
-                        )
-                        (to if:(is Empty (to)))
-                    )
-                ) 
-                (moveAgain)
-            )
-        )
+    ("HopCaptureDistance" (from) Diagonal (range 1 (count Rows))
+        (then ("ReplayIfCanMove" ("HopCaptureDistance" (from (last To)) Diagonal (range 1 (count Rows)))))
     )
 )
 
@@ -59,53 +33,13 @@
                         (from (last To)) 
                         Diagonal
                         (then 
-                            (if "JumpToPromotionZone"
-                                (promote (last To) (piece "DoubleCounter") Mover)
-                                (if (can Move 
-                                        (hop 
-                                            (from (last To)) 
-                                            Diagonal
-                                            (between 
-                                                if:("IsEnemyAt" (between))
-                                                (apply (remove (between)))
-                                            )
-                                            (to if:(is Empty (to)))
-                                        )
-                                    ) 
-                                    (moveAgain)
-                                )
+                            ("PromoteIfReach" (sites Next) "DoubleCounter"
+                                ("ReplayIfCanMove" ("HopCapture" (from (last To)) Diagonal))
                             )
                         )
                     )
-                    (move Hop 
-                        (from (last To)) 
-                        Diagonal
-                        (between 
-                            before:(count Rows)
-                            (range 1 (count Rows))
-                            after:(count Rows)
-                            if:("IsEnemyAt" (between)) 
-                            (apply (remove (between)))
-                        )
-                        (to if:(is Empty (to)))
-                        (then 
-                            (if (can Move 
-                                    (hop 
-                                        (from (last To)) 
-                                        Diagonal
-                                        (between 
-                                            before:(count Rows)
-                                            (range 1 (count Rows))
-                                            after:(count Rows)
-                                            if:("IsEnemyAt" (between)) 
-                                            (apply (remove (between)))
-                                        )
-                                        (to if:(is Empty (to)))
-                                    )
-                                ) 
-                                (moveAgain)
-                            )
-                        )
+                    ("HopCaptureDistance" (from (last To)) Diagonal (range 1 (count Rows))
+                        (then ("ReplayIfCanMove" ("HopCaptureDistance" (from (last To)) Diagonal (range 1 (count Rows)))))
                     )
                 )
                 (priority {
@@ -123,7 +57,6 @@
                     )
                 })
             )
-            
         ) 
         
         (end ("CaptureAll" Next)) 
