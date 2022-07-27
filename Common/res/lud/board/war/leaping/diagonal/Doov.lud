@@ -1,47 +1,19 @@
-(define "HopMan" 
-    (move
-        Hop 
-        (from #1) 
-        (directions {FR FL}) 
-        (between 
-            if:("IsEnemyAt" (between)) 
-            (apply (remove (between)))
-        ) 
-        (to if:(is Empty (to))) 
-        #2
-    ) 
-)
-
-(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
-
-(define "JumpToPromotionZone" (is In (last To) (sites Next)))
+(define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
 
 //------------------------------------------------------------------------------
 
 (game "Doov" 
-    (players 2) 
-    (equipment { 
-        (board (square 8)) 
-        (piece "Counter" P1 N)
-        (piece "Counter" P2 S) 
-        (piece "DoubleCounter" Each)
-        (regions P1 (sites Bottom))
-        (regions P2 (sites Top))
-    }) 
+    ("TwoPlayersNorthSouth")
+    ("DraughtsEquipment" (square 8)) 
     (rules 
-        (start { 
-            (place "Counter1" (difference (expand (sites Bottom)) (sites Phase 1) ))
-            (place "Counter2" (difference (expand (sites Top)) (sites Phase 1)))
-        })
+        ("BlackCellsSetup" 2)
         
         (play 
             (or 
                 (or 
                     (forEach Piece "Counter" 
-                        ("HopMan" (from) 
-                            (then 
-                                (if "JumpToPromotionZone" (promote (last To) (piece "DoubleCounter") Mover)) 
-                            ) 
+                        ("HopCapture" (from)  (directions {FR FL}) 
+                            (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
                         ) 
                     )
                     (forEach Piece "DoubleCounter" ("HopDiagonalCapture"))
@@ -49,16 +21,8 @@
                 
                 (or 
                     (forEach Piece "Counter" 
-                        (move
-                            Step 
-                            (directions {FR FL}) 
-                            (to if:(is Empty (to)))
-                        ) 
-                        (then 
-                            (if "JumpToPromotionZone"
-                                (promote (last To) (piece "DoubleCounter") Mover)
-                            )
-                        )
+                        ("StepToEmpty" (directions {FR FL}))
+                        (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
                     )
                     (forEach Piece "DoubleCounter" "StepDiagonalToEmpty")
                 )
