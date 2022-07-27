@@ -93,14 +93,14 @@ public class Completer
 	 */
 	public static void nextCompletion
 	(
-		final Completion comp, final List<Completion> queue, 
+		final Completion completion, final List<Completion> queue, 
 		final Map<String, String> ludMap, final Map<String, String> defMap, 
 		final Report report
 	)
 	{
-//		System.out.println("Completing next completion for raw string:\n" + raw);
+		System.out.println("Completing next completion for raw string:\n" + completion.raw());
 		
-		final String raw = comp.raw();
+		final String raw = completion.raw();
 		
 		// Find opening and closing bracket locations
 		final int from = raw.indexOf("[");
@@ -176,8 +176,8 @@ public class Completer
 			// Enumerate on parents
 			final String[] parent = parents.get(enumeration - 1);
 			//System.out.println("Enumerating on parent " + enumeration + ": " + parent[0] + "?" + parent[1]);
-			enumerateMatches(left, right, parent, ludMap, queue, comp.score());
-			enumerateMatches(left, right, parent, defMap, queue, comp.score());
+			enumerateMatches(left, right, parent, ludMap, queue, completion.score());
+			enumerateMatches(left, right, parent, defMap, queue, completion.score());
 		}
 		else
 		{
@@ -215,12 +215,12 @@ public class Completer
 				}
 				
 				final String str = raw.substring(0, from) + choice + raw.substring(to + 1);
-				final Completion completion = new Completion(str);
+				final Completion newCompletion = new Completion(str);
 				
 //				System.out.println("\n**********************************************************");
 //				System.out.println("completion " + n + "/" + choices.size() + " is:\n" + completion);
 				
-				queue.add(completion);
+				queue.add(newCompletion);
 			}
 		}
 	}
