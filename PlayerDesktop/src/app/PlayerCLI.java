@@ -22,6 +22,7 @@ import training.expert_iteration.ExpertIteration;
 import utils.concepts.db.ExportDbCsvConcepts;
 import utils.features.ExportFeaturesDB;
 import utils.trials.GenerateTrialsCluster;
+import utils.trials.GenerateTrialsClusterParallel;
 
 /**
  * Class with helper method to delegate to various other main methods
@@ -66,6 +67,7 @@ public class PlayerCLI
 					"--export-features-db",
 					"--export-moveconcept-db",
 					"--generate-trials",
+					"--generate-trials-parallel",
 					"--tutorial-generation",
 					"--game-distance",
 					"--generate-feature-eval-scripts",
@@ -106,6 +108,8 @@ public class PlayerCLI
 			ExportDbCsvConcepts.main(passArgs);
 		else if (command.equalsIgnoreCase("--generate-trials"))
 			GenerateTrialsCluster.main(passArgs);
+		else if (command.equalsIgnoreCase("--generate-trials-parallel"))
+			GenerateTrialsClusterParallel.main(passArgs);
 		else if (command.equalsIgnoreCase("--tutorial-generation"))
 			TestInstructionGeneration.main(passArgs);
 		else if (command.equalsIgnoreCase("--game-distance"))
