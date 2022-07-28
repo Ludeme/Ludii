@@ -14,6 +14,21 @@ public class SwapMoveFeature extends AspatialFeature
 	
 	//-------------------------------------------------------------------------
 	
+	/** The singleton instance */
+	private static final SwapMoveFeature INSTANCE = new SwapMoveFeature();
+
+	//-------------------------------------------------------------------------
+
+	/**
+	 * Private: singleton
+	 */
+	private SwapMoveFeature()
+	{
+		// Do nothing
+	}
+	
+	//-------------------------------------------------------------------------
+	
 	@Override
 	public float featureVal(final State state, final Move move)
 	{
@@ -37,6 +52,16 @@ public class SwapMoveFeature extends AspatialFeature
 	public String generateTikzCode(final Game game)
 	{
 		return "\\node[rectangle,draw{,REL_POS}] ({LABEL}) {Swap};";
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return The singleton instance
+	 */
+	public static SwapMoveFeature instance()
+	{
+		return INSTANCE;
 	}
 	
 	//-------------------------------------------------------------------------

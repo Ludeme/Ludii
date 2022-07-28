@@ -14,6 +14,21 @@ public class PassMoveFeature extends AspatialFeature
 	
 	//-------------------------------------------------------------------------
 	
+	/** The singleton instance */
+	private static final PassMoveFeature INSTANCE = new PassMoveFeature();
+
+	//-------------------------------------------------------------------------
+
+	/**
+	 * Private: singleton
+	 */
+	private PassMoveFeature()
+	{
+		// Do nothing
+	}
+	
+	//-------------------------------------------------------------------------
+	
 	@Override
 	public float featureVal(final State state, final Move move)
 	{
@@ -37,6 +52,16 @@ public class PassMoveFeature extends AspatialFeature
 	public String generateTikzCode(final Game game)
 	{
 		return "\\node[rectangle,draw{,REL_POS}] ({LABEL}) {Pass};";
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return The singleton instance
+	 */
+	public static PassMoveFeature instance()
+	{
+		return INSTANCE;
 	}
 	
 	//-------------------------------------------------------------------------

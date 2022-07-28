@@ -41,11 +41,11 @@ public abstract class Feature
 	private static AspatialFeature aspatialFromString(final String string)
 	{
 		if (string.equals("PassMove"))
-			return new PassMoveFeature();
+			return PassMoveFeature.instance();
 		else if (string.equals("SwapMove"))
-			return new SwapMoveFeature();
+			return SwapMoveFeature.instance();
 		else if (string.equals("Intercept"))
-			return new InterceptFeature();
+			return InterceptFeature.instance();
 		else
 			System.err.println("Cannot construct aspatial feature from string: " + string);
 		

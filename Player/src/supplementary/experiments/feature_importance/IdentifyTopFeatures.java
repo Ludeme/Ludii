@@ -1,9 +1,12 @@
 package supplementary.experiments.feature_importance;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import decision_trees.classifiers.DecisionTreeNode;
 import decision_trees.classifiers.ExperienceUrgencyTreeLearner;
+import features.Feature;
 import features.feature_sets.BaseFeatureSet;
 import function_approx.LinearFunction;
 import game.Game;
@@ -69,6 +72,19 @@ public class IdentifyTopFeatures
 					ExperienceUrgencyTreeLearner.buildTree(featureSets[p], linearFunctionsPlayout[p], experienceBuffers[p], 4, 10);
 			tspgTreesPerPlayer[p] = 
 					ExperienceUrgencyTreeLearner.buildTree(featureSets[p], linearFunctionsTSPG[p], experienceBuffers[p], 4, 10);
+		}
+		
+		// For every player, extract candidate features from the decision trees for that player
+		final List<List<Feature>> candidateFeaturesPerPlayer = new ArrayList<List<Feature>>();
+		for (int p = 1; p <= numPlayers; ++p)
+		{
+			final List<Feature> featuresList = new ArrayList<Feature>();
+			candidateFeaturesPerPlayer.add(featuresList);
+			
+			//collectFeatures(playoutTreesPerPlayer[p], featuresList);
+			//tspgTreesPerPlayer(playoutTreesPerPlayer[p], featuresList);
+			
+			// TODO remove duplicates
 		}
 		
 		// Clear some memory

@@ -123,14 +123,14 @@ public class AtomicFeatureGenerator
 		aspatialFeatures = new ArrayList<AspatialFeature>();
 		
 		// Intercept feature always considered relevant
-		aspatialFeatures.add(new InterceptFeature());
+		aspatialFeatures.add(InterceptFeature.instance());
 		
 		// Pass feature always considered relevant
-		aspatialFeatures.add(new PassMoveFeature());
+		aspatialFeatures.add(PassMoveFeature.instance());
 		
 		// Swap feature only relevant if game uses swap rule
 		if ((game.gameFlags() & GameType.UsesSwapRule) != 0L)
-			aspatialFeatures.add(new SwapMoveFeature());
+			aspatialFeatures.add(SwapMoveFeature.instance());
 	}
 	
 	//-------------------------------------------------------------------------
