@@ -137,7 +137,7 @@ public final class Polygon
 				final double y = points.get(p).getY();
 						 
 				final double xx = x * cosAngle - y * sinAngle; 
-				final double yy = x * sinAngle + y * sinAngle;
+				final double yy = x * sinAngle + y * cosAngle;
 				
 				points.add(new Point2D.Double(xx, yy));
 			}

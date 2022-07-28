@@ -2,7 +2,8 @@
     (players 2) 
     (equipment { 
         //(board (square (poly { {0 0} {0 3} {4 3} {4 0} }))) 
-        (board (square (poly { {0 0} {0 (+ 1 2)} {4 3} {4 0} }))) 
+        //(board (square (poly { {0 0} {0 (+ 1 2)} {4 3} {4 0} }))) 
+        (board (square (poly { {3 8} {3 3} {6 6} } rotns:4))) 
         (piece "Disc") 
     }) 
     (rules 
