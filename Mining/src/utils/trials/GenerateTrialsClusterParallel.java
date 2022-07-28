@@ -41,7 +41,7 @@ public class GenerateTrialsClusterParallel
 	private static int moveLimit;
 	
 	/** The move limit to use to generate the trials. */
-	private static String rootPath = ""; // "Trials" + File.separator;
+	private static String rootPath = "Trials" + File.separator; //""; (for local use this).
 	
 	/** Number of parallel playouts we run */
 	private static final int NUM_PARALLEL = 3;
@@ -250,7 +250,7 @@ public class GenerateTrialsClusterParallel
 				
 				System.out.println("Number " + i);
 				try {
-				executorService.submit(() -> {
+					executorService.submit(() -> {
 					// Run the trial.
 					while (!trial.over())
 						model.startNewStep(context, ais, thinkingTime);
