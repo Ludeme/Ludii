@@ -25,10 +25,14 @@ public final class Polygon
 	{
 	}
 
-	public Polygon(final List<Point2D> pts)
+	public Polygon(final List<Point2D> pts, final int numRotations)
 	{
 		for (final Point2D pt : pts)
 			points.add(new Point2D.Double(pt.getX(), pt.getY()));
+		
+		if (numRotations != 0)
+			addRotations(numRotations);
+			
 	}
 
 	public Polygon(final Point2D[] pts)
@@ -37,7 +41,7 @@ public final class Polygon
 			points.add(new Point2D.Double(pt.getX(), pt.getY()));
 	}
 
-	public Polygon(final Float[][] pts)
+	public Polygon(final Float[][] pts, final int numRotations)
 	{
 		for (final Float[] pair : pts)
 		{
@@ -49,6 +53,9 @@ public final class Polygon
 			}
 			points.add(new Point2D.Double(pair[0].floatValue(), pair[1].floatValue()));
 		}
+						
+		if (numRotations != 0)
+			addRotations(numRotations);
 	}
 
 	public Polygon(final int numSides)
@@ -102,6 +109,40 @@ public final class Polygon
 		
 		for (final Point2D pt : other.points())
 			add(new Point2D.Double(pt.getX(), pt.getY()));
+	}
+	
+	//-------------------------------------------------------------------------
+
+	/**
+	 * Add the existing points repeated by the specified number of rotations.
+	 * @param numRotations
+	 */
+	void addRotations(final int numRotations)
+	{
+		if (numRotations < 0)
+			Collections.reverse(points);
+		
+		final int P = points.size();
+		final double rotnAngle = 2.0 * Math.PI / numRotations;
+		
+		double angle = rotnAngle;
+		for (int r = 1; r < Math.abs(numRotations); r++)
+		{
+			final double sinAngle = Math.sin(angle);
+			final double cosAngle = Math.cos(angle);
+
+			for (int p = 0; p < P; p++)
+			{
+				final double x = points.get(p).getX();
+				final double y = points.get(p).getY();
+						 
+				final double xx = x * cosAngle - y * sinAngle; 
+				final double yy = x * sinAngle + y * sinAngle;
+				
+				points.add(new Point2D.Double(xx, yy));
+			}
+			angle += rotnAngle;
+		}
 	}
 	
 	//-------------------------------------------------------------------------
