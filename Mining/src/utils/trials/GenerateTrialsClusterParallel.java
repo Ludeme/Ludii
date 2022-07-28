@@ -41,7 +41,7 @@ public class GenerateTrialsClusterParallel
 	private static int moveLimit;
 	
 	/** The move limit to use to generate the trials. */
-	private static String rootPath = "." + File.separator + "Trials" + File.separator; //""; (for local use this).
+	private static String rootPath = "." + File.separator; //""; (for local use this).
 	
 	/** Number of parallel playouts we run */
 	private static final int NUM_PARALLEL = 3;
