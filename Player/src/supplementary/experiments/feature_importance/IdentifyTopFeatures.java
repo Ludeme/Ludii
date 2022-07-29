@@ -60,6 +60,22 @@ public class IdentifyTopFeatures
 		
 		loadFeaturesAndWeights(game, trainingOutDirPath, featureSets, linearFunctionsPlayout, linearFunctionsTSPG);
 		
+		for (int p = 1; p < featureSets.length; ++p)
+		{
+			// Add simplified versions of existing spatial features
+			final BaseFeatureSet featureSet = featureSets[p];
+			final SpatialFeature[] origSpatialFeatures = featureSet.spatialFeatures();
+			final List<SpatialFeature> featuresToAdd = new ArrayList<SpatialFeature>();
+			
+			for (final SpatialFeature feature : origSpatialFeatures)
+			{
+				featuresToAdd.addAll(feature.generateGeneralisers(game));
+			}
+			
+			featureSets[p] = featureSet.createExpandedFeatureSet(game, featuresToAdd);
+			featureSets[p].init(game, new int[] {p}, null);
+		}
+		
 		// Load experience buffers
 		final ExperienceBuffer[] experienceBuffers = new ExperienceBuffer[numPlayers + 1];
 		loadExperienceBuffers(game, trainingOutDirPath, experienceBuffers);
@@ -170,21 +186,6 @@ public class IdentifyTopFeatures
 	
 			final BaseFeatureSet[] featureSets = playoutSoftmax.featureSets();
 			final LinearFunction[] linearFunctions = playoutSoftmax.linearFunctions();
-			
-			for (int p = 1; p < featureSets.length; ++p)
-			{
-				// Add simplified versions of existing spatial features
-				final BaseFeatureSet featureSet = featureSets[p];
-				final SpatialFeature[] origSpatialFeatures = featureSet.spatialFeatures();
-				final List<SpatialFeature> featuresToAdd = new ArrayList<SpatialFeature>();
-				
-				for (final SpatialFeature feature : origSpatialFeatures)
-				{
-					featuresToAdd.addAll(feature.generateGeneralisers(game));
-				}
-				
-				// TODO expand feature set
-			}
 	
 			playoutSoftmax.initAI(game, -1);
 			
