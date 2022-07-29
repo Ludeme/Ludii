@@ -27,7 +27,6 @@ import search.minimax.HybridUBFM;
 import search.minimax.LazyUBFM;
 import search.minimax.NaiveActionBasedSelection;
 import search.minimax.UBFM;
-import utils.MyBasicAI;
 import utils.RandomAI;
 
 /**
@@ -175,9 +174,6 @@ public class EvaluateAllUBFMs
 										break;
 									case "Naive Action Based Selection":
 										not_UBFM_AI = new NaiveActionBasedSelection();
-										break;
-									case "Bob":
-										not_UBFM_AI = new MyBasicAI();
 										break;
 									default:
 										System.out.println(configuration[0]);

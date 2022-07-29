@@ -54,11 +54,11 @@ import search.mcts.selection.UCB1;
 import search.mcts.selection.UCB1GRAVE;
 import search.mcts.selection.UCB1Tuned;
 import search.minimax.AlphaBetaSearch;
+import search.minimax.BRSPlus;
+import search.minimax.BiasedUBFM;
 import search.minimax.HybridUBFM;
 import search.minimax.LazyUBFM;
-import search.minimax.BRSPlus;
 import search.minimax.UBFM;
-import search.minimax.BiasedUBFM;
 
 /**
  * Can create AI agents based on strings / files
@@ -105,9 +105,6 @@ public class AIFactory
 		
 		if (string.equalsIgnoreCase("BRS+") || string.equalsIgnoreCase("Best-Reply Search+"))
 			return new BRSPlus();
-
-		if (string.equalsIgnoreCase("Bob the Basic AI"))
-			return new MyBasicAI();
 		
 		if (string.equalsIgnoreCase("UBFM"))
 			return new UBFM();
@@ -498,10 +495,6 @@ public class AIFactory
 		else if (algName.equalsIgnoreCase("Random"))
 		{
 			return new RandomAI();
-		}
-		else if (algName.equalsIgnoreCase("Bob the Basic AI"))
-		{
-			return new MyBasicAI();
 		}
 		else if (algName.equalsIgnoreCase("Lazy UBFM"))
 		{
