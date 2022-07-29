@@ -10,12 +10,9 @@
                 (piece (+ 1 (% (count Moves) (count Players)))) 
                 (to (sites Empty)) 
                 (then 
-                	(and
                     (if 
                         (!= (count MovesThisTurn) (- (count Players) 1)) 
                         (moveAgain)
-                    )
-                    <Version:gameScore>
                     )
                 )
             )
@@ -49,27 +46,23 @@
     (item "10x10" <10> "The game is played on a 10x10 board") 
 })
 
-(option "Players" <Version> args:{ <numPlayers> <gameScore> <endScore>}
+(option "Players" <Version> args:{ <numPlayers> <endScore>}
     {
     (item "2" 
         <2> 
-    	<(and (set Score P1 (* (sizes Group P1))) (set Score P2 (* (sizes Group P2))))>  
         <{(score P1 (* (sizes Group P1))) (score P2 (* (sizes Group P2)))}> 
         "The version of the game played with 2 players."
     )* 
     
     (item "3" 
         <3> 
-	<(and {(set Score P1 (* (sizes Group P1))) (set Score P2 (* (sizes Group P2))) (set Score P3 (* (sizes Group P3)))})>  
-        <{(score P1 (* (sizes Group P1))) (score P2 (* (sizes Group P2))) (score P3 (* (sizes Group P3)))}>  
+        <{(score P1 (* (sizes Group P1))) (score P2 (* (sizes Group P2))) (score P3 (* (sizes Group P3)))}> 
         "The version of the game played with 3 players."
     ) 
     
     (item "4" 
         <4> 
-	<(and {(set Score P1 (* (sizes Group P1))) (set Score P2 (* (sizes Group P2))) (set Score P3 (* (sizes Group P3))) (set Score P4 (* (sizes Group P4)))})>  
-        <{(score P1 (* (sizes Group P1))) (score P2 (* (sizes Group P2))) (score P3 (* (sizes Group P3))) (score P4 (* (sizes Group P4)))}>  
-
+        <{(score P1 (* (sizes Group P1))) (score P2 (* (sizes Group P2))) (score P3 (* (sizes Group P3))) (score P4 (* (sizes Group P4)))}> 
         "The version of the game played with 4 players."
     ) 
     
