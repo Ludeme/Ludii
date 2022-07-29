@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import decision_trees.classifiers.DecisionConditionNode;
 import decision_trees.classifiers.DecisionTreeNode;
 import decision_trees.classifiers.ExperienceUrgencyTreeLearner;
 import features.Feature;
 import features.feature_sets.BaseFeatureSet;
+import features.spatial.SpatialFeature;
 import function_approx.LinearFunction;
 import game.Game;
 import main.CommandLineArgParse;
@@ -81,14 +83,33 @@ public class IdentifyTopFeatures
 			final List<Feature> featuresList = new ArrayList<Feature>();
 			candidateFeaturesPerPlayer.add(featuresList);
 			
-			//collectFeatures(playoutTreesPerPlayer[p], featuresList);
-			//tspgTreesPerPlayer(playoutTreesPerPlayer[p], featuresList);
+			collectFeatures(playoutTreesPerPlayer[p], featuresList);
+			collectFeatures(tspgTreesPerPlayer[p], featuresList);
 			
 			// TODO remove duplicates
 		}
 		
 		// Clear some memory
 		Arrays.fill(experienceBuffers, null);
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Collects all features under a given decision tree node
+	 * @param node Root of (sub)tree from which to collect features
+	 * @param outList List in which to place features
+	 */
+	private static void collectFeatures(final DecisionTreeNode node, final List<Feature> outList)
+	{
+		if (node instanceof DecisionConditionNode)
+		{
+			final DecisionConditionNode conditionNode = (DecisionConditionNode) node;
+			outList.add(conditionNode.feature());
+			
+			collectFeatures(conditionNode.trueNode(), outList);
+			collectFeatures(conditionNode.falseNode(), outList);
+		}
 	}
 	
 	//-------------------------------------------------------------------------
@@ -149,6 +170,21 @@ public class IdentifyTopFeatures
 	
 			final BaseFeatureSet[] featureSets = playoutSoftmax.featureSets();
 			final LinearFunction[] linearFunctions = playoutSoftmax.linearFunctions();
+			
+			for (int p = 1; p < featureSets.length; ++p)
+			{
+				// Add simplified versions of existing spatial features
+				final BaseFeatureSet featureSet = featureSets[p];
+				final SpatialFeature[] origSpatialFeatures = featureSet.spatialFeatures();
+				final List<SpatialFeature> featuresToAdd = new ArrayList<SpatialFeature>();
+				
+				for (final SpatialFeature feature : origSpatialFeatures)
+				{
+					featuresToAdd.addAll(feature.generateGeneralisers(game));
+				}
+				
+				// TODO expand feature set
+			}
 	
 			playoutSoftmax.initAI(game, -1);
 			

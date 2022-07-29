@@ -98,5 +98,31 @@ public class DecisionConditionNode extends DecisionTreeNode
 	}
 	
 	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return The feature we check in this node
+	 */
+	public Feature feature()
+	{
+		return feature;
+	}
+	
+	/**
+	 * @return The node we go to when the feature is active
+	 */
+	public DecisionTreeNode trueNode()
+	{
+		return trueNode;
+	}
+	
+	/**
+	 * @return The node we go to when the feature is not active
+	 */
+	public DecisionTreeNode falseNode()
+	{
+		return falseNode;
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

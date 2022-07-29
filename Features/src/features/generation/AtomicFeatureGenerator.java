@@ -18,6 +18,7 @@ import features.spatial.AbsoluteFeature;
 import features.spatial.Pattern;
 import features.spatial.RelativeFeature;
 import features.spatial.SpatialFeature;
+import features.spatial.SpatialFeature.RotRefInvariantFeature;
 import features.spatial.Walk;
 import features.spatial.elements.FeatureElement;
 import features.spatial.elements.FeatureElement.ElementType;
@@ -445,7 +446,7 @@ public class AtomicFeatureGenerator
 					{
 						shouldAddFeature = false; 
 						
-						final SpatialFeature keepFeature = featuresToKeep.remove(wrapped).feature;
+						final SpatialFeature keepFeature = featuresToKeep.remove(wrapped).feature();
 						
 						// make sure the feature that we decide to keep also
 						// allows for the necessary rotation
@@ -491,50 +492,10 @@ public class AtomicFeatureGenerator
 		
 		for (final RotRefInvariantFeature feature : featuresToKeep.values())
 		{
-			simplified.add(feature.feature);
+			simplified.add(feature.feature());
 		}
 		
 		return simplified;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * Wrapper around a feature, with equals() and hashCode() functions that
-	 * ignore rotation / reflection permissions in feature/pattern.
-	 * 
-	 * @author Dennis Soemers
-	 */
-	private class RotRefInvariantFeature
-	{
-		/** Wrapped Feature */
-		protected SpatialFeature feature;
-		
-		/**
-		 * Constructor
-		 * @param feature
-		 */
-		public RotRefInvariantFeature(final SpatialFeature feature)
-		{
-			this.feature = feature;
-		}
-		
-		@Override
-		public boolean equals(final Object other)
-		{
-			if (!(other instanceof RotRefInvariantFeature))
-			{
-				return false;
-			}
-			
-			return feature.equalsIgnoreRotRef(((RotRefInvariantFeature) other).feature);
-		}
-		
-		@Override
-		public int hashCode()
-		{
-			return feature.hashCodeIgnoreRotRef();
-		}
 	}
 	
 	//-------------------------------------------------------------------------
