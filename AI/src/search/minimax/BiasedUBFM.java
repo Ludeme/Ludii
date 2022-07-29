@@ -1,7 +1,6 @@
 package search.minimax;
 
 import java.util.ArrayList;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -25,7 +24,6 @@ import utils.data_structures.ScoredIndex;
  * 
  * @author cyprien
  */
-
 public class BiasedUBFM extends UBFM
 {
 	
@@ -85,24 +83,24 @@ public class BiasedUBFM extends UBFM
 		
 		final List<ScoredIndex> consideredMoveIndices = new ArrayList<ScoredIndex>(numLegalMoves);
 		
-		for (int i=0; i<numLegalMoves; ++i)
+		for (int i = 0; i < numLegalMoves; ++i)
 		{
 			final Move m = legalMoves.get(i);
 			
-			final float actionValue = (float) learnedSelectionPolicy.computeLogit(context,m);
+			final float actionValue = learnedSelectionPolicy.computeLogit(context,m);
 			
 			consideredMoveIndices.add(new ScoredIndex(i,actionValue));
-		};
+		}
 		Collections.sort(consideredMoveIndices);
 
 		final FVector moveScores = new FVector(numLegalMoves);
-		for (int i=0; i<numLegalMoves; ++i)
+		for (int i = 0; i < numLegalMoves; ++i)
 		{
 			// filling default score for each moves:
 			moveScores.set(i, (mover==maximisingPlayer)? -BETA_INIT+1: BETA_INIT-1);
 		}
 		
-		for (int k=0; k<Math.min(nbStateEvaluationsPerNode, numLegalMoves); k++)
+		for (int k = 0; k < Math.min(nbStateEvaluationsPerNode, numLegalMoves); k++)
 		{
 			final int i = consideredMoveIndices.get(k).index;
 			
@@ -121,13 +119,14 @@ public class BiasedUBFM extends UBFM
 			{
 				break;
 			}
-		};
+		}
 		
 		return moveScores;
 	}
 	
 	//-------------------------------------------------------------------------
 	
+	@Override
 	public void initAI(final Game game, final int playerID)
 	{
 		super.initAI(game,  playerID);

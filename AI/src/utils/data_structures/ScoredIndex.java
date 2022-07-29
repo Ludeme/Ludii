@@ -8,12 +8,12 @@ package utils.data_structures;
  * @author cyprien
  *
  */
-
 public class ScoredIndex implements Comparable<ScoredIndex>
 {
 	
 	/** The move */
-	public final Integer index;
+	public final int index;
+	
 	/** The move's score */
 	public final float score;
 	
@@ -22,7 +22,7 @@ public class ScoredIndex implements Comparable<ScoredIndex>
 	 * @param move
 	 * @param score
 	 */
-	public ScoredIndex(final Integer index, final float score)
+	public ScoredIndex(final int index, final float score)
 	{
 		this.index = index;
 		this.score = score;
@@ -39,4 +39,5 @@ public class ScoredIndex implements Comparable<ScoredIndex>
 		else
 			return 0;
 	}
+	
 }
