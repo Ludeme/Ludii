@@ -17,10 +17,10 @@
             (track "Track2" <Row:track2> loop:True P2)
             }
         )
-        (regions "Home" P1 (sites Track "Track1"))               // P1 Home
-        (regions "Home" P2 (sites Track "Track2"))               // P2 home
+        (regions "Home" P1 (sites Track "Track1"))        // P1 Home
+        (regions "Home" P2 (sites Track "Track2"))        // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))  // P2 inner Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top))) // P2 inner Home
         (piece "Seed" Shared)
     }) 
     (rules 
@@ -86,9 +86,9 @@
 
 (option "Board Size" <Row> args:{ <size> <track2> }
     {
-    (item "8"  <8> <"16,E,N1,W"> "Each row has 8 holes.")*  
-    (item "9"  <9> <"18,E,N1,W"> "Each row has 9 holes.")  
-    (item "10" <10> <"20,E,N1,W"> "Each row has 10 holes.")  
+    (item "8" <8> <"16,E,N1,W"> "Each row has 8 holes.")* 
+    (item "9" <9> <"18,E,N1,W"> "Each row has 9 holes.") 
+    (item "10" <10> <"20,E,N1,W"> "Each row has 10 holes.") 
 })
 
 //------------------------------------------------------------------------------
@@ -113,7 +113,7 @@
         (rules "4x8 board, occasionally 4x9 or 10. Two counters in each hole, except the leftmost hole in the inner row, which has zero, and the hole to its right, which has one. Sowing occurs in an anti-clockwise direction. Players sow from any hole in their two rows. When the final counter lands in an occupied hole, these counters are picked up and sowing continues. When the final counter lands in an empty hole in the inner row, the counters in the opponent's opposite hole in their inner row are captured. If there are also counters in the opponent's opposite hole in the outer row, these are also captured, but only when a capture from the inner row was also made. Players cannot sow single counters, unless there are no holes with multiple counters left, in which case single counters may be sown into an empty hole. Play continues until one player has captured all of the opponent's counters, thus winning the game.")
         (source "Sanderson 1913: 732-733.")
         (id "1312")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         (origin "This game was played in East Africa, around 1913.")

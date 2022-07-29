@@ -5,7 +5,7 @@
         (* 100 (- (count Groups Orthogonal #1) (count Groups Orthogonal #1 min:3)))
         (- 
             (- (count Groups Orthogonal #1) (count Groups Orthogonal #1 min:5))
-            (- (count Groups Orthogonal #1) (count Groups Orthogonal #1 min:3))     
+            (- (count Groups Orthogonal #1) (count Groups Orthogonal #1 min:3))   
         )
         } 
     )
@@ -39,7 +39,7 @@
                 )
                 (then
                     (addScore Mover (- ("CombinedGroupCounts" if:(= (who at:(to)) (mover))) (score Mover)))
-                )     
+                )   
             )
         )
         (end
@@ -62,38 +62,38 @@
 
 (option "Board Type" <Board> args:{ <type> <seed> }
     {
-    (item "Tri Hex 3"    <(tri Hexagon 3)>          
+    (item "Tri Hex 3"  <(tri Hexagon 3)>     
     <> "Base 3 hexagonal board of triangles") 
-    (item "Tri Hex 5*"   <(tri Hexagon 5)>          
+    (item "Tri Hex 5*"  <(tri Hexagon 5)>     
     <> "Base 5 hexagonal board of triangles")* 
-    (item "Square 5"    <(square 5)>              
-    <> "Base 5 square board")  
-    (item "Square 7**"    <(square 7)>              
-    <> "Base 7 square board")  
-    (item "Square 9"    <(square 9)>              
+    (item "Square 5"  <(square 5)>       
+    <> "Base 5 square board") 
+    (item "Square 7**"  <(square 7)>       
+    <> "Base 7 square board") 
+    (item "Square 9"  <(square 9)>       
         <> 
-    "Base 9 square board")  
-    (item "Hex 2"       <(hex 2)>                
+    "Base 9 square board") 
+    (item "Hex 2"    <(hex 2)>        
         <(place Random {"Marker0"} count:1) > 
-    "Base 2 hexagonal board of hexagons")  
-    (item "Hex 3"       <(hex 3)>                
+    "Base 2 hexagonal board of hexagons") 
+    (item "Hex 3"    <(hex 3)>        
         <(place Random {"Marker0"} count:1) >
-    "Base 3 hexagonal board of hexagons")  
-    (item "2x3 triangle"  <(tri Limping 3)>           
+    "Base 3 hexagonal board of hexagons") 
+    (item "2x3 triangle" <(tri Limping 3)>      
         <> 
-    "Base 2x3 truncated triangular board")  
-    (item "3x4 triangle"  <(tri Limping 4)>           
+    "Base 2x3 truncated triangular board") 
+    (item "3x4 triangle" <(tri Limping 4)>      
         <> 
-    "Base 3x4 truncated triangular board")  
-    (item "TriSquares"   <(tiling T33434 2)>         
+    "Base 3x4 truncated triangular board") 
+    (item "TriSquares"  <(tiling T33434 2)>     
         <(place Random {"Marker0"} count:1) > 
-    "Stub square board")  
-    (item "Kensington 1" <(rotate 90 (tiling T3464 1))>  
+    "Stub square board") 
+    (item "Kensington 1" <(rotate 90 (tiling T3464 1))> 
         <(place Random {"Marker0"} count:1) >
-    "Kensington mini board")  
-    (item "Kensington 2" <(rotate 90 (tiling T3464 2))>  
+    "Kensington mini board") 
+    (item "Kensington 2" <(rotate 90 (tiling T3464 2))> 
         <(place Random {"Marker0"} count:3) >
-    "Kensington board")  
+    "Kensington board") 
 })
 
 //------------------------------------------------------------------------------
@@ -117,7 +117,7 @@
         (source "<a href=\"https://sites.google.com/site/theowlsnest02/home/hermit\\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />The Owl's Nest - Hermit</a>
             
         ")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/group")
         (author "Phil Leduc")
         (credit "Phil Leduc")

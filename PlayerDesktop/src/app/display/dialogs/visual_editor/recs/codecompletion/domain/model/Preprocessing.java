@@ -24,8 +24,8 @@ public class Preprocessing {
     /**
      * This method applies all the necessary steps of preprocessing.
      * @param gameDescription
-     * @return
      */
+    @SuppressWarnings("all")
     public static String preprocess(String gameDescription)
     {
         if(DEBUG)System.out.println("Raw:"+gameDescription);
@@ -44,8 +44,8 @@ public class Preprocessing {
      * This method removes the metadata from the game description
      *
      * @param gameDescription
-     * @return
      */
+    @SuppressWarnings("all")
     public static String removeMetadata(String gameDescription)
     {
         String metadataLudeme = "(metadata";
@@ -60,8 +60,8 @@ public class Preprocessing {
      * This method removes all comments from the game description and ravels the description into one line.
      *
      * @param gameDescription
-     * @return
      */
+    @SuppressWarnings("all")
     public static String removeComments(String gameDescription)
     {
         String commentLudeme = "//";
@@ -88,6 +88,7 @@ public class Preprocessing {
      * @param gameDescription
      * @return
      */
+    @SuppressWarnings("all")
     public static  String removeWhitespaces(String gameDescription) {
         char[] chars = gameDescription.toCharArray();
         gameDescription = "";
@@ -139,6 +140,7 @@ public class Preprocessing {
      * @param gameDescription
      * @return
      */
+    @SuppressWarnings("all")
     public static String genericValues(String gameDescription) {
 
         // REPLACE NUMBERS
@@ -251,11 +253,11 @@ public class Preprocessing {
         return gameDescription;
     }
 
+    @SuppressWarnings("all")
     public static String preprocessBegunWord(String begunWord) {
         String cleanBegunWord = "";
         // Watch out for numbers: only contains numbers
         try {
-            double test = Double.parseDouble(begunWord);
             //need to find out whether it is a float or an int
             if(begunWord.contains(".")) {
                 cleanBegunWord = FLOAT_WILDCARD;

@@ -1,52 +1,24 @@
-(define "HopMan" 
-    (move
-        Hop 
-        (from #1) 
-        Diagonal 
-        (between 
-            if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
-            (apply (remove (between) at:EndOfTurn))
-        ) 
-        (to if:(is Empty (to))) 
-        #2
-    ) 
-)
-
-(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
-
-(define "JumpToPromotionZone" (is In (last To) (sites Next)))
+(define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
 
 //------------------------------------------------------------------------------
 
 (game "Diagonal Draughts" 
     (players 2) 
-    (equipment { 
-        (board (square 10)) 
-        (piece "Counter" Each) 
-        (piece "DoubleCounter" Each)
-        (regions P1 (sites Bottom))
-        (regions P2 (sites Top))
-        }
-    ) 
+    ("DraughtsEquipment" (square 10)) 
     (rules 
-        (start
-            { 
+        (start { 
             (place "Counter1" (difference (expand (intersection (sites Right) (sites Bottom)) steps:8 Orthogonal) (sites Phase 1) ))
             (place "Counter2" (difference (expand (intersection (sites Left) (sites Top)) steps:8 Orthogonal) (sites Phase 1)))
-            }
-        )
+        })
         
         (play 
             (if "SameTurn"
                 (if "IsUnpromoted"
                     (max Moves
-                        ("HopMan" (last To)
+                        ("HopInternationalDraughtsStyle" (from (last To))
                             (then 
-                                (if (can Move ("HopMan" (last To))) 
-                                    (moveAgain)
-                                    (if "JumpToPromotionZone" 
-                                        (move Promote (last To) (piece "DoubleCounter") Mover)
-                                    )
+                                ("ReplayIfCanMove" ("HopInternationalDraughtsStyle" (from (last To))) 
+                                    ("PromoteIfReach" (sites Next) "DoubleCounter")
                                 ) 
                             ) 
                         )
@@ -57,13 +29,10 @@
                     (max Moves
                         (or 
                             (forEach Piece "Counter"
-                                ("HopMan" (from) 
+                                ("HopInternationalDraughtsStyle" (from)
                                     (then 
-                                        (if (can Move ("HopMan" (last To))) 
-                                            (moveAgain) 
-                                            (if "JumpToPromotionZone" 
-                                                (move Promote (last To) (piece "DoubleCounter") Mover)
-                                            )
+                                        ("ReplayIfCanMove" ("HopInternationalDraughtsStyle" (from (last To))) 
+                                            ("PromoteIfReach" (sites Next) "DoubleCounter")
                                         ) 
                                     ) 
                                 ) 
@@ -73,16 +42,8 @@
                     )
                     (or 
                         (forEach Piece "Counter" 
-                            (move
-                                Step 
-                                Diagonal 
-                                (to if:(is Empty (to)))
-                            )
-                            (then 
-                                (if "JumpToPromotionZone"
-                                    (move Promote (last To) (piece "DoubleCounter") Mover)
-                                )
-                            )
+                            ("StepToEmpty" Diagonal)
+                            (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
                         )
                         (forEach Piece "DoubleCounter" (move Slide Diagonal))
                     )
@@ -105,7 +66,7 @@
         ")
         (source "Twiss 1805: 173.")
         (id "885")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/leaping/diagonal")
         (credit "Eric Piette")
         (origin "This game was played in England, around 1805.")

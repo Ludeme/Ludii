@@ -36,7 +36,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover (to)))
-    )  
+    ) 
 )
 
 (define "DoCastle"
@@ -106,7 +106,7 @@
 //------------------------------------------------------------------------------
 
 (game "Chess" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8)) 
         
@@ -258,5 +258,5 @@
     
     (ai 
         "Chess_ai"
-    )  
+    ) 
 )

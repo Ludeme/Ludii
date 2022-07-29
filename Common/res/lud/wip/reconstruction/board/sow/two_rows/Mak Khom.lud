@@ -9,9 +9,9 @@
         (mancalaBoard 2 7 store:None
             (track "Track" "0,E,N,W" loop:True)
         )
-        (piece "Seed" Shared)   
-        (regions P1 (sites Bottom))           // P1 home
-        (regions P2 (sites Top))            // P2 home
+        (piece "Seed" Shared)  
+        (regions P1 (sites Bottom))      // P1 home
+        (regions P2 (sites Top))      // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
     }) 
     (rules 

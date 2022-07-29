@@ -14,9 +14,9 @@
         )
         (piece "Seed" Shared)
         (regions "Left" P1 (intersection (expand (sites Left) steps:2) (sites Bottom))) // P1 home left
-        (regions "Left" P2 (intersection (expand (sites Right) steps:2) (sites Top)))  // P2 home left
+        (regions "Left" P2 (intersection (expand (sites Right) steps:2) (sites Top))) // P2 home left
         (regions "Right" P1 (intersection (expand (sites Right) steps:2) (sites Bottom))) // P1 home right
-        (regions "Right" P2 (intersection (expand (sites Left) steps:2) (sites Top)))   // P2 home right
+        (regions "Right" P2 (intersection (expand (sites Left) steps:2) (sites Top)))  // P2 home right
     }) 
     (rules 
         (start (set Count 4 to:(sites Track)))
@@ -69,7 +69,7 @@
         (rules "2x6 board. Four counters in each hole. Sowing occurs in a clockwise direction when starting from the three holes on the left of the board, and in an anti-clockwise direction when starting from the three holes on the right. Sowing ends when the final counter is dropped, regardless of whether the hole is occupied or not. When the final counter is dropped into a hole containing three counters, thus making it contain four, the hole is captured. This can only be done if the hole is one of the end holes on either side of either row, or the penultimate holes on either side of the opponent's row. Sowing is not allowed from a captured hole. When no player is able to move, the player with the most counters in their captured holes wins.")
         (source "Pankhurst 1971: 171.")
         (id "347")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         (origin "This game was played in Horn of Africa, around 1971.")

@@ -266,35 +266,7 @@ public class CompareAllDistanceMetrics
 //		fullImportConceptDataset = DistanceUtils.fullVocabulary(importConceptDataset, "importConceptDataset", overrideStoredVocabularies);
 //		System.out.println("importConceptVocabulary recorded");
 	}
-	
-	//---------------------------------------------------------------------
-	
-	/**
-	 * Specific games/rulesets to compare.
-	 * @return List of two String arrays, for all game and ruleset names to compare.
-	 */
-	private static List<String[]> getSpecificGamesToCompare()
-	{			
-		final String[] gamesToCompare = 
-			{
-				"/lud/board/hunt/Haretavl.lud",
-				"/lud/board/hunt/Jeu Militaire.lud",
-				"/lud/board/hunt/Jeu Militaire.lud"
-			};
 
-		final String[] rulesetsToCompare = 
-			{
-				"",
-				"Ruleset/Lucas (Described)",
-				"Ruleset/Gardner (Suggested)"
-			};
-		
-		final List<String[]> gamesAndRulesetsToCompare = new ArrayList<>();
-		gamesAndRulesetsToCompare.add(gamesToCompare);
-		gamesAndRulesetsToCompare.add(rulesetsToCompare);
-		return gamesAndRulesetsToCompare;
-	}
-	
 	//---------------------------------------------------------------------
 	
 	/**

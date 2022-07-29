@@ -1,0 +1,55 @@
+(game "Gobblet Gobblers"
+    (players 2) 
+    (equipment { 
+        (board (square 3))
+        (piece "Disc1" Each)
+        (piece "Disc2" Each)
+        (piece "Disc3" Each)
+        (hand Each size:3)
+    }) 
+    (rules 
+        (start {
+            (place Stack "Disc11" (handSite P1) count:3)
+            (place Stack "Disc12" (handSite P2) count:3)
+            (place Stack "Disc21" (handSite P1 1) count:3)
+            (place Stack "Disc22" (handSite P2 1) count:3)
+            (place Stack "Disc31" (handSite P1 2) count:3)
+            (place Stack "Disc32" (handSite P2 2) count:3)
+        })
+        (play
+            (or
+                ("MoveToEmptyOrOccupiedByLargerPiece" (sites Hand Mover) if:(is Occupied (from)))
+                ("MoveToEmptyOrOccupiedByLargerPiece" (sites Occupied by:Mover top:True))
+            )
+        )
+        
+        (end 
+            (forEach Player
+                if:(is Line 3 Player top:True)
+                (result Player Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Blue))
+        (player Colour P2 (colour Red))
+        (piece Scale "Disc11" 1.0)
+        (piece Scale "Disc21" 0.6)
+        (piece Scale "Disc31" 0.4)
+        (piece Scale "Disc12" 1.0)
+        (piece Scale "Disc22" 0.6)
+        (piece Scale "Disc32" 0.4)
+        (stackType None)
+    })
+)

@@ -1,21 +1,3 @@
-(define "RemoveEnemyPiece" 
-    (move
-        Remove
-        (sites Occupied by:Next container:"Board") 
-    )
-)
-
-(define "IfLine3MoveAgain" 
-    (then 
-        (if 
-            (is Line 3) 
-            (moveAgain)
-        )
-    )
-)
-
-//------------------------------------------------------------------------------
-
 (game "Symbol S.2" 
     (players 2) 
     
@@ -29,11 +11,7 @@
         )
         (hand Each) 
         (piece "Marker" Each 
-            (move
-                Step
-                (to if:(is Empty (to))) 
-                "IfLine3MoveAgain"
-            )
+            ("StepToEmpty" ~ (then ("ReplayIfLine3")))
         ) 
     }) 
     (rules 
@@ -44,11 +22,11 @@
         (phase "Placement"
             (play
                 (if "SameTurn"
-                    "RemoveEnemyPiece"
+                    "RemoveAnyEnemyPiece"
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
-                        "IfLine3MoveAgain"
+                        (then ("ReplayIfLine3"))
                     ) 
                 )
             ) 
@@ -58,18 +36,13 @@
         (phase "Movement" 
             (play 
                 (if "SameTurn"
-                    "RemoveEnemyPiece"
+                    "RemoveAnyEnemyPiece"
                     (forEach Piece)
                 )
             )
         )
         }
-        (end 
-            (if 
-                (<= (count Pieces Next) 2) 
-                (result Mover Win)
-            )
-        )
+        (end ("HavingLessPiecesLoss" Next 2))
     )
 )
 
@@ -83,7 +56,7 @@
         (rules "Same rules as Six Men's Morris.")
         (source "Bell and Roueché 2007: 108 (S.2).")
         (id "595")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line")
         (credit "Eric Piette")
         }
@@ -91,7 +64,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai 

@@ -9,7 +9,6 @@ import java.awt.*;
 public class SelectionBox
 {
     private static Point A;
-    private static Point B;
     private static Rectangle rect;
     private static SelectionBox sb;
 
@@ -18,10 +17,9 @@ public class SelectionBox
         SelectionBox.A = A;
     }
 
-    public static void drawSelectionArea(Point A, Point B, Graphics2D g2d)
+    public static void drawSelectionArea(Point A1, Point B, Graphics2D g2d)
     {
-        if (sb == null) sb = new SelectionBox(A);
-        SelectionBox.B = B;
+        if (sb == null) sb = new SelectionBox(A1);
 
         float[] dashingPattern = {10f, 4f};
         Stroke stroke = new BasicStroke(2f, BasicStroke.CAP_BUTT,

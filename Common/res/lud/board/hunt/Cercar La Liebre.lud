@@ -1,5 +1,5 @@
 (game "Cercar La Liebre" 
-    (players 2)  
+    (players 2) 
     (equipment { 
         <Board>
         (piece "Counter" P1 "StepToEmpty") 
@@ -21,7 +21,7 @@
 
 (option "Board" <Board> args:{ <type> }
     {
-    (item "Normal" <("AlquerqueBoard" 5 5)> "Played on a Alquerque Board.")*  
+    (item "Normal" <("AlquerqueBoard" 5 5)> "Played on a Alquerque Board.")* 
     (item "Less Diagonal" 
         <(board 
             (remove 
@@ -46,8 +46,8 @@
 
 (option "Play Rules" <Jump> args:{ <hare> }
     {
-    (item "No multiple hops" <"HopCapture">      "The hare can jump to capture.")*  
-    (item "Multiple hops"  <("HopSequenceCapture")> "The hare can jump a sequence of pieces to capture.") 
+    (item "No multiple hops" <"HopCapture">   "The hare can jump to capture.")* 
+    (item "Multiple hops" <("HopSequenceCapture")> "The hare can jump a sequence of pieces to capture.") 
     }
 )
 
@@ -81,7 +81,7 @@
         (useFor "Ruleset/Murray (Described)" (id "598"))
         (source "Murray 1951: 99")
         (id "383")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/hunt")
         (credit "Eric Piette")
         (origin "This game was played in Spain, from around 1221 to 1284.")

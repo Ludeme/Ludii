@@ -16,10 +16,10 @@
             }
         )
         (piece "Seed" Shared)
-        (regions "Home" P1 (sites Track "TrackCCW1"))                   // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))                   // P2 Home
-        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))     // P1 Inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))      // P2 Inner Home
+        (regions "Home" P1 (sites Track "TrackCCW1"))          // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))          // P2 Home
+        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))   // P1 Inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))   // P2 Inner Home
         (regions "Left" P1 (intersection (sites Track "TrackCCW1") (expand (sites Left)))) // P1 Left Holes
         (regions "Left" P2 (intersection (sites Track "TrackCCW2") (expand (sites Right)))) // P2 Left Holes
         (hand Each)
@@ -180,7 +180,7 @@
         (rules "4x8 board. 32 counters per player. Players may arrange the counters however they like in their holes. Players sow by taking the counters from one of their holes and dropping them one by one in an anti-clockwise direction only in the two rows closest to them. When the last counter lands in an empty hole, the turn is over. When the last counter falls into an occupied hole, the contents of this hole are picked up and sowing continues. If the final counter falls into an occupied hole in the inner row, and the two holes opposite it in the opponent's rows are occupied, the counters in these two rows of the opponent are taken. They are then sown on the player's side of the board beginning from the hole that received the first counter of the sowing that led to the capture. Both of the opponent's holes must be occupied to capture. Clockwise sowing is allowed in certain circumstances. If a clockwise move from the four holes on the left hand side of the players board (i.e., the left two holes in the outer row or the left two hole in the inner row) can lead to a capture, a clockwise move is allowed. Sowing cannot occur with single counters. The player who can no longer move loses.")
         (source "Shackell 1934: 14-19.")
         (id "264")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         (origin "This game was played in Uganda, around 1912.")

@@ -50,7 +50,7 @@
         (phase "Entering"
             (play
                 (do 
-                    (if (not "SameTurn") (roll))
+                    (if ("NewTurn") (roll))
                     next:(forEach Die
                         if:("DieNotUsed")
                         (move
@@ -71,7 +71,7 @@
         (phase "Playing" 
             (play
                 (do 
-                    (if (not "SameTurn") (roll))
+                    (if ("NewTurn") (roll))
                     next:(forEach Die
                         if:("DieNotUsed")
                         (forEach Piece top:True)
@@ -101,8 +101,8 @@
         ")
         (source "DLP evidence.")
         (id "991")
-        (version "1.3.2")
-        (classification "board/race/escape/reconstruction")
+        (version "1.3.5")
+        (classification "board/war/reconstruction")
         (credit "Eric Piette")
         (origin "This game was played in Thailand, around 1836.")
         }

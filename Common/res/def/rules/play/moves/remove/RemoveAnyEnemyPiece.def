@@ -1,0 +1,7 @@
+// Allows to remove one piece of the enemy player.
+// #1 = The consequences.
+// @example ("RemoveAnyEnemyPiece")
+
+(define "RemoveAnyEnemyPiece"
+    (move Remove (sites Occupied by:Enemy container:"Board") #1)
+)

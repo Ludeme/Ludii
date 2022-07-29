@@ -190,7 +190,7 @@
 
 // Non-capturing 2-step advancement with en passant setup
 // Note: <back_dir> is used to record which Cells trigger en passant capture.
-//    It should be the compass opposite of <fwd_dir>.
+//  It should be the compass opposite of <fwd_dir>.
 // Source: Derived from Chess.lud - DoubleStep
 // Usage: ("PawnHop" <fwd_dir> <back_dir>)
 (define "PawnHop"
@@ -219,7 +219,7 @@
 )
 
 (define "PawnStep_Double"
-    ("PawnStep_Double_Base" N S  ENE WSW  S N  WSW ENE)
+    ("PawnStep_Double_Base" N S ENE WSW S N WSW ENE)
 )
 
 // Usage: ("PawnStep_ToEmpty_Base" <directions>)
@@ -237,8 +237,8 @@
 
 //----------------------------------------
 // Pawn movement: En passant
-//  - Save skipped-over spaces in Pending
-//  - Save location of last-moved Pawn in Var.
+// - Save skipped-over spaces in Pending
+// - Save location of last-moved Pawn in Var.
 // Note: Counter is reset in (piece "Pawn" ...).
 //----------------------------------------
 
@@ -293,7 +293,7 @@
             )
         )
         (piece "Queen" Each ("SlideCaptureMove" All ~))
-        (piece "Rook"  Each ("SlideCaptureMove" Orthogonal "History_SaveMovementChange"))
+        (piece "Rook" Each ("SlideCaptureMove" Orthogonal "History_SaveMovementChange"))
         (piece "Bishop" Each ("SlideCaptureMove" Diagonal ~))
         (piece "Knight" Each
             (move
@@ -323,11 +323,11 @@
             )
         )
         
-        (map "King"   {(pair 1 "A4") (pair 2 <BoardConfig:King2Start>)})
+        (map "King"  {(pair 1 "A4") (pair 2 <BoardConfig:King2Start>)})
         (map "RookLeft" {(pair 1 "A9") (pair 2 <BoardConfig:RookLeft2Start>)})
         (map "RookRight" {(pair 1 "A1") (pair 2 <BoardConfig:RookRight2Start>)})
         
-        (regions "Region-Dark"  (sites Phase <BoardConfig:RegionDarkPhase>))
+        (regions "Region-Dark" (sites Phase <BoardConfig:RegionDarkPhase>))
         (regions "Region-Light" (sites Phase <BoardConfig:RegionLightPhase>))
         (regions "Region-Medium" (sites Phase <BoardConfig:RegionMediumPhase>))
         
@@ -339,20 +339,20 @@
     (rules
         (start
             {
-            (place "King1"  coord:"A4" state:1)
+            (place "King1" coord:"A4" state:1)
             (place "Queen1" coord:"A6")
-            (place "Rook1"  {"A9" "A1"} state:1)
+            (place "Rook1" {"A9" "A1"} state:1)
             (place "Bishop1" {"A3" "A5" "A7"})
             (place "Knight1" {"A8" "A2"})
             
-            (place "King2"  coord:<BoardConfig:King2Start> state:1)
+            (place "King2" coord:<BoardConfig:King2Start> state:1)
             (place "Queen2" coord:<BoardConfig:Queen2Start>)
-            (place "Rook2"  {<BoardConfig:RookLeft2Start> <BoardConfig:RookRight2Start>} state:1)
+            (place "Rook2" {<BoardConfig:RookLeft2Start> <BoardConfig:RookRight2Start>} state:1)
             (place "Bishop2" <BoardConfig:Bishop2Start>)
             (place "Knight2" <BoardConfig:Knight2Start>)
             
-            (place "Pawn1"  <BoardConfig:Pawn1Start>)
-            (place "Pawn2"  <BoardConfig:Pawn2Start>)
+            (place "Pawn1" <BoardConfig:Pawn1Start>)
+            (place "Pawn2" <BoardConfig:Pawn2Start>)
             }
         )
         phases:{
@@ -392,14 +392,14 @@
     {
     (item "9"
         <(hex Diamond 9)>
-        <{"C9" "C8" "C7" "C6" "C5" "C4" "C3" "C2" "C1"}>    // Pawn1Start
-        <"I4">        // King2Start
-        <"I6">        // Queen2Start
-        <"I9">        // RookLeft2Start
-        <"I1">         // RookRight2Start
+        <{"C9" "C8" "C7" "C6" "C5" "C4" "C3" "C2" "C1"}>  // Pawn1Start
+        <"I4">    // King2Start
+        <"I6">    // Queen2Start
+        <"I9">    // RookLeft2Start
+        <"I1">     // RookRight2Start
         <{"I7" "I5" "I3"}> // Bishop2Start
-        <{"I8" "I2"}>    // Knight2Start
-        <{"G1" "G2" "G3" "G4" "G5" "G6" "G7" "G8" "G9"}>  // Pawn2Start
+        <{"I8" "I2"}>  // Knight2Start
+        <{"G1" "G2" "G3" "G4" "G5" "G6" "G7" "G8" "G9"}> // Pawn2Start
         <0>
         <1>
         <2>
@@ -407,13 +407,13 @@
     )*
     (item "8"
         <(remove (hex Diamond 9) cells:{36 28 21 15 10 6 3 1 0})>
-        <{"B9" "B8" "B7" "B6" "B5" "B4" "B3" "B2" "B1"}>    // Pawn1Start
-        <"H4">        // King2Start
-        <"H6">        // Queen2Start
-        <"H9">        // RookLeft2Start
-        <"H1">         // RookRight2Start
+        <{"B9" "B8" "B7" "B6" "B5" "B4" "B3" "B2" "B1"}>  // Pawn1Start
+        <"H4">    // King2Start
+        <"H6">    // Queen2Start
+        <"H9">    // RookLeft2Start
+        <"H1">     // RookRight2Start
         <{"H7" "H5" "H3"}> // Bishop2Start
-        <{"H8" "H2"}>     // Knight2Start
+        <{"H8" "H2"}>   // Knight2Start
         <{"G1" "G2" "G3" "G4" "G5" "G6" "G7" "G8" "G9"} > // Pawn2Start
         <2>
         <1>
@@ -445,7 +445,7 @@
         The game ends on a checkmate or stalemate.")
         (id "858")
         (source "For a comparison of popular versions of hexagonal chess, see <a href=\"https://en.wikipedia.org/wiki/Hexagonal_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>. For more details on other chess variants, see The Classified Encyclopedia of Chess Variants, by D. B. Pritchard (2nd edition, completed and edited by John Beasley, 2007).")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chess")
         (author "Helge E. de Vasa")
         (credit "Jay Coskey, with some small functions drawn from Chess.lud, by Eric Piette")
@@ -462,7 +462,7 @@
         (piece Scale "Rook" 0.8)
         (board Style Chess)
         
-        (region Colour "Region-Dark"  (colour "#b5651d"))
+        (region Colour "Region-Dark" (colour "#b5651d"))
         (region Colour "Region-Light" (colour "#fff8dc"))
         (region Colour "Region-Medium" (colour "#daae7c"))
     })

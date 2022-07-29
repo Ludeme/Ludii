@@ -348,9 +348,18 @@ public class Material extends HeuristicTerm
 		{
 			sb.append(" pieceWeights:{\n");
 			
+			boolean allZeros = true;
 			for (int i = 0; i < pieceWeightNames.length; ++i)
 			{
 				if (gameAgnosticWeightsArray[i] != 0.f)
+				{
+					break;
+				}
+			}
+			
+			for (int i = 0; i < pieceWeightNames.length; ++i)
+			{
+				if (allZeros || (gameAgnosticWeightsArray[i] != 0.f))
 					sb.append("        (pair " + StringRoutines.quote(pieceWeightNames[i]) + " " + gameAgnosticWeightsArray[i] + ")\n");
 			}
 			

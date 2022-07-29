@@ -18,8 +18,8 @@
             (track "TrackCCW2" {4 5 6 12 11 10} loop:True P2) 
             }
         )
-        (regions "Home" P1 (sites Track "TrackCCW1"))     // P1 home
-        (regions "Home" P2 (sites Track "TrackCCW2"))     // P2 home
+        (regions "Home" P1 (sites Track "TrackCCW1"))   // P1 home
+        (regions "Home" P2 (sites Track "TrackCCW2"))   // P2 home
         (regions "TwoHolesClosestNotCentre" P1 (sites {1 3}))
         (regions "TwoHolesClosestNotCentre" P2 (sites {10 12}))
         (regions "TwoHolesFurtherNotCentre" P1 (sites {7 9}))
@@ -104,7 +104,7 @@
 
 (option "Variant" <Variant> args:{ <opening> }
     {
-    (item "Lontu Holo"  
+    (item "Lontu Holo" 
         <
         (phase "Opening1"
             (play 
@@ -182,7 +182,7 @@
         > 
     "The opening rules of the variant Lontu Holo.")* 
     
-    (item "Alternate Opening 1"  
+    (item "Alternate Opening 1" 
         <
         (phase "Opening1"
             (play 
@@ -257,7 +257,7 @@
         > 
     "The opening rules of the variant Alternate Opening 1.")
     
-    (item "Alternate Opening 2"  
+    (item "Alternate Opening 2" 
         <
         (phase "Opening1"
             (play 
@@ -350,7 +350,7 @@
         > 
     "The opening rules of the variant Alternate Opening 2.") 
     
-    (item "Alternate Opening 3"  
+    (item "Alternate Opening 3" 
         <
         (phase "Opening1"
             (play 
@@ -495,7 +495,7 @@
         (useFor "Ruleset/Alternate Opening 3 (Observed)" (id "968"))
         (source "Murray 1951: 203-204.")
         (id "965")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         (origin "This game was played in Suriname, around 1930.")

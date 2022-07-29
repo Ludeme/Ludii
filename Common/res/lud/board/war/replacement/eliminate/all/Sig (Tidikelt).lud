@@ -137,8 +137,8 @@
 
 (option "Dice" <Dice> args:{ <num> <throwValues> }
     {
-    (item "4"    <4> <(map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})> "The game is played with 4 dice.")*  
-    (item "6"    <6> <(map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 4) (pair 6 4)})> "The game is played with 6 dice.")  
+    (item "4"  <4> <(map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})> "The game is played with 4 dice.")* 
+    (item "6"  <6> <(map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 4) (pair 6 4)})> "The game is played with 6 dice.") 
     }
 )
 
@@ -171,7 +171,7 @@
         (useFor "Ruleset/Six Stick Dice (Observed)" (id "847"))
         (source "Depaulis 2001: 68; Gana 1991: 191.")
         (id "846")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
         (origin "This game was played in Algeria, around 1964.")
@@ -179,7 +179,7 @@
     )
     
     (graphics {
-        (show Edges Hidden)  
+        (show Edges Hidden) 
         (show Symbol "disc" "AllSites" Vertex fillColour:(colour White) edgeColour:(colour Black) scale:1)
         (piece Colour "Die" state:0 fillColour:(colour Dark))
         (piece Scale "Stick" 0.5)

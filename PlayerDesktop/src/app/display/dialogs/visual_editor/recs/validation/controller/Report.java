@@ -80,4 +80,9 @@ public class Report {
     public void writeToCSV() {
         CSVUtils.writeCSV(location, header, lines);
     }
+
+	public int getN()
+	{
+		return N;
+	}
 }

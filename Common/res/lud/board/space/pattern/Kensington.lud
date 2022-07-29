@@ -7,15 +7,13 @@
 )
 
 (define "HexFilled"
-    (= 
-        6 
+    (= 6 
         (count Sites in:"AllVerticesOfCell")
     )
 )
 
 (define "SquareFilled"
-    (= 
-        4 
+    (= 4 
         (count Sites in:"AllVerticesOfCell")
     )
 )
@@ -61,13 +59,13 @@
         (board (rotate 90 (tiling T3464 2)) use:Vertex)
         (hand Each)
         (piece "Marker" Each "StepToEmpty") 
-        (regions "HexA" P1 (sites Cell "E4"))  
-        (regions "HexB" P1 (sites Cell "I4"))  
+        (regions "HexA" P1 (sites Cell "E4")) 
+        (regions "HexB" P1 (sites Cell "I4")) 
         (regions "HexA" P2 (sites Cell "E12")) 
-        (regions "HexB" P2 (sites Cell "I12"))  
-        (regions "HexNeutral1" (sites Cell "C8"))  
-        (regions "HexNeutral2" (sites Cell "G8"))  
-        (regions "HexNeutral3" (sites Cell "K8"))  
+        (regions "HexB" P2 (sites Cell "I12")) 
+        (regions "HexNeutral1" (sites Cell "C8")) 
+        (regions "HexNeutral2" (sites Cell "G8")) 
+        (regions "HexNeutral3" (sites Cell "K8")) 
     }) 
     (rules 
         (start (place "Marker" "Hand" count:15))
@@ -75,8 +73,7 @@
         (play
             (if "SameTurn"
                 "MoveAnEnemyPiece"
-                (if 
-                    ("HandEmpty" Mover)
+                (if ("HandEmpty" Mover)
                     (forEach Piece)
                     "PlaceAPiece"
                     (then 
@@ -124,7 +121,7 @@
             
         The winner is the first player to occupy all six vertices of either any neutral hexagon or one of his/her own color. A win can be achieved during either the placement or movement phases of the game.")
         (id "548")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/pattern")
         (author "Brian Taylor and Peter Forbes")
         (credit "Eric Piette")

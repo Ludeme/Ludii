@@ -101,7 +101,7 @@
         #1 
         (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
-    )  	
+    ) 	
 )
 
 (define "StepMove"
@@ -110,7 +110,7 @@
         #1
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
-    )  	
+    ) 	
 )
 
 (define "GoldMove"
@@ -119,7 +119,7 @@
         { {F} {F L F} {F R F} {L F} {R F} {L L F} {R R F} {L L L F}}
         rotations:False
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
-    )  	
+    ) 	
 )
 
 (define "SilverMove"
@@ -128,13 +128,13 @@
         { {F} {F L F} {F R F} {L F L F} {R F R F} {L L F L F} {R R F R F}}
         rotations:False
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
-    )  	
+    ) 	
 )
 
 //------------------------------------------------------------------------------
 
 (game "Hexshogi" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     
     (equipment { 
         (board (rotate 90 (remove (hex Rectangle 9 11) cells:{0 10 21 31 42 52 63 73 84 94})))
@@ -329,7 +329,7 @@
         (rules "Piece movement has been updated to work on hexagonal cells, but all other rules remain the same.")
         (id "1616")
         (source "<a href=\"http://wikipedia.org/wiki/Hexshogi\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/shogi")
         (author "George R. Dekle Sr.")
         (credit "Matthew Stephenson")

@@ -3,10 +3,8 @@ package app.display.dialogs.visual_editor.view.components.ludemenodecomponent;
 
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
-import app.display.dialogs.visual_editor.view.DesignPalette;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
-import app.display.dialogs.visual_editor.view.panels.NodeHelp;
-import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,31 +15,54 @@ public class NodePopupMenu extends JPopupMenu
 {
 	private static final long serialVersionUID = 1L;
 
-	public NodePopupMenu(LudemeNodeComponent nodeComponent, IGraphPanel graphPanel) {
+	public NodePopupMenu(LudemeNodeComponent nodeComponent, IGraphPanel graphPanel)
+    {
         JMenuItem delete = new JMenuItem("Delete");
-        JMenuItem dynamic = new JMenuItem("(Un)Set Dynamic");
         JMenuItem observe = new JMenuItem("Observe");
         JMenuItem collapse = new JMenuItem("Collapse");
         JMenuItem duplicate = new JMenuItem("Duplicate");
         JMenuItem copyBtn = new JMenuItem("Copy");
 
-        int iconHeight = (int)(copyBtn.getPreferredSize().getHeight()*0.75);
+        int iconDiameter = (int)(copyBtn.getPreferredSize().getHeight()*0.75);
 
-        ImageIcon copyI = new ImageIcon(DesignPalette.COPY_ICON.getImage().getScaledInstance(iconHeight, iconHeight, Image.SCALE_SMOOTH));
-        ImageIcon duplicateI = new ImageIcon(DesignPalette.DUPLICATE_ICON.getImage().getScaledInstance(iconHeight, iconHeight, Image.SCALE_SMOOTH));
-        ImageIcon deleteI = new ImageIcon(DesignPalette.DELETE_ICON.getImage().getScaledInstance(iconHeight, iconHeight, Image.SCALE_SMOOTH));
-        ImageIcon collapseI = new ImageIcon(DesignPalette.COLLAPSE_ICON.getImage().getScaledInstance(iconHeight, iconHeight, Image.SCALE_SMOOTH));
+        ImageIcon copyI = new ImageIcon(DesignPalette.COPY_ICON.getImage().getScaledInstance(iconDiameter, iconDiameter, Image.SCALE_SMOOTH));
+        ImageIcon duplicateI = new ImageIcon(DesignPalette.DUPLICATE_ICON.getImage().getScaledInstance(iconDiameter, iconDiameter, Image.SCALE_SMOOTH));
+        ImageIcon deleteI = new ImageIcon(DesignPalette.DELETE_ICON.getImage().getScaledInstance(iconDiameter, iconDiameter, Image.SCALE_SMOOTH));
+        ImageIcon collapseI = new ImageIcon(DesignPalette.COLLAPSE_ICON().getImage().getScaledInstance(iconDiameter, iconDiameter, Image.SCALE_SMOOTH));
 
         copyBtn.setIcon(copyI);
         duplicate.setIcon(duplicateI);
         collapse.setIcon(collapseI);
         delete.setIcon(deleteI);
 
-        if(graphPanel.graph().getRoot() != nodeComponent.node()) {
+        JMenuItem fix = new JMenuItem("Fix group");
+        fix.addActionListener(e -> {
+            graphPanel.graph().getNode(graphPanel.graph().selectedRoot()).setFixed(true);
+            graphPanel.repaint();
+        });
+
+        JMenuItem unfix = new JMenuItem("Unfix group");
+        unfix.addActionListener(e -> {
+            graphPanel.graph().getNode(graphPanel.graph().selectedRoot()).setFixed(false);
+            graphPanel.repaint();
+        });
+
+
+        if(graphPanel.graph().getRoot() != nodeComponent.node())
+        {
             add(copyBtn);
             add(duplicate);
             add(collapse);
-            add(observe);
+
+            if (graphPanel.graph().selectedRoot() != -1 &&
+                    graphPanel.graph().getNode(graphPanel.graph().selectedRoot()).fixed())
+            {
+                add(unfix);
+            }
+            else if (graphPanel.graph().selectedRoot() != -1)
+            {
+                add(fix);
+            }
             add(delete);
         }
 
@@ -62,9 +83,9 @@ public class NodePopupMenu extends JPopupMenu
                 copy.add(nodeComponent.node());
             }
             // remove root node from copy list
-            copy.remove(graphPanel.graph().getRoot());
+            //copy.remove(graphPanel.graph().getRoot());
 
-            Handler.copy(graphPanel.graph(), copy);
+            Handler.copy(copy);
         });
 
         duplicate.addActionListener(e -> {
@@ -81,12 +102,9 @@ public class NodePopupMenu extends JPopupMenu
             }
         });
 
-        collapse.addActionListener(e -> {
-            Handler.collapseNode(graphPanel.graph(), nodeComponent.node(), true);
-        });
+        collapse.addActionListener(e -> Handler.collapseNode(graphPanel.graph(), nodeComponent.node(), true));
 
         delete.addActionListener(e -> {
-            // TODO: maybe a handler for that?
             if(nodeComponent.selected() && graphPanel.selectedLnc().size() > 1)
             {
                 List<LudemeNode> nodes = new ArrayList<>();
@@ -102,32 +120,35 @@ public class NodePopupMenu extends JPopupMenu
             }
         });
 
-        dynamic.addActionListener(e -> {
-            nodeComponent.changeDynamic();
-        });
-
         observe.addActionListener(e -> {
             LudemeNode node = nodeComponent.node();
             String message = "";
             message += "ID: " + node.id() + "\n";
             message += "Name: " + node.symbol().name() + "\n";
-            message += "Constructor: " + node.selectedClause() + "\n";
+            message += "Grammar Label: " + node.symbol().grammarLabel() + "\n";
+            message += "Token: " + node.symbol().token() + "\n";
+            message += "Selected Constructor: " + node.selectedClause() + "\n";
+            message += "# Clauses: " + node.clauses().size() + "\n";
             message += "Creator: " + node.creatorArgument() + "\n";
             message += "Package: " + node.packageName() + "\n";
-            message += "Dynamic: " + node.dynamic() + "\n";
-            message += "Provided Inputs: " + (node.providedInputsMap().values()) + "\n";
-            message += "Fields: " + nodeComponent.inputArea().currentInputFields + "\n";
-            message += "Provided LIFs: " + node.providedNodeArguments() + "\n";
-            message += "Active LIFs: " + node.activeNodeArguments() + "\n";
-            message += "Active C: (" + node.activeClauses().size() + ") " +node.activeClauses() + "\n";
-            //message += "Inactive C: (" + + nodeComponent.inputArea().inactiveClauses.size() + ") " + nodeComponent.inputArea().inactiveClauses + "\n";
-            message += "Width: " + nodeComponent.width() + "\n";
+            message += ".lud : " + node.toLud() + "\n";
 
-            JOptionPane.showMessageDialog((EditorPanel) graphPanel, message);
+
+
+            JOptionPane.showMessageDialog(graphPanel.panel(), message);
         });
 
-        JMenuItem help = new JMenuItem("Help");
-        help.addActionListener(e -> new NodeHelp(nodeComponent.node()));
-        add(help);
+        if(nodeComponent.node().isDefineRoot())
+        {
+            JMenuItem removeDefine = new JMenuItem("Remove define");
+            removeDefine.addActionListener(e -> {
+                Handler.removeDefine(graphPanel.graph());
+            });
+            removeDefine.setIcon(deleteI);
+            add(removeDefine);
+        }
+
+        add(observe);
+
     }
 }

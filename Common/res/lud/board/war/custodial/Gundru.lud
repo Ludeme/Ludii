@@ -1,10 +1,7 @@
 (game "Gundru"
     (players 2)
     (equipment {
-        (board
-            (square 9)
-            use:Vertex
-        )
+        (board (square 9) use:Vertex)
         (piece "Marker" Each 
             (or
                 (if (= 1 (+ (count Cell at:(handSite Mover)) (count Pieces Mover)))
@@ -56,7 +53,7 @@
         (rules "9x9 intersecting lines, pieces are played on the intersections. 16 pieces per player, one player is black, the other white. Pieces begin placed on the edge of the board: Black on the top and right, white on the bottom and left. Sixteen others are held in reserve for each player. Pieces move any distance orthogonally along the lines. Opponent's pieces are captured when they are surrounded by two of a player's pieces. When this is done, the surrounded player's pieces are removed and replaced with the pieces of the player that surrounded them. If multiple opponent's pieces are in a line and the other player places their pieces at either end of the line, all the pieces in between are captured. When a player is reduced to one piece, it gains the ability to capture by jumping. The player that removes all of their opponent's pieces wins.")
         (source "Lha-Mo 1926: 143-144.")
         (id "377")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/custodial")
         (credit "Eric Piette")
         (origin "This game was played in Tibet, around 1926.")
@@ -67,7 +64,6 @@
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai

@@ -94,7 +94,7 @@ public class Show implements GraphicsItem
 	 * 
 	 * @param showType          The type of data to show.
 	 * @param imageName         Name of the image to show.
-	 * @param imageName         Text string to show.
+	 * @param text         Text string to show.
 	 * @param region            Draw image on all sites in this region.
 	 * @param roleType          Player whose index is to be matched (only for
 	 *                          Region).

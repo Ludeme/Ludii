@@ -1,25 +1,15 @@
 (game "Sujjua"
     (players 2)
     (equipment {
-        (board
-            (concentric Square rings:3) 
-            use:Vertex
-        ) 
-        (piece "Marker" Each
-            (move 
-                Step Orthogonal
-                (to if:(is Empty (to))) 
-            )
-        )
+        ("NineMensMorrisBoard")
+        (piece "Marker" Each ("StepToEmpty" Orthogonal))
         (hand Each)
     })
     (rules 
-        (start 
-            (place "Marker" "Hand" count:9)
-        )
+        (start (place "Marker" "Hand" count:9))
         (play
             (or
-                (if (not ("HandEmpty" Mover))
+                (if ("HandOccupied" Mover)
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty))
@@ -42,16 +32,13 @@
         (rules "Three concentric squares with lines connecting their midpoints. Nine pieces per player. Players alternate turns placing pieces on the board or moving one piece on the board to an adjacent empty spot. The first player to get three of their pieces in a row wins.")
         (source "Humphries 1906: 124-125.")
         (id "723")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line")
         (credit "Eric Piette")
         (origin "This game was played in South Asia, from around 1904 to 1905.")
         }
     )
     
-    (graphics {
-        
-    })
     (ai
         "Sujjua_ai"
     )

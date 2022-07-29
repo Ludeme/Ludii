@@ -24,7 +24,7 @@
 //------------------------------------------------------------------------------
 
 (game "Breakthrough (Jump)" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8) use:Vertex) 
         (piece "Pawn" Each (or {("StepForward") ("StepDiagonalForward") ("Jump")}))

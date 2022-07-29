@@ -13,12 +13,12 @@
             (track "Track2" <Board:CCW2> loop:True P2)
             }
         )
-        (regions "Home" P1 (sites Track "Track1"))                   // P1 Home
-        (regions "Home" P2 (sites Track "Track2"))                   // P2 home
-        (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom)))    // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))     // P2 inner Home
-        (regions "Outer" P1 (sites Bottom))                      // P1 outer Home
-        (regions "Outer" P2 (sites Top))                       // P2 outer Home
+        (regions "Home" P1 (sites Track "Track1"))          // P1 Home
+        (regions "Home" P2 (sites Track "Track2"))          // P2 home
+        (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom)))  // P1 inner Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))   // P2 inner Home
+        (regions "Outer" P1 (sites Bottom))           // P1 outer Home
+        (regions "Outer" P2 (sites Top))            // P2 outer Home
         (piece "Seed" Shared)
     }) 
     (rules 
@@ -152,8 +152,8 @@
 
 (option "Board Size" <Board> args:{ <size> <CCW2> <thirdHoleInnerP1> <rightMostInnerHoleP1> <thirdHoleInnerP2> <rightMostInnerHoleP2>}
     {
-    (item "10"  <10> <"20,E,N1,W"> <12> <19> <27> <20> "Each player has 10 holes by row.")* 
-    (item "12"  <12> <"24,E,N1,W"> <14> <23> <33> <24> "Each player has 12 holes by row.") 
+    (item "10" <10> <"20,E,N1,W"> <12> <19> <27> <20> "Each player has 10 holes by row.")* 
+    (item "12" <12> <"24,E,N1,W"> <14> <23> <33> <24> "Each player has 12 holes by row.") 
 })
 
 //------------------------------------------------------------------------------
@@ -166,7 +166,7 @@
         (rules "4x10-12 board (even numbers only). One counter in each hole, except for the third hole from the left of the inner row, which contains two, and the rightmost hole of the inner row, which is empty. Play must begin from the hole containing two counters. Sowing occurs in an anti-clockwise direction. When the final counter lands in an occupied hole. These are picked up and sowing continues. When the final counter falls in an empty hole, the contents of the hole in the opponent's inner row opposite this hole are captured; if there are also counters in the opponent's outer row, these are also captured, along with the contents of any other two holes on the opponent's side of the board. Single counters can be moved only when there are no holes with multiple counters and they may only be moved to an empty hole. The player who captures all of the opponent's counters wins.")
         (source "Sanderson 1913: 736.")
         (id "257")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         (origin "This game was played in Malawi, around 1913.")

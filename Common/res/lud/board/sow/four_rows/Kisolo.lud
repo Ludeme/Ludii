@@ -6,7 +6,7 @@
 
 (define "InnerPitsWithPossibleCapture"
     (forEach (difference (sites Mover "Inner") (sites Empty))
-        if:(not (is Empty ("OppositePit" (site))))
+        if:(is Occupied ("OppositePit" (site)))
     )		
 )
 
@@ -26,12 +26,12 @@
             (track "TrackCCW2" "14,E,N1,W" loop:True P2)
             }
         )
-        (regions "Home" P1 (sites Track "TrackCCW1"))                   // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))                   // P2 home
-        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))    // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))     // P2 inner Home
-        (regions "Outer" P1 (difference (sites Track "TrackCCW1") (sites P1 "Inner")))  // P1 outer Home
-        (regions "Outer" P2 (difference (sites Track "TrackCCW2") (sites P2 "Inner")))  // P2 outer Home
+        (regions "Home" P1 (sites Track "TrackCCW1"))          // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))          // P2 home
+        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))  // P1 inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))   // P2 inner Home
+        (regions "Outer" P1 (difference (sites Track "TrackCCW1") (sites P1 "Inner"))) // P1 outer Home
+        (regions "Outer" P2 (difference (sites Track "TrackCCW2") (sites P2 "Inner"))) // P2 outer Home
         (piece "Seed" Shared)
     }) 
     (rules 
@@ -50,7 +50,7 @@
                                 (from ("OppositePit" (last To)))
                                 (to ("InnerPit" (last To)))
                             )
-                            (if (not (is Empty ("OppositeOuterPit" (last To))))
+                            (if (is Occupied ("OppositeOuterPit" (last To)))
                                 (fromTo 
                                     (from ("OppositeOuterPit" (last To)))
                                     (to ("InnerPit" (last To)))
@@ -78,15 +78,15 @@
                         (sow
                             "TrackCCW"
                             owner:(mover)
-                            apply:(if (not (is Empty ("NextHole" (to))))
+                            apply:(if (is Occupied ("NextHole" (to)))
                                 (and { 
-                                    (if (and (is In ("NextHole" (to)) (sites Mover "Inner")) (not (is Empty ("OppositePit" ("NextHole" (to))))))
+                                    (if (and (is In ("NextHole" (to)) (sites Mover "Inner")) (is Occupied ("OppositePit" ("NextHole" (to)))))
                                         (and
                                             (fromTo 
                                                 (from ("OppositePit" ("NextHole" (to))))
                                                 (to ("InnerPit" ("NextHole" (to))))
                                             )
-                                            (if (not (is Empty ("OppositeOuterPit" ("NextHole" (to)))))
+                                            (if (is Occupied ("OppositeOuterPit" ("NextHole" (to))))
                                                 (fromTo 
                                                     (from ("OppositeOuterPit" ("NextHole" (to))))
                                                     (to ("InnerPit" ("NextHole" (to))))
@@ -118,20 +118,20 @@
 (option "Start Rules" <Start> args:{<rules>}
     {
     (item "3 Seeds per hole" 
-        <(set Count 3 to:(union (sites P1 "Outer") (sites P2 "Outer")))>  
+        <(set Count 3 to:(union (sites P1 "Outer") (sites P2 "Outer")))> 
         "At the initial state 3 seeds are in each outer hole."
     )**
     (item "Starting Position 1" 
         <
         (set Count 15 to:(sites {"G1" "A4"})) 
         (set Count 1 to:(sites {"F2" "D2" "B2" "A1" "C1" "E1" "B3" "D3" "F3" "G4" "E4" "C4"})) 
-        >  
+        > 
     "The game start with a special starting position.")
     (item "Starting Position 2" 
         <
         (set Count 9 to:(sites {"A1" "G4" "A4" "G1"})) 
         (set Count 1 to:(sites {"F2" "D2" "B2" "B3" "D3" "F3"})) 
-        >  
+        > 
     "The game start with a special starting position.")
     }
 )
@@ -172,7 +172,7 @@
         (useFor "Ruleset/Starting Position 2 (Observed)" (source "Townshend 1977: 45."))
         (useFor "Ruleset/Starting Position 2 (Observed)" (id "623"))
         (id "248")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         }

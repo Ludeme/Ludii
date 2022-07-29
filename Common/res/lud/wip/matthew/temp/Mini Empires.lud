@@ -268,7 +268,7 @@
 
 (define "AttackBuilding"
     (if (= (value Piece at:(last To)) 0)
-        (if (is In (last From) (sites Occupied by:All components:{"Demolisher"}))        
+        (if (is In (last From) (sites Occupied by:All components:{"Demolisher"}))    
             (remove (last To))
             (and
                 (take Control of:All by:Mover at:(last To))
@@ -601,7 +601,7 @@
         (pair 29 5) (pair 30 5) (pair 31 7) (pair 32 7) (pair 33 6) (pair 34 6)
         (pair 35 6) (pair 36 6) (pair 37 6) (pair 38 6) (pair 39 5) (pair 40 5)
         (pair 41 8) (pair 42 8) (pair 43 8) (pair 44 8) (pair 45 8)
-        (pair 46 3) (pair 47 3)  
+        (pair 46 3) (pair 47 3) 
     })
     
     // value (health)
@@ -779,7 +779,7 @@
     }) 
     (rules 
         (meta (passEnd NoEnd))
-        (start {   
+        (start {  
             <Scenario:buildingSetup>
             <Scenario:pieceSetup>
             <Scenario:teams>
@@ -915,16 +915,16 @@
         (place "Town4" (sites {"G14" "F13" "H15"}) state:8 value:100)
         (place "Town0" (sites {"F6" "G10" "K9" "M7" "D4" "C10" "M15" "K7"}) state:8 value:100)
         (place "Factory0" (sites {"B3" "E11" "M13" "H3"}) state:8 value:100)
-        >    
+        >  
         <
         
-        >   
+        >  
         <
         100
-        >         
+        >     
         <
         
-        >   
+        >  
         
         <
         (piece ExtendName P2 "Flip")

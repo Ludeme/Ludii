@@ -24,7 +24,7 @@
 //------------------------------------------------------------------------------
 
 (game "Chaturanga (12x12)"
-    (players {(player N) (player S)})
+    ("TwoPlayersNorthSouth")
     (equipment { 
         (board (square 12)) 
         (piece "Pawn" Each 
@@ -172,7 +172,7 @@
         (rules "12x12 board. Pieces move as follows: Raja (King, x1): moves one space in any direction; Mantri (Minister, placed to the left of the Raja, x1): moves any distance orthogonally or diagonally; Ushtra (Camel, x2): moves diagonally any distance; Chariot (x2), moves orthogonally any distance; Flagcar (x2), moves diagonally any distance; Vaha (Horse, x2): move orthogonally one space and then diagonally another, jumping over any intervening pieces; Danti (Elephant, x2): moves orthogonally any distance. Padati (Pawn, x12): move forward orthogonally one space or one space diagonally forward to capture. When a Padati reaches the opposite edge of the board, it is promoted to a Mantri and is moved immediately to the space it last moved from. An opponent's piece is captured by moving one of the player's own pieces onto the space occupied by the opponent's piece. If the Raja can be captured on the opponent's next turn, it is in check. The Raja cannot be in check at the end of the player's turn. If this is impossible, the opponent wins. When a player is reduced to only their Raja and Padati, the opponent wins. In the case of a stalemate, the player in stalemate may remove any of the opponent's pieces (except their Raja).")
         (source "Iyer 1982: 25-26; Bock-Raming 1995: 116.")
         (id "1464")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
         (origin "This game was played in India, around 1871.")

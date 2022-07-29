@@ -10,9 +10,12 @@
                 (piece (+ 1 (% (count Moves) (count Players)))) 
                 (to (sites Empty)) 
                 (then 
+                	(and
                     (if 
                         (!= (count MovesThisTurn) (- (count Players) 1)) 
                         (moveAgain)
+                    )
+                    <Version:gameScore>
                     )
                 )
             )
@@ -37,32 +40,36 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "4x4"  <4>  "The game is played on a 4x4 board") 
-    (item "5x5"  <5>  "The game is played on a 5x5 board")*  
-    (item "6x6"  <6>  "The game is played on a 6x6 board")  
-    (item "7x7"  <7>  "The game is played on a 7x7 board")  
-    (item "8x8"  <8>  "The game is played on a 8x8 board")  
-    (item "9x9"  <9>  "The game is played on a 9x9 board")  
-    (item "10x10" <10>  "The game is played on a 10x10 board")  
+    (item "4x4" <4> "The game is played on a 4x4 board") 
+    (item "5x5" <5> "The game is played on a 5x5 board")* 
+    (item "6x6" <6> "The game is played on a 6x6 board") 
+    (item "7x7" <7> "The game is played on a 7x7 board") 
+    (item "8x8" <8> "The game is played on a 8x8 board") 
+    (item "9x9" <9> "The game is played on a 9x9 board") 
+    (item "10x10" <10> "The game is played on a 10x10 board") 
 })
 
-(option "Players" <Version> args:{ <numPlayers> <endScore>}
+(option "Players" <Version> args:{ <numPlayers> <gameScore> <endScore>}
     {
     (item "2" 
         <2> 
+    	<(and (set Score P1 (* (sizes Group P1))) (set Score P2 (* (sizes Group P2))))>  
         <{(score P1 (* (sizes Group P1))) (score P2 (* (sizes Group P2)))}> 
         "The version of the game played with 2 players."
     )* 
     
     (item "3" 
         <3> 
-        <{(score P1 (* (sizes Group P1))) (score P2 (* (sizes Group P2))) (score P3 (* (sizes Group P3)))}> 
+	<(and {(set Score P1 (* (sizes Group P1))) (set Score P2 (* (sizes Group P2))) (set Score P3 (* (sizes Group P3)))})>  
+        <{(score P1 (* (sizes Group P1))) (score P2 (* (sizes Group P2))) (score P3 (* (sizes Group P3)))}>  
         "The version of the game played with 3 players."
     ) 
     
     (item "4" 
         <4> 
-        <{(score P1 (* (sizes Group P1))) (score P2 (* (sizes Group P2))) (score P3 (* (sizes Group P3))) (score P4 (* (sizes Group P4)))}> 
+	<(and {(set Score P1 (* (sizes Group P1))) (set Score P2 (* (sizes Group P2))) (set Score P3 (* (sizes Group P3))) (set Score P4 (* (sizes Group P4)))})>  
+        <{(score P1 (* (sizes Group P1))) (score P2 (* (sizes Group P2))) (score P3 (* (sizes Group P3))) (score P4 (* (sizes Group P4)))}>  
+
         "The version of the game played with 4 players."
     ) 
     
@@ -80,7 +87,7 @@
         Scores are awarded based on the sizes of the groups of each color on the board, which are multiplied. The player with the highest score wins.")
         (source "<a href=\"https://nestorgames.com/rulebooks/OMEGA_EN.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames.com</a>")
         (id "447")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/group")
         (author "Néstor Romeral Andrés")
         (publisher "<a href=\"https://www.nestorgames.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a> (used with permission)")

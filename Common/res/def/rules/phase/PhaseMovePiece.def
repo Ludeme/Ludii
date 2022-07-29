@@ -1,0 +1,8 @@
+// Defines a phase to move each piece according to the move ludeme associated with each piece.
+// #1 = The name of the phase.
+// #2 = Optional ending condition applied only in this phase.
+// @example ("PhaseMovePiece" "Movement")
+
+(define "PhaseMovePiece"
+    (phase #1 (play (forEach Piece)) #2)
+)

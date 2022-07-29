@@ -17,12 +17,12 @@ public class FileUtils {
     /**
      * returns the contents of the file as a string where
      * @param f
-     * @return
      */
     public static String getContents(File f) throws FileNotFoundException {
         boolean verbose = false;
         String content = "";
-        Scanner sc = new Scanner(f);
+        try(Scanner sc = new Scanner(f);)
+        {
         while(sc.hasNextLine()) {
             String l = sc.nextLine();
             if(l.contains("//"))
@@ -55,6 +55,7 @@ public class FileUtils {
             content = content.substring(0,j + 1) + " " + content.substring(j + 1);
         }
         return content;
+        }
     }
 
     /**
@@ -82,7 +83,6 @@ public class FileUtils {
     /**
      * Takes in an absolute path and reformats it into a path from the root of the repository
      * @param absolutePath
-     * @return
      */
     public static String reformatPathToRepository(String absolutePath) {
         int i = absolutePath.indexOf("src");
@@ -92,8 +92,7 @@ public class FileUtils {
         // character in regular expressions – each of this uses need doubling the character, in effect needing 4 \ in
         // row."
         // This helped me in replacing backslashes
-        absolutePath = absolutePath.replaceAll("\\\\","/");
-        return absolutePath.substring(i);
+        return absolutePath.replaceAll("\\\\","/").substring(i);
     }
 
     /**
@@ -106,11 +105,10 @@ public class FileUtils {
      * It is very important to close the FileWriter at the end of the writing process!:
      * fw.close();
      * @param pathname
-     * @return
      */
     public static FileWriter writeFile(String pathname) {
         try {
-            File f = new File(pathname);
+            //File f = new File(pathname);
             FileWriter fw = new FileWriter(pathname);
             return fw;
         } catch (IOException e) {

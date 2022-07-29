@@ -36,12 +36,13 @@ import app.display.dialogs.AboutDialog;
 import app.display.dialogs.DeveloperDialog;
 import app.display.dialogs.EvaluationDialog;
 import app.display.dialogs.GameLoaderDialog;
+import app.display.dialogs.ReconstructionDialog;
 import app.display.dialogs.SVGViewerDialog;
 import app.display.dialogs.SettingsDialog;
 import app.display.dialogs.TestLudemeDialog;
 import app.display.dialogs.MoveDialog.PossibleMovesDialog;
 import app.display.dialogs.editor.EditorDialog;
-import app.display.dialogs.visual_editor.VisualEditorPanel;
+import app.display.dialogs.visual_editor.StartVisualEditor;
 import app.display.screenCapture.ScreenCapture;
 import app.display.util.Thumbnails;
 import app.display.views.tabs.TabView;
@@ -118,6 +119,9 @@ public class MainMenuFunctions extends JMenuBar
 	
 	/** Thread in which we're comparing agents. */
 	private static Thread agentComparisonThread = null;
+
+	/** The visual editor. */
+	private static StartVisualEditor startVisualEditor;
 
 	//-------------------------------------------------------------------------
 	
@@ -228,7 +232,7 @@ public class MainMenuFunctions extends JMenuBar
 		else if (source.getText().equals("Visual Editor (Beta)"))
 		{
 			// Create and lauch an instance of the visual editor
-			final VisualEditorPanel visual = new VisualEditorPanel(app);
+			setStartVisualEditor(new StartVisualEditor(app));
 		}
 		// IMPORTANT These next four menu functions are just for us, not the user
 		else if (source.getText().equals("Export Thumbnails"))
@@ -1268,6 +1272,10 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			Generator.testGamesEric(1, true, false);
 		}
+		else if (source.getText().equals("Reconstruction Dialog"))
+		{
+			ReconstructionDialog.createAndShowGUI();
+		}
 		else if (((JMenu)((JPopupMenu) source.getParent()).getInvoker()).getText().equals("Load Recent"))
 		{
 			// Check if a recent game has been selected
@@ -1624,6 +1632,16 @@ public class MainMenuFunctions extends JMenuBar
 			currentContainer = ((JMenu)((JPopupMenu) currentContainer.getParent()).getInvoker());
 		
 		return ((JMenu)currentContainer).getText();
+	}
+
+	public static StartVisualEditor getStartVisualEditor()
+	{
+		return startVisualEditor;
+	}
+
+	public static void setStartVisualEditor(final StartVisualEditor startVisualEditor)
+	{
+		MainMenuFunctions.startVisualEditor = startVisualEditor;
 	}
 	
 	//---------------------------------------------------------------------

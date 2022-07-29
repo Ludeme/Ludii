@@ -15,10 +15,10 @@
             (track "TrackCW2" "23,W,N1,E" loop:True P2)
             }
         )
-        (regions "Home" P1 (sites Track "TrackCCW1"))                   // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))                   // P2 home
-        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))    // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))     // P2 inner Home
+        (regions "Home" P1 (sites Track "TrackCCW1"))          // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))          // P2 home
+        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))  // P1 inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))   // P2 inner Home
         (regions "HolesCW" P1 (sites {15 8 1 6}))
         (regions "HolesCW" P2 (sites {16 23 25 30}))
         (piece "Seed" Shared)
@@ -141,7 +141,7 @@
         (rules "4x8 board. Four pieces in each of the holes in the inner two rows. Sowing occurs in an anti-clockwise direction. Single counters cannot be sown. When the final counter of a sowing falls into an occupied hole, these counters are picked up and the sowing continues. If this hole is in the player's inner row, the counters in the opponent's opposite holes in both rows are captured. Both the inner and outer opposite holes must contain counters for a capture to occur. Play continues with the captured counters, and the player sows these beginning with the next hole after the last one on the player's side from which they picked up holes. Captures cannot be made on the first move. Clockwise sowing can begin from the following holes only if it will allow a capture to occur: the rightmost and leftmost holes of the outer row, the second from the right and second from the left holes in the inner row. Direction can be changed in the middle of a turn if the final counter lands in one of these holes and a clockwise move will result in a capture. When no capture is available, the player must resume in an anti-clockwise direction. When the final counter falls into an empty hole, the turn ends. ")
         (source "Merriam 1953.")
         (id "276")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         (origin "This game was played in Rwanda, around 1953.")

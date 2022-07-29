@@ -1,0 +1,20 @@
+// Defines a custodial capture in all the directions specified (by default Adjacent) to capture a specific piece type owned by the next player. The piece is removed.
+// #1 = The name of the piece type.
+// #2 = Directions of the capture.
+// #3 = Contraints related to the number of pieces to capture.
+// #4 = The consequences.
+// @example ("CustodialCapturePieceType" "Jarl")
+
+(define "CustodialCapturePieceType"
+    (custodial 
+        (from (last To))
+        #2
+        (between 
+            #3
+            if:("IsPieceAt" #1 Next (between))
+            (apply (remove (between)))
+        )
+        (to if:("IsFriendAt" (to)))
+        #4
+    )
+)

@@ -1,0 +1,36 @@
+(heuristics {
+    (lineCompletionHeuristic weight:0.0)
+    (mobilitySimple weight:0.0)
+    (influence weight:0.0)
+    (ownRegionsCount weight:0.0)
+    (centreProximity weight:0.0 pieceWeights:{
+    })
+    (cornerProximity weight:0.0 pieceWeights:{
+    })
+    (material pieceWeights:{
+        (pair "Pawn1" 1.0)
+        (pair "Pawn2" 1.0)
+    })
+    (sidesProximity pieceWeights:{
+        (pair "Pawn1" 1.0)
+        (pair "Pawn2" 1.0)
+    })
+    (playerRegionsProximity player:1 pieceWeights:{
+        (pair "Pawn1" 1.0)
+        (pair "Pawn2" 1.0)
+    })
+    (playerRegionsProximity weight:0.0 player:2 pieceWeights:{
+    })
+    (regionProximity weight:0.0 region:0 pieceWeights:{
+    })
+    (regionProximity region:1 pieceWeights:{
+        (pair "Pawn1" 1.0)
+        (pair "Pawn2" 1.0)
+    })
+    (unthreatenedMaterial weight:0.0 pieceWeights:{
+    })
+    (threatenedMaterial weight:0.0 pieceWeights:{
+    })
+    (threatenedMaterialMultipleCount weight:0.0 pieceWeights:{
+    })
+})

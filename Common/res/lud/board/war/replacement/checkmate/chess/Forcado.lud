@@ -99,7 +99,7 @@
 //------------------------------------------------------------------------------
 
 (game "Forcado" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8)) 
         
@@ -184,40 +184,40 @@
         (play 
             
             (priority {
-                (do (forEach Piece {"Pawn"}      ("PawnOnlyCapture" (id "Rook" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+                (do (forEach Piece {"Pawn"}   ("PawnOnlyCapture" (id "Rook" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
                 (do (forEach Piece {"Bishop_noCross"} ("BishopOnlyCapture" (id "Rook" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-                (do (forEach Piece {"Ferz_noCross"}  ("QueenOnlyCapture" (id "Rook" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-                (do (forEach Piece {"Knight"}     ("KnightOnlyCapture" (id "Rook" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-                (do (forEach Piece {"Rook"}      ("RookOnlyCapture" (id "Rook" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-                (do (forEach Piece {"King_noCross"}  ("KingOnlyCapture" (id "Rook" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+                (do (forEach Piece {"Ferz_noCross"} ("QueenOnlyCapture" (id "Rook" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+                (do (forEach Piece {"Knight"}   ("KnightOnlyCapture" (id "Rook" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+                (do (forEach Piece {"Rook"}   ("RookOnlyCapture" (id "Rook" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+                (do (forEach Piece {"King_noCross"} ("KingOnlyCapture" (id "Rook" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
                 
-                (do (forEach Piece {"Pawn"}      ("PawnOnlyCapture" (id "Knight" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+                (do (forEach Piece {"Pawn"}   ("PawnOnlyCapture" (id "Knight" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
                 (do (forEach Piece {"Bishop_noCross"} ("BishopOnlyCapture" (id "Knight" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-                (do (forEach Piece {"Ferz_noCross"}  ("QueenOnlyCapture" (id "Knight" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-                (do (forEach Piece {"Knight"}     ("KnightOnlyCapture" (id "Knight" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-                (do (forEach Piece {"Rook"}      ("RookOnlyCapture" (id "Knight" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-                (do (forEach Piece {"King_noCross"}  ("KingOnlyCapture" (id "Knight" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+                (do (forEach Piece {"Ferz_noCross"} ("QueenOnlyCapture" (id "Knight" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+                (do (forEach Piece {"Knight"}   ("KnightOnlyCapture" (id "Knight" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+                (do (forEach Piece {"Rook"}   ("RookOnlyCapture" (id "Knight" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+                (do (forEach Piece {"King_noCross"} ("KingOnlyCapture" (id "Knight" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
                 
-                (do (forEach Piece {"Pawn"}      ("PawnOnlyCapture" (id "Ferz_noCross" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+                (do (forEach Piece {"Pawn"}   ("PawnOnlyCapture" (id "Ferz_noCross" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
                 (do (forEach Piece {"Bishop_noCross"} ("BishopOnlyCapture" (id "Ferz_noCross" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-                (do (forEach Piece {"Ferz_noCross"}  ("QueenOnlyCapture" (id "Ferz_noCross" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-                (do (forEach Piece {"Knight"}     ("KnightOnlyCapture" (id "Ferz_noCross" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-                (do (forEach Piece {"Rook"}      ("RookOnlyCapture" (id "Ferz_noCross" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-                (do (forEach Piece {"King_noCross"}  ("KingOnlyCapture" (id "Ferz_noCross" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+                (do (forEach Piece {"Ferz_noCross"} ("QueenOnlyCapture" (id "Ferz_noCross" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+                (do (forEach Piece {"Knight"}   ("KnightOnlyCapture" (id "Ferz_noCross" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+                (do (forEach Piece {"Rook"}   ("RookOnlyCapture" (id "Ferz_noCross" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+                (do (forEach Piece {"King_noCross"} ("KingOnlyCapture" (id "Ferz_noCross" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
                 
-                (do (forEach Piece {"Pawn"}      ("PawnOnlyCapture" (id "Bishop_noCross" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+                (do (forEach Piece {"Pawn"}   ("PawnOnlyCapture" (id "Bishop_noCross" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
                 (do (forEach Piece {"Bishop_noCross"} ("BishopOnlyCapture" (id "Bishop_noCross" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-                (do (forEach Piece {"Ferz_noCross"}  ("QueenOnlyCapture" (id "Bishop_noCross" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-                (do (forEach Piece {"Knight"}     ("KnightOnlyCapture" (id "Bishop_noCross" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-                (do (forEach Piece {"Rook"}      ("RookOnlyCapture" (id "Bishop_noCross" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-                (do (forEach Piece {"King_noCross"}  ("KingOnlyCapture" (id "Bishop_noCross" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+                (do (forEach Piece {"Ferz_noCross"} ("QueenOnlyCapture" (id "Bishop_noCross" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+                (do (forEach Piece {"Knight"}   ("KnightOnlyCapture" (id "Bishop_noCross" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+                (do (forEach Piece {"Rook"}   ("RookOnlyCapture" (id "Bishop_noCross" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+                (do (forEach Piece {"King_noCross"} ("KingOnlyCapture" (id "Bishop_noCross" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
                 
-                (do (forEach Piece {"Pawn"}      ("PawnOnlyCapture" (id "Pawn" Next)) Mover) 	ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+                (do (forEach Piece {"Pawn"}   ("PawnOnlyCapture" (id "Pawn" Next)) Mover) 	ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
                 (do (forEach Piece {"Bishop_noCross"} ("BishopOnlyCapture" (id "Pawn" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-                (do (forEach Piece {"Ferz_noCross"}  ("QueenOnlyCapture" (id "Pawn" Next)) Mover) 	ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-                (do (forEach Piece {"Knight"}     ("KnightOnlyCapture" (id "Pawn" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-                (do (forEach Piece {"Rook"}      ("RookOnlyCapture" (id "Pawn" Next)) Mover)  ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-                (do (forEach Piece {"King_noCross"}  ("KingOnlyCapture" (id "Pawn" Next)) Mover) 	ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+                (do (forEach Piece {"Ferz_noCross"} ("QueenOnlyCapture" (id "Pawn" Next)) Mover) 	ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+                (do (forEach Piece {"Knight"}   ("KnightOnlyCapture" (id "Pawn" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+                (do (forEach Piece {"Rook"}   ("RookOnlyCapture" (id "Pawn" Next)) Mover) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+                (do (forEach Piece {"King_noCross"} ("KingOnlyCapture" (id "Pawn" Next)) Mover) 	ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
                 
                 (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
                 
@@ -252,7 +252,7 @@
         ")
         (source "Libro de los Juegos 5.")
         (id "979")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chess")
         (credit "Eric Piette")
         (origin "This game was played in Spain, around 1283.")

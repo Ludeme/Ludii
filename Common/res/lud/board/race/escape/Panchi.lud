@@ -30,7 +30,7 @@
         (if 
             (and {
                 ("SpecialThrow")
-                (not ("HandEmpty" Mover))
+                ("HandOccupied" Mover)
                 (or (is Empty "StartPoint") ("IsFriendAt" ("StartPoint")))
             })
             (move 
@@ -115,7 +115,7 @@
         ")
         (source "Vasantha 2006: 32.")
         (id "1125")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/escape")
         (credit "Eric Piette")
         (origin "This game was played in India, from around 1794 to 1868.")

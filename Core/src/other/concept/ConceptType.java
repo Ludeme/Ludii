@@ -36,6 +36,12 @@ public enum ConceptType
 
 	/** The concepts related to the Math. */
 	Math(10),
+	
+	/** The concepts related to the containers. */
+	Container(11),
+	
+	/** The concepts related to the components. */
+	Component(12)
 	;
 	
 	//-------------------------------------------------------------------------

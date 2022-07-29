@@ -5,15 +5,16 @@ import app.display.dialogs.visual_editor.recs.utils.StringUtils;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 /**
  * Class is a singleton
  */
 public class DocHandler {
     // TODO: refactor paths in similar way
-    public static final String DOC_LOCATION = System.getProperty("user.dir")+"\\src\\app\\display\\dialogs\\visual_editor\\resources\\recs\\documents.txt"; // TODO: not absolute path
-            //Objects.requireNonNull(DocHandler.class.getResource("resources/recs/documents.txt")).getPath(); TODO: [FILIP] CHANGED
+    public static final String DOC_LOCATION = "../Common/res/recs/documents.txt";
     public static final String GRAMMAR = "grammar_location";
     public static final String GAMES = "games_location";
     public static final String MODELS = "models_location";
@@ -51,13 +52,15 @@ public class DocHandler {
      */
     private DocHandler() {
         modelLocations = new HashMap<>();
-        Scanner sc = FileUtils.readFile(DOC_LOCATION);
-        while (sc.hasNext()) {
-            String nextLine = sc.nextLine();
-            if(DEBUG)System.out.println(nextLine);
-            parseDocumentsLine(nextLine);
+        try(Scanner sc = FileUtils.readFile(DOC_LOCATION);)
+        {
+	        while (sc.hasNext()) {
+	            String nextLine = sc.nextLine();
+	            if(DEBUG)System.out.println(nextLine);
+	            parseDocumentsLine(nextLine);
+	        }
+	        sc.close();
         }
-        sc.close();
     }
 
     /**
@@ -66,7 +69,6 @@ public class DocHandler {
      * -games location
      * -model location
      * @param line
-     * @return
      */
     private void parseDocumentsLine(String line) {
         String[] split = line.split(SEPARATOR);
@@ -99,11 +101,9 @@ public class DocHandler {
 
     /**
      * This method writes the stored data about documents to the documents.txt
-     * @throws IOException
      */
     public void writeDocumentsFile() {
-        FileWriter fw = FileUtils.writeFile(DOC_LOCATION);
-        try {
+        try (FileWriter fw = FileUtils.writeFile(DOC_LOCATION);){
             if(grammarLocation != null) {
                     fw.write(GRAMMAR +SEPARATOR+grammarLocation+"\n");
             }

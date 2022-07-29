@@ -1,12 +1,12 @@
-(game "Nein Ari"  
+(game "Nein Ari" 
     (players 1)
     (equipment 
         { 
         (board <Board:type> use:Edge)
         }
-    )  
+    ) 
     
-    (rules   	 
+    (rules  	 
         (start 
             (set P1 Edge (sites Board Edge))
         )
@@ -17,7 +17,7 @@
                 (sites Occupied by:Mover on:Edge) 
             )
         )
-        (end     
+        (end   
             <Version:result>
         )
     )
@@ -27,29 +27,29 @@
 
 (option "Board" <Board> args:{ <type> <start> }
     {
-    (item "Graph1"       
+    (item "Graph1"    
         <
         (graph
             vertices:{ {0 0} {5 0} {10 0} {0 5} {5 5} {10 5}}
             edges:{ {0 1} {0 2} {0 3} {0 4} {0 5} {1 2} {1 3} {1 4} {1 5} 
             {2 3} {2 4} {2 5} {3 4} {3 5} {4 5}}
         )
-        >    
+        >  
         "The game is played on the Graph1."
     )* 
     
-    (item "Graph2"       
+    (item "Graph2"    
         <
         (graph
             vertices:{{0 0} {5 0} {10 0} {0 5} {5 5} {10 5} {0 10} {5 10} {10 10}}
             edges:{ {0 1} {0 2} {0 3} {0 4} {0 5} {0 6} {0 7} {1 2} {1 3} {1 4} {1 5} {1 6} {1 8} {2 3} {2 4} {2 5} 
             {2 7} {2 8} {3 4} {3 6} {3 7} {3 8} {4 5} {4 6} {4 7} {4 8} {5 6} {5 8} {5 7} {6 7} {6 8} {7 8}}
         )
-        >    
+        >  
         "The game is played on the Graph2."
     ) 
     
-    (item "Graph3"       
+    (item "Graph3"    
         <
         (graph
             vertices:{{0 0} {7 1} {0 4} {3 1} {6 5} {0 8} {10 5} {6 8} {10 11} {11 2} {10 10} {8 13} {13 14} {15 9}}
@@ -68,9 +68,9 @@
             {11 12} {11 13} {12 13}
             }
         )
-        >    
+        >  
         "The game is played on the Graph3."
-    )  
+    ) 
 })
 
 (option "Version" <Version> args:{ <result>}
@@ -85,7 +85,7 @@
     (item "Parameter-k" 
         <
         (if (is RegularGraph Mover k:3) (result Mover Win))
-        >      
+        >   
         "Parameter-k version"
     )
 })
@@ -101,7 +101,7 @@
         (rules "The graph is initially coloured. The goal of the general version of the puzzle is to uncolour edges until the coloured graph is a regular graph. The goal of the parameter-k version of the puzzle is to uncolour edges until the coloured graph is a k-regular graph.
         ")
         (id "702")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "experimental/graph theory")
         (author "Tahmina Begum")
         (credit "Tahmina Begum 25-05-2020")

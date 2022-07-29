@@ -854,7 +854,7 @@
     }) 
     (rules 
         (meta (passEnd NoEnd))
-        (start {   
+        (start {  
             <Scenario:buildingSetup>
             <Scenario:pieceSetup>
             <Scenario:teams>
@@ -967,16 +967,16 @@
         (place "Town4" (sites {"G14" "F13" "H15"}) state:8 value:100)
         (place "Town0" (sites {"F6" "G10" "K9" "M7" "D4" "C10" "M15" "K7"}) state:8 value:100)
         (place "Factory0" (sites {"B3" "E11" "M13" "H3"}) state:8 value:100)
-        >    
+        >  
         <
         
-        >   
+        >  
         <
         100
-        >         
+        >     
         <
         
-        >   
+        >  
         
         <
         (piece ExtendName P2 "Flip")
@@ -1017,13 +1017,13 @@
         (place "Dock0" (sites {"C3" "G3"}) state:8 value:100) 
         (place "Base1" (sites {"A7"}) state:8 value:100) 
         (place "Base2" (sites {"M7"}) state:8 value:100)
-        >    
+        >  
         <
         
-        >   
+        >  
         <
         100
-        >          
+        >     
         <
         
         >
@@ -1063,13 +1063,13 @@
         (place "Factory2" (sites {"G3"}) state:8 value:100)
         (place "Base1" (sites {"A3"}) state:8 value:100) 
         (place "Base2" (sites {"I3"}) state:8 value:100)
-        >    
+        >  
         <
         
-        >   
+        >  
         <
         100
-        >          
+        >     
         <
         
         >
@@ -1110,13 +1110,13 @@
         (place "Dock0" (sites {"C1"}) state:8 value:100) 
         (place "Base1" (sites {"C8"}) state:8 value:100) 
         (place "Base2" (sites {"F1"}) state:8 value:100)
-        >    
+        >  
         <
         
-        >   
+        >  
         <
         100
-        >         
+        >     
         <
         
         > 
@@ -1161,13 +1161,13 @@
         (place "Base1" (sites {"B2" "E8"}) state:8 value:100) 
         (place "Base2" (sites {"K2" "N8"}) state:8 value:100)
         (place "Airport0" (sites {"I9" "G1"}) state:8 value:100)
-        >    
+        >  
         <
         
-        >   
+        >  
         <
         100
-        >         
+        >     
         <
         
         > 
@@ -1221,16 +1221,16 @@
         (place "Factory1" (sites {"E14" "A6"}) state:8 value:100)
         (place "Town0" (sites {"J4" "P16" "M8" "O12" "N10" "I2" "G1" "Q18" "P19"}) state:8 value:100)
         (place "Factory0" (sites {"O9" "P11" "O14" "K6"}) state:8 value:100)
-        >    
+        >  
         <
         (place "Artillery1" (sites {"F10" "D8" "F12"}) state:3 value:40)
         (place "Antiair1" (sites {"F11" "E9"}) state:4 value:50)
         (place "Launcher1" (sites {"I13" "I15" "F7" "D5"}) state:3 value:50)
         (place "Tank1" (sites {"C4" "I16" "E6" "I14"}) state:4 value:80)
-        >   
+        >  
         <
         200
-        >          
+        >     
         <
         (set Team 1 {P1})
         (set Team 2 {P2 P3 P4})
@@ -1271,16 +1271,16 @@
         (place "Factory2" (sites {"N3" "N6" "L5"}) state:8 value:100)
         (place "Base1" (sites {"A4"}) state:8 value:100) 
         (place "Base2" (sites {"N4"}) state:8 value:100)
-        >    
+        >  
         <
         
-        >   
+        >  
         <
         100
-        >   
+        >  
         <
         
-        >    
+        >  
         <
         (piece ExtendName P2 "Flip")
         >
@@ -1289,7 +1289,7 @@
         (show Symbol "waves" (sites "ShallowWater"))
         (show Symbol "waves" (sites "DeepWater"))
         (show Symbol "mountain" (sites "Mountain"))
-        >      
+        >   
         "Scenario - Canyon Pass"
     )
     
@@ -1314,16 +1314,16 @@
         "L4" "L6" "L8" "M4" "M6" "G2" "G4" "G6" "G8" "H2" "H4" "H6" "H8" "F2" "F4" "F6" "F8" "I2" "I4" "I6" "I8"}) state:8 value:100) 
         (place "Base1" (sites {"B8"}) state:8 value:100) 
         (place "Base2" (sites {"M2"}) state:8 value:100)
-        >    
+        >  
         <
         
-        >   
+        >  
         <
         100
-        >     
+        >   
         <
         
-        >   
+        >  
         <
         (piece ExtendName P2 "Flip")
         >
@@ -1332,7 +1332,7 @@
         (show Symbol "waves" (sites "ShallowWater"))
         (show Symbol "waves" (sites "DeepWater"))
         (show Symbol "mountain" (sites "Mountain"))
-        >      
+        >   
         "Scenario - Gridlock"
     )
     
@@ -1367,16 +1367,16 @@
         (place "Base2" (sites {"K4"}) state:8 value:100)
         (place "Dock1" (sites {"C3" "C6"}) state:8 value:100) 
         (place "Dock2" (sites {"K3" "K6"}) state:8 value:100)
-        >    
-        <
-        
-        >   
-        <
-        100
-        >     
+        >  
         <
         
         >  
+        <
+        100
+        >   
+        <
+        
+        > 
         <
         (piece ExtendName P2 "Flip")
         >
@@ -1385,7 +1385,7 @@
         (show Symbol "waves" (sites "ShallowWater"))
         (show Symbol "waves" (sites "DeepWater"))
         (show Symbol "mountain" (sites "Mountain"))
-        >      
+        >   
         "Scenario - Tiny Island"
     )
     
@@ -1410,13 +1410,13 @@
         (place "Base2" (sites {"M4"}) state:8 value:100)
         (place "Airport1" (sites {"C3" "C6"}) state:8 value:100) 
         (place "Airport2" (sites {"K3" "K6"}) state:8 value:100)
-        >    
+        >  
         <
         
-        >   
+        >  
         <
         100
-        >    
+        >  
         <
         
         > 
@@ -1428,7 +1428,7 @@
         (show Symbol "waves" (sites "ShallowWater"))
         (show Symbol "waves" (sites "DeepWater"))
         (show Symbol "mountain" (sites "Mountain"))
-        >        
+        >    
         "Scenario - Aerial Assault"
     )
     
@@ -1462,16 +1462,16 @@
         (place "Base2" (sites {"G6"}) state:8 value:100)
         (place "Base3" (sites {"F7"}) state:8 value:100) 
         (place "Base4" (sites {"F5"}) state:8 value:100)
-        >    
+        >  
         <
         
-        >   
+        >  
         <
         100
-        >         
+        >     
         <
         
-        >   
+        >  
         <
         (piece ExtendName P2 "Flip")
         (piece ExtendName P4 "Flip")
@@ -1541,7 +1541,7 @@
         (regions "MountainArea" (difference (expand (union {(sites Top) (sites Bottom) (sites Side NW) (sites Side NE) (sites Side SW) (sites Side SE)})) (union {(sites "Buildings") (sites "DeepWater") (sites "Docks") (sites "ShallowWater")})))
         (regions "Mountain" (sites Random (sites "MountainArea") num:5))
         
-        (regions "Forest" (sites Random (difference (sites Board) (union {(sites "ShallowWater") (sites "DeepWater") (sites "Mountain") (sites "Docks") (sites "Buildings")})) num:8))   
+        (regions "Forest" (sites Random (difference (sites Board) (union {(sites "ShallowWater") (sites "DeepWater") (sites "Mountain") (sites "Docks") (sites "Buildings")})) num:8))  
         > 
         <
         (place "Base1" (sites "BaseP1") state:8 value:100) 
@@ -1555,13 +1555,13 @@
         (place "Factory0" (sites "Factory2") state:8 value:100) 
         (place "Dock0" (sites "Docks") state:8 value:100) 
         (place "Airport0" (sites "Airport") state:8 value:100) 
-        >    
+        >  
         <
         
-        >   
+        >  
         <
         150
-        >         
+        >     
         <
         
         >
@@ -1633,7 +1633,7 @@
         (regions "MountainArea" (difference (expand (union {(sites Top) (sites Bottom) (sites Left) (sites Right)})) (union {(sites "Buildings") (sites "DeepWater") (sites "Docks") (sites "ShallowWater")})))
         (regions "Mountain" (sites Random (sites "MountainArea") num:5))
         
-        (regions "Forest" (sites Random (difference (sites Board) (union {(sites "ShallowWater") (sites "DeepWater") (sites "Mountain") (sites "Docks") (sites "Buildings")})) num:8))   
+        (regions "Forest" (sites Random (difference (sites Board) (union {(sites "ShallowWater") (sites "DeepWater") (sites "Mountain") (sites "Docks") (sites "Buildings")})) num:8))  
         > 
         <
         (place "Base1" (sites "BaseP1") state:8 value:100) 
@@ -1647,13 +1647,13 @@
         (place "Factory0" (sites "Factory2") state:8 value:100) 
         (place "Dock0" (sites "Docks") state:8 value:100) 
         (place "Airport0" (sites "Airport") state:8 value:100) 
-        >    
+        >  
         <
         
-        >   
+        >  
         <
         150
-        >          
+        >     
         <
         
         >
@@ -1752,7 +1752,7 @@
         (regions "MountainArea" (difference (expand (union {(sites Top) (sites Bottom) (sites Side NW) (sites Side NE) (sites Side SW) (sites Side SE)})) (union {(sites "Buildings") (sites "DeepWater") (sites "Docks") (sites "ShallowWater")})))
         (regions "Mountain" (sites Random (sites "MountainArea") num:14))
         
-        (regions "Forest" (sites Random (difference (sites Board) (union {(sites "ShallowWater") (sites "DeepWater") (sites "Mountain") (sites "Docks") (sites "Buildings")})) num:20))   
+        (regions "Forest" (sites Random (difference (sites Board) (union {(sites "ShallowWater") (sites "DeepWater") (sites "Mountain") (sites "Docks") (sites "Buildings")})) num:20))  
         > 
         <
         (place "Base1" (sites "BaseP1") state:8 value:100) 
@@ -1766,13 +1766,13 @@
         (place "Factory0" (sites "Factory2") state:8 value:100) 
         (place "Dock0" (sites "Docks") state:8 value:100) 
         (place "Airport0" (sites "Airport") state:8 value:100) 
-        >    
+        >  
         <
         
-        >   
+        >  
         <
         200
-        >           
+        >      
         <
         
         >
@@ -1871,7 +1871,7 @@
         (regions "MountainArea" (difference (expand (union {(sites Top) (sites Bottom) (sites Left) (sites Right)})) (union {(sites "Buildings") (sites "DeepWater") (sites "Docks") (sites "ShallowWater")})))
         (regions "Mountain" (sites Random (sites "MountainArea") num:14))
         
-        (regions "Forest" (sites Random (difference (sites Board) (union {(sites "ShallowWater") (sites "DeepWater") (sites "Mountain") (sites "Docks") (sites "Buildings")})) num:20))   
+        (regions "Forest" (sites Random (difference (sites Board) (union {(sites "ShallowWater") (sites "DeepWater") (sites "Mountain") (sites "Docks") (sites "Buildings")})) num:20))  
         > 
         <
         (place "Base1" (sites "BaseP1") state:8 value:100) 
@@ -1885,13 +1885,13 @@
         (place "Factory0" (sites "Factory2") state:8 value:100) 
         (place "Dock0" (sites "Docks") state:8 value:100) 
         (place "Airport0" (sites "Airport") state:8 value:100) 
-        >    
+        >  
         <
         
-        >   
+        >  
         <
         200
-        >         
+        >     
         <
         
         >
@@ -1914,86 +1914,86 @@
 
 (option "Fog of War" <FogOfWar> args:{ <AttackCheck> <EachMove> <NextMove> <Setup> <Metadata> }
     {
-    (item "Off"  	<> <> <> <> <> 																					"No Fog of War.")
-    (item "On"  	<"FogOfWarAttackCheck"> <"FogOfWar"> <"FogOfWarSLOW"> <"FogOfWarSetup"> <"FogOfWarMetadata">	"Fog of War.")**
+    (item "Off" 	<> <> <> <> <> 																					"No Fog of War.")
+    (item "On" 	<"FogOfWarAttackCheck"> <"FogOfWar"> <"FogOfWarSLOW"> <"FogOfWarSetup"> <"FogOfWarMetadata">	"Fog of War.")**
 })
 
 //------------------------------------------------------------------------------
 
 (option "Player 1 Doctrine" <Doctrine1> args:{ <doctrine> }
     {
-    (item "None"  			<"NoDoctrine">  		"Player 1 - No Doctrine.")**
-    (item "Special Forces"  	<"SpecialForces">  	"Player 1 - Special Forces.")
-    (item "Brute Strength"		<"BruteStrength">  	"Player 1 - Brute Strength.")
-    (item "Sharpshooter"  	<"Sharpshooter">  	"Player 1 - Sharpshooter.")
-    (item "Ace Pilot"  		<"AcePilot">  			"Player 1 - Ace Pilot.")
-    (item "Sea Dog"  			<"SeaDog">  			"Player 1 - Sea Dog.")
+    (item "None" 			<"NoDoctrine"> 		"Player 1 - No Doctrine.")**
+    (item "Special Forces" 	<"SpecialForces"> 	"Player 1 - Special Forces.")
+    (item "Brute Strength"		<"BruteStrength"> 	"Player 1 - Brute Strength.")
+    (item "Sharpshooter" 	<"Sharpshooter"> 	"Player 1 - Sharpshooter.")
+    (item "Ace Pilot" 		<"AcePilot"> 			"Player 1 - Ace Pilot.")
+    (item "Sea Dog" 			<"SeaDog"> 			"Player 1 - Sea Dog.")
     (item "Guerrilla Warfare" 	<"GuerrillaWarfare"> 	"Player 1 - Guerrilla Warfare.")
-    (item "Foreign Invader"  	<"ForeignInvader">  	"Player 1 - Foreign Invader.")
-    (item "Conscription"  	<"Conscription">  	"Player 1 - Conscription.")
-    (item "Elite Training"  	<"EliteTraining">  	"Player 1 - Elite Training.")
-    (item "Glass Cannon"  	<"GlassCannon">  		"Player 1 - Glass Cannon.")
-    (item "Hardened Resolve"  <"HardenedResolve"> 	"Player 1 - Hardened Resolve.")
+    (item "Foreign Invader" 	<"ForeignInvader"> 	"Player 1 - Foreign Invader.")
+    (item "Conscription" 	<"Conscription"> 	"Player 1 - Conscription.")
+    (item "Elite Training" 	<"EliteTraining"> 	"Player 1 - Elite Training.")
+    (item "Glass Cannon" 	<"GlassCannon"> 		"Player 1 - Glass Cannon.")
+    (item "Hardened Resolve" <"HardenedResolve"> 	"Player 1 - Hardened Resolve.")
     (item "Preemptive Strike" 	<"PreemptiveStrike"> 	"Player 1 - Preemptive Strike.")
-    (item "Retaliation"  		<"Retaliation">  		"Player 1 - Retaliation.")
-    (item "Lady Luck"  		<"LadyLuck">  		"Player 1 - Lady Luck.")
+    (item "Retaliation" 		<"Retaliation"> 		"Player 1 - Retaliation.")
+    (item "Lady Luck" 		<"LadyLuck"> 		"Player 1 - Lady Luck.")
 })
 
 (option "Player 2 Doctrine" <Doctrine2> args:{ <doctrine> }
     {
-    (item "None"  			<"NoDoctrine">  		"Player 2 - No Doctrine.")**
-    (item "Special Forces"  	<"SpecialForces">  	"Player 2 - Special Forces.")
-    (item "Brute Strength"		<"BruteStrength">  	"Player 2 - Brute Strength.")
-    (item "Sharpshooter"  	<"Sharpshooter">  	"Player 2 - Sharpshooter.")
-    (item "Ace Pilot"  		<"AcePilot">  			"Player 2 - Ace Pilot.")
-    (item "Sea Dog"  			<"SeaDog">  			"Player 2 - Sea Dog.")
+    (item "None" 			<"NoDoctrine"> 		"Player 2 - No Doctrine.")**
+    (item "Special Forces" 	<"SpecialForces"> 	"Player 2 - Special Forces.")
+    (item "Brute Strength"		<"BruteStrength"> 	"Player 2 - Brute Strength.")
+    (item "Sharpshooter" 	<"Sharpshooter"> 	"Player 2 - Sharpshooter.")
+    (item "Ace Pilot" 		<"AcePilot"> 			"Player 2 - Ace Pilot.")
+    (item "Sea Dog" 			<"SeaDog"> 			"Player 2 - Sea Dog.")
     (item "Guerrilla Warfare" 	<"GuerrillaWarfare"> 	"Player 2 - Guerrilla Warfare.")
-    (item "Foreign Invader"  	<"ForeignInvader">  	"Player 2 - Foreign Invader.")
-    (item "Conscription"  	<"Conscription">  	"Player 2 - Conscription.")
-    (item "Elite Training"  	<"EliteTraining">  	"Player 2 - Elite Training.")
-    (item "Glass Cannon"  	<"GlassCannon">  		"Player 2 - Glass Cannon.")
-    (item "Hardened Resolve"  <"HardenedResolve"> 	"Player 2 - Hardened Resolve.")
+    (item "Foreign Invader" 	<"ForeignInvader"> 	"Player 2 - Foreign Invader.")
+    (item "Conscription" 	<"Conscription"> 	"Player 2 - Conscription.")
+    (item "Elite Training" 	<"EliteTraining"> 	"Player 2 - Elite Training.")
+    (item "Glass Cannon" 	<"GlassCannon"> 		"Player 2 - Glass Cannon.")
+    (item "Hardened Resolve" <"HardenedResolve"> 	"Player 2 - Hardened Resolve.")
     (item "Preemptive Strike" 	<"PreemptiveStrike"> 	"Player 2 - Preemptive Strike.")
-    (item "Retaliation"  		<"Retaliation">  		"Player 2 - Retaliation.")
-    (item "Lady Luck"  		<"LadyLuck">  		"Player 2 - Lady Luck.")
+    (item "Retaliation" 		<"Retaliation"> 		"Player 2 - Retaliation.")
+    (item "Lady Luck" 		<"LadyLuck"> 		"Player 2 - Lady Luck.")
 })
 
 (option "Player 3 Doctrine" <Doctrine3> args:{ <doctrine> }
     {
-    (item "None"  			<"NoDoctrine">  		"Player 3 - No Doctrine.")**
-    (item "Special Forces"  	<"SpecialForces">  	"Player 3 - Special Forces.")
-    (item "Brute Strength"		<"BruteStrength">  	"Player 3 - Brute Strength.")
-    (item "Sharpshooter"  	<"Sharpshooter">  	"Player 3 - Sharpshooter.")
-    (item "Ace Pilot"  		<"AcePilot">  			"Player 3 - Ace Pilot.")
-    (item "Sea Dog"  			<"SeaDog">  			"Player 3 - Sea Dog.")
+    (item "None" 			<"NoDoctrine"> 		"Player 3 - No Doctrine.")**
+    (item "Special Forces" 	<"SpecialForces"> 	"Player 3 - Special Forces.")
+    (item "Brute Strength"		<"BruteStrength"> 	"Player 3 - Brute Strength.")
+    (item "Sharpshooter" 	<"Sharpshooter"> 	"Player 3 - Sharpshooter.")
+    (item "Ace Pilot" 		<"AcePilot"> 			"Player 3 - Ace Pilot.")
+    (item "Sea Dog" 			<"SeaDog"> 			"Player 3 - Sea Dog.")
     (item "Guerrilla Warfare" 	<"GuerrillaWarfare"> 	"Player 3 - Guerrilla Warfare.")
-    (item "Foreign Invader"  	<"ForeignInvader">  	"Player 3 - Foreign Invader.")
-    (item "Conscription"  	<"Conscription">  	"Player 3 - Conscription.")
-    (item "Elite Training"  	<"EliteTraining">  	"Player 3 - Elite Training.")
-    (item "Glass Cannon"  	<"GlassCannon">  		"Player 3 - Glass Cannon.")
-    (item "Hardened Resolve"  <"HardenedResolve"> 	"Player 3 - Hardened Resolve.")
+    (item "Foreign Invader" 	<"ForeignInvader"> 	"Player 3 - Foreign Invader.")
+    (item "Conscription" 	<"Conscription"> 	"Player 3 - Conscription.")
+    (item "Elite Training" 	<"EliteTraining"> 	"Player 3 - Elite Training.")
+    (item "Glass Cannon" 	<"GlassCannon"> 		"Player 3 - Glass Cannon.")
+    (item "Hardened Resolve" <"HardenedResolve"> 	"Player 3 - Hardened Resolve.")
     (item "Preemptive Strike" 	<"PreemptiveStrike"> 	"Player 3 - Preemptive Strike.")
-    (item "Retaliation"  		<"Retaliation">  		"Player 3 - Retaliation.")
-    (item "Lady Luck"  		<"LadyLuck">  		"Player 3 - Lady Luck.")
+    (item "Retaliation" 		<"Retaliation"> 		"Player 3 - Retaliation.")
+    (item "Lady Luck" 		<"LadyLuck"> 		"Player 3 - Lady Luck.")
 })
 
 (option "Player 4 Doctrine" <Doctrine4> args:{ <doctrine> }
     {
-    (item "None"  			<"NoDoctrine">  		"Player 4 - No Doctrine.")**
-    (item "Special Forces"  	<"SpecialForces">  	"Player 4 - Special Forces.")
-    (item "Brute Strength"		<"BruteStrength">  	"Player 4 - Brute Strength.")
-    (item "Sharpshooter"  	<"Sharpshooter">  	"Player 4 - Sharpshooter.")
-    (item "Ace Pilot"  		<"AcePilot">  			"Player 4 - Ace Pilot.")
-    (item "Sea Dog"  			<"SeaDog">  			"Player 4 - Sea Dog.")
+    (item "None" 			<"NoDoctrine"> 		"Player 4 - No Doctrine.")**
+    (item "Special Forces" 	<"SpecialForces"> 	"Player 4 - Special Forces.")
+    (item "Brute Strength"		<"BruteStrength"> 	"Player 4 - Brute Strength.")
+    (item "Sharpshooter" 	<"Sharpshooter"> 	"Player 4 - Sharpshooter.")
+    (item "Ace Pilot" 		<"AcePilot"> 			"Player 4 - Ace Pilot.")
+    (item "Sea Dog" 			<"SeaDog"> 			"Player 4 - Sea Dog.")
     (item "Guerrilla Warfare" 	<"GuerrillaWarfare"> 	"Player 4 - Guerrilla Warfare.")
-    (item "Foreign Invader"  	<"ForeignInvader">  	"Player 4 - Foreign Invader.")
-    (item "Conscription"  	<"Conscription">  	"Player 4 - Conscription.")
-    (item "Elite Training"  	<"EliteTraining">  	"Player 4 - Elite Training.")
-    (item "Glass Cannon"  	<"GlassCannon">  		"Player 4 - Glass Cannon.")
-    (item "Hardened Resolve"  <"HardenedResolve"> 	"Player 4 - Hardened Resolve.")
+    (item "Foreign Invader" 	<"ForeignInvader"> 	"Player 4 - Foreign Invader.")
+    (item "Conscription" 	<"Conscription"> 	"Player 4 - Conscription.")
+    (item "Elite Training" 	<"EliteTraining"> 	"Player 4 - Elite Training.")
+    (item "Glass Cannon" 	<"GlassCannon"> 		"Player 4 - Glass Cannon.")
+    (item "Hardened Resolve" <"HardenedResolve"> 	"Player 4 - Hardened Resolve.")
     (item "Preemptive Strike" 	<"PreemptiveStrike"> 	"Player 4 - Preemptive Strike.")
-    (item "Retaliation"  		<"Retaliation">  		"Player 4 - Retaliation.")
-    (item "Lady Luck"  		<"LadyLuck">  		"Player 4 - Lady Luck.")
+    (item "Retaliation" 		<"Retaliation"> 		"Player 4 - Retaliation.")
+    (item "Lady Luck" 		<"LadyLuck"> 		"Player 4 - Lady Luck.")
 })
 
 //------------------------------------------------------------------------------

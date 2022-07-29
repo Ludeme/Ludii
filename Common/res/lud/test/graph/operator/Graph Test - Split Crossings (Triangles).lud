@@ -1,7 +1,7 @@
 (game "Graph Test - Split Crossings (Triangles)" 
     (players 2) 
     (equipment { 
-        (board (splitCrossings (merge (tri 2) (shift 0 -0.325 (rotate 180 (tri 2))))) use:Vertex)  
+        (board (splitCrossings (merge (tri 2) (shift 0 -0.325 (rotate 180 (tri 2))))) use:Vertex) 
         (piece "Disc" P1) 
         (piece "Cross" P2) 
     }) 

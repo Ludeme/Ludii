@@ -1,50 +1,23 @@
-(define "RemoveEnemyPieceNotInLine3" 
-    (move
-        Remove
-        (forEach (sites Occupied by:Next container:"Board") if:(not (is Line 3 Orthogonal through:(site))))
-    )
-)
-
-(define "IfLine3OrthogonalMoveAgain" 
-    (then 
-        (if 
-            (is Line 3 Orthogonal) 
-            (moveAgain)
-        )
-    )
-)
-
-//------------------------------------------------------------------------------
-
 (game "Mylna"
     (players 2)
     (equipment {
-        (board
-            (concentric Square rings:3)
-            use:Vertex
-        ) 
-        (piece "Marker" Each
-            (move 
-                Step Orthogonal
-                (to if:(is Empty (to))) 
-                "IfLine3OrthogonalMoveAgain" 
-            )
+        ("NineMensMorrisBoard")
+        (piece "Marker" Each 
+            ("StepToEmpty" Orthogonal (then ("ReplayIfLine3" Orthogonal)))
         )
         (hand Each)
     })
     (rules 
-        (start 
-            (place "Marker" "Hand" count:9)
-        )
+        (start (place "Marker" "Hand" count:9))
         phases:{
         (phase "Placement"
             (play 
                 (if "SameTurn"
-                    "RemoveEnemyPieceNotInLine3"
+                    ("RemoveAnyEnemyPieceNotInLine3" Orthogonal) 
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty))
-                        "IfLine3OrthogonalMoveAgain"
+                        (then ("ReplayIfLine3" Orthogonal))
                     ) 
                 )
             )
@@ -54,14 +27,14 @@
         (phase "Movement"
             (play 
                 (if "SameTurn"
-                    "RemoveEnemyPieceNotInLine3"
+                    ("RemoveAnyEnemyPieceNotInLine3" Orthogonal) 
                     (forEach Piece)
                 )
             )
         )
         }
         (end {
-            (if (<= (count Pieces Next) 2) (result Mover Win))
+            ("HavingLessPiecesLoss" Next 2)
             ("BlockWin")
         })
     )
@@ -78,19 +51,14 @@
         ")
         (source "Arnarson and Daviðsson 1888-1892: 298-300.")
         (id "817")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line")
         (credit "Eric Piette")
         (origin "This game was played in Iceland, from around 1862 to 1889.")
         }
     )
     
-    (graphics {
-        
-    })
-    
     (ai
         "Mylna_ai"
     )
 )
-

@@ -50,19 +50,13 @@
 
 (game "Tumbleweed"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (hex <Board>))
         (piece "Disc" Each)
         (piece "Disc" Neutral)
-        }
-    )
+    })
     (rules
-        (start 
-            {
-            (place Stack "Disc0" (centrePoint) count:2)
-            }
-        )
+        (start (place Stack "Disc0" (centrePoint) count:2))
         phases:{
         (phase "Opening" 
             (play
@@ -99,12 +93,10 @@
         (end
             (if
                 (all Passed)
-                (byScore
-                    {
+                (byScore {
                     (score P1 "TerritoryP1")
                     (score P2 "TerritoryP2")
-                    }
-                )
+                })
             )
         )
     )
@@ -114,11 +106,11 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "5"  <5> "Played on a size 5 board.") 
-    (item "6"  <6> "Played on a size 6 board.") 
-    (item "7"  <7> "Played on a size 7 board.") 
-    (item "8"  <8> "Played on a size 8 board.")* 
-    (item "9"  <9> "Played on a size 9 board.")
+    (item "5" <5> "Played on a size 5 board.") 
+    (item "6" <6> "Played on a size 6 board.") 
+    (item "7" <7> "Played on a size 7 board.") 
+    (item "8" <8> "Played on a size 8 board.")* 
+    (item "9" <9> "Played on a size 9 board.")
     (item "10" <10> "Played on a size 10 board.") 
     (item "11" <11> "Played on a size 11 board.") 
     }
@@ -141,7 +133,7 @@
             
         The game ends when no more moves can be made by either player, or after two successive passes. The player who occupies over half the board wins. The program automatically scores indirectly controlled territory.")
         (id "963")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/territory")
         (author "Mike Zapawa")
         (publisher "Mike Zapawa")

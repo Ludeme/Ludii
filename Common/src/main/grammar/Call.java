@@ -226,13 +226,13 @@ public class Call
 	@Override
 	public boolean equals(final Object o)
 	{
-		return toString().equals(((Call) o).toString());
+		return ludemeFormat(0).equals(((Call) o).ludemeFormat(0));
 	}
 	
 	@Override
 	public int hashCode()
 	{
-		return toString().hashCode();
+		return ludemeFormat(0).hashCode();
 	}
 	
 	//-------------------------------------------------------------------------
@@ -518,7 +518,7 @@ public class Call
 		
 		return stringList;
 	}
-	
+
 	//-------------------------------------------------------------------------	
 
 	/**

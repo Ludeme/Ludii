@@ -62,7 +62,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )  
+    ) 
 )
 
 // This macro defines one piece move of a castling manouvre
@@ -206,7 +206,7 @@
 //----------------------- Core -------------------------------------------------------
 
 (game "Spartan Chess" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8)) 
         
@@ -398,7 +398,7 @@
         Spartan Kings may not castle. Persian Kings may castle as normal.")
         (id "1396")
         (source "<a href=\"https://boardgamegeek.com/boardgame/86997/spartan-chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chess")
         (author "Steven Streetman")
         (credit "Nicholas Bamber (building on Eric Piette's implementation of chess)")

@@ -7,9 +7,9 @@
         (play 
             (or 
                 <Play:type>
-                (move Pass)	      
+                (move Pass)	   
             )
-        )	    
+        )	  
         (end 	 	
             (if (all Passed)	
                 (byScore)
@@ -21,7 +21,7 @@
 
 (option "Board" <Board> args:{ <type> }
     {
-    (item "Graph1"       
+    (item "Graph1"    
         <
         (graph
             vertices:{ 
@@ -35,16 +35,16 @@
             {15 16} {15 20} {16 21} {20 21} {16 17} {17 22} {21 22} {17 18} 
             {18 23} {22 23} {18 19} {19 24} {23 24}}
         )
-        >    
+        >  
         ""
-    )*  
-    (item "Graph2"       
+    )* 
+    (item "Graph2"    
         <
         (graph
             vertices:{
             {0 0} {2 2} {4 1} {2 3} {4 2} {10 2} {2 5} {6 4} {8 3} {11 3} {5 5}
             {9 4} {12 4} {9 5} {2 7} {4 7} {10 6} {13 5} {13 6} {3 8} {5 8} 
-            {8 7} {10 7} {6 9} {8 9} {11 8} {13 8} {9 11} {11 10}}         
+            {8 7} {10 7} {6 9} {8 9} {11 8} {13 8} {9 11} {11 10}}     
             edges:{
             {0 1} {0 3} {1 3} {1 2} {3 4} {2 4} {10 2} {4 10} {1 10} {3 10} {6 10} {7 10} 
             {10 14} {10 15} {10 24} {8 10} {15 20} {14 20} {19 15} {20 15} {20 23} {20 21}
@@ -52,11 +52,11 @@
             {5 8} {5 11} {9 11} {9 13} {11 17} {16 17} {13 18} {12 16} {12 26} {16 26} 
             {16 18} {25 26} {22 25} {25 27} {26 28} {24 28} {24 27} {27 28}}
         )
-        >    
+        >  
         ""
-    )  
+    ) 
     
-    (item "Graph3"       
+    (item "Graph3"    
         <
         (graph
             vertices:{ 
@@ -68,16 +68,16 @@
             {12 14} {13 12} {10 14} {8 12} {1 9} {3 11} {2 10} {0 8} {7 15} 
             {5 13} {6 14} {4 12}}
         )
-        >    
+        >  
         ""
-    )   
+    )  
 })
 
 //-----------------------------------------------------------------------------------
 
 (option "Play Rules" <Play> args:{ <type> }
     {
-    (item "Edge"  
+    (item "Edge" 
         <
         (move 
             Add
@@ -89,10 +89,10 @@
                 (if 
                     (is Path Edge Mover length:(exact 3)) 
                     (addScore Mover 1)
-                )        		 
+                )    		 
             )	
         )
-        >   
+        >  
         "The players play on edges of the graph."
     )* 
     (item "Vertex" 
@@ -106,23 +106,23 @@
                 (if 
                     (is Path Vertex Mover length:(exact 3)) 
                     (addScore Mover 1)
-                )        		 
+                )    		 
             )	
         )
-        >   
+        >  
         "The players play on vertices of the graph."
-    )  
+    ) 
 })
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "DisPath is a 2-player graph theory game, which can be played on vertices or edges of any graph. The aim of the game is to make more disjoint paths. Every disjoint path needs to be fully disconnected from any other friendly path. The length of the path can be any integer (in this game, we have used k = 3). The motivation comes from the Disjoint path problem in graph theory. ")
         (rules "Each turn, a player selects a graph element (vertex or edge) to create a disjoint path with size k. When a player successfully makes a path of a specific size, he gets a point. The player with the highest score wins the game. ")
         (id "620")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "math/graph")
         (author "Tahmina Begum")
         (credit "Tahmina Begum")
@@ -135,7 +135,7 @@
         (board Style PenAndPaper replaceComponentsWithFilledCells:True)
         (show Edges Orthogonal ThinDotted (colour 127 127 127))
         
-    })  
+    }) 
     (ai
         "DisPath_ai"
     )

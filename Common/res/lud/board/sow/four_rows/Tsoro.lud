@@ -20,10 +20,10 @@
             (track "Track2" <Row:track2> loop:True P2)
             }
         )
-        (regions "Home" P1 (sites Track "Track1"))               // P1 Home
-        (regions "Home" P2 (sites Track "Track2"))               // P2 home
+        (regions "Home" P1 (sites Track "Track1"))        // P1 Home
+        (regions "Home" P2 (sites Track "Track2"))        // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))  // P2 inner Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top))) // P2 inner Home
         (piece "Seed" Shared)
     }) 
     (rules 
@@ -79,16 +79,16 @@
 
 (option "Board Size" <Row> args:{ <size> <track2>}
     {
-    (item "6"  <6> <"12,E,N1,W"> "6 Holes per row.")  
-    (item "7"  <7> <"14,E,N1,W"> "7 Holes per row.")  
-    (item "8"  <8> <"16,E,N1,W"> "8 Holes per row.")**  
-    (item "9"  <9> <"18,E,N1,W"> "9 Holes per row.")  
-    (item "10" <10> <"20,E,N1,W"> "10 Holes per row.")  
-    (item "11" <11> <"22,E,N1,W"> "11 Holes per row.")  
-    (item "12" <12> <"24,E,N1,W"> "12 Holes per row.")*  
-    (item "13" <13> <"26,E,N1,W"> "13 Holes per row.")  
-    (item "14" <14> <"28,E,N1,W"> "14 Holes per row.")  
-    (item "15" <15> <"30,E,N1,W"> "15 Holes per row.")*  
+    (item "6" <6> <"12,E,N1,W"> "6 Holes per row.") 
+    (item "7" <7> <"14,E,N1,W"> "7 Holes per row.") 
+    (item "8" <8> <"16,E,N1,W"> "8 Holes per row.")** 
+    (item "9" <9> <"18,E,N1,W"> "9 Holes per row.") 
+    (item "10" <10> <"20,E,N1,W"> "10 Holes per row.") 
+    (item "11" <11> <"22,E,N1,W"> "11 Holes per row.") 
+    (item "12" <12> <"24,E,N1,W"> "12 Holes per row.")* 
+    (item "13" <13> <"26,E,N1,W"> "13 Holes per row.") 
+    (item "14" <14> <"28,E,N1,W"> "14 Holes per row.") 
+    (item "15" <15> <"30,E,N1,W"> "15 Holes per row.")* 
     (item "16" <16> <"32,E,N1,W"> "16 Holes per row.") 
     (item "17" <17> <"34,E,N1,W"> "17 Holes per row.") 
     (item "18" <18> <"36,E,N1,W"> "18 Holes per row.")* 
@@ -123,7 +123,7 @@
         (rules "4x6-21 board; 8 is most common, 12, 15, and 18 are also popular. Two counters in each hole in the players' outer rows. Sowing occurs in an anti-clockwise direction, only in the two rows belonging to the player. When the final counter lands in an occupied hole, these are picked up and sowing continues. When the final counter lands in an empty hole in the inner row, any counters in the opposite hole in the opponent's inner row are captured. If there also are counters in the opposite hole in the opponent's outer row, these are also captured, but only if there was first a capture from the inner row hole. Players cannot sow from a hole with a single counter unless there are no holes with multiple counters. Single counters can only be sown into an empty hole. Play continues until one player has captured all of the opponent's counters, thus winning the game.")
         (source "Matthews 1964: 64-65.")
         (id "1287")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         (origin "This game was played in Zimbabwe, around 1964.")

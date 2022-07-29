@@ -1515,6 +1515,17 @@ public abstract class SpatialFeature extends Feature
 	}
 
 	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param game The game for which we're generating features (passed such that
+	 * 	we can normalise)
+	 * @return List of new spatial features that generalise (in a game-independent
+	 * manner, i.e. having strictly fewer elements in patterns or action-specifiers)
+	 * this feature.
+	 */
+	public abstract List<SpatialFeature> generateGeneralisers(final Game game);
+	
+	//-------------------------------------------------------------------------
 
 //	/**
 //	 * @return The feature's comment
@@ -1591,6 +1602,54 @@ public abstract class SpatialFeature extends Feature
 		return result;
 	}
 
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Wrapper around a feature, with equals() and hashCode() functions that
+	 * ignore rotation / reflection permissions in feature/pattern.
+	 * 
+	 * @author Dennis Soemers
+	 */
+	public static class RotRefInvariantFeature
+	{
+		/** Wrapped Feature */
+		protected SpatialFeature feature;
+		
+		/**
+		 * Constructor
+		 * @param feature
+		 */
+		public RotRefInvariantFeature(final SpatialFeature feature)
+		{
+			this.feature = feature;
+		}
+		
+		/**
+		 * @return The wrapped feature
+		 */
+		public SpatialFeature feature()
+		{
+			return feature;
+		}
+		
+		@Override
+		public boolean equals(final Object other)
+		{
+			if (!(other instanceof RotRefInvariantFeature))
+			{
+				return false;
+			}
+			
+			return feature.equalsIgnoreRotRef(((RotRefInvariantFeature) other).feature);
+		}
+		
+		@Override
+		public int hashCode()
+		{
+			return feature.hashCodeIgnoreRotRef();
+		}
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

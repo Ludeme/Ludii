@@ -16,7 +16,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King_noCross" Mover at:(to)))
-    )  
+    ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -48,7 +48,7 @@
 //------------------------------------------------------------------------------
 
 (game "Shatren" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8)) 
         
@@ -167,7 +167,7 @@
         ")
         (source "Parker 1909: 586-587.")
         (id "743")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
         (origin "This game was played in Sri Lanka, around 1909.")

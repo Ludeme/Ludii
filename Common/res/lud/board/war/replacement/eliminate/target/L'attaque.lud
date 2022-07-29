@@ -216,7 +216,7 @@
                                     (sites LineOfSight Piece at:(from) Orthogonal)
                                     if:("IsEnemyAt" (to))
                                 )
-                                (then  
+                                (then 
                                     (and
                                         (if (and 
                                                 (!= (what at:(last To)) (id "Bomb" Next)) 
@@ -294,7 +294,7 @@
         (rules "Played on a board of 10x10 squares. The board has three 2x2 zones which cannot be entered, represented as water on the battlefield. each player controls 36 pieces which have individual army ranks. The goal is to capture the opponent's flag. Pieces can move only one space orthogonally. the Scout piece can move any number of spaces orthogonally. Pieces may attempt to capture an opposing piece; when doing so the ranks are revealed and the lower ranking piece is captured; if they are of equal rank they are both removed. There are bomb pieces which cannot move. Bombs eliminate other pieces attacking it and can only be removed by a miner. The spy can only attack the Marshall or the Flag. The scouts can not take each other, and winning is only possible in capturing the opponent flag")
         (id "444")
         (source "<a href=\"https://boardgamegeek.com/image/3535261/lattaque\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/eliminate/target")
         (credit "Eric Piette")
         }

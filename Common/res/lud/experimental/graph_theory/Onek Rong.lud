@@ -2,7 +2,7 @@
     (players <Version:numPlayers>) 
     (equipment { 
         (board <Board:type> use:Vertex)
-        (piece "Marker" Each)  
+        (piece "Marker" Each) 
     })
     
     (rules 
@@ -12,15 +12,15 @@
         (play
             (or
                 (move 
-                    Claim        
-                    (to (sites Empty))  
+                    Claim    
+                    (to (sites Empty)) 
                     (then 
                         (if (= 1 (size Group at:(last To))) 
-                            (addScore Mover (cost Vertex at:(last To)))  
+                            (addScore Mover (cost Vertex at:(last To))) 
                         )
                     ) 
                 )
-                (move Pass)          
+                (move Pass)     
             )
         )
         (end
@@ -35,12 +35,12 @@
 
 (option "Board" <Board> args:{ <type> <start> }
     {
-    (item "Graph1"       
+    (item "Graph1"    
         <
         (subdivide (hex 2))
         > 
         <
-        {   
+        {  
         (set Cost 1 Vertex at:0) 
         (set Cost 2 Vertex at:1)
         (set Cost 3 Vertex at:2) 
@@ -66,11 +66,11 @@
         (set Cost 3 Vertex at:22) 
         (set Cost 1 Vertex at:23) 
         }
-        >    
+        >  
         ""
     )* 
     
-    (item "Graph2"       
+    (item "Graph2"    
         <
         (graph
             vertices:{ 
@@ -115,11 +115,11 @@
         (set Cost 1 Vertex at:23) 
         (set Cost 2 Vertex at:24)
         }
-        >    
+        >  
         ""
     ) 
     
-    (item "Graph3"       
+    (item "Graph3"    
         <
         (graph
             vertices:{ 
@@ -154,9 +154,9 @@
         (set Cost 3 Vertex at:18) 
         (set Cost 3 Vertex at:19) 
         }
-        >    
+        >  
         ""
-    )  
+    ) 
     
 })
 
@@ -170,14 +170,14 @@
     )* 
     
     (item "3" 
-        <3>      
+        <3>   
         "The version of the game played with 3 players."
     ) 
     
     (item "4" 
-        <4>     
+        <4>   
         "The version of the game played with 4 players."
-    )   
+    )  
 })
 
 //------------------------------------------------------------------------------
@@ -189,7 +189,7 @@
         (description "Onek Rong is a multiplayer graph theory game, which can be played by two or more players. It is played on an undirected and vertex-weighted graph. ")
         (rules "Initially, the graph contains only uncoloured vertices. At each turn, a player chooses a vertex to colour with his own colour, or pass. If there is no other adjacent vertex with the same colour, the player receives the weight of the vertex as score. When all vertices are coloured, or all players pass, the player who with the maximum score wins. ")
         (id "674")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "experimental/graph theory")
         (author "Tahmina Begum")
         (credit "Tahmina Begum")

@@ -5,11 +5,11 @@
         (board <Board:type>) 
         (piece "Marker" Neutral) 
         }
-    )  
+    ) 
     (rules
         (start
             {
-            (set Neutral Edge (sites {0..14}))            
+            (set Neutral Edge (sites {0..14}))      
             }
         )
         
@@ -23,7 +23,7 @@
             
             (if (isCaterpillarTree Edge Neutral) (result Mover Win))
             
-        )    
+        )  
     )
 )
 
@@ -31,18 +31,18 @@
 
 (option "Board" <Board> args:{ <type> <start> }
     {
-    (item "Graph1"       
+    (item "Graph1"    
         <
         (graph
             vertices:{ {1 0} {5 0} {0 3} {6 3} {1 6} {5 6}}
             edges:{ {0 1} {0 2} {0 3} {0 4} {0 5} {1 2} {1 3} {1 4} {1 5} 
             {2 3} {2 4} {2 5} {3 4} {3 5} {4 5}}
         )
-        >    
+        >  
         "The game is played on the Graph1 k6."
     )* 
     
-    (item "Graph2"       
+    (item "Graph2"    
         <
         (graph
             vertices:{ 
@@ -53,11 +53,11 @@
             {3 5} {3 6} {3 7} {3 8} {4 5} {4 6} {4 7} {4 8} {5 6} {5 7} {5 8} 
             {6 7} {6 8} {7 8}}
         )
-        >    
+        >  
         "The game is played on the Graph2 k9."
     ) 
     
-    (item "Graph3"       
+    (item "Graph3"    
         <
         (graph
             vertices:{ 
@@ -73,9 +73,9 @@
             {7 21} {7 22} {16 23} {8 23} {2 23} {17 23} {10 24} {24 25} {18 24}
             {18 25} {10 25} {7 15} {10 18}}
         )
-        >    
+        >  
         "The game is played on the Graph3."
-    )  
+    ) 
     
 })
 
@@ -88,7 +88,7 @@
         (classification "mathematical/graph")
         (author "Tahmina Begum")
         (credit "Tahmina Begum 13-05-2020")
-        (date "25-04-2020")   
+        (date "25-04-2020")  
     })
     
     (graphics {

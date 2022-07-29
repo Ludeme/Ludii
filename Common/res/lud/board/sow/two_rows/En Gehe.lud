@@ -11,8 +11,8 @@
         (mancalaBoard 2 "Columns" store:None
             (track "Track" "0,E,N,W" loop:True)
         ) 
-        (regions P1 (sites Bottom))           // P1 home
-        (regions P2 (sites Top))            // P2 home
+        (regions P1 (sites Bottom))      // P1 home
+        (regions P2 (sites Top))      // P2 home
         (piece "Seed" Shared)
         (hand Each)
     }) 
@@ -65,17 +65,17 @@
 
 (option "Board Size" <Row> args:{ <size> }
     {
-    (item "40"  <40> "Each row has 40 holes.")*  
-    (item "41"  <41> "Each row has 41 holes.")  
-    (item "42"  <42> "Each row has 42 holes.")  
-    (item "43"  <43> "Each row has 43 holes.")  
-    (item "44"  <44> "Each row has 44 holes.")  
-    (item "45"  <45> "Each row has 45 holes.")  
-    (item "46"  <46> "Each row has 46 holes.")  
-    (item "47"  <47> "Each row has 47 holes.")  
-    (item "48"  <48> "Each row has 48 holes.")  
-    (item "49"  <49> "Each row has 49 holes.")  
-    (item "50"  <50> "Each row has 50 holes.")
+    (item "40" <40> "Each row has 40 holes.")* 
+    (item "41" <41> "Each row has 41 holes.") 
+    (item "42" <42> "Each row has 42 holes.") 
+    (item "43" <43> "Each row has 43 holes.") 
+    (item "44" <44> "Each row has 44 holes.") 
+    (item "45" <45> "Each row has 45 holes.") 
+    (item "46" <46> "Each row has 46 holes.") 
+    (item "47" <47> "Each row has 47 holes.") 
+    (item "48" <48> "Each row has 48 holes.") 
+    (item "49" <49> "Each row has 49 holes.") 
+    (item "50" <50> "Each row has 50 holes.")
 })
 
 //------------------------------------------------------------------------------
@@ -102,7 +102,7 @@
         (rules "2x40-50 board. Each team controls one row. Play begins with each hole containing four counters (usually seeds or pebbles). A player picks up the counters in a hole in his team's row and sows them in a counterclockwise fashion, one in each consecutive hole. If the last counter is deposited into a hole containing counter, those counters are picked up and the player continues sowing. The turn continues in this fashion until the last counter falls into an empty hole. If this empty hole is on the player's side, the counters in the opposite hole in the other team's row are captured. The counter also causing the capture is taken. Play continues until one team cannot move, and the remaining counters are captured by the other team. The team with the most seeds wins.")
         (source "Merker 1904: 37.")
         (id "67")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         (origin "This game was played in East Africa, around 1904.")

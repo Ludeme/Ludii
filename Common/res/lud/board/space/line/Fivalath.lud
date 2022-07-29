@@ -1,40 +1,36 @@
 (game "Fivalath" 
     (players 2) 
-    (equipment 
-        { 
+    (equipment { 
         (board (square <Board:size>) use:Vertex) 
         (piece "Ball" Each) 
-        }
-    ) 
+    }) 
     (rules 
         
         (play (move Add (to (sites Empty))))
         
-        (end 
-            {
+        (end {
             (if (is Line 5 All) (result Mover Win))
             (if (is Line 4 All) (result Mover Loss))
-            }
-        )
+        })
     )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> }
-    {   
-    (item "8"  <8> "Played on a size 8 board.")  
-    (item "9"  <9> "Played on a size 9 board.")  
-    (item "10" <10> "Played on a size 10 board.")**  
-    (item "11" <11> "Played on a size 11 board.")  
-    (item "12" <12> "Played on a size 12 board.")  
-    (item "13" <13> "Played on a size 13 board.")  
-    (item "14" <14> "Played on a size 14 board.")  
-    (item "15" <15> "Played on a size 15 board.")  
-    (item "16" <16> "Played on a size 16 board.")  
-    (item "17" <17> "Played on a size 17 board.")  
-    (item "18" <18> "Played on a size 18 board.")  
-    (item "19" <19> "Played on a size 19 board.")  
+    {  
+    (item "8" <8> "Played on a size 8 board.") 
+    (item "9" <9> "Played on a size 9 board.") 
+    (item "10" <10> "Played on a size 10 board.")** 
+    (item "11" <11> "Played on a size 11 board.") 
+    (item "12" <12> "Played on a size 12 board.") 
+    (item "13" <13> "Played on a size 13 board.") 
+    (item "14" <14> "Played on a size 14 board.") 
+    (item "15" <15> "Played on a size 15 board.") 
+    (item "16" <16> "Played on a size 16 board.") 
+    (item "17" <17> "Played on a size 17 board.") 
+    (item "18" <18> "Played on a size 18 board.") 
+    (item "19" <19> "Played on a size 19 board.") 
     }
 )
 
@@ -48,7 +44,7 @@
         (rules "Played on a square grid (8x8 or larger) with two players. Players alternate placing one stone of their colour on the board on any empty point. If a player makes a line of five pieces, either orthogonally or diagonally, they win; but if they make a line of four pieces, they lose.")
         (id "1400")
         (source "<a href=\"https://boardgamegeek.com/boardgame/311967/fivalath\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line")
         (author "Néstor Romeral Andrés")
         (credit "Eric Silverman")

@@ -1,12 +1,10 @@
-(define "HasFreedom" (> (count Liberties Orthogonal) 0))
-
 (define "CaptureSurroundedPiece"
     (enclose 
         (from (last To)) 
         Orthogonal 
         (between 
             if:("IsEnemyAt" (between)) 
-            (apply       
+            (apply    
                 (and 
                     (addScore Mover 1) 
                     (remove (between)) 
@@ -30,8 +28,7 @@
         phases:{
         (phase "MarkedPlacement"
             (play 
-                (move
-                    Add
+                (move Add
                     (to (intersection (sites Empty) (sites "MarkedSites")))
                 )
             )
@@ -40,14 +37,13 @@
         (phase "Playing" 
             (play
                 (do
-                    (move
-                        Add
+                    (move Add
                         (to (sites Empty))
                         (then 
                             "CaptureSurroundedPiece"
                         )
                     )
-                    ifAfterwards:"HasFreedom"
+                    ifAfterwards:("HasFreedom" Orthogonal)
                 )
             )
             (end
@@ -74,7 +70,7 @@
         (rules "19x19 intersecting lines. The central, as well as every third spot, in a square with the corners at the fourth point from the corners of the board, are marked. Players alternate turns placing a piece on the board on one of the marked spaces. When all of the marked spaces have been occupied, players may place a piece on any empty spot on the board. If a player surrounds one or more of the opponent's pieces orthogonally, they capture the opponent's pieces. The edge of the board can be included in such an enclosure. A group of pieces which contain two empty or more enclosures cannot be captured by the opponent. Pieces cannot be placed in an enclosure. When no further pieces can be placed, the players count the number of their pieces on the board and the number of empty spaces they enclose, and the player with the higher score wins.")
         (source "Culin 1895: 91-97.")
         (id "1046")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/territory")
         (credit "Eric Piette")
         (origin "This game was played in Korea, around 1895.")

@@ -19,19 +19,16 @@ public interface iNGram {
     /**
      * This method returns a list of all instances with the same key as the provided one.
      * @param key
-     * @return
      */
     List<Instance> getMatch(String key);
 
     /**
      * Get the value of N for the model.
-     * @return
      */
     int getN();
 
     /**
      * Returns the Map object containing the NGram
-     * @return
      */
     Map<String, List<Instance>> getDictionary();
 }

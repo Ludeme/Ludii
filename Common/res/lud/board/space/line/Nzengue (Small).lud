@@ -18,9 +18,7 @@
         (hand Each)
     })
     (rules 
-        (start 
-            (place "Marker" "Hand" count:3)
-        )
+        (start (place "Marker" "Hand" count:3))
         (play (move (from (handSite Mover)) (to (sites Empty))))
         (end ("Line3Win"))
     )
@@ -37,18 +35,13 @@
         (rules "A square is drawn, with diagonals. Three pieces per player. Players alternate turns placing a piece on the board. The corners or the square, the central point, and the midpoint of each side of the square are playing sites. When a player forms a line with their three pieces, they win.")
         (source "Klepzig 1972: 181.")
         (id "1356")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line")
         (origin "This game was played in Republic of Congo, around 1971.")
         }
     )
     
-    (graphics {
-        
-    })
-    
     (ai
         "Nzengue (Small)_ai"
     )
 )
-

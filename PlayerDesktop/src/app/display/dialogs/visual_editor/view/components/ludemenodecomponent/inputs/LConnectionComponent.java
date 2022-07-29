@@ -1,17 +1,17 @@
 package app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs;
 
-import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.ImmutablePoint;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import main.grammar.Symbol;
 
-import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
 
 /**
  * Represents an outgoing connection from a LudemeNodeComponent.
@@ -31,8 +31,6 @@ public class LConnectionComponent extends JComponent
     private ImmutablePoint connectionPointPosition = new ImmutablePoint(0, 0);
     /** The LudemeNodeComponent this ConnectionComponent is connected to */
     private LudemeNodeComponent connectedTo;
-    /** Whether the node this ConnectionComponent is connected to is collapsed */
-    private boolean connectionIsCollapsed = false;
     /** Whether this ConnectionComponent is filled (connected) */
     private boolean isFilled;
 
@@ -55,6 +53,42 @@ public class LConnectionComponent extends JComponent
         add(connectionPointComponent);
         setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        /**
+         * Listener to create a connection when the user clicks on the circle
+         * or remove a connection when the user clicks on the circle again
+         */
+        MouseListener clickListener = new MouseAdapter()
+        {
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                super.mouseClicked(e);
+                IGraphPanel graphPanel = lnc().graphPanel();
+                if (e.getButton() == MouseEvent.BUTTON1)
+                {
+                    if (!filled())
+                    {
+                        // Start drawing connection
+                        fill(!filled());
+                        graphPanel.connectionHandler().startNewConnection(LConnectionComponent.this);
+                    }
+                    else
+                    {
+                        // if already connected: remove connection
+                        if (connectedTo != null)
+                        {
+                            graphPanel.connectionHandler().removeConnection(LConnectionComponent.this.lnc().node(), LConnectionComponent.this);
+                            setConnectedTo(null);
+                        } else
+                        {
+                            // end drawing connection
+                            fill(!filled());
+                            graphPanel.connectionHandler().cancelNewConnection();
+                        }
+                    }
+                }
+            }
+        };
         addMouseListener(clickListener);
 
         revalidate();
@@ -63,67 +97,11 @@ public class LConnectionComponent extends JComponent
     }
 
     /**
-     * Listener to create a connection when the user clicks on the circle
-     * or remove a connection when the user clicks on the circle again
-     */
-    private final MouseListener clickListener = new MouseAdapter()
-    {
-        @Override
-        public void mouseClicked(MouseEvent e)
-        {
-            super.mouseClicked(e);
-            IGraphPanel graphPanel = lnc().graphPanel();
-            if(e.getButton() == MouseEvent.BUTTON1)
-            {
-                if(!filled())
-                {
-                    // Start drawing connection
-                    fill(!filled());
-                    graphPanel.connectionHandler().startNewConnection(LConnectionComponent.this);
-                }
-                else
-                {
-                    /*if(connectionIsCollapsed)
-                    {
-                        connectedTo.setCollapsed(false);
-                        connectedTo.setVisible(true);
-                        graphPanel.repaint();
-                        updatePosition();
-                        return;
-                    }*/
-                    // if already connected: remove connection
-                    if(connectedTo != null)
-                    {
-                        graphPanel.connectionHandler().removeConnection(LConnectionComponent.this.lnc().node(), LConnectionComponent.this);
-                        setConnectedTo(null);
-                    }
-                    else
-                    {
-                        // end drawing connection
-                        fill(!filled());
-                        graphPanel.connectionHandler().cancelNewConnection();
-                    }
-                }
-            }
-        }
-    };
-
-    /**
      * Updates the position of the ConnectionPointComponent
      * Updates whether the ConnectionComponent is connected to a collapsed node or not
      */
     public void updatePosition()
     {
-        // Update whether the node this ConnectionComponent is connected to is collapsed
-        /*if(connectedTo != null)
-        {
-            if(connectedTo.node().collapsed() != connectionIsCollapsed)
-            {
-                connectionIsCollapsed = connectedTo.node().collapsed();
-                connectionPointComponent.repaint();
-                connectionPointComponent.revalidate();
-            }
-        }*/
 
         // Update the position of the ConnectionPointComponent
         if(this.getParent() == null || this.getParent().getParent() == null || this.getParent().getParent().getParent() == null) return;
@@ -207,13 +185,6 @@ public class LConnectionComponent extends JComponent
         return inputField().possibleSymbolInputs();
     }
 
-    @Override
-    public void paintComponent(Graphics g)
-    {
-        super.paintComponent(g);
-        // TODO: need that?
-    }
-
     /**
      *
      * @return whether the input field is optional
@@ -229,7 +200,7 @@ public class LConnectionComponent extends JComponent
      */
     private int radius()
     {
-        return (int)(INPUT_FIELD.label().getPreferredSize().height * 0.4 * (1.0/DesignPalette.SCALAR));
+        return (int)(INPUT_FIELD.label().getPreferredSize().height * 0.4 * (1.0/ DesignPalette.SCALAR));
     }
 
     /**
@@ -237,8 +208,13 @@ public class LConnectionComponent extends JComponent
      */
     class ConnectionPointComponent extends JComponent
     {
-        public boolean fill;
-        public int x,y;
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 4910328438056546197L;
+		public boolean fill;
+        private final int x = 0;
+        private final int y = 0;
 
         public ConnectionPointComponent(boolean fill)
         {
@@ -259,22 +235,22 @@ public class LConnectionComponent extends JComponent
             // if fill = true, draw a filled circle. otherwise, the contour only
             if(fill)
             {
-                g2.setColor(DesignPalette.LUDEME_CONNECTION_POINT);
+                g2.setColor(DesignPalette.LUDEME_CONNECTION_POINT());
                 g2.fillOval(x, y, radius()*2, radius()*2);
             }
             else
             {
-                if(!optional())
+                if(!optional() && !LConnectionComponent.this.inputField().isHybrid())
                 {
-                    g2.setColor(DesignPalette.LUDEME_CONNECTION_POINT_INACTIVE);
+                    g2.setColor(DesignPalette.LUDEME_CONNECTION_POINT_INACTIVE());
                 }
                 else
                 {
-                    g2.setColor(DesignPalette.LUDEME_CONNECTION_POINT);
+                    g2.setColor(DesignPalette.LUDEME_CONNECTION_POINT());
                 }
                 g2.fillOval(x, y, radius()*2, radius()*2);
                 // make white hole to create stroke effect
-                g2.setColor(DesignPalette.BACKGROUND_LUDEME_BODY);
+                g2.setColor(DesignPalette.BACKGROUND_LUDEME_BODY());
                 g2.fillOval(x+radius()/2, y+radius()/2, radius(), radius());
 
             }

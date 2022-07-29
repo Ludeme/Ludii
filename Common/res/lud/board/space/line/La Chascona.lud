@@ -1,29 +1,7 @@
-(define "RemoveEnemyPieceNotInLine3" 
-    (move
-        Remove
-        (forEach 
-            (sites Occupied by:Next container:"Board") 
-            if:(not (is Line 3 Orthogonal through:(site)))
-        )
-    )
-)
-
 (define "RemoveEnemyPiece" 
-    (if (can Move ("RemoveEnemyPieceNotInLine3"))
-        ("RemoveEnemyPieceNotInLine3") 
-        (move
-            Remove
-            (sites Occupied by:Next container:"Board") 
-        )
-    )
-)
-
-(define "IfLine3MoveAgain" 
-    (then 
-        (if 
-            (is Line 3 Orthogonal exact:True) 
-            (moveAgain)
-        )
+    (if (can Move ("RemoveAnyEnemyPieceNotInLine3" Orthogonal) )
+        ("RemoveAnyEnemyPieceNotInLine3" Orthogonal) 
+        ("RemoveAnyEnemyPiece")
     )
 )
 
@@ -33,13 +11,11 @@
     (players 2)
     
     (equipment { 
-        (board (concentric Square rings:3) use:Vertex) 
+        ("NineMensMorrisBoard") 
         (hand Each)
         (piece "Marker" Each 
-            (move
-                Step 
-                (to if:(is Empty (to))) 
-                "IfLine3MoveAgain" 
+            ("StepToEmpty" ~
+                (then ("ReplayIfLine3" Orthogonal exact:True)) 
             )
         ) 
     }) 
@@ -54,7 +30,7 @@
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty)) 
-                        "IfLine3MoveAgain" 
+                        (then ("ReplayIfLine3" Orthogonal exact:True)) 
                     ) 
                 )
             ) 
@@ -85,7 +61,7 @@
         (rules "Three concentric squares, with lines connecting the midpoints of the sides. Nine pieces per player. Players alternate turns placing a piece on the board. When a player places three of their pieces in a line of three along one of the lines on the board, they capture one of the opponent's pieces. When all of the pieces have been placed, players alternate turns moving one of their pieces to an adjacent empty spot on the board. Players cannot capture one of their opponent's pieces which is in a three-in-a-row alignment. The player who either captures seven of their opponent's pieces or blocks the opponent from being able to move wins.")
         (source "Espinel Cejas and González García 1994: 210-212.")
         (id "1944")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line")
         (credit "Eric Piette")
         (origin "This game was played in Canary Islands, around 1994.")

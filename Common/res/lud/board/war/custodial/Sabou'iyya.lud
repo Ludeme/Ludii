@@ -39,17 +39,10 @@
     (equipment {
         (board (square 5))
         (piece "Marker" Each 
-            (move Step Orthogonal (to if:(is Empty (to)))
-                (then 
-                    (custodial 
-                        (from (last To))
+            ("StepToEmpty" Orthogonal
+                (then ("CustodialCapture"
                         Orthogonal
-                        (between
-                            (max 1)
-                            if:("IsEnemyAt" (between))
-                            (apply (remove (between)))
-                        )
-                        (to if:("IsFriendAt" (to)))
+                        (max 1)
                         (then
                             (if ("CanCaptureAgain")	
                                 (moveAgain)
@@ -71,16 +64,16 @@
                     (from (handSite Mover))
                     (to 
                         (if (= 0 (count Pieces Mover in:(sites Board)))
-                            (intersection 
-                                (sites Empty)
+                            (forEach
                                 (sites Around (centrePoint) Orthogonal)
+                                if:(is Empty (site))
                             )
                             (difference (sites Board) (centrePoint)) 
                         )
                         if:(is Empty (to))
                     )
                     (then
-                        (if (not ("SameTurn")) (moveAgain))
+                        (if ("NewTurn") (moveAgain))
                     )
                 )
             )
@@ -94,16 +87,10 @@
                             (from (last To))
                             Orthogonal 
                             (to if:("IsConfigurationToCustodialAgain"))	
-                            (then 
-                                (custodial 
-                                    (from (last To))
+                            (then
+                                ("CustodialCapture"
                                     Orthogonal
-                                    (between
-                                        (max 1)
-                                        if:("IsEnemyAt" (between))
-                                        (apply (remove (between)))
-                                    )
-                                    (to if:("IsFriendAt" (to)))
+                                    (max 1)
                                     (then
                                         (if ("CanCaptureAgain")	
                                             (moveAgain)
@@ -138,7 +125,7 @@
         ")
         (source "Quemeneur 1944: 463-468.")
         (id "1940")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/custodial")
         (origin "This game was played in Tunisia, around 1944.")
         }

@@ -24,22 +24,22 @@
 
 (option "Board" <Board> args:{ <type> <start>}
     {
-    (item "Wheel Shape"     
+    (item "Wheel Shape"   
         <(board (concentric {1 8}) use:Vertex)>
         <(place "Marker1" {1..3 8})
         (place "Marker2" {4..7})>
         "The game is played on a wheel board."
-    )*  
+    )* 
     (item "Square Shape" 
         <("AlquerqueBoard" 3 3)>
         <(place "Marker1" {0 1 2 5})
-        (place "Marker2" {3 6 7 8})>                 
-    "The game is played on a 3x3 alquerque board.")  
+        (place "Marker2" {3 6 7 8})>         
+    "The game is played on a 3x3 alquerque board.") 
 })
 
 (option "Play Rules" <Play> args:{ <rules>}
     {
-    (item "Complete"     
+    (item "Complete"   
         <(move
             Step 
             (to if:(and
@@ -54,10 +54,10 @@
         "The game is played with all the rules"
     )*
     
-    (item "Simplified"      
-        <"StepToEmpty">                 
+    (item "Simplified"   
+        <"StepToEmpty">         
         "The game is played with no constraint on the centre site."
-    )  
+    ) 
 })
 
 //------------------------------------------------------------------------------
@@ -93,7 +93,7 @@
         (useFor "Ruleset/Simple (Suggested)" (id "559"))
         (source "Murray 1951: 93")
         (id "81")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/blocking")
         (credit "Eric Piette")
         (origin "This game was played in New Zealand, around 1912.")

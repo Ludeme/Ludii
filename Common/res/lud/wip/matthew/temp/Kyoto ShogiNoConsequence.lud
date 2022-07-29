@@ -44,7 +44,7 @@
         #1 
         (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
-    )  	
+    ) 	
 )
 
 (define "StepMove"
@@ -53,7 +53,7 @@
         #1
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
-    )  	
+    ) 	
 )
 
 (define "GoldMove" ("StepMove" (directions {Forward Backward Rightward Leftward FL FR}) (then "Promote")))
@@ -61,7 +61,7 @@
 //------------------------------------------------------------------------------
 
 (game "Kyoto Shogi" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     
     (equipment { 
         (board (square 9))

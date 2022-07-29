@@ -45,7 +45,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )  
+    ) 
 )
 
 (define "DecideToCastle"
@@ -135,7 +135,7 @@
 //------------------------------------------------------------------------------
 
 (game "Korkserschach" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8)) 
         
@@ -157,7 +157,7 @@
                                 )
                                 (moveAgain)
                             )
-                            (if (and (not ("SameTurn")) (<= (count Turns) 2))
+                            (if (and ("NewTurn") (<= (count Turns) 2))
                                 (and
                                     (set Pending)
                                     (moveAgain)
@@ -303,8 +303,8 @@
         )
         > 
         "The pawns can double step from the starting positions."
-    )*  
-    (item "No Pawn Double Step" <> "No double step for the pawns.")  
+    )* 
+    (item "No Pawn Double Step" <> "No double step for the pawns.") 
 })
 
 //------------------------------------------------------------------------------
@@ -330,7 +330,7 @@
         ")
         (source "Murray 1913: 391.")
         (id "1430")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chess")
         (origin "This game was played in Germany, around 1873.")
         }

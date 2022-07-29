@@ -1,0 +1,12 @@
+// Defines starting rules placing one piece on each cell of the bottom and the top rows of the board (e.g. Starting rules of Breakthrough).
+// #1 = The number of rows to place pieces for each player.
+// #2 = The name of the piece of P1.
+// #3 = The name of the piece of P2.
+// @example ("BottomTopSetup" 3 "Counter1" "Counter2")
+
+(define "BottomTopSetup"
+    (start { 
+        (place #2 (expand (sites Bottom) steps:(- #1 1)))
+        (place #3 (expand (sites Top) steps:(- #1 1)))
+    })
+)

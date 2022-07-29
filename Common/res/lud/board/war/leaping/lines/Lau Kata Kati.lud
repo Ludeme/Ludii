@@ -5,7 +5,7 @@
             (merge
                 (wedge 4)
                 (shift 0 3 (rotate 180 (wedge 4)))
-            )  
+            ) 
             use:Vertex
         )
         (piece "Counter" Each 
@@ -32,8 +32,8 @@
 
 (option "End Rules" <End> args:{ <rules> }
     {
-    (item "No Pieces" <(if (no Pieces Next) (result Next Loss))>  "The player loses when he has no piece.")*  
-    (item "No Moves" <("NoMoves" Loss)>               "A player loses when he can not move.")  
+    (item "No Pieces" <(if (no Pieces Next) (result Next Loss))> "The player loses when he has no piece.")* 
+    (item "No Moves" <("NoMoves" Loss)>        "A player loses when he can not move.") 
 })
 
 //------------------------------------------------------------------------------
@@ -47,7 +47,7 @@
         (rules "Play begins with each player's pieces on the pieces occupying the points of one of the triangles, leaving the shared apex empty. Pieces move to the next adjacent point connected by a line. Captures are made by hopping over an opponent's piece. The player who captures all of the opponent's pieces wins.")
         (source "Datta 1933: 168, Humphries 1906: 123.")
         (id "159")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
         (origin "This game was played in India, from around 1863 to 1933.")

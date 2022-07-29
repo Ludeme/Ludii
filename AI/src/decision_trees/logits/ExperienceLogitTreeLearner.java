@@ -106,14 +106,14 @@ public class ExperienceLogitTreeLearner
 		
 		if (remainingFeatureVectors.isEmpty())
 		{
-			return new LogitModelNode(new Feature[] {new InterceptFeature()}, new float[] {0.f});
+			return new LogitModelNode(new Feature[] {InterceptFeature.instance()}, new float[] {0.f});
 		}
 		
 		if (allowedDepth == 0)
 		{
 			// Have to create leaf node here		TODO could in theory use remaining features to compute a model again
 			final float meanLogit = remainingTargetLogits.sum() / remainingTargetLogits.size();
-			return new LogitModelNode(new Feature[] {new InterceptFeature()}, new float[] {meanLogit});
+			return new LogitModelNode(new Feature[] {InterceptFeature.instance()}, new float[] {meanLogit});
 		}
 		
 		// For every aspatial and every spatial feature, if not already picked, compute mean logits for true and false branches
@@ -279,7 +279,7 @@ public class ExperienceLogitTreeLearner
 		{
 			// No point in making any split at all, so just make leaf		TODO could in theory use remaining features to compute a model again
 			final float meanLogit = remainingTargetLogits.sum() / remainingTargetLogits.size();
-			return new LogitModelNode(new Feature[] {new InterceptFeature()}, new float[] {meanLogit});
+			return new LogitModelNode(new Feature[] {InterceptFeature.instance()}, new float[] {meanLogit});
 		}
 		
 		final Feature splittingFeature;

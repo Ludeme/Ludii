@@ -54,7 +54,11 @@ import search.mcts.selection.UCB1;
 import search.mcts.selection.UCB1GRAVE;
 import search.mcts.selection.UCB1Tuned;
 import search.minimax.AlphaBetaSearch;
+import search.minimax.HybridUBFM;
+import search.minimax.LazyUBFM;
 import search.minimax.BRSPlus;
+import search.minimax.UBFM;
+import search.minimax.BiasedUBFM;
 
 /**
  * Can create AI agents based on strings / files
@@ -101,6 +105,21 @@ public class AIFactory
 		
 		if (string.equalsIgnoreCase("BRS+") || string.equalsIgnoreCase("Best-Reply Search+"))
 			return new BRSPlus();
+
+		if (string.equalsIgnoreCase("Bob the Basic AI"))
+			return new MyBasicAI();
+		
+		if (string.equalsIgnoreCase("UBFM"))
+			return new UBFM();
+
+		if (string.equalsIgnoreCase("Hybrid UBFM"))
+			return new HybridUBFM();
+
+		if (string.equalsIgnoreCase("Lazy UBFM"))
+			return new LazyUBFM();
+		
+		if (string.equalsIgnoreCase("Biased UBFM"))
+			return new BiasedUBFM();
 		
 		if (string.equalsIgnoreCase("UCT") || string.equalsIgnoreCase("MCTS"))
 			return MCTS.createUCT();
@@ -479,6 +498,26 @@ public class AIFactory
 		else if (algName.equalsIgnoreCase("Random"))
 		{
 			return new RandomAI();
+		}
+		else if (algName.equalsIgnoreCase("Bob the Basic AI"))
+		{
+			return new MyBasicAI();
+		}
+		else if (algName.equalsIgnoreCase("Lazy UBFM"))
+		{
+			return new LazyUBFM();
+		}
+		else if (algName.equalsIgnoreCase("Hybrid UBFM"))
+		{
+			return new HybridUBFM();
+		}
+		else if (algName.equalsIgnoreCase("Biased UBFM"))
+		{
+			return new BiasedUBFM();
+		}
+		else if (algName.equalsIgnoreCase("UBFM"))
+		{
+			return UBFM.createUBFM();
 		}
 		else if (algName.equalsIgnoreCase("Monte Carlo (flat)") || algName.equalsIgnoreCase("Flat MC"))
 		{

@@ -2,7 +2,7 @@
     (players 2)
     
     (equipment { 
-        (board (concentric Square rings:3) use:Vertex) 
+        ("NineMensMorrisBoard")
         (hand Each)
         (piece "Disc" Each (move [#])) 
     })
@@ -23,7 +23,7 @@
         (rules "Three concentric squares, with lines connecting the midpoints of the sides.")
         (source "DLP evidence.")
         (id "1058")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line/reconstruction")
         (credit "Eric Piette")
         (origin "This game was played in Egypt, around 1762.")

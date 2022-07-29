@@ -34,7 +34,7 @@
 //------------------------------------------------------------------------------
 
 (game "Persian Chess with a Queen"
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8)) 
         (piece "King_noCross" Each
@@ -222,7 +222,7 @@
         ")
         (source "Markov 2017.")
         (id "1325")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
         (origin "This game was played in Uzbekistan, around 1877.")

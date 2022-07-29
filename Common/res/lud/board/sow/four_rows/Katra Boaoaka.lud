@@ -14,10 +14,10 @@
             (track "TrackCW2" "24,E,S1,W" loop:True P2)
             }
         )
-        (regions "Home" P1 (sites Track "TrackCCW1"))               // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))               // P2 home
+        (regions "Home" P1 (sites Track "TrackCCW1"))        // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))        // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))  // P2 inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top))) // P2 inner Home
         (piece "Seed" Shared)
         (hand Each)
     }) 
@@ -166,7 +166,7 @@
         (rules "4x8 board. Two counters in each hole. Each player may sow in either direction on their first move, but must continue in the same direction for the remainder of the game. When the final counter of a sowing lands in an occupied hole, the counters in that hole are picked up and sowing continues. If the final hole of a sowing is in the inner row, regardless of whether it is occupied or empty, the player then captures the counters in both of the opponent's holes opposite it, and continues sowing with these counters as well as the ones in the final hole of sowing. Captures cannot be made when the final hole of a sowing was empty, and the opponent's opposite holes have only a single counter. When the final counter lands in an empty hole, the turn is over. The player who captures all the counters wins.")
         (source "Linton 1933: 261-262.")
         (id "275")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         (origin "This game was played in Madagascar, from around 1926 to 1927.")

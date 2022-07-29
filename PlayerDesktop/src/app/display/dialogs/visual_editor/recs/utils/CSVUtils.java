@@ -21,13 +21,12 @@ public class CSVUtils {
      * @param lines
      */
     public static void writeCSV(String location, String header, List<String> lines) {
-        FileWriter fw = FileUtils.writeFile(location);
-
-        try {
+        
+        try (FileWriter fw = FileUtils.writeFile(location);)
+        {
             fw.write(header);
-            for(String line : lines) {
+            for(String line : lines) 
                 fw.write("\n"+line);
-            }
             fw.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -37,21 +36,21 @@ public class CSVUtils {
     /**
      * This method reads in a .csv file from the specified location. It returns all lines as a list.
      * @param location
-     * @return
      */
     public static List<String> readCSV(String location) {
-        Scanner sc = FileUtils.readFile(location);
-        List<String> lines = new ArrayList<>();
+    	try (Scanner sc = FileUtils.readFile(location);)
+    	{
+    		List<String> lines = new ArrayList<>();
 
-        String header = sc.nextLine();
-        lines.add(header);
+            String header = sc.nextLine();
+            lines.add(header);
 
-        while (sc.hasNextLine()) {
-            String line = sc.nextLine();
-            lines.add(line);
+            while (sc.hasNextLine()) {
+                String line = sc.nextLine();
+                lines.add(line);
+            }
+            sc.close();
+            return lines;
         }
-        sc.close();
-
-        return lines;
     }
 }

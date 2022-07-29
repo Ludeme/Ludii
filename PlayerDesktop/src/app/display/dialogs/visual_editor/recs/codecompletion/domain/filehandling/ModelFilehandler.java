@@ -11,7 +11,6 @@ public class ModelFilehandler {
     /**
      * This method performs the operation of extracting a model from it's file.
      * @param N
-     * @return
      */
     public static NGram readModel(int N) {
         DocHandler docHandler = DocHandler.getInstance();

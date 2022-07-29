@@ -456,6 +456,26 @@ public abstract class BaseFeatureSet
 		final SpatialFeature newFeature
 	);
 	
+	/**
+	 * @param targetGame
+	 * @param newFeatures
+	 * @return Expanded feature set with multiple new features added, or original object
+	 * 	if none of the new features were successfully added.
+	 */
+	public BaseFeatureSet createExpandedFeatureSet(final Game targetGame, final List<SpatialFeature> newFeatures)
+	{
+		BaseFeatureSet featureSet = this;
+		
+		for (final SpatialFeature feature : newFeatures)
+		{
+			final BaseFeatureSet expanded = featureSet.createExpandedFeatureSet(targetGame, feature);
+			if (expanded != null)
+				featureSet = expanded;
+		}
+		
+		return featureSet;
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	/**
