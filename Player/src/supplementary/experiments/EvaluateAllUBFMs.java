@@ -22,13 +22,13 @@ import other.trial.Trial;
 import search.mcts.MCTS;
 //import other.trial.Trial;
 import search.minimax.AlphaBetaSearch;
+import search.minimax.BiasedUBFM;
 import search.minimax.HybridUBFM;
 import search.minimax.LazyUBFM;
 import search.minimax.NaiveActionBasedSelection;
 import search.minimax.UBFM;
 import utils.MyBasicAI;
 import utils.RandomAI;
-import search.minimax.BiasedUBFM;
 
 /**
  * Class to run experiments and compare an Unbounded Best-First Minimax agent
@@ -36,7 +36,6 @@ import search.minimax.BiasedUBFM;
  * 
  * @author cyprien
  */
-
 public class EvaluateAllUBFMs
 {
 	
@@ -92,7 +91,7 @@ public class EvaluateAllUBFMs
 			{
 				configurations.add(new String[] {"Naive Action Based Selection"});
 				System.out.println("features found");
-			};
+			}
 			for (String epsilon : new String[] {"0", "0.1", "0.2", "0.3", "0.5"})
 			{
 				
@@ -107,7 +106,7 @@ public class EvaluateAllUBFMs
 					
 					for (String n : new String[] {"2","4","6","10"})
 						configurations.add(new String[] {"BiasedUBFM",epsilon,n});
-				};
+				}
 				
 				for (String weight : new String[] {"0.2","0.5","0.9"})
 					configurations.add(new String[] {"HybridUBFM",epsilon,weight});
@@ -247,7 +246,7 @@ public class EvaluateAllUBFMs
 									    	e.printStackTrace();
 									    }
 										
-									};
+									}
 									
 									return agentScores;
 								}
