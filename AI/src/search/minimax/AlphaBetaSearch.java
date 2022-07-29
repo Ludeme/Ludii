@@ -79,7 +79,7 @@ public class AlphaBetaSearch extends ExpertPolicy
 	protected Heuristics heuristicValueFunction = null;
 	
 	/** If true, we read our heuristic function to use from game's metadata */
-	final boolean heuristicsFromMetadata;
+	protected final boolean heuristicsFromMetadata;
 	
 	/** We'll automatically return our move after at most this number of seconds if we only have one move */
 	protected double autoPlaySeconds = 0.0;
@@ -135,12 +135,6 @@ public class AlphaBetaSearch extends ExpertPolicy
 	/** Do we allow any search depth, or only odd, or only even? */
 	protected AllowedSearchDepths allowedSearchDepths = AllowedSearchDepths.Any;
 
-	//-------------------------------------------------------------------------
-	
-	/** Number of different states evaluated, for an analysis report.
-	 * It is possible that some states are counted several times. */
-	protected int nbStatesEvaluated;
-	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -219,7 +213,6 @@ public class AlphaBetaSearch extends ExpertPolicy
 		provedWin = false;
 		final int depthLimit = maxDepth > 0 ? maxDepth : Integer.MAX_VALUE;
 		lastSearchedRootContext = context;
-		nbStatesEvaluated = 0;
 		
 		if (transpositionTable != null)
 			transpositionTable.allocate();
@@ -431,7 +424,7 @@ public class AlphaBetaSearch extends ExpertPolicy
 			if (System.currentTimeMillis() >= stopTime || wantsInterrupt)
 			{
 				// we need to return
-				analysisReport = friendlyName + " (player " + maximisingPlayer + ") completed search of depth " + searchDepth + " (" + Integer.toString(nbStatesEvaluated)+" states were explored).";
+				analysisReport = friendlyName + " (player " + maximisingPlayer + ") completed search of depth " + searchDepth + ".";
 				return bestMoveCompleteSearch;
 			}
 			
@@ -453,7 +446,7 @@ public class AlphaBetaSearch extends ExpertPolicy
 			moveScores.fill(0, numRootMoves, 0.f);
 		}
 		
-		analysisReport = friendlyName + " (player " + maximisingPlayer + ") completed search of depth " + searchDepth + " (" + Integer.toString(nbStatesEvaluated)+" states were explored).";
+		analysisReport = friendlyName + " (player " + maximisingPlayer + ") completed search of depth " + searchDepth + ".";
 		return bestMoveCompleteSearch;
 	}
 	
@@ -484,8 +477,6 @@ public class AlphaBetaSearch extends ExpertPolicy
 		final float originalAlpha = inAlpha;
 		float alpha = inAlpha;
 		float beta = inBeta;
-
-		nbStatesEvaluated += 1;
 		
 		final long zobrist = state.fullHash(context);
 		final ABTTData tableData;
@@ -495,8 +486,6 @@ public class AlphaBetaSearch extends ExpertPolicy
 			
 			if (tableData != null)
 			{
-				nbStatesEvaluated -= 1; //we had already explored this node
-				
 				if (tableData.depth >= depth)
 				{
 					// Already searched deep enough for data in TT, use results
@@ -1158,28 +1147,28 @@ public class AlphaBetaSearch extends ExpertPolicy
     	return Arrays.asList(experience);
 	}
 	
-	protected float getContextValue(int maximisingPlayer, Context context) // just for displaying the search tree
-	{
-		float heuristicScore = heuristicValueFunction().computeValue(
-				context, maximisingPlayer, ABS_HEURISTIC_WEIGHT_THRESHOLD);
-		
-		for (final int opp : opponents(maximisingPlayer))
-		{
-			if (context.active(opp))
-				heuristicScore -= heuristicValueFunction().computeValue(context, opp, ABS_HEURISTIC_WEIGHT_THRESHOLD);
-			else if (context.winners().contains(opp))
-				heuristicScore -= PARANOID_OPP_WIN_SCORE;
-		}
-		
-		// Invert scores if players swapped
-		if (context.state().playerToAgent(maximisingPlayer) != maximisingPlayer)
-			heuristicScore = -heuristicScore;
-		
-		minHeuristicEval = Math.min(minHeuristicEval, heuristicScore);
-		maxHeuristicEval = Math.max(maxHeuristicEval, heuristicScore);
-		
-		return heuristicScore;
-	}
+//	protected float getContextValue(int maximisingPlayer, Context context) // just for displaying the search tree
+//	{
+//		float heuristicScore = heuristicValueFunction().computeValue(
+//				context, maximisingPlayer, ABS_HEURISTIC_WEIGHT_THRESHOLD);
+//		
+//		for (final int opp : opponents(maximisingPlayer))
+//		{
+//			if (context.active(opp))
+//				heuristicScore -= heuristicValueFunction().computeValue(context, opp, ABS_HEURISTIC_WEIGHT_THRESHOLD);
+//			else if (context.winners().contains(opp))
+//				heuristicScore -= PARANOID_OPP_WIN_SCORE;
+//		}
+//		
+//		// Invert scores if players swapped
+//		if (context.state().playerToAgent(maximisingPlayer) != maximisingPlayer)
+//			heuristicScore = -heuristicScore;
+//		
+//		minHeuristicEval = Math.min(minHeuristicEval, heuristicScore);
+//		maxHeuristicEval = Math.max(maxHeuristicEval, heuristicScore);
+//		
+//		return heuristicScore;
+//	}
 	
 	//-------------------------------------------------------------------------
 	
