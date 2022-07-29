@@ -1,5 +1,7 @@
 package search.minimax;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 import game.Game;
 import gnu.trove.list.array.TLongArrayList;
 import main.collections.FVector;
@@ -48,7 +50,7 @@ public class LazyUBFM extends UBFM
 	
 	//-------------------------------------------------------------------------
 	
-	public static LazyUBFM createLazyUBFM ()
+	public static LazyUBFM createLazyUBFM()
 	{
 		return new LazyUBFM();
 	}
@@ -56,7 +58,7 @@ public class LazyUBFM extends UBFM
 	/**
 	 * Constructor:
 	 */
-	public LazyUBFM ()
+	public LazyUBFM()
 	{
 		super();
 		setLearnedSelectionPolicy(new SoftmaxFromMetadataSelection(0f));
@@ -127,7 +129,7 @@ public class LazyUBFM extends UBFM
 		{
 			final Move m = legalMoves.get(i);
 			
-			final float actionValue = (float) learnedSelectionPolicy.computeLogit(context, m);
+			final float actionValue = learnedSelectionPolicy.computeLogit(context, m);
 			
 			actionLogitSum += actionValue;
 			actionLogitComputations += 1;
@@ -135,7 +137,7 @@ public class LazyUBFM extends UBFM
 			minActionLogit = Math.min(actionValue, minActionLogit);
 			
 			moveScores.set(i, actionValue);
-		};
+		}
 		
 		if (firstTurn)
 		{
@@ -153,9 +155,16 @@ public class LazyUBFM extends UBFM
 				double r = 1;
 				if (debugDisplay)
 				{
-					r = Math.random(); // just for occasional display
-					if (r<0.05)
-						System.out.printf("action score is %.6g and heuristicScore is %.6g ",moveScores.get(i),heuristicScore);
+					r = ThreadLocalRandom.current().nextDouble(); // just for occasional display
+					if (r < 0.05)
+					{
+						System.out.printf
+						(
+							"action score is %.6g and heuristicScore is %.6g ", 
+							Float.valueOf(moveScores.get(i)),
+							Float.valueOf(heuristicScore)
+						);
+					}
 				}
 				
 				// (*2 because the maximal gap with the mean is about half of the range)
@@ -167,8 +176,8 @@ public class LazyUBFM extends UBFM
 				minRegisteredValue = Math.min(heuristicScore + actionScore, minRegisteredValue);
 				
 				if (debugDisplay)
-					if (r<0.05)
-						System.out.printf("-> eval is %.6g\n",moveScores.get(i));
+					if (r < 0.05)
+						System.out.printf("-> eval is %.6g\n", Float.valueOf(moveScores.get(i)));
 			}
 		
 			return moveScores;
@@ -177,6 +186,7 @@ public class LazyUBFM extends UBFM
 
 	//-------------------------------------------------------------------------
 	
+	@Override
 	public void initAI(final Game game, final int playerID)
 	{
 		super.initAI(game, playerID);
@@ -216,14 +226,6 @@ public class LazyUBFM extends UBFM
 	
 	//-------------------------------------------------------------------------
 
-	/**
-	 * Converts a score into a value estimate in [-1, 1]. Useful for visualisations.
-	 * 
-	 * @param score
-	 * @param alpha 
-	 * @param beta 
-	 * @return Value estimate in [-1, 1] from unbounded (heuristic) score.
-	 */
 	@Override
 	public double scoreToValueEst(final float score, final float alpha, final float beta)
 	{
@@ -256,7 +258,7 @@ public class LazyUBFM extends UBFM
 	 * Sets the weight of the action evaluation in the context evaluations.
 	 * @param value the weight
 	 */
-	public void setActionEvaluationWeight(final float value)
+	public static void setActionEvaluationWeight(final float value)
 	{
 		actionEvaluationWeight = value;
 	}

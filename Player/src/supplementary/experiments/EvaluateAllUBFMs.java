@@ -160,7 +160,7 @@ public class EvaluateAllUBFMs
 									case "LazyUBFM":
 										final LazyUBFM LazyAI = new LazyUBFM();
 										UBFM_AI = LazyAI;
-										LazyAI.setActionEvaluationWeight(Float.parseFloat(configuration[2]));
+										LazyUBFM.setActionEvaluationWeight(Float.parseFloat(configuration[2]));
 										break;
 									case "HybridUBFM":
 										final HybridUBFM HybridAI = new HybridUBFM();

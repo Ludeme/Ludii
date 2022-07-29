@@ -57,7 +57,7 @@ public class HybridUBFM extends UBFM
 	
 	//-------------------------------------------------------------------------
 	
-	public static HybridUBFM createHybridUBFM ()
+	public static HybridUBFM createHybridUBFM()
 	{
 		return new HybridUBFM();
 	}
@@ -86,7 +86,7 @@ public class HybridUBFM extends UBFM
 		
 		final Move res = super.BFSSelection(game, context, maxSeconds,depthLimit);
 		
-		analysisReport += "("+Integer.toString(nbPlayoutsDone)+" playouts done)";
+		analysisReport += "(" + Integer.toString(nbPlayoutsDone) + " playouts done)";
 		
 		return res;
 	}
@@ -170,8 +170,18 @@ public class HybridUBFM extends UBFM
 				contextScore = heuristicScore * heuristicScoreWeight + scoreMean * (1f - heuristicScoreWeight);
 				
 				if (debugDisplay)
-					if (ThreadLocalRandom.current().nextFloat()<0.1)
-						System.out.printf("heuristic score is %.5g while avg score is %.5g -> final value is %.5g\n",heuristicScore,scoreMean,contextScore);
+				{
+					if (ThreadLocalRandom.current().nextFloat() < 0.1)
+					{
+						System.out.printf
+						(
+							"heuristic score is %.5g while avg score is %.5g -> final value is %.5g\n",
+							Float.valueOf(heuristicScore),
+							Float.valueOf(scoreMean),
+							Float.valueOf(contextScore)
+						);
+					}
+				}
 
 				
 				minHeuristicEval = Math.min(minHeuristicEval, heuristicScore);
@@ -188,7 +198,7 @@ public class HybridUBFM extends UBFM
 				transpositionTable.store(zobrist, contextScore, depth, TranspositionTableUBFM.EXACT_VALUE, null);
 			
 			nbStatesEvaluated += 1;
-		};
+		}
 
 		if (savingSearchTreeDescription)
 			searchTreeOutput.append("("+stringOfNodeHashes(nodeHashes)+","+Float.toString(contextScore)+","+((newMover==maximisingPlayer)? 1: 2)+"),\n");
@@ -199,6 +209,7 @@ public class HybridUBFM extends UBFM
 
 	//-------------------------------------------------------------------------
 	
+	@Override
 	public void initAI(final Game game, final int playerID)
 	{
 		super.initAI(game,  playerID);
@@ -208,6 +219,7 @@ public class HybridUBFM extends UBFM
 			setLearnedSelectionPolicy(new SoftmaxFromMetadataSelection(epsilon));
 			learnedSelectionPolicy.initAI(game, playerID);
 		}
+		
 		maxAbsHeuristicScore = 0;
 		
 		return;
