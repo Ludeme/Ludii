@@ -1,18 +1,3 @@
-(define "CaptureSurroundedPiece"
-    (enclose 
-        (from (last To)) 
-        Orthogonal 
-        (between 
-            if:("IsEnemyAt" (between)) 
-            (apply       
-                (remove (between)) 
-            ) 
-        )
-    )
-)
-
-//------------------------------------------------------------------------------
-
 (game "Weiqi"
     (players 2)
     (equipment {
@@ -23,14 +8,11 @@
         (meta
             (no Repeat)
         )
-        (play     
+        (play   
             (or
-                (move 
-                    Add
+                (move Add
                     (to (sites Empty))
-                    (then 
-                        "CaptureSurroundedPiece"
-                    )
+                    (then ("EncloseCapture" Orthogonal))
                 )
                 (move Pass)
             )
@@ -58,7 +40,7 @@
         ")
         (source "<a href=\"https://en.wikipedia.org/wiki/Rules_of_Go#Chinese_rules\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
         (id "772")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/territory")
         (credit "Eric Piette")
         (origin "This game was played in China, from around 500 to 599.")

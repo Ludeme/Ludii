@@ -67,7 +67,7 @@
     {
     (item "No Capture" 
         <
-        (if (and (not ("HandEmpty" Mover)) (is Empty ("EnterToBoard")))
+        (if (and ("HandOccupied" Mover) (is Empty ("EnterToBoard")))
             (move (from (handSite Mover)) (to ("EnterToBoard")))
         )
         >
@@ -80,10 +80,10 @@
         )
         >
         "No capture."
-    )*  
-    (item "Capture"  
+    )* 
+    (item "Capture" 
         <
-        (if (and (not ("HandEmpty" Mover)) (or ("IsEnemyAt" "EnterToBoard") (is Empty ("EnterToBoard"))))
+        (if (and ("HandOccupied" Mover) (or ("IsEnemyAt" "EnterToBoard") (is Empty ("EnterToBoard"))))
             (move 
                 (from (handSite Mover)) 
                 (to 
@@ -125,6 +125,10 @@
 
 (rulesets { 
     
+    (ruleset "Ruleset/Locus Ludi Knock-Off Mode (Scholarly)" {
+        
+    })
+    
     (ruleset "Ruleset/Locos Ludi Race (Scholarly)" {
         "Play Rules/No Capture"
     })**
@@ -164,7 +168,7 @@
         (useFor "Ruleset/Locus Ludi Knock-Off Mode (Scholarly)" (id "786"))
         (source "Schädler 2009.")
         (id "137")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/reach")
         (credit "Eric Piette")
         }

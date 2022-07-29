@@ -19,7 +19,6 @@ public class Model2CSV {
      * storing mechanism that is based on the N parameter.
      *
      * @param model
-     * @return
      */
     public static void model2csv(NGram model, String location) {
         Map<String, List<Instance>> dictionary = model.getDictionary();
@@ -81,6 +80,7 @@ public class Model2CSV {
      * @param location
      * @return
      */
+    @SuppressWarnings("all")
     public static NGram csv2model(String location) {
         List<String> lines = CSVUtils.readCSV(location);
         // start the reading

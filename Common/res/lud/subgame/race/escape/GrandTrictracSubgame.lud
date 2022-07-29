@@ -95,8 +95,8 @@
             (place Stack "Disc1" 12 count:15) (place Stack "Disc2" 25 count:15) 
         })
         (play 
-            (do (if (not "SameTurn") (roll))
-                next:(do (if (not "SameTurn") ("UpdateScore"))
+            (do (if ("NewTurn") (roll))
+                next:(do (if ("NewTurn") ("UpdateScore"))
                     next:(or 
                         (if (>= 0 (var "MovingToHucke")) (forEach Piece top:True))
                         

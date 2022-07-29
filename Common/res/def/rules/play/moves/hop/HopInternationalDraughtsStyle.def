@@ -1,0 +1,20 @@
+// Defines a hop move in diagonal over an enemy to an empty site. The enemy pieces are removed at the end of the turn and you can not hop a piece you already hopped during your turn.
+// #1 = The from site.
+// #2 = The consequences.
+// @example ("HopInternationalDraughtsStyle")
+
+(define "HopInternationalDraughtsStyle"
+    (move Hop 
+        #1 
+        Diagonal 
+        (between 
+            if:(and 
+                (not (is In (between) (sites ToClear))) 
+                ("IsEnemyAt" (between))
+            )
+            (apply (remove (between) at:EndOfTurn))
+        ) 
+        (to if:(is Empty (to))) 
+        #2
+    )
+)

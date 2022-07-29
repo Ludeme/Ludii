@@ -24,8 +24,7 @@ public class ChangedClauseAction implements IUserAction
     private final LudemeNode node;
     private final Clause previousClause;
     private final Clause currentClause;
-    private LinkedHashMap<NodeArgument, Object> removedData; // Inputs that were removed when the node was modified
-    private boolean isUndone = false;
+    private final LinkedHashMap<NodeArgument, Object> removedData; // Inputs that were removed when the node was modified
 
     /**
      * Constructor.
@@ -80,14 +79,6 @@ public class ChangedClauseAction implements IUserAction
     }
 
     /**
-     * @return Whether the action was undone
-     */
-    @Override
-    public boolean isUndone() {
-        return isUndone;
-    }
-
-    /**
      * Undoes the action
      */
     @Override
@@ -113,7 +104,6 @@ public class ChangedClauseAction implements IUserAction
             node.setProvidedInput(arg, removedData.get(arg));
         }
         graphPanel.notifyInputsUpdated(graphPanel.nodeComponent(node));
-        isUndone = true;
     }
 
     /**
@@ -122,6 +112,5 @@ public class ChangedClauseAction implements IUserAction
     @Override
     public void redo() {
         Handler.updateCurrentClause(graph, node, currentClause);
-        isUndone = false;
     }
 }

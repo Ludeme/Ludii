@@ -1,11 +1,11 @@
 package app.display.dialogs.visual_editor.view.components.ludemenodecomponent;
 
+import app.display.dialogs.visual_editor.documentation.DocumentationReader;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
-import app.display.dialogs.visual_editor.view.DesignPalette;
-import app.display.dialogs.visual_editor.documentation.DocumentationReader;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import main.grammar.Clause;
 import main.grammar.Symbol;
 
@@ -23,7 +23,11 @@ import java.util.List;
  */
 public class LHeader extends JComponent
 {
-    /** LudemeNodeComponent this header belongs to */
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6153442303344307027L;
+	/** LudemeNodeComponent this header belongs to */
     private final LudemeNodeComponent LNC;
     /** Ludeme Node */
     private final LudemeNode LN;
@@ -31,6 +35,8 @@ public class LHeader extends JComponent
     private LIngoingConnectionComponent ingoingConnectionComponent;
     /** Label for the title */
     private final JLabel title;
+    private final JButton clauseBtn;
+    private final JPanel constructorPanel;
 
     /**
      * Constructor for a new LHeader
@@ -45,10 +51,10 @@ public class LHeader extends JComponent
         // initialize title
         title = new JLabel(LNC.node().title());
         title.setFont(DesignPalette.LUDEME_TITLE_FONT);
-        title.setForeground(DesignPalette.FONT_LUDEME_TITLE_COLOR);
+        title.setForeground(DesignPalette.FONT_LUDEME_TITLE_COLOR());
         title.setSize(title.getPreferredSize());
         // initialize connection component
-        ingoingConnectionComponent = new LIngoingConnectionComponent(this, title.getHeight(), ((int)(title.getHeight()*0.4)), false);
+        ingoingConnectionComponent = new LIngoingConnectionComponent(this, false);
         // root nodes have no ingoing connection
         if(LNC.graphPanel().graph().getRoot() == LNC.node()) ingoingConnectionComponent = null;
         // Panel containing the label and the connection component
@@ -60,7 +66,10 @@ public class LHeader extends JComponent
         connectionAndTitle.setOpaque(false);
 
         // button for selecting the clause
-        JButton clauseBtn = new JButton(DesignPalette.DOWN_ICON);
+        int iconHeight = (int)(title.getPreferredSize().getHeight());
+        ImageIcon icon = new ImageIcon(DesignPalette.DOWN_ICON().getImage().getScaledInstance(iconHeight, iconHeight, Image.SCALE_SMOOTH));
+
+        clauseBtn = new JButton(icon);
         clauseBtn.setFocusPainted(false);
         clauseBtn.setOpaque(false);
         clauseBtn.setContentAreaFilled(false);
@@ -69,7 +78,7 @@ public class LHeader extends JComponent
         clauseBtn.setSize(new Dimension(title.getHeight(), title.getHeight()));
 
         // menu showing available clauses
-        JPanel constructorPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        constructorPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         constructorPanel.add(clauseBtn);
         constructorPanel.add(Box.createHorizontalStrut(0));
         constructorPanel.setOpaque(false);
@@ -79,19 +88,15 @@ public class LHeader extends JComponent
         if(LN.clauses() != null && LN.clauses().size() > 1) {
             JPopupMenu popup = constructClausePopup();
 
-            clauseBtn.addActionListener(e -> {
-                popup.show(clauseBtn, 0, clauseBtn.getHeight());
-            });
+            clauseBtn.addActionListener(e -> popup.show(clauseBtn, 0, clauseBtn.getHeight()));
 
             add(constructorPanel, BorderLayout.LINE_END);
 
         }
 
 
-
-
         // space between this and input area and top of LNC
-        setBorder(new EmptyBorder(DesignPalette.HEADER_PADDING_TOP,0,DesignPalette.HEADER_PADDING_BOTTOM,0));
+        setBorder(new EmptyBorder(DesignPalette.HEADER_PADDING_TOP,0, DesignPalette.HEADER_PADDING_BOTTOM,0));
         setSize(getPreferredSize());
 
         setOpaque(false);
@@ -100,13 +105,7 @@ public class LHeader extends JComponent
         repaint();
         setVisible(true);
 
-
         title.setToolTipText(ludemeNodeComponent().node().description());
-
-        // get help
-        //HelpInformation help = DocumentationReader.instance().documentation().get(LN.symbol());
-        //if(help != null) setToolTipText(help.toHTML());
-
     }
 
     public JPopupMenu constructClausePopup()
@@ -125,7 +124,7 @@ public class LHeader extends JComponent
                 List<Clause> clauses = symbolClauseMap.get(s);
                 for(Clause c : clauses)
                 {
-                    JMenuItem item = new JMenuItem(c.toString());
+                    JMenuItem item = new JMenuItem(clauseTitle(c));
                     item.addActionListener(e -> {
                         Handler.updateCurrentClause(ludemeNodeComponent().graphPanel().graph(), ludemeNodeComponent().node(), c);
                         repaint();
@@ -138,7 +137,7 @@ public class LHeader extends JComponent
             List<Clause> clauses = symbolClauseMap.get(s);
             if(clauses.size() == 1)
             {
-                JMenuItem item = new JMenuItem(s.name());
+                JMenuItem item = new JMenuItem(clauses.get(0).symbol().name());
                 item.setToolTipText(DocumentationReader.instance().documentation().get(s).description());
                 item.addActionListener(e -> {
                     Handler.updateCurrentClause(ludemeNodeComponent().graphPanel().graph(), ludemeNodeComponent().node(), clauses.get(0));
@@ -153,7 +152,7 @@ public class LHeader extends JComponent
                 JMenuItem[] subitems = new JMenuItem[clauses.size()];
                 for(int j = 0; j < clauses.size(); j++)
                 {
-                    subitems[j] = new JMenuItem(clauses.get(j).toString());
+                    subitems[j] = new JMenuItem(clauseTitle(clauses.get(j)));
                     int finalJ = j;
                     subitems[j].addActionListener(e -> {
                         Handler.updateCurrentClause(ludemeNodeComponent().graphPanel().graph(), ludemeNodeComponent().node(), clauses.get(finalJ));
@@ -165,6 +164,25 @@ public class LHeader extends JComponent
             }
         }
         return popup;
+    }
+
+    private static String clauseTitle(Clause c)
+    {
+        /*
+        if(c.args() == null || c.args().size() == 0)
+            return c.toString();
+        if(c.args().get(0).symbol().ludemeType().equals(Symbol.LudemeType.Constant))
+        {
+            String s = "("+c.symbol().token();
+            for(ClauseArg ca : c.args())
+            {
+                if(ca.symbol().ludemeType().equals(Symbol.LudemeType.Constant))
+                    s += " "+ca.symbol().token();
+                else
+                    return s+=")";
+            }
+        } */
+        return c.toString();
     }
 
     /**
@@ -218,10 +236,44 @@ public class LHeader extends JComponent
         super.paintComponent(g);
 
         title.setText(LNC.node().title());
-        title.setFont(DesignPalette.LUDEME_TITLE_FONT);
-        title.setForeground(DesignPalette.FONT_LUDEME_TITLE_COLOR);
+        if(title.getFont().getSize() != DesignPalette.LUDEME_TITLE_FONT_SIZE)
+        {
+            title.setFont(DesignPalette.LUDEME_TITLE_FONT);
+            int iconHeight = DesignPalette.LUDEME_TITLE_FONT_SIZE;
+            ImageIcon icon = new ImageIcon(DesignPalette.DOWN_ICON().getImage().getScaledInstance(iconHeight, iconHeight, Image.SCALE_SMOOTH));
+            clauseBtn.setIcon(null);
+            clauseBtn.setIcon(icon);
+            clauseBtn.setPreferredSize(new Dimension(iconHeight, iconHeight));
+            clauseBtn.setSize(new Dimension(iconHeight, iconHeight));
+            clauseBtn.repaint();
+            clauseBtn.revalidate();
+        }
+        if(title.getForeground() != DesignPalette.FONT_LUDEME_TITLE_COLOR())
+        {
+            title.setForeground(DesignPalette.FONT_LUDEME_TITLE_COLOR());
+        }
+
+
+
         title.setSize(title.getPreferredSize());
-        title.setToolTipText(ludemeNodeComponent().node().description());
+
+        if(ludemeNodeComponent().node().description() != null)
+        {
+            FontMetrics fontMetrics = title.getFontMetrics(title.getFont());
+
+            String toolTipHtml = "<html>" + ludemeNodeComponent().node().description().replaceAll("<", "&lt;").replaceAll(">", "&gt;") + "<br>";
+            if(ludemeNodeComponent().node().remark() != null && !ludemeNodeComponent().node().remark().equals(ludemeNodeComponent().node().description()))
+            {
+                int length = fontMetrics.stringWidth(ludemeNodeComponent().node().remark());
+                toolTipHtml += "<p width=\"" + (Math.min(length, 350)) + "px\">" + ludemeNodeComponent().node().remark().replaceAll("<", "&lt;").replaceAll(">", "&gt;") + "</p>";
+
+            }
+            toolTipHtml += "</html>";
+            title.setToolTipText(toolTipHtml);
+        }
+
+        if(!clauseBtn.getIcon().equals(DesignPalette.DOWN_ICON()))
+            clauseBtn.setIcon(DesignPalette.DOWN_ICON());
 
         setBorder(DesignPalette.HEADER_PADDING_BORDER);
     }

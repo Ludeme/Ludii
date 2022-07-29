@@ -30,8 +30,7 @@
 
 (game "Ultimate Tic-Tac-Toe" 
     (players 2) 
-    (equipment 
-        { 
+    (equipment { 
         (board 
             (union 
                 (square 9) 
@@ -40,13 +39,13 @@
             use:Cell
         ) 
         
-        (piece "Disc"    P1) 
+        (piece "Disc"  P1) 
         (piece "DiscLarge" P1) 
-        (piece "Cross"   P2) 
+        (piece "Cross"  P2) 
         (piece "CrossLarge" P2) 
         
         (regions "SubGames" (sites { 0..80}))
-        (regions "SubGame0" (sites { 0..2  9..11 18..20}))
+        (regions "SubGame0" (sites { 0..2 9..11 18..20}))
         (regions "SubGame1" (sites { 3..5 12..14 21..23}))
         (regions "SubGame2" (sites { 6..8 15..17 24..26}))
         (regions "SubGame3" (sites {27..29 36..38 45..47}))
@@ -86,16 +85,13 @@
             6 7 8 6 7 8 6 7 8 
             } 
         )
-        }
-    ) 
+    }) 
     (rules 
         (play 
-            (priority
-                {
+            (priority {
                 // Move at any empty cell in the designated subgame 
                 // whose supergame is undecided
-                (move
-                    Add
+                (move Add
                     (piece (if (= (mover) P1) (id "Disc" P1) (id "Cross" P2)))
                     (to 
                         (if (= 0 (mapEntry "SubToSub" (last To))) 
@@ -142,7 +138,7 @@
                 )
                 }
                 (then 
-                    (if (is Line 3 if:("CheckLineRightSubGame")) // add a piece in the supergame                  
+                    (if (is Line 3 if:("CheckLineRightSubGame")) // add a piece in the supergame         
                         (add 
                             (piece (if (= (mover) P1) (id "DiscLarge1") (id "CrossLarge2")))
                             (to (mapEntry "SubToSuper" (last To)))
@@ -162,7 +158,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Ultimate Tic-Tac-Toe is a board game composed of nine Tic-Tac-Toe boards arranged in a 3x3 grid.")
@@ -170,7 +166,7 @@
         (rules "Each small 3x3 Tic-Tac-Toe board is referred to as a local board, and the larger 3x3 board is referred to as the global board. The game starts with X playing wherever they want in any of the 81 empty spots. This move 'sends' their opponent to its relative location. For example, if X played in the top right square of their local board, then O needs to play next in the local board at the top right of the global board. O can then play in any one of the nine available spots in that local board, each move sending X to a different local board. If a move is played so that it is to win a local board by the rules of normal Tic-Tac-Toe, then the entire local board is marked as a victory for the player in the global board. Once a local board is won by a player or it is filled completely, no more moves may be played in that board. If a player is sent to such a board, then that player may play in any other board. Game play ends when either a player wins the global board or there are no legal moves remaining, in which case the game is a draw.")
         (id "631")
         (source "<a href=\"https://en.wikipedia.org/wiki/Ultimate_tic-tac-toe\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line")
         (credit "Cameron Browne 16/5/2020")
         }
@@ -178,8 +174,8 @@
     (graphics 
         {
         (board Style UltimateTicTacToe)
-        (piece Scale "Disc"    0.8)
-        (piece Scale "Cross"   0.8)
+        (piece Scale "Disc"  0.8)
+        (piece Scale "Cross"  0.8)
         (piece Scale "DiscLarge" 2.5)
         (piece Scale "CrossLarge" 2.6)
         }

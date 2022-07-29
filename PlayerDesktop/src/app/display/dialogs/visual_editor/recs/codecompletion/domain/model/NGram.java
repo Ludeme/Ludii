@@ -119,7 +119,6 @@ public class NGram implements iNGram {
      * This method returns a list of all instances with the same key as the provided one.
      *
      * @param key
-     * @return
      */
     @Override
     public List<Instance> getMatch(String key) {
@@ -129,8 +128,6 @@ public class NGram implements iNGram {
 
     /**
      * Get the value of N for the model.
-     *
-     * @return
      */
     @Override
     public int getN() {
@@ -139,8 +136,6 @@ public class NGram implements iNGram {
 
     /**
      * Returns the Map object containing the NGram
-     *
-     * @return
      */
     @Override
     public Map<String, List<Instance>> getDictionary() {

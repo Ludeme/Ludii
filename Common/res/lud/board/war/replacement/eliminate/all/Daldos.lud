@@ -52,7 +52,7 @@
         })
         (play 
             (do 
-                (if (not "SameTurn") 
+                (if ("NewTurn") 
                     (roll) 
                 )
                 next:(forEach Die 
@@ -75,7 +75,7 @@
 //------------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <name> } {
-    (item "Ostergaard and Gaston"  <>  "")  
+    (item "Ostergaard and Gaston" <> "") 
 })
 
 //------------------------------------------------------------------------------
@@ -107,7 +107,7 @@
         (useFor "Ruleset/Ostergaard and Gaston (Scholarly)" (source "Østergaard and Gaston 2001."))
         (useFor "Ruleset/Ostergaard and Gaston (Scholarly)" (id "756"))
         (id "756")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
         (origin "This game was played in Scandinavia, from around 1831 to 1927.")

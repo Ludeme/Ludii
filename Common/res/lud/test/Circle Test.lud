@@ -34,12 +34,12 @@
 
 (option "Board" <Board> args:{ <board> }
     {
-    (item "{8} C"     <(circle {8})>           "")  
-    (item "{1 8} C"    <(circle {1 8})>          "")  
-    (item "{0 8} V"    <(circle {0 8}) use:Vertex>     "")  
-    (item "{1 8} V"    <(circle {1 8}) use:Vertex>     "")  
-    (item "{4 4 4 20} C"  <(circle {4 4 4 20})>        "")  
-    (item "{1 4 4 4 20} V" <(circle {1 4 4 4 20}) use:Vertex> "")  
+    (item "{8} C"   <(circle {8})>      "") 
+    (item "{1 8} C"  <(circle {1 8})>     "") 
+    (item "{0 8} V"  <(circle {0 8}) use:Vertex>   "") 
+    (item "{1 8} V"  <(circle {1 8}) use:Vertex>   "") 
+    (item "{4 4 4 20} C" <(circle {4 4 4 20})>    "") 
+    (item "{1 4 4 4 20} V" <(circle {1 4 4 4 20}) use:Vertex> "") 
     }
 )
 

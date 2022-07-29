@@ -2,7 +2,7 @@
     (count Sites 
         in:(intersection 
             (sites Around #1) 
-            (sites Occupied by:All)  
+            (sites Occupied by:All) 
         )
     )
 )
@@ -44,33 +44,33 @@
 //------------------------------------------------------------------------------
 
 (option "Board" <Board> args:{ <board> } {
-    (item "Square 8x8"  <(square 8)> "Square 8x8 board.")  
-    (item "Square 12x12" <(square 12)> "Square 12x12 board.")*  
-    (item "Hex 5"    <(hex 5)> "Hex 5 board.")  
+    (item "Square 8x8" <(square 8)> "Square 8x8 board.") 
+    (item "Square 12x12" <(square 12)> "Square 12x12 board.")* 
+    (item "Hex 5"  <(hex 5)> "Hex 5 board.") 
 })
 
 (option "Start" <Start> args:{ <start> } {
-    (item "Glider"   
+    (item "Glider"  
         <"B4" "C4" "D4" "D3" "C2">
         "Self-perpetuating glider pattern."
     )
-    (item "Lightweight Spaceship"   
+    (item "Lightweight Spaceship"  
         <"C3" "D3" "E3" "F3" "B4" "F4" "F5" "C6" "E6">
         "Self-perpetuating Lightweight spaceship pattern."
     )*
-    (item "Blinker"   
+    (item "Blinker"  
         <"B3" "C3" "D3">
         "Oscillating blinker pattern."
     )
-    (item "Toad"   
+    (item "Toad"  
         <"B3" "C3" "D3" "C4" "D4" "E4">
         "Oscillating toad pattern."
     )
-    (item "Beacon"   
+    (item "Beacon"  
         <"B2" "C2" "B3" "C3" "D4" "E4" "D5" "E5">
         "Oscillating beacon pattern."
     )
-    (item "Block"   
+    (item "Block"  
         <"B2" "C2" "B3" "C3">
         "Static block pattern."
     )
@@ -87,7 +87,7 @@
         All other live cells die in the next generation. Similarly, all other dead cells stay dead.")
         (id "708")
         (source "<a href=\"https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "simulation")
         (author "John Horton Conway")
         (credit "Eric Piette and Cameron Browne")

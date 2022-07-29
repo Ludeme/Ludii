@@ -22,8 +22,8 @@
             }
         )
         (piece "Seed" Shared)
-        (regions P1 (sites Bottom))           // P1 home
-        (regions P2 (sites Top))            // P2 home
+        (regions P1 (sites Bottom))      // P1 home
+        (regions P2 (sites Top))      // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
         (map "RightMost" {(pair P1 7) (pair P2 8)})
     }) 
@@ -114,7 +114,7 @@
         (rules "2x7 board, with one store at either end. Each player owns the store to their left. Seven counters in each hole. The first turn is played simultaneously by both players; at the point which one player's sowing lasts longer than the others, the player whose turn was shorter plays next and turns alternate from this point. Players sow in a clockwise direction from one of the holes in their row, also sowing into their store, but not in their opponent's store. When the final counter lands in an empty hole or in the store, the turn ends. When the final counter falls into an occupied hole, the player picks up the contents of this hole and continues to sow. If this occupied hole is in the player's row, they have the option to instead place the final counter in the opposite hole in the opponent's row, and to place this last counter as well as the contents of that hole into the store. When all of the counters are in the stores, a new game begins. The players take the counters from their stores and place seven in each hole, beginning from their right. Any player which cannot fill a hole with seven counters places the remaining counters in their store. Any holes which are left empty are out of play for this game. Play continues as before. Multiple games are played like this until all of the holes on one side are left empty. This player loses.")
         (source "Béart 1955: 505-507.")
         (id "289")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }

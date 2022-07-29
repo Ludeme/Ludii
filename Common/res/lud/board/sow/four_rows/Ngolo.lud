@@ -16,10 +16,10 @@
             (track "Track2" "18,E,N1,W" loop:True P2)
             }
         )
-        (regions "Home" P1 (sites Track "Track1"))               // P1 Home
-        (regions "Home" P2 (sites Track "Track2"))               // P2 home
+        (regions "Home" P1 (sites Track "Track1"))        // P1 Home
+        (regions "Home" P2 (sites Track "Track2"))        // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))  // P2 inner Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top))) // P2 inner Home
         (piece "Seed" Shared)
     }) 
     (rules 
@@ -92,7 +92,7 @@
         (rules "4x9 board. Two counters in each hole. Players alternate turns sowing from one of the holes in their rows in an anti-clockwise direction. When a counter falls into a hole in their inner row, the player captures the counters from both of the opposite holes on the opponent's side of the board; if one of the two opposite holes is empty, no capture is made. Captures counters are sown on the player's side of the board. Play continues until one player captures all of the counters or one player forfeits.")
         (source "Klepzig 1972: 306.")
         (id "1366")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         (origin "This game was played in Democratic Republic of Congo, around 1971.")

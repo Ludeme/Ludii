@@ -1,6 +1,6 @@
 (define "CaptureToPieceAndAddScore"
     (apply
-        (if (not (is Empty (to)))
+        (if (is Occupied (to))
             (and 
                 (addScore Mover (value Piece at:(to))) 
                 (remove (to)) 
@@ -118,7 +118,7 @@
         })
         
         (play 
-            (do (if (not "SameTurn") (roll))
+            (do (if ("NewTurn") (roll))
                 next:(if (and ("SameTurn") (is Pending))
                     (or {
                         ("PromoteTo" "Boat" (set Value at:(last To) 2))
@@ -152,7 +152,7 @@
 
 (option "Variant" <Variant> args:{ <type> }
     {
-    (item "Wikipedia"  <>    "The rules are describing with the Wikipedia ruleset.")  
+    (item "Wikipedia" <>  "The rules are describing with the Wikipedia ruleset.") 
 })
 
 //------------------------------------------------------------------------------
@@ -185,7 +185,7 @@
         (useFor "Ruleset/Historical Information (Incomplete)" (id "582"))
         (source "Murray 1913: 68-75.")
         (id "295")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
         (origin "This game was played in India, from around 1490 to 1580.")

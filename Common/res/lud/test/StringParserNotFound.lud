@@ -85,12 +85,12 @@
 (define "StepsTaken"
     (count Steps
         //(step 
-            //  (to 
-                //    if:(or 
-                    //      (= (last To) (to)) 
-                    //      (= 0 ("StackSize" (to)))
-                //    )
-            //  )
+            // (to 
+                //  if:(or 
+                    //   (= (last To) (to)) 
+                    //   (= 0 ("StackSize" (to)))
+                //  )
+            // )
         //)
         (last From)
         (last To)
@@ -163,7 +163,7 @@
 )
 
 (game "StringParserNotFound"
-    (players {(player N) (player S)})
+    ("TwoPlayersNorthSouth")
     (equipment
         {
         (board (rotate 30 (hex <Board>)))
@@ -218,9 +218,9 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "4"  <4> "A base 4 board is currently selected")*
-    (item "5"  <5> "A base 5 board is currently selected")
-    (item "6"  <6> "A base 6 board is currently selected") 
+    (item "4" <4> "A base 4 board is currently selected")*
+    (item "5" <5> "A base 5 board is currently selected")
+    (item "6" <6> "A base 6 board is currently selected") 
     }
 )
 

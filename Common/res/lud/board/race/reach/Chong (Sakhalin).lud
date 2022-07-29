@@ -136,23 +136,23 @@
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> <track2>} {
-    (item "3x12"  <12> <"35,W,S1,E,S1,W">  "The game is played on a 3x12 board.")  
-    (item "3x13"  <13> <"38,W,S1,E,S1,W"> "The game is played on a 3x13 board.")  
-    (item "3x14"  <14> <"41,W,S1,E,S1,W"> "The game is played on a 3x14 board.")  
-    (item "3x15"  <15> <"44,W,S1,E,S1,W"> "The game is played on a 3x15 board.")  
-    (item "3x16"  <16> <"47,W,S1,E,S1,W"> "The game is played on a 3x16 board.")  
-    (item "3x17"  <17> <"50,W,S1,E,S1,W"> "The game is played on a 3x17 board.")  
-    (item "3x18"  <18> <"53,W,S1,E,S1,W"> "The game is played on a 3x18 board.")  
-    (item "3x19"  <19> <"56,W,S1,E,S1,W"> "The game is played on a 3x19 board.")  
-    (item "3x20"  <20> <"59,W,S1,E,S1,W"> "The game is played on a 3x20 board.")  
-    (item "3x21"  <21> <"62,W,S1,E,S1,W"> "The game is played on a 3x21 board.")  
-    (item "3x22"  <22> <"65,W,S1,E,S1,W"> "The game is played on a 3x22 board.")  
-    (item "3x23"  <23> <"68,W,S1,E,S1,W"> "The game is played on a 3x23 board.")  
-    (item "3x24"  <24> <"71,W,S1,E,S1,W"> "The game is played on a 3x24 board.")  
-    (item "3x25"  <25> <"74,W,S1,E,S1,W"> "The game is played on a 3x25 board.")  
-    (item "3x26"  <26> <"77,W,S1,E,S1,W"> "The game is played on a 3x26 board.")  
-    (item "3x27"  <27> <"80,W,S1,E,S1,W"> "The game is played on a 3x27 board.")  
-    (item "3x28"  <28> <"83,W,S1,E,S1,W"> "The game is played on a 3x28 board.")  
+    (item "3x12" <12> <"35,W,S1,E,S1,W"> "The game is played on a 3x12 board.") 
+    (item "3x13" <13> <"38,W,S1,E,S1,W"> "The game is played on a 3x13 board.") 
+    (item "3x14" <14> <"41,W,S1,E,S1,W"> "The game is played on a 3x14 board.") 
+    (item "3x15" <15> <"44,W,S1,E,S1,W"> "The game is played on a 3x15 board.") 
+    (item "3x16" <16> <"47,W,S1,E,S1,W"> "The game is played on a 3x16 board.") 
+    (item "3x17" <17> <"50,W,S1,E,S1,W"> "The game is played on a 3x17 board.") 
+    (item "3x18" <18> <"53,W,S1,E,S1,W"> "The game is played on a 3x18 board.") 
+    (item "3x19" <19> <"56,W,S1,E,S1,W"> "The game is played on a 3x19 board.") 
+    (item "3x20" <20> <"59,W,S1,E,S1,W"> "The game is played on a 3x20 board.") 
+    (item "3x21" <21> <"62,W,S1,E,S1,W"> "The game is played on a 3x21 board.") 
+    (item "3x22" <22> <"65,W,S1,E,S1,W"> "The game is played on a 3x22 board.") 
+    (item "3x23" <23> <"68,W,S1,E,S1,W"> "The game is played on a 3x23 board.") 
+    (item "3x24" <24> <"71,W,S1,E,S1,W"> "The game is played on a 3x24 board.") 
+    (item "3x25" <25> <"74,W,S1,E,S1,W"> "The game is played on a 3x25 board.") 
+    (item "3x26" <26> <"77,W,S1,E,S1,W"> "The game is played on a 3x26 board.") 
+    (item "3x27" <27> <"80,W,S1,E,S1,W"> "The game is played on a 3x27 board.") 
+    (item "3x28" <28> <"83,W,S1,E,S1,W"> "The game is played on a 3x28 board.") 
 })
 
 //------------------------------------------------------------------------------
@@ -161,6 +161,22 @@
     
     (info
         {
+        (description "Chong is a game played by the Nivkh people in Northern Asia. This version was played in the late nineteenth and early twentieth century among the Nivkh people living on Sakhalin Island.")
+        (rules "3x12-28 board. Players begin with soldiers, equal in number to the number of spaces in one row for each player, which begin in the spaces in the row closes to the player. Each player has one king piece, which begins in the rightmost space in the central row with respect to the player. Four six-sided dice with values from 1-6. A throw of 1 is called Chong. Pieces move in a boustrophedon path along the board, from left to right in their home row, right to left in the center row, and then left to right in their opponent's row. 
+            
+            A player must first throw a Chong to play. On this turn, when a player throws one Chong, the King exchanges places with the soldier behind it. If more than one Chong is thrown, the King exchanges places with the soldier that many spaces behind it. Any remaining values in the throw are moved by the soldier which took the king's space. Once this move has taken place, pieces move according to the throws of the dice, which can be subdivided between the pieces as the player sees fit. The King only moves with a Chong, and it exchanges the place of a piece that number of occupied squares away, i.e., only spaces occupied by the player's pieces are counted when moving the King. When the player has only one soldier and the King, the King may move normally (like a soldier does), but on throws of Chong. When only the King is left, the first Chong in a throw is ignored and only the second, third, or fourth Chongs are moved. 
+            
+            When a player's piece lands on a space occupied by an opponent's piece, the opponent's piece is captured. An opponent's King cannot be taken by a soldier until it has first moved backwards, and then it can only be taken by a Chong.
+            
+            The game continues after the players' Kings have been taken.
+            
+        When a player reaches the end of the opponent's home line, the player wins.")
+        (source "Sternberg 1933: 340-342.")
+        (id "1972")
+        (version "1.3.5")
+        (classification "board/race/reach")
+        (credit "Eric Piette")
+        (origin "This game was played in North Asia, from around 1890 to 1933.")
         }
     )
     

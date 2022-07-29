@@ -50,10 +50,10 @@
         })
         (play 
             (do 
-                (if (not "SameTurn") (roll))
+                (if ("NewTurn") (roll))
                 next:(forEach Die 
                     if:("DieNotUsed")
-                    (forEach Piece top:True        
+                    (forEach Piece top:True    
                         (then 
                             (if (not (all DiceUsed))
                                 (moveAgain)
@@ -70,9 +70,9 @@
 //------------------------------------------------------------------------------
 
 (option "Dice" <Dice> args:{ <dice> } {
-    (item "Two Four-Sided Dice"  <(dice d:4 faces:{2 3 4 5} num:2) >  "The game is played with two four-sided dice.") 
-    (item "Two Cubic Dice"  <(dice d:6 num:2) >  "The game is played with two cubic dice.")  
-    (item "Three Cubic Dice"  <(dice d:6 num:3)>  "The game is played with three cubic dice.")  
+    (item "Two Four-Sided Dice" <(dice d:4 faces:{2 3 4 5} num:2) > "The game is played with two four-sided dice.") 
+    (item "Two Cubic Dice" <(dice d:6 num:2) > "The game is played with two cubic dice.") 
+    (item "Three Cubic Dice" <(dice d:6 num:3)> "The game is played with three cubic dice.") 
 })
 
 //------------------------------------------------------------------------------
@@ -100,8 +100,7 @@
         {
         (description "Pasakakrida is a race game that was described in the Manasollasa, a twelfth-century CE Sanskrit text from India. The game could be played with either four-sided or six-sided dice.
         ")
-        (useFor "Ruleset/Two Four-Sided Dice (Incomplete)" (rules "24 long rounded spaces, arranged in two rows of twelve, and each row split into two groups of six. Fifteen pieces per player, one with white pieces and the other with colored pieces. Two four-sided dice, with the values 2, 3, 4, 5. The pieces start in the following arrangement: White with two pieces in the second to sixth spaces from the top right, two in the second from the top left, one each in the top left, first from the top left, and the bottom left; 
-                the colored pieces all begin on the sixth space from the top left. Pieces are sent back to the beginning when another player's piece lands on an opponent's piece. A player's piece cannot land on a space that is occupied by more than one of the opponent's pieces. Pieces move according to the throws of the dice.
+        (useFor "Ruleset/Two Four-Sided Dice (Incomplete)" (rules "24 long rounded spaces, arranged in two rows of twelve, and each row split into two groups of six. Fifteen pieces per player, one with white pieces and the other with colored pieces. Two four-sided dice, with the values 2, 3, 4, 5. The pieces start in the following arrangement: White with two pieces in the second to sixth spaces from the top right, two in the second from the top left, one each in the top left, first from the top left, and the bottom left; the colored pieces all begin on the sixth space from the top left. Pieces are sent back to the beginning when another player's piece lands on an opponent's piece. A player's piece cannot land on a space that is occupied by more than one of the opponent's pieces. Pieces move according to the throws of the dice.
         "))
         (useFor "Ruleset/Two Four-Sided Dice (Incomplete)" (source "Bock-Raming 1995a."))
         (useFor "Ruleset/Two Four-Sided Dice (Incomplete)" (id "1752"))
@@ -112,7 +111,7 @@
         (useFor "Ruleset/Three Six-Sided Dice (Incomplete)" (source "Bock-Raming 1995a."))
         (useFor "Ruleset/Three Six-Sided Dice (Incomplete)" (id "1754"))
         (source "Bock-Raming 1995: 114-115.")
-        (version "1.3.2")
+        (version "1.3.5")
         (classification "board/race/escape/reconstruction")
         (origin "This game was played in India, from around 1126 to 1138.")
         }

@@ -34,7 +34,7 @@
             (place Stack "Disc2" (handSite P2) count:15)
         })
         (play 
-            (do (if (or (is Pending) (not "SameTurn")) (roll)) 
+            (do (if (or (is Pending) ("NewTurn")) (roll)) 
                 next:(or (forEach Piece top:True) (forEach Piece container:(mover) top:True)
                     (then 
                         (and
@@ -79,7 +79,7 @@
         ")
         (source "Libro de los Juegos 76-77.")
         (id "731")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/escape")
         (credit "Eric Piette")
         (origin "This game was played in Spain, around 1283.")

@@ -4,7 +4,7 @@ package main.grammar;
 
 /**
  * Argument in a symbol's clause (i.e. a constructor) with an optional label.
- * 
+ *
  * @author cambolbro
  */
 public class ClauseArg
@@ -14,7 +14,7 @@ public class ClauseArg
 
 	/** Local parameter name if parameter has @Name annotation, else null. */
 	private String label = null;
-	
+
 	/** Symbol representing parameter type. */
 	private Symbol symbol = null;
 
@@ -34,19 +34,19 @@ public class ClauseArg
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param label
 	 * @param symbol
 	 * @param optional
 	 */
 	public ClauseArg
 	(
-		final Symbol symbol, final String actualParameterName, final String label, final boolean optional, 
+		final Symbol symbol, final String actualParameterName, final String label, final boolean optional,
 		final int orGroup, final int andGroup
 	)
 	{
 		this.symbol = symbol;
-		this.actualParameterName = actualParameterName;
+		this.actualParameterName = (actualParameterName == null) ? null : new String(actualParameterName);
 		this.label = (label == null) ? null : new String(label);
 		this.optional = optional;
 		this.orGroup = orGroup;
@@ -55,13 +55,13 @@ public class ClauseArg
 
 	/**
 	 * Copy constructor.
-	 * 
+	 *
 	 * @param other
 	 */
 	public ClauseArg(final ClauseArg other)
 	{
 		symbol = other.symbol;
-		actualParameterName = other.actualParameterName;
+		actualParameterName = (other.actualParameterName == null) ? null : new String(other.actualParameterName);
 		label = (other.label == null) ? null : new String(other.label);
 		optional = other.optional;
 		orGroup = other.orGroup;
@@ -162,7 +162,7 @@ public class ClauseArg
 			case SuperLudeme:
 			case SubLudeme:
 			case Structural:
-			// Hack to convert "<String>" args to "string" in the grammar 
+			// Hack to convert "<String>" args to "string" in the grammar
 			if (symbol.token().equals("String"))
 				str = "string";
 			else

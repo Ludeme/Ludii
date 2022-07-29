@@ -178,7 +178,7 @@ public class ExactLogitTreeLearner
 		if (remainingAspatialFeatures.isEmpty() && remainingSpatialFeatures.isEmpty())
 		{
 			// Time to create leaf node: a model with just a single intercept feature
-			return new LogitModelNode(new Feature[] {new InterceptFeature()}, new float[] {accumInterceptWeight});
+			return new LogitModelNode(new Feature[] {InterceptFeature.instance()}, new float[] {accumInterceptWeight});
 		}
 		
 		if (allowedDepth == 0)
@@ -191,7 +191,7 @@ public class ExactLogitTreeLearner
 			int nextIdx = 0;
 			
 			// Start with intercept
-			featuresArray[nextIdx] = new InterceptFeature();
+			featuresArray[nextIdx] = InterceptFeature.instance();
 			weightsArray[nextIdx++] = accumInterceptWeight;
 			
 			// Now aspatial features
@@ -464,7 +464,7 @@ public class ExactLogitTreeLearner
 		if (remainingAspatialFeatures.isEmpty() && remainingSpatialFeatures.isEmpty())
 		{
 			// Time to create leaf node: a model with just a single intercept feature
-			return new LogitModelNode(new Feature[] {new InterceptFeature()}, new float[] {accumInterceptWeight});
+			return new LogitModelNode(new Feature[] {InterceptFeature.instance()}, new float[] {accumInterceptWeight});
 		}
 		
 		if (allowedDepth == 0)
@@ -477,7 +477,7 @@ public class ExactLogitTreeLearner
 			int nextIdx = 0;
 			
 			// Start with intercept
-			featuresArray[nextIdx] = new InterceptFeature();
+			featuresArray[nextIdx] = InterceptFeature.instance();
 			weightsArray[nextIdx++] = accumInterceptWeight;
 			
 			// Now aspatial features

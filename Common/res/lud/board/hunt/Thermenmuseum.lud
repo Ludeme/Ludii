@@ -164,9 +164,7 @@
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
-        )
+        ("PhaseMovePiece" "Movement")
         }
         
         (end {
@@ -246,9 +244,7 @@
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
-        )
+        ("PhaseMovePiece" "Movement")
         }
         
         (end {
@@ -290,9 +286,7 @@
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
-        )
+        ("PhaseMovePiece" "Movement")
         }
         
         (end {
@@ -334,9 +328,7 @@
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
-        )
+        ("PhaseMovePiece" "Movement")
         }
         
         (end {
@@ -378,9 +370,7 @@
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
-        )
+        ("PhaseMovePiece" "Movement")
         }
         
         (end {
@@ -422,9 +412,7 @@
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
-        )
+        ("PhaseMovePiece" "Movement")
         }
         
         (end {
@@ -514,9 +502,7 @@
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
-        )
+        ("PhaseMovePiece" "Movement")
         }
         
         (end ("BlockWin"))
@@ -545,9 +531,7 @@
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
-        )
+        ("PhaseMovePiece" "Movement")
         }
         
         (end ("Line3Win"))
@@ -727,9 +711,7 @@
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
-        )
+        ("PhaseMovePiece" "Movement")
         }
         (end ("BlockWin"))
     )		
@@ -3515,7 +3497,7 @@
         (useFor "Ruleset/Haretavl Starting Position - Top Extension Joined Diagonal (Suggested)" (id "1873"))
         (useFor "Ruleset/Haretavl Starting Position - Top Extension No Joined Diagonal (Suggested)" (rules "Haretavl rules. Board with top extension and no joined diagonals. Dogs begin in the top extension, hare begins in the central point of the bottom row."))
         (useFor "Ruleset/Haretavl Starting Position - Top Extension No Joined Diagonal (Suggested)" (id "1874"))
-        (useFor "Ruleset/Haretavl Three Dogs Two Hares Starting Position - No Extension Joined Diagonal (Suggested)" (rules "Haretavl ruiles. Board with no extensions and joined diagonals. Dogs begin on the top line, the hares begin on the bottom corners."))
+        (useFor "Ruleset/Haretavl Three Dogs Two Hares Starting Position - No Extension Joined Diagonal (Suggested)" (rules "Haretavl rules. Board with no extensions and joined diagonals. Dogs begin on the top line, the hares begin on the bottom corners."))
         (useFor "Ruleset/Haretavl Three Dogs Two Hares Starting Position - No Extension Joined Diagonal (Suggested)" (id "1875"))
         (useFor "Ruleset/Haretavl Three Dogs Two Hares Starting Position 1 - No Extension No Joined Diagonal (Suggested)" (rules "Haretavl rules with two hares. Board with no extensions and no joined diagonals. Dogs begin on the top corners and central spot of the top line, hares begin on the bottom corners."))
         (useFor "Ruleset/Haretavl Three Dogs Two Hares Starting Position 1 - No Extension No Joined Diagonal (Suggested)" (id "1876"))
@@ -3611,7 +3593,7 @@
         (useFor "Ruleset/Haretavl Switch Two Dogs Starting Position 2 - Top Extension No Joined Diagonal (Suggested)" (id "1923"))
         (useFor "Ruleset/Haretavl Switch Two Dogs - Top Extension No Joined Diagonal - Starting Position 3 (Suggested)" (id "1925"))
         (id "1673")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/hunt")
         (credit "Eric Piette")
         }

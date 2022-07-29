@@ -38,7 +38,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )  
+    ) 
 )
 
 (define "DoCastle"
@@ -108,7 +108,7 @@
 //------------------------------------------------------------------------------
 
 (game "ChessX" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8)) 
         

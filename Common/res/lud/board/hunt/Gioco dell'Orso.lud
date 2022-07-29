@@ -36,7 +36,7 @@
                 (move 
                     (from (handSite P1))
                     (to (intersection (sites Empty) (sites {1..4})))
-                    (then (if (not ("HandEmpty" P1)) (moveAgain)))
+                    (then (if ("HandOccupied" P1) (moveAgain)))
                 )
             )
             (nextPhase ("HandEmpty" P1) "HuntingP2")
@@ -67,7 +67,7 @@
                 (move 
                     (from (handSite P2))
                     (to (intersection (sites Empty) (sites {1..4})))
-                    (then (if (not ("HandEmpty" P2)) (moveAgain)))
+                    (then (if ("HandOccupied" P2) (moveAgain)))
                 )
             )
             (nextPhase ("HandEmpty" P2) "HuntingP1")
@@ -101,7 +101,7 @@
                 (move 
                     (from (handSite P1))
                     (to (intersection (sites Empty) (sites {1..4})))
-                    (then (if (not ("HandEmpty" P1)) (moveAgain)))
+                    (then (if ("HandOccupied" P1) (moveAgain)))
                 )
             )
             (nextPhase ("HandEmpty" P1) "HuntingP2")
@@ -152,7 +152,7 @@
         (useFor "Ruleset/Bear Wins One Round (Suggested)" (id "1956"))
         (source "Michaelsen 2014: 212.")
         (id "1163")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/hunt")
         (credit "Eric Piette")
         (origin "This game was played in Italy, from around 1910 to 1994.")

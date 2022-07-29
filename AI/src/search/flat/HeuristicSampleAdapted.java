@@ -224,7 +224,7 @@ public class HeuristicSampleAdapted extends HeuristicSampling
 				return -o1.getKey().compareTo(o2.getKey());
 			}
 		});
-		if (entries==null || entries.size()==0)return null;
+		if(entries.size() == 0) return null;
 		Entry<Float, Integer> array_element = entries.get(0);
 		float newVal = ((entries.size() - 0) * 1.f) / (entries.size()) * 1.0f + 0.0f;
 		aiDistribution.set(array_element.getValue().intValue(), newVal);
@@ -277,7 +277,7 @@ public class HeuristicSampleAdapted extends HeuristicSampling
 			this.game = game;
 		}
 
-		private FastArrayList<Move> addNullMoveAndSort(FastArrayList<Move> moves2) {
+		private static FastArrayList<Move> addNullMoveAndSort(FastArrayList<Move> moves2) {
 			List<Action> a = new ArrayList<Action>();
 			Move m = new Move(a);
 			moves2.add(0,m);

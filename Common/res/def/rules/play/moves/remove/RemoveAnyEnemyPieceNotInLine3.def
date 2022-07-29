@@ -1,0 +1,12 @@
+// Allows to remove one piece of the enemy player which is not in a line 3.
+// #1 = The directions of the line (by default adjacent).
+// @example ("RemoveAnyEnemyPieceNotInLine3")
+
+(define "RemoveAnyEnemyPieceNotInLine3"
+    (move Remove
+        (forEach 
+            (sites Occupied by:Enemy container:"Board") 
+            if:(not (is Line 3 #1 through:(site)))
+        )
+    )
+)

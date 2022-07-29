@@ -10,7 +10,6 @@ public class Instance2Ludeme {
     /**
      * This method converts a Ngram instance into a ludeme object
      * @param instance
-     * @return
      */
     public static Ludeme instance2ludeme(Instance instance) {
         return new Ludeme(instance.getPrediction());

@@ -1,4 +1,4 @@
-(define "NotEnemyOrOnlyOne"  
+(define "NotEnemyOrOnlyOne" 
     (or 
         (and 
             ("IsEnemyAt" (to)) 
@@ -128,7 +128,7 @@
         
         (play 
             (do 
-                (if (not "SameTurn") (roll))
+                (if ("NewTurn") (roll))
                 next:(if "AllPieceInHome"
                     (forEach Die 
                         replayDouble:True 

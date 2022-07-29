@@ -45,7 +45,6 @@ public interface iController {
      * 5. Filter out choices based on begunWord
      * @param context
      * @param begunWord
-     * @return
      */
     List<Instance> getPicklist(String context, String begunWord);
 
@@ -61,7 +60,6 @@ public interface iController {
      * @param context
      * @param begunWord
      * @param maxLength
-     * @return
      */
     List<Instance> getPicklist(String context, String begunWord, int maxLength);
 
@@ -78,7 +76,6 @@ public interface iController {
 
     /**
      * Get the value of N for the current model
-     * @return
      */
     int getN();
 

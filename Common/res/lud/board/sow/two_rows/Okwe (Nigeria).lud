@@ -103,7 +103,7 @@
 
 (option "Board Size" <Board> args:{ <size> <start> <homeTracks> <openingRegions>}
     {
-    (item "10"  <10> 
+    (item "10" <10> 
         <
         (start {
             (set Count 5 to:((sites {0 1 4 19..18 15})))
@@ -119,7 +119,7 @@
         (regions "OpeningRegion" P2 (sites {2..4}))
         >
     "Each row has 10 holes.")*
-    (item "12"  <12> 
+    (item "12" <12> 
         <
         (start {
             (set Count 5 to:((sites {0..2 5 23..21 18})))
@@ -135,7 +135,7 @@
         (regions "OpeningRegion" P2 (sites {5..3}))
         >
     "Each row has 12 holes.") 
-    (item "14"  <14> 
+    (item "14" <14> 
         <
         (start {
             (set Count 5 to:((sites {0..3 6 27..24 21})))
@@ -151,7 +151,7 @@
         (regions "OpeningRegion" P2 (sites {6..4}))
         >
     "Each row has 14 holes.") 
-    (item "16"  <16> 
+    (item "16" <16> 
         <
         (start {
             (set Count 5 to:((sites {0..4 7 31..27 24})))
@@ -167,7 +167,7 @@
         (regions "OpeningRegion" P2 (sites {7..5}))
         >
     "Each row has 16 holes.") 
-    (item "18"  <18> 
+    (item "18" <18> 
         <
         (start {
             (set Count 5 to:((sites {0..5 8 35..30 27})))
@@ -182,8 +182,8 @@
         (regions "OpeningRegion" P1 (sites {26..29}))
         (regions "OpeningRegion" P2 (sites {6..8}))
         >
-    "Each row has 18 holes.")  
-    (item "20"  <20> 
+    "Each row has 18 holes.") 
+    (item "20" <20> 
         <
         (start {
             (set Count 5 to:((sites {0..6 9 39..33 30})))
@@ -222,7 +222,7 @@
         (rules "2x10-20 board, 10 most common. Opening arrangement: Each player has this opening arrangement (number of counters in each hole, starting from the leftmost hole): 5-5-5-5-5-5-5-1-1-5-1-0-0-0-0-0-0-0-0-0. Boards have even numbers of holes, and the farthest left and farthest right holes are eliminated in succession from this opening arrangement to make smaller boards. The challenger concedes the first move. Opening phase: Player 1 removes the counters in the opponent's final four holes with counters and conceals them from the opponent. Player 2 removes the same counters, except leaving the single counter in the opponent's final hole with counters. Players take the counters from any of their holes and sow them in an anti-clockwise direction. When sowing, the first counter is dropped into the hole from which it just came, unless it is a single counter. If the last counter lands in the opponent's row and the opposite hole contains one, three, or five counters, theses are taken and added to the concealed store. In place of a move, a player may add some or all of the counters from the concealed store, sowing from the leftmost hole in their row. If the sowing reaches the rightmost hole in this row, sowing continues from the leftmost hole rather than continuing into the opponent's rows.")
         (source "Basden 1921: 134.")
         (id "231")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         (origin "This game was played in Nigeria, around 1921.")

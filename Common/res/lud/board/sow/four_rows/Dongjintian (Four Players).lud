@@ -5,7 +5,7 @@
     (!= (last To) ("NextSite" #1))
 )
 (define "NextSite"
-    (ahead (last To) steps:#1 (directions Vertex from:(last From) to:(last To)))	
+    (ahead (last To) steps:#1 ("LastDirection" Vertex))
 )
 (define "SowAgainMove" 
     (move Select
@@ -212,7 +212,7 @@
         ")
         (source "Eagle 1995: 57-58.")
         (id "1566")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         (origin "This game was played in China, around 1994.")

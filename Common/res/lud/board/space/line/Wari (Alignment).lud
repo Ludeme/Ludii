@@ -1,21 +1,3 @@
-(define "RemoveEnemyPiece" 
-    (move
-        Remove
-        (sites Occupied by:Next container:"Board") 
-    )
-)
-
-(define "IfLine3MoveAgain" 
-    (then 
-        (if 
-            (is Line 3 Orthogonal exact:True) 
-            (moveAgain)
-        )
-    )
-)
-
-//------------------------------------------------------------------------------
-
 (game "Wari (Alignment)"
     (players 2)
     (equipment { 
@@ -23,15 +5,8 @@
         (hand Each)
         (piece "Marker" Each
             (if (is Line 4 Orthogonal through:(from)) 
-                (move Step 
-                    Orthogonal
-                    (to if:(is Empty (to))) 
-                )
-                (move Step 
-                    Orthogonal
-                    (to if:(is Empty (to))) 
-                    "IfLine3MoveAgain" 
-                )
+                ("StepToEmpty" Orthogonal)
+                ("StepToEmpty" Orthogonal (then ("ReplayIfLine3" Orthogonal exact:True)))
             )
         ) 
     }) 
@@ -52,14 +27,14 @@
         (phase "Movement" 
             (play 
                 (if "SameTurn"
-                    "RemoveEnemyPiece"
+                    ("RemoveAnyEnemyPiece")
                     (forEach Piece)
                 )
             )
         )
         }
         
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -73,7 +48,7 @@
         (rules "6x6 board. Twelve pieces per player. Players alternate turns placing a piece on an empty space on the board. No captures may be made in the placement phase. When all of the pieces have been placed, players alternate turns moving a piece orthogonally to an empty adjacent space on the board. When a player places three of their pieces in an orthogonal row, they remove one of the opponent's pieces. Lines of four or more do not capture. Moving a piece out of a line of four or more, making it now a line of three, does not capture. Lines of three made during the placement phase also do not result in capture. The player who captures all of the opponent's pieces wins.")
         (source "Cardinall 1927: 255.")
         (id "1508")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line")
         (credit "Eric Piette")
         (origin "This game was played in Ghana, from around 1914 to 1927.")

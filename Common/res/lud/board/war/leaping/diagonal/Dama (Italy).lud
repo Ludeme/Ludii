@@ -1,51 +1,21 @@
-(define "HopMan" 
-    (move
-        Hop 
-        (from #1) 
-        (directions {FR FL}) 
-        (between 
-            if:(and ("IsEnemyAt" (between)) (!= (what at:(between)) (id "DoubleCounter" Next)))
-            (apply (remove (between)))
-        ) 
-        (to if:(is Empty (to))) 
-        #2
-    ) 
-)
-
-(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
-
-(define "JumpToPromotionZone" (is In (last To) (sites Next)))
+(define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
 
 //------------------------------------------------------------------------------
 
 (game "Dama (Italy)" 
     (players 2) 
-    (equipment { 
-        (board (square 8)) 
-        (piece "Counter" P1 N)
-        (piece "Counter" P2 S) 
-        (piece "DoubleCounter" Each)
-        (regions P1 (sites Bottom))
-        (regions P2 (sites Top))
-        }
-    ) 
+    ("DraughtsEquipment" (square 8)) 
     (rules 
-        (start
-            { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1) ))
-            (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1)))
-            }
-        )
+        ("BlackCellsSetup" 3)
         
         (play 
             (if "SameTurn"
                 (if "IsUnpromoted"
                     (max Moves 
-                        ("HopMan" (last To) 
+                        ("HopOnlyCounters" (from (last To)) (directions {FR FL})
                             (then 
-                                (if "JumpToPromotionZone" 
-                                    (move Promote (last To) (piece "DoubleCounter") Mover)
-                                    (if (can Move ("HopMan" (last To))) (moveAgain)) 
+                                ("PromoteIfReach" (sites Next) "DoubleCounter"
+                                    ("ReplayIfCanMove" ("HopOnlyCounters" (from (last To)) (directions {FR FL}))) 
                                 ) 
                             ) 
                         )
@@ -57,11 +27,10 @@
                         (priority {
                             (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture"))
                             (forEach Piece "Counter" 
-                                ("HopMan" (from) 
+                                ("HopOnlyCounters" (from) (directions {FR FL}) 
                                     (then 
-                                        (if "JumpToPromotionZone"
-                                            (move Promote (last To) (piece "DoubleCounter") Mover) 
-                                            (if (can Move ("HopMan" (last To))) (moveAgain)) 
+                                        ("PromoteIfReach" (sites Next) "DoubleCounter"
+                                            ("ReplayIfCanMove" ("HopOnlyCounters" (from (last To)) (directions {FR FL}))) 
                                         ) 
                                     ) 
                                 ) 
@@ -70,16 +39,8 @@
                     )
                     (or 
                         (forEach Piece "Counter" 
-                            (move
-                                Step 
-                                (directions {FR FL}) 
-                                (to if:(is Empty (to)))
-                            ) 
-                            (then 
-                                (if "JumpToPromotionZone"
-                                    (move Promote (last To) (piece "DoubleCounter") Mover)
-                                )
-                            )
+                            ("StepToEmpty" (directions {FR FL})) 
+                            (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
                         )
                         (forEach Piece "DoubleCounter" "StepDiagonalToEmpty")
                     )
@@ -102,7 +63,7 @@
         (rules "8x8 Draughts board. Twelve pieces per player, arranged on the three rows closest to the players. Players alternate turns moving a piece forward diagonally to an adjacent empty space. Pieces capture an opponent's piece by hopping over it to an empty space on the opposite side of it, in a forward direction only. Captures are mandatory, and the maximum number of captures is required. Kings are made when a piece reaches the opposite edge of the board from where it started. Kings may move one space diagonally in either direction, and capture rules are the same as for pieces, except when different capturing routes are available with the same number of captures, the one which takes the most kings must be taken. In addition, if a sequence of captures can be made by a king or a regular piece, it must be made with the king. Kings cannot be captured by regular pieces. When a piece does not capture the maximum number of captures and the opponent catches it, the opponent captures the opponent's piece. The first player to capture all of the opponent's pieces wins.")
         (source "van der Stoep 1984: 85.")
         (id "880")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/leaping/diagonal")
         (credit "Eric Piette")
         (origin "This game was played in Italy, from around 1570 to 1590.")

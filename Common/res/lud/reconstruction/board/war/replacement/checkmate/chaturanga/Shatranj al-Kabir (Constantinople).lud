@@ -19,7 +19,7 @@
 //------------------------------------------------------------------------------
 
 (game "Shatranj al-Kabir (Constantinople)"
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment {
         (board (square 13))
         (piece "Pawn" Each 
@@ -173,15 +173,15 @@
     
     (info
         {
-        (description "Shatranj al-Kabir is a type of Shatranj that is described in several manuscripts from medieval Southwest Asia. They agree that this was a favorite game of Timur, also known as Tamerlane. It is a larger version of Shatranj with more pieces, a larger board, and the use of citadels to force a draw.")
-        (aliases {"Shatranj Kamil" "Great Chess" "Complete Chess" "Perfect Chess" "Tamerlane Chess"})
-        (rules "11x10 board, with a twelfth space on the right of the second row of eleven on each side. Each player starts with the following pieces, with their specialized moves: Shah (x1): moves orthogonally or diagonally one space; Wazir (x1): moves one space orthogonally; Firzan (x1) moves one space diagonally; Dabbaba (x2): jumps orthogonally to the third space; Tali'as (x2): moves diagonally two or more spaces; Jamal (x2): jumps diagonally one space then two orthogonally in the same direction; Zurafa (x2): moves diagonally one space then orthogonally three or more spaces; Pil (x2) jumps two spaces diagonally; Asb (x2): jumps one space diagonally and one space orthogonally in the same direction; Rukh(x2): moves any number of spaces orthogonally; Baidaq (x10); move orthogonally forward one space or diagonally forward one space to capture. Each Baidaq is assigned to one of the piece types and promotes to that piece. They are placed in the third rank, with the Baidaq al-Bayadiq on the leftmost square, with the following promotion assignments for each regular Baidaq proceeding from left to right beginning on the second square from the left: Dabbaba, Jamal, Pil, Firzan, Shah, Wazir, Zurafa, Tali'as, Asb, Rukh. Baidaq al-Bayadiq (x1), moves like a Baidaq, but does not promote immediately when it reaches the opposite edge. Instead, it waits there, immune to capture, until a situation arises where two of the opponent's pieces could theoretically be taken by a pawn. The Baidaq al-Bayadiq is then moved to that spot, any piece (including the player's own) being moved from that spot, and then the capture being made on the next turn. It then proceeds as before, and if it is to be promoted again, it becomes a Shah's Baidaq, and is replaced on the appropriate starting position. If it is promoted a third time, it becomes Shah Masnu'a, and the original Shah's Baidaq becomes Shahzada, and both move like the Shah. If the Shah can be taken on the next turn, it is in Check and must not be in Check at the beginning of the next turn. If a Shah is not in Check but no legal moves are available, it is a Stalemate and the opponent wins. If the Shah is in Check and it is impossible to escape, Checkmate occurs and the opponent wins. Once per game, a player may swap a Shah which is in Check or Stalemate with another of the player's pieces. If the player can place the Shah in the extra space on the opponent's side of the board, the game is a draw. The Shah cannot enter the extra space if the opponent's Shah Masnu's occupies it. ")
-        (source "Murray 1913: 344-345.")
-        (id "294")
-        (version "1.3.4")
-        (classification "board/war/replacement/checkmate/chaturanga")
+        (description "This game, named Shatranj al-Kabir by Aminallah Abu-Rafid Muhammad Hafid, was played in Constantinople in the early nineteenth century.")
+        (aliases {"Shatranj al-Kabir"})
+        (rules "13x13 board. The same pieces as Shatranj plus: five pawns per player, one Great Ferz, which moves as a Zurafa in Shatranj al-Kabir, two Karkaddan, which moves diagonally any distance or like a Knight, and two Ahu, which move like the Jamal in Shatranj al-Kabir. Pawns begin on the fourth rank of the board. Pieces are arranged as follows, beginning from the left corner: Rook, Knight, Fil, Karkaddan, Ahu, Great Ferz, Shah, Ferz, Ahu, Karkaddan, Fil, Knight, Rook.")
+        (source "DLP evidence.")
+        (id "1432")
+        (version "1.3.5")
+        (classification "board/war/replacement/checkmate/chaturanga/reconstruction")
         (credit "Eric Piette")
-        (origin "This game was played in Southwest Asia, from around 1352 to 1657.")
+        (origin "This game was played in Turkey, from around 1805 to 1806.")
         }
     )
     

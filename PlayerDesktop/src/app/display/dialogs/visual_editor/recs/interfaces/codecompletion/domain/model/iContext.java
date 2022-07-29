@@ -8,9 +8,9 @@ import java.util.List;
 public interface iContext {
     /**
      * This method produces a string that represents the context with all its fields.
-     * @return
      */
-    String toString();
+    @Override
+	String toString();
 
     String getKey();
 

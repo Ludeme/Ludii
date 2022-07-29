@@ -2,9 +2,7 @@
     (players 2)
     (equipment {
         (board (square 7))
-        (piece "Marker" Each 
-            (move Slide Orthogonal)
-        )
+        (piece "Marker" Each (move Slide Orthogonal))
         (hand Each)
     })
     (rules
@@ -15,16 +13,12 @@
                 (move 
                     (from (handSite Mover))
                     (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
-                    (then
-                        (if (not ("SameTurn")) (moveAgain))
-                    )
+                    (then (if ("NewTurn") (moveAgain)))
                 )
             )
             (nextPhase Mover (is Empty (handSite Mover)) "Move")
         )
-        (phase "Move"
-            (play (forEach Piece))	
-        )
+        (phase "Move" (play (forEach Piece)))
         }
         (end (if (is Line 7) (result Mover Win)))
     )	
@@ -40,7 +34,7 @@
         ")
         (source "Bellin 1964: 55-56.")
         (id "1576")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/line")
         (credit "Eric Piette")
         (origin "This game was played in Algeria, around 1964.")

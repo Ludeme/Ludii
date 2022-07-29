@@ -1,5 +1,3 @@
-(define "StepMove" (move Step #1 (to if:(is Empty (to)))))
-
 (define "ScoreTeam1" (+ (score P1) (score P4)))
 
 (define "ScoreTeam2" (+ (score P2) (score P3)))
@@ -13,30 +11,20 @@
 (define "StartSitesTeam2" (union (sites P2) (sites P3)))
 
 (define "Team1OnlyOnStartSitesTeam2"
-    (= 0 
-        (count
-            Sites
-            in:(difference 
-                ("SitesOccupiedTeam1")
-                ("StartSitesTeam2") 
-            )
-        )
+    (all Sites 
+        ("SitesOccupiedTeam1")
+        if:(is In (site) ("StartSitesTeam2"))
     )
 )
 
 (define "Team2OnlyOnStartSitesTeam1"
-    (= 0 
-        (count
-            Sites
-            in:(difference 
-                ("SitesOccupiedTeam2")
-                ("StartSitesTeam1") 
-            )
-        )
+    (all Sites 
+        ("SitesOccupiedTeam2")
+        if:(is In (site) ("StartSitesTeam1"))
     )
 )
 
-(define "LargePieveAvailable" (not ("HandEmpty" Mover)))
+(define "LargePieveAvailable" ("HandOccupied" Mover))
 
 (define "ReplaceByLargePiece" (fromTo (from (handSite Mover)) (to (between))))
 
@@ -44,8 +32,7 @@
 
 (game "Awithlaknakwe" 
     (players {(player N) (player E) (player S) (player W)}) 
-    (equipment 
-        {
+    (equipment {
         (board 
             (merge
                 (merge
@@ -62,15 +49,14 @@
             )
             use:Vertex
         )
-        (piece "Counter" Each ("StepMove" (directions {FR FL})))
-        (piece "DoubleCounter" Each ("StepMove" (directions {Rightward Forwards Leftward})))
+        (piece "Counter" Each ("StepToEmpty" (directions {FR FL})))
+        (piece "DoubleCounter" Each ("StepToEmpty" (directions {Rightward Forwards Leftward})))
         (regions "Home" P1 (sites {"D9" "E8" "F7" "G6" "H5" "I4"}))
         (regions "Home" P2 (sites {"I22" "H21" "G20" "F19" "E18" "D17"}))
         (regions "Home" P3 (sites {"Q22" "R21" "S20" "T19" "U18" "V17"}))
         (regions "Home" P4 (sites {"V9" "U8" "T7" "S6" "R5" "Q4"}))
         (hand Each)
-        }
-    )
+    })
     (rules
         (start {
             (set Team 1 {P1 P4})
@@ -83,7 +69,7 @@
         })
         (play 
             (forEach Piece
-                (then   
+                (then  
                     (custodial 
                         (from (last To)) 
                         Orthogonal
@@ -91,16 +77,13 @@
                             (max 1) 
                             if:("IsEnemyAt" (between)) 
                             (apply 
-                                (and 
-                                    {
+                                (and {
                                     (remove (between))
                                     (if ("LargePieveAvailable")
                                         ("ReplaceByLargePiece")
                                     )
                                     (addScore Mover 1)
-                                    }
-                                )
-                                
+                                })
                             )
                         )
                         (to if:("IsFriendAt" (to))) 
@@ -114,13 +97,11 @@
                 (and 	
                     ("Team1OnlyOnStartSitesTeam2")
                     ("Team2OnlyOnStartSitesTeam1")
-                )
-                {
+                ) {
                 (if (> ("ScoreTeam1") ("ScoreTeam2")) (result Team1 Win))
                 (if (< ("ScoreTeam1") ("ScoreTeam2")) (result Team2 Win))
                 (if (= ("ScoreTeam1") ("ScoreTeam2")) (result Mover Draw))
-                }
-            )
+            })
         )
     )
 )
@@ -135,15 +116,11 @@
         (rules "12x12 board, with a line of six extra squares centered on each side. Diagonals in every square. Pieces are played on the intersections of lines. Played with two or four players; with four players, the top and left players play against the bottom and right players. Six pieces per player, with one larger piece. Each player's six pieces begin on the central intersection of the extra spaces. Pieces move one spot at a time diagonally. When a player surrounds an opponent's piece on two opposite sides, this piece is captured. The piece is then replaced by the larger piece, which may move diagonally or orthogonally. Pieces may not move backward. When all of the players' remaining pieces reach the starting squares of the opponent, the player with the most captured pieces wins.")
         (source "Culin 1907: 799.")
         (id "152")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/custodial")
         (credit "Eric Piette")
         }
     )
-    
-    (graphics {
-        
-    })
     
     (ai
         "Awithlaknakwe_ai"

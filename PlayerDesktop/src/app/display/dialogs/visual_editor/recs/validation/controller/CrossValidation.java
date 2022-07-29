@@ -48,5 +48,9 @@ public class CrossValidation {
         return testIDs;
     }
 
+	public double getTestProbability()
+	{
+		return testProbability;
+	}
 
 }

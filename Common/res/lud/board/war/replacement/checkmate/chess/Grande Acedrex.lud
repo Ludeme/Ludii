@@ -115,7 +115,7 @@
 //----------------------------------------------------------------
 
 (game "Grande Acedrex" 
-    (players {(player N) (player S)})
+    ("TwoPlayersNorthSouth")
     (equipment {
         (board (square 12))
         <Variant:dice>
@@ -209,7 +209,7 @@
         (play
             <Variant:movement>
         )
-        (end       
+        (end    
             (if (and 
                     ("IsInCheck" "King" Next (forEach Piece))
                     ("NextCanNotMove")
@@ -240,7 +240,7 @@
             ifAfterwards:(not ("IsInCheck" "King" Mover))
         )
         > 
-    "The rules of Alfonso X without dice.")*  
+    "The rules of Alfonso X without dice.")* 
     (item "With Dice" 
         <
         (dice d:8 num:1) 
@@ -275,7 +275,7 @@
             ifAfterwards:(not ("IsInCheck" "King" Mover (forEach Piece)))
         )
         > 
-    "The rules of Alfonso X with a die.")  
+    "The rules of Alfonso X with a die.") 
 })
 
 //------------------------------------------------
@@ -304,7 +304,7 @@
         (useFor "Ruleset/Dice (Described)" (source "Libro de los Juegos 83."))
         (useFor "Ruleset/Dice (Described)" (id "652"))
         (id "312")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chess")
         (credit "Eric Piette")
         }

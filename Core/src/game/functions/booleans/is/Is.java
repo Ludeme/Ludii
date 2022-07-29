@@ -803,6 +803,8 @@ public class Is extends BaseBooleanFunction
 	 * @param If         The condition on each site on the line [True].
 	 * @param byLevel    If true, then lines are detected in using the level in a
 	 *                   stack [False].
+	 * @param top        If true, then lines are detected in using only the top level 
+	 *                   in a stack [False].
 	 * 
 	 * @example (is Line 3)
 	 * @example (is Line 5 Orthogonal if:(not (is In (to) (sites Mover))))
@@ -821,7 +823,8 @@ public class Is extends BaseBooleanFunction
         @Opt      @Name  final BooleanFunction   exact,
 		@Opt 	  @Name  final BooleanFunction   contiguous,
              @Opt @Name  final BooleanFunction   If,
- 			 @Opt @Name  final BooleanFunction   byLevel
+ 			 @Opt @Name  final BooleanFunction   byLevel,
+ 			 @Opt @Name  final BooleanFunction   top
 	)
 	{
 		int numNonNull = 0;
@@ -849,7 +852,7 @@ public class Is extends BaseBooleanFunction
 		switch (isType)
 		{
 		case Line:
-			return new IsLine(type, length, dirn, through, throughAny, who, what, whats, exact, contiguous, If, byLevel);
+			return new IsLine(type, length, dirn, through, throughAny, who, what, whats, exact, contiguous, If, byLevel, top);
 		default:
 			break;
 		}

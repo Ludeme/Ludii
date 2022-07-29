@@ -1,14 +1,16 @@
 package app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+
 import app.display.dialogs.visual_editor.recs.interfaces.codecompletion.domain.filehandling.iLudiiGameDatabase;
 import app.display.dialogs.visual_editor.recs.utils.FileUtils;
-import app.display.dialogs.visual_editor.recs.utils.NGramUtils;
 import app.display.dialogs.visual_editor.recs.utils.StringUtils;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.*;
 
 /**
  * @author filreh
@@ -61,43 +63,45 @@ public class LudiiGameDatabase implements iLudiiGameDatabase {
      * This method reads in a file that contains all game names.
      */
     private void fetchGameNames() {
-        DocHandler docHandler = DocHandler.getInstance();
-        String location = docHandler.getGamesNamesLocation();
-
-        Scanner sc = FileUtils.readFile(location);
+        String location = DocHandler.getInstance().getGamesNamesLocation();
+        try(Scanner sc = FileUtils.readFile(location);)
+        {
         int id = 0;
         while (sc.hasNext()) {
             String curGameName = sc.nextLine();
             names.put(curGameName,id++);
         }
         sc.close();
-    }
-
-    /**
-     * This method analyses each game description one by one and writes the name of each game to a file.
-     */
-    private void fetchGameNamesFromDescriptions() {
-        DocHandler docHandler = DocHandler.getInstance();
-        String location = docHandler.getGamesNamesLocation();
-
-        FileWriter fw = FileUtils.writeFile(location);
-        for(int i = 0; i < getAmountGames(); i++) {
-            String gameDescription = getDescription(i);
-            String gameName = NGramUtils.getGameName(gameDescription);
-            names.put(gameName, i);
-
-            try {
-                fw.write(gameName);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
+//    /**
+//     * This method analyses each game description one by one and writes the name of each game to a file.
+//     */
+//    private void fetchGameNamesFromDescriptions() {
+//        String location = DocHandler.getInstance().getGamesNamesLocation();
+//        try(FileWriter fw = FileUtils.writeFile(location);)
+//        {
+//        for(int i = 0; i < getAmountGames(); i++) {
+//            String gameDescription = getDescription(i);
+//            String gameName = NGramUtils.getGameName(gameDescription);
+//            names.put(gameName, i);
+//
+//            try {
+//                fw.write(gameName);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        }
+//		catch (IOException e1)
+//		{
+//			e1.printStackTrace();
+//		}
+//    }
+
     /**
      * Returns a list of all the locations of game descriptions in the database.
-     *
-     * @return
      */
     @Override
     public List<String> getLocations() {
@@ -106,8 +110,6 @@ public class LudiiGameDatabase implements iLudiiGameDatabase {
 
     /**
      * Returns the amount of games in the database
-     *
-     * @return
      */
     @Override
     public int getAmountGames() {
@@ -118,7 +120,6 @@ public class LudiiGameDatabase implements iLudiiGameDatabase {
      * Returns the description of the game with the id in the locations list
      *
      * @param id
-     * @return
      */
     @Override
     public String getDescription(int id) {
@@ -138,7 +139,6 @@ public class LudiiGameDatabase implements iLudiiGameDatabase {
      * ids and use the other method.
      *
      * @param name
-     * @return
      */
     @Override
     public String getDescription(String name) {

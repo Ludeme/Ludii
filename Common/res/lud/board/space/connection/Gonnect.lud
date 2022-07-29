@@ -33,10 +33,10 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "9x9"   <(square 9)>   "The game is played on a 9x9 board")  
-    (item "13x13"  <(square 13)>  "The game is played on a 13x13 board")**  
-    (item "15x15"  <(square 15)>  "The game is played on a 15x15 board")  
-    (item "19x19"  <(square 19)>  "The game is played on a 19x19 board")  
+    (item "9x9"  <(square 9)>  "The game is played on a 9x9 board") 
+    (item "13x13" <(square 13)> "The game is played on a 13x13 board")** 
+    (item "15x15" <(square 15)> "The game is played on a 15x15 board") 
+    (item "19x19" <(square 19)> "The game is played on a 19x19 board") 
 })
 
 //------------------------------------------------------------------------------
@@ -49,7 +49,7 @@
         (rules "All the rules of Go apply, except that passing is not allowed. A player loses if he has no legal move. A player wins if they successfully connect two opposite sides of the board.")
         (source "<a href=\"https://en.wikipedia.org/wiki/Gonnect\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
         (id "467")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/space/connection")
         (author "João Pedro Neto")
         (credit "Eric Piette")

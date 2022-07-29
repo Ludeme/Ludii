@@ -15,7 +15,7 @@
                             (remember Value "Tied" (player))
                             (set Score Player #1)
                         )
-                        (set Score Player #1)  
+                        (set Score Player #1) 
                 ))
                 next:(do
                     (forEach Value
@@ -56,7 +56,7 @@
 )
 
 (define "StoneCount" // change to score Most pieces placed
-(count Sites in:(sites Occupied by:Player))  // (forEach (sites Occupied) if:(= (who at:(site)) #1)))
+(count Sites in:(sites Occupied by:Player)) // (forEach (sites Occupied) if:(= (who at:(site)) #1)))
 )
 
 //----------------------------
@@ -109,7 +109,7 @@
             (if 
                 (all Passed)
                 (byScore)
-            )       
+            )    
 )))
 
 //-------------------------------------------------
@@ -235,7 +235,7 @@
             The winner of the game is decided by these amended scores.
         Ties may still remain. Also ties between non-leading players are not resolved.")
         (id "1549")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")

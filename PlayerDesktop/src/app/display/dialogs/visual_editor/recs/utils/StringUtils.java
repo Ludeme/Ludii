@@ -9,7 +9,6 @@ public class StringUtils {
      *
      * @param s1
      * @param s2
-     * @return
      */
     public static boolean equals(String s1, String s2) {
         return s1.equals(s2);
@@ -19,7 +18,6 @@ public class StringUtils {
      * Source: https://www.techiedelight.com/how-to-remove-a-suffix-from-a-string-in-java/
      * @param s
      * @param suffix
-     * @return
      */
     public static String removeSuffix(final String s, final String suffix)
     {
@@ -54,7 +52,6 @@ public class StringUtils {
      * @param s
      * @param offs
      * @param len
-     * @return
      */
     public static String getSubstring(String s, int offs, int len) {
         int len2;

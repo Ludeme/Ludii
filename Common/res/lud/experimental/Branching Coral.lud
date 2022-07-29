@@ -116,7 +116,7 @@
         (array #1)
         (if 
             (> 2 (count Sites in:(sites Around (value) "ConnectionDirection" if:(is Empty (to)))))
-            (remove (value))     
+            (remove (value))   
 )))
 
 (define "AllHave1Connection2Edge"
@@ -332,7 +332,7 @@
             A: Cascading largest group LOSES -- i.e. negative scores -- This excludes tied pairs; If all groups are paired, last to place. 
         B: Last player to have placed a stone.")
         (id "1660")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")

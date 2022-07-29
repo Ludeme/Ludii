@@ -12,7 +12,6 @@ public interface iTypeMatch {
      * Then it
      * @param gameDescription
      * @param possibleSymbols
-     * @return
      */
     List<Symbol> typematch(String gameDescription, NGramController NGramController, List<Symbol> possibleSymbols);
 }

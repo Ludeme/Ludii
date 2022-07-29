@@ -109,27 +109,27 @@
 
 (option "Players" <Player> args:{ <num>}
     {
-    (item "2" <2>  "The game has 2 players.")*  
-    (item "3" <3>  "The game has 3 players.") 
-    (item "4" <4>  "The game has 4 players.") 
-    (item "5" <5>  "The game has 5 players.") 
-    (item "6" <6>  "The game has 6 players.") 
-    (item "7" <7>  "The game has 7 players.") 
-    (item "8" <8>  "The game has 8 players.") 
-    (item "9" <9>  "The game has 9 players.") 
-    (item "10" <10>  "The game has 10 players.") 
-    (item "11" <11>  "The game has 11 players.") 
-    (item "12" <12>  "The game has 12 players.") 
-    (item "13" <13>  "The game has 13 players.") 
-    (item "14" <14>  "The game has 14 players.") 
-    (item "15" <15>  "The game has 15 players.") 
-    (item "16" <16>  "The game has 16 players.")  
+    (item "2" <2> "The game has 2 players.")* 
+    (item "3" <3> "The game has 3 players.") 
+    (item "4" <4> "The game has 4 players.") 
+    (item "5" <5> "The game has 5 players.") 
+    (item "6" <6> "The game has 6 players.") 
+    (item "7" <7> "The game has 7 players.") 
+    (item "8" <8> "The game has 8 players.") 
+    (item "9" <9> "The game has 9 players.") 
+    (item "10" <10> "The game has 10 players.") 
+    (item "11" <11> "The game has 11 players.") 
+    (item "12" <12> "The game has 12 players.") 
+    (item "13" <13> "The game has 13 players.") 
+    (item "14" <14> "The game has 14 players.") 
+    (item "15" <15> "The game has 15 players.") 
+    (item "16" <16> "The game has 16 players.") 
 })
 
 (option "Play Rules" <Play> args:{ <capture>}
     {
-    (item "Capture"  <("HittingCapture" (value Piece at:(to)))> "Captures are possible.")*  
-    (item "No Capture" <>  "No Capture.") 
+    (item "Capture" <("HittingCapture" (value Piece at:(to)))> "Captures are possible.")* 
+    (item "No Capture" <> "No Capture.") 
 })
 
 //------------------------------------------------------------------------------
@@ -175,7 +175,7 @@
         (useFor "Ruleset/Captureless (Observed)" (id "832"))
         (source "Culin 1898: 763-765; 1907: 191; Murray 1951: 190-192.")
         (id "830")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/reach")
         (credit "Eric Piette")
         (origin "This game was played in New Mexico, around 1891.")

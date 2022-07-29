@@ -36,7 +36,7 @@ import main.grammar.ebnf.EBNF;
 
 /**
  * Ludii class grammar generator.
- * 
+ *
  * @author cambolbro
  */
 public class Grammar
@@ -46,10 +46,10 @@ public class Grammar
 
 	/** Hash map for accessing symbols directly by name (might be multiples). */
 	private final Map<String, List<Symbol>> symbolsByName = new HashMap<String, List<Symbol>>();
-	
+
 	/** Hash map for identifying symbols by partial keyword (most will have multiples). */
-	private final Map<String, List<Symbol>> symbolsByPartialKeyword = new HashMap<String, List<Symbol>>();	
-	
+	private final Map<String, List<Symbol>> symbolsByPartialKeyword = new HashMap<String, List<Symbol>>();
+
 	/** List of rules. */
 	private final List<GrammarRule> rules = new ArrayList<GrammarRule>();
 
@@ -63,7 +63,7 @@ public class Grammar
 	private Symbol rootMetadataSymbol = null;
 
 	private EBNF ebnf = null;
-	
+
 	//-------------------------------------------------------------------------
 
 	/** Primitive symbols with notional package names. */
@@ -78,14 +78,14 @@ public class Grammar
 	public static final String[][] Predefined =
 	{
 		{ "java.lang.Integer", "game.functions.ints", 	  "java.lang", "int"     },
-		{ "java.lang.Boolean", "game.functions.booleans", "java.lang", "boolean" }, 
-		{ "java.lang.Float",   "game.functions.floats",   "java.lang", "float"   }, 
+		{ "java.lang.Boolean", "game.functions.booleans", "java.lang", "boolean" },
+		{ "java.lang.Float",   "game.functions.floats",   "java.lang", "float"   },
 		{ "java.lang.String",  "game.types", 			  "java.lang", "string"  },
 	};
 
 	/** Function names and associated constants. */
 	private final String[][] Functions =
-	{ 
+	{
 		// Function name Arg replacement Listed symbols (if any)
 		{ "IntFunction", 		"int", 		  },
 		{ "IntConstant", 		"int", 		  },
@@ -112,7 +112,7 @@ public class Grammar
 
 	/** Application constants. */
 	public final static String[][] ApplicationConstants =
-	{ 
+	{
 		// Constant name, return type, notional package, value
 		{ "Off",       "int", "global", ("" + Constants.OFF) },
 		{ "End",       "int", "global", ("" + Constants.END) },
@@ -127,11 +127,11 @@ public class Grammar
 	//-------------------------------------------------------------------------
 
 	private static volatile Grammar singleton = null;
-	
+
 	//-------------------------------------------------------------------------
 
 	private Grammar()
-	{		
+	{
 		//final long startAt = System.nanoTime();
 		generate();
 		//final long endAt = System.nanoTime();
@@ -149,7 +149,7 @@ public class Grammar
 	{
 		if (singleton == null)
 		{
-			synchronized(Grammar.class) 
+			synchronized(Grammar.class)
 			{
 				if (singleton == null)
 					singleton = new Grammar();
@@ -168,7 +168,7 @@ public class Grammar
 	{
 		return symbolsByName.get(name);
 	}
-	
+
 //	/**
 //	 * @return Map of symbols by partial keyword.
 //	 */
@@ -176,7 +176,7 @@ public class Grammar
 //	{
 //		return symbolsByPartialKeyword;
 //	}
-	
+
 	/**
 	 * @return The list of the symbols.
 	 */
@@ -186,38 +186,38 @@ public class Grammar
 	}
 
 	//-------------------------------------------------------------------------
-	
+
 	/**
 	 * Note: This looks like a getter but also may do some processing.
-	 * 
+	 *
 	 * @return The EBNF.
 	 */
 	public EBNF ebnf()
 	{
 		if (ebnf == null)
 			ebnf = new EBNF(grammar().toString());
-		
+
 		//findEBNFClasses(ebnf);
-		
+
 		return ebnf;
 	}
-	
+
 	//-------------------------------------------------------------------------
 
 //	/**
-//	 * Do here in Grammar rather than EBNF, so EBNF doesn't depend on Grammar. 
+//	 * Do here in Grammar rather than EBNF, so EBNF doesn't depend on Grammar.
 //	 */
 //	public void findEBNFClasses()
 //	{
 //		for (final EBNFRule rule : Grammar.grammar().ebnf().rules().values())
-//		{	
+//		{
 //			System.out.println("EBNF rule: " + rule);
 //			//final Class<?> cls = null;
 //			// ...
 //			//rule.setClass(cls);
 //		}
 //	}
-	
+
 	//-------------------------------------------------------------------------
 
 	/**
@@ -252,10 +252,10 @@ public class Grammar
 		symbols.clear();
 		getRules().clear();
 		packages.clear();
-				
-		createSymbols();	
+
+		createSymbols();
 		disambiguateSymbols();
-		
+
 		createRules();
 		addReturnTypeClauses();
 		addApplicationConstantsToRule();
@@ -268,21 +268,21 @@ public class Grammar
 		handleTrackSteps();
 		linkToPackages();
 		instantiateSingleEnums();
-		
+
 		visitSymbols(rootGameSymbol);
 		visitSymbols(rootMetadataSymbol);
-		
+
 		setDisplayOrder(rootGameSymbol);
 		removeRedundantFunctionNames();
 		createSymbolMap();
 		alphabetiseRuleClauses();
 		removeDuplicateClauses();
 		filterOutPrimitiveWrappers();
-		
+
 		setUsedInGrammar();
 		setUsedInDescription();
 		setUsedInMetadata();
-		
+
 		setLudemeTypes();
 		setAtomicLudemes();
 		findAncestors();
@@ -293,7 +293,7 @@ public class Grammar
 		{
 			System.out.println(symbolDetails());
 		}
-		
+
 //		System.out.println("=================\nPackages:");
 //		for (Package pack : packages)
 //			System.out.println(pack.path());
@@ -306,14 +306,14 @@ public class Grammar
 		int numConstants  = 0;
 		int numPredefined = 0;
 		int numPrimitive  = 0;
-		
+
 		for (final Symbol symbol : symbols)
-		{	
+		{
 			if (symbol.usedInDescription())
 				numGrammar++;
 			if (symbol.usedInMetadata())
 				numMetadata++;
-			
+
 			if (symbol.isClass())
 				numClasses++;
 			if (symbol.ludemeType() == LudemeType.Constant)
@@ -323,23 +323,23 @@ public class Grammar
 			if (symbol.ludemeType() == LudemeType.Primitive)
 				numPrimitive++;
 		}
-		
+
 		if (debug)
 		{
 			System.out.println
 			(
-				symbols.size() + " symbols: " + numClasses + " classes, " + 
+				symbols.size() + " symbols: " + numClasses + " classes, " +
 				numConstants + " constants, " + numPredefined + " predefined, " + numPrimitive + " primitives."
 			);
-			System.out.println(getRules().size() + " rules, " + numGrammar + " used in grammar, " + 
+			System.out.println(getRules().size() + " rules, " + numGrammar + " used in grammar, " +
 								numMetadata + " used in metadata.");
 		}
-			
+
 		if (debug)
 		{
 			// Check ludemes used
 			System.out.println("Ludemes used:");
-			
+
 			final List<LudemeInfo> ludemesUsed = ludemesUsed();
 			for (final LudemeInfo li : ludemesUsed)
 				System.out.println(li.symbol().token() + " (" + li.symbol().name() + ") : " + li.symbol().cls().getName());
@@ -352,9 +352,9 @@ public class Grammar
 	 * Create all symbols in the grammar.
 	 */
 	void createSymbols()
-	{		
+	{
 		Symbol symbolInt = null;
-		
+
 		// Create Primitive symbols
 		for (int pid = 0; pid < Primitives.length; pid++)
 		{
@@ -365,15 +365,15 @@ public class Grammar
 				cls = float.class;
 			else if (Primitives[pid][0].equals("boolean"))
 				cls = boolean.class;
-			
+
 			final Symbol symbol = new Symbol(LudemeType.Primitive, Primitives[pid][0], null, Primitives[pid][1], cls);
 			symbol.setReturnType(symbol);  // returns itself
 			symbols.add(symbol);
-			
+
 			if (Primitives[pid][0].equals("int"))
 				symbolInt = symbol;
 		}
-		
+
 		// Create Predefined symbols
 		for (int pid = 0; pid < Predefined.length; pid++)
 		{
@@ -387,15 +387,15 @@ public class Grammar
 			}
 			final Symbol symbol = new Symbol
 								  (
-										LudemeType.Predefined, Predefined[pid][0], null, 
+										LudemeType.Predefined, Predefined[pid][0], null,
 										Predefined[pid][1], cls
-								  );																									
+								  );
 			symbol.setToken(Predefined[pid][3]);
 			symbol.setGrammarLabel(Predefined[pid][3]);
 			symbol.setReturnType(symbol);  // returns itself
-			symbols.add(symbol);			
+			symbols.add(symbol);
 		}
-		
+
 		// Create symbols for application constants
 		for (int cs = 0; cs < ApplicationConstants.length; cs++)
 		{
@@ -405,10 +405,10 @@ public class Grammar
 			final Class<?> cls = int.class;
 			final Symbol symbolC = new Symbol
 								   (
-										LudemeType.Constant, ApplicationConstants[cs][0], 
+										LudemeType.Constant, ApplicationConstants[cs][0],
 										null, ApplicationConstants[cs][2], cls
 								   );
-			symbolC.setReturnType(symbolInt);		
+			symbolC.setReturnType(symbolInt);
 			symbols.add(symbolC);
 		}
 
@@ -426,12 +426,12 @@ public class Grammar
 //			//if (symbol.hasAlias())
 //			if (!symbol.name().equalsIgnoreCase(symbol.token()))
 //				symbol.setUsedInGrammar(true);  // is probably an alias or remapped form something else
-		
+
 //		// Ensure that functions are not used in grammar
 //		for (final Symbol symbol : symbols)
 //			if (symbol.name().contains("Function"))
 //				System.out.println("Symbol function found: " + symbol.info());
-		
+
 		// Set root symbols
 		rootGameSymbol = null;
 		rootMetadataSymbol = null;
@@ -440,11 +440,11 @@ public class Grammar
 		{
 			if (symbol.path().equals("game.Game"))
 				rootGameSymbol = symbol;
-			
+
 			if (symbol.path().equals("metadata.Metadata"))
 				rootMetadataSymbol = symbol;
 		}
-		
+
 		if (rootGameSymbol == null || rootMetadataSymbol == null)
 			throw new RuntimeException("Cannot find game.Game or metadata.Metadata.");
 	}
@@ -453,7 +453,7 @@ public class Grammar
 
 	/**
 	 * Traverse files in library to find symbols.
-	 * 
+	 *
 	 * @param rootPackageName The root package name.
 	 */
 	public void findSymbolsFromClasses(final String rootPackageName)
@@ -462,12 +462,12 @@ public class Grammar
 		try
 		{
 			clsRoot = Class.forName(rootPackageName);
-		} 
+		}
 		catch (final ClassNotFoundException e)
 		{
 			e.printStackTrace();
 		}
-		
+
 		final List<Class<?>> classes = ClassEnumerator.getClassesForPackage(clsRoot.getPackage());
 
 		for (final Class<?> cls : classes)
@@ -477,7 +477,7 @@ public class Grammar
 
 			if (cls.getName().contains("package-info"))
 				continue;  // placeholder file for documentation
-			
+
 			String alias = null;
 
 			// From: http://tutorials.jenkov.com/java-reflection/annotations.html
@@ -490,21 +490,21 @@ public class Grammar
 					alias = anno.alias();
 				}
 			}
-			
+
 			final String classPath = cls.getName();
-			
+
 			// **
 			// ** Assume it is Ludeme type until proven otherwise.
 			// **
-			
+
 			final Symbol symbol = new Symbol(LudemeType.Ludeme, classPath, alias, cls);
 			symbol.setReturnType(symbol);  // returns itself (unless superceded by eval())
 			symbols.add(symbol);
-		
+
 			// Add this package name, if not already found
 			final Package pack = cls.getPackage();
 			final String packageName = pack.getName();
-	
+
 			int p;
 			for (p = 0; p < packages.size(); p++)
 				if (packages.get(p).path().equals(packageName))
@@ -523,36 +523,36 @@ public class Grammar
 			final Symbol symbolA = symbols.get(sa);
 			if (!symbolA.isClass())
 				continue;
-			
+
 			String grammarLabel = "";
-			
+
 			for (int sb = 0; sb < symbols.size(); sb++)
 			{
 				if (sa == sb)
 					continue;
-				
+
 				final Symbol symbolB = symbols.get(sb);
 				if (!symbolB.isClass())
 					continue;
-				
+
 				if (symbolA.name().equals(symbolB.name()))
 				{
 					// Classes with same name found
-					final String label = symbolA.disambiguation(symbolB);					
-			
+					final String label = symbolA.disambiguation(symbolB);
+
 					if (label == null)
 						continue;
-					
+
 					if (label.length() > grammarLabel.length())
 						grammarLabel = new String(label);
 				}
 			}
-			
+
 			if (grammarLabel != "")
 				symbolA.setGrammarLabel(grammarLabel);
 		}
 	}
-		
+
 	//-------------------------------------------------------------------------
 
 	void createSymbolMap()
@@ -575,37 +575,37 @@ public class Grammar
 				symbolsByName.put(key, list);
 			}
 		}
-		
+
 //		// Sort lists (shortest to longest)
 //		for (final List<Symbol> list : symbolsByName.values())
 //		{
 //			Collections.sort(list, new Comparator<Symbol>()
-//			{		
+//			{
 //				@Override
 //				public int compare(final Symbol sa, final Symbol sb)
 //				{
 //					final int lenA = sa.name().length();
 //					final int lenB = sb.name().length();
-//					
+//
 //					if (lenA == lenB)
 //						return sa.name().compareTo(sb.name());
-//						
+//
 //					return lenA < lenB ? -1 : 1;
 //				}
 //			});
 //		}
-		
+
 		// Create map for partial keyword matches
 		symbolsByPartialKeyword.clear();
 		for (final Symbol symbol : symbols)
 		{
 			final String fullKey = symbol.token();
-			
+
 			for (int i = 1; i < fullKey.length() + 1; i++)
 			{
 				final String key = fullKey.substring(0, i);
 //				System.out.println("key=" + key);
-				
+
 				List<Symbol> list = symbolsByPartialKeyword.get(key);
 				if (list != null)
 				{
@@ -626,7 +626,7 @@ public class Grammar
 	}
 
 	//-------------------------------------------------------------------------
-	
+
 	/**
 	 * @param className May be class name or alias.
 	 * @return Symbol list matching the specified keyword.
@@ -636,17 +636,17 @@ public class Grammar
 		final List<Symbol> list = symbolsByName.get(className);
 		if (list != null)
 			return list;  // found symbol by class name
-		
+
 		// Check for aliases
 		for (final Symbol symbol : symbols)
 			if (symbol.token().equals(className))
 				return symbolsByName.get(symbol.name());
-		
+
 		return null;  // could not find
 	}
-	
+
 	//-------------------------------------------------------------------------
-	
+
 	/**
 	 * @param partialKeyword The partial keyword.
 	 * @return Symbols matching the given partial keyword.
@@ -655,7 +655,7 @@ public class Grammar
 	{
 		return symbolsByPartialKeyword.get(partialKeyword);
 	}
-	
+
 	//-------------------------------------------------------------------------
 
 	/**
@@ -667,83 +667,83 @@ public class Grammar
 	public List<String> classPaths(final String description, final int cursorAt, final boolean usePartial)
 	{
 		final List<String> list = new ArrayList<String>();
-		
+
 		if (cursorAt <= 0 || cursorAt >= description.length())
 		{
 			System.out.println("** Grammar.classPaths(): Invalid cursor position " + cursorAt + " specified.");
 			return list;
 		}
-		
+
 		// Get partial keyword up to cursor
 		int c = cursorAt - 1;
 		char ch = description.charAt(c);
-		
+
 		if (!StringRoutines.isTokenChar(ch))
 		{
 			// Not currently on a token (or at the start of one): return nothing
 			return list;
 		}
-		
+
 		while (c > 0 && StringRoutines.isTokenChar(ch))
 		{
 			c--;
 			ch = description.charAt(c);
 		}
-						
+
 		// Get full keyword
 		int cc = cursorAt;
 		char ch2 = description.charAt(cc);
-		
+
 		while (cc < description.length() && StringRoutines.isTokenChar(ch2))
 		{
 			cc++;
 			if (cc < description.length())
 				ch2 = description.charAt(cc);
 		}
-		
+
 		if (cc >= description.length())
 		{
 			System.out.println("** Grammar.classPaths(): Couldn't find end of token from position " + cursorAt + ".");
 			return list;
 		}
-		
+
 		if (ch2 == ':')
 		{
 			// Token is a parameter name: return nothing
 			return list;
 		}
-		
+
 		String partialKeyword = description.substring(c+1, cursorAt);
 		String fullKeyword = description.substring(c+1, cc);
-		
+
 		boolean isRule = false;
-		
+
 		if (partialKeyword.charAt(0) == '<')
 		{
 			isRule = true;
 			partialKeyword = partialKeyword.substring(1);
 		}
-		
+
 		if (fullKeyword.charAt(0) == '<' && fullKeyword.charAt(fullKeyword.length() - 1) == '>')
 		{
 			isRule = true;
 			fullKeyword = fullKeyword.substring(1, fullKeyword.length() - 1);
 		}
-		
-		if 
+
+		if
 		(
-			description.charAt(c) == '<' 
-			|| 
+			description.charAt(c) == '<'
+			||
 			description.charAt(c) == '[' && description.charAt(c+1) == '<'
-			|| 
+			||
 			description.charAt(c) == '(' && description.charAt(c+1) == '<'
 		)
 			isRule = true;
-		
+
 		// Handle primitive and predefined types
 		if (fullKeyword.charAt(0) == '"')
 		{
-			// Is a string: note that quotes '"' are a valid token character 
+			// Is a string: note that quotes '"' are a valid token character
 			list.add("java.lang.String");
 			return list;
 		}
@@ -766,14 +766,14 @@ public class Grammar
 
 		// Find for matches
 		final String keyword = usePartial ? partialKeyword : fullKeyword;
-		
+
 		final List<Symbol> matches = symbolsWithPartialKeyword(keyword);
 		if (matches == null)
 		{
 			// Nothing to return
 			return list;
 		}
-		
+
 		// Filter out unwanted matches
 		if (ch == '(')
 		{
@@ -815,9 +815,9 @@ public class Grammar
 
 		return list;
 	}
-	
+
 	//-------------------------------------------------------------------------
-	
+
 	/**
 	 * @param name
 	 * @return Index of application constant with same name, else -1 if none.
@@ -872,7 +872,7 @@ public class Grammar
 				symbol.setIsAbstract(true);
 		}
 	}
-	
+
 	//-------------------------------------------------------------------------
 
 	/**
@@ -922,27 +922,27 @@ public class Grammar
 		final Symbol symbolEnum = new Symbol(LudemeType.Structural, cls.getName(), null, cls);
 		symbolEnum.setReturnType(symbolEnum);
 		newSymbols.add(symbolEnum);
-		
+
 		for (final Object enumObj : cls.getEnumConstants())
 		{
 			final String symbolName = enumObj.toString();
 			final String path = symbolEnum.path() + "." + symbolName;
-			
+
 			// Check for alias
 			String alias = null;
-			
+
 			// From: https://clevercoder.net/2016/12/12/getting-annotation-value-enum-constant/
 			Field declaredField = null;
-			try 
-			{ 
-				declaredField = cls.getDeclaredField(((Enum<?>)enumObj).name());	
-			} 
-			catch (final NoSuchFieldException e) 
-			{ 
-				e.printStackTrace(); 
+			try
+			{
+				declaredField = cls.getDeclaredField(((Enum<?>)enumObj).name());
 			}
-          
-			if (declaredField != null) 
+			catch (final NoSuchFieldException e)
+			{
+				e.printStackTrace();
+			}
+
+			if (declaredField != null)
 			{
 				final Annotation[] annotations = declaredField.getAnnotations();
 				for (final Annotation annotation : annotations)
@@ -952,10 +952,10 @@ public class Grammar
 						alias = anno.alias();
 					}
 			}
-			
+
 			final Symbol symbolValue =  new Symbol
 										(
-											LudemeType.Constant, path, alias, 
+											LudemeType.Constant, path, alias,
 											symbolEnum.notionalLocation(), cls
 										);
 			symbolValue.setReturnType(symbolEnum); // link value to its enum type
@@ -983,7 +983,7 @@ public class Grammar
 
 			// Handle aliases here as well
 			String alias = null;
-	
+
 			// From: http://tutorials.jenkov.com/java-reflection/annotations.html
 			final Annotation[] classAnnotations = cls.getAnnotations();
 			for (final Annotation annotation : classAnnotations)
@@ -994,7 +994,7 @@ public class Grammar
 					alias = anno.alias();
 				}
 			}
-			
+
 			// Check for run() method
 			final Method[] methods = cls.getDeclaredMethods();
 			for (final Method method : methods)
@@ -1073,7 +1073,7 @@ public class Grammar
 				final Symbol lhs = symbol.returnType();
 				final GrammarRule rule = getRule(lhs);
 				final Clause clause = new Clause(symbol);
-				
+
 				rule.addToRHS(clause);
 			}
 			else
@@ -1091,20 +1091,20 @@ public class Grammar
 				else
 				{
 					// Add non-constructor clause
-					final Clause clause = new Clause(symbol);					
-					if 
+					final Clause clause = new Clause(symbol);
+					if
 					(
 						!rule.containsClause(clause)
-						&& 
+						&&
 						(
-							symbol.ludemeType() == LudemeType.Primitive 
-							|| 
+							symbol.ludemeType() == LudemeType.Primitive
+							||
 							symbol.ludemeType() == LudemeType.Predefined
-							|| 
+							||
 							!lhs.path().equals(symbol.path())
 						)
 						&&  // avoid repetition of LHS collections on RHS
-						!(lhs.matches(symbol) && lhs.nesting() > 0) 
+						!(lhs.matches(symbol) && lhs.nesting() > 0)
 					)
 					{
 						rule.addToRHS(clause);
@@ -1165,7 +1165,7 @@ public class Grammar
 
 	/**
 	 * Expand constructors for this concrete base class.
-	 * 
+	 *
 	 * @param rule
 	 * @param symbol
 	 */
@@ -1192,9 +1192,9 @@ public class Grammar
 			}
 		}
 
-		// Get list of either constructors or construct() methods 
+		// Get list of either constructors or construct() methods
 		final List<Executable> ctors = new ArrayList<Executable>();
-		
+
 		// Get list of constructors
 		ctors.addAll(Arrays.asList(cls.getConstructors()));
 
@@ -1202,12 +1202,12 @@ public class Grammar
 		final Method[] methods = cls.getDeclaredMethods();
 		for (final Method method : methods)
 			if (method.getName().equals("construct") && Modifier.isStatic(method.getModifiers()))
-				ctors.add(method);	
+				ctors.add(method);
 
 		for (final Executable ctor : ctors)
 		{
 			final List<ClauseArg> constructorArgs = new ArrayList<ClauseArg>();
-			
+
 			final Annotation[] ctorAnnotations = ctor.getAnnotations();
 			final Annotation[][] annotations = ctor.getParameterAnnotations();
 			final Type[] types = ctor.getGenericParameterTypes();
@@ -1224,7 +1224,7 @@ public class Grammar
 
 			int prevOrType  = 0;  // 'or' type of previous item
 			int prevAndType = 0;  // 'and' type of previous item
-				
+
 			int orGroup  = 0;
 			int andGroup = 0;
 
@@ -1232,49 +1232,49 @@ public class Grammar
 			{
 				final Type type = types[n];
 				final String typeName = type.getTypeName();
-	
+
 				// Args maintain own records of List<> and array[] nesting,
 				// so find base symbol without collections.
-				
+
 				// **
 				// ** Assume it is Ludeme type unless proven otherwise.
 				// **
-				
+
 				final Symbol temp = new Symbol(LudemeType.Ludeme, typeName, alias, cls);  //null);
 				temp.setNesting(0);
-				
+
 				final Symbol symbolP = findSymbolMatch(temp);
 				if (symbolP == null)
 				{
 					//System.out.println("- No matching symbolP found for symbol: " + symbol.name());
 					continue;
 				}
-				
+
 				// Check for parameter name
-				String label = (n < parameters.length && parameters[n].isNamePresent()) 
+				String label = (n < parameters.length && parameters[n].isNamePresent())
 								? parameters[n].getName()
 								: null;
 
 				// Check for annotations
 				boolean optional = false;
 				boolean isNamed  = false;
-				
+
 				int orType  = 0;
 				int andType = 0;
 
 				for (int a = 0; a < annotations[n].length; a++)
 				{
 					final Annotation ann = annotations[n][a];
-					
+
 					if (ann.annotationType().getName().equals("annotations.Opt"))
 						optional = true;
 
 					if (ann.annotationType().getName().equals("annotations.Name"))
 						isNamed = true;
-										
+
 					if (ann.annotationType().getName().equals("annotations.Or"))
 						orType = 1;
-					
+
 					if (ann.annotationType().getName().equals("annotations.Or2"))
 					{
 						if (orType != 0)
@@ -1284,7 +1284,7 @@ public class Grammar
 
 					if (ann.annotationType().getName().equals("annotations.And"))
 						andType = 1;
-					
+
 					if (ann.annotationType().getName().equals("annotations.And2"))
 					{
 						if (andType != 0)
@@ -1292,9 +1292,9 @@ public class Grammar
 						andType = 2;
 					}
 				}
-				
-				final String actualParameterName = label;
-				
+
+				final String actualParameterName = (label == null) ? null : new String(label);
+
 				if (!isNamed)
 					label = null;
 
@@ -1303,11 +1303,11 @@ public class Grammar
 
 				if (andType != 0 && andType != prevAndType)
 					andGroup++;  // new consecutive 'and' group
-				
+
 				final ClauseArg arg = 	new ClauseArg
 									  	(
-									  		symbolP, actualParameterName, label, optional, 
-									  		(orType  == 0 ? 0 : orGroup), 
+									  		symbolP, actualParameterName, label, optional,
+									  		(orType  == 0 ? 0 : orGroup),
 									  		(andType == 0 ? 0 : andGroup)
 									  	);
 
@@ -1319,11 +1319,11 @@ public class Grammar
 					arg.setNesting(nesting);
 
 				constructorArgs.add(arg);
-				
+
 				prevOrType  = orType;
 				prevAndType = andType;
 			}
-				
+
 			final Clause clause = new Clause(symbol, constructorArgs, isHidden);
 			rule.addToRHS(clause);
 		}
@@ -1355,7 +1355,7 @@ public class Grammar
 
 			if (symbol.hidden())
 				continue;
-			
+
 			final Class<?> cls = symbol.cls();
 			if (cls == null)
 				continue;
@@ -1391,13 +1391,13 @@ public class Grammar
 //			final boolean isAdd = symbol.cls().getName().equals("game.functions.graph.operators.Add");
 //			if (isAdd)
 //				System.out.println("\n" + symbol.cls().getName());
-			
+
 			if (!symbol.isClass() || symbol.matches(symbol.returnType()))
 				continue;  // not overridden
 
 			if (symbol.hidden())
 				continue;
-			
+
 			final GrammarRule rule = findRule(symbol.returnType());
 			if (rule == null)
 				continue;
@@ -1413,7 +1413,7 @@ public class Grammar
 	}
 
 	//-------------------------------------------------------------------------
-	
+
 	void addApplicationConstantsToRule()
 	{
 		// Find <int> symbol and rule
@@ -1430,7 +1430,7 @@ public class Grammar
 		final GrammarRule ruleInt = findRule(symbolInt);
 		if (ruleInt == null)
 			throw new RuntimeException("Failed to find <int> rule.");
-		
+
 		// Find each constant symbol and add to <int> rule
 		for (int cs = 0; cs < ApplicationConstants.length; cs++)
 			for (final Symbol symbol : symbols)
@@ -1440,7 +1440,7 @@ public class Grammar
 					break;
 				}
 	}
-	
+
 	//-------------------------------------------------------------------------
 
 	/**
@@ -1456,13 +1456,13 @@ public class Grammar
 		for (final GrammarRule rule : getRules())
 		{
 			final PackageInfo pack = rule.lhs().pack();
-			
+
 			// Hack to stop duplicate rules showing for primitives.
 			//
 			// TODO: Stop out why these redundant rules are being added in the first place.
 			// CBB:  Does not affect operation, not urgent, fix when convenient.
 			//
-			if 
+			if
 			(
 				(
 					rule.lhs().grammarLabel().equals("int")
@@ -1475,7 +1475,7 @@ public class Grammar
 				rule.rhs().size() == 1
 			)
 				continue;
-			
+
 			if (pack != null)
 				pack.add(rule);
 		}
@@ -1507,17 +1507,17 @@ public class Grammar
 	static void prioritisePackageClass(final PackageInfo pack)
 	{
 		//final List<GrammarRule> rulesP = pack.rules();
-		
+
 		// First pass: Promote partial match (e.g. "player")
 		final List<GrammarRule> promote = new ArrayList<GrammarRule>();
 		for (int r = pack.rules().size()-1; r >= 0; r--)
 		{
 			final GrammarRule rule = pack.rules().get(r);
 
-			if 
+			if
 			(
-				pack.path().contains(rule.lhs().grammarLabel()) 
-				&& 
+				pack.path().contains(rule.lhs().grammarLabel())
+				&&
 				rule.lhs().grammarLabel().length() >= 3  // avoid trivial matches such as "le" in "boolean"
 			)
 			{
@@ -1529,10 +1529,10 @@ public class Grammar
 //				System.out.println("Promoting rule " + rule.lhs().name() + " (A).");
 			}
 		}
-		
+
 		for (final GrammarRule rule : promote)
 			pack.add(0, rule);
-		
+
 		// Second pass: Promote exact match (e.g. "players")
 		promote.clear();
 		for (int r = pack.rules().size()-1; r >= 0; r--)
@@ -1549,7 +1549,7 @@ public class Grammar
 //				System.out.println("Promoting rule " + rule.lhs().name() + " (B).");
 			}
 		}
-		
+
 		for (final GrammarRule rule : promote)
 			pack.add(0, rule);
 	}
@@ -1559,7 +1559,7 @@ public class Grammar
 	/**
 	 * Prioritise rule order within packages so that superclasses come before
 	 * subclasses.
-	 * 
+	 *
 	 * @param pack
 	 */
 	static void prioritiseSuperClasses(final PackageInfo pack)
@@ -1592,7 +1592,7 @@ public class Grammar
 			}
 		}
 	}
-	
+
 	//-------------------------------------------------------------------------
 
 	void linkDirectionsRules()
@@ -1604,32 +1604,32 @@ public class Grammar
 
 		final GrammarRule ruleDirectionFacing = findRule(symbolDirectionFacing);
 
-		final Symbol symbolAbsolute = findSymbolByPath("game.util.directions.AbsoluteDirection"); 
+		final Symbol symbolAbsolute = findSymbolByPath("game.util.directions.AbsoluteDirection");
 		//symbolAbsolute.setUsedInDescription(true);
 		symbolAbsolute.setUsedInGrammar(true);
-		
-		final Symbol symbolRelative = findSymbolByPath("game.util.directions.RelativeDirection"); 
+
+		final Symbol symbolRelative = findSymbolByPath("game.util.directions.RelativeDirection");
 		//symbolRelative.setUsedInDescription(true);
 		symbolRelative.setUsedInGrammar(true);
-		
+
 		final Symbol symbolDirections = findSymbolByPath("game.functions.directions.Directions");
 		symbolDirections.setUsedInDescription(true);
 		symbolDirections.setUsedInGrammar(true);
 
-		final Symbol symbolIf = findSymbolByPath("game.functions.directions.If"); 
+		final Symbol symbolIf = findSymbolByPath("game.functions.directions.If");
 		symbolIf.setUsedInDescription(true);
 		symbolIf.setUsedInGrammar(true);
-				
+
 		ruleDirectionFacing.addToRHS(new Clause(symbolAbsolute));
 		ruleDirectionFacing.addToRHS(new Clause(symbolRelative));
 		ruleDirectionFacing.addToRHS(new Clause(symbolDirections));
 		ruleDirectionFacing.addToRHS(new Clause(symbolIf));
-		
+
 		// Add clauses for <direction>
 		final Symbol symbolDirection = findSymbolByPath("game.util.directions.Direction");
 		//symbolDirection.setUsedInDescription(true);
 		symbolDirection.setUsedInGrammar(true);
-	
+
 		final GrammarRule ruleDirection = findRule(symbolDirection);
 
 		ruleDirection.addToRHS(new Clause(symbolAbsolute));
@@ -1637,23 +1637,23 @@ public class Grammar
 		ruleDirection.addToRHS(new Clause(symbolDirections));
 		ruleDirection.addToRHS(new Clause(symbolIf));
 	}
-	
+
 	//-------------------------------------------------------------------------
 
 	void linkRegionRules()
 	{
 		final Symbol symbolRegion = findSymbolByPath("game.util.equipment.Region");
 		final GrammarRule ruleRegion = findRule(symbolRegion);
-		
+
 		final Symbol symbolSites = findSymbolByPath("game.functions.region.sites.Sites");
 		final GrammarRule ruleSites = findRule(symbolSites);
-		
+
 		for (final Clause clause : ruleRegion.rhs())
 			ruleSites.addToRHS(clause);
-		
+
 		symbolRegion.setUsedInDescription(false);
 		symbolSites.setUsedInDescription(true);
-		
+
 		// Remove <equipment.region> rule
 		for (int r = getRules().size() - 1; r >= 0; r--)
 		{
@@ -1662,7 +1662,7 @@ public class Grammar
 				getRules().remove(r);
 		}
 	}
-	
+
 	//-------------------------------------------------------------------------
 
 	void handleDimFunctions()
@@ -1670,9 +1670,9 @@ public class Grammar
 		// Find <dim> symbol and rule
 		final Symbol symbolDim = findSymbolByPath("game.functions.dim.BaseDimFunction");
 		symbolDim.setUsedInDescription(true);
-		
+
 		final GrammarRule ruleDim = findRule(symbolDim);
-		
+
 		// Find <int> symbol
 		Symbol symbolInt = null;
 		for (final Symbol symbol : symbols)
@@ -1697,26 +1697,26 @@ public class Grammar
 		symbolRange.setUsedInGrammar(true);
 		symbolRange.setUsedInDescription(true);
 	}
-	
+
 	/**
-	 * Remove class name from track step declarations. 
+	 * Remove class name from track step declarations.
 	 */
 	void handleTrackSteps()
 	{
 //		final Symbol symbolTrackStep = findSymbolByPath("game.util.equipment.TrackStep");
 //		final GrammarRule ruleTrackStep = findRule(symbolTrackStep);
-//		
+//
 //		final Symbol symbolDim  = findSymbolByPath("game.functions.dim.BaseDimFunction");
 //		//final GrammarRule ruleDim = findRule(symbolDim);
-//		
-//		final Symbol symbolDirn = findSymbolByPath("game.util.directions.Compass"); 
+//
+//		final Symbol symbolDirn = findSymbolByPath("game.util.directions.Compass");
 //		//final GrammarRule ruleDirn = findRule(symbolDirn);
-//		
+//
 //		final Symbol symbolStep = findSymbolByPath("game.types.board.TrackStepType");
 //		//final GrammarRule ruleStep = findRule(symbolStep);
-//		
+//
 //		ruleTrackStep.clearRHS();
-//		
+//
 //		ruleTrackStep.addToRHS(new Clause(symbolDim));
 //		ruleTrackStep.addToRHS(new Clause(symbolDirn));
 //		ruleTrackStep.addToRHS(new Clause(symbolStep));
@@ -1736,7 +1736,7 @@ public class Grammar
 		}
 
 		final boolean isGame = rootSymbol.name().contains("Game");
-		
+
 		// Don't initialise values, as <directions> would not be picked up
 //		// Prepare export queue, depth first from root
 //		for (final Symbol symbol : symbols)
@@ -1766,7 +1766,7 @@ public class Grammar
 			symbol.setDepth(depth);
 		else if (depth < symbol.depth())
 			symbol.setDepth(depth);  // overwrite existing depth with a shallower one
-		
+
 		if (symbol.visited())
 			return;
 
@@ -1779,9 +1779,9 @@ public class Grammar
 		{
 			symbol.setUsedInMetadata(true);
 		}
-		
+
 		symbol.setVisited(true);
-		
+
 		if (symbol.ludemeType() == LudemeType.Constant)
 			return;
 
@@ -1794,7 +1794,7 @@ public class Grammar
 		// Don't add steps for abstract or hidden classes, which do not appear in the grammar
 		final boolean isVisible = !symbol.isAbstract() && !symbol.hidden();
 		final int nextDepth = depth + (isVisible ? 1 : 0);
-		
+
 		// Recurse to embedded symbols in RHS expression
 		for (final Clause clause : symbol.rule().rhs())
 		{
@@ -1839,15 +1839,15 @@ public class Grammar
 		// Prepare export queue, depth first from root
 		for (final Symbol symbol : symbols)
 			symbol.setVisited(false);
-			
+
 		setPackageOrderRecurse(rootSymbol);
 
 		// Move utility packages to end of list
 		final String[] packsToMove =
-		{ 
-			"game.functions", 
-			"game.util", 
-			"game.types", 
+		{
+			"game.functions",
+			"game.util",
+			"game.types",
 		};
 		for (int pm = 0; pm < packsToMove.length; pm++)
 			for (int p = packageOrder.size()-1; p >= 0; p--)
@@ -1960,15 +1960,15 @@ public class Grammar
 		for (final GrammarRule rule : getRules())
 			rule.alphabetiseClauses();
 	}
-	
+
 	//-------------------------------------------------------------------------
 
 	/**
-	 * Removes duplicate clauses from rules, 
+	 * Removes duplicate clauses from rules,
 	 * For example, <int> ::= Off | Off
-	 * 
+	 *
 	 * BE CAREFUL: Do not eliminate multiple constructors!
-	 * 
+	 *
 	 */
 	void removeDuplicateClauses()
 	{
@@ -1979,7 +1979,7 @@ public class Grammar
 				final Clause clauseA = rule.rhs().get(ca);
 				if (clauseA.isConstructor())
 					continue;  // don't remove
-				
+
 				boolean doRemove = false;
 				for (int cb = ca - 1; cb >= 0; cb--)
 				{
@@ -2006,28 +2006,28 @@ public class Grammar
 		// Filter out trivial rules that map primitive filters to themselves
 		for (final GrammarRule rule : getRules())
 		{
-			if 
+			if
 			(
-				rule.lhs().grammarLabel().equals("Integer") 
-				&& 
+				rule.lhs().grammarLabel().equals("Integer")
+				&&
 				rule.rhs().size() == 1
 				&&
 				rule.rhs().get(0).symbol().grammarLabel().equals("Integer")
 				||
-				rule.lhs().grammarLabel().equals("Float") 
-				&& 
+				rule.lhs().grammarLabel().equals("Float")
+				&&
 				rule.rhs().size() == 1
 				&&
 				rule.rhs().get(0).symbol().grammarLabel().equals("Float")
 				||
-				rule.lhs().grammarLabel().equals("Boolean") 
-				&& 
+				rule.lhs().grammarLabel().equals("Boolean")
+				&&
 				rule.rhs().size() == 1
 				&&
 				rule.rhs().get(0).symbol().grammarLabel().equals("Boolean")
 				||
-				rule.lhs().grammarLabel().equals("String") 
-				&& 
+				rule.lhs().grammarLabel().equals("String")
+				&&
 				rule.rhs().size() == 1
 				&&
 				rule.rhs().get(0).symbol().grammarLabel().equals("String")
@@ -2038,12 +2038,12 @@ public class Grammar
 			}
 		}
 
-		// Replace primitive wrapper symbols on RHS with their primitive equivalents 
+		// Replace primitive wrapper symbols on RHS with their primitive equivalents
 		Symbol symbolInt   = null;
 		Symbol symbolFloat = null;
 		Symbol symbolBoolean = null;
 		Symbol symbolString = null;
-		
+
 //		Symbol symbolTrue  = null;
 //		Symbol symbolFalse = null;
 
@@ -2062,7 +2062,7 @@ public class Grammar
 //			if (symbol.grammarLabel().equals("false"))
 //				symbolFalse = symbol;
 		}
-		
+
 		for (final GrammarRule rule : getRules())
 			for (final Clause clause : rule.rhs())
 				if (clause != null && clause.args() != null)
@@ -2077,7 +2077,7 @@ public class Grammar
 						if (arg.symbol().grammarLabel().equals("String"))
 							arg.setSymbol(symbolString);
 					}
-		
+
 //		// Add 'true' and 'false' constants to <boolean> rule
 //		for (final GrammarRule rule : rules)
 //			if (rule.lhs().grammarLabel().equals("boolean"))
@@ -2085,15 +2085,15 @@ public class Grammar
 //				rule.add(new Clause(symbolTrue));
 //				rule.add(new Clause(symbolFalse));
 //			}
-		
+
 //		// Remove rule for primitive wrappers
 //		for (int r = rules.size() - 1; r >= 0; r--)
 //		{
 //			final GrammarRule rule = rules.get(r);
-//			
+//
 //			//System.out.println("Rule for: " + rule.lhs().cls().getName());
-//			
-//			if 
+//
+//			if
 //			(
 //				rule.lhs().cls().getName().equals("java.lang.Integer")
 //				||
@@ -2130,7 +2130,7 @@ public class Grammar
 					for (int a = clause.args().size() - 1; a >= 0; a--)
 					{
 						final ClauseArg arg = clause.args().get(a);
-						final Symbol symbol = arg.symbol();			
+						final Symbol symbol = arg.symbol();
 						if (symbol.cls() != null && symbol.cls().isEnum())
 						{
 							final GrammarRule ruleS = symbol.rule();
@@ -2141,8 +2141,8 @@ public class Grammar
 								enumValue.symbol().setUsedInGrammar(true);
 							}
 						}
-					}		
-		
+					}
+
 		// Remove enum rules with a single value (should have all been picked up by previous test)
 		for (int r = getRules().size() - 1; r >= 0; r--)
 		{
@@ -2153,7 +2153,7 @@ public class Grammar
 	}
 
 	//-------------------------------------------------------------------------
-	
+
 	/**
 	 * @return Returns a string containing the path abbreviation for each ludeme and the name of the ludeme.
 	 */
@@ -2171,8 +2171,8 @@ public class Grammar
 			str += "\n" + strAbrev + " : " + s.toString().replace("<", "").replace(">", "");
 		}
 		return str;
-	}	
-	
+	}
+
 	//-------------------------------------------------------------------------
 
 	/**
@@ -2209,7 +2209,7 @@ public class Grammar
 		{
 			String name = getFunctions()[f][0];
 			name = name.substring(0, 1).toLowerCase() + name.substring(1);  // lowerCamelCase keyword
-		
+
 			for (final GrammarRule rule : rules)
 			{
 				String label = rule.lhs().grammarLabel();
@@ -2218,7 +2218,7 @@ public class Grammar
 					label = label.replace(name, getFunctions()[f][1]);
 					rule.lhs().setGrammarLabel(label);
 				}
-			}			
+			}
 		}
 	}
 
@@ -2232,18 +2232,18 @@ public class Grammar
 		// Start with all symbols that can occur in descriptions and metadata
 		for (final Symbol symbol : symbols)
 		{
-			if 
+			if
 			(
-				symbol.usedInDescription() 
-//				|| 
+				symbol.usedInDescription()
+//				||
 //				symbol.usedInMetadata()
 			)
 			{
 				symbol.setUsedInGrammar(true);
 				continue;
 			}
-		}	
-		
+		}
+
 		// Iteratively find rules that use them
 		boolean didUpdate = false;
 		do
@@ -2258,15 +2258,15 @@ public class Grammar
 							clause.symbol().setUsedInGrammar(true);
 							didUpdate = true;
 						}
-			}	
+			}
 		} while (didUpdate);
 	}
-	
+
 	//-------------------------------------------------------------------------
 
 	/**
 	 * Set flag for ludemes used in game descriptions.
-	 * These will have instantiations in RHS rule clauses. 
+	 * These will have instantiations in RHS rule clauses.
 	 */
 	private void setUsedInDescription()
 	{
@@ -2274,35 +2274,35 @@ public class Grammar
 			for (final Clause clause : rule.rhs())
 			{
 				final Symbol symbol = clause.symbol();
-				
+
 				if (!symbol.usedInGrammar())
 					continue;  // don't include metadata
-				
-				if 
+
+				if
 				(
 					clause.isConstructor()
 					||
 					symbol.isTerminal()
 				)
 					symbol.setUsedInDescription(true);
-				
+
 				if (clause.args() != null)
 				{
 					// Also check clause args for enum constants etc.
 					for (final ClauseArg arg : clause.args())
 					{
 						final Symbol argSymbol = arg.symbol();
-					
+
 						if (!argSymbol.usedInGrammar())
 							continue;  // don't include metadata
-						
+
 						if (argSymbol.isTerminal())
 							argSymbol.setUsedInDescription(true);
 					}
 				}
 			}
 	}
-	
+
 	//-------------------------------------------------------------------------
 
 	/**
@@ -2311,27 +2311,27 @@ public class Grammar
 	private void setUsedInMetadata()
 	{
 		for (final Symbol symbol : symbols)
-		{	
+		{
 //			if (symbol.cls() != null && MetadataItem.class.isAssignableFrom(symbol.cls()))
 //			{
 //				System.out.println("Metatada symbol path: " + symbol.path());
 //				symbol.setUsedInMetadata(true);
 //			}
-			
+
 			// Avoid dependency on Core
-			
+
 			if (symbol.path().contains("metadata"))
 				symbol.setUsedInMetadata(true);
 		}
-		
+
 		for (final GrammarRule rule : rules)
 			for (final Clause clause : rule.rhs())
 			{
 				final Symbol symbol = clause.symbol();
-				
+
 				if (!symbol.usedInMetadata())
 					continue;  // don't include grammar
-				
+
 				if (clause.args() != null)
 				{
 					// Check metadata clause args
@@ -2343,9 +2343,9 @@ public class Grammar
 				}
 			}
 	}
-	
+
 	//-------------------------------------------------------------------------
-	
+
 	/**
 	 * Set ludeme type for each symbol.
 	 */
@@ -2354,7 +2354,7 @@ public class Grammar
 		for (final Symbol symbol : symbols)
 		{
 			final Class<?> cls = symbol.cls();
-			
+
 			if (cls == null)
 			{
 				// Symbol has no class
@@ -2362,31 +2362,31 @@ public class Grammar
 				symbol.setLudemeType(null);
 				continue;
 			}
-		
+
 			if (cls.isEnum())
 			{
 				symbol.setLudemeType(LudemeType.Constant);
 			}
-			else if 
+			else if
 			(
-				cls.getSimpleName().equals("String") 
-				|| 
-				cls.getSimpleName().equals("Integer") 
-				|| 
-				cls.getSimpleName().equals("Float") 
-				|| 
+				cls.getSimpleName().equals("String")
+				||
+				cls.getSimpleName().equals("Integer")
+				||
+				cls.getSimpleName().equals("Float")
+				||
 				cls.getSimpleName().equals("Boolean")
 			)
 			{
 				symbol.setLudemeType(LudemeType.Predefined);
 			}
-			else if 
+			else if
 			(
-				cls.getSimpleName().equals("int") 
-				|| 
-				cls.getSimpleName().equals("float") 
-				|| 
-				cls.getSimpleName().equals("boolean") 
+				cls.getSimpleName().equals("int")
+				||
+				cls.getSimpleName().equals("float")
+				||
+				cls.getSimpleName().equals("boolean")
 			)
 			{
 				symbol.setLudemeType(LudemeType.Primitive);
@@ -2417,20 +2417,20 @@ public class Grammar
 				}
 			}
 		}
-		
+
 		// Overwrite ludemes that appear in grammar but not descriptions as structural
 		for (final GrammarRule rule : rules)
 		{
-			final Symbol symbol = rule.lhs();			
-			if 
+			final Symbol symbol = rule.lhs();
+			if
 			(
-				(symbol.usedInGrammar() || symbol.usedInMetadata())  
-				&& 
+				(symbol.usedInGrammar() || symbol.usedInMetadata())
+				&&
 				!symbol.usedInDescription()
 			)
 				symbol.setLudemeType(LudemeType.Structural);
 		}
-	
+
 //		Class<?> clsT = null;
 //		try
 //		{
@@ -2441,7 +2441,7 @@ public class Grammar
 //		}
 //		System.out.println(clsT);
 //		System.out.println("Is enum: " + clsT.isEnum());
-		
+
 		// Check for incorrectly labelled enum types
 		for (final Symbol symbol : symbols)
 		{
@@ -2449,8 +2449,8 @@ public class Grammar
 			if (cls.isEnum() && symbol.ludemeType() == LudemeType.Constant)
 			{
 				// Is classified as an enum constant
-//				System.out.println("Enum class " + symbol.token() + " is type: " + symbol.ludemeType());		
-				
+//				System.out.println("Enum class " + symbol.token() + " is type: " + symbol.ludemeType());
+
 				// Check if is actually a constant...
 				boolean isConstant = false;
 				final Object[] constants = cls.getEnumConstants();
@@ -2461,7 +2461,7 @@ public class Grammar
 						isConstant = true;
 						break;
 					}
-				
+
 				if (!isConstant)
 				{
 					// Correct this mistakenly classified enum class
@@ -2470,12 +2470,12 @@ public class Grammar
 				}
 			}
 		}
-		
+
 		findSubludemes();
 	}
-	
+
 //	/**
-//	 * Find subludemes. 
+//	 * Find subludemes.
 //	 * These will be be classes in the subfolder of a superludeme (or below)
 //	 * that are not in the grammar or game descriptions.
 //	 */
@@ -2490,24 +2490,24 @@ public class Grammar
 //				path = path.substring(0, path.lastIndexOf('.'));
 //				supers.put(path, symbol);
 //			}
-//		
-//		// Find all ludeme classes that do not appear in grammar 
+//
+//		// Find all ludeme classes that do not appear in grammar
 //		// and are in a superludeme package (or below).
 //		for (final Symbol symbol : symbols)
 //		{
 //			if (symbol.ludemeType() != LudemeType.Ludeme)
 //				continue;  // can't be a subludeme
-//			
+//
 //			if (symbol.usedInGrammar() || symbol.usedInDescription())
 //				continue;  // can't be a subludeme
-//				
+//
 //			if (symbol.name().contains("Type"))
 //			{
 //				// is parameter type class
 //				symbol.setLudemeType(LudemeType.Structural);
-//				continue;  
+//				continue;
 //			}
-//			
+//
 //			for (final String superPath : supers.keySet())
 //				if (symbol.path().contains(superPath))
 //				{
@@ -2518,7 +2518,7 @@ public class Grammar
 //	}
 
 	/**
-	 * Find subludemes. 
+	 * Find subludemes.
 	 * These will be be classes in the subfolder of a superludeme (or below)
 	 * that are not in the grammar or game descriptions.
 	 */
@@ -2533,31 +2533,31 @@ public class Grammar
 				path = path.substring(0, path.lastIndexOf('.'));
 				supers.put(path, symbol);
 			}
-		
-		// Find all ludeme classes that do not appear in grammar 
+
+		// Find all ludeme classes that do not appear in grammar
 		// and are in a superludeme package (or below).
 		for (final Symbol symbol : symbols)
 		{
 			if (symbol.ludemeType() != LudemeType.Ludeme)
 				continue;  // can't be a subludeme
-			
+
 			if (symbol.usedInGrammar() || symbol.usedInDescription())
 				continue;  // can't be a subludeme
-				
+
 			if (symbol.name().contains("Type"))
 			{
 				// is parameter type class
 				symbol.setLudemeType(LudemeType.Structural);
-				
+
 //				if (symbol.name().equalsIgnoreCase("isLineType"))
 //					System.out.println("IsLineType subludeme found...");
-				
+
 				// Catch super ludeme parameter enum types
 				for (final String superPath : supers.keySet())
 					if (symbol.path().contains(superPath))
 						symbol.setSubLudemeOf(supers.get(superPath));
-				
-				continue;  
+
+				continue;
 			}
 
 			for (final String superPath : supers.keySet())
@@ -2568,16 +2568,16 @@ public class Grammar
 					break;
 				}
 		}
-		
+
 		// Now catch super ludeme enum parameter types
 		for (final Symbol symbol : symbols)
 		{
 			if (symbol.ludemeType() != LudemeType.Ludeme)
 				continue;  // can't be a subludeme
-							
+
 			if (!symbol.name().contains("Type"))
 				continue;  // not a super ludeme enum parameter type
-			
+
 			for (final String superPath : supers.keySet())
 				if (symbol.path().contains(superPath))
 				{
@@ -2587,9 +2587,9 @@ public class Grammar
 				}
 			}
 	}
-	
+
 	//-------------------------------------------------------------------------
-	
+
 	/**
 	 * Set ludeme type for each symbol.
 	 */
@@ -2599,39 +2599,39 @@ public class Grammar
 		// {
 		// 	   { "int",  "game.functions.ints" },
 		// };
-		//	
+		//
 		// /** Predefined symbols (known data types) with notional and actual package names, and keyword. */
 		// public static final String[][] Predefined =
 		// {
 		//	   { "java.lang.Integer", "game.functions.ints", "java.lang", "int" },
 		// };
-		//	
+		//
 		// /** Function names and associated constants. */
 		// private final String[][] Functions =
-		// { 
+		// {
 		//	   { "IntFunction", "int" },
 		//	   { "IntConstant",	"int" },
 		// };
-		//	
+		//
 		// /** Application constants. */
 		// public final static String[][] ApplicationConstants =
-		// { 
+		// {
 		// 	   { "Off", "int", "global", ("" + Constants.OFF) },
 		// };
 
-		
+
 		for (final Symbol symbol : symbols)
 		{
 			// 1. Set symbol as its own atomic symbol (unless proven otherwise)
-			symbol.setAtomicLudeme(symbol);  
-			
+			symbol.setAtomicLudeme(symbol);
+
 			// 2. Primitives already remap to correct atomic ludeme
 			// 	  Do nothing.
-			
+
 			// 3. Remap predefined types
 			if (symbol.name().equals("String"))
 				continue;  // special case
-			
+
 			boolean found = false;
 			for (int n = 0; n < Predefined.length; n++)
 				if (symbol.cls().getName().equals(Predefined[n][0]))
@@ -2639,10 +2639,10 @@ public class Grammar
 					// Is a predefined type
 //					System.out.println("Predefined type " + symbol.name() + "...");
 //					System.out.println("- return type is " + symbol.returnType());
-					
+
 					final List<Symbol> to = this.symbolsByName.get(Predefined[n][3]);
 					if (to != null && to.size() >= 1)
-					{		
+					{
 //						System.out.println(to.size( ) + " symbols found:");
 //						for (final Symbol st : to)
 //							System.out.println("-- " + st.name());
@@ -2651,7 +2651,7 @@ public class Grammar
 						found = true;
 						break;
 					}
-					
+
 					//System.out.println("- return type is " + symbol.returnType());
 				}
 			if (found)
@@ -2665,21 +2665,21 @@ public class Grammar
 					// Is a function
 //					System.out.println("Function type " + symbol.name() + "...");
 //					System.out.println("- return type is " + symbol.returnType());
-					
+
 					symbol.setAtomicLudeme(symbol.returnType());
 					found = true;
 					break;
 				}
 			if (found)
 				continue;
-			
+
 			// 5. Remap application constants
 			found = false;
 			for (int n = 0; n < ApplicationConstants.length; n++)
-				if 
+				if
 				(
-					symbol.name().equals(ApplicationConstants[n][0]) 
-					&& 
+					symbol.name().equals(ApplicationConstants[n][0])
+					&&
 					symbol.returnType().name().equals("int")
 				)
 				{
@@ -2691,12 +2691,12 @@ public class Grammar
 					for (final Symbol st : to)
 					{
 //						System.out.println("-- " + st.name() + " (" + st.cls().getName() + ")");
-						
+
 						if (!st.cls().getName().equals("int"))
 							continue;  // only match to int type
-							
+
 //						System.out.println("* Match *");
-						
+
 						symbol.setAtomicLudeme(st);
 						found = true;
 						break;
@@ -2705,10 +2705,10 @@ public class Grammar
 			if (found)
 				continue;
 		}
-	}	
-	
+	}
+
 	//-------------------------------------------------------------------------
-	
+
 	/**
 	 * @return List of ludemes used in grammar, with relevant info.
 	 */
@@ -2727,13 +2727,13 @@ public class Grammar
 		{
 //			if (symbol.path().equals("game.functions.booleans.math.Equals"))
 //				System.out.println("Equals...");
-			
+
 			if (!symbol.usedInGrammar())
 			{
 				//System.out.println("Skipping: " + symbol.token() + " (" + symbol.cls().getName() + ")");
 				continue;
 			}
-			
+
 			if (symbol.usedInMetadata() && !symbol.name().equals("String"))
 				continue;
 
@@ -2743,9 +2743,9 @@ public class Grammar
 			//symbol.usedInMetadata()
 			//||
 			//symbol.ludemeType() == LudemeType.SubLudeme
-			//|| 
+			//||
 			//IncludeInGrammar.class.isAssignableFrom(symbol.cls())
-			
+
 			// Check if symbol class has @Hide annotation
 //			boolean isHide = false;
 //			final Annotation[] annotations = symbol.cls().getAnnotations();
@@ -2759,7 +2759,7 @@ public class Grammar
 				continue;
 			}
 
-			if 
+			if
 			(
 				symbol.name().equals("Integer")
 				||
@@ -2768,17 +2768,17 @@ public class Grammar
 				symbol.name().equals("Float")
 			)
 				continue;
-			
+
 //			if (symbol.path().equals("game.functions.booleans.math.Equals"))
 //				System.out.println("B");
 
 			if (symbol.ludemeType() != LudemeType.Constant)
-			{				
+			{
 				// Check whether symbol is already present.
 				//
 				// We don't want to do this for constants, as we can
 				// legitimately have more than one constant with the
-				// same grammar label, e.g. All in RelationType, RoleType, etc. 
+				// same grammar label, e.g. All in RelationType, RoleType, etc.
 				//
 				boolean present = false;
 				for (final LudemeInfo used : ludemesUsed)
@@ -2788,28 +2788,28 @@ public class Grammar
 						present = true;
 						break;
 					}
-				
+
 				if (present)
 					continue;  // don't add duplicates, e.g. boolean/Boolean/BooleanConstant/BooleanFunction, etc.
 			}
-			
+
 //			if (symbol.path().equals("game.functions.booleans.math.Equals"))
 //				System.out.println("C");
 
 			final LudemeInfo ludeme = new LudemeInfo(symbol);
-			
+
 			// TODO: Add relevant info here: database id, JavaDoc help, etc.
-			
+
 			ludemesUsed.add(ludeme);
 		}
-		
+
 //		System.out.println("\n==================================\nLudemes used:");
 //		for (final LudemeInfo li : ludemesUsed)
 //			System.out.println(li.symbol().info());
-		
+
 		return ludemesUsed;
 	}
-	
+
 	//-------------------------------------------------------------------------
 
 //	/**
@@ -2818,16 +2818,16 @@ public class Grammar
 //	public Set<String> ludemeNamesUsed()
 //	{
 //		final Set<String> set = new HashSet<String>();
-//		
+//
 //		final List<LudemeInfo> ludemesUsed = ludemesUsed();
 //		for (final LudemeInfo ludeme : ludemesUsed)
 //			set.add(ludeme.symbol().cls().getName());
-//			
+//
 //		return set;
 //	}
-	
+
 	//-------------------------------------------------------------------------
-	
+
 	/**
 	 * Find ancestors of each symbol.
 	 */
@@ -2842,13 +2842,13 @@ public class Grammar
 				parent = parent.getSuperclass();
 				if (parent == null)
 					break;
-				
+
 				final Symbol parentSymbol = findSymbolByPath(parent.getName());
 				if (parentSymbol == null)
 					break;
-				
+
 				symbol.addAncestor(parentSymbol);
-				
+
 				//System.out.println("Adding ancestor " + parentSymbol.name() + " to " + symbol.name() + ".");
 			}
 		}
@@ -2858,18 +2858,18 @@ public class Grammar
 		for (final Symbol symbol : symbols)
 		{
 			final Symbol parentSymbol = symbol.returnType();
-			
+
 			if (parentSymbol == null)
 				continue;
-			
+
 			if (parentSymbol.path().equals(symbol.path()))
 				continue;  // symbol returns its own type
-			
+
 			// Add parent symbol and its ancestors to current symbol
 			symbol.addAncestor(parentSymbol);
 			symbol.addAncestorsFrom(parentSymbol);
 		}
-		
+
 		// Make super ludemes ancestors of their enum parameter types
 		for (final Symbol symbol : symbols)
 		{
@@ -2881,56 +2881,56 @@ public class Grammar
 				symbol.addAncestorsFrom(parentSymbol);  // do we want to include ancestors of super ludeme?
 			}
 		}
-		
+
 		// Set return type as ancestor (if not already present).
 		// Repeat to catch all ancestors of enums in super ludeme enum parameter types.
 		for (final Symbol symbol : symbols)
 		{
 			final Symbol returnSymbol = symbol.returnType();
-			
+
 			if (returnSymbol == null)
 				continue;
-			
+
 			if (returnSymbol.path().equals(symbol.path()))
 				continue;  // symbol returns its own type
-			
-			// Need to get actual symbol from the master list, 
+
+			// Need to get actual symbol from the master list,
 			// as returnType() may be a duplicate (don't know why).
-			final Symbol parentSymbol = findSymbolByPath(returnSymbol.path());  
-			
+			final Symbol parentSymbol = findSymbolByPath(returnSymbol.path());
+
 			// Add parent symbol and its ancestors to current symbol
 			symbol.addAncestor(parentSymbol);
 			symbol.addAncestorsFrom(parentSymbol);
 		}
-			
+
 //		final Symbol is = findSymbolByPath("game.functions.booleans.is.Is");
 //		final Symbol isLineType = findSymbolByPath("game.functions.booleans.is.IsLineType");
 //		final Symbol line = findSymbolByPath("game.functions.booleans.is.IsLineType.Line");
 //		System.out.println("Line return type: " + line.returnType());
-//				
+//
 //		System.out.println("Ancestors of Is: " + is.ancestors());
 //		System.out.println("Ancestors of IsLineType: " + isLineType.ancestors());
 //		System.out.println("Ancestors of Line: " + line.ancestors());
-//	
+//
 //		System.out.println("IsLineType is type: " + isLineType.ludemeType());
 //		System.out.println("IsLineType is subludeme of: " + isLineType.subLudemeOf());
-//		
+//
 //		System.out.print("Paths for Is are:");
 //		for (final Symbol symbol : symbolsByName("Is"))
 //			System.out.println(" " + symbol.path());
 //		System.out.println();
-//		
+//
 //		System.out.print("Paths for IsLineType are:");
 //		for (final Symbol symbol : symbolsByName("IsLineType"))
 //			System.out.println(" " + symbol.path());
 //		System.out.println();
-//		
+//
 //		System.out.print("Paths for Line are:");
 //		for (final Symbol symbol : symbolsByName("Line"))
 //			System.out.println(" " + symbol.path());
 //		System.out.println();
 	}
-	
+
 	//-------------------------------------------------------------------------
 
 	/**
@@ -2939,33 +2939,33 @@ public class Grammar
 	public String symbolDetails()
 	{
 		final StringBuilder sb = new StringBuilder();
-		
+
 		sb.append("\n+++++++++++++++++++ SYMBOLS ++++++++++++++++++++++\n");
 		for (final Symbol symbol : symbols)
 			sb.append(symbol.info() + "\n");
-	
+
 		sb.append("\n\n++++++++++++++++++++ RULES +++++++++++++++++++++++\n");
 		for (final GrammarRule rule : getRules())
 			sb.append
 			(
-				(rule.lhs().usedInGrammar() ? "g" : "~") + 
-				(rule.lhs().usedInDescription() ? "d" : "~") + 
-				(rule.lhs().usedInMetadata() ? "m" : "~") + 
+				(rule.lhs().usedInGrammar() ? "g" : "~") +
+				(rule.lhs().usedInDescription() ? "d" : "~") +
+				(rule.lhs().usedInMetadata() ? "m" : "~") +
 				" " + rule +
 				" [" + rule.lhs().cls().getName() + "] " +
 				"\n"
 			);
-		
+
 		FileHandling.saveStringToFile(sb.toString(), "symbol-details.txt", "");
 		return(sb.toString());
 	}
-	
+
 	//-------------------------------------------------------------------------
-	
+
 	/**
 	 * @return List of grammar rules.
 	 */
-	public List<GrammarRule> getRules() 
+	public List<GrammarRule> getRules()
 	{
 		return rules;
 	}
@@ -2973,37 +2973,37 @@ public class Grammar
 	/**
 	 * @return Function labels.
 	 */
-	public String[][] getFunctions() 
+	public String[][] getFunctions()
 	{
 		return Functions;
 	}
-	
+
 	//-------------------------------------------------------------------------
 
 	public String aliases()
 	{
 		final StringBuilder sb = new StringBuilder();
-		
+
 		for (final Symbol symbol : symbols)
 			if (symbol.hasAlias())
 				sb.append(symbol.name() + " (" + symbol.path() + ") has alias: " + symbol.token() + "\n");
-		
+
 		return sb.toString();
 	}
-	
+
 	//-------------------------------------------------------------------------
 
 	@Override
 	public String toString()
 	{
 		final StringBuilder sb = new StringBuilder();
-		
+
 		for (final PackageInfo pack : packageOrder)
 			sb.append(pack.toString());
-		
+
 		return sb.toString();
 	}
-	
+
 	//-------------------------------------------------------------------------
 
 }

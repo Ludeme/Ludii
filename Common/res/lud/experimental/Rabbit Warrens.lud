@@ -6,7 +6,7 @@
         (count Steps
             (step Orthogonal (to if:(not (= (id #1) (who at:(to))))))
             (site)
-            (difference (sites Outer) <Board:inner>)  
+            (difference (sites Outer) <Board:inner>) 
 )))
 
 (define "RawTerritoryOf"
@@ -122,11 +122,11 @@
                     (var "SitesMoverAroundFrom")
                     (count Sites in:(sites Around (last To) Orthogonal if:(is Mover (who at:(to)))))
                 )
-                (and  
+                (and 
                     (=
                         (var "SitesMoverAroundFrom")
                         (count Sites in:(sites Around (last To) Orthogonal if:(is Mover (who at:(to)))))
-                    )  
+                    ) 
                     (>
                         (count Sites in:(sites Around (last From) Orthogonal if:(is Next (who at:(to)))))
                         (count Sites in:(sites Around (last To) Orthogonal if:(is Next (who at:(to)))))
@@ -166,7 +166,7 @@
             (place "<Board:shape>1" (handSite P1 0) value:0)
             (place "<Board:shape>2" (handSite P2 0) value:0)
             (place "<Board:shape>0" (handSite P1 1) value:0) 
-            (place "<Board:shape>0" (handSite P2 1) value:0)   
+            (place "<Board:shape>0" (handSite P2 1) value:0)  
         })
         (play
             (or
@@ -274,7 +274,7 @@
             
         If the scores are the same, the last player to move, loses.")
         (id "1761")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")
@@ -302,11 +302,11 @@
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
         (region Colour (sites Outer) (colour 200 250 230 90))
-        (region Colour ("RawTerritoryOf" P1) (colour 240 180 150 90))    
-        (region Colour ("RawTerritoryOf" P2) (colour 70 0 0 90))    
+        (region Colour ("RawTerritoryOf" P1) (colour 240 180 150 90))  
+        (region Colour ("RawTerritoryOf" P2) (colour 70 0 0 90))  
         (piece Colour P1 "<Board:shape>" fillColour:(colour 240 180 150 90)) 
-        (piece Colour P2 "<Board:shape>" fillColour:(colour 70 0 0 150))    
-        (piece Colour Neutral "<Board:shape>" fillColour:(colour White) strokeColour:(colour DarkGrey))    
+        (piece Colour P2 "<Board:shape>" fillColour:(colour 70 0 0 150))  
+        (piece Colour Neutral "<Board:shape>" fillColour:(colour White) strokeColour:(colour DarkGrey))  
         (show Piece Value "<Board:shape>" Middle scale:0.70 offsetX:.25 offsetY:.25)
         }
     )

@@ -29,8 +29,8 @@
             (pair 25 27) (pair 26 28) (pair 0 12) (pair 1 13) (pair 2 14) (pair 3 15) (pair 4 16) (pair 5 17) (pair 6 18) (pair 7 19) (pair 8 20) (pair 9 21) (pair 10 22) (pair 11 23) (pair 31 33) (pair 32 34)
             (pair 27 25) (pair 28 26) (pair 12 0) (pair 13 1) (pair 14 2) (pair 15 3) (pair 16 4) (pair 17 5) (pair 18 6) (pair 19 7) (pair 20 8) (pair 21 9) (pair 22 10) (pair 23 11) (pair 33 31) (pair 34 32)
         })
-        (regions P1 (union (sites Bottom) (sites {24 35})))           // P1 home
-        (regions P2 (union (sites Top) (sites {29 30})))            // P2 home
+        (regions P1 (union (sites Bottom) (sites {24 35})))      // P1 home
+        (regions P2 (union (sites Top) (sites {29 30})))      // P2 home
     })
     (rules
         (start (set Count 3 to:(sites Board)))
@@ -206,7 +206,7 @@
         (rules "Two rows of twelve holes in the central part of the board, one hole on either end of this, two rows of two outside of these single holes on both sides of the board, and one final hole on either end of the board. Three counters in each hole. Sowing occurs only in the player's row; players use the inner single hole to their left; the outer single hole to the right. Sowing can occur in either direction. Captures are made when a counter falls into an empty hole. The counters in the opponent's opposite hole are captured. When the final counter of a sowing ends in a player's empty inner single holes, the counters in the opponent's inner single hole are captured. If it lands in a player's empty outer single hole, the counters in the opponent's outer single hole are captured. Single counters can be sown, but these cannot capture more than one of the opponent's counters. If the final counter falls into an occupied hole, the contents of this hole are picked up and sowing continues in the same direction. A player can sow such that they can make a capture from the hole in which the sowing began, but this cannot be done by sowing two or fewer counters. The player who has no counters remaining in their row loses. It is customary to play a series of round to determine the winner.")
         (source "Townshend 1977a: 16-20.")
         (id "378")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow")
         (credit "Eric Piette")
         }

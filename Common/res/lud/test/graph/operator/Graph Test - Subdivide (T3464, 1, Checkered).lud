@@ -16,8 +16,8 @@
 (option "Tiling Type" <Board> args:{ <type> }
     {
     
-    (item "1"     <(subdivide (tiling T3464 1)) > "")
-    (item "1, Dual"  <(dual (subdivide (tiling T3464 1))) > "")
+    (item "1"   <(subdivide (tiling T3464 1)) > "")
+    (item "1, Dual" <(dual (subdivide (tiling T3464 1))) > "")
     (item "1, Dualx2" <(dual (dual (subdivide (tiling T3464 1)))) > "")
     (item "1, Dualx3" <(dual (dual (dual (subdivide (tiling T3464 1))))) > "")
     (item "1, Dualx4" <(dual (dual (dual (dual (subdivide (tiling T3464 1)))))) > "")
@@ -25,8 +25,8 @@
     (item "1, Dualx6" <(dual (dual (dual (dual (dual (dual (subdivide (tiling T3464 1)))))))) > "")
     (item "1, Dualx7" <(dual (dual (dual (dual (dual (dual (dual (subdivide (tiling T3464 1))))))))) > "")
     
-    (item "2, Min 6"     <(subdivide (tiling T3464 2) min:6) > "")
-    (item "2, Min 6, Dual"  <(dual (subdivide (tiling T3464 2) min:6)) > "")
+    (item "2, Min 6"   <(subdivide (tiling T3464 2) min:6) > "")
+    (item "2, Min 6, Dual" <(dual (subdivide (tiling T3464 2) min:6)) > "")
     (item "2, Min 6, Dualx3" <(dual (dual (subdivide (tiling T3464 2) min:6))) > "")
     (item "2, Min 6, Dualx3" <(dual (dual (dual (subdivide (tiling T3464 2) min:6)))) > "")
     (item "2, Min 6, Dualx4" <(dual (dual (dual (dual (subdivide (tiling T3464 2) min:6))))) > "")

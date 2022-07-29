@@ -2,6 +2,7 @@ package app.display.dialogs.visual_editor.model;
 
 import app.display.dialogs.visual_editor.documentation.DocumentationReader;
 import app.display.dialogs.visual_editor.documentation.HelpInformation;
+import grammar.Grammar;
 import main.grammar.Clause;
 import main.grammar.ClauseArg;
 import main.grammar.Symbol;
@@ -24,21 +25,18 @@ public class NodeArgument
     /** The clause this NodeArgument is part of */
     private final Clause CLAUSE;
     /** The list of ClauseArgs this NodeArgument encompasses */
-    private final List<ClauseArg> ARGS;
+    private final List<ClauseArg> args;
+    /** Arguments prior to expanding */
+    public final List<ClauseArg> originalArgs = new ArrayList<>();
     /** The index of the ClauseArg in the Clause */
     private final int INDEX;
     /** List of possible Arguments as Input */
-    private final List<PossibleArgument> POSSIBLE_ARGS;
+    private final List<PossibleArgument> possibleArguments;
     /** The list of Symbols that may be provided as input for this NodeArgument
      *  Structural Symbols are not included in this list, but rather expanded to their rules.
      */
-    private final List<Symbol> POSSIBLE_SYMBOL_INPUTS;
-    /** If this is a Terminal NodeArgument, this indicates whether it should be displayed as a separate node */
-    private boolean SEPARATE_NODE;
+    private final List<Symbol> possibleSymbolInputs;
     private String parameterDescription = null;
-
-    public final ClauseArg originalArg;
-    public final List<ClauseArg> originalArgs = new ArrayList<>();
 
     /**
      * Constructor for NodeInput
@@ -47,16 +45,12 @@ public class NodeArgument
      */
     public NodeArgument(Clause clause, ClauseArg arg)
     {
-        this.originalArg = arg;
         this.CLAUSE = clause;
         this.INDEX = clause.args().indexOf(arg);
 
-        if(arg.symbol().returnType() != arg.symbol()) arg = new ClauseArg(arg.symbol().returnType(), arg.actualParameterName(), arg.label(), arg.optional(), arg.orGroup(), arg.andGroup());
-
-
         // add argument to list
-        this.ARGS = new ArrayList<>();
-        this.ARGS.add(arg);
+        this.args = new ArrayList<>();
+        this.args.add(arg);
         // if arg is part of OR-Group, add other components of OR-Group to it.
         if(arg.orGroup() != 0)
         {
@@ -64,89 +58,170 @@ public class NodeArgument
             int index = clause.args().indexOf(arg)+1;
             while(index < clause.args().size() && clause.args().get(index).orGroup() == group)
             {
-                this.ARGS.add(clause.args().get(index));
+                this.args.add(clause.args().get(index));
                 index++;
             }
         }
 
-        originalArgs.addAll(this.ARGS);
+        for(ClauseArg c : new ArrayList<>(this.args))
+            if(c.symbol().returnType() != c.symbol())
+                for(String[] f : Grammar.grammar().getFunctions())
+                    if(f[0].equals(c.symbol().name()))
+                    {
+                        // find the symbol that matches f[1]
+                        List<Symbol> candidates = new ArrayList<>();
+                        if(Grammar.grammar().symbolsWithPartialKeyword(f[1]) != null) candidates.addAll(Grammar.grammar().symbolsWithPartialKeyword(f[1]));
+                        if(Grammar.grammar().symbolsWithPartialKeyword(f[1].substring(0, f[1].length()-1)) != null) candidates.addAll(Grammar.grammar().symbolsWithPartialKeyword(f[1].substring(0, f[1].length()-1)));
+                        Symbol match = null;
+                        for(Symbol s : candidates)
+                            if(s.grammarLabel().equals(f[1]) && s.rule().rhs().size() > 0)
+                            {
+                                match = s;
+                                break;
+                            }
+                        if(match == null) match = c.symbol().returnType();
+                        int nesting = c.nesting();
+                        ClauseArg newArg = new ClauseArg(match, c.actualParameterName(), c.label(), c.optional(), c.orGroup(), c.andGroup());
+                        newArg.setNesting(nesting);
+                        args.remove(c);
+                        args.add(newArg);
+                        break;
+                    }
 
-        // if this is a choice between collection or not, default to collection
-        if(this.ARGS.size() == 2)
-        {
-            if(this.ARGS.get(0).symbol().equals(this.ARGS.get(1).symbol()))
+        originalArgs.addAll(this.args);
+
+        // if contains a choice between a 1d collection or not, keep the 1d collection and remove the other
+        if(this.args.size() == 2)
+            if(args.get(0).symbol().equals(args.get(1).symbol()))
             {
-                // get index of non-collection
-                int index = 0;
-                if(this.ARGS.get(0).andGroup()==0) index = 1;
-                this.ARGS.remove(index);
+                if(args.get(0).nesting() == 0 && args.get(1).nesting() == 1)
+                    this.args.remove(0);
+                else if(args.get(0).nesting() == 1 && args.get(1).nesting() == 0)
+                    this.args.remove(1);
+            }
+        else if(this.args.size() == 3)
+        {
+            ClauseArg arg1 = args.get(0);
+            ClauseArg arg2 = args.get(1);
+            ClauseArg arg3 = args.get(2);
+            if(arg1.symbol().equals(arg2.symbol()) && arg1.symbol().equals(arg3.symbol()))
+            {
+                if(arg1.nesting() == 0 && arg2.nesting() == 1 && arg3.nesting() == 2)
+                    this.args.remove(arg1);
+                else if(arg1.nesting() == 1 && arg2.nesting() == 2 && arg3.nesting() == 0)
+                    this.args.remove(arg3);
+                else if(arg1.nesting() == 2 && arg2.nesting() == 0 && arg3.nesting() == 1)
+                    this.args.remove(arg2);
             }
         }
 
-        this.POSSIBLE_ARGS = new ArrayList<>();
-        for(ClauseArg ca : ARGS)
+
+        this.possibleArguments = new ArrayList<>();
+        for(ClauseArg ca : args)
             computePossibleArguments(ca);
 
-        Set<Symbol> possibleArguments = new HashSet<>();
-        for(PossibleArgument pa : POSSIBLE_ARGS) possibleArguments.addAll(expandPossibleArgument(pa));
-
+        Set<Symbol> possibleArguments1 = new HashSet<>();
+        for(PossibleArgument pa : this.possibleArguments)
+            possibleArguments1.addAll(expandPossibleArgument(pa));
+        for(ClauseArg a : args())
+            if(terminalDropdown(a))
+                possibleArguments1.add(a.symbol());
 
         Set<Symbol> possibleSymbols = new HashSet<>();
-        for(Symbol s : possibleArguments)
-        {
-            if(s.ludemeType().equals(Symbol.LudemeType.Constant)) continue;
-            possibleSymbols.add(s);
-        }
+        for(Symbol s : possibleArguments1)
+            if(!s.ludemeType().equals(Symbol.LudemeType.Constant))
+                possibleSymbols.add(s);
 
-        POSSIBLE_SYMBOL_INPUTS = new ArrayList<>(possibleSymbols);
-
-        SEPARATE_NODE = false;
-
+        possibleSymbolInputs = new ArrayList<>(possibleSymbols);
         parameterDescription = readHelp();
     }
 
-    private Set<Symbol> expandPossibleArgument(PossibleArgument PA)
-    {
-        Set<Symbol> symbols = new HashSet<>();
-
-        if(PA.possibleArguments().size() == 0) symbols.add(PA.clause().symbol());
-        else
-        {
-            for(PossibleArgument p : PA.possibleArguments())
-            {
-                symbols.addAll(expandPossibleArgument(p));
-            }
-        }
-
-        return symbols;
-    }
-
-    private void computePossibleArguments(ClauseArg arg)
-    {
-        if(arg.symbol().rule() == null)
-        {
-            return;
-        }
-        for(Clause c : arg.symbol().rule().rhs()) {
-            POSSIBLE_ARGS.add(new PossibleArgument(c));
-        }
-    }
-
     /**
-     * Constructor for NodeInput which is a Terminal
+     * Constructor for PreDefined Arguments
      * @param clause the clause this NodeArgument is part of
      */
     public NodeArgument(Clause clause)
     {
         CLAUSE = clause;
         // add argument to list
-        ARGS = new ArrayList<>();
-        ARGS.add(new ClauseArg(clause.symbol(), null, null, false, 0, 0));
-        originalArg = null;
+        args = new ArrayList<>();
+        args.add(new ClauseArg(clause.symbol(), null, null, false, 0, 0));
+        args.get(0).setNesting(clause.args().get(0).nesting());
         INDEX = 0;
-        this.POSSIBLE_ARGS = new ArrayList<>();
-        POSSIBLE_SYMBOL_INPUTS = new ArrayList<>();
-        SEPARATE_NODE = true;
+        this.possibleArguments = new ArrayList<>();
+        possibleSymbolInputs = new ArrayList<>();
+    }
+
+    /**
+     * Creates a NodeArgument with a given list of possible symbol inputs
+     * Used for Define nodes
+     */
+    public NodeArgument(Symbol symbol, Clause clause, List<Symbol> viableInputs)
+    {
+        CLAUSE = clause;
+        args = new ArrayList<>();
+        INDEX = 1;
+
+        ClauseArg ca = new ClauseArg(symbol, "Macro", null, false, 0, 0);
+        args.add(ca);
+
+        this.possibleArguments = new ArrayList<>();
+        for(Symbol s : viableInputs)
+            computePossibleArguments(s);
+
+        Set<Symbol> possibleArguments1 = new HashSet<>();
+        for(PossibleArgument pa : this.possibleArguments) possibleArguments1.addAll(expandPossibleArgument(pa));
+        for(ClauseArg a : args()) if(terminalDropdown(a)) possibleArguments1.add(a.symbol());
+
+        Set<Symbol> possibleSymbols = new HashSet<>();
+        for(Symbol s : possibleArguments1)
+        {
+            if(s.ludemeType().equals(Symbol.LudemeType.Constant)) continue;
+            possibleSymbols.add(s);
+        }
+        this.possibleSymbolInputs = new ArrayList<>(possibleSymbols);
+    }
+
+    private NodeArgument create1DEquivalent(ClauseArg ca)
+    {
+        ClauseArg ca1d = new ClauseArg(ca.symbol(), ca.actualParameterName(), ca.label(), false, 0, 0);
+        ca1d.setNesting(1);
+        return new NodeArgument(this.CLAUSE, ca1d);
+    }
+
+    public NodeArgument collection1DEquivalent(ClauseArg arg)
+    {
+        return create1DEquivalent(arg);
+    }
+
+    private Set<Symbol> expandPossibleArgument(PossibleArgument pa)
+    {
+        Set<Symbol> symbols = new HashSet<>();
+        if(pa.possibleArguments().size() == 0)
+            symbols.add(pa.clause().symbol());
+        else
+            for(PossibleArgument p : pa.possibleArguments())
+                symbols.addAll(expandPossibleArgument(p));
+
+        return symbols;
+    }
+
+    private void computePossibleArguments(ClauseArg arg)
+    {
+        if(arg.symbol() == null)
+            System.out.println();
+        if(arg.symbol().rule() == null)
+            return;
+        for(Clause c : arg.symbol().rule().rhs())
+            possibleArguments.add(new PossibleArgument(c));
+    }
+
+    private void computePossibleArguments(Symbol s)
+    {
+        if(s.rule() == null)
+            return;
+        for(Clause c : s.rule().rhs())
+            possibleArguments.add(new PossibleArgument(c));
     }
 
     /**
@@ -155,59 +230,54 @@ public class NodeArgument
      */
     public List<Symbol> possibleSymbolInputsExpanded()
     {
-        return POSSIBLE_SYMBOL_INPUTS;
+        return possibleSymbolInputs;
     }
 
-    /**
-     * TODO: Add comment
-     * @param symbol
-     * @return
-     */
-    private boolean isTerminal(Symbol symbol)
+
+    private static boolean terminalDropdown(ClauseArg arg)
     {
-        // TODO [FLAG]    Added two lines below
-        if(symbol.ludemeType().equals(Symbol.LudemeType.Predefined)) return true;
-        else if(true) return false;
-        if(symbol.isTerminal()) return true;
-        if(symbol.rule().rhs().size() == 0) return false; // TODO: check whether correct
-        for(Clause clause : symbol.rule().rhs())
-        {
+        if(arg.symbol().rule() == null) return false;
+        if(arg.symbol().rule().rhs().size() == 0) return false;
+        for(Clause clause : arg.symbol().rule().rhs())
             if(!clause.symbol().ludemeType().equals(Symbol.LudemeType.Constant))
-            {
                 return false;
-            }
-        }
         return true;
     }
 
     public boolean isTerminal()
     {
-        if(separateNode()) return true;
-        return isTerminal(arg().symbol());
+        if(arg().symbol().ludemeType().equals(Symbol.LudemeType.Predefined))
+            return true;
+        else
+            return terminalDropdown();
     }
 
     public boolean terminalDropdown()
     {
-        if(arg().symbol().rule() == null) return false;
-        for(Clause clause : arg().symbol().rule().rhs())
-        {
-            if(!clause.symbol().ludemeType().equals(Symbol.LudemeType.Constant))
-            {
-                return false;
-            }
-        }
-        return true;
+        return terminalDropdown(arg());
     }
 
-    public List<Symbol> constantInputs(){
+    public boolean canBePredefined()
+    {
+        Symbol s = arg().symbol();
+        if(s.rule() == null || s.rule().rhs().size() == 0)
+            return false;
+        for(Clause clause : s.rule().rhs())
+        {
+            if(clause.args() != null && clause.args().size() > 0)
+                continue;
+            if(clause.args() == null && clause.symbol().ludemeType().equals(Symbol.LudemeType.Primitive))
+                return true;
+        }
+        return false;
+    }
+
+    public List<Symbol> constantInputs()
+    {
         List<Symbol> constantInputs = new ArrayList<>();
         for(Clause clause : arg().symbol().rule().rhs())
-        {
             if(clause.symbol().ludemeType().equals(Symbol.LudemeType.Constant))
-            {
                 constantInputs.add(clause.symbol());
-            }
-        }
         return constantInputs;
     }
 
@@ -225,7 +295,7 @@ public class NodeArgument
      */
     public List<ClauseArg> args()
     {
-        return ARGS;
+        return args;
     }
 
     /**
@@ -233,8 +303,9 @@ public class NodeArgument
      */
     public ClauseArg arg()
     {
-        if(ARGS.size() == 0) return null;
-        return ARGS.get(0);
+        if(args.size() == 0)
+            return null;
+        return args.get(0);
     }
 
 
@@ -243,7 +314,7 @@ public class NodeArgument
      */
     public int size()
     {
-        return ARGS.size();
+        return args.size();
     }
 
     /**
@@ -262,6 +333,8 @@ public class NodeArgument
      */
     public boolean optional()
     {
+        if(arg() == null)
+            return false;
         return arg().optional();
     }
 
@@ -271,7 +344,20 @@ public class NodeArgument
      */
     public boolean collection()
     {
+        if(arg() == null)
+            return false;
         return arg().nesting() > 0;
+    }
+
+    /**
+     *
+     * @return whether this NodeArgument is a 2D-Collection
+     */
+    public boolean collection2D()
+    {
+        if(arg() == null)
+            return false;
+        return arg().nesting() == 2;
     }
 
     /**
@@ -283,31 +369,12 @@ public class NodeArgument
         return size() > 1;
     }
 
-    public void setSeparateNode(boolean separateNode) {
-        this.SEPARATE_NODE = separateNode;
-    }
-
-    // TODO: Add comment
-    public boolean separateNode()
-    {
-        return SEPARATE_NODE;
-    }
-
-    /**
-     *
-     * @return the ludemeType of the first ClauseArg in the list
-     */
-    public Symbol.LudemeType ludemeType()
-    {
-        return arg().symbol().ludemeType();
-    }
-
     public void setActiveChoiceArg(ClauseArg activeArg)
     {
-        ClauseArg temp = ARGS.get(0);
-        int index = ARGS.indexOf(activeArg);
-        ARGS.set(0, activeArg);
-        ARGS.set(index, temp);
+        ClauseArg temp = args.get(0);
+        int index = args.indexOf(activeArg);
+        args.set(0, activeArg);
+        args.set(index, temp);
         parameterDescription = readHelp();
     }
 
@@ -320,30 +387,17 @@ public class NodeArgument
     {
         DocumentationReader dr = DocumentationReader.instance();
         HelpInformation hi = dr.documentation().get(CLAUSE.symbol());
-        if(hi.parameter(arg()) == null) return null;
-        String help = hi.parameter(arg());
-        return help;
+        if(hi == null || hi.parameter(arg()) == null)
+            return null;
+        return hi.parameter(arg());
     }
 
-    /**
-     *
-     * @param o
-     * @return whether this NodeArgument is equal to another
-     */
-    @Override
-    public boolean equals(Object o){
-        if(o instanceof NodeArgument)
-        {
-            NodeArgument other = (NodeArgument) o;
-            return other.clause().equals(clause()) && other.args().equals(args());
-        }
-        return false;
-    }
+ 
 
     @Override
     public String toString()
     {
-        return "[ " + INDEX + ", " + ARGS.stream().map(ClauseArg::toString).collect(Collectors.joining(", ")) + " ]";
+        return "[ " + INDEX + ", " + args.stream().map(ClauseArg::toString).collect(Collectors.joining(", ")) + " ]";
     }
 
 }

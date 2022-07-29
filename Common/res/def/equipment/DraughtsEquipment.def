@@ -1,0 +1,15 @@
+// Defines all the equipment used in most of the draught games.
+// #1 = The graph of the board.
+// #1 = The default site type to use [Optional by default Cell].
+// @example ("DraughtsEquipment" 8)
+
+(define "DraughtsEquipment"
+    (equipment { 
+        (board #1 #2) 
+        (piece "Counter" P1 N)
+        (piece "Counter" P2 S) 
+        (piece "DoubleCounter" Each)
+        (regions P1 (sites Bottom))
+        (regions P2 (sites Top))
+    })
+)

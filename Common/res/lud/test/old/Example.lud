@@ -1,17 +1,17 @@
-(game "Example"  
+(game "Example" 
     (players 2)
     (equipment 
         { 
         (board <Board:type>)
         (piece "Marker" Shared)
         }
-    )  
+    ) 
     
-    (rules   	 
-        (play       
+    (rules  	 
+        (play    
             (add Edge 
-                to:(sites Empty Edge)	      
-            )        
+                to:(sites Empty Edge)	   
+            )    
         )
         (end 	
             
@@ -24,29 +24,29 @@
 
 (option "Board" <Board> args:{ <type> <start> }
     {
-    (item "Graph1"       
+    (item "Graph1"    
         <
         (graph
             vertices:{ {1 0} {5 0} {0 3} {6 3} {1 6} {5 6}}
             edges:{ {0 1} {0 2} {0 3} {0 4} {0 5} {1 2} {1 3} {1 4} {1 5} 
             {2 3} {2 4} {2 5} {3 4} {3 5} {4 5}}
         )
-        >    
+        >  
         "The game is played on the Graph1 (Non-Planer Graph)."
     )* 
     
-    (item "Graph2"       
+    (item "Graph2"    
         <
         (graph
             vertices:{ {0 1} {4 0} {8 1} {4 2} {3 4} {5 4} {1 5} {7 5} {4 9}}
             edges:{ {0 1} {0 2} {0 3} {0 4} {0 5} {0 6} {0 7} {0 8} {1 2} {1 3} {1 4} {1 5} {1 6} {1 7} {1 8} {2 3} {2 4} {2 5} {2 6}
             {2 7} {2 8} {3 4} {3 5} {3 6} {3 7} {3 8} {4 5} {4 6} {4 7} {4 8} {5 6} {5 7} {5 8} {6 7} {6 8} {7 8}}
         )
-        >    
+        >  
         "The game is played on the Graph2."
     ) 
     
-    (item "Graph3"       
+    (item "Graph3"    
         <
         (graph
             vertices:{ 
@@ -67,9 +67,9 @@
             {11 12} {11 13} {12 13}
             }
         )
-        >    
+        >  
         "The game is played on the Graph3 (Non-Planer Graph)."
-    )  
+    ) 
     
 })
 
@@ -84,7 +84,7 @@
         (classification "mathematical/graph")
         (author "Tahmina Begum")
         (credit "Tahmina Begum 25-05-2020")
-        (date "25-04-2020")   
+        (date "25-04-2020")  
     })
     
     (graphics {

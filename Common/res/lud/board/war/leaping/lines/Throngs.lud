@@ -106,7 +106,7 @@
             ("AStep" "S3" (exact 2))
             ("AStep" "S2" (exact 1))
             ("AStep" "S1" (exact 0))
-            (values Remembered "S1")     
+            (values Remembered "S1")   
             }
         )
         (remember Value "S0" (value) unique:True)
@@ -232,7 +232,7 @@
                     (from)
                     (then
                         (add
-                            (to (last From))    
+                            (to (last From))  
                             (then
                                 (and
                                     {
@@ -259,7 +259,7 @@
                 (add
                     (to 
                         (last To)
-                    )   
+                    )  
                     (then 
                         (set Var "PowerLeft" 0)
 ))))))
@@ -515,7 +515,7 @@
                         (count Sites in:(sites Board))
                         (* 2 (- (score Next) ("SafetyFigure")))
                 ))
-                (byScore)  
+                (byScore) 
     )))
 )
 
@@ -539,7 +539,7 @@
         (set Score P1 0)
         (set Score P2 0)
         (place "Ball1" state:7)
-        (place "Ball2" state:7)  
+        (place "Ball2" state:7) 
         }
 ))
 // Definitions of different Boards the game may be played on
@@ -683,7 +683,7 @@
         This method ends the game when one player has a clear advantage.")
         (id "1224")
         (source "<a href=\"https://boardgamegeek.com/thread/2452882/throngs-new-attempt-describe-how-play\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG Forum</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/leaping/lines")
         (author "Dale W. Walton")
         (credit "Dale W. Walton 2020-11-11")

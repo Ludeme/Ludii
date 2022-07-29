@@ -1093,7 +1093,7 @@ public class GenerateLudiiDocTex
 						description,  
 						new UserSelections(new ArrayList<String>()), 
 						report, 
-						true,
+						true,  // allow examples
 						false
 					);
 

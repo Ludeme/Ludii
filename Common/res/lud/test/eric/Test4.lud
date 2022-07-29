@@ -2,14 +2,14 @@
     (players 2)
     (equipment {
         (board (square 7))
-        (regions "Board" {0..42})  // 42.
+        (regions "Board" {0..42}) // 42.
         
         (piece "Disc" Each (move (from)
                 (to (difference (sites "Board") (from)))
                 
                 //count:(size Stack at:(from)) // ?
                 
-        stack:True))  // but no whole stack-movement ..
+        stack:True)) // but no whole stack-movement ..
     })
     (rules
         (start {(place Stack "Disc1" (coord:"B4") count:1)

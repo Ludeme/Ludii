@@ -156,7 +156,7 @@
         (phase "Placing" 
             (play 
                 ("RollEachNewTurnMove"
-                    (if (not (is Empty (handSite Mover)))
+                    (if (is Occupied (handSite Mover))
                         (forEach Die 
                             if:("DieNotUsed")
                             (if (if (< (pips) 4) (< (size Stack at:"SiteToSelect") 2) (< (size Stack at:"SiteToSelect") 3))
@@ -195,7 +195,7 @@
         ")
         (source "Encyclopédie Methodique 1792: 64-65.")
         (id "1047")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/race/escape")
         (credit "Eric Piette")
         (origin "This game was played in France, around 1792.")

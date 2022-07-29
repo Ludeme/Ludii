@@ -16,12 +16,12 @@
             (track "TrackCCW2" <Row:track2> loop:True P2)
             }
         )
-        (regions "Home" P1 (sites Track "TrackCCW1"))               // P1 Home
-        (regions "Home" P2 (sites Track "TrackCCW2"))               // P2 home
+        (regions "Home" P1 (sites Track "TrackCCW1"))        // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))        // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))  // P2 inner Home
-        (regions "Outer" P1 (sites Bottom))                    // P1 outer Home
-        (regions "Outer" P2 (sites Top))                      // P2 outer Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top))) // P2 inner Home
+        (regions "Outer" P1 (sites Bottom))          // P1 outer Home
+        (regions "Outer" P2 (sites Top))           // P2 outer Home
         (piece "Seed" Shared)
     }) 
     (rules 
@@ -159,15 +159,15 @@
 
 (option "Board Size" <Row> args:{ <size> <track2> }
     {
-    (item "8"  <8> <"16,E,N1,W"> "Each row has 8 holes.")*  
-    (item "9"  <9> <"18,E,N1,W"> "Each row has 9 holes.")  
-    (item "10" <10> <"20,E,N1,W"> "Each row has 10 holes.")  
-    (item "11" <11> <"22,E,N1,W"> "Each row has 11 holes.")  
-    (item "12" <12> <"24,E,N1,W"> "Each row has 12 holes.")  
-    (item "13" <13> <"26,E,N1,W"> "Each row has 13 holes.")  
-    (item "14" <14> <"28,E,N1,W"> "Each row has 14 holes.")  
-    (item "15" <15> <"30,E,N1,W"> "Each row has 15 holes.")  
-    (item "16" <16> <"32,E,N1,W"> "Each row has 16 holes.")  
+    (item "8" <8> <"16,E,N1,W"> "Each row has 8 holes.")* 
+    (item "9" <9> <"18,E,N1,W"> "Each row has 9 holes.") 
+    (item "10" <10> <"20,E,N1,W"> "Each row has 10 holes.") 
+    (item "11" <11> <"22,E,N1,W"> "Each row has 11 holes.") 
+    (item "12" <12> <"24,E,N1,W"> "Each row has 12 holes.") 
+    (item "13" <13> <"26,E,N1,W"> "Each row has 13 holes.") 
+    (item "14" <14> <"28,E,N1,W"> "Each row has 14 holes.") 
+    (item "15" <15> <"30,E,N1,W"> "Each row has 15 holes.") 
+    (item "16" <16> <"32,E,N1,W"> "Each row has 16 holes.") 
 })
 
 //------------------------------------------------------------------------------
@@ -201,7 +201,7 @@
         (useFor "Ruleset/Longarim-Topotha (Observed)" (id "638"))
         (source "Murray 1951: 215-216.")
         (id "259")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         }

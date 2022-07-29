@@ -5,7 +5,7 @@
         (board <Board:type> use:Edge) 
         (piece "Marker" Neutral) 
         }
-    )  
+    ) 
     (rules
         (start
             <Board:start>
@@ -17,9 +17,9 @@
                 (sites Occupied by:Neutral on:Edge)
             )
         )
-        (end    
+        (end  
             (if (is Tree Neutral) (result Mover Win))
-        )    
+        )  
     )
 )
 
@@ -27,19 +27,19 @@
 
 (option "Board" <Board> args:{ <type> <start> }
     {
-    (item "Graph1"       
+    (item "Graph1"    
         <
         (merge (scale 0.707 (concentric {1 8})) (shift -.5 -.5 (square 2))) 
         > 
         <
         {
-        (set Neutral Edge (sites Board Edge))           
+        (set Neutral Edge (sites Board Edge))      
         }
-        >    
+        >  
         "The game is played on the Graph1."
     )* 
     
-    (item "Graph2"       
+    (item "Graph2"    
         <
         (graph
             vertices:{ {4 0} {12 0} {5 3} {8 4} {11 3} {4 6} {6 7} {8 6} {10 7} {12 6} 
@@ -51,23 +51,23 @@
         > 
         <
         {
-        (set Neutral Edge (sites Board Edge))            
+        (set Neutral Edge (sites Board Edge))      
         }
-        >    
+        >  
         "The game is played on the Graph2."
     ) 
     
-    (item "Graph3"       
+    (item "Graph3"    
         <
         (dual (rotate 45 (square 7))) 
         > 
         <
         {
-        (set Neutral Edge (sites Board Edge))           
+        (set Neutral Edge (sites Board Edge))      
         }
-        >   
+        >  
         "The game is played on the Graph3."
-    )  
+    ) 
     
 })
 
@@ -80,7 +80,7 @@
         (description "Nedilmarth is a graph theory game. It is a game for two players on an undirected cyclic graph.")
         (rules "The board graph is initially coloured with a neutral colour. Players take turns removing colour from a coloured edge. The game is won by the player who removes the last cycle from the coloured graph.")
         (id "701")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "experimental/graph theory")
         (author "Tahmina Begum")
         (credit "Tahmina Begum 25-05-2020")

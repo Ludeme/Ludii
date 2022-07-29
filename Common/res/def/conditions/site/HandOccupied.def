@@ -1,0 +1,7 @@
+// Checks if at least a site in a specific hand is not empty. This ludemeplex is working only for non stacking games.
+// #1 = The owner of the hand, can be a RoleType or the index of the owner.
+// @example ("HandOccupied" Mover)
+
+(define "HandOccupied"
+    (not (all Sites (sites Hand #1) if:(= 0 (count Cell at:(site)))))
+)

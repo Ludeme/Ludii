@@ -14,6 +14,21 @@ public class InterceptFeature extends AspatialFeature
 	
 	//-------------------------------------------------------------------------
 	
+	/** The singleton instance */
+	private static final InterceptFeature INSTANCE = new InterceptFeature();
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Private: singleton
+	 */
+	private InterceptFeature()
+	{
+		// Do nothing
+	}
+	
+	//-------------------------------------------------------------------------
+	
 	@Override
 	public float featureVal(final State state, final Move move)
 	{
@@ -34,6 +49,16 @@ public class InterceptFeature extends AspatialFeature
 	public String generateTikzCode(final Game game)
 	{
 		return "\\node[rectangle,draw{,REL_POS}] ({LABEL}) {Intercept};";
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return The singleton instance
+	 */
+	public static InterceptFeature instance()
+	{
+		return INSTANCE;
 	}
 	
 	//-------------------------------------------------------------------------

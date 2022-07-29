@@ -39,7 +39,7 @@
     (and 
         (is Empty (to)) 
         (not (is Threatened (id "King" Mover) at:(to) (forEach Piece)))
-    )  
+    ) 
 )
 
 (define "DecideToCastle"
@@ -173,7 +173,7 @@
 //------------------------------------------------------------------------------
 
 (game "Stratomic" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 10)) 
         
@@ -329,7 +329,7 @@
         - The missile cannot be under attack by an enemy piece at time of launch.")
         (id "1780")
         (source "<a href=\"https://en.wikipedia.org/wiki/Stratomic\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/chess")
         (author "Robert Montay-Marsais")
         (credit "Eric Piette")

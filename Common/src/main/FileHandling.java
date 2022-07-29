@@ -710,7 +710,6 @@ public class FileHandling
 	
 	/**
 	 * Print game options per .lud to file.
-	 * @param fileName
 	 * @throws IOException 
 	 */
 	public static void saveReconstruction

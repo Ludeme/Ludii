@@ -16,8 +16,7 @@ public class DefineInstances
 	//---------------------------------------------------- --------------------
 
 	/**
-	 * @param tag
-	 * @param expression
+	 * @param define The define in entry.
 	 */
 	public DefineInstances(final Define define)
 	{

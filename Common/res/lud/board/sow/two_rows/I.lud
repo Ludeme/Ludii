@@ -11,7 +11,7 @@
         )
         (piece "Seed" Shared)
         (regions P1 (sites Bottom)) // P1 home
-        (regions P2 (sites Top))   // P2 home
+        (regions P2 (sites Top))  // P2 home
         (hand Each)
     }) 
     (rules 
@@ -66,11 +66,11 @@
 
 (option "Board Size" <Board> args:{ <size>}
     {
-    (item "3"  <3> "Each row has 3 holes.")* 
-    (item "4"  <4> "Each row has 4 holes.") 
-    (item "5"  <5> "Each row has 5 holes.") 
-    (item "6"  <6> "Each row has 6 holes.") 
-    (item "7"  <7> "Each row has 7 holes.")  
+    (item "3" <3> "Each row has 3 holes.")* 
+    (item "4" <4> "Each row has 4 holes.") 
+    (item "5" <5> "Each row has 5 holes.") 
+    (item "6" <6> "Each row has 6 holes.") 
+    (item "7" <7> "Each row has 7 holes.") 
 })
 
 //------------------------------------------------------------------------------
@@ -95,7 +95,7 @@
         (rules "2x3-7 board. Four counters in each hole. Players sow counters from their side of the board in an anti-clockwise direction. When the final counter of a sowing lands in a hole containing one or two counters, making it now contain two or three, these are captured. Any adjacent holes with two or three counters are also captured. Single counters cannot be sown. When a player only has single counters in holes in their row, they pass. The player who captures the most counters wins.")
         (source "Griaule 1938: 166-168.")
         (id "1392")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         (origin "This game was played in Mali, around 1938.")

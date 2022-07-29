@@ -15,11 +15,11 @@
 
 (option "Tiling Type" <Board> args:{ <type> }
     {
-    (item "2" <(tiling T31212 2)>  "") 
-    (item "3" <(tiling T31212 3)>  "") 
-    (item "3x3" <(tiling T31212 3 3)>  "") 
-    (item "3x4" <(tiling T31212 3 4)>  "") 
-    (item "Poly" <(tiling T31212 (poly {{1 0} {1 9} {9 0}}))>  "") 
+    (item "2" <(tiling T31212 2)> "") 
+    (item "3" <(tiling T31212 3)> "") 
+    (item "3x3" <(tiling T31212 3 3)> "") 
+    (item "3x4" <(tiling T31212 3 4)> "") 
+    (item "Poly" <(tiling T31212 (poly {{1 0} {1 9} {9 0}}))> "") 
     (item "3, Dual" <(dual (tiling T31212 3))> "") 
 })
 

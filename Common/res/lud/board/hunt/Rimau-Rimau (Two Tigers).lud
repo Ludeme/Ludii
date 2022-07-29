@@ -21,7 +21,7 @@
 
 (option "Start Rules" <Start> args:{ <start> <play> }
     {
-    (item "Tigers Start in hand"    
+    (item "Tigers Start in hand"  
         <
         (start {
             (place "human2" (difference (expand (sites Centre)) (centrePoint)))
@@ -66,8 +66,7 @@
             )
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
+        ("PhaseMovePiece" "Movement"
             (end {
                 (if (no Moves P1) (result P2 Win))
                 (if (no Pieces P2) (result P1 Win))
@@ -75,7 +74,7 @@
         )
         }
         > 
-    "The two tigers start in the hand.")*  
+    "The two tigers start in the hand.")* 
     (item "Tigers start at the centre" 
         <
         (start {
@@ -99,8 +98,7 @@
             )
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
+        ("PhaseMovePiece" "Movement"
             (end ("NoMovesP1NoPiecesP2"))
         )
         }
@@ -137,7 +135,7 @@
         (useFor "Ruleset/Tigers on Central Point (Observed)" (id "982"))
         (source "Murray 1951: 109.")
         (id "981")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/hunt")
         (credit "Eric Piette")
         (origin "This game was played in Singapore, around 1889.")

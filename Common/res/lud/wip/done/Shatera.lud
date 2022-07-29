@@ -34,7 +34,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )  
+    ) 
 )
 
 (define "DoubleStep"
@@ -60,7 +60,7 @@
 //------------------------------------------------------------------------------
 
 (game "Shatera" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8)) 
         

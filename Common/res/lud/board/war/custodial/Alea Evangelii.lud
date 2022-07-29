@@ -1,10 +1,10 @@
-(define "Custodial" 
+(define "Custodial"
     (custodial 
         (from (last To)) 
         Orthogonal
         (between 
             (max 1) 
-            if:(= (what at:(between)) (id #1)) 
+            if:("IsPieceAt" #1 Next (between))
             (apply (remove (between))) 
         )
         (to 
@@ -38,9 +38,9 @@
     )
 )
 
-(define "JarlAndExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (is In (between) (expand origin:(centrePoint) Orthogonal))))
+(define "JarlAndExpandedCentre" (and ("IsPieceAt" "Jarl" P2 (between)) (is In (between) (expand origin:(centrePoint) Orthogonal))))
 
-(define "JarlButNotTheExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (not (is In (between) (expand origin:(centrePoint) Orthogonal)))))
+(define "JarlButNotTheExpandedCentre" (and ("IsPieceAt" "Jarl" P2 (between)) (not (is In (between) (expand origin:(centrePoint) Orthogonal)))))
 
 //------------------------------------------------------------------------------
 
@@ -51,8 +51,7 @@
         (regions "Fortresses" (expand (sites Corners)))
         
         (piece "Thrall" P1 
-            (move
-                Slide
+            (move Slide
                 Orthogonal 
                 (between if:"EmptyButNotFortress") 
                 (to (apply if:(!= (to) (centrePoint))))
@@ -82,8 +81,7 @@
             )
         )
         (piece "Thrall" P2 
-            (move
-                Slide
+            (move Slide
                 Orthogonal 
                 (between if:"EmptyButNotFortress") 
                 (to (apply if:(!= (to) (centrePoint)))) 
@@ -91,39 +89,31 @@
             ) 
         )
         (piece "Jarl" P2 
-            (move
-                Slide
+            (move Slide
                 Orthogonal 
                 (to (apply if:(!= (to) (centrePoint))))
             )
         )
-        }
-    ) 
+    }) 
     (rules 
-        (start
-            { 
+        (start { 
             (place "Thrall1" {"C1" "F1" "N1" "Q1" "A3" "F3" "N3" "S3" "H4" "L4" "G5" "I5" "K5" "M5"
                 "A6" "C6" "Q6" "S6" "E7" "O7" "D8" "P8" "E9" "O9" "E11" "O11" "D12"
                 "P12" "E13" "O13" "A14" "C14" "Q14" "S14" "G15" "I15" "K15" "M15" "H16" "L16"
                 "A17" "F17" "N17" "S17" "C19" "F19" "N19" "Q19"
-                }
-            )
+            })
             (place "Thrall2" {"J4" "F6" "N6" "J7" "I8" "K8" "H9" "J9" "L9" "D10" "G10" "I10" "K10" "M10" "P10"
                 "H11" "J11" "L11" "I12" "K12" "J13" "F14" "N14" "J16"
-                }
-            )
+            })
             (place "Jarl2" (centrePoint))
-            }
-        )
+        })
         
-        (play (forEach Piece)) 
+        (play (forEach Piece))
         
-        (end
-            {
-            (if (is Within (id "Jarl2") in:(sites "Fortresses")) (result P2 Win))
+        (end {
+            ("PieceTypeReachWin" "Jarl2" (sites "Fortresses") P2)
             (if "JarlWasCaptured" (result P1 Win))
-            }
-        )
+        })
     )
 )
 
@@ -131,7 +121,7 @@
 
 (option "Variant" <Variant> args:{ <type> }
     {
-    (item "Cyningstan"  <>    "The rules are describing with the Cyningstan ruleset.")  
+    (item "Cyningstan" <>  "The rules are describing with the Cyningstan ruleset.") 
 })
 
 //--------------------------------------------------------------------------
@@ -164,7 +154,7 @@
         (useFor "Ruleset/Historical Information (Incomplete)" (id "575"))
         (source "Murray 1951: 61.")
         (id "380")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/custodial")
         (credit "Eric Piette")
         (origin "This game was played in British Isles, from around 1100 to 1199.")

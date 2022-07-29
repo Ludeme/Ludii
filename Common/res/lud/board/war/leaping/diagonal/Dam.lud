@@ -1,4 +1,4 @@
-(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
+(define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
 
 (define "JumpToPromotionZone" (is In (last To) (sites Next)))
 
@@ -13,23 +13,21 @@
         )
         (to if:(is Empty (to)))
         (then 
-            (if (can Move 
-                    (hop 
-                        (from (last To)) 
-                        (if (is In (last To) (sites Outer)) (difference Diagonal OppositeDirection) SameDirection)
-                        (between 
-                            before:(count Rows)
-                            if:(and 
-                                (not (is In (between) (sites ToClear))) 
-                                ("IsEnemyAt" (between))
-                            )
-                            (apply (remove (between)))
+            ("ReplayIfCanMove" 
+                (hop 
+                    (from (last To)) 
+                    (if (is In (last To) (sites Outer)) (difference Diagonal OppositeDirection) SameDirection)
+                    (between 
+                        before:(count Rows)
+                        if:(and 
+                            (not (is In (between) (sites ToClear))) 
+                            ("IsEnemyAt" (between))
                         )
-                        (to if:(is Empty (to)))
+                        (apply (remove (between)))
                     )
-                ) 
-                (moveAgain)
-            )
+                    (to if:(is Empty (to)))
+                )
+            ) 
         )
     )
 )
@@ -45,23 +43,9 @@
 //------------------------------------------------------------------------------
 (game "Dam" 
     (players 2)
-    (equipment 
-        { 
-        (board (square 12)) 
-        (piece "Counter" P1 N)
-        (piece "Counter" P2 S) 
-        (piece "DoubleCounter" Each)
-        (regions P1 (sites Bottom))
-        (regions P2 (sites Top))
-        }
-    ) 
+    ("DraughtsEquipment" (square 12)) 
     (rules 
-        (start
-            { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:4) (sites Phase 0) ))
-            (place "Counter2" (difference (expand (sites Top) steps:4) (sites Phase 0)))
-            }
-        )
+        ("WhiteCellsSetup" 5)
         
         (play 
             (if "SameTurn"
@@ -76,26 +60,19 @@
                     (forEach Piece "Counter" 
                         (or
                             ("HopDiagonalSequenceCapture") 
-                            (move
-                                Step 
-                                Diagonal
-                                (to if:(is Empty (to)))
-                            )
+                            ("StepToEmpty" Diagonal)
                         )
                     )
                     (forEach Piece "DoubleCounter"
                         (or
                             ("DoubleCounterHop")
-                            (move
-                                Slide 
-                                (directions Diagonal) 
-                            ) 
+                            (move Slide (directions Diagonal)) 
                         )
                     )
                 )
                 (then 
                     (if (and "IsUnpromoted" "JumpToPromotionZone")
-                        (move Promote (last To) (piece "DoubleCounter") Mover)
+                        (promote (last To) (piece "DoubleCounter") Mover)
                     )
                 )	
             )
@@ -115,7 +92,7 @@
         (rules "12x12 checkered board. Thirty pieces per player, placed on the white spaces in the first five ranks on each player's side. Pieces move diagonally forward or backward. The opponent's pieces are captured by hopping over them. Multiple hops by one piece are allowed in one turn if they are possible. When they reach the opposite edge of the board from where they started, they become Kings. Kings may move diagonally any number of spaces. They may capture pieces proceeding along its diagonal in one direction, as long as the next space beyond the piece to be captured is empty. It may not hop over any pieces which belong to the same player, or those belonging to the opponent except to capture them. Multiple captures for the King can only be made along the same diagonal, except when it makes a capture that brings it to the edge of the board, it can make another capture along the next available diagonal, if possible. The player who captures all of the opponent's pieces wins. ")
         (source "Parker 1909: 584-585.")
         (id "163")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/leaping/diagonal")
         (credit "Matthew Stephenson and Eric Piette")
         }

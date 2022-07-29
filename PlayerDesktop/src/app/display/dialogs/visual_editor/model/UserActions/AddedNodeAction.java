@@ -20,7 +20,6 @@ public class AddedNodeAction implements IUserAction
     private final IGraphPanel graphPanel;
     private final DescriptionGraph graph;
     private final LudemeNode addedNode;
-    private boolean isUndone = false;
 
     private LudemeNode parent; // remembers the parent of the node
     private LinkedHashMap<NodeArgument, Object> removedData; // Inputs that were removed when the node was removed
@@ -72,14 +71,6 @@ public class AddedNodeAction implements IUserAction
     }
 
     /**
-     * @return Whether the action was undone
-     */
-    @Override
-    public boolean isUndone() {
-        return isUndone;
-    }
-
-    /**
      * Undoes the action
      */
     @Override
@@ -99,7 +90,6 @@ public class AddedNodeAction implements IUserAction
         // find the index of the removed node in its parent
         Handler.removeNode(graph, addedNode);
         graphPanel().repaint();
-        isUndone = true;
     }
 
     public void setCollectionIndex(int index)
@@ -139,7 +129,6 @@ public class AddedNodeAction implements IUserAction
                 Handler.addEdge(graph, parent, addedNode, addedNode.creatorArgument(), collectionIndex);
         }
         graphPanel().repaint();
-        isUndone = false;
     }
 
     @Override

@@ -6,7 +6,6 @@ public class ListUtils {
     /**
      * This method checks how many Strings two lists have in common, starting at the back
      * @param l1
-     * @return
      */
     public static int stringsInCommonBack(List<String> l1, List<String> l2) {
         int l1Length = l1.size();

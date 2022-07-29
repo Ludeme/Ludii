@@ -763,7 +763,7 @@ public class Generator
 			final Description description = new Description(str);	
 			final UserSelections userSelections = new UserSelections(new ArrayList<String>());
 			
-			Parser.expandAndParse(description, userSelections, report, false);	
+			Parser.expandAndParse(description, userSelections, report, true, false);	
 			if (report.isError())
 			{
 				// Game does not parse
@@ -947,7 +947,7 @@ public class Generator
 			final Description description = new Description(str);	
 			final UserSelections userSelections = new UserSelections(new ArrayList<String>());
 			
-			Parser.expandAndParse(description, userSelections, report, false);	
+			Parser.expandAndParse(description, userSelections, report, true, false);	
 			if (report.isError())
 			{
 				// Game does not parse

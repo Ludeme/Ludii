@@ -1,6 +1,6 @@
 (define "JiangSameColumnWithNoPieceBetween"
     (if (= (column of:(where "Jiang" P1)) (column of:(where "Jiang" P2)))
-        (not ("NoSites" (forEach (sites Direction from:(where "Jiang" P1) N stop:(= (to) (where "Jiang" P2))) if:(not (is Empty (site))))))
+        (not ("NoSites" (forEach (sites Direction from:(where "Jiang" P1) N stop:(= (to) (where "Jiang" P2))) if:(is Occupied (site)))))
         True
     )
 )
@@ -26,7 +26,7 @@
 //------------------------------------------------------------------------------
 
 (game "MiniXiangqi" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (rectangle 7 7) use:Vertex) 
         
@@ -82,7 +82,7 @@
                     (between 
                         before:(count Rows) 
                         after:(count Rows) 
-                        if:(not (is Empty (between)))
+                        if:(is Occupied (between))
                     )
                     (to 
                         if:(is Empty (to)) 
@@ -148,7 +148,7 @@
         (rules "The rules for pieces are the same as regular Xiangqi, except pawns start with the ability to move sideways.")
         (id "1622")
         (source "<a href=\"http://mlwi.magix.net/bg/minixiangqi.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Website</a>")
-        (version "1.3.4")
+        (version "1.3.5")
         (classification "board/war/replacement/checkmate/xiangqi")
         (author "Shigenobu Kusumoto")
         (credit "Matthew Stephenson")
