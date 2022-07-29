@@ -8,10 +8,7 @@ import ludemeplexDetection.LudemeplexDetection;
 import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
-import manager.ai.AIRegistry;
-import search.minimax.UBFMKilothonContender;
 import supplementary.experiments.EvaluateAllUBFMs;
-import supplementary.experiments.HeuristicsTraining;
 import supplementary.experiments.debugging.FindCrashingTrial;
 import supplementary.experiments.eval.EvalAgents;
 import supplementary.experiments.eval.EvalGames;
@@ -76,7 +73,7 @@ public class PlayerCLI
 					"--game-distance",
 					"--generate-feature-eval-scripts",
 					"--eval-ubfm",
-					"--learning-with-descent",
+//					"--learning-with-descent",
 					"--generate-biased-mcts-eval-scripts",
 					"--kilothon"
 				)
@@ -125,17 +122,14 @@ public class PlayerCLI
 		else if (command.equalsIgnoreCase("--generate-biased-mcts-eval-scripts"))
 			GenerateBiasedMCTSEvalScripts.main(passArgs);
 		else if (command.equalsIgnoreCase("--kilothon"))
-		{
-			AIRegistry.registerAI("UBFM Contender", ()->{return new UBFMKilothonContender();}, (game)->{return true;});
 			Kilothon.main(passArgs);
-		}
 		else if (command.equalsIgnoreCase("--eval-ubfm"))
 			EvaluateAllUBFMs.main(passArgs);
-		else if (command.equalsIgnoreCase("--learning-with-descent"))
-		{
-			HeuristicsTraining.main(passArgs);
-			EvaluateAllUBFMs.main(new String[] {passArgs[0], "eval heuristics"});
-		}
+//		else if (command.equalsIgnoreCase("--learning-with-descent"))
+//		{
+//			HeuristicsTraining.main(passArgs);
+//			EvaluateAllUBFMs.main(new String[] {passArgs[0], "eval heuristics"});
+//		}
 		else
 			System.err.println("ERROR: command not yet implemented: " + command);
 
