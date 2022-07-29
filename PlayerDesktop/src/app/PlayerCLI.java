@@ -8,7 +8,6 @@ import ludemeplexDetection.LudemeplexDetection;
 import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
-import supplementary.experiments.EvaluateAllUBFMs;
 import supplementary.experiments.debugging.FindCrashingTrial;
 import supplementary.experiments.eval.EvalAgents;
 import supplementary.experiments.eval.EvalGames;
@@ -72,7 +71,7 @@ public class PlayerCLI
 					"--tutorial-generation",
 					"--game-distance",
 					"--generate-feature-eval-scripts",
-					"--eval-ubfm",
+//					"--eval-ubfm",
 //					"--learning-with-descent",
 					"--generate-biased-mcts-eval-scripts",
 					"--kilothon"
@@ -123,8 +122,8 @@ public class PlayerCLI
 			GenerateBiasedMCTSEvalScripts.main(passArgs);
 		else if (command.equalsIgnoreCase("--kilothon"))
 			Kilothon.main(passArgs);
-		else if (command.equalsIgnoreCase("--eval-ubfm"))
-			EvaluateAllUBFMs.main(passArgs);
+//		else if (command.equalsIgnoreCase("--eval-ubfm"))
+//			EvaluateAllUBFMs.main(passArgs);
 //		else if (command.equalsIgnoreCase("--learning-with-descent"))
 //		{
 //			HeuristicsTraining.main(passArgs);
