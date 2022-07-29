@@ -3,6 +3,7 @@ package search.minimax;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import game.Game;
 import main.collections.FastArrayList;
@@ -15,7 +16,7 @@ import utils.data_structures.ScoredMove;
 
 /** 
  * Naive AI that just picks the most promising action according to its learned selection policy 
- * base on actions, with no exploration.
+ * based on actions, with no exploration.
  * 
  * @author cyprien
  */
@@ -27,6 +28,10 @@ public class NaiveActionBasedSelection extends AI
 	
 	/** Current list of moves available in root */
 	protected FastArrayList<Move> currentRootMoves = null;
+	
+	protected float selectionEpsilon = 0f;
+	
+	protected int selectActionNbCalls = 0;
 
 	//-------------------------------------------------------------------------
 	
@@ -36,8 +41,7 @@ public class NaiveActionBasedSelection extends AI
 	public NaiveActionBasedSelection ()
 	{
 		super();
-		setLearnedSelectionPolicy(new SoftmaxFromMetadataSelection(0f));
-		friendlyName = "Biased UBFM";
+		friendlyName = "Naive Action Based Selection";
 	}
 
 	//-------------------------------------------------------------------------
@@ -53,21 +57,35 @@ public class NaiveActionBasedSelection extends AI
 	{
 		currentRootMoves = new FastArrayList<Move>(game.moves(context).moves());
 		
-		final int numRootMoves = currentRootMoves.size();
-		
-		final List<ScoredMove> consideredMoveIndices = new ArrayList<ScoredMove>(numRootMoves);
-		
-		for (int i=0; i<numRootMoves; ++i)
-		{
-			final Move m = currentRootMoves.get(i);
+		Move selectedMove;		
+		if ((learnedSelectionPolicy != null) && (ThreadLocalRandom.current().nextDouble(1.)<selectionEpsilon))
+		{			
+			final int numRootMoves = currentRootMoves.size();
 			
-			final float actionValue = (float) learnedSelectionPolicy.computeLogit(context,m);
+			final List<ScoredMove> consideredMoveIndices = new ArrayList<ScoredMove>(numRootMoves);
 			
-			consideredMoveIndices.add(new ScoredMove(m,actionValue,1));
-		};
-		Collections.sort(consideredMoveIndices);
+			for (int i=0; i<numRootMoves; ++i)
+			{
+				final Move m = currentRootMoves.get(i);
+				
+				final float actionValue = (float) learnedSelectionPolicy.computeLogit(context,m);
+				
+				consideredMoveIndices.add(new ScoredMove(m,actionValue,1));
+			};
+			Collections.sort(consideredMoveIndices);
+			
+			selectedMove = consideredMoveIndices.get(0).move;
+		}
+		else
+		{			
+			final int r = ThreadLocalRandom.current().nextInt(currentRootMoves.size());
+			final Move move = currentRootMoves.get(r);
+			selectedMove = move;
+		}
 		
-		return consideredMoveIndices.get(0).move;
+		selectActionNbCalls += 1;
+		
+		return selectedMove;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -81,10 +99,27 @@ public class NaiveActionBasedSelection extends AI
 		currentRootMoves = null;
 		
 		// Instantiate feature sets for selection policy
-		if (learnedSelectionPolicy != null)
+		if ((game.metadata().ai().features() != null) || (game.metadata().ai().trainedFeatureTrees() != null))
+		{
+			setLearnedSelectionPolicy(new SoftmaxFromMetadataSelection(0f));
 			learnedSelectionPolicy.initAI(game, playerID);
+		}
+		
+		selectActionNbCalls = 0;
 		
 		return;
+	}
+
+	@Override
+	public boolean supportsGame(final Game game)
+	{
+		if (game.isStochasticGame())
+			return false;
+		
+		if (game.hiddenInformation())
+			return false;
+		
+		return ((game.metadata().ai().features() != null) || (game.metadata().ai().trainedFeatureTrees() != null));
 	}
 	
 	//-------------------------------------------------------------------------
@@ -96,6 +131,16 @@ public class NaiveActionBasedSelection extends AI
 	public void setLearnedSelectionPolicy(final SoftmaxPolicy policy)
 	{
 		learnedSelectionPolicy = policy;
+	}
+	
+	public void setSelectionEpsilon(final float eps)
+	{
+		selectionEpsilon = eps;
+	}
+	
+	public int getSelectActionNbCalls()
+	{
+		return selectActionNbCalls;
 	}
 	
 }

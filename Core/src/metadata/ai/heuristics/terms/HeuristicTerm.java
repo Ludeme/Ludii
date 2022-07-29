@@ -284,11 +284,8 @@ public abstract class HeuristicTerm implements AIItem
 		
 		for (int i = 1; i < pieceWeights.dim(); ++i)
 		{
-			if (pieceWeights.get(i) != 0.f)
-			{
-				newPieceWeightNames.add(components[i].name());
-				newPieceWeights.add(pieceWeights.get(i));
-			}
+			newPieceWeightNames.add(components[i].name());
+			newPieceWeights.add(pieceWeights.get(i));
 		}
 		
 		return new Object[]{newPieceWeightNames.toArray(new String[0]), newPieceWeights.toArray()};

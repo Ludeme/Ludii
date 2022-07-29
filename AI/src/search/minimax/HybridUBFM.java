@@ -11,7 +11,6 @@ import other.move.Move;
 import other.state.State;
 import policies.softmax.SoftmaxFromMetadataSelection;
 import policies.softmax.SoftmaxPolicy;
-import search.mcts.MCTS;
 import utils.data_structures.transposition_table.TranspositionTableUBFM;
 import utils.data_structures.transposition_table.TranspositionTableUBFM.UBFMTTData;
 
@@ -20,7 +19,7 @@ import utils.data_structures.transposition_table.TranspositionTableUBFM.UBFMTTDa
  * Can also work with no trained features, and will then execute random playouts.
  * 
  * (the formula for the evaluation of a context is v(s) = h(s) * x + (1-x) * p(s) * max(abs(h))
- *  where h is the heuristic score, x is heiristicScoreWeight parameter, p(s) is the average
+ *  where h is the heuristic score, x is heuristicScoreWeight parameter, p(s) is the average
  *  ranking utility obtained in the playouts (between -1 and 1) and max(abs(h)) is the 
  *  maximum absolute value of heuristics observed up to now. An effect of this choice is that 
  *  the playouts will have less impact when the AI doesn't know much about the heuristics range.)
@@ -36,7 +35,7 @@ public class HybridUBFM extends UBFM
 	private final float epsilon = 0.5f;
 	
 	/** Number of playouts for each state's evaluation */
-	protected int nbPlayoutsPerEvaluation = 10;
+	protected int nbPlayoutsPerEvaluation = 6;
 	
 	/** Weight of heuristics score in state evaluation */
 	protected float heuristicScoreWeight = 0.5f;
@@ -51,6 +50,10 @@ public class HybridUBFM extends UBFM
 	
 	/** Maximum absolute value recorded for heuristic scores */
 	protected float maxAbsHeuristicScore = 0f;
+
+	/** For the AI visualisation data: */
+	float maxRegisteredValue;
+	float minRegisteredValue;
 	
 	//-------------------------------------------------------------------------
 	
@@ -174,12 +177,15 @@ public class HybridUBFM extends UBFM
 				minHeuristicEval = Math.min(minHeuristicEval, heuristicScore);
 				maxHeuristicEval = Math.max(maxHeuristicEval, heuristicScore);
 				
+				maxRegisteredValue = Math.max(contextScore, maxRegisteredValue);
+				minRegisteredValue = Math.min(contextScore, minRegisteredValue);
+				
 				maxAbsHeuristicScore = Math.max(maxAbsHeuristicScore, Math.abs(heuristicScore));
 			
 			}
 
 			if (transpositionTable != null)
-				transpositionTable.store(null, zobrist, contextScore, depth, TranspositionTableUBFM.EXACT_VALUE, null);
+				transpositionTable.store(zobrist, contextScore, depth, TranspositionTableUBFM.EXACT_VALUE, null);
 			
 			nbStatesEvaluated += 1;
 		};
@@ -207,6 +213,32 @@ public class HybridUBFM extends UBFM
 		return;
 	}
 	
+	//--------------------------------------------------------------------------
+	
+	/**
+	 * Converts a score into a value estimate in [-1, 1]. Useful for visualisations.
+	 * 
+	 * @param score
+	 * @param alpha 
+	 * @param beta 
+	 * @return Value estimate in [-1, 1] from unbounded (heuristic) score.
+	 */
+	@Override
+	public double scoreToValueEst(final float score, final float alpha, final float beta)
+	{
+		if (score <= alpha+10)
+			return -1.0;
+		
+		if (score >= beta-10)
+			return 1.0;
+		
+		minRegisteredValue = Math.min(minRegisteredValue, minHeuristicEval);
+		maxRegisteredValue = Math.max(maxRegisteredValue, maxHeuristicEval);
+
+		// Map to range [-0.8, 0.8] based on most extreme heuristic evaluations
+		// observed so far.
+		return -0.8 + (0.8 - -0.8) * ((score - minRegisteredValue) / (maxRegisteredValue - minRegisteredValue));
+	}
 	
 	//-------------------------------------------------------------------------
 	

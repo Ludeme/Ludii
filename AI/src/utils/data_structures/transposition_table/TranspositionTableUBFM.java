@@ -3,12 +3,11 @@ package utils.data_structures.transposition_table;
 import java.util.ArrayList;
 import java.util.List;
 
-import other.move.Move;
 import utils.data_structures.ScoredMove;
 
 /**
- * Transposition table for Best-First Search.
- * Copied from AB-Transposition tables but adding a field for the sorted list of Scored Moves.
+ * Transposition table for Unbounded Best-First Minimax. Works as a hash tables, where the beginning of the hash code
+ * points to an entry which contains a list of data.
  * 
  * @author cyprien
  */
@@ -22,14 +21,10 @@ public class TranspositionTableUBFM
 	public final static byte INVALID_VALUE			= (byte) 0x0;
 	/** An exact (maybe heuristic) value stored in Transposition Table */
 	public final static byte EXACT_VALUE			= (byte) 0x1;
-	/** A lower bound stored in Transposition Table */
-	public final static byte LOWER_BOUND			= (byte) (0x1 << 1);
-	/** A upper bound stored in Transposition Table */
-	public final static byte UPPER_BOUND			= (byte) (0x1 << 2);
 	/** An exact value marked (only used by the heuristic learning code) */
-	public final static byte MARKED			= (byte) (0x1 << 3);
+	public final static byte MARKED			= (byte) (0x1 << 1);
 	/** An exact value validated (only used by the heuristic learning code) */
-	public final static byte VALIDATED			= (byte) (0x1 << 4);
+	public final static byte VALIDATED			= (byte) (0x1 << 2);
 	
 	//-------------------------------------------------------------------------
 	
@@ -105,7 +100,6 @@ public class TranspositionTableUBFM
 	
 	/**
 	 * Stores new data for given full hash (full 64bits code)
-	 * @param bestMove 
 	 * @param fullHash
 	 * @param value 
 	 * @param depth 
@@ -113,7 +107,6 @@ public class TranspositionTableUBFM
 	 */
 	public void store
 	(
-		final Move bestMove, 
 		final long fullHash,
 		final float value,
 		final int depth,
@@ -127,12 +120,12 @@ public class TranspositionTableUBFM
 		if (entry == null)
 		{
 			entry = new UBFMTTEntry();
-			entry.data.add(new UBFMTTData(bestMove, fullHash, value, depth, valueType, sortedScoredMoves));
+			entry.data.add(new UBFMTTData(fullHash, value, depth, valueType, sortedScoredMoves));
 			table[idx] = entry;
 		}
 		else
 		{
-			UBFMTTData dataToSave =  new UBFMTTData(bestMove, fullHash, value, depth, valueType, sortedScoredMoves);
+			UBFMTTData dataToSave =  new UBFMTTData(fullHash, value, depth, valueType, sortedScoredMoves);
 			
 			// We erase a previous entry if it has the same fullHash
 			for (int i =0; i<entry.data.size(); i++)
@@ -160,11 +153,7 @@ public class TranspositionTableUBFM
 	 * @author cyprien
 	 */
 	public static final class UBFMTTData
-	{
-		
-		/** The best move according to previous AB search */
-		public Move bestMove = null;
-		
+	{		
 		/** Full 64bits hash code for which this data was stored */
 		public long fullHash = -1L;
 		
@@ -182,7 +171,6 @@ public class TranspositionTableUBFM
 		
 		/**
 		 * Constructor
-		 * @param bestMove
 		 * @param fullHash
 		 * @param value
 		 * @param depth
@@ -190,7 +178,6 @@ public class TranspositionTableUBFM
 		 */
 		public UBFMTTData
 		(
-			final Move bestMove, 
 			final long fullHash,
 			final float value,
 			final int depth,
@@ -198,7 +185,6 @@ public class TranspositionTableUBFM
 			final List<ScoredMove> sortedScoredMoves
 		)
 		{
-			this.bestMove = bestMove;
 			this.fullHash = fullHash;
 			this.value = value;
 			this.depth = depth;

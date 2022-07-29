@@ -21,7 +21,7 @@ import utils.data_structures.ScoredIndex;
 /**
  * AI based on Unbounded Best-First Minimax, which uses the action evaluation to select a small number 
  * of actions that will really be simulated (the most promising ones). If selectionEpsilon != 0, then any other move can still be randomly 
- * picked for exploration.
+ * picked for exploration with a probability of selectionEpsilon.
  * 
  * @author cyprien
  */
@@ -30,7 +30,7 @@ public class BiasedUBFM extends UBFM
 {
 	
 	/** Number of moves that are really evaluated with the heuristics at each step of the exploration. */
-	private int nbStateEvaluationsPerNode = 3;
+	private int nbStateEvaluationsPerNode = 6;
 	
 	//-------------------------------------------------------------------------
 
@@ -68,7 +68,7 @@ public class BiasedUBFM extends UBFM
 	//-------------------------------------------------------------------------
 
 	@Override
-	protected FVector estimateMoveValues
+	protected FVector estimateMovesValues
 	(
 		final FastArrayList<Move> legalMoves,
 		final Context context,
@@ -113,7 +113,7 @@ public class BiasedUBFM extends UBFM
 
 			nodeHashes.add(contextCopy.state().fullHash(contextCopy));
 			final float heuristicScore = getContextValue(contextCopy, maximisingPlayer, nodeHashes,depth);
-			nodeHashes.remove(nodeHashes.size()-1);
+			nodeHashes.removeAt(nodeHashes.size()-1);
 			
 			moveScores.set(i, heuristicScore);
 			

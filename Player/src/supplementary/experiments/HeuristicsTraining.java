@@ -63,22 +63,19 @@ import weka.classifiers.functions.LinearRegression;
  * @author cyprien
  */
 
-public class HeuristicsLearning
+public class HeuristicsTraining
 {
 	
 	private final boolean debugDisplays = true;
 	
 	/** Duration of the whole training in seconds: */
-	private final double trainingDuration = 10000.;
-	
-	/** Game played: */
-	private String gameName;
+	private final double trainingDuration = 14400.;
 	
 	/** Thinking time of the AI in seconds: */
 	private final float thinkingTime = 0.3f;
 	
 	/** Path of the directory with the files: */
-	private static final String repository = "/home/cyprien/Documents/M1/Internship/data/learning/";
+	private static final String repository = "/data/learning/";
 	
 	private final String trainDataFile = "training.arff";
 	private final String testDataFile = "testing.arff";
@@ -93,7 +90,13 @@ public class HeuristicsLearning
 	private final float scoreWin = 20f;
 	
 	/** Number of playouts before the weights are updated */
-	private final int numPlayoutsPerIteration = 6;
+	private final int numPlayoutsPerIteration = 40;
+	
+	/** Numbre of turns after which the games are stopped */
+	private int maxNbTurns = 40;
+	
+	/** Probability of discarding an entry: */
+	private final double probabilityDiscard = 0.9;
 	
 	/** Threhshold of the heuristics weights (under it thy are not saved) */
 	private final float heuristicWeightsThreshold = 0.001f;
@@ -118,10 +121,8 @@ public class HeuristicsLearning
 	
 	//-------------------------------------------------------------------------
 	
-	public HeuristicsLearning(String gameName)
-	{
-		this.gameName = gameName;
-		
+	public HeuristicsTraining(String gameName)
+	{		
 		game = GameLoader.loadGameFromName(gameName+".lud");
 		numPlayers = game.players().count();
 		
@@ -142,6 +143,9 @@ public class HeuristicsLearning
 			System.out.println("Number of parameters : "+Integer.toString(nbParameters));
 	}
 	
+	//-------------------------------------------------------------------------
+
+	
 	public static void main (String[] args)
 	{
 		String gameName;
@@ -150,17 +154,14 @@ public class HeuristicsLearning
 		else
 			gameName = "Breakthrough";
 		
-		HeuristicsLearning heuristicLearning = new HeuristicsLearning(gameName);
+		HeuristicsTraining heuristicTraining = new HeuristicsTraining(gameName);
 
 		try {
-			heuristicLearning.runHeuristicLearning();	
+			heuristicTraining.runHeuristicLearning();	
 		} catch (final Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	//-------------------------------------------------------------------------
-	
 	
 	protected void runHeuristicLearning () throws Exception
 	{
@@ -179,6 +180,7 @@ public class HeuristicsLearning
 		
 		while (System.currentTimeMillis() < stopTime)
 		{
+			
 			//-----------------------------------------------------------------
 
 			// Initialising the training data files:
@@ -205,6 +207,10 @@ public class HeuristicsLearning
 			}
 			
 			heuristics.updateParams(game, heuristicWeights, 0);
+
+			System.out.println("Heuristics:");
+			System.out.println(heuristics.toString());
+			System.out.println(heuristics.paramsVector().toString());
 
 			fillTrainingCallNumber = 0;
 			
@@ -287,7 +293,7 @@ public class HeuristicsLearning
 			classifier.buildClassifier(trainDataSet);
 			
 			for (int i=0; i<nbParameters; i++)
-				heuristicWeights.set(i, (float) classifier.coefficients()[i]);
+				heuristicWeights.set(i, (float) classifier.coefficients()[i+1]);
 
 			// Evaluating the classifier:
 			Evaluation eval = new Evaluation(trainDataSet);
@@ -299,8 +305,6 @@ public class HeuristicsLearning
 			System.out.println(eval.toSummaryString());
 			System.out.print(" the expression for the input data as per alogorithm is ");
 			System.out.println(classifier);
-			
-			numIteration += 1;
 			
 			//---------------------------------------------------------------------
 			// Saving weights in a file:
@@ -332,7 +336,14 @@ public class HeuristicsLearning
 		      System.out.println("An error occurred.");
 		      e.printStackTrace();
 			}
-		}
+			
+			numIteration += 1;
+			
+//			We consider that we have generated enough heuristic parameters after 75 iterations
+			if (numIteration > 75)
+				break;
+		};
+		System.out.println("Heuristic training done.");
 		
 	}
 	
@@ -362,11 +373,13 @@ public class HeuristicsLearning
 		final Trial trial = new Trial(game);
 		final Context context = new Context(game, trial);
 		
-		final BiasedUBFM AI = new BiasedUBFM(heuristics);
+		final UBFM AI = new UBFM(heuristics);
 		
 		AI.setIfFullPlayouts(true); // switches to the "Descent" algorithm
-		AI.setNbStateEvaluationsPerNode(6);
+//		AI.setNbStateEvaluationsPerNode(6);
+		AI.setSelectionEpsilon(0.3f);
 		AI.savingSearchTreeDescription = false;
+		AI.debugDisplay = false;
 		AI.forceAMaximisingPlayer(maximisingPlayer);
 		AI.setTTReset(false);
 
@@ -381,7 +394,7 @@ public class HeuristicsLearning
 
 		final Context initialContext = AI.copyContext(context); // used later
 		
-		game.playout(context, agents, thinkingTime, null, -1, 100, ThreadLocalRandom.current()); // TODO: change max nb playout actions
+		game.playout(context, agents, thinkingTime, null, -1, maxNbTurns, ThreadLocalRandom.current()); // TODO: change max nb playout actions
 		
 		System.out.println("done");
 		
@@ -393,12 +406,13 @@ public class HeuristicsLearning
 			System.out.println("\nGenerating training set for the linear regression:\n");
 		}
 		
+		System.out.println("Nubmer of entries in the TT: "+Integer.toString(AI.getTranspositionTable().nbEntries()));
 		
 		final long zobrist = initialContext.state().fullHash(initialContext);
 		final UBFMTTData tableData = AI.getTranspositionTable().retrieve(zobrist);
 		
 		// Marking the value in the TT so that it is not visited again in the same recursive call
-		AI.getTranspositionTable().store(tableData.bestMove, tableData.fullHash, tableData.value, tableData.depth, TranspositionTableUBFM.MARKED, tableData.sortedScoredMoves);
+		AI.getTranspositionTable().store(tableData.fullHash, tableData.value, tableData.depth, TranspositionTableUBFM.MARKED, tableData.sortedScoredMoves);
 
 		final StringBuffer trainDataEntries = new StringBuffer();
 		final StringBuffer testDataEntries = new StringBuffer();
@@ -412,7 +426,7 @@ public class HeuristicsLearning
 		}
 		
 		// Validating the value in the TT so that it is not visited again
-		AI.getTranspositionTable().store(tableData.bestMove, tableData.fullHash, rootValue, tableData.depth, TranspositionTableUBFM.VALIDATED, tableData.sortedScoredMoves);
+		AI.getTranspositionTable().store(tableData.fullHash, rootValue, tableData.depth, TranspositionTableUBFM.VALIDATED, tableData.sortedScoredMoves);
 				
 		return new Pair<String,String>(trainDataEntries.toString(), testDataEntries.toString());
 	}
@@ -492,14 +506,14 @@ public class HeuristicsLearning
 							{
 								
 								// Marking the value in the TT so that it is not visited again in the same recursive call
-								AI.getTranspositionTable().store(	newTableData.bestMove, newTableData.fullHash, newTableData.value,
+								AI.getTranspositionTable().store(	newTableData.fullHash, newTableData.value,
 																	newTableData.depth, TranspositionTableUBFM.MARKED,
 																	newTableData.sortedScoredMoves);
 								
 								final float childValue = fillTrainingData(AI, contextCopy, trainingEntries, testingEntries, maximisingPlayer);
 								
 								// Un-marking the value in the TT so that it is not considered as a draw if encountered elsewhere in the tree
-								AI.getTranspositionTable().store(	newTableData.bestMove, newTableData.fullHash, childValue, 
+								AI.getTranspositionTable().store(	newTableData.fullHash, childValue, 
 																	newTableData.depth, TranspositionTableUBFM.VALIDATED, 
 																	newTableData.sortedScoredMoves);
 							}
@@ -523,7 +537,7 @@ public class HeuristicsLearning
 			//-----------------------------------------------------------------
 			// Adding entry with heuristic value differences:
 			
-			if (registeringValue)
+			if ((registeringValue) && (Math.random()>probabilityDiscard))
 			{
 				
 				StringBuffer dataFileContent;
@@ -569,21 +583,21 @@ public class HeuristicsLearning
 		if (MobilityAdvanced.isApplicableToGame(game))
 			heuristicTerms.add(new MobilityAdvanced(null, 0f));
 		
-		if (InfluenceAdvanced.isApplicableToGame(game))
-			heuristicTerms.add(new InfluenceAdvanced(null, 0f));
+//		if (InfluenceAdvanced.isApplicableToGame(game))
+//			heuristicTerms.add(new InfluenceAdvanced(null, 0f));
 
-		if (LineCompletionHeuristic.isApplicableToGame(game))
-			heuristicTerms.add(new LineCompletionHeuristic(null, 0f, null));
+//		if (LineCompletionHeuristic.isApplicableToGame(game))
+//			heuristicTerms.add(new LineCompletionHeuristic(null, 0f, null));
 		
 		
-		if (OwnRegionsCount.isApplicableToGame(game))
-			heuristicTerms.add(new OwnRegionsCount(null, 0f));
+//		if (OwnRegionsCount.isApplicableToGame(game))
+//			heuristicTerms.add(new OwnRegionsCount(null, 0f));
 		
-		if (PlayerSiteMapCount.isApplicableToGame(game))
-			heuristicTerms.add(new PlayerSiteMapCount(null, 0f));
-		
-		if (Score.isApplicableToGame(game))
-			heuristicTerms.add(new Score(null, 0f));
+//		if (PlayerSiteMapCount.isApplicableToGame(game))
+//			heuristicTerms.add(new PlayerSiteMapCount(null, 0f));
+//		
+//		if (Score.isApplicableToGame(game))
+//			heuristicTerms.add(new Score(null, 0f));
 		
 //		if (CentreProximity.isApplicableToGame(game))
 //			heuristicTerms.add(new CentreProximity(null, 0f, null));
@@ -601,13 +615,13 @@ public class HeuristicsLearning
 		if (SidesProximity.isApplicableToGame(game))
 			heuristicTerms.add(new SidesProximity(null, 0f, null));
 		
-		if (PlayerRegionsProximity.isApplicableToGame(game))
-		{
-			for (int p = 1; p <= game.players().count(); ++p)
-			{
-				heuristicTerms.add(new PlayerRegionsProximity(null, 0f, p, null));
-			}
-		}
+//		if (PlayerRegionsProximity.isApplicableToGame(game))
+//		{
+//			for (int p = 1; p <= game.players().count(); ++p)
+//			{
+//				heuristicTerms.add(new PlayerRegionsProximity(null, 0f, p, null));
+//			}
+//		}
 		
 		/*
 		 if (RegionProximity.isApplicableToGame(game))

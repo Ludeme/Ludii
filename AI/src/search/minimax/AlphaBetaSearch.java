@@ -42,8 +42,8 @@ import utils.data_structures.transposition_table.TranspositionTable.ABTTData;
  */
 public class AlphaBetaSearch extends ExpertPolicy
 {
-	
-	protected boolean savingSearchTreeDescription = true;
+	/** If savingSearchTreeDescription is true, the search tree will be saved in searchTreeFile */
+	protected boolean savingSearchTreeDescription = false;
 	protected String searchTreeFile = "/home/cyprien/Documents/M1/Internship/search_trees_raw/AB_default.sav";
 	
 	protected final StringBuffer searchTreeOutput = new StringBuffer();
@@ -385,7 +385,7 @@ public class AlphaBetaSearch extends ExpertPolicy
 			nodeHashes.add(initialZobrist);
 			
 			if (savingSearchTreeDescription)
-				searchTreeOutput.append("("+stringOfNodeHashes(nodeHashes)+",0,"+Integer.toString(context.state().playerToAgent(context.state().mover()))+"),\n");
+				searchTreeOutput.append("("+stringOfNodeHashes(nodeHashes)+","+getContextValue(maximisingPlayer,context)+","+Integer.toString(context.state().playerToAgent(context.state().mover()))+"),\n");
 			
 			for (int i = 0; i < numRootMoves; ++i)
 			{
@@ -524,7 +524,7 @@ public class AlphaBetaSearch extends ExpertPolicy
 		nbStatesEvaluated += 1;
 		
 		if (savingSearchTreeDescription)
-			searchTreeOutput.append("("+stringOfNodeHashes(nodeHashes)+",0,"+Integer.toString(state.playerToAgent(state.mover()))+"),\n");
+			searchTreeOutput.append("("+stringOfNodeHashes(nodeHashes)+","+getContextValue(maximisingPlayer,context)+","+Integer.toString(state.playerToAgent(state.mover()))+"),\n");
 		
 		final long zobrist = state.fullHash(context);
 		final ABTTData tableData;
@@ -1206,6 +1206,29 @@ public class AlphaBetaSearch extends ExpertPolicy
     			);
     	
     	return Arrays.asList(experience);
+	}
+	
+	protected float getContextValue(int maximisingPlayer, Context context) // just for displaying the search tree
+	{
+		float heuristicScore = heuristicValueFunction().computeValue(
+				context, maximisingPlayer, ABS_HEURISTIC_WEIGHT_THRESHOLD);
+		
+		for (final int opp : opponents(maximisingPlayer))
+		{
+			if (context.active(opp))
+				heuristicScore -= heuristicValueFunction().computeValue(context, opp, ABS_HEURISTIC_WEIGHT_THRESHOLD);
+			else if (context.winners().contains(opp))
+				heuristicScore -= PARANOID_OPP_WIN_SCORE;
+		}
+		
+		// Invert scores if players swapped
+		if (context.state().playerToAgent(maximisingPlayer) != maximisingPlayer)
+			heuristicScore = -heuristicScore;
+		
+		minHeuristicEval = Math.min(minHeuristicEval, heuristicScore);
+		maxHeuristicEval = Math.max(maxHeuristicEval, heuristicScore);
+		
+		return heuristicScore;
 	}
 	
 	//-------------------------------------------------------------------------

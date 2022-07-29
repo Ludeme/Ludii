@@ -27,6 +27,7 @@ import search.minimax.LazyUBFM;
 import search.minimax.NaiveActionBasedSelection;
 import search.minimax.UBFM;
 import utils.MyBasicAI;
+import utils.RandomAI;
 import search.minimax.BiasedUBFM;
 
 /**
@@ -48,7 +49,9 @@ public class EvaluateAllUBFMs
 	/** Time for the AI to think in the simulations (seconds): */
 	final private static double thinkingTime = 1;
 	
-	final String repository = "/data/";
+	private boolean compareHeuristics = true;
+	
+	final String repository = "/home/cyprien/Documents/M1/Internship/data/";
 	
 	//-------------------------------------------------------------------------
 	
@@ -74,33 +77,44 @@ public class EvaluateAllUBFMs
 		System.out.println("Launching all the matches in the game "+gameName+"...");
 		
 		final Game game = GameLoader.loadGameFromName(gameName+".lud");
-		
+
 		configurations = new ArrayList<String[]>(80);
-		for (String epsilon : new String[] {"0", "0.1", "0.2", "0.3", "0.5"})
+		
+		if (compareHeuristics)
 		{
-			
-			configurations.add(new String[] {"UBFM",epsilon});
-			
-			configurations.add(new String[] {"DescentUBFM",epsilon});
-			
+			configurations.add(new String[] {"TrainedUBFM", Float.toString(0.2f), Integer.toString(1)});
+			for (int i=1; i<=15; i++)
+				configurations.add(new String[] {"TrainedUBFM", Float.toString(0.2f), Integer.toString(i*5)});
+		}
+		else
+		{
 			if ((game.metadata().ai().features() != null) || (game.metadata().ai().trainedFeatureTrees() != null))
 			{
-				for (String weight : new String[] {"0.1","0.3","0.5","1","2"})
-					configurations.add(new String[] {"LazyUBFM",epsilon,weight});
-				
-				for (String n : new String[] {"2","4","6","10"})
-					configurations.add(new String[] {"BiasedUBFM",epsilon,n});
+				configurations.add(new String[] {"Naive Action Based Selection"});
+				System.out.println("features found");
 			};
+			for (String epsilon : new String[] {"0", "0.1", "0.2", "0.3", "0.5"})
+			{
+				
+				configurations.add(new String[] {"UBFM",epsilon});
+				
+				configurations.add(new String[] {"DescentUBFM",epsilon});
+				
+				if ((game.metadata().ai().features() != null) || (game.metadata().ai().trainedFeatureTrees() != null))
+				{
+					for (String weight : new String[] {"0.1","0.3","0.5","1","2"})
+						configurations.add(new String[] {"LazyUBFM",epsilon,weight});
+					
+					for (String n : new String[] {"2","4","6","10"})
+						configurations.add(new String[] {"BiasedUBFM",epsilon,n});
+				};
+				
+				for (String weight : new String[] {"0.2","0.5","0.9"})
+					configurations.add(new String[] {"HybridUBFM",epsilon,weight});
+			}
 			
-			for (String weight : new String[] {"0.2","0.5","0.9"})
-				configurations.add(new String[] {"HybridUBFM",epsilon,weight});
+			configurations.add(new String[] {"Bob"});
 		}
-		if ((game.metadata().ai().features() != null) || (game.metadata().ai().trainedFeatureTrees() != null))
-		{
-			configurations.add(new String[] {"Naive Action Based Selection"});
-		};
-		
-		configurations.add(new String[] {"Bob"});
 		
 		
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -122,6 +136,8 @@ public class EvaluateAllUBFMs
 						(
 							() -> 
 							{
+
+								final double[] agentScores = new double[]{0.,0.,0.,0.};
 								try
 								{
 									LocalDateTime beginTime = LocalDateTime.now();  
@@ -132,6 +148,12 @@ public class EvaluateAllUBFMs
 									{
 									case "UBFM":
 										UBFM_AI = new UBFM();
+										break;
+									case "TrainedUBFM":
+										String fileName = repository+"learning/learned_heuristics/"+gameName+configuration[2]+".sav";
+										File f = new File(fileName);
+										if (f.exists())
+											UBFM_AI = new UBFM();
 										break;
 									case "DescentUBFM":
 										UBFM_AI = new UBFM();
@@ -159,15 +181,17 @@ public class EvaluateAllUBFMs
 										not_UBFM_AI = new MyBasicAI();
 										break;
 									default:
+										System.out.println(configuration[0]);
 										throw new RuntimeException("Configuration not understood");
 									}
 
-									final AI Tested_AI;
+									AI Tested_AI = null;
 									if (UBFM_AI != null)
 									{
 										UBFM_AI.setSelectionEpsilon(Float.parseFloat(configuration[1]));
 										UBFM_AI.setSelectionPolicy(UBFM.SelectionPolicy.SAFEST);
 										Tested_AI = UBFM_AI;
+										UBFM_AI.savingSearchTreeDescription = false;
 										
 										//if (gameName == "Chess")
 										UBFM_AI.setTTReset(true); // FIXME: could be changed
@@ -175,61 +199,63 @@ public class EvaluateAllUBFMs
 										UBFM_AI.debugDisplay = false;
 										UBFM_AI.savingSearchTreeDescription = false;
 									}
-									else
-									{
+									else if (not_UBFM_AI != null)
 										Tested_AI = not_UBFM_AI;
-									}
 									
-									final AI opponentAI;
-									switch (opponent)
+									if (Tested_AI != null)
 									{
-									case "AlphaBeta":
-										opponentAI = new AlphaBetaSearch();
-										break;
-									case "UCT":
-										opponentAI = MCTS.createUCT();
-										break;
-									default:
-										throw new RuntimeException("Unkown opponent");
-									}
-									
-									final double[] agentScores = new double[]{0.,0.,0.,0.};
-									
-									compareAgents(game, Tested_AI, opponentAI, agentScores, numTrialsPerComparison, configuration);
-	
-									try
-									{
-										File directory = new File(String.valueOf(repository+gameName+"/"+opponent+"/"));
-										directory.mkdirs();
-										FileWriter myWriter = new FileWriter(repository+gameName+"/"+opponent+"/"+configurationToString(configuration)+".sav");
-										myWriter.write("Results of the duel between "+configurationToString(configuration)+" against "+opponent+":\n");
-										myWriter.write("Game: "+gameName+"\n");
-										myWriter.write("(thinking time: "+Double.toString(thinkingTime)+", numberOfPlayouts: "+Integer.toString(numTrialsPerComparison)+")\n");
-										myWriter.write("(begin time "+dtf.format(beginTime)+", end time "+dtf.format(LocalDateTime.now())+")\n\n");
-										myWriter.write("UBFM WR as 1st player:"+Double.toString(agentScores[0])+"\n");
-										myWriter.write("Opponent WR as 1st player:"+Double.toString(agentScores[1])+"\n");
-										myWriter.write("UBFM WR as 2nd player:"+Double.toString(agentScores[2])+"\n");
-										myWriter.write("Opponent WR as 2nd player:"+Double.toString(agentScores[3])+"\n");
-										myWriter.write("\n");
-										myWriter.write("UBFM WR average:"+Double.toString((agentScores[2]+agentScores[0])/2.)+"\n");
-										myWriter.write("Opponent WR average:"+Double.toString((agentScores[1]+agentScores[3])/2.)+"\n");
-										myWriter.write("UBFM score:"+Double.toString(100*(agentScores[0]+agentScores[2])/(agentScores[0]+agentScores[1]+agentScores[2]+agentScores[3]))+"\n");
-										myWriter.close();
-									}
-									catch (IOException e)
-									{
-								    	System.out.println("An error occurred.");
-								    	e.printStackTrace();
-								    }
+										final AI opponentAI;
+										switch (opponent)
+										{
+										case "AlphaBeta":
+											opponentAI = new AlphaBetaSearch();
+											break;
+										case "UCT":
+											opponentAI = MCTS.createUCT();
+											break;
+										case "RandomAI":
+											opponentAI = new RandomAI();
+											break;
+										default:
+											throw new RuntimeException("Unkown opponent");
+										}
+										
+										compareAgents(game, Tested_AI, opponentAI, agentScores, numTrialsPerComparison, configuration);
+		
+										try
+										{
+											File directory = new File(String.valueOf(repository+gameName+"/"+opponent+"/"));
+											directory.mkdirs();
+											FileWriter myWriter = new FileWriter(repository+gameName+"/"+opponent+"/"+configurationToString(configuration)+".sav");
+											myWriter.write("Results of the duel between "+configurationToString(configuration)+" against "+opponent+":\n");
+											myWriter.write("Game: "+gameName+"\n");
+											myWriter.write("(thinking time: "+Double.toString(thinkingTime)+", numberOfPlayouts: "+Integer.toString(numTrialsPerComparison)+")\n");
+											myWriter.write("(begin time "+dtf.format(beginTime)+", end time "+dtf.format(LocalDateTime.now())+")\n\n");
+											myWriter.write("UBFM WR as 1st player:"+Double.toString(agentScores[0])+"\n");
+											myWriter.write("Opponent WR as 1st player:"+Double.toString(agentScores[1])+"\n");
+											myWriter.write("UBFM WR as 2nd player:"+Double.toString(agentScores[2])+"\n");
+											myWriter.write("Opponent WR as 2nd player:"+Double.toString(agentScores[3])+"\n");
+											myWriter.write("\n");
+											myWriter.write("UBFM WR average:"+Double.toString((agentScores[2]+agentScores[0])/2.)+"\n");
+											myWriter.write("Opponent WR average:"+Double.toString((agentScores[1]+agentScores[3])/2.)+"\n");
+											myWriter.write("UBFM score:"+Double.toString(50f+(agentScores[0]+agentScores[2])/4.-(agentScores[1]+agentScores[3])/4.)+"\n");
+											myWriter.close();
+										}
+										catch (IOException e)
+										{
+									    	System.out.println("An error occurred.");
+									    	e.printStackTrace();
+									    }
+										
+									};
 									
 									return agentScores;
-									
 								}
 								catch (final Exception e)
 								{
 									e.printStackTrace();
 									
-									return new double[] {0.,0.,0.,0.};
+									return agentScores;
 								}
 								finally
 								{
@@ -329,7 +355,11 @@ public class EvaluateAllUBFMs
 		if (args.length>0)
 			evaluator.gameName = args[0];
 		else
-			evaluator.gameName = "Lines of Action"; // by default
+			evaluator.gameName = "Breakthrough"; // by default
+		
+		if (args.length>1)
+			if (args[1] == "eval heuristics")
+				evaluator.compareHeuristics = true;
 		
 		evaluator.runExperiment();
 	}

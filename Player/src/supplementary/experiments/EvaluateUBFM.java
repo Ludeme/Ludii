@@ -12,6 +12,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import game.Game;
 import main.math.statistics.Stats;
+import metadata.ai.heuristics.Heuristics;
+import metadata.ai.heuristics.terms.MobilityAdvanced;
 import other.AI;
 import other.GameLoader;
 import other.RankUtils;
@@ -24,6 +26,7 @@ import search.minimax.HybridUBFM;
 import search.minimax.LazyUBFM;
 import search.minimax.NaiveActionBasedSelection;
 import search.minimax.UBFM;
+import search.minimax.UBFMKilothonContender;
 import search.minimax.BiasedUBFM;
 import utils.RandomAI;
 
@@ -44,13 +47,13 @@ public class EvaluateUBFM
 	private static EvaluateUBFM evaluateUBFM = null;
 	
 	/** Number of trials that will be played to compare the agents: */
-	private static int numTrialsPerComparison = 2;
+	private static int numTrialsPerComparison = 1;
 	
 	/** Time for the AI to think in the simulations (seconds): */
 	private static double thinkingTime = 1;
 	
 	/** Game played: */
-	private static final String gameName = "Alquerque";
+	private static final String gameName = "20 Squares";
 	
 	/** Name of the file in which the results will be written: */
 	private String outputFile = "comparison_output.sav";
@@ -98,13 +101,16 @@ public class EvaluateUBFM
 						{
 							try
 							{
-								final AI UBFM_AI = new NaiveActionBasedSelection();
-//								UBFM_AI.setSelectionPolicy(UBFM.SelectionPolicy.SAFEST);
+								final Heuristics heuristics = new Heuristics(new MobilityAdvanced(null, null));
+								
+								final AI UBFM_AI = new UBFMKilothonContender();
+//								UBFM_AI.setSelectionEpsilon(0f);
 								
 								final AI alphaBetaAI = MCTS.createUCT();
 								
 //								UBFM_AI.debugDisplay = false;
 //								UBFM_AI.savingSearchTreeDescription = false;
+//								UBFM_AI.setNbStateEvaluationsPerNode(20);
 								
 								final Float[] agentScores = new Float[]{0f,0f};
 								
