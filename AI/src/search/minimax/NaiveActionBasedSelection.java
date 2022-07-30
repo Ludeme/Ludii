@@ -46,6 +46,7 @@ public class NaiveActionBasedSelection extends AI
 
 	//-------------------------------------------------------------------------
 	
+	@Override
 	public Move selectAction
 	(
 		final Game game, 
@@ -58,7 +59,7 @@ public class NaiveActionBasedSelection extends AI
 		currentRootMoves = new FastArrayList<Move>(game.moves(context).moves());
 		
 		Move selectedMove;		
-		if ((learnedSelectionPolicy != null) && (ThreadLocalRandom.current().nextDouble(1.)<selectionEpsilon))
+		if ((learnedSelectionPolicy != null) && (ThreadLocalRandom.current().nextDouble(1.) < selectionEpsilon))
 		{			
 			final int numRootMoves = currentRootMoves.size();
 			
@@ -68,10 +69,10 @@ public class NaiveActionBasedSelection extends AI
 			{
 				final Move m = currentRootMoves.get(i);
 				
-				final float actionValue = (float) learnedSelectionPolicy.computeLogit(context,m);
+				final float actionValue = learnedSelectionPolicy.computeLogit(context,m);
 				
-				consideredMoveIndices.add(new ScoredMove(m,actionValue,1));
-			};
+				consideredMoveIndices.add(new ScoredMove(m, actionValue, 1));
+			}
 			Collections.sort(consideredMoveIndices);
 			
 			selectedMove = consideredMoveIndices.get(0).move;

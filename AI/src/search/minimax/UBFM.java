@@ -26,8 +26,8 @@ import other.move.Move;
 import other.state.State;
 import other.trial.Trial;
 import training.expert_iteration.ExItExperience;
-import training.expert_iteration.ExpertPolicy;
 import training.expert_iteration.ExItExperience.ExItExperienceState;
+import training.expert_iteration.ExpertPolicy;
 import utils.data_structures.ScoredMove;
 import utils.data_structures.transposition_table.TranspositionTableUBFM;
 import utils.data_structures.transposition_table.TranspositionTableUBFM.UBFMTTData;
@@ -69,8 +69,10 @@ public class UBFM extends ExpertPolicy
 	/** Value of epsilon if a randomised policy is picked (default is epsilon-greedy) */
 	protected double selectionEpsilon = 0.1;
 	
-	/** If set to an integer, the AI will always play for the same maximising player. This is useful when using 
-	 * the same AI to play for an opponent with the same transposition table*/
+	/** 
+	 * If set to an integer, the AI will always play for the same maximising player. This is useful when using 
+	 * the same AI to play for an opponent with the same transposition table
+	 */
 	protected Integer forcedMaximisingPlayer = null;
 	
 	//-------------------------------------------------------------------------
@@ -271,15 +273,16 @@ public class UBFM extends ExpertPolicy
 				
 			case SAFEST:
 				ScoredMove scoredMove;
-				if (debugDisplay) {
+				if (debugDisplay) 
+				{
 					System.out.print("sortedScoredMoves:\n(");
 					for (int i=0; i<rootTableData.sortedScoredMoves.size(); i++)
 					{
 						scoredMove = rootTableData.sortedScoredMoves.get(i);
 						System.out.print(Integer.toString(i)+": score "+Float.toString(scoredMove.score)+" ("+Integer.toString(scoredMove.nbVisits)+"); ");
-					};
+					}
 					System.out.println(")");
-				};
+				}
 				
 				ScoredMove safestScoredMove = rootTableData.sortedScoredMoves.get(0);
 				for (int i=0; i<rootTableData.sortedScoredMoves.size(); i++)
@@ -340,7 +343,7 @@ public class UBFM extends ExpertPolicy
 		if (forcedMaximisingPlayer == null)
 			maximisingPlayer = context.state().playerToAgent(context.state().mover());
 		else
-			maximisingPlayer = forcedMaximisingPlayer;
+			maximisingPlayer = forcedMaximisingPlayer.intValue();
 
 		if (!transpositionTable.isAllocated())
 		{
@@ -382,7 +385,7 @@ public class UBFM extends ExpertPolicy
 
 			estimatedRootScore = (float) scoreToValueEst(minimaxResult, rootAlphaInit, rootBetaInit);
 			iterationCount += 1;
-		};
+		}
 		
 		final UBFMTTData rootTableData = transpositionTable.retrieve(zobrist);
 		final ScoredMove finalChoice = finalDecision(rootTableData, mover==maximisingPlayer);
@@ -390,7 +393,13 @@ public class UBFM extends ExpertPolicy
 		analysisReport = friendlyName + " (player " + maximisingPlayer + ") completed an analysis that reached at some point a depth of " + maxDepthReached + ":\n";
 		analysisReport += "best value observed at root "+Float.toString(finalChoice.score)+",\n";
 		analysisReport += Integer.toString(nbStatesEvaluated)+" different states were evaluated\n";
-		analysisReport += String.format("%d iterations, with %d calls of minimax",iterationCount,callsOfMinimax);
+		analysisReport += 
+				String.format
+				(
+					"%d iterations, with %d calls of minimax", 
+					Integer.valueOf(iterationCount), 
+					Integer.valueOf(callsOfMinimax)
+				);
 		if ((maxSeconds > 0.) && (System.currentTimeMillis()<stopTime))
 			analysisReport += " (finished analysis early) ";
 
@@ -430,7 +439,9 @@ public class UBFM extends ExpertPolicy
 		      myWriter.write(searchTreeOutput.toString());
 		      myWriter.close();
 		      System.out.println("Successfully saved search tree in a file.");
-		    } catch (IOException e) {
+		    } 
+			catch (IOException e) 
+			{
 		      System.out.println("An error occurred.");
 		      e.printStackTrace();
 		    }
@@ -449,7 +460,7 @@ public class UBFM extends ExpertPolicy
 	 * @param nodeHashes : list of hashes of states that lead to this state, used to avoid loops and when saving the search tree
 	 * @return the score of the context
 	 */
-	protected Float minimaxBFS
+	protected float minimaxBFS
 	(
 		final Context context,
 		final int maximisingPlayer,
@@ -686,10 +697,10 @@ public class UBFM extends ExpertPolicy
 			if (System.currentTimeMillis() >= stopTime || ( wantsInterrupt))
 			{
 				for (int j=i+1; j<numLegalMoves; j++)
-					moveScores.set(j,mover==maximisingPlayer? -BETA_INIT + 1 : BETA_INIT-1);
+					moveScores.set(j, mover == maximisingPlayer ? -BETA_INIT + 1 : BETA_INIT - 1);
 				break;
 			}
-		};
+		}
 		
 		return moveScores;
 	}
@@ -770,7 +781,7 @@ public class UBFM extends ExpertPolicy
 				heuristicScore = -heuristicScore;
 
 			nbStatesEvaluated += 1;
-		};
+		}
 
 		if (savingSearchTreeDescription)
 		{
@@ -1030,7 +1041,7 @@ public class UBFM extends ExpertPolicy
 		{
 			res += Long.toString(nodeHashes.get(i));
 			res += ",";
-		};
+		}
 		res += ")";
 		
 		return res;

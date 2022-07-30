@@ -12,23 +12,13 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import game.Game;
 import main.math.statistics.Stats;
-import metadata.ai.heuristics.Heuristics;
-import metadata.ai.heuristics.terms.MobilityAdvanced;
 import other.AI;
 import other.GameLoader;
 import other.RankUtils;
 import other.context.Context;
 import other.trial.Trial;
 import search.mcts.MCTS;
-//import other.trial.Trial;
-import search.minimax.AlphaBetaSearch;
-import search.minimax.HybridUBFM;
-import search.minimax.LazyUBFM;
-import search.minimax.NaiveActionBasedSelection;
-import search.minimax.UBFM;
 import search.minimax.UBFMKilothonContender;
-import search.minimax.BiasedUBFM;
-import utils.RandomAI;
 
 /**
  * Class to run experiments and compare an Unbounded Best-First Minimax agent
@@ -101,7 +91,7 @@ public class EvaluateUBFM
 						{
 							try
 							{
-								final Heuristics heuristics = new Heuristics(new MobilityAdvanced(null, null));
+								//final Heuristics heuristics = new Heuristics(new MobilityAdvanced(null, null));
 								
 								final AI UBFM_AI = new UBFMKilothonContender();
 //								UBFM_AI.setSelectionEpsilon(0f);
@@ -112,9 +102,9 @@ public class EvaluateUBFM
 //								UBFM_AI.savingSearchTreeDescription = false;
 //								UBFM_AI.setNbStateEvaluationsPerNode(20);
 								
-								final Float[] agentScores = new Float[]{0f,0f};
+								final float[] agentScores = new float[] {0.f, 0.f };
 								
-								if (m%2 == 0)
+								if (m % 2 == 0)
 									compareAgents(game, UBFM_AI, alphaBetaAI, agentScores);
 								else
 									compareAgents(game, alphaBetaAI, UBFM_AI, agentScores);
@@ -123,13 +113,13 @@ public class EvaluateUBFM
 								output(".");
 								
 								// agent utilities are converted to a score between 0 and 1
-								return (double) agentScores[m%2]*0.5 + 0.5;
+								return Double.valueOf(agentScores[m%2]*0.5 + 0.5);
 							}
 							catch (final Exception e)
 							{
 								e.printStackTrace();
 								
-								return (double) 0;
+								return Double.valueOf(0.0);
 							}
 						}
 					)
@@ -144,13 +134,16 @@ public class EvaluateUBFM
 			for (int n=0; n<numTrialsPerComparison; ++n)
 			{	
 				result = futures.get(n).get();
-				if (n%2 == 0)
+				if (n % 2 == 0)
 					resultsAgent1asFirst.addSample(result);
 				else
 					resultsAgent1asSecond.addSample(result);
+				
 				if (result == 0.5)
-					nbDraws += 1;				
-				if (debugDisplays) System.out.println("Score of agent 1 in game "+n+" is "+futures.get(n).get());
+					nbDraws += 1;
+				
+				if (debugDisplays) 
+					System.out.println("Score of agent 1 in game "+n+" is "+futures.get(n).get());
 			}
 			
 			resultsAgent1asFirst.measure();
@@ -179,7 +172,7 @@ public class EvaluateUBFM
 	/**
 	 * Compares a two of agents on a given game. Writes the results in the array resultsArray.
 	 */
-	private static void compareAgents(final Game game, final AI AI1, final AI AI2, final Float[] resultsArray)
+	private static void compareAgents(final Game game, final AI AI1, final AI AI2, final float[] resultsArray)
 	{
 		final Trial trial = new Trial(game);
 		final Context context = new Context(game, trial);
@@ -215,11 +208,14 @@ public class EvaluateUBFM
 		
 		textOutput.append(text);
 		
-		try {
+		try 
+		{
 	      FileWriter myWriter = new FileWriter("/home/cyprien/Documents/M1/Internship/"+outputFile);
 	      myWriter.write(textOutput.toString());
 	      myWriter.close();
-	    } catch (IOException e) {
+	    } 
+		catch (final IOException e) 
+		{
 	      System.out.println("An error occurred.");
 	      e.printStackTrace();
 	    }

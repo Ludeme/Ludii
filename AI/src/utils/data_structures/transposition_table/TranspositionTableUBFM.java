@@ -11,7 +11,6 @@ import utils.data_structures.ScoredMove;
  * 
  * @author cyprien
  */
-
 public class TranspositionTableUBFM
 {
 	
@@ -87,14 +86,15 @@ public class TranspositionTableUBFM
 	public UBFMTTData retrieve(final long fullHash)
 	{
 		final UBFMTTEntry entry = table[(int) (fullHash >>> (Long.SIZE - numBitsPrimaryCode))];
-		if (entry == null)
-			return null;
-		else
+		if (entry != null)
+		{
 			for (UBFMTTData data : entry.data)
 			{
 				if (data.fullHash == fullHash)
 					return data;
 			}
+		}
+
 		return null;
 	}
 	
@@ -137,7 +137,7 @@ public class TranspositionTableUBFM
 					entry.data.set(i, dataToSave);
 					return;
 				}
-			};
+			}
 			
 			// If we arrive to this point it means that we had no previous data about this fullHash
 			entry.data.add(dataToSave);
