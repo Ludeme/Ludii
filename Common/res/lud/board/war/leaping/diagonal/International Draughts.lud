@@ -1,51 +1,22 @@
-(define "HopCounter" 
-    (move
-        Hop 
-        (from #1) 
-        Diagonal 
-        (between 
-            if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
-            (apply (remove (between) at:EndOfTurn))
-        ) 
-        (to if:(is Empty (to))) 
-        #2
-    ) 
-)
-
-(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
-
-(define "JumpToPromotionZone" (is In (last To) (sites Next)))
+(define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
 
 //------------------------------------------------------------------------------
 
 (game "International Draughts" 
-    (players 2) 
-    (equipment { 
-        (board (square 10)) 
-        (piece "Counter" P1 N)
-        (piece "Counter" P2 S) 
-        (piece "DoubleCounter" Each)
-        (regions P1 (sites Bottom))
-        (regions P2 (sites Top))
-    }) 
+	    ("TwoPlayersNorthSouth")
+	    ("DraughtsEquipment" (square 10))
     
     (rules 
-        (start { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:3) (sites Phase 1)))
-            (place "Counter2" (difference (expand (sites Top) steps:3) (sites Phase 1)))
-        })
+            ("BlackCellsSetup" 4)
         
         (play 
             (if "SameTurn"
                 (if "IsUnpromoted"
                     (max Moves
-                        ("HopCounter" (last To)
+                    	("HopInternationalDraughtsStyle" (from (last To))
                             (then 
-                                (if (can Move ("HopCounter" (last To))) 
-                                    (moveAgain)
-                                    (if "JumpToPromotionZone" 
-                                        (move Promote (last To) (piece "DoubleCounter") Mover)
-                                    )
+                            	("ReplayIfCanMove" ("HopInternationalDraughtsStyle" (from (last To)))
+                            		("PromoteIfReach" (sites Next) "DoubleCounter")
                                 ) 
                             ) 
                         )
@@ -56,13 +27,10 @@
                     (max Moves
                         (or 
                             (forEach Piece "Counter"
-                                ("HopCounter" (from) 
+                            	("HopInternationalDraughtsStyle" (from)
                                     (then 
-                                        (if (can Move ("HopCounter" (last To))) 
-                                            (moveAgain) 
-                                            (if "JumpToPromotionZone" 
-                                                (move Promote (last To) (piece "DoubleCounter") Mover)
-                                            )
+                                    	("ReplayIfCanMove" ("HopInternationalDraughtsStyle" (from (last To))) 
+                                        	("PromoteIfReach" (sites Next) "DoubleCounter")
                                         ) 
                                     ) 
                                 ) 
@@ -72,16 +40,8 @@
                     )
                     (or 
                         (forEach Piece "Counter" 
-                            (move
-                                Step 
-                                (directions {FR FL}) 
-                                (to if:(is Empty (to)))
-                            )
-                            (then 
-                                (if "JumpToPromotionZone"
-                                    (move Promote (last To) (piece "DoubleCounter") Mover)
-                                )
-                            )
+                            ("StepToEmpty" (directions {FR FL}))
+                            (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
                         )
                         (forEach Piece "DoubleCounter" (move Slide Diagonal))
                     )
