@@ -1,8 +1,7 @@
 (define "HopCounter" 
     (or
         (do
-            (move
-                Hop 
+            (move Hop 
                 (from #1) 
                 Orthogonal 
                 (between 
@@ -17,23 +16,11 @@
             ifAfterwards:(is In (last To) (sites Phase 0))
         )
         
-        (move
-            Hop 
-            (from #1) 
-            Diagonal 
-            (between
-                if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
-                (apply (remove (between) at:EndOfTurn))
-            ) 
-            (to if:(is Empty (to))) 
-            #2
-        )
+        ("HopInternationalDraughtsStyle" (from #1) #2)
     )
 )
 
-(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
-
-(define "JumpToPromotionZone" (is In (last To) (sites Next)))
+(define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
 
 (define "HopFrisianSequenceCapture"
     (do
@@ -126,18 +113,12 @@
     )
 )
 
-(define "CounterSimpleMove" 
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to if:(is Empty (to)))
-    )		
-)
+(define "CounterSimpleMove" ("StepToEmpty" (directions {FR FL})))
 
 (define "TwoKingsMoverOneKingEnemy" 
     (and {
-        (= Off (where "Counter" P1))
-        (= Off (where "Counter" P2))
+        ("IsOffBoard" (where "Counter" P1))
+        ("IsOffBoard" (where "Counter" P2))
         (= 1 (count Pieces Next))
         (= 2 (count Pieces Mover))
     })
@@ -169,11 +150,8 @@
                         ("HopCounter" (last To)
                             (then 
                                 (and
-                                    (if (can Move ("HopCounter" (last To))) 
-                                        (moveAgain)
-                                        (if "JumpToPromotionZone" 
-                                            (move Promote (last To) (piece "DoubleCounter") Mover (then (set Value at:(last To) 19)))
-                                        )
+                                	("ReplayIfCanMove" ("HopCounter" (last To)) 
+                                        ("PromoteIfReach" (sites Next) "DoubleCounter" (then (set Value at:(last To) 19)))
                                     ) 
                                     (forEach Site (sites Occupied by:Mover)
                                         (if (!= 0 (state at:(site)))
@@ -196,11 +174,8 @@
                                 ("HopCounter" (from) 
                                     (then 
                                         (and
-                                            (if (can Move ("HopCounter" (last To))) 
-                                                (moveAgain) 
-                                                (if "JumpToPromotionZone" 
-                                                    (move Promote (last To) (piece "DoubleCounter") Mover (then (set Value at:(last To) 19)))
-                                                )
+                                        	("ReplayIfCanMove" ("HopCounter" (last To))
+                                        		("PromoteIfReach" (sites Next) "DoubleCounter" (then (set Value at:(last To) 19)))
                                             )
                                             (forEach Site (sites Occupied by:Mover)
                                                 (if (!= 0 (state at:(site)))
@@ -217,10 +192,8 @@
                         (forEach Piece "Counter" 
                             ("CounterSimpleMove")
                             (then 
-                                (and
-                                    (if "JumpToPromotionZone"
-                                        (move Promote (last To) (piece "DoubleCounter") Mover (then (set Value at:(last To) 19)))
-                                    )
+                                (and	
+                                	("PromoteIfReach" (sites Next) "DoubleCounter" (then (set Value at:(last To) 19)))
                                     (forEach Site (sites Occupied by:Mover)
                                         (if (!= 0 (state at:(site)))
                                             (set State at:(site) 0)
@@ -237,7 +210,7 @@
                                 (move Slide Diagonal)
                             )
                             (then
-                                (if (!= Off (where "Counter" Mover))
+                                (if ("IsNotOffBoard" (where "Counter" Mover))
                                     (and
                                         (set State at:(last To) (+ 1 (state at:(last To))))
                                         (forEach Site (sites Occupied by:Mover)
