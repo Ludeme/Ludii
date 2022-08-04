@@ -4442,12 +4442,14 @@ EXAMPLE: (graph vertices:{ {0 0} {1.5 0 0.5} {0.5 1} } edges:{ {0 1} {0 2} {1 2}
 TYPE: game.util.graph.Poly
 TYPE JAVADOC: Defines a polygon composed of a list of floating point (x,y) pairs.
 NEW CTOR
-(poly {{<float>}})
+(poly {{<float>}} [rotns:int])
 PARAM JAVADOC: {{<float>}}: Float points defining polygon.
+PARAM JAVADOC: [rotns:int]: Number of duplicate rotations to make.
 EXAMPLE: (poly { { 0 0 } { 0 2.5 } { 4.75 1 } })
 NEW CTOR
-(poly {{<dimFunction>}})
+(poly {{<dimFunction>}} [rotns:int])
 PARAM JAVADOC: {{<dimFunction>}}: Float points defining polygon.
+PARAM JAVADOC: [rotns:int]: Number of duplicate rotations to make.
 EXAMPLE: (poly { { 0 0 } { 0 2.5 } { 4.75 1 } })
 REMARKS: The polygon can be concave.
 TYPE: game.util.math.Count
