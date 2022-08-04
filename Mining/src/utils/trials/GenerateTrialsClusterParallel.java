@@ -143,155 +143,179 @@ public class GenerateTrialsClusterParallel
 
 					System.out.println("Loading ruleset: " + rulesetGame.getRuleset().heading());
 						
-					final ExecutorService executorService = Executors.newFixedThreadPool(NUM_PARALLEL);
-					final CountDownLatch latch = new CountDownLatch(NUM_PARALLEL);
-					
-					for (int i = 0; i < NUM_TRIALS_PER_GAME; ++i)
+					int beginTrialIndex = 0;
+					for (; beginTrialIndex < NUM_TRIALS_PER_GAME; ++beginTrialIndex)
 					{
-						System.out.println("Starting playout " + i + ": ...");
-						final String trialFilepath = rulesetFolderPath + File.separator + agentName + "Trial_" + i + ".txt";
+						final String trialFilepath = rulesetFolderPath + File.separator + agentName + "Trial_" + beginTrialIndex + ".txt";
 						final File trialFile = new File(trialFilepath);
 							
-						if(trialFile.exists())
-							continue;
-
-						try {
-							final int numTrial = i ;
-							final String path = gamePath;
-							executorService.submit
-							(
-							() -> 
-								{
-									// Set the agents.
-									final List<AI> ais = chooseAI(rulesetGame, agentName, numTrial);
-									for(final AI ai : ais)
-										if(ai != null)
-											ai.setMaxSecondsPerMove(thinkingTime);
-		
-									final Trial trial = new Trial(rulesetGame);
-									final Context context = new Context(rulesetGame, trial);
-				
-									final byte[] startRNGState = ((RandomProviderDefaultState) context.rng().saveState()).getState();
-									rulesetGame.start(context);
-										
-									// Init the ais.
-									for (int p = 1; p <= rulesetGame.players().count(); ++p)
-										ais.get(p).initAI(rulesetGame, p);
-									final Model model = context.model();
+						if(!trialFile.exists())
+							break;
+					}
+					
+					if(beginTrialIndex < NUM_TRIALS_PER_GAME)
+					{
+						final int parallelNum = (NUM_TRIALS_PER_GAME - beginTrialIndex) > NUM_PARALLEL ? NUM_PARALLEL : (NUM_TRIALS_PER_GAME - beginTrialIndex);
+						final ExecutorService executorService = Executors.newFixedThreadPool(parallelNum);
+						final CountDownLatch latch = new CountDownLatch(parallelNum);
+						
+						for (int i = beginTrialIndex; i < NUM_TRIALS_PER_GAME; ++i)
+						{
+							final String trialFilepath = rulesetFolderPath + File.separator + agentName + "Trial_" + i + ".txt";
+							final File trialFile = new File(trialFilepath);
 								
-									// Run the trial.
-									while (!trial.over())
-										model.startNewStep(context, ais, thinkingTime);
-										
-									try
+							System.out.println("Starting playout " + i + ": ...");
+							
+							try {
+								final int numTrial = i ;
+								final String path = gamePath;
+								executorService.submit
+								(
+								() -> 
 									{
-										trial.saveTrialToTextFile(trialFile, path, rulesetGame.getOptions(), new RandomProviderDefaultState(startRNGState));
-										System.out.println("Saved trial for " + rulesetGame.name() + "|" + rulesetGame.getRuleset().heading().replace("/", "_") +" to file: " + trialFilepath);
+										// Set the agents.
+										final List<AI> ais = chooseAI(rulesetGame, agentName, numTrial);
+										for(final AI ai : ais)
+											if(ai != null)
+												ai.setMaxSecondsPerMove(thinkingTime);
+			
+										final Trial trial = new Trial(rulesetGame);
+										final Context context = new Context(rulesetGame, trial);
+					
+										final byte[] startRNGState = ((RandomProviderDefaultState) context.rng().saveState()).getState();
+										rulesetGame.start(context);
+											
+										// Init the ais.
+										for (int p = 1; p <= rulesetGame.players().count(); ++p)
+											ais.get(p).initAI(rulesetGame, p);
+										final Model model = context.model();
+									
+										// Run the trial.
+										while (!trial.over())
+											model.startNewStep(context, ais, thinkingTime);
+											
+										try
+										{
+											trial.saveTrialToTextFile(trialFile, path, rulesetGame.getOptions(), new RandomProviderDefaultState(startRNGState));
+											System.out.println("Saved trial for " + rulesetGame.name() + "|" + rulesetGame.getRuleset().heading().replace("/", "_") +" to file: " + trialFilepath);
+										}
+										catch (final IOException e)
+										{
+											e.printStackTrace();
+											fail("Crashed when trying to save trial to file.");
+										}
 									}
-									catch (final IOException e)
-									{
-										e.printStackTrace();
-										fail("Crashed when trying to save trial to file.");
-									}
+								);
+								}				
+								catch (final Exception e)
+								{
+									e.printStackTrace();
 								}
-							);
-							}				
-							catch (final Exception e)
-							{
-								e.printStackTrace();
-							}
-							finally
-							{
-								latch.countDown();
-							}
+								finally
+								{
+									latch.countDown();
+								}
+						}
+						try
+						{
+							latch.await();
+						}
+						catch (final InterruptedException e)
+						{
+							e.printStackTrace();
+						}
+	
+						executorService.shutdown();
 					}
-					try
-					{
-						latch.await();
-					}
-					catch (final InterruptedException e)
-					{
-						e.printStackTrace();
-					}
-
-					executorService.shutdown();
 				}
 			}
 		}
 		else // Code for the default ruleset.
 		{
-			final ExecutorService executorService = Executors.newFixedThreadPool(NUM_PARALLEL);
-			final CountDownLatch latch = new CountDownLatch(NUM_PARALLEL);
-			
-			for (int i = 0; i < NUM_TRIALS_PER_GAME; ++i)
+			int beginTrialIndex = 0;
+			for (; beginTrialIndex < NUM_TRIALS_PER_GAME; ++beginTrialIndex)
 			{
-				System.out.println("Starting playout " + i + ": ...");
-				final String trialFilepath = gameFolderPath + File.separator + agentName + "Trial_" + i + ".txt";
+				final String trialFilepath = gameFolderPath + File.separator + agentName + "Trial_" + beginTrialIndex + ".txt";
 				final File trialFile = new File(trialFilepath);
+					
+				if(!trialFile.exists())
+					break;
+			}
+			
+			if(beginTrialIndex < NUM_TRIALS_PER_GAME)
+			{
+				final int parallelNum = (NUM_TRIALS_PER_GAME - beginTrialIndex) > NUM_PARALLEL ? NUM_PARALLEL : (NUM_TRIALS_PER_GAME - beginTrialIndex);
+				final ExecutorService executorService = Executors.newFixedThreadPool(parallelNum);
+				final CountDownLatch latch = new CountDownLatch(parallelNum);
 				
-				if(trialFile.exists())
-					continue;
-				
-				try {
-					final int numTrial = i ;
-					final String path = gamePath;
-					executorService.submit
-					(
-					() -> 
-						{
-							// Set the agents.
-							final List<AI> ais = chooseAI(game, agentName, numTrial);
-							for(final AI ai : ais)
-								if(ai != null)
-									ai.setMaxSecondsPerMove(thinkingTime);
-								
-							final Trial trial = new Trial(game);
-							final Context context = new Context(game, trial);
-				
-							final byte[] startRNGState = ((RandomProviderDefaultState) context.rng().saveState()).getState();
-							game.start(context);
-								
-							// Init the ais.
-							for (int p = 1; p <= game.players().count(); ++p)
-								ais.get(p).initAI(game, p);
-							final Model model = context.model();
-							
-							// Run the trial.
-							while (!trial.over())
-								model.startNewStep(context, ais, thinkingTime);
+				for (int i = beginTrialIndex; i < NUM_TRIALS_PER_GAME; ++i)
+				{
+					final String trialFilepath = gameFolderPath + File.separator + agentName + "Trial_" + i + ".txt";
+					final File trialFile = new File(trialFilepath);
+					
+					System.out.println("Starting playout " + i + ": ...");
+					
+					try {
+						final int numTrial = i ;
+						final String path = gamePath;
+						executorService.submit
+						(
+						() -> 
+							{
+								// Set the agents.
+								final List<AI> ais = chooseAI(game, agentName, numTrial);
+								for(final AI ai : ais)
+									if(ai != null)
+										ai.setMaxSecondsPerMove(thinkingTime);
 									
-							try
-							{
-								trial.saveTrialToTextFile(trialFile, path, new ArrayList<String>(), new RandomProviderDefaultState(startRNGState));
-								System.out.println("Saved trial for " + game.name() +" to file: " + trialFilepath);
-							}
-							catch (final IOException e)
-							{
-								e.printStackTrace();
-								fail("Crashed when trying to save trial to file.");
-							}
+								final Trial trial = new Trial(game);
+								final Context context = new Context(game, trial);
+					
+								final byte[] startRNGState = ((RandomProviderDefaultState) context.rng().saveState()).getState();
+								game.start(context);
+									
+								// Init the ais.
+								for (int p = 1; p <= game.players().count(); ++p)
+									ais.get(p).initAI(game, p);
+								final Model model = context.model();
+								
+								// Run the trial.
+								while (!trial.over())
+									model.startNewStep(context, ais, thinkingTime);
+										
+								try
+								{
+									trial.saveTrialToTextFile(trialFile, path, new ArrayList<String>(), new RandomProviderDefaultState(startRNGState));
+									System.out.println("Saved trial for " + game.name() +" to file: " + trialFilepath);
+								}
+								catch (final IOException e)
+								{
+									e.printStackTrace();
+									fail("Crashed when trying to save trial to file.");
+								}
+						}
+					);
+					}				
+					catch (final Exception e)
+					{
+						e.printStackTrace();
 					}
-				);
-				}				
-				catch (final Exception e)
+					finally
+					{
+						latch.countDown();
+					}
+				}
+				try
+				{
+					latch.await();
+				}
+				catch (final InterruptedException e)
 				{
 					e.printStackTrace();
 				}
-				finally
-				{
-					latch.countDown();
-				}
+	
+				executorService.shutdown();
 			}
-			try
-			{
-				latch.await();
-			}
-			catch (final InterruptedException e)
-			{
-				e.printStackTrace();
-			}
-
-			executorService.shutdown();
 		}
 	}
 	

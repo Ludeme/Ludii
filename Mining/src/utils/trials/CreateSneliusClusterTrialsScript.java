@@ -27,7 +27,7 @@ public class CreateSneliusClusterTrialsScript
 		final int maxMove = 5000; // Constants.DEFAULT_MOVES_LIMIT;
 		//final int allocatedMemoryJava = 4096;
 		final int thinkingTime = 1;
-		final String agentName = "Alpha-Beta"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
+		final String agentName = "UCT"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
 		//final String clusterLogin = "piettee";
 		final String mainScriptName = "GenTrials.sh";
 		
