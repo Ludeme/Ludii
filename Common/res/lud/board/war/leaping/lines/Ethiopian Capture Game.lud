@@ -15,7 +15,7 @@
             (place "Marker2" (union {(sites {"A3" "B3"}) (expand (sites Top)) }))
         })
         (play (forEach Piece))
-        (end (if (<= (count Pieces Next) 5) (result Mover Win)))
+        (end ("HavingLessPiecesLoss" Next 5))
     )
 )
 
@@ -36,9 +36,6 @@
         }
     )
     
-    (graphics {
-        
-    })
     (ai
         "Ethiopian Capture Game_ai"
     )

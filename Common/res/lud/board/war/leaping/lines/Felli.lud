@@ -1,7 +1,3 @@
-(define "OnPromotionZone" (is In (last To) (sites Next)))
-
-//------------------------------------------------------------------------------
-
 (game "Felli" 
     (players 2) 
     (equipment { 
@@ -40,18 +36,10 @@
         <
         (or {
             (forEach Piece "Counter" ("HopCapture") 
-                (then 
-                    (if "OnPromotionZone"
-                        (promote (last To) (piece "DoubleCounter") Mover)
-                    )
-                )
+                (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
             )
             (forEach Piece "Counter" ("StepToEmpty")
-                (then 
-                    (if "OnPromotionZone"
-                        (promote (last To) (piece "DoubleCounter") Mover)
-                    )
-                )		
+                (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
             )
             (forEach Piece "DoubleCounter" (move Slide))
             (forEach Piece "DoubleCounter" ("HopCapture"))
@@ -134,7 +122,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai 

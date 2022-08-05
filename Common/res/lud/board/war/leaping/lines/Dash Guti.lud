@@ -3,12 +3,10 @@
     (equipment { 
         (board 
             (add
-                (merge
-                    {
+                (merge {
                     (wedge 4)
                     (shift 0 3 (rotate 180 (wedge 4)))
-                    }
-                )
+                })
                 vertices:{{0 3} {6 3}}
                 edges:{{7 19} {19 18} {0 19} {0 20} {20 16} {20 9}}
             )
@@ -54,7 +52,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai 
