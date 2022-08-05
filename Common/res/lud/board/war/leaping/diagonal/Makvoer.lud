@@ -1,7 +1,3 @@
-(define "JumpToPromotionZone" (is In (last To) (sites Next)))
-
-//------------------------------------------------------------------------------
-
 (game "Makvoer" 
     (players 2)
     (equipment { 
@@ -11,8 +7,7 @@
                 "StepDiagonalToEmpty" 
                 "HopDiagonalCapture"
                 (do
-                    (move
-                        Hop 
+                    (move Hop 
                         Orthogonal 
                         (between 
                             before:1
@@ -25,25 +20,13 @@
                     ifAfterwards:(is In (last To) (sites Phase 0))
                 )
                 }
-                (then 
-                    (if "JumpToPromotionZone"
-                        (promote (last To) (piece "DoubleCounter") Mover)
-                    )
-                )
+                (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
             )
         )
         (piece "DoubleCounter" Each
             (or
                 (move Slide)
-                (move Hop 
-                    (between 
-                        before:(count Rows) 
-                        after:(count Rows)
-                        if:("IsEnemyAt" (between)) 
-                        (apply (remove (between)))
-                    )
-                    (to if:(is Empty (to)))
-                )
+                ("HopCaptureDistance")
             )
         )
         (regions P1 (sites Bottom))
@@ -51,14 +34,11 @@
     }) 
     
     (rules 
-        (start { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)))
-            (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1)))
-        })
+        ("BlackCellsSetup" 3)
         
         (play (forEach Piece)) 
         
-        (end (if (no Pieces Next) (result Mover Win))) 
+        (end ("CaptureAll" Next)) 
     )
 )
 
