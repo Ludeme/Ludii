@@ -7,7 +7,7 @@
         )
         (to if:(is Empty (to)))
         (then 
-            (if (can Move 
+        	("ReplayIfCanMove" 
                     (hop 
                         (from (last To)) 
                         (between 
@@ -16,8 +16,6 @@
                         )
                         (to if:(is Empty (to)))
                     )
-                ) 
-                (moveAgain)
             )
         )
     )
@@ -26,9 +24,9 @@
 (define "OnlyKings" 
     (and {
         (= 1 (count Pieces P1))
-        (!= Off (where "King" P1))
+        ("IsNotOffBoard" (where "King" P1))
         (= 1 (count Pieces P2))
-        (!= Off (where "King" P2))
+        ("IsNotOffBoard" (where "King" P2))
     })
 )
 
@@ -131,7 +129,7 @@
             )
         ) 
         (end {
-            (if (no Pieces Next) (result Mover Win))	
+            ("CaptureAll" Next)	
             (if ("SingleEnemyHigherPieceBlocked") (result Mover Win))
             (if ("OnlyKings" Next) (result Mover Draw))	
         })
@@ -160,7 +158,6 @@
         (piece Scale "Prince" 1.15)
         (piece Rename piece:"King" "Cone")
         (piece Rename piece:"Prince" "Cone")
-        
     })
     
     (ai
