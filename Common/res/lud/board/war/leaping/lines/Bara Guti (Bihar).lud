@@ -16,11 +16,9 @@
             (place "Counter2" (sites {1 9 17 6..8 14..16 22..24}))
         })
         
-        (play 
-            (forEach Piece)
-        )
+        (play (forEach Piece))
         
-        (end (if (no Pieces Next) (result Next Loss))) 
+        (end ("CaptureAll" Next)) 
     )
 ) 
 
@@ -40,10 +38,6 @@
         (origin "This game was played in India, around 1935.")
         }
     )
-    
-    (graphics {
-        
-    })
     
     (ai
         "Bara Guti (Bihar)_ai"
