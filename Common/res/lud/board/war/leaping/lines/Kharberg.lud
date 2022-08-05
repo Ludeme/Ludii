@@ -1,20 +1,8 @@
-(define "PromoteIfBorderReached" 
-    (if (is In (last To) (sites Next))
-        (move Promote (last To) (piece "DoubleCounter") Mover)
-    )
-)
-
 (define "Hop" 
-    (move
-        Hop 
-        (between 
-            if:("IsEnemyAt" (between))
-            (apply (remove (between)))
-        ) 
-        (to if:(is Empty (to))) 
+    ("HopCapture" ~ ~
         (then
             (and 
-                ("PromoteIfBorderReached")
+                ("PromoteIfReach" (sites Next) "DoubleCounter")
                 ("HasCaptured")
             )
         )
@@ -52,7 +40,7 @@
     (move
         Select 
         (from #1
-            if:(!= (what at:(from)) 0)
+            if:(is Occupied (from))
         )
         (then 
             (and {
@@ -75,12 +63,8 @@
         (piece "Counter" Each
             (or
                 ("Hop") 
-                (move
-                    Step 
-                    (to if:(is Empty (to)))
-                    (then ("HasNotCaptured"))
-                )
-                (then ("PromoteIfBorderReached"))
+                ("StepToEmpty" ~ (then ("HasNotCaptured")))
+                (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
             )
         )
         (piece "DoubleCounter" Each
@@ -132,10 +116,6 @@
         (origin "This game was played in Sahara, around 1950.")
         }
     )
-    
-    (graphics {
-        
-    })
     
     (ai
         "Kharberg_ai"

@@ -7,15 +7,15 @@
         )
         (to if:(is Empty (to)))
         (then 
-        	("ReplayIfCanMove" 
-                    (hop 
-                        (from (last To)) 
-                        (between 
-                            if:(and ("IsEnemyAt" (between)) (>= (value Piece at:(from)) (value Piece at:(between))))
-                            (apply (remove (between)))
-                        )
-                        (to if:(is Empty (to)))
+            ("ReplayIfCanMove" 
+                (hop 
+                    (from (last To)) 
+                    (between 
+                        if:(and ("IsEnemyAt" (between)) (>= (value Piece at:(from)) (value Piece at:(between))))
+                        (apply (remove (between)))
                     )
+                    (to if:(is Empty (to)))
+                )
             )
         )
     )
