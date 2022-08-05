@@ -1,41 +1,13 @@
-(define "Step" 
-    (move 
-        Step 
-        #1 
-        (to 
-            if:(and 
-                (is In (from) (sites Occupied by:Mover)) 
-                (is Empty (to))
-            )
-        ) 
-        stack:True
-    )
-)
-
 (define "Hop" 
-    (move
-        Hop 
-        #1 
-        (between if:("IsEnemyAt" (between)) (apply (fromTo (from (between)) (to))))
-        (to if:(and 
-                (is In (from) (sites Occupied by:Mover)) 
-                (is Empty (to))
-            )
-        )
-        stack:True 
+	("HopStackEnemyCaptureTop"
+		#1
+		~
         (then 
             (if 
                 (can Move 
-                    (hop 
+                	("HopStackEnemyCaptureTop"
                         (from (last To)) 
                         #1 
-                        (between if:("IsEnemyAt" (between)) (apply (fromTo (from (between)) (to))))  	
-                        (to if:(and 
-                                (is In (from) (sites Occupied by:Mover)) 
-                                (is Empty (to))
-                            )
-                        )
-                        stack:True
                     )
                 ) 
                 (moveAgain) 
@@ -44,9 +16,7 @@
     ) 
 )
 
-(define "IsUnpromoted" (= (what at:(last To) level:(topLevel at:(last To))) (id "Counter" Mover)))
-
-(define "JumpToPromotionZone" (is In (last To) (sites Next)))
+(define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To) level:(topLevel at:(last To))))
 
 //------------------------------------------------------------------------------
 
@@ -69,31 +39,16 @@
         (play
             (if "SameTurn"
                 (if "IsUnpromoted" 
-                    (move
-                        Hop 
+                	("HopStackEnemyCaptureTop"
                         (from (last To)) 
                         (directions {FR FL}) 
-                        (between if:("IsEnemyAt" (between)) (apply (fromTo (from (between)) (to)))) 
-                        (to if:(and 
-                                (is In (from) (sites Occupied by:Mover)) 
-                                (is Empty (to))
-                            )
-                        )
-                        stack:True 
                         (then 
-                            (if "JumpToPromotionZone" (promote (last To) (piece "CounterStar") Mover)
+                        	("PromoteIfReach" (sites Next) "CounterStar"
                                 (if 
-                                    (can Move 
-                                        (hop 
+                                    (can Move
+                                        ("HopStackEnemyCaptureTop" 
                                             (from (last To)) 
                                             (directions {FR FL}) 
-                                            (between if:("IsEnemyAt" (between)) (apply (fromTo (from (between)) (to)))) 		
-                                            (to if:(and 
-                                                    (is In (from) (sites Occupied by:Mover)) 
-                                                    (is Empty (to))
-                                                )
-                                            )
-                                            stack:True
                                         )
                                     ) 
                                     (moveAgain) 
@@ -101,30 +56,15 @@
                             ) 
                         )
                     ) 
-                    (move
-                        Hop
+                	("HopStackEnemyCaptureTop"
                         (from (last To)) 
                         Diagonal 
-                        (between if:("IsEnemyAt" (between)) (apply (fromTo (from (between)) (to)))) 
-                        (to if:(and 
-                                (is In (from) (sites Occupied by:Mover)) 
-                                (is Empty (to))
-                            )
-                        ) 
-                        stack:True 
                         (then 
                             (if 
                                 (can Move 
-                                    (hop 
+                                	("HopStackEnemyCaptureTop"
                                         (from (last To)) 
                                         Diagonal 
-                                        (between if:("IsEnemyAt" (between)) (apply (fromTo (from (between)) (to)))) 
-                                        (to if:(and 
-                                                (is In (from) (sites Occupied by:Mover)) 
-                                                (is Empty (to))
-                                            )
-                                        ) 
-                                        stack:True
                                     )
                                 ) 
                                 (moveAgain) 
@@ -134,13 +74,13 @@
                 )
                 (priority {
                     (or { 
-                        (forEach Piece "Counter" ("Hop" (directions {FR FL})) top:True (then (if "JumpToPromotionZone" (promote (last To) (piece "CounterStar") Mover))))
+                        (forEach Piece "Counter" ("Hop" (directions {FR FL})) top:True (then ("PromoteIfReach" (sites Next) "CounterStar")))
                         (forEach Piece "CounterStar" ("Hop" Diagonal) top:True)
                     })
                     
                     (or { 
-                        (forEach Piece "Counter" ("Step" (directions {FR FL})) top:True (then (if "JumpToPromotionZone" (promote (last To) (piece "CounterStar") Mover))))
-                        (forEach Piece "CounterStar" ("Step" Diagonal) top:True)
+                        (forEach Piece "Counter" ("StepStackToEmpty" (directions {FR FL})) top:True (then ("PromoteIfReach" (sites Next) "CounterStar")))
+                        (forEach Piece "CounterStar" ("StepStackToEmpty" Diagonal) top:True)
                     })
                 })
             )
