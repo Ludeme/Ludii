@@ -1,7 +1,5 @@
-
 (define "HopMan" 
-    (move
-        Hop 
+    (move Hop 
         (from #1) 
         Diagonal 
         (between 
@@ -13,7 +11,7 @@
     ) 
 )
 
-(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
+(define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
 
 (define "JumpToPromotionZone" (is In (last To) (sites Next)))
 
@@ -30,7 +28,7 @@
         )
         (to if:(is Empty (to)))
         (then 
-            (if (can Move 
+        	("ReplayIfCanMove"
                     (hop 
                         (from (last To))
                         SameDirection 
@@ -47,8 +45,6 @@
                         (to if:(is Empty (to)))
                     )
                 ) 
-                (moveAgain)
-            )
         )
     )
 )
@@ -66,7 +62,7 @@
         )
         (to if:(is Empty (to)))
         (then 
-            (if (can Move 
+        	("ReplayIfCanMove"
                     (hop 
                         (from (last To))
                         SameDirection 
@@ -83,8 +79,6 @@
                         (to if:(is Empty (to)))
                     )
                 ) 
-                (moveAgain)
-            )
         )
     )
 )
@@ -92,24 +86,10 @@
 //------------------------------------------------------------------------------
 
 (game "Moo" 
-    (players 2) 
-    (equipment { 
-        (board (square 8)) 
-        (piece "Counter" P1 N)
-        (piece "Counter" P2 S) 
-        (piece "DoubleCounter" Each)
-        (regions P1 (sites Bottom))
-        (regions P2 (sites Top))
-        (regions "MarkedCell" (sites Phase 0))
-        }
-    ) 
+	("TwoPlayersNorthSouth")
+	("DraughtsEquipment" (square 8) ~ (regions "MarkedCell" (sites Phase 0))) 
     (rules 
-        (start
-            { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1) ))
-            (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1)))
-            }
-        )
+        ("BlackCellsSetup" 3)
         
         (play 
             (if "SameTurn"
@@ -117,11 +97,8 @@
                     (if "IsUnpromoted"
                         ("HopMan" (last To)
                             (then 
-                                (if (can Move ("HopMan" (last To))) 
-                                    (moveAgain)
-                                    (if "JumpToPromotionZone" 
-                                        (move Promote (last To) (piece "DoubleCounter") Mover)
-                                    )
+                            	("ReplayIfCanMove" ("HopMan" (last To)) 
+                            		("PromoteIfReach" (sites Next) "DoubleCounter")
                                 ) 
                             ) 
                         )
@@ -134,24 +111,13 @@
                         (or
                             ("HopMan" (from) 
                                 (then 
-                                    (if (can Move ("HopMan" (last To))) 
-                                        (moveAgain) 
-                                        (if "JumpToPromotionZone" 
-                                            (move Promote (last To) (piece "DoubleCounter") Mover)
-                                        )
+                                	("ReplayIfCanMove" ("HopMan" (last To)) 
+                                		("PromoteIfReach" (sites Next) "DoubleCounter")
                                     ) 
                                 ) 
                             )
-                            (move
-                                Step 
-                                (directions {FR FL}) 
-                                (to if:(is Empty (to)))
-                            )
-                            (then 
-                                (if "JumpToPromotionZone"
-                                    (move Promote (last To) (piece "DoubleCounter") Mover)
-                                )
-                            )
+                            ("StepToEmpty" (directions {FR FL}))
+                            (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
                         )
                     )
                     (forEach Piece "DoubleCounter" 
@@ -164,7 +130,7 @@
             )
         ) 
         
-        (end (if (no Pieces Next) (result Mover Win))) 
+        (end ("CaptureAll" Next)) 
     )
 )
 
