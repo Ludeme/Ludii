@@ -1,39 +1,14 @@
-(define "PromoteIfBorderReached" 
-    (if (is In (last To) (sites Next))
-        (move Promote (last To) (piece "DoubleCounter") Mover)
-    )
-)
-
 (define "HopCounter" 
-    (move
-        Hop 
+	("HopCapture"
+		~
         (directions {Forwards Rightward Leftward})
-        (between 
-            if:("IsEnemyAt" (between))
-            (apply (remove (between)))
-        ) 
-        (to if:(is Empty (to))) 
         (then
             (and 
-                ("PromoteIfBorderReached")
+            	("PromoteIfReach" (sites Next) "DoubleCounter")
                 ("HasCaptured")
             )
         )
     ) 
-)
-
-(define "HopDoubleCounter" 
-    (move
-        Hop
-        (between 
-            before:9
-            after:9
-            if:("IsEnemyAt" (between)) 
-            (apply (remove (between)))
-        )
-        (to if:(is Empty (to)))
-        (then ("HasCaptured"))
-    )
 )
 
 (define "HasCaptured" (set Value Mover 0))
@@ -43,21 +18,8 @@
     (set Pending 
         (sites From
             (or 
-                (forEach Piece "Counter" 
-                    ("HopCounter")
-                ) 
-                (forEach Piece "DoubleCounter" 
-                    (move
-                        Hop
-                        (between 
-                            before:9
-                            after:9
-                            if:("IsEnemyAt" (between)) 
-                            (apply (remove (between)))
-                        )
-                        (to if:(is Empty (to)))
-                    )
-                )
+                (forEach Piece "Counter" ("HopCounter")) 
+                (forEach Piece "DoubleCounter" ("HopCaptureDistance"))
             )
         )
     )
@@ -66,11 +28,8 @@
 (define "SitesWithPossibleCaptureInPreviousTurn" (sites Pending))
 
 (define "HuffOnePieceOf" 
-    (move
-        Select 
-        (from #1
-            if:(!= (what at:(from)) 0)
-        )
+    (move Select 
+        (from #1 if:(is Occupied (from)))
         (then 
             (and {
                 (remove (last To)) 
@@ -97,18 +56,15 @@
         (piece "Counter" Each
             (or
                 ("HopCounter") 
-                (move
-                    Step 
-                    (directions {Forwards Rightward Leftward})
-                    (to if:(is Empty (to)))
+                ("StepToEmpty" (directions {Forwards Rightward Leftward})
                     (then ("HasNotCaptured"))
                 )
-                (then ("PromoteIfBorderReached"))
+                (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
             )		
         )
         (piece "DoubleCounter" Each
             (or
-                ("HopDoubleCounter") 
+                ("HopCaptureDistance" ~ ~ ~ (then ("HasCaptured")))
                 (move Slide (then ("HasNotCaptured")))
             )		
         )
@@ -139,7 +95,7 @@
             )
         ) 
         
-        (end (if (no Pieces Mover) (result Next Win))) 
+        (end ("CaptureAll" Mover)) 
     )
 )
 

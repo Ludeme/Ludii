@@ -15,9 +15,7 @@
             (place "Marker2" (union {(sites Row 5) (sites Row 6) (sites Row 7) (sites Row 8)}))
         })
         
-        (play 
-            (forEach Piece)
-        )
+        (play (forEach Piece))
         
         (end ("CaptureAll" Next))
     )
@@ -42,11 +40,9 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai
         "Dam (Singapore)_ai"
     )
 )
-
