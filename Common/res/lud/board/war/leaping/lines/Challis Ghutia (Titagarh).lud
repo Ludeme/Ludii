@@ -17,7 +17,7 @@
         
         (play (forEach Piece)) 
         
-        (end (if (no Pieces Next) (result Mover Win))) 
+        (end ("CaptureAll" Next)) 
     )
 )
 
@@ -176,10 +176,6 @@
         (origin "This game was played in India, around 1939.")
         }
     )
-    
-    (graphics {
-        
-    })
     
     (ai
         "Challis Ghutia (Titagarh)_ai"
