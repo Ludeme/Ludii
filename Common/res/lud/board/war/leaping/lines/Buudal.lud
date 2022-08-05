@@ -17,9 +17,7 @@
         )
     })
     (rules
-        (start 
-            (place "Marker" "Hand" count:6)
-        )
+        (start (place "Marker" "Hand" count:6))
         
         phases:{
         (phase "Placement"
@@ -33,7 +31,8 @@
         )
         ("PhaseMovePiece" "Movement")
         }
-        (end (if (no Pieces Next) (result Mover Win)))
+    
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -53,9 +52,6 @@
         }
     )
     
-    (graphics {
-        
-    })
     (ai
         "Buudal_ai"
     )

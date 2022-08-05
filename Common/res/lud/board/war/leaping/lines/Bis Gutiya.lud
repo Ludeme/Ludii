@@ -12,9 +12,7 @@
     
     (rules 
         ("BeforeAfterCentreSetup" "Marker1" "Marker2")
-        
         (play (forEach Piece)) 
-        
         (end ("CaptureAll" Next)) 
     )
 )
