@@ -1,7 +1,6 @@
 (define "OrthogonalHopCaptureDoubleCounter"
     (do
-        (move
-            Hop 
+        (move Hop 
             #1
             Orthogonal
             (between 
@@ -18,8 +17,7 @@
 )
 
 (define "DiagonalHopCaptureDoubleCounter"
-    (move
-        Hop 
+    (move Hop 
         #1
         Diagonal
         (between 
@@ -34,8 +32,7 @@
 
 (define "OrthogonalHopCaptureCounter"
     (do
-        (move
-            Hop 
+        (move Hop 
             #1
             Orthogonal
             (between 
@@ -52,8 +49,7 @@
 )
 
 (define "DiagonalHopCaptureCounter"
-    (move
-        Hop 
+    (move Hop 
         #1
         Diagonal
         (between 
@@ -68,14 +64,11 @@
 
 (define "DoubleCounterMoveAgainIfCanCaptureAgain" 
     (then
-        (if 
-            (can Move 
+    	("ReplayIfCanMove" 
                 (or 
                     ("DiagonalHopCaptureDoubleCounter" (from (last To))) 
                     ("OrthogonalHopCaptureDoubleCounter" (from (last To)))
                 )
-            )
-            (moveAgain)
         )
     )
 )
@@ -88,79 +81,42 @@
         )
         ("DiagonalHopCaptureDoubleCounter" (from) ("DoubleCounterMoveAgainIfCanCaptureAgain"))
         ("OrthogonalHopCaptureDoubleCounter" (from) ("DoubleCounterMoveAgainIfCanCaptureAgain"))
-        }
-    )
+    })
 )
 
 (define "CounterMoveAgainIfCanCaptureAgain" 
     (then 
-        (if ("JumpToPromotionZone") 
-            (and
-                (promote (last To) (piece "DoubleCounter") Mover)
-                (if 
-                    (can Move 
-                        (or 
-                            ("DiagonalHopCaptureDoubleCounter" (from (last To))) 
-                            ("OrthogonalHopCaptureDoubleCounter" (from (last To)))
-                        )
-                    )
-                    (moveAgain)
-                )
-            )
-            (if 
-                (can Move 
+    	(and
+    ("PromoteIfReach" (sites Next) "DoubleCounter")
+            ("ReplayIfCanMove" 
                     (or 
                         ("DiagonalHopCaptureCounter" (from (last To))) 
                         ("OrthogonalHopCaptureCounter" (from (last To)))
                     )
                 )
-                (moveAgain)
-            )
         )
     )
 )
 
 (define "CounterMove"
     (or {
-        (move
-            Step 
-            (directions {FR FL}) 
-            (to if:(is Empty (to)))
-            (then 
-                (if ("JumpToPromotionZone") 
-                    (move Promote (last To) (piece "DoubleCounter") Mover)
-                )
-            )
+        ("StepToEmpty" (directions {FR FL}) 
+        	(then ("PromoteIfReach" (sites Next) "DoubleCounter"))
         )
         ("DiagonalHopCaptureCounter" (from) ("CounterMoveAgainIfCanCaptureAgain"))
         ("OrthogonalHopCaptureCounter" (from) ("CounterMoveAgainIfCanCaptureAgain"))
-        }
-    )
+    })
 )
 
-(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
-(define "JumpToPromotionZone" (is In (last To) (sites Next)))
+(define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
 
 //------------------------------------------------------------------------------
 
 (game "Maleys" 
-    (players 2) 
-    (equipment { 
-        (board (square 10)) 
-        (piece "Counter" P1 N "CounterMove")
-        (piece "Counter" P2 S "CounterMove") 
-        (piece "DoubleCounter" Each "DoubleCounterMove")
-        (regions P1 (sites Bottom))
-        (regions P2 (sites Top))
-        }
-    ) 
+	("TwoPlayersNorthSouth")
+	("DraughtsEquipment" (square 10))
     (rules 
-        (start
-            { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:3) (sites Phase 1) ))
-            (place "Counter2" (difference (expand (sites Top) steps:3) (sites Phase 1)))
-            }
-        )
+        ("BlackCellsSetup" 4)
         
         (play 
             (if ("SameTurn")
@@ -177,11 +133,14 @@
                     )
                     (move Pass)
                 )
-                (forEach Piece)
+                (or 
+                        (forEach Piece "Counter" "CounterMove")
+                        (forEach Piece "DoubleCounter" "DoubleCounterMove")
+                )
             )
         ) 
         
-        (end (if (no Pieces Next) (result Mover Win))) 
+        (end ("CaptureAll" Next)) 
     )
 )
 
