@@ -28,23 +28,23 @@
         )
         (to if:(is Empty (to)))
         (then 
-        	("ReplayIfCanMove"
-                    (hop 
-                        (from (last To))
-                        SameDirection 
-                        (between
-                            before:(count Rows)
-                            (range 1 (count Rows))
-                            after:(count Rows)
-                            if:(and
-                                (not (is In (between) (sites ToClear))) 
-                                ("IsEnemyAt" (between))
-                            )
-                            (apply (remove (between)))
+            ("ReplayIfCanMove"
+                (hop 
+                    (from (last To))
+                    SameDirection 
+                    (between
+                        before:(count Rows)
+                        (range 1 (count Rows))
+                        after:(count Rows)
+                        if:(and
+                            (not (is In (between) (sites ToClear))) 
+                            ("IsEnemyAt" (between))
                         )
-                        (to if:(is Empty (to)))
+                        (apply (remove (between)))
                     )
-                ) 
+                    (to if:(is Empty (to)))
+                )
+            ) 
         )
     )
 )
@@ -62,23 +62,23 @@
         )
         (to if:(is Empty (to)))
         (then 
-        	("ReplayIfCanMove"
-                    (hop 
-                        (from (last To))
-                        SameDirection 
-                        (between
-                            before:(count Rows)
-                            (range 1 (count Rows))
-                            after:(count Rows)
-                            if:(and
-                                (not (is In (between) (sites ToClear))) 
-                                ("IsEnemyAt" (between))
-                            )
-                            (apply (remove (between)))
+            ("ReplayIfCanMove"
+                (hop 
+                    (from (last To))
+                    SameDirection 
+                    (between
+                        before:(count Rows)
+                        (range 1 (count Rows))
+                        after:(count Rows)
+                        if:(and
+                            (not (is In (between) (sites ToClear))) 
+                            ("IsEnemyAt" (between))
                         )
-                        (to if:(is Empty (to)))
+                        (apply (remove (between)))
                     )
-                ) 
+                    (to if:(is Empty (to)))
+                )
+            ) 
         )
     )
 )
@@ -86,8 +86,8 @@
 //------------------------------------------------------------------------------
 
 (game "Moo" 
-	("TwoPlayersNorthSouth")
-	("DraughtsEquipment" (square 8) ~ (regions "MarkedCell" (sites Phase 0))) 
+    ("TwoPlayersNorthSouth")
+    ("DraughtsEquipment" (square 8) ~ (regions "MarkedCell" (sites Phase 0))) 
     (rules 
         ("BlackCellsSetup" 3)
         
@@ -97,8 +97,8 @@
                     (if "IsUnpromoted"
                         ("HopMan" (last To)
                             (then 
-                            	("ReplayIfCanMove" ("HopMan" (last To)) 
-                            		("PromoteIfReach" (sites Next) "DoubleCounter")
+                                ("ReplayIfCanMove" ("HopMan" (last To)) 
+                                    ("PromoteIfReach" (sites Next) "DoubleCounter")
                                 ) 
                             ) 
                         )
@@ -111,8 +111,8 @@
                         (or
                             ("HopMan" (from) 
                                 (then 
-                                	("ReplayIfCanMove" ("HopMan" (last To)) 
-                                		("PromoteIfReach" (sites Next) "DoubleCounter")
+                                    ("ReplayIfCanMove" ("HopMan" (last To)) 
+                                        ("PromoteIfReach" (sites Next) "DoubleCounter")
                                     ) 
                                 ) 
                             )

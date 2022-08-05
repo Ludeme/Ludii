@@ -3,19 +3,19 @@
 //------------------------------------------------------------------------------
 
 (game "Pleasant Draughts" 
-	    ("TwoPlayersNorthSouth")
-	    ("DraughtsEquipment" (square 8))
+    ("TwoPlayersNorthSouth")
+    ("DraughtsEquipment" (square 8))
     (rules 
-            ("BlackCellsSetup" 3)
+        ("BlackCellsSetup" 3)
         
         (play 
             (if "SameTurn"
                 (or
                     (if "IsUnpromoted"
-                    	("HopCapture" (from (last To)) (directions {FR FL})
+                        ("HopCapture" (from (last To)) (directions {FR FL})
                             (then 
-                            	("PromoteIfReach" (sites Next) "DoubleCounter"
-                                	("ReplayIfCanMove" ("HopCapture" (from (last To)) (directions {FR FL})))
+                                ("PromoteIfReach" (sites Next) "DoubleCounter"
+                                    ("ReplayIfCanMove" ("HopCapture" (from (last To)) (directions {FR FL})))
                                 ) 
                             ) 
                         )
@@ -26,10 +26,10 @@
                 (or 
                     (forEach Piece "Counter" 
                         (or
-                        	("HopCapture" (from) (directions {FR FL})
+                            ("HopCapture" (from) (directions {FR FL})
                                 (then 
-                                	("PromoteIfReach" (sites Next) "DoubleCounter"
-                                    	("ReplayIfCanMove" ("HopCapture" (from (last To)) (directions {FR FL}))) 
+                                    ("PromoteIfReach" (sites Next) "DoubleCounter"
+                                        ("ReplayIfCanMove" ("HopCapture" (from (last To)) (directions {FR FL}))) 
                                     ) 
                                 ) 
                             ) 

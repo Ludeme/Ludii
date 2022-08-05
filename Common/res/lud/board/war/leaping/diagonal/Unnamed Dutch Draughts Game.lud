@@ -10,21 +10,21 @@
         )
         (to if:(is Empty (to)))
         (then 
-        	("ReplayIfCanMove" 
-                    (hop 
-                        (from (last To)) 
-                        Diagonal
-                        (between 
-                            #2
-                            #3
-                            if:(and 
-                                (not (is In (between) (sites ToClear))) 
-                                ("IsEnemyAt" (between))
-                            )
-                            (apply (remove (between) #4))
+            ("ReplayIfCanMove" 
+                (hop 
+                    (from (last To)) 
+                    Diagonal
+                    (between 
+                        #2
+                        #3
+                        if:(and 
+                            (not (is In (between) (sites ToClear))) 
+                            ("IsEnemyAt" (between))
                         )
-                        (to if:(is Empty (to)))
+                        (apply (remove (between) #4))
                     )
+                    (to if:(is Empty (to)))
+                )
                 ("PromoteIfReach" (sites Next) "CounterStar")
             )
         )
@@ -40,8 +40,8 @@
 //------------------------------------------------------------------------------
 
 (game "Unnamed Dutch Draughts Game" 
-	("TwoPlayersNorthSouth")
-	("DraughtsEquipment" (square 10) ~ (piece "CounterStar" Each))
+    ("TwoPlayersNorthSouth")
+    ("DraughtsEquipment" (square 10) ~ (piece "CounterStar" Each))
     (rules 
         (start { 
             (place "Counter1" (difference (expand (sites Bottom) steps:3) (union (sites Bottom) (sites Phase 1)) ))
@@ -54,9 +54,9 @@
             (if ("SameTurn")
                 (if ("IsUnpromoted")
                     (max Moves
-                    	("HopInternationalDraughtsStyle" (from (last To))
+                        ("HopInternationalDraughtsStyle" (from (last To))
                             (then 
-                            	("ReplayIfCanMove" ("HopInternationalDraughtsStyle" (from (last To)))
+                                ("ReplayIfCanMove" ("HopInternationalDraughtsStyle" (from (last To)))
                                     ("PromoteIfReach" (sites Next) "DoubleCounter")
                                 ) 
                             ) 
@@ -71,17 +71,17 @@
                     (max Moves
                         (or {
                             (forEach Piece "Counter"
-                            	("HopInternationalDraughtsStyle" (from)
+                                ("HopInternationalDraughtsStyle" (from)
                                     (then 
-                                    	("ReplayIfCanMove" ("HopInternationalDraughtsStyle" (from (last To))) 
-                                    		("PromoteIfReach" (sites Next) "DoubleCounter")
+                                        ("ReplayIfCanMove" ("HopInternationalDraughtsStyle" (from (last To))) 
+                                            ("PromoteIfReach" (sites Next) "DoubleCounter")
                                         )
                                     ) 
                                 ) 
                             )
                             (forEach Piece "DoubleCounter" ("HopDoubleCounter" (from) before:(count Rows) after:(count Rows) at:EndOfTurn))
                             (forEach Piece "CounterStar" ("HopSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))
-                         })
+                        })
                     )
                     (or {
                         (forEach Piece "Counter" 

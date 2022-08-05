@@ -18,8 +18,8 @@
 //------------------------------------------------------------------------------
 
 (game "Shashki" 
-		("TwoPlayersNorthSouth")
-		("DraughtsEquipment" (square 8)) 
+    ("TwoPlayersNorthSouth")
+    ("DraughtsEquipment" (square 8)) 
     (rules 
         ("BlackCellsSetup" 3)
         
@@ -33,7 +33,7 @@
                                     (promote (last To) (piece "DoubleCounter") Mover)
                                     ("ReplayIfCanMove" ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows)))
                                 )
-                            	("ReplayIfCanMove" ("HopCounter" (last To))) 
+                                ("ReplayIfCanMove" ("HopCounter" (last To))) 
                             )
                         ) 
                     )
@@ -49,7 +49,7 @@
                                             (promote (last To) (piece "DoubleCounter") Mover)
                                             ("ReplayIfCanMove" ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows)))
                                         )
-                                    	("ReplayIfCanMove" ("HopCounter" (last To))) 
+                                        ("ReplayIfCanMove" ("HopCounter" (last To))) 
                                     )
                                 ) 
                             ) 

@@ -18,12 +18,12 @@
 
 (define "MoveAgainIfCanCaptureAgain" 
     (then 
-    	("ReplayIfCanMove" 
-                (or 
-                	("HopCapture" (from (last To)) Diagonal)
-                    ("OrthogonalHopCaptureCounter" (from (last To)))
-                )
+        ("ReplayIfCanMove" 
+            (or 
+                ("HopCapture" (from (last To)) Diagonal)
+                ("OrthogonalHopCaptureCounter" (from (last To)))
             )
+        )
     )
 )
 
@@ -33,7 +33,7 @@
         (move Slide Orthogonal (between (exact 2))) 
         ("HopCapture" (from) Diagonal ("MoveAgainIfCanCaptureAgain"))
         ("OrthogonalHopCaptureCounter" (from) ("MoveAgainIfCanCaptureAgain"))
-     })
+    })
 )
 
 //------------------------------------------------------------------------------

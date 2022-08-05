@@ -6,15 +6,15 @@
 
 (define "HopStackEnemyCaptureTop"
     (move Hop 
-            #1
-            #2 
-            (between if:("IsEnemyAt" (between)) (apply (fromTo (from (between)) (to))))  	
-            (to if:(and 
-                    (is In (from) (sites Occupied by:Mover)) 
-                    (is Empty (to))
-                )
+        #1
+        #2 
+        (between if:("IsEnemyAt" (between)) (apply (fromTo (from (between)) (to))))  	
+        (to if:(and 
+                (is In (from) (sites Occupied by:Mover)) 
+                (is Empty (to))
             )
-            stack:True
-            #3
         )
+        stack:True
+        #3
+    )
 )

@@ -7,10 +7,7 @@
         )
     })
     (rules
-        (start {
-            (place "Bean1" (forEach (sites Board) if:(< (site) (centrePoint))))
-            (place "Bean2" (forEach (sites Board) if:(> (site) (centrePoint))))
-        })
+        ("BeforeAfterCentreSetup" "Bean1" "Bean2")
         
         (play 
             (if ("SameTurn")

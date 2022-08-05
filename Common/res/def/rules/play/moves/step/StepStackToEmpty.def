@@ -5,14 +5,14 @@
 
 (define "StepStackToEmpty"
     (move Step 
-            #1 
-            (to 
-                if:(and 
-                    (is In (from) (sites Occupied by:Mover)) 
-                    (is Empty (to))
-                )
-            ) 
-            stack:True
-            #2
-        )
+        #1 
+        (to 
+            if:(and 
+                (is In (from) (sites Occupied by:Mover)) 
+                (is Empty (to))
+            )
+        ) 
+        stack:True
+        #2
+    )
 )

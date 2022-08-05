@@ -64,11 +64,11 @@
 
 (define "DoubleCounterMoveAgainIfCanCaptureAgain" 
     (then
-    	("ReplayIfCanMove" 
-                (or 
-                    ("DiagonalHopCaptureDoubleCounter" (from (last To))) 
-                    ("OrthogonalHopCaptureDoubleCounter" (from (last To)))
-                )
+        ("ReplayIfCanMove" 
+            (or 
+                ("DiagonalHopCaptureDoubleCounter" (from (last To))) 
+                ("OrthogonalHopCaptureDoubleCounter" (from (last To)))
+            )
         )
     )
 )
@@ -86,14 +86,14 @@
 
 (define "CounterMoveAgainIfCanCaptureAgain" 
     (then 
-    	(and
-    ("PromoteIfReach" (sites Next) "DoubleCounter")
+        (and
+            ("PromoteIfReach" (sites Next) "DoubleCounter")
             ("ReplayIfCanMove" 
-                    (or 
-                        ("DiagonalHopCaptureCounter" (from (last To))) 
-                        ("OrthogonalHopCaptureCounter" (from (last To)))
-                    )
+                (or 
+                    ("DiagonalHopCaptureCounter" (from (last To))) 
+                    ("OrthogonalHopCaptureCounter" (from (last To)))
                 )
+            )
         )
     )
 )
@@ -101,7 +101,7 @@
 (define "CounterMove"
     (or {
         ("StepToEmpty" (directions {FR FL}) 
-        	(then ("PromoteIfReach" (sites Next) "DoubleCounter"))
+            (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
         )
         ("DiagonalHopCaptureCounter" (from) ("CounterMoveAgainIfCanCaptureAgain"))
         ("OrthogonalHopCaptureCounter" (from) ("CounterMoveAgainIfCanCaptureAgain"))
@@ -113,8 +113,8 @@
 //------------------------------------------------------------------------------
 
 (game "Maleys" 
-	("TwoPlayersNorthSouth")
-	("DraughtsEquipment" (square 10))
+    ("TwoPlayersNorthSouth")
+    ("DraughtsEquipment" (square 10))
     (rules 
         ("BlackCellsSetup" 4)
         
@@ -134,8 +134,8 @@
                     (move Pass)
                 )
                 (or 
-                        (forEach Piece "Counter" "CounterMove")
-                        (forEach Piece "DoubleCounter" "DoubleCounterMove")
+                    (forEach Piece "Counter" "CounterMove")
+                    (forEach Piece "DoubleCounter" "DoubleCounterMove")
                 )
             )
         ) 

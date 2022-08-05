@@ -1,11 +1,11 @@
 (define "Hop" 
-	("HopStackEnemyCaptureTop"
-		#1
-		~
+    ("HopStackEnemyCaptureTop"
+        #1
+        ~
         (then 
             (if 
                 (can Move 
-                	("HopStackEnemyCaptureTop"
+                    ("HopStackEnemyCaptureTop"
                         (from (last To)) 
                         #1 
                     )
@@ -39,11 +39,11 @@
         (play
             (if "SameTurn"
                 (if "IsUnpromoted" 
-                	("HopStackEnemyCaptureTop"
+                    ("HopStackEnemyCaptureTop"
                         (from (last To)) 
                         (directions {FR FL}) 
                         (then 
-                        	("PromoteIfReach" (sites Next) "CounterStar"
+                            ("PromoteIfReach" (sites Next) "CounterStar"
                                 (if 
                                     (can Move
                                         ("HopStackEnemyCaptureTop" 
@@ -56,13 +56,13 @@
                             ) 
                         )
                     ) 
-                	("HopStackEnemyCaptureTop"
+                    ("HopStackEnemyCaptureTop"
                         (from (last To)) 
                         Diagonal 
                         (then 
                             (if 
                                 (can Move 
-                                	("HopStackEnemyCaptureTop"
+                                    ("HopStackEnemyCaptureTop"
                                         (from (last To)) 
                                         Diagonal 
                                     )

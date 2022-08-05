@@ -150,7 +150,7 @@
                         ("HopCounter" (last To)
                             (then 
                                 (and
-                                	("ReplayIfCanMove" ("HopCounter" (last To)) 
+                                    ("ReplayIfCanMove" ("HopCounter" (last To)) 
                                         ("PromoteIfReach" (sites Next) "DoubleCounter" (then (set Value at:(last To) 19)))
                                     ) 
                                     (forEach Site (sites Occupied by:Mover)
@@ -174,8 +174,8 @@
                                 ("HopCounter" (from) 
                                     (then 
                                         (and
-                                        	("ReplayIfCanMove" ("HopCounter" (last To))
-                                        		("PromoteIfReach" (sites Next) "DoubleCounter" (then (set Value at:(last To) 19)))
+                                            ("ReplayIfCanMove" ("HopCounter" (last To))
+                                                ("PromoteIfReach" (sites Next) "DoubleCounter" (then (set Value at:(last To) 19)))
                                             )
                                             (forEach Site (sites Occupied by:Mover)
                                                 (if (!= 0 (state at:(site)))
@@ -193,7 +193,7 @@
                             ("CounterSimpleMove")
                             (then 
                                 (and	
-                                	("PromoteIfReach" (sites Next) "DoubleCounter" (then (set Value at:(last To) 19)))
+                                    ("PromoteIfReach" (sites Next) "DoubleCounter" (then (set Value at:(last To) 19)))
                                     (forEach Site (sites Occupied by:Mover)
                                         (if (!= 0 (state at:(site)))
                                             (set State at:(site) 0)

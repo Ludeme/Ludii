@@ -1,10 +1,10 @@
 (define "Hop" 
-	("HopStackEnemyCaptureTop"
-		(from)
+    ("HopStackEnemyCaptureTop"
+        (from)
         #1 
         (then 
             ("ReplayIfCanMove"
-            	("HopStackEnemyCaptureTop"
+                ("HopStackEnemyCaptureTop"
                     (from (last To)) 
                     #1 
                 )
@@ -14,8 +14,8 @@
 )
 
 (define "HopDistance" 
-	("HopStackEnemyCaptureTopDistance"
-		(from)
+    ("HopStackEnemyCaptureTopDistance"
+        (from)
         #1 
         (then 
             ("ReplayIfCanMove"
@@ -23,8 +23,8 @@
                     (from (last To)) 
                     #1 
                     (between 
-                    	before:(count Rows) 
-                    	after:(count Rows)
+                        before:(count Rows) 
+                        after:(count Rows)
                         if:(and (not (is In (between) (last Between))) ("IsEnemyAt" (between))) 
                         (apply (fromTo (from (between)) (to)))
                     )  	
@@ -60,7 +60,7 @@
         (play
             (if "SameTurn"
                 (if "IsUnpromoted" 
-                	("HopStackEnemyCaptureTop"
+                    ("HopStackEnemyCaptureTop"
                         (from (last To)) 
                         (directions {FR FL}) 
                         (then 
