@@ -159,15 +159,13 @@
 
 (game "Seesaw Draughts"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (square 8))
         (piece "Disc" P1 N)
         (piece "Disc" P2 S) 
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-        }
-    )
+    })
     (rules
         (start { 
             (place "Disc1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)))
@@ -185,12 +183,7 @@
                 )
             )
         )
-        (end 
-            (if 
-                (no Moves Next) 
-                (result Next Loss)
-            )
-        )
+        (end ("NoMoves" Loss))
     )
 )
 
