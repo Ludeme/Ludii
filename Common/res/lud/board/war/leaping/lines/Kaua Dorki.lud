@@ -15,20 +15,16 @@
                 ("StepToEmpty")
             )
         )
-        }
-    ) 
+    }) 
     (rules 
         (start {
             (place "Marker1" (expand (union (sites Bottom) (sites {"A3"}))))
             (place "Marker2" (expand (union (sites Top) (sites {"E3"}))))
         })
-        (play 
-            (forEach Piece)
-        )
         
-        (end 
-            (if (no Pieces Next) (result Mover Win))
-        )
+        (play (forEach Piece))
+        
+        (end ("AllCapture" Next))
     )
 )
 
@@ -51,7 +47,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai

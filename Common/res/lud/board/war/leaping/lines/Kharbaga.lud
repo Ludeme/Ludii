@@ -1,13 +1,3 @@
-(define "PromotionIfOppositeSideReached" 
-    (then 
-        (if (is In (last To) (sites Next))
-            (move Promote (last To) (piece "DoubleCounter") Mover)
-        )
-    )
-)
-
-//------------------------------------------------------------------------------
-
 (game "Kharbaga"
     (players {(player S) (player N)})
     (equipment {
@@ -16,21 +6,12 @@
             (or
                 ("StepForwardsToEmpty")
                 ("HopCapture")
-                ("PromotionIfOppositeSideReached")
+                (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
             )
         )
         (piece "DoubleCounter" Each
             (or
-                (move
-                    Hop 
-                    (between 
-                        before:9 
-                        after:9 
-                        if:("IsEnemyAt" (between)) 
-                        (apply (remove (between)))
-                    )
-                    (to if:(is Empty (to)))
-                )
+            	("HopCaptureDistance")
                 (move Slide)
             )
         )
@@ -64,7 +45,6 @@
     
     (graphics {
         (piece Families {"Defined" "Isometric"})
-        
     })
     
     (ai 
