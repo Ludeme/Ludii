@@ -1,16 +1,7 @@
 (game "Hewakam Keliya" 
     (players 2) 
-    (equipment { 
-        (board 
-            (merge 
-                { 
-                (shift 0 2 (square 5 diagonals:Alternating)) 
-                (wedge 3) 
-                (shift 0 6 (rotate 180 (wedge 3))) 
-                } 
-            ) 
-            use:Vertex
-        ) 
+    (equipment {
+    ("AlquerqueBoardWithBottomAndTopTriangles")
         (piece "Marker" Each 
             (or 
                 ("HopSequenceCapture") 
@@ -58,7 +49,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai 
