@@ -13,17 +13,9 @@
         )
         (piece "Counter" Each
             (or
-                (move
-                    Step 
-                    (difference Forwards Diagonal)
-                    (to if:(is Empty (to)))
-                )	
+                ("StepToEmpty" (difference Forwards Diagonal))	
                 "HopCapture"
-                (then
-                    (if (is In (last To) (sites Next))
-                        (move Promote (last To) (piece "DoubleCounter") Mover)
-                    )		
-                )
+                (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
             )
         )
         (piece "DoubleCounter" Each
@@ -41,7 +33,7 @@
             (place "Counter2" (union (sites {36..39}) (expand (sites Top) steps:3)))
         })
         (play (forEach Piece))
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -65,7 +57,6 @@
     )
     
     (graphics {
-        
         (show Edges Diagonal Hidden)
     })
     
