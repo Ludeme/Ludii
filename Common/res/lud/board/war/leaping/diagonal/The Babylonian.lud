@@ -1,7 +1,6 @@
 (define "OrthogonalHopCaptureCounter"
     (do
-        (move
-            Hop 
+        (move Hop 
             #1
             Orthogonal
             (between 
@@ -17,51 +16,24 @@
     )
 )
 
-(define "DiagonalHopCaptureCounter"
-    (move
-        Hop 
-        #1
-        Diagonal
-        (between 
-            if:("IsEnemyAt" (between))
-            (apply (remove (between)))
-        ) 
-        (to if:(is Empty (to)))
-        #2
-    )
-)
-
 (define "MoveAgainIfCanCaptureAgain" 
     (then 
-        (if 
-            (can Move 
+    	("ReplayIfCanMove" 
                 (or 
-                    ("DiagonalHopCaptureCounter" (from (last To))) 
+                	("HopCapture" (from (last To)) Diagonal)
                     ("OrthogonalHopCaptureCounter" (from (last To)))
                 )
             )
-            (moveAgain)
-        )
     )
 )
 
 (define "CounterMove"
     (or {
-        (move
-            Step 
-            Diagonal
-            (to if:(is Empty (to)))
-        )
-        (move
-            Hop 
-            Orthogonal
-            (between if:(is Empty (between)))
-            (to if:(is Empty (to)))
-        )
-        ("DiagonalHopCaptureCounter" (from) ("MoveAgainIfCanCaptureAgain"))
+        ("StepToEmpty" Diagonal) 
+        (move Slide Orthogonal (between (exact 2))) 
+        ("HopCapture" (from) Diagonal ("MoveAgainIfCanCaptureAgain"))
         ("OrthogonalHopCaptureCounter" (from) ("MoveAgainIfCanCaptureAgain"))
-        }
-    )
+     })
 )
 
 //------------------------------------------------------------------------------
@@ -73,20 +45,14 @@
         (piece "Counter" Each "CounterMove")
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-        }
-    ) 
+    }) 
     (rules 
-        (start
-            { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:3) (sites Phase 0) ))
-            (place "Counter2" (difference (expand (sites Top) steps:3) (sites Phase 0)))
-            }
-        )
+        ("WhiteCellsSetup" 4)
         
         (play 
             (if ("SameTurn")
                 (or {
-                    ("DiagonalHopCaptureCounter" (from (last To)) ("MoveAgainIfCanCaptureAgain"))
+                    ("HopCapture" (from (last To)) Diagonal ("MoveAgainIfCanCaptureAgain"))
                     ("OrthogonalHopCaptureCounter" (from (last To)) ("MoveAgainIfCanCaptureAgain"))
                     (move Pass)
                 })
@@ -94,7 +60,7 @@
             )
         ) 
         
-        (end (if (no Pieces Next) (result Mover Win))) 
+        (end ("CaptureAll" Next)) 
     )
 )
 
