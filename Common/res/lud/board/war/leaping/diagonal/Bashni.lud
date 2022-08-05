@@ -1,39 +1,30 @@
-(define "Step" 
-    (move Step 
+(define "Hop" 
+	("HopStackEnemyCaptureTop"
+		(from)
         #1 
-        (to 
-            if:(and 
-                (is In (from) (sites Occupied by:Mover)) 
-                (is Empty (to))
-            )
-        ) 
-        stack:True
-    )
+        (then 
+            ("ReplayIfCanMove"
+            	("HopStackEnemyCaptureTop"
+                    (from (last To)) 
+                    #1 
+                )
+            ) 
+        )
+    ) 
 )
 
-(define "Hop" 
-    (move Hop 
+(define "HopDistance" 
+	("HopStackEnemyCaptureTopDistance"
+		(from)
         #1 
-        (between 
-            #2
-            #3
-            if:("IsEnemyAt" (between)) 
-            (apply (fromTo (from (between)) (to)))
-        )
-        (to if:(and 
-                (is In (from) (sites Occupied by:Mover)) 
-                (is Empty (to))
-            )
-        )
-        stack:True 
         (then 
             ("ReplayIfCanMove"
                 (hop 
                     (from (last To)) 
                     #1 
                     (between 
-                        #2
-                        #3
+                    	before:(count Rows) 
+                    	after:(count Rows)
                         if:(and (not (is In (between) (last Between))) ("IsEnemyAt" (between))) 
                         (apply (fromTo (from (between)) (to)))
                     )  	
@@ -69,32 +60,15 @@
         (play
             (if "SameTurn"
                 (if "IsUnpromoted" 
-                    (move Hop 
+                	("HopStackEnemyCaptureTop"
                         (from (last To)) 
                         (directions {FR FL}) 
-                        (between if:("IsEnemyAt" (between)) (apply (fromTo (from (between)) (to)))) 
-                        (to if:(and 
-                                (is In (from) (sites Occupied by:Mover)) 
-                                (is Empty (to))
-                            )
-                        )
-                        stack:True 
                         (then 
                             ("PromoteIfReach" (sites Next) "CounterStar"
                                 ("ReplayIfCanMove"
-                                    (hop 
+                                    ("HopStackEnemyCaptureTop"
                                         (from (last To)) 
                                         (directions {FR FL}) 
-                                        (between 
-                                            if:("IsEnemyAt" (between)) 
-                                            (apply (fromTo (from (between)) (to)))
-                                        ) 		
-                                        (to if:(and 
-                                                (is In (from) (sites Occupied by:Mover)) 
-                                                (is Empty (to))
-                                            )
-                                        )
-                                        stack:True
                                     )
                                 )
                             ) 
@@ -140,11 +114,11 @@
                 (priority {
                     (or { 
                         (forEach Piece "Counter" ("Hop" (directions {FR FL})) top:True (then ("PromoteIfReach" (sites Next) "CounterStar")))
-                        (forEach Piece "CounterStar" ("Hop" Diagonal before:(count Rows) after:(count Rows)) top:True)
+                        (forEach Piece "CounterStar" ("HopDistance" Diagonal) top:True)
                     })
                     
                     (or { 
-                        (forEach Piece "Counter" ("Step" (directions {FR FL})) top:True (then ("PromoteIfReach" (sites Next) "CounterStar")))
+                        (forEach Piece "Counter" ("StepStackToEmpty" (directions {FR FL})) top:True (then ("PromoteIfReach" (sites Next) "CounterStar")))
                         (forEach Piece "CounterStar" (move Slide Diagonal stack:True) top:True)
                     })
                 })
