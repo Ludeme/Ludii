@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import features.aspatial.AspatialFeature;
@@ -18,7 +16,6 @@ import features.spatial.AbsoluteFeature;
 import features.spatial.Pattern;
 import features.spatial.RelativeFeature;
 import features.spatial.SpatialFeature;
-import features.spatial.SpatialFeature.RotRefInvariantFeature;
 import features.spatial.Walk;
 import features.spatial.elements.FeatureElement;
 import features.spatial.elements.FeatureElement.ElementType;
@@ -76,7 +73,7 @@ public class AtomicFeatureGenerator
 		this.game = game;
 		
 		// First generate spatial features
-		spatialFeatures = simplifyFeatureSet(generateFeatures(maxWalkSize, maxStraightWalkSize));
+		spatialFeatures = SpatialFeature.simplifySpatialFeaturesList(game, generateFeatures(maxWalkSize, maxStraightWalkSize));
 		spatialFeatures.sort(new Comparator<SpatialFeature>() 
 		{
 
@@ -391,111 +388,6 @@ public class AtomicFeatureGenerator
 		}
 		
 		return allWalks;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * Simplifies the feature set given by the list of features by:
-	 * 
-	 * 	1) If there are two different features (which may not yet allow
-	 * 	reflection), such that they would become equal if one of them were
-	 * 	reflected; keeps only one of them (with reflection allowed).
-	 * 
-	 * 	2) If there are two different features (which may not yet allow all
-	 * 	rotations), such that they would become equal if one of them were
-	 * 	rotated by a certain amount; keeps only one of them (with the required
-	 * 	rotation allowed)
-	 * 
-	 * @param featuresIn
-	 * @return
-	 */
-	private List<SpatialFeature> simplifyFeatureSet(final List<SpatialFeature> featuresIn)
-	{
-		final List<SpatialFeature> simplified = new ArrayList<SpatialFeature>(featuresIn.size());
-		
-		final Map<Object, RotRefInvariantFeature> featuresToKeep = 
-				new HashMap<Object, RotRefInvariantFeature>();
-		
-		final TFloatArrayList rotations = new TFloatArrayList(Walk.allGameRotations(game));
-		final boolean[] reflections = {true, false};
-		
-		for (final SpatialFeature feature : featuresIn)
-		{
-			boolean shouldAddFeature = true;
-			
-			for (int i = 0; i < rotations.size(); ++i)
-			{
-				final float rotation = rotations.get(i);
-				
-				for (int j = 0; j < reflections.length; ++j)
-				{
-					final boolean reflect = reflections[j];
-					
-					SpatialFeature rotatedFeature = feature.rotatedCopy(rotation);
-					
-					if (reflect)
-					{
-						rotatedFeature = rotatedFeature.reflectedCopy();
-					}
-					
-					rotatedFeature.normalise(game);
-					final RotRefInvariantFeature wrapped = new RotRefInvariantFeature(rotatedFeature);
-					
-					if (featuresToKeep.containsKey(wrapped))
-					{
-						shouldAddFeature = false; 
-						
-						final SpatialFeature keepFeature = featuresToKeep.remove(wrapped).feature();
-						
-						// make sure the feature that we decide to keep also
-						// allows for the necessary rotation
-						final float requiredRot = rotation == 0.f ? 0.f : 1.f - rotation;
-						
-						if (keepFeature.pattern().allowedRotations() != null)
-						{
-							if (!keepFeature.pattern().allowedRotations().contains(requiredRot))
-							{
-								final TFloatArrayList allowedRotations = new TFloatArrayList();
-								allowedRotations.addAll
-								(
-									keepFeature.pattern().allowedRotations()
-								);
-								allowedRotations.add(requiredRot);
-								keepFeature.pattern().setAllowedRotations(allowedRotations);
-								keepFeature.pattern().allowedRotations().sort();
-								keepFeature.normalise(game);
-							}
-						}
-						
-						final RotRefInvariantFeature wrappedKeep = new RotRefInvariantFeature(keepFeature);
-						featuresToKeep.put(wrappedKeep, wrappedKeep);
-						/*System.out.println("using " + keepFeature + 
-								" instead of " + feature);*/
-						
-						break;
-					}
-				}
-				
-				if (!shouldAddFeature)
-				{
-					break;
-				}
-			}
-			
-			if (shouldAddFeature)
-			{
-				final RotRefInvariantFeature wrapped = new RotRefInvariantFeature(feature);
-				featuresToKeep.put(wrapped, wrapped);
-			}
-		}
-		
-		for (final RotRefInvariantFeature feature : featuresToKeep.values())
-		{
-			simplified.add(feature.feature());
-		}
-		
-		return simplified;
 	}
 	
 	//-------------------------------------------------------------------------
