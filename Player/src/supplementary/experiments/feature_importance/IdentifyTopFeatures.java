@@ -8,6 +8,7 @@ import decision_trees.classifiers.DecisionConditionNode;
 import decision_trees.classifiers.DecisionTreeNode;
 import decision_trees.classifiers.ExperienceUrgencyTreeLearner;
 import features.Feature;
+import features.aspatial.AspatialFeature;
 import features.feature_sets.BaseFeatureSet;
 import features.spatial.SpatialFeature;
 import function_approx.LinearFunction;
@@ -96,13 +97,31 @@ public class IdentifyTopFeatures
 		final List<List<Feature>> candidateFeaturesPerPlayer = new ArrayList<List<Feature>>();
 		for (int p = 1; p <= numPlayers; ++p)
 		{
+			// Collect all the features in our trees
 			final List<Feature> featuresList = new ArrayList<Feature>();
 			candidateFeaturesPerPlayer.add(featuresList);
 			
 			collectFeatures(playoutTreesPerPlayer[p], featuresList);
 			collectFeatures(tspgTreesPerPlayer[p], featuresList);
 			
-			// TODO remove duplicates
+			// Get rid of any sorts of duplicates/redundancies
+			List<SpatialFeature> spatialFeatures = new ArrayList<SpatialFeature>(featuresList.size());
+			final List<AspatialFeature> aspatialFeatures = new ArrayList<AspatialFeature>();
+			
+			for (final Feature feature : featuresList)
+			{
+				if (feature instanceof AspatialFeature)
+					aspatialFeatures.add((AspatialFeature) feature);
+				else
+					spatialFeatures.add((SpatialFeature) feature);
+			}
+			
+			spatialFeatures = SpatialFeature.deduplicate(spatialFeatures);
+			spatialFeatures = SpatialFeature.simplifySpatialFeaturesList(game, spatialFeatures);
+			
+			featuresList.clear();
+			featuresList.addAll(aspatialFeatures);
+			featuresList.addAll(spatialFeatures);
 		}
 		
 		// Clear some memory
