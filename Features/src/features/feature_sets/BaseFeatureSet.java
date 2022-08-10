@@ -470,7 +470,9 @@ public abstract class BaseFeatureSet
 		{
 			final BaseFeatureSet expanded = featureSet.createExpandedFeatureSet(targetGame, feature);
 			if (expanded != null)
+			{
 				featureSet = expanded;
+			}
 		}
 		
 		return featureSet;

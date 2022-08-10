@@ -61,21 +61,21 @@ public class IdentifyTopFeatures
 		
 		loadFeaturesAndWeights(game, trainingOutDirPath, featureSets, linearFunctionsPlayout, linearFunctionsTSPG);
 		
-		for (int p = 1; p < featureSets.length; ++p)
-		{
-			// Add simplified versions of existing spatial features
-			final BaseFeatureSet featureSet = featureSets[p];
-			final SpatialFeature[] origSpatialFeatures = featureSet.spatialFeatures();
-			final List<SpatialFeature> featuresToAdd = new ArrayList<SpatialFeature>();
-			
-			for (final SpatialFeature feature : origSpatialFeatures)
-			{
-				featuresToAdd.addAll(feature.generateGeneralisers(game));
-			}
-			
-			featureSets[p] = featureSet.createExpandedFeatureSet(game, featuresToAdd);
-			featureSets[p].init(game, new int[] {p}, null);
-		}
+//		for (int p = 1; p < featureSets.length; ++p)
+//		{
+//			// Add simplified versions of existing spatial features
+//			final BaseFeatureSet featureSet = featureSets[p];
+//			final SpatialFeature[] origSpatialFeatures = featureSet.spatialFeatures();
+//			final List<SpatialFeature> featuresToAdd = new ArrayList<SpatialFeature>();
+//			
+//			for (final SpatialFeature feature : origSpatialFeatures)
+//			{
+//				featuresToAdd.addAll(feature.generateGeneralisers(game));
+//			}
+//			
+//			featureSets[p] = featureSet.createExpandedFeatureSet(game, featuresToAdd);
+//			featureSets[p].init(game, new int[] {p}, null);
+//		}
 		
 		// Load experience buffers
 		final ExperienceBuffer[] experienceBuffers = new ExperienceBuffer[numPlayers + 1];
@@ -95,6 +95,8 @@ public class IdentifyTopFeatures
 		
 		// For every player, extract candidate features from the decision trees for that player
 		final List<List<Feature>> candidateFeaturesPerPlayer = new ArrayList<List<Feature>>();
+		candidateFeaturesPerPlayer.add(null);
+		
 		for (int p = 1; p <= numPlayers; ++p)
 		{
 			// Collect all the features in our trees
@@ -119,9 +121,31 @@ public class IdentifyTopFeatures
 			spatialFeatures = SpatialFeature.deduplicate(spatialFeatures);
 			spatialFeatures = SpatialFeature.simplifySpatialFeaturesList(game, spatialFeatures);
 			
+			// Add generalisers of our candidate spatial features
+			final int origNumSpatialFeatures = spatialFeatures.size();
+			for (int i = 0; i < origNumSpatialFeatures; ++i)
+			{
+				spatialFeatures.addAll(spatialFeatures.get(i).generateGeneralisers(game));
+			}
+			
+			// Do another round of cleaning up duplicates
+			spatialFeatures = SpatialFeature.deduplicate(spatialFeatures);
+			spatialFeatures = SpatialFeature.simplifySpatialFeaturesList(game, spatialFeatures);
+			
 			featuresList.clear();
 			featuresList.addAll(aspatialFeatures);
 			featuresList.addAll(spatialFeatures);
+			
+			candidateFeaturesPerPlayer.add(featuresList);
+		}
+		
+		for (int p = 1; p <= numPlayers; ++p)
+		{
+			System.out.println("Candidate features for P" + p + ":");
+			for (final Feature feature : candidateFeaturesPerPlayer.get(p))
+			{
+				System.out.println(feature);
+			}
 		}
 		
 		// Clear some memory
