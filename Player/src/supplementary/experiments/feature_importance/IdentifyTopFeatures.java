@@ -8,18 +8,27 @@ import decision_trees.classifiers.DecisionConditionNode;
 import decision_trees.classifiers.DecisionTreeNode;
 import decision_trees.classifiers.ExperienceUrgencyTreeLearner;
 import features.Feature;
+import features.FeatureVector;
+import features.WeightVector;
 import features.aspatial.AspatialFeature;
 import features.feature_sets.BaseFeatureSet;
+import features.feature_sets.network.JITSPatterNetFeatureSet;
 import features.spatial.SpatialFeature;
 import function_approx.LinearFunction;
 import game.Game;
+import gnu.trove.list.array.TFloatArrayList;
+import gnu.trove.list.array.TIntArrayList;
 import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
 import main.StringRoutines;
+import main.collections.ArrayUtils;
+import main.collections.FVector;
+import main.math.statistics.IncrementalStats;
 import other.GameLoader;
 import policies.softmax.SoftmaxPolicyLinear;
 import search.mcts.MCTS;
+import training.expert_iteration.ExItExperience;
 import utils.AIFactory;
 import utils.ExperimentFileUtils;
 import utils.data_structures.experience_buffers.ExperienceBuffer;
@@ -94,62 +103,187 @@ public class IdentifyTopFeatures
 		}
 		
 		// For every player, extract candidate features from the decision trees for that player
-		final List<List<Feature>> candidateFeaturesPerPlayer = new ArrayList<List<Feature>>();
-		candidateFeaturesPerPlayer.add(null);
+		final List<List<AspatialFeature>> candidateAspatialFeaturesPerPlayer = new ArrayList<List<AspatialFeature>>();
+		final List<List<SpatialFeature>> candidateSpatialFeaturesPerPlayer = new ArrayList<List<SpatialFeature>>();
+		candidateAspatialFeaturesPerPlayer.add(null);
+		candidateSpatialFeaturesPerPlayer.add(null);
 		
 		for (int p = 1; p <= numPlayers; ++p)
 		{
 			// Collect all the features in our trees
+			final List<AspatialFeature> aspatialFeaturesList = new ArrayList<AspatialFeature>();
+			List<SpatialFeature> spatialFeaturesList = new ArrayList<SpatialFeature>();
+			candidateAspatialFeaturesPerPlayer.add(aspatialFeaturesList);
+			candidateSpatialFeaturesPerPlayer.add(spatialFeaturesList);
+			
 			final List<Feature> featuresList = new ArrayList<Feature>();
-			candidateFeaturesPerPlayer.add(featuresList);
 			
 			collectFeatures(playoutTreesPerPlayer[p], featuresList);
 			collectFeatures(tspgTreesPerPlayer[p], featuresList);
 			
 			// Get rid of any sorts of duplicates/redundancies
-			List<SpatialFeature> spatialFeatures = new ArrayList<SpatialFeature>(featuresList.size());
-			final List<AspatialFeature> aspatialFeatures = new ArrayList<AspatialFeature>();
-			
 			for (final Feature feature : featuresList)
 			{
 				if (feature instanceof AspatialFeature)
-					aspatialFeatures.add((AspatialFeature) feature);
+					aspatialFeaturesList.add((AspatialFeature) feature);
 				else
-					spatialFeatures.add((SpatialFeature) feature);
+					spatialFeaturesList.add((SpatialFeature) feature);
 			}
 			
-			spatialFeatures = SpatialFeature.deduplicate(spatialFeatures);
-			spatialFeatures = SpatialFeature.simplifySpatialFeaturesList(game, spatialFeatures);
+			spatialFeaturesList = SpatialFeature.deduplicate(spatialFeaturesList);
+			spatialFeaturesList = SpatialFeature.simplifySpatialFeaturesList(game, spatialFeaturesList);
 			
 			// Add generalisers of our candidate spatial features
-			final int origNumSpatialFeatures = spatialFeatures.size();
+			final int origNumSpatialFeatures = spatialFeaturesList.size();
 			for (int i = 0; i < origNumSpatialFeatures; ++i)
 			{
-				spatialFeatures.addAll(spatialFeatures.get(i).generateGeneralisers(game));
+				spatialFeaturesList.addAll(spatialFeaturesList.get(i).generateGeneralisers(game));
 			}
 			
 			// Do another round of cleaning up duplicates
-			spatialFeatures = SpatialFeature.deduplicate(spatialFeatures);
-			spatialFeatures = SpatialFeature.simplifySpatialFeaturesList(game, spatialFeatures);
+			spatialFeaturesList = SpatialFeature.deduplicate(spatialFeaturesList);
+			spatialFeaturesList = SpatialFeature.simplifySpatialFeaturesList(game, spatialFeaturesList);
 			
-			featuresList.clear();
-			featuresList.addAll(aspatialFeatures);
-			featuresList.addAll(spatialFeatures);
-			
-			candidateFeaturesPerPlayer.add(featuresList);
+			candidateAspatialFeaturesPerPlayer.add(aspatialFeaturesList);
+			candidateSpatialFeaturesPerPlayer.add(spatialFeaturesList);
 		}
 		
+		// Create new feature sets with all the candidate features
+		final BaseFeatureSet[] candidateFeatureSets = new BaseFeatureSet[numPlayers + 1];
 		for (int p = 1; p <= numPlayers; ++p)
 		{
-			System.out.println("Candidate features for P" + p + ":");
-			for (final Feature feature : candidateFeaturesPerPlayer.get(p))
-			{
-				System.out.println(feature);
-			}
+			candidateFeatureSets[p] = JITSPatterNetFeatureSet.construct(candidateAspatialFeaturesPerPlayer.get(p), candidateSpatialFeaturesPerPlayer.get(p));
+			candidateFeatureSets[p].init(game, new int [] {p}, null);
+		}
+		
+		// For every candidate feature, determine a single weight as the one we
+		// would have used for it if the feature were used in the root of a logit tree
+		final FVector[] candidateFeatureWeightsPerPlayer = new FVector[numPlayers + 1];
+		for (int p = 1; p <= numPlayers; ++p)
+		{
+			candidateFeatureWeightsPerPlayer[p] = 
+					computeCandidateFeatureWeights
+					(
+						candidateFeatureSets[p], 
+						featureSets[p], 
+						linearFunctionsPlayout[p], 
+						experienceBuffers[p]
+					);
 		}
 		
 		// Clear some memory
 		Arrays.fill(experienceBuffers, null);
+		
+		// TODO run trials to evaluate all the candidate features now that they have their weights
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param candidateFeatureSet
+	 * @param originalFeatureSet
+	 * @param oracleFunction
+	 * @param experienceBuffer
+	 * @return Vector of weights, with one weight for every feature in the candidate feature set.
+	 */
+	private static FVector computeCandidateFeatureWeights
+	(
+		final BaseFeatureSet candidateFeatureSet, 
+		final BaseFeatureSet originalFeatureSet, 
+		final LinearFunction oracleFunction, 
+		final ExperienceBuffer experienceBuffer
+	)
+	{
+		final WeightVector oracleWeightVector = oracleFunction.effectiveParams();
+		final ExItExperience[] samples = experienceBuffer.allExperience();
+		final List<FeatureVector> allCandidateFeatureVectors = new ArrayList<FeatureVector>();
+		final TFloatArrayList allTargetLogits = new TFloatArrayList();
+		
+		for (final ExItExperience sample : samples)
+		{
+			if (sample != null && sample.moves().size() > 1)
+			{
+				final FeatureVector[] featureVectors = sample.generateFeatureVectors(originalFeatureSet);
+				final FeatureVector[] candidateFeatureVectors = sample.generateFeatureVectors(candidateFeatureSet);
+				final float[] logits = new float[featureVectors.length];
+
+				for (int i = 0; i < featureVectors.length; ++i)
+				{
+					final FeatureVector featureVector = featureVectors[i];
+					logits[i] = oracleWeightVector.dot(featureVector);
+				}
+				
+				final float maxLogit = ArrayUtils.max(logits);
+				final float minLogit = ArrayUtils.min(logits);
+				
+				if (maxLogit == minLogit)
+					continue;		// Nothing to learn from this, just skip it
+				
+				// Maximise logits for winning moves and minimise for losing moves
+				for (int i = sample.winningMoves().nextSetBit(0); i >= 0; i = sample.winningMoves().nextSetBit(i + 1))
+				{
+					logits[i] = maxLogit;
+				}
+				
+				for (int i = sample.losingMoves().nextSetBit(0); i >= 0; i = sample.losingMoves().nextSetBit(i + 1))
+				{
+					logits[i] = minLogit;
+				}
+				
+				for (int i = 0; i < candidateFeatureVectors.length; ++i)
+				{
+					allCandidateFeatureVectors.add(candidateFeatureVectors[i]);
+					allTargetLogits.add(logits[i]);
+				}
+			}
+		}
+		
+		final FVector candidateFeatureWeights = new FVector(candidateFeatureSet.getNumFeatures());
+		final IncrementalStats[] logitStatsPerFeatureWhenTrue = new IncrementalStats[candidateFeatureWeights.dim()];
+		final IncrementalStats[] logitStatsPerFeatureWhenFalse = new IncrementalStats[candidateFeatureWeights.dim()];
+		
+		for (int i = 0; i < logitStatsPerFeatureWhenTrue.length; ++i)
+		{
+			logitStatsPerFeatureWhenTrue[i] = new IncrementalStats();
+			logitStatsPerFeatureWhenFalse[i] = new IncrementalStats();
+		}
+		
+		final int numAspatialFeatures = candidateFeatureSet.getNumAspatialFeatures();
+		final int numSpatialFeatures = candidateFeatureSet.getNumSpatialFeatures();
+		
+		for (int i = 0; i < allCandidateFeatureVectors.size(); ++i)
+		{
+			final FeatureVector featureVector = allCandidateFeatureVectors.get(i);
+			final float targetLogit = allTargetLogits.getQuick(i);
+			
+			final FVector aspatialFeatureValues = featureVector.aspatialFeatureValues();
+			final TIntArrayList activeSpatialFeatureIndices = featureVector.activeSpatialFeatureIndices();
+			
+			for (int j = 0; j < aspatialFeatureValues.dim(); ++j)
+			{
+				if (aspatialFeatureValues.get(j) != 0.f)
+					logitStatsPerFeatureWhenTrue[j].observe(targetLogit);
+				else
+					logitStatsPerFeatureWhenFalse[j].observe(targetLogit);
+			}
+			
+			boolean[] spatialActive = new boolean[numSpatialFeatures];
+			
+			for (int j = 0; j < activeSpatialFeatureIndices.size(); ++j)
+			{
+				final int fIdx = activeSpatialFeatureIndices.getQuick(j);
+				logitStatsPerFeatureWhenTrue[fIdx + numAspatialFeatures].observe(targetLogit);
+				spatialActive[fIdx] = true;
+			}
+			
+			for (int j = 0; j < numSpatialFeatures; ++j)
+			{
+				if (!spatialActive[j])
+					logitStatsPerFeatureWhenFalse[j + numAspatialFeatures].observe(targetLogit);
+			}
+		}
+		
+		return candidateFeatureWeights;
 	}
 	
 	//-------------------------------------------------------------------------
