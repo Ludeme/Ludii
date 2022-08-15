@@ -3,6 +3,7 @@ package supplementary.experiments.feature_importance;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import decision_trees.classifiers.DecisionConditionNode;
 import decision_trees.classifiers.DecisionTreeNode;
@@ -24,8 +25,13 @@ import main.CommandLineArgParse.OptionTypes;
 import main.StringRoutines;
 import main.collections.ArrayUtils;
 import main.collections.FVector;
+import main.collections.ListUtils;
 import main.math.statistics.IncrementalStats;
+import other.AI;
 import other.GameLoader;
+import other.RankUtils;
+import other.context.Context;
+import other.trial.Trial;
 import policies.softmax.SoftmaxPolicyLinear;
 import search.mcts.MCTS;
 import training.expert_iteration.ExItExperience;
@@ -42,6 +48,19 @@ import utils.data_structures.experience_buffers.UniformExperienceBuffer;
  */
 public class IdentifyTopFeatures
 {
+	
+	//-------------------------------------------------------------------------
+	
+	/** 
+	 * Every feature is, per generation, guaranteed to get this many trials 
+	 * (likely each against a different opponent feature) for eval.
+	 */
+	private static final int NUM_TRIALS_PER_FEATURE_EVAL = 20;
+	
+	/**
+	 * Number of feature we want to end up with at the end (per player).
+	 */
+	private static final int GOAL_NUM_FEATURES = 10;
 	
 	//-------------------------------------------------------------------------
 	
@@ -113,8 +132,6 @@ public class IdentifyTopFeatures
 			// Collect all the features in our trees
 			final List<AspatialFeature> aspatialFeaturesList = new ArrayList<AspatialFeature>();
 			List<SpatialFeature> spatialFeaturesList = new ArrayList<SpatialFeature>();
-			candidateAspatialFeaturesPerPlayer.add(aspatialFeaturesList);
-			candidateSpatialFeaturesPerPlayer.add(spatialFeaturesList);
 			
 			final List<Feature> featuresList = new ArrayList<Feature>();
 			
@@ -125,9 +142,14 @@ public class IdentifyTopFeatures
 			for (final Feature feature : featuresList)
 			{
 				if (feature instanceof AspatialFeature)
-					aspatialFeaturesList.add((AspatialFeature) feature);
+				{
+					if (!aspatialFeaturesList.contains(feature))
+						aspatialFeaturesList.add((AspatialFeature) feature);
+				}
 				else
+				{
 					spatialFeaturesList.add((SpatialFeature) feature);
+				}
 			}
 			
 			spatialFeaturesList = SpatialFeature.deduplicate(spatialFeaturesList);
@@ -173,8 +195,149 @@ public class IdentifyTopFeatures
 		
 		// Clear some memory
 		Arrays.fill(experienceBuffers, null);
+		Arrays.fill(candidateFeatureSets, null);
+		Arrays.fill(featureSets, null);
 		
-		// TODO run trials to evaluate all the candidate features now that they have their weights
+		// Run trials to evaluate all our candidate features and rank them
+		final List<List<Feature>> candidateFeaturesPerPlayer = new ArrayList<List<Feature>>(numPlayers + 1);
+		candidateFeaturesPerPlayer.add(null);
+		for (int p = 1; p <= numPlayers; ++p)
+		{
+			final List<Feature> candidateFeatures = new ArrayList<Feature>();
+			candidateFeatures.addAll(candidateAspatialFeaturesPerPlayer.get(p));
+			candidateFeatures.addAll(candidateSpatialFeaturesPerPlayer.get(p));
+			candidateFeaturesPerPlayer.add(candidateFeatures);
+			
+//			System.out.println("Candidate features for player " + p);
+//			
+//			for (final Feature f : candidateFeatures)
+//			{
+//				System.out.println(f);
+//			}
+//			
+//			System.out.println();
+		}
+		
+		evaluateCandidateFeatures(game, candidateFeaturesPerPlayer, candidateFeatureWeightsPerPlayer);
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Evaluates all the given candidate features and tries to rank them by playing
+	 * a bunch of trials with them.
+	 * 
+	 * @param game
+	 * @param candidateFeaturesPerPlayer
+	 * @param candidateFeatureWeightsPerPlayer
+	 */
+	private static void evaluateCandidateFeatures
+	(
+		final Game game,
+		final List<List<Feature>> candidateFeaturesPerPlayer,
+		final FVector[] candidateFeatureWeightsPerPlayer
+	) 
+	{
+		final int numPlayers = game.players().count();
+		final IncrementalStats[][] playerFeatureScores = new IncrementalStats[numPlayers + 1][];
+		final TIntArrayList[] remainingFeaturesPerPlayer = new TIntArrayList[numPlayers + 1];
+		final BaseFeatureSet[] playerFeatureSets = new BaseFeatureSet[numPlayers + 1];
+		final LinearFunction[] playerLinFuncs = new LinearFunction[numPlayers + 1];
+		
+		for (int p = 1; p <= numPlayers; ++p)
+		{
+			playerFeatureScores[p] = new IncrementalStats[candidateFeaturesPerPlayer.get(p).size()];
+			
+			for (int i = 0; i < playerFeatureScores[p].length; ++i)
+			{
+				playerFeatureScores[p][i] = new IncrementalStats();
+			}
+			
+			remainingFeaturesPerPlayer[p] = ListUtils.range(candidateFeaturesPerPlayer.get(p).size());
+			playerLinFuncs[p] = new LinearFunction(new WeightVector(FVector.wrap(new float[] {Float.NaN})));
+		}
+		
+		boolean terminateProcess = false;
+		
+		final Trial trial = new Trial(game);
+		final Context context = new Context(game, trial);
+		
+		while (!terminateProcess)
+		{
+			// Start a new generation
+			for (int p = 1; p <= numPlayers; ++p)
+			{
+				// An evaluation round for all features of player p
+				for (int i = 0; i < remainingFeaturesPerPlayer[p].size(); ++i)
+				{
+					// Evaluate i'th feature for player p
+					final int idxFeatureToEval = remainingFeaturesPerPlayer[p].getQuick(i);
+					playerFeatureSets[p] = JITSPatterNetFeatureSet.construct(
+							Arrays.asList(candidateFeaturesPerPlayer.get(p).get(idxFeatureToEval)));
+					playerFeatureSets[p].init(game, new int[] {p}, null);
+					playerLinFuncs[p].trainableParams().allWeights().set(0, candidateFeatureWeightsPerPlayer[p].get(idxFeatureToEval));
+					
+					for (int trialIdx = 0; trialIdx < NUM_TRIALS_PER_FEATURE_EVAL; ++trialIdx)
+					{
+						game.start(context);
+						
+						// Pick random feature indices for all other players
+						final int[] featureIndices = new int[numPlayers + 1];
+						featureIndices[0] = Integer.MIN_VALUE;
+						featureIndices[p] = idxFeatureToEval;
+						
+						final List<AI> ais = new ArrayList<AI>();
+						ais.add(null);
+						
+						for (int opp = 1; opp <= numPlayers; ++opp)
+						{
+							if (opp != p)
+							{
+								featureIndices[opp] = 
+										ThreadLocalRandom.current().nextInt(remainingFeaturesPerPlayer[opp].size());
+								playerFeatureSets[opp] = JITSPatterNetFeatureSet.construct(
+										Arrays.asList(candidateFeaturesPerPlayer.get(opp).get(featureIndices[opp])));
+								playerLinFuncs[opp].trainableParams().allWeights().set(0, candidateFeatureWeightsPerPlayer[opp].get(featureIndices[opp]));
+							}
+						}
+						
+						for (int player = 1; player <= numPlayers; ++player)
+						{
+							final SoftmaxPolicyLinear softmax = new SoftmaxPolicyLinear(playerLinFuncs, playerFeatureSets);
+							ais.add(softmax);
+							softmax.initAI(game, player);
+						}
+						
+						// Play the trial
+						game.playout(context, ais, 1.0, null, -1, -1, null);
+						
+						// Update feature evaluations
+						final double[] agentUtils = RankUtils.agentUtilities(context);
+						
+						for (int player = 1; player <= numPlayers; ++player)
+						{
+							playerFeatureScores[player][featureIndices[player]].observe(agentUtils[player]);
+						}
+					}
+				}
+			}
+			
+			// Evaluate the entire generation
+			for (int p = 1; p <= numPlayers; ++p)
+			{
+				System.out.println("Scores for Player " + p);
+				
+				for (int i = 0; i < playerFeatureScores[p].length; ++i)
+				{
+					System.out.println("Feature = " + candidateFeaturesPerPlayer.get(p).get(i) + ", score = " + playerFeatureScores[p][i].getMean());
+				}
+				
+				System.out.println();
+			}
+			
+			// TODO don't completely terminate after this
+			terminateProcess = true;
+		}
 	}
 	
 	//-------------------------------------------------------------------------
