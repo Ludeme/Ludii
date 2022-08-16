@@ -419,6 +419,7 @@ public class IdentifyTopFeatures
 		final FVector candidateFeatureWeights = new FVector(candidateFeatureSet.getNumFeatures());
 		final IncrementalStats[] logitStatsPerFeatureWhenTrue = new IncrementalStats[candidateFeatureWeights.dim()];
 		final IncrementalStats[] logitStatsPerFeatureWhenFalse = new IncrementalStats[candidateFeatureWeights.dim()];
+		final IncrementalStats totalAvgLogit = new IncrementalStats();
 		
 		for (int i = 0; i < logitStatsPerFeatureWhenTrue.length; ++i)
 		{
@@ -433,6 +434,7 @@ public class IdentifyTopFeatures
 		{
 			final FeatureVector featureVector = allCandidateFeatureVectors.get(i);
 			final float targetLogit = allTargetLogits.getQuick(i);
+			totalAvgLogit.observe(targetLogit);
 			
 			final FVector aspatialFeatureValues = featureVector.aspatialFeatureValues();
 			final TIntArrayList activeSpatialFeatureIndices = featureVector.activeSpatialFeatureIndices();
@@ -463,7 +465,7 @@ public class IdentifyTopFeatures
 		
 		for (int i = 0; i < candidateFeatureWeights.dim(); ++i)
 		{
-			candidateFeatureWeights.set(i, (float) (logitStatsPerFeatureWhenTrue[i].getMean() - logitStatsPerFeatureWhenFalse[i].getMean()));
+			candidateFeatureWeights.set(i, (float) (logitStatsPerFeatureWhenTrue[i].getMean() - totalAvgLogit.getMean()));
 		}
 		
 		return candidateFeatureWeights;
