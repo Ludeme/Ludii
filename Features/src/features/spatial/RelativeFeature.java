@@ -512,7 +512,7 @@ public class RelativeFeature extends SpatialFeature
 						toPosition == null ? null : new Walk(toPosition),
 						fromPosition == null ? null : new Walk(fromPosition),
 						lastToPosition == null ? null : new Walk(lastToPosition),
-						null
+						lastFromPosition == null ? null : new Walk(lastFromPosition)
 					);
 			newFeature.pattern().setAllowedRotations(pattern.allowedRotations());
 			
