@@ -57,12 +57,12 @@ public class IdentifyTopFeatures
 	 * Every feature is, per generation, guaranteed to get this many trials 
 	 * (likely each against a different opponent feature) for eval.
 	 */
-	private static final int NUM_TRIALS_PER_FEATURE_EVAL = 20;
+	private static final int NUM_TRIALS_PER_FEATURE_EVAL = 30;
 	
 	/**
-	 * Number of feature we want to end up with at the end (per player).
+	 * Number of features we want to end up with at the end (per player).
 	 */
-	private static final int GOAL_NUM_FEATURES = 10;
+	private static final int GOAL_NUM_FEATURES = 15;
 	
 	//-------------------------------------------------------------------------
 	
@@ -324,34 +324,64 @@ public class IdentifyTopFeatures
 				}
 			}
 			
+			// We'll terminate except if in the evaluating we decide that we want to keep going
+			terminateProcess = true;
+			
 			// Evaluate the entire generation
 			for (int p = 1; p <= numPlayers; ++p)
 			{
-				// Sort feature indices for this player based on their scores
+				// Sort remaining feature indices for this player based on their scores
 				final List<ScoredInt> scoredIndices = new ArrayList<ScoredInt>();
-				for (int i = 0; i < playerFeatureScores[p].length; ++i)
+				for (int i = 0; i < remainingFeaturesPerPlayer[p].size(); ++i)
 				{
-					scoredIndices.add(new ScoredInt(i, playerFeatureScores[p][i].getMean()));
+					final int fIdx = remainingFeaturesPerPlayer[p].getQuick(i);
+					scoredIndices.add(new ScoredInt(fIdx, playerFeatureScores[p][fIdx].getMean()));
 				}
 				Collections.sort(scoredIndices, ScoredInt.DESCENDING);
 				
-				System.out.println("Scores for Player " + p);
-				
-				for (final ScoredInt scoredIdx : scoredIndices)
+				// Keep only the best ones
+				final int numToKeep = Math.max(GOAL_NUM_FEATURES, scoredIndices.size() / 2);
+				final TIntArrayList keepIndices = new TIntArrayList();
+				for (int i = 0; i < numToKeep; ++i)
 				{
-					final int fIdx = scoredIdx.object();
-					System.out.println
-					(
-						"Feature = " + candidateFeaturesPerPlayer.get(p).get(fIdx) + 
-						", weight = " + candidateFeatureWeightsPerPlayer[p].get(fIdx) + 
-						", score = " + playerFeatureScores[p][fIdx].getMean());
+					final int fIdx = scoredIndices.get(i).object();
+					keepIndices.add(fIdx);
+					
+					// Reset scores for this feature
+					playerFeatureScores[p][fIdx] = new IncrementalStats();
 				}
+				remainingFeaturesPerPlayer[p] = keepIndices;
 				
-				System.out.println();
+				if (numToKeep > GOAL_NUM_FEATURES)
+					terminateProcess = false;	// Should keep going
 			}
-			
-			// TODO don't completely terminate after this
-			terminateProcess = true;
+		}
+		
+		// Print sorted remaining features
+		for (int p = 1; p <= numPlayers; ++p)
+		{
+			final List<ScoredInt> scoredIndices = new ArrayList<ScoredInt>();
+			for (int i = 0; i < remainingFeaturesPerPlayer[p].size(); ++i)
+			{
+				final int fIdx = remainingFeaturesPerPlayer[p].getQuick(i);
+				scoredIndices.add(new ScoredInt(fIdx, playerFeatureScores[p][fIdx].getMean()));
+			}
+			Collections.sort(scoredIndices, ScoredInt.DESCENDING);
+
+			System.out.println("Scores for Player " + p);
+
+			for (final ScoredInt scoredIdx : scoredIndices)
+			{
+				final int fIdx = scoredIdx.object();
+				System.out.println
+				(
+					"Feature = " + candidateFeaturesPerPlayer.get(p).get(fIdx) + 
+					", weight = " + candidateFeatureWeightsPerPlayer[p].get(fIdx) + 
+					", score = " + playerFeatureScores[p][fIdx].getMean()
+				);
+			}
+
+			System.out.println();
 		}
 	}
 	
