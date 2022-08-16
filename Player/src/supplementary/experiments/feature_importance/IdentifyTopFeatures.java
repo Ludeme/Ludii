@@ -2,6 +2,7 @@ package supplementary.experiments.feature_importance;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -26,6 +27,7 @@ import main.StringRoutines;
 import main.collections.ArrayUtils;
 import main.collections.FVector;
 import main.collections.ListUtils;
+import main.collections.ScoredInt;
 import main.math.statistics.IncrementalStats;
 import other.AI;
 import other.GameLoader;
@@ -325,11 +327,24 @@ public class IdentifyTopFeatures
 			// Evaluate the entire generation
 			for (int p = 1; p <= numPlayers; ++p)
 			{
-				System.out.println("Scores for Player " + p);
-				
+				// Sort feature indices for this player based on their scores
+				final List<ScoredInt> scoredIndices = new ArrayList<ScoredInt>();
 				for (int i = 0; i < playerFeatureScores[p].length; ++i)
 				{
-					System.out.println("Feature = " + candidateFeaturesPerPlayer.get(p).get(i) + ", score = " + playerFeatureScores[p][i].getMean());
+					scoredIndices.add(new ScoredInt(i, playerFeatureScores[p][i].getMean()));
+				}
+				Collections.sort(scoredIndices, ScoredInt.DESCENDING);
+				
+				System.out.println("Scores for Player " + p);
+				
+				for (final ScoredInt scoredIdx : scoredIndices)
+				{
+					final int fIdx = scoredIdx.object();
+					System.out.println
+					(
+						"Feature = " + candidateFeaturesPerPlayer.get(p).get(fIdx) + 
+						", weight = " + candidateFeatureWeightsPerPlayer[p].get(fIdx) + 
+						", score = " + playerFeatureScores[p][fIdx].getMean());
 				}
 				
 				System.out.println();
@@ -444,6 +459,11 @@ public class IdentifyTopFeatures
 				if (!spatialActive[j])
 					logitStatsPerFeatureWhenFalse[j + numAspatialFeatures].observe(targetLogit);
 			}
+		}
+		
+		for (int i = 0; i < candidateFeatureWeights.dim(); ++i)
+		{
+			candidateFeatureWeights.set(i, (float) (logitStatsPerFeatureWhenTrue[i].getMean() - logitStatsPerFeatureWhenFalse[i].getMean()));
 		}
 		
 		return candidateFeatureWeights;
