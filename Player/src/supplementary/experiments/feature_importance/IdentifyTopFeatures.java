@@ -365,22 +365,30 @@ public class IdentifyTopFeatures
 			}
 		}
 		
+		// Obtain the rankings of feature indices per player
+		final List<List<ScoredInt>> scoredIndicesPerPlayer = new ArrayList<List<ScoredInt>>();
+		scoredIndicesPerPlayer.add(null);
+		
+		for (int p = 1; p <= numPlayers; ++p)
+		{
+			final List<ScoredInt> scoredIndices = new ArrayList<ScoredInt>();
+			for (int i = 0; i < remainingFeaturesPerPlayer[p].size(); ++i)
+			{
+				final int fIdx = remainingFeaturesPerPlayer[p].getQuick(i);
+				scoredIndices.add(new ScoredInt(fIdx, playerFeatureScores[p][fIdx].getMean()));
+			}
+			Collections.sort(scoredIndices, ScoredInt.DESCENDING);
+			scoredIndicesPerPlayer.add(scoredIndices);
+		}
+		
 		// Print initial rankings of features for all players
 		try (final PrintWriter writer = new PrintWriter(outDir + "RankedFeatures.txt", "UTF-8"))
 		{
 			for (int p = 1; p <= numPlayers; ++p)
 			{
-				final List<ScoredInt> scoredIndices = new ArrayList<ScoredInt>();
-				for (int i = 0; i < remainingFeaturesPerPlayer[p].size(); ++i)
-				{
-					final int fIdx = remainingFeaturesPerPlayer[p].getQuick(i);
-					scoredIndices.add(new ScoredInt(fIdx, playerFeatureScores[p][fIdx].getMean()));
-				}
-				Collections.sort(scoredIndices, ScoredInt.DESCENDING);
-			
 				writer.println("Scores for Player " + p);
 				
-				for (final ScoredInt scoredIdx : scoredIndices)
+				for (final ScoredInt scoredIdx : scoredIndicesPerPlayer.get(p))
 				{
 					final int fIdx = scoredIdx.object();
 					writer.println
@@ -398,6 +406,24 @@ public class IdentifyTopFeatures
 		{
 			e.printStackTrace();
 		}
+		
+		// Now we're gonna try to build bigger featuresets that beat smaller ones
+		final BaseFeatureSet[] bestFeatureSetPerPlayer = new BaseFeatureSet[numPlayers + 1];
+		final LinearFunction[] bestLinFuncPerPlayer = new LinearFunction[numPlayers + 1];
+		
+		for (int p = 1; p <= numPlayers; ++p)
+		{
+			final int fIdx = scoredIndicesPerPlayer.get(p).get(0).object();
+			bestFeatureSetPerPlayer[p] = JITSPatterNetFeatureSet.construct(
+					Arrays.asList(candidateFeaturesPerPlayer.get(p).get(fIdx)));
+			bestLinFuncPerPlayer[p] = new LinearFunction(
+					new WeightVector(FVector.wrap(new float[] {candidateFeatureWeightsPerPlayer[p].get(fIdx)})));
+		}
+		
+		// TODO loop
+			// TODO evaluate baseline against opponents' baselines
+			// TODO evaluate baseline + next-best-ranked-feature against opponents' baselines
+			// TODO If better, add that feature
 	}
 	
 	//-------------------------------------------------------------------------
