@@ -1,5 +1,7 @@
 package supplementary.experiments.feature_importance;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -57,7 +59,7 @@ public class IdentifyTopFeatures
 	 * Every feature is, per generation, guaranteed to get this many trials 
 	 * (likely each against a different opponent feature) for eval.
 	 */
-	private static final int NUM_TRIALS_PER_FEATURE_EVAL = 30;
+	private static final int NUM_TRIALS_PER_FEATURE_EVAL = 25;
 	
 	/**
 	 * Number of features we want to end up with at the end (per player).
@@ -220,7 +222,7 @@ public class IdentifyTopFeatures
 //			System.out.println();
 		}
 		
-		evaluateCandidateFeatures(game, candidateFeaturesPerPlayer, candidateFeatureWeightsPerPlayer);
+		evaluateCandidateFeatures(game, candidateFeaturesPerPlayer, candidateFeatureWeightsPerPlayer, parsedArgs);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -232,14 +234,20 @@ public class IdentifyTopFeatures
 	 * @param game
 	 * @param candidateFeaturesPerPlayer
 	 * @param candidateFeatureWeightsPerPlayer
+	 * @param parsedArgs
 	 */
 	private static void evaluateCandidateFeatures
 	(
 		final Game game,
 		final List<List<Feature>> candidateFeaturesPerPlayer,
-		final FVector[] candidateFeatureWeightsPerPlayer
+		final FVector[] candidateFeatureWeightsPerPlayer,
+		final CommandLineArgParse parsedArgs
 	) 
 	{
+		String outDir = parsedArgs.getValueString("--out-dir");
+		if (!outDir.endsWith("/"))
+			outDir += "/";
+		
 		final int numPlayers = game.players().count();
 		final IncrementalStats[][] playerFeatureScores = new IncrementalStats[numPlayers + 1][];
 		final TIntArrayList[] remainingFeaturesPerPlayer = new TIntArrayList[numPlayers + 1];
@@ -263,10 +271,13 @@ public class IdentifyTopFeatures
 		
 		final Trial trial = new Trial(game);
 		final Context context = new Context(game, trial);
+		int generation = 0;
 		
 		while (!terminateProcess)
 		{
 			// Start a new generation
+			++generation;
+			
 			for (int p = 1; p <= numPlayers; ++p)
 			{
 				// An evaluation round for all features of player p
@@ -279,7 +290,7 @@ public class IdentifyTopFeatures
 					playerFeatureSets[p].init(game, new int[] {p}, null);
 					playerLinFuncs[p].trainableParams().allWeights().set(0, candidateFeatureWeightsPerPlayer[p].get(idxFeatureToEval));
 					
-					for (int trialIdx = 0; trialIdx < NUM_TRIALS_PER_FEATURE_EVAL; ++trialIdx)
+					for (int trialIdx = 0; trialIdx < (NUM_TRIALS_PER_FEATURE_EVAL * generation); ++trialIdx)
 					{
 						game.start(context);
 						
@@ -346,9 +357,6 @@ public class IdentifyTopFeatures
 				{
 					final int fIdx = scoredIndices.get(i).object();
 					keepIndices.add(fIdx);
-					
-					// Reset scores for this feature
-					playerFeatureScores[p][fIdx] = new IncrementalStats();
 				}
 				remainingFeaturesPerPlayer[p] = keepIndices;
 				
@@ -357,31 +365,38 @@ public class IdentifyTopFeatures
 			}
 		}
 		
-		// Print sorted remaining features
-		for (int p = 1; p <= numPlayers; ++p)
+		// Print initial rankings of features for all players
+		try (final PrintWriter writer = new PrintWriter(outDir + "RankedFeatures.txt", "UTF-8"))
 		{
-			final List<ScoredInt> scoredIndices = new ArrayList<ScoredInt>();
-			for (int i = 0; i < remainingFeaturesPerPlayer[p].size(); ++i)
+			for (int p = 1; p <= numPlayers; ++p)
 			{
-				final int fIdx = remainingFeaturesPerPlayer[p].getQuick(i);
-				scoredIndices.add(new ScoredInt(fIdx, playerFeatureScores[p][fIdx].getMean()));
+				final List<ScoredInt> scoredIndices = new ArrayList<ScoredInt>();
+				for (int i = 0; i < remainingFeaturesPerPlayer[p].size(); ++i)
+				{
+					final int fIdx = remainingFeaturesPerPlayer[p].getQuick(i);
+					scoredIndices.add(new ScoredInt(fIdx, playerFeatureScores[p][fIdx].getMean()));
+				}
+				Collections.sort(scoredIndices, ScoredInt.DESCENDING);
+			
+				writer.println("Scores for Player " + p);
+				
+				for (final ScoredInt scoredIdx : scoredIndices)
+				{
+					final int fIdx = scoredIdx.object();
+					writer.println
+					(
+						"Feature=" + candidateFeaturesPerPlayer.get(p).get(fIdx) + 
+						",weight=" + candidateFeatureWeightsPerPlayer[p].get(fIdx) + 
+						",score=" + playerFeatureScores[p][fIdx].getMean()
+					);
+				}
+	
+				writer.println();
 			}
-			Collections.sort(scoredIndices, ScoredInt.DESCENDING);
-
-			System.out.println("Scores for Player " + p);
-
-			for (final ScoredInt scoredIdx : scoredIndices)
-			{
-				final int fIdx = scoredIdx.object();
-				System.out.println
-				(
-					"Feature = " + candidateFeaturesPerPlayer.get(p).get(fIdx) + 
-					", weight = " + candidateFeatureWeightsPerPlayer[p].get(fIdx) + 
-					", score = " + playerFeatureScores[p][fIdx].getMean()
-				);
-			}
-
-			System.out.println();
+		}
+		catch (final IOException e)
+		{
+			e.printStackTrace();
 		}
 	}
 	
@@ -611,15 +626,15 @@ public class IdentifyTopFeatures
 	
 			final String agentStr = StringRoutines.join
 					(
-							";", 
-							"algorithm=MCTS",
-							"selection=noisyag0selection",
-							playoutSb.toString(),
-							"final_move=robustchild",
-							"tree_reuse=true",
-							selectionSb.toString(),
-							"friendly_name=BiasedMCTS"
-							);
+						";", 
+						"algorithm=MCTS",
+						"selection=noisyag0selection",
+						playoutSb.toString(),
+						"final_move=robustchild",
+						"tree_reuse=true",
+						selectionSb.toString(),
+						"friendly_name=BiasedMCTS"
+					);
 	
 			final MCTS mcts = (MCTS) AIFactory.createAI(agentStr);
 			final SoftmaxPolicyLinear playoutSoftmax = (SoftmaxPolicyLinear) mcts.playoutStrategy();
