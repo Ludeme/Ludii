@@ -788,10 +788,10 @@ public class BoardDesign extends ContainerDesign
 				
 				final Rectangle2D rect = new Rectangle2D.Double
 						(
-							drawPosn.x + offsetX - s.scale() * boardStyle.cellRadiusPixels(), 
-							drawPosn.y + offsetY - s.scale() * boardStyle.cellRadiusPixels(), 
-							(int) (s.scale() * boardStyle.cellRadiusPixels() * 2), 
-							(int) (s.scale() * boardStyle.cellRadiusPixels() * 2)
+							drawPosn.x + offsetX - s.scaleX() * boardStyle.cellRadiusPixels(), 
+							drawPosn.y + offsetY - s.scaleY() * boardStyle.cellRadiusPixels(), 
+							(int) (s.scaleX() * boardStyle.cellRadiusPixels() * 2), 
+							(int) (s.scaleY() * boardStyle.cellRadiusPixels() * 2)
 						);
 				
 				SVGtoImage.loadFromFilePath(g2d, fullPath, rect, edgeColour, fillColour, rotation);
