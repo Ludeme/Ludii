@@ -20,6 +20,7 @@ import features.feature_sets.network.JITSPatterNetFeatureSet;
 import features.spatial.SpatialFeature;
 import function_approx.LinearFunction;
 import game.Game;
+import game.types.play.RoleType;
 import gnu.trove.list.array.TFloatArrayList;
 import gnu.trove.list.array.TIntArrayList;
 import main.CommandLineArgParse;
@@ -31,6 +32,7 @@ import main.collections.FVector;
 import main.collections.ListUtils;
 import main.collections.ScoredInt;
 import main.math.statistics.IncrementalStats;
+import metadata.ai.misc.Pair;
 import other.AI;
 import other.GameLoader;
 import other.RankUtils;
@@ -61,10 +63,11 @@ public class IdentifyTopFeatures
 	 */
 	private static final int NUM_TRIALS_PER_FEATURE_EVAL = 25;
 	
-	/**
-	 * Number of features we want to end up with at the end (per player).
-	 */
+	/** Number of features we want to end up with at the end (per player). */
 	private static final int GOAL_NUM_FEATURES = 15;
+	
+	/** Number of trials to run per evaluation for deciding whether or not to grow feature set */
+	private static final int NUM_EVAL_TRIALS_FEATURESET_GROWING = 150;
 	
 	//-------------------------------------------------------------------------
 	
@@ -170,7 +173,8 @@ public class IdentifyTopFeatures
 			spatialFeaturesList = SpatialFeature.deduplicate(spatialFeaturesList);
 			spatialFeaturesList = SpatialFeature.simplifySpatialFeaturesList(game, spatialFeaturesList);
 			
-			candidateAspatialFeaturesPerPlayer.add(aspatialFeaturesList);
+			candidateAspatialFeaturesPerPlayer.add(new ArrayList<AspatialFeature>());
+			//candidateAspatialFeaturesPerPlayer.add(aspatialFeaturesList);		TODO leaving aspatial features out, annoying to get weight vectors correct
 			candidateSpatialFeaturesPerPlayer.add(spatialFeaturesList);
 		}
 		
@@ -407,7 +411,7 @@ public class IdentifyTopFeatures
 			e.printStackTrace();
 		}
 		
-		// Now we're gonna try to build bigger featuresets that beat smaller ones
+		// Now we're going to try to build bigger featuresets that beat smaller ones
 		final BaseFeatureSet[] bestFeatureSetPerPlayer = new BaseFeatureSet[numPlayers + 1];
 		final LinearFunction[] bestLinFuncPerPlayer = new LinearFunction[numPlayers + 1];
 		
@@ -420,10 +424,200 @@ public class IdentifyTopFeatures
 					new WeightVector(FVector.wrap(new float[] {candidateFeatureWeightsPerPlayer[p].get(fIdx)})));
 		}
 		
-		// TODO loop
-			// TODO evaluate baseline against opponents' baselines
-			// TODO evaluate baseline + next-best-ranked-feature against opponents' baselines
-			// TODO If better, add that feature
+		//final boolean[] keepGrowing = new boolean[numPlayers + 1];
+		//Arrays.fill(keepGrowing, 1, numPlayers + 1, true);
+		int nextFeatureRank = 1;
+		
+		//while (ArrayUtils.contains(keepGrowing, true))
+		while (nextFeatureRank < GOAL_NUM_FEATURES)
+		{
+			// Evaluate baselines against each other
+			final IncrementalStats[] baselinePerformancePerPlayer = new IncrementalStats[numPlayers + 1];
+			for (int p = 1; p <= numPlayers; ++p)
+			{
+				baselinePerformancePerPlayer[p] = new IncrementalStats();
+			}
+			
+			// Create baseline AIs
+			final List<AI> baselineAIs = new ArrayList<AI>();
+			baselineAIs.add(null);
+			for (int p = 1; p <= numPlayers; ++p)
+			{
+				baselineAIs.add(new SoftmaxPolicyLinear(bestLinFuncPerPlayer, bestFeatureSetPerPlayer));
+			}
+			
+			for (int t = 0; t < NUM_EVAL_TRIALS_FEATURESET_GROWING; ++t)
+			{
+				game.start(context);
+				
+				// Init AIs
+				for (int p = 1; p <= numPlayers; ++p)
+				{
+					baselineAIs.get(p).initAI(game, p);
+				}
+				
+				// Play the trial
+				game.playout(context, baselineAIs, 1.0, null, -1, -1, null);
+				
+				// Update baseline stats
+				final double[] agentUtils = RankUtils.agentUtilities(context);
+				
+				for (int p = 1; p <= numPlayers; ++p)
+				{
+					baselinePerformancePerPlayer[p].observe(agentUtils[p]);
+				}
+			}
+			
+			// Now, for every player, try adding the next-best feature and see if that helps us
+			// perform better against opposing baselines
+			final boolean[] updateBaseline = new boolean[numPlayers + 1];
+			
+			for (int player = 1; player <= numPlayers; ++player)
+			{
+				//if (keepGrowing[player])
+				if (nextFeatureRank < scoredIndicesPerPlayer.get(player).size())
+				{
+					// Create list of AIs for this eval round
+					final List<AI> ais = new ArrayList<AI>();
+					ais.add(null);
+					for (int p = 1; p <= numPlayers; ++p)
+					{
+						if (p == player)
+						{
+							// Create AI with extra feature
+							final int fIdx = scoredIndicesPerPlayer.get(p).get(nextFeatureRank).object();
+							final Feature newFeature = candidateFeaturesPerPlayer.get(p).get(fIdx);
+							
+							final List<Feature> features = new ArrayList<Feature>();
+							
+							for (final Feature f : bestFeatureSetPerPlayer[p].aspatialFeatures())
+							{
+								features.add(f);
+							}
+							for (final Feature f : bestFeatureSetPerPlayer[p].spatialFeatures())
+							{
+								features.add(f);
+							}
+							
+							features.add(newFeature);
+							
+							final BaseFeatureSet biggerFeatureSet = JITSPatterNetFeatureSet.construct(features);
+							final LinearFunction biggerLinFunc = new LinearFunction(new WeightVector(new FVector(features.size())));
+							biggerLinFunc.trainableParams().allWeights().copyFrom(
+									bestLinFuncPerPlayer[p].trainableParams().allWeights(), 0, 0, features.size() - 1);
+							biggerLinFunc.trainableParams().allWeights().set(features.size() - 1, candidateFeatureWeightsPerPlayer[p].get(fIdx));
+							
+							final BaseFeatureSet[] featureSetsArray = Arrays.copyOf(bestFeatureSetPerPlayer, numPlayers + 1);
+							featureSetsArray[p] = biggerFeatureSet;
+							final LinearFunction[] linFuncsArray = Arrays.copyOf(bestLinFuncPerPlayer, numPlayers + 1);
+							linFuncsArray[p] = biggerLinFunc;
+							ais.add(new SoftmaxPolicyLinear(linFuncsArray, featureSetsArray));
+						}
+						else
+						{
+							// Just use the baseline
+							ais.add(baselineAIs.get(p));
+						}
+					}
+					
+					// Play trials with these AIs; all baselines except a bigger featureset for the one to evaluate
+					final IncrementalStats evalStats = new IncrementalStats();
+					
+					for (int t = 0; t < NUM_EVAL_TRIALS_FEATURESET_GROWING; ++t)
+					{
+						game.start(context);
+						
+						// Init AIs
+						for (int p = 1; p <= numPlayers; ++p)
+						{
+							ais.get(p).initAI(game, p);
+						}
+						
+						// Play the trial
+						game.playout(context, ais, 1.0, null, -1, -1, null);
+						
+						// Update eval stats
+						final double[] agentUtils = RankUtils.agentUtilities(context);
+						evalStats.observe(agentUtils[player]);
+					}
+					
+					// Check whether the bigger featureset outperforms the smaller one
+					if (evalStats.getMean() > baselinePerformancePerPlayer[player].getMean())
+					{
+						// We performed better, so we'll want the baseline to grow
+						updateBaseline[player] = true;
+					}
+//					else
+//					{
+//						// Did not perform better, so skip trying to grow this player's featureset forever
+//						keepGrowing[player] = false;
+//					}
+				}
+			}
+			
+			// Went through all players, so now update baselines if necessary
+			for (int p = 1; p <= numPlayers; ++p) 
+			{
+				if (updateBaseline[p])
+				{
+					// Create the bigger feature set and linear function again
+					final int fIdx = scoredIndicesPerPlayer.get(p).get(nextFeatureRank).object();
+					final Feature newFeature = candidateFeaturesPerPlayer.get(p).get(fIdx);
+					
+					final List<Feature> features = new ArrayList<Feature>();
+					
+					for (final Feature f : bestFeatureSetPerPlayer[p].aspatialFeatures())
+					{
+						features.add(f);
+					}
+					for (final Feature f : bestFeatureSetPerPlayer[p].spatialFeatures())
+					{
+						features.add(f);
+					}
+					
+					features.add(newFeature);
+					
+					final BaseFeatureSet biggerFeatureSet = JITSPatterNetFeatureSet.construct(features);
+					final LinearFunction biggerLinFunc = new LinearFunction(new WeightVector(new FVector(features.size())));
+					biggerLinFunc.trainableParams().allWeights().copyFrom(
+							bestLinFuncPerPlayer[p].trainableParams().allWeights(), 0, 0, features.size() - 1);
+					biggerLinFunc.trainableParams().allWeights().set(features.size() - 1, candidateFeatureWeightsPerPlayer[p].get(fIdx));
+					
+					// Update the baselines
+					bestFeatureSetPerPlayer[p] = biggerFeatureSet;
+					bestLinFuncPerPlayer[p] = biggerLinFunc;
+				}
+			}
+			
+			++nextFeatureRank;
+		}
+		
+		// Create metadata items of the best feature sets
+		final metadata.ai.features.FeatureSet[] featureSets = new metadata.ai.features.FeatureSet[numPlayers];
+		for (int p = 1; p <= numPlayers; ++p)
+		{
+			final Pair[] pairs = new Pair[bestFeatureSetPerPlayer[p].getNumFeatures()];
+			final SpatialFeature[] features = bestFeatureSetPerPlayer[p].spatialFeatures();
+			final FVector weights = bestLinFuncPerPlayer[p].trainableParams().allWeights();
+			
+			for (int i = 0; i < pairs.length; ++i)
+			{
+				pairs[i] = new Pair(features[i].toString(), Float.valueOf(weights.get(i)));
+			}
+			
+			featureSets[p - 1] = new metadata.ai.features.FeatureSet(RoleType.roleForPlayerId(p), pairs);
+		}
+		
+		// Write all the features metadata
+		final metadata.ai.features.Features featuresMetadata = new metadata.ai.features.Features(featureSets);
+		try (final PrintWriter writer = new PrintWriter(outDir + "BestFeatures.txt", "UTF-8"))
+		{
+			writer.print(featuresMetadata.toString());
+		}
+		catch (final IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	//-------------------------------------------------------------------------
