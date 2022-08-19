@@ -12,6 +12,7 @@ import supplementary.experiments.debugging.FindCrashingTrial;
 import supplementary.experiments.eval.EvalAgents;
 import supplementary.experiments.eval.EvalGames;
 import supplementary.experiments.eval.EvalGate;
+import supplementary.experiments.feature_importance.IdentifyTopFeatures;
 import supplementary.experiments.optim.EvolOptimHeuristics;
 import supplementary.experiments.scripts.GenerateBiasedMCTSEvalScripts;
 import supplementary.experiments.scripts.GenerateFeatureEvalScripts;
@@ -74,7 +75,8 @@ public class PlayerCLI
 //					"--eval-ubfm",
 //					"--learning-with-descent",
 					"--generate-biased-mcts-eval-scripts",
-					"--kilothon"
+					"--kilothon",
+					"--identify-top-features"
 				)
 				.withNumVals(1)
 				.withType(OptionTypes.String));
@@ -122,6 +124,8 @@ public class PlayerCLI
 			GenerateBiasedMCTSEvalScripts.main(passArgs);
 		else if (command.equalsIgnoreCase("--kilothon"))
 			Kilothon.main(passArgs);
+		else if (command.equalsIgnoreCase("--identify-top-features"))
+			IdentifyTopFeatures.main(passArgs);
 //		else if (command.equalsIgnoreCase("--eval-ubfm"))
 //			EvaluateAllUBFMs.main(passArgs);
 //		else if (command.equalsIgnoreCase("--learning-with-descent"))

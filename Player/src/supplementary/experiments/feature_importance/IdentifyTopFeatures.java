@@ -929,7 +929,7 @@ public class IdentifyTopFeatures
 				new CommandLineArgParse
 				(
 					true,
-					"Identift top features for a game."
+					"Identify top features for a game."
 				);
 		
 		argParse.addOption(new ArgOption()
@@ -957,6 +957,7 @@ public class IdentifyTopFeatures
 		if (!argParse.parseArguments(args))
 			return;
 		
+		System.out.println("Identifying top features for args: " + Arrays.toString(args));
 		identifyTopFeatures(argParse);
 	}
 	
