@@ -44,7 +44,7 @@ public class IdentifyTopFeaturesSnelliusScripts
 	private static final int CORES_PER_NODE = 128;
 	
 	/** Number of cores per Java call */
-	private static final int CORES_PER_PROCESS = 2;
+	private static final int CORES_PER_PROCESS = 3;
 	
 	/** If we request more cores than this in a job, we get billed for the entire node anyway, so should request exclusive */
 	private static final int EXCLUSIVE_CORES_THRESHOLD = 96;

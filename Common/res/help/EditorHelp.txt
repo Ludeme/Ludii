@@ -5918,8 +5918,8 @@ DEFINE: LastDirection
 DEFINE JAVADOC: Returns the direction between the last `from' location and the last `to' location. #1 = The site type of the sites. 
 DEFINE EXAMPLE: ("LastDirection" Cell)
 DEFINE: DraughtsEquipment
-DEFINE JAVADOC: Defines all the equipment used in most of the draught games. #1 = The graph of the board. #1 = The default site type to use [Optional by default Cell]. 
-DEFINE EXAMPLE: ("DraughtsEquipment" 8)
+DEFINE JAVADOC: Defines all the equipment used in most of the draught games. #1 = The graph of the board. #2 = The default site type to use [Optional by default Cell]. #3 = An optional element of the equipment. 
+DEFINE EXAMPLE: ("DraughtsEquipment" (square 8))
 DEFINE: CrossBoard
 DEFINE JAVADOC: Defines a regular cross board tilled by squares (example: Pachisi). #1 = The dimension of an arm of the cross. #2 = The full dimension of the board. #3 = The default site type of the board. #4 = The type of the diagonals of each tiling. 
 DEFINE EXAMPLE: ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
@@ -6235,6 +6235,12 @@ DEFINE: HopSequenceCaptureAgain
 DEFINE JAVADOC: Defines a sequence of hop move in all the adjacent directions over an enemy to an empty site from the last ``to'' location of the previous move. The enemy pieces are removed. #1 = Maximum distance before the hop [0]. #2 = Maximum distance after the hop [0]. #3 = When to perform the capture (immediately or at the end of the turn) [immediately]. 
 DEFINE EXAMPLE: ("HopSequenceCaptureAgain")
 DEFINE EXAMPLE: ("HopSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn)
+DEFINE: HopStackEnemyCaptureTop
+DEFINE JAVADOC: Defines a hop move in all the directions specified (by default Adjacent) over a stack with on top an enemy to an empty site. The enemy piece is moved to the top of the jumping stack. #1 = The from site. #2 = Directions of the hop. #3 = The consequences. 
+DEFINE EXAMPLE: ("HopStackEnemyCaptureTop")
+DEFINE: HopStackEnemyCaptureTopDistance
+DEFINE JAVADOC: Defines a hop move in all the directions specified (by default Adjacent) over a stack with on top an enemy to an empty site at any distance. The enemy piece is moved to the top of the jumping stack. #1 = The from site. #2 = Directions of the hop. #3 = The consequences. 
+DEFINE EXAMPLE: ("HopStackEnemyCaptureTopDistance")
 DEFINE: LeapToEmpty
 DEFINE JAVADOC: Defines a leap move to an empty site. #1 = The walk. #2 = The consequences. 
 DEFINE EXAMPLE: ("LeapToEmpty" "KnightWalk")
@@ -6268,12 +6274,18 @@ DEFINE EXAMPLE: ("StepOrthogonalToEmpty")
 DEFINE: StepRotationalToEmpty
 DEFINE JAVADOC: Defines a step move to all the rotational directions to an empty site. 
 DEFINE EXAMPLE: ("StepRotationalToEmpty")
+DEFINE: StepStackToEmpty
+DEFINE JAVADOC: Defines a step move of a full stack to all the directions specified (adjacent by default) to an empty site. #1 = The direction(s) to step. #2 = The consequences. 
+DEFINE EXAMPLE: ("StepStackToEmpty")
 DEFINE: StepToEmpty
 DEFINE JAVADOC: Defines a step move to all the directions specified (adjacent by default) to an empty site. #1 = The direction(s) to step. #2 = The consequences. 
 DEFINE EXAMPLE: ("StepToEmpty")
 DEFINE: StepToEnemy
 DEFINE JAVADOC: Defines a step move to all the directions specified (adjacent by default) to a site occupied by an enemy piece. The enemy piece is removed. #1 = The direction(s) to step. #2 = The consequences. 
 DEFINE EXAMPLE: ("StepToEnemy")
+DEFINE: BeforeAfterCentreSetup
+DEFINE JAVADOC: Defines starting rules placing one piece on each site before and after the centre (e.g. Starting rules of Zamma). #1 = The name of the piece of P1. #2 = The name of the piece of P2. 
+DEFINE EXAMPLE: ("BeforeAfterCentreSetup" "Marker1" "Marker2")
 DEFINE: BlackCellsSetup
 DEFINE JAVADOC: Defines starting rules placing one counter on each black cell of a square board (e.g. Starting rules of Draughts). #1 = The number of rows to place pieces for each player. 
 DEFINE EXAMPLE: ("BlackCellsSetup" 3)
