@@ -1,5 +1,6 @@
 package supplementary.experiments.feature_importance;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -251,6 +252,8 @@ public class IdentifyTopFeatures
 		String outDir = parsedArgs.getValueString("--out-dir");
 		if (!outDir.endsWith("/"))
 			outDir += "/";
+		
+		new File(outDir).mkdirs();
 		
 		final int numPlayers = game.players().count();
 		final IncrementalStats[][] playerFeatureScores = new IncrementalStats[numPlayers + 1][];
