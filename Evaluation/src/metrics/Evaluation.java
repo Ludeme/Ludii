@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import metrics.designer.IdealDuration;
+import metrics.designer.SkillTrace;
 import metrics.multiple.MultiMetricFramework.MultiMetricValue;
 import metrics.multiple.metrics.BoardSitesOccupied;
 import metrics.multiple.metrics.BranchingFactor;
@@ -90,7 +91,7 @@ public class Evaluation
 		
 		// Designer
 		dialogMetrics.add(new IdealDuration());
-		//dialogMetrics.add(new SkillTrace());
+		dialogMetrics.add(new SkillTrace());
 	}
 	
 	//-------------------------------------------------------------------------
