@@ -11,12 +11,14 @@ import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
+import java.util.stream.IntStream;
 
 import org.apache.commons.rng.RandomProviderState;
 
@@ -34,6 +36,7 @@ import main.Constants;
 import main.FileHandling;
 import main.StringRoutines;
 import main.UnixPrintWriter;
+import main.collections.ListUtils;
 import main.options.Ruleset;
 import manager.utils.game_logs.MatchRecord;
 import metrics.Evaluation;
@@ -171,6 +174,7 @@ public class ExportDbCsvConcepts
 		folderTrials = args.length < 6 ? "" : args[5];
 		final String gameName = args.length < 7 ? "" : args[6];
 		final String rulesetName = args.length < 8 ? "" : args[7];
+		final String agentName2 = args.length < 9 ? "" : args[8];
 
 		if (gameName.isEmpty())
 		{
@@ -187,7 +191,7 @@ public class ExportDbCsvConcepts
 		else if (lessTrialsGames.contains(gameName) && numPlayouts > smallLimitTrials)
 			numPlayouts = smallLimitTrials;
 
-		exportRulesetConceptsCSV(evaluation, numPlayouts, timeLimit, thinkingTime, agentName, gameName, rulesetName);
+		exportRulesetConceptsCSV(evaluation, numPlayouts, timeLimit, thinkingTime, agentName, gameName, rulesetName, agentName2);
 	}
 
 	// -------------------------------------------------------------------------
@@ -369,10 +373,11 @@ public class ExportDbCsvConcepts
 	 * @param agentName       The name of the agent to use for the playout concepts
 	 * @param name            The name of the game.
 	 * @param rulesetExpected The name of the ruleset of the game.
+	 * @param agentName2	  The name for a different second agent (if not empty string)
 	 */
 	public static void exportRulesetConceptsCSV(final Evaluation evaluation, final int numPlayouts,
 			final double timeLimit, final double thinkingTime, final String agentName, final String name,
-			final String rulesetExpected)
+			final String rulesetExpected, final String agentName2)
 	{
 		final List<Concept> ignoredConcepts = new ArrayList<Concept>();
 		ignoredConcepts.add(Concept.Behaviour);
@@ -501,7 +506,7 @@ public class ExportDbCsvConcepts
 							System.out.println("Loading ruleset: " + rulesetGame.getRuleset().heading());
 							final Map<String, Double> playoutConcepts = (numPlayouts == 0)
 									? new HashMap<String, Double>()
-									: playoutsMetrics(rulesetGame, evaluation, numPlayouts, timeLimit, thinkingTime, agentName);
+									: playoutsMetrics(rulesetGame, evaluation, numPlayouts, timeLimit, thinkingTime, agentName, agentName2);
 							
 							final int idRuleset = IdRuleset.get(rulesetGame);
 							final BitSet concepts = rulesetGame.booleanConcepts();
@@ -585,7 +590,7 @@ public class ExportDbCsvConcepts
 				else // Code for games with only a single ruleset.
 				{
 					final Map<String, Double> playoutConcepts = (numPlayouts == 0) ? new HashMap<String, Double>()
-							: playoutsMetrics(game, evaluation, numPlayouts, timeLimit, thinkingTime, agentName);
+							: playoutsMetrics(game, evaluation, numPlayouts, timeLimit, thinkingTime, agentName, agentName2);
 
 					final int idRuleset = IdRuleset.get(game);
 					final BitSet concepts = game.booleanConcepts();
@@ -683,7 +688,8 @@ public class ExportDbCsvConcepts
 	 *         set in entry
 	 */
 	private static Map<String, Double> playoutsMetrics(final Game game, final Evaluation evaluation,
-			final int playoutLimit, final double timeLimit, final double thinkingTime, final String agentName)
+			final int playoutLimit, final double timeLimit, final double thinkingTime, final String agentName,
+			final String agentName2)
 	{
 		final long startTime = System.currentTimeMillis();
 
@@ -717,14 +723,51 @@ public class ExportDbCsvConcepts
 
 		if (folderTrials.isEmpty())
 		{
+			// Create list of AI objects to be used in all trials
+			final List<AI> aisAllTrials = chooseAI(game, agentName, agentName2, 0);
+
+			for (final AI ai : aisAllTrials)
+				if (ai != null)
+					ai.setMaxSecondsPerMove(thinkingTime);
+			
+			final int numPlayers = game.players().count();
+			List<TIntArrayList> aiListPermutations = new ArrayList<TIntArrayList>();
+			if (numPlayers <= 5)
+			{
+				// Compute all possible permutations of indices for the list of AIs
+				aiListPermutations = ListUtils.generatePermutations(
+						TIntArrayList.wrap(IntStream.range(0, numPlayers).toArray()));
+
+				Collections.shuffle(aiListPermutations);
+			}
+			else
+			{
+				// Randomly generate some permutations of indices for the list of AIs
+				aiListPermutations = ListUtils.samplePermutations(
+						TIntArrayList.wrap(IntStream.range(0, numPlayers).toArray()), 120);
+			}
+			
 			int playoutsDone = 0;
 			for (int indexPlayout = 0; indexPlayout < playoutLimit; indexPlayout++)
 			{
-				final List<AI> ais = chooseAI(game, agentName, indexPlayout);
-
-				for (final AI ai : ais)
-					if (ai != null)
-						ai.setMaxSecondsPerMove(thinkingTime);
+//				final List<AI> ais = chooseAI(game, agentName, agentName2, indexPlayout);
+//
+//				for (final AI ai : ais)
+//					if (ai != null)
+//						ai.setMaxSecondsPerMove(thinkingTime);
+				
+				// Create re-ordered list of AIs for this particular playout
+				final List<AI> ais = new ArrayList<AI>();
+				ais.add(null);
+				final int currentAIsPermutation = indexPlayout % aiListPermutations.size();
+				final TIntArrayList currentPlayersPermutation = aiListPermutations.get(currentAIsPermutation);
+				for (int i = 0; i < currentPlayersPermutation.size(); ++i)
+				{
+					ais.add
+					(
+						aisAllTrials.get(currentPlayersPermutation.getQuick(i) % aisAllTrials.size())
+					);
+				}
 
 				final Context context = new Context(game, new Trial(game));
 				allStoredRNG.add(context.rng().saveState());
@@ -901,14 +944,31 @@ public class ExportDbCsvConcepts
 	/**
 	 * @param game         The game.
 	 * @param agentName    The name of the agent.
+	 * @param agentName2   The name of the second agent (can be empty string if not used).
 	 * @param indexPlayout The index of the playout.
 	 * @return The list of AIs to play that playout.
 	 */
-	private static List<AI> chooseAI(final Game game, final String agentName, final int indexPlayout)
+	private static List<AI> chooseAI(final Game game, final String agentName, final String agentName2, final int indexPlayout)
 	{
 		final List<AI> ais = new ArrayList<AI>();
 		ais.add(null);
+		
+		if (agentName2.length() > 0)
+		{
+			// Special case where we have provided two different names
+			if (game.players().count() == 2)
+			{
+				ais.add(AIFactory.createAI(agentName));
+				ais.add(AIFactory.createAI(agentName2));
+				return ais;
+			}
+			else
+			{
+				System.err.println("Provided 2 agent names, but not a 2-player game!");
+			}
+		}
 
+		// Continue with Eric's original implementation
 		for (int p = 1; p <= game.players().count(); ++p)
 		{
 			if (agentName.equals("UCT"))
