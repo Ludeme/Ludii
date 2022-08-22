@@ -380,6 +380,13 @@ public final class FromTo extends Effect
 									move.setLevelMinNonDecision(levelFrom.eval(context));
 									move.setLevelMaxNonDecision(levelFrom.eval(context));
 								}
+								
+								// To add the levels to move a stack on the Move class (only for GUI)
+								if (stack)
+								{
+									move.setLevelMinNonDecision(0);
+									move.setLevelMaxNonDecision(cs.sizeStack(from, realTypeFrom) - 1);
+								}
 							}
 						
 							if (rotationTo != null)
