@@ -951,7 +951,7 @@ public class ExportDbCsvConcepts
 	private static List<AI> chooseAI(final Game game, final String agentName, final String agentName2, final int indexPlayout)
 	{
 		final List<AI> ais = new ArrayList<AI>();
-		ais.add(null);
+		//ais.add(null);
 		
 		if (agentName2.length() > 0)
 		{
