@@ -1,247 +1,219 @@
 // Polypods 
 //---------------------------------------------
-// Utility for determining if a group is alive  
+// Utility for determining if a group is alive   
 (define "IsAliveAt" // <region>
-    (<= 0
-        (+
-            (results
-                from:#1 
-                to:(from)
-                (if (= 0 (state at:(to))) 1 (- 1))
-            )
-        )
-    )
-)
+ (<= 0
+  (+
+   (results
+    from:#1 
+    to:(from)
+    (if (= 0 (state at:(to))) 1 (- 1))
+))))
 
-//---------------------------------- 
+//----------------------------------  
 // Capture Locations and procedure
 
 (define "CaptureSites"
-    (intersection
-        (sites Around (intersection (sites Group at:(last To)) (sites State 1)))
-        (intersection (sites Occupied by:Next) (sites State 0))
-    )
-)
+ (intersection
+  (sites Around (intersection (sites Group at:(last To)) (sites State 1)))
+  (intersection (sites Occupied by:Next) (sites State 0))
+))
 
 (define "KeySitesOfAffectedGroups"
-    (sites
-        (results
-            from:"CaptureSites"
-            to:(min (array (difference (sites Group at:(from)) "CaptureSites")))
-            (to)
-        )
-    )
-)
+ (sites
+  (results
+   from:"CaptureSites"
+   to:(min (array (difference (sites Group at:(from)) "CaptureSites")))
+   (to)
+)))
 
-(define "AffectedGroupAt" // The updated group without captured terminals associated with the key location.
-    (difference (sites Group at:#1) (sites (values Remembered "CS")))
+(define "AffectedGroupAt"  // The updated group without captured terminals associated with the key location.
+ (difference (sites Group at:#1) (sites (values Remembered "CS")))
 )
 
 (define "Check4IllegalCapture"
-    (and {
-        ("UpdateTerminals" (sites Group at:(last To)))
-        }
-        (then
-            (if
-                (not ("IsAliveAt" (sites Group at:(last To))))
-                (trigger "IllegalCapture" Mover)
-            )
-        )
-    )
-)
+ (and
+  {
+   ("UpdateTerminals" (sites Group at:(var "ConvertedFootSite"))) 
+  }
+  (then
+   (if
+    //work around: using  (last To) did not pick up the last consequence, but rather the last move
+    (not ("IsAliveAt" (sites Group at:(var "ConvertedFootSite"))))
+    (trigger "IllegalCapture" Mover)
+))))
 
 (define "ClaimCapture" // site
-    (if 
-        (= 1 (state at:(site)))
-        (remove (site))
-        (add (to (site) (apply (remove (to))))
-            (then ("Check4IllegalCapture"))
-        )
-    )
-)
+ (if 
+  (= 1 (state at:(site)))
+  (remove (site))
+  (add
+   (to (site)
+    (apply
+     (and
+      (set Var "ConvertedFootSite" (to))
+      (remove (to))
+   )))
+   (then ("Check4IllegalCapture"))
+)))
 
 //-------------------------------
 
 (define "Captures"
-    (do
-        (forEach Site "CaptureSites"
-            (remember Value "CS" (site) unique:True)
-            (then
-                (forEach Site "KeySitesOfAffectedGroups"
-                    (remember Value "KS" (site) unique:True)
-                )
-            )
-        )
-        next:(forEach Site (sites (values Remembered "CS")) (remove (site))
-            (then
-                (forEach Value
-                    (values Remembered "KS") // a key site within the remainder of the group
-                    ("UpdateTerminals" ("AffectedGroupAt" (value)))
-                )
-            )
-        )
-        (then 
-            (and
-                (forEach Value (values Remembered "KS") 
-                    (if 
-                        (not ("IsAliveAt" ("AffectedGroupAt" (value))))
-                        (forEach Site
-                            ("AffectedGroupAt" (value)) 
-                            ("ClaimCapture") 
-                        )
-                    )
-                )
-                (forget Value "CS" All
-                    (then (forget Value "KS" All))
-                )
-            )
-        )
-    )
-)
-
+ (do
+  (forEach Site "CaptureSites"
+   (remember Value "CS" (site) unique:True)
+   (then
+    (forEach Site "KeySitesOfAffectedGroups"
+     (remember Value "KS" (site) unique:True)
+  )))
+  next:(forEach Site (sites (values Remembered "CS")) (remove (site))
+   (then
+    (forEach Value
+     (values Remembered "KS")  // a key site within the remainder of the group
+     ("UpdateTerminals" ("AffectedGroupAt" (value)))
+  )))
+  (then 
+   (and
+    (forEach Value (values Remembered "KS")  
+     (if 
+      (not ("IsAliveAt" ("AffectedGroupAt" (value))))
+      (forEach Site
+       ("AffectedGroupAt" (value)) 
+       ("ClaimCapture") 
+    )))
+    (forget Value "CS" All
+     (then (forget Value "KS" All))
+)))))
+   
 //---------------------------------------------
 // Updating Group structures 
 
 (define "SurroundingSitesInGroup"
-    (array (intersection #1 (sites Around (site))))
+ (array (intersection #1 (sites Around (site))))
 )
 
-(define "UpdateTerminals" // <region> such as (sites) or (sites Group at:(last To))
-    (forEach Site #1
-        (if
-            (or
-                (< 2 (size Array ("SurroundingSitesInGroup" #1)))
-                (and
-                    (= 2 (size Array ("SurroundingSitesInGroup" #1)))
-                    (< 1 
-                        (count Steps 
-                            (min ("SurroundingSitesInGroup" #1))
-                            (max ("SurroundingSitesInGroup" #1))
-                        )
-                    )
-                )
-            )
-            (set State at:(site) 1)
-            (set State at:(site) 0)
-        )
-    )
-)
+(define "UpdateTerminals"  // <region> such as (sites) or (sites Group at:(last To))
+ (forEach Site #1
+  (if
+   (or
+    (< 2 (size Array ("SurroundingSitesInGroup" #1)))
+    (and
+     (= 2 (size Array ("SurroundingSitesInGroup" #1)))
+     (< 1 
+      (count Steps 
+       (min ("SurroundingSitesInGroup" #1))
+       (max ("SurroundingSitesInGroup" #1))
+   ))))
+   (set State at:(site) 1)
+   (set State at:(site) 0)
+)))
 
 //--------------------------------
 // Placement
 
 (define "ToAllowedSites"
-    (to
-        (difference
-            (sites Empty)
-            (sites Around
-                (intersection (sites Occupied by:Next) (sites State 1))
-            )
-        )
-        level:0
-    )
-)
+ (to
+  (difference
+   (sites Empty)
+   (sites Around
+    (intersection (sites Occupied by:Next) (sites State 1))
+  ))
+  level:0
+))
 
 //-----------------------------------------------
 // Main routine
 
 (game "Polypods"
-    (players 2)
-    (equipment {
-        (board <BoardShape:gridType> use:Vertex)
-        (piece "Disc" Each maxState:1)
-    })
-    (rules
-        (play
-            (or
-                (move Pass)
-                (do
-                    (do
-                        (move Add "ToAllowedSites" 
-                            (then ("UpdateTerminals" (sites Group at:(last To))))
-                        )
-                        ifAfterwards:("IsAliveAt" (sites Group at:(last To)))
-                        (then ("Captures"))
-                    )
-                    ifAfterwards:(not (is Triggered "IllegalCapture" Mover))
-                )
-                (then 
-                    ("Score")
-                )
-            )
-        )
-        (end 
-            (if
-                (all Passed) {
-                (if
-                    (> (score Mover) (score Next))
-                    (result Mover Win)
-                )
-                (if
-                    (and
-                        (= (score Mover) (score Next))
-                        (>= ("FringeScoreOf" Mover) ("FringeScoreOf" Next))
-                    )
-                    (result Mover Win)
-                )
-                (if
-                    (and
-                        (= (score Mover) (score Next))
-                        (= ("FringeScoreOf" Mover) ("FringeScoreOf" Next))
-                    )
-                    (result Mover Draw)
-                )
-                }
-                (result Next Win)
-            )
-        )
+ (players 2)
+ (equipment
+  {
+   (board <BoardShape:gridType> use:Vertex)
+   (piece "Disc" Each maxState:1)
+  }
+ )
+ (rules
+  (play
+   (or
+    (move Pass)
+    (do
+     (do
+      (move Add "ToAllowedSites" 
+       (then ("UpdateTerminals" (sites Group at:(last To))))
+      )
+      ifAfterwards:("IsAliveAt" (sites Group at:(last To)))
+      (then ("Captures"))
+     )
+     ifAfterwards:(not (is Triggered "IllegalCapture" Mover))
     )
-)
+    (then 
+     ("Score")
+  )))
+  (end 
+   (if
+    (all Passed)
+    {
+     (if
+      (> (score Mover) (score Next))
+      (result Mover Win)
+     )
+     (if
+      (and
+       (= (score Mover) (score Next))
+       (>= ("FringeScoreOf" Mover) ("FringeScoreOf" Next))
+      )
+      (result Mover Win)
+     )
+     (if
+      (and
+       (= (score Mover) (score Next))
+       (= ("FringeScoreOf" Mover) ("FringeScoreOf" Next))
+      )
+      (result Mover Draw)
+     )
+    }
+    (result Next Win)
+))))
 
 //-----------------------------
 //Scoring
 
 (define "Score"
-    (and
-        ("ScoreCore4" Mover)
-        ("ScoreCore4" Next)
-    )
-)
+ (and
+  ("ScoreCore4" Mover)
+  ("ScoreCore4" Next)
+))
 
 (define "ScoreFringe4" (set Score #1 ("FringeScoreOf" #1)))
-
+ 
 (define "ScoreCore4"
-    (set Score #1
-        (count Sites 
-            in:(intersection
-                (sites Occupied by:#1) 
-                (sites State 1)
-            )
-        )
-    )
-)
+ (set Score #1
+  (count Sites 
+   in:(intersection
+    (sites Occupied by:#1) 
+    (sites State 1)
+))))
 
 (define "FringeScoreOf"
-    (count Sites
-        in:(difference
-            (sites Around (sites Occupied by:#1))
-            (sites Around (difference (sites Occupied by:All) (sites Occupied by:#1)) includeSelf:True)
-        )
-    )
-)
+ (count Sites
+  in:(difference
+   (sites Around (sites Occupied by:#1))
+   (sites Around (difference (sites Occupied by:All) (sites Occupied by:#1)) includeSelf:True)
+)))
 
 //-------------------------------------------------
 // Options
 
 (option "Board" <BoardShape> args:{<gridType> <directionsUsed> <DiagShow>} 
-    {
-    (item "Hex 3" <(tri Hexagon 3)> <Orthogonal> <Hidden> "Order 3, Hex Grid")
-    (item "Hex 3,4 - strong AI" <(tri Limping 3)> <Orthogonal> <Hidden> "Order 3-4, Hex Grid")*
-    (item "Hex 4" <(tri Hexagon 4)> <Orthogonal> <Hidden> "Order 4, Hex Grid")
-    (item "Hex 4,5*" <(tri Limping 4)> <Orthogonal> <Hidden> "Order 4-5, Hex Grid")
-    (item "Hex 5" <(tri Hexagon 5)> <Orthogonal> <Hidden> "Order 5, Hex Grid")
-    (item "Hex 5,6" <(tri Limping 5)> <Orthogonal> <Hidden> "Order 5-6, Hex Grid") 
-    }
+  {
+   (item "Hex 3" <(tri Hexagon 3)> <Orthogonal> <Hidden> "Order 3, Hex Grid")
+   (item "Hex 3,4 - strong AI" <(tri Limping 3)> <Orthogonal> <Hidden> "Order 3-4, Hex Grid")*
+   (item "Hex 4" <(tri Hexagon 4)> <Orthogonal> <Hidden> "Order 4, Hex Grid")
+   (item "Hex 4,5*" <(tri Limping 4)> <Orthogonal> <Hidden> "Order 4-5, Hex Grid")
+   (item "Hex 5" <(tri Hexagon 5)> <Orthogonal> <Hidden> "Order 5, Hex Grid")
+   (item "Hex 5,6" <(tri Limping 5)> <Orthogonal> <Hidden> "Order 5-6, Hex Grid") 
+  }
 )
 
 //---------------------------------------------
