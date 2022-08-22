@@ -41,7 +41,7 @@
                                                 (= 0 (state at:(site) level:(level)))
                                                 (!= 0 (who at:(site) level:(level)))
                                             )
-                                            (set State at:(site) level:(level) (site))
+                                            (if (<= (site) (- (count Vertices) 1)) (set State at:(site) level:(level) (site)))
                                         )
                                     )	
                                 )

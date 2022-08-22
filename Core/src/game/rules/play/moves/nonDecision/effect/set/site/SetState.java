@@ -88,8 +88,16 @@ public final class SetState extends Effect
 			realType = SiteType.Cell;
 		else if (realType == null)
 			realType = context.board().defaultSite();
-		if(site >= context.containers()[cid].topology().getGraphElements(realType).size())
-			return moves;
+		if(cid == 0)
+		{
+			if(site >= context.containers()[0].topology().getGraphElements(realType).size())
+				return moves;
+		}
+		else
+		{
+			if((site - context.sitesFrom()[cid]) >= context.containers()[cid].topology().getGraphElements(SiteType.Cell).size())
+				return moves;
+		}
 		
 		final BaseAction action = new ActionSetState(realType, site, level, stateValue);
 		final Move move = new Move(action);
