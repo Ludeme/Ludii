@@ -81,7 +81,7 @@ public final class Add extends Effect
 	
 	//-------------------------------------------------------------------------
 
-	/** Action cache (indexed by move first, component second, state+1 third, site fourth) */
+	/** Action cache (indexed by mover first, component second, state+1 third, site fourth) */
 	private Move[][][][] actionCache = null;
 	
 	/** 
