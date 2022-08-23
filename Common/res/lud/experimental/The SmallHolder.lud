@@ -78,15 +78,15 @@
 ))
 
 (define "PiecewiseCapture" 
- (forEach Group Orthogonal
-  if:(is In (to) (intersection (sites Board) (sites Occupied by:Next)))
-  (remove (intersection (sites) (sites (values Remembered #2))))
-  (then
-   (seq
-    {
-     (forget Value #1 All)
-     ("UpdateAllTerritoryOfNext")
-    }    
+    (forEach Group Orthogonal
+        if:(is In (to) (intersection (sites Board) (sites Occupied by:Next)))
+        (remove (intersection (sites) (sites (values Remembered #2))))
+        (then
+            (seq
+                {
+                (forget Value #1 All)
+                ("UpdateAllTerritoryOfNext")
+                }    
 ))))
 
 (define "CaptureGroupsWithin" 
@@ -145,185 +145,184 @@
 )
 
 (define "MakeCapture"
- (if 
-  (= (mover) 1)
-  (<Capture:cVariant> "P2" "P1")
-  (<Capture:cVariant> "P1" "P2")
+    (if 
+        (= (mover) 1)
+        (<Capture:cVariant> "P2" "P1")
+        (<Capture:cVariant> "P1" "P2")
 ))
 
 (define "PlayWithoutSizeRestriction"
- (move Add
-  (to <Capture:playableSites> )
-  (then
-   (if
-    ("IsNotAnIsolatedPlacement")
-    (seq
-     {
-      ("RecordTerritoryOfRevisedGroup")
-      ("MakeCapture")
-     }
+    (move Add
+        (to <Capture:playableSites> )
+        (then
+            (if
+                ("IsNotAnIsolatedPlacement")
+                (seq
+                    {
+                    ("RecordTerritoryOfRevisedGroup")
+                    ("MakeCapture")
+                    }
 )))))
 
 (define "Play2SmallestGroup"
- (if
-  (> 2 (count Groups Orthogonal if:(is Mover (who at:(to)))))
-  (move Add
-   (to
-    <Capture:playableSites>
-    if:(all Sites
-     (sites Around (to) Orthogonal)
-     if:(not (is Mover (who at:(site))))
-  )))
-  (or
-   (move Add
-    (to
-     <Capture:playableSites>
-     if:(all Sites
-      (sites Around (to) Orthogonal)
-      if:(not (is Mover (who at:(site))))
-   )))
-   (move Add
-    (to
-     <Capture:playableSites>
-     if:(not
-      (all Sites
-       (sites Around (to) Orthogonal if:(is Mover (who at:(to))))
-       if:(<
-        (min (sizes Group Orthogonal Mover))
-        (size Group at:(site) Orthogonal)
-  ))))))
-  (then
-   (seq
-    {
-     ("UpdateGroupSizeValue4PiecesConnected2Placement")
-//    next:("UpdateTotalMoverGroupCount")
-//    (then
-     (if 
-      ("IsNotAnIsolatedPlacement")
-      (seq
-       {
-        ("RecordTerritoryOfRevisedGroup")
-        ("MakeCapture")
-       }
-     ))
-    }
-))))
-
-
-//--------------------------
-
-(game "The SmallHolder"
-    (players 2)
-    (equipment
+    (if
+        (> 2 (count Groups Orthogonal if:(is Mover (who at:(to)))))
+        (move Add
+            (to
+                <Capture:playableSites>
+                if:(all Sites
+                    (sites Around (to) Orthogonal)
+                    if:(not (is Mover (who at:(site))))
+        )))
+        (or
+            (move Add
+                (to
+                    <Capture:playableSites>
+                    if:(all Sites
+                        (sites Around (to) Orthogonal)
+                        if:(not (is Mover (who at:(site))))
+            )))
+            (move Add
+                (to
+                    <Capture:playableSites>
+                    if:(not
+                        (all Sites
+                            (sites Around (to) Orthogonal if:(is Mover (who at:(to))))
+                            if:(<
+                                (min (sizes Group Orthogonal Mover))
+                                (size Group at:(site) Orthogonal)
+        ))))))
+        (then
+            (seq
+                {
+                ("UpdateGroupSizeValue4PiecesConnected2Placement")
+                //    next:("UpdateTotalMoverGroupCount")
+                //    (then
+                    (if 
+                        ("IsNotAnIsolatedPlacement")
+                        (seq
+                            {
+                            ("RecordTerritoryOfRevisedGroup")
+                            ("MakeCapture")
+                            }
+                    ))
+                    }
+    ))))
+    
+    //--------------------------
+    
+    (game "The SmallHolder"
+        (players 2)
+        (equipment
+            {
+            (board <Board:type> use:Cell)
+            //        (hand Each size:1)
+            (piece "Disc" Each)
+            }
+        )
+        (rules
+            //        (start
+                //            {
+                //            (place "Disc1" (handSite P1 0) value:0) 
+                //            (place "Disc2" (handSite P2 0) value:0) 
+                //            }
+            //        )
+            (play
+                <Placement:pVariant>
+            )
+            (end 
+                "EndNoMoves"
+    ))) 
+    
+    (define "EndNoMoves"
+        (if (no Moves Next) (result Next Loss))
+    )
+    
+    //--------------------------------------
+    
+    (option "Board" <Board> args:{ <type> }
         {
-        (board <Board:type> use:Cell)
-//        (hand Each size:1)
-        (piece "Disc" Each)
+        (item "Hex3" <(hex Hexagon 3)> "3 Hexagon Board")
+        (item "Hex 343434" <(hex Limping 3)> "343434 Hexagon Board")
+        (item "Hex4" <(hex Hexagon 4)> "4 Hexagon Board")**
+        (item "Hex 454545" <(hex Limping 4)> "454545 Hexagon Board")
+        (item "Hex5" <(hex Hexagon 5)> "5 Hexagon Board")
+        (item "Hex6" <(hex Hexagon 6)> "6 Hexagon Board")
+        (item "Hex7" <(hex Hexagon 7)> "7 Hexagon Board")
+        }
+    ) 
+    
+    (option "Placement" <Placement> args:{ <pVariant> }
+        {
+        (item "New or Extend Smallest" 
+            <"Play2SmallestGroup">
+            "Standard"
+        )**
+        (item "Unrestricted" 
+            <"PlayWithoutSizeRestriction">
+            "Place a stone on an empty space."
+        )    
         }
     )
-    (rules
-//        (start
-//            {
-//            (place "Disc1" (handSite P1 0) value:0) 
-//            (place "Disc2" (handSite P2 0) value:0) 
-//            }
-//        )
-        (play
-         <Placement:pVariant>
-        )
-        (end 
-         "EndNoMoves"
-))) 
-
-(define "EndNoMoves"
- (if (no Moves Next) (result Next Loss))
-)
- 
-//--------------------------------------
-
-(option "Board" <Board> args:{ <type> }
-    {
-    (item "Hex3" <(hex Hexagon 3)> "3 Hexagon Board")
-    (item "Hex 343434" <(hex Limping 3)> "343434 Hexagon Board")
-    (item "Hex4" <(hex Hexagon 4)> "4 Hexagon Board")**
-    (item "Hex 454545" <(hex Limping 4)> "454545 Hexagon Board")
-    (item "Hex5" <(hex Hexagon 5)> "5 Hexagon Board")
-    (item "Hex6" <(hex Hexagon 6)> "6 Hexagon Board")
-    (item "Hex7" <(hex Hexagon 7)> "7 Hexagon Board")
-    }
-) 
-
-(option "Placement" <Placement> args:{ <pVariant> }
-    {
-    (item "New or Extend Smallest" 
-     <"Play2SmallestGroup">
-     "Standard"
-    )**
-    (item "Unrestricted" 
-     <"PlayWithoutSizeRestriction">
-     "Place a stone on an empty space."
-    )    
-    }
-)
-
-(option "Capture" <Capture> args:{ <cVariant> <playableSites> }
-    {
-    (item "Piecewise" 
-     <"PiecewiseCapture">
-     <"EmptySitesOutsideEnemyTerritory">
-     "Standard"
-    )**
-    (item "Groupwise" 
-     <"CaptureGroupsWithin">
-     <(union
-       ("EmptySitesOutsideEnemyTerritory")
-       (sites Around
-        (intersection (sites Board) (sites Occupied by:Mover)) 
-        Orthogonal 
-        if:(is Empty (to))
-     ))>
-     "Placement in opponent's holdings is only allowed as an extension of a group. When you extend a group, capture every opponent's group lying completely within your holdings."
-    )
-    }
-)    
-     
-(option "Territory" <Territory> args:{ <tVariant> }
-    {
-    (item "Gap"
-        <"HexBetweenSites">
-        "Standard"
-    )**
-    (item "Hull" 
-        <"HexHullSites">
-        "Each group's holdings is smallest grid-oriented hexagon that contains it."
-    )
-    }
-)
-
-//------------------------------------------------------------------------------
-
-// need to add Cascade if Value = 1, and Cascade if Piece is of mover.
-(metadata
-    (info
+    
+    (option "Capture" <Capture> args:{ <cVariant> <playableSites> }
         {
-   }
-  )
-
-  (graphics
-    {
-    (board Colour Phase0 (colour 100 200 250 120))
-    (board Colour OuterEdges (colour Black))
-    (board Colour InnerEdges (colour Black))
-    (board StyleThickness OuterEdges 1.5)
-    (board StyleThickness InnerEdges 0.4)
-    (board StyleThickness InnerVertices 0.4)
-    (board StyleThickness OuterVertices 0.4)
-    (board Colour Symbols (colour Black))
-    (player Colour P1 (colour Black))
-    (player Colour P2 (colour LightOrange))
-    (region Colour ("P1Territory")     (colour  60 120 170 120)) 
-    (region Colour ("CommonTerritory") (colour 120 157 185 120))  
-    (region Colour ("P2Territory")     (colour 180 195 200 120))
-    }
-  )
-)
+        (item "Piecewise" 
+            <"PiecewiseCapture">
+            <"EmptySitesOutsideEnemyTerritory">
+            "Standard"
+        )**
+        (item "Groupwise" 
+            <"CaptureGroupsWithin">
+            <(union
+                ("EmptySitesOutsideEnemyTerritory")
+                (sites Around
+                    (intersection (sites Board) (sites Occupied by:Mover)) 
+                    Orthogonal 
+                    if:(is Empty (to))
+            ))>
+            "Placement in opponent's holdings is only allowed as an extension of a group. When you extend a group, capture every opponent's group lying completely within your holdings."
+        )
+        }
+    )    
+    
+    (option "Territory" <Territory> args:{ <tVariant> }
+        {
+        (item "Gap"
+            <"HexBetweenSites">
+            "Standard"
+        )**
+        (item "Hull" 
+            <"HexHullSites">
+            "Each group's holdings is smallest grid-oriented hexagon that contains it."
+        )
+        }
+    )
+    
+    //------------------------------------------------------------------------------
+    
+    // need to add Cascade if Value = 1, and Cascade if Piece is of mover.
+    (metadata
+        (info
+            {
+            }
+        )
+        
+        (graphics
+            {
+            (board Colour Phase0 (colour 100 200 250 120))
+            (board Colour OuterEdges (colour Black))
+            (board Colour InnerEdges (colour Black))
+            (board StyleThickness OuterEdges 1.5)
+            (board StyleThickness InnerEdges 0.4)
+            (board StyleThickness InnerVertices 0.4)
+            (board StyleThickness OuterVertices 0.4)
+            (board Colour Symbols (colour Black))
+            (player Colour P1 (colour Black))
+            (player Colour P2 (colour LightOrange))
+            (region Colour ("P1Territory")     (colour  60 120 170 120)) 
+            (region Colour ("CommonTerritory") (colour 120 157 185 120))  
+            (region Colour ("P2Territory")     (colour 180 195 200 120))
+            }
+        )
+    )

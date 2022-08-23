@@ -20,7 +20,7 @@
     })
     (rules
         (play (priority {
-            (if (= (var "PlacementDone") -1) "Placement")
+                (if (= (var "PlacementDone") -1) "Placement")
         }))
         (end
             (if
