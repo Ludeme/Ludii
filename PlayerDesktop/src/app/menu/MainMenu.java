@@ -977,7 +977,8 @@ public class MainMenu extends JMenuBar
 			menuItem = new JMenuItem("More Developer Options");
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
-
+			
+			MenuScroller.setScrollerFor(menu, 30, 50, 0, 0);
 		}
 		
 		//---------------------------------------------------------------------
