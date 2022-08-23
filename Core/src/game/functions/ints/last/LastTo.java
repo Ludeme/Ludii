@@ -14,7 +14,7 @@ import other.context.Context;
 import other.move.Move;
 
 /**
- * Returns the ``to'' location of the last move.
+ * Returns the ``to'' location of the last decision.
  * 
  * @author Eric.Piette
  */
