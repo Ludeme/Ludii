@@ -486,6 +486,9 @@ public final class Add extends Effect
 		
 		if (site != null)
 			gameFlags |= site.gameFlags(game);
+		
+		if (localState != null)
+			gameFlags |= GameType.SiteState;
 
 		if (level != null)
 		{
