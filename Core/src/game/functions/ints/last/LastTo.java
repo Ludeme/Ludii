@@ -32,7 +32,7 @@ public final class LastTo extends BaseIntFunction
 
 	/**
 	 * @param afterSubsequents Whether to return the ``to'' location after applying
-	 *                         subsequents [False].
+	 *                         the consequences [False].
 	 */
 	public LastTo
 	(
