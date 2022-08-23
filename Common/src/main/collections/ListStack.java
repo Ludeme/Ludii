@@ -676,8 +676,6 @@ public final class ListStack implements Serializable
 		{
 			if (type > 0 && !who.isEmpty())
 				return who.getQuick(size-1);
-			if(!what.isEmpty())
-				return what.getQuick(size-1);
 			return 0;
 		}
 		return 0;
@@ -692,8 +690,6 @@ public final class ListStack implements Serializable
 		{
 			if (type > 0 && level < who.size())
 				return who.getQuick(level);
-			if(level < what.size())
-				return what.getQuick(level);
 			return 0;
 		}
 		return 0;
@@ -707,7 +703,7 @@ public final class ListStack implements Serializable
 
 	public void setWho(final int val)
 	{
-		if (type > 0 && size > 0 && !who.isEmpty())
+		if (type > 0)
 			who.add(val);
 	}
 	

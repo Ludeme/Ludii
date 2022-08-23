@@ -1,17 +1,32 @@
-(game "Tic-Tac-Toe"
-    (players 2)
+(define "Placement"
+    (priority {
+        (move Add (piece (id "Disc" Mover)) (to (sites Empty)))
+        (move Add (piece (id "Disc" Mover)) (to (sites Occupied by:Mover))
+            (then (if (= (count Turns) 10) (set Var "PlacementDone" 1)))
+        )
+    })
+)
+
+//-----------------------------------------------------------------------------------------------------------
+
+(game "TestCode"
+    (players 6)
     (equipment {
-        (board (square 3))
-        (piece "Disc" P1 maxState:1)
-        (piece "Cross" P2 maxState:1)
+        (board (square 3)
+            largeStack:True
+        )
+        (piece "Disc" Each)
+        (dice num:5)
     })
     (rules
-        (play
-            (move Add
-                (piece (mover) state:1)
-                (to (sites Empty))
+        (play (priority {
+            (if (= (var "PlacementDone") -1) "Placement")
+        }))
+        (end
+            (if
+                (= (var "PlacementDone") 1)
+                (result Next Draw)
             )
         )
-        (end ("Line3Win"))
     )
 )
