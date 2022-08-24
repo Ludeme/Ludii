@@ -25,8 +25,7 @@
 )
 
 (define "DecideToCastle"
-    (move
-        Slide 
+    (move Slide 
         (from (mapEntry #1 (mover))) 
         #2 
         (between 
@@ -95,8 +94,7 @@
 )
 
 (define "DoubleStep"
-    (move
-        Slide 
+    (move Slide 
         Forward 
         (between (exact 2) if:(is Empty (between))) 
         (to if:(is Empty (to))) 
@@ -112,8 +110,7 @@
 )
 
 (define "EnPassant"
-    (move
-        Step 
+    (move Step 
         (directions {FR FL}) 
         (to if:"InLocationEnPassant") 
         (then 
