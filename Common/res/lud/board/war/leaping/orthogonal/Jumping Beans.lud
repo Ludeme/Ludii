@@ -19,7 +19,7 @@
                 (priority {
                     (max Moves
                         (forEach Piece
-                        	("HopCapture" ~ ~ (then ("ReplayIfCanMove" ("HopCapture" (from (last To))))))
+                            ("HopCapture" ~ ~ (then ("ReplayIfCanMove" ("HopCapture" (from (last To))))))
                         )
                     )
                     (forEach Piece)

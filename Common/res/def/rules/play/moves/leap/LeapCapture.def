@@ -6,19 +6,19 @@
 
 (define "LeapCapture"
     (move
-            Leap 
-            #1
-            (to 
-                if:(not ("IsFriendAt" (to))) 
-                (apply 
-                    (if ("IsEnemyAt" (to)) 
-                        (remove 
-                            (to) 
-                            #2
-                        )
+        Leap 
+        #1
+        (to 
+            if:(not ("IsFriendAt" (to))) 
+            (apply 
+                (if ("IsEnemyAt" (to)) 
+                    (remove 
+                        (to) 
+                        #2
                     )
-                ) 
+                )
             ) 
-            #3
-        )
+        ) 
+        #3
+    )
 )

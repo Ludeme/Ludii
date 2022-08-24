@@ -34,7 +34,7 @@
             (nextPhase Mover "Movement")
         )
         (phase "Movement" 
-        	(play 
+            (play 
                 (if "SameTurn"
                     (or
                         ("HopSequence" (last To) SameDirection)

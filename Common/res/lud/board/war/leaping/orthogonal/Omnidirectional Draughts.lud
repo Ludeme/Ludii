@@ -18,7 +18,7 @@
 (game "Omnidirectional Draughts" 
     (players 2) 
     ("DraughtsEquipment" (square <Board>))
-
+    
     (rules 
         
         (start {
@@ -32,8 +32,8 @@
                     (max Moves
                         ("HopCounter" (last To)
                             (then 
-                            	("ReplayIfCanMove" ("HopCounter" (last To)) 
-                            			("PromoteIfReach" (sites Next) "DoubleCounter")
+                                ("ReplayIfCanMove" ("HopCounter" (last To)) 
+                                    ("PromoteIfReach" (sites Next) "DoubleCounter")
                                 ) 
                             ) 
                         )
@@ -46,8 +46,8 @@
                             (forEach Piece "Counter"
                                 ("HopCounter" (from) 
                                     (then 
-                                    	("ReplayIfCanMove" ("HopCounter" (last To))
-                                    			("PromoteIfReach" (sites Next) "DoubleCounter")
+                                        ("ReplayIfCanMove" ("HopCounter" (last To))
+                                            ("PromoteIfReach" (sites Next) "DoubleCounter")
                                         ) 
                                     ) 
                                 ) 

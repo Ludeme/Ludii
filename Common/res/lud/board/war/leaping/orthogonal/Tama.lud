@@ -3,7 +3,7 @@
 )
 
 (define "HopMan" 
-	("HopCapture"
+    ("HopCapture"
         (from #1) 
         (directions {Forward Rightward Leftward}) 
         #2
@@ -29,8 +29,8 @@
                     (max Moves
                         ("HopMan" (last To)
                             (then 
-                            	("ReplayIfCanMove" ("HopMan" (last To))
-                            		("PromoteIfReach" (sites Next) "DoubleCounter")
+                                ("ReplayIfCanMove" ("HopMan" (last To))
+                                    ("PromoteIfReach" (sites Next) "DoubleCounter")
                                 ) 
                             ) 
                         )
@@ -43,8 +43,8 @@
                             (forEach Piece "Counter" 
                                 ("HopMan" (from)
                                     (then 
-                                    	("ReplayIfCanMove" ("HopMan" (last To))
-                                    		("PromoteIfReach" (sites Next) "DoubleCounter")
+                                        ("ReplayIfCanMove" ("HopMan" (last To))
+                                            ("PromoteIfReach" (sites Next) "DoubleCounter")
                                         ) 
                                     ) 
                                 ) 
@@ -77,12 +77,12 @@
             #1 
             #2
             (then 
-            	("ReplayIfCanMove" 
-                        ("HopCapture" 
-                            (from (last To)) 
-                            #2
-                        )
-                    ) 
+                ("ReplayIfCanMove" 
+                    ("HopCapture" 
+                        (from (last To)) 
+                        #2
+                    )
+                ) 
             )
         ) 
         > 
@@ -99,11 +99,11 @@
             #2
             ~
             (then 
-            	("ReplayIfCanMove" 
-                		("HopCaptureDistanceNotAlreadyHopped" 
-                            (from (last To)) 
-                            (difference Orthogonal OppositeDirection)
-                        )
+                ("ReplayIfCanMove" 
+                    ("HopCaptureDistanceNotAlreadyHopped" 
+                        (from (last To)) 
+                        (difference Orthogonal OppositeDirection)
+                    )
                 )
             )
         )	

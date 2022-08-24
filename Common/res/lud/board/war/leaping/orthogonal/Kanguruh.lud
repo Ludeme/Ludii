@@ -24,12 +24,12 @@
                     )
                 )
                 (then
-                	("ReplayIfCanMove" 
-                            (hop
-                                (from (last To))
-                                (between if:(is Occupied (between)))
-                                (to if:(and (is Empty (to)) (not (is In (to) (values Remembered)))))
-                            )
+                    ("ReplayIfCanMove" 
+                        (hop
+                            (from (last To))
+                            (between if:(is Occupied (between)))
+                            (to if:(and (is Empty (to)) (not (is In (to) (values Remembered)))))
+                        )
                         (forget Value All)
                     )
                 )
@@ -63,12 +63,12 @@
                             )
                         )
                         (then
-                        	("ReplayIfCanMove"
-                                    (hop
-                                        (from (last To))
-                                        (between if:(is Occupied (between)))
-                                        (to if:(and (is Empty (to)) (not (is In (to) (values Remembered)))))
-                                    )
+                            ("ReplayIfCanMove"
+                                (hop
+                                    (from (last To))
+                                    (between if:(is Occupied (between)))
+                                    (to if:(and (is Empty (to)) (not (is In (to) (values Remembered)))))
+                                )
                                 (forget Value All)
                             )
                         )

@@ -139,11 +139,9 @@
                 "InitialPawnMove"
                 "EnPassant"
             )
-            (then
+            (then 
                 (and
-                    (if (is In (last To) (sites Mover "Promotion")) 
-                        (moveAgain)
-                    )
+                    ("ReplayInMovingOn" (sites Mover "Promotion"))
                     (set Counter)
                 )
             )

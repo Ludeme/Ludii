@@ -10,12 +10,12 @@
                 ("StepToEmpty" (directions {Forward Rightward Leftward}))
                 ("HopCapture" ~ (directions {Forward Rightward Leftward}) 
                     (then 
-                    	("ReplayIfCanMove" 
-                    			("HopCapture" 
-                                    (from (last To)) 
-                                    (directions {Forward Rightward Leftward})
-                                )
-                            ) 
+                        ("ReplayIfCanMove" 
+                            ("HopCapture" 
+                                (from (last To)) 
+                                (directions {Forward Rightward Leftward})
+                            )
+                        ) 
                     )
                 )
             })
@@ -29,17 +29,17 @@
         (play 
             (if ("SameTurn")
                 (and
-                	("HopCapture"
+                    ("HopCapture"
                         (from (last To)) 
                         (directions {Forward Rightward Leftward})
                         (then 
-                        	("ReplayIfCanMove"
-                                    (("HopCapture" 
+                            ("ReplayIfCanMove"
+                                (("HopCapture" 
                                         (from (last To)) 
                                         (directions {Forward Rightward Leftward})
                                     )
                                 ) 
-                             )
+                            )
                         )
                     )	
                     (move Pass)

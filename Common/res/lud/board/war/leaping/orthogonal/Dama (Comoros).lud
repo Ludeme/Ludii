@@ -4,12 +4,12 @@
         #2
         ~
         (then 
-        	("ReplayIfCanMove"
-            		("HopCaptureDistanceNotAlreadyHopped" 
-                        (from (last To)) 
-                        (difference Orthogonal OppositeDirection)
-                        )
-                ) 
+            ("ReplayIfCanMove"
+                ("HopCaptureDistanceNotAlreadyHopped" 
+                    (from (last To)) 
+                    (difference Orthogonal OppositeDirection)
+                )
+            ) 
         )
     )
 )
@@ -41,8 +41,8 @@
                     (if "IsUnpromoted"
                         ("HopMan" (last To)
                             (then 
-                            	("ReplayIfCanMove" ("HopMan" (last To)) 
-                            			("PromoteIfReach" (sites Next) "DoubleCounter")
+                                ("ReplayIfCanMove" ("HopMan" (last To)) 
+                                    ("PromoteIfReach" (sites Next) "DoubleCounter")
                                 ) 
                             ) 
                         )
@@ -54,8 +54,8 @@
                     (forEach Piece "Counter" 
                         ("HopMan" (from)
                             (then 
-                            	("ReplayIfCanMove" ("HopMan" (last To))
-                            			("PromoteIfReach" (sites Next) "DoubleCounter")
+                                ("ReplayIfCanMove" ("HopMan" (last To))
+                                    ("PromoteIfReach" (sites Next) "DoubleCounter")
                                 ) 
                             ) 
                         ) 

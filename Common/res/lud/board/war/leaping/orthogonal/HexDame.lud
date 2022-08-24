@@ -37,8 +37,8 @@
                     (max Moves
                         ("HopMan" (last To)
                             (then 
-                            	("ReplayIfCanMove" ("HopMan" (last To)) 
-                            		("PromoteIfReach" (sites Next) "DoubleCounter")
+                                ("ReplayIfCanMove" ("HopMan" (last To)) 
+                                    ("PromoteIfReach" (sites Next) "DoubleCounter")
                                 ) 
                             ) 
                         )
@@ -51,8 +51,8 @@
                             (forEach Piece "Counter"
                                 ("HopMan" (from) 
                                     (then 
-                                    	("ReplayIfCanMove" ("HopMan" (last To))
-                                    			("PromoteIfReach" (sites Next) "DoubleCounter")
+                                        ("ReplayIfCanMove" ("HopMan" (last To))
+                                            ("PromoteIfReach" (sites Next) "DoubleCounter")
                                         ) 
                                     ) 
                                 ) 

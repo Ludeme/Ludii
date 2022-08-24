@@ -14,8 +14,8 @@
         (board (square 8))
         (piece "King_noCross"
             (or
-            	("StepToNotFriend"
-            		~
+                ("StepToNotFriend"
+                    ~
                     (then
                         (if (not ("KingMovedOrCheckedBefore" (last To)))
                             ("RememberKingMovedOrChecked" (last To))
@@ -24,7 +24,7 @@
                 )
                 (if (not ("KingMovedOrCheckedBefore" (from)))
                     (or {
-                    	("SlideCapture" ~ (between (exact 2)))
+                        ("SlideCapture" ~ (between (exact 2)))
                         ("LeapCapture" "KnightWalk")
                         (if (is In (from) ("KingSites"))
                             (or
@@ -56,30 +56,30 @@
                 )
             )
         )
-
+        
         ("ChessRook" "Rook" ~
-                (then
-                    (if (and 
-                            (not ("RookMovedBefore" (last To)))
-                            (not (is In (last To) ("SitesNextToKing")))
-                        )
-                        ("RememberRookMoved" (last To))
+            (then
+                (if (and 
+                        (not ("RookMovedBefore" (last To)))
+                        (not (is In (last To) ("SitesNextToKing")))
                     )
+                    ("RememberRookMoved" (last To))
                 )
+            )
         )
         ("ChessBishop" "Bishop_noCross")
         ("ChessKnight" "Knight")
         (piece "Pawn"
             (if (is In (from) (sites Mover "Promotion"))
                 ("SlideCapture" 
-                	(directions {BR BL}) 
+                    (directions {BR BL}) 
                     (between (exact 3))
                     ~
                     (then (promote (last To) (piece "Queen") Mover))
                 )
                 (or 
                     "StepForwardToEmpty" 
-                	("StepToEnemy" (directions {FR FL}))
+                    ("StepToEnemy" (directions {FR FL}))
                     (then ("PromoteIfReach" (intersection (sites Corners) (sites Mover "Promotion")) "Queen"))
                 )		
             )
