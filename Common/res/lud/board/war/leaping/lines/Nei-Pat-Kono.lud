@@ -1,21 +1,18 @@
 (game "Nei-Pat-Kono"
     (players 2) 
-    (equipment 
-        { 
+    (equipment { 
         (board <Board> use:Vertex) 
         (piece "Marker" Each 
             (or 
                 ("StepOrthogonalToEmpty")
-                (move
-                    Hop
+                (move Hop
                     Orthogonal 
                     (between if:("IsFriendAt" (between)))
                     (to if:("IsEnemyAt" (to))) 
                 ) 
             ) 
         )
-        }
-    ) 
+    }) 
     (rules 
         (start { <Start> })
         (play (forEach Piece))
@@ -71,7 +68,6 @@
     (graphics {
         (board Style Graph)
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai
