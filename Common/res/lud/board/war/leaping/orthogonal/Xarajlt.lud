@@ -1,5 +1,6 @@
 (game "Xarajlt"
     ("TwoPlayersNorthSouth") 
+    
     (equipment {
         (board 
             (rectangle 5 3)
@@ -7,23 +8,19 @@
         )
         (piece "Marker" Each 
             (or
-                (move Step 
-                    (directions {Forward FR FL})
-                    (to if:(is Empty (to)))
-                )
+                ("StepToEmpty" (directions {Forward FR FL}))
                 ("HopOrthogonalCapture")
             )
         )
     })
+    
     (rules
         (start {
             (place "Marker1" (expand (sites Bottom)))
             (place "Marker2" (expand (sites Top)))
         })
-        (play 
-            (forEach Piece)
-        )
-        (end (if (no Pieces Next) (result Mover Win)))
+        (play (forEach Piece))
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -45,8 +42,8 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
+    
     (ai
         "Xarajlt_ai"
     )
