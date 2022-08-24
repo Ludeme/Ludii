@@ -870,6 +870,8 @@ public class Game extends BaseLudeme implements API, Serializable
 	 */
 	public boolean requiresCount()
 	{
+		if(isStacking())
+			return false;
 		for (final Container c : equipment.containers())
 			if (c.isHand())
 				return true;
