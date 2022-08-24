@@ -3,14 +3,14 @@
     (equipment { 
         (board (square 12))
         ("ChessPawn" "Pawn" ~
-                (then
-                    (if (is In (last To) (sites Mover "Promotion")) 
-                        (and
-                            (promote (last To) (piece "Ferz_noCross") Mover)	
-                            (fromTo (from (last To)) (to (last From)))
-                        )
+            (then
+                (if (is In (last To) (sites Mover "Promotion")) 
+                    (and
+                        (promote (last To) (piece "Ferz_noCross") Mover)	
+                        (fromTo (from (last To)) (to (last From)))
                     )
                 )
+            )
         )
         ("ChessRook" "Rook")
         ("ChessBishop" "Camel")
