@@ -1,16 +1,10 @@
 (define "PromotedHopOrthogonalSequenceCapture" 
-    (move Hop
+    ("HopCaptureDistance"
         #1
         #2
-        (between 
-            before:(count Rows) 
-            after:(count Rows)
-            if:("IsEnemyAt" (between)) 
-            (apply (remove (between)))
-        )
-        (to if:(is Empty (to)))
+        ~
         (then 
-            (if (can Move 
+            ("ReplayIfCanMove" 
                     (hop 
                         (from (last To)) 
                         (difference Orthogonal OppositeDirection)
@@ -26,27 +20,19 @@
                         (to if:(is Empty (to)))
                     )
                 ) 
-                (moveAgain)
-            )
         )
     )
 )
 
 (define "HopMan" 
-    (move
-        Hop 
+    ("HopCapture"
         (from #1) 
         (directions {Forward Rightward Leftward}) 
-        (between 
-            if:("IsEnemyAt" (between))
-            (apply (remove (between)))
-        ) 
-        (to if:(is Empty (to))) 
         #2
     ) 
 )
 
-(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
+(define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
 
 (define "JumpToPromotionZone" (is In (last To) (sites Next)))
 
@@ -54,14 +40,7 @@
 
 (game "Dama" 
     (players 2) 
-    (equipment { 
-        (board (square 8)) 
-        (piece "Counter" P1 N)
-        (piece "Counter" P2 S) 
-        (piece "DoubleCounter" Each)
-        (regions P1 (sites Bottom))
-        (regions P2 (sites Top))
-    }) 
+    ("DraughtsEquipment" (square 8))
     (rules 
         (start { 
             (place "Counter1" (union (sites Row 1) (sites Row 2)))
@@ -73,14 +52,11 @@
                 (if "IsUnpromoted"
                     (max Moves
                         ("HopMan" (last To)
-                            (then 
-                                (if (can Move ("HopMan" (last To))) 
-                                    (moveAgain)
-                                    (if "JumpToPromotionZone" 
-                                        (move Promote (last To) (piece "DoubleCounter") Mover)
-                                    )
-                                ) 
-                            ) 
+                                (then 
+                                        ("ReplayIfCanMove" ("HopMan" (last To))
+                                            ("PromoteIfReach" (sites Next) "DoubleCounter")
+                                        ) 
+                                        )
                         )
                     )
                     (max Moves ("PromotedHopOrthogonalSequenceCapture" (from (last To)) (difference Orthogonal OppositeDirection)))
@@ -90,14 +66,11 @@
                         (or 
                             (forEach Piece "Counter" 
                                 ("HopMan" (from)
-                                    (then 
-                                        (if (can Move ("HopMan" (last To))) 
-                                            (moveAgain) 
-                                            (if "JumpToPromotionZone" 
-                                                (move Promote (last To) (piece "DoubleCounter") Mover)
-                                            )
-                                        ) 
-                                    ) 
+                                        (then 
+                                                ("ReplayIfCanMove" ("HopMan" (last To))
+                                                    ("PromoteIfReach" (sites Next) "DoubleCounter")
+                                                ) 
+                                                )
                                 ) 
                             )
                             (forEach Piece "DoubleCounter" ("PromotedHopOrthogonalSequenceCapture" (from) Orthogonal))
@@ -105,16 +78,8 @@
                     )
                     (or 
                         (forEach Piece "Counter" 
-                            (move
-                                Step 
-                                (directions {Forward Rightward Leftward}) 
-                                (to if:(is Empty (to)))
-                            )
-                            (then 
-                                (if "JumpToPromotionZone"
-                                    (move Promote (last To) (piece "DoubleCounter") Mover)
-                                )
-                            )
+                            ("StepToEmpty" (directions {Forward Rightward Leftward}))
+                            (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
                         )
                         (forEach Piece "DoubleCounter" (move Slide Orthogonal))
                     )
