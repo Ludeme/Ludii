@@ -5,19 +5,9 @@
         ~
         (then 
             ("ReplayIfCanMove" 
-                    (hop 
+                    ("HopCaptureDistanceNotAlreadyHopped" 
                         (from (last To)) 
                         (difference Orthogonal OppositeDirection)
-                        (between 
-                            before:(count Rows) 
-                            after:(count Rows)
-                            if:(and 
-                                (not (is In (between) (sites ToClear))) 
-                                ("IsEnemyAt" (between))
-                            )
-                            (apply (remove (between)))
-                        )
-                        (to if:(is Empty (to)))
                     )
                 ) 
         )
