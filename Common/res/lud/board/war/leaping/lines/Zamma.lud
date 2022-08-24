@@ -1,39 +1,15 @@
-(define "PromoteIfBorderReached" 
-    (if (is In (last To) (sites Next))
-        (move Promote (last To) (piece "DiscDouble") Mover)
-    )
-)
-
 (define "HopDisc" 
-    (move
-        Hop 
-        (between 
-            if:("IsEnemyAt" (between))
-            (apply (remove (between)))
-        ) 
-        (to if:(is Empty (to))) 
+    ("HopCapture" ~ ~
         (then
             (and 
-                ("PromoteIfBorderReached")
+                ("PromoteIfReach" (sites Next) "DiscDouble")
                 ("HasCaptured")
             )
         )
     ) 
 )
 
-(define "HopDiscDouble" 
-    (move
-        Hop
-        (between 
-            before:9
-            after:9
-            if:("IsEnemyAt" (between)) 
-            (apply (remove (between)))
-        )
-        (to if:(is Empty (to)))
-        (then ("HasCaptured"))
-    )
-)
+(define "HopDiscDouble" ("HopCaptureDistance" ~ ~ ~ (then ("HasCaptured"))))
 
 (define "HasCaptured" (set Value Mover 0))
 (define "HasNotCaptured" (set Value Mover 1))
@@ -42,21 +18,8 @@
     (set Pending 
         (sites From
             (or 
-                (forEach Piece "Disc" 
-                    ("HopDisc")
-                ) 
-                (forEach Piece "DiscDouble" 
-                    (move
-                        Hop
-                        (between 
-                            before:9
-                            after:9
-                            if:("IsEnemyAt" (between)) 
-                            (apply (remove (between)))
-                        )
-                        (to if:(is Empty (to)))
-                    )
-                )
+                (forEach Piece "Disc" ("HopDisc")) 
+                (forEach Piece "DiscDouble" ("HopCaptureDistance"))
             )
         )
     )
@@ -65,10 +28,9 @@
 (define "SitesWithPossibleCaptureInPreviousTurn" (sites Pending))
 
 (define "HuffOnePieceOf" 
-    (move
-        Select 
+    (move Select 
         (from #1
-            if:(!= (what at:(from)) 0)
+            if:(is Occupied (from))
         )
         (then 
             (and {
@@ -96,13 +58,8 @@
         (piece "Disc" Each 
             (or
                 ("HopDisc") 
-                (move
-                    Step 
-                    Forwards 
-                    (to if:(is Empty (to)))
-                    (then ("HasNotCaptured"))
-                )
-                (then ("PromoteIfBorderReached"))
+                ("StepToEmpty" Forwards (then ("HasNotCaptured")))
+                (then ("PromoteIfReach" (sites Next) "DiscDouble"))
             )
         )
         (piece "DiscDouble" Each
@@ -161,7 +118,6 @@
         (player Colour P1 (colour VeryDarkGrey))
         (player Colour P2 (colour White))
         (piece ExtendName P2 "Stick")
-        
     })
     
     (ai 
