@@ -115,7 +115,7 @@ public class TestTrialsIntegrityERIC
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getName().contains("Koruboddo"))
+			if (fileEntry.getName().contains("Laram Wali"))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
 					gameReached = true;

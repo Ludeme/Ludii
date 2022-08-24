@@ -5,21 +5,12 @@
 
 (game "Laram Wali"
     (players 2)
-    (equipment
-        {
-        (board
-            (merge
-                (shift "ArmSize" 0 (rectangle (* 3 "ArmSize") "ArmSize"))
-                (shift 0 "ArmSize" (rectangle "ArmSize" (* 3 "ArmSize")))
-            )
-        )
+    (equipment {
+    	("CrossBoard" "ArmSize" (* 3 "ArmSize") use:Cell)
         (hand Each)
         (piece "Marker" Each
             (or
-                (move 
-                    Step Orthogonal
-                    (to if:(is Empty (to))) 
-                )
+                ("StepOrthogonalToEmpty") 
                 (move Hop 
                     Orthogonal
                     (between 
@@ -31,8 +22,7 @@
                 )
             )
         )
-        }
-    )
+    })
     (rules
         (start (place "Marker" "Hand" count:"NumInitPiece"))
         
@@ -50,7 +40,7 @@
         ("PhaseMovePiece" "Movement")
         }
         
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )	
 )
 
