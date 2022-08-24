@@ -4,7 +4,7 @@
         (board
             (add
                 (remove 
-                	("AlquerqueGraphWithBottomAndTopTriangles")
+                    ("AlquerqueGraphWithBottomAndTopTriangles")
                     vertices:{1 11 21 23 13 3}
                 )
                 edges:{ {0 1} {1 2} {8 9} {9 10} {16 17} {17 18} }
@@ -19,7 +19,7 @@
             (place "Marker2" (union (sites {"A6" "E6"}) (expand (sites Top) steps:3)))
         })
         (play (forEach Piece))
-
+        
         (end ("CaptureAll" Next))
     )
 )

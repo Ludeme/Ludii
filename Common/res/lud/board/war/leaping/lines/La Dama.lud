@@ -1,10 +1,10 @@
 (define "HopDisc" 
     ("HopCapture"
-    	~
+        ~
         (directions {Rightward Leftward Forwards} of:All)
         (then
             (and 
-            	("PromoteIfReach" (sites Next) "DiscDouble")
+                ("PromoteIfReach" (sites Next) "DiscDouble")
                 ("HasCaptured")
             )
         )

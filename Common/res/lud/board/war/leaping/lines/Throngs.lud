@@ -8,7 +8,8 @@
         from:(sites (values Remembered #1))
         to:(sites To (hop (from (from)) Adjacent (between #2 if:True) (to if:(is Empty (to)))))
         (to)
-))
+    )
+)
 
 (define "Yields6"
     (forEach Value 
@@ -18,70 +19,66 @@
         )
         (remember Value "S6" (value) unique:True)
         (then ("Yields5"))
-)) 
+    )
+) 
 
 (define "Yields5"
     (forEach Value
-        (union
-            {
+        (union {
             ("AStep" "S7" (exact 1))
             ("AStep" "S6" (exact 0))
             (values Remembered "S6")
-            }
-        )
+        })
         (remember Value "S5" (value) unique:True)
         (then ("Yields4"))
-)) 
+    )
+) 
 
 (define "Yields4"
     (forEach Value
-        (union
-            {
+        (union {
             ("AStep" "S7" (exact 2))
             ("AStep" "S6" (exact 1))
             ("AStep" "S5" (exact 0))
             (values Remembered "S5")
-            }
-        )
+        })
         (remember Value "S4" (value) unique:True)
         (then ("Yields3"))
-)) 
+    )
+) 
 
 (define "Yields3"
     (forEach Value
-        (union
-            {
+        (union {
             ("AStep" "S7" (exact 3))
             ("AStep" "S6" (exact 2))
             ("AStep" "S5" (exact 1))
             ("AStep" "S4" (exact 0))
             (values Remembered "S4")
-            }
-        )
+        })
         (remember Value "S3" (value) unique:True)
         (then ("Yields2"))
-)) 
+    )
+)
 
 (define "Yields2"
     (forEach Value
-        (union
-            {
+        (union {
             ("AStep" "S7" (exact 4))
             ("AStep" "S6" (exact 3))
             ("AStep" "S5" (exact 2))
             ("AStep" "S4" (exact 1))
             ("AStep" "S3" (exact 0))
             (values Remembered "S3")
-            }
-        )
+        })
         (remember Value "S2" (value) unique:True)
         (then ("Yields1"))
-)) 
+    )
+)
 
 (define "Yields1" 
     (forEach Value
-        (union
-            {
+        (union {
             ("AStep" "S7" (exact 5))
             ("AStep" "S6" (exact 4))
             ("AStep" "S5" (exact 3))
@@ -89,16 +86,15 @@
             ("AStep" "S3" (exact 1))
             ("AStep" "S2" (exact 0))
             (values Remembered "S2")
-            }
-        )
+        })
         (remember Value "S1" (value) unique:True)
         (then ("Yields0"))
-)) 
+    )
+)
 
 (define "Yields0"
     (forEach Value
-        (union
-            {
+        (union {
             ("AStep" "S7" (exact 6))
             ("AStep" "S6" (exact 5))
             ("AStep" "S5" (exact 4))
@@ -107,10 +103,10 @@
             ("AStep" "S2" (exact 1))
             ("AStep" "S1" (exact 0))
             (values Remembered "S1")   
-            }
-        )
+        })
         (remember Value "S0" (value) unique:True)
-)) 
+    )
+)
 
 // Key concept: PowerLeft is Influence at the starting position of a move. 
 // It determines where to start the hopping process.
@@ -138,15 +134,22 @@
                             (if 
                                 (= 1 (var "PowerLeft")) 
                                 (remember Value "S1" (var "LastTo") unique:True (then ("Yields0")))
-        ))))))
+                            )
+                        )
+                    )
+                )
+            )
+        )
         #1 // Handles the "then" clauses passed into the define.
-))
+    )
+)
 
 (define "InfluenceAt"
     (-
         (count Pieces Mover in:(sites Around (#1) includeSelf:True))
         (count Pieces Next in:(sites Around (#1) includeSelf:True))
-))
+    )
+)
 
 // Processing individual move choices
 
@@ -159,12 +162,17 @@
                 (and
                     (= 0 ("InfluenceAt" (to)))
                     (= 0 (count Sites in:(difference (sites Around (to)) (sites Occupied by:All))))
-        ))) 
+                )
+            )
+        ) 
         (then 
             (and
                 (set Var "PowerLeft" 0)
                 (set Value Mover 0)
-))))
+            )
+        )
+    )
+)
 
 (define "CanMoveElsewhere" // Test to prevent selecting null moves when all destinations are blocked
     (can Move 
@@ -173,82 +181,106 @@
                 (difference
                     (sites (values Remembered "S0"))
                     (var "LastTo")
-)))))
+                )
+            )
+        )
+    )
+)
 
 (define "AddThenMove" // Remaining piece placement cases
     (move Add
         (to 
             (sites Empty) 
-            if:(le 2 ("InfluenceAt" (to)))
+            if:(<= 2 ("InfluenceAt" (to)))
         )
         (then 
             (do
-                (and
-                    {
+                (and {
                     (set Var "LastTo" (last To))
                     (set Var "PowerLeft" (- ("InfluenceAt" (last To)) 2))
                     (set State at:(last To) (- ("InfluenceAt" (last To)) 2))
                     (set Value Mover 0)
-                    }
-                )
+                })
                 next:("FindDestinations" //remove the last two characters to restore the included then conditions
                     (then 
                         (if 
                             (not ("CanMoveElsewhere")) 
                             (set Var "PowerLeft" 0)
-)))))))
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
 
 (define "CaptureThenMove" // Opponent piece captures, including those without subsequent movement.
     (forEach Site
         (sites Occupied by:Next)
         (if 
-            (le 2 ("InfluenceAt" (site)))
+            (<= 2 ("InfluenceAt" (site)))
             (move Remove (site)
                 (then
                     (add
                         (to (last From))
                         (then 
-                            (and
-                                {
+                            (and {
                                 (set Var "LastTo" (last To))
                                 (set Var "PowerLeft" (- ("InfluenceAt" (last To)) 4))
                                 (set State at:(last To) (- ("InfluenceAt" (last To)) 4))
-                                }
-        ))))))
+                            })
+                        )
+                    )
+                )
+            )
+        )
         (then
             ("FindDestinations"
                 (then 
                     (if 
                         (not ("CanMoveElsewhere")) 
                         (set Var "PowerLeft" 0)
-))))))
+                    )
+                )
+            )
+        )
+    )
+)
 
 (define "MoveFriendly" // Selects the piece to move - shows in the listing as a removal, as it is followed by a destination selection on the next turn. 
     (do
         (forEach Piece
             (if 
-                (lt 0 (("InfluenceAt" (from))))
+                (< 0 (("InfluenceAt" (from))))
                 (move Remove
                     (from)
                     (then
                         (add
                             (to (last From))  
                             (then
-                                (and
-                                    {
+                                (and {
                                     (set Var "LastTo" (last To))
                                     (set State at:(last To) ("InfluenceAt" (last To))) 
                                     (set Var "PowerLeft" ("InfluenceAt" (last To))) 
-                                    }
-            ))))))
+                                })
+                            )
+                        )
+                    )
+                )
+            )
             Mover
             (then 
                 ("FindDestinations" 
                     (then 
                         (forget Value "S0" (var "LastTo"))
-        ))))
+                    )
+                )
+            )
+        )
         ifAfterwards:("CanMoveElsewhere")
-)) 
+    )
+) 
+
 // Continuation of the moves based on remaining influence
 
 (define "CompleteTheMove" // shows as a destination selection in the listing for consistancy
@@ -257,20 +289,20 @@
             (from (sites (values Remembered "S0")))
             (then
                 (add
-                    (to 
-                        (last To)
-                    )  
-                    (then 
-                        (set Var "PowerLeft" 0)
-))))))
+                    (to (last To))  
+                    (then (set Var "PowerLeft" 0))
+                )
+            )
+        )
+    )
+)
 
 // Defining the structure of each individual Move: ie movement selection, plus handling follow-up movement
 // First some utilities: clearing the remembered values 
 // and testing for move restrictions that prevent cycling:- After a passed turn at least one player must place a piece.
 
 (define "ForgetAll"
-    (and
-        {
+    (and {
         (forget Value "S7" All)
         (forget Value "S6" All) 
         (forget Value "S5" All) 
@@ -279,8 +311,8 @@
         (forget Value "S2" All) 
         (forget Value "S1" All) 
         (forget Value "S0" All) 
-        }
-)) 
+    })
+) 
 
 (define "IsEdge" (> 5 (count Sites in:(sites Around #1))))
 
@@ -309,10 +341,15 @@
                                         (-
                                             (count Pieces #2 in:(sites Around (from)))
                                             (count Pieces #1 in:(sites Around (from)))
-                                )))
+                                        )
+                                    )
+                                )
                                 1
                                 0
-                ))))
+                            )
+                        )
+                    )
+                )
                 (+ // Sum of Empty sites that after adding 2 pieces, can only be taken by #1
                     // special test of empty edges where placing a piece in the interior links the empty edge to another piece at distance 2.
                     (results 
@@ -344,10 +381,15 @@
                                     (and
                                         (< 2 (count Pieces #1 in:(sites Around (from))))
                                         (> 1 (count Pieces #2 in:(sites Around (from))))
-                                ))
+                                    )
+                                )
                                 1
                                 0
-            )))))
+                            )
+                        )
+                    )
+                )
+            )
             // enemy sites that the enemy never can secure
             (+
                 (results 
@@ -360,13 +402,17 @@
                         )
                         1 
                         0
-            )))
+                    )
+                )
+            )
             
-)))
+        )
+    )
+)
 
 (define "TheMove"
     (if
-        (lt 0 (var "PowerLeft")) 
+        (< 0 (var "PowerLeft")) 
         ("CompleteTheMove")
         (or
             { // Add a piece at least once in 2 turns.
@@ -379,14 +425,12 @@
             ("CaptureThenMove") 
             ("AddThenMove")
             ("AddOnly")
-            }
-        )
+        })
         (then 
             (if 
-                (lt 0 (var "PowerLeft"))
+                (< 0 (var "PowerLeft"))
                 (moveAgain)
-                (and
-                    {
+                (and {
                     (set Var "MovePhase" #1)
                     (set Value Mover (+ 1 (value Player Mover))) // counter for forcing a placement
                     (#2)
@@ -394,8 +438,11 @@
                     ("SetScores" P2 P1)
                     (forEach Piece (if (!= 0 (state at:(from))) (set State at:(from) 0)))
                     ("ForgetAll")
-                    }
-)))))
+                })
+            )
+        )
+    )
+)
 
 // Each turn - Flow control for the double moves, passing and end considerations:
 
@@ -448,7 +495,9 @@
                             (< 0 (counter)) 
                             (set NextPlayer (player (next)))
                             (moveAgain)
-                ))) 
+                        )
+                    )
+                ) 
                 (or 
                     (move Propose "Accept Pie Offer and Move" 
                         (then (set NextPlayer (player (mover))))
@@ -476,14 +525,26 @@
                                                 (and 
                                                     (forget Value All)
                                                     (set NextPlayer (player (next)))
-        ))))))))))) 
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        ) 
         (nextPhase 
             (or 
                 (is Proposed "Swap Pieces")
                 (is Proposed "Accept Pie Offer and Move")
             )
             "FirstTurn"
-)))
+        )
+    )
+)
 
 (define "SafetyFigure" 3)
 
@@ -491,13 +552,11 @@
 
 (game "Throngs" 
     (players 2)
-    (equipment 
-        {
+    (equipment {
         <Board:type>
         (piece "Ball" P1)
         (piece "Ball" P2)
-        }
-    )
+    })
     (rules 
         (meta (passEnd NoEnd))
         <Variants:starting>
@@ -514,34 +573,35 @@
                     (<
                         (count Sites in:(sites Board))
                         (* 2 (- (score Next) ("SafetyFigure")))
-                ))
+                    )
+                )
                 (byScore) 
-    )))
+            )
+        )
+    )
 )
 
 // Structure of play for the game: Start options
 
 (define "StdPieceStart"
-    (start 
-        {
+    (start {
         (set Score P1 1)
         (set Score P2 2)
         (place "Ball1" <Board:startP1>)
         (place "Ball2" <Board:startP2>)
         (place "Ball1" state:7)
         (place "Ball2" state:7)
-        }
-))
+    })
+)
 
 (define "PieStart"
-    (start 
-        {
+    (start {
         (set Score P1 0)
         (set Score P2 0)
         (place "Ball1" state:7)
         (place "Ball2" state:7) 
-        }
-))
+    })
+)
 // Definitions of different Boards the game may be played on
 
 (define "ThrongsBoard"
@@ -550,7 +610,8 @@
             vertices:{2 3 4 15 23 24 33 57 69 70 71 80 81 82 83 91 92 93 94 101 102 103 111 112 115 116 119 120 121 122 123 124 125 126}
         )
         use:Vertex
-))
+    )
+)
 
 (define "RaggedHex63"
     (board
@@ -558,15 +619,19 @@
             vertices:{0 1 5 6 29 30 39 48 64 70 71 74}
         ) 
         use:Vertex
-))
+    )
+)
+
 (define "RaggedHex87"
     (board
         (trim
             (remove (tri Limping 6 7) 
                 vertices:{0 1 2 6 7 8 15 33 44 45 55 56 67 77 87 95 96 102 103 104 107}
-        )) 
+            )
+        ) 
         use:Vertex
-))
+    )
+)
 
 (define "RaggedHex153"
     (board
@@ -574,7 +639,8 @@
             vertices:{0 1 2 3 7 8 9 10 11 18 19 20 30 54 68 69 82 83 84 98 99 100 113 114 128 141 154 165 166 175 176 177 183 184 185 186 187 190 191}
         ) 
         use:Vertex
-))
+    )
+)
 
 // ---------------------------------------------
 // Options for Board and Set-up/Pie
@@ -731,4 +797,3 @@
     )
     
 )
-
