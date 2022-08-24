@@ -1,6 +1,5 @@
 (define "HopCounter" 
-    (move
-        Hop 
+    (move Hop 
         (from #1) 
         All
         (between 
@@ -12,23 +11,14 @@
     ) 
 )
 
-(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
-
-(define "JumpToPromotionZone" (is In (last To) (sites Next)))
+(define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
 
 //------------------------------------------------------------------------------
 
 (game "Omnidirectional Draughts" 
     (players 2) 
-    (equipment { 
-        (board (square <Board>))  
-        (piece "Counter" P1 N)
-        (piece "Counter" P2 S) 
-        (piece "DoubleCounter" Each)
-        (regions P1 (sites Bottom))
-        (regions P2 (sites Top))
-    }) 
-    
+    ("DraughtsEquipment" (square <Board>))
+
     (rules 
         
         (start {
@@ -42,11 +32,8 @@
                     (max Moves
                         ("HopCounter" (last To)
                             (then 
-                                (if (can Move ("HopCounter" (last To))) 
-                                    (moveAgain)
-                                    (if "JumpToPromotionZone" 
-                                        (move Promote (last To) (piece "DoubleCounter") Mover)
-                                    )
+                            	("ReplayIfCanMove" ("HopCounter" (last To)) 
+                            			("PromoteIfReach" (sites Next) "DoubleCounter")
                                 ) 
                             ) 
                         )
@@ -59,11 +46,8 @@
                             (forEach Piece "Counter"
                                 ("HopCounter" (from) 
                                     (then 
-                                        (if (can Move ("HopCounter" (last To))) 
-                                            (moveAgain) 
-                                            (if "JumpToPromotionZone" 
-                                                (move Promote (last To) (piece "DoubleCounter") Mover)
-                                            )
+                                    	("ReplayIfCanMove" ("HopCounter" (last To))
+                                    			("PromoteIfReach" (sites Next) "DoubleCounter")
                                         ) 
                                     ) 
                                 ) 
@@ -73,16 +57,8 @@
                     )
                     (or 
                         (forEach Piece "Counter" 
-                            (move
-                                Step 
-                                (directions Forwards) 
-                                (to if:(is Empty (to)))
-                            )
-                            (then 
-                                (if "JumpToPromotionZone"
-                                    (move Promote (last To) (piece "DoubleCounter") Mover)
-                                )
-                            )
+                            ("StepToEmpty" (directions Forwards))
+                            (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
                         )
                         (forEach Piece "DoubleCounter" (move Slide))
                     )
