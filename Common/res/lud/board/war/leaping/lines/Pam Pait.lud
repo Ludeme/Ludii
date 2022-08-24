@@ -4,32 +4,23 @@
         (board
             (add
                 (remove 
-                    (merge {
-                        (square 5 diagonals:Alternating)
-                        (shift 0 4 (rotate 180 (wedge 3)))
-                        (shift 0 -2 (wedge 3))
-                    })
+                	("AlquerqueGraphWithBottomAndTopTriangles")
                     vertices:{1 11 21 23 13 3}
                 )
-                edges:{
-                {0 1} {1 2} {8 9} {9 10} {16 17} {17 18}
-                }
+                edges:{ {0 1} {1 2} {8 9} {9 10} {16 17} {17 18} }
             )
             use:Vertex
         )
         (piece "Marker" Each (or "HopCapture" "StepToEmpty"))
-        }
-    ) 
+    }) 
     (rules 
         (start {
             (place "Marker1" (union (sites {"A4" "E4"}) (expand (sites Bottom) steps:3)))
             (place "Marker2" (union (sites {"A6" "E6"}) (expand (sites Top) steps:3)))
         })
         (play (forEach Piece))
-        
-        (end 
-            (if (no Pieces Next) (result Mover Win))
-        )
+
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -53,7 +44,6 @@
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai
