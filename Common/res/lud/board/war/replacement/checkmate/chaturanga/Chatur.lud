@@ -1,26 +1,3 @@
-(define "CaptureEnemyToPiece"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove (to))
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
-)
-
 (define "SitesNextToKing" (sites {"D1" "F1" "C8" "E8"}))
 (define "KingSites" (sites {"E1" "D8"}))
 (define "RememberRookMoved" (set State at:#1 1))
@@ -37,10 +14,8 @@
         (board (square 8))
         (piece "King_noCross"
             (or
-                (move Step
-                    (to if:(not ("IsFriendAt" (to)))
-                        ("CaptureEnemyToPiece")
-                    )
+            	("StepToNotFriend"
+            		~
                     (then
                         (if (not ("KingMovedOrCheckedBefore" (last To)))
                             ("RememberKingMovedOrChecked" (last To))
@@ -49,48 +24,28 @@
                 )
                 (if (not ("KingMovedOrCheckedBefore" (from)))
                     (or {
-                        (move
-                            Slide 
-                            (between
-                                (exact 2)
-                            )
-                            (to 
-                                if:("IsEnemyAt" (to)) 
-                                "CaptureEnemyToPiece"
-                            ) 
-                        )
-                        (move
-                            Leap 
-                            "KnightWalk" 
-                            (to 
-                                if:(not ("IsFriendAt" (to))) 
-                                "CaptureEnemyToPiece"
-                            ) 
-                        )
+                    	("SlideCapture" ~ (between (exact 2)))
+                        ("LeapCapture" "KnightWalk")
                         (if (is In (from) ("KingSites"))
                             (or
                                 (if (and {
                                         (is Empty (ahead (from) steps:2 W))
-                                        (= (id "Rook" Mover) (what at:(ahead (from) W))) 
+                                        ("IsPieceAt" "Rook" Mover (ahead (from) W))
                                         (not ("RookMovedBefore" (ahead (from) W)))
                                     })
                                     (move
                                         (from)
-                                        (to
-                                            (ahead (from) steps:2 W)
-                                        )
+                                        (to (ahead (from) steps:2 W))
                                     )
                                 )
                                 (if (and {
                                         (is Empty (ahead (from) steps:2 E))
-                                        (= (id "Rook" Mover) (what at:(ahead (from) E))) 
+                                        ("IsPieceAt" "Rook" Mover (ahead (from) E))
                                         (not ("RookMovedBefore" (ahead (from) E)))
                                     })
                                     (move
                                         (from)
-                                        (to
-                                            (ahead (from) steps:2 E)
-                                        )
+                                        (to (ahead (from) steps:2 E))
                                     )
                                 )
                             )
@@ -101,14 +56,8 @@
                 )
             )
         )
-        (piece "Rook"
-            (move
-                Slide 
-                Orthogonal
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureEnemyToPiece"
-                ) 
+
+        ("ChessRook" "Rook" ~
                 (then
                     (if (and 
                             (not ("RookMovedBefore" (last To)))
@@ -117,64 +66,25 @@
                         ("RememberRookMoved" (last To))
                     )
                 )
-            )		
         )
-        (piece "Bishop_noCross"
-            (move
-                Slide 
-                Diagonal
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureEnemyToPiece"
-                ) 
-            )		
-        )
-        (piece "Knight"
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureEnemyToPiece"
-                ) 
-            )		
-        )
+        ("ChessBishop" "Bishop_noCross")
+        ("ChessKnight" "Knight")
         (piece "Pawn"
             (if (is In (from) (sites Mover "Promotion"))
-                (move
-                    Slide 
-                    (directions {BR BL}) 
-                    (between
-                        (exact 3)
-                    )
-                    (to 
-                        if:("IsEnemyAt" (to)) 
-                        "CaptureEnemyToPiece"
-                    ) 
-                    (then
-                        (promote (last To) (piece "Queen") Mover)
-                    )
+                ("SlideCapture" 
+                	(directions {BR BL}) 
+                    (between (exact 3))
+                    ~
+                    (then (promote (last To) (piece "Queen") Mover))
                 )
                 (or 
                     "StepForwardToEmpty" 
-                    "CaptureForwardDiagonal"
-                    (then
-                        (if (is In (last To) (intersection (sites Corners) (sites Mover "Promotion")))
-                            (promote (last To) (piece "Queen") Mover)
-                        )
-                    )
+                	("StepToEnemy" (directions {FR FL}))
+                    (then ("PromoteIfReach" (intersection (sites Corners) (sites Mover "Promotion")) "Queen"))
                 )		
             )
         ) 
-        (piece "Queen"
-            (move
-                Slide 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureEnemyToPiece"
-                ) 
-            ) 		
-        )
+        ("ChessQueen" "Queen")
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     })
@@ -201,12 +111,7 @@
         )
         
         (end {
-            (if (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
+            ("Checkmate" "King_noCross")
             (if (= (count Pieces Next) 1) (result Mover Loss)) 
         })
     )
@@ -240,4 +145,3 @@
     })
     
 )
-
