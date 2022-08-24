@@ -1,26 +1,3 @@
-(define "CaptureEnemyToPiece"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove (to))
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
-)
-
 (define "OnlyRajaAndPadati"
     (and {
         (no Pieces #1 "Ferz_noCross")
@@ -42,56 +19,13 @@
 (game "Chaturanga (Kridakausalya)"
     ("TwoPlayersNorthSouth") 
     (equipment { 
-        (board (square 8)) 	
-        (piece "King_noCross"
-            (move Step
-                (to if:(not ("IsFriendAt" (to)))
-                    ("CaptureEnemyToPiece")
-                )
-            )
-        )
-        (piece "Ferz_noCross"
-            (move
-                Slide 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureEnemyToPiece"
-                ) 
-            ) 			
-        )
-        (piece "Knight"
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureEnemyToPiece"
-                ) 
-            )		
-        )
-        (piece "Elephant"
-            (move
-                Slide 
-                Diagonal
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureEnemyToPiece"
-                ) 
-            )		
-        )
-        (piece "Rook"
-            (move
-                Slide 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureEnemyToPiece"
-                ) 
-            ) 		
-        )
-        (piece "Pawn"
-            (or 
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
+        (board (square 8)) 
+        ("ChessKing" "King_noCross")
+        ("ChessQueen" "Ferz_noCross")
+        ("ChessKnight" "Knight")
+        ("ChessBishop" "Elephant")
+        ("ChessRook" "Rook")
+        ("ChessPawn" "Pawn" ~
                 (then
                     (if (is In (last To) (sites Mover "Promotion"))
                         (and
@@ -99,7 +33,6 @@
                             (fromTo (from (last To)) (to (last From)))	
                         )
                     )
-                )
             )		
         )
         (regions "Promotion" P1 (sites Top))
@@ -121,12 +54,7 @@
         )
         
         (end {
-            (if (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
+            ("Checkmate" "King_noCross")
             (if ("OnlyRajaAndPadati" Next) (result Mover Win))
         })
     )
