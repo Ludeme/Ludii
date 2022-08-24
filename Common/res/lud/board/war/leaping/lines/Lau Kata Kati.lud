@@ -18,7 +18,7 @@
     
     (rules 
         (start {
-            (place "Counter1" (expand (sites Bottom) steps:2) )
+            (place "Counter1" (expand (sites Bottom) steps:2))
             (place "Counter2" (expand (sites Top) steps:2))
         })
         
@@ -32,8 +32,8 @@
 
 (option "End Rules" <End> args:{ <rules> }
     {
-    (item "No Pieces" <(if (no Pieces Next) (result Next Loss))> "The player loses when he has no piece.")* 
-    (item "No Moves" <("NoMoves" Loss)>        "A player loses when he can not move.") 
+    (item "No Pieces" <("CaptureAll" Next)> "The player loses when he has no piece.")* 
+    (item "No Moves"  <("NoMoves" Loss)>    "A player loses when he can not move.") 
 })
 
 //------------------------------------------------------------------------------
@@ -55,7 +55,6 @@
     )
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     (ai 
         "Lau Kata Kati_ai"
