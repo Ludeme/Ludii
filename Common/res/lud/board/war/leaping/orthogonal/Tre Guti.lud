@@ -1,25 +1,15 @@
 (game "Tre Guti" 
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (square 3) use:Vertex)
         (hand Each)
         (piece "Marker" Each
             (or
-                (move Step
-                    (to if:(is Empty (to))) 
-                )
-                (move Hop
-                    (between 
-                        if:("IsEnemyAt" (between)) 
-                        (apply (remove (between)))
-                    )
-                    (to if:(is Empty (to)))
-                )
+                ("StepToEmpty")
+                ("HopCapture")
             )	 
         )
-        }
-    )
+    })
     (rules 
         (start (place "Marker" "Hand" count:3))
         
@@ -32,7 +22,7 @@
         ("PhaseMovePiece" "Movement")
         }
         
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -55,7 +45,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai
