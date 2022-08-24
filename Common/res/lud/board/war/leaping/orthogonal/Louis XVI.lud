@@ -48,17 +48,13 @@
                             )
                         )
                     )
-                    (forEach Piece "King"
-                        (move Step
-                            (to if:(is Empty (to)))
-                        )
-                    )
+                    (forEach Piece "King" ("StepToEmpty"))
                 )	
             })
         )
         (end { 
-            (if (= Off (where "King" P2)) (result P1 Win))
-            (if (is In (where "King" P2) (sites "GoalKing")) (result P2 Win))
+            (if ("IsOffBoard" (where "King" P2)) (result P1 Win))
+            ("PieceTypeReachWin" "King2" (sites "GoalKing") P2)
         })
     )
 )
