@@ -71,9 +71,7 @@ public class SkillTrace extends Metric
 		final List<AI> ais = new ArrayList<AI>(game.players().count() + 1);
 		ais.add(null);
 		for (int p = 1; p <= game.players().count(); ++p)
-		{
 			ais.add(MCTS.createUCT());
-		}
 		
 		final Trial trial = new Trial(game);
 		final Context context = new Context(game, trial);
