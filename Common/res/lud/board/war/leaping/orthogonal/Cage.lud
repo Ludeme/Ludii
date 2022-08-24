@@ -155,15 +155,12 @@
 
 (game "Cage"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (square <Board>))
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
-        (start 
-            {
+        (start {
             (place "Disc1" 
                 (difference
                     (sites Phase 0)
@@ -176,8 +173,7 @@
                     (sites Outer)
                 )
             )
-            }
-        )
+        })
         (play
             (forEach Piece
                 (if
@@ -264,6 +260,7 @@
         (board Style Chess)
         (no Sunken)
     })
+    
     (ai
         "Cage_ai"
     )
