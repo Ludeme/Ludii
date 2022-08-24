@@ -714,20 +714,23 @@ public class MainMenuFunctions extends JMenuBar
     		
 			for (int i = 0; i < context.board().numSites(); i++)
 			{
-				final Action actionRemove = ActionRemove.construct(context.board().defaultSite(), i, Constants.UNDEFINED, true);
-				final Move moveToApply = new Move(actionRemove);
-				moveToApply.then().add(csq);
-				
-				for (final Action a : moveToApply.actions())
-	    			a.apply(context, false);
-				
-				final int currentMover = context.state().mover();
-				final int nextMover = context.state().next();
-				final int previousMover = context.state().prev();
-
-				context.state().setMover(currentMover);
-				context.state().setNext(nextMover);
-				context.state().setPrev(previousMover);
+				for (int j = 0; j < Constants.MAX_STACK_HEIGHT; j++)
+				{ 
+					final Action actionRemove = ActionRemove.construct(context.board().defaultSite(), i, j, true);
+					final Move moveToApply = new Move(actionRemove);
+					moveToApply.then().add(csq);
+					
+					for (final Action a : moveToApply.actions())
+		    			a.apply(context, false);
+					
+					final int currentMover = context.state().mover();
+					final int nextMover = context.state().next();
+					final int previousMover = context.state().prev();
+	
+					context.state().setMover(currentMover);
+					context.state().setNext(nextMover);
+					context.state().setPrev(previousMover);
+				}
 			}
 			app.updateTabs(context);
 		}
