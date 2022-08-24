@@ -115,7 +115,7 @@ public class TestTrialsIntegrityERIC
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getName().contains("Mraha wa Bwe"))
+			if (fileEntry.getName().contains("Natt Klab ash-Shawk"))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
 					gameReached = true;
