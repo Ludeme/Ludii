@@ -15,11 +15,7 @@
                     )
                     (to if:(is Empty (to)))
                 )
-                (move
-                    Step 
-                    Orthogonal 
-                    (to if:(is Empty (to)))
-                )
+                ("StepOrthogonalToEmpty")
                 (if (= 1 (state at:(from)))
                     (move 
                         Slide
@@ -28,9 +24,7 @@
                             (exact 2)
                             if:(is Empty (between))
                         )
-                        (then 
-                            (set State at:(last To) 0)
-                        )
+                        (then (set State at:(last To) 0))
                     )
                 )
             })			
@@ -43,7 +37,7 @@
             (place "Marker2" (sites Top) state:1)
         })
         (play (forEach Piece))
-        (end (if (< (count Pieces Next) 4) (result Mover Win)))
+        (end ("HavingLessPiecesLoss" Next 3))
     )
 )
 
