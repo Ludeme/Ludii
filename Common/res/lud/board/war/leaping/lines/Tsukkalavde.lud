@@ -1,18 +1,14 @@
 (game "Tsukkalavde" 
     (players 2) 
     (equipment { 
-        (board 
-            (square 5 diagonals:Alternating)
-            use:Vertex
-        )
+    	("AlquerqueBoard" 5 5)
         (piece "Marker" Each
             (or 
                 ("HopSequenceCapture")
                 ("StepToEmpty")
             )		
         ) 
-        }
-    ) 
+    }) 
     (rules 
         (start { 
             (place "Marker1" (union (expand (sites Bottom)) (sites {"D3" "E3"})))
