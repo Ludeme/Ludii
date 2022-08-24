@@ -5,22 +5,5 @@
 // @example ("ChessKnight" "Knight")
 
 (define "ChessKnight"
-    (piece #1 Each 
-        (move
-            Leap 
-            "KnightWalk" 
-            (to 
-                if:(not ("IsFriendAt" (to))) 
-                (apply 
-                    (if ("IsEnemyAt" (to)) 
-                        (remove 
-                            (to) 
-                            #2
-                        )
-                    )
-                ) 
-            ) 
-            #3
-        )
-    )
+    (piece #1 Each ("LeapCapture" "KnightWalk" #2 #3))
 )
