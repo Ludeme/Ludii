@@ -28,7 +28,7 @@
             )
         )
         
-        (end (if (= 0 (count Pieces Next)) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
