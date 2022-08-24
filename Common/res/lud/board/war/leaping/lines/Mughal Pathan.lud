@@ -23,8 +23,7 @@
                 ("StepToEmpty")
             )
         )
-        }
-    ) 
+    }) 
     (rules 
         (start {
             (place "Marker1" (union (sites Bottom) (expand (sites Row 2))))
@@ -40,9 +39,7 @@
             )
         )
         
-        (end 
-            (if (no Pieces Next) (result Mover Win))
-        )
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -65,7 +62,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai
