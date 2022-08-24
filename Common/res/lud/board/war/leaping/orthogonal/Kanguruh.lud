@@ -24,15 +24,12 @@
                     )
                 )
                 (then
-                    (if 
-                        (can Move
+                	("ReplayIfCanMove" 
                             (hop
                                 (from (last To))
                                 (between if:(is Occupied (between)))
                                 (to if:(and (is Empty (to)) (not (is In (to) (values Remembered)))))
                             )
-                        )
-                        (moveAgain)
                         (forget Value All)
                     )
                 )
@@ -49,9 +46,7 @@
             (if ("SameTurn")
                 (or
                     (move Pass
-                        (then
-                            (forget Value All)
-                        )
+                        (then (forget Value All))
                     )
                     (move Hop
                         (from (last To))
@@ -68,15 +63,12 @@
                             )
                         )
                         (then
-                            (if 
-                                (can Move
+                        	("ReplayIfCanMove"
                                     (hop
                                         (from (last To))
                                         (between if:(is Occupied (between)))
                                         (to if:(and (is Empty (to)) (not (is In (to) (values Remembered)))))
                                     )
-                                )
-                                (moveAgain)
                                 (forget Value All)
                             )
                         )
