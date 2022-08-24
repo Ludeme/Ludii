@@ -34,7 +34,7 @@
 
 (option "End Rules" <End> args:{ <rules> }
     {
-    (item "No Pieces" <(if (no Pieces Next) (result Next Loss))> "The player loses when he has no piece.")* 
+    (item "No Pieces" <("CaptureAll" Next)> "The player loses when he has no piece.")* 
     (item "No Moves" <("NoMoves" Loss)>        "A player loses when he can not move.") 
 })
 
@@ -54,10 +54,6 @@
         (origin "This game was played in South Asia, around 1951.")
         }
     )
-    
-    (graphics {
-        
-    })
     
     (ai 
         "Pretwa_ai"
