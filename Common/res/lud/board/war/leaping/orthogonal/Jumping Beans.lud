@@ -2,9 +2,7 @@
     (players 2)
     (equipment {
         (board (square 7))
-        (piece "Bean" Each
-            (move Step (to if:(is Empty (to))))
-        )
+        (piece "Bean" Each ("StepToEmpty"))
     })
     (rules
         ("BeforeAfterCentreSetup" "Bean1" "Bean2")
@@ -12,49 +10,16 @@
         (play 
             (if ("SameTurn")
                 (max Moves
-                    (move Hop
+                    ("HopCapture"
                         (from (last To))
-                        (between if:("IsEnemyAt" (between)))
-                        (to if:(is Empty (to))
-                            (apply 
-                                (remove (between))
-                            )
-                        )
-                        (then
-                            (if (can Move
-                                    (hop
-                                        (from (last To))
-                                        (between if:("IsEnemyAt" (between)))
-                                        (to if:(is Empty (to)))
-                                    )
-                                )
-                                (moveAgain)
-                            )
-                        )
+                        ~
+                        (then ("ReplayIfCanMove" ("HopCapture" (from (last To)))))
                     )
                 )
                 (priority {
                     (max Moves
                         (forEach Piece
-                            (move Hop
-                                (between if:("IsEnemyAt" (between)))
-                                (to if:(is Empty (to))
-                                    (apply 
-                                        (remove (between))
-                                    )
-                                )
-                                (then
-                                    (if (can Move
-                                            (hop
-                                                (from (last To))
-                                                (between if:("IsEnemyAt" (between)))
-                                                (to if:(is Empty (to)))
-                                            )
-                                        )
-                                        (moveAgain)
-                                    )
-                                )
-                            )
+                        	("HopCapture" ~ ~ (then ("ReplayIfCanMove" ("HopCapture" (from (last To))))))
                         )
                     )
                     (forEach Piece)
