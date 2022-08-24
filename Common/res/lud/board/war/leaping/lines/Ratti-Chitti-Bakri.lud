@@ -13,14 +13,9 @@
     (rules 
         ("BeforeAfterCentreSetup" "Marker1" "Marker2")
         
-        (play 
-            (forEach Piece)
-        )
+        (play (forEach Piece))
         
-        (end {
-            (if (no Pieces P1) (result P2 Win))
-            (if (no Pieces P2) (result P1 Win))
-        }) 
+        (end ("ForEachPlayerNoPiecesLoss"))
     )
 )
 
@@ -43,7 +38,6 @@
     
     (graphics {
         (player Colour P2 (colour Red))
-        
     })
     
     (ai
