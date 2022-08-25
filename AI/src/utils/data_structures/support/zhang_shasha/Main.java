@@ -1,7 +1,5 @@
 package utils.data_structures.support.zhang_shasha;
 
-import java.io.IOException;
-
 /**
  * Code originally from: https://github.com/ijkilchenko/ZhangShasha
  * 
@@ -12,7 +10,7 @@ import java.io.IOException;
 public class Main 
 {
 	
-	public static void main(String[] args) throws IOException 
+	public static void main(String[] args)
 	{
 		// Sample trees (in preorder).
 		String tree1Str1 = "f(d(a c(b)) e)";
