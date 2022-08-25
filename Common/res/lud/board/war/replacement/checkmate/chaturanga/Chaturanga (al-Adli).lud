@@ -8,11 +8,11 @@
             (move Hop Orthogonal 
                 (between (exact 1) if:True) 
                 (to if:(not ("IsFriendAt" (to)))
-                		(apply 
-                		        (if ("IsEnemyAt" (to))
-                		            (remove (to))
-                		        )
-                		    ) 
+                    (apply 
+                        (if ("IsEnemyAt" (to))
+                            (remove (to))
+                        )
+                    ) 
                 )
             )
         )

@@ -4,11 +4,11 @@
     (move Hop Diagonal 
         (between if:True) 
         (to if:(not ("IsFriendAt" (to))) 
-        	    (apply 
-        	            (if ("IsEnemyAt" (to))
-        	                (remove (to))
-        	            )
-        	        ) 
+            (apply 
+                (if ("IsEnemyAt" (to))
+                    (remove (to))
+                )
+            ) 
         ) 
     )		
 )
@@ -38,16 +38,16 @@
         (piece "Elephant" Each ("ElephantMove"))
         ("ChessRook" "Rook")
         ("ChessPawn" "Pawn" ~
-                (then
-                    (if (is In (last To) (sites Mover "Promotion"))
-                        (and
-                            (promote (last To) (piece "Ferz_noCross") Mover)
-                            (if (not (is In (last To) (sites "PromotionMarked")))
-                                (fromTo (from (last To)) (to (last From)))	
-                            )
+            (then
+                (if (is In (last To) (sites Mover "Promotion"))
+                    (and
+                        (promote (last To) (piece "Ferz_noCross") Mover)
+                        (if (not (is In (last To) (sites "PromotionMarked")))
+                            (fromTo (from (last To)) (to (last From)))	
                         )
                     )
                 )
+            )
         )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))

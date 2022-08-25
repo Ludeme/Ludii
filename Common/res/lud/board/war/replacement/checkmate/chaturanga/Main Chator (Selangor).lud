@@ -24,13 +24,13 @@
 )
 
 (define "DoubleStep"
-	    (move Slide 
-	        Forward 
-	        (between (exact 2) if:(is Empty (between))) 
-	        (to if:(is Empty (to))) 
-	        "SetEnPassantLocation"
-	    )
-	)
+    (move Slide 
+        Forward 
+        (between (exact 2) if:(is Empty (between))) 
+        (to if:(is Empty (to))) 
+        "SetEnPassantLocation"
+    )
+)
 
 (define "InLocationEnPassant"
     (and 
@@ -119,13 +119,13 @@
         (piece "King_noCross" Each 
             (if (= (count Pieces Mover) 1)
                 (or
-                	("LeapCapture" "KnightWalk")
-                	("SlideCapture")
+                    ("LeapCapture" "KnightWalk")
+                    ("SlideCapture")
                 )
                 (or {
                     ("StepToNotFriend")
                     (if (and ("HasNeverMoved" (from)) (!= (value Player Mover) (mover)))
-                    	("LeapToEmpty" "KnightWalk"
+                        ("LeapToEmpty" "KnightWalk"
                             (then (set Value Mover (mover)))
                         )
                     )
@@ -173,8 +173,8 @@
         )
         
         (end {
-        	("Checkmate" "King_noCross") 
-        	("MisereBlockWin")
+            ("Checkmate" "King_noCross") 
+            ("MisereBlockWin")
             (if (= (count Pieces Next) 1) (result Mover Win)) 
         })
     )

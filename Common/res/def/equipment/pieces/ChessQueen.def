@@ -6,18 +6,18 @@
 
 (define "ChessQueen"
     (piece #1 Each 
-    	    (move
-    	            Slide
-    	            (to 
-    	                if:("IsEnemyAt" (to))  
-    	                (apply 
-    	                        (remove 
-    	                            (to) 
-    	                            #2
-    	                        )
-    	                ) 
-    	            )
-    	            #3
-    	        ) 		
+        (move
+            Slide
+            (to 
+                if:("IsEnemyAt" (to))  
+                (apply 
+                    (remove 
+                        (to) 
+                        #2
+                    )
+                ) 
+            )
+            #3
+        ) 		
     )
 )

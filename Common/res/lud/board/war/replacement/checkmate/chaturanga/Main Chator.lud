@@ -25,12 +25,12 @@
                 )		
                 (if ("IsFirstCheck")
                     (or {
-                    	("SlideCapture" ~
+                        ("SlideCapture" ~
                             (between
                                 (exact 2)
                             )
                         )
-                    	("LeapCapture" "KnightWalk")
+                        ("LeapCapture" "KnightWalk")
                         (if (is In (from) ("KingSites"))
                             (or
                                 (if (and {
@@ -61,14 +61,14 @@
             )
         )
         ("ChessRook" "Rook" ~
-                (then
-                    (if (and 
-                            (not ("RookMovedBefore" (last To)))
-                            (not (is In (last To) ("SitesNextToKing")))
-                        )
-                        ("RememberRookMoved" (last To))
+            (then
+                (if (and 
+                        (not ("RookMovedBefore" (last To)))
+                        (not (is In (last To) ("SitesNextToKing")))
                     )
+                    ("RememberRookMoved" (last To))
                 )
+            )
         )
         ("ChessBishop" "Bishop_noCross")
         ("ChessKnight" "Knight")
@@ -85,7 +85,7 @@
                     )
                     (or {
                         "StepForwardToEmpty" 
-                    	("StepToEnemy" (directions {FR FL}))
+                        ("StepToEnemy" (directions {FR FL}))
                         }
                         (then
                             (if (is In (last To) (sites Mover "Promotion")) // to update for the last rules
