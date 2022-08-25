@@ -1,28 +1,3 @@
-(define "CaptureToPiece"
-    (apply 
-        (remove 
-            (to) 
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
-)
-
-//------------------------------------------------------------------------------
-
 (game "Cittabhramanrpasya Khelanam"
     (players {(player S) (player N)}) 
     (equipment { 
@@ -31,7 +6,7 @@
         (piece "Pawn" P1 
             (or 
                 "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
+                ("StepToEnemy" (directions {FR FL}))
                 (then
                     (if (is In (last To) (sites Mover "Promotion")) 
                         (and
@@ -42,74 +17,27 @@
                 )
             )
         )
-        (piece "Rook" P1 
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "King_noCross" P1 
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece" 
-                )
-            )
-        )
-        (piece "Elephant" P1 
-            (move
-                Slide 
-                Diagonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        ) 
-        (piece "Knight" P1 
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "Ferz_noCross" P1 
-            (move
-                Slide 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
+        (piece "Rook" P1 ("SlideCapture" ~ Orthogonal))
+        (piece "King_noCross" P1 ("StepToNotFriend"))
+        (piece "Elephant" P1 ("SlideCapture" ~ Diagonal))
+        (piece "Knight" P1 ("LeapCapture"  "KnightWalk"))
+        (piece "Ferz_noCross" P1  ("SlideCapture"))
         (piece "King_noCross" P2 
             (or
-                (move
-                    Leap 
+                (move Leap 
                     "KnightWalk" 
                     (to 
                         if:(and (not ("IsFriendAt" (to))) (not (is In (to) (sites Around (where "King-noCross" Next)))))
-                        "CaptureToPiece"
+                        (apply (remove (to))) 
                     ) 
                 )
                 
-                (move
-                    Slide 
+                (move Slide 
                     (to 
                         if:("IsEnemyAt" (to)) 
                         (apply 
                             if:(not (is In (to) (sites Around (where "King-noCross" Next))))
-                            (remove 
-                                (to) 
-                            )
+                            (remove (to))
                         )
                     ) 
                 )
@@ -124,18 +52,9 @@
             (place "King_noCross2" coord:"E1")
         })
         
-        (play 
-            (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-        )
+        (play (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))))
         
-        (end {
-            (if (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
-        })
+        (end ("Checkmate" "King_noCross"))
     )
 )
 

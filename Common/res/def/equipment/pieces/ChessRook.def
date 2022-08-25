@@ -5,5 +5,5 @@
 // @example ("ChessRook" "Rook")
 
 (define "ChessRook" 
-    (piece #1 Each ("SlideCapture" (from) Orthogonal #2 #3))
+    (piece #1 Each ("SlideCapture" ~ Orthogonal #2 #3))
 )
