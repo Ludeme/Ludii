@@ -1537,10 +1537,12 @@ public class ExportDbCsvConcepts
 		{
 			final Concept concept = Concept.values()[indexConcept];
 			mapFrequency.put(concept.name(), Double.valueOf(frequencyMoveConcepts.get(indexConcept)));
-			if (mapFrequency.get(concept.name()) != 0)
+			if (mapFrequency.get(concept.name()).doubleValue() != 0)
+			{
+				final double perc= mapFrequency.get(concept.name()).doubleValue() * 100.0;
 				System.out.println("concept = " + concept.name() + " frequency is "
-						+ new DecimalFormat("##.##").format(Double.valueOf(mapFrequency.get(concept.name())) * 100)
-						+ "%.");
+						+ new DecimalFormat("##.##").format(perc) + "%.");
+			}
 		}
 
 		final double allMilliSecond = System.currentTimeMillis() - startTime;
@@ -1584,7 +1586,7 @@ public class ExportDbCsvConcepts
 					playoutConceptValues.put(metric.concept().name(), null);
 				else
 				{
-					double metricValue = metric.apply(game, evaluation, trialsMetrics, rngTrials);
+					double metricValue = metric.apply(game, evaluation, trialsMetrics, rngTrials).doubleValue();
 					metricValue = (Math.abs(metricValue) < Constants.EPSILON) ? 0 : metricValue;
 					playoutConceptValues.put(metric.concept().name(), Double.valueOf(metricValue));
 					if (metricValue != 0)
@@ -1652,8 +1654,8 @@ public class ExportDbCsvConcepts
 		final double secs = (stopAt - start) / 1000000000.0;
 		final double rate = (playouts / secs);
 		final double rateMove = (moveDone / secs);
-		playoutConceptValues.put(Concept.PlayoutsPerSecond.name(), rate);
-		playoutConceptValues.put(Concept.MovesPerSecond.name(), rateMove);
+		playoutConceptValues.put(Concept.PlayoutsPerSecond.name(), Double.valueOf(rate));
+		playoutConceptValues.put(Concept.MovesPerSecond.name(), Double.valueOf(rateMove));
 
 		final double allSeconds = (System.currentTimeMillis() - startTime) / 1000.0;
 		final int seconds = (int) (allSeconds % 60.0);
