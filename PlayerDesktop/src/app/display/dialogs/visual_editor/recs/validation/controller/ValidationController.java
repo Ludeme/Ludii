@@ -95,7 +95,7 @@ public class ValidationController {
                 //TRAINING
                 if(DEBUG)System.out.println("Selecting Training word to cut out");
                 int idTraining = (int) (Math.random() * (trainingsIDs.size()-1)); // select one random id
-                idTraining = trainingsIDs.get(idTraining);
+                idTraining = trainingsIDs.get(idTraining).intValue();
                 String gameDescriptionTraining = db.getDescription(idTraining);
 
                 gameDescriptionTraining = Preprocessing.preprocess(gameDescriptionTraining); // preprocess
@@ -112,12 +112,12 @@ public class ValidationController {
                 List<Integer> atLeastLength3Training = new ArrayList<>();
                 for(int f = 0; f < splitTraining.length; f++) {
                     if(splitTraining[f].length() > 2) {
-                        atLeastLength3Training.add(f);
+                        atLeastLength3Training.add(Integer.valueOf(f));
                     }
                 }
                 double u = Math.random(); // at random
                 j = (int) (u * (atLeastLength3Training.size() - 1));
-                j = atLeastLength3Training.get(j);
+                j = atLeastLength3Training.get(j).intValue();
                 cutOutTraining = splitTraining[j];
 
                 String contextTraining = splitTraining[0]; //given to code completion
@@ -128,7 +128,7 @@ public class ValidationController {
                 //TEST
                 if(DEBUG)System.out.println("Selecting Test word to cut out");
                 int idTest = (int) (Math.random() * (testIDs.size()-1)); // select one random id
-                idTest = testIDs.get(idTest);
+                idTest = testIDs.get(idTest).intValue();
                 String gameDescriptionTest = db.getDescription(idTest);
 
                 gameDescriptionTest = Preprocessing.preprocess(gameDescriptionTest); // preprocess
@@ -145,12 +145,12 @@ public class ValidationController {
                 List<Integer> atLeastLength3Test = new ArrayList<>();
                 for(int f = 0; f < splitTest.length; f++) {
                     if(splitTest[f].length() > 2) {
-                        atLeastLength3Test.add(f);
+                        atLeastLength3Test.add(Integer.valueOf(f));
                     }
                 }
                 u = Math.random(); // at random
                 j = (int) (u * (atLeastLength3Test.size() - 1));
-                j = atLeastLength3Test.get(j);
+                j = atLeastLength3Test.get(j).intValue();
                 cutOutTest = splitTest[j];
 
                 String contextTest = splitTest[0]; //given to code completion
@@ -277,10 +277,18 @@ public class ValidationController {
             double top5AverageTest = top5SumTest / (double) iterations;
             double top7AverageTest = top7SumTest / (double) iterations;
 
-            report.addRecord(Arrays.asList((double)r,
-                    nanosAverage,
-                    top1AverageTraining,top3AverageTraining,top5AverageTraining,top7AverageTraining,
-                    top1AverageTest,top3AverageTest,top5AverageTest,top7AverageTest));
+            report.addRecord
+            (
+            	Arrays.asList
+            	(
+            		Double.valueOf((double)r),
+                    Double.valueOf(nanosAverage),
+                    Double.valueOf(top1AverageTraining), Double.valueOf(top3AverageTraining), 
+                    Double.valueOf(top5AverageTraining), Double.valueOf(top7AverageTraining),
+                    Double.valueOf(top1AverageTest), 	 Double.valueOf(top3AverageTest), 
+                    Double.valueOf(top5AverageTest), 	 Double.valueOf(top7AverageTest)
+            	)
+            );
         }
 
         report.writeToCSV();
