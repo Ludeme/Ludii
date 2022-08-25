@@ -5,5 +5,20 @@
 // @example ("ChessRook" "Rook")
 
 (define "ChessRook" 
-    (piece #1 Each ("SlideCapture" ~ Orthogonal #2 #3))
+    (piece #1 Each 
+    	    (move
+    	            Slide
+    	            Orthogonal
+    	            (to 
+    	                if:("IsEnemyAt" (to))  
+    	                (apply 
+    	                        (remove 
+    	                            (to) 
+    	                            #2
+    	                        )
+    	                ) 
+    	            )
+    	            #3
+    	        ) 		
+    )
 )
