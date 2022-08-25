@@ -133,7 +133,7 @@ public class EvaluateUBFM
 			double result;
 			for (int n=0; n<numTrialsPerComparison; ++n)
 			{	
-				result = futures.get(n).get();
+				result = futures.get(n).get().doubleValue();
 				if (n % 2 == 0)
 					resultsAgent1asFirst.addSample(result);
 				else

@@ -81,7 +81,7 @@ public class HeuristicWeightTuningOld
 		
 		public Double heuristicWinRate()
 		{
-			return heuristicWinRateSum/numComparisons;
+			return Double.valueOf(heuristicWinRateSum / numComparisons);
 		}
 		
 		public void addHeuristicWinRate(final double winRate)

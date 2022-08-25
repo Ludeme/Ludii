@@ -391,7 +391,7 @@ public class HeuristicWeightTuning
 		while (selectedCandidateIndices.size() < k)
 		{
 			final int randomNum = ThreadLocalRandom.current().nextInt(0, candidates.keySet().size());
-			selectedCandidateIndices.add(randomNum);
+			selectedCandidateIndices.add(Integer.valueOf(randomNum));
 		}
 			
 		// Select the two best candidates from our random candidate set.
@@ -400,20 +400,20 @@ public class HeuristicWeightTuning
 		int counter = 0;
 		for (final Map.Entry<Heuristics, HeuristicStats> candidate : candidates.entrySet())
 		{
-			if (selectedCandidateIndices.contains(counter))
+			if (selectedCandidateIndices.contains(Integer.valueOf(counter)))
 			{
-				if (candidate.getValue().heuristicWinRate() > highestWinRate)
+				if (candidate.getValue().heuristicWinRate().doubleValue() > highestWinRate)
 				{
 					selectedCandidates[1] = Heuristics.copy(selectedCandidates[0]);
 					secondHighestWinRate = highestWinRate;
 					
 					selectedCandidates[0] = Heuristics.copy(candidate.getKey());
-					highestWinRate = candidate.getValue().heuristicWinRate();
+					highestWinRate = candidate.getValue().heuristicWinRate().doubleValue();
 				}
-				else if (candidate.getValue().heuristicWinRate() > secondHighestWinRate)
+				else if (candidate.getValue().heuristicWinRate().doubleValue() > secondHighestWinRate)
 				{
 					selectedCandidates[1] = Heuristics.copy(candidate.getKey());
-					secondHighestWinRate = candidate.getValue().heuristicWinRate();
+					secondHighestWinRate = candidate.getValue().heuristicWinRate().doubleValue();
 				} 
 			}
 			counter++;
