@@ -69,7 +69,7 @@ public class LudiiGameDatabase implements iLudiiGameDatabase {
         int id = 0;
         while (sc.hasNext()) {
             String curGameName = sc.nextLine();
-            names.put(curGameName,id++);
+            names.put(curGameName, Integer.valueOf(id++));
         }
         sc.close();
         }
@@ -104,7 +104,8 @@ public class LudiiGameDatabase implements iLudiiGameDatabase {
      * Returns a list of all the locations of game descriptions in the database.
      */
     @Override
-    public List<String> getLocations() {
+    public List<String> getLocations() 
+    {
         return locations;
     }
 
@@ -112,7 +113,8 @@ public class LudiiGameDatabase implements iLudiiGameDatabase {
      * Returns the amount of games in the database
      */
     @Override
-    public int getAmountGames() {
+    public int getAmountGames() 
+    {
         return locations.size();
     }
 
@@ -122,12 +124,14 @@ public class LudiiGameDatabase implements iLudiiGameDatabase {
      * @param id
      */
     @Override
-    public String getDescription(int id) {
+    public String getDescription(int id) 
+    {
         //fetches description if it was already read in
-        String description = descriptions.getOrDefault(id,"null");
+        String description = descriptions.getOrDefault(Integer.valueOf(id), "null");
 
         // else, reads it in
-        if(StringUtils.equals(description,"null")) {
+        if(StringUtils.equals(description,"null")) 
+        {
             String location = locations.get(id);
             description = GameFileHandler.readGame(location);
         }
@@ -141,15 +145,18 @@ public class LudiiGameDatabase implements iLudiiGameDatabase {
      * @param name
      */
     @Override
-    public String getDescription(String name) {
-        int id = names.get(name);
+    public String getDescription(String name) 
+    {
+        int id = names.get(name).intValue();
         return getDescription(id);
     }
 
-    public List<String> getNames() {
+    public List<String> getNames() 
+    {
         String[] namesArr = new String[getAmountGames()+1];
-        for(Map.Entry<String, Integer> entry : names.entrySet()) {
-            int id = entry.getValue();
+        for(Map.Entry<String, Integer> entry : names.entrySet()) 
+        {
+            int id = entry.getValue().intValue();
             String name = entry.getKey();
             namesArr[id] = name;
         }
