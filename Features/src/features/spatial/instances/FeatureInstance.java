@@ -485,6 +485,7 @@ public final class FeatureInstance implements BitwiseTest
 				allRestrictionsNull = false;
 			}
 			break;
+			//$CASES-OMITTED$
 		default:
 			System.err.println("Warning: bitSetType " + bitSetType + " not supported by FeatureInstance.addTest()!");
 			return false;
