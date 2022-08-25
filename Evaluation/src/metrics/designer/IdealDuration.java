@@ -71,7 +71,7 @@ public class IdealDuration extends Metric
 			tally += score;
 		}
 		
-		return tally / trials.length;
+		return Double.valueOf(tally / trials.length);
 	}
 	
 	//-------------------------------------------------------------------------
