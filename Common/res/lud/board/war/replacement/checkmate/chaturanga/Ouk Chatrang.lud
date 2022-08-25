@@ -11,29 +11,6 @@
     (set State at:#1 0) 
 )
 
-(define "CaptureToPiece"
-    (apply 
-        (remove 
-            (to) 
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to))
-            (apply (remove (to)))
-        )
-    )
-)
-
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
-)
-
 //------------------------------------------------------------------------------
 
 (game "Ouk Chatrang"
@@ -43,94 +20,32 @@
         (hand Each size:5)
         (piece "King_noCross" Each 
             (or
-                (move
-                    Step 
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        "CaptureToPiece" 
-                    )
-                )
+                ("StepToNotFriend")
                 (if (= 1 (state at:(from)))
-                    (move
-                        Leap 
-                        "KnightWalk" 
-                        (to 
-                            if:(is Empty (to))
-                        )
-                    )
+                    ("LeapToEmpty" "KnightWalk")
                 )
                 "RememberPieceHasMoved"
             )
         )
-        (piece "Boat" Each 
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
+        ("ChessRook" "Boat")
         (piece "Ferz_noCross" Each
             (or
-                (move
-                    Step 
-                    Diagonal
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        "CaptureToPiece" 
-                    )
-                )
-                (move
-                    Step 
-                    Forward
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        "CaptureToPiece" 
-                    )
-                )
+            	("StepToNotFriend" Diagonal)
+            	("StepToNotFriend" Forward)
             )
         )
-        (piece "Knight" Each
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )		
-        )
-        (piece "Fish" Each
-            (or 
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
-                (then
-                    (if (is In (last To) (sites Mover "Promotion")) 
-                        (promote (last To) (piece (id "Queen" Mover)))
-                    )
-                )
-            )		
-        ) 
+        ("ChessKnight" "Knight")
+        ("ChessPawn" "Fish" ~ (then ("PromoteIfReach" (sites Mover "Promotion") "Queen")))
         (piece "Queen" Each
             (or
-                (move
-                    Step 
-                    Diagonal
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        "CaptureToPiece" 
-                    )
-                )
+                ("StepToNotFriend" Diagonal)
                 (if (= 1 (state at:(from)))
-                    (move
-                        Hop 
+                    (move Hop 
                         Forward 
                         (between if:True) 
                         (to 
                             if:(not ("IsFriendAt" (to))) 
-                            "CaptureToPiece" 
+                            (apply (remove (to)))
                         )
                     )
                 )
@@ -148,17 +63,10 @@
             (place "Boat2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Ferz_noCross2" {"C8" "F8"}) (place "Queen2" coord:"D8" state:1) (place "King_noCross2" coord:"E8" state:1) 
         })
         (play (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))))
-        (end
-            {
-            (if (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
-            (if (no Moves Mover) (result Mover Draw)) 
-            }
-        )
+        (end {
+            ("Checkmate" "King_noCross")
+            ("DrawIfNoMoves" Mover)
+        })
     )
 )
 

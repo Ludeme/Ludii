@@ -210,7 +210,7 @@
                 ) 
                 (result Mover Win)
             ) 
-            ("DrawIfNoMovesNext")
+            ("DrawIfNoMoves" Next)
             (if (= (count Pieces Next) 1) (result Mover Win)) 
         })
     )

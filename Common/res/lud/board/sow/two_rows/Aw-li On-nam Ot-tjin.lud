@@ -42,7 +42,7 @@
         
         (end
             (if (no Moves Mover) {
-            	("DrawIfNoMovesNext")
+            	("DrawIfNoMoves" Next)
                 (if (is Mover P1) 
                     (byScore {
                         (score P1 ("KalahCount" P1)) 

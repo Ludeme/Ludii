@@ -1,7 +1,7 @@
-// Checks if the next player has no legal moves and the game ends in a draw.
-// #1 = The result to apply.
-// @example ("DrawIfNoMovesNext")
+// Checks if a player has no legal moves and the game ends in a draw.
+// #1 = The Player with no moves.
+// @example ("DrawIfNoMoves" Next)
 
-(define "DrawIfNoMovesNext"
-	(if (no Moves Next) (result Mover Draw))
+(define "DrawIfNoMoves"
+	(if (no Moves #1) (result Mover Draw))
 )
