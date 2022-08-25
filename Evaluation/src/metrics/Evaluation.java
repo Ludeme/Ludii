@@ -294,35 +294,35 @@ public class Evaluation
 	public double getStateEvaluationCacheValue(final long key)
 	{
 		// put is needed to update eldest value.
-		stateEvaluationCache.put(key, stateEvaluationCache.get(key).doubleValue());
-		return stateEvaluationCache.get(key).doubleValue();
+		stateEvaluationCache.put(Long.valueOf(key), stateEvaluationCache.get(Long.valueOf(key)));
+		return stateEvaluationCache.get(Long.valueOf(key)).doubleValue();
 	}
 	
 	public double getStateAfterMoveEvaluationCache(final long key)
 	{
 		// put is needed to update eldest value.
-		stateAfterMoveEvaluationCache.put(key, stateAfterMoveEvaluationCache.get(key).doubleValue());
-		return stateAfterMoveEvaluationCache.get(key).doubleValue();
+		stateAfterMoveEvaluationCache.put(Long.valueOf(key), stateAfterMoveEvaluationCache.get(Long.valueOf(key)));
+		return stateAfterMoveEvaluationCache.get(Long.valueOf(key)).doubleValue();
 	}
 	
 	public void putStateEvaluationCacheValue(final long key, final double value)
 	{
-		stateEvaluationCache.put(key, value);
+		stateEvaluationCache.put(Long.valueOf(key), Double.valueOf(value));
 	}
 	
 	public void putStateAfterMoveEvaluationCache(final long key, final double value)
 	{
-		stateAfterMoveEvaluationCache.put(key, value);
+		stateAfterMoveEvaluationCache.put(Long.valueOf(key), Double.valueOf(value));
 	}
 	
 	public boolean stateEvaluationCacheContains(final long key)
 	{
-		return stateEvaluationCache.containsKey(key);
+		return stateEvaluationCache.containsKey(Long.valueOf(key));
 	}
 	
 	public boolean stateAfterMoveEvaluationCacheContains(final long key)
 	{
-		return stateAfterMoveEvaluationCache.containsKey(key);
+		return stateAfterMoveEvaluationCache.containsKey(Long.valueOf(key));
 	}
 
 	//-------------------------------------------------------------------------

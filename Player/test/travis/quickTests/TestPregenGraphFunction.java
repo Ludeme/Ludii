@@ -641,7 +641,7 @@ public class TestPregenGraphFunction
 	public void makeTheBoard(final GraphFunction function, final SiteType useType)
 	{
 		init();
-		board = new Board(function, null, null, null, null, useType, false);
+		board = new Board(function, null, null, null, null, useType, Boolean.FALSE);
 		board.createTopology(0, 0);
 		for (final SiteType type : SiteType.values())
 			for (final TopologyElement element : board.topology().getGraphElements(type))

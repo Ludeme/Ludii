@@ -45,7 +45,7 @@ public class TestSquareSymmetries
 	private static Board createBoard()
 	{
 		final Board board = new Board(new RectangleOnSquare(new DimConstant(8), null, null, null), null,
-				null, null, null, null, false);
+				null, null, null, null, Boolean.FALSE);
 
 		board.createTopology(0, 0);
 		final Topology topology = board.topology();
