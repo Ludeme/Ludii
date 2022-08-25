@@ -1238,7 +1238,7 @@ public class LInputField extends JComponent
     public List<Integer> inputIndices() {
         List<Integer> indices = new ArrayList<>();
         for (NodeArgument nodeArgument : nodeArguments)
-            indices.add(nodeArgument.index());
+            indices.add(Integer.valueOf(nodeArgument.index()));
         return indices;
     }
 

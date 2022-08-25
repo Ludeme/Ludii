@@ -45,7 +45,7 @@ public class FileUtils {
             i++;
             if(index != -1) {
                 i = index + 1;
-                occ.add(index);
+                occ.add(Integer.valueOf(index));
             }
         }
         for(int j : occ) {

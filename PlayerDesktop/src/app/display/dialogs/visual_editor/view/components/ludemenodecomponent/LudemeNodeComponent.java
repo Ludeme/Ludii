@@ -436,7 +436,7 @@ public class LudemeNodeComponent extends JPanel
                 (
                 	GRAPH_PANEL.nodeComponent
                 	(
-                		GRAPH_PANEL.graph().getNode(v))
+                		GRAPH_PANEL.graph().getNode(v.intValue()))
                 	)
                 );
             }
