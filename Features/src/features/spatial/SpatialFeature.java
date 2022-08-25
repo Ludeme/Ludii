@@ -1619,7 +1619,6 @@ public abstract class SpatialFeature extends Feature
 	 * 	rotation allowed)
 	 * 
 	 * @param featuresIn
-	 * @return
 	 */
 	public static List<SpatialFeature> simplifySpatialFeaturesList(final Game game, final List<SpatialFeature> featuresIn)
 	{

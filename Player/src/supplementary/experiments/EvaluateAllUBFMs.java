@@ -221,6 +221,7 @@ public class EvaluateAllUBFMs
 										{
 											File directory = new File(String.valueOf(repository+gameName+"/"+opponent+"/"));
 											directory.mkdirs();
+											@SuppressWarnings("resource")
 											FileWriter myWriter = new FileWriter(repository+gameName+"/"+opponent+"/"+configurationToString(configuration)+".sav");
 											myWriter.write("Results of the duel between "+configurationToString(configuration)+" against "+opponent+":\n");
 											myWriter.write("Game: "+gameName+"\n");
@@ -285,7 +286,7 @@ public class EvaluateAllUBFMs
 	 * @param nbTrials
 	 * @param configuration
 	 */
-	private void compareAgents
+	private static void compareAgents
 	(
 		final Game game,
 		final AI AI1,

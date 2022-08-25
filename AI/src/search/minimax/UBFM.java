@@ -435,7 +435,8 @@ public class UBFM extends ExpertPolicy
 		{
 			try
 			{
-		      FileWriter myWriter = new FileWriter(treeSaveFile);
+		      @SuppressWarnings("resource")
+			FileWriter myWriter = new FileWriter(treeSaveFile);
 		      myWriter.write(searchTreeOutput.toString());
 		      myWriter.close();
 		      System.out.println("Successfully saved search tree in a file.");

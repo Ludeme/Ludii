@@ -102,7 +102,7 @@ public class UBFMKilothonContender extends UBFM
 //			System.out.println("UCT dealing with this decision");
 		}	
 			
-		timeLeft -= Math.max(0, ((float) (System.currentTimeMillis()-startTime))/1000f );
+		timeLeft -= Math.max(0, (System.currentTimeMillis()-startTime)/1000f );
 		
 //		System.out.println("Time left : "+Float.toString(timeLeft));
 		
@@ -118,6 +118,7 @@ public class UBFMKilothonContender extends UBFM
 	 * @param depth
 	 * @return
 	 */
+	@Override
 	protected float getContextValue
 	(
 		final Context context,
@@ -222,7 +223,7 @@ public class UBFMKilothonContender extends UBFM
 			{
 				heuristicValueFunction = new Heuristics( new NullHeuristic());
 				heuristicValueFunction().init(game);
-			};
+			}
 		}
 		
 		// reset these things used for visualisation purposes

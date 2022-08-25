@@ -68,7 +68,6 @@ public class Parser
 	 * @param description
 	 * @param userSelections
 	 * @param report
-	 * @param firstCompletionsOnly Only generate first completion (if any).
 	 * @param isVerbose
 	 * @return Whether the .lud can be parsed.
 	 */
@@ -89,7 +88,6 @@ public class Parser
 	 * @param userSelections
 	 * @param report
 	 * @param allowExamples Suppress warnings for ludeme examples, e.g. for LLR.
-	 * @param firstCompletionsOnly Only generate first completion (if any).
 	 * @param isVerbose
 	 * @return Whether the .lud can be parsed.
 	 */

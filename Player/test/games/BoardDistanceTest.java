@@ -294,8 +294,8 @@ public class BoardDistanceTest
 		
 		for (int n = 0; n < MAX + 1; n++)
 		{
-			contributionsA[n] = talliesA[n] / (double)totalA;
-			contributionsB[n] = talliesB[n] / (double)totalB;
+			contributionsA[n] = talliesA[n] / totalA;
+			contributionsB[n] = talliesB[n] / totalB;
 		}
 		
 		System.out.print("contributionsA:");

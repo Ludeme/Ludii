@@ -210,7 +210,8 @@ public class EvaluateUBFM
 		
 		try 
 		{
-	      FileWriter myWriter = new FileWriter("/home/cyprien/Documents/M1/Internship/"+outputFile);
+	      @SuppressWarnings("resource")
+		FileWriter myWriter = new FileWriter("/home/cyprien/Documents/M1/Internship/"+outputFile);
 	      myWriter.write(textOutput.toString());
 	      myWriter.close();
 	    } 

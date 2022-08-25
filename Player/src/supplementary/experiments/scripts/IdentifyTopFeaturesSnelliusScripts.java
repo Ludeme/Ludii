@@ -285,8 +285,6 @@ public class IdentifyTopFeaturesSnelliusScripts
 		/**
 		 * Constructor
 		 * @param gameName
-		 * @param numPlayers
-		 * @param matchup
 		 */
 		public ProcessData(final String gameName)
 		{
