@@ -1,18 +1,4 @@
-(define "Hop" 
-    (move
-        Hop
-        (from #1)
-        #2
-        (between 
-            if:("IsEnemyAt" (between))
-            (apply (remove (between)))
-        )
-        (to if:(is Empty (to)))
-        #3
-    )
-)
-
-(define "HopSequence" ("Hop" #1 #2 (then (if (can Move ("Hop" (last To) SameDirection)) (moveAgain)))))
+(define "HopSequence" ("HopCapture" (from #1) #2 (then ("ReplayIfCanMove" ("HopCapture" (from (last To)) SameDirection)))))
 
 //------------------------------------------------------------------------------
 
@@ -31,8 +17,7 @@
         phases:{ 
         (phase "OpeningP1" P1 
             (play 
-                (move
-                    Remove
+                (move Remove
                     (intersection 
                         (union 
                             (sites Corners) 
@@ -45,15 +30,11 @@
             (nextPhase Mover "Movement")
         )
         (phase "OpeningP2" P2 
-            (play 
-                (move
-                    Remove
-                    (sites Around (last To) Own) 
-                )
-            ) 
+            (play (move Remove (sites Around (last To) Own))) 
             (nextPhase Mover "Movement")
         )
-        (phase "Movement" (play 
+        (phase "Movement" 
+            (play 
                 (if "SameTurn"
                     (or
                         ("HopSequence" (last To) SameDirection)

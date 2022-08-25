@@ -1,0 +1,24 @@
+// Defines a leap move to empty or enemy sites. The enemy pieces are removed.
+// #1 = The walk.
+// #2 = Consequences of the capture effect.
+// #3 = The consequences.
+// @example ("LeapCapture" "KnightWalk")
+
+(define "LeapCapture"
+    (move
+        Leap 
+        #1
+        (to 
+            if:(not ("IsFriendAt" (to))) 
+            (apply 
+                (if ("IsEnemyAt" (to)) 
+                    (remove 
+                        (to) 
+                        #2
+                    )
+                )
+            ) 
+        ) 
+        #3
+    )
+)

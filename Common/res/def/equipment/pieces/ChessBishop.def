@@ -6,21 +6,19 @@
 
 (define "ChessBishop"
     (piece #1 Each 
-        (move
-            Slide 
-            Diagonal 
-            (to 
-                if:("IsEnemyAt" (to)) 
-                (apply 
-                    (if ("IsEnemyAt" (to))
-                        (remove 
-                            (to) 
-                            #2
-                        )
-                    )
-                ) 
-            ) 
-            #3
-        )
+    	    (move
+    	            Slide
+    	            Diagonal
+    	            (to 
+    	                if:("IsEnemyAt" (to))  
+    	                (apply 
+    	                        (remove 
+    	                            (to) 
+    	                            #2
+    	                        )
+    	                ) 
+    	            )
+    	            #3
+    	        ) 		
     )
 )

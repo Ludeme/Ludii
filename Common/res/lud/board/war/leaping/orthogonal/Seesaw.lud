@@ -91,14 +91,8 @@
     (count Stack
         at:#1
         if:(or
-            (= 
-                (id "Disc" Next) 
-                (what at:(to) level:(level))
-            )
-            (= 
-                (id "Disc" Mover) 
-                (what at:(to) level:(level))
-            )
+            ("IsPieceAt" "Disc" Next (to) level:(level))
+            ("IsPieceAt" "Disc" Mover (to) level:(level))
         )
     )
 )
@@ -107,8 +101,7 @@
     (if
         (is Odd ("StackSize" (from)))
         (sites Distance
-            (step
-                Forwards
+            (step Forwards
                 (to
                     if:(= 0 ("StackSize" (to)))
                 )
@@ -223,13 +216,11 @@
 
 (game "Seesaw"
     ("TwoPlayersNorthSouth")
-    (equipment
-        {
+    (equipment {
         (board (rotate 30 (hex <Board>)))
         (piece "Disc" Each)
         (tile "Hex" Each)
-        }
-    )
+    })
     (rules
         (start {
             (place Stack "Hex1" 0)

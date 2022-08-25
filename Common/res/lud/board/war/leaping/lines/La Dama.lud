@@ -1,42 +1,17 @@
-(define "PromoteIfCornersReached" 
-    (if (is In (last To) (sites Next))
-        (move Promote (last To) (piece "DiscDouble") Mover)
-    )
-)
-
 (define "HopDisc" 
-    (move
-        Hop 
+    ("HopCapture"
+        ~
         (directions {Rightward Leftward Forwards} of:All)
-        (between 
-            if:("IsEnemyAt" (between))
-            (apply (remove (between)))
-        ) 
-        (to if:(is Empty (to))) 
         (then
             (and 
-                ("PromoteIfCornersReached")
+                ("PromoteIfReach" (sites Next) "DiscDouble")
                 ("HasCaptured")
             )
         )
     ) 
 )
 
-(define "HopDiscDouble" 
-    (move
-        Hop
-        All
-        (between 
-            before:9
-            after:9
-            if:("IsEnemyAt" (between)) 
-            (apply (remove (between)))
-        )
-        (to if:(is Empty (to)))
-        (then ("HasCaptured"))
-    )
-)
-
+(define "HopDiscDouble" ("HopCaptureDistance" ~ All ~ (then ("HasCaptured"))))
 (define "HasCaptured" (set Value Mover 0))
 (define "HasNotCaptured" (set Value Mover 1))
 (define "DidNotCaptured" (= (value Player Prev) 1))
@@ -44,22 +19,8 @@
     (set Pending 
         (sites From
             (or 
-                (forEach Piece "Disc" 
-                    ("HopDisc")
-                ) 
-                (forEach Piece "DiscDouble" 
-                    (move
-                        Hop
-                        All
-                        (between 
-                            before:9
-                            after:9
-                            if:("IsEnemyAt" (between)) 
-                            (apply (remove (between)))
-                        )
-                        (to if:(is Empty (to)))
-                    )
-                )
+                (forEach Piece "Disc" ("HopDisc")) 
+                (forEach Piece "DiscDouble" ("HopCaptureDistance" ~ All))
             )
         )
     )
@@ -71,7 +32,7 @@
     (move
         Select 
         (from #1
-            if:(!= (what at:(from)) 0)
+            if:(is Occupied (from))
         )
         (then 
             (and {
@@ -99,13 +60,11 @@
         (piece "Disc" Each
             (or
                 ("HopDisc") 
-                (move
-                    Step 
+                ("StepToEmpty" 
                     (directions {Rightward Leftward Forwards} of:All) 
-                    (to if:(is Empty (to)))
                     (then ("HasNotCaptured"))
                 )
-                (then ("PromoteIfCornersReached"))
+                (then ("PromoteIfReach" (sites Next) "DiscDouble"))
             )		
         )
         (piece "DiscDouble" Each
@@ -141,7 +100,7 @@
             )
         ) 
         
-        (end (if (no Pieces Mover) (result Next Win))) 
+        (end ("CaptureAll" Mover)) 
     )
 )
 

@@ -7,26 +7,15 @@
         )
         (piece "Marker" Each
             (or {
-                (move Step (directions {Forward Rightward Leftward}) (to if:(is Empty (to))))
-                (move Hop (directions {Forward Rightward Leftward}) 
-                    (between
-                        if:("IsEnemyAt" (between)) 
-                        (apply (remove (between)))
-                    )
-                    (to if:(is Empty (to)))
+                ("StepToEmpty" (directions {Forward Rightward Leftward}))
+                ("HopCapture" ~ (directions {Forward Rightward Leftward}) 
                     (then 
-                        (if (can Move 
-                                (hop 
-                                    (from (last To)) 
-                                    (directions {Forward Rightward Leftward})
-                                    (between 
-                                        if:("IsEnemyAt" (between))
-                                    )
-                                    (to if:(is Empty (to)))
-                                )
-                            ) 
-                            (moveAgain)
-                        )
+                        ("ReplayIfCanMove" 
+                            ("HopCapture" 
+                                (from (last To)) 
+                                (directions {Forward Rightward Leftward})
+                            )
+                        ) 
                     )
                 )
             })
@@ -40,26 +29,16 @@
         (play 
             (if ("SameTurn")
                 (and
-                    (move Hop 
+                    ("HopCapture"
                         (from (last To)) 
                         (directions {Forward Rightward Leftward})
-                        (between 
-                            if:("IsEnemyAt" (between))
-                            (apply (remove (between)))
-                        )
-                        (to if:(is Empty (to)))
                         (then 
-                            (if (can Move 
-                                    (hop 
+                            ("ReplayIfCanMove"
+                                (("HopCapture" 
                                         (from (last To)) 
                                         (directions {Forward Rightward Leftward})
-                                        (between 
-                                            if:("IsEnemyAt" (between))
-                                        )
-                                        (to if:(is Empty (to)))
                                     )
                                 ) 
-                                (moveAgain)
                             )
                         )
                     )	

@@ -1,0 +1,9 @@
+// Makes a player losing when this player has no pieces. This ludemeplex can be used only in an ending condition.
+// @example ("ForEachPlayerNoPiecesLoss")
+
+(define "ForEachPlayerNoPiecesLoss"
+    (forEach Player
+        if:(no Pieces Player)
+        (result Player Loss)
+    )
+)

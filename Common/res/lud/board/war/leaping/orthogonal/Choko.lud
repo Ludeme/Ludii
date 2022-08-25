@@ -21,7 +21,7 @@
                 )
             )
         )
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -47,7 +47,6 @@
         (piece Scale "Stick2" 0.6)
         (show Edges Hidden)
         (show Symbol "disc" "AllSites" Vertex fillColour:(colour Grey) edgeColour:(colour Black) scale:0.9)
-        
     })
     
     (ai

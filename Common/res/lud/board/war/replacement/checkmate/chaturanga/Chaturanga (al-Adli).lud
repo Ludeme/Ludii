@@ -1,80 +1,24 @@
-(define "CaptureEnemyToPiece"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove (to))
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
-)
-
-//------------------------------------------------------------------------------
-
 (game "Chaturanga (al-Adli)"
     ("TwoPlayersNorthSouth") 
     (equipment {
         (board (square 8))
-        (piece "King_noCross"
-            (move Step
-                (to if:(not ("IsFriendAt" (to)))
-                    ("CaptureEnemyToPiece")
-                )
-            )
-        )
-        (piece "Rook"
-            (move
-                Slide 
-                Orthogonal
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureEnemyToPiece"
-                ) 
-            )	
-        )
+        (piece "King_noCross" ("StepToNotFriend"))
+        ("ChessRook" "Rook")
         (piece "Elephant"
             (move Hop Orthogonal 
                 (between (exact 1) if:True) 
                 (to if:(not ("IsFriendAt" (to)))
-                    ("CaptureEnemyToPiece")
+                		(apply 
+                		        (if ("IsEnemyAt" (to))
+                		            (remove (to))
+                		        )
+                		    ) 
                 )
             )
         )
-        (piece "Knight"
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureEnemyToPiece"
-                ) 
-            )	
-        )
-        (piece "Pawn"
-            (or 
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
-            )
-        ) 
-        (piece "Queen"
-            (move Step Diagonal
-                (to if:(not ("IsFriendAt" (to)))
-                    ("CaptureEnemyToPiece")
-                )
-            )
-        )
+        ("ChessKnight" "Knight")
+        ("ChessPawn" "Pawn")
+        (piece "Queen" ("StepToNotFriend" Diagonal))
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     })
@@ -87,19 +31,13 @@
         })
         
         (play 
-            (do
-                (forEach Piece)
+            (do (forEach Piece)
                 ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
             )
         )
         
         (end {
-            (if (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
+            ("Checkmate" "King_noCross")
             (if (= (count Pieces Next) 1) (result Mover Loss)) 
         })
     )

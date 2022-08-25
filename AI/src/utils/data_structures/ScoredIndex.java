@@ -19,7 +19,6 @@ public class ScoredIndex implements Comparable<ScoredIndex>
 	
 	/**
 	 * Constructor
-	 * @param move
 	 * @param score
 	 */
 	public ScoredIndex(final int index, final float score)

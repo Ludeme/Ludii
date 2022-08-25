@@ -15,7 +15,7 @@
             (place "Marker2" (union {(sites {"A3" "B3"}) (expand (sites Top)) }))
         })
         (play (forEach Piece))
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 

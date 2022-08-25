@@ -31,16 +31,7 @@
 (option "Start" <Start> args:{ <board> <rules>}
     {
     (item "Sixteen Pieces" 
-        <(board 
-            (merge 
-                { 
-                (shift 0 2 (square 5 diagonals:Alternating)) 
-                (wedge 3) 
-                (shift 0 6 (rotate 180 (wedge 3))) 
-                } 
-            ) 
-            use:Vertex
-        )> 
+        <("AlquerqueBoardWithBottomAndTopTriangles")> 
         <  
         (start { 
             (place "Marker1" (union {(sites Row 0) (sites Row 1) (sites Row 2) (sites Row 3)}))
@@ -50,13 +41,11 @@
     "The game is played with sixteen pieces.")** 
     (item "Nineteen Pieces" 
         <(board 
-            (merge 
-                { 
+            (merge { 
                 (shift 0 2 (square 5 diagonals:Alternating)) 
                 (shift -1 -1 (wedge 4))
                 (shift -1 6 (rotate 180 (wedge 4))) 
-                } 
-            ) 
+            }) 
             use:Vertex
         )> 
         <
@@ -111,7 +100,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai 
@@ -119,4 +107,3 @@
     )
     
 )
-

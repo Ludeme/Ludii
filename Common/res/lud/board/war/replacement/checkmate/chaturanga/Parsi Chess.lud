@@ -7,8 +7,7 @@
 )
 
 (define "CaptureForwardDiagonal"
-    (move
-        Step 
+    (move Step 
         (directions {FR FL}) 
         (to 
             if:(and 
@@ -44,13 +43,8 @@
     )
 )
 
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
-)
-
 (define "DoubleStep"
-    (move
-        Slide 
+    (move Slide 
         Forward 
         (between (exact 2) if:(is Empty (between))) 
         (to if:(is Empty (to))) 
@@ -126,82 +120,29 @@
                 )
             )
         )
-        (piece "Boat" Each 
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-                "RememberPieceHasMoved"
-            )
-        )
+        ("ChessRook" "Boat" ~ "RememberPieceHasMoved")
         (piece "King_noCross" Each 
             (or
-                (move
-                    Step 
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        "CaptureToPiece" 
-                    )
-                )
+                ("StepToNotFriend")
                 (if (!= (value Player Mover) (mover))
-                    (move
-                        Leap 
-                        "KnightWalk" 
-                        (to 
-                            if:(is Empty (to))
-                        )
-                        (then (set Value Mover (mover)))
-                    )
+                    ("LeapToEmpty" "KnightWalk" (then (set Value Mover (mover))))
                 )
                 "RememberPieceHasMoved"
             )
         )
-        (piece "Elephant" Each 
-            (move
-                Slide 
-                Diagonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        ) 
-        (piece "Knight" Each 
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "Ferz_noCross" Each 
-            (move
-                Slide 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-                "RememberPieceHasMoved"
-            ) 
-        )
+        ("ChessBishop" "Elephant")
+        ("ChessKnight" "Knight")
+        ("ChessQueen" "Ferz_noCross" ~ "RememberPieceHasMoved")
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
-        }
-    ) 
+    }) 
     (rules 
-        (start
-            { 
+        (start { 
             (place "Pawn1" (sites Row 1))
             (place "Pawn2" (sites Row 6))
             (place "Boat1" {"A1" "H1"} state:1) (place "Knight1" {"B1" "G1"}) (place "Elephant1" {"C1" "F1"}) (place "Ferz_noCross1" coord:"D1" state:1) (place "King_noCross1" coord:"E1" state:1) 
             (place "Boat2" {"A8" "H8"} state:1) (place "Knight2" {"B8" "G8"}) (place "Elephant2" {"C8" "F8"}) (place "Ferz_noCross2" coord:"E8" state:1) (place "King_noCross2" coord:"D8" state:1) 
-            }
-        )
+         })
         
         (play 
             (do 
@@ -217,17 +158,10 @@
             )
         )
         
-        (end
-            {
-            (if (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
+        (end {
+        	("Checkmate" "King_noCross")
             (if (= 1 (count Pieces Next)) (result Mover Draw)) // Only the king
-            }
-        )
+        })
     )
 )
 

@@ -10,8 +10,7 @@
                 (square "BoardSize" diagonals:Alternating)
                 (shift 2 8 (rotate 180 (wedge 3)))
                 (shift 2 -2 (wedge 3))
-                }
-            )
+            })
             use:Vertex
         )
         (piece "Marker" Each
@@ -35,7 +34,7 @@
                 (forEach Piece)
             )
         )
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -58,7 +57,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai

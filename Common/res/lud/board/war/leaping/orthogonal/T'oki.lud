@@ -27,9 +27,7 @@
         (hand Each)
     })
     (rules 
-        (start { 
-            (place "Marker" "Hand" count:20)
-        })
+        (start (place "Marker" "Hand" count:20))
         (play
             (or
                 (move 
@@ -67,6 +65,7 @@
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
     })
+    
     (ai
         "T'oki_ai"
     )

@@ -1,36 +1,10 @@
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
-(define "CaptureToPiece"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove 
-                (to) 
-            )
-        )
-    ) 
-)
-
 (define "DoubleStep"
-    (move
-        Slide 
-        Forward 
-        (between (exact 2) if:(is Empty (between))) 
-        (to if:(is Empty (to))) 
-    )
-)
-
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
-)
+	    (move Slide 
+	        Forward 
+	        (between (exact 2) if:(is Empty (between))) 
+	        (to if:(is Empty (to))) 
+	    )
+	)
 
 (define "SitesNextToKing" (sites {"C1" "E1" "D8" "F8"}))
 (define "KingSites" (sites {"E8" "D1"}))
@@ -48,17 +22,10 @@
         (board (square 8))
         (piece "King_noCross"
             (or
-                (move
-                    Step 
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        "CaptureToPiece"
-                    ) 
-                )	
+                ("StepToNotFriend")	
                 (if (not ("KingMovedBefore" (from)))
                     (or {
-                        (move
-                            Hop
+                        (move Hop
                             Orthogonal
                             (between
                                 (exact 2)
@@ -66,41 +33,36 @@
                             )
                             (to 
                                 if:(not ("IsFriendAt" (to))) 
-                                "CaptureToPiece"
+                                (apply 
+                                        (if ("IsEnemyAt" (to))
+                                            (remove 
+                                                (to) 
+                                            )
+                                        )
+                                    )
                             ) 
                         )
-                        (move
-                            Leap 
-                            "KnightWalk" 
-                            (to 
-                                if:(not ("IsFriendAt" (to))) 
-                                "CaptureToPiece"
-                            ) 
-                        )
+                        ("LeapCapture" "KnightWalk")
                         (if (is In (from) ("KingSites"))
                             (or
                                 (if (and {
                                         (is Empty (ahead (from) steps:2 W))
-                                        (= (id "Rook" Mover) (what at:(ahead (from) W))) 
+                                        ("IsPieceAt" "Rook" Mover (ahead (from) W))
                                         (not ("RookMovedBefore" (ahead (from) W)))
                                     })
                                     (move
                                         (from)
-                                        (to
-                                            (ahead (from) steps:2 W)
-                                        )
+                                        (to (ahead (from) steps:2 W))
                                     )
                                 )
                                 (if (and {
                                         (is Empty (ahead (from) steps:2 E))
-                                        (= (id "Rook" Mover) (what at:(ahead (from) E))) 
+                                        ("IsPieceAt" "Rook" Mover (ahead (from) E))
                                         (not ("RookMovedBefore" (ahead (from) E)))
                                     })
                                     (move
                                         (from)
-                                        (to
-                                            (ahead (from) steps:2 E)
-                                        )
+                                        (to (ahead (from) steps:2 E))
                                     )
                                 )
                             )
@@ -111,14 +73,7 @@
                 )
             )
         )
-        (piece "Rook"
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
+        ("ChessRook" "Rook" ~
                 (then
                     (if (and 
                             (not ("RookMovedBefore" (last To)))
@@ -127,38 +82,16 @@
                         ("RememberRookMoved" (last To))
                     )
                 )
-            )
         )
-        (piece "Bishop_noCross"
-            (move
-                Slide 
-                Diagonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )		
-        )
-        (piece "Knight"
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )		
-        )
+        ("ChessBishop" "Bishop_noCross")
+        ("ChessKnight" "Knight")
         (piece "Pawn"
             (or {
                 (if (and (= 0 (state at:(last To))) (is In (from) (sites Start (piece (what at:(from))))))
                     "DoubleStep"
                 )
-                (move Step 
-                    (if (= 1 (state at:(from))) Backward Forward)
-                    (to if:(is Empty (to)))
-                )
-                "CaptureForwardDiagonal"
+                ("StepToEmpty" (if (= 1 (state at:(from))) Backward Forward))
+                ("StepToEnemy" (directions {FR FL}))
                 }
                 (then
                     (if (is In (last To) (union (sites Bottom) (sites Top))) 
@@ -170,15 +103,7 @@
                 )
             )
         ) 
-        (piece "Queen"
-            (move
-                Slide 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
+        ("ChessQueen" "Queen")
     })
     (rules 
         (start { 
@@ -196,13 +121,8 @@
         )
         
         (end {
-            (if (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
-            (if (no Moves Next) (result Mover Draw))
+            ("Checkmate" "King_noCross")
+            ("DrawIfNoMoves" Next)
         })
     )
 )

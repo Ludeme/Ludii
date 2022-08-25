@@ -1,9 +1,4 @@
-(define "RemoveEnemyPiece" 
-    (move
-        Remove
-        (sites Occupied by:Next container:"Board") 
-    )
-)
+(define "RemoveEnemyPiece" (move Remove (sites Occupied by:Next container:"Board")))
 
 //------------------------------------------------------------------------------
 
@@ -14,14 +9,7 @@
         (piece "Marker" Each 
             (or
                 ("StepOrthogonalToEmpty")
-                (move Hop 
-                    (between 
-                        if:("IsEnemyAt" (between)) 
-                        (apply (remove (between)))
-                    )
-                    (to if:(is Empty (to)))
-                    (then (moveAgain))
-                )
+                ("HopCapture" ~ ~ (then (moveAgain)))
             )
         )
         (hand Each)
@@ -42,7 +30,7 @@
                 )
             )
         )
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 

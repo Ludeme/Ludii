@@ -193,7 +193,7 @@
                 ) 
                 (result Mover Win)
             ) 
-            (if (no Moves Next) (result Mover Draw)) 
+            ("DrawIfNoMoves" Next) 
         })
     )
 )
