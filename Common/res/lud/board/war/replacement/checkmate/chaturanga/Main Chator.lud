@@ -35,7 +35,7 @@
                             (or
                                 (if (and {
                                         (is Empty (ahead (from) steps:2 W))
-                                        (= (id "Rook" Mover) (what at:(ahead (from) W))) 
+                                        ("IsPieceAt" "Rook" Mover (ahead (from) W))
                                         (not ("RookMovedBefore" (ahead (from) W)))
                                     })
                                     (move
@@ -45,7 +45,7 @@
                                 )
                                 (if (and {
                                         (is Empty (ahead (from) steps:2 E))
-                                        (= (id "Rook" Mover) (what at:(ahead (from) E))) 
+                                        ("IsPieceAt" "Rook" Mover (ahead (from) E))
                                         (not ("RookMovedBefore" (ahead (from) E)))
                                     })
                                     (move
