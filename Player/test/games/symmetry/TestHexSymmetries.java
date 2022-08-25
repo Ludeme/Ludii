@@ -39,7 +39,7 @@ public class TestHexSymmetries
 
 	private static Board createBoard()
 	{
-		final Board board = new Board(new HexagonOnHex(new DimConstant(5)), null, null, null, null, SiteType.Cell, false);
+		final Board board = new Board(new HexagonOnHex(new DimConstant(5)), null, null, null, null, SiteType.Cell, Boolean.FALSE);
 
 		board.createTopology(0, 0);
 		final Topology topology = board.topology();
