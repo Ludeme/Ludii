@@ -80,7 +80,7 @@ public class Balance extends Metric
 			}
 		}
 		
-		return 1.0 - maxDisc;
+		return Double.valueOf(1.0 - maxDisc);
 	}
 
 	//-------------------------------------------------------------------------

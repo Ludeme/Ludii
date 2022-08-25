@@ -74,7 +74,7 @@ public class Drawishness extends Metric
 				naturalDraws++;
 		}
 
-		return naturalDraws / trials.length;
+		return Double.valueOf(naturalDraws / trials.length);
 	}
 
 	//-------------------------------------------------------------------------

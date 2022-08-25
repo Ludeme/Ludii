@@ -50,7 +50,7 @@ public class DurationMoves extends Metric
 		for (final Trial trial : trials)
 			moveTally += trial.numberRealMoves();
 		
-		return moveTally / trials.length;
+		return Double.valueOf(moveTally / trials.length);
 	}
 
 	//-------------------------------------------------------------------------

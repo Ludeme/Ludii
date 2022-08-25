@@ -94,7 +94,7 @@ public abstract class MultiMetricFramework extends Metric
 			if (valueList.length > 1)
 			{
 				Arrays.sort(valueList);
-				metricMedian = valueList[valueList.length/2];
+				metricMedian = valueList[valueList.length/2].doubleValue();
 			}
 					
 			metricMedianFinal += metricMedian;
@@ -287,9 +287,9 @@ public abstract class MultiMetricFramework extends Metric
 				for (final Double value : valueList)
 				{
 					double direction = 0.0;
-					if (value > lastValue)
+					if (value.doubleValue() > lastValue)
 						direction = 1.0;
-					if (value < lastValue)
+					if (value.doubleValue() < lastValue)
 						direction = -1.0;
 					if (direction != 0.0 && valueChangeDirection != direction)
 						metricChange += 1 / (valueList.length-1);
@@ -323,19 +323,19 @@ public abstract class MultiMetricFramework extends Metric
 
 		switch (multiMetricValue())
 		{
-			case Average: return metricAverage(metricValues);
-			case Median: return metricMedian(metricValues);
-			case Max: return metricMax(metricValues);
-			case Min: return metricMin(metricValues);
-			case Variance: return metricVariance(metricValues);
+			case Average: return Double.valueOf(metricAverage(metricValues));
+			case Median: return Double.valueOf(metricMedian(metricValues));
+			case Max: return Double.valueOf(metricMax(metricValues));
+			case Min: return Double.valueOf(metricMin(metricValues));
+			case Variance: return Double.valueOf(metricVariance(metricValues));
 			
-			case ChangeAverage: return metricChangeAverage(metricValues);
-			case ChangeSign: return metricChangeSign(metricValues);
-			case ChangeLineBestFit: return metricChangeLineBestFit(metricValues);
-			case ChangeNumTimes: return metricChangeNumTimes(metricValues);
+			case ChangeAverage: return Double.valueOf(metricChangeAverage(metricValues));
+			case ChangeSign: return Double.valueOf(metricChangeSign(metricValues));
+			case ChangeLineBestFit: return Double.valueOf(metricChangeLineBestFit(metricValues));
+			case ChangeNumTimes: return Double.valueOf(metricChangeNumTimes(metricValues));
 			
-			case MaxIncrease: return metricMaxIncrease(metricValues);
-			case MaxDecrease: return metricMaxDecrease(metricValues);
+			case MaxIncrease: return Double.valueOf(metricMaxIncrease(metricValues));
+			case MaxDecrease: return Double.valueOf(metricMaxDecrease(metricValues));
 			
 			default: return null;
 		}
