@@ -298,7 +298,7 @@ public class CompareAllDistanceMetrics
 //		
 		final DistanceMetric overlapDistanceMetric = new Overlap();
 		
-		allDistances.put("overlap_ludeme", overlapDistanceMetric.distance(ludemeDataset, defaultLudemeVocabulary, gameA, gameB));
+		allDistances.put("overlap_ludeme", Double.valueOf(overlapDistanceMetric.distance(ludemeDataset, defaultLudemeVocabulary, gameA, gameB)));
 //		
 //		//---------------------------------------------------------------------
 //		// JensenShannonDivergence
