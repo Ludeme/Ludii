@@ -4,21 +4,6 @@
 // #3 = The consequences of the moves.
 // @example ("ChessRook" "Rook")
 
-(define "ChessRook"
-    (piece #1 Each 
-        (move
-            Slide 
-            Orthogonal
-            (to 
-                if:("IsEnemyAt" (to))  
-                (apply 
-                        (remove 
-                            (to) 
-                            #2
-                        )
-                ) 
-            ) 
-            #3
-        ) 
-    )
+(define "ChessRook" 
+    (piece #1 Each ("SlideCapture" (from) Orthogonal #2 #3))
 )

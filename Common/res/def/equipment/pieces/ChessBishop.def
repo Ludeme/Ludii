@@ -5,20 +5,5 @@
 // @example ("ChessBishop" "Bishop")
 
 (define "ChessBishop"
-    (piece #1 Each 
-        (move
-            Slide 
-            Diagonal 
-            (to 
-                if:("IsEnemyAt" (to)) 
-                (apply 
-                        (remove 
-                            (to) 
-                            #2
-                        )
-                ) 
-            ) 
-            #3
-        )
-    )
+    (piece #1 Each ("SlideCapture" (from) Diagonal #2 #3))
 )

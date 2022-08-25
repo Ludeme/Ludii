@@ -5,19 +5,5 @@
 // @example ("ChessQueen" "Queen")
 
 (define "ChessQueen"
-    (piece #1 Each 
-        (move
-            Slide 
-            (to 
-                if:("IsEnemyAt" (to))  
-                (apply 
-                        (remove 
-                            (to) 
-                            #2
-                        )
-                ) 
-            ) 
-            #3
-        ) 
-    )
+    (piece #1 Each ("SlideCapture" (from) ~ #2 #3))
 )
