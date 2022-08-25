@@ -432,7 +432,13 @@ public class LudemeNodeComponent extends JPanel
                 LudemeNodeComponent lnc = Q.remove(0);
                 Handler.selectNode(lnc);
                 List<Integer> children = lnc.LN.children();
-                children.forEach(v -> Q.add(GRAPH_PANEL.nodeComponent(GRAPH_PANEL.graph().getNode(v))));
+                children.forEach(v -> Q.add
+                (
+                	GRAPH_PANEL.nodeComponent
+                	(
+                		GRAPH_PANEL.graph().getNode(v))
+                	)
+                );
             }
             subtree = !LudemeNodeComponent.this.LN.children().isEmpty();
             graphPanel().repaint();

@@ -169,7 +169,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
     public void notifyNodeRemoved(LudemeNodeComponent lnc)
     {
         NODE_COMPONENTS.remove(lnc);
-        NODE_COMPONENTS_BY_ID.remove(lnc.node().id());
+        NODE_COMPONENTS_BY_ID.remove(Integer.valueOf(lnc.node().id()));
         remove(lnc);
         connectionHandler().removeAllConnections(lnc.node(), false);
         repaint();
@@ -421,7 +421,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
         LudemeNodeComponent lc = new LudemeNodeComponent(node, this);
         hideAllAddArgumentPanels();
         NODE_COMPONENTS.add(lc);
-        NODE_COMPONENTS_BY_ID.put(node.id(), lc);
+        NODE_COMPONENTS_BY_ID.put(Integer.valueOf(node.id()), lc);
         add(lc);
         lc.updatePositions();
 
@@ -473,7 +473,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
     @Override
     public LudemeNodeComponent nodeComponent(LudemeNode node)
     {
-        LudemeNodeComponent lnc = NODE_COMPONENTS_BY_ID.get(node.id());
+        LudemeNodeComponent lnc = NODE_COMPONENTS_BY_ID.get(Integer.valueOf(node.id()));
         if(lnc != null)
             return lnc;
 
