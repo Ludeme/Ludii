@@ -122,7 +122,7 @@
         
         (end {
             ("Checkmate" "King_noCross")
-            (if (no Moves Next) (result Mover Draw))
+            ("DrawIfNoMovesNext")
         })
     )
 )

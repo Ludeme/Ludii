@@ -38,7 +38,7 @@
         
         (end {
             ("Checkmate" "King_noCross")
-            (if (no Moves Next) (result Mover Draw)) 
+            ("DrawIfNoMovesNext")
             (if (and {(= (count Pieces Next) 1) (= (count Pieces Mover) 2) ("IsNotOffBoard" (where "Ferz_noCross" Mover))})
                 (result Mover Draw)
             )
