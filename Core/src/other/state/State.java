@@ -1080,6 +1080,7 @@ public class State implements Serializable
 	 * 
 	 * @param otherOnTrackIndices
 	 */
+	@SuppressWarnings("static-method")
 	protected OnTrackIndices copyOnTrackIndices(final OnTrackIndices otherOnTrackIndices)
 	{
 		return otherOnTrackIndices == null ? null : new OnTrackIndices(otherOnTrackIndices);
@@ -1376,6 +1377,7 @@ public class State implements Serializable
 	 * @param payoff
 	 * @param payoffsArray The array of payoffs that we wish to modify
 	 */
+	@SuppressWarnings("static-method")
 	public void setPayoff(final int player, final double payoff, final double[] payoffsArray)
 	{
 		payoffsArray[player] = payoff;
@@ -2164,6 +2166,7 @@ public class State implements Serializable
 	 * @param context The current context.
 	 * @return The concepts involved in this specific state.
 	 */
+	@SuppressWarnings("static-method")
 	public BitSet concepts(final Context context)
 	{
 		// TODO CHECK LEGAL MOVES CONCEPT, CHECK ONLY PIECES CONCEPT ON BOARD, BUT NEED TO DISCUSS WITH MATTHEW BEFORE TO FINISH THAT CODE.

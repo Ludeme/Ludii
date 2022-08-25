@@ -36,7 +36,7 @@ public class Concept implements ReconItem
 	)
 	{
 		this.conceptName = conceptName;
-		value = ((valueDouble != null) ? valueDouble : (valueBoolean ? 1d : 0d) );
+		value = ((valueDouble != null) ? valueDouble.doubleValue() : (valueBoolean.booleanValue() ? 1d : 0d) );
 	}
 
 	//-------------------------------------------------------------------------

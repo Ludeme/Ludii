@@ -91,6 +91,7 @@ public class Result extends BaseLudeme implements Serializable
 	 * @param game The game.
 	 * @return The long value corresponding of the state flags.
 	 */
+	@SuppressWarnings("static-method")
 	public long gameFlags(final Game game)
 	{
 		return 0;

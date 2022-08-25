@@ -31,6 +31,7 @@ import other.topology.Topology;
  *
  * @author cambolbro and Eric.Piette
  */
+@SuppressWarnings("static-method")
 public class Component extends Item implements Cloneable
 {
 	/** Current direction that piece is facing. */

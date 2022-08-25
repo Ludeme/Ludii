@@ -490,6 +490,7 @@ public class Game extends BaseLudeme implements API, Serializable
 	/**
 	 * @return The different instances of a match.
 	 */
+	@SuppressWarnings("static-method")
 	public Subgame[] instances()
 	{
 		return null;
@@ -643,6 +644,7 @@ public class Game extends BaseLudeme implements API, Serializable
 	/**
 	 * @return True is the game uses instance.
 	 */
+	@SuppressWarnings("static-method")
 	public boolean hasSubgames()
 	{
 		return false;
@@ -2290,7 +2292,7 @@ public class Game extends BaseLudeme implements API, Serializable
 								null, 
 								null, 
 								null,
-								false
+								Boolean.FALSE
 							) 
 						}
 			);
@@ -3065,6 +3067,7 @@ public class Game extends BaseLudeme implements API, Serializable
 	 * @param context The context.
 	 * @return The move applied to undo the last move played.
 	 */
+	@SuppressWarnings("static-method")
 	public Move undo(final Context context)
 	{
 		context.getLock().lock();
@@ -3735,7 +3738,7 @@ public class Game extends BaseLudeme implements API, Serializable
 	 * @param originalMoves The list of moves.
 	 * @return The moves corresponding to these coordinates.
 	 */
-	public List<Move> getMovesFromCoordinates
+	public static List<Move> getMovesFromCoordinates
 	(
 		final String str, 
 		final Context context,

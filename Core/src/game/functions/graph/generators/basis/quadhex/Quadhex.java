@@ -80,6 +80,7 @@ public class Quadhex extends Basis
 			
 	//-------------------------------------------------------------------------
 
+	@SuppressWarnings("static-method")
 	void sixUniformSections(final Graph graph, final int layers)
 	{
 		//  B----C
@@ -147,6 +148,7 @@ public class Quadhex extends Basis
 		
 	//-------------------------------------------------------------------------
 
+	@SuppressWarnings("static-method")
 	void threeUniformSections(final Graph graph, final int layers)
 	{
 		//final double tolerance = 0.001;

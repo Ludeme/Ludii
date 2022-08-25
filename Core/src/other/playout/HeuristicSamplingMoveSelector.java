@@ -83,6 +83,7 @@ public class HeuristicSamplingMoveSelector extends PlayoutMoveSelector
 	 * 
 	 * @return Opponents of given player
 	 */
+	@SuppressWarnings("static-method")
 	public int[] opponents(final int player, final Context context)
 	{
 		final int numPlayersInGame = context.game().players().count();

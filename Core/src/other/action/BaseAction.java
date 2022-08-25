@@ -311,6 +311,7 @@ public abstract class BaseAction implements Action
 	 * @return The direction of the line of play according to the side and the state
 	 *         of the domino.
 	 */
+	@SuppressWarnings("static-method")
 	protected AbsoluteDirection getDirnDomino(final int side, final int state)
 	{
 		switch (side)

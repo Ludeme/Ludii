@@ -370,6 +370,7 @@ public abstract class Model implements Playout
 	/**
 	 * @return The moves per player.
 	 */
+	@SuppressWarnings("static-method")
 	public Move[] movesPerPlayer() 
 	{
 		return null;
