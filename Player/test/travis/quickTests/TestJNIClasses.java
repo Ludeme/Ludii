@@ -12,11 +12,12 @@ import org.junit.Test;
  *
  * @author Dennis Soemers
  */
+@SuppressWarnings("static-method")
 public class TestJNIClasses
 {
 	
 	@Test
-	public static void testFullyQualifiedNames()
+	public void testFullyQualifiedNames()
 	{
 		try
 		{

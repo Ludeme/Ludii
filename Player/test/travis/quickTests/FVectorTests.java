@@ -11,13 +11,14 @@ import main.collections.FVector;
  * 
  * @author Dennis Soemers
  */
+@SuppressWarnings("static-method")
 public class FVectorTests
 {
 	
 	private static final float FLOAT_TOLERANCE = 0.0001f;
 	
 	@Test
-	public static void testLinspaceInclusive()
+	public void testLinspaceInclusive()
 	{
 		final FVector linspace = FVector.linspace(0.f, 1.f, 4, true);
 		assertEquals(linspace.dim(), 4);
@@ -28,7 +29,7 @@ public class FVectorTests
 	}
 	
 	@Test
-	public static void testLinspaceExclusive()
+	public void testLinspaceExclusive()
 	{
 		final FVector linspace = FVector.linspace(0.f, 1.f, 4, false);
 		assertEquals(linspace.dim(), 4);

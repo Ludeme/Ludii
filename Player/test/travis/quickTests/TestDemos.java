@@ -33,11 +33,12 @@ import utils.AIFactory;
  *
  * @author Dennis Soemers
  */
+@SuppressWarnings("static-method")
 public class TestDemos
 {
 	
 	@Test
-	public static void testDemos()
+	public void testDemos()
 	{
 		final String[] allDemos = FileHandling.getResourceListing(TestDemos.class, "demos/", ".json");
 		

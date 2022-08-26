@@ -19,6 +19,7 @@ import utils.data_structures.experience_buffers.PrioritizedReplayBuffer;
  *
  * @author Dennis Soemers
  */
+@SuppressWarnings("static-method")
 public class TestPrioritizedExperienceReplay
 {
 
@@ -54,7 +55,7 @@ public class TestPrioritizedExperienceReplay
 	}
 	
 	@Test
-	public static void testAdd()
+	public void testAdd()
 	{
 		System.out.println("Running testAdd()");
 		final PrioritizedReplayBuffer memory = createDefaultMemory();
@@ -67,7 +68,7 @@ public class TestPrioritizedExperienceReplay
 	}
 	
 	@Test
-	public static void testSetAndGetPriority()
+	public void testSetAndGetPriority()
 	{
 		System.out.println("Running testSetAndGetPriority()");
 		final PrioritizedReplayBuffer memory = createDefaultMemory();
@@ -107,7 +108,7 @@ public class TestPrioritizedExperienceReplay
 	}
 	
 	@Test
-	public static void testLowPriorityElementNotFrequentlySampled()
+	public void testLowPriorityElementNotFrequentlySampled()
 	{
 		System.out.println("Running testLowPriorityElementNotFrequentlySampled()");
 		final PrioritizedReplayBuffer memory = createDefaultMemory();
@@ -135,7 +136,7 @@ public class TestPrioritizedExperienceReplay
 		System.out.println("Finished testLowPriorityElementNotFrequentlySampled()");
 	}
 	
-	public static void testNoIdxOutOfBounds()
+	public void testNoIdxOutOfBounds()
 	{
 		System.out.println("Running testNoIdxOutOfBounds()");
 		for (int rep = 0; rep < 100; ++rep)
