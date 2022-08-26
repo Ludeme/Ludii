@@ -34,11 +34,11 @@ import other.trial.Trial;
  *
  * @author Dennis Soemers
  */
+@SuppressWarnings("static-method")
 public class TestAmazonsFeatures
 {
 	
 	@Test
-	@SuppressWarnings("static-method")
 	public void test()
 	{
 		final Game game = GameLoader.loadGameFromName("Amazons.lud");
@@ -350,7 +350,6 @@ public class TestAmazonsFeatures
 	}
 	
 	@Test
-	@SuppressWarnings("static-method")
 	public void testB()
 	{
 		final Game game = GameLoader.loadGameFromName("Amazons.lud");

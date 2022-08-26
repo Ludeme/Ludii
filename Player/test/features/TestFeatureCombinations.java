@@ -20,11 +20,12 @@ import other.context.Context;
 import other.state.container.ContainerState;
 import other.trial.Trial;
 
+@SuppressWarnings("static-method")
 public class TestFeatureCombinations
 {
 	
 	@Test
-	public static void testA()
+	public void testA()
 	{
 		final Game game = GameLoader.loadGameFromName("Breakthrough.lud");
 
@@ -108,7 +109,7 @@ public class TestFeatureCombinations
 	}
 	
 	@Test
-	public static void testB()
+	public void testB()
 	{
 		final Game game = GameLoader.loadGameFromName("Breakthrough.lud");
 		
@@ -189,7 +190,7 @@ public class TestFeatureCombinations
 	}
 	
 	@Test
-	public static void testC()
+	public void testC()
 	{
 		final Game game = GameLoader.loadGameFromName("Amazons.lud");
 		
@@ -282,7 +283,7 @@ public class TestFeatureCombinations
 	}
 	
 	@Test
-	public static void testD()
+	public void testD()
 	{
 		final Game game = GameLoader.loadGameFromName("Amazons.lud");
 
@@ -382,7 +383,7 @@ public class TestFeatureCombinations
 	}
 	
 	@Test
-	public static void testE()
+	public void testE()
 	{
 		final Game game = GameLoader.loadGameFromName("Amazons.lud");
 
@@ -479,7 +480,7 @@ public class TestFeatureCombinations
 	}
 	
 	@Test
-	public static void testF()
+	public void testF()
 	{
 		final Game game = GameLoader.loadGameFromName("Tic-Tac-Toe.lud");
 
@@ -570,7 +571,7 @@ public class TestFeatureCombinations
 	}
 	
 	@Test
-	public static void testG()
+	public void testG()
 	{
 		final Game game = GameLoader.loadGameFromName("Ko-app-paw-na.lud");
 
