@@ -23,7 +23,7 @@ import main.grammar.Description;
 public class GameFileNamesTest
 {
 	@Test
-	public void testGameFileNames() throws IOException
+	public static void testGameFileNames() throws IOException
 	{
 		final File startFolder = new File("../Common/res/lud/");
 		final List<File> gameDirs = new ArrayList<>();

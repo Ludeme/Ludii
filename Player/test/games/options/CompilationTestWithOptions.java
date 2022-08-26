@@ -24,7 +24,7 @@ import other.GameLoader;
 public class CompilationTestWithOptions
 {
 	@Test
-	public void testCompilingLudFromFile()
+	public static void testCompilingLudFromFile()
 	{
 		final File startFolder = new File("../Common/res/lud/");
 		final List<File> gameDirs = new ArrayList<>();

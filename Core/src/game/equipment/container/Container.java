@@ -28,6 +28,7 @@ import other.topology.Vertex;
  *
  * @author cambolbro and Eric.Piette
  */
+@SuppressWarnings("static-method")
 public abstract class Container extends Item implements Serializable, Cloneable
 {
 	private static final long serialVersionUID = 1L;

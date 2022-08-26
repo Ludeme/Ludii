@@ -309,11 +309,13 @@ public class DocumentationReader
         }
     }
 
+	@SuppressWarnings("static-method")
     public HashMap<Symbol, HelpInformation> documentation()
     {
         return documentation;
     }
 
+	@SuppressWarnings("static-method")
     public HelpInformation help(Symbol symbol)
     {
         return documentation.get(symbol);

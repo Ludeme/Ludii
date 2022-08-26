@@ -45,12 +45,14 @@ public class EditorSidebar extends JTabbedPane
         return editorSidebar;
     }
 
+	@SuppressWarnings("static-method")
     public void setSidebarVisible(boolean visible)
     {
         editorSidebar.setVisible(visible);
         editorSidebar.repaint();
     }
 
+	@SuppressWarnings("static-method")
     public void setLayoutTabSelected() {
         int LAYOUT_TAB_INDEX = 0;
         editorSidebar.setSelectedIndex(LAYOUT_TAB_INDEX);}

@@ -93,6 +93,7 @@ public class TrainUrgencyTreesNormalGames
 	/**
 	 * Do the work
 	 */
+	@SuppressWarnings("static-method")
 	public void run()
 	{
 		for (int i = 0; i < GAMES.length; ++i)

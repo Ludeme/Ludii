@@ -16,7 +16,7 @@ public class TestJNIClasses
 {
 	
 	@Test
-	public void testFullyQualifiedNames()
+	public static void testFullyQualifiedNames()
 	{
 		try
 		{

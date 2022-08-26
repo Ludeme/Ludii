@@ -37,7 +37,7 @@ public class TestDemos
 {
 	
 	@Test
-	public void testDemos()
+	public static void testDemos()
 	{
 		final String[] allDemos = FileHandling.getResourceListing(TestDemos.class, "demos/", ".json");
 		

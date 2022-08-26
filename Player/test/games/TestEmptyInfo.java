@@ -24,7 +24,7 @@ import main.grammar.Description;
 public class TestEmptyInfo
 {
 	@Test
-	public void testCompilingLudFromFile()
+	public static void testCompilingLudFromFile()
 	{
 		System.out.println("=========================================\nTest: Compile all .lud from file:\n");
 

@@ -35,6 +35,7 @@ public class TestGomokuFeatures
 {
 	
 	@Test
+	@SuppressWarnings("static-method")
 	public void test()
 	{
 		// Default board size = 15x15 vertices

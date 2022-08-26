@@ -19,7 +19,7 @@ public class TestZhangShasha
 {
 	
 	@Test
-	public void testZhangShashaFromStrings() throws IOException
+	public static void testZhangShashaFromStrings() throws IOException
 	{
 		// Sample trees (in preorder).
 		final String tree1Str1 = "f(d(a c(b)) e)";

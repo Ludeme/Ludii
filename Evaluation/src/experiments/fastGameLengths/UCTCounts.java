@@ -26,6 +26,7 @@ public class UCTCounts
 	/**
 	 * @param game The game to test.
 	 */
+	@SuppressWarnings("static-method")
 	void runUCT(final Game game) 
 	{
 		final List<AI> ais = new ArrayList<>();

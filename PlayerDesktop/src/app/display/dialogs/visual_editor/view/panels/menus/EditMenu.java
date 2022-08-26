@@ -15,21 +15,21 @@ public class EditMenu extends JMenu
 	public EditMenu(EditorMenuBar menuBar)
     {
         super("Edit");
-        menuBar.addJMenuItem(this, "Undo", undo, KeyStroke.getKeyStroke("control Z"));
-        menuBar.addJMenuItem(this, "Redo", redo, KeyStroke.getKeyStroke("control Y"));
+        EditorMenuBar.addJMenuItem(this, "Undo", undo, KeyStroke.getKeyStroke("control Z"));
+        EditorMenuBar.addJMenuItem(this, "Redo", redo, KeyStroke.getKeyStroke("control Y"));
         add(new JSeparator());
-        menuBar.addJMenuItem(this, "Copy", copy, KeyStroke.getKeyStroke("control C"));
-        menuBar.addJMenuItem(this, "Paste", paste, KeyStroke.getKeyStroke("control V"));
-        menuBar.addJMenuItem(this, "Duplicate", duplicate, KeyStroke.getKeyStroke("control shift D"));
-        menuBar.addJMenuItem(this, "Delete", delete, KeyStroke.getKeyStroke("control D"));
+        EditorMenuBar.addJMenuItem(this, "Copy", copy, KeyStroke.getKeyStroke("control C"));
+        EditorMenuBar.addJMenuItem(this, "Paste", paste, KeyStroke.getKeyStroke("control V"));
+        EditorMenuBar.addJMenuItem(this, "Duplicate", duplicate, KeyStroke.getKeyStroke("control shift D"));
+        EditorMenuBar.addJMenuItem(this, "Delete", delete, KeyStroke.getKeyStroke("control D"));
         add(new JSeparator());
-        menuBar.addJMenuItem(this, "Select All", selectAll, KeyStroke.getKeyStroke("control A"));
-        menuBar.addJMenuItem(this, "Unselect All", unselectAll);
-        menuBar.addJMenuItem(this, "Collapse", collapse, KeyStroke.getKeyStroke("control W"));
-        menuBar.addJMenuItem(this, "Expand", expand, KeyStroke.getKeyStroke("control E"));
-        menuBar.addJMenuItem(this, "Expand All", expandAll);
+        EditorMenuBar.addJMenuItem(this, "Select All", selectAll, KeyStroke.getKeyStroke("control A"));
+        EditorMenuBar.addJMenuItem(this, "Unselect All", unselectAll);
+        EditorMenuBar.addJMenuItem(this, "Collapse", collapse, KeyStroke.getKeyStroke("control W"));
+        EditorMenuBar.addJMenuItem(this, "Expand", expand, KeyStroke.getKeyStroke("control E"));
+        EditorMenuBar.addJMenuItem(this, "Expand All", expandAll);
         add(new JSeparator());
-        menuBar.addJCheckBoxMenuItem(this, "Confirm Sensitive Actions", Handler.sensitivityToChanges, e -> Handler.sensitivityToChanges = !Handler.sensitivityToChanges);
+        EditorMenuBar.addJCheckBoxMenuItem(this, "Confirm Sensitive Actions", Handler.sensitivityToChanges, e -> Handler.sensitivityToChanges = !Handler.sensitivityToChanges);
     }
 
     final ActionListener undo = e -> Handler.undo();

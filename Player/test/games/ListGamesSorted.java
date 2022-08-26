@@ -29,7 +29,7 @@ import other.GameLoader;
 public class ListGamesSorted
 {
 	@Test
-	public void testCompilingLudFromMemory()
+	public static void testCompilingLudFromMemory()
 	{
 		final List<String> list = new ArrayList<String>();
 		final List<String> failedGames = new ArrayList<String>();

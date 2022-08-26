@@ -1083,7 +1083,7 @@ public class TravisTest
 	 * @return The list of combinations of option with only one option between
 	 * the specific option to check.
 	 */
-	public List<List<String>> combinationsKept(final String optionToCheck, final List<List<String>> optionCombinations)
+	public static List<List<String>> combinationsKept(final String optionToCheck, final List<List<String>> optionCombinations)
 	{
 		final SplitMix64 rng = new SplitMix64();
 		final List<List<String>> optionCombinationsKept = new ArrayList<List<String>>();
@@ -1142,7 +1142,7 @@ public class TravisTest
 	 * @return True if the string to check is contains in any string in the
 	 * list.
 	 */
-	public boolean containsPartOf(final List<String> list, final String test)
+	public static boolean containsPartOf(final List<String> list, final String test)
 	{
 		for (final String string : list)
 			if (test.contains(string))

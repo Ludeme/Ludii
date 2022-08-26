@@ -40,7 +40,7 @@ public class TestTrialsIntegrityPuzzle
 	 * @throws IOException
 	 */
 	@Test
-	public void test() throws FileNotFoundException, IOException
+	public static void test() throws FileNotFoundException, IOException
 	{
 		System.out.println(
 				"\n=========================================\nIntegrity Deduction Puzzle Test\n=========================================\n");

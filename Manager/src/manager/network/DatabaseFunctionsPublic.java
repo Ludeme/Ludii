@@ -20,6 +20,7 @@ import other.trial.Trial;
  * 
  * @author Matthew.Stephenson and Dennis Soemers
  */
+@SuppressWarnings("static-method")
 public class DatabaseFunctionsPublic 
 {
 	

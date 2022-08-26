@@ -20,7 +20,7 @@ public class TestHexOptions
 {
 	
 	@Test
-	public void testHexBoardSizes()
+	public static void testHexBoardSizes()
 	{
 		final List<String> options = new ArrayList<String>();
 		

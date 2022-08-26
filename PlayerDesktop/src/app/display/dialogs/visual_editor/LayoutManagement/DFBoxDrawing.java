@@ -88,15 +88,15 @@ public class DFBoxDrawing
         {
             List<Integer> nodeCh = new ArrayList<>(graph.getNode(nodeId).children());
             graph.getNode(nodeId).children().forEach(v -> {
-                if (graph.getNode(v).collapsed()) nodeCh.remove(v);
+                if (graph.getNode(v.intValue()).collapsed()) nodeCh.remove(v);
             });
             if (nodeCh.size() == 0) return;
 
-            iGNode nFirst = graph.getNode(nodeCh.get(0));
-            iGNode nLast = graph.getNode(nodeCh.get(nodeCh.size()-1));
+            iGNode nFirst = graph.getNode(nodeCh.get(0).intValue());
+            iGNode nLast = graph.getNode(nodeCh.get(nodeCh.size()-1).intValue());
 
             nodeCh.forEach((s) -> {
-                initPlacement(s, (int) (freeX + GraphRoutines.nodesMaxDist() * odsMetrics[1]) + graph.getNode(s).width() + PADDING_X);
+                initPlacement(s.intValue(), (int) (freeX + GraphRoutines.nodesMaxDist() * odsMetrics[1]) + graph.getNode(s.intValue()).width() + PADDING_X);
                 // freeX + getNodeDepth(graph, s)*graph.getNode(s).getWidth()*wX
 
 
@@ -174,9 +174,9 @@ public class DFBoxDrawing
             // iterating through LE and current path to add edges into Gup
             while (j != 0 && k != 0)
             {
-                int currentPk = P.get(k);
-                iGNode upper = graph1.getNode(LE.get(j));
-                iGNode lower = graph1.getNode(P.get(k));
+                int currentPk = P.get(k).intValue();
+                iGNode upper = graph1.getNode(LE.get(j).intValue());
+                iGNode lower = graph1.getNode(P.get(k).intValue());
                 if (upper.equals(lower)) break;
 
                 int upperWidth = upper.fixed() ? GraphRoutines.getSubtreeArea(graph1, upper.id()).width : upper.width();
@@ -192,7 +192,7 @@ public class DFBoxDrawing
                     // check if right corner of upper exceeds right corner of lower to add to LE candidates
                     if ((int)(upper.pos().x()+ upperWidth) > (int)(lower.pos().x()+lowerWidth))
                     {
-                        leCandidates.add(0, upper.id());
+                        leCandidates.add(0, Integer.valueOf(upper.id()));
                     }
                     addMinDistToGup(Gup, upper, lower);
                     j--;
@@ -203,7 +203,7 @@ public class DFBoxDrawing
                     // check if right corner of upper exceeds right corner of lower to add to LE candidates
                     if ((int)(upper.pos().x()+ upperWidth) > (int)(lower.pos().x()+lowerWidth))
                     {
-                        leCandidates.add(0, upper.id());
+                        leCandidates.add(0, Integer.valueOf(upper.id()));
                     }
                     // CASE#2: left corner of upper is within lower
                     if ((int)(upper.pos().x()) <= (int)(lower.pos().x()+lowerWidth))
@@ -221,7 +221,7 @@ public class DFBoxDrawing
                     }
                     k--;
                 }
-                leCandidates.add(0, currentPk);
+                leCandidates.add(0, Integer.valueOf(currentPk));
             }
             LE = new ArrayList<>(leCandidates);
             LE.addAll(0, paths.get(i).stream().limit(k+1).collect(Collectors.toList()));
@@ -238,18 +238,18 @@ public class DFBoxDrawing
 	private void addMinDistToGup(HashMap<Integer, Integer> gup, iGNode upper, iGNode lower)
     {
         int newDist = GraphRoutines.computeNodeVerticalDistance(upper.id(), lower.id(), graph);
-        if (gup.containsKey(lower.id()))
+        if (gup.containsKey(Integer.valueOf(lower.id())))
         {
-            if (newDist < gupDistances.get(lower.id()))
+            if (newDist < gupDistances.get(Integer.valueOf(lower.id())).intValue())
             {
-                gup.put(lower.id(), upper.id());
-                gupDistances.put(lower.id(), newDist);
+                gup.put(Integer.valueOf(lower.id()), Integer.valueOf(upper.id()));
+                gupDistances.put(Integer.valueOf(lower.id()), Integer.valueOf(newDist));
             }
         }
         else
         {
-            gup.put(lower.id(), upper.id());
-            gupDistances.put(lower.id(), newDist);
+            gup.put(Integer.valueOf(lower.id()), Integer.valueOf(upper.id()));
+            gupDistances.put(Integer.valueOf(lower.id()), Integer.valueOf(newDist));
         }
     }
 
@@ -270,15 +270,15 @@ public class DFBoxDrawing
             int minDist = Integer.MAX_VALUE;
             for (int j = 1; j < P.size(); j++)
             {
-                int nid = P.get(j);
-                if (!subTree.contains(P.get(j)) && gup.containsKey(nid)) 
+                int nid = P.get(j).intValue();
+                if (!subTree.contains(P.get(j)) && gup.containsKey(Integer.valueOf(nid))) 
                 {
-                	minDist = Math.min(minDist, GraphRoutines.computeNodeVerticalDistance(gup.get(nid), nid, graph1));
+                	minDist = Math.min(minDist, GraphRoutines.computeNodeVerticalDistance(gup.get(Integer.valueOf(nid)).intValue(), nid, graph1));
                 }
             }
             for (int j = 1; j < P.size(); j++)
             {
-                iGNode n = graph1.getNode(P.get(j));
+                iGNode n = graph1.getNode(P.get(j).intValue());
                 int dist = Math.abs(minDist - MIN_NODE_GAP);
                 if (!subTree.contains(P.get(j)))
                 {
@@ -298,9 +298,9 @@ public class DFBoxDrawing
      */
 	public void updateWeights(Double offset, Double distance, Double spread)
     {
-        odsMetrics[0] = offset;
-        odsMetrics[1] = distance;
-        odsMetrics[2] = spread;
+        odsMetrics[0] = offset.doubleValue();
+        odsMetrics[1] = distance.doubleValue();
+        odsMetrics[2] = spread.doubleValue();
     }
 
     /**

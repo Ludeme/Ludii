@@ -12,6 +12,7 @@ import app.display.dialogs.visual_editor.view.components.AddArgumentPanel;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
+import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputArea;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
 import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
@@ -233,7 +234,10 @@ public class GraphPanel extends JPanel implements IGraphPanel
             assert inputField != null;
             int index = inputField.inputArea().inputFieldIndex(inputField) + elementIndex;
             while(index >= from.inputArea().currentInputFields.size())
-                from.inputArea().addCollectionItem(inputField);
+			{
+				from.inputArea();
+				LInputArea.addCollectionItem(inputField);
+			}
             inputField = from.inputArea().currentInputFields.get(index);
         }
 

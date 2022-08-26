@@ -17,7 +17,7 @@ public class FVectorTests
 	private static final float FLOAT_TOLERANCE = 0.0001f;
 	
 	@Test
-	public void testLinspaceInclusive()
+	public static void testLinspaceInclusive()
 	{
 		final FVector linspace = FVector.linspace(0.f, 1.f, 4, true);
 		assertEquals(linspace.dim(), 4);
@@ -28,7 +28,7 @@ public class FVectorTests
 	}
 	
 	@Test
-	public void testLinspaceExclusive()
+	public static void testLinspaceExclusive()
 	{
 		final FVector linspace = FVector.linspace(0.f, 1.f, 4, false);
 		assertEquals(linspace.dim(), 4);

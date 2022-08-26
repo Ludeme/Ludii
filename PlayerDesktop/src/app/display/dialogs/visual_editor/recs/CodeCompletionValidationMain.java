@@ -9,8 +9,7 @@ import app.display.dialogs.visual_editor.recs.validation.controller.ValidationCo
 public class CodeCompletionValidationMain {
 
     public static void main(String[] args) {
-        ValidationController vc = new ValidationController();
-        vc.validate(0.66,5,1000,2);
+        ValidationController.validate(0.66,5,1000,2);
         /*int maxN = 20;
         int[] NValues = new int[maxN];
         long[] creationDurations = new long[maxN];

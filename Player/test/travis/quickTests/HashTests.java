@@ -22,6 +22,7 @@ import other.trial.Trial;
  * 
  * @author mrraow
  */
+@SuppressWarnings("static-method")
 public class HashTests
 {
 	/**

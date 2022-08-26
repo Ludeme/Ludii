@@ -27,15 +27,15 @@ public class ViewMenu extends JMenu
 
         List<String> paletteNames = Handler.palettes();
         for (String paletteName : paletteNames)
-            menuBar.addJMenuItem(appearance, paletteName, e -> Handler.setPalette(paletteName));
+            EditorMenuBar.addJMenuItem(appearance, paletteName, e -> Handler.setPalette(paletteName));
 
-        menuBar.addJMenuItem(background, "Dot Grid", dotGrid);
-        menuBar.addJMenuItem(background, "Cartesian Grid", cartesianGrid);
-        menuBar.addJMenuItem(background, "No Grid", noGrid);
+        EditorMenuBar.addJMenuItem(background, "Dot Grid", dotGrid);
+        EditorMenuBar.addJMenuItem(background, "Cartesian Grid", cartesianGrid);
+        EditorMenuBar.addJMenuItem(background, "No Grid", noGrid);
 
-        menuBar.addJMenuItem(fontSize, "Small", e->Handler.setFont("Small"));
-        menuBar.addJMenuItem(fontSize, "Medium", e->Handler.setFont("Medium"));
-        menuBar.addJMenuItem(fontSize, "Large", e->Handler.setFont("Large"));
+        EditorMenuBar.addJMenuItem(fontSize, "Small", e->Handler.setFont("Small"));
+        EditorMenuBar.addJMenuItem(fontSize, "Medium", e->Handler.setFont("Medium"));
+        EditorMenuBar.addJMenuItem(fontSize, "Large", e->Handler.setFont("Large"));
 
     }
 

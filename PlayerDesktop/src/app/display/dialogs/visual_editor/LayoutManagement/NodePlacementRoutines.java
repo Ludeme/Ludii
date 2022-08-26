@@ -37,10 +37,10 @@ public final class NodePlacementRoutines
         Vector2D t = graph.getNode(r).pos().sub(oPos);
         // iterate through descendants of a root node
         List<Integer> Q = new ArrayList<>();
-        Q.add(r);
+        Q.add(Integer.valueOf(r));
         while (!Q.isEmpty())
         {
-            int nid = Q.remove(0);
+            int nid = Q.remove(0).intValue();
             iGNode n = graph.getNode(nid);
             if (!n.collapsed())
             {

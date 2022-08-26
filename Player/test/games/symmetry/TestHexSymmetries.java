@@ -14,7 +14,7 @@ import other.topology.TopologyElement;
 public class TestHexSymmetries
 {
 	@Test
-	public void testHexRotations()
+	public static void testHexRotations()
 	{
 		final Board board = createBoard();
 
@@ -26,7 +26,7 @@ public class TestHexSymmetries
 	}
 
 	@Test
-	public void testHexReflections()
+	public static void testHexReflections()
 	{
 		final Board board = createBoard();
 

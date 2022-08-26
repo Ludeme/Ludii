@@ -39,7 +39,7 @@ public class FileMenu extends JMenu
 
         // menuBar.addJMenuItem(this, "Save", null);
         // menuBar.addJMenuItem(this, "Save as...", null);
-        menuBar.addJMenuItem(this, "Export as .lud", e -> exportAsLud());
+        EditorMenuBar.addJMenuItem(this, "Export as .lud", e -> exportAsLud());
 
         // add(new JSeparator());
 

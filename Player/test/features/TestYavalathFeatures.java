@@ -34,7 +34,7 @@ public class TestYavalathFeatures
 {
 	
 	@Test
-	public void test()
+	public static void test()
 	{
 		final Game game = GameLoader.loadGameFromName("/Yavalath.lud");
 		

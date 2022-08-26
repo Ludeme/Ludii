@@ -212,6 +212,7 @@ public class FastGameLengths
 	
 	//-------------------------------------------------------------------------
 
+	@SuppressWarnings("static-method")
 	public int gameLength(final Trial trial, final Game game)
 	{
 		//return trial.numLogicalDecisions(game);
@@ -776,7 +777,7 @@ public class FastGameLengths
 //		return totalDecisions / (double)numTrials;
 //	}
 
-	double branchingFactorParallel
+	static double branchingFactorParallel
 	(
 		final Game game, final int numTrials
 	) throws Exception

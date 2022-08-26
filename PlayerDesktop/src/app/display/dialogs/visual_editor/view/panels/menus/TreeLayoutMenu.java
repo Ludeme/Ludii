@@ -41,7 +41,7 @@ public class TreeLayoutMenu extends JMenu
             Handler.gameGraphPanel.repaint();
         });
 
-        menuBar.addJMenuItem(this, "Arrange Graph",
+        EditorMenuBar.addJMenuItem(this, "Arrange Graph",
                 Handler.currentGraphPanel.getLayoutHandler().getEvaluateAndArrange());
 
         add(new JSeparator());
@@ -51,24 +51,24 @@ public class TreeLayoutMenu extends JMenu
 
         add(new JSeparator());
 
-        menuBar.addJCheckBoxMenuItem(this, "Animation", Handler.animation, e -> {
+        EditorMenuBar.addJCheckBoxMenuItem(this, "Animation", Handler.animation, e -> {
             LayoutSettingsPanel.getLayoutSettingsPanel().animatePlacement().setSelected(((JCheckBoxMenuItem) e.getSource()).isSelected());
             Handler.animation = ((JCheckBoxMenuItem) e.getSource()).isSelected();
         });
-        menuBar.addJCheckBoxMenuItem(this, "Auto Placement", Handler.autoplacement, e -> {
+        EditorMenuBar.addJCheckBoxMenuItem(this, "Auto Placement", Handler.autoplacement, e -> {
             LayoutSettingsPanel.getLayoutSettingsPanel().autoPlacement().setSelected(((JCheckBoxMenuItem) e.getSource()).isSelected());
             Handler.autoplacement = ((JCheckBoxMenuItem) e.getSource()).isSelected();
         });
-        menuBar.addJCheckBoxMenuItem(this, "Preserve Configurations", Handler.autoplacement, e -> Handler.evaluateLayoutMetrics = ((JCheckBoxMenuItem) e.getSource()).isSelected());
+        EditorMenuBar.addJCheckBoxMenuItem(this, "Preserve Configurations", Handler.autoplacement, e -> Handler.evaluateLayoutMetrics = ((JCheckBoxMenuItem) e.getSource()).isSelected());
 
         add(new JSeparator());
 
-        menuBar.addJMenuItem(this, "Open Layout Settings", e -> {
+        EditorMenuBar.addJMenuItem(this, "Open Layout Settings", e -> {
             EditorSidebar.getEditorSidebar().setVisible(true);
             EditorSidebar.getEditorSidebar().setLayoutTabSelected();
         });
 
-        menuBar.addJMenuItem(this, "Help", e -> new LayoutUserGuideFrame());
+        EditorMenuBar.addJMenuItem(this, "Help", e -> new LayoutUserGuideFrame());
 
     }
 

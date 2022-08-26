@@ -653,7 +653,7 @@ public class TestPregenGraphFunction
 	 * 
 	 * @return A list with all the indices of a list of graph element.
 	 */
-	public TIntArrayList transformList(final List<? extends TopologyElement> graphElements)
+	public static TIntArrayList transformList(final List<? extends TopologyElement> graphElements)
 	{
 		final TIntArrayList result = new TIntArrayList();
 		for (final TopologyElement element : graphElements)
@@ -667,7 +667,7 @@ public class TestPregenGraphFunction
 	 * @param expectedIndices
 	 * @return True if the list has the same indices on it and the same size.
 	 */
-	public boolean check(final TIntArrayList indices, final TIntArrayList expectedIndices)
+	public static boolean check(final TIntArrayList indices, final TIntArrayList expectedIndices)
 	{
 		if (indices.size() != expectedIndices.size())
 			return false;

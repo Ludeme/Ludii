@@ -103,6 +103,7 @@ public abstract class SpatialFeature extends Feature
 	 * @return Is this a reactive feature (with specifiers for last-from 
 	 * 	and/or last-to position)?
 	 */
+	@SuppressWarnings("static-method")
 	public boolean isReactive()
 	{
 		return false;

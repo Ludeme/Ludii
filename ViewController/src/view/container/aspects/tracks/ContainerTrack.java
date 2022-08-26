@@ -34,6 +34,7 @@ public class ContainerTrack
 	/**
 	 * Draw arrows representing a specific track on the board.
 	 */
+	@SuppressWarnings("static-method")
 	public void drawTrackArrow(final Bridge bridge, final Graphics2D g2d, final String trackName, final Context context, final ContainerStyle containerStyle)
 	{
 		final Game game = context.game();

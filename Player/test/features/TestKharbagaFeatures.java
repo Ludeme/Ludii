@@ -30,6 +30,7 @@ public class TestKharbagaFeatures
 {
 	
 	@Test
+	@SuppressWarnings("static-method")
 	public void test()
 	{
 		final Game game = GameLoader.loadGameFromName("Kharbaga.lud");

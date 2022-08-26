@@ -161,6 +161,7 @@ public abstract class ToolButton
 	/** 
 	 * If the button is enabled and can be pressed. True by default. 
 	 */
+	@SuppressWarnings("static-method")
 	protected boolean isEnabled()
 	{
 		return true;

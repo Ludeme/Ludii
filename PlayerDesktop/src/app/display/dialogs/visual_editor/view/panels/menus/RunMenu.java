@@ -14,10 +14,10 @@ public class RunMenu extends JMenu
 	public RunMenu(EditorMenuBar menuBar)
     {
         super("Run");
-        menuBar.addJMenuItem(this, "Compile", compile, KeyStroke.getKeyStroke("control shift R"));
-        menuBar.addJMenuItem(this, "Play Game", play, KeyStroke.getKeyStroke("control P"));
+        EditorMenuBar.addJMenuItem(this, "Compile", compile, KeyStroke.getKeyStroke("control shift R"));
+        EditorMenuBar.addJMenuItem(this, "Play Game", play, KeyStroke.getKeyStroke("control P"));
         add(new JSeparator());
-        menuBar.addJCheckBoxMenuItem(this, "Auto Compile", Handler.liveCompile, autocompile);
+        EditorMenuBar.addJCheckBoxMenuItem(this, "Auto Compile", Handler.liveCompile, autocompile);
     }
 
     final ActionListener autocompile = e -> Handler.liveCompile = ((JCheckBoxMenuItem) e.getSource()).isSelected();

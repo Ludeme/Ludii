@@ -80,6 +80,7 @@ public class UCBCacheTest
 
 	//-------------------------------------------------------------------------
 
+	@SuppressWarnings("static-method")
 	Node expand(final Node parent)
 	{
 		final Node child = new Node(parent.choose(), parent);
@@ -89,6 +90,7 @@ public class UCBCacheTest
 
 	//-------------------------------------------------------------------------
 
+	@SuppressWarnings("static-method")
 	Long key(final int parentVisits, final int childVisits)
 	{
 		return Long.valueOf((((long) parentVisits) << 32) | childVisits);

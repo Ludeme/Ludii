@@ -316,6 +316,7 @@ public class SoftmaxPolicyLinear extends SoftmaxPolicy
 	 * @param distribution
 	 * @return Samples an action index from a previously-computed distribution
 	 */
+	@SuppressWarnings("static-method")
 	public int selectActionFromDistribution(final FVector distribution)
 	{
 		return distribution.sampleFromDistribution();

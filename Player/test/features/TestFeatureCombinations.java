@@ -24,7 +24,7 @@ public class TestFeatureCombinations
 {
 	
 	@Test
-	public void testA()
+	public static void testA()
 	{
 		final Game game = GameLoader.loadGameFromName("Breakthrough.lud");
 
@@ -108,7 +108,7 @@ public class TestFeatureCombinations
 	}
 	
 	@Test
-	public void testB()
+	public static void testB()
 	{
 		final Game game = GameLoader.loadGameFromName("Breakthrough.lud");
 		
@@ -189,7 +189,7 @@ public class TestFeatureCombinations
 	}
 	
 	@Test
-	public void testC()
+	public static void testC()
 	{
 		final Game game = GameLoader.loadGameFromName("Amazons.lud");
 		
@@ -282,7 +282,7 @@ public class TestFeatureCombinations
 	}
 	
 	@Test
-	public void testD()
+	public static void testD()
 	{
 		final Game game = GameLoader.loadGameFromName("Amazons.lud");
 
@@ -382,7 +382,7 @@ public class TestFeatureCombinations
 	}
 	
 	@Test
-	public void testE()
+	public static void testE()
 	{
 		final Game game = GameLoader.loadGameFromName("Amazons.lud");
 
@@ -479,7 +479,7 @@ public class TestFeatureCombinations
 	}
 	
 	@Test
-	public void testF()
+	public static void testF()
 	{
 		final Game game = GameLoader.loadGameFromName("Tic-Tac-Toe.lud");
 
@@ -570,7 +570,7 @@ public class TestFeatureCombinations
 	}
 	
 	@Test
-	public void testG()
+	public static void testG()
 	{
 		final Game game = GameLoader.loadGameFromName("Ko-app-paw-na.lud");
 

@@ -54,7 +54,7 @@ public class TestPrioritizedExperienceReplay
 	}
 	
 	@Test
-	public void testAdd()
+	public static void testAdd()
 	{
 		System.out.println("Running testAdd()");
 		final PrioritizedReplayBuffer memory = createDefaultMemory();
@@ -67,7 +67,7 @@ public class TestPrioritizedExperienceReplay
 	}
 	
 	@Test
-	public void testSetAndGetPriority()
+	public static void testSetAndGetPriority()
 	{
 		System.out.println("Running testSetAndGetPriority()");
 		final PrioritizedReplayBuffer memory = createDefaultMemory();
@@ -107,7 +107,7 @@ public class TestPrioritizedExperienceReplay
 	}
 	
 	@Test
-	public void testLowPriorityElementNotFrequentlySampled()
+	public static void testLowPriorityElementNotFrequentlySampled()
 	{
 		System.out.println("Running testLowPriorityElementNotFrequentlySampled()");
 		final PrioritizedReplayBuffer memory = createDefaultMemory();
@@ -135,7 +135,7 @@ public class TestPrioritizedExperienceReplay
 		System.out.println("Finished testLowPriorityElementNotFrequentlySampled()");
 	}
 	
-	public void testNoIdxOutOfBounds()
+	public static void testNoIdxOutOfBounds()
 	{
 		System.out.println("Running testNoIdxOutOfBounds()");
 		for (int rep = 0; rep < 100; ++rep)

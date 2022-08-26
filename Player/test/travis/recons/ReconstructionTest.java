@@ -25,7 +25,7 @@ import other.GameLoader;
 public class ReconstructionTest
 {
 	@Test
-	public void testCompilingLudFromMemory()
+	public static void testCompilingLudFromMemory()
 	{
 		System.out.println("\n=========================================\nTest: Compile all .lud corresponding to reconstruction:\n");
 

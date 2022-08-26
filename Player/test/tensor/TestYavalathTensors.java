@@ -19,7 +19,7 @@ public class TestYavalathTensors
 {
 	
 	@Test
-	public void test()
+	public static void test()
 	{
 		final LudiiGameWrapper game = LudiiGameWrapper.construct("Yavalath.lud");
 		final LudiiStateWrapper state = new LudiiStateWrapper(game);

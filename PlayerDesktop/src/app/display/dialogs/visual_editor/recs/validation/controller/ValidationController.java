@@ -19,13 +19,13 @@ public class ValidationController {
     private static final int REPLICATIONS = 31;
     private static final int ITERATIONS = 1000;
 
-    public void validate(int minN, int maxN) {
+    public static void validate(int minN, int maxN) {
         for(int N = minN; N <= maxN; N++) {
             validate(TRAINING_PROPORTION,REPLICATIONS,ITERATIONS,N);
         }
     }
 
-    public void validate() {
+    public static void validate() {
         for(int N = 2; N <= 15; N++) {
             switch (N){
                 case 2:
@@ -54,7 +54,7 @@ public class ValidationController {
         }
     }
 
-    public void validate(double trainingProportion, int replications, int iterations, int N) {
+    public static void validate(double trainingProportion, int replications, int iterations, int N) {
         String location = "src/app/display/dialogs/visual_editor/resources/recs/validation/precision_and_time/"+System.currentTimeMillis()+"_"+N+".csv";
         Report report = new Report(N,location);
 
@@ -95,7 +95,7 @@ public class ValidationController {
                 //TRAINING
                 if(DEBUG)System.out.println("Selecting Training word to cut out");
                 int idTraining = (int) (Math.random() * (trainingsIDs.size()-1)); // select one random id
-                idTraining = trainingsIDs.get(idTraining);
+                idTraining = trainingsIDs.get(idTraining).intValue();
                 String gameDescriptionTraining = db.getDescription(idTraining);
 
                 gameDescriptionTraining = Preprocessing.preprocess(gameDescriptionTraining); // preprocess
@@ -112,12 +112,12 @@ public class ValidationController {
                 List<Integer> atLeastLength3Training = new ArrayList<>();
                 for(int f = 0; f < splitTraining.length; f++) {
                     if(splitTraining[f].length() > 2) {
-                        atLeastLength3Training.add(f);
+                        atLeastLength3Training.add(Integer.valueOf(f));
                     }
                 }
                 double u = Math.random(); // at random
                 j = (int) (u * (atLeastLength3Training.size() - 1));
-                j = atLeastLength3Training.get(j);
+                j = atLeastLength3Training.get(j).intValue();
                 cutOutTraining = splitTraining[j];
 
                 String contextTraining = splitTraining[0]; //given to code completion
@@ -128,7 +128,7 @@ public class ValidationController {
                 //TEST
                 if(DEBUG)System.out.println("Selecting Test word to cut out");
                 int idTest = (int) (Math.random() * (testIDs.size()-1)); // select one random id
-                idTest = testIDs.get(idTest);
+                idTest = testIDs.get(idTest).intValue();
                 String gameDescriptionTest = db.getDescription(idTest);
 
                 gameDescriptionTest = Preprocessing.preprocess(gameDescriptionTest); // preprocess
@@ -145,12 +145,12 @@ public class ValidationController {
                 List<Integer> atLeastLength3Test = new ArrayList<>();
                 for(int f = 0; f < splitTest.length; f++) {
                     if(splitTest[f].length() > 2) {
-                        atLeastLength3Test.add(f);
+                        atLeastLength3Test.add(Integer.valueOf(f));
                     }
                 }
                 u = Math.random(); // at random
                 j = (int) (u * (atLeastLength3Test.size() - 1));
-                j = atLeastLength3Test.get(j);
+                j = atLeastLength3Test.get(j).intValue();
                 cutOutTest = splitTest[j];
 
                 String contextTest = splitTest[0]; //given to code completion

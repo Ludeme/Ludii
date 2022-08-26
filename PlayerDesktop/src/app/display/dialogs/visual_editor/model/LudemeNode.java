@@ -629,7 +629,7 @@ public class LudemeNode implements iGNode
     public List<Integer> children()
     {
         List<Integer> children_ids = new ArrayList<>();
-        for(LudemeNode c : children) children_ids.add(c.id());
+        for(LudemeNode c : children) children_ids.add(Integer.valueOf(c.id()));
         return children_ids;
     }
 
@@ -921,7 +921,7 @@ public class LudemeNode implements iGNode
         return rawLud;
     }
 
-    public String collectionToLud(Object[] collection, NodeArgument arg, boolean isDefinePanel)
+    public static String collectionToLud(Object[] collection, NodeArgument arg, boolean isDefinePanel)
     {
         if(collection.length == 0 && arg.optional()) return "";
         StringBuilder sb = new StringBuilder();

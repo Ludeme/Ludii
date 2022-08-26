@@ -26,7 +26,7 @@ public class TestCanonicalHashes
 	 * Plays different 2 hex moves, verifies canonical hash is the same
 	 */
 	@Test
-	public void testPlayerEquivalence()
+	public static void testPlayerEquivalence()
 	{
 		final Game game1 = GameLoader.loadGameFromName("board/space/connection/Hex.lud");
 		final Trial trial1 = new Trial(game1);
@@ -53,7 +53,7 @@ public class TestCanonicalHashes
 	 * Plays different 2 hex moves, verifies canonical hash is the same
 	 */
 	@Test
-	public void testPlayerNonEquivalence()
+	public static void testPlayerNonEquivalence()
 	{
 		final Game game1 = GameLoader.loadGameFromName("board/space/connection/Hex.lud");
 		final Trial trial1 = new Trial(game1);
@@ -80,7 +80,7 @@ public class TestCanonicalHashes
 	 * Plays different 2 hex moves, verifies canonical hash is the same
 	 */
 	@Test
-	public void testRotationEquivalence()
+	public static void testRotationEquivalence()
 	{
 		final Game game1 = GameLoader.loadGameFromName("board/space/connection/Hex.lud");
 		final Trial trial1 = new Trial(game1);
@@ -132,7 +132,7 @@ public class TestCanonicalHashes
 	 * Plays different 2 hex moves, verifies canonical hash is the same
 	 */
 	@Test
-	public void testRotationNonEquivalence()
+	public static void testRotationNonEquivalence()
 	{
 		final Game game1 = GameLoader.loadGameFromName("board/space/connection/Hex.lud");
 		final Trial trial1 = new Trial(game1);
@@ -167,7 +167,7 @@ public class TestCanonicalHashes
 	 * Plays different 2 hex moves, verifies canonical hash is the same
 	 */
 	@Test
-	public void testReflectionEquivalence()
+	public static void testReflectionEquivalence()
 	{
 		final Game game1 = GameLoader.loadGameFromName("board/space/connection/Hex.lud");
 		final Trial trial1 = new Trial(game1);
@@ -237,7 +237,7 @@ public class TestCanonicalHashes
 	 * Plays different 2 hex moves, verifies canonical hash is the same
 	 */
 	@Test
-	public void testReflectionNonEquivalence()
+	public static void testReflectionNonEquivalence()
 	{
 		final Game game1 = GameLoader.loadGameFromName("board/space/connection/Hex.lud");
 		final Trial trial1 = new Trial(game1);

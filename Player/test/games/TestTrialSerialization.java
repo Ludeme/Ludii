@@ -44,6 +44,7 @@ public class TestTrialSerialization
 	 * The test to run.
 	 */
 	@Test
+	@SuppressWarnings("static-method")
 	public void test()
 	{
 		final File startFolder = new File("../Common/res/lud/");

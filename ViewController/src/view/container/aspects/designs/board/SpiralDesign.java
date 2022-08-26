@@ -293,6 +293,7 @@ public class SpiralDesign extends BoardDesign
 	/**
 	 * @return Point projected inwards to the ring that the specified vertex angle would lie on.
 	 */
+	@SuppressWarnings("static-method")
 	Point2D.Double ptOnRing
 	(
 		final double x0, final double y0, final double a, final double b, 

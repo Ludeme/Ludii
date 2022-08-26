@@ -14,6 +14,7 @@ import other.move.Move;
  * 
  * @author Dennis Soemers and cambolbro
  */
+@SuppressWarnings("static-method")
 public abstract class AI
 {
 	//-------------------------------------------------------------------------

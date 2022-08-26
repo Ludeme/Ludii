@@ -365,15 +365,11 @@ public class DesignPalette
         }
     }
 
+	@SuppressWarnings("static-method")
     public String name()
     {
         return name;
     }
-
-
-
-
-
 
     private static final int DEFAULT_INPUTAREA_PADDING_BOTTOM = 12;
     public static int INPUTAREA_PADDING_BOTTOM = (int) (DEFAULT_INPUTAREA_PADDING_BOTTOM * SCALAR);

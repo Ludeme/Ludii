@@ -91,7 +91,7 @@ public class DescriptionGraph implements iGraph
 	@Override
     public LudemeNode getNode(int id)
     {
-        return (LudemeNode) nodeMap.get(id);
+        return (LudemeNode) nodeMap.get(Integer.valueOf(id));
     }
 
     public List<LudemeNode> getNodes()
@@ -104,7 +104,7 @@ public class DescriptionGraph implements iGraph
     {
         this.allLudemeNodes.add((LudemeNode) ludemeNode);
         int id = ludemeNode.id();
-        nodeMap.put(id, ludemeNode);
+        nodeMap.put(Integer.valueOf(id), ludemeNode);
         addConnectedComponentRoot(id);
         return id;
     }
@@ -113,7 +113,7 @@ public class DescriptionGraph implements iGraph
     public void removeNode(iGNode node)
     {
         this.allLudemeNodes.remove(node);
-        nodeMap.remove(node.id());
+        nodeMap.remove(Integer.valueOf(node.id()));
         removeConnectedComponentRoot(node.id());
         node.id();
     }
@@ -150,15 +150,15 @@ public class DescriptionGraph implements iGraph
     @Override
     public void addConnectedComponentRoot(int root)
     {
-        if (!connectedComponentRoots.contains(root) && getNode(root) != null)
-            connectedComponentRoots.add(root);
+        if (!connectedComponentRoots.contains(Integer.valueOf(root)) && getNode(root) != null)
+            connectedComponentRoots.add(Integer.valueOf(root));
     }
 
     @Override
     public void removeConnectedComponentRoot(int root)
     {
-        if (connectedComponentRoots.contains(root))
-            connectedComponentRoots.remove((Object)root);
+        if (connectedComponentRoots.contains(Integer.valueOf(root)))
+            connectedComponentRoots.remove(Integer.valueOf(root));
     }
 
     @Override

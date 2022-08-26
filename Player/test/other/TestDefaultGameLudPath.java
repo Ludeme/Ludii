@@ -21,7 +21,7 @@ public class TestDefaultGameLudPath
 	 * a game.
 	 */
 	@Test
-	public void testDefaultGameLudPath()
+	public static void testDefaultGameLudPath()
 	{
 		final Game game = GameLoader.loadGameFromName(Constants.DEFAULT_GAME_PATH);
 		assert(game != null);

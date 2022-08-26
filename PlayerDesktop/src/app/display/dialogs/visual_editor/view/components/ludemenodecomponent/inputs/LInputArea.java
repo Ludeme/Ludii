@@ -363,7 +363,7 @@ public class LInputArea extends JPanel
         return newInputField;
     }
 
-    public void addCollectionItem(LInputField inputField)
+    public static void addCollectionItem(LInputField inputField)
     {
         inputField.addCollectionItem();
     }

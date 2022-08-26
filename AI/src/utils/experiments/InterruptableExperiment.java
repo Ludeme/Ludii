@@ -171,6 +171,7 @@ public abstract class InterruptableExperiment
 	 * @param logWriter
 	 * @param line
 	 */
+	@SuppressWarnings("static-method")
 	public void logLine(final PrintWriter logWriter, final String line)
 	{
 		if (logWriter != null)

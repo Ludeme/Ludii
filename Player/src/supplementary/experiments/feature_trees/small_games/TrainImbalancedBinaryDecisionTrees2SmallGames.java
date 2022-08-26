@@ -92,6 +92,7 @@ public class TrainImbalancedBinaryDecisionTrees2SmallGames
 	/**
 	 * Do the work
 	 */
+	@SuppressWarnings("static-method")
 	public void run()
 	{
 		for (int i = 0; i < GAMES.length; ++i)

@@ -192,6 +192,7 @@ public class ContainerPlacement
 		this.cellRadiusPixels = cellRadiusPixels;
 	}
 	
+	@SuppressWarnings("static-method")
 	public double containerZoom()
 	{
 		return 1.0;

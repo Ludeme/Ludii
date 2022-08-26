@@ -117,10 +117,10 @@ public class GraphAnimator
 	public void preserveInitPositions(iGraph graph, int root)
     {
         List<Integer> Q = new ArrayList<>();
-        Q.add(root);
+        Q.add(Integer.valueOf(root));
         while (!Q.isEmpty())
         {
-            int nId = Q.remove(0);
+            int nId = Q.remove(0).intValue();
             iGNode n = graph.getNode(nId);
             nodesToProcess.add(n);
             nodeInitPositions.put(n, n.pos());

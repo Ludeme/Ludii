@@ -23,6 +23,7 @@ import other.GameLoader;
 public class WarningCrashTest
 {
 	@Test
+	@SuppressWarnings("static-method")
 	public void runTests()
 	{
 		// Load from memory

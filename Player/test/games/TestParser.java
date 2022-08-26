@@ -27,7 +27,7 @@ import other.GameLoader;
 public class TestParser
 {
 	@Test
-	public void testCompilingLudFromMemory()
+	public static void testCompilingLudFromMemory()
 	{
 		System.out.println("\n======================================================");
 		System.out.println("Test: Parsing test .lud from memory:\n");

@@ -51,7 +51,7 @@ public class LayoutHandler
      */
 	public void updateDFSWeights(double offset, double distance, double spread)
     {
-        layout.updateWeights(offset, distance, spread);
+        layout.updateWeights(Double.valueOf(offset), Double.valueOf(distance), Double.valueOf(spread));
     }
 
     /**
@@ -99,13 +99,13 @@ public class LayoutHandler
         {
             roots = new ArrayList<>(graph.connectedComponentRoots());
             // move root node at the top of the list
-            roots.remove((Object) graph.getRoot().id());
-            roots.add(0, graph.getRoot().id());
+            roots.remove(Integer.valueOf(graph.getRoot().id()));
+            roots.add(0, Integer.valueOf(graph.getRoot().id()));
         }
         else
         {
             roots = new ArrayList<>();
-            roots.add(graph.selectedRoot());
+            roots.add(Integer.valueOf(graph.selectedRoot()));
         }
 
 
@@ -114,12 +114,12 @@ public class LayoutHandler
         Vector2D transPos = null;
         for (int i = 0; i < roots.size(); i++)
         {
-            int root = roots.get(i);
+            int root = roots.get(i).intValue();
 
             // translation position
             if (i > 0)
             {
-                Rectangle rect = GraphRoutines.getSubtreeArea(graph, roots.get(i-1));
+                Rectangle rect = GraphRoutines.getSubtreeArea(graph, roots.get(i-1).intValue());
                 transPos = new Vector2D(
                         Handler.gameGraphPanel.parentScrollPane().getViewport().getViewRect().x+NodePlacementRoutines.DEFAULT_X_POS,
                         rect.y+rect.height+NodePlacementRoutines.DEFAULT_Y_POS);
@@ -177,7 +177,6 @@ public class LayoutHandler
     {
         public EvaluateAndArrange()
 		{
-			// TODO Auto-generated constructor stub
 		}
 
 		@Override

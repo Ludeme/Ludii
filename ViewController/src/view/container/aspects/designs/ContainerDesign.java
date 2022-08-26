@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import bridge.Bridge;
 import other.context.Context;
 
+@SuppressWarnings("static-method")
 public class ContainerDesign 
 {
 	public String createSVGImage(final Bridge bridge, final Context context) 

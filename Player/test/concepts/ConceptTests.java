@@ -14,6 +14,7 @@ import other.concept.Concept;
 public class ConceptTests
 {
 	@Test
+	@SuppressWarnings("static-method")
 	public void ConceptLeaf()
 	{
 		for (final Concept concept : Concept.values())

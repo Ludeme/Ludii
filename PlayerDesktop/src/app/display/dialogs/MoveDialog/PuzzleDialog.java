@@ -259,7 +259,8 @@ public class PuzzleDialog extends JDialog
 	}
 	
 	//-------------------------------------------------------------------------
-	
+
+	@SuppressWarnings("static-method")
 	void paintButton(final PlayerApp app, final Context context, final JButton button, final int site, final int puzzleValue, final SiteType siteType)
 	{
 		final ContainerState cs = context.state().containerStates()[0];

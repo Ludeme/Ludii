@@ -39,14 +39,14 @@ public class EditorMenuBar extends JMenuBar {
         add(about);
     }
 
-    public void addJMenuItem(JMenu menu, String itemName, ActionListener actionListener)
+    public static void addJMenuItem(JMenu menu, String itemName, ActionListener actionListener)
     {
         JMenuItem jMenuItem = new JMenuItem(itemName);
         jMenuItem.addActionListener(actionListener);
         menu.add(jMenuItem);
     }
 
-    public void addJMenuItem(JMenu menu, String itemName, ActionListener actionListener, KeyStroke keyStroke)
+    public static void addJMenuItem(JMenu menu, String itemName, ActionListener actionListener, KeyStroke keyStroke)
     {
         JMenuItem jMenuItem = new JMenuItem(itemName);
         jMenuItem.addActionListener(actionListener);
@@ -54,7 +54,7 @@ public class EditorMenuBar extends JMenuBar {
         menu.add(jMenuItem);
     }
 
-    public void addJCheckBoxMenuItem(JMenu menu, String itemName, boolean selected, ActionListener actionListener)
+    public static void addJCheckBoxMenuItem(JMenu menu, String itemName, boolean selected, ActionListener actionListener)
     {
         JCheckBoxMenuItem jMenuItem = new JCheckBoxMenuItem(itemName);
         jMenuItem.addActionListener(actionListener);

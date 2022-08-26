@@ -34,6 +34,7 @@ public class TestHeuristicStateValues
 	 * 	evaluation term that's applicable for every alternating-move game.
 	 */
 	@Test
+	@SuppressWarnings("static-method")
 	public void test()
 	{
 		final File startFolder = new File("../Common/res/lud/");

@@ -37,15 +37,15 @@ public final class GraphRoutines
         List<Integer> nextLayer = new ArrayList<>();
 
         int d = 1;
-        layer.add(r);
+        layer.add(Integer.valueOf(r));
         while (!layer.isEmpty())
         {
             int finalD = d;
             nextLayer.clear();
             layer.forEach((v) ->
             {
-                graph.getNode(v).setDepth(finalD);
-                nextLayer.addAll(graph.getNode(v).children());
+                graph.getNode(v.intValue()).setDepth(finalD);
+                nextLayer.addAll(graph.getNode(v.intValue()).children());
             });
             layer = new ArrayList<>(nextLayer);
             d++;
@@ -89,22 +89,22 @@ public final class GraphRoutines
         HashMap<Integer, List<Double>> layerSpread = new HashMap<>();
 
         List<Integer> Q = new ArrayList<>();
-        Q.add(root);
+        Q.add(Integer.valueOf(root));
 
         while (!Q.isEmpty())
         {
-            int n = Q.remove(0);
+            int n = Q.remove(0).intValue();
             iGNode node = graph.getNode(n);
             // if node is a parent: find its configurations
             if (!node.children().isEmpty())
             {
                 List<Integer> children = graph.getNode(n).children();
-                int depth = graph.getNode(children.get(0)).depth();
+                int depth = graph.getNode(children.get(0).intValue()).depth();
                 // compute D
                 double xDiffMean = 0.0;
                 for (Integer child: children)
                 {
-                    xDiffMean += Math.abs(computeNodeHorizontalDistance(n, child, graph));
+                    xDiffMean += Math.abs(computeNodeHorizontalDistance(n, child.intValue(), graph));
                 }
                 xDiffMean /= children.size();
                 double D = (Math.max(0, Math.min(xDiffMean, NODES_MAX_DIST))) / (NODES_MAX_DIST);
@@ -116,8 +116,8 @@ public final class GraphRoutines
                 }
                 else
                 {
-                    iGNode f = graph.getNode(children.get(0));
-                    iGNode l = graph.getNode(children.get(children.size()-1));
+                    iGNode f = graph.getNode(children.get(0).intValue());
+                    iGNode l = graph.getNode(children.get(children.size()-1).intValue());
                     O = ((node.pos().y()+node.height()/2.0) - f.pos().y()) / Math.abs(l.pos().y()+l.height() - f.pos().y());
                     O = Math.max(0.0, Math.min(1.0, O));
                 }
@@ -131,9 +131,9 @@ public final class GraphRoutines
                 else
                 {
                     // order children by Y coordinate
-                    children.sort((o1, o2) -> (int) (graph.getNode(o1).pos().y() - graph.getNode(o2).pos().y()));
+                    children.sort((o1, o2) -> (int) (graph.getNode(o1.intValue()).pos().y() - graph.getNode(o2.intValue()).pos().y()));
                     for (int i = 0; i < children.size()-1; i++)
-                        Smean += abs(computeNodeVerticalDistance(children.get(i), children.get(i+1), graph));
+                        Smean += abs(computeNodeVerticalDistance(children.get(i).intValue(), children.get(i+1).intValue(), graph));
                     Smean /= children.size()-1;
                     S = Math.max(0, Math.min(Smean, NODES_MAX_SPREAD)) / (NODES_MAX_SPREAD);
                 }
@@ -164,8 +164,8 @@ public final class GraphRoutines
 
 	private static void addWeight(int d, double w, HashMap<Integer, List<Double>> weightMap)
     {
-        if (!weightMap.containsKey(d)) weightMap.put(d, new ArrayList<>());
-        weightMap.get(d).add(w);
+        if (!weightMap.containsKey(Integer.valueOf(d))) weightMap.put(Integer.valueOf(d), new ArrayList<>());
+        weightMap.get(Integer.valueOf(d)).add(Double.valueOf(w));
     }
 
 	private static double getAvgWeight(HashMap<Integer, List<Double>> weightMap)
@@ -178,10 +178,10 @@ public final class GraphRoutines
             if(keys.size() - i > 1)
                 layerWeight /= 2.0;
             double layerAvg = 0.0;
-            int k = keys.get(i);
-            List<Double> list = weightMap.get(k);
+            int k = keys.get(i).intValue();
+            List<Double> list = weightMap.get(Integer.valueOf(k));
             for (Double aDouble : list)
-                layerAvg += aDouble;
+                layerAvg += aDouble.doubleValue();
             layerAvg /= list.size();
 
             avg += layerAvg*layerWeight;
@@ -201,10 +201,10 @@ public final class GraphRoutines
         // current node
         iGNode node = graph.getNode(root);
         List<Integer> p = new ArrayList<>(pprime);
-        p.add(root);
+        p.add(Integer.valueOf(root));
         node.children().forEach(cid ->
         {
-            iGNode c = graph.getNode(cid);
+            iGNode c = graph.getNode(cid.intValue());
             List<Integer> pTemp = new ArrayList<>(p);
             pTemp.add(cid);
             if (c.children().isEmpty() || c.fixed())
@@ -213,7 +213,7 @@ public final class GraphRoutines
             }
             else
             {
-                findAllPaths(paths, graph, cid, p);
+                findAllPaths(paths, graph, cid.intValue(), p);
             }
         });
     }
@@ -232,10 +232,10 @@ public final class GraphRoutines
         int rbY = (int) graph.getNode(root).pos().y();
 
         List<Integer> Q = new ArrayList<>();
-        Q.add(root);
+        Q.add(Integer.valueOf(root));
         while (!Q.isEmpty())
         {
-            int nId = Q.remove(0);
+            int nId = Q.remove(0).intValue();
             iGNode node = graph.getNode(nId);
             if (node.pos().x() < ltX) ltX = (int) node.pos().x();
             if (node.pos().x() + node.width() > rbX) rbX = (int) node.pos().x() + node.width();

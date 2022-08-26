@@ -16,6 +16,7 @@ import other.concept.Concept;
 import other.context.Context;
 import other.trial.Trial;
 
+@SuppressWarnings("static-method")
 public abstract class MultiMetricFramework extends Metric
 {
 

@@ -15,7 +15,7 @@ public class TestMath
 {
 	
 	@Test
-	public void testCombinations()
+	public static void testCombinations()
 	{
 		assertEquals(ListUtils.numCombinationsWithReplacement(5, 1), 5);
 		assertEquals(ListUtils.numCombinationsWithReplacement(5, 2), 15);

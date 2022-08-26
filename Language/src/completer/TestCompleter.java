@@ -75,7 +75,7 @@ public class TestCompleter
 		
 	//-------------------------------------------------------------------------
 
-	void testLoadLuds()
+	static void testLoadLuds()
 	{
 		final Map<String, String> luds = Completer.getAllLudContents();
 		final Map<String, String> defs = Completer.getAllDefContents();
@@ -85,7 +85,7 @@ public class TestCompleter
 	
 	//-------------------------------------------------------------------------
 
-	void testCompletion()
+	static void testCompletion()
 	{
 		testCompletion("TestReconOneClause.lud");
 		testCompletion("TestReconTwoClauses.lud");
@@ -99,7 +99,7 @@ public class TestCompleter
 		testCompletion("TestReconEnumeration2.lud");
 	}
 	
-	void testCompletion(final String fileName)
+	static void testCompletion(final String fileName)
 	{
 		//final String fileName = "TestReconA.lud";
 		final String filePath = "../Common/res/lud/test/recon/" + fileName;
@@ -153,11 +153,8 @@ public class TestCompleter
 
 	public static void main(String[] args)
 	{
-		final TestCompleter app = new TestCompleter();
-		
-		//app.testSaving();
-		app.testLoadLuds();
-		app.testCompletion();
+		TestCompleter.testLoadLuds();
+		TestCompleter.testCompletion();
 	}
 	
 }

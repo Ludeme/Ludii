@@ -42,6 +42,7 @@ public class TestDecision
 	 * @throws IOException
 	 */
 	@Test
+	@SuppressWarnings("static-method")
 	public void test() throws FileNotFoundException, IOException
 	{
 		final File startFolder = new File("../Common/res/lud");

@@ -18,7 +18,7 @@ public class TestChunkSets
 {
 	
 	@Test
-	public void testViolatesNotA()
+	public static void testViolatesNotA()
 	{
 		// State chunkset: 		0011 1111 0011 0001 0111
 		final ChunkSet s = new ChunkSet(4, 5);
@@ -45,7 +45,7 @@ public class TestChunkSets
 	}
 	
 	@Test
-	public void testViolatesNotB()
+	public static void testViolatesNotB()
 	{
 		// State chunkset: 		0011 1111 0011 0001 0111
 		final ChunkSet s = new ChunkSet(4, 5);
@@ -72,7 +72,7 @@ public class TestChunkSets
 	}
 	
 	@Test
-	public void testViolatesNotC()
+	public static void testViolatesNotC()
 	{
 		// State chunkset: 		0011 1111 0011 0001 0111
 		final ChunkSet s = new ChunkSet(4, 5);
@@ -99,7 +99,7 @@ public class TestChunkSets
 	}
 	
 	@Test
-	public void testViolatesNotD()
+	public static void testViolatesNotD()
 	{
 		// State chunkset: 		0011 1111 0011 0000 0111
 		final ChunkSet s = new ChunkSet(4, 5);
@@ -126,7 +126,7 @@ public class TestChunkSets
 	}
 	
 	@Test
-	public void testViolatesNotE()
+	public static void testViolatesNotE()
 	{
 		// State chunkset: 		0011 1111 0011 0000 0111
 		final ChunkSet s = new ChunkSet(4, 5);
@@ -153,7 +153,7 @@ public class TestChunkSets
 	}
 	
 	@Test
-	public void testGetNonzeroChunks()
+	public static void testGetNonzeroChunks()
 	{
 		// Pick a random power of 2 (up to and including 4, for max chunksize of 16)
 		final int power = ThreadLocalRandom.current().nextInt(5);

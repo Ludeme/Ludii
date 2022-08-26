@@ -25,6 +25,7 @@ import other.topology.Vertex;
 public class BoardDistanceTest
 {
 	@Test
+	@SuppressWarnings("static-method")
 	public void test()
 	{
 		final String[] gameNames = 

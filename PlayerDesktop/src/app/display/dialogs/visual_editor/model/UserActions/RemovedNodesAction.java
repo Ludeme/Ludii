@@ -63,8 +63,8 @@ public class RemovedNodesAction implements IUserAction
             if(inputs.get(arg) instanceof LudemeNode)
             {
                 LudemeNode inputNode = (LudemeNode)inputs.get(arg);
-                copiedIds.put(arg, inputNode.id());
-                nodeId.put(inputNode.id(), inputNode);
+                copiedIds.put(arg, Integer.valueOf(inputNode.id()));
+                nodeId.put(Integer.valueOf(inputNode.id()), inputNode);
             }
         }
 
@@ -85,8 +85,8 @@ public class RemovedNodesAction implements IUserAction
                     if(copy[i] instanceof LudemeNode)
                     {
                         LudemeNode inputNode = (LudemeNode)copy[i];
-                        copy[i] = inputNode.id();
-                        nodeId.put(inputNode.id(), inputNode);
+                        copy[i] = Integer.valueOf(inputNode.id());
+                        nodeId.put(Integer.valueOf(inputNode.id()), inputNode);
                     }
                 }
                 copiedIds.put(arg, copy);
@@ -132,7 +132,7 @@ public class RemovedNodesAction implements IUserAction
         for(LudemeNode n : removedNodesSorted)
         {
             LinkedHashMap<NodeArgument, Integer> ids = copiedNodeInputIds.get(n);
-            if(ids.containsValue(node.id()))
+            if(ids.containsValue(Integer.valueOf(node.id())))
             {
                 node.setParent(n);
                 Handler.addEdge(graph, n, node, node.creatorArgument());
@@ -144,7 +144,7 @@ public class RemovedNodesAction implements IUserAction
             LinkedHashMap<NodeArgument, Object[]> ids = copiedCollectionNodeIds.get(ln);
             for(NodeArgument arg : ids.keySet())
             {
-                if(Arrays.asList(ids.get(arg)).contains(node.id()))
+                if(Arrays.asList(ids.get(arg)).contains(Integer.valueOf(node.id())))
                 {
                     node.setParent(ln);
                     return;
