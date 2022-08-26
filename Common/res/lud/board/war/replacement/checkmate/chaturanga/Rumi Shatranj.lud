@@ -1,28 +1,3 @@
-(define "CaptureToPiece"
-    (apply 
-        (remove 
-            (to) 
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
-)
-
-//------------------------------------------------------------------------------
-
 (game "Rumi Shatranj"
     ("TwoPlayersNorthSouth") 
     (equipment {
@@ -103,18 +78,10 @@
             )
         )
         }
-        (end
-            {
-            (if 
-                (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
+        (end {
+            ("Checkmate" "King_noCross")
             ("BlockWin")
-            }
-        )
+        })
     )
 )
 
