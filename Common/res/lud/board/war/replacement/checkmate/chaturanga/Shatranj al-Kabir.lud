@@ -14,20 +14,9 @@
     (and ("IsEnemyAt" (to))
         (not 
             (and { 
-                (= (what at:(to)) (id "Pawn" Next))
+                ("IsPieceAt" "Pawn" Next (to))
                 (is In (to) (sites Mover))
             })
-        )
-    )
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("EnemyNotImmumned") 
-            (apply (remove (to)))
         )
     )
 )
@@ -70,8 +59,8 @@
     (forEach
         (sites Empty)
         if:(if (is Mover P1)
-            (and (is Enemy (who at:(ahead (site) NE))) (is Enemy (who at:(ahead (site) NW))))
-            (and (is Enemy (who at:(ahead (site) SE))) (is Enemy (who at:(ahead (site) SW))))
+            (and ("IsEnemyAt" (ahead (site) NE)) ("IsEnemyAt" (ahead (site) NW)))
+            (and ("IsEnemyAt" (ahead (site) SE)) ("IsEnemyAt" (ahead (site) SW)))
         )
     )
 )
@@ -80,7 +69,7 @@
     (forEach 
         (sites Next) 
         if:(and 
-            (= (what at:(site)) (id "Pawn" Mover)) 
+            ("IsPieceAt" "Pawn" Mover (site)) 
             (<= (value Piece at:(site)) 2)
         )
     )
@@ -97,7 +86,7 @@
     (forEach 
         (sites Next) 
         if:(and {
-            (= (what at:(site)) (id "Pawn" Mover)) 
+            ("IsPieceAt" "Pawn" Mover (site))
             (or (= (value Piece at:(site)) 11) (= (value Piece at:(site)) 12))
             (= (state at:(site)) 1)
         })
@@ -136,16 +125,10 @@
         )
         (piece "Pawn" Each
             (if (= "ValueOfPawnKingPower" (value Piece at:(from)))
-                (move
-                    Step 
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        "CaptureToPiece"
-                    ) 
-                )
+                ("StepToNotFriend")
                 (or
                     "StepForwardToEmpty" 
-                    "CaptureForwardDiagonal"	
+                	("StepToEnemy" (directions {FR FL}))	
                     (then 
                         (if ("NotSpecialPawn")
                             ("PromoteToAssignedPiece")
@@ -172,8 +155,7 @@
         )
         
         (piece "Knight_rotated" Each
-            (move
-                Leap 
+            (move Leap 
                 { {F F F R F } {F F F L F } } 
                 (to 
                     if:(or (is Empty (to)) ("EnemyNotImmumned")) 
@@ -196,8 +178,7 @@
         )
         
         (piece "Queen" Each
-            (move
-                Step 
+            (move Step 
                 Diagonal
                 (to 
                     if:(or (is Empty (to)) ("EnemyNotImmumned")) 
@@ -207,8 +188,7 @@
         )
         
         (piece "King_noCross" Each
-            (move
-                Step 
+            (move Step 
                 (to 
                     if:(or 
                         (is Empty (to)) 
@@ -229,8 +209,7 @@
         )
         
         (piece "Amazon" Each
-            (move
-                Step 
+            (move Step 
                 Orthogonal
                 (to 
                     if:(or (is Empty (to)) ("EnemyNotImmumned")) 
@@ -267,8 +246,7 @@
             )
         )
         (piece "Bishop_noCross" Each
-            (move
-                Slide 
+            (move Slide 
                 Diagonal
                 (between (min 2))
                 (to 
@@ -279,8 +257,7 @@
         )
         
         (piece "Knight" Each
-            (move
-                Leap 
+            (move Leap 
                 "KnightWalk" 
                 (to 
                     if:(or (is Empty (to)) ("EnemyNotImmumned")) 
@@ -290,8 +267,7 @@
         )
         
         (piece "Rook" Each
-            (move
-                Slide 
+            (move Slide 
                 Orthogonal
                 (to 
                     if:("EnemyNotImmumned") 
@@ -365,20 +341,12 @@
             )
         )
         (end { 
-            (if 
-                (no Moves Next)
-                (result Mover Win)
-            )
-            (if (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            )
+        	("BlockWin")
+        	("Checkmate" "King_noCross")
             (if 
                 (or 
-                    (= (what at:(mapEntry "ExtraSquare" P1)) (id "King_noCross" P2))
-                    (= (what at:(mapEntry "ExtraSquare" P2)) (id "King_noCross" P1))
+                    ("IsPieceAt" "King_noCross" P2 (mapEntry "ExtraSquare" P1))
+                    ("IsPieceAt" "King_noCross" P1 (mapEntry "ExtraSquare" P2))
                 )
                 (result Mover Draw)
             )
