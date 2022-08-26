@@ -1,68 +1,16 @@
-(define "CaptureEnemyToPiece"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove (to))
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
+(define "CaptureForwardDiagonal" ("StepToEnemy" (directions {FR FL})))
 (define "NextCanNotMove" (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next (forEach Piece)))))))
-
-(define "KingMove"
-    (move Step
-        (to if:(not ("IsFriendAt" (to)))
-            ("CaptureEnemyToPiece")
-        )
-    )
-)
-
-(define "KnightMove" 
-    (move
-        Leap 
-        "KnightWalk" 
-        (to 
-            if:(not ("IsFriendAt" (to))) 
-            "CaptureEnemyToPiece"
-        ) 
-    )		
-)
-
-(define "QueenMove" 
-    (move Step
-        Diagonal
-        (to if:(not ("IsFriendAt" (to)))
-            ("CaptureEnemyToPiece")
-        )
-    ) 		
-)
-
+(define "KingMove" ("StepToNotFriend"))
+(define "KnightMove" ("LeapCapture" "KnightWalk"))
+(define "QueenMove" ("StepToNotFriend" Diagonal))
+(define "RookMove" ("SlideCapture" Orthogonal))
 (define "ElephantMove"
     (move Hop Orthogonal 
         (between if:True) 
-        (to if:(not ("IsFriendAt" (to))) ("CaptureEnemyToPiece")) 
-    )		
-)
-
-(define "RookMove" 
-    (move
-        Slide 
-        Orthogonal
-        (to 
-            if:("IsEnemyAt" (to)) 
-            "CaptureEnemyToPiece"
+        (to if:(not ("IsFriendAt" (to))) 
+        	(apply (if ("IsEnemyAt" (to)) (remove (to)))) 
         ) 
-    )	
+    )		
 )
 
 //------------------------------------------------------------------------------
@@ -81,11 +29,7 @@
             (or 
                 "StepForwardToEmpty" 
                 "CaptureForwardDiagonal"
-                (then
-                    (if (is In (last To) (sites Top)) 
-                        (promote (last To) (piece "Ferz_noCross") Mover)
-                    )
-                )
+                (then ("PromoteIfReach" (sites Top) "Ferz_noCross"))
             )		
         )
         (piece "King_noCross" P2
