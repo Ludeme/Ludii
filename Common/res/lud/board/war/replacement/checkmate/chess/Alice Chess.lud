@@ -48,8 +48,7 @@
 (define "DecideToCastle"
     (do
         (set Value at:(mapEntry #1 (mover)) (% (+ (value Piece at:(mapEntry #1 (mover))) 1) 2))
-        next:(move
-            Slide
+        next:(move Slide
             (from (mapEntry #1 (mover))) 
             #2 
             (between 
@@ -92,8 +91,7 @@
 )
 
 (define "DoubleStep"
-    (move
-        Slide 
+    (move Slide 
         Forward 
         (between 
             (exact 2)
@@ -111,8 +109,7 @@
 )
 
 (define "CaptureForwardDiagonal"
-    (move
-        Step 
+    (move Step 
         (directions {FR FL}) 
         (to 
             if:(and 
