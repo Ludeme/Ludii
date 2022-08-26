@@ -1,94 +1,37 @@
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
-)
-
-(define "CaptureToPiece"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove 
-                (to) 
-            )
-        )
-    ) 
-)
-
-//------------------------------------------------------------------------------
-
 (game "1D Chess" 
     (players 2) 
     (equipment { 
         (board (rectangle 1 <BoardSize:BoardSize>)) 
-        
-        (piece "Rook" Each 
-            (move 
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "King" Each 
-            (move 
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "Knight" Each 
-            (move 
-                Leap 
-                { {F F} }
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        }
-    ) 
+        ("ChessRook" "Rook")
+        ("ChessKing" "King")
+        (piece "Knight" Each ("LeapCapture" { {F F} }))
+    }) 
     (rules 
-        (start
-            { 
+        (start { 
             (place "Rook1" coord:"C1") (place "Knight1" coord:"B1") (place "King1" coord:"A1") 
             <BoardSize:PiecePlacement>
-            }
-        )
+        })
         
         (play (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King" Mover))))
         
-        (end
-            {
-            (if (and 
-                    ("IsInCheck" "King" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
+        (end {
+        	("Checkmate" "King")
             (if (or (no Moves Mover) (= (counter) 100)) (result Mover Draw)) 
-            }
-        )
+         })
     )
 )
 
 (option "BoardSize" <BoardSize> args:{ <BoardSize> <PiecePlacement> }
     {
     (item "8" 	
-        <
-        8
-        >
+        <8>
         <
         (place "Rook2" coord:"F1") (place "Knight2" coord:"G1") (place "King2" coord:"H1") 
         >
     "Board of length 8.")**
     
     (item "9" 	
-        <
-        9
-        >
+        <9>
         <
         (place "Rook2" coord:"G1") (place "Knight2" coord:"H1") (place "King2" coord:"I1") 
         >
