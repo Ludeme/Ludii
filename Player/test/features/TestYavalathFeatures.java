@@ -33,8 +33,9 @@ import other.trial.Trial;
 public class TestYavalathFeatures
 {
 	
+	@SuppressWarnings("static-method")
 	@Test
-	public static void test()
+	public void test()
 	{
 		final Game game = GameLoader.loadGameFromName("/Yavalath.lud");
 		
