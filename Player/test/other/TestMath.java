@@ -14,8 +14,9 @@ import main.collections.ListUtils;
 public class TestMath
 {
 	
+	@SuppressWarnings("static-method")
 	@Test
-	public static void testCombinations()
+	public void testCombinations()
 	{
 		assertEquals(ListUtils.numCombinationsWithReplacement(5, 1), 5);
 		assertEquals(ListUtils.numCombinationsWithReplacement(5, 2), 15);
