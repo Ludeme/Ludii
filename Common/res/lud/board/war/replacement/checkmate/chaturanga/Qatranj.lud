@@ -1,137 +1,29 @@
-(define "CaptureToPiece"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove 
-                (to) 
-            )
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
-)
-
-//------------------------------------------------------------------------------
-
 (game "Qatranj"
     ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 10)) 
-        // Rukh
-        (piece "Rook" Each
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )		
-        )
-        // Ghora
-        (piece "Knight" Each
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )		
-        )
-        // Fil
-        (piece "Bishop_noCross" Each
-            (move
-                Slide 
-                Diagonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )		
-        )
-        // Wazir
-        (piece "Queen" Each
-            (move
-                Slide 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )			
-        )
+        ("ChessRook" "Rook") // Rukh
+        ("ChessKnight" "Knight") // Ghora
+        ("ChessBishop" "Bishop_noCross") // Fil
+        ("ChessQueen" "Queen")
         // Shahzada
         (piece "Commoner" Each
             (or
-                (move
-                    Slide 
-                    (to 
-                        if:("IsEnemyAt" (to)) 
-                        "CaptureToPiece"
-                    ) 
-                )
-                (move
-                    Leap 
-                    "KnightWalk" 
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        "CaptureToPiece"
-                    ) 
-                )	
+                ("SlideCapture")
+                ("LeapCapture" "KnightWalk")	
             )
         )
-        // Padshah
-        (piece "King_noCross" Each
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )		
-        )
-        // Kotwal
-        (piece "Mann" Each
+        ("ChessKing" "King_noCross") // Padshah
+        (piece "Mann" Each // Kotwal
             (or
-                (move
-                    Slide 
-                    (to 
-                        if:("IsEnemyAt" (to)) 
-                        "CaptureToPiece"
-                    ) 
-                )
-                (move
-                    Leap 
-                    "KnightWalk" 
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        "CaptureToPiece"
-                    ) 
-                )	
+                ("SlideCapture")
+                ("LeapCapture" "KnightWalk")	
             )		
         )
         // Urdabegini
         (piece "Wazir" Each
             (do
-                (move
-                    Step 
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        "CaptureToPiece"
-                    ) 
-                )
+                ("StepToNotFriend") 
                 ifAfterwards:(> (count Steps
                         (last From)
                         (where "King_noCross" Next)
@@ -148,7 +40,7 @@
         (piece "Pawn" Each
             (or 
                 "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
+                ("StepToEnemy" (directions {FR FL}))
             )		
         )
     })
@@ -169,14 +61,7 @@
                 ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
             )
         )
-        (end {
-            (if (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
-        })
+        (end ("Checkmate" "King_noCross"))
     )
 )
 

@@ -34,6 +34,7 @@ import utils.AIUtils;
  * 
  * @author Dennis Soemers and Eric.Piette
  */
+@SuppressWarnings("static-method")
 public class TestTrialsIntegrityERIC
 {
 	/**
@@ -43,7 +44,7 @@ public class TestTrialsIntegrityERIC
 	 * @throws IOException
 	 */
 	@Test
-	public static void test() throws FileNotFoundException, IOException
+	public void test() throws FileNotFoundException, IOException
 	{
 		final File startFolder = new File("../Common/res/lud");
 		final List<File> gameDirs = new ArrayList<File>();
@@ -115,7 +116,7 @@ public class TestTrialsIntegrityERIC
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getName().contains("Persian Chess with a Queen"))
+			if (fileEntry.getName().contains("Qatranj"))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
 					gameReached = true;
