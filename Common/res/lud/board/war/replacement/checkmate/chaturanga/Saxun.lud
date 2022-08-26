@@ -1,121 +1,29 @@
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
-)
-
-(define "CaptureToPiece"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove 
-                (to) 
-            )
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
-//------------------------------------------------------------------------------
-
 (game "Saxun" 
     ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8)) 
-        
-        // Layakúcan
-        (piece "Pawn" Each 
-            (or 
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
-            )
-        )
-        // Lúdkax
-        (piece "Rook" Each 
-            (move
-                Slide Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        // Alyx
-        (piece "King_noCross" Each 
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        // Slúnax
-        (piece "Bishop_noCross" Each 
-            (move
-                Slide 
-                Diagonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        // Kúnax
-        (piece "Knight" Each 
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        // Férsix
-        (piece "Queen" Each 
-            (move
-                Slide 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            ) 
-        )
-        }
-    ) 
+        ("ChessPawn" "Pawn") // Layakúcan
+        ("ChessRook" "Rook") // Lúdkax
+        ("ChessKing" "King_noCross") // Alyx
+        ("ChessBishop" "Bishop_noCross") // Slúnax
+        ("ChessKnight" "Knight") // Kúnax
+        ("ChessQueen" "Queen") // Férsix
+    }) 
     (rules 
-        (start
-            { 
+        (start { 
             (place "Pawn1" {"F4" "G4" "H4" "B3" "C3" "D3" "E3" "A2"})
             (place "Pawn2" {"H7" "H6" "G6" "F6" "E6" "A5" "B5" "C5"})
             (place "Rook1" {"C2" "D1"}) (place "Knight1" {"B1" "H2"}) (place "Bishop_noCross1" {"E1" "F1"}) (place "Queen1" coord:"D2") (place "King_noCross1" coord:"C1") 
             (place "Rook2" {"C7" "B8"}) (place "Knight2" {"A7" "H8"}) (place "Bishop_noCross2" {"F7" "G7"}) (place "Queen2" coord:"B7") (place "King_noCross2" coord:"C8") 
-            }
-        )
+        })
         
         (play 
-            (do 
-                (forEach Piece)
+            (do (forEach Piece)
                 ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
             )
         )
         
-        (end
-            (if (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
-        )
+        (end ("Checkmate" "King_noCross"))
     )
 )
 
