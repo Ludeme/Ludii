@@ -11,20 +11,14 @@
                 (to 
                     if:(or 
                         (is Empty (to)) 
-                        (and ("IsEnemyAt" (to)) (!= (what at:(to)) (id "Elephant" Next)))
+                        (and ("IsEnemyAt" (to)) (not ("IsPieceAt" "Elephant" Next (to))))
                     ) 
                     (apply (remove (to)))
                 ) 
             )
         )
         ("ChessKnight" "Knight")
-        ("ChessPawn" "Pawn" ~
-                (then
-                    (if (is In (last To) (sites Mover "Promotion")) 
-                        (moveAgain)
-                    )
-                )
-        )
+        ("ChessPawn" "Pawn" ~ (then ("ReplayInMovingOn" (sites Mover "Promotion"))))
         (piece "Ferz_noCross" Each ("StepToNotFriend" Diagonal))
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
