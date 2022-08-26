@@ -1,60 +1,12 @@
-(define "CaptureToPiece"
-    (apply 
-        (remove 
-            (to) 
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
-)
-
-//------------------------------------------------------------------------------
-
 (game "Tsatsarandi"
     (players 2)
     (equipment {
         (board (square 8))
-        (piece "Pawn"
-            (or 
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
-            )		
-        )
-        (piece "Rook"
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )		
-        )
-        (piece "King_noCross"
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece" 
-                )
-            )		
-        )
+        ("ChessPawn" "Pawn")
+        ("ChessRook" "Rook")
+        ("ChessKing" "King_noCross")
         (piece "Bishop_noCross"
-            (move 
-                Hop 
+            (move Hop 
                 Diagonal 
                 (between if:True) 
                 (to 
@@ -62,30 +14,12 @@
                         (is Empty (to)) 
                         ("IsEnemyAt" (to))
                     ) 
-                    "CaptureToPiece"
+                    (apply (remove (to))) 
                 )
             )		
         )
-        (piece "Knight"
-            (move 
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )		
-        )
-        (piece "Ferz_noCross"
-            (move
-                Step 
-                Diagonal
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece" 
-                )
-            )		
-        )
+        ("ChessKnight" "Knight")
+        (piece "Ferz_noCross" ("StepToNotFriend" Diagonal))
     })
     (rules 
         (start {
@@ -100,17 +34,7 @@
             (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
         )
         
-        (end
-            {
-            (if 
-                (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
-            }
-        )
+        (end ("Checkmate" "King_noCross"))
     )
 )
 
