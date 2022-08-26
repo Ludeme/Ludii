@@ -1,105 +1,23 @@
-(define "CaptureToPiece"
-    (apply 
-        (remove 
-            (to) 
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
-)
-
-//------------------------------------------------------------------------------
-
 (game "Shatranj (Algeria)" 
     ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8)) 
         
-        (piece "Pawn" Each 
-            (or 
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
-                (then
-                    (if (is In (last To) (sites Mover "Promotion")) 
-                        (promote (last To) (piece (id "Ferz_noCross" Mover)))
-                    )
-                )
-            )
-        )
-        
-        (piece "Rook" Each 
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
+        ("ChessPawn" "Pawn" ~ (then ("PromoteIfReach" (sites Mover "Promotion") "Ferz_noCross")))
+        ("ChessRook" "Rook")
         (piece "King_noCross" Each 
             (or
-                (move
-                    Step 
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        "CaptureToPiece" 
-                    )
-                )
+                ("StepToNotFriend")
                 (if (!= (value Player Mover) (mover))
-                    (move
-                        Leap 
-                        "KnightWalk" 
-                        (to 
-                            if:(is Empty (to))
-                        )
+                    ("LeapToEmpty" "KnightWalk"
                         (then (set Value Mover (mover)))
                     )
                 )
             )	
         )
-        (piece "Elephant" Each 
-            (move
-                Slide 
-                Diagonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "Knight" Each 
-            (move 
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "Ferz_noCross" Each 
-            (move
-                Slide 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
+        ("ChessBishop" "Elephant")
+        ("ChessKnight" "Knight")
+        ("ChessQueen" "Ferz_noCross")
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     }) 
@@ -125,19 +43,11 @@
             )
         )
         
-        (end
-            {
-            (if 
-                (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
+        (end {
+        	("Checkmate" "King_noCross")
             (if (= (count Pieces Next) 1) (result Mover Win)) 
             ("BlockWin")
-            }
-        )
+        })
     )
 )
 
