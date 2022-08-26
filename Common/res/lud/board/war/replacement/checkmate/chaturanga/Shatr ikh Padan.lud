@@ -1,52 +1,9 @@
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
-)
-
-(define "CaptureToPiece"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove 
-                (to) 
-            )
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
-//------------------------------------------------------------------------------
-
 (game "Shatr ikh Padan" 
     ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8)) 
-        
-        (piece "Pawn" Each 
-            (or {
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
-                }
-            )
-        )
-        
-        (piece "King_noCross" Each 
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
+        ("ChessPawn" "Pawn")
+        ("ChessKing" "King_noCross")
     }) 
     (rules 
         (start { 
@@ -57,20 +14,12 @@
         })
         
         (play 
-            (do 
-                (forEach Piece)
+            (do (forEach Piece)
                 ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
             )
         )
         
-        (end {
-            (if (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
-        })
+        (end ("Checkmate" "King_noCross"))
     )
 )
 
