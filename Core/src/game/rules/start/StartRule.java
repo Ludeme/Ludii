@@ -9,7 +9,6 @@ import other.BaseLudeme;
  * 
  * @author cambolbro
  */
-@SuppressWarnings("static-method")
 public abstract class StartRule extends BaseLudeme implements Rule
 {
 	private static final long serialVersionUID = 1L;
