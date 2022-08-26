@@ -21,8 +21,7 @@
 )
 
 (define "CaptureForwardDiagonal"
-    (move
-        Step 
+    (move Step 
         (directions {FR FL}) 
         (to 
             if:(= ("RightPlayer") (who at:(to))) 
@@ -36,11 +35,7 @@
         "StepForwardToEmpty" 
         "CaptureForwardDiagonal"
         }
-        (then
-            (if (is In (last To) (sites #1)) 
-                (promote (last To) (piece {"Queen"}) Mover)
-            )
-        )
+        (then ("PromoteIfReach" (sites #1) "Queen"))
     )
 )
 
@@ -109,8 +104,7 @@
         (piece "Pawn3d" P4 N ("PawnMove" Top))
         
         (piece "Knight" Each
-            (move
-                Leap 
+            (move Leap 
                 "KnightWalk" 
                 (to 
                     if:("EmptyorNext") 
@@ -119,8 +113,7 @@
             )
         )
         (piece "Rook" Each
-            (move
-                Slide 
+            (move Slide 
                 Orthogonal 
                 (to 
                     if:(= ("RightPlayer") (who at:(to))) 
@@ -129,8 +122,7 @@
             )
         )
         (piece "Bishop" Each
-            (move 
-                Hop 
+            (move Hop 
                 Diagonal 
                 (between if:True) 
                 (to 
@@ -140,8 +132,7 @@
             )		
         )
         (piece "Queen" Each
-            (move
-                Step 
+            (move Step 
                 Diagonal
                 (to 
                     if:("EmptyorNext") 
