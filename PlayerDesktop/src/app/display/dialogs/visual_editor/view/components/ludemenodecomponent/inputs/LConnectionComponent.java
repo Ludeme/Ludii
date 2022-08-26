@@ -30,7 +30,7 @@ public class LConnectionComponent extends JComponent
     /** Position of the ConnectionPointComponent */
     private ImmutablePoint connectionPointPosition = new ImmutablePoint(0, 0);
     /** The LudemeNodeComponent this ConnectionComponent is connected to */
-    private LudemeNodeComponent connectedTo;
+    LudemeNodeComponent connectedTo;
     /** Whether this ConnectionComponent is filled (connected) */
     private boolean isFilled;
 
@@ -189,7 +189,7 @@ public class LConnectionComponent extends JComponent
      *
      * @return whether the input field is optional
      */
-    private boolean optional()
+    boolean optional()
     {
         return INPUT_FIELD.optional();
     }
@@ -198,7 +198,7 @@ public class LConnectionComponent extends JComponent
      *
      * @return the radius of the connection component
      */
-    private int radius()
+    int radius()
     {
         return (int)(INPUT_FIELD.label().getPreferredSize().height * 0.4 * (1.0/ DesignPalette.SCALAR));
     }

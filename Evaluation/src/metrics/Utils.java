@@ -176,14 +176,14 @@ public class Utils
 		final long stateAndMoveHash = context.state().fullHash() ^ move.toTrialFormat(context).hashCode() ^ rngHashcode;
 		
 		if (evaluation.stateAfterMoveEvaluationCacheContains(stateAndMoveHash))
-			return evaluation.getStateAfterMoveEvaluationCache(stateAndMoveHash);
+			return Double.valueOf(evaluation.getStateAfterMoveEvaluationCache(stateAndMoveHash));
 		
 		final TempContext copyContext = new TempContext(context);
 		copyContext.game().apply(copyContext, move);
 		final double stateEvaluationAfterMove = evaluateState(evaluation, copyContext, move.mover());
 		evaluation.putStateAfterMoveEvaluationCache(stateAndMoveHash, stateEvaluationAfterMove);
 
-		return stateEvaluationAfterMove;
+		return Double.valueOf(stateEvaluationAfterMove);
 	}
 	
 	/**

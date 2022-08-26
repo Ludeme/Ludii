@@ -74,7 +74,7 @@ public class BoardCoverageUsed extends Metric
 			numSitesCovered += ((double) sitesCovered.size()) / context.board().topology().getAllUsedGraphElements(context.game()).size();
 		}
 
-		return numSitesCovered / trials.length;
+		return Double.valueOf(numSitesCovered / trials.length);
 	}
 
 }

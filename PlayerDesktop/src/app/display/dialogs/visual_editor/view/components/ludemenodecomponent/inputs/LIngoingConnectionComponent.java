@@ -16,7 +16,7 @@ public class LIngoingConnectionComponent extends JComponent
 	private static final long serialVersionUID = -4899501888400568564L;
 	private final LHeader lHeader;
     private boolean fill;
-    private int RADIUS;
+    int RADIUS;
     private final ConnectionPointComponent connectionPointComponent;
     private ImmutablePoint connectionPointPosition = new ImmutablePoint(0, 0);
 

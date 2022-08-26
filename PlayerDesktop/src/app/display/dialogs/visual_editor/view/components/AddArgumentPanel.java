@@ -77,8 +77,8 @@ public class AddArgumentPanel extends JPanel
     };
     final JScrollPane scrollableList = new JScrollPane(list);
     public final JTextField searchField = new JTextField();
-    private LInputField initiator;
-    private List<ReadableSymbol> currentSymbols;
+    LInputField initiator;
+    List<ReadableSymbol> currentSymbols;
     public AddArgumentPanel(List<Symbol> symbolList, IGraphPanel graphPanel, boolean connect)
     {
         this(symbolList, graphPanel, connect, false);
@@ -199,7 +199,7 @@ public class AddArgumentPanel extends JPanel
         drawComponents();
     }
 
-    private List<LudemeNode> defineNodes;
+    List<LudemeNode> defineNodes;
 
     // for defines
     public void updateList(List<Symbol> symbolList, List<LudemeNode> nodes)
@@ -240,7 +240,7 @@ public class AddArgumentPanel extends JPanel
     }
 
 
-    private static boolean isConstantTerminal(Symbol s)
+    static boolean isConstantTerminal(Symbol s)
     {
         if(s.rule() == null) return false;
         if(s.rule().rhs().size() == 1 && (s.rule().rhs().get(0).args().isEmpty() || s.rule().rhs().get(0).args().get(0).symbol() == s)) return false;

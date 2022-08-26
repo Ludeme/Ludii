@@ -60,7 +60,7 @@ public class AdvantageP1 extends Metric
 			p1Wins += (RankUtils.agentUtilities(context)[1] + 1.0) / 2.0;
 		}
 
-		return p1Wins / trials.length;
+		return Double.valueOf(p1Wins / trials.length);
 	}
 
 	//-------------------------------------------------------------------------

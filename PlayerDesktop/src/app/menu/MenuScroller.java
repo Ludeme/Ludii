@@ -34,17 +34,17 @@ import javax.swing.event.PopupMenuListener;
 public class MenuScroller 
 {
   //private JMenu menu;
-  private JPopupMenu menu;
-  private Component[] menuItems;
+  JPopupMenu menu;
+  Component[] menuItems;
   private final MenuScrollItem upItem;
   private final MenuScrollItem downItem;
   private final MenuScrollListener menuListener = new MenuScrollListener();
-  private int scrollCount;
-  private int interval;
-  private int topFixedCount;
-  private int bottomFixedCount;
-  private int firstIndex = 0;
-  private int keepVisibleIndex = -1;
+  int scrollCount;
+  int interval;
+  int topFixedCount;
+  int bottomFixedCount;
+  int firstIndex = 0;
+  int keepVisibleIndex = -1;
 
   /**
    * Registers a menu to be scrolled with the default number of items to
@@ -433,7 +433,7 @@ public class MenuScroller
     dispose();
   }
 
-  private void refreshMenu() {
+  void refreshMenu() {
     if (menuItems != null && menuItems.length > 0) {
       firstIndex = Math.max(topFixedCount, firstIndex);
       firstIndex = Math.min(menuItems.length - bottomFixedCount - scrollCount, firstIndex);
@@ -470,7 +470,12 @@ public class MenuScroller
 
   private class MenuScrollListener implements PopupMenuListener {
 
-    @Override
+    public MenuScrollListener()
+	{
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
     public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
       setMenuItems();
     }

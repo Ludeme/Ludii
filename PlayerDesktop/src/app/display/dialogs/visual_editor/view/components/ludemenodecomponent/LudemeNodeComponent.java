@@ -39,7 +39,7 @@ public class LudemeNodeComponent extends JPanel
 	/** X, Y coordinates of the node */
     protected int x, y;
     /** Position of the node */
-    private final ImmutablePoint position = new ImmutablePoint(x, y);
+    final ImmutablePoint position = new ImmutablePoint(x, y);
     /** The Ludeme Node LN this component represents */
     private final LudemeNode LN;
     /** Graph Panel this node is in */
@@ -47,7 +47,7 @@ public class LudemeNodeComponent extends JPanel
     /** Whether this node is marked as uncompilable */
     private boolean markedUncompilable = false;
     // Whether the node is "marked"/selected
-    private boolean selected = false;
+    boolean selected = false;
     private boolean doubleSelected = false;
     private boolean subtree = false;
     /** Sub-Components of the node */
@@ -206,7 +206,8 @@ public class LudemeNodeComponent extends JPanel
      *
      * @return the width of a node component according to the Design Palette
      */
-    public int width()
+    @SuppressWarnings("static-method")
+	public int width()
     {
         return DesignPalette.NODE_WIDTH;
     }
@@ -257,7 +258,7 @@ public class LudemeNodeComponent extends JPanel
         return inputArea.getPreferredSize().height + header.getPreferredSize().height;
     }
 
-    private List<LudemeNodeComponent> collapsedSubtreeNodes()
+    List<LudemeNodeComponent> collapsedSubtreeNodes()
     {
         List<LudemeNodeComponent> nodes = new ArrayList<>();
         for(LudemeNode node : node().childrenNodes())
@@ -409,7 +410,7 @@ public class LudemeNodeComponent extends JPanel
         }
     };
 
-	private void handleNodeComponentSelection(MouseEvent e)
+	void handleNodeComponentSelection(MouseEvent e)
     {
         if (e.getClickCount() == 1 && !selected)
         {
@@ -432,7 +433,7 @@ public class LudemeNodeComponent extends JPanel
                 LudemeNodeComponent lnc = Q.remove(0);
                 Handler.selectNode(lnc);
                 List<Integer> children = lnc.LN.children();
-                children.forEach(v -> Q.add(GRAPH_PANEL.nodeComponent(GRAPH_PANEL.graph().getNode(v))));
+                children.forEach(v -> Q.add(GRAPH_PANEL.nodeComponent(GRAPH_PANEL.graph().getNode(v.intValue()))));
             }
             subtree = !LudemeNodeComponent.this.LN.children().isEmpty();
             graphPanel().repaint();

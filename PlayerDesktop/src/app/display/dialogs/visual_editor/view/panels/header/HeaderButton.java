@@ -23,9 +23,9 @@ public class HeaderButton extends JButton {
     public ImageIcon INACTIVE_ICON;
     public ImageIcon HOVER_ICON;
 
-    private final boolean selectable;
-    private boolean active;
-    private boolean clickListenerOn = true;
+    final boolean selectable;
+    boolean active;
+    boolean clickListenerOn = true;
 
     public HeaderButton(ImageIcon activeIcon, ImageIcon inactiveIcon, ImageIcon hoverIcon, String text, boolean active, boolean selectable)
     {

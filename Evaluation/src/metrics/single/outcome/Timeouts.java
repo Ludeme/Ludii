@@ -57,7 +57,7 @@ public class Timeouts extends Metric
 				timeouts++;
 		}
 
-		return timeouts / trials.length;
+		return Double.valueOf(timeouts / trials.length);
 	}
 
 	//-------------------------------------------------------------------------

@@ -277,10 +277,10 @@ public class ValidationController {
             double top5AverageTest = top5SumTest / (double) iterations;
             double top7AverageTest = top7SumTest / (double) iterations;
 
-            report.addRecord(Arrays.asList((double)r,
-                    nanosAverage,
-                    top1AverageTraining,top3AverageTraining,top5AverageTraining,top7AverageTraining,
-                    top1AverageTest,top3AverageTest,top5AverageTest,top7AverageTest));
+            report.addRecord(Arrays.asList(Double.valueOf(r),
+            		Double.valueOf(nanosAverage),
+            		Double.valueOf(top1AverageTraining),Double.valueOf(top3AverageTraining),Double.valueOf(top5AverageTraining),Double.valueOf(top7AverageTraining),
+            		Double.valueOf(top1AverageTest),Double.valueOf(top3AverageTest),Double.valueOf(top5AverageTest),Double.valueOf(top7AverageTest)));
         }
 
         report.writeToCSV();

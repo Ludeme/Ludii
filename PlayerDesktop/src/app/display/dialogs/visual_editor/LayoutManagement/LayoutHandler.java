@@ -175,7 +175,12 @@ public class LayoutHandler
      */
     private class EvaluateAndArrange implements ActionListener
     {
-        @Override
+        public EvaluateAndArrange()
+		{
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
         public void actionPerformed(ActionEvent e)
         {
             executeLayout();

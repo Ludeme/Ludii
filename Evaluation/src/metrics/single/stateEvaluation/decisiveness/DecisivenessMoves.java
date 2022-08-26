@@ -93,7 +93,7 @@ public class DecisivenessMoves extends Metric
 			avgDecisivenessThreshold += turnAboveDecisivenessthreshold/trial.generateRealMovesList().size();
 		}
 
-		return avgDecisivenessThreshold / trials.length;
+		return Double.valueOf(avgDecisivenessThreshold / trials.length);
 	}
 
 	//-------------------------------------------------------------------------

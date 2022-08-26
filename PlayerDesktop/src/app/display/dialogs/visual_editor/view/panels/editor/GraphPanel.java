@@ -43,7 +43,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
     private final List<LudemeNodeComponent> NODE_COMPONENTS = new ArrayList<>();
     private final Map<Integer, LudemeNodeComponent> NODE_COMPONENTS_BY_ID = new HashMap<>();
     // The last position of the mouse
-    private Point mousePosition;
+    Point mousePosition;
     // The LayoutHandler
     private final LayoutHandler lm;
     // The ConnectionHandler
@@ -51,7 +51,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
     // window to add a new ludeme out of all possible ones
     private final AddArgumentPanel addLudemePanel;
     // window to add a new ludeme as an input
-    private final AddArgumentPanel connectArgumentPanel;
+    final AddArgumentPanel connectArgumentPanel;
     // List of nodes that are not satisfied/complete
     private List<LudemeNodeComponent> uncompilableNodes = new ArrayList<>();
 
@@ -62,11 +62,11 @@ public class GraphPanel extends JPanel implements IGraphPanel
     public static List<Symbol> symbolsWithoutConnection;
 
     // flag to check if select button is active
-    private boolean SELECTION_MODE = false;
+    boolean SELECTION_MODE = false;
     // flag to check if user performs selection
-    private boolean SELECTING = false;
+    boolean SELECTING = false;
     // flag to check if selection was performed
-    private boolean SELECTED = false;
+    boolean SELECTED = false;
     // list of selected nodes
     private List<LudemeNodeComponent> selectedLnc = new ArrayList<>();
 
@@ -169,7 +169,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
     public void notifyNodeRemoved(LudemeNodeComponent lnc)
     {
         NODE_COMPONENTS.remove(lnc);
-        NODE_COMPONENTS_BY_ID.remove(lnc.node().id());
+        NODE_COMPONENTS_BY_ID.remove(Integer.valueOf(lnc.node().id()));
         remove(lnc);
         connectionHandler().removeAllConnections(lnc.node(), false);
         repaint();
@@ -421,7 +421,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
         LudemeNodeComponent lc = new LudemeNodeComponent(node, this);
         hideAllAddArgumentPanels();
         NODE_COMPONENTS.add(lc);
-        NODE_COMPONENTS_BY_ID.put(node.id(), lc);
+        NODE_COMPONENTS_BY_ID.put(Integer.valueOf(node.id()), lc);
         add(lc);
         lc.updatePositions();
 
@@ -473,7 +473,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
     @Override
     public LudemeNodeComponent nodeComponent(LudemeNode node)
     {
-        LudemeNodeComponent lnc = NODE_COMPONENTS_BY_ID.get(node.id());
+        LudemeNodeComponent lnc = NODE_COMPONENTS_BY_ID.get(Integer.valueOf(node.id()));
         if(lnc != null)
             return lnc;
 
@@ -969,7 +969,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
     /**
      * Iterate through nodes on a panel and scale their positions for zooming in/out
      */
-    private void scaleNodesPositions(double scalar)
+    void scaleNodesPositions(double scalar)
     {
         graph().getNodes().forEach(ludemeNode -> {
             Vector2D scaledPos = getScaledCoords(ludemeNode.pos(), scalar, Handler.getViewPortSize().width, Handler.getViewPortSize().height);
