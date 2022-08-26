@@ -1,13 +1,3 @@
-(define "DoubleStep"
-    (move Slide 
-        Forward 
-        (between (exact 2) if:(is Empty (between))) 
-        (to if:(is Empty (to))) 
-    )
-)
-
-//------------------------------------------------------------------------------
-
 (game "Shatranj al-Husun"
     ("TwoPlayersNorthSouth") 
     (equipment {
@@ -39,7 +29,7 @@
         ("ChessBishop" "Bishop")
         ("ChessPawn" "Pawn"
                 (if (is In (from) (sites Start (piece (what at:(from)))))
-                    "DoubleStep"
+                	("DoubleStepForwardToEmpty")
                 )
                 (then ("PromoteIfReach" (sites Mover "Promotion") "Queen"))
         )

@@ -43,14 +43,6 @@
     )
 )
 
-(define "DoubleStep"
-    (move Slide 
-        Forward 
-        (between (exact 2) if:(is Empty (between))) 
-        (to if:(is Empty (to))) 
-    )
-)
-
 (define "RememberPieceHasMoved"
     (then 
         (if 
@@ -107,7 +99,7 @@
             (or { 
                 (if (is In (from) (sites Start (piece (what at:(from)))))
                     (if (= 1 (state at:(ahead (from) Backward)))
-                        "DoubleStep"
+                    	("DoubleStepForwardToEmpty")
                     )
                 )
                 "StepForwardToEmpty" 

@@ -1,0 +1,12 @@
+// Defines a forward slide move to empty sites at distance 2.
+// #1 = The consequences of the moves.
+// @example ("DoubleStepForwardToEmpty")
+
+(define "DoubleStepForwardToEmpty"
+	    (move Slide 
+	            Forward 
+	            (between (exact 2) if:(is Empty (between))) 
+	            (to if:(is Empty (to))) 
+	            #1
+	        ) 
+)

@@ -5,14 +5,6 @@
     ) 
 )
 
-(define "DoubleStep"
-    (move Slide 
-        Forward 
-        (between (exact 2) if:(is Empty (between))) 
-        (to if:(is Empty (to))) 
-    )
-)
-
 (define "CanNotMove"
     (not (can Move (do (and (forEach Piece #1) (set NextPlayer (player #2))) ifAfterwards:(not ("IsInCheck" "King_noCross" #1)))))
 )
@@ -36,7 +28,7 @@
 
 (define "InitialPawnMove"
     (if (is In (from) (sites Start (piece (what at:(from)))))
-        "DoubleStep"
+    	("DoubleStepForwardToEmpty")
     )
 )
 

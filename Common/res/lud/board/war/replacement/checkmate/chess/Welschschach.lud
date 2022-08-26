@@ -22,15 +22,6 @@
     )
 )
 
-(define "DoubleStep"
-    (move
-        Slide 
-        Forward 
-        (between (exact 2) if:(is Empty (between))) 
-        (to if:(is Empty (to))) 
-    )
-)
-
 (define "NextCanNotMove"
     (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
 )
@@ -163,7 +154,7 @@
                     )
                     (forEach Piece "Pawn" 
                         (if (is In (from) (intersection ("SpecialStartingPawns") (sites Start (piece (what at:(from))))))
-                            "DoubleStep"
+                        	("DoubleStepForwardToEmpty")
                         )
                         Mover
                     )

@@ -40,15 +40,6 @@
     (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
 )
 
-(define "DoubleStep"
-    (move
-        Slide 
-        Forward 
-        (between (exact 2) if:(is Empty (between))) 
-        (to if:(is Empty (to))) 
-    )
-)
-
 //------------------------------------------------------------------------------
 
 (game "Lombard Chess"
@@ -151,7 +142,7 @@
                 )
                 "CaptureForwardDiagonal"
                 (if (is In (from) (sites Start (piece (what at:(from)))))
-                    "DoubleStep"
+                	("DoubleStepForwardToEmpty")
                 )
                 }
                 (then

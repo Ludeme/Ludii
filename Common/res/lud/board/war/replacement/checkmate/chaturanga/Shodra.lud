@@ -12,15 +12,6 @@
     ) 
 )
 
-(define "DoubleStep"
-    (move
-        Slide 
-        Forward 
-        (between (exact 2) if:(is Empty (between))) 
-        (to if:(is Empty (to))) 
-    )
-)
-
 (define "CaptureForwardDiagonal"
     (move
         Step 
@@ -83,7 +74,7 @@
         (piece "Pawn" Each
             (or {
                 (if (is In (from) (sites Start (piece (what at:(from)))))
-                    "DoubleStep"
+                	("DoubleStepForwardToEmpty")
                 )
                 "StepForwardToEmpty" 
                 "CaptureForwardDiagonal"

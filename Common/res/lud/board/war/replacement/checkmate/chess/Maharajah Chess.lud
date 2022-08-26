@@ -68,15 +68,6 @@
     )
 )
 
-(define "DoubleStep"
-    (move
-        Slide 
-        Forward 
-        (between (exact 2) if:(is Empty (between))) 
-        (to if:(is Empty (to))) 
-    )
-)
-
 (define "InLocationEnPassant"
     (and 
         (is Pending) 
@@ -105,7 +96,7 @@
         (piece "Pawn" P2 S
             (or {
                 (if (is In (from) (sites Start (piece (what at:(from)))))
-                    "DoubleStep"
+                	("DoubleStepForwardToEmpty")
                 )
                 "StepForwardToEmpty" 
                 "CaptureForwardDiagonal"

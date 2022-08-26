@@ -40,15 +40,6 @@
     (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
 )
 
-(define "DoubleStep"
-    (move
-        Slide 
-        Forward 
-        (between (exact 2) if:(is Empty (between))) 
-        (to if:(is Empty (to))) 
-    )
-)
-
 //------------------------------------------------------------------------------
 
 (game "Schachzabel"
@@ -146,7 +137,7 @@
                         (= 1 (state at:(from)))
                         (= 32 (count Sites in:(sites Occupied by:All)))
                     })
-                    "DoubleStep"
+                	("DoubleStepForwardToEmpty")
                 )
                 }
                 (then

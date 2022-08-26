@@ -88,15 +88,6 @@
     ("DecideToCastle" "King" W 2 "KingNotCheckedAndToEmpty" (then ("CastleRook" "RookLeft" E 3 True)))
 )
 
-(define "DoubleStep"
-    (move
-        Slide 
-        Forward 
-        (between (exact 2) if:(is Empty (between))) 
-        (to if:(is Empty (to))) 
-    )
-)
-
 (define "CaptureForwardDiagonal"
     (move
         Step 
@@ -299,7 +290,7 @@
     (item "Pawn Double Step" 
         <
         (if (is In (from) (sites Start (piece (what at:(from)))))
-            "DoubleStep"
+        	("DoubleStepForwardToEmpty")
         )
         > 
         "The pawns can double step from the starting positions."
