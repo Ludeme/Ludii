@@ -2,27 +2,6 @@
     (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
 )
 
-(define "CaptureToPiece"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove 
-                (to) 
-            )
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
 //------------------------------------------------------------------------------
 
 (game "Shodra"
@@ -30,25 +9,8 @@
     (equipment {
         (board (square 8))
         (hand Each size:5)
-        (piece "King_noCross" Each
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )			
-        )
-        (piece "Rook" Each
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )			
-        )
+        ("ChessKing" "King_noCross")
+        ("ChessRook" "Rook")
         (piece "Camel" Each
             (move Hop Diagonal 
                 (between if:True) 
@@ -61,41 +23,14 @@
                 ) 
             )			
         )
-        (piece "Knight" Each
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )			
-        )
-        (piece "Pawn" Each
-            (or {
+        ("ChessKnight" "Knight")
+        ("ChessPawn" "Pawn"
                 (if (is In (from) (sites Start (piece (what at:(from)))))
                 	("DoubleStepForwardToEmpty")
                 )
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
-                }
-                (then
-                    (if (is In (last To) (sites Mover "Promotion")) 
-                        (promote (last To) (piece "Dog") Mover)
-                    )
-                )
-            )		
-        ) 
-        (piece "Dog" Each
-            (move
-                Step 
-                Diagonal
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )			
+                (then ("PromoteIfReach" (sites Mover "Promotion") "Dog"))
         )
+        (piece "Dog" Each ("StepToNotFriend" Diagonal))
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     })
