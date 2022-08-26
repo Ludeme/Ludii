@@ -18,8 +18,9 @@ import utils.LudiiStateWrapper;
 public class TestYavalathTensors
 {
 	
+	@SuppressWarnings("static-method")
 	@Test
-	public static void test()
+	public void test()
 	{
 		final LudiiGameWrapper game = LudiiGameWrapper.construct("Yavalath.lud");
 		final LudiiStateWrapper state = new LudiiStateWrapper(game);
