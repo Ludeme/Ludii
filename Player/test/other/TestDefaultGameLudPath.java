@@ -12,6 +12,7 @@ import main.Constants;
  *
  * @author Dennis Soemers
  */
+@SuppressWarnings("static-method")
 public class TestDefaultGameLudPath
 {
 	
@@ -21,7 +22,7 @@ public class TestDefaultGameLudPath
 	 * a game.
 	 */
 	@Test
-	public static void testDefaultGameLudPath()
+	public void testDefaultGameLudPath()
 	{
 		final Game game = GameLoader.loadGameFromName(Constants.DEFAULT_GAME_PATH);
 		assert(game != null);

@@ -15,11 +15,12 @@ import utils.data_structures.support.zhang_shasha.Tree;
  *
  * @author Dennis Soemers
  */
+@SuppressWarnings("static-method")
 public class TestZhangShasha
 {
 	
 	@Test
-	public static void testZhangShashaFromStrings() throws IOException
+	public void testZhangShashaFromStrings() throws IOException
 	{
 		// Sample trees (in preorder).
 		final String tree1Str1 = "f(d(a c(b)) e)";

@@ -14,11 +14,11 @@ import main.collections.ChunkSet;
  *
  * @author Dennis Soemers
  */
+@SuppressWarnings("static-method")
 public class TestChunkSets
 {
-	
 	@Test
-	public static void testViolatesNotA()
+	public void testViolatesNotA()
 	{
 		// State chunkset: 		0011 1111 0011 0001 0111
 		final ChunkSet s = new ChunkSet(4, 5);
@@ -45,7 +45,7 @@ public class TestChunkSets
 	}
 	
 	@Test
-	public static void testViolatesNotB()
+	public void testViolatesNotB()
 	{
 		// State chunkset: 		0011 1111 0011 0001 0111
 		final ChunkSet s = new ChunkSet(4, 5);
@@ -72,7 +72,7 @@ public class TestChunkSets
 	}
 	
 	@Test
-	public static void testViolatesNotC()
+	public void testViolatesNotC()
 	{
 		// State chunkset: 		0011 1111 0011 0001 0111
 		final ChunkSet s = new ChunkSet(4, 5);
@@ -99,7 +99,7 @@ public class TestChunkSets
 	}
 	
 	@Test
-	public static void testViolatesNotD()
+	public void testViolatesNotD()
 	{
 		// State chunkset: 		0011 1111 0011 0000 0111
 		final ChunkSet s = new ChunkSet(4, 5);
@@ -126,7 +126,7 @@ public class TestChunkSets
 	}
 	
 	@Test
-	public static void testViolatesNotE()
+	public void testViolatesNotE()
 	{
 		// State chunkset: 		0011 1111 0011 0000 0111
 		final ChunkSet s = new ChunkSet(4, 5);
@@ -153,7 +153,7 @@ public class TestChunkSets
 	}
 	
 	@Test
-	public static void testGetNonzeroChunks()
+	public void testGetNonzeroChunks()
 	{
 		// Pick a random power of 2 (up to and including 4, for max chunksize of 16)
 		final int power = ThreadLocalRandom.current().nextInt(5);
