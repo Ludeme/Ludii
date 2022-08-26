@@ -187,7 +187,7 @@ public class LInputArea extends JPanel
                 // find the inputfield with same index
                 LInputField inputField = null;
                 for(LInputField lInputField : currentInputFields)
-                    if(lInputField.inputIndices().contains(input_index))
+                    if(lInputField.inputIndices().contains(Integer.valueOf(input_index)))
                     {
                         inputField = lInputField;
                         break;

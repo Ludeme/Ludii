@@ -70,7 +70,7 @@ public class DecisivenessMoves extends Metric
 			{
 				for (final Integer playerIndex : highestRankedPlayers)
 				{
-					if (Utils.evaluateState(evaluation, context, playerIndex) > decisivenessThreshold)
+					if (Utils.evaluateState(evaluation, context, playerIndex.intValue()) > decisivenessThreshold)
 					{
 						aboveThresholdFound = true;
 						turnAboveDecisivenessthreshold = i;

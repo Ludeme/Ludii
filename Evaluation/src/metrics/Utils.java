@@ -139,9 +139,9 @@ public class Utils
 			// Terminal node (at least for mover)
 			return RankUtils.agentUtilities(instanceContext)[mover];
 		}
-		else if (evaluation.stateEvaluationCacheContains(Long.valueOf(stateAndMoverHash)))
+		else if (evaluation.stateEvaluationCacheContains(stateAndMoverHash))
 		{
-			return evaluation.getStateEvaluationCacheValue(Long.valueOf(stateAndMoverHash));
+			return evaluation.getStateEvaluationCacheValue(stateAndMoverHash);
 		}
 		else
 		{
@@ -217,7 +217,7 @@ public class Utils
 		
 		for (int i = 1; i <= context.game().players().count(); i++)
 			if (RankUtils.agentUtilities(context)[i] == highestRanking)
-				highestRankedPlayers.add(i);
+				highestRankedPlayers.add(Integer.valueOf(i));
 		
 		return highestRankedPlayers;
 	}

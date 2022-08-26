@@ -62,14 +62,14 @@ public class GameTreeComplexity extends Metric
 			double branchingFactor = 0.0;
 			for (final Move m : trial.generateRealMovesList())
 			{
-				branchingFactor += Double.valueOf(context.game().moves(context).moves().size()) / trial.generateRealMovesList().size();
+				branchingFactor += context.game().moves(context).moves().size() / trial.generateRealMovesList().size();
 				context.game().apply(context, m);
 			}
 
 			gameTreeComplexity += trial.generateRealMovesList().size() * Math.log10(branchingFactor);
 		}
 
-		return gameTreeComplexity / trials.length;
+		return Double.valueOf(gameTreeComplexity / trials.length);
 	}
 
 }

@@ -50,7 +50,7 @@ public class ModelCreator {
             protected NGram doInBackground() throws Exception {
                 NGram ngramModel = new NGram(N);
                 for(int i = 0; i < amountGames; i++) {
-                    int gameID = gameIDs.get(i);
+                    int gameID = gameIDs.get(i).intValue();
                     String curGameDescription = db.getDescription(gameID);
 
                     //apply preprocessing
@@ -120,7 +120,7 @@ public class ModelCreator {
         int amountGames = db.getAmountGames();
 
         for (int i = 0; i < amountGames; i++) {
-            gameIDs.add(i);
+            gameIDs.add(Integer.valueOf(i));
         }
 
         //return createModel(N, gameIDs, false);

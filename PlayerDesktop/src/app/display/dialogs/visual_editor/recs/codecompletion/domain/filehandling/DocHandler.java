@@ -94,16 +94,18 @@ public class DocHandler {
         }
         if(split[0].startsWith(MODEL)) {
             int N = Integer.parseInt(split[0].charAt(MODEL.length())+"");
-            modelLocations.put(N,split[1]);
-            if(DEBUG)System.out.println(modelLocations.get(N));
+            modelLocations.put(Integer.valueOf(N), split[1]);
+            if(DEBUG)System.out.println(modelLocations.get(Integer.valueOf(N)));
         }
     }
 
     /**
      * This method writes the stored data about documents to the documents.txt
      */
-    public void writeDocumentsFile() {
-        try (FileWriter fw = FileUtils.writeFile(DOC_LOCATION);){
+    public void writeDocumentsFile() 
+    {
+        try (FileWriter fw = FileUtils.writeFile(DOC_LOCATION);)
+        {
             if(grammarLocation != null) {
                     fw.write(GRAMMAR +SEPARATOR+grammarLocation+"\n");
             }
@@ -119,8 +121,9 @@ public class DocHandler {
             if(gamesNamesLocation != null) {
                 fw.write(GAMES_NAMES +SEPARATOR+gamesNamesLocation+"\n");
             }
-            for(Map.Entry<Integer, String> entry : modelLocations.entrySet()) {
-                int N = entry.getKey();
+            for(Map.Entry<Integer, String> entry : modelLocations.entrySet()) 
+            {
+                int N = entry.getKey().intValue();
                 String modelLocation = entry.getValue();
                 fw.write(MODEL +N+SEPARATOR+modelLocation+"\n");
             }
@@ -130,8 +133,9 @@ public class DocHandler {
         }
     }
 
-    public void addModelLocation(int N, String location) {
-        modelLocations.put(N,location);
+    public void addModelLocation(int N, String location) 
+    {
+        modelLocations.put(Integer.valueOf(N), location);
     }
 
     public String getGrammarLocation() {
@@ -154,8 +158,9 @@ public class DocHandler {
         return gamesNamesLocation;
     }
 
-    public String getModelLocation(int N) {
-        return modelLocations.getOrDefault(N,MODEL_DOES_NOT_EXIST);
+    public String getModelLocation(int N) 
+    {
+        return modelLocations.getOrDefault(Integer.valueOf(N), MODEL_DOES_NOT_EXIST);
     }
 
     /**

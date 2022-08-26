@@ -266,6 +266,7 @@ public abstract class TabPage extends View
 	/**
 	 * Add faded text to tab page.
 	 */
+	@SuppressWarnings("deprecation")
 	protected void addFadedText(final String str)
 	{
 		StyleConstants.setForeground(textstyle, fadedFontColour);

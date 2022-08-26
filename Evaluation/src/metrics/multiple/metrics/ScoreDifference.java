@@ -42,11 +42,11 @@ public class ScoreDifference extends MultiMetricFramework
 	public Double[] getMetricValueList(final Evaluation evaluation, final Trial trial, final Context context)
 	{
 		final ArrayList<Double> valueList = new ArrayList<>();
-		valueList.add(getScoreDiscrepancy(context));
+		valueList.add(Double.valueOf(getScoreDiscrepancy(context)));
 		for (final Move m : trial.generateRealMovesList())
 		{
 			context.game().apply(context, m);
-			valueList.add(getScoreDiscrepancy(context));
+			valueList.add(Double.valueOf(getScoreDiscrepancy(context)));
 		}
 		return valueList.toArray(new Double[0]);
 	}

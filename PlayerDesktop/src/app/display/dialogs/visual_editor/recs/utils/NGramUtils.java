@@ -63,7 +63,7 @@ public class NGramUtils {
         List<Pair<Instance,Integer>> unorderedPicklistMatchingWords = new ArrayList<>();
         for(Instance instance : unorderedPicklist) {
             int matchingWords = instance.matchingWords(context);
-            Pair<Instance,Integer> cur = new Pair<>(instance, matchingWords);
+            Pair<Instance,Integer> cur = new Pair<>(instance, Integer.valueOf(matchingWords));
             unorderedPicklistMatchingWords.add(cur);
         }
         return  unorderedPicklistMatchingWords;
@@ -123,9 +123,9 @@ public class NGramUtils {
             for(Pair<Instance,Integer> p : entry.getValue()) {
                 pMultiplicity += p.getR().getMultiplicity();
                 //if p has more matching words than stored, update, else do nothing
-                maxMatchingWords = p.getS() > maxMatchingWords ? p.getS() : maxMatchingWords;
+                maxMatchingWords = p.getS().intValue() > maxMatchingWords ? p.getS().intValue() : maxMatchingWords;
             }
-            uniquePredictions.add(new Pair<>(new Instance(newInstanceWords,pMultiplicity), maxMatchingWords));
+            uniquePredictions.add(new Pair<>(new Instance(newInstanceWords,pMultiplicity), Integer.valueOf(maxMatchingWords)));
         }
 
         return  uniquePredictions;

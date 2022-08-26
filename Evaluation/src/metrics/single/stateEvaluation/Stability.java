@@ -98,7 +98,7 @@ public class Stability extends Metric
 			avgStability += stateEvaluationVariance;
 		}
 
-		return avgStability / trials.length;
+		return Double.valueOf(avgStability / trials.length);
 	}
 
 	//-------------------------------------------------------------------------
