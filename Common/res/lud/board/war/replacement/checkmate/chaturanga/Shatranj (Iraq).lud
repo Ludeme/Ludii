@@ -1,63 +1,19 @@
-(define "CaptureEnemyToPiece"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove (to))
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
-)
-
-//------------------------------------------------------------------------------
-
 (game "Shatranj (Iraq)" 
     ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8)) 
-        (piece "King_noCross"
-            (move Step
-                (to if:(not ("IsFriendAt" (to)))
-                    ("CaptureEnemyToPiece")
-                )
-            )		
-        )
+        ("ChessKing" "King_noCross")
         (piece "Ferz_noCross"
             (or
-                (move
-                    Slide 
-                    (to 
-                        if:("IsEnemyAt" (to)) 
-                        "CaptureEnemyToPiece"
-                    ) 
-                )
-                (move
-                    Leap 
-                    "KnightWalk" 
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        "CaptureEnemyToPiece"
-                    ) 
-                )
+                ("SlideCapture")
+                ("LeapCapture" "KnightWalk")
             )
         )
         (piece "Elephant"
             (move Slide Diagonal 
                 (between if:(or (is In (between) (sites Around (from))) (is Empty (between)))) 
                 (to 
-                    if:(and (!= (id "Elephant" Next) (what at:(to))) ("IsEnemyAt" (to)))
+                    if:(and (not ("IsPieceAt" "Elephant" Next (to))) ("IsEnemyAt" (to)))
                     (apply 
                         if:(not (is In (to) (sites Around (from))))
                         (if ("IsEnemyAt" (to))
@@ -67,64 +23,28 @@
                 ) 
             )		
         )
-        (piece "Knight"
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureEnemyToPiece"
-                ) 
-            )		
-        )
-        (piece "Rook"
-            (move
-                Slide 
-                Orthogonal
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureEnemyToPiece"
-                ) 
-            )		
-        )
-        (piece "Pawn"
-            (or 
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
-                (then
-                    (if (is In (last To) (sites Mover "Promotion"))
-                        (promote (last To) (piece "Ferz_noCross") Mover)
-                    )
-                )
-            )		
-        )
+        ("ChessKnight" "Knight")
+        ("ChessRook" "Rook")
+        ("ChessPawn" "Pawn" ~ (then ("PromoteIfReach" (sites Mover "Promotion") "Ferz_noCross")))
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     })
     
     (rules 
-        (start
-            { 
+        (start { 
             (place "Pawn1" (sites Row 1))
             (place "Pawn2" (sites Row 6))
             (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Elephant1" {"C1" "F1"}) (place "Ferz_noCross1" coord:"D1") (place "King_noCross1" coord:"E1") 
             (place "Rook2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Elephant2" {"C8" "F8"}) (place "Ferz_noCross2" coord:"D8") (place "King_noCross2" coord:"E8") 
-            }
-        )
+        })
         (play 
-            (do
-                (forEach Piece)
+            (do (forEach Piece)
                 ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
             )
         )
         
         (end {
-            (if (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
+        	("Checkmate" "King_noCross")
             (if (no Moves Mover) (result Mover Loss))
         })
     )
