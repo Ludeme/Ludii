@@ -1,17 +1,3 @@
-(define "CaptureToPiece"
-    (apply 
-        (remove 
-            (to) 
-        )
-    ) 
-)
-
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
-)
-
-//------------------------------------------------------------------------------
-
 (game "Shatranj ar-Rumiya" 
     (players 2) 
     (equipment { 
@@ -20,10 +6,7 @@
         )
         (piece "Pawn" Each
             (or {
-                (move Step
-                    (if (= (state at:(from)) 0) CW CCW)
-                    (to if:(is Empty (to)))
-                )
+                ("StepToEmpty" (if (= (state at:(from)) 0) CW CCW))
                 (move 
                     (from)
                     (to 
@@ -45,13 +28,13 @@
                 }
                 (then 
                     (if (= (state at:(last To)) 0) 
-                        (if (= (id "Pawn" Next) (what at:(ahead (last To) CW)))
+                        (if ("IsPieceAt" "Pawn" Next (ahead (last To) CW))
                             (and 
                                 (remove (last To))
                                 (remove (ahead (last To) CW))
                             )
                         )
-                        (if (= (id "Pawn" Next) (what at:(ahead (last To) CCW)))
+                        (if ("IsPieceAt" "Pawn" Next (ahead (last To) CCW))
                             (and 
                                 (remove (last To))
                                 (remove (ahead (last To) CCW))
@@ -61,16 +44,7 @@
                 )
             )
         )
-        (piece "Rook" Each
-            (move
-                Slide 
-                Rotational
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )		
-        )
+        (piece "Rook" Each ("SlideCapture" Rotational))
         (piece "Knight" Each
             (forEach Direction 
                 Orthogonal
@@ -115,27 +89,9 @@
                 )
             )	
         )
-        (piece "Queen" Each
-            (move
-                Step 
-                Diagonal
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece" 
-                )
-            )		
-        )
-        (piece "King_noCross" Each
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece" 
-                )
-            )		
-        )
-        }
-    ) 
+        (piece "Queen" Each ("StepToNotFriend" Diagonal))
+        ("ChessKing" "King_noCross")
+    }) 
     (rules 
         <Variant:start>
         (play 
@@ -145,12 +101,7 @@
             )
         )
         (end { 
-            (if (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            )
+        	("Checkmate" "King_noCross")
             <Variant:end>
         })
     )
