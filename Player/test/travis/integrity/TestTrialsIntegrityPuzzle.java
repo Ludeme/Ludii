@@ -31,6 +31,7 @@ import other.trial.Trial;
  * 
  * @author Eric.Piette
  */
+@SuppressWarnings("static-method")
 public class TestTrialsIntegrityPuzzle
 {
 	/**
@@ -40,7 +41,7 @@ public class TestTrialsIntegrityPuzzle
 	 * @throws IOException
 	 */
 	@Test
-	public static void test() throws FileNotFoundException, IOException
+	public void test() throws FileNotFoundException, IOException
 	{
 		System.out.println(
 				"\n=========================================\nIntegrity Deduction Puzzle Test\n=========================================\n");
