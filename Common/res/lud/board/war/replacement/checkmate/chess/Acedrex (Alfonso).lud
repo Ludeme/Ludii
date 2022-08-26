@@ -29,14 +29,7 @@
     ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8)) 
-        (piece "King" Each
-            (move Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )		
-        )
+        ("ChessKing" "King" (then (set Var 1)))
         (piece "Queen" Each
             (or
                 (move Step 
@@ -68,24 +61,8 @@
                 )
             )		
         )
-        (piece "Knight" Each
-            (move Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )		
-        )
-        (piece "Rook" Each
-            (move Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )		
-        )
+        ("ChessKnight" "Knight" (then (set Var 1)))
+        ("ChessRook" "Rook" (then (set Var 1)))
         (piece "Pawn" Each
             (or {
                 (if (and (not ("HadACapture")) (is In (from) (sites Start (piece (what at:(from))))))
@@ -95,7 +72,7 @@
                 "CaptureForwardDiagonal"
                 }
                 (then
-                    (if (and (= Off (where "Queen" Mover)) (is In (last To) (sites Mover "Promotion")))
+                    (if (and ("IsOffBoard" (where "Queen" Mover)) (is In (last To) (sites Mover "Promotion")))
                         (promote (last To) (piece "Queen") Mover)
                     )
                 )
