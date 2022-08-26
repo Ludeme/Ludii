@@ -1,24 +1,3 @@
-(define "CaptureToPiece"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove 
-                (to) 
-            )
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
 (define "PawnToReplace" (!= 0 (count Sites in:(sites Occupied by:Mover container:"Hand" component:"Pawn"))))
 
 (define "EmptySitesBehindPawnPositions" 
@@ -36,7 +15,7 @@
 )
 
 (define "PawnWasMovedForward"
-    (and (is In (last From) (sites Board)) (= (what at:(last To)) (id "Pawn" Mover)))
+    (and (is In (last From) (sites Board)) ("IsPieceAt" "Pawn" Mover (last To)))
 )
 
 (define "AnyOwnedSitesOnBoardExceptPawn"
@@ -79,10 +58,6 @@
     )
 )
 
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
-)
-
 //------------------------------------------------------------------------------
 
 (game "Sittuyin"
@@ -90,66 +65,12 @@
     (equipment {
         (board (square 8))
         (hand Each size:6)
-        (piece "King_noCross" Each
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )		
-        )
-        (piece "Rook" Each
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )		
-        )
-        (piece "Elephant" Each
-            (move
-                Step 
-                Forwards
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )			
-        )
-        (piece "Knight" Each
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )		
-        )
-        (piece "Pawn" Each
-            (or 
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
-                (then 
-                    (if (is In (last To) (difference (sites "DiagonalSites") (sites Mover "Home"))) 
-                        (promote (last To) (piece "Queen") Mover)
-                    )
-                )
-            )		
-        ) 
-        (piece "Queen" Each
-            (move
-                Step 
-                Diagonal
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )			
-        )
+        ("ChessKing" "King_noCross")
+        ("ChessRook" "Rook")
+        (piece "Elephant" Each ("StepToNotFriend" Forwards))
+        ("ChessKnight" "Knight")
+        ("ChessPawn" "Pawn" ~ (then ("PromoteIfReach" (difference (sites "DiagonalSites") (sites Mover "Home")) "Queen")))
+        (piece "Queen" Each ("StepToNotFriend" Diagonal))
         (regions "Home" P1 (expand (sites Bottom) steps:3))
         (regions "Home" P2 (expand (sites Top) steps:3))
         (regions "NoPawnSites" 
@@ -246,17 +167,9 @@
                     ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
                 )
             )
-            (end    
-                (if (and 
-                        ("IsInCheck" "King_noCross" Next)
-                        ("NextCanNotMove")
-                    ) 
-                    (result Mover Win)
-                )
-            )
+            (end ("Checkmate" "King_noCross"))
         )
         }
-        
     )
 )
 
