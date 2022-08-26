@@ -2,27 +2,6 @@
     (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" #1 Next)))))
 )
 
-(define "CaptureToPiece"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove 
-                (to) 
-            )
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
 (define "HasNeverMoved"
     (= (state at:#1) 1) 
 )
@@ -67,101 +46,35 @@
             (do
                 (or {
                     "StepForwardToEmpty" 
-                    "CaptureForwardDiagonal"
-                    }
-                )
+                    ("StepToEnemy" (directions {FR FL}))
+                })
                 ifAfterwards:(if (is In (last To) (sites Mover "Promotion"))
                     (!= Undefined ("PromotedPiece"))
                     True
                 )
-                (then
-                    (if (is In (last To) (sites Mover "Promotion")) 
-                        (promote (last To) (piece "PromotedPiece"))
-                    )
-                )
+                (then ("PromoteIfReach" (sites Mover "Promotion") "PromotedPiece"))
             )
         )
         
-        (piece "Boat" P2 
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
+        (piece "Boat" P2 ("SlideCapture" Orthogonal))
         (piece "King_noCross" Each
             (if (is Mover P1)
                 (or
-                    (move
-                        Leap 
-                        "KnightWalk" 
-                        (to 
-                            if:(not ("IsFriendAt" (to))) 
-                            "CaptureToPiece"
-                        ) 
-                    ) 
-                    (move
-                        Slide 
-                        (to 
-                            if:("IsEnemyAt" (to)) 
-                            "CaptureToPiece"
-                        ) 
-                    ) 
+                    ("LeapCapture" "KnightWalk")
+                    ("SlideCapture")
                 )
                 (or
-                    (move
-                        Step 
-                        (to 
-                            if:(not ("IsFriendAt" (to))) 
-                            "CaptureToPiece"
-                        ) 
-                    )
+                    ("StepToNotFriend")
                     (if ("HasNeverMoved" (from))
-                        (move
-                            Leap 
-                            "KnightWalk" 
-                            (to 
-                                if:(not ("IsFriendAt" (to))) 
-                                "CaptureToPiece"
-                            ) 
-                        )
+                    	("LeapCapture" "KnightWalk")
                     )
                     "RememberPieceHasMoved"
                 )
             )
         )
-        (piece "Elephant" P2 
-            (move
-                Slide 
-                Diagonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "Knight" P2 
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "Queen" P2 
-            (move
-                Slide 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            ) 
-        )
+        (piece "Elephant" P2 ("SlideCapture" Diagonal))
+        (piece "Knight" P2 ("LeapCapture" "KnightWalk"))
+        (piece "Queen" P2 ("SlideCapture"))
         (regions "Promotion" P2 (sites Bottom))
     }) 
     (rules 
@@ -176,7 +89,7 @@
                 (forEach Piece)
                 ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
                 (then
-                    (if (and (= (id "King_noCross" P1) (what at:(last To))) ("HasNeverMoved" (where "King_noCross" P2)))
+                    (if (and ("IsPieceAt" "King_noCross" P1 (last To)) ("HasNeverMoved" (where "King_noCross" P2)))
                         (if ("IsInCheck" "King_noCross" P2)
                             (set State at:(where "King_noCross" P2) 0) 
                         )
