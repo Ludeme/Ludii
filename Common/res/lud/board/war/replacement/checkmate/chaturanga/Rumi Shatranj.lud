@@ -28,25 +28,8 @@
     (equipment {
         (board (square 8))
         (hand Each size:5)
-        (piece "King_noCross" Each
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece" 
-                )
-            )
-        )
-        (piece "Rook" Each
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
+        ("ChessKing" "King_noCross")
+        ("ChessRook" "Rook")
         (piece "Elephant" Each
             (move Hop Diagonal 
                 (between if:True) 
@@ -59,37 +42,15 @@
                 ) 
             )
         )
-        (piece "Knight" Each
-            (move 
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "Pawn" Each
-            (or 
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
+        ("ChessKnight" "Knight")
+        ("ChessPawn" "Pawn" ~
                 (then
                     (if (is In (last To) (sites Mover "Promotion")) 
                         (moveAgain)
                     )
                 )
-            )
-        ) 
-        (piece "Ferz_noCross" Each
-            (move
-                Step 
-                Diagonal
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece" 
-                )
-            )
         )
+        (piece "Ferz_noCross" Each ("StepToNotFriend" Diagonal))
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     })
