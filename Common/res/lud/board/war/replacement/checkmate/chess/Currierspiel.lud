@@ -1,55 +1,13 @@
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
-)
-
-(define "CaptureToPiece"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove 
-                (to) 
-            )
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
-//------------------------------------------------------------------------------
-
 (game "Currierspiel"
     ("TwoPlayersNorthSouth") 
     (equipment {
         (board (rectangle 8 12))
         (regions "StartingPawnRookQueen" P1 (sites {"A2" "G2" "L2"}))
         (regions "StartingPawnRookQueen" P2 (sites {"A7" "G7" "L7"}))
-        (piece "King" Each
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
+        ("ChessKing" "King")
         (piece "Queen" Each // TO ADD may leap two spaces diagonally on its first move oer any intervening pieces;
             (or
-                (move
-                    Step 
-                    Diagonal
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        "CaptureToPiece"
-                    ) 
-                )
+                ("StepToNotFriend" Diagonal)
                 (if (= 1 (state at:(from)))
                     (move Hop 
                         (between 
@@ -63,36 +21,9 @@
                 )
             )
         )
-        (piece "Mann" Each
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "Fool" Each
-            (move
-                Step 
-                Orthogonal
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        // Courier
-        (piece "Ferz" Each
-            (move
-                Slide 
-                Diagonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
+        ("ChessKing" "Mann")
+        (piece "Fool" Each ("StepToNotFriend" Orthogonal))
+        ("ChessBishop" "Ferz") // Courier
         (piece "Bishop" Each
             (move Hop 
                 (between 
@@ -103,32 +34,9 @@
                 )
             )
         )
-        (piece "Knight" Each
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "Rook" Each
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "Pawn" Each
-            (or 
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
-            )
-        )
+        ("ChessKnight" "Knight")
+        ("ChessRook" "Rook")
+        ("ChessPawn" "Pawn")
     })
     (rules 
         (start {
@@ -162,15 +70,7 @@
         )
         }
         
-        (end
-            (if 
-                (and 
-                    ("IsInCheck" "King" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
-        )
+        (end ("Checkmate" "King"))
     )
 )
 
