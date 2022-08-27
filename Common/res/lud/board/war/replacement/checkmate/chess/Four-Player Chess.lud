@@ -19,17 +19,6 @@
     ) 
 )
 
-(define "CaptureToPieceAndResetCounter"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove 
-                (to) 
-                (then (set Counter))
-            )
-        )
-    ) 
-)
-
 (define "KingNotCheckedAndToEmpty"
     (and 
         (is Empty (to)) 
@@ -111,17 +100,6 @@
     )
 )
 
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
 (define "RemoveKingIfCheckmate"
     (if (and (is Active #1) (not (is Mover #1)))
         (if 
@@ -142,16 +120,14 @@
         (board 
             <NumOfPlayers:BoardShape>
         ) 
-        
-        (piece "Pawn" Each 
-            (or {
+
+        ("ChessPawn" "Pawn"
+            (or 
                 (if (is In (from) (sites Start (piece (what at:(from)))))
                     ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
                 )
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
                 "EnPassant"
-                }
+                )
                 (then
                     (and
                         (if (is In (last To) (sites Mover "Promotion")) 
@@ -160,70 +136,20 @@
                         (set Counter)
                     )
                 )
-            )
         )
-        
-        (piece "Rook" Each 
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-                "RememberPieceHasMoved"
-            )
-        )
-        (piece "King" Each 
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-                "RememberPieceHasMoved"
-            )
-        )
-        (piece "Bishop" Each 
-            (move
-                Slide 
-                Diagonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-            )
-        )
-        (piece "Knight" Each 
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-            )
-        )
-        (piece "Queen" Each 
-            (move
-                Slide 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-            ) 
-        )
+
+        ("ChessRook" "Rook" (then (set Counter)) ("RememberPieceHasMoved"))
+        ("ChessKing" "King" (then (set Counter)) ("RememberPieceHasMoved"))
+        ("ChessBishop" "Bishop" (then (set Counter)))
+        ("ChessKnight" "Knight" (then (set Counter)))
+        ("ChessQueen" "Queen" (then (set Counter)))
         
         <NumOfPlayers:BoardRegions>
-        
-        }
-    ) 
+    }) 
     (rules 
-        (start
-            { 
+        (start { 
             <NumOfPlayers:PieceSetup>
-            }
-        )
+        })
         
         (play 
             (if "SameTurn"
@@ -271,15 +197,13 @@
             )
         )
         
-        (end
-            {
+        (end {
             (forEach NonMover
-                if:(= (where "King" Player) Off) 
+                if:("IsOffBoard" (where "King" Player)) 
                 (result Player Loss)
             )
             (if (and (<= (count Active) 2) (or (no Moves Mover) (= (counter) (* 50 (count Active))))) (result Mover Draw)) 
-            }
-        )
+        })
     )
 )
 
