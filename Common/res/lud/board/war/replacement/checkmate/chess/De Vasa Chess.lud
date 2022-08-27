@@ -35,14 +35,6 @@
     )
 )
 
-// Source: Chess.lud - NextCanNotMove
-(define "NextCannotMove"
-    (not (can Move (do
-                (forEach Piece Next)
-                ifAfterwards:(not ("IsInCheck" "King" Next))
-    )))
-)
-
 // Usage: ("P12" <player1_arg> <player2_arg>)
 (define "P12"
     (if (is Mover P1) #1 #2)
@@ -50,8 +42,7 @@
 
 // Usage: ("SlideCaptureMove" <directions> <then>)
 (define "SlideCaptureMove"
-    (move
-        Slide
+    (move Slide
         #1
         (to if:("IsEnemyAt" (to))
             "CaptureToPieceAndResetCounter"
@@ -90,8 +81,7 @@
 
 // Usage: ("KingStepCapture" <directions> <then>)
 (define "KingStepCapture"
-    (move
-        Step
+    (move Step
         #1
         (to if:"IsToEmptyOrEnemy"
             "CaptureToPieceAndResetCounter"
@@ -105,20 +95,17 @@
 //----------------------------------------
 
 (define "Castle_PreCheck"
-    (and
-        {
-        (= (what at:(mapEntry "King" (mover))) (id "King" Mover)) // @ Start Cell
+    (and {
+        ("IsPieceAt" "King" Mover (mapEntry "King" (mover))) // @ Start Cell
         ("History_HasNeverMoved" "King")
         (not ("IsInCheck" "King" Mover))
-        }
-    )
+    })
 )
 
 // Usage: ("Castle_Base" <piece_key> <slide_dir> <slide_spaces> <condition> <then>)
 // Source: Chess.lud - DoCastle
 (define "Castle_Base"
-    (move
-        Slide
+    (move Slide
         (from (mapEntry #1 (mover)))
         #2
         (between
@@ -175,8 +162,7 @@
 
 // Usage: ("PawnCapture_Base" <directions>)
 (define "PawnCapture_Base"
-    (move
-        Step
+    (move Step
         #1
         (to if:("IsEnemyAt" (to))
             (apply (remove (to)))
@@ -194,17 +180,15 @@
 // Source: Derived from Chess.lud - DoubleStep
 // Usage: ("PawnHop" <fwd_dir> <back_dir>)
 (define "PawnHop"
-    (move
-        Hop
+    (move Hop
         #1
         (between if:(is In (between) (sites Empty)))
         (to if:"IsToEmpty")
-        (then (and
-                {
+        (then (and {
                 (set Pending (ahead (last To) #2))
                 (set Var (last To))
-                }
-        ))
+                })
+        )
     )
 )
 
@@ -224,11 +208,7 @@
 
 // Usage: ("PawnStep_ToEmpty_Base" <directions>)
 (define "PawnStep_ToEmpty_Base"
-    (move
-        Step
-        #1
-        (to if:"IsToEmpty")
-    )
+    ("StepToEmpty" #1)
 )
 
 (define "PawnStep_ToEmpty"
@@ -244,8 +224,7 @@
 
 // Usage: ("EnPassant_Base" <directions>)
 (define "EnPassant_Base"
-    (move
-        Step
+    (move Step
         #1
         (to if:"IsEnPassantCapture")
         (then (remove (var)))
@@ -275,8 +254,7 @@
 
 (game "De Vasa Chess"
     (players {(player NNE) (player SSW)})
-    (equipment
-        {
+    (equipment {
         (board <BoardConfig:BoardLayout>)
         
         (piece "King" Each
@@ -286,24 +264,14 @@
                     (or {
                         "Castle_KingSide"
                         "Castle_QueenSide"
-                        }
-                    )
+                    })
                 )
-                }
-            )
+            })
         )
         (piece "Queen" Each ("SlideCaptureMove" All ~))
         (piece "Rook" Each ("SlideCaptureMove" Orthogonal "History_SaveMovementChange"))
         (piece "Bishop" Each ("SlideCaptureMove" Diagonal ~))
-        (piece "Knight" Each
-            (move
-                Leap
-                "KnightWalk"
-                (to if:"IsToEmptyOrEnemy"
-                    "CaptureToPieceAndResetCounter"
-                )
-            )
-        )
+        ("ChessKnight" "Knight" (then (set Counter)))
         
         (piece "Pawn" Each
             (or {
@@ -313,10 +281,8 @@
                 "EnPassant_Ortho"
                 }
                 (then
-                    (and
-                        (if (is In (last To) (sites Mover "PromotionZone"))
-                            (moveAgain)
-                        )
+                    (and 
+                    	("ReplayInMovingOn" (sites Mover "PromotionZone"))
                         (set Counter)
                     )
                 )
@@ -333,12 +299,10 @@
         
         (regions "PromotionZone" P1 (sites Side NE))
         (regions "PromotionZone" P2 (sites Side SW))
-        }
-    )
+    })
     
     (rules
-        (start
-            {
+        (start {
             (place "King1" coord:"A4" state:1)
             (place "Queen1" coord:"A6")
             (place "Rook1" {"A9" "A1"} state:1)
@@ -353,8 +317,7 @@
             
             (place "Pawn1" <BoardConfig:Pawn1Start>)
             (place "Pawn2" <BoardConfig:Pawn2Start>)
-            }
-        )
+        })
         phases:{
         (phase "Movement"
             (play
@@ -365,22 +328,15 @@
                     )
                 )
             )
-            (end
-                {
-                (if (and
-                        ("IsInCheck" "King" Next)
-                        ("NextCannotMove")
-                    )
-                    (result Mover Win)
-                )
+            (end {
+                ("Checkmate" "King")
                 (if (or
                         (no Moves Mover)
                         (= (counter) 100)
                     )
                     (result Mover Draw)
                 )
-                }
-            )
+                })
         )
         }
     )
