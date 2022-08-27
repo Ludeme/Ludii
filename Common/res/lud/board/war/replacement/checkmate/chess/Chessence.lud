@@ -1,7 +1,3 @@
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
-)
-
 (define "CaptureToPiece"
     (apply 
         if:(not (is In (to) (sites "BlackenedSquares")))
@@ -21,9 +17,8 @@
         (board (rectangle 9 6)) 
         (piece "Pawn" Each
             (or {
-                (if (not (all Sites (sites Around (from) Orthogonal) if:(!= (what at:(site)) (id "Pawn" Mover))))
-                    (move
-                        Slide 
+                (if (not (all Sites (sites Around (from) Orthogonal) if:(not ("IsPieceAt" "Pawn" Mover (site)))))
+                    (move Slide 
                         Orthogonal 
                         (between
                             if:(and (is Empty (between)) (not (is In (between) (sites "BlackenedSquares"))))
@@ -34,9 +29,8 @@
                         ) 
                     )
                 )
-                (if (not (all Sites (sites Around (from) Diagonal) if:(!= (what at:(site)) (id "Pawn" Mover))))
-                    (move
-                        Slide 
+                (if (not (all Sites (sites Around (from) Diagonal) if:(not ("IsPieceAt" "Pawn" Mover (site)))))
+                    (move Slide 
                         Diagonal 
                         (between
                             if:(and (is Empty (between)) (not (is In (between) (sites "BlackenedSquares"))))
@@ -60,8 +54,7 @@
                             if:(!= (what at:(site)) (id "Pawn" Mover))
                         )
                     )
-                    (move
-                        Leap 
+                    (move Leap 
                         "KnightWalk" 
                         (to 
                             if:(and (not ("IsFriendAt" (to))) (not (is In (to) (sites "BlackenedSquares"))))
@@ -102,12 +95,7 @@
         )
         
         (end {
-            (if (and 
-                    ("IsInCheck" "King" Next)
-                    ("NextCanNotMove")
-                )
-                (result Mover Win)
-            ) 
+            ("Checkmate" "King")
             (if (no Moves Mover) (result Mover Loss)) 
         })
     )
