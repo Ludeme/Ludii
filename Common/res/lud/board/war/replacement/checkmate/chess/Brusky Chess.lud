@@ -35,14 +35,6 @@
     )
 )
 
-// Source: Chess.lud - NextCanNotMove
-(define "NextCannotMove"
-    (not (can Move (do
-                (forEach Piece Next)
-                ifAfterwards:(not ("IsInCheck" "King" Next))
-    )))
-)
-
 // Usage: ("P12" <player1_arg> <player2_arg>)
 (define "P12"
     (if (is Mover P1) #1 #2)
@@ -50,8 +42,7 @@
 
 // Usage: ("SlideCaptureMove" <directions> <then>)
 (define "SlideCaptureMove"
-    (move
-        Slide
+    (move Slide
         #1
         (to if:("IsEnemyAt" (to))
             "CaptureToPieceAndResetCounter"
@@ -90,8 +81,7 @@
 
 // Usage: ("KingCaptureStep" <directions> <then>)
 (define "KingCaptureStep"
-    (move
-        Step
+    (move Step
         #1
         (to if:"IsToEmptyOrEnemy"
             "CaptureToPieceAndResetCounter"
@@ -113,20 +103,17 @@
 )
 
 (define "Castle_PreCheck"
-    (and
-        {
-        (= (what at:(mapEntry "King" (mover))) (id "King" Mover)) // At Start Cell
+    (and {
+        ("IsPieceAt" "King" Mover (mapEntry "King" (mover))) // At Start Cell
         ("History_HasNeverMoved" "King")
         (not ("IsInCheck" "King" Mover))
-        }
-    )
+    })
 )
 
 // Usage: ("Castle_Base" <piece_key> <slide_dir> <slide_spaces> <condition> <then>)
 // Source: Chess.lud - DoCastle
 (define "Castle_Base"
-    (move
-        Slide
+    (move Slide
         (from (mapEntry #1 (mover)))
         #2
         (between
@@ -185,24 +172,21 @@
 // Source: Derived from Chess.lud - DoubleStep
 // Usage: ("PawnHop" <fwd_dir> <back_dir>)
 (define "PawnHop"
-    (move
-        Hop
+    (move Hop
         #1
         (between if:(is In (between) (sites Empty)))
         (to if:"IsToEmpty")
-        (then (and
-                {
+        (then (and {
                 (set Pending (ahead (last To) #2))
                 (set Var (last To))
-                }
-        ))
+                })
+       )
     )
 )
 
 // Usage: ("PawnCapture_Base" <directions>)
 (define "PawnCapture_Base"
-    (move
-        Step
+    (move Step
         #1
         (to if:("IsEnemyAt" (to))
             (apply (remove (to)))
@@ -234,8 +218,7 @@
 
 // Usage: ("StepOrthoToEmpty_Base" <directions>)
 (define "StepOrthoToEmpty_Base"
-    (move
-        Step
+    (move Step
         #1
         (to if:"IsToEmpty")
     )
@@ -254,8 +237,7 @@
 
 // Usage: ("EnPassant_Base" <directions>)
 (define "EnPassant_Base"
-    (move
-        Step
+    (move Step
         #1
         (to if:"IsEnPassantCapture")
         (then (remove (var)))
@@ -286,8 +268,7 @@
 
 (game "Brusky Chess"
     ("TwoPlayersNorthSouth")
-    (equipment
-        {
+    (equipment {
         (board
             (remove
                 (hex Rectangle 8 13)
@@ -302,24 +283,14 @@
                     (or {
                         "Castle_KingSide"
                         "Castle_QueenSide"
-                        }
-                    )
+                    })
                 )
-                }
-            )
+            })
         )
-        (piece "Queen" Each ("SlideCaptureMove" All ~))
+        (piece "Queen" Each ("SlideCaptureMove" All))
         (piece "Rook" Each ("SlideCaptureMove" Orthogonal "History_SaveMovementChange"))
-        (piece "Bishop" Each ("SlideCaptureMove" Diagonal ~))
-        (piece "Knight" Each
-            (move 
-                Leap
-                "KnightWalk"
-                (to if:"IsToEmptyOrEnemy"
-                    "CaptureToPieceAndResetCounter"
-                )
-            )
-        )
+        (piece "Bishop" Each ("SlideCaptureMove" Diagonal))
+        ("ChessKnight" "Knight" (then (set Counter)))
         
         (piece "Pawn" Each
             (or {
@@ -334,9 +305,7 @@
                 }
                 (then
                     (and
-                        (if (is In (last To) (sites Mover "PromotionZone"))
-                            (moveAgain)
-                        )
+                        ("ReplayInMovingOn" (sites Mover "PromotionZone"))
                         (set Counter)
                     )
                 )
@@ -353,12 +322,10 @@
         (regions "Region-Dark" (sites Phase 2))
         (regions "Region-Light" (sites Phase 1))
         (regions "Region-Medium" (sites Phase 0))
-        }
-    )
+    })
     
     (rules
-        (start
-            {
+        (start {
             (place "King1" coord:"F1" state:1)
             (place "Queen1" coord:"D1")
             (place "Rook1" {"A1" "I1"} state:1)
@@ -373,8 +340,7 @@
             
             (place "Pawn1" (sites Row 1))
             (place "Pawn2" (sites Row 6))
-            }
-        )
+        })
         phases:{
         (phase "Movement"
             (play
@@ -385,22 +351,15 @@
                     )
                 )
             )
-            (end
-                {
-                (if (and
-                        ("IsInCheck" "King" Next)
-                        ("NextCannotMove")
-                    )
-                    (result Mover Win)
-                )
+            (end {
+                ("Checkmate" "King")
                 (if (or
                         (no Moves Mover)
                         (= (counter) 100)
                     )
                     (result Mover Draw)
                 )
-                }
-            )
+                })
         )
         }
     )
