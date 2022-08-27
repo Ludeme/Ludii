@@ -170,7 +170,7 @@
         (piece "Pawn" Each 
             (or {
                 (if (is In (from) (sites Start (piece (what at:(from)))))
-                	("DoubleStepForwardToEmpty" "SetEnPassantLocation")
+                    ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
                 )
                 "StepForwardToEmpty" 
                 "CaptureForwardDiagonal"

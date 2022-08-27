@@ -69,19 +69,19 @@
         ("ChessBishop" "Bishop_noCross")
         ("ChessKnight" "Knight")
         ("ChessRook" "Rook" ~
-                (then
-                    (if (and 
-                            (not ("RookMovedBefore" (last To)))
-                            (not (is In (last To) ("SitesNextToKing")))
-                        )
-                        ("RememberRookMoved" (last To))
+            (then
+                (if (and 
+                        (not ("RookMovedBefore" (last To)))
+                        (not (is In (last To) ("SitesNextToKing")))
                     )
+                    ("RememberRookMoved" (last To))
                 )
+            )
         )
         (piece "Pawn" Each
             (or {
                 (if (and (= 0 (state at:(last To))) (is In (from) (sites Start (piece (what at:(from))))))
-                	("DoubleStepForwardToEmpty")
+                    ("DoubleStepForwardToEmpty")
                 )
                 ("StepToEmpty" 
                     (if (= 1 (state at:(from))) Backward Forward)

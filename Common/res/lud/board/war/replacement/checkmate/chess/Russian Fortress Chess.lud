@@ -232,7 +232,7 @@
             (if (is Active (who at:(from)))
                 (or { 
                     (if (is In (from) (sites Start (piece (what at:(from)))))
-                    	("DoubleStepForwardToEmpty")
+                        ("DoubleStepForwardToEmpty")
                     )
                     (move Step
                         Forward

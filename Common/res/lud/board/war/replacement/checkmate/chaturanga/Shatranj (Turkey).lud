@@ -29,11 +29,11 @@
                 Diagonal
                 (between if:True)
                 (to if:(not ("IsFriendAt" (to)))
-                	    (apply 
-                	            (if ("IsEnemyAt" (to))
-                	                (remove (to))
-                	            )
-                	        ) 
+                    (apply 
+                        (if ("IsEnemyAt" (to))
+                            (remove (to))
+                        )
+                    ) 
                 )
             )	
         )
@@ -58,7 +58,7 @@
         )
         
         (end {
-        	("Checkmate" "King_noCross")
+            ("Checkmate" "King_noCross")
             (if (no Moves Mover) (result Mover Loss))
         })
     )

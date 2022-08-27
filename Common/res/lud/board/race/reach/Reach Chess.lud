@@ -116,7 +116,7 @@
 
 (define "InitialPawnMove"
     (if (is In (from) (sites Start (piece (what at:(from)))))
-    	("DoubleStepForwardToEmpty" "SetEnPassantLocation")
+        ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
     )
 )
 

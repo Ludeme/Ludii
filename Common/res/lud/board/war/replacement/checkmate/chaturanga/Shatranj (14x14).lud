@@ -28,7 +28,7 @@
         (play 
             (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
         )
-
+        
         (end ("Checkmate" "King_noCross"))
     )
 )

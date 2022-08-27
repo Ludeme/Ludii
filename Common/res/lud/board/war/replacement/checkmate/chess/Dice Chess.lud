@@ -86,7 +86,7 @@
         (piece "Pawn" Each
             (or {
                 (if (is In (from) (sites Start (piece (what at:(from)))))
-                	("DoubleStepForwardToEmpty")
+                    ("DoubleStepForwardToEmpty")
                 )
                 ("StepForwardToEmpty") 
                 ("CaptureForwardDiagonal")

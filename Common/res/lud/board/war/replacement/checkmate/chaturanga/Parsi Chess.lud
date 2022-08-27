@@ -99,7 +99,7 @@
             (or { 
                 (if (is In (from) (sites Start (piece (what at:(from)))))
                     (if (= 1 (state at:(ahead (from) Backward)))
-                    	("DoubleStepForwardToEmpty")
+                        ("DoubleStepForwardToEmpty")
                     )
                 )
                 "StepForwardToEmpty" 

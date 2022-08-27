@@ -1864,7 +1864,7 @@ TYPE JAVADOC: Returns a site related to the last move.
 NEW CTOR
 (last <lastType> [afterConsequence:<boolean>])
 PARAM JAVADOC: <lastType>: The site to return.
-PARAM JAVADOC: [afterConsequence:<boolean>]: To check the from location of the last move after applying the consequence [False].
+PARAM JAVADOC: [afterConsequence:<boolean>]: True, to check the location related to the last decision; False, to check the to location related to the last consequence. [False].
 EXAMPLE: (last To)
 EXAMPLE: (last From)
 EXAMPLE: (last LevelFrom)
@@ -5938,6 +5938,9 @@ DEFINE EXAMPLE: ("AlquerqueBoardWithBottomAndTopTriangles")
 DEFINE: AlquerqueBoardWithBottomTriangle
 DEFINE JAVADOC: Defines a rectangular board with Alquerque-style alternating diagonals with a triangle extension at the bottom. 
 DEFINE EXAMPLE: ("AlquerqueBoardWithBottomTriangle")
+DEFINE: AlquerqueBoardWithEightTriangles
+DEFINE JAVADOC: Defines a rectangular board with Alquerque-style alternating diagonals with eight triangle extensions. 
+DEFINE EXAMPLE: ("AlquerqueBoardWithEightTriangles")
 DEFINE: AlquerqueBoardWithFourTriangles
 DEFINE JAVADOC: Defines a rectangular board with Alquerque-style alternating diagonals with four triangle extensions on each side. 
 DEFINE EXAMPLE: ("AlquerqueBoardWithFourTriangles")
@@ -6118,12 +6121,18 @@ DEFINE EXAMPLE: ("ReachWin" (sites Top) P1)
 DEFINE: BlockWin
 DEFINE JAVADOC: If the next player has no legal moves, the mover is winning. This ludemeplex can be used only in an ending condition. 
 DEFINE EXAMPLE: ("BlockWin")
+DEFINE: DrawIfNoMovesNext
+DEFINE JAVADOC: Checks if a player has no legal moves and the game ends in a draw. #1 = The Player with no moves. 
+DEFINE EXAMPLE: ("DrawIfNoMoves" Next)
 DEFINE: ForEachNonMoverNoMovesLoss
 DEFINE JAVADOC: Makes a player losing when this player has no moves. This ludemeplex can be used only in an ending condition. 
 DEFINE EXAMPLE: ("ForEachNonMoverNoMovesLoss")
 DEFINE: ForEachPlayerNoMovesLoss
 DEFINE JAVADOC: Makes a player losing when this player has no moves. This ludemeplex can be used only in an ending condition. 
 DEFINE EXAMPLE: ("ForEachPlayerNoMovesLoss")
+DEFINE: ForEachPlayerNoPiecesLoss
+DEFINE JAVADOC: Makes a player losing when this player has no pieces. This ludemeplex can be used only in an ending condition. 
+DEFINE EXAMPLE: ("ForEachPlayerNoPiecesLoss")
 DEFINE: Line3Win
 DEFINE JAVADOC: If the mover has 3 pieces aligned, the mover is winning. This ludemeplex can be used only in an ending condition. #1 = Directions of the line (by default Adjacent) or role type of the owner of the pieces making the line. 
 DEFINE EXAMPLE: ("Line3Win")
@@ -6190,6 +6199,9 @@ DEFINE EXAMPLE: ("HopCapture")
 DEFINE: HopCaptureDistance
 DEFINE JAVADOC: Defines a hop move in all the directions specified (by default Adjacent) over an enemy to an empty site at any distance. The enemy piece is removed. #1 = The from site. #2 = Directions of the hop. #3 = The range of pieces you can hop (by default 1). #4 = The consequences. 
 DEFINE EXAMPLE: ("HopCaptureDistance" (from (last To)) Diagonal)
+DEFINE: HopCaptureDistanceNotAlreadyHopped
+DEFINE JAVADOC: Defines a hop move in the specified directions over an enemy to an empty site at any distance. The enemy pieces are removed and you can not hop a piece you already hopped during your turn. #1 = The from site. #2 = The directions. #2 = The consequences. 
+DEFINE EXAMPLE: ("HopCaptureDistanceNotAlreadyHopped")
 DEFINE: HopDiagonalCapture
 DEFINE JAVADOC: Defines a hop move in all the diagonal directions over an enemy to an empty site. The enemy piece is removed. 
 DEFINE EXAMPLE: ("HopDiagonalCapture")
@@ -6241,6 +6253,9 @@ DEFINE EXAMPLE: ("HopStackEnemyCaptureTop")
 DEFINE: HopStackEnemyCaptureTopDistance
 DEFINE JAVADOC: Defines a hop move in all the directions specified (by default Adjacent) over a stack with on top an enemy to an empty site at any distance. The enemy piece is moved to the top of the jumping stack. #1 = The from site. #2 = Directions of the hop. #3 = The consequences. 
 DEFINE EXAMPLE: ("HopStackEnemyCaptureTopDistance")
+DEFINE: LeapCapture
+DEFINE JAVADOC: Defines a leap move to empty or enemy sites. The enemy pieces are removed. #1 = The walk. #2 = Consequences of the capture effect. #3 = The consequences. 
+DEFINE EXAMPLE: ("LeapCapture" "KnightWalk")
 DEFINE: LeapToEmpty
 DEFINE JAVADOC: Defines a leap move to an empty site. #1 = The walk. #2 = The consequences. 
 DEFINE EXAMPLE: ("LeapToEmpty" "KnightWalk")
@@ -6253,6 +6268,9 @@ DEFINE EXAMPLE: ("RemoveAnyEnemyPiece")
 DEFINE: RemoveAnyEnemyPieceNotInLine3
 DEFINE JAVADOC: Allows to remove one piece of the enemy player which is not in a line 3. #1 = The directions of the line (by default adjacent). 
 DEFINE EXAMPLE: ("RemoveAnyEnemyPieceNotInLine3")
+DEFINE: DoubleStepForwardToEmpty
+DEFINE JAVADOC: Defines a forward slide move to empty sites at distance 2. #1 = The consequences of the moves. 
+DEFINE EXAMPLE: ("DoubleStepForwardToEmpty")
 DEFINE: SlideCapture
 DEFINE JAVADOC: Defines a slide move to capture an enemy piece. #1 = Directions of the slide. #2 = Between conditions to specify (by default sliding on empty sites). #3 = Consequences of the capture effect. #4 = The consequences of the moves. 
 DEFINE EXAMPLE: ("SlideCapture" Orthogonal)
@@ -6283,6 +6301,9 @@ DEFINE EXAMPLE: ("StepToEmpty")
 DEFINE: StepToEnemy
 DEFINE JAVADOC: Defines a step move to all the directions specified (adjacent by default) to a site occupied by an enemy piece. The enemy piece is removed. #1 = The direction(s) to step. #2 = The consequences. 
 DEFINE EXAMPLE: ("StepToEnemy")
+DEFINE: StepToNotFriend
+DEFINE JAVADOC: Defines a step move to all the directions specified (adjacent by default) to a site occupied by an enemy piece or an empty site. The enemy piece is removed. #1 = The direction(s) to step. #2 = The consequences. 
+DEFINE EXAMPLE: ("StepToNotFriend")
 DEFINE: BeforeAfterCentreSetup
 DEFINE JAVADOC: Defines starting rules placing one piece on each site before and after the centre (e.g. Starting rules of Zamma). #1 = The name of the piece of P1. #2 = The name of the piece of P2. 
 DEFINE EXAMPLE: ("BeforeAfterCentreSetup" "Marker1" "Marker2")

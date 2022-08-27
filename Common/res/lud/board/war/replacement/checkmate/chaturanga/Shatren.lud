@@ -28,19 +28,19 @@
         (board (square 8)) 
         
         ("ChessPawn" "Pawn" ~
-                (then
-                    (if (is In (last To) (sites Mover "Promotion")) 
-                        ("PromotedPiece")
-                    )
+            (then
+                (if (is In (last To) (sites Mover "Promotion")) 
+                    ("PromotedPiece")
+                )
             )
         )
-
+        
         ("ChessRook" "Castle")
         (piece "King_noCross" Each 
             (or
                 ("StepToNotFriend")
                 (if (not ("IsInCheck" "King_noCross" Mover))
-                	("LeapCapture" "KnightWalk")
+                    ("LeapCapture" "KnightWalk")
                 )
             )
         )

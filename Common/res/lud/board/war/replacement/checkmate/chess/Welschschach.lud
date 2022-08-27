@@ -154,7 +154,7 @@
                     )
                     (forEach Piece "Pawn" 
                         (if (is In (from) (intersection ("SpecialStartingPawns") (sites Start (piece (what at:(from))))))
-                        	("DoubleStepForwardToEmpty")
+                            ("DoubleStepForwardToEmpty")
                         )
                         Mover
                     )

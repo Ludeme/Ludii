@@ -3,10 +3,10 @@
 // @example ("DoubleStepForwardToEmpty")
 
 (define "DoubleStepForwardToEmpty"
-	    (move Slide 
-	            Forward 
-	            (between (exact 2) if:(is Empty (between))) 
-	            (to if:(is Empty (to))) 
-	            #1
-	        ) 
+    (move Slide 
+        Forward 
+        (between (exact 2) if:(is Empty (between))) 
+        (to if:(is Empty (to))) 
+        #1
+    ) 
 )

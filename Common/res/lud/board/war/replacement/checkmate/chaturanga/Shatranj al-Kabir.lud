@@ -128,7 +128,7 @@
                 ("StepToNotFriend")
                 (or
                     "StepForwardToEmpty" 
-                	("StepToEnemy" (directions {FR FL}))	
+                    ("StepToEnemy" (directions {FR FL}))	
                     (then 
                         (if ("NotSpecialPawn")
                             ("PromoteToAssignedPiece")
@@ -341,8 +341,8 @@
             )
         )
         (end { 
-        	("BlockWin")
-        	("Checkmate" "King_noCross")
+            ("BlockWin")
+            ("Checkmate" "King_noCross")
             (if 
                 (or 
                     ("IsPieceAt" "King_noCross" P2 (mapEntry "ExtraSquare" P1))

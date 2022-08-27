@@ -80,7 +80,7 @@
         (piece "Pawn"
             (or {
                 (if (and (= 0 (state at:(last To))) (is In (from) (sites Start (piece (what at:(from))))))
-                	("DoubleStepForwardToEmpty")
+                    ("DoubleStepForwardToEmpty")
                 )
                 ("StepToEmpty" (if (= 1 (state at:(from))) Backward Forward))
                 ("StepToEnemy" (directions {FR FL}))

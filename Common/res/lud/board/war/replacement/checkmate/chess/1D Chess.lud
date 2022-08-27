@@ -15,9 +15,9 @@
         (play (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King" Mover))))
         
         (end {
-        	("Checkmate" "King")
+            ("Checkmate" "King")
             (if (or (no Moves Mover) (= (counter) 100)) (result Mover Draw)) 
-         })
+        })
     )
 )
 

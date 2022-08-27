@@ -1,6 +1,4 @@
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
-)
+//**** Defines used to model the castling Moves. ****
 
 (define "HasNeverMoved"
     (= (state at:(mapEntry #1 (mover))) 1) 
@@ -18,22 +16,6 @@
                 ("PieceHasMoved" (last To))
             ) 
             (set Value at:(last To) (% (+ (value Piece at:(last To)) 1) 2))
-        )
-    ) 
-)
-
-(define "CaptureToPieceAndResetCounter"
-    (apply 
-        if: (or (and ("IsEnemyAt" (to)) (= (value Piece at:(from)) (value Piece at:(to)))) (is Empty (to)))
-        (if 
-            (and 
-                ("IsEnemyAt" (to))
-                (= (value Piece at:(from)) (value Piece at:(to)))
-            )
-            (remove 
-                (to) 
-                (then (set Counter))
-            )
         )
     ) 
 )
@@ -90,6 +72,37 @@
     ("DecideToCastle" "King" W 2 "KingNotCheckedAndToEmpty" (then ("CastleRook" "RookLeft" E 3 True)))
 )
 
+(define "Castling"
+    
+    (if (and 
+            ("HasNeverMoved" "King")
+            (not ("IsInCheck" "King" Mover)) 
+        )
+        (or
+            (if (and 
+                    ("HasNeverMoved" "RookLeft")
+                    (can Move ("CastleRook" "RookLeft" E 3 (or
+                                (is Empty (between))
+                                (!= (value Piece at:(from)) (value Piece at:(between)))
+                    )))
+                )
+                "BigCastling"
+            )
+            (if (and 
+                    ("HasNeverMoved" "RookRight")
+                    (can Move ("CastleRook" "RookRight" W 2 (or
+                                (is Empty (between))
+                                (!= (value Piece at:(from)) (value Piece at:(between)))
+                    )))
+                )
+                "SmallCastling"
+            )
+        )
+    )
+)
+
+//**** Defines used to model the Pawn moves. ****
+
 (define "DoubleStep"
     (move Slide 
         Forward 
@@ -121,6 +134,24 @@
     )
 )
 
+//**** Defines used to model the capture effect. ****
+
+(define "CaptureToPieceAndResetCounter"
+    (apply 
+        if: (or (and ("IsEnemyAt" (to)) (= (value Piece at:(from)) (value Piece at:(to)))) (is Empty (to)))
+        (if 
+            (and 
+                ("IsEnemyAt" (to))
+                (= (value Piece at:(from)) (value Piece at:(to)))
+            )
+            (remove 
+                (to) 
+                (then (set Counter))
+            )
+        )
+    ) 
+)
+
 //------------------------------------------------------------------------------
 
 (game "Alice Chess" 
@@ -143,15 +174,13 @@
                         )
                         (set Counter)
                         (set Value at:(last To) (% (+ (value Piece at:(last To)) 1) 2))
-                        }
-                    )
+                    })
                 )
             )
         )
         
         (piece "Rook" Each 
-            (move
-                Slide 
+            (move Slide 
                 Orthogonal 
                 (between 
                     if:(or
@@ -167,8 +196,7 @@
             )
         )
         (piece "King" Each 
-            (move
-                Step 
+            (move Step 
                 (to 
                     if:(and (not ("IsFriendAt" (to))) (or (is Empty (to)) (= (value Piece at:(from)) (value Piece at:(to)))))
                     "CaptureToPieceAndResetCounter"
@@ -177,8 +205,7 @@
             )
         )
         (piece "Bishop" Each 
-            (move
-                Slide 
+            (move Slide 
                 Diagonal 
                 (between 
                     if:(or
@@ -196,8 +223,7 @@
             )
         )
         (piece "Knight" Each 
-            (move
-                Leap 
+            (move Leap 
                 "KnightWalk" 
                 (to 
                     if:(and (not ("IsFriendAt" (to))) (or (is Empty (to)) (= (value Piece at:(from)) (value Piece at:(to)))))
@@ -209,8 +235,7 @@
             )
         )
         (piece "Queen" Each 
-            (move
-                Slide 
+            (move Slide 
                 (between 
                     if:(or
                         (is Empty (between))
@@ -245,39 +270,13 @@
             (if "SameTurn"
                 (do (set Var "promotedValue" (value Piece at:(last To)))
                     next:(move Promote (last To) (piece {"Queen" "Knight" "Bishop" "Rook"}) Mover 
-                        (then
-                            (set Value at:(last To) (var "promotedValue"))
-                        ) 
+                        (then (set Value at:(last To) (var "promotedValue"))) 
                     )
                 )
                 (do 
                     (or 
                         (forEach Piece)
-                        (if (and 
-                                ("HasNeverMoved" "King")
-                                (not ("IsInCheck" "King" Mover)) 
-                            )
-                            (or
-                                (if (and 
-                                        ("HasNeverMoved" "RookLeft")
-                                        (can Move ("CastleRook" "RookLeft" E 3 (or
-                                                    (is Empty (between))
-                                                    (!= (value Piece at:(from)) (value Piece at:(between)))
-                                        )))
-                                    )
-                                    "BigCastling"
-                                )
-                                (if (and 
-                                        ("HasNeverMoved" "RookRight")
-                                        (can Move ("CastleRook" "RookRight" W 2 (or
-                                                    (is Empty (between))
-                                                    (!= (value Piece at:(from)) (value Piece at:(between)))
-                                        )))
-                                    )
-                                    "SmallCastling"
-                                )
-                            )
-                        )
+                        ("Castling")
                     )
                     ifAfterwards:(not ("IsInCheck" "King" Mover))
                 )
@@ -285,12 +284,7 @@
         )
         
         (end {
-            (if (and 
-                    ("IsInCheck" "King" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
+            ("Checkmate" "King")
             (if (or (no Moves Mover) (= (counter) 99)) (result Mover Draw)) 
         })
     )

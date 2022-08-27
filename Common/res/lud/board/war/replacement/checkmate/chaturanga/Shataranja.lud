@@ -3,14 +3,14 @@
     (equipment { 
         (board (square 10)) 
         ("ChessPawn" "Pawn" ~
-                (then
-                    (if (is In (last To) (sites Mover "Promotion")) 
-                        (and
-                            (promote (last To) (piece "Bishop_noCross") Mover)	
-                            (fromTo (from (last To)) (to (last From)))
-                        )
+            (then
+                (if (is In (last To) (sites Mover "Promotion")) 
+                    (and
+                        (promote (last To) (piece "Bishop_noCross") Mover)	
+                        (fromTo (from (last To)) (to (last From)))
                     )
                 )
+            )
         )
         ("ChessRook" "Rook")
         ("ChessKing" "King_noCross")
@@ -53,7 +53,7 @@
         )
         
         (end {
-        	("Checkmate" "King_noCross")
+            ("Checkmate" "King_noCross")
             (if (and {
                     (no Pieces Next "Ferz_noCross")
                     (no Pieces Next "Queen")

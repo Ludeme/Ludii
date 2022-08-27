@@ -67,7 +67,7 @@
             )
         )
         (end {
-        	("Checkmate" "King_noCross")
+            ("Checkmate" "King_noCross")
             (if (is Triggered "CanNotEscape" Next) (result Mover Win))
             (if (not (can Move (forEach Piece Next)))
                 (result Mover Win)

@@ -290,7 +290,7 @@
     (item "Pawn Double Step" 
         <
         (if (is In (from) (sites Start (piece (what at:(from)))))
-        	("DoubleStepForwardToEmpty")
+            ("DoubleStepForwardToEmpty")
         )
         > 
         "The pawns can double step from the starting positions."

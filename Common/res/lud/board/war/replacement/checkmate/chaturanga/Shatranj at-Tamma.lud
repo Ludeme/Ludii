@@ -1,16 +1,16 @@
 (game "Shatranj at-Tamma" 
     ("TwoPlayersNorthSouth") 
     (equipment {
-    	("ChessPawn" "Pawn" ~ 
-                (then
-                        (if (is In (last To) (sites Mover "Promotion")) 
-                            (if ("IsOffBoard" (where "Queen" Mover))
-                                (promote (last To) (piece "Queen") Mover)
-                                (remove (last To))
-                            )
-                        )
+        ("ChessPawn" "Pawn" ~ 
+            (then
+                (if (is In (last To) (sites Mover "Promotion")) 
+                    (if ("IsOffBoard" (where "Queen" Mover))
+                        (promote (last To) (piece "Queen") Mover)
+                        (remove (last To))
                     )
-    	)
+                )
+            )
+        )
         ("ChessKing" "King_noCross")
         (piece "Queen" Each ("StepToNotFriend" Diagonal))
         ("ChessKnight" "Knight")
@@ -58,7 +58,7 @@
             )
         )
         (end { 
-        	("Checkmate" "King_noCross") 
+            ("Checkmate" "King_noCross") 
             ("BlockWin")
         })
     )
