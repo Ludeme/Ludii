@@ -31,14 +31,6 @@
     )
 )
 
-// Source: Chess.lud - NextCanNotMove
-(define "NextCannotMove"
-    (not (can Move (do
-                (forEach Piece Next)
-                ifAfterwards:(not ("IsInCheck" "King" Next))
-    )))
-)
-
 // Usage: ("P12" <player1_arg> <player2_arg>)
 (define "P12"
     (if (is Mover P1) #1 #2)
@@ -46,8 +38,7 @@
 
 // Usage: ("SlideCaptureMove" <directions> <then>)
 (define "SlideCaptureMove"
-    (move
-        Slide
+    (move Slide
         #1
         (to if:("IsEnemyAt" (to))
             "CaptureToPieceAndResetCounter"
@@ -62,8 +53,7 @@
 
 // Usage: ("KingCaptureStep" <directions> <then>)
 (define "KingCaptureStep"
-    (move
-        Step
+    (move Step
         #1
         (to if:"IsToEmptyOrEnemy"
             "CaptureToPieceAndResetCounter"
@@ -84,17 +74,15 @@
 // Source: Derived from Chess.lud - DoubleStep
 // Usage: ("PawnHop" <fwd_dir> <back_dir>)
 (define "PawnHop"
-    (move
-        Hop
+    (move Hop
         #1
         (between if:(is In (between) (sites Empty)))
         (to if:"IsToEmpty")
-        (then (and
-                {
+        (then (and {
                 (set Pending (ahead (last To) #2))
                 (set Var (last To))
-                }
-        ))
+                })
+       )
     )
 )
 
@@ -102,20 +90,10 @@
     ("PawnStep_To" ("Directions" {WNW ENE} {WSW ESE}))
 )
 
-(define "PawnStep_Double"
-    ("PawnHop" Forward Backward)
-)
+(define "PawnStep_Double" ("PawnHop" Forward Backward))
 
 // Usage: ("PawnStep_To" <directions>)
-(define "PawnStep_To"
-    (move
-        Step
-        #1
-        (to if:("IsEnemyAt" (to))
-            (apply (remove (to)))
-        )
-    )
-)
+(define "PawnStep_To" ("StepToEnemy" #1))
 
 //----------------------------------------
 // Pawn Movement: En passant
@@ -126,8 +104,7 @@
 
 // Usage: ("EnPassant_Base" <directions>)
 (define "EnPassant_Base"
-    (move
-        Step
+    (move Step
         #1
         (to if:"IsEnPassantCapture")
         (then (remove (var)))
@@ -158,8 +135,7 @@
 
 (game "Glinski Chess"
     ("TwoPlayersNorthSouth")
-    (equipment
-        {
+    (equipment {
         (board (rotate 90 (hex 6)))
         
         (piece "King" Each ("KingCaptureStep" All ~))
@@ -198,12 +174,10 @@
         (regions "Region-Dark" (sites Phase 0))
         (regions "Region-Light" (sites Phase 2))
         (regions "Region-Medium" (sites Phase 1))
-        }
-    )
+    })
     
     (rules
-        (start
-            {
+        (start {
             (place "King1" coord:"B1")
             (place "Queen1" coord:"A2")
             (place "Rook1" {"A4" "D1"})
@@ -218,8 +192,7 @@
             
             (place "Pawn1" <Placement:Pawn1>)
             (place "Pawn2" <Placement:Pawn2>)
-            }
-        )
+        })
         
         phases:{
         (phase "Movement"
@@ -231,22 +204,15 @@
                     )
                 )
             )
-            (end
-                {
-                (if (and
-                        ("IsInCheck" "King" Next)
-                        ("NextCannotMove")
-                    )
-                    (result Mover Win)
-                )
+            (end {
+                ("Checkmate" "King")
                 (if (or
                         (no Moves Mover)
                         (= (counter) 100)
                     )
                     (result Mover Draw)
                 )
-                }
-            )
+             })
         )
         }
     )
