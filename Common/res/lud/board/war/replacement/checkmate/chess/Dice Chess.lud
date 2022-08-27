@@ -1,11 +1,3 @@
-(define "CaptureToPiece"
-    (apply
-        (if (is Occupied (to))
-            (remove (to)) 
-        )
-    ) 
-)
-
 (define "CaptureForwardDiagonal"
     (move
         Step 
@@ -13,7 +5,7 @@
         (directions {FR FL}) 
         (to 
             if:("IsEnemyAt" (to)) 
-            "CaptureToPiece"
+            (apply (remove (to)))
         )
     )
 )
@@ -91,62 +83,14 @@
                 ("StepForwardToEmpty") 
                 ("CaptureForwardDiagonal")
                 }
-                (then
-                    (if (is In (last To) (sites Mover "Promotion"))
-                        (moveAgain) 
-                    )
-                )
+                (then ("ReplayInMovingOn" (sites Mover "Promotion")))
             )
         )
-        (piece "Bishop" Each
-            (move
-                Slide 
-                Diagonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "Knight" Each
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "Rook" Each
-            (move
-                Slide 
-                Orthogonal 
-                (between if:(is Empty (between))) 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece" 
-                )
-            )
-        )
-        (piece "Queen" Each
-            (move
-                Slide 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            ) 
-        )		
-        (piece "King_noCross" Each
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece" 
-                )
-            )
-        )
+        ("ChessBishop" "Bishop")
+        ("ChessKnight" "Knight")
+        ("ChessRook" "Rook")
+        ("ChessQueen" "Queen")
+        ("ChessKing" "King_noCross")
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     }) 
@@ -213,8 +157,7 @@
     (item "10x10" 
         <10>
         <
-        (start
-            { 
+        (start { 
             (place "Pawn1" {"A2" "B2" "C2" "D2" "E2" "F2" "G2" "H2" "I2" "J2"})
             (place "Pawn2" {"J9" "I9" "H9" "G9" "E9" "F9" "D9" "C9" "B9" "A9"})
             (place "Bishop1" {"C1" "H1"}) (place "Bishop2" {"C10" "H10"}) 
@@ -222,8 +165,7 @@
             (place "Rook1" {"A1" "J1"}) (place "Rook2" {"A10" "J10"}) 
             (place "Queen1" coord:"D1") (place "Queen2" coord:"D10")			
             (place "King_noCross1" {"E1" "F1" "G1"}) (place "King_noCross2" {"E10" "F10" "G10"}) 
-            }
-        )
+        })
         >
         "The game is played on a 10x10 board."
     ) 
