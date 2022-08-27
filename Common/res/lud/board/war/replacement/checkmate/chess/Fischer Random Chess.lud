@@ -1,7 +1,3 @@
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
-)
-
 (define "HasNeverMoved"
     (= (state at:#1) 1) 
 )
@@ -16,17 +12,6 @@
             (= (state at:(last To)) 1) 
             ("PieceHasMoved" (last To))
         ) 
-    ) 
-)
-
-(define "CaptureToPieceAndResetCounter"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove 
-                (to) 
-                (then (set Counter))
-            )
-        )
     ) 
 )
 
@@ -56,17 +41,6 @@
     )
 )
 
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
 //------------------------------------------------------------------------------
 
 (game "Fischer Random Chess" 
@@ -74,76 +48,25 @@
     (equipment { 
         (board (square 8)) 
         
-        (piece "Pawn" Each 
-            (or {
+        ("ChessPawn" "Pawn"
+            (or 
                 (if (is In (from) (sites Start (piece (what at:(from)))))
                     ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
                 )
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
                 "EnPassant"
-                }
+                )
                 (then
                     (and
-                        (if (is In (last To) (sites Mover "Promotion")) 
-                            (moveAgain)
-                        )
+                            ("ReplayInMovingOn" (sites Mover "Promotion"))
                         (set Counter)
                     )
                 )
-            )
         )
-        
-        (piece "Rook" Each 
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-                "RememberPieceHasMoved"
-            )
-        )
-        (piece "King" Each 
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-                "RememberPieceHasMoved"
-            )
-        )
-        (piece "Bishop" Each 
-            (move
-                Slide 
-                Diagonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-            )
-        )
-        (piece "Knight" Each 
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-            )
-        )
-        (piece "Queen" Each 
-            (move
-                Slide 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-            ) 
-        )
+        ("ChessRook" "Rook" (then (set Counter)) ("RememberPieceHasMoved"))
+        ("ChessKing" "King" (then (set Counter)) ("RememberPieceHasMoved"))
+        ("ChessBishop" "Bishop" (then (set Counter)))
+        ("ChessKnight" "Knight" (then (set Counter)))
+        ("ChessQueen" "Queen" (then (set Counter)))
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     }) 
@@ -250,7 +173,7 @@
                                                         )
                                                     )
                                                     (then
-                                                        (if (= (what at:(var "RookToMove")) (id "Rook" Mover))
+                                                        (if ("IsPieceAt" "Rook" Mover (var "RookToMove"))
                                                             (slide 
                                                                 (from (var "RookToMove")) 
                                                                 (if (< (column of:(var "RookToMove")) (column of:(coord "D1")))
@@ -319,7 +242,7 @@
                                                         )
                                                     )
                                                     (then
-                                                        (if (= (what at:(var "RookToMove")) (id "Rook" Mover))
+                                                        (if ("IsPieceAt" "Rook" Mover (var "RookToMove"))
                                                             (slide 
                                                                 (from (var "RookToMove")) 
                                                                 (if (< (column of:(var "RookToMove")) (column of:(coord "F1")))
@@ -395,7 +318,7 @@
                                                         )
                                                     )
                                                     (then
-                                                        (if (= (what at:(var "RookToMove")) (id "Rook" Mover))
+                                                        (if ("IsPieceAt" "Rook" Mover (var "RookToMove"))
                                                             (slide 
                                                                 (from (var "RookToMove")) 
                                                                 (if (< (column of:(var "RookToMove")) (column of:(coord "F8")))
@@ -464,7 +387,7 @@
                                                         )
                                                     )
                                                     (then
-                                                        (if (= (what at:(var "RookToMove")) (id "Rook" Mover))
+                                                        (if ("IsPieceAt" "Rook" Mover (var "RookToMove"))
                                                             (slide 
                                                                 (from (var "RookToMove")) 
                                                                 (if (< (column of:(var "RookToMove")) (column of:(coord "D8")))
@@ -498,12 +421,7 @@
         )
         
         (end {
-            (if (and 
-                    ("IsInCheck" "King" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
+            ("Checkmate" "King")
             (if (or (no Moves Mover) (= (counter) 99)) (result Mover Draw)) 
         })
     )
