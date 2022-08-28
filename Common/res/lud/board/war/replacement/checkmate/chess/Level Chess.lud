@@ -123,17 +123,6 @@
     )
 )
 
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
 (define "GetSiteLevel"
     (if 
         (is In (#1) (sites "Level5")) 5
@@ -178,14 +167,12 @@
                         "DoubleStep"
                     )
                     "StepForwardToEmpty" 
-                    "CaptureForwardDiagonal"
+                    ("StepToEnemy" (directions {FR FL}))
                     "EnPassant"
                     }
                     (then
                         (and
-                            (if (is In (last To) (sites Mover "Promotion")) 
-                                (moveAgain)
-                            )
+                        	("ReplayInMovingOn" (sites Mover "Promotion"))
                             (set Counter)
                         )
                     )
@@ -195,8 +182,7 @@
         
         (piece "Rook" Each 
             (if (is Active (who at:(from)))
-                (move
-                    Slide 
+                (move Slide 
                     Orthogonal 
                     (to 
                         if:(or ("IsEnemyAt" (to)) (and (< ("GetSiteLevel" (from)) ("GetSiteLevel" (to))) (not ("IsFriendAt" (to)))))
@@ -208,8 +194,7 @@
         )
         (piece "King" Each 
             (if (is Active (who at:(from)))
-                (move
-                    Step 
+                (move Step 
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPieceAndResetCounter"
@@ -220,8 +205,7 @@
         )
         (piece "Bishop" Each 
             (if (is Active (who at:(from)))
-                (move
-                    Slide 
+                (move Slide 
                     Diagonal 
                     (to 
                         if:(or ("IsEnemyAt" (to)) (and (< ("GetSiteLevel" (from)) ("GetSiteLevel" (to))) (not ("IsFriendAt" (to)))))
@@ -252,8 +236,7 @@
         )
         (piece "Queen" Each 
             (if (is Active (who at:(from)))
-                (move
-                    Slide 
+                (move Slide 
                     (to 
                         if:(or ("IsEnemyAt" (to)) (and (< ("GetSiteLevel" (from)) ("GetSiteLevel" (to))) (not ("IsFriendAt" (to)))))
                         "CaptureToPieceAndResetCounter"
@@ -264,14 +247,11 @@
         
         <NumOfPlayers:BoardRegions>
         
-        }
-    ) 
+    }) 
     (rules 
-        (start
-            { 
+        (start { 
             <NumOfPlayers:PieceSetup>
-            }
-        )
+        })
         
         (play 
             (if "SameTurn"
@@ -319,15 +299,13 @@
             )
         )
         
-        (end
-            {
+        (end {
             (forEach NonMover
-                if:(= (where "King" Player) Off) 
+                if:("IsOffBoard" (where "King" Player)) 
                 (result Player Loss)
             )
             (if (and (<= (count Active) 2) (or (no Moves Mover) (= (counter) (* 50 (count Active))))) (result Mover Draw)) 
-            }
-        )
+        })
     )
 )
 
