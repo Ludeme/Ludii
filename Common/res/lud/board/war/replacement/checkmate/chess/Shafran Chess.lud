@@ -34,14 +34,6 @@
     )
 )
 
-// Source: Chess.lud - NextCanNotMove
-(define "NextCannotMove"
-    (not (can Move (do
-                (forEach Piece Next)
-                ifAfterwards:(not ("IsInCheck" "King" Next))
-    )))
-)
-
 // Usage: ("P12" <player1_arg> <player2_arg>)
 (define "P12"
     (if (is Mover P1) #1 #2)
@@ -49,8 +41,7 @@
 
 // Usage: ("SlideCaptureMove" <directions> <then>)
 (define "SlideCaptureMove"
-    (move
-        Slide
+    (move Slide
         #1
         (to if:("IsEnemyAt" (to))
             "CaptureToPieceAndResetCounter"
@@ -89,8 +80,7 @@
 
 // Usage: ("KingCaptureStep" <directions> <then>)
 (define "KingCaptureStep"
-    (move
-        Step
+    (move Step
         #1
         (to if:"IsToEmptyOrEnemy"
             "CaptureToPieceAndResetCounter"
@@ -112,20 +102,17 @@
 //----------------------------------------
 
 (define "Castle_PreCheck"
-    (and
-        {
-        (= (what at:(mapEntry "King" (mover))) (id "King" Mover)) // At Start Cell
+    (and {
+        ("IsPieceAt" "King" Mover (mapEntry "King" (mover))) // At Start Cell
         ("History_HasNeverMoved" "King")
         (not ("IsInCheck" "King" Mover))
-        }
-    )
+    })
 )
 
 // Usage: ("Castle_Base" <piece_key> <slide_dir> <slide_spaces> <condition> <then>)
 // Source: Chess.lud - DoCastle
 (define "Castle_Base"
-    (move
-        Slide
+    (move Slide
         (from (mapEntry #1 (mover)))
         #2
         (between
@@ -192,8 +179,7 @@
 
 // Source: Chess.lud - CaptureForwardDiagonal
 (define "PawnCapture_Diag"
-    (move
-        Step
+    (move Step
         ("Directions" {NNW NNE} {SSW SSE})
         (to if:("IsEnemyAt" (to))
             (apply (remove (to)))
@@ -203,8 +189,7 @@
 
 // For the initial move at distance 2 or 3 of the pawns
 (define "PawnHop"
-    (move
-        Hop 
+    (move Hop 
         (from) 
         Forward 
         (between 
@@ -226,8 +211,7 @@
 
 // Usage: ("EnPassant_Base" <directions>)
 (define "EnPassant_Base"
-    (move
-        Step
+    (move Step
         #1
         (to if:"IsEnPassantCapture")
         (then (remove (var)))
@@ -254,8 +238,7 @@
 
 (game "Shafran Chess"
     ("TwoPlayersNorthSouth")
-    (equipment
-        {
+    (equipment {
         (board
             (remove
                 (rotate 90 (hex 6))
@@ -275,20 +258,12 @@
                         }
                     )
                 )
-                }
-            )
+            })
         )
         (piece "Queen" Each ("SlideCaptureMove" All ~))
         (piece "Rook" Each ("SlideCaptureMove" Orthogonal "History_SaveMovementChange"))
         (piece "Bishop" Each ("SlideCaptureMove" Diagonal ~))
-        (piece "Knight" Each
-            (move Leap
-                "KnightWalk"
-                (to if:"IsToEmptyOrEnemy"
-                    "CaptureToPieceAndResetCounter"
-                )
-            )
-        )
+        ("ChessKnight" "Knight" (then (set Counter)))
         
         (piece "Pawn" Each
             (or {
@@ -301,17 +276,14 @@
                         (if (is In (from) (sites Mover "Pawn_Step3Cells"))
                             ("PawnHop" 2)
                         )
-                        }
-                    )
+                    })
                 )
                 "PawnCapture_Diag"
                 "EnPassant_Diag"
                 }
                 (then
                     (and
-                        (if (is In (last To) (sites Mover "PromotionZone"))
-                            (moveAgain)
-                        )
+                        ("ReplayInMovingOn" (sites Mover "PromotionZone"))
                         (set Counter)
                     )
                 )
@@ -334,12 +306,10 @@
         (regions "Region-Dark" (sites Phase 2))
         (regions "Region-Light" (sites Phase 0))
         (regions "Region-Medium" (sites Phase 1))
-        }
-    )
+    })
     
     (rules
-        (start
-            {
+        (start {
             (place "King1" coord:"A1" state:1)
             (place "Queen1" coord:"A2")
             (place "Rook1" {"A5" "E1"} state:1)
@@ -354,8 +324,7 @@
             
             (place "Pawn1" {"B6" "B5" "B4" "B3" "B2" "C2" "D2" "E2" "F2"})
             (place "Pawn2" {"E9" "F9" "G9" "H9" "I9" "I8" "I7" "I6" "I5"})
-            }
-        )
+        })
         phases:{
         (phase "Movement"
             (play
@@ -366,22 +335,15 @@
                     )
                 )
             )
-            (end
-                {
-                (if (and
-                        ("IsInCheck" "King" Next)
-                        ("NextCannotMove")
-                    )
-                    (result Mover Win)
-                )
+            (end {
+                ("Checkmate" "King")
                 (if (or
                         (no Moves Mover)
                         (= (counter) 100)
                     )
                     (result Mover Draw)
                 )
-                }
-            )
+            })
         )
         }
     )
