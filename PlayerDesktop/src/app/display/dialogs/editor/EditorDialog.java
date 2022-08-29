@@ -352,7 +352,6 @@ public class EditorDialog extends JDialog
 				});
 			}
 			
-			@SuppressWarnings("deprecation")
 			@Override
 			public void keyTyped(final KeyEvent e)
 			{
@@ -560,7 +559,6 @@ public class EditorDialog extends JDialog
 	
 	//-------------------------------------------------------------------------
 
-	@SuppressWarnings("deprecation")
 	void showAutosuggest(final PlayerApp app, final Point point, final boolean usePartial)
 	{
 		if (suggestion != null) 

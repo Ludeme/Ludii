@@ -19,7 +19,6 @@ public enum EditorActions
 	 * @param e
 	 * @return action requested by the user
 	 */
-	@SuppressWarnings("deprecation")
 	public static EditorActions fromKeyEvent (KeyEvent e)
 	{
 		if (e.getKeyCode() == KeyEvent.VK_TAB) return TAB;

@@ -11,6 +11,7 @@ import main.collections.FVector;
  * 
  * @author Dennis Soemers
  */
+@SuppressWarnings("static-method")
 public class FVectorTests 
 {
 	
