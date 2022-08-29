@@ -43,8 +43,7 @@
 )
 
 (define "DecideToCastle"
-    (move
-        Slide 
+    (move Slide 
         (from (mapEntry #1 (mover))) 
         #2 
         (between 
@@ -96,8 +95,7 @@
 )
 
 (define "EnPassant"
-    (move
-        Step 
+    (move Step 
         (directions {FR FL}) 
         (to if:"InLocationEnPassant") 
         (then 
@@ -114,8 +112,7 @@
 )
 
 (define "CaptureForwardDiagonal"
-    (move
-        Step 
+    (move Step 
         (directions {FR FL}) 
         (to 
             if:("IsEnemyAt" (to)) 
@@ -178,9 +175,7 @@
                 }
                 (then
                     (and
-                        (if (is In (last To) (sites Mover "Promotion")) 
-                            (moveAgain)
-                        )
+                        ("ReplayInMovingOn" (sites Mover "Promotion")) 
                         (set Counter)
                     )
                 )
@@ -188,8 +183,7 @@
         )
         
         (piece "Rook" Each 
-            (move
-                Slide 
+            (move Slide 
                 Orthogonal 
                 (to 
                     if:("IsEnemyAt" (to)) 
@@ -199,8 +193,7 @@
             )
         )
         (piece "King" Each 
-            (move
-                Step 
+            (move Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndResetCounter"
@@ -209,8 +202,7 @@
             )
         )
         (piece "Bishop" Each 
-            (move
-                Slide 
+            (move Slide 
                 Diagonal 
                 (to 
                     if:("IsEnemyAt" (to)) 
@@ -219,8 +211,7 @@
             )
         )
         (piece "Knight" Each 
-            (move
-                Leap 
+            (move Leap 
                 "KnightWalk" 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
@@ -229,8 +220,7 @@
             )
         )
         (piece "Queen" Each 
-            (move
-                Slide 
+            (move Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
@@ -239,8 +229,7 @@
         )
         
         (piece "NuclearBomb" Each
-            (move
-                Step 
+            (move Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndResetCounter"
