@@ -961,6 +961,10 @@ public class MainMenu extends JMenuBar
 				menuItem = new JMenuItem("Generate 1 Game with Restrictions (dev)");
 				menuItem.addActionListener(al);
 				menu.add(menuItem);
+				
+				menuItem = new JMenuItem("Geacron Distance (test)");
+				menuItem.addActionListener(al);
+				menu.add(menuItem);
 			}
 
 			if (app.contextSnapshot().getContext(app).game().description().isReconstruction())	// Repalce this with the real check when completed

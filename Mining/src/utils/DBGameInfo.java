@@ -49,10 +49,15 @@ public class DBGameInfo
 	
 	//-------------------------------------------------------------------------
 	
+	public static Map<String, Integer> getRulesetIds()
+	{
+		return getRulesetIds(rulesetIdsInputFilePath);
+	}
+	
 	/**
 	 * @return a Map giving the DB Id for each ruleset in the database (names in same format as getUniqueName)
 	 */
-	public static Map<String, Integer> getRulesetIds()
+	public static Map<String, Integer> getRulesetIds(final String filePath)
 	{
 		if (rulesetIds == null)
 		{
@@ -60,7 +65,7 @@ public class DBGameInfo
 			
 			final List<String[]> allLines = new ArrayList<>();
 			
-			try (BufferedReader br = new BufferedReader(new FileReader(rulesetIdsInputFilePath))) 
+			try (BufferedReader br = new BufferedReader(new FileReader(filePath))) 
 			{
 			    String line;
 			    while ((line = br.readLine()) != null) 

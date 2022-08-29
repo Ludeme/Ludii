@@ -12,9 +12,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Pattern;
@@ -56,6 +59,7 @@ import app.utils.PuzzleSelectionType;
 import app.utils.QrCodeGeneration;
 import app.views.tools.ToolView;
 import approaches.random.Generator;
+import contextualiser.CulturalSimilarity;
 import features.feature_sets.BaseFeatureSet;
 import game.Game;
 import game.rules.phase.Phase;
@@ -1274,6 +1278,16 @@ public class MainMenuFunctions extends JMenuBar
 		else if (source.getText().equals("Generate 1 Game with Restrictions (dev)"))
 		{
 			Generator.testGamesEric(1, true, false);
+		}
+		else if (source.getText().equals("Geacron Distance (test)"))
+		{
+			final Map<String, Double> rulesetSimilarities = CulturalSimilarity.getRulesetSimilarities(game);
+			
+			final double maxValueInMap = (Collections.max(rulesetSimilarities.values()));
+			System.out.println("closest rulesets:");
+	        for (final Entry<String, Double> entry : rulesetSimilarities.entrySet()) 
+	            if (entry.getValue() == maxValueInMap) 
+	                System.out.println(entry.getKey());     // Print the rulesets with max similarity
 		}
 		else if (source.getText().equals("Reconstruction Dialog"))
 		{
