@@ -254,7 +254,7 @@ public final class OverlayView extends View
 			String message = "Player " + winner + " has won";
 			final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
 			final int pixels = DesktopApp.view().getBoardPanel().placement().width;
-			g2d.drawString(message, (int)(pixels), (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.5));
+			g2d.drawString(message, pixels, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.5));
 		}
 	}
 	
