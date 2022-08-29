@@ -15,7 +15,7 @@ public class ContextualSimilarity
 
 	/**
 	 * @param game Game to compare similarity against.
-	 * @param conceptSimilarity true if using concept similarity, otherwise cultural similarity.
+	 * @param conceptSimilarity true if using concept similarity, otherwise using cultural similarity.
 	 * @return Map of game/ruleset names to similarity values.
 	 */
 	public static final Map<String, Double> getRulesetSimilarities(final Game game, final boolean conceptSimilarity)
