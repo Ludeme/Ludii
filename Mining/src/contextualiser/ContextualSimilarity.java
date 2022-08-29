@@ -23,7 +23,7 @@ public class ContextualSimilarity
 		// Get all ruleset ids from DB
 		final String name = DBGameInfo.getUniqueName(game);
 		final Map<String, Integer> rulesetIds = DBGameInfo.getRulesetIds(rulesetIdsFilePath);
-		final int rulesetId = rulesetIds.get(name);
+		final int rulesetId = rulesetIds.get(name).intValue();
 		
 		final Map<Integer, Double> rulesetSimilaritiesIds = new HashMap<>();			// Map of ruleset ids to similarity
 		final Map<String, Double> rulesetSimilaritiesNames = new HashMap<>();			// Map of game/ruleset names to similarity
@@ -39,11 +39,11 @@ public class ContextualSimilarity
 		        
 		        double similarity = -1.0;
 		        if (conceptSimilarity)
-		        	similarity = Double.valueOf(values[2]);
+		        	similarity = Double.valueOf(values[2]).doubleValue();
 		        else
-		        	similarity = Double.valueOf(values[1]);
+		        	similarity = Double.valueOf(values[1]).doubleValue();
 		        
-		        rulesetSimilaritiesIds.put(Integer.valueOf(values[0]), similarity);
+		        rulesetSimilaritiesIds.put(Integer.valueOf(values[0]), Double.valueOf(similarity));
 		        
 //		        if (!rulesetIds.containsValue(Integer.valueOf(values[0])))
 //		        	System.out.println("ERROR, two rulesets with the same name. ruleset id: " + Integer.valueOf(values[0]));
@@ -51,7 +51,7 @@ public class ContextualSimilarity
 		        // Convert ruleset ids to corresponding names.
 		        for (final Map.Entry<String, Integer> entry : rulesetIds.entrySet()) 
 		        	if (entry.getValue().equals(Integer.valueOf(values[0])))
-		        		rulesetSimilaritiesNames.put(entry.getKey(), similarity);
+		        		rulesetSimilaritiesNames.put(entry.getKey(), Double.valueOf(similarity));
 		    }
 		}
 		catch (final Exception e)

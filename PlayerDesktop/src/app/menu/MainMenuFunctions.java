@@ -1282,21 +1282,21 @@ public class MainMenuFunctions extends JMenuBar
 		else if (source.getText().equals("Contextual Distance"))
 		{
 			final Map<String, Double> rulesetSimilaritiesCultural = ContextualSimilarity.getRulesetSimilarities(game, false);
-			final double maxValueInMapCultural = (Collections.max(rulesetSimilaritiesCultural.values()));
+			final double maxValueInMapCultural = (Collections.max(rulesetSimilaritiesCultural.values()).doubleValue());
 			System.out.println("------------------");
 			System.out.println("closest cultural rulesets:");
 			if (maxValueInMapCultural > 0)
 		        for (final Entry<String, Double> entry : rulesetSimilaritiesCultural.entrySet()) 
-		            if (entry.getValue() == maxValueInMapCultural) 
+		            if (entry.getValue().doubleValue() == maxValueInMapCultural) 
 		                System.out.println(entry.getKey() + " (" + maxValueInMapCultural + ")");     // Print the rulesets with max cultural similarity
 	        
 	        final Map<String, Double> rulesetSimilaritiesConcept = ContextualSimilarity.getRulesetSimilarities(game, true);
-			final double maxValueInMapConcept = (Collections.max(rulesetSimilaritiesConcept.values()));
+			final double maxValueInMapConcept = (Collections.max(rulesetSimilaritiesConcept.values()).doubleValue());
 			System.out.println();
 			System.out.println("closest concept rulesets:");
 			if (maxValueInMapConcept > 0)
 		        for (final Entry<String, Double> entry : rulesetSimilaritiesConcept.entrySet()) 
-		            if (entry.getValue() == maxValueInMapConcept) 
+		            if (entry.getValue().doubleValue() == maxValueInMapConcept) 
 		                System.out.println(entry.getKey() + " (" + maxValueInMapConcept + ")");     // Print the rulesets with max concept similarity
 		}
 		else if (source.getText().equals("Reconstruction Dialog"))
