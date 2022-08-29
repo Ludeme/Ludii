@@ -34,7 +34,7 @@
                 
                 (move Select
                     (from Vertex (sites Board Vertex) if:(is Occupied Vertex (from)))
-                    (to Vertex (sites Hand Shared))
+                    (to Cell (sites Hand Shared))
                     (then
                         (remove Vertex (last From))
                     )
