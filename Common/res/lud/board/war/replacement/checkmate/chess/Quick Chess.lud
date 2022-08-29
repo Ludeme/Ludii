@@ -1,7 +1,3 @@
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
-)
-
 (define "CaptureToPieceAndResetCounter"
     (apply 
         (if ("IsEnemyAt" (to))
@@ -17,8 +13,7 @@
 )
 
 (define "CaptureForwardDiagonal"
-    (move
-        Step 
+    (move Step 
         (directions {FR FL}) 
         (to 
             if:("IsEnemyAt" (to)) 
@@ -77,8 +72,7 @@
         )
         
         (piece "Rook" Each 
-            (move
-                Slide 
+            (move Slide 
                 Orthogonal 
                 (to 
                     if:("IsEnemyAt" (to)) 
@@ -87,8 +81,7 @@
             )
         )
         (piece "King" Each 
-            (move
-                Step 
+            (move Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndResetCounter"
@@ -96,8 +89,7 @@
             )
         )
         (piece "Bishop" Each 
-            (move
-                Slide 
+            (move Slide 
                 Diagonal 
                 (to 
                     if:("IsEnemyAt" (to)) 
@@ -106,8 +98,7 @@
             )
         )
         (piece "Knight" Each 
-            (move
-                Leap 
+            (move Leap 
                 "KnightWalk" 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
@@ -116,8 +107,7 @@
             )
         )
         (piece "Queen" Each 
-            (move
-                Slide 
+            (move Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
@@ -170,12 +160,7 @@
         )
         
         (end {
-            (if (and 
-                    ("IsInCheck" "King" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
+            ("Checkmate" "King")
             (if (no Moves Mover) (result Mover Draw))
             (if (= (var "NoEnoughCapture") 1) (byScore)) 
         })

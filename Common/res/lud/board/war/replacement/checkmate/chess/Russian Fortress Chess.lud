@@ -122,8 +122,7 @@
         (piece "Queen" Each
             (if (is Active (who at:(from)))
                 (or
-                    (move
-                        Slide 
+                    (move Slide 
                         Orthogonal
                         (to 
                             if:("IsEnemyAt" (to)) 
@@ -137,8 +136,7 @@
                             ) 
                         ) 
                     )	
-                    (move
-                        Slide 
+                    (move Slide 
                         Diagonal
                         (to 
                             if:("IsEnemyAt" (to)) 
@@ -192,17 +190,14 @@
         )
         (piece "Bishop" Each
             (if (is Active (who at:(from)))
-                (move
-                    Slide 
+                (move Slide 
                     Diagonal 
                     (to 
                         if:("IsEnemyAt" (to)) 
                         (apply 
                             if:("NoWallUsedByVerticesBetweenFromTo" (from) (to))
                             (if ("IsEnemyAt" (to))
-                                (remove 
-                                    (to) 
-                                )
+                                (remove (to))
                             )
                         )
                     ) 
@@ -211,8 +206,7 @@
         )
         (piece "Rook" Each
             (if (is Active (who at:(from)))
-                (move
-                    Slide 
+                (move Slide 
                     Orthogonal
                     (to 
                         if:("IsEnemyAt" (to)) 
@@ -287,8 +281,7 @@
             (place "Rook1" (handSite P1 2)) (place "Rook2" (handSite P2 2))
             (place "Rook3" (handSite P3 2)) (place "Rook4" (handSite P4 2))
         })
-        phases:
-        {
+        phases:{
         (phase "Placing"
             (play
                 (forEach Site (sites Hand Mover)
@@ -321,7 +314,7 @@
         }
         (end {
             (forEach NonMover
-                if:(= (where "King" Player) Off) 
+                if:("IsOffBoard" (where "King" Player)) 
                 (result Player Loss)
             )	
             (if (and {(not (is Active P1)) (not (is Active P3)) (is Active P2) }) (result P2 Win))
