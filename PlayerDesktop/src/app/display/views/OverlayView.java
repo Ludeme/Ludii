@@ -247,7 +247,7 @@ public final class OverlayView extends View
 		// Game over message for exhibition
 		if (app.settingsPlayer().usingExhibitionApp() && context.trial().over())	
 		{
-			String message = "Draw";
+			String message = "          Draw";
 			if (context.winners().size() > 0)
 				message = "Player " + context.winners().get(0) + " has won";
 
