@@ -12,7 +12,7 @@ import other.context.TempContext;
 import other.move.Move;
 
 /**
- * Applies a sequence of moves one by one.
+ * Applies a sequence of moves one by one. Each move will use the new (temporary) state/context created by the previous move applied in the sequence.
  *
  * @author Eric.Piette
  */
