@@ -962,7 +962,7 @@ public class MainMenu extends JMenuBar
 				menuItem.addActionListener(al);
 				menu.add(menuItem);
 				
-				menuItem = new JMenuItem("Geacron Distance (test)");
+				menuItem = new JMenuItem("Cultural Distance (test)");
 				menuItem.addActionListener(al);
 				menu.add(menuItem);
 			}

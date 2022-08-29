@@ -1279,13 +1279,13 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			Generator.testGamesEric(1, true, false);
 		}
-		else if (source.getText().equals("Geacron Distance (test)"))
+		else if (source.getText().equals("Cultural Distance (test)"))
 		{
 			final Map<String, Double> rulesetSimilarities = CulturalSimilarity.getRulesetSimilarities(game);
 			
 			final double maxValueInMap = (Collections.max(rulesetSimilarities.values()));
 			System.out.println("------------------");
-			System.out.println("closest rulesets:");
+			System.out.println("closest cultural rulesets:");
 	        for (final Entry<String, Double> entry : rulesetSimilarities.entrySet()) 
 	            if (entry.getValue() == maxValueInMap) 
 	                System.out.println(entry.getKey() + " (" + maxValueInMap + ")");     // Print the rulesets with max similarity
