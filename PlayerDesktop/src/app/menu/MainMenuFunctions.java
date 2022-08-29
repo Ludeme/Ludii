@@ -1287,7 +1287,7 @@ public class MainMenuFunctions extends JMenuBar
 			System.out.println("closest rulesets:");
 	        for (final Entry<String, Double> entry : rulesetSimilarities.entrySet()) 
 	            if (entry.getValue() == maxValueInMap) 
-	                System.out.println(entry.getKey());     // Print the rulesets with max similarity
+	                System.out.println(entry.getKey() + " (" + maxValueInMap + ")");     // Print the rulesets with max similarity
 		}
 		else if (source.getText().equals("Reconstruction Dialog"))
 		{
