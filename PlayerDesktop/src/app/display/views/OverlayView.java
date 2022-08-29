@@ -243,6 +243,19 @@ public final class OverlayView extends View
 			final String str = "Pot: $" + context.state().pot();
 			drawStringBelowBoard(g2d, str, 0.95);
 		}
+		
+		// Game over message for exhibition
+		if (app.settingsPlayer().usingExhibitionApp() && context.trial().over())	
+		{
+			int winner = context.winners().get(0);
+			final Font font = new Font("Arial", Font.BOLD, 56);
+			g2d.setFont(font);
+			g2d.setColor(Color.RED);
+			String message = "Player " + winner + " has won";
+			final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
+			final int pixels = DesktopApp.view().getBoardPanel().placement().width;
+			g2d.drawString(message, (int)(pixels), (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.5));
+		}
 	}
 	
 	//-------------------------------------------------------------------------
