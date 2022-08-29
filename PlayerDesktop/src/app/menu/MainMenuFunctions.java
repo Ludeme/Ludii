@@ -59,7 +59,7 @@ import app.utils.PuzzleSelectionType;
 import app.utils.QrCodeGeneration;
 import app.views.tools.ToolView;
 import approaches.random.Generator;
-import contextualiser.CulturalSimilarity;
+import contextualiser.ContextualSimilarity;
 import features.feature_sets.BaseFeatureSet;
 import game.Game;
 import game.rules.phase.Phase;
@@ -1279,16 +1279,23 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			Generator.testGamesEric(1, true, false);
 		}
-		else if (source.getText().equals("Cultural Distance (test)"))
+		else if (source.getText().equals("Contextual Distance"))
 		{
-			final Map<String, Double> rulesetSimilarities = CulturalSimilarity.getRulesetSimilarities(game);
-			
-			final double maxValueInMap = (Collections.max(rulesetSimilarities.values()));
+			final Map<String, Double> rulesetSimilaritiesCultural = ContextualSimilarity.getRulesetSimilarities(game, false);
+			final double maxValueInMapCultural = (Collections.max(rulesetSimilaritiesCultural.values()));
 			System.out.println("------------------");
 			System.out.println("closest cultural rulesets:");
-	        for (final Entry<String, Double> entry : rulesetSimilarities.entrySet()) 
-	            if (entry.getValue() == maxValueInMap) 
-	                System.out.println(entry.getKey() + " (" + maxValueInMap + ")");     // Print the rulesets with max similarity
+	        for (final Entry<String, Double> entry : rulesetSimilaritiesCultural.entrySet()) 
+	            if (entry.getValue() == maxValueInMapCultural) 
+	                System.out.println(entry.getKey() + " (" + maxValueInMapCultural + ")");     // Print the rulesets with max cultural similarity
+	        
+	        final Map<String, Double> rulesetSimilaritiesConcept = ContextualSimilarity.getRulesetSimilarities(game, true);
+			final double maxValueInMapConcept = (Collections.max(rulesetSimilaritiesConcept.values()));
+			System.out.println("------------------");
+			System.out.println("closest context rulesets:");
+	        for (final Entry<String, Double> entry : rulesetSimilaritiesConcept.entrySet()) 
+	            if (entry.getValue() == maxValueInMapConcept) 
+	                System.out.println(entry.getKey() + " (" + maxValueInMapConcept + ")");     // Print the rulesets with max concept similarity
 		}
 		else if (source.getText().equals("Reconstruction Dialog"))
 		{

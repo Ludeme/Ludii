@@ -8,20 +8,25 @@ import java.util.Map;
 import game.Game;
 import utils.DBGameInfo;
 
-public class CulturalSimilarity 
+public class ContextualSimilarity 
 {
 	private static final String rulesetIdsFilePath = "../Mining/res/concepts/input/GameRulesets.csv";
 	private static final String rulesetLudemesOutputFilePath = "../../LudiiPrivate/DataMiningScripts/Geacron/GeacronDistance/res/output/contextualiser/similarity_";
 
-	public static final Map<String, Double> getRulesetSimilarities(final Game game)
+	/**
+	 * @param game Game to compare similarity against.
+	 * @param conceptSimilarity true if using concept similarity, otherwise cultural similarity.
+	 * @return Map of game/ruleset names to similarity values.
+	 */
+	public static final Map<String, Double> getRulesetSimilarities(final Game game, final boolean conceptSimilarity)
 	{
 		// Get all ruleset ids from DB
 		final String name = DBGameInfo.getUniqueName(game);
 		final Map<String, Integer> rulesetIds = DBGameInfo.getRulesetIds(rulesetIdsFilePath);
 		final int rulesetId = rulesetIds.get(name);
 		
-		final Map<Integer, Double> rulesetSimilaritiesIds = new HashMap<>();			// Map of ruleset ids to CSN similarity
-		final Map<String, Double> rulesetSimilaritiesNames = new HashMap<>();			// Map of game/ruleset names to CSN similarity
+		final Map<Integer, Double> rulesetSimilaritiesIds = new HashMap<>();			// Map of ruleset ids to similarity
+		final Map<String, Double> rulesetSimilaritiesNames = new HashMap<>();			// Map of game/ruleset names to similarity
 		final String fileName = rulesetLudemesOutputFilePath + rulesetId + ".csv";
 				
 		try (BufferedReader br = new BufferedReader(new FileReader(fileName))) 
@@ -31,7 +36,14 @@ public class CulturalSimilarity
 		    while ((line = br.readLine()) != null) 
 		    {
 		        final String[] values = line.split(",");
-		        rulesetSimilaritiesIds.put(Integer.valueOf(values[0]), Double.valueOf(values[1]));
+		        
+		        double similarity = -1.0;
+		        if (conceptSimilarity)
+		        	similarity = Double.valueOf(values[2]);
+		        else
+		        	similarity = Double.valueOf(values[1]);
+		        
+		        rulesetSimilaritiesIds.put(Integer.valueOf(values[0]), similarity);
 		        
 //		        if (!rulesetIds.containsValue(Integer.valueOf(values[0])))
 //		        	System.out.println("ERROR, two rulesets with the same name. ruleset id: " + Integer.valueOf(values[0]));
@@ -39,7 +51,7 @@ public class CulturalSimilarity
 		        // Convert ruleset ids to corresponding names.
 		        for (final Map.Entry<String, Integer> entry : rulesetIds.entrySet()) 
 		        	if (entry.getValue().equals(Integer.valueOf(values[0])))
-		        		rulesetSimilaritiesNames.put(entry.getKey(), Double.valueOf(values[1]));
+		        		rulesetSimilaritiesNames.put(entry.getKey(), similarity);
 		    }
 		}
 		catch (final Exception e)
