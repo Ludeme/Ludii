@@ -1284,6 +1284,7 @@ public class MainMenuFunctions extends JMenuBar
 			final Map<String, Double> rulesetSimilarities = CulturalSimilarity.getRulesetSimilarities(game);
 			
 			final double maxValueInMap = (Collections.max(rulesetSimilarities.values()));
+			System.out.println("------------------");
 			System.out.println("closest rulesets:");
 	        for (final Entry<String, Double> entry : rulesetSimilarities.entrySet()) 
 	            if (entry.getValue() == maxValueInMap) 
