@@ -1291,8 +1291,8 @@ public class MainMenuFunctions extends JMenuBar
 	        
 	        final Map<String, Double> rulesetSimilaritiesConcept = ContextualSimilarity.getRulesetSimilarities(game, true);
 			final double maxValueInMapConcept = (Collections.max(rulesetSimilaritiesConcept.values()));
-			System.out.println("------------------");
-			System.out.println("closest context rulesets:");
+			System.out.println();
+			System.out.println("closest concept rulesets:");
 	        for (final Entry<String, Double> entry : rulesetSimilaritiesConcept.entrySet()) 
 	            if (entry.getValue() == maxValueInMapConcept) 
 	                System.out.println(entry.getKey() + " (" + maxValueInMapConcept + ")");     // Print the rulesets with max concept similarity
