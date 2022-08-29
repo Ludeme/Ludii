@@ -5,17 +5,6 @@
 // General functions
 //----------------------------------------
 
-// Source: Chess.lud - CaptureToPieceAndResetCounter
-(define "CaptureToPieceAndResetCounter"
-    (apply
-        (if ("IsEnemyAt" (to))
-            (remove (to)
-                (then (set Counter))
-            )
-        )
-    )
-)
-
 // Usage: ("Directions" <p1_directions> <p2_directions>)
 (define "Directions"
     ("P12" (directions #1) (directions #2))
@@ -31,29 +20,9 @@
     )
 )
 
-// Source: Chess.lud - NextCanNotMove
-(define "NextCannotMove"
-    (not (can Move (do
-                (forEach Piece Next)
-                ifAfterwards:(not ("IsInCheck" "King" Next))
-    )))
-)
-
 // Usage: ("P12" <p1_arg> <p2_arg>)
 (define "P12"
     (if (is Mover P1) #1 #2)
-)
-
-// Usage: ("SlideCaptureMove" <directions> <then>)
-(define "SlideCaptureMove"
-    (move
-        Slide
-        #1
-        (to if:("IsEnemyAt" (to))
-            "CaptureToPieceAndResetCounter"
-        )
-        #2
-    )
 )
 
 //----------------------------------------
@@ -66,7 +35,13 @@
         Step
         #1
         (to if:"IsToEmptyOrEnemy"
-            "CaptureToPieceAndResetCounter"
+            (apply
+                    (if ("IsEnemyAt" (to))
+                        (remove (to)
+                            (then (set Counter))
+                        )
+                    )
+                )
         )
         #2
     )
@@ -77,18 +52,6 @@
 // Note: Counter is reset in (piece "Pawn" ...).
 //----------------------------------------
 
-// Source: Chess.lud - CaptureForwardDiagonal
-(define "PawnCapture_Diag"
-    (move
-        Step
-        ("Directions" {NNW NNE} {SSW SSE})
-        (to if:("IsEnemyAt" (to))
-            (apply (remove (to)))
-        )
-    )
-)
-
-//----------------------------------------
 // Pawn promotion
 //----------------------------------------
 // Usage: ("PromoteTo" <piece_types>)
@@ -100,27 +63,19 @@
 
 (game "Mini Hexchess"
     ("TwoPlayersNorthSouth")
-    (equipment
-        {
+    (equipment {
         (board (rotate 90 (hex 4)))
         
         (piece "King" Each ("KingCaptureStep" All ~))
-        (piece "Queen" Each ("SlideCaptureMove" All ~))
-        (piece "Rook" Each ("SlideCaptureMove" Orthogonal ~))
-        (piece "Bishop" Each ("SlideCaptureMove" Diagonal ~))
-        (piece "Knight" Each
-            (move Leap
-                "KnightWalk"
-                (to if:"IsToEmptyOrEnemy"
-                    "CaptureToPieceAndResetCounter"
-                )
-            )
-        )
+        (piece "Queen" Each ("SlideCapture" ~ ~ (then (set Counter))))
+        (piece "Rook" Each ("SlideCapture" Orthogonal ~ (then (set Counter))))
+        (piece "Bishop" Each ("SlideCapture" Diagonal ~ (then (set Counter))))
+        ("ChessKnight" "Knight" (then (set Counter)))
         
         (piece "Pawn" Each
             (or {
                 "StepForwardToEmpty"
-                "PawnCapture_Diag"
+            	("StepToEnemy" ("Directions" {NNW NNE} {SSW SSE}))
                 }
                 (then
                     (and
@@ -139,12 +94,10 @@
         (regions "Region-Dark" (sites Phase 2))
         (regions "Region-Light" (sites Phase 1))
         (regions "Region-Medium" (sites Phase 0))
-        }
-    )
+    })
     
     (rules
-        (start
-            {
+        (start {
             (place "King1" coord:"B2")
             (place "Rook1" coord:"B1")
             (place "Bishop1" coord:"A1")
@@ -157,8 +110,7 @@
             
             (place "Pawn1" {"A3" "B3" "C3" "C2" "C1"})
             (place "Pawn2" {"E7" "E6" "E5" "F5" "G5"})
-            }
-        )
+        })
         phases:{
         (phase "Movement"
             (play
@@ -169,22 +121,15 @@
                     )
                 )
             )
-            (end
-                {
-                (if (and
-                        ("IsInCheck" "King" Next)
-                        ("NextCannotMove")
-                    )
-                    (result Mover Win)
-                )
+            (end {
+                ("Checkmate" "King")
                 (if (or
                         (no Moves Mover)
                         (= (counter) 100)
                     )
                     (result Mover Draw)
                 )
-                }
-            )
+            })
         )
         }
     )
