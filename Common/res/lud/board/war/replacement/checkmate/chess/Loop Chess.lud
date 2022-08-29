@@ -5,8 +5,7 @@
                     (forEach Piece Next)
                     (move (from (sites Occupied by:Next container:"Hand" components:{"Rook" "Bishop" "Knight" "Queen"})) (to (sites Empty)))
                     (move (from (sites Occupied by:Next container:"Hand" component:"Pawn")) (to (difference (sites Empty) (sites "LastRanks"))))
-                    }
-                )
+                })
                 ifAfterwards:(not ("IsInCheck" "King" Next))
             )
         ) 
@@ -14,7 +13,7 @@
 )
 
 (define "KingInTheInitialPlace"
-    (= (what at:(mapEntry "King" (mover))) (id "King" Mover))
+    ("IsPieceAt" "King" Mover (mapEntry "King" (mover)))
 )
 
 (define "HasNeverMoved"

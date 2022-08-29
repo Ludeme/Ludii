@@ -76,7 +76,6 @@ public class TextPaneUtils
 	 * @param pt
 	 * @return partial word before specified point in text area
 	 */
-	@SuppressWarnings("deprecation")
 	public static String getLettersBeforePoint (final JTextComponent tc, final Point pt) 
 	{
 		try {
@@ -95,7 +94,6 @@ public class TextPaneUtils
 	 * @param pt
 	 * @return Word at specified point in text area
 	 */
-	@SuppressWarnings("deprecation")
 	public static String getWordAtPoint (final JTextComponent tc, final Point pt) 
 	{
 		try {
@@ -110,7 +108,6 @@ public class TextPaneUtils
 		return null;
 	}
 
-	@SuppressWarnings("deprecation")
 	public static String replaceWordAtPoint (final JTextComponent tc, final Point pt, final String newWord) 
 	{
 		try {
