@@ -42,8 +42,7 @@
 )
 
 (define "DoCastle"
-    (move
-        Slide 
+    (move Slide 
         (from (mapEntry #1 (mover))) 
         #2 
         (between 
@@ -75,17 +74,6 @@
     )
 )
 
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
 //------------------------------------------------------------------------------
 
 (game "Maharajah Chess" 
@@ -99,28 +87,15 @@
                     ("DoubleStepForwardToEmpty")
                 )
                 "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
+                ("StepToEnemy" (directions {FR FL}))
                 }
-                (then
-                    (set Counter)
-                )
+                (then (set Counter))
             )
         )
         
-        (piece "Rook" P2 
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-                "RememberPieceHasMoved"
-            )
-        )
+        (piece "Rook" P2 ("SlideCapture" Orthogonal ~ (then (set Counter)) "RememberPieceHasMoved"))
         (piece "King" P2 
-            (move
-                Step 
+            (move Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndResetCounter"
@@ -129,8 +104,7 @@
             )
         )
         (piece "Bishop" P2 
-            (move
-                Slide 
+            (move Slide 
                 Diagonal 
                 (to 
                     if:("IsEnemyAt" (to)) 
@@ -138,19 +112,9 @@
                 ) 
             )
         )
-        (piece "Knight" P2 
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-            )
-        )
+        (piece "Knight" P2 ("LeapCapture" "KnightWalk" (then (set Counter))))
         (piece "Queen" P2 
-            (move
-                Slide 
+            (move Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
@@ -160,36 +124,20 @@
         
         (piece "Amazon" P1 
             (or
-                (move
-                    Leap 
-                    "KnightWalk" 
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        "CaptureToPieceAndResetCounter"
-                    ) 
-                ) 
-                (move
-                    Slide 
-                    (to 
-                        if:("IsEnemyAt" (to)) 
-                        "CaptureToPieceAndResetCounter"
-                    ) 
-                ) 
+            	("LeapCapture" "KnightWalk" (then (set Counter)))
+            	("SlideCapture" ~ ~ (then (set Counter)))
             )
         )
         (map "King" {(pair 1 "E1") (pair 2 "E8")})
         (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})
         (map "RookRight" {(pair 1 "H1") (pair 2 "H8")})
-        }
-    ) 
+    }) 
     (rules 
-        (start
-            { 
+        (start { 
             (place "Pawn2" (sites Row 6))
             (place "Amazon1" coord:"E1")
             (place "Rook2" {"A8" "H8"} state:1) (place "Knight2" {"B8" "G8"}) (place "Bishop2" {"C8" "F8"}) (place "Queen2" coord:"D8") (place "King2" coord:"E8" state:1) 
-            }
-        )
+        })
         
         (play 
             (do 
@@ -224,8 +172,7 @@
             )
         )
         
-        (end
-            {
+        (end {
             (if 
                 (if (is Mover P1)
                     (and 
@@ -240,8 +187,7 @@
                 (result Mover Win)
             ) 
             (if (or (no Moves Mover) (= (counter) 100)) (result Mover Draw)) 
-            }
-        )
+        })
     )
 )
 

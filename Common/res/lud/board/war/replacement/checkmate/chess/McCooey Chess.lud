@@ -35,14 +35,6 @@
     )
 )
 
-// Source: Chess.lud - NextCanNotMove
-(define "NextCannotMove"
-    (not (can Move (do
-                (forEach Piece Next)
-                ifAfterwards:(not ("IsInCheck" "King" Next))
-    )))
-)
-
 // Usage: ("P12" <player1_arg> <player2_arg>)
 (define "P12"
     (if (is Mover P1) #1 #2)
@@ -50,8 +42,7 @@
 
 // Usage: ("SlideCaptureMove" <direction> <then>)
 (define "SlideCaptureMove"
-    (move
-        Slide
+    (move Slide
         #1
         (to if:("IsEnemyAt" (to))
             "CaptureToPieceAndResetCounter"
@@ -66,8 +57,7 @@
 
 // Usage: ("KingCaptureStep" <direction> <then>)
 (define "KingCaptureStep"
-    (move
-        Step
+    (move Step
         #1
         (to if:"IsToEmptyOrEnemy"
             "CaptureToPieceAndResetCounter"
@@ -84,8 +74,7 @@
 // Source: Derived from Chess.lud - DoubleStep
 // Usage: ("PawnHop" <fwd_dir> <back_dir>)
 (define "PawnHop"
-    (move
-        Hop
+    (move Hop
         #1
         (between if:(is In (between) (sites Empty)))
         (to if:"IsToEmpty")
@@ -100,8 +89,7 @@
 
 // Source: Chess.lud - CaptureForwardDiagonal
 (define "PawnCapture_Diag"
-    (move
-        Step
+    (move Step
         ("Directions" {NNW NNE} {SSW SSE})
         (to if:("IsEnemyAt" (to))
             (apply (remove (to)))
@@ -122,8 +110,7 @@
 
 // Usage: ("EnPassant_Base" <directions>)
 (define "EnPassant_Base"
-    (move
-        Step
+    (move Step
         #1
         (to if:"IsEnPassantCapture")
         (then (remove (var)))
@@ -154,10 +141,9 @@
 
 (game "McCooey Chess"
     ("TwoPlayersNorthSouth")
-    (equipment
-        {
+    (equipment {
         (board (rotate 90 (hex 6)))
-        
+
         (piece "King" Each ("KingCaptureStep" All ~))
         (piece "Queen" Each ("SlideCaptureMove" All ~))
         (piece "Rook" Each ("SlideCaptureMove" Orthogonal ~))
@@ -202,12 +188,10 @@
         (regions "Region-Dark" (sites Phase 0))
         (regions "Region-Light" (sites Phase 2))
         (regions "Region-Medium" (sites Phase 1))
-        }
-    )
+    })
     
     (rules
-        (start
-            {
+        (start {
             (place "King1" coord:"B1")
             (place "Queen1" coord:"A2")
             (place "Rook1" {"A3" "C1"})
@@ -222,8 +206,7 @@
             
             (place "Pawn1" {"A4" "B4" "C4" "D4" "D3" "D2" "D1"})
             (place "Pawn2" {"H11" "H10" "H9" "H8" "I8" "J8" "K8"})
-            }
-        )
+        })
         phases:{
         (phase "Movement"
             (play
@@ -234,22 +217,15 @@
                     )
                 )
             )
-            (end
-                {
-                (if (and
-                        ("IsInCheck" "King" Next)
-                        ("NextCannotMove")
-                    )
-                    (result Mover Win)
-                )
+            (end {
+                ("Checkmate" "King")
                 (if (or
                         (no Moves Mover)
                         (= (counter) 100)
                     )
                     (result Mover Draw)
                 )
-                }
-            )
+            })
         )
         }
     )
