@@ -96,8 +96,7 @@
 )
 
 (define "SlideMove"
-    (move
-        Slide
+    (move Slide
         #1 
         (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
@@ -105,8 +104,7 @@
 )
 
 (define "StepMove"
-    (move
-        Step
+    (move Step
         #1
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
@@ -114,8 +112,7 @@
 )
 
 (define "GoldMove"
-    (move
-        Leap
+    (move Leap
         { {F} {F L F} {F R F} {L F} {R F} {L L F} {R R F} {L L L F}}
         rotations:False
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
@@ -123,8 +120,7 @@
 )
 
 (define "SilverMove"
-    (move
-        Leap
+    (move Leap
         { {F} {F L F} {F R F} {L F L F} {R F R F} {L L F L F} {R R F R F}}
         rotations:False
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
@@ -168,8 +164,7 @@
         
         // Knight
         (piece "Keima" Each 
-            (move
-                Leap
+            (move Leap
                 "KnightWalk"
                 rotations:False
                 (to 
@@ -305,8 +300,7 @@
             )
         )
         
-        (end
-            {
+        (end {
             (if (and 
                     ("IsInCheck" "Osho" Next)
                     ("NextCannotMove")
@@ -314,8 +308,7 @@
                 (result Mover Win)
             )
             ("BlockWin")
-            }
-        )
+        })
     )
 )
 
