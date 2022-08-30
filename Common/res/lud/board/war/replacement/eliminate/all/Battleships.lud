@@ -116,8 +116,7 @@
         )
         (phase "Playing"
             (play
-                (move
-                    Select
+                (move Select
                     (from (intersection (sites Next "Defence") (sites Hidden to:Mover)))
                     (then
                         ("ClearShotSpace"
