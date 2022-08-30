@@ -1,7 +1,5 @@
-
 (define "StepMove" 
-    (move
-        Step 
+    (move Step 
         #1
         (to 
             if:(and 
@@ -50,7 +48,7 @@
                 (forEach Piece)
             )
         )
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
