@@ -2,8 +2,6 @@
 
 (define "CanMove" (= (value Player Mover) 1))
 
-(define "SiteToMove" (trackSite Move steps:(mapEntry (var))))
-
 (define "RemovePiece" 
     (apply 
         (if 
@@ -17,8 +15,7 @@
 
 (game "Awangdu"
     (players 2) 
-    (equipment 
-        { 
+    (equipment { 
         (board (rectangle 5 12) 
             { 
             (track "Track1" "0,E,N1,W,N1,E,N1,W,N1,E" P1 directed:True)
@@ -26,34 +23,30 @@
             }
             use:Vertex
         )
-        (dice d:2 from:0 num:6)
+        ("StickDice" 6)
         (piece "Disc" Each
-            (if (not (is Friend (who at:("SiteToMove"))))
+            (if (not ("IsFriendAt" ("NextSiteOnTrack" (mapEntry (var)))))
                 (move 
                     (from) 
                     (to 
-                        ("SiteToMove")
+                    	("NextSiteOnTrack" (mapEntry (var)))
                         ("RemovePiece")
                     )
                 )
             )
         ) 
         (map {(pair 0 <High:value>) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 1) (pair 6 <High:value>)})
-        }
-    ) 
+        }) 
     
     (rules 
-        (start 
-            { 	
+        (start { 	
             (place "Disc1" (sites Bottom))
             (place "Disc2" (sites Top))
-            }
-        )	
+        })	
         
         (play
-            (do 
-                (roll) 
-                next:(if 
+        		("RollMove"
+        			(if 
                     (or 
                         ("CanMove") 
                         ("AllowToBegin")
@@ -68,12 +61,7 @@
             )
         )
         
-        (end 
-            (if 
-                (< (count Pieces Next) 3)
-                (result Mover Win)
-            )
-        )
+        (end ("HavingLessPiecesLoss" Next 2))
     )
 )
 
@@ -113,8 +101,8 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
+    
     (ai
         "Awangdu_ai"
     )
