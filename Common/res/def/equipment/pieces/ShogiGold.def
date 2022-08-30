@@ -1,0 +1,17 @@
+// Defines a piece moving like a gold in Shogi.
+// #1 = The name of the piece.
+// #2 = Consequences of the capture effect.
+// #3 = The consequences of the moves.
+// @example ("ShogiGold" "Tokin")
+
+(define "ShogiGold"
+    (piece #1 Each 
+    		(move Step 
+    				(directions {Forward Backward Rightward Leftward FL FR})
+    		        (to if:(not ("IsFriendAt" (to))) 
+    		        	            #2
+    		        ) 
+    		        #3 
+    		    ) 	
+    )
+)

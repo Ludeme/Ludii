@@ -40,8 +40,7 @@
 )
 
 (define "SlideMove"
-    (move
-        Slide 
+    (move Slide 
         #1 
         (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
@@ -49,8 +48,7 @@
 )
 
 (define "StepMove"
-    (move
-        Step 
+    (move Step 
         #1
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
@@ -106,7 +104,7 @@
         (piece "Kinsho" Each "GoldMove")
         
         // Promoted Pawn
-        (piece "Tokin" Each "GoldMove")
+        ("ShogiGold" "Tokin" "CapturePiece")
         
         // Promoted Silver
         (piece "Narigin" Each "GoldMove")
