@@ -13,14 +13,12 @@
                     (move (from (sites Occupied by:Next container:"Hand" components:{"Ma" "Ju" "Pao" "Zu"})) (to (sites Empty)))
                     (move (from (sites Occupied by:Next container:"Hand" component:"Shi")) (to (intersection (sites Empty) (sites Next "PalaceShi"))))
                     (move (from (sites Occupied by:Next container:"Hand" component:"Xiang")) (to (intersection (sites Empty) (sites Next "Home"))))
-                    }
-                )
+                })
     ifAfterwards:(not ("IsInCheck" "Jiang" Next)))))
 )
 
 (define "StepMoveOnThePalace" 
-    (move
-        Step
+    (move Step
         #1 
         (to 
             if:(and 
@@ -50,8 +48,7 @@
         
         // Elephant
         (piece "Xiang" Each 
-            (move
-                Slide
+            (move Slide
                 Diagonal 
                 (between 
                     (exact 2) 
@@ -107,8 +104,7 @@
         
         // Chariot
         (piece "Ju" Each 
-            (move
-                Slide
+            (move Slide
                 Orthogonal 
                 (to 
                     if:("IsEnemyAt" (to)) 
@@ -129,8 +125,7 @@
         (piece "Pao" Each 
             (or 
                 (move Slide Orthogonal) 
-                (move
-                    Hop
+                (move Hop
                     Orthogonal 
                     (between 
                         before:(count Rows) 
@@ -153,8 +148,7 @@
         
         // Soldier
         (piece "Zu" Each
-            (move
-                Step
+            (move Step
                 (if 
                     (is In (from) (sites Mover "Home")) 
                     Forward 
@@ -195,8 +189,7 @@
         })
         
         (play (do 
-                (or
-                    {
+                (or {
                     (forEach Piece) 
                     (move (from (sites Occupied by:Mover container:"Hand" components:{"Ma" "Ju" "Pao" "Zu"})) (to (sites Empty)))
                     (move (from (sites Occupied by:Mover container:"Hand" component:"Shi")) (to (intersection (sites Empty) (sites Mover "PalaceShi")))) 
