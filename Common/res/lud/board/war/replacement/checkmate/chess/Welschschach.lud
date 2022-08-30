@@ -22,10 +22,6 @@
     )
 )
 
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
-)
-
 (define "SpecialStartingPawns" (sites {"A2" "D2" "H2" "A7" "H7" "E7"}))
 
 //------------------------------------------------------------------------------
@@ -39,7 +35,7 @@
                 (to if:(and (not ("IsFriendAt" (to)))
                         (if (not (is In (to) (sites Next "Promotion")))
                             True
-                            (!= (what at:(to)) (id "Pawn" Next))
+                            (not ("IsPieceAt" "Pawn" Next (to)))
                         )
                     )
                     ("CaptureEnemyToPiece")
@@ -73,8 +69,7 @@
             )		
         )
         (piece "Knight"
-            (move
-                Leap 
+            (move Leap 
                 "KnightWalk" 
                 (to 
                     if:(and (not ("IsFriendAt" (to)))
@@ -88,8 +83,7 @@
             )		
         )
         (piece "Rook"
-            (move
-                Slide 
+            (move Slide 
                 Orthogonal
                 (to 
                     if:(and (not ("IsFriendAt" (to)))
@@ -131,8 +125,7 @@
             (place "Rook2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Bishop_noCross2" {"C8" "F8"}) (place "Queen2" coord:"E8") (place "King_noCross2" coord:"D8") 
         })
         
-        phases:
-        {
+        phases:{
         (phase "Opening" 
             (play
                 (or {
@@ -172,14 +165,7 @@
         )
         }
         
-        (end {
-            (if (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
-        })
+        (end ("Checkmate" "King_noCross"))
     )
 )
 
