@@ -1,14 +1,12 @@
 (match "Bul" 
     (players <Player:num>)
-    (games 
-        {
+    (games {
         (subgame "Aj Sayil"  <Player:option> next:1)
         (subgame "Aj T'iwil" <Player:option> next:2)
         (subgame "Aj Sina'anil" <Player:option> next:3)
         (subgame "Aj Sakakil" <Player:option> next:4)
         (subgame "A K'aak'il" <Player:option>  )
-        }
-    )
+    })
     <Player:end>
 )
 
