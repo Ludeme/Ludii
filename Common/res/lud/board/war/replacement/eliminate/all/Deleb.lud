@@ -3,13 +3,6 @@
 (define "ThrowTwoDice" (+ ("Die1") ("Die2")))
 <Board:dice>
 
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
-        steps:#2
-    )
-)
-
 (define "Remember" 
     (if (is Mover P1)
         (remember Value "ScoreP1" #1)
@@ -72,7 +65,7 @@
                 )
             )
             (to 
-                ("NextSiteFrom" (from) (value))	
+            		("NextSiteOnTrack" (value) from:(from))
                 if:(and
                     (not ("IsFriendAt" (to)))
                     (or 
@@ -80,7 +73,7 @@
                         (= 0 
                             (count Sites in:(intersection 
                                     (sites Occupied by:Enemy) 
-                                (sites Track Mover from:("NextSiteFrom" (from) 1) to:("NextSiteFrom" (from) (- (value) 1))))
+                                (sites Track Mover from:("NextSiteOnTrack" 1 from:(from)) to:("NextSiteOnTrack" (- (value) 1) from:(from))))
                             )
                         )
                     )
@@ -112,7 +105,7 @@
             )
         )
         (to 
-            ("NextSiteFrom" (from) ("ThrowValue"))	
+        		("NextSiteOnTrack" ("ThrowValue") from:(from))
             if:(and
                 (not ("IsFriendAt" (to)))
                 (or 
@@ -120,7 +113,7 @@
                     (= 0 
                         (count Sites in:(intersection 
                                 (sites Occupied by:Enemy) 
-                            (sites Track Mover from:("NextSiteFrom" (from) 1) to:("NextSiteFrom" (from) (- ("ThrowValue") 1))))
+                            (sites Track Mover from:("NextSiteOnTrack" 1 from:(from)) to:("NextSiteOnTrack" (- ("ThrowValue") 1) from:(from))))
                         )
                     )
                 )
@@ -164,7 +157,7 @@
             <Board:tracks>
             use:Vertex
         )
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
         (piece "Marker" P1 ("Move"))
         (piece "Marker" P2 ("Move"))
         (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})
@@ -180,8 +173,8 @@
         
         (phase "StageOne" 
             (play 
-                (do (roll) 
-                    next:(move Pass)
+                ("RollMove"
+                	(move Pass)
                     (then
                         (if (or 
                                 (= ("ThrowValue") 6)
@@ -200,8 +193,8 @@
         
         (phase "StageTwo" 
             (play 
-                (do (roll) 
-                    next:(move Pass)
+                ("RollMove"
+                	(move Pass)
                     (then
                         (if (or 
                                 (= 0 ("ThrowThreeDice"))
@@ -226,8 +219,8 @@
         
         (phase "StageThree" 
             (play 
-                (do (roll) 
-                    next:(move Pass)
+                ("RollMove"
+                	(move Pass)
                     (then
                         (if 
                             (= 0 ("ThrowTwoDice"))
@@ -247,7 +240,7 @@
             (nextPhase Mover (= 0 ("ThrowTwoDice")) "StageOne")
             (nextPhase Mover (= 2 ("ThrowTwoDice")) "StageTwo")
             (nextPhase Mover (= 1 ("ThrowTwoDice")) "PlayingScore")
-            }
+         }
         )
         
         (phase "PlayingScore" 
@@ -267,8 +260,7 @@
         
         (phase "Playing" 
             (play 
-                (do (roll) 
-                    next:(or 
+                ("RollMove" (or 
                         (if (or (is Mover P1) (is Mover P3)) 
                             (forEach Piece P1) 
                             (forEach Piece P2)
@@ -285,7 +277,7 @@
         )
         
         }
-        (end (if (no Pieces Enemy) (result TeamMover Win)))
+        (end ("CaptureAllTeam"))
     )
 )
 
@@ -491,7 +483,6 @@
     (graphics {
         (show Edges Diagonal Hidden)
         (piece Colour "Die" state:0 fillColour:(colour Black))
-        
     })
     
 )
