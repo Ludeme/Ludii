@@ -2,8 +2,6 @@
 
 (define "EntryPoint" (mapEntry "Entry" (mover)))
 
-(define "SiteToMoveOnTrack" (trackSite Move #1 #2 steps:#3))
-
 (define "NoPieceOnBoard" (< (count Pieces Mover in:(sites Board)) 1))
 
 (define "SetCapturePiece"
@@ -18,7 +16,7 @@
 
 (define "UnsetCapturingPieces" 
     (forEach Level (last From) FromTop
-        (if (is Friend (who at:(last From) level:(level)))
+        (if ("IsFriendAt" (last From) level:(level))
             ("UnsetCapturingPiece" at:(last From) level:(level))
         )
     ) 
@@ -31,10 +29,10 @@
 (define "CaptureMove" 
     (forEach Level (last To) FromTop
         (and
-            (if (is Enemy (who at:(last To) level:(level)))
+            (if ("IsEnemyAt" (last To) level:(level))
                 ("SetCapturePiece" at:(last To) level:(level))
             )
-            (if (is Friend (who at:(last To) level:(level)))
+            (if ("IsFriendAt" (last To) level:(level))
                 ("SetCapturingPiece" at:(last To) level:(level))
             )
         )
@@ -50,7 +48,7 @@
 (define "EnterAPiece" 
     (move
         (from (handSite Mover))
-        (to ("SiteToMoveOnTrack" from:("EntryPoint" (mover)) "Track" (- "ThrowValue" 1)))
+        (to ("NextSiteOnTrack" (- "ThrowValue" 1) from:("EntryPoint" (mover)) "Track"))
     )
 )
 
@@ -95,7 +93,7 @@
                     (move 
                         (from (from) level:(level))
                         (to 
-                            ("SiteToMoveOnTrack" from:(from) "Track" ("ThrowValue"))
+                        	("NextSiteOnTrack" ("ThrowValue") from:(from) "Track")
                         )
                         (then 
                             (if ("AtLeastAnEnemyPieceThere" (last To))
@@ -105,11 +103,11 @@
                     )
                 )
                 (if ("CapturingPiece" (state at:(from) level:(level)))
-                    (if (!= Off ("SiteToMoveOnTrack" from:(from) "CaptureTrack" ("ThrowValue")))
+                    (if ("IsNotOffBoard" ("NextSiteOnTrack" ("ThrowValue") from:(from) "CaptureTrack"))
                         (move 
                             (from (from) level:(level))
                             (to 
-                                ("SiteToMoveOnTrack" from:(from) "CaptureTrack" ("ThrowValue"))
+                            	("NextSiteOnTrack" ("ThrowValue") from:(from) "CaptureTrack")
                             )
                             (then 
                                 (and
@@ -139,7 +137,7 @@
             (pair 9 0) (pair 10 13) (pair 11 0) (pair 12 13) 
             (pair 13 0) (pair 14 13) (pair 15 0) (pair 16 13)
         })
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
         (hand Each)
     })
     (rules
@@ -147,8 +145,8 @@
             <Player:teams>
         })
         (play 
-            (do (roll) 
-                next:(or {
+        		("RollMove"
+        			(or {
                     (if (and ("NoPieceOnBoard") (is Occupied (handSite Mover)))
                         ("EnterAPiece")
                     )
@@ -162,7 +160,7 @@
             )
         )
         
-        (end (if (no Pieces Enemy) (result TeamMover Win)))
+        (end ("CaptureAllTeam"))
     )
 )
 
