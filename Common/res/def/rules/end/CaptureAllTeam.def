@@ -1,0 +1,6 @@
+// Checks if all the enemies have no piece and makes the current team to win. This ludemeplex can be used only in an ending condition.
+// @example ("CaptureAllTeam")
+
+(define "CaptureAllTeam"
+	(if (no Pieces Enemy) (result TeamMover Win))
+)
