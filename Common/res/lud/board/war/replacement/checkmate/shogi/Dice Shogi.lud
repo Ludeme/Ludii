@@ -160,8 +160,8 @@
                     ("Promote")
                     (move Pass)
                 )
-                (do (roll)
-                    next:(do
+                ("RollMove"
+                	(do
                         (if (!= 6 (count Pips))
                             (or {
                                 (if (can Move 
