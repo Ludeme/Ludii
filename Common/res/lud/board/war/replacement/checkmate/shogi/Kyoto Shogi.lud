@@ -43,8 +43,7 @@
 )
 
 (define "SlideMove"
-    (move
-        Slide
+    (move Slide
         #1 
         (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
@@ -52,8 +51,7 @@
 )
 
 (define "StepMove"
-    (move
-        Step
+    (move Step
         #1
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
@@ -190,8 +188,7 @@
             )
         )
         
-        (end
-            {
+        (end {
             (if (and 
                     ("IsInCheck" "Osho" Next)
                     ("NextCannotMove")
@@ -199,8 +196,7 @@
                 (result Mover Win)
             ) 
             ("BlockWin")
-            }
-        )
+        })
     )
 )
 
