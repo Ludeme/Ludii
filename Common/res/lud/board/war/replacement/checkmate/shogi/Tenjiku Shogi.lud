@@ -23,8 +23,7 @@
 )
 
 (define "SlideMove" 
-    (move 
-        Slide
+    (move Slide
         #1
         #2 
         (to 
@@ -35,21 +34,10 @@
     )
 )
 
-(define "StepMove" 
-    (move
-        Step
-        #1
-        (to 
-            if:(not ("IsFriendAt" (to))) 
-            ("CaptureEnemy")
-        ) 
-        #2 
-    )
-)
+(define "StepMove" ("StepToNotFriend" #1 #2))
 
 (define "HopMove" 
-    (move
-        Hop
+    (move Hop
         #1
         (between 
             if:True
@@ -63,8 +51,7 @@
 )
 
 (define "HopMoveWithRange" 
-    (move
-        Hop
+    (move Hop
         #1
         (between
             #2
@@ -81,8 +68,7 @@
 )
 
 (define "DoubleStep" 
-    (move
-        Step
+    (move Step
         #1
         (to 
             if:(not ("IsFriendAt" (to))) 
@@ -126,8 +112,7 @@
 )
 
 (define "RangingJump"
-    (move
-        Hop
+    (move Hop
         #1
         (between 
             (range 1 (count Columns))
@@ -186,12 +171,8 @@
                         ("SlideMove" Diagonal)
                     )
                 )
-                (move
-                    Step
+                ("StepToEmpty"
                     Adjacent
-                    (to 
-                        if:(is Empty (to))
-                    ) 
                     (then 
                         (if (< (value Player Mover) 1)
                             (and
@@ -202,13 +183,7 @@
                         )
                     )
                 )
-                (move
-                    Step
-                    Adjacent
-                    (to 
-                        if:("IsEnemyAt" (to))
-                        ("CaptureEnemy")
-                    ) 
+                ("StepToEnemy" Adjacent
                     (then 
                         (set Value Mover Undefined)
                     )
@@ -262,14 +237,7 @@
                 ("DoubleStep" Adjacent SW)
                 ("DoubleStep" Adjacent SE)
                 ("HopMove" Adjacent)
-                (move
-                    Leap 
-                    "KnightWalk" 
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        ("CaptureEnemy")
-                    ) 
-                )
+                ("LeapCapture" "KnightWalk")
                 }
                 "Promote"
             )		
@@ -342,12 +310,7 @@
                         )	 
                     )	
                 )
-                (move
-                    Step
-                    Adjacent
-                    (to 
-                        if:(is Empty (to))
-                    ) 
+                ("StepToEmpty" Adjacent
                     (then 
                         (if (!= 0 (count Sites in:("AdjacentEnemyPieces" (last To))))
                             (and
@@ -379,8 +342,7 @@
                 ("DoubleStep" SW NE)
                 ("DoubleStep" W E)
                 ("DoubleStep" NW SE)
-                (move
-                    Slide
+                (move Slide
                     (directions {FR FL BR BL Forward Backward})
                     (between 
                         if:(or 
@@ -695,8 +657,8 @@
             (if 
                 (and { 
                     (not (is Mover Next)) 
-                    (= (where "King" Next) Off) 
-                    (= (where "Prince" Next) Off) 
+                    ("IsOffBoard" (where "King" Next)) 
+                    ("IsOffBoard" (where "Prince" Next)) 
                 }) 
                 (result Mover Win)
             )
