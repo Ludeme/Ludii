@@ -3,8 +3,7 @@
             (= (state at:(from)) 1) 
             (and (= (state at:(from)) 0) (= 1 (pips)))
         )
-        (move
-            Slide
+        (move Slide
             #1 
             (between 
                 (exact (pips))
@@ -54,25 +53,20 @@
             (place "Minus2" (sites {20..27 32..35}))
         })
         (play 
-            (do 
-                (if ("NewTurn") 
-                    (roll) 
-                )
-                next:(forEach Die 
+        		("RollEachNewTurnMove"
+        				(forEach Die 
                     replayDouble:(and (= (face 36) 1) (= (face 37) 1))
                     (forEach Piece
                         (then 
                             (if (not (all DiceUsed))
-                                (if (can Move (forEach Die (forEach Piece)))
-                                    (moveAgain)
-                                )
+                                ("ReplayIfCanMove" (forEach Die (forEach Piece)))
                             )
                         )
                     )
                 )
             )
         )
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
