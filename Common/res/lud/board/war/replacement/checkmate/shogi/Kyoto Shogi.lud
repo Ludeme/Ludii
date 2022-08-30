@@ -58,8 +58,6 @@
     ) 	
 )
 
-(define "GoldMove" ("StepMove" (directions {Forward Backward Rightward Leftward FL FR}) (then "Promote")))
-
 //------------------------------------------------------------------------------
 
 (game "Kyoto Shogi" 
@@ -128,10 +126,10 @@
         )
         
         // Gold General
-        (piece "Kinsho" Each "GoldMove")
+        ("ShogiGold" "Kinsho" "CapturePiece" (then "Promote"))
         
         // Promoted Pawn
-        (piece "Tokin" Each "GoldMove")
+        ("ShogiGold" "Tokin" "CapturePiece" (then "Promote"))
         
         (map "Where" { 
             (pair (id "Fuhyo" P1) (handSite P2)) (pair (id "Fuhyo" P2) (handSite P1)) 
