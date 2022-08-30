@@ -5,13 +5,8 @@
     )
 )
 
-(define "EnemyCannotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "Jiang" Next)))))
-)
-
 (define "StepMoveOnThePalace" 
-    (move
-        Step
+    (move Step
         #1 
         (to 
             if:(and 
@@ -61,23 +56,13 @@
         )
         
         // Chariot
-        (piece "Ju" Each 
-            (move
-                Slide
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    (apply (remove (to)))
-                )
-            )
-        )
+        (piece "Ju" Each ("SlideCapture" Orthogonal))
         
         // Canon
         (piece "Pao" Each 
             (or 
                 (move Slide Orthogonal) 
-                (move
-                    Hop
+                (move Hop
                     Orthogonal 
                     (between 
                         before:(count Rows) 
@@ -96,16 +81,7 @@
         )
         
         // Soldier
-        (piece "Zu" Each
-            (move
-                Step
-                (directions {Forward Rightward Leftward})
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    (apply (remove (to)))
-                )
-            )
-        )
+        (piece "Zu" Each ("StepToNotFriend" (directions {Forward Rightward Leftward})))
         
         (regions "PalaceP1" P1 { 2..4 9..11 16..18 })
         (regions "PalaceP2" P2 { 30..32 37..39 44..46 })
@@ -127,12 +103,7 @@
         )
         
         (end {
-            (if (and 
-                    ("IsInCheck" "Jiang" Next) 
-                    ("EnemyCannotMove")
-                ) 
-                (result Mover Win)
-            ) 
+            ("Checkmate" "Jiang")
             ("BlockWin")
         })
     )
