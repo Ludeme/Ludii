@@ -2,13 +2,13 @@
     (do
         (if
             (or {
-                (= (what at:(to)) (id "General" P1))
-                (= (what at:(to)) (id "General" P2))
-                (= (what at:(to)) (id "General" P3))
-                (= (what at:(to)) (id "General" P4))
-                (= (what at:(to)) (id "General" P5))
-                (= (what at:(to)) (id "General" P6))
-                (= (what at:(to)) (id "General" P7))
+                ("IsPieceAt" "General" P1 (to))
+                ("IsPieceAt" "General" P2 (to))
+                ("IsPieceAt" "General" P3 (to))
+                ("IsPieceAt" "General" P4 (to))
+                ("IsPieceAt" "General" P5 (to))
+                ("IsPieceAt" "General" P6 (to))
+                ("IsPieceAt" "General" P7 (to))
             })
             (add (piece (id "General" Mover)) (to (handSite Mover)))
         )
@@ -29,13 +29,13 @@
 
 (define "NotaKing" 
     (!= (who at:#1) Shared)
-    (!= (what at:#1) (id "Diplomat" P1))
-    (!= (what at:#1) (id "Diplomat" P2))
-    (!= (what at:#1) (id "Diplomat" P3))
-    (!= (what at:#1) (id "Diplomat" P4))
-    (!= (what at:#1) (id "Diplomat" P5))
-    (!= (what at:#1) (id "Diplomat" P6))
-    (!= (what at:#1) (id "Diplomat" P7))
+    (not ("IsPieceAt" "Diplomat" P1 #1))
+    (not ("IsPieceAt" "Diplomat" P2 #1))
+    (not ("IsPieceAt" "Diplomat" P3 #1))
+    (not ("IsPieceAt" "Diplomat" P4 #1))
+    (not ("IsPieceAt" "Diplomat" P5 #1))
+    (not ("IsPieceAt" "Diplomat" P6 #1))
+    (not ("IsPieceAt" "Diplomat" P7 #1))
 )
 
 (define "EnemyNotKing"
@@ -52,7 +52,7 @@
     })
 )
 
-(define "CaptureGeneralOf" (= (where "General" #1) Off))
+(define "CaptureGeneralOf" ("IsOffBoard" (where "General" #1)))
 
 (define "RemovePiecesIfPlayerHasLost" 
     (if 
@@ -78,8 +78,7 @@
         (board (square 19) use:Vertex)
         (piece "King" Shared)
         (piece "General" Each
-            (move
-                Slide 
+            (move Slide 
                 All
                 (between
                     if:("EmptyNotKing" (between))
@@ -91,8 +90,7 @@
             ) 
         )
         (piece "Deputy General" Each
-            (move
-                Slide 
+            (move Slide 
                 Orthogonal
                 (between
                     if:("EmptyNotKing" (between))
@@ -104,8 +102,7 @@
             )
         )
         (piece "Officer" Each
-            (move
-                Slide 
+            (move Slide 
                 Diagonal
                 (between
                     if:("EmptyNotKing" (between))
@@ -118,8 +115,7 @@
         )
         (piece "Diplomat" Each (move Slide All))
         (piece "Archer" Each
-            (move 
-                Hop 
+            (move Hop 
                 All 
                 (between (exact 3) if:(is Empty (between))) 
                 (to 
@@ -129,8 +125,7 @@
             )
         )
         (piece "CrossBow" Each
-            (move 
-                Hop 
+            (move Hop 
                 All 
                 (between (exact 4) if:(is Empty (between))) 
                 (to 
@@ -140,8 +135,7 @@
             )
         )
         (piece "Knife" Each
-            (move 
-                Step 
+            (move Step 
                 Diagonal
                 (to 
                     if:(or (is Empty (to)) ("EnemyNotKing" (to))) 
@@ -150,8 +144,7 @@
             )
         )
         (piece "Broadsword" Each
-            (move 
-                Step 
+            (move Step 
                 Orthogonal
                 (to 
                     if:(or (is Empty (to)) ("EnemyNotKing" (to))) 
