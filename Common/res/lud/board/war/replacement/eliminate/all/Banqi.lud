@@ -7,15 +7,15 @@
 
 (define "ZuMovingOnJiang"
     (and
-        (= (what at:(from)) (id "Zu" Mover))
-        (= (what at:(to)) (id "Jiang" Next))
+        ("IsPieceAt" "Zu" Mover (from))
+        ("IsPieceAt" "Jiang" Next (to))
     )
 )
 
 (define "JiangMovingOnZu"
     (and
-        (= (what at:(from)) (id "Jiang" Mover))
-        (= (what at:(to)) (id "Zu" Next))
+            ("IsPieceAt" "Jiang" Mover (from))
+            ("IsPieceAt" "Zu" Next (to))
     )
 )
 
@@ -25,8 +25,7 @@
         (to 
             if:(or 
                 (is Empty (to)) 
-                (and 
-                    {
+                (and {
                     (not (is Hidden What at:(to) to:Mover)) 
                     ("IsEnemyAt" (to))
                     (or
@@ -36,8 +35,7 @@
                             (not ("JiangMovingOnZu"))
                         )
                     )
-                    }
-                )
+                })
             ) 
             (apply (remove (to)))
         ) 
@@ -45,19 +43,16 @@
 )
 
 (define "RevealAPiece"
-    (move
-        Select 
+    (move Select 
         (from (sites Hidden What to:Mover))
         (then
-            (and
-                {
+            (and {
                 (set Hidden What at:(last To) False to:P1)
                 (set Hidden Who at:(last To) False to:P1)
                 (set Hidden What at:(last To) False to:P2)
                 (set Hidden Who at:(last To) False to:P2)
                 #1
-                }
-            )
+            })
         )
     )
 )
