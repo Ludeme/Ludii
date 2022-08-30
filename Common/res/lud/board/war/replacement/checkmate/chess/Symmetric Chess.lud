@@ -15,17 +15,6 @@
     ) 
 )
 
-(define "CaptureToPieceAndResetCounter"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove 
-                (to) 
-                (then (set Counter))
-            )
-        )
-    ) 
-)
-
 (define "KingNotCheckedAndToEmpty"
     (and 
         (is Empty (to)) 
@@ -98,16 +87,11 @@
     )
 )
 
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
+(define "InitialPawnMove"
+	    (if (is In (from) (sites Start (piece (what at:(from)))))
+	        ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
+	    )
+	)
 
 //------------------------------------------------------------------------------
 
@@ -116,60 +100,28 @@
     (equipment { 
         (board (rectangle 8 9)) 
         
-        (piece "Pawn" Each 
-            (or {
-                (if (is In (from) (sites Start (piece (what at:(from)))))
-                    ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
+        ("ChessPawn" "Pawn"
+                (or 
+                    "InitialPawnMove"
+                    "EnPassant"
                 )
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
-                "EnPassant"
-                }
-                (then
+                (then 
                     (and
-                        (if (is In (last To) (sites Mover "Promotion")) 
-                            (moveAgain)
-                        )
+                        ("ReplayInMovingOn" (sites Mover "Promotion"))
                         (set Counter)
                     )
                 )
             )
-        )
         
-        (piece "Rook" Each 
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-                "RememberPieceHasMoved"
-            )
-        )
-        (piece "King" Each 
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-                "RememberPieceHasMoved"
-            )
-        )
+        ("ChessRook" "Rook" (then (set Counter)) ("RememberPieceHasMoved"))
+        ("ChessKing" "King" (then (set Counter)) ("RememberPieceHasMoved"))
         // State = 1, means can step or slide, State = 2 means must step, State = 0 means must Slide
         (piece "Bishop" Each 
             (or {
-                (move
-                    Slide 
-                    (from
-                        if:(!= (state at:(from)) 2)
-                    )
+                ("SlideCapture"
+                    (from if:(!= (state at:(from)) 2))
                     Diagonal 
-                    (to 
-                        if:("IsEnemyAt" (to)) 
-                        "CaptureToPieceAndResetCounter"
-                    )
+                    (then (set Counter))
                     (then
                         (and
                             (forEach Site (sites Occupied by:Mover component:"Bishop")
@@ -179,12 +131,18 @@
                         )
                     )
                 )
-                (move
-                    Step 
+                (move Step 
                     Orthogonal
                     (to 
                         if:(and (not ("IsFriendAt" (to))) (!= (state at:(from)) 0)) 
-                        "CaptureToPieceAndResetCounter"
+                        (apply 
+                                (if ("IsEnemyAt" (to))
+                                    (remove 
+                                        (to) 
+                                        (then (set Counter))
+                                    )
+                                )
+                            ) 
                     ) 
                     (then
                         (forEach Site (sites Occupied by:Mover component:"Bishop")
@@ -192,28 +150,10 @@
                         )
                     )
                 )
-                }
-            )
+            })
         )
-        (piece "Knight" Each 
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-            )
-        )
-        (piece "Queen" Each 
-            (move
-                Slide 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-            ) 
-        )
+        ("ChessKnight" "Knight" (then (set Counter)))
+        ("ChessQueen" "Queen" (then (set Counter)))
         
         (map "King" {(pair 1 "E1") (pair 2 "E8")})
         (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})
