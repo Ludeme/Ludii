@@ -75,8 +75,6 @@
     (= (+ 1 (column of:(last To))) (count Pips))
 )
 
-(define "GoldMove" ("StepMove" (directions {Forward Backward Rightward Leftward FL FR})))
-
 //------------------------------------------------------------------------------
 
 (game "Dice Shogi" 
@@ -101,13 +99,13 @@
         (piece "Kakugyo" Each ("SlideMove" Diagonal "CanPromote"))
         
         // Gold General
-        (piece "Kinsho" Each "GoldMove")
+        ("ShogiGold" "Kinsho" "CapturePiece")
         
         // Promoted Pawn
         ("ShogiGold" "Tokin" "CapturePiece")
         
         // Promoted Silver
-        (piece "Narigin" Each "GoldMove")
+        ("ShogiGold" "Narigin" "CapturePiece")
         
         // Promoted Rook
         (piece "Ryuo" Each (or ("SlideMove" Orthogonal) ("StepMove" Diagonal)))
