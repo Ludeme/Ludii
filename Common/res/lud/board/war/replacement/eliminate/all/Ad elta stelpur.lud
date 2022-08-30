@@ -16,13 +16,6 @@
     (= 1 (pips))
 )
 
-(define "NextSiteFrom" 
-    (trackSite Move 
-        #2
-        steps:#1
-    )
-)
-
 (define "UseADie6" 
     (set Pending 
         (if (all DiceEqual)
@@ -45,7 +38,7 @@
         (move 
             (from)
             (to 
-                ("NextSiteFrom" #1) 
+            	("NextSiteOnTrack" #1)
                 if:(and 
                     (not ("IsFriendAt" (to)))
                     (if (>= (count Turns) 2) 
@@ -69,7 +62,7 @@
             (move 
                 (from)
                 (to 
-                    ("NextSiteFrom" (if (= #1 12) 4 (if (= #1 6) 2 #1)) "CornerTrack") 
+                    ("NextSiteOnTrack" (if (= #1 12) 4 (if (= #1 6) 2 #1)) "CornerTrack") 
                     if:(not ("IsFriendAt" (to)))
                     (apply 
                         if:("IsEnemyAt" (to)) 
@@ -85,8 +78,7 @@
 
 (game "Ad elta stelpur" 
     (players 2) 
-    (equipment 
-        { 
+    (equipment { 
         (board (rectangle 2 13) 
             {
             (track "NormalTrack" {0..5 7..12 25..20 18..13} loop:True)
@@ -98,21 +90,17 @@
         (regions "LeftMost" P2 {24 25})
         (dice num:2)
         (piece "Disc" Each) 
-        } 
-    )
+    })
     
     (rules
-        (start 
-            { 
+        (start { 
             (place "Disc1" {0..5})
             (place "Disc2" {20..25})
-            }
-        )
+        })
         
         (play 
             (do 
-                (if 
-                    ("NewTurn") 
+                (if ("NewTurn") 
                     (roll)
                     (if 
                         (and 
@@ -155,11 +143,7 @@
             )
         )
         
-        (end 
-            (if (no Pieces Next)
-                (result Mover Win)
-            )
-        )
+        (end ("CaptureAll" Next)) 
     )
 )
 
