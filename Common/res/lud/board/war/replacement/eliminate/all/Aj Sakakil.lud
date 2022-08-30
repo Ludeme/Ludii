@@ -14,7 +14,7 @@
 
 (define "UnsetCapturingPieces" 
     (forEach Level (last From) FromTop
-        (if (is Friend (who at:(last From) level:(level)))
+        (if ("IsFriendAt" (last From) level:(level))
             ("UnsetCapturingPiece" at:(last From) level:(level))
         )
     ) 
@@ -33,10 +33,10 @@
 (define "CaptureMove" 
     (forEach Level (last To) FromTop
         (and
-            (if (is Enemy (who at:(last To) level:(level)))
+            (if ("IsEnemyAt" (last To) level:(level))
                 ("SetCapturePiece" at:(last To) level:(level))
             )
-            (if (is Friend (who at:(last To) level:(level)))
+            (if ("IsFriendAt" (last To) level:(level))
                 ("SetCapturingPiece" at:(last To) level:(level))
             )
         )

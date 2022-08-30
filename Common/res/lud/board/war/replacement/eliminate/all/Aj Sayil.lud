@@ -14,7 +14,7 @@
 
 (define "UnsetCapturingPieces" 
     (forEach Level (last From) FromTop
-        (if (is Friend (who at:(last From) level:(level)))
+        (if ("IsFriendAt" (last From) level:(level))
             ("UnsetCapturingPiece" at:(last From) level:(level))
         )
     ) 
