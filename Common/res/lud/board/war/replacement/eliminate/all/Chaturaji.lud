@@ -10,8 +10,7 @@
 )
 
 (define "CaptureForwardDiagonal"
-    (move
-        Step 
+    (move Step 
         (directions {FR FL}) 
         (to 
             if:("IsEnemyAt" (to)) 
@@ -21,7 +20,7 @@
 )
 
 (define "PromoteTo" 
-    (if (= (where #1 Mover) Off) (move Promote (last To) (piece #1) Mover (then #2)))
+    (if ("IsOffBoard" (where #1 Mover)) (move Promote (last To) (piece #1) Mover (then #2)))
 )
 
 (define "PlayAPiece"
@@ -61,8 +60,7 @@
             )
         )
         (piece "Boat" Each
-            (move
-                Hop 
+            (move Hop 
                 Diagonal 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
@@ -71,8 +69,7 @@
             )
         )
         (piece "Knight" Each
-            (move
-                Leap 
+            (move Leap 
                 "KnightWalk" 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
@@ -81,8 +78,7 @@
             )
         )
         (piece "Elephant" Each
-            (move
-                Slide 
+            (move Slide 
                 Orthogonal 
                 (between if:(is Empty (between))) 
                 (to 
@@ -92,8 +88,7 @@
             )
         ) 
         (piece "King_noCross" Each
-            (move
-                Step 
+            (move Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndAddScore" 
@@ -118,8 +113,8 @@
         })
         
         (play 
-            (do (if ("NewTurn") (roll))
-                next:(if (and ("SameTurn") (is Pending))
+            ("RollEachNewTurnMove"
+            	(if (and ("SameTurn") (is Pending))
                     (or {
                         ("PromoteTo" "Boat" (set Value at:(last To) 2))
                         ("PromoteTo" "Knight" (set Value at:(last To) 3))
