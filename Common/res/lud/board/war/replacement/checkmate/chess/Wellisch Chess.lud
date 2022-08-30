@@ -13,11 +13,10 @@
 // Usage: ("IsToA" <piece_type>)
 (define "IsToA"
     (or {
-        (= (what at:(to)) (id #1 P1))
-        (= (what at:(to)) (id #1 P2))
-        (= (what at:(to)) (id #1 P3))
-        }
-    )
+        ("IsPieceAt" #1 P1 (to))
+        ("IsPieceAt" #1 P2 (to))
+        ("IsPieceAt" #1 P3 (to))
+    })
 )
 
 (define "IsToEmpty"
@@ -35,7 +34,9 @@
     (not (can Move (do
                 (forEach Piece (next))
                 ifAfterwards:(not ("IsInCheck" "King" Next))
-    )))
+    )
+    		)
+    		)
 )
 
 // Usage: ("P123" <p1_arg> <p2_arg> <p3_arg>)
@@ -77,8 +78,7 @@
 
 // Usage: ("SlideGrabMove" <directions> <then>)
 (define "SlideGrabMove"
-    (move
-        Slide
+    (move Slide
         #1
         (to if:("IsEnemyAt" (to))
             (apply "GrabToPieceAndResetCounter")
@@ -89,8 +89,7 @@
 
 // Usage: ("StepGrabMove" <directions> <then>)
 (define "StepGrabMove"
-    (move
-        Step
+    (move Step
         #1
         (to if:"IsToEmptyOrEnemy"
             (apply
@@ -132,23 +131,19 @@
 //----------------------------------------
 
 (define "Castle_PreCheck"
-    (and
-        {
-        (= (what at:(mapEntry "King" (mover))) (id "King" Mover)) // At Start Cell
+    (and {
+        ("IsPieceAt" "King" Mover (mapEntry "King" (mover))) // At Start Cell
         ("History_HasNeverMoved" "King")
         (not ("IsInCheck" "King" Mover))
-        }
-    )
+     })
 )
 
 // Usage: ("KingSideSwap" <king_idx> <rook_idx>)
 (define "KingSideSwap"
-    (if (and
-            {
+    (if (and 
             ("History_HasNeverMoved" "RookRight")
             (not ("IsInCheck" "King" Mover at:(mapEntry "RookRight" Mover)))
-            }
-        )
+         )
         (move Swap Pieces #1 #2
             (then "History_SaveMovement")
         )
@@ -157,21 +152,15 @@
 
 // Usage: ("QueenSideSwap" <king_idx> <rook_idx>)
 (define "QueenSideSwap"
-    (if (and
-            {
+    (if (and {
             ("History_HasNeverMoved" "RookLeft")
             (not ("IsInCheck" "King" Mover at:(mapEntry "RookLeft" Mover)))
             (not ("IsInCheck" "King" Mover at:(mapEntry "Queen" Mover)))
             (is In (mapEntry "Queen" Mover) (sites Empty))
-            }
-        )
-        (and
-            {
+         })
             (move Swap Pieces #1 #2
                 (then "History_SaveMovement")
             )
-            }
-        )
     )
 )
 
@@ -197,8 +186,7 @@
 
 // Usage: ("PawnGrab_Base" <directions>)
 (define "PawnGrab_Base"
-    (move
-        Step
+    (move Step
         #1
         (to if:("IsEnemyAt" (to))
             (apply ("GrabToPiece" ~))
@@ -212,11 +200,7 @@
 
 // Usage: ("StepOrthoToEmpty_Base" <directions>)
 (define "StepOrthoToEmpty_Base"
-    (move
-        Step
-        #1
-        (to if:"IsToEmpty")
-    )
+    ("StepToEmpty" #1)
 )
 
 (define "StepOrthoToEmpty"
@@ -233,9 +217,11 @@
 
 (define "PromoteFromHand"
     (move
-        (from (sites Occupied by:Mover container:"Hand"
+        (from 
+        	(sites Occupied by:Mover container:"Hand"
                 components:{"Queen" "Rook" "Knight"}
-        ))
+        )
+        )
         (to (last To))
     )
 )
@@ -246,7 +232,7 @@
                 components:{"Queen" "Rook" "Knight"}
         ))
         (to (sites Mover "PromotionZone")
-            if:(= (what at:(to)) (id "Pawn" Mover))
+            if:("IsPieceAt" "Pawn" Mover (to))
         )
     )
 )
@@ -255,8 +241,7 @@
 
 (game "Wellisch Chess"
     (players {(player N) (player ESE) (player WSW)})
-    (equipment
-        {
+    (equipment {
         (board (hex 6))
         
         (piece "King" Each // Moves in Orthogonal steps
@@ -266,11 +251,9 @@
                     (or {
                         "Castle_KingSide"
                         "Castle_QueenSide"
-                        }
-                    )
+                    })
                 )
-                }
-            )
+            })
         )
         (piece "Queen" Each // Q = R + N
             (or
@@ -290,9 +273,7 @@
                 }
                 (then
                     (and
-                        (if (is In (last To) (sites Mover "PromotionZone"))
-                            (moveAgain)
-                        )
+                        ("ReplayInMovingOn" (sites Mover "PromotionZone"))
                         (set Counter)
                     )
                 )
@@ -303,17 +284,15 @@
         (map "RookLeft" {(pair 1 "B1") (pair 2 "E10") (pair 3 "K7")})
         (map "RookRight" {(pair 1 "E1") (pair 2 "B7") (pair 3 "K10")})
         
-        (map "Queen"  {(pair 1 2) (pair 2 70) (pair 3 69)})
+        (map "Queen" {(pair 1 2) (pair 2 70) (pair 3 69)})
         
         (hand Each size:3) // One for each of Queen, Rook, Knight
         
-        (map "HandIndex"
-            {
+        (map "HandIndex" {
             (pair 4 0) (pair 7 1) (pair 10 2) // P1: Q, R, N
             (pair 5 0) (pair 8 1) (pair 11 2) // P2: Q, R, N
             (pair 6 0) (pair 9 1) (pair 12 2) // P3: Q, R, N
-            }
-        )
+        })
         
         (regions "PromotionZone" P1 (sites Top))
         (regions "PromotionZone" P2 (sites {"K6" "J5" "I4" "H3" "G2" "F1"})) // Side ESE
@@ -322,12 +301,10 @@
         (regions "Region-Grey" (sites Phase 1))
         (regions "Region-Red" (sites Phase 2))
         (regions "Region-Yellow" (sites Phase 0))
-        }
-    )
+    })
     
     (rules
-        (start
-            {
+        (start {
             (place "King1" coord:"D1" state:1)
             (place "Queen1" coord:"C1")
             (place "Rook1" {"B1" "E1"} state:1)
@@ -346,8 +323,7 @@
             (place "Pawn1" {"A2" "B2" "C2" "D3" "E3" "E2" "F2" "G2"})
             (place "Pawn3" {"J11" "J10" "J9" "I8" "I7" "J7" "J6" "J5"})
             (place "Pawn2" {"A5" "B6" "C7" "D7" "E8" "E9" "F10" "G11"})
-            }
-        )
+        })
         phases:{
         (phase "Movement"
             (play
@@ -367,19 +343,17 @@
                     )
                 )
             )
-            (end
-                {
+            (end {
                 (if (is Triggered "CapturedEnemyKing" P1) (result P1 Win))
                 (if (is Triggered "CapturedEnemyKing" P2) (result P2 Win))
                 (if (is Triggered "CapturedEnemyKing" P3) (result P3 Win))
                 
-                (if (= (where "King" P1) Off) (result P1 Loss))
-                (if (= (where "King" P2) Off) (result P2 Loss))
-                (if (= (where "King" P3) Off) (result P3 Loss))
+                (if ("IsOffBoard" (where "King" P1)) (result P1 Loss))
+                (if ("IsOffBoard" (where "King" P2)) (result P2 Loss))
+                (if ("IsOffBoard" (where "King" P3)) (result P3 Loss))
                 
                 (if (= (counter) 100) (result Mover Draw)) // No available moves causes pass
-                }
-            )
+            })
         )
         }
     )
