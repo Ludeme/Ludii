@@ -1,7 +1,5 @@
 (define "ThrowValue" (count Pips))
 
-(define "SiteToMoveOnTrack" (trackSite Move #1 #2 steps:#3))
-
 (define "NoPieceOnBoard" (< (count Pieces Mover in:(sites Board)) 1))
 
 (define "CaptureMove" 
@@ -25,7 +23,7 @@
         (regions "AllSites" (sites Board Vertex))
         (piece "Stick" Each
             (forEach Value (values Remembered "Throws")
-                (if (= Off ("SiteToMoveOnTrack" from:(from) "Track" (value)))
+                (if ("IsOffBoard" ("NextSiteOnTrack" (value) from:(from) "Track"))
                     (move 
                         (from (from) level:(level))
                         (to 
@@ -41,14 +39,14 @@
                             )
                         )
                         (to 
-                            ("SiteToMoveOnTrack" from:(from) "Track" (value))
+                        	("NextSiteOnTrack" (value) from:(from) "Track")
                             (apply (and ("CaptureMove") (forget Value "Throws" (value))))
                         )
                     )
                 )
             )		
         )
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
         (hand Each)
     })
     (rules 
@@ -59,8 +57,8 @@
         phases:{
         (phase "ThrowPhase" 
             (play 
-                (do (roll)
-                    next:(move Pass
+            		("RollMove"
+            			(move Pass
                         (then
                             (if (not (no Pieces Mover))
                                 (and {
@@ -93,8 +91,8 @@
             (nextPhase (= 0 (size Array (values Remembered "Throws"))) "ThrowPhase")
         )
         }
-        
-        (end (if (no Pieces Enemy) (result TeamMover Win)))
+
+    (end ("CaptureAllTeam"))
     )
 )
 
