@@ -4,16 +4,8 @@
         (board (square 7))
         (piece "Marker" Each
             (or
-                (move Step 
-                    (directions {Rightward Leftward Forwards})
-                    (to if:(is Empty (to)))
-                )
-                (move Hop
-                    (between if:("IsEnemyAt" (between)))
-                    (to if:(is Empty (to))
-                        (apply (remove (between)))
-                    )
-                )
+                ("StepToEmpty" (directions {Rightward Leftward Forwards}))
+                ("HopCapture")
             )
         )
     })
@@ -22,10 +14,8 @@
             (place "Marker1" (expand (sites Bottom) steps:2))
             (place "Marker2" (expand (sites Top) steps:2))
         })
-        (play
-            (forEach Piece)
-        )
-        (end (if (no Pieces Next) (result Mover Win)))
+        (play (forEach Piece))
+        (end ("CaptureAll" Next))
     )
 )
 
