@@ -1,7 +1,5 @@
 (define "ThrowValue" (count Pips))
 
-(define "SiteToMoveOnTrack" (trackSite Move steps:#1))
-
 (define "CaptureEnemyPiece" 
     (apply 
         if:("IsEnemyAt" (to)) 
@@ -22,7 +20,7 @@
 (define "OnlyOnePieceMovingOutOfHome" 
     (if (not ("SiteInHome" (from)))
         True
-        (if ("SiteInHome" ("SiteToMoveOnTrack" ("ThrowValue")))
+        (if ("SiteInHome" ("NextSiteOnTrack" ("ThrowValue")))
             True
             (= ("CountOwnPiecesOutHome") 0)
         )
@@ -39,13 +37,13 @@
             #1
         })
         (if (and 
-                (not (is Friend (who at:("SiteToMoveOnTrack" ("ThrowValue")))))
+                (not ("IsFriendAt" ("NextSiteOnTrack" ("ThrowValue"))))
                 ("OnlyOnePieceMovingOutOfHome")
             )
             (move 
                 (from)
                 (to 
-                    ("SiteToMoveOnTrack" ("ThrowValue")) 
+                		("NextSiteOnTrack" ("ThrowValue"))
                     "CaptureEnemyPiece"
                 )
                 (then
@@ -70,7 +68,7 @@
             (track "Track2" "23,W,S1,E,S1,W,N1,E" loop:True P2)
             }
         )
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
         (piece "Marker" Each ("Move"))
         (regions "Home" P1 (sites Bottom))
         (regions "Home" P2 (sites Top))
@@ -81,9 +79,8 @@
             (place "Marker2" (sites Top))
         })
         (play 
-            (do 
-                (roll) 
-                next:(if (= 1 ("ThrowValue"))
+        	("RollMove"
+        				(if (= 1 ("ThrowValue"))
                     (priority {
                         (forEach Piece
                             ("Move" (is In (from) (sites Mover "Home")))
@@ -99,7 +96,7 @@
                 )
             )
         )
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
