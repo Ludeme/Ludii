@@ -2,8 +2,6 @@
 
 (define "FireSites" (sites Centre))
 
-(define "SiteToMoveOnTrack" (trackSite Move #1 #2 steps:#3))
-
 (define "NoPieceOnBoard" (< (count Pieces Mover in:(sites Board)) 1))
 
 (define "SetCapturePiece"
@@ -18,7 +16,7 @@
 
 (define "UnsetCapturingPieces" 
     (forEach Level (last From) FromTop
-        (if (is Friend (who at:(last From) level:(level)))
+        (if ("IsFriendAt" (last From) level:(level))
             ("UnsetCapturingPiece" at:(last From) level:(level))
         )
     ) 
@@ -37,10 +35,10 @@
 (define "CaptureMove" 
     (forEach Level (last To) FromTop
         (and
-            (if (is Enemy (who at:(last To) level:(level)))
+            (if ("IsEnemyAt" (last To) level:(level))
                 ("SetCapturePiece" at:(last To) level:(level))
             )
-            (if (is Friend (who at:(last To) level:(level)))
+            (if ("IsFriendAt" (last To) level:(level))
                 ("SetCapturingPiece" at:(last To) level:(level))
             )
         )
@@ -88,7 +86,7 @@
             (forEach Value (values Remembered "Throws")
                 (or
                     (if ("FreePiece" (state at:(from) level:(level)))
-                        (if (= Off ("SiteToMoveOnTrack" from:(from) "Track" (value)))
+                        (if ("IsOffBoard" ("NextSiteOnTrack" (value) from:(from) "Track"))
                             (move 
                                 (from (from) level:(level))
                                 (to 
@@ -104,7 +102,7 @@
                                     )
                                 )
                                 (to 
-                                    ("SiteToMoveOnTrack" from:(from) "Track" (value))
+                                	("NextSiteOnTrack" (value) from:(from) "Track")
                                     (apply (forget Value "Throws" (value)))
                                 )
                                 (then 
@@ -116,7 +114,7 @@
                         )
                     )
                     (if ("CapturingPiece" (state at:(from) level:(level)))
-                        (if (= Off ("SiteToMoveOnTrack" from:(from) "CaptureTrack" (value)))
+                        (if ("IsOffBoard" ("NextSiteOnTrack" (value) from:(from) "CaptureTrack"))
                             (do (forget Value "Throws" (value))
                                 next:(move Remove (from) level:(level)
                                     (then
@@ -131,7 +129,7 @@
                             (move 
                                 (from (from) level:(level))
                                 (to 
-                                    ("SiteToMoveOnTrack" from:(from) "CaptureTrack" (value))
+                                	("NextSiteOnTrack" (value) from:(from) "CaptureTrack")
                                     (apply (forget Value "Throws" (value)))
                                 )
                                 (then 
@@ -146,7 +144,7 @@
                 )
             )		
         )
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
         (hand Each)
     })
     (rules 
@@ -157,8 +155,8 @@
         phases:{
         (phase "ThrowPhase" 
             (play 
-                (do (roll)
-                    next:(move Pass
+                ("RollMove"
+                	(move Pass
                         (then
                             (if (not (no Pieces Mover))
                                 (and {
@@ -200,8 +198,8 @@
             (nextPhase (= 0 (size Array (values Remembered "Throws"))) "ThrowPhase")
         )
         }
-        
-        (end (if (no Pieces Enemy) (result TeamMover Win)))
+
+    (end ("CaptureAllTeam"))
     )
 )
 

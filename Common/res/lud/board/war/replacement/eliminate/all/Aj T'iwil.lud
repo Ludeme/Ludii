@@ -4,7 +4,7 @@
 
 (define "CaptureMove" 
     (forEach Level (to) FromTop
-        (if (is Enemy (who at:(to) level:(level)))
+        (if ("IsEnemyAt" (to) level:(level))
             (remove (to) level:(level))
         )
     ) 
