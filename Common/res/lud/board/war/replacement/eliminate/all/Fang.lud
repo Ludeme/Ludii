@@ -34,8 +34,7 @@
             use:Vertex
         )
         (piece "Marker" Each
-            (move Step 
-                (to if:(is Empty (to)))
+            ("StepToEmpty" ~
                 (then 
                     (if (> ("HowManySquareSurroundedEmptyPoint") 0)
                         (and
@@ -64,8 +63,7 @@
         (phase "Playing" 
             (play
                 (if ("SameTurn")
-                    (move
-                        Remove 
+                    (move Remove 
                         (sites Occupied by:Next) 
                         (then 
                             (if (> (value Player Mover) 1)
@@ -83,7 +81,7 @@
         )
         }
         
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -108,7 +106,6 @@
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai
