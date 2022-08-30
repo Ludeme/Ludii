@@ -1,7 +1,5 @@
 (define "ThrowValue" (mapEntry (count Pips)))
 
-(define "SiteToMoveOnTrack" (trackSite Move steps:("ThrowValue")))
-
 (define "CaptureEnemyPiece" 
     (apply 
         if:("IsEnemyAt" (to)) 
@@ -25,7 +23,7 @@
     (move 
         (from)
         (to 
-            "SiteToMoveOnTrack" 
+        	("NextSiteOnTrack" ("ThrowValue"))
             "CaptureEnemyPiece"
         )
         count:#1
@@ -37,7 +35,7 @@
 (define "CreateAKing" 
     (move 
         (from)
-        (to "SiteToMoveOnTrack")
+        (to ("NextSiteOnTrack" ("ThrowValue")))
     )		
 )
 
@@ -60,11 +58,11 @@
             (track "Track2" "51,W,S1,E,S1,W,S1,E" P2 directed:True)
             }
         )
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
         (map {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})
         (piece "Marker" Each
             (if (or ("ActivatedPiece") (and (= 1 ("ThrowValue")) ("InactivePiece")))
-                (if (!= "SiteToMoveOnTrack" Off)
+                (if ("IsNotOffBoard" ("NextSiteOnTrack" ("ThrowValue")))
                     (if (or 
                             (not ("InOpponentHome")) 
                             (and
@@ -73,8 +71,8 @@
                             )
                         )
                         (if (or
-                                (is In "SiteToMoveOnTrack" (sites Empty))
-                                (is Enemy (who at:"SiteToMoveOnTrack"))
+                                (is In ("NextSiteOnTrack" ("ThrowValue")) (sites Empty))
+                                ("IsEnemyAt" ("NextSiteOnTrack" ("ThrowValue")))
                             )
                             (or 
                                 (if ("ThrowEqualSizeKingMinusOne")
@@ -83,8 +81,8 @@
                                 ("KingMove")
                             )
                             (if (and 
-                                    (is In "SiteToMoveOnTrack" (sites "CentralRows"))
-                                    (is Friend (who at:"SiteToMoveOnTrack"))
+                                    (is In ("NextSiteOnTrack" ("ThrowValue")) (sites "CentralRows"))
+                                    ("IsFriendAt" ("NextSiteOnTrack" ("ThrowValue")))
                                 )
                                 ("CreateAKing")
                             )
@@ -105,9 +103,8 @@
             (place "Marker2" (sites Top) state:1)
         })
         (play 
-            (do 
-                (roll) 
-                next:(if (can Move (forEach Piece))
+        		("RollMove"
+        			(if (can Move (forEach Piece))
                     (forEach Piece (then (if (is In ("ThrowValue") (sites "AnotherThrow")) (moveAgain))))
                     (move Pass (then (if (is In ("ThrowValue") (sites "AnotherThrow")) (moveAgain))))
                 )
