@@ -23,9 +23,8 @@
             (place "Ball1" (intersection (sites Phase 1) (expand (sites Centre) steps:2 Orthogonal)))
             (place "Ball2" (intersection (sites Phase 0) (expand (sites Centre) steps:2 Orthogonal)))
         })
-        (play 
-            (forEach Piece)
-        ) 
+        
+        (play (forEach Piece)) 
         
         (end {
             (if (and (not (no Pieces Mover)) (no Pieces Next))
