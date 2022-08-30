@@ -1,16 +1,3 @@
-(define "CustodialCaptures" 
-    (custodial 
-        (from (last To)) 
-        Orthogonal
-        (between 
-            (max 1) 
-            if:("IsEnemyAt" (between)) 
-            (apply (remove (between)))
-        )
-        (to if:("IsFriendAt" (to)))
-    )
-)
-
 (define "SurroundCaptures" 
     (surround 
         (from (last To)) 
@@ -33,10 +20,9 @@
     
     (equipment { 
         (board (square 9))
-        (piece "Fuhyo" P1 (move Slide Orthogonal (then (or "CustodialCaptures" "SurroundCaptures"))))
-        (piece "Tokin" P2 (move Slide Orthogonal (then (or "CustodialCaptures" "SurroundCaptures"))))
-        }
-    )
+        (piece "Fuhyo" P1 (move Slide Orthogonal (then (or ("CustodialCapture" Orthogonal (max 1)) "SurroundCaptures"))))
+        (piece "Tokin" P2 (move Slide Orthogonal (then (or ("CustodialCapture" Orthogonal (max 1)) "SurroundCaptures"))))
+    })
     
     (rules 
         (start { 
