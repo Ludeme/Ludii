@@ -3,12 +3,7 @@
     (equipment {
         (board (square 8))
         (piece "Ball" Each
-            (move Step
-                (to if:("IsEnemyAt" (to))
-                    (apply
-                        (remove (to))
-                    )
-                )
+            ("StepToEnemy" ~
                 (then
                     (forEach Site
                         (sites Around (last To))
@@ -25,8 +20,6 @@
     })
     (rules
         (start {
-            //   (place "Ball1" (difference (union (sites Top) (sites Right)) (union {(sites Left) (sites Bottom) (intersertion (sites Top) (sites Right))})))
-            //   (place "Ball2" (difference (union (sites Bottom) (sites Left)) (union {(sites Right) (sites Top) (intersertion (sites Bottom) (sites Left))})))
             (place "Ball1" (sites Phase 1))
             (place "Ball2" (sites Phase 0))
         })
