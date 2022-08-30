@@ -100,8 +100,7 @@
 )
 
 (define "SlideMove"
-    (move
-        Slide
+    (move Slide
         #1 
         (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
@@ -109,15 +108,12 @@
 )
 
 (define "StepMove"
-    (move
-        Step
+    (move Step
         #1
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
     ) 	
 )
-
-(define "GoldMove" ("StepMove" (directions {Forward Backward Rightward Leftward FL FR})))
 
 (define "Captured"
     (if (is Mover P1)
@@ -389,13 +385,13 @@
         )
         
         // Gold General
-        (piece "Kinsho" Each "GoldMove")
+        ("ShogiGold" "Kinsho" "CapturePiece")
         
         // Promoted Pawn
-        (piece "Tokin" Each "GoldMove")
+        ("ShogiGold" "Tokin" "CapturePiece")
         
         // Promoted Silver
-        (piece "Narigin" Each "GoldMove")
+        ("ShogiGold" "Narigin" "CapturePiece")
         
         // Promoted Rook
         (piece "Ryuo" Each (or ("SlideMove" Orthogonal) ("StepMove" Diagonal)))
@@ -404,10 +400,10 @@
         (piece "Ryuma" Each (or ("SlideMove" Diagonal) ("StepMove" Orthogonal)))
         
         // Promoted Knight
-        (piece "Narikei" Each "GoldMove")
+        ("ShogiGold" "Narikei" "CapturePiece")
         
         // Promoted Lance
-        (piece "Narikyo" Each "GoldMove")
+        ("ShogiGold" "Narikyo" "CapturePiece")
         
         (regions "LastRankP1" P1 (sites Top))
         (regions "LastRankP2" P2 (sites Left))
@@ -483,15 +479,13 @@
             )
         )
         
-        (end
-            {
+        (end {
             (forEach NonMover
-                if:(= (where "Osho" Player) Off) 
+                if:("IsOffBoard" (where "Osho" Player)) 
                 (result Player Loss)
-            )
-            (if (no Moves Next) (result Next Loss)) 
-            }
-        )
+            ) 
+            ("NoMoves" Loss)
+        })
     )
 )
 
