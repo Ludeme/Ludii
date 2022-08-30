@@ -96,8 +96,7 @@
 )
 
 (define "SlideMove"
-    (move
-        Slide
+    (move Slide
         #1 
         (to if:(and ("IsEnemyAt" (to)) (= (count Pieces Mover "Osho" in:(sites Board)) 1)) "CapturePiece")
         #2 
@@ -105,15 +104,12 @@
 )
 
 (define "StepMove"
-    (move
-        Step
+    (move Step
         #1
         (to if:(and (not ("IsFriendAt" (to))) (or (not ("IsEnemyAt" (to))) (= (count Pieces Mover "Osho" in:(sites Board)) 1))) "CapturePiece") 
         #2 
     ) 	
 )
-
-(define "GoldMove" ("StepMove" (directions {Forward Backward Rightward Leftward FL FR})))
 
 //------------------------------------------------------------------------------
 
@@ -204,13 +200,13 @@
         )
         
         // Gold General
-        (piece "Kinsho" Each "GoldMove")
+        ("ShogiGold" "Kinsho" "CapturePiece")
         
         // Promoted Pawn
-        (piece "Tokin" Each "GoldMove")
+        ("ShogiGold" "Tokin" "CapturePiece")
         
         // Promoted Silver
-        (piece "Narigin" Each "GoldMove")
+        ("ShogiGold" "Narigin" "CapturePiece")
         
         // Promoted Rook
         (piece "Ryuo" Each (or ("SlideMove" Orthogonal) ("StepMove" Diagonal)))
@@ -219,10 +215,10 @@
         (piece "Ryuma" Each (or ("SlideMove" Diagonal) ("StepMove" Orthogonal)))
         
         // Promoted Knight
-        (piece "Narikei" Each "GoldMove")
+        ("ShogiGold" "Narikei" "CapturePiece")
         
         // Promoted Lance
-        (piece "Narikyo" Each "GoldMove")
+        ("ShogiGold" "Narikyo" "CapturePiece")
         
         (regions "LastRankP1" P1 (sites Top))
         (regions "LastRankP2" P2 (sites Bottom))
@@ -300,19 +296,16 @@
             )
         )
         
-        (end
-            {
+        (end {
             (if (and {
                     ("IsInCheck" "Osho" Next)
                     ("NextCannotMove")
                     (= (count Pieces Mover "Osho" in:(sites Board)) 1)
-                    }
-                ) 
+                }) 
                 (result Mover Win)
             ) 
             ("BlockWin")
-            }
-        )
+        })
     )
 )
 
