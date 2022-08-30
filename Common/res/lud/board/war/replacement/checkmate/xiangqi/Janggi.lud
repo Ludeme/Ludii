@@ -1,6 +1,5 @@
 (define "StepMoveOnThePlace" 
-    (move
-        Step
+    (move Step
         (if 
             (is In (from) (sites Mover "PalaceOrtho")) 
             Orthogonal 
@@ -52,23 +51,22 @@
 )
 
 (define "NotEmptyAndNotAnotherPo" 
-    (and { 
-        (!= (what at:(between)) (id "Po1")) 
-        (!= (what at:(between)) (id "Po2"))
+    (and {
+        (not ("IsPieceAt" "Po" P1 (between))) 
+        (not ("IsPieceAt" "Po" P2 (between)))  
         (is Occupied (between))
     })
 )
 
 (define "NotAFriendAndNotNextPo" 
     (and 
-        (!= (what at:(to)) (id "Po" Next)) 
+        (not ("IsPieceAt" "Po" Next (to))) 
         (not ("IsFriendAt" (to)))
     )
 )
 
 (define "PawnMove" 
-    (move
-        Step
+    (move Step
         (directions {Forward Rightward Leftward}) 
         (to 
             if:(not ("IsFriendAt" (to)))
@@ -147,20 +145,12 @@
         
         // Chariot
         (piece "Cha" Each (or {
-                (move
-                    Slide
-                    Orthogonal 
-                    (to 
-                        if:("IsEnemyAt" (to)) 
-                        (apply (remove (to)))
-                    )
-                )
+                ("SlideCapture" Orthogonal) 
                 
                 // Diagonal slide only on the palace
                 (if 
                     (is In (from) "ThePalaces") 
-                    (move
-                        Slide
+                    (move Slide
                         Diagonal 
                         (between 
                             (max 2) 
@@ -181,8 +171,7 @@
         // Canon
         (piece "Po" Each 
             (or {
-                (move
-                    Hop
+                (move Hop
                     Orthogonal 
                     (between 
                         before:(count Rows) 
@@ -197,8 +186,7 @@
                         )
                     ) 
                 )
-                (move
-                    Hop
+                (move Hop
                     Orthogonal
                     (between 
                         before:(count Rows) 
@@ -210,8 +198,7 @@
                 // Jump Diagonal on the Palace
                 (if 
                     (is In (from) "ThePalaces")
-                    (move
-                        Hop
+                    (move Hop
                         Diagonal 
                         (between if:"NotEmptyAndNotAnotherPo") 
                         (to 
@@ -219,9 +206,7 @@
                                 "NotAFriendAndNotNextPo" 
                                 (is In (to) "ThePalaces")
                             ) 
-                            (apply 
-                                (remove (to))
-                            )
+                            (apply (remove (to)))
                         ) 
                     )
                 )
@@ -236,16 +221,13 @@
         (regions "PalaceOrthoP1" P1 { 4 12 14 22 })
         (regions "PalaceP2" P2 { 66..68 75..77 84..86 })
         (regions "PalaceOrthoP2" P2 { 67 75 77 85 })
-        }
-    ) 
+    }) 
     
     (rules 
-        (start
-            { 
+        (start { 
             (place "Han1" coord:"E2") (place "Sa1" {"D1" "F1"}) (place "Sang1" {"C1" "G1"}) (place "Ma1" {"B1" "H1"}) (place "Cha1" {"A1" "I1"}) (place "Po1" {"B3" "H3"}) (place "Byeong1" {"A4" "C4" "E4" "G4" "I4"})
             (place "Cho2" coord:"E9") (place "Sa2" {"D10" "F10"}) (place "Sang2" {"C10" "G10"}) (place "Ma2" {"B10" "H10"}) (place "Cha2" {"A10" "I10"}) (place "Po2" {"B8" "H8"}) (place "Jol2" {"A7" "C7" "E7" "G7" "I7"})
-            }
-        )
+        })
         
         (play (do (forEach Piece) ifAfterwards:"GeneralNotCheck" 
                 (then 
