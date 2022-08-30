@@ -14,8 +14,7 @@
 )
 
 (define "SlideMove" 
-    (move 
-        Slide
+    (move Slide
         #1
         #2 
         (to 
@@ -27,8 +26,7 @@
 )
 
 (define "StepMove" 
-    (move
-        Step
+    (move Step
         #1
         (to 
             if:(not ("IsFriendAt" (to))) 
@@ -39,8 +37,7 @@
 )
 
 (define "HopMove" 
-    (move
-        Hop
+    (move Hop
         #1
         (between 
             if:True
@@ -54,8 +51,7 @@
 )
 
 (define "HopMoveWithRange" 
-    (move
-        Hop
+    (move Hop
         #1
         (between
             #2
@@ -1657,12 +1653,10 @@
             (pair 395 583) (pair 396 584) (pair 397 585) (pair 398 586) (pair 399 587) (pair 400 588) (pair 401 589) (pair 402 590) (pair 403 591) (pair 404 592) (pair 405 593) (pair 406 594) (pair 407 595) (pair 408 596)
             (pair 409 407) (pair 410 408) (pair 415 89) (pair 416 90) (pair 417 45) (pair 418 46)
         }) // Todo: to improve with IntFunction.
-        }
-    )
+    })
     
     (rules 
-        (start
-            { 
+        (start { 
             // Row 1
             (place "Lance1" {"A1" "AJ1"}) (place "TurtleSnake1" coord:"B1")
             (place "WhiteTiger1" coord:"AI1") (place "RunningRabbit1" {"C1" "AH1"})
@@ -1932,8 +1926,7 @@
             // Row 25
             (place "LeftDog2" {"V25" "AE25"}) (place "RightDog2" {"F25" "O25"})
             (place "GoBetween2" {"K25" "Z25"})
-            }
-        )
+        })
         
         (play
             (if "SameTurn"
