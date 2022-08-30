@@ -14,6 +14,7 @@ import completer.Completion;
 import grammar.Grammar;
 import main.Constants;
 import main.StringRoutines;
+import main.grammar.DefineInstances;
 import main.grammar.Description;
 import main.grammar.GrammarRule;
 import main.grammar.Instance;
@@ -113,7 +114,6 @@ public class Parser
 				// Replace raw description string passed in with best completion 
 				description.setRaw(completions.get(0).raw());
 			}
-			
 			description.setIsRecontruction(true);
 		}
 		
@@ -123,9 +123,7 @@ public class Parser
 			{
 				//report.clear();
 				
-				final Map<String, DefineInstances> defineInstances = new HashMap<String, DefineInstances>();
-				
-				Expander.expand(description, userSelections, report, defineInstances, isVerbose);				
+				Expander.expand(description, userSelections, report, isVerbose);				
 				if (report.isError())
 				{
 //					System.out.println("Errors while expanding (A):");
@@ -137,7 +135,7 @@ public class Parser
 				if (isVerbose)
 				{
 					System.out.println("Define instances:");
-					for (final DefineInstances defIn : defineInstances.values())
+					for (final DefineInstances defIn : description.defineInstances().values())
 						System.out.println(defIn + "\n");
 				}
 			}

@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import main.FileHandling;
+import main.grammar.Define;
 import main.grammar.Report;
 
 //-----------------------------------------------------------------------------

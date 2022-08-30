@@ -10,6 +10,8 @@ import java.util.regex.Pattern;
 import exception.UnusedOptionException;
 import main.FileHandling;
 import main.StringRoutines;
+import main.grammar.Define;
+import main.grammar.DefineInstances;
 import main.grammar.Description;
 import main.grammar.Report;
 import main.options.Option;
@@ -55,7 +57,6 @@ public class Expander
 	 * @param description     The description.
 	 * @param userSelections  The user selections.
 	 * @param report          The report.
-	 * @param defineInstances Optional list of define instances (for visual editor).
 	 * @param isVerbose       True if this is verbose.
 	 */
 	public static void expand
@@ -63,7 +64,6 @@ public class Expander
 		final Description    	description,
 		final UserSelections  	userSelections,
 		final Report 		  	report,
-		final Map<String, DefineInstances> defineInstances,
 		final boolean         	isVerbose
 	)
 	{
@@ -109,7 +109,7 @@ public class Expander
 //		System.out.println("Options expanded:\n" + description.optionsExpanded());
 		
 		// Continue expanding defines for full description
-		str = expandDefines(str, report, defineInstances);
+		str = expandDefines(str, report, description.defineInstances());
 		if (report.isError())
 			return;
 		

@@ -2,12 +2,16 @@ package main.grammar;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import main.Constants;
 import main.StringRoutines;
 import main.options.GameOptions;
 import main.options.Ruleset;
+
+//-----------------------------------------------------------------------------
 
 /**
  * Game description with full details after expansion.
@@ -51,6 +55,9 @@ public class Description
   	
   	// Maximum number of reconstructions to generate (if using reconstruction syntax).
   	private int maxReconstructions = 1;
+  	
+  	// Map of define instances used in the current game expansion.
+  	private final Map<String, DefineInstances> defineInstances = new HashMap<String, DefineInstances>();
   	
   	//-------------------------------------------------------------------------
 
@@ -162,6 +169,11 @@ public class Description
    		maxReconstructions = num;
    	}
 
+   	public final Map<String, DefineInstances> defineInstances()
+   	{
+   		return defineInstances;
+   	}
+   	
 	//-------------------------------------------------------------------------
 
 	public void clearRulesets()
