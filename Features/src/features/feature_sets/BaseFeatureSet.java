@@ -34,6 +34,21 @@ public abstract class BaseFeatureSet
 	
 	//-------------------------------------------------------------------------
 	
+	/**
+	 * Different implementations we have for evaluating feature sets.
+	 * 
+	 * @author Dennis Soemers
+	 */
+	public static enum FeatureSetImplementations
+	{
+		NAIVE,
+		TREE,
+		SPATTERNET,
+		JITSPATTERNET
+	}
+	
+	//-------------------------------------------------------------------------
+	
 	/** Only spatial features with an absolute value greater than this are considered relevant for AI */
 	public static final float SPATIAL_FEATURE_WEIGHT_THRESHOLD = 0.001f;
 	

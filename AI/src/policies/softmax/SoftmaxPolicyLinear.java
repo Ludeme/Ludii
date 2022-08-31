@@ -15,7 +15,11 @@ import features.FeatureVector;
 import features.WeightVector;
 import features.aspatial.AspatialFeature;
 import features.feature_sets.BaseFeatureSet;
+import features.feature_sets.BaseFeatureSet.FeatureSetImplementations;
+import features.feature_sets.LegacyFeatureSet;
+import features.feature_sets.NaiveFeatureSet;
 import features.feature_sets.network.JITSPatterNetFeatureSet;
+import features.feature_sets.network.SPatterNetFeatureSet;
 import features.spatial.SpatialFeature;
 import function_approx.BoostedLinearFunction;
 import function_approx.LinearFunction;
@@ -71,6 +75,9 @@ public class SoftmaxPolicyLinear extends SoftmaxPolicy
 	 * players. Otherwise, it will contain one Feature Set per player.
 	 */
 	protected BaseFeatureSet[] featureSets;
+	
+	/** Implementation to use for feature sets */
+	protected FeatureSetImplementations implementation = FeatureSetImplementations.JITSPATTERNET;
 	
 	//-------------------------------------------------------------------------
 	
@@ -137,9 +144,9 @@ public class SoftmaxPolicyLinear extends SoftmaxPolicy
 		for (final metadata.ai.features.FeatureSet featureSet : features.featureSets())
 		{
 			if (featureSet.role() == RoleType.Shared || featureSet.role() == RoleType.Neutral)
-				addFeatureSetWeights(0, featureSet.featureStrings(), featureSet.selectionWeights(), featureSetsList, linFuncs);
+				softmax.addFeatureSetWeights(0, featureSet.featureStrings(), featureSet.selectionWeights(), featureSetsList, linFuncs);
 			else
-				addFeatureSetWeights(featureSet.role().owner(), featureSet.featureStrings(), featureSet.selectionWeights(), featureSetsList, linFuncs);
+				softmax.addFeatureSetWeights(featureSet.role().owner(), featureSet.featureStrings(), featureSet.selectionWeights(), featureSetsList, linFuncs);
 		}
 		
 		softmax.featureSets = featureSetsList.toArray(new BaseFeatureSet[featureSetsList.size()]);
@@ -166,9 +173,9 @@ public class SoftmaxPolicyLinear extends SoftmaxPolicy
 		for (final metadata.ai.features.FeatureSet featureSet : features.featureSets())
 		{
 			if (featureSet.role() == RoleType.Shared || featureSet.role() == RoleType.Neutral)
-				addFeatureSetWeights(0, featureSet.featureStrings(), featureSet.playoutWeights(), featureSetsList, linFuncs);
+				softmax.addFeatureSetWeights(0, featureSet.featureStrings(), featureSet.playoutWeights(), featureSetsList, linFuncs);
 			else
-				addFeatureSetWeights(featureSet.role().owner(), featureSet.featureStrings(), featureSet.playoutWeights(), featureSetsList, linFuncs);
+				softmax.addFeatureSetWeights(featureSet.role().owner(), featureSet.featureStrings(), featureSet.playoutWeights(), featureSetsList, linFuncs);
 		}
 		
 		softmax.featureSets = featureSetsList.toArray(new BaseFeatureSet[featureSetsList.size()]);
@@ -476,6 +483,10 @@ public class SoftmaxPolicyLinear extends SoftmaxPolicy
 			{
 				epsilon = Double.parseDouble(input.substring("epsilon=".length()));
 			}
+			else if (input.toLowerCase().startsWith("implementation="))
+			{
+				implementation = FeatureSetImplementations.valueOf(input.substring("implementation=".length()).toUpperCase());
+			}
 		}
 		
 		if (!policyWeightsFilepaths.isEmpty())
@@ -520,7 +531,27 @@ public class SoftmaxPolicyLinear extends SoftmaxPolicy
 					else
 						linearFunctions[i] = LinearFunction.fromFile(policyWeightsFilepath);
 					
-					featureSets[i] = JITSPatterNetFeatureSet.construct(parentDir + File.separator + linearFunctions[i].featureSetFile());
+					final String featureSetFilepath = parentDir + File.separator + linearFunctions[i].featureSetFile();
+					final BaseFeatureSet featureSet;
+					switch (implementation)
+					{
+					case NAIVE:
+						featureSet = new NaiveFeatureSet(featureSetFilepath);
+						break;
+					case TREE:
+						featureSet = new LegacyFeatureSet(featureSetFilepath);
+						break;
+					case SPATTERNET:
+						featureSet = new SPatterNetFeatureSet(featureSetFilepath);
+						break;
+					case JITSPATTERNET:
+						featureSet = JITSPatterNetFeatureSet.construct(featureSetFilepath);
+						break;
+					default:
+						System.err.println("Unrecognised feature set implementation: " + implementation);
+						return;
+					}
+					featureSets[i] = featureSet;
 				}
 			}
 		}
@@ -785,7 +816,7 @@ public class SoftmaxPolicyLinear extends SoftmaxPolicy
 	 * @param outFeatureSets
 	 * @param outLinFuncs
 	 */
-	protected static void addFeatureSetWeights
+	protected void addFeatureSetWeights
 	(
 		final int playerIdx, 
 		final String[] featureStrings,
@@ -820,7 +851,26 @@ public class SoftmaxPolicyLinear extends SoftmaxPolicy
 			weights.add(featureWeights[i]);
 		}
 		
-		outFeatureSets.set(playerIdx, JITSPatterNetFeatureSet.construct(aspatialFeatures, spatialFeatures));
+		final BaseFeatureSet featureSet;
+		switch (implementation)
+		{
+		case NAIVE:
+			featureSet = new NaiveFeatureSet(aspatialFeatures, spatialFeatures);
+			break;
+		case TREE:
+			featureSet = new LegacyFeatureSet(aspatialFeatures, spatialFeatures);
+			break;
+		case SPATTERNET:
+			featureSet = new SPatterNetFeatureSet(aspatialFeatures, spatialFeatures);
+			break;
+		case JITSPATTERNET:
+			featureSet = JITSPatterNetFeatureSet.construct(aspatialFeatures, spatialFeatures);
+			break;
+		default:
+			System.err.println("Unrecognised feature set implementation: " + implementation);
+			return;
+		}
+		outFeatureSets.set(playerIdx, featureSet);
 		outLinFuncs.set(playerIdx, new LinearFunction(new WeightVector(new FVector(weights.toArray()))));
 	}
 
