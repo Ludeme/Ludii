@@ -48,12 +48,10 @@
 
 (game "Oust"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board <Board>)
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
         (play
             (or
