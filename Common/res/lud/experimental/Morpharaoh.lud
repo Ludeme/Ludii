@@ -1,14 +1,12 @@
 //-------------------------------------------------
 (define "SitesEdge"
-    (union 
-        {
+    (union {
         <Board:north>
         <Board:south>
         <Board:east>
         <Board:west>
-        }
-        // (difference (sites Outer) <Board:excludeFromEdge>)
-))
+    })
+)
 
 (define "DiagonallyAdjacent2"
     (sites Direction
@@ -22,17 +20,20 @@
             E) 
         W) 
         distance:1
-)) 
+    )
+) 
 
 (define "EdgeMajority"
     (<= 2
         (count Pieces Mover in:(sites Around (to) Orthogonal)) 
-))
+    )
+)
 
 (define "Majority"
     (<= 3
         (count Pieces Mover in:(sites Around (to) Orthogonal)) 
-))
+    )
+)
 
 (define "LobsidedVEmbrace"
     (<= 1
@@ -53,7 +54,9 @@
                                     (sites Around (from) Orthogonal)
                                     (sites Occupied by:Mover)
                                     }
-                        )))
+                                )
+                            )
+                        )
                         (< 0 
                             (count Sites
                                 in:(intersection
@@ -62,10 +65,17 @@
                                     (sites Around (from) Orthogonal)
                                     (sites Occupied by:Mover)
                                     }
-                    ))))
+                                )
+                            )
+                        )
+                    )
                     1
                     0
-)))))
+                )
+            )
+        )
+    )
+)
 
 (define "AdjacentPair"
     (<= 1
@@ -85,10 +95,16 @@
                                 (sites Around (from) Orthogonal)
                                 (sites Occupied by:Mover)
                                 }
-                    )))
+                            )
+                        )
+                    )
                     1
                     0
-)))))
+                )
+            )
+        )
+    )
+)
 
 (define "Check4Win"
     (if
@@ -101,46 +117,51 @@
             (is Connected Orthogonal { <Board:east> <Board:west> })
             (trigger "Win" Mover)
         )
-))
+    )
+)
 
 //---------------------------------------
 (game "Morpharaoh" 
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (trim <Board:type>) use:Cell)
         (piece "Disc" Each)
         (piece "Disc" Neutral)
-        }
-    )
+    })
     (rules 
         (play
-            (or
-                {
+            (or {
                 (move Add
                     (to 
                         (sites Empty)
-                ))
+                    )
+                )
                 (move Add
                     (to
                         (intersection (sites Occupied by:Next) ("SitesEdge"))
                         if:(<Edge:controlType>)
                         (apply (remove (to)))
-                ))
+                    )
+                )
                 (move Add
                     (to
                         (difference (sites Occupied by:Next) ("SitesEdge"))
                         if:(<Center:controlType>)
                         (apply (remove (to)))
-                ))
+                    )
+                )
                 }
                 (then "Check4Win")
-        ))
+            )
+        )
         (end 
             (if
                 (is Triggered "Win" Mover)
                 (result Mover Win)
-))))
+            )
+        )
+    )
+)
 
 //------------------------------------
 

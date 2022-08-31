@@ -11,7 +11,9 @@
         )
         (then
             (set Score Mover (count Sites in:(intersection (sites Occupied by:Mover) (sites State 1)))) 
-)))
+        )
+    )
+)
 
 (define "ScoreHalf"
     (forEach Piece
@@ -27,7 +29,9 @@
         )
         (then
             (set Score Mover (count Sites in:(intersection (sites Occupied by:Mover) (sites State 1)))) 
-)))
+        )
+    )
+)
 
 //-----------------------------------------
 // Defines for Options
@@ -47,7 +51,8 @@
                 (not (was Pass))
             )
             (moveAgain)
-    )) 
+        )
+    ) 
 )
 
 //-----------------------------------------------
@@ -55,13 +60,11 @@
 
 (game "Goldilocks Stones"
     (players 2)
-    (equipment
-        {
+    (equipment {
         "BoardUsed"
         (piece "Ball" P1)
         (piece "Ball" P2)
-        }
-    )
+    })
     (rules
         (start (set Score Each 0))
         (play
@@ -88,7 +91,10 @@
                     (byScore)
                 )
                 }
-))))
+            )
+        )
+    )
+)
 
 //-------------------------------------------------
 // Options

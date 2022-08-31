@@ -1,12 +1,14 @@
 (define "SimpleScoring"
     (set Score Mover 
         (max (sizes Group <BoardShape:directionsUsed> Mover))
-))
+    )
+)
 
 (define "SimpleOrthoScoring"
     (set Score Mover 
         (max (sizes Group Orthogonal Mover))
-))
+    )
+)
 
 (define "SpecialScoring"
     (and
@@ -14,12 +16,16 @@
             (* 
                 (max (sizes Group <BoardShape:directionsUsed> Mover))
                 (count Pieces Next)
-        ))
+            )
+        )
         (set Score Next 
             (* 
                 (max (sizes Group <BoardShape:directionsUsed> Next))
                 (count Pieces Mover)
-))))
+            )
+        )
+    )
+)
 
 (define "SpecialOrthoScoring"
     (and
@@ -27,20 +33,23 @@
             (* 
                 (max (sizes Group Orthogonal Mover))
                 (count Pieces Next)
-        ))
+            )
+        )
         (set Score Next 
             (* 
                 (max (sizes Group Orthogonal Next))
                 (count Pieces Mover)
-))))
+            )
+        )
+    )
+)
 
 (define "PiePhase"
     (phase "Pie"
         (play 
             (if 
                 (is Mover P1)
-                (or
-                    {
+                (or {
                     (move Add (piece (mover)) (to (sites Empty)))
                     (move Add (piece (next)) (to (sites Empty)))
                     (move Pass)
@@ -50,7 +59,9 @@
                             (< 0 (counter)) 
                             (set NextPlayer (player (next)))
                             (moveAgain)
-                )))
+                        )
+                    )
+                )
                 (or 
                     (move Propose "Accept Pie Offer and Move" 
                         (then (set NextPlayer (player (mover))))
@@ -67,7 +78,8 @@
                                     (and
                                         (remove (site))
                                         (add (piece (mover)) (to (site)))
-                                ))
+                                    )
+                                )
                                 (then
                                     (forEach Value (values Remembered)
                                         (and
@@ -78,14 +90,25 @@
                                             (and 
                                                 (forget Value All)
                                                 (set NextPlayer (player (next)))
-        )))))))))) 
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        ) 
         (nextPhase 
             (or 
                 (is Proposed "Swap Pieces")
                 (is Proposed "Accept Pie Offer and Move")
             )
             "Placement"
-)))
+        )
+    )
+)
 
 //-----------------------------------------
 // Defines for Options
@@ -105,13 +128,11 @@
 
 (game "Faraday"
     (players 2)
-    (equipment
-        {
+    (equipment {
         "BoardUsed"
         (piece "Ball" P1)
         (piece "Ball" P2)
-        }
-    )
+    })
     (rules
         (meta (no Repeat Positional))
         (start (set Score Each 0))
@@ -128,7 +149,10 @@
                                 (- 
                                     (count Pieces Next in:(sites Around (to) <BoardShape:directionsUsed>))
                                     (count Pieces Mover in:(sites Around (to) <BoardShape:directionsUsed>))
-                    ))))
+                                )
+                            )
+                        )
+                    )
                     (then 
                         (and
                             {
@@ -136,14 +160,13 @@
                             (set Var "Last2Move" (mover))
                             (if (not (no Moves Mover)) (moveAgain))
                             }
-            ))))
+                        )
+                    )
+                )
+            )
             (end 
                 (if 
-                    (or
-                        {
-                        (all Passed)
-                        }
-                    )
+                    (all Passed)
                     {
                     (if 
                         (!= (score Mover) (score Next))
@@ -165,9 +188,12 @@
                     )
                     }
                     (byScore)
-        )))
+                )
+            )
+        )
         }
-))
+    )
+)
 
 //-------------------------------------------------
 // Options

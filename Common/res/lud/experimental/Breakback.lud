@@ -9,8 +9,7 @@
         (piece "Pawn" Each 
             (or {
                 "StepForwardToEmpty" 
-                (move 
-                    Step
+                (move Step
                     (directions {FR FL}) 
                     (to if:(or 
                             (is Empty (to)) 

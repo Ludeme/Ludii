@@ -12,23 +12,25 @@
                 (if 
                     (>= (value Piece at:(site)) (score Mover))
                     (sites Around (site) <Board:directions>)
-            )) 
-))) 
+                )
+            ) 
+        )
+    )
+) 
 
 (define "SetNewGroupValue"
     (forEach Site 
         (sites Group at:(last To) <Board:directions>)
         (set Value at:(site) (count Sites in:(sites Group at:(last To) <Board:directions>)))
-))
+    )
+)
 //--------------------------
 (game "Ecosys"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (<Board:type>)
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
         (start (set Score Each 0))
         (play
@@ -38,12 +40,13 @@
                     (and
                         ("SetNewGroupValue")
                         (set Score Mover (size Array (sizes Group <Board:directions> Mover))) 
-        ))))
-        (end 
-            (if 
-                (no Moves Next)
-                (result Mover Win)
-)))) 
+                    )
+                )
+            )
+        )
+        (end ("NoMoves" Loss))
+    )
+)
 
 //--------------------------------------
 
@@ -64,8 +67,7 @@
 ) 
 
 (define "HexGraphics"
-    (graphics
-        {
+    (graphics {
         (board Colour OuterEdges (colour Black))
         (board Colour InnerEdges (colour Black))
         (board StyleThickness OuterEdges 1.5)
@@ -78,20 +80,19 @@
         (region Colour (sites Occupied by:P1) (colour 60 120 170 120)) 
         (region Colour (sites Occupied by:P2) (colour 195 195 200 120))
         (show Piece Value Middle valueOutline:False scale:.8)
-        }
-))
+    })
+)
 
 (define "SquareGraphics"
-    (graphics
-        {
+    (graphics {
         (board Style Go)
         (piece Background image:"square.svg" edgeColour:(colour 100 100 100 255))
         (piece Foreground image:"cross.svg" edgeColour:(colour 100 100 100 255))
         (piece Colour strokeColour:(colour 100 100 100 255))
         (piece Scale .26)
         (show Piece Value CornerLeft valueOutline:True scale:1.5)
-        }
-))
+    })
+)
 
 //--------------------------------------
 

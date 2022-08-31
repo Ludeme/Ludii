@@ -8,7 +8,10 @@
                 from:#1 
                 to:(from)
                 (if (= 0 (state at:(to))) 1 (- 1))
-))))
+            )
+        )
+    )
+)
 
 //----------------------------------  
 // Capture Locations and procedure
@@ -17,7 +20,8 @@
     (intersection
         (sites Around (intersection (sites Group at:(last To)) (sites State 1)))
         (intersection (sites Occupied by:Next) (sites State 0))
-))
+    )
+)
 
 (define "KeySitesOfAffectedGroups"
     (sites
@@ -25,15 +29,16 @@
             from:"CaptureSites"
             to:(min (array (difference (sites Group at:(from)) "CaptureSites")))
             (to)
-)))
+        )
+    )
+)
 
 (define "AffectedGroupAt"  // The updated group without captured terminals associated with the key location.
     (difference (sites Group at:#1) (sites (values Remembered "CS")))
 )
 
 (define "Check4IllegalCapture"
-    (and
-        {
+    (and {
         ("UpdateTerminals" (sites Group at:(var "ConvertedFootSite"))) 
         }
         (then
@@ -41,7 +46,10 @@
                 //work around: using  (last To) did not pick up the last consequence, but rather the last move
                 (not ("IsAliveAt" (sites Group at:(var "ConvertedFootSite"))))
                 (trigger "IllegalCapture" Mover)
-))))
+            )
+        )
+    )
+)
 
 (define "ClaimCapture" // site
     (if 
@@ -53,9 +61,13 @@
                     (and
                         (set Var "ConvertedFootSite" (to))
                         (remove (to))
-            )))
+                    )
+                )
+            )
             (then ("Check4IllegalCapture"))
-)))
+        )
+    )
+)
 
 //-------------------------------
 
@@ -66,13 +78,17 @@
             (then
                 (forEach Site "KeySitesOfAffectedGroups"
                     (remember Value "KS" (site) unique:True)
-        )))
+                )
+            )
+        )
         next:(forEach Site (sites (values Remembered "CS")) (remove (site))
             (then
                 (forEach Value
                     (values Remembered "KS")  // a key site within the remainder of the group
                     ("UpdateTerminals" ("AffectedGroupAt" (value)))
-        )))
+                )
+            )
+        )
         (then 
             (and
                 (forEach Value (values Remembered "KS")  
@@ -81,10 +97,16 @@
                         (forEach Site
                             ("AffectedGroupAt" (value)) 
                             ("ClaimCapture") 
-                )))
+                        )
+                    )
+                )
                 (forget Value "CS" All
                     (then (forget Value "KS" All))
-)))))
+                )
+            )
+        )
+    )
+)
 
 //---------------------------------------------
 // Updating Group structures 
@@ -104,10 +126,15 @@
                         (count Steps 
                             (min ("SurroundingSitesInGroup" #1))
                             (max ("SurroundingSitesInGroup" #1))
-            ))))
+                        )
+                    )
+                )
+            )
             (set State at:(site) 1)
             (set State at:(site) 0)
-)))
+        )
+    )
+)
 
 //--------------------------------
 // Placement
@@ -118,21 +145,21 @@
             (sites Empty)
             (sites Around
                 (intersection (sites Occupied by:Next) (sites State 1))
-        ))
+            )
+        )
         level:0
-))
+    )
+)
 
 //-----------------------------------------------
 // Main routine
 
 (game "Polypods"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board <BoardShape:gridType> use:Vertex)
         (piece "Disc" Each maxState:1)
-        }
-    )
+    })
     (rules
         (play
             (or
@@ -149,10 +176,11 @@
                 )
                 (then 
                     ("Score")
-        )))
+                )
+            )
+        )
         (end 
-            (if
-                (all Passed)
+            (if (all Passed)
                 {
                 (if
                     (> (score Mover) (score Next))
@@ -174,7 +202,10 @@
                 )
                 }
                 (result Next Win)
-))))
+            )
+        )
+    )
+)
 
 //-----------------------------
 //Scoring
@@ -183,7 +214,8 @@
     (and
         ("ScoreCore4" Mover)
         ("ScoreCore4" Next)
-))
+    )
+)
 
 (define "ScoreFringe4" (set Score #1 ("FringeScoreOf" #1)))
 
@@ -193,14 +225,19 @@
             in:(intersection
                 (sites Occupied by:#1) 
                 (sites State 1)
-))))
+            )
+        )
+    )
+)
 
 (define "FringeScoreOf"
     (count Sites
         in:(difference
             (sites Around (sites Occupied by:#1))
             (sites Around (difference (sites Occupied by:All) (sites Occupied by:#1)) includeSelf:True)
-)))
+        )
+    )
+)
 
 //-------------------------------------------------
 // Options

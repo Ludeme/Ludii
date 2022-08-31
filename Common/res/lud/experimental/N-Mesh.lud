@@ -11,9 +11,11 @@
             (difference
                 (sites Incident Edge of:Cell at:(regionSite ("SharedCells" #1 #2) index:0))
                 (sites Incident Edge of:Cell at:(regionSite ("SharedCells" #1 #2) index:1))
-        ))
+            )
+        )
         index:0
-))
+    )
+)
 
 (define "BetweenEdge"
     (regionSite
@@ -22,15 +24,18 @@
             (difference
                 (sites Incident Edge of:Cell at:#1)
                 (sites Incident Edge of:Cell at:#2)
-        ))
+            )
+        )
         index:0
-))
+    )
+)
 
 (define "EdgeIsOriented"  
     (= 
         (regionSite (sites Incident Cell of:Edge at:#1) index:0) 
         (ahead Cell (regionSite (sites Incident Cell of:Edge at:#1) index:1) #2)
-)) 
+    )
+) 
 
 (define "EdgeOrientationInteger" (if (or ("EdgeIsOriented" #1 E) ("EdgeIsOriented" #1 W)) 0 2)) // of an edge
 
@@ -46,7 +51,9 @@
                         {{ F F #2 F }} 
                         (to Cell (sites Occupied by:Mover)
                             if:("NeedsConnection")
-                )))
+                        )
+                    )
+                )
                 ("HalfWayEdge" (to) (last To))
             ) 
             (add
@@ -58,12 +65,13 @@
                 )
                 stack:True
                 (then (set State Edge at:(var "ToEdge") (+ #1 ("EdgeOrientationInteger" (var "ToEdge")))))
-        ))
-))
+            )
+        )
+    )
+)
 
 (define "RemoveConnector"
-    (and
-        {
+    (and {
         (forEach Site // edge between friends may not have opponent break.
             (sites Around Cell (last To) Orthogonal)
             (apply if:(is Mover (who at:(site)))
@@ -73,13 +81,13 @@
             (sites Incident Edge of:Cell at:(last To)) 
             (apply if:(= (mover) (who Edge at:(site)))
                 (remove Edge (site) count:2)
-        ))
-        }
-))
+            )
+        )
+    })
+)
 
 (define "NeedsConnection"
-    (and
-        {
+    (and {
         (is Mover (who at:(to)))
         (not
             (is Within
@@ -87,15 +95,19 @@
                 in:(intersection
                     (sites Around Cell (to))
                     (sites Around Cell (last To))
-        )))
+                )
+            )
+        )
         (> 2
             (count Pieces All
                 in:(intersection
                     (sites Around Cell (to) Adjacent)
                     (sites Around Cell (last To) Adjacent)
-        )))
-        }
-))
+                )
+            )
+        )
+    })
+)
 
 //-------------------------------------------------- 
 // Connectivity
@@ -108,7 +120,10 @@
             (if 
                 (= #2 (ahead Cell #1 W)) (sites Around #3 S)
                 (sites Around #3 E)
-))))
+            )
+        )
+    )
+)
 
 (define "Break"
     (or
@@ -119,23 +134,24 @@
         (and
             (!= 0 (count Pieces of:("Opponent" #3) in:("Twist" #2 #1 #2)))
             (!= 0 (count Pieces of:("Opponent" #3) in:("Twist" #1 #2 #1)))
-)))
+        )
+    )
+)
 
 (define "Opponent"
     (- 3 (id #1))
 )
 
 (define "NotCrossingConnector" 
-    (or
-        {
+    (or {
         (= (to) (from))
         (and
             (is #1 (who at:(from)))  
             (is #1 (who at:(to))) 
         ) 
         (not ("Break" (from) (to) #1))
-        }
-))
+    })
+)
 
 //-----------------------------------
 // End condition tests
@@ -159,10 +175,15 @@
                             )
                             ("NotCrossingConnector" #2) 
                             //  }
-                )))
+                        )
+                    )
+                )
                 (#1) 
                 (difference ("Liberties" #2) #1)
-))))
+            )
+        )
+    )
+)
 
 (define "Scoring"
     (and
@@ -173,13 +194,14 @@
         (do
             "CheckOpponentLoss"
             next:(set Score Next (- 0 (count Pieces Cell Next in:(sites State Cell 1))))
-)))
+        )
+    )
+)
 
 (define "CheckMoverLoss"
     (if
         ("IsDeadSiteValueofPlayer" (last To) Mover)
-        (and
-            {
+        (and {
             (trigger "Enmeshed" Mover)
             (set State at:(last To) 1) 
             (forEach Value
@@ -187,9 +209,11 @@
                 (if
                     ("IsDeadSiteValueofPlayer" (value) Mover)
                     (set State at:(value) 1)
-            ))
-            }
-))) 
+                )
+            )
+        })
+    )
+) 
 
 (define "CheckOpponentLoss"
     (forEach Value
@@ -199,7 +223,10 @@
             (and
                 (trigger "Enmeshed" Next)
                 (set State at:(value) 1)
-))))
+            )
+        )
+    )
+)
 
 //-------------------------------
 // Move definitions
@@ -209,30 +236,29 @@
         (piece (id "Ball" Mover))
         (to (sites Empty))
         (then 
-            (and 
-                {
+            (and {
                 ("AddConnector" 1 L)
                 ("AddConnector" 2 R)
                 ("RemoveConnector")
                 ("Scoring")
-                }
-))))
+            })
+        )
+    )
+)
 
 //-----------------------------------------------
 // Main routine
 
 (game "N-Mesh"
     (players 2)
-    (equipment
-        {
+    (equipment {
         "SquareGrid"
         (regions "Marked" ("LibertyRegions")) 
         (piece "Ball" P1 maxState:1)
         (piece "Ball" P2 maxState:1)
         (piece "I" P1 maxState:5)
         (piece "I" P2 maxState:5)
-        }
-    )
+    })
     (rules
         (play
             (or
@@ -242,9 +268,12 @@
                         (to
                             (sites Occupied by:Next)
                             (apply (remove (to)))
-                )))
+                        )
+                    )
+                )
                 ("Add2EmptyWithConsequenses")
-        ))
+            )
+        )
         (end 
             (if 
                 (or
@@ -262,7 +291,10 @@
                 ) 
                 }
                 (byScore)
-))))
+            )
+        )
+    )
+)
 
 //-------------------------------------------------
 // Defines for Options
@@ -275,18 +307,19 @@
         (sites Board) 
         if:(= 0
             (%
-                (+
-                    {
+                (+ {
                     (if (= 0 (% (- <BoardSize:smallSide> 1) 5)) 1 0) // prevents a symmetrical board.
                     (site)
                     (*
                         (- 7 <BoardSize:smallSide>)
                         (/ (site) <BoardSize:smallSide>)
                     )
-                    }
-                )
+                })
                 5
-))))
+            )
+        )
+    )
+)
 
 // (define "LibertyRegions" (forEach (sites Board) if:(= 0 (% (site) <BoardSize:regionSpacing>)))) 
 

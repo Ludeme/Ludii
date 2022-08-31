@@ -8,19 +8,17 @@
     (move Select
         (from #1 if:(> 2 (count Stack at:(from))))
         (to <Board:placementVector>
-            if:(and
-                {
+            if:(and {
                 (is In (to) (sites Occupied by:Mover top:True))
                 (= 2 (count Sites in:("SwapSites" (to) (from))))
                 (or
                     (= 1 (count Sites in:(intersection ("SwapSites" (to) (from)) (sites Occupied by:Mover top:True))))
                     (= 1 (count Sites in:(intersection ("SwapSites" (to) (from)) (sites Occupied by:Next top:True))))
                 )
-                }
-        ))
+            })
+        )
         (then
-            (and
-                {
+            (and {
                 //  (remove (last From))
                 (add
                     (piece (id "Disc" Mover))
@@ -31,8 +29,10 @@
                     ("SwapSites" (last To) (last From))
                     (remember Value (site))
                 )
-                }
-))))
+            })
+        )
+    )
+)
 (define "SwapSite" (arrayValue (values Remembered) index:#1))
 (define "SwapPiece" (what at:("SwapSite" #1) level:(topLevel at:("SwapSite" #1))))
 
@@ -54,45 +54,53 @@
                                 (piece (var "Piece1"))
                                 (to ("SwapSite" 0)
                                     (apply (remove (to)))
-        )))))))
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         (then
-            (and
-                {
+            (and {
                 ("SetScoreOf" Mover)
                 ("SetScoreOf" Next)
                 (forget Value All)
                 <Protocol:turn>
-                }
-))))
+            })
+        )
+    )
+)
 
 //--------------------------
 (game "Veloop (Square)"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (renumber (rotate 90 <Board:type>)) use:Cell)
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
-        (start
-            {
+        (start {
             (place "Disc1" <Board:bStart>)
             (place "Disc2" <Board:wStart>)
-            }
-        )
+        })
         (play
             (priority
                 ("Placement" (sites Empty))
                 ("Placement" (sites Occupied by:Next))
                 (then 
                     ("MakeSwap")
-        )))
+                )
+            )
+        )
         (end 
             (if 
                 (!= 0 (+ (score P1) (score P2)))
                 (byScore)
-)))) 
+            )
+        )
+    )
+) 
 
 (define "SetScoreOf"
     (set Score #1 (- 0 (count Sites in:(difference (sites Occupied by:#1) ("UnconfinedStiesOf" #1)))))
@@ -108,7 +116,10 @@
                 )
                 (site)
                 (sites Outer)
-)))) 
+            )
+        )
+    )
+) 
 
 //--------------------------------------
 

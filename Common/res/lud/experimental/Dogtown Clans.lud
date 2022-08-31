@@ -3,7 +3,8 @@
     (<=
         (+ <Control:surplus> (count Pieces in:(sites Around (#2) "LoSDirection" if:(!= 0 (who at:(to))))))
         (* 2 (count Pieces #1 in:(sites Around (#2) "LoSDirection")))
-))
+    )
+)
 // --------------------------------------
 (define "ScoreFor"
     (set Score #1
@@ -15,7 +16,10 @@
                 )
                 to:(from) 
                 (if (is Empty (to)) 1 2)
-))))
+            )
+        )
+    )
+)
 
 (define "MoveTwiceThenScore" 
     (if
@@ -24,22 +28,22 @@
         (and 
             ("ScoreFor" Mover)
             ("ScoreFor" Next) 
-)))
+        )
+    )
+)
 
 //-----------------------------------------------
 // Main routine
 
 (game "Dogtown Clans"
     (players 2)
-    (equipment
-        {
+    (equipment {
         "BoardUsed"
         (piece "Counter" P1)
         (piece "Counter" P2)
         (piece "X" Neutral)
         (piece "Counter" Neutral)
-        }
-    )
+    })
     (rules
         (meta (passEnd NoEnd))
         (play
@@ -58,7 +62,10 @@
                             (if
                                 (> 2 (count Pieces in:(sites Occupied by:Neutral)))
                                 (moveAgain)
-                ))))
+                            )
+                        )
+                    )
+                )
                 
                 (or
                     {
@@ -72,7 +79,9 @@
                                 (= -1 (var "DoubleTurnPhase"))
                                 (set Var "DoubleTurnPhase" 1)
                                 ("MoveTwiceThenScore")
-                    )))
+                            )
+                        )
+                    )
                     (move Remove 
                         (forEach
                             (sites Occupied by:Next)
@@ -88,13 +97,20 @@
                         (and 
                             ("ScoreFor" Mover)
                             ("ScoreFor" Next) 
-        )))))
+                        )
+                    )
+                )
+            )
+        )
         
         (end 
             (if 
                 (no Moves Mover)
                 (result Mover Loss) //last to place wins a tie
-))))
+            )
+        )
+    )
+)
 
 /-----------------------------------------
 // Defines for Options

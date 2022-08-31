@@ -7,13 +7,16 @@
             (step Orthogonal (to if:(not (= (id #1) (who at:(to))))))
             (site)
             (difference (sites Outer) <Board:inner>) 
-)))
+        )
+    )
+)
 
 (define "RawTerritoryOf"
     (forEach
         (difference <Board:inner> (sites Occupied by:(player (id #1))))
         if:("Included" #1)
-))
+    )
+)
 
 (define "TC" // Territory Count
     (size Array
@@ -23,7 +26,11 @@
                 if:(and
                     ("Included" #1)
                     (is Empty (site))
-)))))
+                )
+            )
+        )
+    )
+)
 
 //--------------------
 // Square scoring utilities
@@ -34,14 +41,17 @@
             (step Orthogonal (to if:(not (= (id #1) (who at:(to))))))
             (from) 
             (site)
-)))
+        )
+    )
+)
 
 (define "Coordinates" 
     (results
         from:(to)
         to:(forEach (sites Board) if:("IsSiteInSameTerritory" #1))
         #2
-))
+    )
+)
 
 (define "IsLowestReachableSite"
     (= Infinity
@@ -53,7 +63,11 @@
                     from:(site)
                     to:(forEach (sites Board) if:(< (from) (site)))
                     (to)
-)))))
+                )
+            )
+        )
+    )
+)
 
 (define "RCSQ" //region count - Square
     (+
@@ -74,7 +88,12 @@
                     (-
                         (max ("Coordinates" #1 (row of:(to))))
                         (min ("Coordinates" #1 (row of:(to))))
-))))))
+                    )
+                )
+            )
+        )
+    )
+)
 
 (define "RCHX" //region count - Hex 
     (size Array
@@ -92,11 +111,18 @@
                                     from:(site)
                                     to:(forEach <Board:inner> if:(< (from) (site)))
                                     (to)
-)))))))))
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
 
 (define "GetTerritorySitesAndScore"
-    (and
-        {
+    (and {
         (set Value at:(handSite #1 0) ("TC" #1))
         (set Value at:(handSite #1 1) (<Board:regionScoring> #1))
         (set Score #1
@@ -104,8 +130,8 @@
                 ("TC" #1)
                 (<Board:regionScoring> #1)
         ))
-        }
-))
+    })
+)
 
 (define "RabbitMove"
     (forEach Piece
@@ -116,7 +142,8 @@
                 (between (range 0 Infinity) if:True)
                 (to (sites Empty)
                     if:(is Empty (to))
-            ))
+                )
+            )
             ifAfterwards:(or
                 (<
                     (var "SitesMoverAroundFrom")
@@ -130,37 +157,38 @@
                     (>
                         (count Sites in:(sites Around (last From) Orthogonal if:(is Next (who at:(to)))))
                         (count Sites in:(sites Around (last To) Orthogonal if:(is Next (who at:(to)))))
-            )))
+                    )
+                )
+            )
             (then 
-                (and
-                    {
+                (and {
                     ("GetTerritorySitesAndScore" Mover)
                     ("GetTerritorySitesAndScore" Next)
                     (if
                         (is Prev Next)
                         (moveAgain)
                     )
-                    }
-)))))
+                })
+            )
+        )
+    )
+)
 
 //-----------------------------------------------
 // Main routine
 
 (game "Rabbit Warrens"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board <Board:side> use:Cell)
         (hand P1 size:2)
         (hand P2 size:2)
         (piece "Ball" Each)
         (piece "<Board:shape>" Each)
         (piece "<Board:shape>" Neutral)
-        }
-    )
+    })
     (rules
-        (start
-            {
+        (start {
             <Board:white> 
             <Board:black>
             (place "<Board:shape>1" (handSite P1 0) value:0)
@@ -172,9 +200,9 @@
             (or
                 (move Pass)
                 "RabbitMove"
-        ))
-        (end 
-            {
+            )
+        )
+        (end {
             (if 
                 (and
                     (= (score P1) (score P2))
@@ -186,8 +214,9 @@
             (all Passed)
             (byScore)
         )
-        }
-)))
+    })
+)
+)
 
 //--------------------------------------
 // End conditions

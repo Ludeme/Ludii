@@ -11,19 +11,21 @@
                             (sites)
                         )
                         Orthogonal
-        ))))
-))
+                    )
+                )
+            )
+        )
+    )
+)
 
 //---------------------------------------
 (game "Sprout-R-Out" 
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (trim <Board:type>) use:Cell)
         (piece "Ball" Each)
         (piece "Ball" Neutral)
-        }
-    )
+    })
     (rules
         (play
             (if
@@ -32,7 +34,8 @@
                     (to
                         (sites Empty)
                         (apply (set State at:(to) 1))
-                ))
+                    )
+                )
                 (forEach Group
                     Orthogonal
                     if:(and
@@ -46,7 +49,9 @@
                                 (forEach Site 
                                     (sites)
                                     (set State at:(site) 0)
-                        )))
+                                )
+                            )
+                        )
                         (then
                             (if 
                                 (!= 0
@@ -54,7 +59,9 @@
                                         in:(intersection
                                             (sites Occupied by:Next) 
                                             (sites State 1)
-                                )))
+                                        )
+                                    )
+                                )
                                 (moveAgain)
                                 (do
                                     (forEach Site 
@@ -75,7 +82,9 @@
                                                 ) 
                                                 (forEach Site (sites)
                                                     (set State at:(site) 1)
-                                        )))
+                                                )
+                                            )
+                                        )
                                         next:(set Value Mover (score Mover)
                                             (then
                                                 (set Score Mover
@@ -91,7 +100,11 @@
                                                                         (step (to if:(not (is Mover (who at:(to))))))
                                                                         (site)
                                                                         (sites Occupied by:Next)
-                                                    )))))
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
                                                     (then
                                                         (if
                                                             (and
@@ -99,7 +112,19 @@
                                                                 (= (score Next) (value Player Next))
                                                             )
                                                             (trigger "End" Mover)
-        )))))))))))))
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         (end 
             (if
                 (and 
@@ -107,7 +132,10 @@
                     (is Triggered "End" Next)
                 )
                 (byScore)
-))))
+            )
+        )
+    )
+)
 
 //------------------------------------
 

@@ -13,8 +13,7 @@
             )
         )
         next:(do
-            (and
-                {
+            (and {
                 (remember Value 0)
                 (remember Value 0)
                 (forEach Group "GridDirection" 
@@ -23,9 +22,10 @@
                         (no Pieces in:(intersection (sites) (sites State 1))) 
                         (remember Value 
                             (count Sites in:(sites))
-                )))
-                }
-            )
+                        )
+                    )
+                )
+            })
             next:(set Var "TopValue" (max (values Remembered))
                 (then
                     (forget Value (max (values Remembered)) 
@@ -33,12 +33,18 @@
                             (set Score #1 (* (var "TopValue") (max (values Remembered)))
                                 (then
                                     (forget Value All)  
-        )))))))
-))
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
 
 (define "AddOrPass"
-    (or
-        {
+    (or {
         (move Add
             (piece (id "Disc" Mover))
             (to (sites Empty)
@@ -47,26 +53,23 @@
             (then (set Var "Added" 1))
         )
         (move Pass) // without this there are obscure forced moves...
-        }
-))
+    })
+)
 
 //-----------------------------------------------
 // Main routine
 
 (game "Wrigglers Squared"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board <BoardShape:gridType> use:Vertex)
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
         (play
             (if
                 (= 1 (var "Added"))
-                (or
-                    {
+                (or {
                     "AddOrPass"
                     (forEach Piece
                         (if
@@ -76,11 +79,11 @@
                         ))
                         Mover
                     )
-                    }
-                )
+                })
                 "AddOrPass"
                 (then ("Score4" Mover))
-        ))
+            )
+        )
         (end 
             (if
                 (all Passed)
@@ -91,7 +94,10 @@
                 )
                 }
                 (result Next Win)
-))))
+            )
+        )
+    )
+)
 
 //-------------------------------------------------
 // Options

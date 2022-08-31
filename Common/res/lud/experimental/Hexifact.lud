@@ -5,16 +5,14 @@
 
 (define "ScoreMover"
     (do
-        (and
-            {
+        (and {
             (remember Value 0)
             (remember Value 0)
             (forEach Group "GridDirection" 
                 //  if:(is Mover (who at:(to))) // this appears to be the default, and it ceases to work when the boolean is included.
                 (remember Value (count Sites in:(sites)))
             )
-            }
-        )
+        })
         next:(set Var "TopValue" (max (values Remembered))
             (then
                 (forget Value (max (values Remembered)) 
@@ -22,30 +20,34 @@
                         (set Score Mover (* (var "TopValue") (max (values Remembered)))
                             (then
                                 (forget Value All)  
-        ))))))
-))
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
 
 (define "PlacementSites"
     (and
         (no Pieces Mover in:(sites Around (to) "GridDirection"))
         (not (no Pieces Next in:(sites Around (to) "GridDirection")))
-))
+    )
+)
 
 //-----------------------------------------------
 // Main routine
 
 (game "Hexifact"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board <BoardShape:gridType> use:Vertex)
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
         (play
-            (or
-                {
+            (or {
                 (move Add
                     (piece (id "Disc" Mover))
                     (to (sites Empty)
@@ -57,7 +59,9 @@
                         (forEach Site
                             (sites Occupied by:Mover)
                             (set State at:(site) 0)
-                )))
+                        )
+                    )
+                )
                 (if
                     <Jumping:limits>
                     (do
@@ -74,11 +78,14 @@
                         ifAfterwards:(all Sites
                             (sites Occupied by:Mover) 
                             if:(> 4 (count Pieces Mover in:(sites Around (site) "GridDirection")))
-                )))
+                        )
+                    )
+                )
                 (move Pass) // without this there are obscure forced moves...
                 }
                 (then ("ScoreMover"))
-        ))
+            )
+        )
         (end 
             (if
                 (all Passed)
@@ -89,7 +96,10 @@
                 )
                 }
                 (result Next Win)
-))))
+            )
+        )
+    )
+)
 
 //-------------------------------------------------
 // Options
@@ -173,7 +183,6 @@ No individual piece may jump more than once before the mover takes a placement t
     (board StyleThickness InnerVertices .5)
     (show Edges Diagonal <BoardShape:DiagShow>)
     (piece Foreground "Disc" state:1 image:"square.svg" fillColour:(colour 0 0 0 50) scale:0.4)
-    // (show Piece State)
     }
 )
 

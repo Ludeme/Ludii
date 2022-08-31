@@ -7,45 +7,41 @@
 ))
 
 (define "HexBetweenSites"
-    (union
-        {
+    (union {
         ("Corner" #1 NNW SSE) 
         ("Corner" #1 NNE SSW) 
         ("Corner" #1 E W) 
-        }
-))
+    })
+)
 
 (define "HexHullSites"
-    (union
-        {
+    (union {
         ("Corner" #1 NNW E) 
         ("Corner" #1 NNE SSE) 
         ("Corner" #1 E SSW) 
         ("Corner" #1 SSE W) 
         ("Corner" #1 SSW NNW) 
         ("Corner" #1 W NNE) 
-        }
-))
+    })
+)
 
 (define "SquareBetweenSites"
-    (union
-        {
+    (union {
         ("Corner" #1 NE SW) 
         ("Corner" #1 S N) 
         ("Corner" #1 NE SW) 
         ("Corner" #1 E W) 
-        }
-))
+    })
+)
 
 (define "SquareHullSites"
-    (union
-        {
+    (union {
         ("Corner" #1 N E) 
         ("Corner" #1 S E) 
         ("Corner" #1 S W) 
         ("Corner" #1 N W) 
-        }
-))
+    })
+)
 
 (define "P1Territory"
     (difference
@@ -57,7 +53,8 @@
             (sites (values Remembered "P2")) 
             (difference (sites Occupied by:P2) (handSite P2 0))
         ) 
-))
+    )
+)
 
 (define "P2Territory"
     (difference
@@ -69,25 +66,28 @@
             (sites (values Remembered "P1")) 
             (difference (sites Occupied by:P1) (handSite P1 0))
         ) 
-)) 
+    )
+) 
 
 (define "CommonTerritory"
     (intersection
         (union (sites (values Remembered "P2")) (difference (sites Occupied by:P2) (handSite P2 0)))
         (union (sites (values Remembered "P1")) (difference (sites Occupied by:P1) (handSite P1 0)))
-))
+    )
+)
 
 (define "PiecewiseCapture" 
     (forEach Group Orthogonal
         if:(is In (to) (intersection (sites Board) (sites Occupied by:Next)))
         (remove (intersection (sites) (sites (values Remembered #2))))
         (then
-            (seq
-                {
+            (seq {
                 (forget Value #1 All)
                 ("UpdateAllTerritoryOfNext")
-                }    
-))))
+            })
+        )
+    )
+)
 
 (define "CaptureGroupsWithin" 
     (forEach Group Orthogonal
@@ -99,7 +99,8 @@
         )
         // Forget all to handle very rare case of removing a group that (partially?) is in common territory based on other groups.
         (then ("UpdateAllTerritoryOfNext"))              
-))
+    )
+)
 
 (define "UpdateAllTerritoryOfNext"
     (forEach Group Orthogonal
@@ -109,7 +110,10 @@
                 (= (mover) 1)
                 (remember Value "P2" (site) unique:True)
                 (remember Value "P1" (site) unique:True)
-)))) 
+            )
+        )
+    )
+) 
 
 (define "RecordTerritoryOfRevisedGroup"
     (forEach Site (<Territory:tVariant> (sites Group at:(last To) Orthogonal))
@@ -117,7 +121,9 @@
             (= (mover) 1)
             (remember Value "P1" (site) unique:True)
             (remember Value "P2" (site) unique:True)
-))) 
+        )
+    )
+) 
 
 (define "EmptySitesOutsideEnemyTerritoryFor" 
     (difference (sites Empty) (sites (values Remembered #1)))
@@ -128,7 +134,8 @@
         (= 1 (mover)) 
         ("EmptySitesOutsideEnemyTerritoryFor" "P2")
         ("EmptySitesOutsideEnemyTerritoryFor" "P1")
-))
+    )
+)
 
 (define "UpdateTotalMoverGroupCount" 
     (set Value at:(handSite Mover 0) (size Array (sizes Group Orthogonal Mover)))
@@ -138,7 +145,8 @@
     (forEach Site 
         (sites Group at:(last To) Orthogonal)
         (set Value at:(site) (count Sites in:(sites Group at:(last To) Orthogonal)))
-))
+    )
+)
 
 (define "IsNotAnIsolatedPlacement"
     (< 0 (count Pieces Mover in:(sites Around (last To) Orthogonal)))
@@ -149,7 +157,8 @@
         (= (mover) 1)
         (<Capture:cVariant> "P2" "P1")
         (<Capture:cVariant> "P1" "P2")
-))
+    )
+)
 
 (define "PlayWithoutSizeRestriction"
     (move Add
@@ -157,12 +166,14 @@
         (then
             (if
                 ("IsNotAnIsolatedPlacement")
-                (seq
-                    {
+                (seq {
                     ("RecordTerritoryOfRevisedGroup")
                     ("MakeCapture")
-                    }
-)))))
+                })
+            )
+        )
+    )
+)
 
 (define "Play2SmallestGroup"
     (if
@@ -173,7 +184,9 @@
                 if:(all Sites
                     (sites Around (to) Orthogonal)
                     if:(not (is Mover (who at:(site))))
-        )))
+                )
+            )
+        )
         (or
             (move Add
                 (to
@@ -181,7 +194,9 @@
                     if:(all Sites
                         (sites Around (to) Orthogonal)
                         if:(not (is Mover (who at:(site))))
-            )))
+                    )
+                )
+            )
             (move Add
                 (to
                     <Capture:playableSites>
@@ -191,10 +206,14 @@
                             if:(<
                                 (min (sizes Group Orthogonal Mover))
                                 (size Group at:(site) Orthogonal)
-        ))))))
+                            )
+                        )
+                    )
+                )
+            )
+        )
         (then
-            (seq
-                {
+            (seq {
                 ("UpdateGroupSizeValue4PiecesConnected2Placement")
                 //    next:("UpdateTotalMoverGroupCount")
                 //    (then
@@ -205,21 +224,22 @@
                             ("RecordTerritoryOfRevisedGroup")
                             ("MakeCapture")
                             }
-                    ))
-                    }
-    ))))
+                        )
+                    )
+                })
+            )
+        )
+    )
     
     //--------------------------
     
     (game "The SmallHolder"
         (players 2)
-        (equipment
-            {
+        (equipment {
             (board <Board:type> use:Cell)
             //        (hand Each size:1)
             (piece "Disc" Each)
-            }
-        )
+        })
         (rules
             //        (start
                 //            {
@@ -232,7 +252,9 @@
             )
             (end 
                 "EndNoMoves"
-    ))) 
+            )
+        )
+    ) 
     
     (define "EndNoMoves"
         (if (no Moves Next) (result Next Loss))

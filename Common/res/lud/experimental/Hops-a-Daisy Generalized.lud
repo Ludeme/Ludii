@@ -1,6 +1,5 @@
 (define "NonpriorityMoves" // arg: "NonMoverHops" see Chosen:nonMoverCaptures
-    (or
-        {
+    (or {
         (if
             ("SameTurn")
             (or
@@ -17,20 +16,22 @@
         ))
         #1
         #2
-        }
-))
+    })
+)
 
 (define "PriorityHopsOnly" // No friendly hops 
     (priority
         ("NonMoverHops")
         ("NonpriorityMoves" ~ ~)
-))
+    )
+)
 
 (define "PriorityHops" // Friendly Hops allowed 
     (priority
         ("NonMoverHops")
         ("NonpriorityMoves" ("MoverHops") ~)
-)) 
+    )
+) 
 
 (define "MoverHops"
     ("HopChange" <CapOption:friendHops> "MoverSites")
@@ -43,13 +44,14 @@
 (define "HopChange" // Options: eg. "Moversites" or <Multi:capture>
     (if 
         ("SameTurn")
-        (if 
-            (is Pending)
+        (if (is Pending)
             (#1 (from (last To)) #2)
         )
         (do (forget Value All) 
             next:(#1 (from) #2)
-)))
+        )
+    )
+)
 
 //Player role function define
 
@@ -98,9 +100,12 @@
                 (% 
                     (+ {<NumberPlayers:inGame> (var "FirstNoPlace") (- (player)) -1})
                     <NumberPlayers:inGame>
-        )))
+                )
+            )
+        )
         (propose "End")
-))
+    )
+)
 
 (define "TurnPass"
     (do 
@@ -113,19 +118,22 @@
             )
         )
         next:(move Pass)
-))
+    )
+)
 
 (define "NoMorph" // argument where from, who's pieces
     (or
         ("GeneralHop" #1 #2 "Hex" "Hex" "ValueHex" "ValueHex")
         ("GeneralHop" #1 #2 "Disc" "Disc" "ValueDisc" "ValueDisc")
-))
+    )
+)
 
 (define "Morph" // argument where from, who's pieces
     (or
         ("GeneralHop" #1 #2 "Disc" "Hex" "ValueDisc" "ValueHex")
         ("GeneralHop" #1 #2 "Hex" "Disc" "ValueHex" "ValueDisc")
-))
+    )
+)
 
 (define "GeneralHop" // argument where from, who's sites, piece type hopped, piece typ replaced
     (forEach Piece "Disc"
@@ -140,17 +148,19 @@
                             (sites Occupied by:All component:#3) 
                         )
                         (sites (values Remembered))
-                ))
+                    )
+                )
                 (apply 
                     (and 
                         (addScore (player (who at:(between))) (- #5))
                         (set Pending (between))
-            )))
+                    )
+                )
+            )
             (to if:(is Empty (to)))
         )
         (then
-            (and
-                {
+            (and {
                 (remember Value (value Pending))
                 (remove (value Pending))
                 (add (piece (id #4 Mover)) (to (value Pending)))
@@ -160,7 +170,12 @@
                     (and
                         (set Pending)
                         (moveAgain)
-)))))) 
+                    )
+                )
+            )
+        )
+    )
+) 
 
 (define "DiscStep"
     (forEach Piece "Disc"
@@ -168,7 +183,9 @@
             (from (from)) 
             (to (sites Around (from)) if:(is Empty (to))) 
             (then (moveAgain))
-)))
+        )
+    )
+)
 
 (define "PlaceHex"
     (move 
@@ -179,7 +196,10 @@
             (and
                 (addScore Mover "ValueHex")
                 (set Var "FirstNoPlace" 0)
-))))
+            )
+        )
+    )
+)
 
 (define "PlaceDisc" 
     (if
@@ -191,7 +211,11 @@
                 (and
                     (addScore Mover "ValueDisc")
                     (set Var "FirstNoPlace" 0)
-)))))
+                )
+            )
+        )
+    )
+)
 
 (define "NoSuicide" 
     (difference 
@@ -210,7 +234,12 @@
                     )
                     (to
                         (sites Between from:(from) to:(site))
-))))))
+                    )
+                )
+            )
+        )
+    )
+)
 
 //----------------------------------------------------------
 
@@ -225,13 +254,13 @@
 (define "NearestPieces" // arg: Site of player to consider
     (count 
         Sites
-        in:(intersection
-            {
+        in:(intersection {
             (#1)
             (sites Direction from:(site) distance:<Equi:method>)
             (sites LineOfSight Piece at:(site) Orthogonal) 
-            }
-)))
+        })
+    )
+)
 
 (define "Dist2NearestLoSEnemy" 
     (min
@@ -242,7 +271,9 @@
                 if:(or (is Mover (who at:(site))) (is In (site) <Multi:influence>))
             )
             (count Steps Orthogonal (from) (to))
-)))
+        )
+    )
+)
 
 (define "Dist2NearestLoS"
     (min
@@ -250,7 +281,9 @@
             from:(site)
             to:(sites LineOfSight Piece at:(from) Orthogonal) 
             (count Steps Orthogonal (from) (to))
-)))
+        )
+    )
+)
 
 //---------------------------------------
 // Main routine
@@ -258,13 +291,11 @@
 
 (game "Hops-a-Daisy Generalized"
     (players <NumberPlayers:inGame>)
-    (equipment
-        {
+    (equipment {
         (board (hex <Board:size>) use:Cell)
         (piece "Disc" Each)
         (piece "Hex" Each)
-        }
-    )
+    })
     (rules 
         (start (set Score Each 0)) 
         (play
@@ -274,7 +305,10 @@
             (if 
                 (is Proposed "End")
                 (byScore)
-))))
+            )
+        )
+    )
+)
 
 //---------------------------------------
 

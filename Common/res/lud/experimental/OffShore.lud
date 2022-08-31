@@ -7,26 +7,24 @@
 ))
 
 (define "HexHullSites"
-    (union
-        {
+    (union {
         ("Corner" #1 NNW E) 
         ("Corner" #1 NNE SSE) 
         ("Corner" #1 E SSW) 
         ("Corner" #1 SSE W) 
         ("Corner" #1 SSW NNW) 
         ("Corner" #1 W NNE) 
-        }
-))
+    })
+)
 
 (define "SquareHullSites"
-    (union
-        {
+    (union {
         ("Corner" #1 N E) 
         ("Corner" #1 S E) 
         ("Corner" #1 S W) 
         ("Corner" #1 N W) 
-        }
-))
+    })
+)
 
 (define "P1Territory"
     (difference
@@ -35,7 +33,8 @@
             (difference (sites Occupied by:P1) (handSite P1 0))
         ) 
         (sites (values Remembered "P2"))
-)) 
+    )
+) 
 
 (define "P2Territory"
     (difference
@@ -44,23 +43,24 @@
             (difference (sites Occupied by:P2) (handSite P2 0))
         ) 
         (sites (values Remembered "P1"))
-)) 
+    )
+) 
 
 (define "CommonTerritory"
     (intersection
         (union (sites (values Remembered "P2")) (difference (sites Occupied by:P2) (handSite P2 0)))
         (union (sites (values Remembered "P1")) (difference (sites Occupied by:P1) (handSite P1 0)))
-))
+    )
+)
 
 (define "Scoring"
-    (and
-        {
+    (and {
         (set Score P1 (count Sites in:(intersection (sites Empty) (sites (values Remembered "P1")))))
         (set Score P2 (count Sites in:(intersection (sites Empty) (sites (values Remembered "P2")))))
         (set Value at:(handSite P1 0) (size Array (sizes Group Orthogonal P1)))
         (set Value at:(handSite P2 0) (size Array (sizes Group Orthogonal P2)))
-        }
-))
+    })
+)
 
 (define "CaptureWithin" 
     (forEach Group Orthogonal
@@ -72,7 +72,10 @@
                     (forget Value #1 (site))
                 )
                 (remove (sites))
-))))
+            )
+        )
+    )
+)
 
 (define "RecordTerritoryOfRevisedGroup"
     (forEach Site (<Board:hullType> (sites Group at:(last To) Orthogonal))
@@ -80,7 +83,9 @@
             (= (mover) 1)
             (remember Value "P1" (site) unique:True)
             (remember Value "P2" (site) unique:True)
-))) 
+        )
+    )
+) 
 
 (define "EmptySitesOutsideEnemyTerritoryFor" 
     (difference (sites Empty) (sites (values Remembered #1)))
@@ -93,7 +98,8 @@
     (forEach Site 
         (sites Group at:(last To) Orthogonal)
         (set Value at:(site) (count Sites in:(sites Group at:(last To) Orthogonal)))
-))
+    )
+)
 
 (define "SitesInOversizedGroups" 
     (forEach
@@ -104,7 +110,9 @@
                 (value Piece at:(handSite Mover 0))
             )
             (sites Around (site) Orthogonal)
-)))
+        )
+    )
+)
 
 (define "IsNotAnIsolatedPlacement"
     (< 0 (count Pieces Mover in:(sites Around (last To) Orthogonal)))
@@ -113,36 +121,30 @@
 //--------------------------
 (game "OffShore"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board <Board:type> use:Cell)
         (hand Each size:1)
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
-        (start
-            {
+        (start {
             (place "Disc1" (handSite P1 0) value:0) 
             (place "Disc2" (handSite P2 0) value:0) 
-            }
-        )
+        })
         (play
             (or
                 (move Pass)
                 (move Add
                     (to
                         (difference
-                            (union
-                                { // "{}" needed because 2nd item might not exist...
+                            (union { 
                                 (if
                                     (= 1 (mover)) 
                                     ("EmptySitesOutsideEnemyTerritoryFor" "P2")
                                     ("EmptySitesOutsideEnemyTerritoryFor" "P1")
                                 )
                                 (<RestrictionEasementFor:placement>)
-                                }
-                            )
+                            })
                             ("SitesInOversizedGroups")
                         )
                     )
@@ -163,10 +165,17 @@
                                                 (then ("Scoring"))
                                             )
                                             ("Scoring")
-        )))))))))
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         (end 
-            (if 
-                (all Passed)
+            (if  (all Passed)
                 {
                 (if
                     (> (score Mover) (score Next))
@@ -178,7 +187,10 @@
                 )
                 } 
                 (result Mover Win)
-)))) 
+            )
+        )
+    )
+) 
 
 //--------------------------------------
 

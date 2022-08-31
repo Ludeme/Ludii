@@ -36,8 +36,8 @@
             (place Stack "Disc7" 28 count:7) 
         })
         (play
-        		("RollEachNewTurnMove" 
-        				(forEach Die
+            ("RollEachNewTurnMove" 
+                (forEach Die
                     if:("DieNotUsed")
                     (forEach Site
                         (sites Occupied by:Mover)

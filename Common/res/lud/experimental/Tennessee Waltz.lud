@@ -14,9 +14,11 @@
                 if:(and
                     (is #1 (who at:(site)))
                     (= 2 (count Pieces #1 in:(union (sites Around (from) "Adj") (sites Around (site) "Adj"))))
-            ))
+                )
+            )
             (from)
-    ))
+        )
+    )
     
     (define "ShiftTokenFromToAndScore"
         (and
@@ -36,22 +38,31 @@
                                 stack:False
                                 (then
                                     (remove (sites Hand #1))
-                )))))
+                                )
+                            )
+                        )
+                    )
+                )
                 (if
                     (and
                         (not (no Pieces #2 in:(sites Hand #2)))
                         (=
                             (size Array ("PairSitesOf" #2))
                             (size Array ("PairSitesOf" #1))
-                    ))
+                        )
+                    )
                     (addScore #2 1)
-    ))))
+                )
+            )
+        )
+    )
     
     (define "Score4"
         (+
             (count Pieces #1 in:(sites Hand #1))
             (size Array ("PairSitesOf" #1))
-    ))
+        )
+    )
     
     //---------------------------------
     // Shifting consequences and utilities
@@ -85,7 +96,12 @@
             (push
                 (from (var "PairedSite"))
                 "PushDirection"
-))))))
+            )
+        )
+    )
+)
+)
+)
 
 //----------------------------------
 // Pair Testing utility
@@ -94,7 +110,8 @@
     (and
         (= 1 (count Pieces #1 in:(sites Around #2 "Adj")))
         (no Pieces #1 in:(sites Around (intersection (sites Around #2 "Adj") (sites Occupied by:#1)) "Adj"))
-))
+    )
+)
 
 //---------------------------------------------
 // Move restrictions and housekeeping
@@ -109,29 +126,31 @@
             (set Var "LT" (last To)
                 (then
                     (set Var "PairedSite" (regionSite (intersection (sites Around (var "LF") "Adj") (sites Occupied by:Mover)) index:0))
-)))))
+                )
+            )
+        )
+    )
+)
 
 (define "PassingIsAllowedAfterFirstPairScores"
     (if
         (= 1 (mod (+ (score P1) (score P2)) 2)) // There has been a pair already.
         (move Pass)
-))
+    )
+)
 
 //---------------------------------------------------
 
 (game "Tennessee Waltz" 
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board <BoardShape:gridType> use:Vertex)
         (hand Each size:1)
         (piece "Disc" Each) 
-        }
-    )
+    })
     (rules
         (play
-            (or
-                {
+            (or {
                 ("PassingIsAllowedAfterFirstPairScores")
                 (move Add (to (sites Empty) if:(not ("IsAPairOfAt" Mover (to)))))
                 (do
@@ -145,15 +164,22 @@
                                     "RecordTheSitesInvolvedInTheMove"
                                     (add (piece (id "Disc" Mover)) (to (last From))
                                         (then ("PushConsquences4ThePair"))
-                        ))))
+                                    )
+                                )
+                            )
+                        )
                         ifAfterwards:(and ("PairHasStayedOnBoard") ("NoEnemyWasPushedOff"))
-                ))
+                    )
+                )
                 }
                 (then
                     (and
                         ("ShiftTokenFromToAndScore" Next Mover)
                         ("ShiftTokenFromToAndScore" Mover Next)
-        ))))
+                    )
+                )
+            )
+        )
         (end 
             (if
                 (or
@@ -163,14 +189,16 @@
                 (byScore)
                 // Bug - Without this update below final score does not update correctly in some cases after the push.
                 // (byScore {(score Mover ("Score4" Mover)) (score Next ("Score4" Next))}) 
-))))
+            )
+        )
+    )
+)
 
 //-------------------------------------------------
 // Winning and Scoring
 
 (define "IsWinningCondition"
-    (or
-        {
+    (or {
         (and
             (< (score Mover) (score Next))
             ("CannotMakeAPairOf" Mover)
@@ -179,8 +207,8 @@
             (> (score Mover) (score Next))
             ("CannotMakeAPairOf" Next)
         )
-        }
-))
+    })
+)
 
 (define "ThereAreSurroundingEmptySitesWithNoPiecesOfAroundThemAt"
     (< 0
@@ -189,29 +217,38 @@
                 (forEach
                     (intersection (sites Around #2 "Adj") (sites Empty))
                     if:(no Pieces #1 in:(sites Around (site) "Adj"))
-)))))
+                )
+            )
+        )
+    )
+)
 
 (define "PairableSiteOf"
     (sites To
         (select
             (from
                 (sites Empty)
-                if:(or
-                    {
+                if:(or {
                     ("IsAPairOfAt" #1 (from))
                     (and
                         (no Pieces #1 in:(sites Around (from) "Adj"))
                         ("ThereAreSurroundingEmptySitesWithNoPiecesOfAroundThemAt" #1 (from))
                     )
-                    }
-)))))
+                })
+            )
+        )
+    )
+)
 
 (define "CannotMakeAPairOf"
     (= 0
         (size Array
             (array
                 ("PairableSiteOf" #1)
-))))
+            )
+        )
+    )
+)
 
 //------------------------------------
 

@@ -1,6 +1,5 @@
 (define "HopMan" 
-    (move
-        Hop 
+    (move Hop 
         (from #1) 
         (directions {FR FL}) 
         (between 
@@ -23,22 +22,19 @@
         (piece "Counter" P2 S)
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
-        }
-    ) 
+    }) 
     (rules 
-        (start
-            { 
+        (start { 
             (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1) ))
             (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1)))
-            }
-        )
+        })
         
         (play 
             (if "SameTurn"
                 (or
                     ("HopMan" (last To)
                         (then 
-                            (if (can Move ("HopMan" (last To))) (moveAgain)) 
+                            ("ReplayIfCanMove" ("HopMan" (last To))) 
                         ) 
                     )
                     (move Pass)
@@ -47,16 +43,12 @@
                     (forEach Piece "Counter" 
                         ("HopMan" (from)
                             (then 
-                                (if (can Move ("HopMan" (last To))) (moveAgain)) 
+                                ("ReplayIfCanMove" ("HopMan" (last To))) 
                             )
                         ) 
                     )
                     (forEach Piece "Counter" 
-                        (move
-                            Step 
-                            (directions {FR FL}) 
-                            (to if:(is Empty (to)))
-                        ) 
+                        ("StepToEmpty" (directions {FR FL})) 
                     )
                 )
             )

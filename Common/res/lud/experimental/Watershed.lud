@@ -3,7 +3,9 @@
     (max 0
         (max
             (sizes Group "ScoreConnectionDirection" #1) 
-)))
+        )
+    )
+)
 
 //---------------------------
 // Defines for Tiebreaker scoring option
@@ -14,13 +16,17 @@
             (difference
                 (sizes Group "ScoreConnectionDirection" #1)
                 (sizes Group "ScoreConnectionDirection" #2)
-))))
+            )
+        )
+    )
+)
 
 (define "CascadeTie"
     (and
         (set Score Mover (var "MoverScore")) 
         (set Score Next (var "NextScore")) 
-))
+    )
+)
 
 (define "CascadeTiebreaker"
     (if 
@@ -30,7 +36,8 @@
             (set Score Next (* <Variant:tieFactor> ("CascadeScore" Next Mover)))
         )
         ("CascadeTie")
-))
+    )
+)
 
 //---------------------
 // Defines for scoring options
@@ -49,7 +56,11 @@
                 )
                 (then 
                     ("CascadeTiebreaker")
-)))))
+                )
+            )
+        )
+    )
+)
 
 //----------------------------
 (define "CapturingAtScoreWhat4Who" 
@@ -68,9 +79,14 @@
                                     (set Value at:(handSite #3) (+ 1 (value Piece at:(handSite #3))))
                             ))
                             (set Value at:(handSite #3) (+ 1 (value Piece at:(handSite #3))))
-                )))
+                        )
+                    )
+                )
                 (remove (value))
-))))
+            )
+        )
+    )
+)
 
 //-----------------------------
 // Placement condition
@@ -90,21 +106,23 @@
                     )
                     (site)
                     (difference (sites Outer) (site))
-)))))
+                )
+            )
+        )
+    )
+)
 
 //-----------------------------------------------
 // Main routine
 
 (game "Watershed"
     (players 2)
-    (equipment
-        {
+    (equipment {
         "BoardUsed"
         (piece "Ball" Each)
         (piece "Disc" Each)
         (hand Each size:1)
-        }
-    )
+    })
     (rules
         (start (set Score Each 0))
         (play
@@ -118,12 +136,17 @@
                                 in:(intersection
                                     (sites Around (to) "ConnectionDirection")
                                     (sites Empty)
-                )))))
+                                )
+                            )
+                        )
+                    )
+                )
                 ifAfterwards:("AllHave1Connection2Edge" 
                     (intersection 
                         (sites Around (last To) "ConnectionDirection")
                         (sites Empty)
-                )) 
+                    )
+                ) 
                 (then
                     (do
                         ("CapturingAtScoreWhat4Who" 
@@ -135,7 +158,10 @@
                             <Variant:bonus2> // who gets their value
                         )
                         next:("Scoring")
-        ))))
+                    )
+                )
+            )
+        )
         (end 
             (if 
                 (no Moves Next)
@@ -149,7 +175,10 @@
                     (byScore)
                 )
                 }
-))))
+            )
+        )
+    )
+)
 /-----------------------------------------
 // Defines for Options
 

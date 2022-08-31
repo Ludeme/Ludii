@@ -17,7 +17,8 @@
                 if:(>
                     (size Group at:(last To) "GridDirection" if:(is Mover (who at:(to))))
                     (size Group at:(site) "GridDirection" if:(is Next (who at:(to))))
-            ))
+                )
+            )
             // check for secondary removals
             (then 
                 (forEach Value
@@ -29,15 +30,20 @@
                                     from:(sites Around (value) "GridDirection") 
                                     "GridDirection"
                                     if:(is Mover (who at:(to)))
-                            ))
+                                )
+                            )
                             (size Group at:(value) "GridDirection" if:(is Next (who at:(to))))
                         )
                         (remove (value))
-))))))
+                    )
+                )
+            )
+        )
+    )
+)
 
 (define "IsNeitherSelfAdjacentNorSuicide"
     (and
-        
         // no adjacent mover
         (not (is In (to) (sites Around (sites Occupied by:Mover) "GridDirection"))) 
         
@@ -46,7 +52,10 @@
             in:(intersection
                 (sites Around (to) "GridDirection") 
                 (sites Around (sites Occupied by:Next) "GridDirection")
-))))
+            )
+        )
+    )
+)
 
 (define "IfAdjacentIsContactBetween2EqualChains"
     (or
@@ -58,13 +67,19 @@
                         from:(sites Around (to) "GridDirection")
                         "GridDirection"
                         if:(is Mover (who at:(to)))
-            )))
+                    )
+                )
+            )
             (count Pieces 
                 in:(sites Group
                     from:(sites Around (to) "GridDirection")
                     "GridDirection"
                     if:(is Next (who at:(to)))
-)))))
+                )
+            )
+        )
+    )
+)
 
 //-------------------------------------------------
 // Defines for Options
@@ -72,19 +87,23 @@
 (define "SizeOfLargestGroupMover"
     (max
         (sizes Group "GridDirection" Mover) 
-))
+    )
+)
 
 (define "SizeOfLargestGroupNext"
     (max
         (sizes Group "GridDirection" Next) 
-))
+    )
+)
 
 (define "SizeOf2ndLargestGroupMover" 
     (max
         (difference
             (sizes Group "GridDirection" P2) 
             "SizeOfLargestGroupMover"
-))) 
+        )
+    )
+) 
 
 (define "FindSizeOfGroupIfLargerThanAny"
     (set Var "LargestMover"
@@ -98,7 +117,8 @@
                             (difference
                                 (sizes Group "GridDirection" Mover)
                                 (var "LargestMover") 
-                        ))
+                            )
+                        )
                         (then
                             (set Var "LargestUnique" 
                                 (if
@@ -113,7 +133,15 @@
                                     ))
                                     (var "LargestMover")
                                     0
-)))))))))
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
 
 (define "SitesAroundLargestChainIfOFMover"
     (sites Around
@@ -122,9 +150,11 @@
             if:(=
                 (size Group at:(site) "GridDirection")
                 (var "LargestUnique")
-        ))
+            )
+        )
         "GridDirection"
-))
+    )
+)
 
 (define "RestrictededMergerSites"
     (difference
@@ -133,13 +163,15 @@
             (sites Around (difference (sites Occupied by:Mover) (from)) "GridDirection") // adjacent mover
         )
         ("SitesAroundLargestChainIfOFMover")
-))
+    )
+)
 
 (define "MergerSites"
     (intersection
         (sites Empty)
         (sites Around (difference (sites Occupied by:Mover) (from)) "GridDirection") // adjacent mover
-))
+    )
+)
 
 (define "GridDirection" <BoardShape:directionsUsed>)
 //-----------------------------------------------
@@ -147,12 +179,10 @@
 
 (game "Chains of Thought"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board <BoardShape:gridType> use:Vertex)
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
         (play
             (or
@@ -163,20 +193,20 @@
                     <GameOption:capture>
                 )
                 (do
-                    (and
-                        {
+                    (and {
                         (set Var "GroupCount" (count Groups "GridDirection" if:(is Mover (who at:(to)))))
                         <Movement:precheck> // "FindSizeOfGroupIfLargerThanAny"
-                        }
-                    )
+                    })
                     next:(forEach Piece 
                         (move Step "GridDirection"
                             (to 
                                 if:(is In (to)
                                     <Movement:limits> // "MergerSites" or "RestrictededMergerSites"
-                    ))))
-                    ifAfterwards:(and
-                        {
+                                )
+                            )
+                        )
+                    )
+                    ifAfterwards:(and {
                         // Reduces the number of groups, by merger
                         (< (count Groups "GridDirection" if:(is Mover (who at:(to)))) (var "GroupCount"))
                         
@@ -188,22 +218,27 @@
                                     from:(sites Around (last To) "GridDirection" if:(is Next (who at:(to)))) 
                                     to:(from)
                                     (size Group at:(to) "GridDirection" if:(is Next (who at:(to))))
-                        )))
-                        } 
-                    ) 
+                                )
+                            )
+                        )
+                    }) 
                     <GameOption:capture>
                 )
                 <GameGoal:scoring>
-        ))
+            )
+        )
         (end 
             (if (no Moves Next) <GameGoal:goal>)
-)))
+        )
+    )
+)
 
 (define "SetScores"
     (and
         (set Score P1 (max (difference (sizes Group "GridDirection" P1) (sizes Group "GridDirection" P2))))
         (set Score P2 (max (difference (sizes Group "GridDirection" P2) (sizes Group "GridDirection" P1))))
-)) 
+    )
+) 
 
 //-------------------------------------------------
 // Options

@@ -1,8 +1,7 @@
 // Double-Run Stone
 //-----------------------------------------------
 (define "SetupHands"
-    (start
-        {
+    (start {
         (set Score Each 0)
         (place "3Dot1" (handSite P1 0))
         (place "3Dot1" (handSite P1 1))
@@ -33,8 +32,8 @@
         (place "1Dot2" (handSite P2 11))
         (place "1Dot2" (handSite P2 12))
         (place "1Dot2" (handSite P2 13))
-        }
-))
+    })
+)
 
 //---------------------------------------
 // Score the win condition and highlight the involved pieces using set State
@@ -43,14 +42,12 @@
     (and
         (forEach Group "Connection" if:(is In (to) (sites Occupied by:Mover))
             (if 
-                (and
-                    {
+                (and {
                     (= 4 (count Sites in:(sites)))
                     (is Within (id "1Dot" Mover) in:(sites))
                     (is Within (id "2Dot" Mover) in:(sites))
                     (is Within (id "3Dot" Mover) in:(sites))
-                    }
-                )
+                })
                 // Score for mover's double runs
                 (forEach Site (sites)
                     (and
@@ -58,38 +55,44 @@
                             (if (is Within (id "3Dot" Mover) at:(site))
                                 3
                                 (if (is Within (id "2Dot" Mover) at:(site)) 1 -1)
-                        ))
+                            )
+                        )
                         (set State at:(site) 1)
-        ))))
+                    )
+                )
+            )
+        )
         
         // Also check for opponent's runs
         (forEach Group "Connection" if:(is In (to) (sites Occupied by:Next))
             (if 
-                (and
-                    {
+                (and {
                     (= 4 (count Sites in:(sites)))
                     (is Within (id "1Dot" Next) in:(sites))
                     (is Within (id "2Dot" Next) in:(sites))
                     (is Within (id "3Dot" Next) in:(sites))
-                    }
-                )
+                })
                 (forEach Site (sites)
                     (and
                         (addScore Next
                             (if (is Within (id "3Dot" Next) at:(site))
                                 6
                                 (if (is Within (id "2Dot" Next) at:(site)) 2 -2)
-                        ))
+                            )
+                        )
                         (set State at:(site) 1)
-                ))
-))))
+                    )
+                )
+            )
+        )
+    )
+)
 
 //-----------------------------------------
 // Boolean define for checking move legality
 
 (define "IntolerableSite"
-    (and
-        {
+    (and {
         (or
             (is Within (id "1Dot" P1) in:(difference (sites Around (#1) "Connection") (#2)))
             (is Within (id "1Dot" P2) in:(difference (sites Around (#1) "Connection") (#2)))
@@ -102,8 +105,8 @@
             (is Within (id "3Dot" P1) in:(difference (sites Around (#1) "Connection") (#2)))
             (is Within (id "3Dot" P2) in:(difference (sites Around (#1) "Connection") (#2)))
         )
-        }
-))
+    })
+)
 //-----------------------------------------------------
 // Movement defines
 
@@ -115,20 +118,24 @@
                 (< 0 (count Pieces Mover #1 in:(sites Hand Mover)))
                 (not
                     ("IntolerableSite" (to) (to))
-        )))
+                )
+            )
+        )
         (then 
-            (and
-                {
+            (and {
                 (remove (min (array (forEach (sites Hand Mover) if:(= (id #1 Mover) (what at:(site)))))))
                 (forEach Site 
                     (sites Around (last To) "Connection") 
                     (if 
                         ("IntolerableSite" (site) (site))
                         (remove (site))
-                ))
+                    )
+                )
                 (forEach Site (sites Occupied by:Mover) (set State at:(site) 0)) // clear move limits
-                }
-))))
+            })
+        )
+    )
+)
 
 (define "StepPiece"
     (forEach Site
@@ -137,14 +144,11 @@
             (from (site))
             "Connection"
             (to 
-                if:(and
-                    {
+                if:(and {
                     (is Empty (to)) 
-                    (not
-                        ("IntolerableSite" (to) (from))
-                    )
-                    }
-            ))
+                    (not ("IntolerableSite" (to) (from)))
+                })
+            )
             (then
                 (and
                     (forEach Site 
@@ -152,10 +156,14 @@
                         (if 
                             ("IntolerableSite" (site) (site))
                             (remove (site))
-                    )) 
+                        )
+                    ) 
                     (set State at:(last To) 2) // freeze piece 
-        )))
-))
+                )
+            )
+        )
+    )
+)
 
 //-------------------------------------------------
 // Defines for Options
@@ -174,35 +182,31 @@
         (no Moves Mover)
         (move Pass (then (forEach Site (sites State 1) (set State at:(site) 0)))) 
         (move Pass (then (set Score Mover (count Pieces Mover in:(sites Board)))))
-))
+    )
+)
 //-----------------------------------------------
 // Main routine
 
 (game "Double-Run Stone"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board "BoardUsed" use:Vertex)
         (hand Each size:15)
         (piece "1Dot" Each)
         (piece "2Dot" Each)
         (piece "3Dot" Each)
-        }
-    )
+    })
     (rules
         ("SetupHands")
         (play
             (if 
                 (= 0 (count Sites in:(sites State 1)))
-                (priority
-                    {
-                    (or
-                        {
+                (priority {
+                    (or {
                         ("AddPiece" "1Dot")
                         ("AddPiece" "2Dot")
                         ("AddPiece" "3Dot")
-                        }
-                    )
+                    })
                     ("StepPiece")
                     (do (forEach Site (sites State 0) (set State at:(site) 1))
                         next:("Stalemate")
@@ -210,19 +214,25 @@
                     (move Pass
                         (then
                             (forEach Site (sites State 0) (set State at:(site) 1)) 
-                    ))
+                        )
+                    )
                     }
                     (then 
                         ("ScoreWinCondition")
-                ))
+                    )
+                )
                 ("Stalemate")
-        ))
+            )
+        )
         (end 
             (if 
                 (!= 0 (count Sites in:(sites State 1)))
                 // (< 0 (+ (score Mover) (score Next)))
                 (byScore)
-))))
+            )
+        )
+    )
+)
 
 //-------------------------------------------------
 // Options

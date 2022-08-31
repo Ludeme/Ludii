@@ -29,7 +29,7 @@
             (move 
                 (from (site))
                 (to 
-                	("NextSiteOnTrack" ("ThrowValue") from:(site) "HomeTrack")
+                    ("NextSiteOnTrack" ("ThrowValue") from:(site) "HomeTrack")
                     "CaptureEnemyPiece"
                 )
                 count:(count at:(site))
@@ -106,7 +106,7 @@
         (phase "InitGame" 
             (play
                 ("RollMove"
-                	(move Pass)
+                    (move Pass)
                     (then 
                         (if ("Tab")
                             (moveAgain)
@@ -119,7 +119,7 @@
         (phase "Play"
             (play
                 ("RollMove"
-                	(forEach Site (sites Occupied by:Mover)
+                    (forEach Site (sites Occupied by:Mover)
                         ("Move")
                     )
                     (then 

@@ -69,8 +69,8 @@
                             "CaptureDefenderAndMakeVisible"
                             (if (< (value Piece at:(from)) (value Piece at:(to)))
                                 (if (and 
-                                		("IsPieceAt" "Spy" Mover (from))
-                                		("IsPieceAt" "Marshal" Next (to))
+                                        ("IsPieceAt" "Spy" Mover (from))
+                                        ("IsPieceAt" "Marshal" Next (to))
                                     )
                                     ("CaptureDefenderAndMoveAttackerAndMakeVisible")
                                     ("CaptureAttackerAndMakeVisible")

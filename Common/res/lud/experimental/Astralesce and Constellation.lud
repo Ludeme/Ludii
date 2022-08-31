@@ -11,7 +11,10 @@
                 from:(last To) 
                 to:("FirstFriend" Orthogonal)
                 (size Group at:(to) Orthogonal if:(= (mover) (who at:(to))))
-))))
+            )
+        )
+    )
+)
 
 (define "ValueAtFrom"
     (set Var "MaxSizeFrom"
@@ -22,7 +25,11 @@
                     from:(from) 
                     to:("FirstFriend" Orthogonal)
                     (size Group at:(to) Orthogonal if:(= (mover) (who at:(to))))
-)))))
+                )
+            )
+        )
+    )
+)
 
 (define "FirstFriend" 
     (sites To
@@ -35,9 +42,12 @@
                     (is Next (who at:(between)))
                     (is Empty (between))
                     }
-            ))
+                )
+            )
             (to <Board:area> if:(is Mover (who at:(to))))
-)))
+        )
+    )
+)
 //--------------------------------------------------------
 // Variants
 
@@ -54,7 +64,10 @@
                     (to ("PlayableSite"))
                 ) 
                 ifAfterwards:(> "ValueAtTo" (var "MaxSizeFrom"))
-))))
+            )
+        )
+    )
+)
 
 (define "Constellate" 
     (forEach Piece
@@ -66,25 +79,28 @@
                         if:(or
                             (= (between) (from)) 
                             (is In (between) (intersection <Board:area> (sites Empty)))
-                    ))
+                        )
+                    )
                     (to 
                         if:(is Next (who at:(to))) 
                         (apply (remove (to))) 
-                )) 
+                    )
+                ) 
                 ifAfterwards:(> "ValueAtTo" (var "MaxSizeFrom"))
-))))
+            )
+        )
+    )
+)
 
 //-----------------------------------------------
 // Main routine
 
 (game "Astralesce and Constellation"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (hex Hexagon <Board:side>) use:Cell)
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
         (start {<Board:white> <Board:black>})
         (play
@@ -92,7 +108,9 @@
         )
         (end 
             <Game:winCondition>
-)))
+        )
+    )
+)
 
 //--------------------------------------
 // End conditions
@@ -101,17 +119,17 @@
     (= 1
         (count Groups Cell Orthogonal
             if:(is #1 (who at:(to)))
-)))
+        )
+    )
+)
 
 (define "StandardEnd"
     (if 
-        (or
-            {
+        (or {
             (no Moves Next)
             ("IsSingleGroupOf" Mover)
             ("IsSingleGroupOf" Next)
-            }
-        )
+        })
         {
         (if 
             ("IsSingleGroupOf" Mover)
