@@ -1,6 +1,4 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
-(define "NextHole" (trackSite Move from:#1 #2 steps:#3))
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
 (define "MiddleSites" (difference (sites Board) (union (sites Left) (sites Right))))
 (define "CaptureMove"
     (if ("IsEnemyAt" (to))
@@ -16,7 +14,7 @@
         (move
             (from (from))
             (to 
-                ("SiteToMoveOnTrack" "LoopTrack" ("ThrowValue"))	
+            	("NextSiteOnTrack" ("ThrowValue") "LoopTrack")
                 if:(and {
                     (if ("IsEnemyAt" (to))
                         (= 2 ("ThrowValue"))
@@ -28,7 +26,7 @@
                     )
                     (if (or (and (= 2 ("ThrowValue")) ("IsEnemyAt" (to))) (= 3 ("ThrowValue")))
                         True
-                        (all Sites (sites Track from:("NextHole" (from) "LoopTrack" 1) to:("NextHole" (from) "LoopTrack" (- ("ThrowValue") 1))) if:(not ("IsEnemyAt" (site))))
+                        (all Sites (sites Track from:("NextSiteOnTrack" 1 from:(from) "LoopTrack") to:("NextSiteOnTrack" (- ("ThrowValue") 1) from:(from) "LoopTrack")) if:(not ("IsEnemyAt" (site))))
                     )
                 })
                 (apply ("CaptureMove"))
@@ -37,7 +35,7 @@
         (move
             (from (from))
             (to 
-                ("SiteToMoveOnTrack" "Track" ("ThrowValue"))	
+            	("NextSiteOnTrack" ("ThrowValue") "Track")
                 if:(and {
                     (if (is In (to) ("MiddleSites"))
                         (if ("IsEnemyAt" (to))
@@ -52,7 +50,7 @@
                     )
                     (if (or (and (= 2 ("ThrowValue")) ("IsEnemyAt" (to))) (= 3 ("ThrowValue")))
                         True
-                        (all Sites (sites Track from:("NextHole" (from) "Track" 1) to:("NextHole" (from) "Track" (- ("ThrowValue") 1))) if:(not ("IsEnemyAt" (site))))
+                        (all Sites (sites Track from:("NextSiteOnTrack" 1 from:(from) "Track") to:("NextSiteOnTrack" (- ("ThrowValue") 1) from:(from) "Track")) if:(not ("IsEnemyAt" (site))))
                     )
                 })
                 (apply ("CaptureMove"))
@@ -94,7 +92,7 @@
             }
             use:Vertex
         )
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
         (piece "Marker" Each ("Move"))
         (map "Throw" {(pair 0 0) (pair 3 6) (pair 2 3) (pair 1 2) (pair 4 6)})
         (regions "Home" P1 (expand (sites Left)))
@@ -115,7 +113,7 @@
                 )
             )
         )
-        (end (if (no Pieces Enemy) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
