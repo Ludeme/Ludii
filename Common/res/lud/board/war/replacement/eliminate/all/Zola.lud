@@ -126,19 +126,15 @@
 
 (game "Zola"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (square <Board>))
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
-        (start 
-            {
+        (start {
             (place "Disc1" (sites Phase 0))
             (place "Disc2" (sites Phase 1))
-            }
-        )
+        })
         (play
             (forEach Piece
                 (or {
@@ -153,12 +149,8 @@
         (end 
             (if 
                 (or
-                    (= 0
-                        (count Sites in:(sites Occupied by:P1))
-                    )
-                    (= 0
-                        (count Sites in:(sites Occupied by:P2))
-                    )
+                    (no Pieces P1)
+                    (no Pieces P2)
                 ) 
                 (result Mover Win)
             )
