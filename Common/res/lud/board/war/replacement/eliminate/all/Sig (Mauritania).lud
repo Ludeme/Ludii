@@ -1,7 +1,5 @@
 (define "ThrowValue" (count Pips))
 
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
-
 (define "IsSpecialThrow" (= ("ThrowValue") 4))
 
 (define "ActivatedThrow" (is In ("ThrowValue") (sites {1 8})))
@@ -52,7 +50,7 @@
                         )
                     )
                     (to 
-                        ("SiteToMoveOnTrack" "Track" ("ThrowValue"))	
+                    	("NextSiteOnTrack" ("ThrowValue") "Track")
                         if:(if (is In (to) ("MiddleSites"))
                             (or (is Empty (to)) (and ("IsEnemyAt" (to)) ("PieceCanBeCapture")))
                             (is Empty (to))
@@ -70,7 +68,8 @@
                 (move
                     (from (from))
                     (to 
-                        ("SiteToMoveOnTrack" "Track" 1)	
+
+                        ("NextSiteOnTrack" 1 "Track")
                         if:(if (is In (to) ("MiddleSites"))
                             (or (is Empty (to)) (and ("IsEnemyAt" (to)) ("PieceCanBeCapture")))
                             (is Empty (to))
@@ -108,7 +107,7 @@
             (move
                 (from (from))
                 (to 
-                    ("SiteToMoveOnTrack" "GoBackTrack" ("ThrowValue"))	
+                    	("NextSiteOnTrack" ("ThrowValue") "GoBackTrack")
                     if:(if (is In (to) ("MiddleSites"))
                         (not ("IsFriendAt" (to)))
                         (is Empty (to))
@@ -125,7 +124,7 @@
                 (move
                     (from (from))
                     (to 
-                        ("SiteToMoveOnTrack" "LoopTrack" ("ThrowValue"))	
+                        	("NextSiteOnTrack" ("ThrowValue") "LoopTrack")
                         if:(if (is In (to) ("MiddleSites"))
                             (not ("IsFriendAt" (to)))
                             (is Empty (to))
@@ -148,18 +147,16 @@
             <Board:track>
             use:Vertex
         )
-        (dice d:2 from:0 num:8)
+        ("StickDice" 8)
         (piece "Marker" P1 ("Move"))
         (piece "Stick" P2 ("Move"))
     })
     (rules 
-        (start 
-            {
+        (start {
             (place "Marker1" (sites Bottom))
             (place "Stick2" (sites Top))
             <Players:start>
-            }
-        )
+        })
         phases:{
         (phase "MovingPhase"
             (play
@@ -179,8 +176,8 @@
         )
         (phase "RemovingPhase"
             (play
-                (do (roll)
-                    next:(if (= ("ThrowValue") 4) 
+                ("RollMove"
+                	(if (= ("ThrowValue") 4) 
                         (move Remove
                             (sites Occupied by:Enemy)
                         )
@@ -189,7 +186,7 @@
             )	
         )
         }
-        (end (if (no Pieces Enemy) (result TeamMover Win)))
+        (end ("CaptureAllTeam"))
     )
 )
 
