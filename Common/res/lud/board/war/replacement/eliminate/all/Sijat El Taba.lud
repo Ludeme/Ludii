@@ -13,14 +13,6 @@
 
 (define "ThrowValue" (mapEntry (count Pips)))
 
-(define "SiteToMoveOnTrack" (trackSite Move steps:("ThrowValue")))
-(define "SiteToCaptureWithTabOnTrack" 
-    (trackSite 
-        Move 
-        steps:(+ (value Player Mover) ("ThrowValue"))
-    )
-)
-
 (define "CaptureEnemyPiece" 
     (apply 
         if:("IsEnemyAt" (to)) 
@@ -49,8 +41,7 @@
 (define "ActivePiece" (set State at:(last From) 1))
 
 (define "ActiveInactivedPiece"
-    (move
-        Select 
+    (move Select 
         (from (sites Occupied by:Mover) if:("InactivedPiece")) 
         (then (and ("ActivePiece") (moveAgain)))
     )
@@ -69,26 +60,26 @@
         (piece "Marker" Each
             (if (= (state at:(from)) 1) 
                 (or
-                    (if (!= "SiteToMoveOnTrack" Off)
+                    (if ("IsNotOffBoard" ("NextSiteOnTrack" ("ThrowValue")))
                         (if (or
-                                (is In "SiteToMoveOnTrack" (sites Empty))
-                                (is Enemy (who at:"SiteToMoveOnTrack"))
+                                (is In ("NextSiteOnTrack" ("ThrowValue")) (sites Empty))
+                                ("IsEnemyAt" ("NextSiteOnTrack" ("ThrowValue")))
                             )
                             (move 
                                 (from)
                                 (to 
-                                    "SiteToMoveOnTrack" 
+                                		("NextSiteOnTrack" ("ThrowValue")) 
                                     "CaptureEnemyPiece"
                                 )
                             )
                         )
                     )
-                    (if (!= "SiteToCaptureWithTabOnTrack" Off)
-                        (if (is Enemy (who at:"SiteToCaptureWithTabOnTrack"))
+                    (if ("IsNotOffBoard" ("NextSiteOnTrack" (+ (value Player Mover) ("ThrowValue"))))
+                        (if ("IsEnemyAt" ("NextSiteOnTrack" (+ (value Player Mover) ("ThrowValue"))))
                             (move 
                                 (from)
                                 (to 
-                                    "SiteToCaptureWithTabOnTrack" 
+                                		("NextSiteOnTrack" (+ (value Player Mover) ("ThrowValue"))) 
                                     "CaptureEnemyPiece"
                                 )
                                 (then ("ReinitTabule"))
@@ -98,7 +89,7 @@
                 )
             )
         )
-        (dice d:2 from:0 num:3)
+        ("StickDice" 3)
         (map {(pair 1 1) (pair 2 2) (pair 3 4) (pair 0 6)})
     })
     (rules
@@ -107,9 +98,8 @@
             (place "Marker2" ("StartSites" Top))
         })
         (play 
-            (do 
-                (roll) 
-                next:(if 
+            ("RollMove" 
+            	(if 
                     (= (mapEntry (count Pips)) 1)
                     (or
                         (move Pass 
