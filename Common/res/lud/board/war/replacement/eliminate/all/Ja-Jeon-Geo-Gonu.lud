@@ -1,6 +1,5 @@
 (define "SlideToCapture" 
-    (move
-        Slide 
+    (move Slide 
         "AllTracks" 
         (between 
             if:(or 
@@ -29,20 +28,15 @@
         )
         (piece "Disc" Each  
             (or {
-                (move
-                    Step
-                    Orthogonal 
-                    (to if:(is Empty (to)))
-                ) 
+                ("StepToEmpty" Orthogonal)
                 ("SlideToCapture") 
             }) 
         )
-        }
-    ) 
+    }) 
     (rules 
         (start { <Start> })
         (play (forEach Piece)) 
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
