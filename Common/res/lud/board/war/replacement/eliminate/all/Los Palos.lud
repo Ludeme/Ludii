@@ -2,10 +2,10 @@
 
 (define "SiteToMoveOnTrack" 
     (if (= (state at:(from)) 0)
-        (trackSite Move "Track" steps:("ThrowValue"))
+    	("NextSiteOnTrack" ("ThrowValue") "Track")
         (if (= (state at:(from)) 1)
-            (trackSite Move "TrackLeft" steps:("ThrowValue"))
-            (trackSite Move "TrackRight" steps:("ThrowValue"))
+        	("NextSiteOnTrack" ("ThrowValue") "TrackLeft")
+        	("NextSiteOnTrack" ("ThrowValue") "TrackRight")
         )
     )
 )
@@ -88,9 +88,8 @@
             (track "Track4"  "0,1,2,3,4,W" P4 directed:True)
             (track "TrackRight" "14,E,W" directed:True) // Local state = 2
             (track "TrackLeft" "4,W,E" directed:True) // Local state = 1
-            }
-        )
-        (dice d:2 from:0 num:5)
+        })
+        ("StickDice" 5)
         (piece "Marker" Each
             (move
                 (from (from))
@@ -105,9 +104,7 @@
                         )
                     )
                 )
-                (then 
-                    ("UpdateState")
-                )
+                (then ("UpdateState"))
             )
         )
         (map "Throw" {(pair 0 5) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 5)})
@@ -124,12 +121,8 @@
             (set Team 1 {P1 P3})
             (set Team 2 {P2 P4})
         })
-        (play 
-            (do 
-                (roll) next:(forEach Piece)
-            )
-        )
-        (end (if (no Pieces Enemy) (result TeamMover Win)))
+        (play ("RollMove" (forEach Piece)))
+        (end ("CaptureAllTeam"))
     )
 )
 
