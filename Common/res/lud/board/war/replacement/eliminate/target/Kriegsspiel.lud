@@ -90,8 +90,7 @@
 
 // Move that builds an entrenchment at the rotation specified in #1
 (define "BuildEntrenchmentMove"
-    (move 
-        Select
+    (move Select
         (from (from) if:(= (state at:(from)) 1))
         (to
             (difference (intersection (sites Around (from)) "SitesCanStandOn") ("AttackedSites" Enemy))
@@ -110,8 +109,7 @@
 )
 
 (define "DemolishEntrenchmentMove"
-    (move 
-        Select
+    (move Select
         (from (from) if:(= (state at:(from)) 1))
         (to
             (intersection 
@@ -123,9 +121,7 @@
                 (not (is In (to) ("AttackedSites" Enemy)))
             )
         )
-        (then 
-            (remove (last To))
-        )
+        (then (remove (last To)))
     )
 )
 
@@ -133,8 +129,7 @@
 // Bridge Wagon
 
 (define "DemolishBridgeWagonMove"
-    (move 
-        Select
+    (move Select
         (from (from) if:(= (state at:(from)) 1))
         (to
             (intersection {
@@ -143,15 +138,12 @@
                 "UnoccupiedUnits"
             })
         )
-        (then 
-            (remove (last To))
-        )
+        (then (remove (last To)))
     )
 )
 
 (define "DemolishBridgeMove"
-    (move 
-        Select
+    (move Select
         (from (from) if:(= (state at:(from)) 1))
         (to
             (intersection 
@@ -160,9 +152,7 @@
             )
             if:(not (is In (to) ("AttackedSites" Enemy)))
         )
-        (then 
-            (forget Value "Bridges" (last To))
-        )
+        (then (forget Value "Bridges" (last To)))
     )
 )
 
@@ -170,8 +160,7 @@
 // Bridge
 
 (define "BuildBridge"
-    (move 
-        Select
+    (move Select
         (from (from) 
             if:(and {
                 (= (state at:(from)) 1)
@@ -208,8 +197,7 @@
 )
 
 (define "DeconstructBridge"
-    (move 
-        Select
+    (move Select
         (from (from) 
             if:(and {
                 (= (state at:(from)) 1)
@@ -247,8 +235,7 @@
 )
 
 (define "BuildBridgeGround"
-    (move 
-        Select
+    (move Select
         (from (from) 
             if:(and {
                 (= (state at:(from)) 1)
@@ -269,8 +256,7 @@
 )
 
 (define "DeconstructBridgeGround"
-    (move 
-        Select
+    (move Select
         (from (from) 
             if:(and {
                 (= (state at:(from)) 1)
@@ -291,8 +277,7 @@
 )
 
 (define "BurnBridgeMove"
-    (move 
-        Select
+    (move Select
         (from (from) if:(= (state at:(from)) 1))
         (to
             (intersection 
@@ -300,9 +285,7 @@
                 (sites Around (from))
             )
         )
-        (then 
-            ("SetFireRegion" (last To) Mover)
-        )
+        (then ("SetFireRegion" (last To) Mover))
     )
 )
 
@@ -331,8 +314,7 @@
 (define "InfantryMoves"
     
     // Move without any capture
-    (move
-        Slide 
+    (move Slide 
         (from (from) if:(= (state at:(from)) 3)	)
         (between 
             (range 1 8)
@@ -344,7 +326,7 @@
         (to
             if:False
             (apply
-                if:(if (!= (what at:(to)) 0) 
+                if:(if (is Occupied (to)) 
                     (not (is In (to) (sites "TownRegion")))
                     True
                 )
@@ -359,8 +341,7 @@
     ) 
     
     // Move with capture
-    (move
-        Step 
+    (move Step 
         (from (from) if:(= (state at:(from)) 1))
         (directions {Forward FR FL}) 
         (to 
@@ -370,8 +351,7 @@
     )
     
     // Shoot (normal)
-    (move 
-        Select
+    (move Select
         (from (from) if:(= (state at:(from)) 1))
         (to
             (intersection 
@@ -383,14 +363,11 @@
                 (is In (to) (sites Occupied by:Mover container:"Board" components:{"RiderOutline"}))
             )
         )
-        (then 
-            (remove (last To))
-        )
+        (then (remove (last To)))
     )
     
     // Shoot (from entrenchment)
-    (move 
-        Select
+    (move Select
         (from (from) if:(= (state at:(from)) 1))
         (to
             (intersection 
@@ -399,14 +376,11 @@
             )
             if:("IsSiteProtectedByEntrenchment" (from) (to))
         )
-        (then 
-            (remove (last To))
-        )
+        (then (remove (last To)))
     )
     
     // Shoot (outnumber the enemy)
-    (move 
-        Select
+    (move Select
         (from (from) 
             if:(and
                 (= (state at:(from)) 1)	
@@ -449,8 +423,7 @@
 (define "CavalryMoves"
     
     // Move without any capture
-    (move
-        Slide 
+    (move Slide 
         (from (from) if:(= (state at:(from)) 3)	)
         (between 
             (range 1 12)
@@ -462,17 +435,16 @@
         (to
             if:False
             (apply
-                if:(if (!= (what at:(to)) 0) 
+                if:(if (is Occupied (to)) 
                     (not (is In (to) (sites "TownRegion")))
                     True
                 )
             )
         )
-    ) 
+    )
     
     // Move with capture (against just infantry)
-    (move
-        Slide 
+    (move Slide 
         (from (from) if:(= (state at:(from)) 1)	)
         (between 
             (range 1 12)
@@ -496,8 +468,7 @@
     ) 
     
     // Move with capture (against cavalry and infantry)
-    (move
-        Slide 
+    (move Slide 
         (from (from) if:(= (state at:(from)) 1)	)
         (directions {Forward FR FL}) 
         (between 
@@ -537,8 +508,7 @@
 // Artillery
 
 (define "ArtillerySlide"
-    (move
-        Slide
+    (move Slide
         (from (from) 
             if:(and {
                 (= (state at:(from)) 3)
@@ -567,8 +537,7 @@
 
 // Can attack all pieces if behind an entrenchment
 (define "ArtilleryEntrenched"
-    (move 
-        Select
+    (move Select
         (from (from) 
             if:(and {
                 (= (state at:(from)) 1)
@@ -591,16 +560,13 @@
                 ("IsSiteProtectedByEntrenchment" (from) (to)) 
             )
         )
-        (then 
-            (remove (last To))
-        )
+        (then (remove (last To)))
     )
 )
 
 // Can attack all pieces
 (define "ArtilleryShootStrong"
-    (move 
-        Select
+    (move Select
         (from (from) 
             if:(and {
                 (= (state at:(from)) 1)
@@ -620,16 +586,13 @@
                 (is In (to) (sites Occupied by:Mover container:"Board" components:{"RiderOutline"}))
             )
         )
-        (then 
-            (remove (last To))
-        )
+        (then (remove (last To)))
     )
 )
 
 // Cannot attack the CannonOutline
 (define "ArtilleryShootWeak"
-    (move 
-        Select
+    (move Select
         (from (from) 
             if:(and {
                 (= (state at:(from)) 1)
@@ -649,15 +612,12 @@
                 (is In (to) (sites Occupied by:Mover container:"Board" components:{"RiderOutline"}))
             )
         )
-        (then 
-            (remove (last To))
-        )
+        (then (remove (last To)))
     )
 )
 
 (define "ArtilleryShootBridge"
-    (move 
-        Select
+    (move Select
         (from (from) 
             if:(and {
                 (= (state at:(from)) 1)
@@ -671,15 +631,12 @@
             )
             if:(not ("IsSiteProtectedByEntrenchment" (to) (from))) 
         )
-        (then 
-            (forget Value "Bridges" (last To))
-        )
+        (then (forget Value "Bridges" (last To)))
     )
 )
 
 (define "ArtilleryBurnBridge"
-    (move 
-        Select
+    (move Select
         (from (from) 
             if:(and {
                 (= (state at:(from)) 1)
@@ -710,8 +667,7 @@
 )
 
 (define "DemolishArtilleryMove"
-    (move 
-        Select
+    (move Select
         (from (from) if:(= (state at:(from)) 1))
         (to
             (intersection 
@@ -720,9 +676,7 @@
             )
             if:(> (state at:(to)) 0)
         )
-        (then 
-            (remove (last To))
-        )
+        (then (remove (last To)))
     )
 )
 
@@ -753,8 +707,7 @@
 )
 
 (define "FireSpreadMoves"
-    (move
-        Select
+    (move Select
         (from #1)
         (to (from))
         (then 
