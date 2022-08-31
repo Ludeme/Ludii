@@ -1,6 +1,5 @@
 (define "SlideToCapture" 
-    (move
-        Slide
+    (move Slide
         "AllTracks" 
         (between 
             if:(or 
@@ -17,8 +16,7 @@
 
 (define "NPiecesOnTrack" 
     (end 
-        (forEach 
-            Track
+        (forEach Track
             if:(> #1 (count Pieces Mover in:(sites Track))) 
             (result Mover Loss)
         )
@@ -34,8 +32,7 @@
         
         (piece "Marker" Each 
             (or {
-                (move
-                    Step
+                (move Step
                     All
                     <Step:to>
                 )
@@ -134,7 +131,7 @@
                     (score P2 (count Pieces P2))
                 })
             )
-            (if (no Pieces Next) (result Mover Win))
+            ("CaptureAll" Next)
         })
         >
         "The mover win if the next player does not have any piece."
