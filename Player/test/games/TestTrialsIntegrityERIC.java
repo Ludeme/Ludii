@@ -116,7 +116,7 @@ public class TestTrialsIntegrityERIC
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getName().contains("Sweep Burrow"))
+			if (fileEntry.getName().contains("Tab"))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
 					gameReached = true;

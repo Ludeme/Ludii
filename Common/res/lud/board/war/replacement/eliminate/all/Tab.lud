@@ -1,7 +1,5 @@
 (define "ThrowValue" (mapEntry (count Pips))) 
 
-(define "SiteToMoveOnTrack" (trackSite Move from:(site) #1 steps:#2))
-
 (define "SpecialThrows" 
     (is In ("ThrowValue") (sites {1 4 6}))
 )
@@ -31,7 +29,7 @@
             (move 
                 (from (site))
                 (to 
-                    ("SiteToMoveOnTrack" "HomeTrack" ("ThrowValue")) 
+                	("NextSiteOnTrack" ("ThrowValue") from:(site) "HomeTrack")
                     "CaptureEnemyPiece"
                 )
                 count:(count at:(site))
@@ -42,7 +40,7 @@
             (move 
                 (from (site))
                 (to 
-                    ("SiteToMoveOnTrack" "MiddleTrack" ("ThrowValue")) 
+                    ("NextSiteOnTrack" ("ThrowValue") from:(site) "MiddleTrack")
                     "CaptureEnemyPiece"
                 )
                 count:(count at:(site))
@@ -61,7 +59,7 @@
                 (move 
                     (from (site))
                     (to 
-                        ("SiteToMoveOnTrack" "EnemyTrack" ("ThrowValue")) 
+                        ("NextSiteOnTrack" ("ThrowValue") from:(site) "EnemyTrack")
                         "CaptureEnemyPiece"
                     )
                     count:(count at:(site))
@@ -94,7 +92,7 @@
         )
         (piece "Stick" Each)
         (regions "AllSites" (sites Board))
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
         (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})
         (regions "Home" P1 (sites Bottom))
         (regions "Home" P2 (sites Top))
@@ -107,9 +105,8 @@
         phases:{
         (phase "InitGame" 
             (play
-                (do 
-                    (roll) 
-                    next:(move Pass)
+                ("RollMove"
+                	(move Pass)
                     (then 
                         (if ("Tab")
                             (moveAgain)
@@ -121,9 +118,8 @@
         )
         (phase "Play"
             (play
-                (do 
-                    (roll) 
-                    next:(forEach Site (sites Occupied by:Mover)
+                ("RollMove"
+                	(forEach Site (sites Occupied by:Mover)
                         ("Move")
                     )
                     (then 
@@ -135,7 +131,7 @@
             )
         )
         }
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
