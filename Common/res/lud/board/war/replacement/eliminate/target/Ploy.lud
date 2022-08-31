@@ -2,8 +2,7 @@
 
 (define "SlideOrChangeDirection"
     (or
-        (move
-            Slide
+        (move Slide
             #1
             (between #2) 
             (to 
@@ -17,8 +16,7 @@
 
 (define "StepOrChangeDirection"
     (or 
-        (move
-            Step
+        (move Step
             #1 
             (to 
                 if:(not ("IsFriendAt" (to))) 
@@ -96,7 +94,7 @@
         (end 
             (if 
                 (or 
-                    (= (where "Commander" Next) Off) 
+                    ("IsOffBoard" (where "Commander" Next)) 
                     (= (count Pieces Next) 1)
                 ) 
                 (result Mover Win)

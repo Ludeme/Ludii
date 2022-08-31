@@ -13,8 +13,7 @@
         ) 
         (to 
             (sites Distance 
-                (step
-                    Orthogonal
+                (step Orthogonal
                     (to 
                         if:(#1)
                     )
@@ -320,8 +319,7 @@
 // Healing
 
 (define "HealMoveBuilding"
-    (move
-        Select
+    (move Select
         (from
             (from)
             if:(and
@@ -355,8 +353,7 @@
 )
 
 (define "HealMoveUnit"
-    (move
-        Select
+    (move Select
         (from
             (from)
             if:(> (state at:(from)) 0)
@@ -419,16 +416,14 @@
             )
             copy:True
             (then 
-                (and
-                    {
+                (and {
                     (addScore 
                         Mover 
                         (- (/ (* (count at:(last From)) ("GetDoctrineValue" (mover) 7)) 4))
                     )	
                     (take Control of:All by:Mover at:(last To))
                     (set State at:(last To) 0)
-                    }
-                )
+                })
             )
         )
     )
@@ -510,7 +505,7 @@
         (and {
             (is Active #1) 
             (> (count Active) 2)
-            (= (where "Base" #1) Off)
+            ("IsOffBoard" (where "Base" #1))
         }) 
         (forEach Site (sites Occupied by:#1)
             (if (is In (site) (sites Occupied by:#1 components:{"Town" "Base" "Factory" "Dock" "Airport"}))
@@ -914,7 +909,7 @@
         
         (end 
             (forEach NonMover 
-                if:(= (where "Base" Player) Off) (result Player Loss)
+                if:("IsOffBoard" (where "Base" Player)) (result Player Loss)
             )
         )
     )
