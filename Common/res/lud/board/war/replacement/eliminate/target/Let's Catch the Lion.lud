@@ -1,7 +1,7 @@
 (define "CapturePiece"
     (apply 
         (if ("IsEnemyAt" (to))
-            (if (= (what at:(to)) (id "Lion" Next))
+            (if ("IsPieceAt" "Lion" Next (to))
                 (remove (to))
                 (add 
                     (piece (mapEntry "Captured" (what at:(to)))) 
@@ -13,8 +13,7 @@
 )
 
 (define "StepMove"
-    (move
-        Step
+    (move Step
         #1
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
@@ -89,7 +88,7 @@
             )
             (if 
                 (or 
-                    (= (where "Lion" Next) Off) 
+                    ("IsOffBoard" (where "Lion" Next))
                     (is In (where "Lion" Mover) (sites Mover "LastRank"))
                 ) 
                 (result Mover Win)
