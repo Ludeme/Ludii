@@ -60,9 +60,8 @@
         (if ("IsEnemyAt" (to))
             (and
                 (if (and 
-                        
-                        (!= (what at:(to)) (id "Bomb" Next)) 
-                        (!= (what at:(to)) (id "Flag" Next))
+                        (not ("IsPieceAt" "Bomb" Next (to)))
+                        (not ("IsPieceAt" "Flag" Next (to)))
                     )
                     (if (= (value Piece at:(to)) (value Piece at:(from)))
                         ("CapturePiecesAndMakeVisible")
@@ -70,8 +69,8 @@
                             "CaptureDefenderAndMakeVisible"
                             (if (< (value Piece at:(from)) (value Piece at:(to)))
                                 (if (and 
-                                        (= (what at:(from)) (id "Spy" Mover)) 
-                                        (= (what at:(to)) (id "Marshal" Next))
+                                		("IsPieceAt" "Spy" Mover (from))
+                                		("IsPieceAt" "Marshal" Next (to))
                                     )
                                     ("CaptureDefenderAndMoveAttackerAndMakeVisible")
                                     ("CaptureAttackerAndMakeVisible")
@@ -79,8 +78,8 @@
                             )
                         )
                     )
-                    (if (= (what at:(to)) (id "Bomb" Next))
-                        (if (= (what at:(from)) (id "Miner" Mover))
+                    (if ("IsPieceAt" "Bomb" Next (to))
+                        (if ("IsPieceAt" "Miner" Mover (from))
                             (and { 
                                 (fromTo (from (to)) (to (mapEntry (what at:(to))))) 
                                 (set Hidden What at:(mapEntry (what at:(to))) False to:P1) 
@@ -93,7 +92,7 @@
                             })
                             ("CaptureAttackerAndMakeVisible")
                         )
-                        (if (= (what at:(to)) (id "Flag" Next))
+                        (if ("IsPieceAt" "Flag" Next (to))
                             (and 
                                 ("CaptureFlag") 
                                 (remove (to))
@@ -112,7 +111,7 @@
 (game "L'attaque" 
     (players 2) 
     
-    (equipment { 
+    (equipment {
         (board 
             (hole 
                 (hole 
@@ -144,8 +143,7 @@
         (regions "HomeP2" P2 (expand (sites Top) steps:3))
         (map {(pair 1 84) (pair 2 96) (pair 3 85) (pair 4 97) (pair 5 86) (pair 6 98) (pair 7 87) (pair 8 99) (pair 9 88)
         (pair 10 100) (pair 11 89) (pair 12 101) (pair 13 90) (pair 14 102) (pair 15 91) (pair 16 103) (pair 17 92) (pair 18 104) (pair 19 93) (pair 20 105) (pair 21 94) (pair 22 106) (pair 23 95) (pair 24 107)})
-        }
-    ) 
+    }) 
     
     (rules 
         (start { 
@@ -192,8 +190,7 @@
             (play
                 (or 
                     (forEach Piece {"Marshal" "General" "Colonel" "Major" "Captain" "Lieutenant" "Sergeant" "Miner" "Spy"} 
-                        (move
-                            Step
+                        (move Step
                             Orthogonal 
                             (to 
                                 if:(not ("IsFriendAt" (to))) 
@@ -203,14 +200,12 @@
                     )
                     (forEach Piece "Scout" 
                         (or
-                            (move
-                                Select
+                            (move Select
                                 (from)
                                 (to (sites LineOfSight Empty at:(from) Orthogonal))
                                 (then (fromTo (from (last From)) (to (last To))))
                             )
-                            (move
-                                Select
+                            (move Select
                                 (from)
                                 (to 
                                     (sites LineOfSight Piece at:(from) Orthogonal)
@@ -219,8 +214,8 @@
                                 (then 
                                     (and
                                         (if (and 
-                                                (!= (what at:(last To)) (id "Bomb" Next)) 
-                                                (!= (what at:(last To)) (id "Flag" Next))
+                                                (not ("IsPieceAt" "Bomb" Next (last To)))
+                                                (not ("IsPieceAt" "Flag" Next (last To)))
                                             )
                                             (if (= (value Piece at:(last To)) (value Piece at:(last From)))
                                                 (and {
@@ -251,7 +246,7 @@
                                                     }) 
                                                 )
                                             )
-                                            (if (= (what at:(last To)) (id "Bomb" Next))
+                                            (if ("IsPieceAt" "Bomb" Next (last To))
                                                 (and {
                                                     (fromTo (from (last From)) (to (mapEntry (what at:(last From))))) 
                                                     (set Hidden What at:(mapEntry (what at:(last From))) False to:P1) 
@@ -265,8 +260,7 @@
                                                     ("CaptureFlag") 
                                                     (remove (last To))
                                                     (fromTo (from (last From)) (to (last To))) 
-                                                    }
-                                                )
+                                                })
                                             )
                                         )
                                         (note player:Mover "attacks" to:Next)
@@ -280,7 +274,6 @@
             (end (if "FlagWasCaptured" (result Mover Win))) 
         )
         }
-        
     )
 )
 
