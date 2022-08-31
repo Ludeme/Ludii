@@ -146,19 +146,11 @@
                                     "RemoveAPiece"
                                 )
                             )
-                            (then 
-                                (if (not (all DiceUsed))
-                                    (moveAgain)
-                                )
-                            )
+                            (then ("ReplayNotAllDiceUsed"))
                         )
                     )
                     (forEach Piece top:True
-                        (then 
-                            (if (not (all DiceUsed))
-                                (moveAgain)
-                            )
-                        )
+                            (then ("ReplayNotAllDiceUsed"))
                     )
                 )
             )

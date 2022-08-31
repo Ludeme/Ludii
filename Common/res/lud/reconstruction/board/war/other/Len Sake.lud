@@ -56,11 +56,7 @@
                         (move
                             (from (handSite Mover))
                             (to ("NextSiteFrom" (handSite Mover)))
-                            (then 
-                                (if (not (all DiceUsed))
-                                    (moveAgain)
-                                )
-                            )
+                            (then ("ReplayNotAllDiceUsed"))
                         )
                     )
                 )
@@ -75,11 +71,7 @@
                     next:(forEach Die
                         if:("DieNotUsed")
                         (forEach Piece top:True)
-                        (then 
-                            (if (not (all DiceUsed))
-                                (moveAgain)
-                            )
-                        )
+                        (then ("ReplayNotAllDiceUsed"))
                     )
                 )
             )

@@ -50,11 +50,7 @@
                 next:(forEach Die 
                     if:("DieNotUsed")
                     (forEach Piece top:True    
-                        (then 
-                            (if (not (all DiceUsed))
-                                (moveAgain)
-                            )
-                        )
+                            (then ("ReplayNotAllDiceUsed"))
                     )
                 )
             )		

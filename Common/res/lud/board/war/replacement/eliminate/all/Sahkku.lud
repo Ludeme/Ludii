@@ -26,13 +26,6 @@
     )
 )
 
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
-        steps:#2
-    )
-)
-
 (define "ActivePiece" (set State at:#1 level:#2 1))
 (define "IsActivated" (= 1 (state at:#1 level:#2)))
 
@@ -42,7 +35,7 @@
             (from (from) level:(level)
                 if:(or ("IsActivated" (from) (level)) ("Sahkku" (value)))
             )
-            (to ("NextSiteFrom" (from) (value))
+            (to ("NextSiteOnTrack" (value) from:(from))
                 if:(or {
                     (= (id "Gonagas" Shared) (what at:(to))) 
                     (is Empty (to))
@@ -112,7 +105,7 @@
             (track "Track2" "44,W,S1,E,S1,W,N1,E" loop:True P2)
             }
         )
-        (dice d:4 from:0 num:3)
+        ("StickDice" 3)
         (piece "Marker" Each
             (forEach Die
                 if:("DieNotUsed")
@@ -120,7 +113,7 @@
                     (from (from) level:(level)
                         if:(or ("IsActivated" (from) (level)) ("Sahkku" (pips)))
                     )
-                    (to ("NextSiteFrom" (from) (pips))
+                    (to ("NextSiteOnTrack" (pips) from:(from))
                         if:(or {
                             (= (id "Gonagas" Shared) (what at:(to))) 
                             (is Empty (to))
@@ -139,11 +132,7 @@
                             })
                         )
                     )
-                    (then
-                        (if (not (all DiceUsed))
-                            (moveAgain)
-                        )
-                    )
+                    (then ("ReplayNotAllDiceUsed"))
                 )
             )		
         )
@@ -171,9 +160,7 @@
                                     (remove (last To) level:(level))
                                 )
                             )
-                            (if (not (all DiceUsed))
-                                (moveAgain)
-                            )
+                            ("ReplayNotAllDiceUsed")
                         )
                     )
                 )
@@ -221,22 +208,21 @@
         )
         (phase "PlayingPips"
             (play 
-                (do
-                    (if ("NewTurn") (roll))
-                    next:(or (forEach Piece "MovePieceWithStoredPips") (forEach Piece "MoveGonagasWithStoredPips" Shared))
+            	("RollEachNewTurnMove"
+            		(or (forEach Piece "MovePieceWithStoredPips") (forEach Piece "MoveGonagasWithStoredPips" Shared))
                 )
             )
             (nextPhase Mover (= 0 (size Array (values Remembered "Pips"))) "Playing")
         )
         (phase "Playing"
             (play 
-                (do (if ("NewTurn") (roll))
-                    next:(or (forEach Piece) (forEach Piece Shared))
+            	("RollEachNewTurnMove"
+            		(or (forEach Piece) (forEach Piece Shared))
                 )
             )
         )
         }
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 

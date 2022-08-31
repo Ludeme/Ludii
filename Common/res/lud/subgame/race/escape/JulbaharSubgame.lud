@@ -98,11 +98,7 @@
                     ("MoveAPiece" (site))
                 )
             })
-            (then 
-                (if (not (all DiceUsed))
-                    (moveAgain)
-                )
-            )
+            (then ("ReplayNotAllDiceUsed"))
         )
     )		
 )

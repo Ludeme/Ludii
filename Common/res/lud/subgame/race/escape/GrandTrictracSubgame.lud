@@ -76,11 +76,7 @@
                             if:(is In (to) (sites Mover "BeforeHucke")) 
                         )
                     )
-                    (then 
-                        (if (not (all DiceUsed))
-                            (moveAgain)
-                        )
-                    )
+                    (then ("ReplayNotAllDiceUsed"))
                 )
             )		
         )

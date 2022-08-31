@@ -55,12 +55,8 @@
                 (if ("NewTurn") (roll))
                 next:(forEach Die 
                     if:("DieNotUsed")
-                    (forEach Piece top:True    
-                        (then 
-                            (if (not (all DiceUsed))
-                                (moveAgain)
-                            )
-                        )
+                    (forEach Piece top:True  
+                            (then ("ReplayNotAllDiceUsed"))
                     )
                 )
             )		
