@@ -1,6 +1,5 @@
-
 (define "Move"
-    (move Step (to if:(is Empty (to))) (then "PostActionUpdate"))
+    ("StepToEmpty" ~ (then "PostActionUpdate"))
 )
 
 (define "Shoot"
