@@ -2,8 +2,6 @@
 
 (define "ThrowValue" (mapEntry "Throw" (count Pips))) 
 
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
-
 (define "Sig" (= 1 ("ThrowValue")))
 
 (define "ActivatePiece" (set State at:#1 1))
@@ -15,7 +13,7 @@
         if:("IsEnemyAt" (to)) 
         (if (is In (to) (sites Next "Home"))
             (remove (to))
-            (if (= ("FirstAvailableInHome" Next) Off) 
+            (if ("IsOffBoard" ("FirstAvailableInHome" Next)) 
                 (remove (to))
                 (fromTo
                     (from (to))
@@ -33,7 +31,7 @@
 (define "CaptureEnemyPieceInEntering" 
     (apply 
         if:("IsEnemyAt" (to)) 
-        (if (= ("FirstAvailableInHome" Next) Off) 
+        (if ("IsOffBoard" ("FirstAvailableInHome" Next)) 
             (remove (to))
             (fromTo
                 (from (to))
@@ -51,11 +49,11 @@
                     True
                     ("Sig") 
                 )
-                (if (not (is Friend (who at:("SiteToMoveOnTrack" "HomeTrack" ("ThrowValue")))))
+                (if (not ("IsFriendAt" ("NextSiteOnTrack" ("ThrowValue") "HomeTrack")))
                     (move 
                         (from)
                         (to 
-                            ("SiteToMoveOnTrack" "HomeTrack" ("ThrowValue")) 
+                        	("NextSiteOnTrack" ("ThrowValue") "HomeTrack")
                             "CaptureEnemyPiece"
                         )
                         (then
@@ -68,11 +66,11 @@
             )
         )
         (if ("IsInTrack" (from) "EnemyTrack")
-            (if (not (is Friend (who at:("SiteToMoveOnTrack" "EnemyTrack" ("ThrowValue")))))
+            (if (not ("IsFriendAt" ("NextSiteOnTrack" ("ThrowValue") "EnemyTrack")))
                 (move 
                     (from)
                     (to 
-                        ("SiteToMoveOnTrack" "EnemyTrack" ("ThrowValue")) 
+                        ("NextSiteOnTrack" ("ThrowValue") "EnemyTrack")
                         "CaptureEnemyPiece"
                     )
                 )
@@ -101,7 +99,7 @@
         )
         (piece "Stick" Each)
         (regions "AllSites" (sites Board))
-        (dice d:2 from:0 num:<Dice:num>)
+        ("StickDice" <Dice:num>)
         <Dice:throwValues>
         (map "FirstEnemySite" {(pair P1 2) (pair P2 0)})
         (regions "Home" P1 (sites Left))
@@ -113,8 +111,8 @@
             (place "Stick2" (sites Right))
         })
         (play 
-            (do (roll) 
-                next:(or
+            ("RollMove"
+            	(or
                     (if (and ("Sig") (= (mover) (who at:("BottomSite"))))
                         (move 
                             (from ("BottomSite"))
@@ -129,7 +127,7 @@
                 )
             )
         )
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
