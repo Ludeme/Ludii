@@ -1,13 +1,4 @@
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
-        steps:(pips)
-    )
-)
-
 (define "DieNotUsed" (!= (pips) 0))
-
-(define "AllPieceEscaped" ("NoSites" (sites Occupied by:#1 top:False)))
 
 (define "NotEnemyOrOnlyOne" 
     (or 
@@ -45,15 +36,14 @@
             (place Stack "Disc7" 28 count:7) 
         })
         (play
-            (do 
-                (if ("NewTurn") (roll))
-                next:(forEach Die
+        		("RollEachNewTurnMove" 
+        				(forEach Die
                     if:("DieNotUsed")
                     (forEach Site
                         (sites Occupied by:Mover)
                         (move 
                             (from (site))
-                            (to ("NextSiteFrom" (site))
+                            (to ("NextSiteOnTrack" (pips) from:(site))
                                 if:("NotEnemyOrOnlyOne")
                                 (apply 
                                     if:("IsEnemyAt" (to)) 
@@ -62,18 +52,12 @@
                             )
                         )
                     )
-                    (then 
-                        (if 
-                            (not (all DiceUsed)) 
-                            (moveAgain)
-                        )
-                    )
+                    (then ("ReplayNotAllDiceUsed"))
                 )
             )
         )
-        (end 
-            (forEach NonMover if:("AllPieceEscaped" Player) (result Player Loss))
-        )
+        
+        (end (forEach NonMover if:(no Pieces Player) (result Player Loss)))
     )
 )
 
