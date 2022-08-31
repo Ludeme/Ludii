@@ -299,8 +299,7 @@
 
 (game "Sweep Burrow"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (square 8))
         (piece "Disc" Each
             (if
@@ -356,8 +355,7 @@
                 )
             )
         )
-        }
-    )
+    })
     (rules
         (start {
             (place "Disc1" 
@@ -395,12 +393,7 @@
             
         })
         (play (forEach Piece))
-        (end 
-            (if 
-                (no Pieces Next) 
-                (result Next Loss)
-            )
-        )
+        (end ("CaptureAll" Next)) 
     )
 )
 
