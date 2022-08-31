@@ -1,17 +1,10 @@
 (game "King And Courtesan"
     ("TwoPlayersNorthSouth")
-    (equipment
-        {
+    (equipment {
         (board (rotate 45 (square <Size>)))
         (piece "Disc" Each
             (or {
-                (move Step
-                    Forwards
-                    (to 
-                        if:(is Empty (to)) 
-                    )
-                    stack:True
-                )
+                ("StepToEmpty" Forwards stack:True)
                 (move Step
                     (to 
                         if:("IsEnemyAt" (to)) 
@@ -36,8 +29,7 @@
                 )
             })
         )
-        }
-    )
+    })
     (rules
         (start {
             (place "Disc1" (expand (sites Bottom) steps:(- <Size> 2) Orthogonal))
@@ -45,9 +37,9 @@
             (place Stack "Disc1" (sites Bottom))
             (place Stack "Disc2" (sites Top))
         })
-        (play
-            (forEach Piece top:True)
-        )
+        
+        (play (forEach Piece top:True))
+        
         (end {
             (if 
                 (= 1 (var "NextLoss")) 
