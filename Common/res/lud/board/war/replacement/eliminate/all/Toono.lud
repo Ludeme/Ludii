@@ -25,7 +25,7 @@
             (place "Marker2" (difference (expand (sites Top) steps:2) (expand (sites Bottom) steps:2)))
         })
         (play (forEach Piece))
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
