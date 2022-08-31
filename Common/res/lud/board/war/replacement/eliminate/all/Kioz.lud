@@ -4,8 +4,6 @@
     (is In ("ThrowValue") (sites {1 4 6}))
 )
 
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
-
 (define "CaptureEnemyPiece" 
     (apply 
         if:("IsEnemyAt" (to)) 
@@ -33,11 +31,11 @@
             #1
         })
         (if (is In (from) (sites Mover "Home"))
-            (if (not (is Friend (who at:("SiteToMoveOnTrack" "Track" ("ThrowValue")))))
+            (if (not ("IsFriendAt" ("NextSiteOnTrack" ("ThrowValue") "Track")))
                 (move 
                     (from)
                     (to 
-                        ("SiteToMoveOnTrack" "Track" ("ThrowValue")) 
+                    	("NextSiteOnTrack" ("ThrowValue") "Track")
                         "CaptureEnemyPiece"
                     )
                     (then
@@ -47,11 +45,11 @@
                     )
                 )
             )
-            (if (not (is Friend (who at:("SiteToMoveOnTrack" "MiddleTrack" ("ThrowValue")))))
+            (if (not ("IsFriendAt" ("NextSiteOnTrack" ("ThrowValue") "MiddleTrack")))
                 (move 
                     (from)
                     (to 
-                        ("SiteToMoveOnTrack" "MiddleTrack" ("ThrowValue")) 
+                    	("NextSiteOnTrack" ("ThrowValue") "MiddleTrack")
                         "CaptureEnemyPiece"
                     )
                 )
@@ -73,7 +71,7 @@
             (track "MiddleTrack" "44,E,S1,W" loop:True)
             }
         )
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
         (piece "Marker" Each)
         (piece "King" Each)
         (map "Throw" {(pair 0 4) (pair 1 1) (pair 2 2) (pair 3 2) (pair 4 6)})
@@ -88,9 +86,8 @@
             (place "King2" (intersection (sites Top) (expand (sites Left) steps:3)))
         })
         (play 
-            (do 
-                (roll) 
-                next:(if ("Tab")
+            ("RollMove"
+            	(if ("Tab")
                     (priority {
                         (forEach Piece ("Move" (not ("PieceActivated" (from)))))
                         (forEach Piece ("Move"))
@@ -104,7 +101,7 @@
                 )
             )
         )
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
