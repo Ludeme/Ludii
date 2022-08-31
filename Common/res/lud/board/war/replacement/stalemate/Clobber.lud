@@ -1,18 +1,14 @@
 (game "Clobber" 
     (players 2) 
-    (equipment 
-        { 
+    (equipment { 
         (board (rectangle <Rows> <Columns>)) 
         (piece "Marker" Each <Moves>)
-        }
-    ) 
+    }) 
     (rules 
-        (start 
-            { 
+        (start { 
             (place "Marker1" (sites Phase 1))
             (place "Marker2" (sites Phase 0))
-            }
-        )
+        })
         (play (forEach Piece))
         (end ("NoMoves" Loss))
     )
@@ -64,22 +60,14 @@
     (item 
         "Standard" 
         <
-        (move
-            Step
-            Orthogonal 
-            (to 
-                if:("IsEnemyAt" (to)) 
-                (apply (remove (to)))
-            )
-        )
+        ("StepToEnemy" Orthogonal)
         > 
         "Pieces must step onto an enemy piece."
     )* 
     (item 
         "Cannibal" 
         <
-        (move
-            Step
+        (move Step
             Orthogonal 
             (to 
                 if:(or
