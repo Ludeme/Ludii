@@ -1,7 +1,5 @@
 (define "ThrowValue" (mapEntry (count Pips))) 
 
-(define "SiteToMoveOnTrack" (trackSite Move steps:#1))
-
 (define "SpecialThrows" 
     (is In ("ThrowValue") (sites {1 4}))
 )
@@ -14,14 +12,14 @@
 )
 
 (define "NoFriendPieceInBetween" 
-    (= 1 (count Sites in:(intersection (sites Occupied by:#1) (sites Track Mover "Track" from:(from) to:("SiteToMoveOnTrack" ("ThrowValue"))))))		
+    (= 1 (count Sites in:(intersection (sites Occupied by:#1) (sites Track Mover "Track" from:(from) to:("NextSiteOnTrack" "ThrowValue")))))		
 )
 
 (define "Move"
     (move 
         (from (site))
         (to 
-            ("SiteToMoveOnTrack" ("ThrowValue")) 
+        	("NextSiteOnTrack" "ThrowValue")
             if:(and 
                 (or
                     (is Empty (to))
@@ -59,7 +57,7 @@
         )
         (piece "Stick" Each)
         (regions "AllSites" (sites Board))
-        (dice d:2 from:0 num:8)
+        ("StickDice" 8)
         (map "Throw" {(pair 0 8) (pair 1 1) (pair 2 6) (pair 3 5) (pair 4 4) (pair 5 5) (pair 6 6) (pair 7 1) (pair 8 8)})
         (regions "Home" P1 (sites Bottom))
         (regions "Home" P2 (sites Top))
@@ -74,8 +72,8 @@
             (place "Stick2" (sites Top))
         })
         (play 
-            (do (roll) 
-                next:(if (or (is Mover P1) (is Mover P3))
+            ("RollMove"
+            	(if (or (is Mover P1) (is Mover P3))
                     (forEach Site (sites Occupied by:Team1) ("Move" Team1))
                     (forEach Site (sites Occupied by:Team2) ("Move" Team2))
                 )
@@ -143,7 +141,6 @@
         (show Symbol "disc" "AllSites" Vertex fillColour:(colour White) edgeColour:(colour Black) scale:1)
         (piece Colour "Die" state:1 fillColour:(colour Red))
         (piece Scale "Stick" 0.5)
-        
     })
     
 )
