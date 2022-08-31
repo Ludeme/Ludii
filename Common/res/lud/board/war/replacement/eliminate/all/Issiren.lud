@@ -1,5 +1,4 @@
 (define "ThrowValue" (mapEntry (count Pips)))
-(define "SiteToMoveOnTrack" (trackSite Move steps:("ThrowValue")))
 (define "ActivatePiece" (set State at:(last To) 0))
 (define "ActivatedPiece" (= (state at:(from)) 0))
 (define "InactivePiece" (= (state at:(from)) 1))
@@ -23,7 +22,7 @@
             (track "Track2" "36,E,S1,W,S1,E,S1,W,N1,E,N1,W" loop:True P2)
             }
         )
-        (dice d:2 from:0 num:6)
+        ("StickDice" 6)
         (piece "Marker" Each
             (move 
                 (from
@@ -34,7 +33,7 @@
                     )
                 )
                 (to
-                    ("SiteToMoveOnTrack")
+                	("NextSiteOnTrack" ("ThrowValue"))
                     if:(not ("IsFriendAt" (to)))
                     (apply
                         (if ("IsEnemyAt" (to))
@@ -59,8 +58,8 @@
         })
         
         (play 
-            (do (roll)
-                next:(forEach Piece)
+            ("RollMove" 
+            	(forEach Piece)
                 (then
                     (if ("AllowToReplay") 
                         (moveAgain)
@@ -69,7 +68,7 @@
             )
         )
         
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
