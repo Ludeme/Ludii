@@ -1,7 +1,5 @@
 (define "ThrowValue" (mapEntry (count Pips)))
 
-(define "SiteToMoveOnTrack" (trackSite Move steps:(if ("InactivePiece") 1 ("ThrowValue"))))
-
 (define "ActivatePiece" (if (= (state at:(last To)) 1) (set State at:(last To) 0)))
 
 (define "ActivatedPiece" (= (state at:(from)) 0))
@@ -40,15 +38,15 @@
                     ("ActivatedPiece") 
                     (and (or (= 1 ("ThrowValue")) (= 6 ("ThrowValue"))) ("InactivePiece"))
                 )
-                (if (!= "SiteToMoveOnTrack" Off)
+                (if ("IsNotOffBoard" ("NextSiteOnTrack" (if ("InactivePiece") 1 ("ThrowValue"))))
                     (if (or
-                            (is In "SiteToMoveOnTrack" (sites Empty))
-                            (is Enemy (who at:"SiteToMoveOnTrack"))
+                            (is In ("NextSiteOnTrack" (if ("InactivePiece") 1 ("ThrowValue"))) (sites Empty))
+                            ("IsEnemyAt" ("NextSiteOnTrack" (if ("InactivePiece") 1 ("ThrowValue"))))
                         )
                         (move 
                             (from)
                             (to 
-                                "SiteToMoveOnTrack" 
+                            	("NextSiteOnTrack" (if ("InactivePiece") 1 ("ThrowValue"))) 
                                 "CaptureEnemyPiece"
                             )
                         )
@@ -58,7 +56,7 @@
             )
         )
         (regions "AllSites" (sites Board))
-        (dice d:2 from:0 num:6)
+        ("StickDice" 6)
         (map {(pair 0 6) (pair 1 0) (pair 2 2) (pair 3 1) (pair 4 1) (pair 5 0) (pair 6 6)})
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
@@ -68,13 +66,9 @@
             (place "Stick1" (sites Bottom) state:1)
             (place "Stick2" (sites Top) state:1)
         })
-        (play 
-            (do (roll) 
-                next:(forEach Piece)
-            )
-        )
+        (play ("RollMove" (forEach Piece)))
         (end {
-            (if (no Pieces Next) (result Mover Win))
+            ("CaptureAll" Next)
             (if ("AllPieceInOpponentHome")
                 (result Mover Draw)
             )
