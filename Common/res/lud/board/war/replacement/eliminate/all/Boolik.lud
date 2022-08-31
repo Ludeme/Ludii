@@ -93,7 +93,7 @@
                     (move 
                         (from (from) level:(level))
                         (to 
-                        	("NextSiteOnTrack" ("ThrowValue") from:(from) "Track")
+                            ("NextSiteOnTrack" ("ThrowValue") from:(from) "Track")
                         )
                         (then 
                             (if ("AtLeastAnEnemyPieceThere" (last To))
@@ -107,7 +107,7 @@
                         (move 
                             (from (from) level:(level))
                             (to 
-                            	("NextSiteOnTrack" ("ThrowValue") from:(from) "CaptureTrack")
+                                ("NextSiteOnTrack" ("ThrowValue") from:(from) "CaptureTrack")
                             )
                             (then 
                                 (and
@@ -145,8 +145,8 @@
             <Player:teams>
         })
         (play 
-        		("RollMove"
-        			(or {
+            ("RollMove"
+                (or {
                     (if (and ("NoPieceOnBoard") (is Occupied (handSite Mover)))
                         ("EnterAPiece")
                     )

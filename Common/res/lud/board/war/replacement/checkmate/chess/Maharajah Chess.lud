@@ -124,8 +124,8 @@
         
         (piece "Amazon" P1 
             (or
-            	("LeapCapture" "KnightWalk" (then (set Counter)))
-            	("SlideCapture" ~ ~ (then (set Counter)))
+                ("LeapCapture" "KnightWalk" (then (set Counter)))
+                ("SlideCapture" ~ ~ (then (set Counter)))
             )
         )
         (map "King" {(pair 1 "E1") (pair 2 "E8")})

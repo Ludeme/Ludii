@@ -40,10 +40,10 @@
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     (apply 
-                            (if ("IsEnemyAt" (to))
-                                (remove (to))
-                            )
-                        ) 
+                        (if ("IsEnemyAt" (to))
+                            (remove (to))
+                        )
+                    ) 
                 )
             )		
         )
@@ -62,21 +62,21 @@
             )
         )
         ("ChessPawn" "Pawn"
-                (if (and {
+            (if (and {
                     (is In (from) (sites Start (piece (what at:(from)))))
                     (= 1 (state at:(from)))
                     (= 32 (count Sites in:(sites Occupied by:All)))
                 })
                 ("DoubleStepForwardToEmpty")
             )
-                (then
-                        (if (is In (last To) (sites Mover "Promotion")) 
-                            (and
-                                (promote (last To) (piece (id "Queen" Mover)))
-                                (set State at:(last To) 1)
-                            )
-                        )
+            (then
+                (if (is In (last To) (sites Mover "Promotion")) 
+                    (and
+                        (promote (last To) (piece (id "Queen" Mover)))
+                        (set State at:(last To) 1)
                     )
+                )
+            )
         )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))

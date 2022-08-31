@@ -33,7 +33,7 @@
                     )
                 )
                 (to
-                	("NextSiteOnTrack" ("ThrowValue"))
+                    ("NextSiteOnTrack" ("ThrowValue"))
                     if:(not ("IsFriendAt" (to)))
                     (apply
                         (if ("IsEnemyAt" (to))
@@ -59,7 +59,7 @@
         
         (play 
             ("RollMove" 
-            	(forEach Piece)
+                (forEach Piece)
                 (then
                     (if ("AllowToReplay") 
                         (moveAgain)

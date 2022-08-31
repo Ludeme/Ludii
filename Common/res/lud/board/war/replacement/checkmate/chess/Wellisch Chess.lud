@@ -34,9 +34,9 @@
     (not (can Move (do
                 (forEach Piece (next))
                 ifAfterwards:(not ("IsInCheck" "King" Next))
+            )
+        )
     )
-    		)
-    		)
 )
 
 // Usage: ("P123" <p1_arg> <p2_arg> <p3_arg>)
@@ -135,7 +135,7 @@
         ("IsPieceAt" "King" Mover (mapEntry "King" (mover))) // At Start Cell
         ("History_HasNeverMoved" "King")
         (not ("IsInCheck" "King" Mover))
-     })
+    })
 )
 
 // Usage: ("KingSideSwap" <king_idx> <rook_idx>)
@@ -143,7 +143,7 @@
     (if (and 
             ("History_HasNeverMoved" "RookRight")
             (not ("IsInCheck" "King" Mover at:(mapEntry "RookRight" Mover)))
-         )
+        )
         (move Swap Pieces #1 #2
             (then "History_SaveMovement")
         )
@@ -157,10 +157,10 @@
             (not ("IsInCheck" "King" Mover at:(mapEntry "RookLeft" Mover)))
             (not ("IsInCheck" "King" Mover at:(mapEntry "Queen" Mover)))
             (is In (mapEntry "Queen" Mover) (sites Empty))
-         })
-            (move Swap Pieces #1 #2
-                (then "History_SaveMovement")
-            )
+        })
+        (move Swap Pieces #1 #2
+            (then "History_SaveMovement")
+        )
     )
 )
 
@@ -218,9 +218,9 @@
 (define "PromoteFromHand"
     (move
         (from 
-        	(sites Occupied by:Mover container:"Hand"
+            (sites Occupied by:Mover container:"Hand"
                 components:{"Queen" "Rook" "Knight"}
-        )
+            )
         )
         (to (last To))
     )

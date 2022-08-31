@@ -6,12 +6,12 @@
 
 (define "ShogiGold"
     (piece #1 Each 
-    		(move Step 
-    				(directions {Forward Backward Rightward Leftward FL FR})
-    		        (to if:(not ("IsFriendAt" (to))) 
-    		        	            #2
-    		        ) 
-    		        #3 
-    		    ) 	
+        (move Step 
+            (directions {Forward Backward Rightward Leftward FL FR})
+            (to if:(not ("IsFriendAt" (to))) 
+                #2
+            ) 
+            #3 
+        ) 	
     )
 )

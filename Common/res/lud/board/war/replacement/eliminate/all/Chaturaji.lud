@@ -114,7 +114,7 @@
         
         (play 
             ("RollEachNewTurnMove"
-            	(if (and ("SameTurn") (is Pending))
+                (if (and ("SameTurn") (is Pending))
                     (or {
                         ("PromoteTo" "Boat" (set Value at:(last To) 2))
                         ("PromoteTo" "Knight" (set Value at:(last To) 3))

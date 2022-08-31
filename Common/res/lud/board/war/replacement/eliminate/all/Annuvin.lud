@@ -58,9 +58,9 @@
         (end 
             (if 
                 (or 
-                		(and (= 1 (count Pieces Next)) (= 6 (count Pieces Mover))) 
-                		(no Pieces Next)
-                		)
+                    (and (= 1 (count Pieces Next)) (= 6 (count Pieces Mover))) 
+                    (no Pieces Next)
+                )
                 (result Mover Win)
             )
         )

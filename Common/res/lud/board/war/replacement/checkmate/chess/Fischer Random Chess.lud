@@ -54,13 +54,13 @@
                     ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
                 )
                 "EnPassant"
+            )
+            (then
+                (and
+                    ("ReplayInMovingOn" (sites Mover "Promotion"))
+                    (set Counter)
                 )
-                (then
-                    (and
-                            ("ReplayInMovingOn" (sites Mover "Promotion"))
-                        (set Counter)
-                    )
-                )
+            )
         )
         ("ChessRook" "Rook" (then (set Counter)) ("RememberPieceHasMoved"))
         ("ChessKing" "King" (then (set Counter)) ("RememberPieceHasMoved"))

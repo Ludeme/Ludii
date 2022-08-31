@@ -24,7 +24,7 @@
             )	
         )
         (to 
-        		("NextSiteOnTrack" 1)
+            ("NextSiteOnTrack" 1)
             if:(not ("IsFriendAt" (to)))
             (apply "CaptureMove")
         )
@@ -50,7 +50,7 @@
             if:("ActivatedPiece" (from))
         )
         (to 
-        		("NextSiteOnTrack" (if (= 1 (var "SpecialSig")) (+ 1 ("ThrowValue")) ("ThrowValue")))
+            ("NextSiteOnTrack" (if (= 1 (var "SpecialSig")) (+ 1 ("ThrowValue")) ("ThrowValue")))
             if:(not ("IsFriendAt" (to)))
             (apply "CaptureMove")
         )
@@ -81,7 +81,7 @@
         })
         (play 
             ("RollMove"
-            	(priority 
+                (priority 
                     (forEach Piece ("MoveToActivate"))
                     (forEach Piece ("Move"))
                 )

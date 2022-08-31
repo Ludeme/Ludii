@@ -19,7 +19,7 @@
     (move 
         (from (site))
         (to 
-        	("NextSiteOnTrack" "ThrowValue")
+            ("NextSiteOnTrack" "ThrowValue")
             if:(and 
                 (or
                     (is Empty (to))
@@ -73,7 +73,7 @@
         })
         (play 
             ("RollMove"
-            	(if (or (is Mover P1) (is Mover P3))
+                (if (or (is Mover P1) (is Mover P3))
                     (forEach Site (sites Occupied by:Team1) ("Move" Team1))
                     (forEach Site (sites Occupied by:Team2) ("Move" Team2))
                 )

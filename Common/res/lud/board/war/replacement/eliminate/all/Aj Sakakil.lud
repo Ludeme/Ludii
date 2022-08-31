@@ -100,7 +100,7 @@
                                     )
                                 )
                                 (to 
-                                	("NextSiteOnTrack" (value) from:(from))
+                                    ("NextSiteOnTrack" (value) from:(from))
                                     (apply (forget Value "Throws" (value)))
                                 )
                                 (then 
@@ -127,7 +127,7 @@
                             (move 
                                 (from (from) level:(level))
                                 (to 
-                                	("NextSiteOnTrack" (value) from:(from))
+                                    ("NextSiteOnTrack" (value) from:(from))
                                     (apply (forget Value "Throws" (value)))
                                 )
                                 (then 
@@ -153,8 +153,8 @@
         phases:{
         (phase "ThrowPhase" 
             (play 
-            	("RollMove"
-            		(move Pass
+                ("RollMove"
+                    (move Pass
                         (then
                             (if (not (no Pieces Mover))
                                 (and {

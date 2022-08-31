@@ -101,7 +101,7 @@
                                         )
                                     )
                                     (to 
-                                    	("NextSiteOnTrack" (value) from:(from) "Track")
+                                        ("NextSiteOnTrack" (value) from:(from) "Track")
                                         (apply (forget Value "Throws" (value)))
                                     )
                                     (then 
@@ -116,7 +116,7 @@
                                     (move 
                                         (from (from) level:(level))
                                         (to 
-                                        	("NextSiteOnTrack" (value) from:(from) "CaptureTrack")
+                                            ("NextSiteOnTrack" (value) from:(from) "CaptureTrack")
                                             (apply (forget Value "Throws" (value)))
                                         )
                                         (then 
@@ -143,7 +143,7 @@
                             (move 
                                 (from (from) level:(level))
                                 (to 
-                                	("NextSiteOnTrack" (value) from:(from) "CaptureTrack")
+                                    ("NextSiteOnTrack" (value) from:(from) "CaptureTrack")
                                     (apply (forget Value "Throws" (value)))
                                 )
                                 (then 
@@ -169,8 +169,8 @@
         phases:{
         (phase "ThrowPhase" 
             (play 
-            	("RollMove"
-            			(move Pass
+                ("RollMove"
+                    (move Pass
                         (then
                             (if (not (no Pieces Mover))
                                 (and {
@@ -203,8 +203,8 @@
             (nextPhase (= 0 (size Array (values Remembered "Throws"))) "ThrowPhase")
         )
         }
-
-    (end ("CaptureAllTeam"))
+        
+        (end ("CaptureAllTeam"))
     )
 )
 

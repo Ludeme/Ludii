@@ -107,13 +107,13 @@
         (to 
             if:(not ("IsFriendAt" (to))) 
             (apply 
-                    (if ("IsEnemyAt" (to))
-                        (remove 
-                            (to) 
-                            (then (set Counter))
-                        )
+                (if ("IsEnemyAt" (to))
+                    (remove 
+                        (to) 
+                        (then (set Counter))
                     )
-                ) 
+                )
+            ) 
         ) 
         "RememberPieceHasMoved"
     )		

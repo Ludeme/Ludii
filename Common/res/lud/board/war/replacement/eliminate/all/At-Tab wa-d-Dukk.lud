@@ -23,7 +23,7 @@
     (move 
         (from)
         (to 
-        	("NextSiteOnTrack" ("ThrowValue"))
+            ("NextSiteOnTrack" ("ThrowValue"))
             "CaptureEnemyPiece"
         )
         count:#1
@@ -103,8 +103,8 @@
             (place "Marker2" (sites Top) state:1)
         })
         (play 
-        		("RollMove"
-        			(if (can Move (forEach Piece))
+            ("RollMove"
+                (if (can Move (forEach Piece))
                     (forEach Piece (then (if (is In ("ThrowValue") (sites "AnotherThrow")) (moveAgain))))
                     (move Pass (then (if (is In ("ThrowValue") (sites "AnotherThrow")) (moveAgain))))
                 )

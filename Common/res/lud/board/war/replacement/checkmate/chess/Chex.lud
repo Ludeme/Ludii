@@ -17,7 +17,7 @@
                 ("StepToEnemy" (directions {FR FL}))
             })
         )
-
+        
         (tile "Rook" Each numSides:4 ("SlideCapture" Orthogonal))
         (tile "King" Each numSides:4 ("StepToNotFriend"))
         (tile "Bishop" Each numSides:4 ("SlideCapture" Diagonal))
@@ -144,7 +144,7 @@
                 (result Next Win)
             )
             ("DrawIfNoMoves" Mover)
-       })
+        })
     )
 )
 

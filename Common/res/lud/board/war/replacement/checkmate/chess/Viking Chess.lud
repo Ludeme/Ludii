@@ -4,14 +4,14 @@
         (board (rectangle 7 12)) 
         
         ("ChessPawn" "Pawn" ~
-                (then 
-                    (and
-                        ("ReplayInMovingOn" (sites Mover "Promotion"))
-                        (set Counter)
-                    )
+            (then 
+                (and
+                    ("ReplayInMovingOn" (sites Mover "Promotion"))
+                    (set Counter)
                 )
             )
-
+        )
+        
         ("ChessRook" "Rook")
         ("ChessKing" "King")
         ("ChessBishop" "Bishop")

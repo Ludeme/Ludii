@@ -35,7 +35,7 @@
                 (move 
                     (from)
                     (to 
-                    	("NextSiteOnTrack" ("ThrowValue") "Track")
+                        ("NextSiteOnTrack" ("ThrowValue") "Track")
                         "CaptureEnemyPiece"
                     )
                     (then
@@ -49,7 +49,7 @@
                 (move 
                     (from)
                     (to 
-                    	("NextSiteOnTrack" ("ThrowValue") "MiddleTrack")
+                        ("NextSiteOnTrack" ("ThrowValue") "MiddleTrack")
                         "CaptureEnemyPiece"
                     )
                 )
@@ -87,7 +87,7 @@
         })
         (play 
             ("RollMove"
-            	(if ("Tab")
+                (if ("Tab")
                     (priority {
                         (forEach Piece ("Move" (not ("PieceActivated" (from)))))
                         (forEach Piece ("Move"))

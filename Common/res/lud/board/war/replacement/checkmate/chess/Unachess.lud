@@ -25,14 +25,14 @@
         (board (square 8)) 
         
         ("ChessPawn" "Pawn" ~
-                (then 
-                    (and
-                        ("ReplayInMovingOn" (sites Mover "Promotion"))
-                        (set Counter)
-                    )
+            (then 
+                (and
+                    ("ReplayInMovingOn" (sites Mover "Promotion"))
+                    (set Counter)
                 )
             )
-
+        )
+        
         ("ChessRook" "Rook" (then (set Counter)))
         ("ChessKing" "King" (then (set Counter)))
         ("ChessBishop" "Bishop" (then (set Counter)))

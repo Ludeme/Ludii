@@ -29,14 +29,14 @@
                 (move 
                     (from) 
                     (to 
-                    	("NextSiteOnTrack" (mapEntry (var)))
+                        ("NextSiteOnTrack" (mapEntry (var)))
                         ("RemovePiece")
                     )
                 )
             )
         ) 
         (map {(pair 0 <High:value>) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 1) (pair 6 <High:value>)})
-        }) 
+    }) 
     
     (rules 
         (start { 	
@@ -45,8 +45,8 @@
         })	
         
         (play
-        		("RollMove"
-        			(if 
+            ("RollMove"
+                (if 
                     (or 
                         ("CanMove") 
                         ("AllowToBegin")

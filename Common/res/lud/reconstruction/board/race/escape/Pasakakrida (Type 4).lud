@@ -54,7 +54,7 @@
                 next:(forEach Die 
                     if:("DieNotUsed")
                     (forEach Piece top:True  
-                            (then ("ReplayNotAllDiceUsed"))
+                        (then ("ReplayNotAllDiceUsed"))
                     )
                 )
             )		

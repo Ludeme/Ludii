@@ -187,7 +187,7 @@
         (then (and {
                 (set Pending (ahead (last To) #2))
                 (set Var (last To))
-                })
+            })
         )
     )
 )
@@ -282,7 +282,7 @@
                 }
                 (then
                     (and 
-                    	("ReplayInMovingOn" (sites Mover "PromotionZone"))
+                        ("ReplayInMovingOn" (sites Mover "PromotionZone"))
                         (set Counter)
                     )
                 )
@@ -336,7 +336,7 @@
                     )
                     (result Mover Draw)
                 )
-                })
+            })
         )
         }
     )

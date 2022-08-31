@@ -5,49 +5,49 @@
 (define "PieceDef" (piece Foreground #1 image:"cone" fillColour:(colour #2) edgeColour:(colour Black) scale:0.5 offsetY:+0.7))
 (define "Extinction" (and (= 0 (count Sites in:(difference (sites Occupied by:Mover) (sites Mover "Reserve")))) (not (no Moves Next))))
 (define "StartThen" 
-		(then 
-			(and {
-			(promote (last To) (piece {"Cone"}) Mover)
+    (then 
+        (and {
+            (promote (last To) (piece {"Cone"}) Mover)
             (set Var "StartS" (+ 1 (var "StartS")))
             (if (= (id Mover) 1)
-            	(set Var "Zstep1" (+ (mapEntry <Starter:Pip1> (last To)) (var "Zstep1")))
-            	(set Var "Zstep2" (+ (mapEntry <Starter:Pip2> (last To)) (var "Zstep2")))
+                (set Var "Zstep1" (+ (mapEntry <Starter:Pip1> (last To)) (var "Zstep1")))
+                (set Var "Zstep2" (+ (mapEntry <Starter:Pip2> (last To)) (var "Zstep2")))
             )
             (if (= 0 (var "StartS")) (set Var "St1Pos" (last To)))
             (if (and {
-            	(= 1 (var "StartS")) 
-            	(or {
-            	(= (mapEntry "Attacks1" (last To)) (var "St1Pos"))
-                (= (mapEntry "Attacks2" (last To))
-                (var "St1Pos"))
-               })
-            	})
-            	(set Var "CntrAttack" 1)
+                    (= 1 (var "StartS")) 
+                    (or {
+                        (= (mapEntry "Attacks1" (last To)) (var "St1Pos"))
+                        (= (mapEntry "Attacks2" (last To))
+                        (var "St1Pos"))
+                    })
+                })
+                (set Var "CntrAttack" 1)
             )
             (if (> (var "StartS") 2) (set Var "CntrAttack" 0))
             (if (and {
-            	(is Friend (who at:(mapEntry "SameColor" (last To)))) 
-                (!= 1 (var "CntrAttack")) 
-                "PlayerHasReserve" 
+                    (is Friend (who at:(mapEntry "SameColor" (last To)))) 
+                    (!= 1 (var "CntrAttack")) 
+                    "PlayerHasReserve" 
                 })
                 (and {
-                	(remove (sites Mover "Reserve"))
+                    (remove (sites Mover "Reserve"))
                     (if (= (id Mover) 1) 
-                    	(add (piece "Starter1")(to (sites Mover "Base")) stack:True)
-                    	(add (piece "Starter2")(to (sites Mover "Base")) stack:True)
+                        (add (piece "Starter1")(to (sites Mover "Base")) stack:True)
+                        (add (piece "Starter2")(to (sites Mover "Base")) stack:True)
                     )
-            })
-                )
+                })
+            )
             (set Value at:(last To) 1)
             
             (if (= 1 <Showz:stp>)
-            	(and 
-            		(set Score Next (+ (* (toInt (= (id Mover) 1))(var "Zstep2")) (* (toInt (= (id Mover) 2))(var "Zstep1"))))
+                (and 
+                    (set Score Next (+ (* (toInt (= (id Mover) 1))(var "Zstep2")) (* (toInt (= (id Mover) 2))(var "Zstep1"))))
                     (set Score Mover (+ (* (toInt (= (id Mover) 1)) (+ (mapEntry <Starter:Pip1> (last To)) (var "Zstep1"))) (* (toInt (= (id Mover) 2))(+ (mapEntry <Starter:Pip2> (last To)) (var "Zstep2")))))
+                )
             )
-            		)
-    })
-		)
+        })
+    )
 )
 (define "NewZ1" (+ (- (var "Zstep1")(mapEntry <Starter:Pip1> (last From))) (mapEntry <Starter:Pip1> (last To)))
 )
@@ -62,99 +62,99 @@
         (if (and (= 2 (var "StartS")) (= 1 (var "CntrAttack")))
             (move (from (sites Mover "Base"))(to (intersection (sites "Rings") (sites Empty))) "StartThen" )
             (move (from (sites Mover "Base"))(to (intersection (sites Mover "HomeRing") (sites Empty))) "StartThen" )
-    )
         )
+    )
 )
 (define "MoveThen" (then (and { (set Var "StartS" 3) (set Var "CntrAttack" 0 )
             (if (= (id Mover) 1) 
-            	(and 
-            		(set Var "Zstep1" "NewZ1") 
-            		(set Var "Zstep2" "NewZ2Nx")
-            		)
-            (and 
-            	(set Var "Zstep2" "NewZ2" ) 
-            	(set Var "Zstep1" "NewZ1Nx" )
-            	) 
+                (and 
+                    (set Var "Zstep1" "NewZ1") 
+                    (set Var "Zstep2" "NewZ2Nx")
+                )
+                (and 
+                    (set Var "Zstep2" "NewZ2" ) 
+                    (set Var "Zstep1" "NewZ1Nx" )
+                ) 
             )
             (if (and {
-            	(is Friend (who at:(mapEntry "SameColor" (last To)))) 
-            	"PlayerHasReserve" 
-            	})  
+                    (is Friend (who at:(mapEntry "SameColor" (last To)))) 
+                    "PlayerHasReserve" 
+                })  
                 (and {
-                	(remove (sites Mover "Reserve"))
+                    (remove (sites Mover "Reserve"))
                     (if (= (id Mover) 1)  
-                    	(add (piece "Starter1")(to (sites Mover "Base")) stack:True)
-                    	(add (piece "Starter2")(to (sites Mover "Base")) stack:True) 
+                        (add (piece "Starter1")(to (sites Mover "Base")) stack:True)
+                        (add (piece "Starter2")(to (sites Mover "Base")) stack:True) 
                     )
-            }) 
-                )
+                }) 
+            )
             
             (if (= 15 (last To))
-            	(and { 
-            		(if (= (id Mover) 1)      //  Prisoner_Stack - Transport
+                (and { 
+                    (if (= (id Mover) 1)      //  Prisoner_Stack - Transport
                         (and { 
-                        	(set Var "Zstep1" (- (var "Zstep1")(mapEntry <Starter:Pip1> (last From))) )
+                            (set Var "Zstep1" (- (var "Zstep1")(mapEntry <Starter:Pip1> (last From))) )
                             (add (piece "Starter1" )
-                            		(to (sites Mover "Base"))
-                            		count:(count Stack at:(last To) if:(= (id "Cone" P1)(what at:(to) level:(level)))) 
-                            		stack:True
+                                (to (sites Mover "Base"))
+                                count:(count Stack at:(last To) if:(= (id "Cone" P1)(what at:(to) level:(level)))) 
+                                stack:True
                             )
                             (add (piece "Prisoner1" ) 
-                            		(to (sites Mover "Prison"))
-                        
-                            	count:(count Stack at:(last To) if:(= (id "Cone" P2)(what at:(to) level:(level)))) 
-                        stack:True
-                        )   
-                            })
+                                (to (sites Mover "Prison"))
+                                
+                                count:(count Stack at:(last To) if:(= (id "Cone" P2)(what at:(to) level:(level)))) 
+                                stack:True
+                            )   
+                        })
                         (and { 
-                        	(set Var "Zstep2"(- (var "Zstep2")(mapEntry <Starter:Pip2> (last From))) )
+                            (set Var "Zstep2"(- (var "Zstep2")(mapEntry <Starter:Pip2> (last From))) )
                             (add (piece "Starter2") 
-                            	(to (sites Mover "Base"))
-                            	count:(count Stack at:(last To) if:(= (id "Cone" P2)(what at:(to) level:(level)))) 
-                            	stack:True
-                            	)
-                            (add (piece "Prisoner2")
-                            		(to (sites Mover "Prison"))
-                            		count:(count Stack at:(last To) if:(= (id "Cone" P1)(what at:(to) level:(level)))) 
-                            stack:True
+                                (to (sites Mover "Base"))
+                                count:(count Stack at:(last To) if:(= (id "Cone" P2)(what at:(to) level:(level)))) 
+                                stack:True
                             )
-                    })
-                        )
+                            (add (piece "Prisoner2")
+                                (to (sites Mover "Prison"))
+                                count:(count Stack at:(last To) if:(= (id "Cone" P1)(what at:(to) level:(level)))) 
+                                stack:True
+                            )
+                        })
+                    )
                     (remove 15 count:(count Stack at:(last To)))
-            })
-            	)
+                })
+            )
             (set Value at:(last To) (count Stack at:(last To)))
             
             (if (= 1 <Showz:stp>) 
-            	(and 
-            		(set Score Mover (+ (* (toInt (= (id Mover) 1)) "NewZ1" ) (* (toInt (= (id Mover) 2)) "NewZ2" )))
+                (and 
+                    (set Score Mover (+ (* (toInt (= (id Mover) 1)) "NewZ1" ) (* (toInt (= (id Mover) 2)) "NewZ2" )))
                     (set Score  Next (+ (* (toInt (= (id Mover) 1)) "NewZ2Nx" ) (* (toInt (= (id Mover) 2)) "NewZ1Nx" )))
+                )
             )
-            		)
-    }) 
-		)    
+        }) 
+    )    
 )
 
 (define "PrisonerExchange"
     (if (and { 
-    	"PlayerHasPrisoners"
+            "PlayerHasPrisoners"
             (= 0 (count Pieces Mover in:(sites "Base" ))) 
             (> (count Pieces Mover in:(sites "Reserve" )) 0) 
-            })
+        })
         
         (move (from (sites Mover "Prison")) (to (sites Mover "Base")) )
         
         (then 
-        		(and {
-        		(promote (last To) (piece {"Starter"}) Mover )  
+            (and {
+                (promote (last To) (piece {"Starter"}) Mover )  
                 (remove (sites Mover "Reserve"))
                 (if (= (id Mover) 1) 
-                	(add (piece "Reserve2")(to (sites Next "Reserve")) stack:True)
-                	(add (piece "Reserve1")(to (sites Next "Reserve")) stack:True) 
+                    (add (piece "Reserve2")(to (sites Next "Reserve")) stack:True)
+                    (add (piece "Reserve1")(to (sites Next "Reserve")) stack:True) 
                 )
                 (moveAgain)
-        })
-        		)
+            })
+        )
     )
 )
 
@@ -167,25 +167,25 @@
     })
 )
 (define "LastMan"     
-		(move 
-				(from (intersection (sites Mover "SitesLastMan")(sites Occupied by:Mover))) 
-				(to 15)  
-
+    (move 
+        (from (intersection (sites Mover "SitesLastMan")(sites Occupied by:Mover))) 
+        (to 15)  
+        
         (then   
-        	(and { 
-        		(set Var "CntrAttack" 0)
+            (and { 
+                (set Var "CntrAttack" 0)
                 (remove 15 )
                 (remove (sites Mover "Reserve"))
                 (if (= (id Mover) 1) 
-                	(and { 
-                		(set Var "Zstep1" 0)
+                    (and { 
+                        (set Var "Zstep1" 0)
                         (add (piece "Starter1" )(to (sites Mover "Base")) count:2 stack:True)
                     })
                     (and {
-                    	(set Var "Zstep2" 0)
+                        (set Var "Zstep2" 0)
                         (add (piece "Starter2" )(to (sites Mover "Base")) count:2 stack:True)
-                })
-                    )
+                    })
+                )
             })
     ))
 )
@@ -205,25 +205,25 @@
 (define "Zstp"       (+ (* (toInt (= (id Mover) 1))(var "Zstep1")) (* (toInt (= (id Mover) 2))(var "Zstep2")) ))
 (define "CaptPos"  (mapEntry "SameColor" (arrayValue (intersection (array (sites Empty))(array {(mapEntry #1 (from)) }) ) index:0)))
 (define "MoveSteps"     
-		(move (from)
-				(to (union {
-					(intersection { 
-						(difference "RingOrT" (from)) 
-						(sites Empty)
-						(sites { (mapEntry #1 (from)) (mapEntry #2 (from)) (mapEntry #3 (from)) (mapEntry #4 (from))
-							(mapEntry #5 (from)) (mapEntry #6 (from)) (mapEntry #7 (from)) (mapEntry #8 (from)) }) 
-                    })
+    (move (from)
+        (to (union {
+                (intersection { 
+                    (difference "RingOrT" (from)) 
+                    (sites Empty)
+                    (sites { (mapEntry #1 (from)) (mapEntry #2 (from)) (mapEntry #3 (from)) (mapEntry #4 (from))
+                    (mapEntry #5 (from)) (mapEntry #6 (from)) (mapEntry #7 (from)) (mapEntry #8 (from)) }) 
+                })
                 (intersection {
-                	(sites "Rings")(sites Occupied by:Next)
+                    (sites "Rings")(sites Occupied by:Next)
                     (sites { 
-                    	("CaptPos" #1) ("CaptPos" #2)("CaptPos" #3) ("CaptPos" #4)
-                    	("CaptPos" #5) ("CaptPos" #6)("CaptPos" #7) ("CaptPos" #8) (mapEntry #9 (from)) 
-                }) 
-                    })
-    })
-						) 
-				stack:True   "MoveThen" 
-		)
+                        ("CaptPos" #1) ("CaptPos" #2)("CaptPos" #3) ("CaptPos" #4)
+                        ("CaptPos" #5) ("CaptPos" #6)("CaptPos" #7) ("CaptPos" #8) (mapEntry #9 (from)) 
+                    }) 
+                })
+            })
+        ) 
+        stack:True   "MoveThen" 
+    )
 )
 
 (define "ConeMove"         //     move Z Steps in 'RingsPlusT'!..
@@ -245,7 +245,6 @@
                                                                 (if (= "Zstp" 16) ("MoveSteps"  "Step8a" "Step8b" "Step16c" "Step16d"  "Step16e" "Step16f" "Step16g" ~  "SameColor" )
                                                                     (if (= "Zstp" 17) ("MoveSteps"  "Step7a" "Step7b" "Step17c" "Step17d"  "Step17e" "Step17f" "Step17g" "Step17h"  ~ )
                                                                         (if (> "Zstp" 17) ("MoveSteps"  "Step2a" "Step2b" "Step18c" "Step18d"  "Step18e" "Step18f" ~ ~   "Step18g" )  //  never really reached ..
-    )
                                                                         )
                                                                     )
                                                                 )
@@ -263,6 +262,7 @@
                 )
             )
         )
+    )
 )
 
 (game "MensaSpiel"
@@ -379,9 +379,9 @@
         )
         
         (end  { 
-        	(if (>= (count Pieces Mover in:(sites "Prison")) <Num:pris>) (result Mover Win) )
+            (if (>= (count Pieces Mover in:(sites "Prison")) <Num:pris>) (result Mover Win) )
             (if "Extinction" (result Next Win) )  
-       })
+        })
     )
 ) //  end game
 
@@ -401,8 +401,8 @@
 (option "Show StepLength" <Showz> args:{ <stp> <statuscode> }
     { (item "Show StepLength in player status" <1> <(show Score " Steps")> "Show StepLength in player status.")*
     (item "Hide StepLength in player status" <0> <(show Symbol "star" {2} scale:.1)> " No  StepLength in player status.")
-} 
-    )
+    } 
+)
 //-----------------------
 (metadata
     (info { 

@@ -50,7 +50,7 @@
                         )
                     )
                     (to 
-                    	("NextSiteOnTrack" ("ThrowValue") "Track")
+                        ("NextSiteOnTrack" ("ThrowValue") "Track")
                         if:(if (is In (to) ("MiddleSites"))
                             (or (is Empty (to)) (and ("IsEnemyAt" (to)) ("PieceCanBeCapture")))
                             (is Empty (to))
@@ -68,7 +68,7 @@
                 (move
                     (from (from))
                     (to 
-
+                        
                         ("NextSiteOnTrack" 1 "Track")
                         if:(if (is In (to) ("MiddleSites"))
                             (or (is Empty (to)) (and ("IsEnemyAt" (to)) ("PieceCanBeCapture")))
@@ -107,7 +107,7 @@
             (move
                 (from (from))
                 (to 
-                    	("NextSiteOnTrack" ("ThrowValue") "GoBackTrack")
+                    ("NextSiteOnTrack" ("ThrowValue") "GoBackTrack")
                     if:(if (is In (to) ("MiddleSites"))
                         (not ("IsFriendAt" (to)))
                         (is Empty (to))
@@ -124,7 +124,7 @@
                 (move
                     (from (from))
                     (to 
-                        	("NextSiteOnTrack" ("ThrowValue") "LoopTrack")
+                        ("NextSiteOnTrack" ("ThrowValue") "LoopTrack")
                         if:(if (is In (to) ("MiddleSites"))
                             (not ("IsFriendAt" (to)))
                             (is Empty (to))
@@ -177,7 +177,7 @@
         (phase "RemovingPhase"
             (play
                 ("RollMove"
-                	(if (= ("ThrowValue") 4) 
+                    (if (= ("ThrowValue") 4) 
                         (move Remove
                             (sites Occupied by:Enemy)
                         )

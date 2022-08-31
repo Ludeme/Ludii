@@ -167,10 +167,10 @@
 )
 
 (define "InitialPawnMove"
-	    (if (is In (from) (sites Start (piece (what at:(from)))))
-	        ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
-	    )
-	)
+    (if (is In (from) (sites Start (piece (what at:(from)))))
+        ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
+    )
+)
 
 //------------------------------------------------------------------------------
 
@@ -179,22 +179,22 @@
     (equipment { 
         (board (square 8)) 
         ("ChessPawn" "Pawn"
-                (or 
-                    "InitialPawnMove"
-                    "EnPassant"
-                )
-                (then 
-                    (and
-                        ("ReplayInMovingOn" (sites Mover "Promotion"))
-                        (set Counter)
-                    )
+            (or 
+                "InitialPawnMove"
+                "EnPassant"
+            )
+            (then 
+                (and
+                    ("ReplayInMovingOn" (sites Mover "Promotion"))
+                    (set Counter)
                 )
             )
-            ("ChessRook" "Rook" (then (set Counter)) ("RememberPieceHasMoved"))
-            ("ChessKing" "King" (then (set Counter)) ("RememberPieceHasMoved"))
-            ("ChessBishop" "Bishop" (then (set Counter)))
-            ("ChessKnight" "Knight" (then (set Counter)))
-            ("ChessQueen" "Queen" (then (set Counter)))
+        )
+        ("ChessRook" "Rook" (then (set Counter)) ("RememberPieceHasMoved"))
+        ("ChessKing" "King" (then (set Counter)) ("RememberPieceHasMoved"))
+        ("ChessBishop" "Bishop" (then (set Counter)))
+        ("ChessKnight" "Knight" (then (set Counter)))
+        ("ChessQueen" "Queen" (then (set Counter)))
         
         (map "King" {(pair 1 "E1") (pair 2 "E8")})
         (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})

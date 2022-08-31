@@ -65,7 +65,7 @@
         })
         (play 
             ("RollMove" 
-            	(if (can Move (forEach Piece))
+                (if (can Move (forEach Piece))
                     (forEach Piece (then (if (= ("ThrowValue") 5) (moveAgain))))
                     (move Pass (then (if (= ("ThrowValue") 5) (moveAgain))))
                 )

@@ -38,7 +38,7 @@
         (move 
             (from)
             (to 
-            	("NextSiteOnTrack" #1)
+                ("NextSiteOnTrack" #1)
                 if:(and 
                     (not ("IsFriendAt" (to)))
                     (if (>= (count Turns) 2) 

@@ -88,10 +88,10 @@
 )
 
 (define "InitialPawnMove"
-	    (if (is In (from) (sites Start (piece (what at:(from)))))
-	        ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
-	    )
-	)
+    (if (is In (from) (sites Start (piece (what at:(from)))))
+        ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
+    )
+)
 
 //------------------------------------------------------------------------------
 
@@ -101,17 +101,17 @@
         (board (rectangle 8 9)) 
         
         ("ChessPawn" "Pawn"
-                (or 
-                    "InitialPawnMove"
-                    "EnPassant"
-                )
-                (then 
-                    (and
-                        ("ReplayInMovingOn" (sites Mover "Promotion"))
-                        (set Counter)
-                    )
+            (or 
+                "InitialPawnMove"
+                "EnPassant"
+            )
+            (then 
+                (and
+                    ("ReplayInMovingOn" (sites Mover "Promotion"))
+                    (set Counter)
                 )
             )
+        )
         
         ("ChessRook" "Rook" (then (set Counter)) ("RememberPieceHasMoved"))
         ("ChessKing" "King" (then (set Counter)) ("RememberPieceHasMoved"))
@@ -136,13 +136,13 @@
                     (to 
                         if:(and (not ("IsFriendAt" (to))) (!= (state at:(from)) 0)) 
                         (apply 
-                                (if ("IsEnemyAt" (to))
-                                    (remove 
-                                        (to) 
-                                        (then (set Counter))
-                                    )
+                            (if ("IsEnemyAt" (to))
+                                (remove 
+                                    (to) 
+                                    (then (set Counter))
                                 )
-                            ) 
+                            )
+                        ) 
                     ) 
                     (then
                         (forEach Site (sites Occupied by:Mover component:"Bishop")

@@ -53,7 +53,7 @@
                     (move 
                         (from)
                         (to 
-                        	("NextSiteOnTrack" ("ThrowValue") "HomeTrack")
+                            ("NextSiteOnTrack" ("ThrowValue") "HomeTrack")
                             "CaptureEnemyPiece"
                         )
                         (then
@@ -112,7 +112,7 @@
         })
         (play 
             ("RollMove"
-            	(or
+                (or
                     (if (and ("Sig") (= (mover) (who at:("BottomSite"))))
                         (move 
                             (from ("BottomSite"))

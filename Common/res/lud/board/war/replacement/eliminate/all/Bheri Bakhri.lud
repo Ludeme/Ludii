@@ -43,7 +43,7 @@
             (move 
                 (from)
                 (to 
-                		("NextSiteOnTrack" ("ThrowValue"))
+                    ("NextSiteOnTrack" ("ThrowValue"))
                     "CaptureEnemyPiece"
                 )
                 (then
@@ -79,8 +79,8 @@
             (place "Marker2" (sites Top))
         })
         (play 
-        	("RollMove"
-        				(if (= 1 ("ThrowValue"))
+            ("RollMove"
+                (if (= 1 ("ThrowValue"))
                     (priority {
                         (forEach Piece
                             ("Move" (is In (from) (sites Mover "Home")))

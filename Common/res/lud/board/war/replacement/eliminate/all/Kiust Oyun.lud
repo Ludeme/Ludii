@@ -14,7 +14,7 @@
         (move
             (from (from))
             (to 
-            	("NextSiteOnTrack" ("ThrowValue") "LoopTrack")
+                ("NextSiteOnTrack" ("ThrowValue") "LoopTrack")
                 if:(and {
                     (if ("IsEnemyAt" (to))
                         (= 2 ("ThrowValue"))
@@ -35,7 +35,7 @@
         (move
             (from (from))
             (to 
-            	("NextSiteOnTrack" ("ThrowValue") "Track")
+                ("NextSiteOnTrack" ("ThrowValue") "Track")
                 if:(and {
                     (if (is In (to) ("MiddleSites"))
                         (if ("IsEnemyAt" (to))

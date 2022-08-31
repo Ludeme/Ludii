@@ -39,7 +39,7 @@
                             )
                         )
                         (to 
-                        	("NextSiteOnTrack" (value) from:(from) "Track")
+                            ("NextSiteOnTrack" (value) from:(from) "Track")
                             (apply (and ("CaptureMove") (forget Value "Throws" (value))))
                         )
                     )
@@ -57,8 +57,8 @@
         phases:{
         (phase "ThrowPhase" 
             (play 
-            		("RollMove"
-            			(move Pass
+                ("RollMove"
+                    (move Pass
                         (then
                             (if (not (no Pieces Mover))
                                 (and {
@@ -91,8 +91,8 @@
             (nextPhase (= 0 (size Array (values Remembered "Throws"))) "ThrowPhase")
         )
         }
-
-    (end ("CaptureAllTeam"))
+        
+        (end ("CaptureAllTeam"))
     )
 )
 

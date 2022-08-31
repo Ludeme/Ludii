@@ -36,12 +36,12 @@
         #1
         (to if:"IsToEmptyOrEnemy"
             (apply
-                    (if ("IsEnemyAt" (to))
-                        (remove (to)
-                            (then (set Counter))
-                        )
+                (if ("IsEnemyAt" (to))
+                    (remove (to)
+                        (then (set Counter))
                     )
                 )
+            )
         )
         #2
     )
@@ -75,7 +75,7 @@
         (piece "Pawn" Each
             (or {
                 "StepForwardToEmpty"
-            	("StepToEnemy" ("Directions" {NNW NNE} {SSW SSE}))
+                ("StepToEnemy" ("Directions" {NNW NNE} {SSW SSE}))
                 }
                 (then
                     (and

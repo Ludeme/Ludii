@@ -120,24 +120,24 @@
         (board 
             <NumOfPlayers:BoardShape>
         ) 
-
+        
         ("ChessPawn" "Pawn"
             (or 
                 (if (is In (from) (sites Start (piece (what at:(from)))))
                     ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
                 )
                 "EnPassant"
-                )
-                (then
-                    (and
-                        (if (is In (last To) (sites Mover "Promotion")) 
-                            (moveAgain)
-                        )
-                        (set Counter)
+            )
+            (then
+                (and
+                    (if (is In (last To) (sites Mover "Promotion")) 
+                        (moveAgain)
                     )
+                    (set Counter)
                 )
+            )
         )
-
+        
         ("ChessRook" "Rook" (then (set Counter)) ("RememberPieceHasMoved"))
         ("ChessKing" "King" (then (set Counter)) ("RememberPieceHasMoved"))
         ("ChessBishop" "Bishop" (then (set Counter)))

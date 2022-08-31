@@ -155,7 +155,7 @@
                         ("CaptureEnemyAndPromote")
                     ) 
                 )
-           })
+            })
         )
         
         (piece "WizardStork" Each
@@ -402,7 +402,7 @@
                 ("DoubleStep" Forward (directions Cell from:(last To) to:(last From)))
                 ("HopMove" Forward)
                 ("SlideMove" (difference Adjacent Forward))
-             })
+            })
         )
         
         (piece "Queen" Each ("SlideMove" Adjacent))
@@ -477,7 +477,7 @@
                         ("CaptureEnemyAndPromote")
                     ) 
                 )
-           })
+            })
         )
         
         (piece "WhiteHorse" Each ("SlideMove" (directions {Forwards Backward})))
@@ -518,7 +518,7 @@
                 ("StepMove" FR)
                 ("SlideMove" (directions {Forward FL Backward}))
                 ("SlideMove" (directions {Rightward Leftward}) (between (max 2)))
-           })
+            })
         )
         
         (piece "RightChariot" Each

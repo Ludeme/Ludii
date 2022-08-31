@@ -68,7 +68,7 @@
                             (move 
                                 (from)
                                 (to 
-                                		("NextSiteOnTrack" ("ThrowValue")) 
+                                    ("NextSiteOnTrack" ("ThrowValue")) 
                                     "CaptureEnemyPiece"
                                 )
                             )
@@ -79,7 +79,7 @@
                             (move 
                                 (from)
                                 (to 
-                                		("NextSiteOnTrack" (+ (value Player Mover) ("ThrowValue"))) 
+                                    ("NextSiteOnTrack" (+ (value Player Mover) ("ThrowValue"))) 
                                     "CaptureEnemyPiece"
                                 )
                                 (then ("ReinitTabule"))
@@ -99,7 +99,7 @@
         })
         (play 
             ("RollMove" 
-            	(if 
+                (if 
                     (= (mapEntry (count Pips)) 1)
                     (or
                         (move Pass 

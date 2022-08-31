@@ -208,16 +208,16 @@
         )
         (phase "PlayingPips"
             (play 
-            	("RollEachNewTurnMove"
-            		(or (forEach Piece "MovePieceWithStoredPips") (forEach Piece "MoveGonagasWithStoredPips" Shared))
+                ("RollEachNewTurnMove"
+                    (or (forEach Piece "MovePieceWithStoredPips") (forEach Piece "MoveGonagasWithStoredPips" Shared))
                 )
             )
             (nextPhase Mover (= 0 (size Array (values Remembered "Pips"))) "Playing")
         )
         (phase "Playing"
             (play 
-            	("RollEachNewTurnMove"
-            		(or (forEach Piece) (forEach Piece Shared))
+                ("RollEachNewTurnMove"
+                    (or (forEach Piece) (forEach Piece Shared))
                 )
             )
         )

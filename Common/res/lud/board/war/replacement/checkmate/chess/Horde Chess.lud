@@ -85,23 +85,23 @@
         (board (square 8)) 
         
         ("ChessPawn" "Pawn"
-                (or 
-                        (if (and 
-                                (= (who at:(from)) P1) 
-                                (is In (from) (sites Start (piece (what at:(from)))))
-                            )
-                            ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
-                        )
-                    "EnPassant"
-                )
-                (then 
-                    (and
-                        ("ReplayInMovingOn" (sites Mover "Promotion"))
-                        (set Counter)
+            (or 
+                (if (and 
+                        (= (who at:(from)) P1) 
+                        (is In (from) (sites Start (piece (what at:(from)))))
                     )
+                    ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
+                )
+                "EnPassant"
+            )
+            (then 
+                (and
+                    ("ReplayInMovingOn" (sites Mover "Promotion"))
+                    (set Counter)
                 )
             )
-
+        )
+        
         ("ChessRook" "Rook" (then (set Counter)) ("RememberPieceHasMoved"))
         ("ChessKing" "King" (then (set Counter)) ("RememberPieceHasMoved"))
         ("ChessBishop" "Bishop" (then (set Counter)))
@@ -171,7 +171,7 @@
                 (result P2 Win)
             ) 
             (if (or (no Moves Mover) (= (counter) 100)) (result Mover Draw)) 
-         })
+        })
     )
 )
 

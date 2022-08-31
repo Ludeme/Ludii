@@ -2,10 +2,10 @@
 
 (define "SiteToMoveOnTrack" 
     (if (= (state at:(from)) 0)
-    	("NextSiteOnTrack" ("ThrowValue") "Track")
+        ("NextSiteOnTrack" ("ThrowValue") "Track")
         (if (= (state at:(from)) 1)
-        	("NextSiteOnTrack" ("ThrowValue") "TrackLeft")
-        	("NextSiteOnTrack" ("ThrowValue") "TrackRight")
+            ("NextSiteOnTrack" ("ThrowValue") "TrackLeft")
+            ("NextSiteOnTrack" ("ThrowValue") "TrackRight")
         )
     )
 )

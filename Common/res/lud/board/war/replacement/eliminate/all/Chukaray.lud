@@ -93,7 +93,7 @@
             (move 
                 (from (from) level:(level))
                 (to
-                	("NextSiteOnTrack" ("ThrowValue") from:(from))
+                    ("NextSiteOnTrack" ("ThrowValue") from:(from))
                     if:True
                     (apply
                         (and
@@ -131,7 +131,7 @@
         })
         (play 
             ("RollMove"
-            	(if ("NotThrow0") 
+                (if ("NotThrow0") 
                     (forEach Piece)
                     (if (= ("Centre") (where "Stick" Mover))
                         (if ("IsNotOffBoard" ("NearestHomeWithStick" (mover)))

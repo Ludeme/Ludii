@@ -2,8 +2,8 @@
 
 (define "SiteToMoveOnTrack" 
     (if (= 0 (state at:(from)))
-    	("NextSiteOnTrack" ("ThrowValue") "TrackCW")
-    	("NextSiteOnTrack" ("ThrowValue") "TrackCCW")
+        ("NextSiteOnTrack" ("ThrowValue") "TrackCW")
+        ("NextSiteOnTrack" ("ThrowValue") "TrackCCW")
     )
 )
 
@@ -76,7 +76,7 @@
         })
         (play 
             ("RollMove"
-            	(if (can Move (if (!= ("ThrowValue") 0) (forEach Piece)))
+                (if (can Move (if (!= ("ThrowValue") 0) (forEach Piece)))
                     (forEach Piece (then (if (!= ("ThrowValue") 0) (moveAgain))))
                     (move Pass (then (if (!= ("ThrowValue") 0) (moveAgain))))
                 )
@@ -93,8 +93,8 @@
             )
         )
         (end {
-        	("CaptureAll" P1)
-        	("CaptureAll" P2)
+            ("CaptureAll" P1)
+            ("CaptureAll" P2)
         })
     )
 )

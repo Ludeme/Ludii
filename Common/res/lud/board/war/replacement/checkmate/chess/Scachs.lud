@@ -99,10 +99,10 @@
 )
 
 (define "InitialPawnMove"
-	    (if (is In (from) (sites Start (piece (what at:(from)))))
-	        ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
-	    )
-	)
+    (if (is In (from) (sites Start (piece (what at:(from)))))
+        ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
+    )
+)
 
 //------------------------------------------------------------------------------
 
@@ -112,17 +112,17 @@
         (board (square 8)) 
         
         ("ChessPawn" "Pawn"
-                (or 
-                    "InitialPawnMove"
-                    "EnPassant"
-                )
-                (then
-                        (if (and ("IsOffBoard" (where "Queen" Mover)) (is In (last To) (sites Mover "Promotion")))
-                            (promote (last To) (piece {"Queen"}) Mover)
-                        )
-                    )
+            (or 
+                "InitialPawnMove"
+                "EnPassant"
             )
-
+            (then
+                (if (and ("IsOffBoard" (where "Queen" Mover)) (is In (last To) (sites Mover "Promotion")))
+                    (promote (last To) (piece {"Queen"}) Mover)
+                )
+            )
+        )
+        
         ("ChessRook" "Rook" ~ ("RememberPieceHasMoved"))
         (piece "King" Each 
             (or

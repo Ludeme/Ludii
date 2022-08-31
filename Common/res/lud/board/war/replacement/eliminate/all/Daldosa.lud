@@ -53,8 +53,8 @@
             (place "Minus2" (sites {20..27 32..35}))
         })
         (play 
-        		("RollEachNewTurnMove"
-        				(forEach Die 
+            ("RollEachNewTurnMove"
+                (forEach Die 
                     replayDouble:(and (= (face 36) 1) (= (face 37) 1))
                     (forEach Piece
                         (then 

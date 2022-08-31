@@ -73,12 +73,12 @@
         (board (square 12))
         <Variant:dice>
         ("ChessPawn" "Pawn" ~
-                (then     
-                	(if (is In (last To) (sites Mover "Promotion")) 
+            (then     
+                (if (is In (last To) (sites Mover "Promotion")) 
                     (promote (last To) (piece "PromotedPiece"))
                 )
-                )
             )
+        )
         ("ChessBishop" "Crocodile")
         (piece "Eagle" Each
             (move (from)
@@ -126,12 +126,12 @@
                         (to
                             if:(not ("IsFriendAt" (to))) 
                             (apply 
-                                    (if ("IsEnemyAt" (to))
-                                        (remove 
-                                            (to) 
-                                        )
+                                (if ("IsEnemyAt" (to))
+                                    (remove 
+                                        (to) 
                                     )
-                                ) 
+                                )
+                            ) 
                         )
                     )
                 )

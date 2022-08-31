@@ -92,25 +92,25 @@
 )
 
 (define "Castling"
-        (if (and 
-                ("HasNeverMoved" "King")
-                (not ("IsInCheck" "King" Mover)) 
-            )
-            (or
-                (if (and 
-                        ("HasNeverMoved" "RookLeft")
-                        (can Move ("CastleRook" "RookLeft" E 3 (is Empty (to))))
-                    )
-                    "BigCastling"
+    (if (and 
+            ("HasNeverMoved" "King")
+            (not ("IsInCheck" "King" Mover)) 
+        )
+        (or
+            (if (and 
+                    ("HasNeverMoved" "RookLeft")
+                    (can Move ("CastleRook" "RookLeft" E 3 (is Empty (to))))
                 )
-                (if (and 
-                        ("HasNeverMoved" "RookRight")
-                        (can Move ("CastleRook" "RookRight" W 2 (is Empty (to))))
-                    )
-                    "SmallCastling"
-                )
+                "BigCastling"
             )
-        )		
+            (if (and 
+                    ("HasNeverMoved" "RookRight")
+                    (can Move ("CastleRook" "RookRight" W 2 (is Empty (to))))
+                )
+                "SmallCastling"
+            )
+        )
+    )		
 )
 
 (define "SetEnPassantLocation"

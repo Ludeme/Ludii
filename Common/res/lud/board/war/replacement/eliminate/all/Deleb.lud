@@ -65,7 +65,7 @@
                 )
             )
             (to 
-            		("NextSiteOnTrack" (value) from:(from))
+                ("NextSiteOnTrack" (value) from:(from))
                 if:(and
                     (not ("IsFriendAt" (to)))
                     (or 
@@ -105,7 +105,7 @@
             )
         )
         (to 
-        		("NextSiteOnTrack" ("ThrowValue") from:(from))
+            ("NextSiteOnTrack" ("ThrowValue") from:(from))
             if:(and
                 (not ("IsFriendAt" (to)))
                 (or 
@@ -174,7 +174,7 @@
         (phase "StageOne" 
             (play 
                 ("RollMove"
-                	(move Pass)
+                    (move Pass)
                     (then
                         (if (or 
                                 (= ("ThrowValue") 6)
@@ -194,7 +194,7 @@
         (phase "StageTwo" 
             (play 
                 ("RollMove"
-                	(move Pass)
+                    (move Pass)
                     (then
                         (if (or 
                                 (= 0 ("ThrowThreeDice"))
@@ -220,7 +220,7 @@
         (phase "StageThree" 
             (play 
                 ("RollMove"
-                	(move Pass)
+                    (move Pass)
                     (then
                         (if 
                             (= 0 ("ThrowTwoDice"))
@@ -240,7 +240,7 @@
             (nextPhase Mover (= 0 ("ThrowTwoDice")) "StageOne")
             (nextPhase Mover (= 2 ("ThrowTwoDice")) "StageTwo")
             (nextPhase Mover (= 1 ("ThrowTwoDice")) "PlayingScore")
-         }
+            }
         )
         
         (phase "PlayingScore" 
