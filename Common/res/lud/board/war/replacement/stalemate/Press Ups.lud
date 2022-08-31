@@ -10,8 +10,7 @@
         (piece "Disc" Neutral) 
         (regions P1 (difference (union (sites Bottom) (sites Top)) (union (sites Right) (sites Left))))
         (regions P2 (difference (union (sites Right) (sites Left)) (union (sites Bottom) (sites Top))))
-        }
-    ) 
+    }) 
     
     (rules 
         (start {
@@ -23,8 +22,7 @@
         phases:{
         (phase "Init" 
             (play 
-                (move
-                    Select
+                (move Select
                     (from "AllSitesWithoutOwnedPiece") 
                     (then (remove (last To)))
                 )
@@ -33,8 +31,7 @@
         )
         (phase "Remove" 
             (play 
-                (move
-                    Select
+                (move Select
                     (from 
                         (sites Around (last To)) 
                         if:(is Occupied (from))
@@ -45,18 +42,16 @@
         )
         }
         
-        (end 
-            {
-            (if (no Pieces P1) (result P1 Win))
-            (if (no Pieces P2) (result P2 Win))
+        (end {
+            ("CaptureAll" P1)
+            ("CaptureAll" P2)
             (if (no Moves Next)
                 (byScore {
                     (score P1 (count Pieces P1)) 
                     (score P2 (count Pieces P2))
                 })
             )
-            }
-        )
+        })
     )
 )
 
