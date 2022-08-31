@@ -18,8 +18,7 @@
 )
 
 (define "CaptureForwardDiagonal"
-    (move
-        Step 
+    (move Step 
         (directions {FR FL}) 
         (to 
             if:("IsEnemyAt" (to)) 
@@ -60,8 +59,7 @@
             )
         )
         (piece "Rook" Each
-            (move
-                Hop 
+            (move Hop 
                 Diagonal 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
@@ -70,8 +68,7 @@
             )
         )
         (piece "Knight" Each
-            (move
-                Leap 
+            (move Leap 
                 "KnightWalk" 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
@@ -80,8 +77,7 @@
             )
         )
         (piece "Elephant" Each
-            (move
-                Slide 
+            (move Slide 
                 Orthogonal 
                 (between if:(is Empty (between))) 
                 (to 
@@ -91,8 +87,7 @@
             )
         ) 
         (piece "King_noCross" Each
-            (move
-                Step 
+            (move Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndAddScore" 
@@ -114,8 +109,7 @@
         })
         
         (play 
-            (do (if ("NewTurn") (roll))
-                next:"PlayAPiece"
+        	("RollEachNewTurnMove" "PlayAPiece"
                 (then 
                     (if 
                         (can Move "PlayAPiece")
