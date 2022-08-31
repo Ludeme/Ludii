@@ -1,6 +1,6 @@
 (define "ThrowValue" (mapEntry "ThrowDiceValue" (count Pips)))
 
-(define "SiteToMoveOnTrack" (trackSite Move steps:("ThrowValue")))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" ("ThrowValue")))
 
 (define "ActivatePiece" (if (= (state at:(last To)) 1) (set State at:(last To) 0)))
 
@@ -20,10 +20,10 @@
             ("ActivatedPiece") 
             (and (= (count Pips) (mapEntry "Sir" (mover))) ("InactivePiece"))
         )
-        (if (!= "SiteToMoveOnTrack" Off)
+        (if ("IsNotOffBoard" "SiteToMoveOnTrack")
             (if (or
                     (is In "SiteToMoveOnTrack" (sites Empty))
-                    (is Enemy (who at:"SiteToMoveOnTrack"))
+                    ("IsEnemyAt" "SiteToMoveOnTrack")
                 )
                 (move 
                     (from)
@@ -54,7 +54,7 @@
         (piece "Stick" P1 ("PieceMove"))
         (piece "Marker" P2 ("PieceMove"))
         (regions "AllSites" (sites Board))
-        (dice d:2 from:0 num:6)
+        ("StickDice" 6)
         (map "ThrowDiceValue" {(pair 0 6) (pair 1 5) (pair 2 0) (pair 3 3) (pair 4 0) (pair 5 5) (pair 6 6)})
         (map "Sir" {(pair 1 1) (pair 2 5)})
     })
@@ -64,17 +64,14 @@
             (place "Marker2" (sites Top) state:1)
         })
         (play 
-            (do 
-                (roll) 
-                next:(if (can Move (forEach Piece))
+            ("RollMove" 
+            	(if (can Move (forEach Piece))
                     (forEach Piece (then (if (= ("ThrowValue") 5) (moveAgain))))
                     (move Pass (then (if (= ("ThrowValue") 5) (moveAgain))))
                 )
             )
         )
-        (end 
-            (if (no Pieces Next) (result Mover Win))
-        )
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -101,7 +98,6 @@
         (piece Colour "Die" state:1 fillColour:(colour Black))
         (piece Scale "Stick" 0.5)
         (piece Scale "Marker" 0.5)
-        
     })
     
     (ai
