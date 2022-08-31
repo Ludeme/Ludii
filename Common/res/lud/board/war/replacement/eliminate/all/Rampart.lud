@@ -41,12 +41,10 @@
 
 (game "Rampart"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (square <Size>) use:Vertex)
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
         (start {
             (place "Disc1" 
@@ -76,12 +74,7 @@
                 ("Remove")
             )
         )
-        (end 
-            (if 
-                (no Pieces Next) 
-                (result Next Loss)
-            )
-        )
+        (end ("CaptureAll" Next))
     )
 )
 
