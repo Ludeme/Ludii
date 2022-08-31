@@ -27,8 +27,7 @@
     (equipment { 
         (board (hex 5)) 
         (piece "Marker" Each 
-            (move
-                Slide
+            (move Slide
                 Orthogonal
                 (to 
                     (apply 
@@ -53,8 +52,7 @@
             )
         )
         (map "PlayerPhase" {(pair 1 1) (pair 0 2) (pair 2 3)})
-        }
-    ) 
+    }) 
     (rules
         (start {
             (place "Marker1" (expand origin:(coord "A5") steps:2))
@@ -63,8 +61,7 @@
         })
         (play
             (if "SameTurn"
-                (move 
-                    Add 
+                (move Add 
                     (piece ("Bunny"))
                     (to (sites Empty))
                     (then (set NextPlayer (player "Candidate")))
