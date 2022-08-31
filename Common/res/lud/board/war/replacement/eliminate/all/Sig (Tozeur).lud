@@ -1,4 +1,4 @@
-(define "SiteToMoveOnTrack" (trackSite Move steps:(count Pips)))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" (count Pips)))
 
 (define "ActivatePiece" (if (= (state at:(last To)) 1) (set State at:(last To) 0)))
 
@@ -38,10 +38,10 @@
                     ("ActivatedPiece") 
                     (and (= (count Pips) 1) ("InactivePiece"))
                 )
-                (if (!= "SiteToMoveOnTrack" Off)
+                (if ("IsNotOffBoard" "SiteToMoveOnTrack")
                     (if (or
                             (is In "SiteToMoveOnTrack" (sites Empty))
-                            (is Enemy (who at:"SiteToMoveOnTrack"))
+                            ("IsEnemyAt" "SiteToMoveOnTrack")
                         )
                         (move 
                             (from)
@@ -56,7 +56,7 @@
             )
         )
         (regions "AllSites" (sites Board))
-        (dice d:2 from:0 num:6)  
+        ("StickDice" 6)  
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
     })
@@ -65,9 +65,9 @@
             (place "Stick1" (sites Bottom) state:1)
             (place "Stick2" (sites Top) state:1)
         })
-        (play (do (roll) next:(forEach Piece)))
+        (play ("RollMove" (forEach Piece)))
         (end {
-            (if (no Pieces Next) (result Mover Win))
+            ("CaptureAll" Next)
             (if ("AllPieceInOpponentHome")
                 (result Mover Draw)
             )
