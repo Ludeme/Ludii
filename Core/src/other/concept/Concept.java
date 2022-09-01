@@ -356,6 +356,20 @@ public enum Concept
 		Concept.NumPlayers
 	),
 	
+	/** Players are using directions in their definitions. */
+	PlayersWithDirections
+	(
+		"1.2.2",
+		798,
+		"Players are using directions.",
+		ConceptType.Properties,
+		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
+		true,
+		Concept.Players
+	),
+	
 	/** */
 	Cooperation
 	(
@@ -1845,21 +1859,21 @@ public enum Concept
 	/** Use biased dice. */
 	BiasedDice
 	(
-		"2.2.6",
+		"2.2.5.5",
 		113, 
-		"Use biased dice.",
+		"Game is played with biased dice.",
 		ConceptType.Component, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
-		Concept.Component
+		Concept.Dice
 	),
 	
 	/** A card is included in the components. */
 	Card
 	(
-		"2.2.7",
+		"2.2.6",
 		114, 
 		"Game is played with cards.",
 		ConceptType.Component,
@@ -1873,7 +1887,7 @@ public enum Concept
 	/** A domino is included in the components. */
 	Domino
 	(
-		"2.2.8",
+		"2.2.7",
 		115, 
 		"Game is played with dominoes.",
 		ConceptType.Component, 
@@ -1887,7 +1901,7 @@ public enum Concept
 	/** A large piece is included in the components. */
 	LargePiece
 	(
-		"2.2.9",
+		"2.2.8",
 		116, 
 		"Game is played with large pieces.",
 		ConceptType.Component, 
@@ -1901,7 +1915,7 @@ public enum Concept
 	/** Use tiles. */
 	Tile
 	(
-		"2.2.10",
+		"2.2.9",
 		117, 
 		"Game is played with tiles.",
 		ConceptType.Component, 
@@ -1915,7 +1929,7 @@ public enum Concept
 	/** Number of component types. */
 	NumComponentsType
 	(
-		"2.2.11",
+		"2.2.10",
 		118, 
 		"Number of component types.",
 		ConceptType.Component, 
@@ -1929,7 +1943,7 @@ public enum Concept
 	/** Average number of component types per player. */
 	NumComponentsTypePerPlayer
 	(
-		"2.2.12",
+		"2.2.11",
 		119, 
 		"Average number of component types per player.",
 		ConceptType.Component, 
@@ -1943,7 +1957,7 @@ public enum Concept
 	/** Number of dice. */
 	NumDice
 	(
-		"2.2.13",
+		"2.2.12",
 		120, 
 		"Number of dice.",
 		ConceptType.Component, 
