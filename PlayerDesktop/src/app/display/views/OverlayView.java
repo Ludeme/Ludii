@@ -251,7 +251,7 @@ public final class OverlayView extends View
 			if (context.winners().size() > 0)
 				message = "Player " + context.winners().get(0) + " has won";
 
-			final Font font = new Font("Arial", Font.BOLD, 56);
+			final Font font = new Font("Arial", Font.BOLD, 48);
 			g2d.setFont(font);
 			g2d.setColor(Color.RED);
 			
