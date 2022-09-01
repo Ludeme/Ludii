@@ -1,11 +1,9 @@
 (game "Line and Cross" 
     (players <Version:numPlayers>) 
-    (equipment 
-        { 
+    (equipment { 
         (board <Board:type> use:Edge)
         (piece "Marker" Shared)
-        }
-    ) 
+   }) 
     
     (rules  	 
         (start
@@ -141,7 +139,6 @@
         (player Colour Shared (colour 255 200 0))
         (board Style PenAndPaper replaceComponentsWithFilledCells:True)
         (show Edges ThinDotted (colour 127 127 127))
-        
     })
     (ai
         "Line and Cross_ai"

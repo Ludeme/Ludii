@@ -1,10 +1,8 @@
 (game "Nein Ari" 
     (players 1)
-    (equipment 
-        { 
+    (equipment { 
         (board <Board:type> use:Edge)
-        }
-    ) 
+     }) 
     
     (rules  	 
         (start 
@@ -12,8 +10,7 @@
         )
         
         (play 
-            (move
-                Remove
+            (move Remove
                 (sites Occupied by:Mover on:Edge) 
             )
         )
@@ -113,7 +110,6 @@
         (player Colour P1 (colour Green))
         (board Style PenAndPaper replaceComponentsWithFilledCells:True)
         (show Edges ThinDotted (colour 127 127 127))
-        
     })
     
     (ai

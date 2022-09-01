@@ -1,19 +1,16 @@
 (game "Ciri Amber" 
     (players <Version:numPlayers>) 
-    (equipment 
-        { 
+    (equipment { 
         (board <Board:type> use:Edge)
         (piece "Marker" Neutral) 
-        }
-    ) 
+    }) 
     
     (rules
         (start
             <Board:start>
         )
         (play
-            (move
-                Remove
+            (move Remove
                 (sites Occupied by:Neutral)
                 (then 
                     (addScore Mover (cost Edge at:(last To)))
