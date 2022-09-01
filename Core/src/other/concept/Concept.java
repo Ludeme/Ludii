@@ -1782,8 +1782,64 @@ public enum Concept
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true,
+		false,
 		Concept.Component
+	),
+	
+	/** A D2 is included in the components. */
+	DiceD2
+	(
+		"2.2.5.1",
+		794, 
+		"Game is played with D2 dice.",
+		ConceptType.Component, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.Dice
+	),
+	
+	/** A D3 is included in the components. */
+	DiceD3
+	(
+		"2.2.5.2",
+		795, 
+		"Game is played with D3 dice.",
+		ConceptType.Component, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.Dice
+	),
+	
+	/** A D4 is included in the components. */
+	DiceD4
+	(
+		"2.2.5.3",
+		796, 
+		"Game is played with D4 dice.",
+		ConceptType.Component, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.Dice
+	),
+	
+	/** A D6 is included in the components. */
+	DiceD6
+	(
+		"2.2.5.4",
+		797, 
+		"Game is played with D6 dice.",
+		ConceptType.Component, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.Dice
 	),
 	
 	/** Use biased dice. */
