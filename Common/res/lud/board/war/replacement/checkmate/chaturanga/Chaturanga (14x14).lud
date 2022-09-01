@@ -1,91 +1,42 @@
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
-)
-
-(define "CaptureToPiece"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove (to))
-        )
-    ) 
-)
-
-//------------------------------------------------------------------------------
-
 (game "Chaturanga (14x14)"
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 14)) 
-        (piece "King" Each
-            (move
-                Slide 
-                (to 
-                    if:("IsEnemyAt" (to))
-                    "CaptureToPiece"
-                ) 
-            )		
-        )
-        (piece "Prince" Each
-            (move
-                Slide 
+        ("ChessQueen" "King")
+        (piece "Prince" Each 
+            ("SlideCapture" ~
                 (between
                     (max 6)
                     if:(is Empty (between))
                 )
-                (to 
-                    if:("IsEnemyAt" (to))
-                    "CaptureToPiece"
-                ) 
             )		
         )
         (piece "Bishop" Each // Minister
-            (move
-                Slide 
+            ("SlideCapture" ~
                 (between
                     (max 6)
                     if:(is Empty (between))
                 )
-                (to 
-                    if:("IsEnemyAt" (to))
-                    "CaptureToPiece"
-                ) 
-            )			
+            )	
         ) 
         (piece "Queen" Each // Military Leader
-            (move
-                Slide 
+            ("SlideCapture" ~
                 (between
                     (max 6)
                     if:(is Empty (between))
                 )
-                (to 
-                    if:("IsEnemyAt" (to))
-                    "CaptureToPiece"
-                ) 
-            )			
+            )
         ) 
         (piece "Elephant" Each
             (or {
-                (move
-                    Slide 
+                ("SlideCapture"
                     Forward
                     (between
                         (max 5)
                         if:(is Empty (between))
                     )
-                    (to 
-                        if:("IsEnemyAt" (to))
-                        "CaptureToPiece"
-                    ) 
                 )
-                (move
-                    Step 
-                    (directions {BR BL})
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        "CaptureToPiece" 
-                    )
-                )
+                ("StepToNotFriend" (directions {BR BL}))
                 (forEach Direction 
                     Forward 
                     (between (range 1 5))
@@ -101,7 +52,11 @@
                                                 (if (is Mover P1) (directions {SW SE}) (directions {NW NE}))
                                                 (to 
                                                     if:(not ("IsFriendAt" (to)))
-                                                    "CaptureToPiece"
+                                                    (apply 
+                                                        (if ("IsEnemyAt" (to))
+                                                            (remove (to))
+                                                        )
+                                                    ) 
                                                 ) 
                                             )
                                         )
@@ -114,108 +69,45 @@
                 
             })
         ) 
-        (piece "Rook" Each // Cart
-            (move
-                Slide 
-                Orthogonal
-                (to 
-                    if:("IsEnemyAt" (to))
-                    "CaptureToPiece"
-                ) 
-            )			
-        ) 
-        (piece "Horse" Each
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(is Empty (to))
-                    "CaptureToPiece"
-                ) 
-            )		
-        )
+        ("ChessRook" "Rook") // Cart
+        ("ChessKnight" "Horse")
         (piece "Wrench" Each // Machinist 
             (or 
-                (move
-                    Slide 
+                ("SlideCapture"
                     Forward
                     (between
                         (max 4)
                         if:(is Empty (between))
                     )
-                    (to 
-                        if:("IsEnemyAt" (to))
-                        "CaptureToPiece"
-                    ) 
                 )
-                (move
-                    Step 
-                    (directions {FR FL Backward})
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        "CaptureToPiece" 
-                    )
-                )
+                ("StepToNotFriend" (directions {FR FL Backward}))
             )		
         ) 
         (piece "Archer" Each
             (or 
-                (move
-                    Slide 
+                ("SlideCapture"
                     Forward
                     (between
                         (max 3)
                         if:(is Empty (between))
                     )
-                    (to 
-                        if:("IsEnemyAt" (to))
-                        "CaptureToPiece"
-                    ) 
                 )
-                (move
-                    Step 
-                    (directions {FR FL Backward})
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        "CaptureToPiece" 
-                    )
-                )
+                ("StepToNotFriend" (directions {FR FL Backward}))
             )			
         )
         (piece "Spear" Each
             (or 
-                (move
-                    Slide 
+                ("SlideCapture"
                     Forward
                     (between
                         (max 2)
                         if:(is Empty (between))
                     )
-                    (to 
-                        if:("IsEnemyAt" (to))
-                        "CaptureToPiece"
-                    ) 
                 )
-                (move
-                    Step 
-                    (directions {FR FL Backward})
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        "CaptureToPiece" 
-                    )
-                )
+                ("StepToNotFriend" (directions {FR FL Backward}))
             )		
         )
-        (piece "Sword" Each
-            (move
-                Step 
-                (directions {Forward FR FL Backward})
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece" 
-                )
-            )		
-        )
+        (piece "Sword" Each ("StepToNotFriend" (directions {Forward FR FL Backward})))
         (hand Each size:11)
         (regions P1 (expand (sites Bottom) steps:6))
         (regions P2 (expand (sites Top) steps:6))
@@ -244,23 +136,14 @@
         
         (phase "Play"
             (play 
-                (do 
-                    (forEach Piece)
-                    
+                (do (forEach Piece)
                     ifAfterwards:(not ("IsInCheck" "King" Mover))
                 )
             )
         )
         
-        }   
-        (end 
-            (if (and 
-                    ("IsInCheck" "King" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
-        )
+        }  
+        (end ("Checkmate" "King"))
     )
 )
 
@@ -274,10 +157,10 @@
         (rules "14x14 board. 32 pieces per player. Pieces move as follows: King (x1): Moves any distance orthogonally or diagonally; Crown Prince (x1): moves up to six spaces orthogonally or diagonally; Minister (x1): moves up to six spaces orthogonally or diagonally;  Military leader (x1): moves up to six spaces orthogonally or diagonally; Elephant (x2): moves forward orthogonally up to five spaces with the possibility of then moving one space backward diagonally; Cart (x2): moves any distance orthogonally; Horse (x4): moves one space orthogonally and then one space diagonally, leaping over any intervening pieces; Machinist (x4): moves forward orthogonally up to four spaces, forward diagonally one space, or backward orthogonally one space; Archer (x4): moves forward orthogonally up to three spaces, forward diagonally one space, or backward orthogonally one space; Spearmen (x4): moves forward orthogonally up to two spaces, forward diagonally one space, or backward orthogonally one space; Swordsmen (x4): forward one space orthogonally or diagonally or backward one space orthogonally. Players place their pieces on their half of the board in any arrangement they wish. When a piece moves to a space occupied by an opponent's piece, the opponent's piece is captured. If the King can be captured by the opponent on their next turn, it is in check and must not be in check at the end of the player's turn. If this is not possible, the player loses. ")
         (source "Bock-Raming 2001.")
         (id "1453")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in India, from around 1497 to 1540.")
+        (origin "This game was played in India, from around 1497 to 1540.")
         }
     )
     

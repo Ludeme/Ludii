@@ -1,7 +1,3 @@
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
-)
-
 (define "HasNeverMoved"
     (= (state at:(mapEntry #1 (mover))) 1) 
 )
@@ -19,22 +15,11 @@
     ) 
 )
 
-(define "CaptureToPieceAndResetCounter"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove 
-                (to) 
-                (then (set Counter))
-            )
-        )
-    ) 
-)
-
 (define "KingNotCheckedAndToEmpty"
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )  
+    ) 
 )
 
 (define "DecideToCastle"
@@ -77,19 +62,33 @@
     ("DecideToCastle" "King" W 2 "KingNotCheckedAndToEmpty" (then ("CastleRook" "RookLeft" E 3 True)))
 )
 
-(define "SetEnPassantLocation"
-    (then 
-        (set Pending (ahead (last To) Backward))
+(define "Castling"
+    (if (and 
+            ("HasNeverMoved" "King")
+            (not ("IsInCheck" "King" Mover)) 
+        )
+        (or
+            (if (and 
+                    ("HasNeverMoved" "RookLeft")
+                    (can Move ("CastleRook" "RookLeft" E 3 (is Empty (to))))
+                )
+                "BigCastling"
+            )
+            (if (and 
+                    ("HasNeverMoved" "RookRight")
+                    (can Move ("CastleRook" "RookRight" W 2 (is Empty (to))))
+                )
+                "SmallCastling"
+            )
+        )
     )
 )
 
-(define "DoubleStep"
-    (move
-        Slide 
-        Forward 
-        (between (exact 2) if:(is Empty (between))) 
-        (to if:(is Empty (to))) 
-        "SetEnPassantLocation"
+//**** Defines used to model the extra Pawn moves. ****
+
+(define "SetEnPassantLocation"
+    (then 
+        (set Pending (ahead (last To) Backward))
     )
 )
 
@@ -101,8 +100,7 @@
 )
 
 (define "EnPassant"
-    (move
-        Step 
+    (move Step 
         (directions {FR FL}) 
         (to if:"InLocationEnPassant") 
         (then 
@@ -113,21 +111,16 @@
     )
 )
 
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
+(define "InitialPawnMove"
+    (if (is In (from) (sites Start (piece (what at:(from)))))
+        ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
     )
 )
 
 //------------------------------------------------------------------------------
 
 (game "Dragonchess" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board 
             (merge
@@ -136,87 +129,38 @@
             )
         ) 
         
-        (piece "Pawn" Each 
-            (or {
-                (if (is In (from) (sites Start (piece (what at:(from)))))
-                    "DoubleStep"
-                )
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
+        ("ChessPawn" "Pawn"
+            (or 
+                "InitialPawnMove"
                 "EnPassant"
-                }
-                (then
-                    (and
-                        (if (is In (last To) (sites Mover "Promotion")) 
-                            (moveAgain)
-                        )
-                        (set Counter)
-                    )
+            )
+            (then 
+                (and
+                    ("ReplayInMovingOn" (sites Mover "Promotion"))
+                    (set Counter)
                 )
             )
         )
-        
-        (piece "Rook" Each 
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-                "RememberPieceHasMoved"
-            )
-        )
-        (piece "King" Each 
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-                "RememberPieceHasMoved"
-            )
-        )
-        (piece "Bishop" Each 
-            (move
-                Slide 
-                Diagonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-            )
-        )
-        (piece "Knight" Each 
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-            )
-        )
-        (piece "Queen" Each 
-            (move
-                Slide 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-            ) 
-        )
+        ("ChessRook" "Rook" (then (set Counter)) ("RememberPieceHasMoved"))
+        ("ChessKing" "King" (then (set Counter)) ("RememberPieceHasMoved"))
+        ("ChessBishop" "Bishop" (then (set Counter)))
+        ("ChessKnight" "Knight" (then (set Counter)))
+        ("ChessQueen" "Queen" (then (set Counter)))
         
         (piece "Dragon" Each 
-            (move
-                Slide 
+            (move Slide 
                 (between 
                     (max 3)
                     if:(is Empty (between))
                 )
                 (to 
                     if:("IsEnemyAt" (to)) 
-                    "CaptureToPieceAndResetCounter"
+                    (apply 
+                        (remove 
+                            (to) 
+                            (then (set Counter))
+                        )
+                    ) 
                 ) 
             ) 
         )
@@ -241,25 +185,7 @@
                 (do 
                     (or 
                         (forEach Piece)
-                        (if (and 
-                                ("HasNeverMoved" "King")
-                                (not ("IsInCheck" "King" Mover)) 
-                            )
-                            (or
-                                (if (and 
-                                        ("HasNeverMoved" "RookLeft")
-                                        (can Move ("CastleRook" "RookLeft" E 3 (is Empty (to))))
-                                    )
-                                    "BigCastling"
-                                )
-                                (if (and 
-                                        ("HasNeverMoved" "RookRight")
-                                        (can Move ("CastleRook" "RookRight" W 2 (is Empty (to))))
-                                    )
-                                    "SmallCastling"
-                                )
-                            )
-                        )
+                        ("Castling")
                     )
                     ifAfterwards:(not ("IsInCheck" "King" Mover))
                 )
@@ -267,12 +193,7 @@
         )
         
         (end {
-            (if (and 
-                    ("IsInCheck" "King" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
+            ("Checkmate" "King")
             (if (or (no Moves Mover) (= (counter) 99)) (result Mover Draw)) 
         })
     )
@@ -288,7 +209,7 @@
         (rules "Same rules as Chess. Dragons move like queens, but at most three squares.")
         (id "1779")
         (source "<a href=\"https://www.chessvariants.com/large.dir/dragonchess.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.chessvariants.com</a>")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/chess")
         (publisher "<a href=\"http://dragonchess.net/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Dragon Chess Inc</a>")
         (credit "Eric Piette")

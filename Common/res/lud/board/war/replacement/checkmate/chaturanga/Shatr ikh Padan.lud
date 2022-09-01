@@ -1,52 +1,9 @@
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
-)
-
-(define "CaptureToPiece"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove 
-                (to) 
-            )
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
-//------------------------------------------------------------------------------
-
 (game "Shatr ikh Padan" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8)) 
-        
-        (piece "Pawn" Each 
-            (or {
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
-                }
-            )
-        )
-        
-        (piece "King_noCross" Each 
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
+        ("ChessPawn" "Pawn")
+        ("ChessKing" "King_noCross")
     }) 
     (rules 
         (start { 
@@ -57,20 +14,12 @@
         })
         
         (play 
-            (do 
-                (forEach Piece)
+            (do (forEach Piece)
                 ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
             )
         )
         
-        (end {
-            (if (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
-        })
+        (end ("Checkmate" "King_noCross"))
     )
 )
 
@@ -84,10 +33,10 @@
         (rules "8x8 board. Two players. Pieces and movement are as follows: King x1, placed on the fifth space from the left on one edge of the board: Moves one space orthogonally or diagonally. Pawns x8, arranged along the row in front of the king: moves one space forward orthogonally or one space forward diagonally to capture. The opponent's pieces are placed in the same position on the opposite side of the board. If the King can be taken on the next turn it is in check, it must not remain in check on the next turn. If the king cannot move out of check, checkmate is declared and the opponent wins.")
         (source "Murray 1913: 347.")
         (id "316")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1901.")
+        (origin "This game was played in India, around 1901.")
         }
     )
     

@@ -34,6 +34,7 @@ import utils.AIUtils;
  * 
  * @author Dennis Soemers and Eric.Piette
  */
+@SuppressWarnings("static-method")
 public class TestTrialsIntegrityERIC
 {
 	/**
@@ -51,8 +52,8 @@ public class TestTrialsIntegrityERIC
 
 		final List<File> entries = new ArrayList<File>();
 
-		final String moreSpecificFolder = "../Common/res/lud/board/space/line";
-		//final String moreSpecificFolder = "";
+		//final String moreSpecificFolder = "../Common/res/lud/board/war/leaping/diagonal";
+		final String moreSpecificFolder = "";
 		
 		for (int i = 0; i < gameDirs.size(); ++i)
 		{

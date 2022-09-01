@@ -1,7 +1,7 @@
 (game "Graph Test - Mesh (20, Rectangle)" 
     (players 2) 
     (equipment { 
-        (board (mesh 20 {{0,0} {0,1} {2,1} {2,0}})) 
+        (board (mesh 20 (poly { {0 0} {0 1} {2 1} {2 0} }) )) 
         (piece "Disc" P1) 
         (piece "Cross" P2) 
     }) 

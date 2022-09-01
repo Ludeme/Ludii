@@ -13,11 +13,9 @@
         (to 
             if:("IsEnemyAt" (to))  
             (apply 
-                (if ("IsEnemyAt" (to))
-                    (remove 
-                        (to) 
-                        #3
-                    )
+                (remove 
+                    (to) 
+                    #3
                 )
             ) 
         ) 

@@ -1,39 +1,15 @@
-(define "PromoteIfBorderReached" 
-    (if (is In (last To) (sites Next))
-        (move Promote (last To) (piece "DiscDouble") Mover)
-    )
-)
-
 (define "HopDisc" 
-    (move
-        Hop 
-        (between 
-            if:("IsEnemyAt" (between))
-            (apply (remove (between)))
-        ) 
-        (to if:(is Empty (to))) 
+    ("HopCapture" ~ ~
         (then
             (and 
-                ("PromoteIfBorderReached")
+                ("PromoteIfReach" (sites Next) "DiscDouble")
                 ("HasCaptured")
             )
         )
     ) 
 )
 
-(define "HopDiscDouble" 
-    (move
-        Hop
-        (between 
-            before:9
-            after:9
-            if:("IsEnemyAt" (between)) 
-            (apply (remove (between)))
-        )
-        (to if:(is Empty (to)))
-        (then ("HasCaptured"))
-    )
-)
+(define "HopDiscDouble" ("HopCaptureDistance" ~ ~ ~ (then ("HasCaptured"))))
 
 (define "HasCaptured" (set Value Mover 0))
 (define "HasNotCaptured" (set Value Mover 1))
@@ -42,21 +18,8 @@
     (set Pending 
         (sites From
             (or 
-                (forEach Piece "Disc" 
-                    ("HopDisc")
-                ) 
-                (forEach Piece "DiscDouble" 
-                    (move
-                        Hop
-                        (between 
-                            before:9
-                            after:9
-                            if:("IsEnemyAt" (between)) 
-                            (apply (remove (between)))
-                        )
-                        (to if:(is Empty (to)))
-                    )
-                )
+                (forEach Piece "Disc" ("HopDisc")) 
+                (forEach Piece "DiscDouble" ("HopCaptureDistance"))
             )
         )
     )
@@ -65,10 +28,9 @@
 (define "SitesWithPossibleCaptureInPreviousTurn" (sites Pending))
 
 (define "HuffOnePieceOf" 
-    (move
-        Select 
+    (move Select 
         (from #1
-            if:(!= (what at:(from)) 0)
+            if:(is Occupied (from))
         )
         (then 
             (and {
@@ -90,19 +52,14 @@
 //------------------------------------------------------------------------------
 
 (game "Zamma" 
-    (players {(player N) (player S)})
+    ("TwoPlayersNorthSouth")
     (equipment { 
         ("AlquerqueBoard" 9 9)
         (piece "Disc" Each 
             (or
                 ("HopDisc") 
-                (move
-                    Step 
-                    Forwards 
-                    (to if:(is Empty (to)))
-                    (then ("HasNotCaptured"))
-                )
-                (then ("PromoteIfBorderReached"))
+                ("StepToEmpty" Forwards (then ("HasNotCaptured")))
+                (then ("PromoteIfReach" (sites Next) "DiscDouble"))
             )
         )
         (piece "DiscDouble" Each
@@ -116,10 +73,7 @@
     }) 
     
     (rules 
-        (start { 
-            (place "Disc1" (forEach (sites Board) if:(< (site) (centrePoint))))
-            (place "Disc2" (forEach (sites Board) if:(> (site) (centrePoint))))
-        })
+        ("BeforeAfterCentreSetup" "Disc1" "Disc2")
         
         (play 
             (or
@@ -153,10 +107,10 @@
         (rules "Played on a square Alquerque board with 9x9 intersecting lines with diagonals. Each player has 40 pieces. Pieces are placed on the intersections of the lines, and move forward along the lines to an adjacent unoccupied intersection. Once pieces reach the opposite side of the board from their starting position at the end of their turn, they are promoted and can move in any direction and over any distance. Opponent's pieces are captured by jumping them. Captures are obligatory if possible. If a player does not capture when they are supposed to, the opponent may remove that piece immediately and then play as normal. The player who captures all of their opponent's pieces or blocks them from being able to move wins.")
         (source "Monod 1951: 11-12.")
         (id "64")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in North Africa, around 1950.")
+        (origin "This game was played in North Africa, around 1950.")
         }
     )
     
@@ -164,7 +118,6 @@
         (player Colour P1 (colour VeryDarkGrey))
         (player Colour P2 (colour White))
         (piece ExtendName P2 "Stick")
-        
     })
     
     (ai 

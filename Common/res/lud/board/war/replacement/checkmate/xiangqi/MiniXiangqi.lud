@@ -1,17 +1,12 @@
 (define "JiangSameColumnWithNoPieceBetween"
     (if (= (column of:(where "Jiang" P1)) (column of:(where "Jiang" P2)))
-        (not ("NoSites" (forEach (sites Direction from:(where "Jiang" P1) N stop:(= (to) (where "Jiang" P2))) if:(not (is Empty (site))))))
+        (not ("NoSites" (forEach (sites Direction from:(where "Jiang" P1) N stop:(= (to) (where "Jiang" P2))) if:(is Occupied (site)))))
         True
     )
 )
 
-(define "EnemyCannotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "Jiang" Next)))))
-)
-
 (define "StepMoveOnThePalace" 
-    (move
-        Step
+    (move Step
         #1 
         (to 
             if:(and 
@@ -26,7 +21,7 @@
 //------------------------------------------------------------------------------
 
 (game "MiniXiangqi" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (rectangle 7 7) use:Vertex) 
         
@@ -61,28 +56,18 @@
         )
         
         // Chariot
-        (piece "Ju" Each 
-            (move
-                Slide
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    (apply (remove (to)))
-                )
-            )
-        )
+        (piece "Ju" Each ("SlideCapture" Orthogonal))
         
         // Canon
         (piece "Pao" Each 
             (or 
                 (move Slide Orthogonal) 
-                (move
-                    Hop
+                (move Hop
                     Orthogonal 
                     (between 
                         before:(count Rows) 
                         after:(count Rows) 
-                        if:(not (is Empty (between)))
+                        if:(is Occupied (between))
                     )
                     (to 
                         if:(is Empty (to)) 
@@ -96,16 +81,7 @@
         )
         
         // Soldier
-        (piece "Zu" Each
-            (move
-                Step
-                (directions {Forward Rightward Leftward})
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    (apply (remove (to)))
-                )
-            )
-        )
+        (piece "Zu" Each ("StepToNotFriend" (directions {Forward Rightward Leftward})))
         
         (regions "PalaceP1" P1 { 2..4 9..11 16..18 })
         (regions "PalaceP2" P2 { 30..32 37..39 44..46 })
@@ -127,12 +103,7 @@
         )
         
         (end {
-            (if (and 
-                    ("IsInCheck" "Jiang" Next) 
-                    ("EnemyCannotMove")
-                ) 
-                (result Mover Win)
-            ) 
+            ("Checkmate" "Jiang")
             ("BlockWin")
         })
     )
@@ -148,7 +119,7 @@
         (rules "The rules for pieces are the same as regular Xiangqi, except pawns start with the ability to move sideways.")
         (id "1622")
         (source "<a href=\"http://mlwi.magix.net/bg/minixiangqi.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Website</a>")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/xiangqi")
         (author "Shigenobu Kusumoto")
         (credit "Matthew Stephenson")

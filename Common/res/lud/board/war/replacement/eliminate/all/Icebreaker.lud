@@ -32,8 +32,7 @@
 
 (game "Icebreaker"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (hex <Board>))
         (piece "Disc" Each
             (move Step
@@ -71,8 +70,7 @@
             )
         )
         (piece "Disc" Neutral)
-        }
-    )
+    })
     (rules
         (start {
             (place "Disc0" (difference (sites Board) (sites Corners)))
@@ -86,9 +84,7 @@
             (place "Disc2" (sites Around (centrePoint) distance:(- <Board> 1) SSE))
             
         })
-        (play
-            (forEach Piece Mover)
-        )
+        (play (forEach Piece Mover))
         (end 
             (if 
                 (or
@@ -111,11 +107,11 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "8"  <8> "A size 8 board is currently selected")
-    (item "7"  <7> "A size 7 board is currently selected")
-    (item "6"  <6> "A size 6 board is currently selected")
-    (item "5"  <5> "A size 5 board is currently selected")*
-    (item "4"  <4> "A size 4 board is currently selected")
+    (item "8" <8> "A size 8 board is currently selected")
+    (item "7" <7> "A size 7 board is currently selected")
+    (item "6" <6> "A size 6 board is currently selected")
+    (item "5" <5> "A size 5 board is currently selected")*
+    (item "4" <4> "A size 4 board is currently selected")
     }
 )
 
@@ -146,7 +142,7 @@
             The goal is to capture the majority of the icebergs. On the default size 5 board, there are 55 icebergs starting out. If you capture 28 of them, you
         win.")
         (id "1926")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/eliminate/all")
         (author "Mark Steere")
         (publisher "<a href=\"http://www.marksteeregames.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Mark Steere Games</a>")

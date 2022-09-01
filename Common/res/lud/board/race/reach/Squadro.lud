@@ -7,7 +7,7 @@
         (if ("IsEnemyAt" (ahead (last To) ("Direction" (last To))))
             (moveAgain)
         )
-    )  
+    ) 
 )
 
 (define "Slide" 
@@ -16,7 +16,7 @@
         (between (exact #1))
         (to if:(is Empty (to)))
         #2
-    )  
+    ) 
 )
 
 (define "MoveThree"
@@ -94,7 +94,7 @@
         })
         
         (play 
-            (if ("SameTurn")  
+            (if ("SameTurn") 
                 (move Hop
                     (from (last To))
                     (between 
@@ -144,7 +144,7 @@
         To win Squadro, you need to be the first player to make a return trip with four of your five pieces.")
         (id "1543")
         (source "<a href=\"https://boardgamegeek.com/boardgame/245222/squadro\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/race/reach")
         (author "Adrián Jiménez Pascual")
         (publisher "<a href=\"https://www.gigamic.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Gigamic</a> (used with permission)")

@@ -1,5 +1,4 @@
 (define "ThrowValue" (mapEntry "ThrowDiceValue" (count Pips)))
-(define "TrackMove" (trackSite Move #1 #2 steps:#3))
 (define "DieNotUsed" (!= (pips) 0))
 
 //------------------------------------------------------------------------------
@@ -26,11 +25,11 @@
             }
             use:Vertex
         )
-        (dice d:2 from:0 num:7)
+        ("StickDice" 7)
         (piece "Pawn" Each
             (move 
                 (from (from) level:(level))
-                (to ("TrackMove" from:(from) "Track" ("ThrowValue"))
+                (to ("NextSiteOnTrack" ("ThrowValue") from:(from) "Track")
                     (apply 
                         (if ("IsEnemyAt" (to))
                             (forEach Level (to) FromTop
@@ -52,12 +51,12 @@
         })
         
         (play 
-            (do (roll)
-                next:(or
+            ("RollMove"
+                (or
                     (if (is Occupied (handSite Mover))
                         (move 
                             (from (handSite Mover))
-                            (to ("TrackMove" from:(mapEntry "Entry" Mover) "Track" (- ("ThrowValue") 1))
+                            (to ("NextSiteOnTrack" (- ("ThrowValue") 1) from:(mapEntry "Entry" Mover) "Track")
                                 (apply 
                                     (if ("IsEnemyAt" (to))
                                         (forEach Level (to) FromTop
@@ -73,7 +72,7 @@
             )
         )
         
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -114,10 +113,10 @@
         (useFor "Ruleset/Throw of Thirty (Described)" (source "Deodhar 1905 (translated by Dnyaneshwari Kamath."))
             (useFor "Ruleset/Throw of Thirty (Described)" (id "1564"))
             (source "Kamath 2020: 27.")
-            (version "1.3.5")
+            (version "1.3.6")
             (classification "board/war/replacement/eliminate/all")
             (credit "Eric Piette")
-            (origin  "This game was played in India, around 1905.")
+            (origin "This game was played in India, around 1905.")
             }
         )
         

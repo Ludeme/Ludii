@@ -26,7 +26,7 @@ import other.GameLoader;
 public class GamesWithWebLink
 {
 	@Test
-	public void testLinkInGame()
+	public static void testLinkInGame()
 	{
 		final List<String> failedGames = new ArrayList<String>();
 

@@ -1,104 +1,31 @@
-(define "CaptureToPiece"
-    (apply 
-        (remove 
-            (to) 
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
-)
-
-//------------------------------------------------------------------------------
-
 (game "Shatranj at-Tamma" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment {
-        (piece "Pawn" Each
-            (or 
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
-                (then
-                    (if (is In (last To) (sites Mover "Promotion")) 
-                        (if (= Off (where "Queen" Mover))
-                            (promote (last To) (piece "Queen") Mover)
-                            (remove (last To))
-                        )
+        ("ChessPawn" "Pawn" ~ 
+            (then
+                (if (is In (last To) (sites Mover "Promotion")) 
+                    (if ("IsOffBoard" (where "Queen" Mover))
+                        (promote (last To) (piece "Queen") Mover)
+                        (remove (last To))
                     )
                 )
-            )	
+            )
         )
-        (piece "King_noCross" Each
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece" 
-                )
-            )		
-        )
-        (piece "Queen" Each
-            (move
-                Step 
-                Diagonal
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece" 
-                )
-            )		
-        )
-        (piece "Knight" Each
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )			
-        )
-        (piece "Wazir" Each
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece" 
-                )
-            )		
-        )
-        (piece "Rook" Each
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )		
-        )
+        ("ChessKing" "King_noCross")
+        (piece "Queen" Each ("StepToNotFriend" Diagonal))
+        ("ChessKnight" "Knight")
+        ("ChessKing" "Wazir")
+        ("ChessRook" "Rook")
         (piece "Elephant" Each
-            (move 
-                Hop 
+            (move Hop 
                 Diagonal 
                 (between if:True) 
                 (to 
                     if:(or 
                         (is Empty (to)) 
-                        (and ("IsEnemyAt" (to)) (!= (what at:(to)) (id "Elephant" Next)))
+                        (and ("IsEnemyAt" (to)) (not ("IsPieceAt" "Elephant" Next (to))))
                     ) 
-                    "CaptureToPiece"
+                    (apply (remove (to))) 
                 )
             )		
         )
@@ -131,12 +58,7 @@
             )
         )
         (end { 
-            (if (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
+            ("Checkmate" "King_noCross") 
             ("BlockWin")
         })
     )
@@ -153,7 +75,7 @@
         (rules "10x10 board. The pieces move as follows, with the number per player: 1 x Shah (king): one space orthogonally or diagonally; 1 x Fers (counselor): one square diagonally; 2 x Rukh (rook): any number of spaces orthogonally; 2x Dabbaba: one space orthogonally or diagonally; 2 x Pil (elephant): two squares diagonally, jumping over the first. Cannot capture another Pil; 2 x Asb (horse): one square orthogonally, and then one square diagonally, jumping over any intervening pieces; 10 x Sarbaz (soldier): one space forward orthogonally or one space forward diagonally to capture. No en passant. Sarbaz begins in the third rank, and is promoted to Fers when reaching the tenth rank, only if the Fers has been captured. Otherwise, the other player captures it. No castling. Stalemate results in win for player causing it. The player who checkmates the king wins.")
         (source "Murray 1913: 341-342.")
         (id "308")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
         }

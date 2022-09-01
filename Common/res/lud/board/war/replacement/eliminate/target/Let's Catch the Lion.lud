@@ -1,7 +1,7 @@
 (define "CapturePiece"
     (apply 
         (if ("IsEnemyAt" (to))
-            (if (= (what at:(to)) (id "Lion" Next))
+            (if ("IsPieceAt" "Lion" Next (to))
                 (remove (to))
                 (add 
                     (piece (mapEntry "Captured" (what at:(to)))) 
@@ -13,12 +13,11 @@
 )
 
 (define "StepMove"
-    (move
-        Step
+    (move Step
         #1
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
-    )  	
+    ) 	
 )
 
 (define "InLastRank"
@@ -32,7 +31,7 @@
 //------------------------------------------------------------------------------
 
 (game "Let's Catch the Lion"
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment {
         (board (rectangle 4 3))
         (tile "Giraffe" Each ("StepMove" Orthogonal))
@@ -89,7 +88,7 @@
             )
             (if 
                 (or 
-                    (= (where "Lion" Next) Off) 
+                    ("IsOffBoard" (where "Lion" Next))
                     (is In (where "Lion" Mover) (sites Mover "LastRank"))
                 ) 
                 (result Mover Win)
@@ -121,7 +120,7 @@
         (id "1546")
         (source "<a href=\"https://en.wikipedia.org/wiki/D%C5%8Dbutsu_sh%C5%8Dgi\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>
         ")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/eliminate/target")
         (author "Madoka Kitao")
         (publisher "<a href=\"https://www.nestorgames.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a>

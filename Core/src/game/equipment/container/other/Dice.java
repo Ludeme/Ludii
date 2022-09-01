@@ -305,6 +305,18 @@ public final class Dice extends Container
 		concepts.set(Concept.Dice.id(), true);
 		if (biased != null)
 			concepts.set(Concept.BiasedDice.id(), true);
+		
+		if(numFaces == 2)
+			concepts.set(Concept.DiceD2.id(), true);
+
+		if(numFaces == 3)
+			concepts.set(Concept.DiceD3.id(), true);
+
+		if(numFaces == 4)
+			concepts.set(Concept.DiceD4.id(), true);
+
+		if(numFaces == 6)
+			concepts.set(Concept.DiceD6.id(), true);
 
 		return concepts;
 	}

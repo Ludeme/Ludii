@@ -159,7 +159,10 @@ public final class Player extends BaseLudeme implements Serializable
 	{
 		final BitSet concepts = new BitSet();
 		if (direction != null)
+		{
 			concepts.set(Concept.PieceDirection.id(), true);
+			concepts.set(Concept.PlayersWithDirections.id(), true);
+		}
 		return concepts;
 	}
 

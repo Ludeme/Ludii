@@ -50,17 +50,13 @@
         (phase "Entering"
             (play
                 (do 
-                    (if (not "SameTurn") (roll))
+                    (if ("NewTurn") (roll))
                     next:(forEach Die
                         if:("DieNotUsed")
                         (move
                             (from (handSite Mover))
                             (to ("NextSiteFrom" (handSite Mover)))
-                            (then 
-                                (if (not (all DiceUsed))
-                                    (moveAgain)
-                                )
-                            )
+                            (then ("ReplayNotAllDiceUsed"))
                         )
                     )
                 )
@@ -71,15 +67,11 @@
         (phase "Playing" 
             (play
                 (do 
-                    (if (not "SameTurn") (roll))
+                    (if ("NewTurn") (roll))
                     next:(forEach Die
                         if:("DieNotUsed")
                         (forEach Piece top:True)
-                        (then 
-                            (if (not (all DiceUsed))
-                                (moveAgain)
-                            )
-                        )
+                        (then ("ReplayNotAllDiceUsed"))
                     )
                 )
             )
@@ -101,10 +93,10 @@
         ")
         (source "DLP evidence.")
         (id "991")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Thailand, around 1836.")
+        (origin "This game was played in Thailand, around 1836.")
         }
     )
     

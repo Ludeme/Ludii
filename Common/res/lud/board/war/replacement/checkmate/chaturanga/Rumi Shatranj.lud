@@ -1,100 +1,30 @@
-(define "CaptureToPiece"
-    (apply 
-        (remove 
-            (to) 
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
-)
-
-//------------------------------------------------------------------------------
-
 (game "Rumi Shatranj"
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment {
         (board (square 8))
         (hand Each size:5)
-        (piece "King_noCross" Each
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece" 
-                )
-            )
-        )
-        (piece "Rook" Each
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
+        ("ChessKing" "King_noCross")
+        ("ChessRook" "Rook")
         (piece "Elephant" Each
             (move Hop Diagonal 
                 (between if:True) 
                 (to 
                     if:(or 
                         (is Empty (to)) 
-                        (and ("IsEnemyAt" (to)) (!= (what at:(to)) (id "Elephant" Next)))
+                        (and ("IsEnemyAt" (to)) (not ("IsPieceAt" "Elephant" Next (to))))
                     ) 
                     (apply (remove (to)))
                 ) 
             )
         )
-        (piece "Knight" Each
-            (move 
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "Pawn" Each
-            (or 
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
-                (then
-                    (if (is In (last To) (sites Mover "Promotion")) 
-                        (moveAgain)
-                    )
-                )
-            )
-        ) 
-        (piece "Ferz_noCross" Each
-            (move
-                Step 
-                Diagonal
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece" 
-                )
-            )
-        )
+        ("ChessKnight" "Knight")
+        ("ChessPawn" "Pawn" ~ (then ("ReplayInMovingOn" (sites Mover "Promotion"))))
+        (piece "Ferz_noCross" Each ("StepToNotFriend" Diagonal))
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     })
     (rules 
-        (start {  
+        (start { 
             (place "Pawn1" (sites Row 1))
             (place "Pawn2" (sites Row 6))
             (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Elephant1" {"C1" "F1"}) (place "Ferz_noCross1" coord:"D1") (place "King_noCross1" coord:"E1") 
@@ -142,18 +72,10 @@
             )
         )
         }
-        (end
-            {
-            (if 
-                (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
+        (end {
+            ("Checkmate" "King_noCross")
             ("BlockWin")
-            }
-        )
+        })
     )
 )
 
@@ -168,7 +90,7 @@
         ")
         (source "Murray 1913: 362.")
         (id "298")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
         }

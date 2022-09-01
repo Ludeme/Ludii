@@ -336,9 +336,22 @@ public class State implements Serializable
 	 */
 	public long fullHash(final Context context)
 	{
-		final int lastFrom = LAST_FROM_LUDEME.eval(context);
-		final int lastTo = LAST_TO_LUDEME.eval(context);
-		return fullHash() ^ lastFromHashes[lastFrom + 1] ^ lastToHashes[lastTo + 1];
+		final int lastFrom = LAST_FROM_LUDEME.eval(context) + 1;
+		final int lastTo = LAST_TO_LUDEME.eval(context) + 1;
+		
+		long hash = fullHash();
+		
+		if (lastFrom < lastFromHashes.length)
+			hash ^= lastFromHashes[lastFrom];
+		else
+			hash ^= lastFromHashes[lastFrom % lastFromHashes.length];
+		
+		if (lastTo < lastToHashes.length)
+			hash ^= lastToHashes[lastTo];
+		else
+			hash ^= lastToHashes[lastTo % lastToHashes.length];
+		
+		return hash;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -1067,6 +1080,7 @@ public class State implements Serializable
 	 * 
 	 * @param otherOnTrackIndices
 	 */
+	@SuppressWarnings("static-method")
 	protected OnTrackIndices copyOnTrackIndices(final OnTrackIndices otherOnTrackIndices)
 	{
 		return otherOnTrackIndices == null ? null : new OnTrackIndices(otherOnTrackIndices);
@@ -1363,6 +1377,7 @@ public class State implements Serializable
 	 * @param payoff
 	 * @param payoffsArray The array of payoffs that we wish to modify
 	 */
+	@SuppressWarnings("static-method")
 	public void setPayoff(final int player, final double payoff, final double[] payoffsArray)
 	{
 		payoffsArray[player] = payoff;
@@ -2151,6 +2166,7 @@ public class State implements Serializable
 	 * @param context The current context.
 	 * @return The concepts involved in this specific state.
 	 */
+	@SuppressWarnings("static-method")
 	public BitSet concepts(final Context context)
 	{
 		// TODO CHECK LEGAL MOVES CONCEPT, CHECK ONLY PIECES CONCEPT ON BOARD, BUT NEED TO DISCUSS WITH MATTHEW BEFORE TO FINISH THAT CODE.

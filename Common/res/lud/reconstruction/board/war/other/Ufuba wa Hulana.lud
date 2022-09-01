@@ -19,11 +19,7 @@
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
         
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
+        ("PhaseMovePiece" "Movement")
         }
         
         (end [#])
@@ -41,10 +37,10 @@
         (rules "5x5 board. Twelve pieces per player. Players alternate turns placing a piece on the board. When the pieces are placed, pieces are captured. ")
         (source "DLP evidence.")
         (id "960")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Comoros, around 1694.")
+        (origin "This game was played in Comoros, around 1694.")
         }
     )
     

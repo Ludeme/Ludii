@@ -20,12 +20,12 @@
             }
         )
         (piece "Seed" Shared)
-        (regions "Home" P1 (sites Bottom))           // P1 home
-        (regions "Home" P2 (sites Top))            // P2 home
+        (regions "Home" P1 (sites Bottom))      // P1 home
+        (regions "Home" P2 (sites Top))      // P2 home
         (regions "RightHome" P1 (intersection (expand (sites Right) steps:2) (sites Bottom))) // P1 home
-        (regions "RightHome" P2 (intersection (expand (sites Right) steps:2) (sites Top)))   // P2 home
+        (regions "RightHome" P2 (intersection (expand (sites Right) steps:2) (sites Top)))  // P2 home
         (regions "LeftHome" P1 (intersection (expand (sites Left) steps:2) (sites Bottom))) // P1 home
-        (regions "LeftHome" P2 (intersection (expand (sites Left) steps:2) (sites Top)))   // P2 home
+        (regions "LeftHome" P2 (intersection (expand (sites Left) steps:2) (sites Top)))  // P2 home
         (hand Each)
     }) 
     (rules 
@@ -138,10 +138,10 @@
         (rules "2x6 board. Three counters per hole. Sowing occurs in an anti-clockwise direction when starting from the right three holes of a player's row, or in a clockwise direction when starting from the player's left three holes. When the final counter falls into an occupied hole, these are picked up and sowing continues, except when this hole is made to contain four counters, in which case these counters are captured and the player takes another turn. These captures may not be made on the first turn. When the final counter lands in an empty hole, the turn ends. Play continues until one player is without counters in their row. The opponent then captures the remaining counters in their row, and the player that has captured the most counters wins.")
         (source "Pankhurst 1971: 171.")
         (id "348")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Horn of Africa, around 1971.")
+        (origin "This game was played in Horn of Africa, around 1971.")
         }
     )
     

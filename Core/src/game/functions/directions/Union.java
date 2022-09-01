@@ -52,6 +52,7 @@ public class Union extends DirectionsFunction
 	 * @param context Current game context.
 	 * @return Nuthin'! Absolutely nuthin'.
 	 */
+	@SuppressWarnings("static-method")
 	public Direction eval(final Context context)
 	{
 		return null;

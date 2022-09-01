@@ -28,6 +28,7 @@ public abstract class DirectionsFunction extends BaseLudeme implements Direction
 	/**
 	 * @return The relative directions.
 	 */
+	@SuppressWarnings("static-method")
 	public RelativeDirection[] getRelativeDirections()
 	{
 		return null;

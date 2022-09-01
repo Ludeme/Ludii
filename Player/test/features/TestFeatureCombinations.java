@@ -20,6 +20,7 @@ import other.context.Context;
 import other.state.container.ContainerState;
 import other.trial.Trial;
 
+@SuppressWarnings("static-method")
 public class TestFeatureCombinations
 {
 	

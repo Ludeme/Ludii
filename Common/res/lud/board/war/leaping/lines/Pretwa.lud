@@ -34,8 +34,8 @@
 
 (option "End Rules" <End> args:{ <rules> }
     {
-    (item "No Pieces" <(if (no Pieces Next) (result Next Loss))>  "The player loses when he has no piece.")*  
-    (item "No Moves" <("NoMoves" Loss)>               "A player loses when he can not move.")  
+    (item "No Pieces" <("CaptureAll" Next)> "The player loses when he has no piece.")* 
+    (item "No Moves" <("NoMoves" Loss)>        "A player loses when he can not move.") 
 })
 
 //------------------------------------------------------------------------------
@@ -48,16 +48,12 @@
         (rules "Each player begins with nine pieces. Pieces moves along the lines to the next intersection point. Players may hop an opponent's piece to capture it. Captures can be made in sequence if another capture is available after the previous one is made. The player who captures all of their opponent's pieces wins.")
         (source "Murray 1951: 71.")
         (id "162")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in South Asia, around 1951.")
+        (origin "This game was played in South Asia, around 1951.")
         }
     )
-    
-    (graphics {
-        
-    })
     
     (ai 
         "Pretwa_ai"

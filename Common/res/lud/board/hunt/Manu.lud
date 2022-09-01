@@ -22,7 +22,7 @@
             ) 
             (nextPhase ("HandEmpty" P1) "Movement")
         )
-        (phase "Movement" (play (forEach Piece)))
+        ("PhaseMovePiece" "Movement")
         }
         
         (end ("NoMovesLossAndNoPiecesPlayerLoss" P2))
@@ -39,10 +39,10 @@
         (rules "Played on cross-shaped board, made of five squares, each divided into four squares and with the diagonals of the larger squares drawn. One player plays with thirteen pieces situated on every point of one arm of the cross and along the line immediately perpendicular to that arm. The other plays as the Punipeki, which is placed on any empty spot on the first turn. Pieces move along the lines to an adjacent empty spot. The Punipeki may jump over an adjacent piece to capture it. The Punipeki wins if it can capture all the opponent's pieces, the other player wins by blocking the Punipeki from moving.")
         (source "Culin 1899: 244-245.")
         (id "1109")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in Hawaii, around 1899.")
+        (origin "This game was played in Hawaii, around 1899.")
         }
     )
     

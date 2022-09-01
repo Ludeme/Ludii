@@ -1,5 +1,5 @@
 (game "Crand"
-    (players {(player N) (player S)})
+    ("TwoPlayersNorthSouth")
     (equipment { 
         (board 
             (add
@@ -13,17 +13,9 @@
         )
         (piece "Counter" Each
             (or
-                (move
-                    Step 
-                    (difference Forwards Diagonal)
-                    (to if:(is Empty (to)))
-                )	
+                ("StepToEmpty" (difference Forwards Diagonal))	
                 "HopCapture"
-                (then
-                    (if (is In (last To) (sites Next))
-                        (move Promote (last To) (piece "DoubleCounter") Mover)
-                    )		
-                )
+                (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
             )
         )
         (piece "DoubleCounter" Each
@@ -41,7 +33,7 @@
             (place "Counter2" (union (sites {36..39}) (expand (sites Top) steps:3)))
         })
         (play (forEach Piece))
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -57,15 +49,14 @@
         ")
         (source "Hamidoun 1952: 67-68.")
         (id "1386")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in Mauritania, around 1952.")
+        (origin "This game was played in Mauritania, around 1952.")
         }
     )
     
     (graphics {
-        
         (show Edges Diagonal Hidden)
     })
     

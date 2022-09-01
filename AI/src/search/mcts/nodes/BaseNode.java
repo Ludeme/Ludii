@@ -233,6 +233,7 @@ public abstract class BaseNode
      * @param agent
      * @return Is the value for given agent fully proven in this node?
      */
+	@SuppressWarnings("static-method")
     public boolean isValueProven(final int agent)
     {
     	return false;

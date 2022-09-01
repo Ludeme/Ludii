@@ -1,7 +1,3 @@
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
-)
-
 (define "HasNeverMoved"
     (= (state at:(mapEntry #1 (mover))) 1) 
 )
@@ -33,7 +29,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )  
+    ) 
 )
 
 (define "DecideToCastle"
@@ -82,16 +78,6 @@
     )
 )
 
-(define "DoubleStep"
-    (move
-        Slide 
-        Forward 
-        (between (exact 2) if:(is Empty (between))) 
-        (to if:(is Empty (to))) 
-        "SetEnPassantLocation"
-    )
-)
-
 (define "InLocationEnPassant"
     (and 
         (is Pending) 
@@ -112,52 +98,32 @@
     )
 )
 
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
+(define "InitialPawnMove"
+    (if (is In (from) (sites Start (piece (what at:(from)))))
+        ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
     )
 )
 
 //------------------------------------------------------------------------------
 
 (game "Scachs" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8)) 
         
-        (piece "Pawn" Each 
-            (or {
-                (if (is In (from) (sites Start (piece (what at:(from)))))
-                    "DoubleStep"
-                )
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
+        ("ChessPawn" "Pawn"
+            (or 
+                "InitialPawnMove"
                 "EnPassant"
-                }
-                (then
-                    (if (and (= Off (where "Queen" Mover)) (is In (last To) (sites Mover "Promotion")))
-                        (promote (last To) (piece {"Queen"}) Mover)
-                    )
+            )
+            (then
+                (if (and ("IsOffBoard" (where "Queen" Mover)) (is In (last To) (sites Mover "Promotion")))
+                    (promote (last To) (piece {"Queen"}) Mover)
                 )
             )
         )
         
-        (piece "Rook" Each 
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-                "RememberPieceHasMoved"
-            )
-        )
+        ("ChessRook" "Rook" ~ ("RememberPieceHasMoved"))
         (piece "King" Each 
             (or
                 (if (and (not ("IsInCheck" "King" Mover)) ("HasNeverMoved" "King"))
@@ -166,41 +132,17 @@
                         (to if:(is Empty (to)))
                     )
                 )
-                (move
-                    Step 
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        "CaptureToPiece"
-                    ) 
-                )
+                ("StepToNotFriend")
                 "RememberPieceHasMoved"
             )
         )
-        (piece "Bishop" Each 
-            (move
-                Slide 
-                Diagonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "Knight" Each 
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
+        ("ChessBishop" "Bishop")
+        ("ChessKnight" "Knight")
         (piece "Queen" Each 
             (move
                 Slide 
                 (to 
-                    if:(and (!= (id "Queen" Next) (what at:(to))) ("IsEnemyAt" (to))) 
+                    if:(and (not ("IsPieceAt" "Queen" Next (to))) ("IsEnemyAt" (to))) 
                     "CaptureToPiece"
                 ) 
             ) 
@@ -249,12 +191,7 @@
         )
         
         (end {
-            (if (and 
-                    ("IsInCheck" "King" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
+            ("Checkmate" "King")
             (if (= 1 (count Pieces Next)) (result Mover Win)) 
             ("BlockWin")
         })
@@ -274,10 +211,10 @@
         ")
         (source "Murray 1913: 781.")
         (id "1415")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/chess")
         (credit "Eric Piette")
-        (origin  "This game was played in Spain, from around 1475 to 1499.")
+        (origin "This game was played in Spain, from around 1475 to 1499.")
         }
     )
     

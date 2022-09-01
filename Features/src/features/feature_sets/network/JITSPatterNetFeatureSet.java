@@ -91,6 +91,26 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 	}
 	
 	/**
+	 * Construct feature set from list of features
+	 * @param features
+	 */
+	public static JITSPatterNetFeatureSet construct(final List<Feature> features)
+	{
+		final List<AspatialFeature> aspatials = new ArrayList<AspatialFeature>();
+		final List<SpatialFeature> spatials = new ArrayList<SpatialFeature>();
+		
+		for (final Feature f : features)
+		{
+			if (f instanceof AspatialFeature)
+				aspatials.add((AspatialFeature) f);
+			else
+				spatials.add((SpatialFeature) f);
+		}
+		
+		return construct(aspatials, spatials);
+	}
+	
+	/**
 	 * Construct feature set from lists of features
 	 * @param aspatialFeatures
 	 * @param spatialFeatures

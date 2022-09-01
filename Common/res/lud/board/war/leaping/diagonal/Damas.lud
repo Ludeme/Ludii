@@ -1,33 +1,3 @@
-(define "HopCounter" 
-    (move
-        Hop
-        #1
-        (directions {FR FL})
-        (between 
-            if:("IsEnemyAt" (between))
-            (apply (remove (between)))
-        ) 
-        (to if:(is Empty (to))) 
-        #2
-    ) 
-)
-
-(define "HopDoubleCounter" 
-    (move
-        Hop
-        #1
-        Diagonal
-        (between 
-            before:9
-            after:9
-            if:("IsEnemyAt" (between)) 
-            (apply (remove (between)))
-        )
-        (to if:(is Empty (to)))
-        #2
-    )
-)
-
 (define "SitesWithPossibleCaptureInPreviousTurn" (sites Pending))
 
 (define "RememberSiteWithPossibleCapture"
@@ -36,29 +6,21 @@
             (max Moves
                 (or
                     (forEach Piece "Counter"
-                        ("HopCounter" (from)
+                        ("HopCapture" (from) (directions {FR FL})
                             (then
                                 (if (is In (last To) (sites Next))
                                     (and
-                                        (move Promote (last To) (piece "DoubleCounter") Mover)
-                                        (if (can Move ("HopDoubleCounter" (from (last To)))) 
-                                            (moveAgain) 
-                                        ) 
+                                        (promote (last To) (piece "DoubleCounter") Mover)
+                                        ("ReplayIfCanMove" ("HopCaptureDistance" (from (last To)) Diagonal))
                                     )
-                                    (if (can Move ("HopCounter" (from (last To)))) 
-                                        (moveAgain) 
-                                    ) 
+                                    ("ReplayIfCanMove" ("HopCapture" (from (last To)) (directions {FR FL})))
                                 )
                             )
                         )
                     )
                     (forEach Piece "DoubleCounter"
-                        ("HopDoubleCounter" (from) 
-                            (then 
-                                (if (can Move ("HopDoubleCounter" (from (last To)))) 
-                                    (moveAgain) 
-                                ) 
-                            )
+                        ("HopCaptureDistance" (from) Diagonal ~
+                            (then ("ReplayIfCanMove" ("HopCaptureDistance" (from (last To)) Diagonal)))
                         )
                     )
                 )
@@ -67,58 +29,37 @@
     )
 )
 
-(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
-
+(define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
 (define "StoreCapturingPiece" (set Value Mover (last To)))
 (define "LastCapturingPiece" (value Player Mover))
 
 //------------------------------------------------------------------------------
 
 (game "Damas" 
-    (players {(player N) (player S)})
-    (equipment { 
-        (board (square 8)) 
-        (piece "Counter" Each)
-        (piece "DoubleCounter" Each)
-        (regions P1 (sites Bottom))
-        (regions P2 (sites Top))
-        }
-    ) 
+    ("TwoPlayersNorthSouth")
+    ("DraughtsEquipment" (square 8)) 
     (rules 
-        (start
-            { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1) ))
-            (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1)))
-            }
-        )
+        ("BlackCellsSetup" 3)
         
         (play 
             (if ("SameTurn")
                 (if "IsUnpromoted"
                     (max Moves
-                        ("HopCounter" (from (last To))
+                        ("HopCapture" (from (last To)) (directions {FR FL})
                             (then
                                 (if (is In (last To) (sites Next))
                                     (and
-                                        (move Promote (last To) (piece "DoubleCounter") Mover)
-                                        (if (can Move ("HopDoubleCounter" (from (last To)))) 
-                                            (moveAgain) 
-                                        ) 
+                                        (promote (last To) (piece "DoubleCounter") Mover)
+                                        ("ReplayIfCanMove" ("HopCaptureDistance" (from (last To)) Diagonal))
                                     )
-                                    (if (can Move ("HopCounter" (from (last To)))) 
-                                        (moveAgain) 
-                                    ) 
+                                    ("ReplayIfCanMove" ("HopCapture" (from (last To)) (directions {FR FL})))
                                 )
                             )
                         )
                     )
                     (max Moves 
-                        ("HopDoubleCounter" (from (last To))
-                            (then 
-                                (if (can Move ("HopDoubleCounter" (from (last To)))) 
-                                    (moveAgain) 
-                                ) 
-                            )	
+                        ("HopCaptureDistance" (from (last To)) Diagonal ~
+                            (then ("ReplayIfCanMove" ("HopCaptureDistance" (from (last To)) Diagonal)))
                         ) 
                     )
                 )
@@ -128,21 +69,17 @@
                     next:(or {
                         // Capture moves.
                         (forEach Piece "Counter"
-                            (max Moves 
-                                ("HopCounter" (from)
+                            (max Moves
+                                ("HopCapture" (from) (directions {FR FL})
                                     (then
                                         (and
                                             "StoreCapturingPiece"
                                             (if (is In (last To) (sites Next))
                                                 (and
-                                                    (move Promote (last To) (piece "DoubleCounter") Mover)
-                                                    (if (can Move ("HopDoubleCounter" (from (last To)))) 
-                                                        (moveAgain) 
-                                                    ) 
+                                                    (promote (last To) (piece "DoubleCounter") Mover)
+                                                    ("ReplayIfCanMove" ("HopCaptureDistance" (from (last To)) Diagonal))
                                                 )
-                                                (if (can Move ("HopCounter" (from (last To)))) 
-                                                    (moveAgain) 
-                                                ) 
+                                                ("ReplayIfCanMove" ("HopCapture" (from (last To)) (directions {FR FL})))
                                             )
                                         )
                                     )
@@ -151,13 +88,11 @@
                         )
                         (forEach Piece "DoubleCounter"
                             (max Moves 
-                                ("HopDoubleCounter" (from) 
+                                ("HopCaptureDistance" (from) Diagonal ~
                                     (then 
                                         (and
                                             "StoreCapturingPiece"
-                                            (if (can Move ("HopDoubleCounter" (from (last To)))) 
-                                                (moveAgain) 
-                                            ) 
+                                            ("ReplayIfCanMove" ("HopCaptureDistance" (from (last To)) Diagonal))
                                         )
                                     )	
                                 )
@@ -165,22 +100,13 @@
                         )
                         // Non Captures moves.
                         (forEach Piece "Counter"
-                            (move
-                                Step 
+                            ("StepToEmpty" 
                                 (directions {FR FL}) 
-                                (to if:(is Empty (to)))
-                                (then
-                                    (if (is In (last To) (sites Next))
-                                        (move Promote (last To) (piece "DoubleCounter") Mover)
-                                    )
-                                )
+                                (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
                             )
                         )
-                        (forEach Piece "DoubleCounter"
-                            (move Slide Diagonal)
-                        )
-                        }
-                    )
+                        (forEach Piece "DoubleCounter" (move Slide Diagonal))
+                    })
                     (then
                         (and
                             (if (and (!= ("LastCapturingPiece") (last To)) (not (is In (last To) ("SitesWithPossibleCaptureInPreviousTurn"))))
@@ -195,10 +121,7 @@
             )
         ) 
         
-        (end { 
-            (if (no Moves P1) (result P2 Win))
-            (if (no Moves P2) (result P1 Win))
-        }) 
+        (end ("ForEachPlayerNoMovesLoss"))
     )
 )
 
@@ -213,10 +136,10 @@
         (rules "8x8 checkered board. twelve pieces per player, placed on the first three rows closest to the players. Players alternate turns moving a piece forward diagonally to an empty space. Pieces may capture an opponent's piece by hopping over it to an empty adjacent space. Captures are compulsory, multiple captures are possible, the maximum capture possible is required, and failure to do so is penalized by the huff, where the piece that should have made the capture is itself captured. When a piece reaches the opposite edge of the board from where it started, it becomes a king. Kings may move any distance diagonally forward or backward, and may capture any number of opponent's pieces it leaps over. The player who captures all of the opponent's pieces wins.")
         (source "van der Stoep 184: 82; Murray 1951: 78.")
         (id "879")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/leaping/diagonal")
         (credit "Eric Piette")
-        (origin  "This game was played in Spain, around 1547.")
+        (origin "This game was played in Spain, around 1547.")
         }
     )
     

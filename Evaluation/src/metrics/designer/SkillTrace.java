@@ -71,9 +71,7 @@ public class SkillTrace extends Metric
 		final List<AI> ais = new ArrayList<AI>(game.players().count() + 1);
 		ais.add(null);
 		for (int p = 1; p <= game.players().count(); ++p)
-		{
 			ais.add(MCTS.createUCT());
-		}
 		
 		final Trial trial = new Trial(game);
 		final Context context = new Context(game, trial);
@@ -126,13 +124,13 @@ public class SkillTrace extends Metric
 			}
 			
 			strongAIAvgResult /= numTrialsPerMatch;
-			strongAIResults.add(strongAIAvgResult);
+			strongAIResults.add(Double.valueOf(strongAIAvgResult));
 			areaEstimate += Math.max(strongAIAvgResult, 0.0);
 			weakIterationValue *= 2;
 			
 			// Print match results in console
 			System.out.println("-----");
-			System.out.println("Match Index:" + matchCount+1);
+			System.out.println("Match Index:" + (matchCount+1));
 			System.out.println("Strong AI result:" + strongAIAvgResult);
 		}
 		
@@ -145,11 +143,11 @@ public class SkillTrace extends Metric
 		
 		// No matches were able to be completed within the time limit.
 		if (matchCount == 0)
-			return 0.0;
+			return Double.valueOf(0);
 		
 		final double skillTrace = yValueNextStep + (1-yValueNextStep)*(areaEstimate/matchCount);
 		
-		return skillTrace;
+		return Double.valueOf(skillTrace);
 	}
 
 	//-------------------------------------------------------------------------

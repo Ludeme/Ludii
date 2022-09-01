@@ -16,18 +16,15 @@ public class GZIPController{
      * https://www.geeksforgeeks.org/compressing-decompressing-files-using-gzip-format-java/?ref=lbp
      * @param inputPath location of .csv file
      * @param outputPath   location of .gz file
-     * @return
      */
     public static void compress(String inputPath, String outputPath) {
         byte[] buffer = new byte[1024];
         try
+        (
+        	GZIPOutputStream os = new GZIPOutputStream(new FileOutputStream(outputPath));
+            FileInputStream in = new FileInputStream(inputPath);		
+        )
         {
-            GZIPOutputStream os =
-                    new GZIPOutputStream(new FileOutputStream(outputPath));
-
-            FileInputStream in =
-                    new FileInputStream(inputPath);
-
             int totalSize;
             while((totalSize = in.read(buffer)) > 0 )
             {
@@ -52,18 +49,15 @@ public class GZIPController{
      * https://www.geeksforgeeks.org/compressing-decompressing-files-using-gzip-format-java/?ref=lbp
      * @param inputPath location of .csv file
      * @param outputPath   location of .gz file
-     * @return
      */
     public static void decompress(String inputPath, String outputPath) {
         byte[] buffer = new byte[1024];
         try
+        (
+            GZIPInputStream is = new GZIPInputStream(new FileInputStream(inputPath));
+            FileOutputStream out = new FileOutputStream(outputPath);        		
+        )
         {
-            GZIPInputStream is =
-                    new GZIPInputStream(new FileInputStream(inputPath));
-
-            FileOutputStream out =
-                    new FileOutputStream(outputPath);
-
             int totalSize;
             while((totalSize = is.read(buffer)) > 0 )
             {

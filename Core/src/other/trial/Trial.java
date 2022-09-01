@@ -207,6 +207,7 @@ public class Trial implements Serializable
 	 * @param otherState
 	 * @return Copy of given game state.
 	 */
+	@SuppressWarnings("static-method")
 	protected MoveSequence copyMoveSequence(final MoveSequence otherSequence)
 	{
 		return new MoveSequence(otherSequence);

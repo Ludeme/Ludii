@@ -16,7 +16,6 @@ public class NGramUtils {
      * This method returns a list of all substrings of length N
      *
      * @param N
-     * @return
      */
     public static List<List<String>> allSubstrings(String gameDescription, int N) {
         String[] words = gameDescription.split(" ");
@@ -40,7 +39,6 @@ public class NGramUtils {
      * This method takes a list of words and turns it into an N Gram instance
      *
      * @param words
-     * @return
      */
     public static Instance createInstance(List<String> words) {
         if(words.size() < 2) {
@@ -54,7 +52,6 @@ public class NGramUtils {
      * This method takes the context string and turns it into a Context object
      *
      * @param context
-     * @return
      */
     public static Context createContext(String context) {
         List<String> words = Arrays.asList(context.split(" "));
@@ -66,7 +63,7 @@ public class NGramUtils {
         List<Pair<Instance,Integer>> unorderedPicklistMatchingWords = new ArrayList<>();
         for(Instance instance : unorderedPicklist) {
             int matchingWords = instance.matchingWords(context);
-            Pair<Instance,Integer> cur = new Pair<>(instance, matchingWords);
+            Pair<Instance,Integer> cur = new Pair<>(instance, Integer.valueOf(matchingWords));
             unorderedPicklistMatchingWords.add(cur);
         }
         return  unorderedPicklistMatchingWords;
@@ -75,7 +72,6 @@ public class NGramUtils {
     /**
      * This method extracts the name of a game out of its description as lud code
      * @param gameDescription
-     * @return
      */
     public static String getGameName(String gameDescription) {
         String gameLudeme = "(game";
@@ -119,7 +115,7 @@ public class NGramUtils {
         for(Map.Entry<String, List<Pair<Instance, Integer>>> entry : pmEntrySet) {
             int pMultiplicity = 0;
             int maxMatchingWords = 0;
-            String entryPrediction = entry.getKey();
+           // String entryPrediction = entry.getKey();
             Instance firstInstance = entry.getValue().get(0).getR();
             //not all instances have the same words, but same key bcs of NGram.getMatch and same prediction because of predictionMatch
             //therefore the resulting instance must have words equal to {key,prediction}
@@ -127,9 +123,9 @@ public class NGramUtils {
             for(Pair<Instance,Integer> p : entry.getValue()) {
                 pMultiplicity += p.getR().getMultiplicity();
                 //if p has more matching words than stored, update, else do nothing
-                maxMatchingWords = p.getS() > maxMatchingWords ? p.getS() : maxMatchingWords;
+                maxMatchingWords = p.getS().intValue() > maxMatchingWords ? p.getS().intValue() : maxMatchingWords;
             }
-            uniquePredictions.add(new Pair<>(new Instance(newInstanceWords,pMultiplicity), maxMatchingWords));
+            uniquePredictions.add(new Pair<>(new Instance(newInstanceWords,pMultiplicity), Integer.valueOf(maxMatchingWords)));
         }
 
         return  uniquePredictions;
@@ -152,7 +148,6 @@ public class NGramUtils {
      * @param superlist
      * @param sublist
      * @param <F>
-     * @return
      */
     public static <F> int count(List<F> superlist, List<F> sublist) {
         if(DEBUG)System.out.println("------------Match----------");

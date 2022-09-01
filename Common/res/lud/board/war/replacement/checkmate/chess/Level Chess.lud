@@ -34,7 +34,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )  
+    ) 
 )
 
 (define "DecideToCastle"
@@ -123,17 +123,6 @@
     )
 )
 
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
 (define "GetSiteLevel"
     (if 
         (is In (#1) (sites "Level5")) 5
@@ -178,14 +167,12 @@
                         "DoubleStep"
                     )
                     "StepForwardToEmpty" 
-                    "CaptureForwardDiagonal"
+                    ("StepToEnemy" (directions {FR FL}))
                     "EnPassant"
                     }
                     (then
                         (and
-                            (if (is In (last To) (sites Mover "Promotion")) 
-                                (moveAgain)
-                            )
+                            ("ReplayInMovingOn" (sites Mover "Promotion"))
                             (set Counter)
                         )
                     )
@@ -195,8 +182,7 @@
         
         (piece "Rook" Each 
             (if (is Active (who at:(from)))
-                (move
-                    Slide 
+                (move Slide 
                     Orthogonal 
                     (to 
                         if:(or ("IsEnemyAt" (to)) (and (< ("GetSiteLevel" (from)) ("GetSiteLevel" (to))) (not ("IsFriendAt" (to)))))
@@ -208,8 +194,7 @@
         )
         (piece "King" Each 
             (if (is Active (who at:(from)))
-                (move
-                    Step 
+                (move Step 
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         "CaptureToPieceAndResetCounter"
@@ -220,8 +205,7 @@
         )
         (piece "Bishop" Each 
             (if (is Active (who at:(from)))
-                (move
-                    Slide 
+                (move Slide 
                     Diagonal 
                     (to 
                         if:(or ("IsEnemyAt" (to)) (and (< ("GetSiteLevel" (from)) ("GetSiteLevel" (to))) (not ("IsFriendAt" (to)))))
@@ -252,8 +236,7 @@
         )
         (piece "Queen" Each 
             (if (is Active (who at:(from)))
-                (move
-                    Slide 
+                (move Slide 
                     (to 
                         if:(or ("IsEnemyAt" (to)) (and (< ("GetSiteLevel" (from)) ("GetSiteLevel" (to))) (not ("IsFriendAt" (to)))))
                         "CaptureToPieceAndResetCounter"
@@ -264,14 +247,11 @@
         
         <NumOfPlayers:BoardRegions>
         
-        }
-    ) 
+    }) 
     (rules 
-        (start
-            { 
+        (start { 
             <NumOfPlayers:PieceSetup>
-            }
-        )
+        })
         
         (play 
             (if "SameTurn"
@@ -319,15 +299,13 @@
             )
         )
         
-        (end
-            {
+        (end {
             (forEach NonMover
-                if:(= (where "King" Player) Off) 
+                if:("IsOffBoard" (where "King" Player)) 
                 (result Player Loss)
             )
             (if (and (<= (count Active) 2) (or (no Moves Mover) (= (counter) (* 50 (count Active))))) (result Mover Draw)) 
-            }
-        )
+        })
     )
 )
 
@@ -335,7 +313,7 @@
 
 (option "Players" <NumOfPlayers> args:{ <NumPlayers> <BoardShape> <BoardRegions> <PieceSetup> <CheckMate> }
     {
-    (item "4"  	
+    (item "4" 	
         <
         {(player N) (player S) (player E) (player W)}
         > 
@@ -383,7 +361,7 @@
         >
     "Four Players.")**
     
-    (item "2"  	
+    (item "2" 	
         <
         {(player N) (player S)}
         > 
@@ -420,7 +398,7 @@
         >
     "Two Players.")
     
-    (item "8"  	
+    (item "8" 	
         <
         {(player N) (player E) (player E) (player S) (player S) (player W) (player W) (player N)}
         > 
@@ -507,7 +485,7 @@
         Once a player is checkmated their king is removed, but all their other pieces remain on the board as neutral obstacles. Neutral pieces cannot help checkmate other players. If a player cannot make a move when there are more than two players remaining, they skip their turn rather than giving a stalemate.")
         (id "1318")
         (source "<a href=\"http://levelchess.eu/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />levelchess.eu</a>")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/chess")
         (author "Ignas Sladkevičius")
         (credit "Matthew Stephenson and Eric Piette")

@@ -804,6 +804,7 @@ public class Move extends BaseAction
 	 * @param actionsList
 	 * @return True if the list of actions to apply contains SetNextPlayer.
 	 */
+	@SuppressWarnings("static-method")
 	public boolean containsReplayAction(final List<Action> actionsList)
 	{
 		for (final Action action : actionsList)

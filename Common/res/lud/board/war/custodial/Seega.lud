@@ -5,17 +5,11 @@
         (hand Each) 
         
         (piece "Marker" Each 
-            (move Step Orthogonal (to if:(is Empty (to)))
-                (then 
-                    (custodial 
-                        (from (last To))
+            ("StepToEmpty" Orthogonal
+                (then
+                    ("CustodialCapture"
                         Orthogonal
-                        (between
-                            (max 1)
-                            if:("IsEnemyAt" (between))
-                            (apply (remove (between)))
-                        )
-                        (to if:("IsFriendAt" (to)))
+                        (max 1)
                     )
                 )
             )
@@ -32,7 +26,7 @@
                     (to (difference (sites Empty) (centrePoint))) 
                     (then 
                         (if 
-                            (not "SameTurn") 
+                            ("NewTurn") 
                             (moveAgain)
                         )
                     )
@@ -40,14 +34,10 @@
             ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
-        (phase "Movement" 
-            (play 
-                (forEach Piece) 
-            )
-        )
+        ("PhaseMovePiece" "Movement")
         }
         
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -55,9 +45,9 @@
 
 (option "Board Size" <Board> args:{ <size> <numPieces>}
     {
-    (item "5x5"  <5> <12> "The game is played on a 5x5 board.")**  
-    (item "7x7"  <7> <24> "The game is played on a 7x7 board.")  
-    (item "9x9"  <9> <40> "The game is played on a 9x9 board.")  
+    (item "5x5" <5> <12> "The game is played on a 5x5 board.")** 
+    (item "7x7" <7> <24> "The game is played on a 7x7 board.") 
+    (item "9x9" <9> <40> "The game is played on a 9x9 board.") 
 })
 
 //------------------------------------------------------------------------------
@@ -103,10 +93,10 @@
         (useFor "Ruleset/Tisawee (Observed)" (id "590"))
         (source "Murray 1951: 54-55; Parker 1909: 603-604.")
         (id "150")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/custodial")
         (credit "Eric Piette")
-        (origin  "This game was played in North Africa, from around 1825 to 1925.")
+        (origin "This game was played in North Africa, from around 1825 to 1925.")
         }
     )
     
@@ -116,7 +106,6 @@
         (board Colour OuterEdges (colour Black))
         (board StyleThickness InnerEdges 0.5)
         (board StyleThickness OuterEdges 0.5)
-        
     })
     
     (ai 

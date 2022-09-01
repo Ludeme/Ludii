@@ -54,7 +54,7 @@ public class WeightVector
 		// For the spatial features, use this offset (to skip weights for aspatial features)
 		final int offset = aspatialFeatureValues.dim();
 		
-		return  aspatialFeaturesVal + weights.dotSparse(featureVector.activeSpatialFeatureIndices(), offset);
+		return aspatialFeaturesVal + weights.dotSparse(featureVector.activeSpatialFeatureIndices(), offset);
 	}
 	
 	//-------------------------------------------------------------------------

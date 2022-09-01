@@ -40,21 +40,19 @@
 )
 
 (define "SlideMove"
-    (move
-        Slide 
+    (move Slide 
         #1 
         (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
-    )  	
+    ) 	
 )
 
 (define "StepMove"
-    (move
-        Step 
+    (move Step 
         #1
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
-    )  	
+    ) 	
 )
 
 (define "PlaceAPiece"
@@ -70,19 +68,17 @@
             ) 
             ifAfterwards:(not ("IsInCheck" "Osho" #2 (forEach Piece #1)))
         )
-    })  	
+    }) 	
 )
 
 (define "CorrectColumn"
     (= (+ 1 (column of:(last To))) (count Pips))
 )
 
-(define "GoldMove" ("StepMove" (directions {Forward Backward Rightward Leftward FL FR})))
-
 //------------------------------------------------------------------------------
 
 (game "Dice Shogi" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     
     (equipment { 
         (board (square 5))
@@ -103,13 +99,13 @@
         (piece "Kakugyo" Each ("SlideMove" Diagonal "CanPromote"))
         
         // Gold General
-        (piece "Kinsho" Each "GoldMove")
+        ("ShogiGold" "Kinsho" "CapturePiece")
         
         // Promoted Pawn
-        (piece "Tokin" Each "GoldMove")
+        ("ShogiGold" "Tokin" "CapturePiece")
         
         // Promoted Silver
-        (piece "Narigin" Each "GoldMove")
+        ("ShogiGold" "Narigin" "CapturePiece")
         
         // Promoted Rook
         (piece "Ryuo" Each (or ("SlideMove" Orthogonal) ("StepMove" Diagonal)))
@@ -164,8 +160,8 @@
                     ("Promote")
                     (move Pass)
                 )
-                (do (roll)
-                    next:(do
+                ("RollMove"
+                    (do
                         (if (!= 6 (count Pips))
                             (or {
                                 (if (can Move 
@@ -209,7 +205,7 @@
         If there are no legal moves with the value of the die, or if the value of the die is equal to 6, you can move any piece according to the rules of Mini Shogi.")
         (id "492")
         (source "<a href=\"http://minerva.cs.uec.ac.jp/cgi-bin/uec55shogi/wiki.cgi?page=The+Rule+of+Dice%2DShogi\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />minerva.cs.uec.ac.jp</a>")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/shogi")
         (credit "Eric Piette")
         }

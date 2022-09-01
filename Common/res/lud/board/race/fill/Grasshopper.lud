@@ -5,7 +5,7 @@
 (define "Hop" 
     (move Hop
         (from #1)
-        (between if:(not (is Empty (between))))
+        (between if:(is Occupied (between)))
         (to 
             if:(and
                 ("IsEmptyAndNotVisited" (to))
@@ -85,8 +85,8 @@
         (regions "Home" P2 (expand origin:(coord "H8") steps:3 Orthogonal))
         >
         "The game is played on a board 8x8."
-    )*  
-    (item "10x10"  
+    )* 
+    (item "10x10" 
         <(square 10)>
         < 
         (regions "Home" P1 (expand origin:(coord "A1") steps:4 Orthogonal))
@@ -106,7 +106,7 @@
         (rules "The rules are the same as for Halma. Pieces move one space orthogonally or diagonally. They may jump over a piece of any color. Multiple jumps in one turn are possible. Jumps do not capture. The player who first places all of their pieces in the opponent's starting position wins.")
         (source "<a href=\"http://www.cyningstan.com/game/71/grasshopper\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />cyningstan</a>")
         (id "402")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/race/fill")
         (credit "Eric Piette")
         }

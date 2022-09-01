@@ -1,7 +1,3 @@
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next (forEach Piece))))))
-)
-
 (define "HasNeverMoved"
     (= (state at:(from)) 1) 
 )
@@ -17,27 +13,6 @@
             "PieceHasMoved"
         ) 
     ) 
-)
-
-(define "CaptureEnemyPiece"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove 
-                (to) 
-            )
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
 )
 
 (define "PromotedPiece" 
@@ -61,7 +36,7 @@
 
 (define "RhinoMovement" 
     (sites To
-        (if (!= (ahead (from) #1) Off)
+        (if ("IsNotOffBoard" (ahead (from) #1))
             (slide 
                 (from (ahead (from) #1))
                 #2 
@@ -75,7 +50,7 @@
 
 (define "EagleMovement" 
     (sites To
-        (if (and (!= (ahead (from) #1) Off) (not ("IsFriendAt" (ahead (from) #1))))
+        (if (and ("IsNotOffBoard" (ahead (from) #1)) (not ("IsFriendAt" (ahead (from) #1))))
             (or
                 (fromTo (from) (to (ahead (from) #1)))
                 (slide 
@@ -90,48 +65,21 @@
     )
 )
 
-(define "LeapMove" 
-    (move
-        Leap 
-        #1 
-        (to 
-            if:(not ("IsFriendAt" (to))) 
-            "CaptureEnemyPiece"
-        ) 
-    )
-)
-
-(define "SlideMove" 
-    (move
-        Slide 
-        #1 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            "CaptureEnemyPiece"
-        ) 
-    )
-)
-
 //----------------------------------------------------------------
 
 (game "Grande Acedrex" 
-    (players {(player N) (player S)})
+    ("TwoPlayersNorthSouth")
     (equipment {
         (board (square 12))
         <Variant:dice>
-        (piece "Pawn" Each
-            (or {
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
-                }
-                (then
-                    (if (is In (last To) (sites Mover "Promotion")) 
-                        (promote (last To) (piece "PromotedPiece"))
-                    )
+        ("ChessPawn" "Pawn" ~
+            (then     
+                (if (is In (last To) (sites Mover "Promotion")) 
+                    (promote (last To) (piece "PromotedPiece"))
                 )
             )
         )
-        (piece "Crocodile" Each ("SlideMove" Diagonal))
+        ("ChessBishop" "Crocodile")
         (piece "Eagle" Each
             (move (from)
                 (to 
@@ -165,26 +113,25 @@
                 )
             )
         )
-        (piece "Giraffe" Each ("LeapMove" "GiraffeWalk"))
-        (piece "Rook" Each ("SlideMove" Orthogonal))
-        (piece "Lion" Each ("LeapMove" { {F F F} }))
+        (piece "Giraffe" Each ("LeapCapture" "GiraffeWalk"))
+        ("ChessRook" "Rook")
+        (piece "Lion" Each ("LeapCapture" { {F F F} }))
         (piece "King" Each
             (or
-                (move
-                    Step 
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        "CaptureEnemyPiece"
-                    ) 
-                )
+                ("StepToNotFriend")
                 (if "HasNeverMoved"
-                    (move
-                        Hop
+                    (move Hop
                         Forwards
                         (between if:True)
                         (to
                             if:(not ("IsFriendAt" (to))) 
-                            "CaptureEnemyPiece"
+                            (apply 
+                                (if ("IsEnemyAt" (to))
+                                    (remove 
+                                        (to) 
+                                    )
+                                )
+                            ) 
                         )
                     )
                 )
@@ -209,14 +156,7 @@
         (play
             <Variant:movement>
         )
-        (end       
-            (if (and 
-                    ("IsInCheck" "King" Next (forEach Piece))
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
-        )
+        (end ("Checkmate" "King"))
     )
 )
 
@@ -240,11 +180,9 @@
             ifAfterwards:(not ("IsInCheck" "King" Mover))
         )
         > 
-    "The rules of Alfonso X without dice.")*  
+    "The rules of Alfonso X without dice.")* 
     (item "With Dice" 
-        <
-        (dice d:8 num:1) 
-        > 
+        <(dice d:8 num:1)> 
         <
         
         (do
@@ -275,7 +213,7 @@
             ifAfterwards:(not ("IsInCheck" "King" Mover (forEach Piece)))
         )
         > 
-    "The rules of Alfonso X with a die.")  
+    "The rules of Alfonso X with a die.") 
 })
 
 //------------------------------------------------
@@ -304,7 +242,7 @@
         (useFor "Ruleset/Dice (Described)" (source "Libro de los Juegos 83."))
         (useFor "Ruleset/Dice (Described)" (id "652"))
         (id "312")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/chess")
         (credit "Eric Piette")
         }

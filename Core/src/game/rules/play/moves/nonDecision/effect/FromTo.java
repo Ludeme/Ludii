@@ -283,7 +283,7 @@ public final class FromTo extends Effect
 											Constants.OFF, 
 											true
 										);
-								actionMove.setLevelFrom(cs.sizeStack(from, typeFrom) - 1);
+								actionMove.setLevelFrom(0);
 							}
 						}
 						else if (levelFrom == null && countFn == null)
@@ -320,7 +320,10 @@ public final class FromTo extends Effect
 									);
 							}
 							
-							actionMove.setLevelFrom(cs.sizeStack(from, typeFrom) - 1);
+							if(stack)
+								actionMove.setLevelFrom(0);
+							else
+								actionMove.setLevelFrom(cs.sizeStack(from, typeFrom) - 1);
 						}
 						else if (levelFrom != null)
 						{
@@ -372,13 +375,21 @@ public final class FromTo extends Effect
 							{
 								if (levelFrom == null)
 								{
-									move.setLevelMinNonDecision(cs.sizeStack(from,realTypeFrom) - 1);
-									move.setLevelMaxNonDecision(cs.sizeStack(from,realTypeFrom) - 1);
+									move.setLevelMinNonDecision(cs.sizeStack(from, realTypeFrom) - 1);
+									move.setLevelMaxNonDecision(cs.sizeStack(from, realTypeFrom) - 1);
 								}
 								else
 								{
 									move.setLevelMinNonDecision(levelFrom.eval(context));
 									move.setLevelMaxNonDecision(levelFrom.eval(context));
+								}
+								
+								// To add the levels to move a stack on the Move class (only for GUI)
+								if (stack)
+								{
+									move.setLevelMinNonDecision(0);
+									move.setLevelMaxNonDecision(cs.sizeStack(from, realTypeFrom) - 1);
+									move.setLevelFrom(0);
 								}
 							}
 						

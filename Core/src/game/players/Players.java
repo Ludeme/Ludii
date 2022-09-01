@@ -120,12 +120,6 @@ public final class Players extends BaseLudeme implements Serializable
 	@Override
 	public BitSet concepts(final Game game)
 	{
-//		if (count() == 1)
-//			return GameConcept.Puzzle;
-//		else if (count() == 2)
-//			return GameConcept.TwoPlayers;
-//		else
-//			return GameConcept.MultiPlayers;
 		final BitSet concepts = new BitSet();
 		for (int i = 1; i < players.size(); i++)
 		{

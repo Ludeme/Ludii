@@ -75,7 +75,7 @@ public class TestCompleter
 		
 	//-------------------------------------------------------------------------
 
-	void testLoadLuds()
+	static void testLoadLuds()
 	{
 		final Map<String, String> luds = Completer.getAllLudContents();
 		final Map<String, String> defs = Completer.getAllDefContents();
@@ -85,7 +85,7 @@ public class TestCompleter
 	
 	//-------------------------------------------------------------------------
 
-	void testCompletion()
+	static void testCompletion()
 	{
 		testCompletion("TestReconOneClause.lud");
 		testCompletion("TestReconTwoClauses.lud");
@@ -99,7 +99,7 @@ public class TestCompleter
 		testCompletion("TestReconEnumeration2.lud");
 	}
 	
-	void testCompletion(final String fileName)
+	static void testCompletion(final String fileName)
 	{
 		//final String fileName = "TestReconA.lud";
 		final String filePath = "../Common/res/lud/test/recon/" + fileName;
@@ -115,7 +115,8 @@ public class TestCompleter
 			System.out.println("File needs completing: " + Completer.needsCompleting(str));
 			
 			//final Report report = new Report();
-			final List<Completion> completions = Completer.complete(str, null);
+			final List<Completion> completions = Completer.complete(str, 3, null);   // save all completions
+			//final List<Completion> completions = Completer.complete(str, true, null);  // only save first completion for each file
 			for (int n = 0; n < completions.size(); n++) 
 			{
 				final Completion completion = completions.get(n);
@@ -125,7 +126,7 @@ public class TestCompleter
 				final String outFileName = fileName.substring(0, suffixAt) + "-" + n; 			
 				try
 				{
-					Completer.saveReconstruction(outFileName, completion);
+					Completer.saveCompletion(outFileName, completion);
 				} 
 				catch (IOException e)
 				{
@@ -152,11 +153,8 @@ public class TestCompleter
 
 	public static void main(String[] args)
 	{
-		final TestCompleter app = new TestCompleter();
-		
-		//app.testSaving();
-		app.testLoadLuds();
-		app.testCompletion();
+		TestCompleter.testLoadLuds();
+		TestCompleter.testCompletion();
 	}
 	
 }

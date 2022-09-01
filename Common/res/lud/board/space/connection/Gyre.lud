@@ -40,7 +40,7 @@
                                         )
                                     )
                                 )
-                            )  
+                            ) 
                         )
                     )
                 )
@@ -54,11 +54,11 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "5"  <5> "A size 5 board is currently selected")
-    (item "6"  <6> "A size 6 board is currently selected")
-    (item "7"  <7> "A size 7 board is currently selected")*
-    (item "8"  <8> "A size 8 board is currently selected")
-    (item "9"  <9> "A size 9 board is currently selected")
+    (item "5" <5> "A size 5 board is currently selected")
+    (item "6" <6> "A size 6 board is currently selected")
+    (item "7" <7> "A size 7 board is currently selected")*
+    (item "8" <8> "A size 8 board is currently selected")
+    (item "9" <9> "A size 9 board is currently selected")
     }
 )
 
@@ -71,7 +71,7 @@
         (rules "Players take turns placing a stone on an empty cell. A player wins as soon as some or all of their stones form a group with the following property: If all the cells of that group where removed (imagined away) from the board, none of the resulting partitions of the board would contain a majority of the set of cells comprising both the center cell and the perimeter cells (a majority relative to the entire intact board, that is, not of the imagined result of partitioning it).")
         (id "1556")
         (source "<a href=\"http://www.marksteeregames.com/Gyre_rules.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Mark Steere Games</a>")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/space/connection")
         (author "Mark Steere")
         (publisher "<a href=\"http://www.marksteeregames.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Mark Steere Games</a>")

@@ -96,29 +96,25 @@
 )
 
 (define "SlideMove"
-    (move
-        Slide
+    (move Slide
         #1 
         (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
-    )  	
+    ) 	
 )
 
 (define "StepMove"
-    (move
-        Step
+    (move Step
         #1
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
-    )  	
+    ) 	
 )
-
-(define "GoldMove" ("StepMove" (directions {Forward Backward Rightward Leftward FL FR})))
 
 //------------------------------------------------------------------------------
 
 (game "Shogi" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     
     (equipment { 
         (board (square 9))
@@ -204,13 +200,13 @@
         )
         
         // Gold General
-        (piece "Kinsho" Each "GoldMove")
+        ("ShogiGold" "Kinsho" "CapturePiece")
         
         // Promoted Pawn
-        (piece "Tokin" Each "GoldMove")
+        ("ShogiGold" "Tokin" "CapturePiece")
         
         // Promoted Silver
-        (piece "Narigin" Each "GoldMove")
+        ("ShogiGold" "Narigin" "CapturePiece")
         
         // Promoted Rook
         (piece "Ryuo" Each (or ("SlideMove" Orthogonal) ("StepMove" Diagonal)))
@@ -219,10 +215,10 @@
         (piece "Ryuma" Each (or ("SlideMove" Diagonal) ("StepMove" Orthogonal)))
         
         // Promoted Knight
-        (piece "Narikei" Each "GoldMove")
+        ("ShogiGold" "Narikei" "CapturePiece")
         
         // Promoted Lance
-        (piece "Narikyo" Each "GoldMove")
+        ("ShogiGold" "Narikyo" "CapturePiece")
         
         (regions "LastRankP1" P1 (sites Top))
         (regions "LastRankP2" P2 (sites Bottom))
@@ -300,8 +296,7 @@
             )
         )
         
-        (end
-            {
+        (end {
             (if (and 
                     ("IsInCheck" "Osho" Next)
                     ("NextCannotMove")
@@ -309,8 +304,7 @@
                 (result Mover Win)
             ) 
             ("BlockWin")
-            }
-        )
+        })
     )
 )
 
@@ -325,10 +319,10 @@
         (rules "Pieces move as follows: Osho(1): moves one space in any direction Hisha(1): moves any number of spaces orthogonally. Kakugyo(1): moves any number of spaces diagonally. Kinsho(2): moves one square in any direction except diagonally backwards. Ginsho (2): moves one square diagonally or one square forward orthogonally. Keima(2): moves one space forward and then one space diagonally forward. Kyosha(2): moves any number of spaces only forward or backward. Fuhyo(9): moves one space forward. Pieces are promoted when reaching the opposite third of the board. Pieces are captured when an opponent's piece moves to the space it occupies. Captured pieces are held and can re-enter the game under the control of the capturing player as their turn. The goal is to capture the other player's king.")
         (source "Murray 1913: 138-148.")
         (id "46")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/shogi")
         (credit "Eric Piette")
-        (origin  "This game was played in Japan, around 1058.")
+        (origin "This game was played in Japan, around 1058.")
         }
     )
     

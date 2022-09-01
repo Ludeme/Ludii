@@ -1,13 +1,7 @@
 (define "HopCounter" 
-    (move
-        Hop 
+    ("HopCapture"
         (from #1) 
         Orthogonal 
-        (between 
-            if:("IsEnemyAt" (between))
-            (apply (remove (between)))
-        ) 
-        (to if:(is Empty (to))) 
         #2
     ) 
 )
@@ -41,31 +35,17 @@
                 (if "SameTurn"
                     (or
                         ("HopCounter" (last To)
-                            (then 
-                                (if (can Move ("HopCounter" (last To))) 
-                                    (moveAgain)
-                                ) 
-                            ) 
+                            (then ("ReplayIfCanMove" ("HopCounter" (last To)))) 
                         )
                         (move Pass)
                     )
                     (or 
                         (forEach Piece "Counter"
                             ("HopCounter" (from) 
-                                (then 
-                                    (if (can Move ("HopCounter" (last To))) 
-                                        (moveAgain) 
-                                    ) 
-                                ) 
+                                (then ("ReplayIfCanMove" ("HopCounter" (last To)))) 
                             ) 
                         )
-                        (forEach Piece "Counter" 
-                            (move
-                                Step 
-                                Orthogonal 
-                                (to if:(is Empty (to)))
-                            )
-                        )
+                        (forEach Piece "Counter" ("StepOrthogonalToEmpty"))
                     )
                 )
             )
@@ -86,10 +66,10 @@
         (rules "5x5 board. Twelve pieces per player. Players alternate turns placing two pieces on the board, leaving the central space empty. Once all the pieces have been placed, players alternate turns moving one space orthogonally to an empty space. An opponent's piece may be captured by hopping over it to an empty space immediately on the opposite side of it in an orthogonal direction. Multiple captures are allowed, and a player is allowed to land on a space already landed on during the chain of captures. Captures are not compulsory. A player wins when they capture all of their opponent's pieces or the opponent cannot move.")
         (source "De Voogt 2019: 3-5.")
         (id "1991")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/leaping/orthogonal")
         (credit "Eric Piette")
-        (origin  "This game was played in Comoros, around 2018.")
+        (origin "This game was played in Comoros, around 2018.")
         }
     )
     

@@ -37,13 +37,13 @@ public class Referee
 	//---------------------------------------------------------
 	
 	/** The game instance. */
-	private Context context;
+	Context context;
 
 	/** True if human input is allowed to cause a new step to start */
-	private final AtomicBoolean allowHumanBasedStepStart = new AtomicBoolean(true);
+	final AtomicBoolean allowHumanBasedStepStart = new AtomicBoolean(true);
 	
 	/** Set to true if we want a new nextMove(false) call */
-	private final AtomicBoolean wantNextMoveCall = new AtomicBoolean(false);
+	final AtomicBoolean wantNextMoveCall = new AtomicBoolean(false);
 
 	/** Update visualisation of what AI is thinking every x milliseconds */
 	public static final int AI_VIS_UPDATE_TIME = 40;

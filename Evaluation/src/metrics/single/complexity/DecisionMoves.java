@@ -71,7 +71,7 @@ public class DecisionMoves extends Metric
 			avgNumDecisionMoves += numDecisionMoves / trial.generateRealMovesList().size();
 		}
 
-		return avgNumDecisionMoves / trials.length;
+		return Double.valueOf(avgNumDecisionMoves / trials.length);
 	}
 
 	//-------------------------------------------------------------------------

@@ -39,7 +39,7 @@ public class BoardStyle implements GraphicsItem
 	)
 	{
 		this.containerStyleType = containerStyleType;
-		this.replaceComponentsWithFilledCells = replaceComponentsWithFilledCells == null ? false : replaceComponentsWithFilledCells;
+		this.replaceComponentsWithFilledCells = replaceComponentsWithFilledCells == null ? Boolean.FALSE : replaceComponentsWithFilledCells;
 	}
 
 	//-------------------------------------------------------------------------

@@ -34,6 +34,21 @@ public abstract class BaseFeatureSet
 	
 	//-------------------------------------------------------------------------
 	
+	/**
+	 * Different implementations we have for evaluating feature sets.
+	 * 
+	 * @author Dennis Soemers
+	 */
+	public static enum FeatureSetImplementations
+	{
+		NAIVE,
+		TREE,
+		SPATTERNET,
+		JITSPATTERNET
+	}
+	
+	//-------------------------------------------------------------------------
+	
 	/** Only spatial features with an absolute value greater than this are considered relevant for AI */
 	public static final float SPATIAL_FEATURE_WEIGHT_THRESHOLD = 0.001f;
 	
@@ -455,6 +470,28 @@ public abstract class BaseFeatureSet
 		final Game targetGame,
 		final SpatialFeature newFeature
 	);
+	
+	/**
+	 * @param targetGame
+	 * @param newFeatures
+	 * @return Expanded feature set with multiple new features added, or original object
+	 * 	if none of the new features were successfully added.
+	 */
+	public BaseFeatureSet createExpandedFeatureSet(final Game targetGame, final List<SpatialFeature> newFeatures)
+	{
+		BaseFeatureSet featureSet = this;
+		
+		for (final SpatialFeature feature : newFeatures)
+		{
+			final BaseFeatureSet expanded = featureSet.createExpandedFeatureSet(targetGame, feature);
+			if (expanded != null)
+			{
+				featureSet = expanded;
+			}
+		}
+		
+		return featureSet;
+	}
 	
 	//-------------------------------------------------------------------------
 	

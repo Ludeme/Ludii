@@ -318,9 +318,9 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "4"  <4> "A base 4 board is currently selected")
-    (item "5"  <5> "A base 5 board is currently selected")* 
-    (item "6"  <6> "A base 6 board is currently selected") 
+    (item "4" <4> "A base 4 board is currently selected")
+    (item "5" <5> "A base 5 board is currently selected")* 
+    (item "6" <6> "A base 6 board is currently selected") 
     }
 )
 
@@ -358,7 +358,7 @@
             
         If, after you have moved a stack, it partakes in flanking one or more enemy stacks, you must immediately move one of these enemy stacks. Except for the obvious difference that you are moving an enemy stack, all normal rules apply to this move. For example: If the captured stack grows (if you move it farther away from the center cell, that is), it grows by the addition of pieces of your color, so situations where this hostage move must itself be a capturing move are possible. Such chaining of captures must continue until you capture a stack that is not in a position to continue the chain. Growing captured stacks is the only way to take ownership of them more permanently.")
         (id "1185")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/space/blocking")
         (author "Michael Amundsen")
         (publisher "Michael Amundsen")

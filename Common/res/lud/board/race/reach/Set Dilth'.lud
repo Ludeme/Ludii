@@ -73,7 +73,7 @@
 
 (option "Players" <Player> args:{ <num> <start> <track>}
     {
-    (item "2" <2>  
+    (item "2" <2> 
         <
         (start {
             (set Team 1 {P1})
@@ -88,8 +88,8 @@
         (track "Track2" {39 35 33 31 29 27 25 23 21 19 38 17 15 13 11 9 7 5 3 1 37 0 2 4 6 8 10 12 14 16 36 18 20 22 24 26 28 30 32 34} loop:True P2)
         }
         >
-    "The game has 2 players.")  
-    (item "3" <3>  
+    "The game has 2 players.") 
+    (item "3" <3> 
         <
         (start {
             (set Team 1 {P1 P3})
@@ -107,7 +107,7 @@
         }
         >
     "The game has 3 players.") 
-    (item "4" <4>  
+    (item "4" <4> 
         <
         (start {
             (set Team 1 {P1 P3})
@@ -151,10 +151,10 @@
     (rules "Forty stones, arranged in a circle, with a larger gap after every tenth stone. The gaps between the stones are the playing spaces. Two to four players. One stick per player. Three sticks, each with one flat marked side and one round side, used as dice. The throws are as follows: one marked side up = 2; two marked sides up = 3; all marked sides up = 5; no marked sides up =10. Throws of 10 grant the player another throw. Each player starts at one of the larger gaps, and any players facing each other play on a team. Teams play in opposite directions: The player starting from the left or right space moves in a clockwise direction; the player(s) sitting at the top or bottom play anticlockwise). When a player's piece moves past or onto the space occupied by a piece belonging to the opposing team, the opposing team's piece is sent back to the starting space. The first team to circle the board three times wins. ")
     (source "Culin 1907: 88-89.")
     (id "840")
-    (version "1.3.5")
+    (version "1.3.6")
     (classification "board/race/reach")
     (credit "Eric Piette")
-    (origin  "This game was played in Arizona, around 1901.")
+    (origin "This game was played in Arizona, around 1901.")
     }
 )
 

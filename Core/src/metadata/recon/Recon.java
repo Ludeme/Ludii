@@ -88,7 +88,7 @@ public class Recon implements Serializable
 		final Map<String, Double> conceptValues = new HashMap<>();
 		for (final ReconItem infoItem : items)
 			if (infoItem instanceof Concept)
-				conceptValues.put(((Concept) infoItem).conceptName(), ((Concept) infoItem).value());
+				conceptValues.put(((Concept) infoItem).conceptName(), Double.valueOf(((Concept) infoItem).value()));
 		return conceptValues;
 	}
 

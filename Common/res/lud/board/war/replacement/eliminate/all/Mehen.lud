@@ -1,18 +1,17 @@
-
 (define "Entry" 87)
 (define "EndInnerTrack" 1)
 (define "BeginOuterTrack" 0)
 
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:(count Pips)))
-(define "SiteToMoveOnTrackForLion" (trackSite Move #1 steps:(mul (count Pips) 2)))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" (count Pips) #1))
+(define "SiteToMoveOnTrackForLion" ("NextSiteOnTrack" (* (count Pips) 2) #1))
 (define "EmptyCentralSpaceReached"
     (and 
-        (= ("SiteToMoveOnTrack") End) 
-        (= (what at:"BeginOuterTrack") 0)
+        ("IsEndTrack" ("SiteToMoveOnTrack")) 
+        (is Empty "BeginOuterTrack")
     )
 )
 (define "EntryReachedFromInside"
-    (= (trackSite Move "OppositeTrack" steps:(count Pips)) End)
+    ("IsEndTrack" ("NextSiteOnTrack" (count Pips) "OppositeTrack"))
 )
 (define "PieceNowMoveToTheEntry"
     (then
@@ -32,7 +31,7 @@
 )
 
 (define "AdvanceOn"
-    (if (!= ("SiteToMoveOnTrack" #1) Off) 	 			
+    (if ("IsNotOffBoard" ("SiteToMoveOnTrack" #1)) 	 			
         (if (is In ("SiteToMoveOnTrack" #1) (sites Empty))
             (move (from) (to ("SiteToMoveOnTrack" #1)))
         )
@@ -41,20 +40,20 @@
 
 (define "LionMoveOn"
     (if (and 
-            (!= ("SiteToMoveOnTrackForLion" #1) Off) 
-            (!= ("SiteToMoveOnTrackForLion" #1) End) 
+            ("IsNotOffBoard" ("SiteToMoveOnTrackForLion" #1)) 
+            ("IsNotEndTrack" ("SiteToMoveOnTrackForLion" #1)) 
         )			
-        (if (not (is Friend (who at:(trackSite Move #1 steps:(mul (count Pips) 2)))))
+        (if (not ("IsFriendAt" (trackSite Move #1 steps:(mul (count Pips) 2))))
             (move (from) (to (trackSite Move #1 steps:(mul (count Pips) 2))))
         )
     )
 )
 
 (define "EntryEmpty"
-    (= (what at:"Entry") 0)
+    (is Empty "Entry")
 )
 (define "HaveDiscToPlace"
-    (!= (what at:(handSite Mover)) 0)
+    (is Occupied (handSite Mover))
 )
 (define "LetInDisc"
     (move 
@@ -63,10 +62,10 @@
     )
 )
 (define "EntryEmptyOrOccupiedByEnemy"
-    (not (is Friend (who at:"Entry")))
+    (not ("IsFriendAt" "Entry"))
 )
 (define "HaveLionToPlace"
-    (!= (what at:(handSite Mover 1)) 0)
+    (is Occupied (handSite Mover 1))
 )
 (define "LetInLion"
     (move 
@@ -88,13 +87,12 @@
             }
             use:Vertex
         ) 
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
         (hand Each size:2)
         
         (piece "Disc" Each // Piece moving from the hand to the central site.
             (if ("EmptyCentralSpaceReached") 
-                (move
-                    Select
+                (move Select
                     (from) 
                     ("PieceNowMoveToTheEntry") 
                 )
@@ -104,8 +102,7 @@
         
         (piece "Marker" Each // Piece moving from the central site to the entry of the spiral board.
             (if ("EntryReachedFromInside")
-                (move
-                    Select
+                (move Select
                     (from) 
                     ("PromoteToLion")
                 ) 
@@ -126,8 +123,8 @@
             (place "Disc2" (handSite P2) count:6)
         })
         (play 
-            (do (roll)
-                next:(or {
+            ("RollMove" 
+                (or {
                     (if
                         (and {
                             (= (count Pips) 1)
@@ -149,7 +146,7 @@
             )
         )
         
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -157,7 +154,7 @@
 
 (option "Variant" <Variant> args:{ <type> }
     {
-    (item "Kendall"  <>    "The rules are describing with the Kendall ruleset.")  
+    (item "Kendall" <>  "The rules are describing with the Kendall ruleset.") 
 })
 
 //------------------------------------------------------------------------------
@@ -196,10 +193,10 @@
         (useFor "Ruleset/Kendall (Scholarly)" (source "Kendall 2007."))
         (useFor "Ruleset/Kendall (Scholarly)" (id "542"))
         (id "542")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
-        (origin  "This game was played in Egypt, from around 3300BCE to 1225BCE.")
+        (origin "This game was played in Egypt, from around 3300BCE to 1225BCE.")
         }
     )
     

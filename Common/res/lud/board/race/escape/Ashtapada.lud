@@ -72,7 +72,7 @@
                             )
                         )
                         (if 
-                            (not ("HandEmpty" Mover))
+                            ("HandOccupied" Mover)
                             (move 
                                 (from (handSite Mover)) 
                                 (to 
@@ -100,7 +100,7 @@
     {
     (item "2" 
         <2> 
-        <  
+        < 
         (start { 	
             (place "Disc1" (handSite P1) count:2)
             (place "Disc2" (handSite P2) count:2)
@@ -111,8 +111,8 @@
         (map "Exit" {(pair P1 "E3") (pair P2 "D6")})
         >
         "The version of the game played with 2 players."
-    )*  
-    (item "4"  
+    )* 
+    (item "4" 
         <4>
         <
         (start { 	
@@ -158,10 +158,10 @@
         (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
         (useFor "Ruleset/Historical Information (Incomplete)" (id "576"))
         (id "172")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/race/escape")
         (credit "Eric Piette")
-        (origin  "This game was played in India, from around 1200 to 1299.")
+        (origin "This game was played in India, from around 1200 to 1299.")
         }
     )
     

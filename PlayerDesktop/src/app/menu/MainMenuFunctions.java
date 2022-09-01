@@ -12,9 +12,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Pattern;
@@ -36,12 +39,13 @@ import app.display.dialogs.AboutDialog;
 import app.display.dialogs.DeveloperDialog;
 import app.display.dialogs.EvaluationDialog;
 import app.display.dialogs.GameLoaderDialog;
+import app.display.dialogs.ReconstructionDialog;
 import app.display.dialogs.SVGViewerDialog;
 import app.display.dialogs.SettingsDialog;
 import app.display.dialogs.TestLudemeDialog;
 import app.display.dialogs.MoveDialog.PossibleMovesDialog;
 import app.display.dialogs.editor.EditorDialog;
-import app.display.dialogs.visual_editor.VisualEditorPanel;
+import app.display.dialogs.visual_editor.StartVisualEditor;
 import app.display.screenCapture.ScreenCapture;
 import app.display.util.Thumbnails;
 import app.display.views.tabs.TabView;
@@ -55,6 +59,7 @@ import app.utils.PuzzleSelectionType;
 import app.utils.QrCodeGeneration;
 import app.views.tools.ToolView;
 import approaches.random.Generator;
+import contextualiser.ContextualSimilarity;
 import features.feature_sets.BaseFeatureSet;
 import game.Game;
 import game.rules.phase.Phase;
@@ -118,6 +123,9 @@ public class MainMenuFunctions extends JMenuBar
 	
 	/** Thread in which we're comparing agents. */
 	private static Thread agentComparisonThread = null;
+
+	/** The visual editor. */
+	private static StartVisualEditor startVisualEditor;
 
 	//-------------------------------------------------------------------------
 	
@@ -228,7 +236,7 @@ public class MainMenuFunctions extends JMenuBar
 		else if (source.getText().equals("Visual Editor (Beta)"))
 		{
 			// Create and lauch an instance of the visual editor
-			final VisualEditorPanel visual = new VisualEditorPanel(app);
+			setStartVisualEditor(new StartVisualEditor(app));
 		}
 		// IMPORTANT These next four menu functions are just for us, not the user
 		else if (source.getText().equals("Export Thumbnails"))
@@ -710,20 +718,23 @@ public class MainMenuFunctions extends JMenuBar
     		
 			for (int i = 0; i < context.board().numSites(); i++)
 			{
-				final Action actionRemove = ActionRemove.construct(context.board().defaultSite(), i, Constants.UNDEFINED, true);
-				final Move moveToApply = new Move(actionRemove);
-				moveToApply.then().add(csq);
-				
-				for (final Action a : moveToApply.actions())
-	    			a.apply(context, false);
-				
-				final int currentMover = context.state().mover();
-				final int nextMover = context.state().next();
-				final int previousMover = context.state().prev();
-
-				context.state().setMover(currentMover);
-				context.state().setNext(nextMover);
-				context.state().setPrev(previousMover);
+				for (int j = 0; j < Constants.MAX_STACK_HEIGHT; j++)
+				{ 
+					final Action actionRemove = ActionRemove.construct(context.board().defaultSite(), i, j, true);
+					final Move moveToApply = new Move(actionRemove);
+					moveToApply.then().add(csq);
+					
+					for (final Action a : moveToApply.actions())
+		    			a.apply(context, false);
+					
+					final int currentMover = context.state().mover();
+					final int nextMover = context.state().next();
+					final int previousMover = context.state().prev();
+	
+					context.state().setMover(currentMover);
+					context.state().setNext(nextMover);
+					context.state().setPrev(previousMover);
+				}
 			}
 			app.updateTabs(context);
 		}
@@ -1268,6 +1279,30 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			Generator.testGamesEric(1, true, false);
 		}
+		else if (source.getText().equals("Contextual Distance"))
+		{
+			final Map<String, Double> rulesetSimilaritiesCultural = ContextualSimilarity.getRulesetSimilarities(game, false);
+			final double maxValueInMapCultural = (Collections.max(rulesetSimilaritiesCultural.values()).doubleValue());
+			System.out.println("------------------");
+			System.out.println("closest cultural rulesets:");
+			if (maxValueInMapCultural > 0)
+		        for (final Entry<String, Double> entry : rulesetSimilaritiesCultural.entrySet()) 
+		            if (entry.getValue().doubleValue() == maxValueInMapCultural) 
+		                System.out.println(entry.getKey() + " (" + maxValueInMapCultural + ")");     // Print the rulesets with max cultural similarity
+	        
+	        final Map<String, Double> rulesetSimilaritiesConcept = ContextualSimilarity.getRulesetSimilarities(game, true);
+			final double maxValueInMapConcept = (Collections.max(rulesetSimilaritiesConcept.values()).doubleValue());
+			System.out.println();
+			System.out.println("closest concept rulesets:");
+			if (maxValueInMapConcept > 0)
+		        for (final Entry<String, Double> entry : rulesetSimilaritiesConcept.entrySet()) 
+		            if (entry.getValue().doubleValue() == maxValueInMapConcept) 
+		                System.out.println(entry.getKey() + " (" + maxValueInMapConcept + ")");     // Print the rulesets with max concept similarity
+		}
+		else if (source.getText().equals("Reconstruction Dialog"))
+		{
+			ReconstructionDialog.createAndShowGUI();
+		}
 		else if (((JMenu)((JPopupMenu) source.getParent()).getInvoker()).getText().equals("Load Recent"))
 		{
 			// Check if a recent game has been selected
@@ -1624,6 +1659,16 @@ public class MainMenuFunctions extends JMenuBar
 			currentContainer = ((JMenu)((JPopupMenu) currentContainer.getParent()).getInvoker());
 		
 		return ((JMenu)currentContainer).getText();
+	}
+
+	public static StartVisualEditor getStartVisualEditor()
+	{
+		return startVisualEditor;
+	}
+
+	public static void setStartVisualEditor(final StartVisualEditor startVisualEditor)
+	{
+		MainMenuFunctions.startVisualEditor = startVisualEditor;
 	}
 	
 	//---------------------------------------------------------------------

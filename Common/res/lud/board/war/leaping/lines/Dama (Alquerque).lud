@@ -1,39 +1,14 @@
-(define "PromoteIfBorderReached" 
-    (if (is In (last To) (sites Next))
-        (move Promote (last To) (piece "DoubleCounter") Mover)
-    )
-)
-
 (define "HopCounter" 
-    (move
-        Hop 
+    ("HopCapture"
+        ~
         (directions {Forwards Rightward Leftward})
-        (between 
-            if:("IsEnemyAt" (between))
-            (apply (remove (between)))
-        ) 
-        (to if:(is Empty (to))) 
         (then
             (and 
-                ("PromoteIfBorderReached")
+                ("PromoteIfReach" (sites Next) "DoubleCounter")
                 ("HasCaptured")
             )
         )
     ) 
-)
-
-(define "HopDoubleCounter" 
-    (move
-        Hop
-        (between 
-            before:9
-            after:9
-            if:("IsEnemyAt" (between)) 
-            (apply (remove (between)))
-        )
-        (to if:(is Empty (to)))
-        (then ("HasCaptured"))
-    )
 )
 
 (define "HasCaptured" (set Value Mover 0))
@@ -43,21 +18,8 @@
     (set Pending 
         (sites From
             (or 
-                (forEach Piece "Counter" 
-                    ("HopCounter")
-                ) 
-                (forEach Piece "DoubleCounter" 
-                    (move
-                        Hop
-                        (between 
-                            before:9
-                            after:9
-                            if:("IsEnemyAt" (between)) 
-                            (apply (remove (between)))
-                        )
-                        (to if:(is Empty (to)))
-                    )
-                )
+                (forEach Piece "Counter" ("HopCounter")) 
+                (forEach Piece "DoubleCounter" ("HopCaptureDistance"))
             )
         )
     )
@@ -66,11 +28,8 @@
 (define "SitesWithPossibleCaptureInPreviousTurn" (sites Pending))
 
 (define "HuffOnePieceOf" 
-    (move
-        Select 
-        (from #1
-            if:(!= (what at:(from)) 0)
-        )
+    (move Select 
+        (from #1 if:(is Occupied (from)))
         (then 
             (and {
                 (remove (last To)) 
@@ -91,24 +50,21 @@
 //------------------------------------------------------------------------------
 
 (game "Dama (Alquerque)" 
-    (players {(player N) (player S)})
+    ("TwoPlayersNorthSouth")
     (equipment { 
         ("AlquerqueBoard" 5 5)
         (piece "Counter" Each
             (or
                 ("HopCounter") 
-                (move
-                    Step 
-                    (directions {Forwards Rightward Leftward})
-                    (to if:(is Empty (to)))
+                ("StepToEmpty" (directions {Forwards Rightward Leftward})
                     (then ("HasNotCaptured"))
                 )
-                (then ("PromoteIfBorderReached"))
+                (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
             )		
         )
         (piece "DoubleCounter" Each
             (or
-                ("HopDoubleCounter") 
+                ("HopCaptureDistance" ~ ~ ~ (then ("HasCaptured")))
                 (move Slide (then ("HasNotCaptured")))
             )		
         )
@@ -139,7 +95,7 @@
             )
         ) 
         
-        (end (if (no Pieces Mover) (result Next Win))) 
+        (end ("CaptureAll" Mover)) 
     )
 )
 
@@ -153,10 +109,10 @@
         (rules "5x5 intersecting lines with diagonals drawn in the four quadrants. Twelve pieces per player. which begin on two rows closest to the player and the two spaces in the central row on the player's right. Players alternate turns moving a piece to an empty adjacent point on the board, along the lines in a forward or sideways direction. A player may capture an opponent's piece by hopping over it to an empty space on immediately on the opposite side of it along the lines on the board. Captures are compulsory, and if the opponent realizes that the player did not make a possible capture, the opponent immediately captures the player's piece that could have captured but didn't. Regular pieces cannot capture backwards. When a piece reaches the farthest row on the opposite side of the board from where they started, it is promoted to a king, which can move and capture any distance along the lines of the board. The player who captures all of their opponent's pieces wins.")
         (source "de Voogt 2019: 6.")
         (id "1992")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in Comoros, around 2018.")
+        (origin "This game was played in Comoros, around 2018.")
         }
     )
     

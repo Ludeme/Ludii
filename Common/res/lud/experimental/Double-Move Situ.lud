@@ -4,12 +4,15 @@
         (+
             (results
                 from:(forEach
-                    (difference (difference (sites Board) (sites Occupied by:#1)) (sites Occupied by:Neutral))  
+                    (difference (difference (sites Board) (sites Occupied by:#1)) (sites Occupied by:Neutral)) 
                     if:("IsControlledBy" #1 (site))
                 )
                 to:(from) 
                 (if (is Empty (to)) 1 2)
-))))
+            )
+        )
+    )
+)
 
 (define "IsControlledBy" 
     (<=
@@ -19,11 +22,16 @@
                 in:(difference
                     (sites LineOfSight Piece at:#2 "LoSDirection")
                     (sites Occupied by:Neutral)
-        )))
+                )
+            )
+        )
         (* 2
             (count Pieces #1
                 in:(sites LineOfSight Piece at:#2 "LoSDirection")
-))))
+            )
+        )
+    )
+)
 
 (define "MoveTwiceThenScore" 
     (if
@@ -32,22 +40,22 @@
         (and 
             ("ScoreFor" Mover)
             ("ScoreFor" Next) 
-)))
+        )
+    )
+)
 
 //-----------------------------------------------
 // Main routine
 
 (game "Double-Move Situ"
     (players 2)
-    (equipment
-        {
+    (equipment {
         "BoardUsed"
         (piece "Counter" P1)
         (piece "Counter" P2)
         (piece "X" Neutral)
         (piece "Counter" Neutral)
-        }
-    )
+    })
     (rules
         (meta (passEnd NoEnd))
         (play
@@ -66,10 +74,12 @@
                             (if
                                 (> 2 (count Pieces in:(sites Occupied by:Neutral)))
                                 (moveAgain)
-                ))))
+                            )
+                        )
+                    )
+                )
                 
-                (or
-                    {
+                (or {
                     (move Add
                         (to
                             (sites Empty)
@@ -80,7 +90,9 @@
                                 (= -1 (var "DoubleTurnPhase"))
                                 (set Var "DoubleTurnPhase" 1)
                                 ("MoveTwiceThenScore")
-                    )))
+                            )
+                        )
+                    )
                     (move Remove 
                         (forEach
                             (sites Occupied by:Next)
@@ -88,21 +100,27 @@
                         )
                         (then ("MoveTwiceThenScore"))
                     )
-                    }
-                )
+                })
                 (then
                     (if
                         (no Moves Next)
                         (and 
                             ("ScoreFor" Mover)
                             ("ScoreFor" Next) 
-        )))))
+                        )
+                    )
+                )
+            )
+        )
         
         (end 
             (if 
                 (no Moves Mover)
                 (result Mover Loss) //last to place wins a tie
-))))
+            )
+        )
+    )
+)
 
 /-----------------------------------------
 // Defines for Options
@@ -191,7 +209,7 @@
             
         There are options for the board size and type, and the number of surplus stones needed to control a node.")
         (id "1734")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")
@@ -217,7 +235,7 @@
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
         (show Edges Diagonal <Grid:diagShow> (colour DarkGrey))
-    (board Background fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.3 scaleY:1.3)// offsetX:0.021 offsetY:-0.015)  
+    (board Background fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.3 scaleY:1.3)// offsetX:0.021 offsetY:-0.015) 
     (piece Foreground P1 "Counter" image:"DoubleCounter" fillColour:(colour 120 36 0) edgeColour:(colour Black) scale:0.98)
     (piece Foreground P2 "Counter" image:"DoubleCounter" fillColour:(colour Cream) edgeColour:(colour VeryDarkGrey) scale:0.98)
     (piece Foreground Neutral "X" image:"Cross" fillColour:(colour DarkBlue) edgeColour:(colour DarkBlue) scale:.45 offsetX:.16 offsetY:.2)

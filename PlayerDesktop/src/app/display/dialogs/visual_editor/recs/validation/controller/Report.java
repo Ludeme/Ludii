@@ -40,38 +40,38 @@ public class Report {
      */
     public void addRecord(List<Double> record) {
         String line = "";
-        double iDouble = record.get(0);
+        double iDouble = record.get(0).doubleValue();
         int i = (int) iDouble;
         line += i + ",";
 
         //times
-        double nanoDouble = record.get(1);
+        double nanoDouble = record.get(1).doubleValue();
         long nano = (long) nanoDouble;
         line += nano + ",";
 
         // precision
-        double top1Training = record.get(2);
+        double top1Training = record.get(2).doubleValue();
         line += top1Training + ",";
 
-        double top3Training = record.get(3);
+        double top3Training = record.get(3).doubleValue();
         line += top3Training + ",";
 
-        double top5Training = record.get(4);
+        double top5Training = record.get(4).doubleValue();
         line += top5Training + ",";
 
-        double top7Training = record.get(5);
+        double top7Training = record.get(5).doubleValue();
         line += top7Training + ",";
 
-        double top1Test = record.get(6);
+        double top1Test = record.get(6).doubleValue();
         line += top1Test + ",";
 
-        double top3Test = record.get(7);
+        double top3Test = record.get(7).doubleValue();
         line += top3Test + ",";
 
-        double top5Test = record.get(8);
+        double top5Test = record.get(8).doubleValue();
         line += top5Test + ",";
 
-        double top7Test = record.get(9);
+        double top7Test = record.get(9).doubleValue();
         line += top7Test;
 
         lines.add(line);
@@ -80,4 +80,9 @@ public class Report {
     public void writeToCSV() {
         CSVUtils.writeCSV(location, header, lines);
     }
+
+	public int getN()
+	{
+		return N;
+	}
 }

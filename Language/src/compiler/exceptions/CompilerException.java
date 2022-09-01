@@ -52,6 +52,7 @@ public class CompilerException extends RuntimeException
 	/**
 	 * @return The message of the title.
 	 */
+	@SuppressWarnings("static-method")
 	public String getMessageTitle() 
 	{
 		return "A compiler error has occurred.";

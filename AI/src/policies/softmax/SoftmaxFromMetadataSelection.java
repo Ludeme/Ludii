@@ -63,9 +63,9 @@ public class SoftmaxFromMetadataSelection extends SoftmaxPolicy
 				for (final metadata.ai.features.FeatureSet featureSet : featuresMetadata.featureSets())
 				{
 					if (featureSet.role() == RoleType.Shared)
-						SoftmaxPolicyLinear.addFeatureSetWeights(0, featureSet.featureStrings(), featureSet.selectionWeights(), featureSetsList, linFuncs);
+						((SoftmaxPolicyLinear)wrappedSoftmax).addFeatureSetWeights(0, featureSet.featureStrings(), featureSet.selectionWeights(), featureSetsList, linFuncs);
 					else
-						SoftmaxPolicyLinear.addFeatureSetWeights(featureSet.role().owner(), featureSet.featureStrings(), featureSet.selectionWeights(), featureSetsList, linFuncs);
+						((SoftmaxPolicyLinear)wrappedSoftmax).addFeatureSetWeights(featureSet.role().owner(), featureSet.featureStrings(), featureSet.selectionWeights(), featureSetsList, linFuncs);
 				}
 				
 				((SoftmaxPolicyLinear) wrappedSoftmax).featureSets = featureSetsList.toArray(new BaseFeatureSet[featureSetsList.size()]);

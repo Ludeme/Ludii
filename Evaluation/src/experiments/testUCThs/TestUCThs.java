@@ -195,7 +195,7 @@ public class TestUCThs
 	
 	//-------------------------------------------------------------------------
 
-	public int gameLength(final Trial trial, final Game game)
+	public static int gameLength(final Trial trial, final Game game)
 	{
 		//return trial.numLogicalDecisions(game);
 		//return trial.numMoves() - trial.numForcedPasses();
@@ -207,7 +207,7 @@ public class TestUCThs
 	/**
 	 * @param game Single game object shared between threads.
 	 */
-	void compareUCThs
+	static void compareUCThs
 	(
 		final GameName gameName, final Game game, final int iterations, final int depth
 	) throws Exception
@@ -585,7 +585,7 @@ public class TestUCThs
 //	
 	//-------------------------------------------------------------------------
 
-	void showResults
+	static void showResults
 	(
 		final Game game, final String label, final int numTrials, 
 		final List<Future<TrialRecord>> futures, final double secs, 
@@ -686,7 +686,7 @@ public class TestUCThs
 	
 	//-------------------------------------------------------------------------
 
-	double lengthRandomSerial(final Game game, final int numTrials)
+	static double lengthRandomSerial(final Game game, final int numTrials)
 	{
 		final long startAt = System.nanoTime();
 		
@@ -813,7 +813,7 @@ public class TestUCThs
 //		return totalDecisions / (double)numTrials;
 //	}
 
-	double branchingFactorParallel
+	static double branchingFactorParallel
 	(
 		final Game game, final int numTrials
 	) throws Exception

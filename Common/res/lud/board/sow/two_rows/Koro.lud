@@ -25,8 +25,8 @@
         (piece "Seed" Shared)
         (hand Each)
         (map "Hogon" {<Row:hogon>})
-        (regions P1 (sites Bottom))          // P1 home
-        (regions P2 (sites Top))            // P2 home 
+        (regions P1 (sites Bottom))     // P1 home
+        (regions P2 (sites Top))      // P2 home 
     }) 
     (rules 
         
@@ -87,15 +87,15 @@
 
 (option "Board Size" <Row> args:{ <size> <hogon>}
     {
-    (item "5"  <5> <(pair P1 4) (pair P2 5)> "Each row has 5 holes.")  
-    (item "6"  <6> <(pair P1 5) (pair P2 6)> "Each row has 6 holes.")*  
+    (item "5" <5> <(pair P1 4) (pair P2 5)> "Each row has 5 holes.") 
+    (item "6" <6> <(pair P1 5) (pair P2 6)> "Each row has 6 holes.")* 
 })
 
 (option "Start" <Start> args:{ <numSeeds> <usingHogon>}
     {
-    (item "4 Seeds"  <4> <14> "Each hole has initially 4 seeds.")* 
-    (item "5 Seeds"  <5> <15> "Each hole has initially 5 seeds.")  
-    (item "6 Seeds"  <6> <16> "Each hole has initially 6 seeds.")  
+    (item "4 Seeds" <4> <14> "Each hole has initially 4 seeds.")* 
+    (item "5 Seeds" <5> <15> "Each hole has initially 5 seeds.") 
+    (item "6 Seeds" <6> <16> "Each hole has initially 6 seeds.") 
 })
 
 //------------------------------------------------------------------------------
@@ -135,10 +135,10 @@
         (useFor "Ruleset/Six Holes (Observed)" (id "783"))
         (source "Murray 1951: 183-184.")
         (id "781")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Mali, around 1938.")
+        (origin "This game was played in Mali, around 1938.")
         }
     )
     

@@ -22,6 +22,7 @@ import other.concept.ConceptType;
  * @author Eric.Piette
  *
  */
+@SuppressWarnings("static-method")
 public class AllDifferentIdConceptEnum
 {
 

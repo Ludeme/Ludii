@@ -1,7 +1,5 @@
 (define "ThrowValue" (mapEntry (count Pips))) 
 
-(define "SiteToMoveOnTrack" (trackSite Move steps:#1))
-
 (define "SpecialThrows" 
     (is In ("ThrowValue") (sites {1 4}))
 )
@@ -14,14 +12,14 @@
 )
 
 (define "NoFriendPieceInBetween" 
-    (= 1 (count Sites in:(intersection (sites Occupied by:#1) (sites Track Mover "Track" from:(from) to:("SiteToMoveOnTrack" ("ThrowValue"))))))		
+    (= 1 (count Sites in:(intersection (sites Occupied by:#1) (sites Track Mover "Track" from:(from) to:("NextSiteOnTrack" "ThrowValue")))))		
 )
 
 (define "Move"
     (move 
         (from (site))
         (to 
-            ("SiteToMoveOnTrack" ("ThrowValue")) 
+            ("NextSiteOnTrack" "ThrowValue")
             if:(and 
                 (or
                     (is Empty (to))
@@ -59,7 +57,7 @@
         )
         (piece "Stick" Each)
         (regions "AllSites" (sites Board))
-        (dice d:2 from:0 num:8)
+        ("StickDice" 8)
         (map "Throw" {(pair 0 8) (pair 1 1) (pair 2 6) (pair 3 5) (pair 4 4) (pair 5 5) (pair 6 6) (pair 7 1) (pair 8 8)})
         (regions "Home" P1 (sites Bottom))
         (regions "Home" P2 (sites Top))
@@ -74,8 +72,8 @@
             (place "Stick2" (sites Top))
         })
         (play 
-            (do (roll) 
-                next:(if (or (is Mover P1) (is Mover P3))
+            ("RollMove"
+                (if (or (is Mover P1) (is Mover P3))
                     (forEach Site (sites Occupied by:Team1) ("Move" Team1))
                     (forEach Site (sites Occupied by:Team2) ("Move" Team2))
                 )
@@ -101,9 +99,9 @@
     {
     (item "20" <20> <"79,W,S1,E,S1,W,S1,E"> "Each row has 20 holes.") 
     (item "21" <21> <"83,W,S1,E,S1,W,S1,E"> "Each row has 21 holes.") 
-    (item "22" <22> <"87,W,S1,E,S1,W,S1,E"> "Each row has 22 holes.")  
+    (item "22" <22> <"87,W,S1,E,S1,W,S1,E"> "Each row has 22 holes.") 
     (item "23" <23> <"91,W,S1,E,S1,W,S1,E"> "Each row has 23 holes.") 
-    (item "24" <24> <"94,W,S1,E,S1,W,S1,E"> "Each row has 24 holes.")  
+    (item "24" <24> <"94,W,S1,E,S1,W,S1,E"> "Each row has 24 holes.") 
     (item "25" <25> <"79,W,S1,E,S1,W,S1,E"> "Each row has 25 holes.") 
     }
 )
@@ -131,19 +129,18 @@
         (rules "4x20-25 board. Player on two teams of two players. Each team has a number of pieces which are equal to the number of holes in one of the rows. Pieces baring in the outer rows of the board. Eight sticks used as dice, painted red on one side. The throws are as follows: All sides of one color = 8; seven of one color = 1; six of one color = 6; five of one color = 5; four of one color= 4. Throws of 4 and 1 allow the player another throw. Pieces are moved after the throws are made. Each throw must be used to move a piece; the value of a throw cannot be subdivided between pieces. Pieces move from left to right in the team's home row, the right to left in the second row, left to right in the third row, and then right to left in the opposing team's home row. Pieces may not move past other pieces belonging to the team, but may move past the opponent's pieces. Then a piece lands in a spot occupied by a piece belonging to the opposing team, the opposing team's piece is captured. Once a player places their pieces in the opponent's home row, they cannot be taken. The team continue until all of the pieces are in the opponents' home rows, and the team with the most remaining pieces wins.")
         (source "Depaulis 2001: 74-76.")
         (id "768")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
-        (origin  "This game was played in Western Sahara, around 1993.")
+        (origin "This game was played in Western Sahara, around 1993.")
         }
     )
     
     (graphics {
-        (show Edges Hidden)  
+        (show Edges Hidden) 
         (show Symbol "disc" "AllSites" Vertex fillColour:(colour White) edgeColour:(colour Black) scale:1)
         (piece Colour "Die" state:1 fillColour:(colour Red))
         (piece Scale "Stick" 0.5)
-        
     })
     
 )

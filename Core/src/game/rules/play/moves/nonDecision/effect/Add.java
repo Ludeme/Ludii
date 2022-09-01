@@ -81,7 +81,7 @@ public final class Add extends Effect
 	
 	//-------------------------------------------------------------------------
 
-	/** Action cache (indexed by move first, component second, state+1 third, site fourth) */
+	/** Action cache (indexed by mover first, component second, state+1 third, site fourth) */
 	private Move[][][][] actionCache = null;
 	
 	/** 
@@ -277,8 +277,7 @@ public final class Add extends Effect
 					{
 						final Action actionToAdd = (level == null)
 								? new ActionAdd(type, toSite, componentId, 1, state, Constants.UNDEFINED,
-										Constants.UNDEFINED,
-										null)
+										Constants.UNDEFINED, null)
 								: new ActionInsert(type, toSite, level.eval(context), componentId, state);
 
 						final int cid = toSite >= context.containerId().length ? 0 : context.containerId()[toSite];
@@ -439,8 +438,7 @@ public final class Add extends Effect
 				if (valid)
 				{
 					final Action actionAdd = new ActionAdd(type, toSite, largePieceId, 1, state, Constants.UNDEFINED,
-							Constants.UNDEFINED,
-							null);
+							Constants.UNDEFINED, null);
 					actionAdd.setDecision(isDecision());
 
 					final Move move = new Move(actionAdd);
@@ -488,6 +486,9 @@ public final class Add extends Effect
 		
 		if (site != null)
 			gameFlags |= site.gameFlags(game);
+		
+		if (localState != null)
+			gameFlags |= GameType.SiteState;
 
 		if (level != null)
 		{

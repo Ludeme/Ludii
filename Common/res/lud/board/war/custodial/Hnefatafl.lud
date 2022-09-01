@@ -2,7 +2,7 @@
     (custodial 
         (from (last To)) 
         Orthogonal
-        (between (max 1) if:(= (what at:(between)) (id #1)) (apply (remove (between))))
+        (between (max 1) if:("IsPieceAt" #1 Next (between)) (apply (remove (between))))
         (to if:"FriendOrCentreOrFortress") 
     )
 )
@@ -28,8 +28,7 @@
         (regions "Fortresses" (sites Corners))
         
         (piece "Thrall" P1 
-            (move
-                Slide
+            (move Slide
                 Orthogonal 
                 (between if:"EmptyButNotCentreOrFortress")
                 (then 
@@ -38,51 +37,42 @@
                         (<Capture:type>
                             (between
                                 <Capture:distance>
-                                if:(= (what at:(between)) (id "Jarl2")) 
+                                if:("IsPieceAt" "Jarl" P2 (between))
                                 "JarlIsCaptured"
                             )
-                            (to 
-                                if:"FriendOrCentreOrFortress"
-                            )
+                            (to if:"FriendOrCentreOrFortress")
                         )
                     })
                 )
             )
         )
         (piece "Thrall" P2 
-            (move
-                Slide
+            (move Slide
                 Orthogonal 
                 (between if:"EmptyButNotCentreOrFortress") 
                 (then ("Custodial" "Thrall1")) 
             ) 
         ) 
         (piece "Jarl" P2 
-            (move
-                Slide
+            (move Slide
                 Orthogonal 
                 (then ("Custodial" "Thrall1")) 
             ) 
         ) 
-        }
-    ) 
+    }) 
     (rules 
-        (start
-            { 
+        (start { 
             (place "Thrall1" {"D1" "E1" "F1" "G1" "H1" "F2" "A4" "A5" "A6" "A7" "A8" "B6" "K4" "K5" "K6" "K7" "K8" "J6" "F10" "D11" "E11" "F11" "G11" "H11" "F10"})
             (place "Thrall2" {"F4" "E5" "F5" "G5" "D6" "E6" "G6" "H6" "E7" "F7" "G7" "F8"})
             (place "Jarl2" (centrePoint))
-            }
-        )
+        })
         
         (play (forEach Piece)) 
         
-        (end
-            {
-            (if (is Within (id "Jarl2") in:(sites "Fortresses")) (result P2 Win))
+        (end {
+            ("PieceTypeReachWin" "Jarl2" (sites "Fortresses") P2)
             (if "JarlWasCaptured" (result P1 Win))
-            }
-        )
+        })
     )
 )
 
@@ -90,8 +80,8 @@
 
 (option "Play Rules" <Capture> args:{ <type> <distance> }
     {
-    (item "Fetlar Common"  <surround (from (last To)) Orthogonal> <>    "The game is played with the common rules.")  
-    (item "Fetlar Latin"  <custodial (from (last To)) Orthogonal> <(max 1)> "The game is played with the latin rules.")  
+    (item "Fetlar Common" <surround (from (last To)) Orthogonal> <>  "The game is played with the common rules.") 
+    (item "Fetlar Latin" <custodial (from (last To)) Orthogonal> <(max 1)> "The game is played with the latin rules.") 
 })
 
 //------------------------------------------------------------------------------
@@ -139,10 +129,10 @@
         (useFor "Ruleset/Copenhagen (Suggested)" (id "546"))
         (source "Murray 1951: 55–64.")
         (id "42")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/custodial")
         (credit "Eric Piette")
-        (origin  "This game was played in Scandinavia, from around 790 to 1413.")
+        (origin "This game was played in Scandinavia, from around 790 to 1413.")
         }
     )
     

@@ -1,12 +1,10 @@
 (define "ThrowValue" (count Pips))
 
-(define "SiteToMoveOnTrack" (trackSite Move #1 #2 steps:#3))
-
 (define "NoPieceOnBoard" (< (count Pieces Mover in:(sites Board)) 1))
 
 (define "CaptureMove" 
     (forEach Level (to) FromTop
-        (if (is Enemy (who at:(to) level:(level)))
+        (if ("IsEnemyAt" (to) level:(level))
             (remove (to) level:(level))
         )
     ) 
@@ -25,7 +23,7 @@
         (regions "AllSites" (sites Board Vertex))
         (piece "Stick" Each
             (forEach Value (values Remembered "Throws")
-                (if (= Off ("SiteToMoveOnTrack" from:(from) "Track" (value)))
+                (if ("IsOffBoard" ("NextSiteOnTrack" (value) from:(from) "Track"))
                     (move 
                         (from (from) level:(level))
                         (to 
@@ -41,14 +39,14 @@
                             )
                         )
                         (to 
-                            ("SiteToMoveOnTrack" from:(from) "Track" (value))
+                            ("NextSiteOnTrack" (value) from:(from) "Track")
                             (apply (and ("CaptureMove") (forget Value "Throws" (value))))
                         )
                     )
                 )
             )		
         )
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
         (hand Each)
     })
     (rules 
@@ -59,8 +57,8 @@
         phases:{
         (phase "ThrowPhase" 
             (play 
-                (do (roll)
-                    next:(move Pass
+                ("RollMove"
+                    (move Pass
                         (then
                             (if (not (no Pieces Mover))
                                 (and {
@@ -94,7 +92,7 @@
         )
         }
         
-        (end (if (no Pieces Enemy) (result TeamMover Win)))
+        (end ("CaptureAllTeam"))
     )
 )
 
@@ -124,7 +122,7 @@
         } 
         >
         "The game has 6 players."
-    )  
+    ) 
     (item "8" <8> <20>
         <
         (set Team 1 {P1 P2 P3 P4})
@@ -151,7 +149,7 @@
         } 
         >
         "The game has 8 players."
-    )  
+    ) 
     (item "10" <10> <25>
         <
         (set Team 1 {P1 P2 P3 P4 P5})
@@ -182,7 +180,7 @@
         } 
         >
         "The game has 10 players."
-    )  
+    ) 
     (item "12" <12> <25>
         <
         (set Team 1 {P1 P2 P3 P4 P5 P6})
@@ -217,7 +215,7 @@
         } 
         >
         "The game has 12 players."
-    )  
+    ) 
     (item "14" <14> <25>
         <
         (set Team 1 {P1 P2 P3 P4 P5 P6 P7})
@@ -256,7 +254,7 @@
         } 
         >
         "The game has 14 players."
-    )  
+    ) 
     (item "16" <16> <30>
         <
         (set Team 1 {P1 P2 P3 P4 P5 P6 P7 P8})
@@ -299,7 +297,7 @@
         } 
         >
         "The game has 16 players."
-    )  
+    ) 
 })
 
 //------------------------------------------------------------------------------
@@ -325,7 +323,7 @@
         ")
         (source "Verbeeck 1998: 87-90.")
         (id "644")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
         }

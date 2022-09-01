@@ -1,36 +1,19 @@
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
-)
-
-(define "KingInTheInitialPlace"
-    (= (what at:(mapEntry "King" (mover))) (id "King" Mover))
-)
+//**** Defines used to model the castling Moves. ****
 
 (define "HasNeverMoved"
     (= (state at:(mapEntry #1 (mover))) 1) 
 )
 
 (define "PieceHasMoved"
-    (set State at:(last To) 0) 
+    (set State at:#1 0) 
 )
 
 (define "RememberPieceHasMoved"
     (then 
         (if 
             (= (state at:(last To)) 1) 
-            "PieceHasMoved"
+            ("PieceHasMoved" (last To))
         ) 
-    ) 
-)
-
-(define "CaptureToPieceAndResetCounter"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove 
-                (to) 
-                (then (set Counter))
-            )
-        )
     ) 
 )
 
@@ -38,43 +21,75 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )  
+    ) 
 )
 
-(define "DoCastle"
-    (move
-        Slide 
+(define "DecideToCastle"
+    (move Slide 
         (from (mapEntry #1 (mover))) 
         #2 
         (between 
             (exact #3) 
             if:#4
         ) 
+        (to 
+            if:True
+            (apply ("PieceHasMoved" (from)))
+        )
         #5
     )
 )
 
+(define "CastleRook"
+    (slide 
+        (from (mapEntry #1 (mover))) 
+        #2 
+        (between 
+            (exact #3) 
+            if:#4
+        ) 
+        (to 
+            if:True
+            (apply ("PieceHasMoved" (from)))
+        )
+    )
+)
+
 (define "SmallCastling"
-    ("DoCastle" "King" E 2 "KingNotCheckedAndToEmpty" (then (and ("PieceHasMoved") ("DoCastle" "RookRight" W 2 True))))
+    ("DecideToCastle" "King" E 2 "KingNotCheckedAndToEmpty" (then ("CastleRook" "RookRight" W 2 True)))
 )
 
 (define "BigCastling"
-    ("DoCastle" "King" W 2 "KingNotCheckedAndToEmpty" (then (and ("PieceHasMoved") ("DoCastle" "RookLeft" E 3 True))))
+    ("DecideToCastle" "King" W 2 "KingNotCheckedAndToEmpty" (then ("CastleRook" "RookLeft" E 3 True)))
 )
+
+(define "Castling"
+    (if (and 
+            ("HasNeverMoved" "King")
+            (not ("IsInCheck" "King" Mover)) 
+        )
+        (or
+            (if (and 
+                    ("HasNeverMoved" "RookLeft")
+                    (can Move ("CastleRook" "RookLeft" E 3 (is Empty (to))))
+                )
+                "BigCastling"
+            )
+            (if (and 
+                    ("HasNeverMoved" "RookRight")
+                    (can Move ("CastleRook" "RookRight" W 2 (is Empty (to))))
+                )
+                "SmallCastling"
+            )
+        )
+    )
+)
+
+//**** Defines used to model the extra Pawn moves. ****
 
 (define "SetEnPassantLocation"
     (then 
         (set Pending (ahead (last To) Backward))
-    )
-)
-
-(define "DoubleStep"
-    (move
-        Slide 
-        Forward 
-        (between (exact 2) if:(is Empty (between))) 
-        (to if:(is Empty (to))) 
-        "SetEnPassantLocation"
     )
 )
 
@@ -86,8 +101,7 @@
 )
 
 (define "EnPassant"
-    (move
-        Step 
+    (move Step 
         (directions {FR FL}) 
         (to if:"InLocationEnPassant") 
         (then 
@@ -98,102 +112,40 @@
     )
 )
 
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
+(define "InitialPawnMove"
+    (if (is In (from) (sites Start (piece (what at:(from)))))
+        ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
     )
 )
 
 //------------------------------------------------------------------------------
 
 (game "Amazon Chess" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8)) 
         
-        (piece "Pawn" Each 
-            (or {
-                (if (is In (from) (sites Start (piece (what at:(from)))))
-                    "DoubleStep"
-                )
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
+        ("ChessPawn" "Pawn"
+            (or 
+                "InitialPawnMove"
                 "EnPassant"
-                }
-                (then
-                    (and
-                        (if (is In (last To) (sites Mover "Promotion")) 
-                            (moveAgain)
-                        )
-                        (set Counter)
-                    )
+            )
+            (then 
+                (and
+                    ("ReplayInMovingOn" (sites Mover "Promotion"))
+                    (set Counter)
                 )
             )
         )
         
-        (piece "Rook" Each 
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-                "RememberPieceHasMoved"
-            )
-        )
-        (piece "King" Each 
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-                "RememberPieceHasMoved"
-            )
-        )
-        (piece "Bishop" Each 
-            (move
-                Slide 
-                Diagonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-            )
-        )
-        (piece "Knight" Each 
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-            )
-        )
+        ("ChessRook" "Rook" (then (set Counter)) ("RememberPieceHasMoved"))
+        ("ChessKing" "King" (then (set Counter)) ("RememberPieceHasMoved"))
+        ("ChessBishop" "Bishop" (then (set Counter)))
+        ("ChessKnight" "Knight" (then (set Counter)))
         (piece "Queen" Each
             (or
-                (move
-                    Slide 
-                    (to 
-                        if:("IsEnemyAt" (to)) 
-                        "CaptureToPieceAndResetCounter"
-                    ) 
-                ) 
-                (move
-                    Leap 
-                    "KnightWalk"
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        "CaptureToPieceAndResetCounter"
-                    ) 
-                )
+                ("SlideCapture" ~ ~ (then (set Counter)))
+                ("LeapCapture" "KnightWalk" (then (set Counter)))
             )
         )
         
@@ -202,8 +154,7 @@
         (map "RookRight" {(pair 1 "H1") (pair 2 "H8")})
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
-        }
-    ) 
+    }) 
     (rules 
         (start
             { 
@@ -220,43 +171,17 @@
                 (do 
                     (or 
                         (forEach Piece)
-                        (if (and {
-                                "KingInTheInitialPlace" 
-                                ("HasNeverMoved" "King")
-                                (not ("IsInCheck" "King" Mover)) 
-                            })
-                            (or
-                                (if (and 
-                                        ("HasNeverMoved" "RookLeft")
-                                        (can Move ("DoCastle" "RookLeft" E 3 (is Empty (to))))
-                                    )
-                                    "BigCastling"
-                                )
-                                (if (and 
-                                        ("HasNeverMoved" "RookRight")
-                                        (can Move ("DoCastle" "RookRight" W 2 (is Empty (to))))
-                                    )
-                                    "SmallCastling"
-                                )
-                            )
-                        )
+                        ("Castling")
                     )
                     ifAfterwards:(not ("IsInCheck" "King" Mover))
                 )
             )
         )
         
-        (end
-            {
-            (if (and 
-                    ("IsInCheck" "King" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
+        (end {
+            ("Checkmate" "King")
             (if (or (no Moves Mover) (= (counter) 100)) (result Mover Draw)) 
-            }
-        )
+        })
     )
 )
 
@@ -270,7 +195,7 @@
         (rules "The rules are exactly the same as in Chess, except the Queen also has the ability to move as a knight.")
         (source "<a href=\"https://brainking.com/en/GameRules?tp=58\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />brainking</a>")
         (id "458")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/chess")
         (credit "Eric Piette")
         }

@@ -12,21 +12,10 @@
 )
 
 (define "PiecesSurroundingAreNotAdjacent"
-    (= 0
-        (count Sites
-            in:(forEach
-                (sites Around (between) Own)
-                if:(!= 0 
-                    (count Sites 
-                        in:(sites 
-                            Around 
-                            (site) 
-                            Own 
-                            if:(is In (to) (sites Around (between) Own))
-                        )
-                    )
-                )
-            )
+    (all Sites
+        (sites Around (between) Own)
+        if:(all Sites (sites Around (site) Own) 
+            if:(not (is In (to) (sites Around (between) Own)))
         )
     )
 )
@@ -40,8 +29,7 @@
                 (is In (between) (sites "Fortresses")) 
                 ("IsEnemyAt" (between))
                 ("PiecesSurroundingAreNotAdjacent")
-                }
-            )
+            })
             (apply (remove (between)))
         )
         (to if:("IsFriendAt" (to)))
@@ -56,10 +44,9 @@
         (between 
             if:(and {
                 (= (between) ("Throne")) 
-                (= (what at:(between)) (id "Jarl" P1))
+                ("IsPieceAt" "Jarl" P1 (between))
                 ("PiecesSurroundingAreNotAdjacent")
-                }
-            )
+            })
             (apply (remove (between)))
         )
         (to if:("IsFriendAt" (to)))
@@ -67,7 +54,7 @@
     )
 )
 
-(define "JarlWasCaptured" (= (where "Jarl" P1) Off))
+(define "JarlWasCaptured" ("IsOffBoard" (where "Jarl" P1)))
 
 (define "Throne" (centrePoint))
 
@@ -103,12 +90,10 @@
             <Board:start>
         })
         (play (forEach Piece))
-        (end
-            {
-            (if (is Within (id "Jarl1") in:(sites "Fortresses")) (result P1 Win))
+        (end {
+            ("PieceTypeReachWin" "Jarl1" (sites "Fortresses") P1)
             (if "JarlWasCaptured" (result P2 Win))
-            }
-        )
+        })
     )
 )
 
@@ -116,16 +101,16 @@
 
 (option "Board Size" <Board> args:{ <size> <start> <kingMove>}
     {
-    (item "4x4"  
+    (item "4x4" 
         <4> 
         <				
         (place "Thrall2" (sites "Fortresses"))
         (place "Thrall1" {"D3" "C4" "E5"})
-        >    
+        >  
         <Step (to if:(is Empty (to)))>
         "The game is played on a 4x4 hex board."
-    )*  
-    (item "5x5"  
+    )* 
+    (item "5x5" 
         <5> 
         <
         (place "Thrall2" (union (sites {"B2" "B5" "E8" "H8" "E2" "H5"}) (sites "Fortresses")))
@@ -133,7 +118,7 @@
         > 
         <Slide>
         "The game is played on a 5x5 hex board. The King can slide."
-    )  
+    ) 
 })
 
 //-----------------------------------------------------------------
@@ -159,7 +144,7 @@
         HeXentafl on a 5x5 grid is almost identical to a 4x4 grid, except there are more attackers and defenders, and the King moves just like the other pieces. It is not limited to one space at a time.")
         (id "718")
         (source "<a href=\"https://nxsgame.wordpress.com/2019/09/26/hexentafl/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nxsgame.wordpress.com</a>")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/custodial")
         (author "Kevin R. Kane")
         (publisher "<a href=\"https://www.nestorgames.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a> (used with permission)")

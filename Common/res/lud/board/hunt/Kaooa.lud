@@ -1,10 +1,7 @@
 (game "Kaooa" 
     (players 2) 
     (equipment { 
-        (board 
-            (splitCrossings (regular Star 5))
-            use:Vertex
-        )
+        ("StarBoard" 5)
         (hand Each) 
         (piece "Marker" P1 (or ("HopSequenceCapture") "StepToEmpty")) 
         (piece "Marker" P2 "StepToEmpty") 
@@ -26,8 +23,7 @@
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
+        ("PhaseMovePiece" "Movement"
             (end ("NoMoves" Loss))
         )
         }
@@ -38,13 +34,13 @@
 
 (option "Start rules" <Num> args:{ <pieces> }
     {
-    (item "3 Pieces"  <3>  "The game starts with 3 discs for the second player.")  
-    (item "4 Pieces"  <4>  "The game starts with 4 discs for the second player.")  
-    (item "5 Pieces"  <5>  "The game starts with 5 discs for the second player.")  
-    (item "6 Pieces"  <6>  "The game starts with 6 discs for the second player.")  
-    (item "7 Pieces"  <7>  "The game starts with 7 discs for the second player.")*  
-    (item "8 Pieces"  <8>  "The game starts with 8 discs for the second player.")  
-    (item "9 Pieces"  <9>  "The game starts with 9 discs for the second player.")  
+    (item "3 Pieces" <3> "The game starts with 3 discs for the second player.") 
+    (item "4 Pieces" <4> "The game starts with 4 discs for the second player.") 
+    (item "5 Pieces" <5> "The game starts with 5 discs for the second player.") 
+    (item "6 Pieces" <6> "The game starts with 6 discs for the second player.") 
+    (item "7 Pieces" <7> "The game starts with 7 discs for the second player.")* 
+    (item "8 Pieces" <8> "The game starts with 8 discs for the second player.") 
+    (item "9 Pieces" <9> "The game starts with 9 discs for the second player.") 
 })
 
 //------------------------------------------------------------------------------
@@ -57,10 +53,10 @@
         (rules "Played on a five-pointed star shaped board. One player plays with one piece, the \"tiger,\" and the other plays with seven pieces, the \"kaooas.\" The player with the kaooas attempt to checkmate the tiger by moving to one of the points where the lines of the board intersect. The tiger captures kaooas by hopping over them. The tiger wins by capturing all the kaooas.")
         (source "Gupta 1924: 167.")
         (id "468")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1924.")
+        (origin "This game was played in India, around 1924.")
         }
     )
     

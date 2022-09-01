@@ -1,7 +1,7 @@
 (game "Haretavl" 
     (players 2) 
     (equipment { 
-        ("ThreeMenMorrisBoardWithLeftAndRightTriangles")
+        ("ThreeMensMorrisBoardWithLeftAndRightTriangles")
         (hand Each)
         (piece "Dog" P1 "StepToEmpty")
         (piece "Hare" P2 "StepToEmpty")
@@ -23,8 +23,7 @@
             )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
-        
-        (phase "Movement" (play (forEach Piece)))
+        ("PhaseMovePiece" "Movement")
         }
         
         <End:rule>
@@ -91,10 +90,10 @@
         (useFor "Ruleset/Hare Wins (Suggested)" (id "1898"))
         (source "Michaelsen 2014.")
         (id "770")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in Scandinavia, from around 1833 to 1886.")
+        (origin "This game was played in Scandinavia, from around 1833 to 1886.")
         }
     )
     

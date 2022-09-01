@@ -116,8 +116,7 @@
         )
         (phase "Playing"
             (play
-                (move
-                    Select
+                (move Select
                     (from (intersection (sites Next "Defence") (sites Hidden to:Mover)))
                     (then
                         ("ClearShotSpace"
@@ -152,7 +151,7 @@
         Finally the players take turns to guess spaces in their opponent's home area. These are revealed to be either water or a ship according to the following code: <b>C</b>arrier - 5 spaces; <b>B</b>attleship - 4 spaces; <b>D</b>estroyer - 3 spaces; <b>S</b>ubmarine - 3 spaces; <b>P</b>atrol Boat - 2 spaces.")
         (id "1551")
         (source "<a href=\"https://en.wikipedia.org/wiki/Battleship_(game)\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/eliminate/all")
         (credit "Nicholas Bamber")
         (date "1931")

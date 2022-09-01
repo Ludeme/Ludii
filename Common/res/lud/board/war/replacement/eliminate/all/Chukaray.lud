@@ -1,5 +1,4 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
 (define "NotThrow0" (!= 0 ("ThrowValue")))
 (define "Centre" 12)
 
@@ -89,17 +88,17 @@
             }
             use:Edge
         )
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
         (piece "Stick" Each
             (move 
                 (from (from) level:(level))
                 (to
-                    ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
+                    ("NextSiteOnTrack" ("ThrowValue") from:(from))
                     if:True
                     (apply
                         (and
                             (if ("IsEnemyAt" (to))
-                                (if (= Off ("NearestHomeWithStick" (who at:(to))))
+                                (if ("IsOffBoard" ("NearestHomeWithStick" (who at:(to))))
                                     (remove (to))
                                     (fromTo
                                         (from (to))
@@ -109,7 +108,7 @@
                             )
                             (if (and {
                                     (is Occupied (to))
-                                    (= (id "Stick" Neutral) (what at:(to) level:0))
+                                    ("IsPieceAt" "Stick" Neutral (to) level:0)
                                     (is In (to) (sites Next "Side"))
                                 })
                                 (remove (to) level:0)
@@ -131,19 +130,19 @@
             (place Stack "Stick0" (sites {1..11 13..22}))
         })
         (play 
-            (do (roll) 
-                next:(if ("NotThrow0") 
+            ("RollMove"
+                (if ("NotThrow0") 
                     (forEach Piece)
                     (if (= ("Centre") (where "Stick" Mover))
-                        (if (!= Off ("NearestHomeWithStick" (mover)))
+                        (if ("IsNotOffBoard" ("NearestHomeWithStick" (mover)))
                             (move
                                 (from (where "Stick" Mover))
                                 (to ("NearestHomeWithStick" (mover)))
                             )
                             (if 
                                 (and
-                                    (= Off ("NearestHomeWithStick" (mover)))
-                                    (= Off ("NearestHomeWithStick" (next)))
+                                    ("IsOffBoard" ("NearestHomeWithStick" (mover)))
+                                    ("IsOffBoard" ("NearestHomeWithStick" (next)))
                                 )
                                 (move Pass (then (trigger "Draw" Mover)))
                             )
@@ -158,7 +157,7 @@
             )
         )
         (end {
-            (if (no Pieces Next) (result Mover Win))
+            ("CaptureAll" Next)
             (if (is Triggered "Draw" Mover) (result Mover Draw))
         })
     )
@@ -175,7 +174,7 @@
         (rules "Twenty-three spaces are arranged in a line: the outer space on each side and the central space are a circular holes, the intervening spaces are vertically-oriented trenches. A stick is laid in each trench, and a stick is stuck into the ground in each end hole, one belonging to each player. They move their sticks toward the opposite end of the track and then go back to their starting point, according to  the throw of four stick dice, with one flat and one convex side. The values of the throws are as follows: 4 convex sides up = 4, 3=0, 2=1, 1=0, 0=2. Players continue to throw and move until obtaining a result of 0. When the player passes the central hole, they remove the sticks from the trenches in which they land. If the player lands in the central hole, and throws a 0 on their next throw, they must then return to the space nearest to their home still containing a stick. If the player lands on the same place as the opponent, the opponent is sent back to the space nearest their home which still has a stick in it, thus eliminating this stick. The goal is to eliminate all of the sticks from the opponent's side of the board and then to land on the same space as the opponent's playing stick. If both players are in the end stage and trying to land on each other, and a player lands in the central space and then throws a 0, the game is a draw.")
         (source "Nordenskiold 1910: 428-429.")
         (id "331")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
         }

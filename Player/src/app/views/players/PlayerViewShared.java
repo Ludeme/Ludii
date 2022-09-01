@@ -1,6 +1,5 @@
 package app.views.players;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -32,12 +31,12 @@ public class PlayerViewShared extends PlayerViewUser
 	public void paint(final Graphics2D g2d)
 	{
 		// Add border around shared hand for exhibition app.
-		if (app.settingsPlayer().usingExhibitionApp() && app.manager().ref().context().board().numSites() > 1)
-		{
-			g2d.setColor(Color.WHITE);
-			g2d.setStroke(new BasicStroke(1, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
-			g2d.fillRoundRect(20, placement.y+20, placement.width+5, placement.height-40, 40, 40);
-		}
+//		if (app.settingsPlayer().usingExhibitionApp() && app.manager().ref().context().board().numSites() > 1)
+//		{
+//			g2d.setColor(Color.WHITE);
+//			g2d.setStroke(new BasicStroke(1, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
+//			g2d.fillRoundRect(350, placement.y+30, placement.width+5, placement.height-60, 40, 40);
+//		}
 		
 		if (hand != null)
 		{

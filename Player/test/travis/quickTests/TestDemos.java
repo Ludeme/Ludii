@@ -33,6 +33,7 @@ import utils.AIFactory;
  *
  * @author Dennis Soemers
  */
+@SuppressWarnings("static-method")
 public class TestDemos
 {
 	

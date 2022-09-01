@@ -12,6 +12,7 @@ import org.junit.Test;
  *
  * @author Dennis Soemers
  */
+@SuppressWarnings("static-method")
 public class TestJNIClasses
 {
 	

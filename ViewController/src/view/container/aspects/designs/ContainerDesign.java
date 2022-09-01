@@ -7,6 +7,7 @@ import other.context.Context;
 
 public class ContainerDesign 
 {
+	@SuppressWarnings("static-method")
 	public String createSVGImage(final Bridge bridge, final Context context) 
 	{
 		return null;
@@ -22,6 +23,7 @@ public class ContainerDesign
 		// Do nothing.
 	}
 
+	@SuppressWarnings("static-method")
 	public boolean ignorePieceSelectionLimit() 
 	{
 		return false;

@@ -8,8 +8,8 @@
         (mancalaBoard 2 6 store:None
             (track "Track" "0,E,N,W" loop:True)
         )
-        (regions P1 (sites Bottom))           // P1 home
-        (regions P2 (sites Top))            // P2 home
+        (regions P1 (sites Bottom))      // P1 home
+        (regions P2 (sites Top))      // P2 home
         (piece "Seed" Shared)
         (hand Each)
     }) 
@@ -52,10 +52,10 @@
         (rules "2x6 board. Six counters in each hole. Players take the contents of one of their holes and sow in an anti-clockwise direction. When the final counter of a sowing lands in a hole, making it contain two, four, or six counters,  these counters are taken. If the second to last hole also contains two, four, or six counters, these are also taken, continuing in an unbroken line until a hole with containing a number of counters other than two, four, or six. The game continues until all of the counters have been captured. The player who captured the most counters wins.")
         (source "Niebuhr 1774: 173.")
         (id "1056")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Egypt, around 1762.")
+        (origin "This game was played in Egypt, around 1762.")
         }
     )
     

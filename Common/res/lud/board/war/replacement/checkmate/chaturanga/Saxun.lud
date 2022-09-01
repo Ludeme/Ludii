@@ -1,121 +1,29 @@
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
-)
-
-(define "CaptureToPiece"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove 
-                (to) 
-            )
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
-//------------------------------------------------------------------------------
-
 (game "Saxun" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8)) 
-        
-        // Layakúcan
-        (piece "Pawn" Each 
-            (or 
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
-            )
-        )
-        // Lúdkax
-        (piece "Rook" Each 
-            (move
-                Slide Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        // Alyx
-        (piece "King_noCross" Each 
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        // Slúnax
-        (piece "Bishop_noCross" Each 
-            (move
-                Slide 
-                Diagonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        // Kúnax
-        (piece "Knight" Each 
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        // Férsix
-        (piece "Queen" Each 
-            (move
-                Slide 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            ) 
-        )
-        }
-    ) 
+        ("ChessPawn" "Pawn") // Layakúcan
+        ("ChessRook" "Rook") // Lúdkax
+        ("ChessKing" "King_noCross") // Alyx
+        ("ChessBishop" "Bishop_noCross") // Slúnax
+        ("ChessKnight" "Knight") // Kúnax
+        ("ChessQueen" "Queen") // Férsix
+    }) 
     (rules 
-        (start
-            { 
+        (start { 
             (place "Pawn1" {"F4" "G4" "H4" "B3" "C3" "D3" "E3" "A2"})
             (place "Pawn2" {"H7" "H6" "G6" "F6" "E6" "A5" "B5" "C5"})
             (place "Rook1" {"C2" "D1"}) (place "Knight1" {"B1" "H2"}) (place "Bishop_noCross1" {"E1" "F1"}) (place "Queen1" coord:"D2") (place "King_noCross1" coord:"C1") 
             (place "Rook2" {"C7" "B8"}) (place "Knight2" {"A7" "H8"}) (place "Bishop_noCross2" {"F7" "G7"}) (place "Queen2" coord:"B7") (place "King_noCross2" coord:"C8") 
-            }
-        )
+        })
         
         (play 
-            (do 
-                (forEach Piece)
+            (do (forEach Piece)
                 ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
             )
         )
         
-        (end
-            (if (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
-        )
+        (end ("Checkmate" "King_noCross"))
     )
 )
 
@@ -129,7 +37,7 @@
         (rules "8x8 checkered board. The pieces move as follows: Álix' (\"old man\"), x1: moves one space orthogonally or diagonally; Férsix' (\"fers\"), x1: moves any number of spaces orthogonally or diagonally; Lúdkax' (\"boat\"), x2: moves orthogonally any number of spaces; Slúnax' (\"elephant\"), x2: moves diagonally any number of spaces; Kúnax' (\"horse\"), x2: moves like a Chess knight; Layakúcan (\"little boys\"), x8: move forward one space, capture diagonally forward. Captures are made when a piece moves onto a space occupied by an opponent's piece. A player's Álix' is checked when it can be taken by the opponent on their next turn, and this possibility must be removed before the opponent plays. If a player's Álix' is checkmated, the opponent wins. ")
         (source "Jochelson 1933: 65-66.")
         (id "319")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
         }

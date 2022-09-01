@@ -1,5 +1,7 @@
 package game.util.graph;
 
+import annotations.Name;
+import annotations.Opt;
 import game.functions.dim.DimFunction;
 import main.math.Polygon;
 import other.BaseLudeme;
@@ -23,25 +25,32 @@ public class Poly extends BaseLudeme
 	 * For building a polygon with float points.
 	 * 
 	 * @param pts Float points defining polygon.
+	 * @param rotns Number of duplicate rotations to make.
 	 * 
 	 * @example (poly { { 0 0 } { 0 2.5 } { 4.75 1 } })
 	 */
 	public Poly
 	(
-		final Float[][] pts
+			       final Float[][] pts,
+		@Opt @Name final Integer   rotns
 	) 
 	{
-		polygon = new Polygon(pts);
+		polygon = new Polygon(pts, (rotns == null ? 0 : rotns.intValue()));
 	}
 
 	/**
 	 * For building a polygon with DimFunction points.
 	 * 
-	 * @param pts Float points defining polygon.
+	 * @param pts   Float points defining polygon.
+	 * @param rotns Number of duplicate rotations to make.
 	 * 
 	 * @example (poly { { 0 0 } { 0 2.5 } { 4.75 1 } })
 	 */
-	public Poly(final DimFunction[][] pts)
+	public Poly
+	(
+			       final DimFunction[][] pts,
+		@Opt @Name final Integer         rotns
+	)
 	{
 		final Float[][] floatPts = new Float[pts.length][];
 
@@ -54,7 +63,7 @@ public class Poly extends BaseLudeme
 				floatPts[i][j] = Float.valueOf(pts[i][j].eval());
 		}
 
-		polygon = new Polygon(floatPts);
+		polygon = new Polygon(floatPts, (rotns == null ? 0 : rotns.intValue()));
 	}
 
 	//-------------------------------------------------------------------------

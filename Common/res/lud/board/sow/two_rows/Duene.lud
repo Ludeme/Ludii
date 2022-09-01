@@ -10,8 +10,8 @@
         (mancalaBoard 2 6
             (track "Track" "1,E,N,W" loop:True)
         )
-        (regions P1 (sites Bottom))           // P1 home
-        (regions P2 (sites Top))            // P2 home
+        (regions P1 (sites Bottom))      // P1 home
+        (regions P2 (sites Top))      // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
         (piece "Seed" Shared)
     }) 
@@ -128,10 +128,10 @@
         (rules "2x6 board with two stores. Four counters in each hole. Sowing occurs in an anti-clockwise direction. When the final counter lands in an occupied hole the counters are picked up and sowing continues, unless the hole contained three counters, causing it to contain four, in which case the counters are captured. An unbroken sequence of holes with four counters in them behind the hole from which the first capture was made are also captured. In addition, any holes which were sown into during the course of the turn which now contain four counters are captured by the owner of the row. Play continues until there are only eight counters left. The first player to make a capture with these eight counters captures them all. The player with the most counters wins.")
         (source "Schönhärl 1909: 147.")
         (id "1305")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in West Africa, from around 1908 to 1909.")
+        (origin "This game was played in West Africa, from around 1908 to 1909.")
         }
     )
     

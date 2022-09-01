@@ -459,6 +459,7 @@ public class Regions extends Item
 	 * @return True if this Region is static (always evals to the same region
 	 * regardless of context).
 	 */
+	@SuppressWarnings("static-method")
 	public boolean isStatic()
 	{
 //		if (region != null)

@@ -19,9 +19,7 @@
             (nextPhase ("HandEmpty" P2) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
-        )
+        ("PhaseMovePiece" "Movement")
         }
         
         (end (if (is Line 3 through:(centrePoint) what:(mover)) (result Mover Win))) 
@@ -32,7 +30,7 @@
 
 (option "Variant" <Variant> args:{ <type> }
     {
-    (item "Blumlein"  <>    "The rules are describing with the Blumlein ruleset.")  
+    (item "Blumlein" <>  "The rules are describing with the Blumlein ruleset.") 
 })
 
 //------------------------------------------------------------------------------
@@ -64,10 +62,10 @@
         (useFor "Ruleset/Blumlein (Suggested)" (id "567"))
         (source "Blümlein 1918: 101-102.")
         (id "567")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in Rome?, from around 250 to 550.")
+        (origin "This game was played in Rome?, from around 250 to 550.")
         }
     )
     

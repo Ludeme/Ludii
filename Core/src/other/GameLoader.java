@@ -383,6 +383,10 @@ public final class GameLoader
 					}
 				}
 				
+				// Probably loading an external .lud from filepath.
+				if (bestMatchFilepath == null)
+					return null;
+				
 				String resourceStr = bestMatchFilepath.replaceAll(Pattern.quote("\\"), "/");
 				resourceStr = resourceStr.substring(resourceStr.indexOf("/lud/"));
 				

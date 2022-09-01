@@ -15,6 +15,7 @@ import utils.data_structures.support.zhang_shasha.Tree;
  *
  * @author Dennis Soemers
  */
+@SuppressWarnings("static-method")
 public class TestZhangShasha
 {
 	

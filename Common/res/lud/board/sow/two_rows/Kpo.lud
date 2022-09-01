@@ -31,12 +31,12 @@
 
 (option "Players" <Players> args:{ <num> <store> <homes> <track> <init> <Play> <end>}
     {
-    (item "2"  
+    (item "2" 
         <2> 
         <(map {(pair P1 FirstSite) (pair P2 LastSite)})>
         <
-        (regions P1 (sites Bottom))          
-        (regions P2 (sites Top))             
+        (regions P1 (sites Bottom))     
+        (regions P2 (sites Top))       
         >
         <
         (track "Track" "1,E,N,W" loop:True)
@@ -70,15 +70,15 @@
         (end ("MancalaByScoreWhen" (no Moves Next)))
         >
         "The game is played with 2 players."
-    )*  
+    )* 
     
-    (item "3"  
+    (item "3" 
         <3> 
         <(hand Each)>
         <
-        (regions P1 (sites {"B1" "C1" "B2" "C2"}))          
-        (regions P2 (sites {"D1" "E1" "D2" "E2"}))           
-        (regions P3 (sites {"F1" "G1" "F2" "G2"}))          
+        (regions P1 (sites {"B1" "C1" "B2" "C2"}))     
+        (regions P2 (sites {"D1" "E1" "D2" "E2"}))      
+        (regions P3 (sites {"F1" "G1" "F2" "G2"}))     
         >
         <
         {
@@ -161,14 +161,14 @@
         "The game is played with 4 players."
     ) 
     
-    (item "4"  
+    (item "4" 
         <4> 
         <(hand Each)>
         <
-        (regions P1 (sites {"B1" "C1" "D1"}))          
-        (regions P2 (sites {"E1" "F1" "G1"}))           
-        (regions P3 (sites {"G2" "F2" "E2"}))          
-        (regions P4 (sites {"B2" "C2" "D2"}))            
+        (regions P1 (sites {"B1" "C1" "D1"}))     
+        (regions P2 (sites {"E1" "F1" "G1"}))      
+        (regions P3 (sites {"G2" "F2" "E2"}))     
+        (regions P4 (sites {"B2" "C2" "D2"}))      
         >
         <
         {
@@ -289,7 +289,7 @@
         (useFor "Ruleset/Four players (Described)" (id "626"))
         (source "Silva 1995: 228.")
         (id "280")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }

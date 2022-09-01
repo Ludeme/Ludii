@@ -54,7 +54,7 @@ public class Completion extends Metric
 				completedGames++;
 		}
 
-		return completedGames / trials.length;
+		return Double.valueOf(completedGames / trials.length);
 	}
 
 	//-------------------------------------------------------------------------

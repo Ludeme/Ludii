@@ -27,21 +27,29 @@
                                         from:(sites Group at:(last To))
                                         to:(from)
                                         (- (* 32 #1))
-                                ))
+                                    )
+                                )
                                 (max
                                     (results
                                         from:(sites Group at:(last To))
                                         to:(from)
                                         (- (#2))
-                            )))
-                    ))
+                                    )
+                                )
+                            )
+                        )
+                    )
                     (results
                         from:(sites)
                         to:(from)
                         (value Piece at:(from))
-        ))))
+                    )
+                )
+            )
+        )
         #3
-))
+    )
+)
 
 (define "DRow" (/ (value Piece at:(from)) 32))
 (define "DCol" (% (value Piece at:(from)) 32))
@@ -71,7 +79,10 @@
                 ("IfThisRotationDo" (- "DRow" "DCol") (- "DCol") #1) 
                 }
                 #2
-))))
+            )
+        )
+    )
+)
 
 //----------------------------------------------
 // Marking Edible Bugs after Growth Moves
@@ -89,7 +100,15 @@
                                 (+
                                     (* 32 (- (var "LastRow") (row of:(site))))
                                     (- (var "LastCol") (column of:(site)))
-))))))))) 
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+) 
 
 (define "ThenMarkTheGrowingBudAsEdible"
     (then
@@ -97,7 +116,9 @@
             (sites Group at:(last To))
             (set State at:(site) 1)
             (then (moveAgain))
-)))
+        )
+    )
+)
 
 (define "MarkTheSelectedBugsAsEdible"
     (forEach Site (sites) (set State at:(site) 1))
@@ -115,7 +136,9 @@
                 next:("IfBugsMatchDo" ("MarkTheSelectedBugsAsEdible") ("ThenMarkTheGrowingBudAsEdible")) 
             )
             ("RecordTheGrowingBugsShapeVectorsAsValues") 
-)))
+        )
+    )
+)
 
 //--------------------------------------------------
 // Eating Utilities
@@ -132,16 +155,17 @@
     ("IfBugsMatchDo"
         (forEach Value (array (sites)) (remember Value (value))) // this is an action parameter, as is the then clause below...
         (then
-            (and
-                {
+            (and {
                 (remove (sites (values Remembered)))
                 (forEach Site
                     (sites Group at:(last To))
                     (set State at:(site) 0)
                 )
                 (moveAgain)
-                }
-))))
+            })
+        )
+    )
+)
 
 //----------------------------------
 //Growth Utilities
@@ -160,13 +184,15 @@
     (=
         ("BugSizeAfterPlacement")
         (+ 1 ("SizeOfArbitraryAdjacentMoversBug"))
-))
+    )
+)
 
 (define "BugNot2Big"
     (<=
         ("BugSizeAfterPlacement")
         ("SizeLargestBug")
-))
+    )
+)
 
 (define "RequiredGrowth" 
     (move Add
@@ -175,7 +201,8 @@
             #1
         )
         #2
-)) 
+    )
+) 
 
 //-----------
 
@@ -183,13 +210,14 @@
     (is In (to) (sites Around (sites Group at:(last From))))
 )
 
-(define "BonusGrowth"  
+(define "BonusGrowth" 
     (move Add
         (to (sites Empty)
             if:(and ("IsNext2BugThatAte") ("PlacementDoesntMergeBugs"))
         )
         #1
-)) 
+    )
+) 
 
 //-----------------------
 
@@ -199,7 +227,10 @@
             in:(difference
                 (intersection (sites Empty) (sites Around (sites Group at:(last To))))
                 (sites Around (difference (sites Occupied by:Mover) (sites Group at:(last To))))
-))))
+            )
+        )
+    )
+)
 
 (define "PlayerChoosesAHungryBug"
     (do
@@ -212,23 +243,23 @@
                 (from (max (array (sites))))
                 (then
                     ("EatAllNeighboringBugsAndGrow")
-        )))
+                )
+            )
+        )
         ifAfterwards:("BugCanStillGrow") 
-))
+    )
+)
 
 //--------------------------------------------------------- 
 (game "Bug" 
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board <Board:type> use:Cell)
         (piece "Hex" Each maxValue:1023) // 32rows * 32columns for recording vectors
-        }
-    )
+    })
     (rules
         (play
-            (if
-                (not ("SameTurn"))
+            (if ("NewTurn")
                 (if
                     (> 1 ("SizeLargestBug"))
                     (move Add (to (sites Board)))
@@ -240,19 +271,23 @@
                     ("BonusGrowth" (then ("FindWhatThereIsToEat")))
                 )
                 (then ("Score"))
-        ))
+            )
+        )
         (end
             (if
                 (and
                     (no Moves Mover)
-                    (not ("SameTurn"))
+                    ("NewTurn")
                 ) 
                 (if
                     (= (var "Last2Grow") (mover))
                     (result Mover Loss)
                 )
                 (result Mover Win)
-))))  
+            )
+        )
+    )
+) 
 
 //----------------------------------
 
@@ -262,7 +297,10 @@
         (set Score Next 
             (count Sites
                 in:(sites To ("RequiredGrowth" ~ ~))
-))))
+            )
+        )
+    )
+)
 
 //---------------
 
@@ -335,7 +373,7 @@
         The more experienced player's score must exceed any handicap agreed at the begining of the game.")
         (id "1995")
         (source "<a href=\"https://boardgamegeek.com/boardgame/240835/bug\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/space/territory")
         (author "Nick Bentley")
         (credit "Dale W. Walton")

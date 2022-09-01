@@ -34,6 +34,7 @@ public class GenerateRandomTestTrials
 	 * Generates trials for Travis tests.
 	 */
 	@Test
+	@SuppressWarnings("static-method")
 	public void test()
 	{
 		final File startFolder = new File("../Common/res/lud/");

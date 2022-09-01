@@ -39,7 +39,7 @@ public class CompilationConceptDataset implements Dataset
 				}
 				else if (concept.dataType().equals(ConceptDataType.DoubleData) || concept.dataType().equals(ConceptDataType.IntegerData))
 				{
-					featureMap.put(concept.name(), Double.valueOf(game.nonBooleanConcepts().get(concept.id())));
+					featureMap.put(concept.name(), Double.valueOf(game.nonBooleanConcepts().get(Integer.valueOf(concept.id()))));
 				}
 				else
 				{

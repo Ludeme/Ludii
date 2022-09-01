@@ -4,8 +4,7 @@
 )
 
 (define "TouchingPlacements"
-    (or
-        {
+    (or {
         (move Add
             (piece (id "Square" Mover)) 
             (to Cell "EmptyCellsAroundPiecesPlaced")
@@ -20,21 +19,23 @@
             )
             (then
                 (add (piece (id "Square" Mover)) (to Cell (sites Incident Cell of:Edge at:(last From))))
-        ))
-        }
-))
+            )
+        )
+    })
+)
 
 (define "Placements"
-    (or
-        {
+    (or {
         (move Add
             (piece (id "Square" Mover)) 
             (to (sites Empty))
             (then
                 (if
-                    (not ("SameTurn")) 
+                    ("NewTurn") 
                     (remember Value (last To))
-        )))
+                )
+            )
+        )
         (move Select
             (from Edge
                 (sites Board Edge) 
@@ -49,40 +50,43 @@
                             (to (site))
                         )
                         (if
-                            (not ("SameTurn"))
+                            ("NewTurn")
                             (remember Value (site))
-        )))))
+                        )
+                    )
+                )
+            )
+        )
         (if
             ("SameTurn")
             (move Pass) // allows playing less than 2 pieces
         )
-        }
-))
+    })
+)
 
 (define "NoCrosscuts" (= (size Array (sizes Group Orthogonal Mover)) (size Array (sizes Group All Mover))))
 
 (define "GamePlay"
     (if
-        (not ("SameTurn"))
+        ("NewTurn")
         (do
             ("Placements") 
-            ifAfterwards:(or
-                {
+            ifAfterwards:(or {
                 "NoCrosscuts"
                 (can Move
                     (do <GameOption:restriction>
                         ifAfterwards:("NoCrosscuts")
                 ))
-                }
-            )
+            })
             (then (moveAgain))
         )
         (do
             <GameOption:restriction>
             ifAfterwards:("NoCrosscuts")
-            (then
-                (forget Value All)
-))))
+            (then (forget Value All))
+        )
+    )
+)
 
 (define "Goal"
     (or
@@ -102,14 +106,14 @@
             (sites Row 0) 
             }
         )
-))
+    )
+)
 
 (define "Order" <Board:size>)
 
 (game "Allemande"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board
             (remove
                 (square (+ 2 "Order")) 
@@ -129,13 +133,11 @@
                 (sites Row (+ "Order" 1))
                 (sites Row 0)
         ))
-    (piece "Square" Each) // ("Placements" ~))  
+    (piece "Square" Each) // ("Placements" ~)) 
     (hand Each size:4)
-    }
-)
+})
 (rules
-    (start 
-        {
+    (start {
         (place "Square1"
             (union
                 (sites Column (+ "Order" 1))
@@ -146,9 +148,9 @@
             (union
                 (sites Row (+ "Order" 1))
                 (sites Row 0) 
-        ))
-        }
-    )
+            )
+        )
+    })
     (play
         "GamePlay"
     )
@@ -156,7 +158,10 @@
         (if
             "Goal"
             (result Mover Win)
-))))
+        )
+    )
+)
+)
 
 //-------------------------------------------------------------------------
 
@@ -250,7 +255,7 @@
             2. Restricting successive placements in the turn to locations around the previous placement.
         This keeps all the pieces played in one turn, as a group.")
         (id "1961")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")
@@ -258,8 +263,7 @@
         }
     )
     
-    (graphics
-        {
+    (graphics {
         (board StyleThickness InnerEdges 2)
         (player Colour P1 (colour Red))
         (player Colour P2 (colour Cream)) 
@@ -268,11 +272,10 @@
         (region Colour "EW" P1 (colour 255 0 0 50))
         (region Colour "NS" P2 (colour 200 200 50 50))
         (region Colour P2 (sites State 2) (colour 0 0 0 160))
-        //  (show Piece State)
+        // (show Piece State)
         (hand Placement P2 scale:0.222 offsetX:0.95 offsetY:0.10 vertical:True)
         (hand Placement P1 scale:0.222 offsetX:0.05 offsetY:0.10 vertical:True)
-        }
-    )
+    })
     (ai
         (heuristics (lineCompletionHeuristic targetLength:"Order"))
 ))

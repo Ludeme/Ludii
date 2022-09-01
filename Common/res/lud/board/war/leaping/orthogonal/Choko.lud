@@ -14,14 +14,14 @@
             (if (is Pending)
                 (move (from (handSite Mover)) (to (sites Empty)))
                 (or
-                    (if (not ("HandEmpty" Mover))
+                    (if ("HandOccupied" Mover)
                         (move (from (handSite Mover)) (to (sites Empty)) (then (set Pending)))
                     )
                     (forEach Piece)
                 )
             )
         )
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -35,10 +35,10 @@
         (rules "Five rows of five holes. Each player has twelve sticks; one player's sticks are longer than the other player's. Players alternate turns placing one of their sticks in an empty hole on the board. A player may, on their turn, move a stick to an empty adjacent hole in an orthogonal direction instead of placing a stick. Players do not have to place all of their sticks before moving, but if they wish to place a stick after they have already moved, the opponent must also place a stick on their following turn. A player captures an opponent's stick by hopping over it in an orthogonal direction to an empty hole immediately on the opposite side of the opponent's stick. The player who captures all of the opponent's pieces wins.")
         (source "Parker 1909: 604.")
         (id "1069")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/leaping/orthogonal")
         (credit "Eric Piette")
-        (origin  "This game was played in Senegambia, around 1909.")
+        (origin "This game was played in Senegambia, around 1909.")
         }
     )
     
@@ -47,7 +47,6 @@
         (piece Scale "Stick2" 0.6)
         (show Edges Hidden)
         (show Symbol "disc" "AllSites" Vertex fillColour:(colour Grey) edgeColour:(colour Black) scale:0.9)
-        
     })
     
     (ai

@@ -23,8 +23,8 @@
         )
         (piece "Seed" Shared)
         (hand Each)
-        (regions P1 (sites Bottom))           // P1 home
-        (regions P2 (sites Top))            // P2 home
+        (regions P1 (sites Bottom))      // P1 home
+        (regions P2 (sites Top))      // P2 home
         (map "LeftMost" {(pair P1 0) (pair P2 11)})
     }) 
     (rules 
@@ -156,10 +156,10 @@
         (rules "2x6 board. 72 counters are distributed unevenly into the holes with the only rule that corresponding holes on either side of the board must contain counters. The opponent moves first, but may flip the board around if they prefer that arrangement, sacrificing the first move. Counters are sowed in an anti-clockwise direction from a hole in the player's row. If the last counter falls into a hole making it odd, these are picked up and sowing continues. If it lands in a hole making it even, these counters are captured as are the ones in the opposite hole. If the previous hole also has an even number, these and the ones in the opposite hole are captured. If the last counter falls into an empty hole, the turn ends. If a player has no counters in their holes, the opponent must give them one counter, to be placed in the leftmost hole and played from there. Play ends when the board is cleared of counters. Each player counts the number of counters they captured. The player with more counters is given a score equal to the difference in the number of counters. Another round begins again exactly as before. The game is won when a player accumulates sixty points.")
         (source "Lane 1836: 346.")
         (id "412")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Egypt, around 1836.")
+        (origin "This game was played in Egypt, around 1836.")
         }
     )
     

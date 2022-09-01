@@ -22,8 +22,7 @@ public final class Last extends BaseIntFunction
 
 	/**
 	 * @param lastType         The site to return.
-	 * @param afterConsequence To check the from location of the last move after
-	 *                         applying the consequence [False].
+	 * @param afterConsequence True, to check the location related to the last decision; False, to check the to location related to the last consequence. [False].
 	 * 
 	 * @example (last To)
 	 * @example (last From)

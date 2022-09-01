@@ -54,7 +54,7 @@
         (piece "Seed" Shared)
         (hand Each)
         (regions P1 (union (sites Bottom) (intersection (sites Row 1) (expand (sites Right) steps:2)))) // P1 home
-        (regions P2 (union (sites Top) (intersection (sites Row 1) (expand (sites Left) steps:2))))   // P2 home
+        (regions P2 (union (sites Top) (intersection (sites Row 1) (expand (sites Left) steps:2))))  // P2 home
         (map "LeftMost" {(pair P1 0) (pair P2 17)})
     }) 
     (rules 
@@ -205,10 +205,10 @@
         (rules "3x6 board. Play begins with three counters per hole. Each player owns the row closest to them and the right half of the central row. Sowing occurs in the following direction: from left to right in the player's full row, right to left in the player's half of the central row, proceeding to the opponent's full row and sowing right to left, then left to right in the opponent's part of the central row, then proceeding back to the player's full row and proceeding as before. Sowing always begins from a player's own holes. A player can not sow from their left hand hole in their main row unless it has more than three counters, unless there is no other option. When the last counter falls into an empty hole, the turn ends. If the last counter falls into an occupied hole, the contents of that hole are picked up and sowing continues. A hole is captured by dropping the last counter of a sowing into an opponent's hole which contains three counters, making it have four counters, and becomes a wegue. Captures cannot be made until after the original three counters placed in the holes at the beginning of the game have been moved. Once a wegue is created, the player cannot sow from it. When the final counter of a sowing lands in a wegue owned by the opponent, the player captures two counters from it. Play continues until all of the counters are captured or all of the counters are accumulated in wegue. A new round begins. Players then collect the counters in their captured holes. They count their takings by filling their holes with three counters each as in the beginning, and the player would own every hole they could fill with three counters. If the player has two counters remaining, they also gain another hole and the opponent surrenders their extra counter. At the end of play, if a player captures the opponent's single remaining hole as a wegue, the player captured three counters from it, leaving one for the opponent to continue to play. Play continues until one player cannot fill any holes.")
         (source "Pankhurst 1971: 164-165.")
         (id "18")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/sow/three rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Ethiopia, around 1977.")
+        (origin "This game was played in Ethiopia, around 1977.")
         }
     )
     

@@ -1,4 +1,4 @@
-(define "NotAnEnemy"  
+(define "NotAnEnemy" 
     (not ("IsEnemyAt" (to)))
 )
 
@@ -98,11 +98,7 @@
                     ("MoveAPiece" (site))
                 )
             })
-            (then 
-                (if (not (all DiceUsed))
-                    (moveAgain)
-                )
-            )
+            (then ("ReplayNotAllDiceUsed"))
         )
     )		
 )
@@ -134,7 +130,7 @@
         
         (play 
             (do 
-                (if (not "SameTurn") (roll))
+                (if ("NewTurn") (roll))
                 next:
                 (if (can Move ("Move"))
                     ("Move")

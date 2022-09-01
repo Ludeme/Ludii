@@ -11,7 +11,8 @@ import main.collections.FVector;
  * 
  * @author Dennis Soemers
  */
-public class FVectorTests
+@SuppressWarnings("static-method")
+public class FVectorTests 
 {
 	
 	private static final float FLOAT_TOLERANCE = 0.0001f;

@@ -1,0 +1,9 @@
+// Checks if a specific piece type reached a region and makes a player is wining. This ludemeplex can be used only in an ending condition.
+// #1 = The name of the piece.
+// #2 = The region to reach.
+// #3 = The player
+// @example ("PieceTypeReachWin" "Jarl2" (sites Corners) P2)
+
+(define "PieceTypeReachWin"
+    (if (is Within (id #1) in:#2) (result #3 Win))
+)

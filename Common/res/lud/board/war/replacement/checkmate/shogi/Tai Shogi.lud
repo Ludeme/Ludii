@@ -24,8 +24,7 @@
 )
 
 (define "SlideMove" 
-    (move 
-        Slide
+    (move Slide
         #1
         #2 
         (to 
@@ -37,8 +36,7 @@
 )
 
 (define "StepMove" 
-    (move
-        Step
+    (move Step
         #1
         (to 
             if:(not ("IsFriendAt" (to))) 
@@ -49,8 +47,7 @@
 )
 
 (define "HopMove" 
-    (move
-        Hop
+    (move Hop
         #1
         (between 
             if:True
@@ -64,8 +61,7 @@
 )
 
 (define "HopMoveWithRange" 
-    (move
-        Hop
+    (move Hop
         #1
         (between
             #2
@@ -82,8 +78,7 @@
 )
 
 (define "DoubleStep" 
-    (move
-        Step
+    (move Step
         #1
         (to 
             if:(not ("IsFriendAt" (to))) 
@@ -128,7 +123,7 @@
 //------------------------------------------------------------------------------
 
 (game "Tai Shogi"
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 25))
         
@@ -153,16 +148,14 @@
                 ("DoubleStep" Adjacent SW)
                 ("DoubleStep" Adjacent SE)
                 ("HopMove" Adjacent)
-                (move
-                    Leap 
+                (move Leap 
                     "KnightWalk" 
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         ("CaptureEnemyAndPromote")
                     ) 
                 )
-                }
-            )
+            })
         )
         
         (piece "WizardStork" Each
@@ -196,8 +189,7 @@
         (piece "TeachingKing" Each
             (or {
                 ("SlideMove" Adjacent)
-                (move // three steps
-                    Slide 
+                (move Slide // three steps
                     Adjacent 
                     (between 
                         (exact 3)	
@@ -218,8 +210,7 @@
                     )
                 )
                 ("StepMove" Adjacent) // on step
-                (move // jump to three steps.
-                    Hop
+                (move Hop // jump to three steps.
                     Adjacent
                     (between
                         (exact 2)
@@ -230,8 +221,7 @@
                         ("CaptureEnemyAndPromote")
                     ) 
                 )
-                (move // jump to two steps.
-                    Hop
+                (move Hop // jump to two steps.
                     Adjacent
                     (between
                         (exact 1)
@@ -242,8 +232,7 @@
                         ("CaptureEnemyAndPromote")
                     ) 
                 )
-                (move // jump to two steps and move to step 3.
-                    Hop
+                (move Hop // jump to two steps and move to step 3.
                     Adjacent
                     (between
                         (exact 1)
@@ -260,12 +249,11 @@
                     (then 
                         (fromTo
                             (from (last To))
-                            (to (ahead (last To) (directions Cell from:(last From) to:(last To))))
+                            (to (ahead (last To) ("LastDirection" Cell)))
                         )
                     )
                 )
-                (move // jump to two steps and move to step 1.
-                    Hop
+                (move Hop // jump to two steps and move to step 1.
                     Adjacent
                     (between
                         (exact 1)
@@ -286,8 +274,7 @@
                         )
                     )
                 )
-                }
-            )	
+            })	
         )
         
         (piece "SquareMover" Each
@@ -379,12 +366,11 @@
                         )
                     )
                 )
-                ("DoubleStep" (directions {FR FL}) (directions Cell from:(last From) to:(last To)))
+                ("DoubleStep" (directions {FR FL}) ("LastDirection" Cell))
                 ("DoubleStep" (directions {FR FL}) (directions Cell from:(last To) to:(last From)))
                 ("HopMove" (directions {FR FL}))
                 ("SlideMove" (difference Adjacent (directions {FR FL})))
-                }
-            )
+            })
         )
         
         (piece "HornedFalcon" Each
@@ -412,12 +398,11 @@
                         )
                     )
                 )
-                ("DoubleStep" Forward (directions Cell from:(last From) to:(last To)))
+                ("DoubleStep" Forward ("LastDirection" Cell))
                 ("DoubleStep" Forward (directions Cell from:(last To) to:(last From)))
                 ("HopMove" Forward)
                 ("SlideMove" (difference Adjacent Forward))
-                }
-            )
+            })
         )
         
         (piece "Queen" Each ("SlideMove" Adjacent))
@@ -485,16 +470,14 @@
                 ("DoubleStep" Adjacent SW)
                 ("DoubleStep" Adjacent SE)
                 ("HopMove" Adjacent)
-                (move
-                    Leap 
+                (move Leap
                     "KnightWalk" 
                     (to 
                         if:(not ("IsFriendAt" (to))) 
                         ("CaptureEnemyAndPromote")
                     ) 
                 )
-                }
-            )
+            })
         )
         
         (piece "WhiteHorse" Each ("SlideMove" (directions {Forwards Backward})))
@@ -527,8 +510,7 @@
                 ("StepMove" FL)
                 ("SlideMove" (directions {Rightward FR Leftward}))
                 ("SlideMove" (directions {Forward Backward}) (between (max 2)))
-                }
-            )		
+            })		
         )
         
         (piece "WhiteTiger" Each
@@ -536,8 +518,7 @@
                 ("StepMove" FR)
                 ("SlideMove" (directions {Forward FL Backward}))
                 ("SlideMove" (directions {Rightward Leftward}) (between (max 2)))
-                }
-            )
+            })
         )
         
         (piece "RightChariot" Each
@@ -580,8 +561,7 @@
                 ("SlideMove" (directions {Rightward Leftward}) (between (max 2)))
                 ("SlideMove" Diagonal (between (max 3)))
                 ("SlideMove" (directions {Forward Backward}))
-                }
-            )
+            })
         )
         
         (piece "GreatDragon" Each
@@ -589,8 +569,7 @@
                 ("SlideMove" (directions {Forward Backward}) (between (max 2)))
                 ("SlideMove" (directions {BR BL}) (between (max 3)))
                 ("SlideMove" (directions {Rightward Leftward}))
-                (move // jump to two steps.
-                    Hop
+                (move Hop // jump to two steps.
                     (directions {Rightward Leftward})
                     (between
                         (range 1 2)
@@ -601,8 +580,7 @@
                         ("CaptureEnemyAndPromote")
                     ) 
                 )
-                }
-            )	
+            })	
         )
         
         (piece "WhiteElephant" Each
@@ -614,8 +592,7 @@
         
         (piece "LionDog" Each
             (or {
-                (move // three steps
-                    Slide 
+                (move Slide // three steps
                     Adjacent 
                     (between 
                         (exact 3)	
@@ -636,8 +613,7 @@
                     )
                 )
                 ("StepMove" Adjacent) // on step
-                (move // jump to three steps.
-                    Hop
+                (move Hop // jump to three steps.
                     Adjacent
                     (between
                         (exact 2)
@@ -648,8 +624,7 @@
                         ("CaptureEnemyAndPromote")
                     ) 
                 )
-                (move // jump to two steps.
-                    Hop
+                (move Hop // jump to two steps.
                     Adjacent
                     (between
                         (exact 1)
@@ -660,8 +635,7 @@
                         ("CaptureEnemyAndPromote")
                     ) 
                 )
-                (move // jump to two steps and move to step 3.
-                    Hop
+                (move Hop // jump to two steps and move to step 3.
                     Adjacent
                     (between
                         (exact 1)
@@ -678,12 +652,11 @@
                     (then 
                         (fromTo
                             (from (last To))
-                            (to (ahead (last To) (directions Cell from:(last From) to:(last To))))
+                            (to (ahead (last To) ("LastDirection" Cell)))
                         )
                     )
                 )
-                (move // jump to two steps and move to step 1.
-                    Hop
+                (move Hop // jump to two steps and move to step 1.
                     Adjacent
                     (between
                         (exact 1)
@@ -704,8 +677,7 @@
                         )
                     )
                 )
-                }
-            )
+            })
         )
         
         (piece "Wrestler" Each
@@ -1170,8 +1142,8 @@
                         ("SlideMove"
                             (from (last To))
                             (difference 
-                                (difference (if (= (what at:(last To)) (id "HookMover" Mover)) Orthogonal Diagonal)
-                                    (directions Cell from:(last From) to:(last To))
+                                (difference (if ("IsPieceAt" "HookMover" Mover (last To)) Orthogonal Diagonal)
+                                    ("LastDirection" Cell)
                                 ) 
                                 (directions Cell from:(last To) to:(last From))
                             )
@@ -1186,8 +1158,8 @@
             (if 
                 (and { 
                     (not (is Mover Next)) 
-                    (= (where "Emperor" Next) Off) 
-                    (= (where "Prince" Next) Off) 
+                    ("IsOffBoard" (where "Emperor" Next)) 
+                    ("IsOffBoard" (where "Prince" Next)) 
                 }) 
                 (result Mover Win)
             )
@@ -1199,7 +1171,7 @@
 
 (option "Variant" <Variant> args:{ <type> }
     {
-    (item "Wikipedia"  <>    "The rules are describing from wikipedia.")  
+    (item "Wikipedia" <>  "The rules are describing from wikipedia.") 
 })
 
 //------------------------------------------------------------------------------
@@ -1231,7 +1203,7 @@
         (useFor "Ruleset/Wikipedia (Suggested)" (id "1452"))
         (source "Banaschak 2001: 144.")
         (id "1452")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/shogi")
         (credit "Eric Piette")
         }

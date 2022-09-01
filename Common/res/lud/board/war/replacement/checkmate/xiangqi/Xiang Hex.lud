@@ -1,17 +1,12 @@
 (define "JiangSameColumnWithNoPieceBetween"
     (if (= (column of:(where "Jiang" P1)) (column of:(where "Jiang" P2)))
-        (not ("NoSites" (forEach (sites Direction from:(where "Jiang" P1) N stop:(= (to) (where "Jiang" P2))) if:(not (is Empty (site))))))
+        (not ("NoSites" (forEach (sites Direction from:(where "Jiang" P1) N stop:(= (to) (where "Jiang" P2))) if:(is Occupied (site)))))
         True
     )
 )
 
-(define "EnemyCannotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "Jiang" Next)))))
-)
-
 (define "StepMoveOnThePalace" 
-    (move
-        Step
+    (move Step
         #1 
         (to 
             if:(and 
@@ -26,7 +21,7 @@
 //------------------------------------------------------------------------------
 
 (game "Xiang Hex" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (renumber Cell (rotate 90 (remove (hex Rectangle 9 11) cells:{0 1 11 21 63 74 85 84 94 93 83 73 31 20 9 10}))))
         
@@ -38,8 +33,7 @@
         
         // Elephant
         (piece "Xiang" Each 
-            (move
-                Slide
+            (move Slide
                 Diagonal 
                 (between 
                     (exact 2) 
@@ -83,28 +77,18 @@
         )
         
         // Chariot
-        (piece "Ju" Each 
-            (move
-                Slide
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    (apply (remove (to)))
-                )
-            )
-        )
+        (piece "Ju" Each ("SlideCapture" Orthogonal))
         
         // Canon
         (piece "Pao" Each 
             (or 
                 (move Slide Orthogonal) 
-                (move
-                    Hop
+                (move Hop
                     Orthogonal 
                     (between 
                         before:(count Rows) 
                         after:(count Rows) 
-                        if:(not (is Empty (between)))
+                        if:(is Occupied (between))
                     )
                     (to 
                         if:(is Empty (to)) 
@@ -119,17 +103,12 @@
         
         // Soldier
         (piece "Zu" Each
-            (move
-                Step
+            ("StepToNotFriend"
                 (if 
                     (is In (from) (sites Mover "Home")) 
                     Forward 
                     (union (directions {Forward FL FR}) (directions {W E}))
                 ) 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    (apply (remove (to)))
-                )
             )
         )
         
@@ -155,12 +134,7 @@
         )
         
         (end {
-            (if (and 
-                    ("IsInCheck" "Jiang" Next) 
-                    ("EnemyCannotMove")
-                ) 
-                (result Mover Win)
-            ) 
+            ("Checkmate" "Jiang")
             ("BlockWin")
         })
     )
@@ -176,7 +150,7 @@
         (rules "All rules are the same as regular Xiangqi.")
         (id "1623")
         (source "<a href=\"https://www.chessvariants.com/rules/xiang-hex\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Chess Variants</a>")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/xiangqi")
         (author "Larry Smith")
         (credit "Matthew Stephenson and Eric Piette")

@@ -5,17 +5,6 @@
 // General functions
 //----------------------------------------
 
-// Source: Chess.lud - CaptureToPieceAndResetCounter
-(define "CaptureToPieceAndResetCounter"
-    (apply
-        (if ("IsEnemyAt" (to))
-            (remove (to)
-                (then (set Counter))
-            )
-        )
-    )
-)
-
 // Usage: ("Directions" <p1_directions> <p2_directions>)
 (define "Directions"
     ("P12" (directions #1) (directions #2))
@@ -31,29 +20,9 @@
     )
 )
 
-// Source: Chess.lud - NextCanNotMove
-(define "NextCannotMove"
-    (not (can Move (do
-                (forEach Piece Next)
-                ifAfterwards:(not ("IsInCheck" "King" Next))
-    )))
-)
-
 // Usage: ("P12" <p1_arg> <p2_arg>)
 (define "P12"
     (if (is Mover P1) #1 #2)
-)
-
-// Usage: ("SlideCaptureMove" <directions> <then>)
-(define "SlideCaptureMove"
-    (move
-        Slide
-        #1
-        (to if:("IsEnemyAt" (to))
-            "CaptureToPieceAndResetCounter"
-        )
-        #2
-    )
 )
 
 //----------------------------------------
@@ -66,7 +35,13 @@
         Step
         #1
         (to if:"IsToEmptyOrEnemy"
-            "CaptureToPieceAndResetCounter"
+            (apply
+                (if ("IsEnemyAt" (to))
+                    (remove (to)
+                        (then (set Counter))
+                    )
+                )
+            )
         )
         #2
     )
@@ -77,18 +52,6 @@
 // Note: Counter is reset in (piece "Pawn" ...).
 //----------------------------------------
 
-// Source: Chess.lud - CaptureForwardDiagonal
-(define "PawnCapture_Diag"
-    (move
-        Step
-        ("Directions" {NNW NNE} {SSW SSE})
-        (to if:("IsEnemyAt" (to))
-            (apply (remove (to)))
-        )
-    )
-)
-
-//----------------------------------------
 // Pawn promotion
 //----------------------------------------
 // Usage: ("PromoteTo" <piece_types>)
@@ -99,28 +62,20 @@
 //------------------------------------------------------------------------------
 
 (game "Mini Hexchess"
-    (players {(player N) (player S)})
-    (equipment
-        {
+    ("TwoPlayersNorthSouth")
+    (equipment {
         (board (rotate 90 (hex 4)))
         
-        (piece "King"  Each ("KingCaptureStep" All ~))
-        (piece "Queen" Each ("SlideCaptureMove" All ~))
-        (piece "Rook"  Each ("SlideCaptureMove" Orthogonal ~))
-        (piece "Bishop" Each ("SlideCaptureMove" Diagonal ~))
-        (piece "Knight" Each
-            (move Leap
-                "KnightWalk"
-                (to if:"IsToEmptyOrEnemy"
-                    "CaptureToPieceAndResetCounter"
-                )
-            )
-        )
+        (piece "King" Each ("KingCaptureStep" All ~))
+        (piece "Queen" Each ("SlideCapture" ~ ~ (then (set Counter))))
+        (piece "Rook" Each ("SlideCapture" Orthogonal ~ (then (set Counter))))
+        (piece "Bishop" Each ("SlideCapture" Diagonal ~ (then (set Counter))))
+        ("ChessKnight" "Knight" (then (set Counter)))
         
         (piece "Pawn" Each
             (or {
                 "StepForwardToEmpty"
-                "PawnCapture_Diag"
+                ("StepToEnemy" ("Directions" {NNW NNE} {SSW SSE}))
                 }
                 (then
                     (and
@@ -136,29 +91,26 @@
         (regions "PromotionZone" P1 (union (sites Side NW) (sites Side NE)))
         (regions "PromotionZone" P2 (union (sites Side SW) (sites Side SE)))
         
-        (regions "Region-Dark"  (sites Phase 2))
+        (regions "Region-Dark" (sites Phase 2))
         (regions "Region-Light" (sites Phase 1))
         (regions "Region-Medium" (sites Phase 0))
-        }
-    )
+    })
     
     (rules
-        (start
-            {
-            (place "King1"  coord:"B2")
-            (place "Rook1"  coord:"B1")
+        (start {
+            (place "King1" coord:"B2")
+            (place "Rook1" coord:"B1")
             (place "Bishop1" coord:"A1")
             (place "Knight1" coord:"A2")
             
-            (place "King2"  coord:"F6")
-            (place "Rook2"  coord:"F7")
+            (place "King2" coord:"F6")
+            (place "Rook2" coord:"F7")
             (place "Bishop2" coord:"G7")
             (place "Knight2" coord:"G6")
             
             (place "Pawn1" {"A3" "B3" "C3" "C2" "C1"})
             (place "Pawn2" {"E7" "E6" "E5" "F5" "G5"})
-            }
-        )
+        })
         phases:{
         (phase "Movement"
             (play
@@ -169,22 +121,15 @@
                     )
                 )
             )
-            (end
-                {
-                (if (and
-                        ("IsInCheck" "King" Next)
-                        ("NextCannotMove")
-                    )
-                    (result Mover Win)
-                )
+            (end {
+                ("Checkmate" "King")
                 (if (or
                         (no Moves Mover)
                         (= (counter) 100)
                     )
                     (result Mover Draw)
                 )
-                }
-            )
+            })
         )
         }
     )
@@ -212,7 +157,7 @@
         The game ends on a checkmate or stalemate.")
         (id "854")
         (source "The setup for Mini Hexchess can be found at the Chess Variant Page (<a href=\"https://www.chessvariants.com/hexagonal.dir/minihex.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.chessvariants.com</a>). For a comparison of popular versions of hexagonal chess, see Wikipedia (<a href=\"https://en.wikipedia.org/wiki/Hexagonal_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>). For more details on other chess variants, see The Classified Encyclopedia of Chess Variants, by D. B. Pritchard (2nd edition, completed and edited by John Beasley, 2007).")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/chess")
         (author "Dave McCooey and Richard Honeycutt")
         (credit "Jay Coskey, with some small functions drawn from Chess.lud, by Eric Piette")
@@ -229,7 +174,7 @@
         (piece Scale "Pawn" 0.825)
         (board Style Chess)
         
-        (region Colour "Region-Dark"  (colour "#b5651d"))
+        (region Colour "Region-Dark" (colour "#b5651d"))
         (region Colour "Region-Light" (colour "#fff8dc"))
         (region Colour "Region-Medium" (colour "#daae7c"))
     })

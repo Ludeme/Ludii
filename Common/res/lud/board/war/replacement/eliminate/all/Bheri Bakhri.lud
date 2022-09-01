@@ -1,7 +1,5 @@
 (define "ThrowValue" (count Pips))
 
-(define "SiteToMoveOnTrack" (trackSite Move steps:#1))
-
 (define "CaptureEnemyPiece" 
     (apply 
         if:("IsEnemyAt" (to)) 
@@ -22,7 +20,7 @@
 (define "OnlyOnePieceMovingOutOfHome" 
     (if (not ("SiteInHome" (from)))
         True
-        (if ("SiteInHome" ("SiteToMoveOnTrack" ("ThrowValue")))
+        (if ("SiteInHome" ("NextSiteOnTrack" ("ThrowValue")))
             True
             (= ("CountOwnPiecesOutHome") 0)
         )
@@ -39,13 +37,13 @@
             #1
         })
         (if (and 
-                (not (is Friend (who at:("SiteToMoveOnTrack" ("ThrowValue")))))
+                (not ("IsFriendAt" ("NextSiteOnTrack" ("ThrowValue"))))
                 ("OnlyOnePieceMovingOutOfHome")
             )
             (move 
                 (from)
                 (to 
-                    ("SiteToMoveOnTrack" ("ThrowValue")) 
+                    ("NextSiteOnTrack" ("ThrowValue"))
                     "CaptureEnemyPiece"
                 )
                 (then
@@ -70,7 +68,7 @@
             (track "Track2" "23,W,S1,E,S1,W,N1,E" loop:True P2)
             }
         )
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
         (piece "Marker" Each ("Move"))
         (regions "Home" P1 (sites Bottom))
         (regions "Home" P2 (sites Top))
@@ -81,9 +79,8 @@
             (place "Marker2" (sites Top))
         })
         (play 
-            (do 
-                (roll) 
-                next:(if (= 1 ("ThrowValue"))
+            ("RollMove"
+                (if (= 1 ("ThrowValue"))
                     (priority {
                         (forEach Piece
                             ("Move" (is In (from) (sites Mover "Home")))
@@ -99,7 +96,7 @@
                 )
             )
         )
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -113,10 +110,10 @@
         (rules "3x8 board. Eight pieces per player, which start in the spaces of the outer rows of the board. Four cowrie shells used as dice, the number of mouths face up being the value of the throw. A throw of 1 grants the player another throw. A player must throw 1 for the first move of each of their pieces. Players may only play with one piece out of the home row at a time and cannot move the next of their pieces until the piece being played has been captured. Throws of 1 must be used to move a piece in the home row, if possible. Pieces move from left to right in the player's home row, then from right to left in the central row, left to right in the opponent's home row, and right to left in the central row. When a piece lands on a space occupied by an opponent's piece, the opponent's piece is captured. The player who captures all of the opponent's pieces wins.")
         (source "Das Gupta 1927: 298-299.")
         (id "765")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1926.")
+        (origin "This game was played in India, around 1926.")
         }
     )
     

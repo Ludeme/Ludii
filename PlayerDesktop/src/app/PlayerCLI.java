@@ -12,6 +12,7 @@ import supplementary.experiments.debugging.FindCrashingTrial;
 import supplementary.experiments.eval.EvalAgents;
 import supplementary.experiments.eval.EvalGames;
 import supplementary.experiments.eval.EvalGate;
+import supplementary.experiments.feature_importance.IdentifyTopFeatures;
 import supplementary.experiments.optim.EvolOptimHeuristics;
 import supplementary.experiments.scripts.GenerateBiasedMCTSEvalScripts;
 import supplementary.experiments.scripts.GenerateFeatureEvalScripts;
@@ -22,6 +23,7 @@ import training.expert_iteration.ExpertIteration;
 import utils.concepts.db.ExportDbCsvConcepts;
 import utils.features.ExportFeaturesDB;
 import utils.trials.GenerateTrialsCluster;
+import utils.trials.GenerateTrialsClusterParallel;
 
 /**
  * Class with helper method to delegate to various other main methods
@@ -66,11 +68,15 @@ public class PlayerCLI
 					"--export-features-db",
 					"--export-moveconcept-db",
 					"--generate-trials",
+					"--generate-trials-parallel",
 					"--tutorial-generation",
 					"--game-distance",
 					"--generate-feature-eval-scripts",
+//					"--eval-ubfm",
+//					"--learning-with-descent",
 					"--generate-biased-mcts-eval-scripts",
-					"--kilothon"
+					"--kilothon",
+					"--identify-top-features"
 				)
 				.withNumVals(1)
 				.withType(OptionTypes.String));
@@ -106,6 +112,8 @@ public class PlayerCLI
 			ExportDbCsvConcepts.main(passArgs);
 		else if (command.equalsIgnoreCase("--generate-trials"))
 			GenerateTrialsCluster.main(passArgs);
+		else if (command.equalsIgnoreCase("--generate-trials-parallel"))
+			GenerateTrialsClusterParallel.main(passArgs);
 		else if (command.equalsIgnoreCase("--tutorial-generation"))
 			TestInstructionGeneration.main(passArgs);
 		else if (command.equalsIgnoreCase("--game-distance"))
@@ -116,6 +124,15 @@ public class PlayerCLI
 			GenerateBiasedMCTSEvalScripts.main(passArgs);
 		else if (command.equalsIgnoreCase("--kilothon"))
 			Kilothon.main(passArgs);
+		else if (command.equalsIgnoreCase("--identify-top-features"))
+			IdentifyTopFeatures.main(passArgs);
+//		else if (command.equalsIgnoreCase("--eval-ubfm"))
+//			EvaluateAllUBFMs.main(passArgs);
+//		else if (command.equalsIgnoreCase("--learning-with-descent"))
+//		{
+//			HeuristicsTraining.main(passArgs);
+//			EvaluateAllUBFMs.main(new String[] {passArgs[0], "eval heuristics"});
+//		}
 		else
 			System.err.println("ERROR: command not yet implemented: " + command);
 

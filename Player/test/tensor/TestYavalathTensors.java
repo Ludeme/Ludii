@@ -18,6 +18,7 @@ import utils.LudiiStateWrapper;
 public class TestYavalathTensors
 {
 	
+	@SuppressWarnings("static-method")
 	@Test
 	public void test()
 	{

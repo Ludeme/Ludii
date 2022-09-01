@@ -322,6 +322,7 @@ public class MancalaDesign extends BoardDesign
 	/**
 	 * Draws a board pit at the specified location.
 	 */
+	@SuppressWarnings("static-method")
 	void drawPit
 	(
 		final Graphics2D g2d, final int x, final int y, final int r,
@@ -347,6 +348,7 @@ public class MancalaDesign extends BoardDesign
 	/**
 	 * Draws a square pit at the specified location.
 	 */
+	@SuppressWarnings("static-method")
 	void drawSquare
 	(
 		final Graphics2D g2d, final int x, final int y, final int r,
@@ -364,6 +366,7 @@ public class MancalaDesign extends BoardDesign
 	/**
 	 * Draws an oval pit at the specified location.
 	 */
+	@SuppressWarnings("static-method")
 	void drawOval
 	(
 		final Graphics2D g2d, final int x, final int y, final int r,

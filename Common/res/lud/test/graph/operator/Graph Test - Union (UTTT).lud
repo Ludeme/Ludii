@@ -5,13 +5,13 @@
             (union (square 9) (scale 3 (square 3)))
             use:Cell
         ) 
-        (piece "Disc"    P1) 
+        (piece "Disc"  P1) 
         (piece "DiscLarge" P1) 
-        (piece "Cross"   P2) 
+        (piece "Cross"  P2) 
         (piece "CrossLarge" P2) 
         
         (regions "SubGames" (sites { 0..80}))
-        (regions "SubGame0" (sites { 0..2  9..11 18..20}))
+        (regions "SubGame0" (sites { 0..2 9..11 18..20}))
         (regions "SubGame1" (sites { 3..5 12..14 21..23}))
         (regions "SubGame2" (sites { 6..8 15..17 24..26}))
         (regions "SubGame3" (sites {27..29 36..38 45..47}))
@@ -107,7 +107,7 @@
                 )
                 }
                 (then 
-                    (if (is Line 3) // add a piece in the supergame                  
+                    (if (is Line 3) // add a piece in the supergame         
                         (add 
                             (what (if (= (mover) P1) (id "DiscLarge1") (id "CrossLarge2")))
                             (to (mapEntry "SubToSuper" (last To)))
@@ -127,7 +127,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata 
     (info
         {
         (description "Ultimate Tic-Tac-Toe is a board game composed of nine Tic-Tac-Toe boards arranged in a 3x3 grid.")
@@ -142,8 +142,8 @@
     (graphics 
         {
         (board Style UltimateTicTacToe)
-        (piece Scale "Disc"    0.8)
-        (piece Scale "Cross"   0.8)
+        (piece Scale "Disc"  0.8)
+        (piece Scale "Cross"  0.8)
         (piece Scale "DiscLarge" 2.5)
         (piece Scale "CrossLarge" 2.6)
         }

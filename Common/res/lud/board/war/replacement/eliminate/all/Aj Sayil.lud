@@ -1,7 +1,5 @@
 (define "ThrowValue" (count Pips))
 
-(define "SiteToMoveOnTrack" (trackSite Move #1 #2 steps:#3))
-
 (define "NoPieceOnBoard" (< (count Pieces Mover in:(sites Board)) 1))
 
 (define "SetCapturePiece"
@@ -16,7 +14,7 @@
 
 (define "UnsetCapturingPieces" 
     (forEach Level (last From) FromTop
-        (if (is Friend (who at:(last From) level:(level)))
+        (if ("IsFriendAt" (last From) level:(level))
             ("UnsetCapturingPiece" at:(last From) level:(level))
         )
     ) 
@@ -35,10 +33,10 @@
 (define "CaptureMove" 
     (forEach Level (last To) FromTop
         (and
-            (if (is Enemy (who at:(last To) level:(level)))
+            (if ("IsEnemyAt" (last To) level:(level))
                 ("SetCapturePiece" at:(last To) level:(level))
             )
-            (if (is Friend (who at:(last To) level:(level)))
+            (if ("IsFriendAt" (last To) level:(level))
                 ("SetCapturingPiece" at:(last To) level:(level))
             )
         )
@@ -86,7 +84,7 @@
             (forEach Value (values Remembered "Throws")
                 (or
                     (if ("FreePiece" (state at:(from) level:(level)))
-                        (if (= Off ("SiteToMoveOnTrack" from:(from) "Track" (value)))
+                        (if ("IsOffBoard" ("NextSiteOnTrack" (value) from:(from) "Track"))
                             (move 
                                 (from (from) level:(level))
                                 (to 
@@ -102,7 +100,7 @@
                                     )
                                 )
                                 (to 
-                                    ("SiteToMoveOnTrack" from:(from) "Track" (value))
+                                    ("NextSiteOnTrack" (value) from:(from) "Track")
                                     (apply (forget Value "Throws" (value)))
                                 )
                                 (then 
@@ -114,7 +112,7 @@
                         )
                     )
                     (if ("CapturingPiece" (state at:(from) level:(level)))
-                        (if (= Off ("SiteToMoveOnTrack" from:(from) "CaptureTrack" (value)))
+                        (if ("IsOffBoard" ("NextSiteOnTrack" (value) from:(from) "CaptureTrack"))
                             (do (forget Value "Throws" (value))
                                 next:(move Remove (from) level:(level)
                                     (then
@@ -129,7 +127,7 @@
                             (move 
                                 (from (from) level:(level))
                                 (to 
-                                    ("SiteToMoveOnTrack" from:(from) "CaptureTrack" (value))
+                                    ("NextSiteOnTrack" (value) from:(from) "CaptureTrack")
                                     (apply (forget Value "Throws" (value)))
                                 )
                                 (then 
@@ -144,7 +142,7 @@
                 )
             )		
         )
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
         (hand Each)
     })
     (rules 
@@ -155,8 +153,8 @@
         phases:{
         (phase "ThrowPhase" 
             (play 
-                (do (roll)
-                    next:(move Pass
+                ("RollMove"
+                    (move Pass
                         (then
                             (if (not (no Pieces Mover))
                                 (and {
@@ -190,7 +188,7 @@
         )
         }
         
-        (end (if (no Pieces Enemy) (result TeamMover Win)))
+        (end ("CaptureAllTeam"))
     )
 )
 
@@ -226,7 +224,7 @@
         } 
         >
         "The game has 6 players."
-    )  
+    ) 
     (item "8" <8> <20>
         <
         (set Team 1 {P1 P2 P3 P4})
@@ -261,7 +259,7 @@
         } 
         >
         "The game has 8 players."
-    )  
+    ) 
     (item "10" <10> <25>
         <
         (set Team 1 {P1 P2 P3 P4 P5})
@@ -302,7 +300,7 @@
         } 
         >
         "The game has 10 players."
-    )  
+    ) 
     (item "12" <12> <25>
         <
         (set Team 1 {P1 P2 P3 P4 P5 P6})
@@ -349,7 +347,7 @@
         } 
         >
         "The game has 12 players."
-    )  
+    ) 
     (item "14" <14> <25>
         <
         (set Team 1 {P1 P2 P3 P4 P5 P6 P7})
@@ -402,7 +400,7 @@
         } 
         >
         "The game has 14 players."
-    )  
+    ) 
     (item "16" <16> <30>
         <
         (set Team 1 {P1 P2 P3 P4 P5 P6 P7 P8})
@@ -461,7 +459,7 @@
         } 
         >
         "The game has 16 players."
-    )  
+    ) 
 })
 
 //------------------------------------------------------------------------------
@@ -486,7 +484,7 @@
         (rules "Six or more players, even number of players, played on two teams. The board consists of twenty kernels of corn, spaced evenly in a line. If there are ten to fourteen players, the board is expanded to 25 kernels. If there are more than sixteen players, it is expanded to 30. Sticks are used to play, (five per player), and are played in the spaces between corn kernels. Dice are also corn kernels, with one side marked with a black dot. Four dice are used, the value of a move determined by the number of black dots that land face up. Each player has two throws on their turn, and moves after the second throw. The throws both must be used, and can be used in any order. Each team's home is the side of the board to their left. Each team moves toward the opposite end of the track, and then back to home. All of the players on one team play in succession, and then the players on the other team play next. Players enter the men on their throws and move along the track. Each player may have only one piece on the board at a time. When a player reaches the team's home field, the piece may be re-entered. Reaching the home field does not require an exact throw, and if one throw brings a player home, they may use the second throw to enter it again. If a piece lands on that of an opponent, it is captured. The captures piece is placed on top of the piece that captured it, and the stack now moves toward the capturing player's home space. If the player successfully carries the captured piece to the team's home space, the piece is permanently captured and removed from play. If the opposing side lands on the same space as the stack, they are stacked with the opponent's piece, and the opponent begins carrying the stack to the opposing team's side. Any pieces captured belonging to the team which brings them back to their home are returned to their players. Pieces belonging to the same team may occupy the same space with no consequence for the game. When one team has no more counters left to enter, the winner is the team that captured most of the opposing team's pieces.")
         (source "Verbeeck 1998: 89-90.")
         (id "642")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
         }

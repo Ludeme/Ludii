@@ -15,21 +15,28 @@
                             (remember Value "Tied" (player))
                             (set Score Player #1)
                         )
-                        (set Score Player #1)  
-                ))
+                        (set Score Player #1) 
+                    )
+                )
                 next:(do
                     (forEach Value
                         (values Remembered "Tied")
                         (forEach
                             (players All if:(is In (player) (values Remembered "Tied")))
                             (addScore (player (player)) <TType:selTiebreaker>) // can be "CascadeWins" "CascadeLoses" "StoneCount" "GroupCount"
-                    ))
+                        )
+                    )
                     next:(forget Value "Scores" All 
                         (then
                             (forget Value "Tied" All)
-        )))))
+                        )
+                    )
+                )
+            )
+        )
         (forEach Player (set Score Player #1))
-))
+    )
+)
 
 (define "CascadeWins" (max 0 (- ("LargerGroup" (player) (value)) ("LargerGroup" (value) (player)))))
 (define "CascadeLoses" (max 0 (- ("LargerGroup" (value) (player)) ("LargerGroup" (player) (value)))))
@@ -40,7 +47,10 @@
             (difference
                 (sizes Group "ScoreConnection" of:#1)
                 (sizes Group "ScoreConnection" of:#2)
-))))
+            )
+        )
+    )
+)
 
 (define "Tied4FirstPlace"
     (= 
@@ -49,14 +59,17 @@
             (difference 
                 (values Remembered "Scores") 
                 #1 // This is causing a non-fatal null pointer exception at compilation
-))))
+            )
+        )
+    )
+)
 
 (define "GroupCount"
     (max 0 (max (sizes Group "ScoreConnection" of:#1)))
 )
 
 (define "StoneCount" // change to score Most pieces placed
-(count Sites in:(sites Occupied by:Player))  // (forEach (sites Occupied) if:(= (who at:(site)) #1)))
+(count Sites in:(sites Occupied by:Player)) // (forEach (sites Occupied) if:(= (who at:(site)) #1)))
 )
 
 //----------------------------
@@ -65,11 +78,11 @@
     (>
         (max 0 (count Pieces of:#1 in:(sites Around (site) "ConnectionDirection")))
         (max 0 (count Pieces of:(mover) in:(sites Around (site) "ConnectionDirection")))
-))
+    )
+)
 
 (define "Anemone" 
-    (or
-        {
+    (or {
         (move Pass)
         (move Claim (to (sites Empty)))
         (forEach Site
@@ -82,22 +95,24 @@
                 (move Remove (site)
                     (then
                         (claim (to (last To)))
-        ))))
+                    )
+                )
+            )
+        )
         }
         (then <SType:selScoring>) 
-))
+    )
+)
 
 //-----------------------------------------------
 // Main routine
 
 (game "Windflowers"
     (players <HowMany:playerCount>)
-    (equipment
-        {
+    (equipment {
         "BoardUsed"
         (piece "Ball" Each)
-        }
-    )
+    })
     (rules
         (start
             (set Score Each 0)
@@ -109,8 +124,10 @@
             (if 
                 (all Passed)
                 (byScore)
-            )       
-)))
+            )    
+        )
+    )
+)
 
 //-------------------------------------------------
 // Defines for Options
@@ -235,7 +252,7 @@
             The winner of the game is decided by these amended scores.
         Ties may still remain.  Also ties between non-leading players are not resolved.")
         (id "1549")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")
@@ -261,7 +278,6 @@
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
         (show Edges Diagonal <BoardShape:diagShow> (colour DarkGrey))
-        
         (board Background image:<BoardShape:backgroundImage> fillColour:"ColourBackground" edgeColour:(colour 180 180 180 80) scale:<BoardSize:backgroundSize>) 
         }
     )

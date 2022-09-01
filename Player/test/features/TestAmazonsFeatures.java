@@ -34,6 +34,7 @@ import other.trial.Trial;
  *
  * @author Dennis Soemers
  */
+@SuppressWarnings("static-method")
 public class TestAmazonsFeatures
 {
 	

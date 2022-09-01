@@ -1,17 +1,3 @@
-(define "HopMan" 
-    (move
-        Hop 
-        (from #1) 
-        Diagonal 
-        (between 
-            if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
-            (apply (remove (between) at:EndOfTurn))
-        ) 
-        (to if:(is Empty (to))) 
-        #2
-    ) 
-)
-
 (define "HopDoubleCounter" 
     (move Hop
         #1
@@ -24,51 +10,38 @@
         )
         (to if:(is Empty (to)))
         (then 
-            (if (can Move 
-                    (hop 
-                        (from (last To)) 
-                        Diagonal
-                        (between 
-                            #2
-                            #3
-                            if:(and 
-                                (not (is In (between) (sites ToClear))) 
-                                ("IsEnemyAt" (between))
-                            )
-                            (apply (remove (between) #4))
+            ("ReplayIfCanMove" 
+                (hop 
+                    (from (last To)) 
+                    Diagonal
+                    (between 
+                        #2
+                        #3
+                        if:(and 
+                            (not (is In (between) (sites ToClear))) 
+                            ("IsEnemyAt" (between))
                         )
-                        (to if:(is Empty (to)))
+                        (apply (remove (between) #4))
                     )
-                ) 
-                (moveAgain)
-                (if "JumpToPromotionZone" 
-                    (move Promote (last To) (piece "Counterstar") Mover)
+                    (to if:(is Empty (to)))
                 )
+                ("PromoteIfReach" (sites Next) "CounterStar")
             )
         )
     )
 )
 
-(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
+(define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
 
-(define "IsQueen" (= (what at:(last To)) (id "DoubleCounter" Mover)))
+(define "IsQueen" ("IsPieceAt" "DoubleCounter" Mover (last To)))
 
 (define "JumpToPromotionZone" (is In (last To) (sites Next)))
 
 //------------------------------------------------------------------------------
 
 (game "Unnamed Dutch Draughts Game" 
-    (players 2) 
-    (equipment { 
-        (board (square 10)) 
-        (piece "Counter" P1 N)
-        (piece "Counter" P2 S) 
-        (piece "DoubleCounter" Each)
-        (piece "Counterstar" Each)
-        (regions P1 (sites Bottom))
-        (regions P2 (sites Top))
-    }) 
-    
+    ("TwoPlayersNorthSouth")
+    ("DraughtsEquipment" (square 10) ~ (piece "CounterStar" Each))
     (rules 
         (start { 
             (place "Counter1" (difference (expand (sites Bottom) steps:3) (union (sites Bottom) (sites Phase 1)) ))
@@ -81,13 +54,10 @@
             (if ("SameTurn")
                 (if ("IsUnpromoted")
                     (max Moves
-                        ("HopMan" (last To)
+                        ("HopInternationalDraughtsStyle" (from (last To))
                             (then 
-                                (if (can Move ("HopMan" (last To))) 
-                                    (moveAgain)
-                                    (if "JumpToPromotionZone" 
-                                        (move Promote (last To) (piece "DoubleCounter") Mover)
-                                    )
+                                ("ReplayIfCanMove" ("HopInternationalDraughtsStyle" (from (last To)))
+                                    ("PromoteIfReach" (sites Next) "DoubleCounter")
                                 ) 
                             ) 
                         )
@@ -101,47 +71,31 @@
                     (max Moves
                         (or {
                             (forEach Piece "Counter"
-                                ("HopMan" (from) 
+                                ("HopInternationalDraughtsStyle" (from)
                                     (then 
-                                        (if (can Move ("HopMan" (last To))) 
-                                            (moveAgain) 
-                                            (if "JumpToPromotionZone" 
-                                                (move Promote (last To) (piece "DoubleCounter") Mover)
-                                            )
-                                        ) 
+                                        ("ReplayIfCanMove" ("HopInternationalDraughtsStyle" (from (last To))) 
+                                            ("PromoteIfReach" (sites Next) "DoubleCounter")
+                                        )
                                     ) 
                                 ) 
                             )
                             (forEach Piece "DoubleCounter" ("HopDoubleCounter" (from) before:(count Rows) after:(count Rows) at:EndOfTurn))
-                            (forEach Piece "Counterstar" ("HopSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))
-                            }
-                        )
+                            (forEach Piece "CounterStar" ("HopSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))
+                        })
                     )
                     (or {
                         (forEach Piece "Counter" 
-                            (move
-                                Step 
-                                (directions {FR FL}) 
-                                (to if:(is Empty (to)))
-                            )
-                            (then 
-                                (if "JumpToPromotionZone"
-                                    (move Promote (last To) (piece "DoubleCounter") Mover)
-                                )
-                            )
+                            ("StepToEmpty" (directions {FR FL}))
+                            (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
                         )
                         (forEach Piece "DoubleCounter" (move Slide Diagonal)
-                            (then 
-                                (if "JumpToPromotionZone" 
-                                    (move Promote (last To) (piece "Counterstar") Mover)
-                                )
-                            ) 
+                            (then ("PromoteIfReach" (sites Next) "CounterStar"))
                         )
-                        (forEach Piece "Counterstar" (move Slide))
+                        (forEach Piece "CounterStar" (move Slide))
                     })
                 })
             )
-        ) 
+        )
         
         (end ("BlockWin"))
     )
@@ -157,10 +111,10 @@
         (rules "10x10 board. Twenty pieces per player, which begin on the four rows closest to the player. The row of pieces on the edge of the board closest to each player begins with the pieces already as Queens. Pieces move diagonally one space forward, or can jump an adjacent piece belonging to the opponent to capture it. Captures are mandatory, and the maximum number of captures possible must be taken. When pieces reach the opposite edge of the board from where they started, they are promoted to Queen. Queens move any number of spaces diagonally, and jump over any number of opponents' pieces over any distance. When a Queen reaches that edge of the board a second time (or, for the first time if one of those which began the game as a Queen), they are further promoted, gaining the power to move and take orthogonally over any distance. The player who captures all of the opponent's pieces wins.  ")
         (source "Twiss 1805: 174-175.")
         (id "890")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/leaping/diagonal")
         (credit "Eric Piette")
-        (origin  "This game was played in Holland, around 1805.")
+        (origin "This game was played in Holland, around 1805.")
         }
     )
     

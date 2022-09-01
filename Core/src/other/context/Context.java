@@ -341,6 +341,7 @@ public class Context
 	 * @param otherState
 	 * @return Copy of given game state.
 	 */
+	@SuppressWarnings("static-method")
 	protected State copyState(final State otherState)
 	{
 		return otherState == null ? null : new State(otherState);
@@ -354,6 +355,7 @@ public class Context
 	 * @param otherTrial
 	 * @return Copy of given Trial
 	 */
+	@SuppressWarnings("static-method")
 	protected Trial copyTrial(final Trial otherTrial)
 	{
 		return new Trial(otherTrial);
@@ -1627,6 +1629,7 @@ public class Context
 	 * @param context The context.
 	 * @return The list of legal moves for that state.
 	 */
+	@SuppressWarnings("static-method")
 	public Moves moves(final Context context)
 	{
 		return context.game().moves(context);

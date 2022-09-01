@@ -14,8 +14,8 @@ import java.util.Map;
 /**
  * @author filreh
  */
-public class ModelLibrary implements iModelLibrary {
-
+public class ModelLibrary implements iModelLibrary 
+{
     private final DocHandler docHandler;
 
     private List<String> modelLocations;
@@ -24,7 +24,8 @@ public class ModelLibrary implements iModelLibrary {
     //Singleton
     private static ModelLibrary lib;
 
-    public static ModelLibrary getInstance() {
+    public static ModelLibrary getInstance() 
+    {
         // create object if it's not already created
         if(lib == null) {
             lib = new ModelLibrary();
@@ -34,7 +35,8 @@ public class ModelLibrary implements iModelLibrary {
         return lib;
     }
 
-    private ModelLibrary() {
+    private ModelLibrary() 
+    {
         this.docHandler = DocHandler.getInstance();
         allModels = new HashMap<>();
         this.modelLocations = allModelLocations();
@@ -46,15 +48,15 @@ public class ModelLibrary implements iModelLibrary {
      * Adds it to the model locations. Also in the documents.txt
      *
      * @param N
-     * @return
      */
     @Override
-    public NGram getModel(int N) {
+    public NGram getModel(int N) 
+    {
         // progress bar
         ProgressBar pb = new ProgressBar("Fetching Data","",100);
 
         //1. check if it is in the already loaded in models
-        NGram model = allModels.getOrDefault(N,null);
+        NGram model = allModels.getOrDefault(Integer.valueOf(N), null);
         if(model == null) {
             model = addModel(N, pb);
         }
@@ -65,16 +67,15 @@ public class ModelLibrary implements iModelLibrary {
 
     /**
      * Returns all model locations, is updated everytime it is called
-     *
-     * @return
      */
     @Override
-    public List<String> allModelLocations() {
+    public List<String> allModelLocations() 
+    {
         modelLocations = new ArrayList<>();
         for(int N = 2; N <= 20; N++) {
             String location = docHandler.getModelLocation(N);
             //if the model exists
-            if(!StringUtils.equals(location,docHandler.MODEL_DOES_NOT_EXIST)) {
+            if(!StringUtils.equals(location,DocHandler.MODEL_DOES_NOT_EXIST)) {
                 modelLocations.add(location);
             }
         }
@@ -83,11 +84,10 @@ public class ModelLibrary implements iModelLibrary {
 
     /**
      * Returns the amount of models stored currently
-     *
-     * @return
      */
     @Override
-    public int getAmountModels() {
+    public int getAmountModels() 
+    {
         //update the list before returning
         allModelLocations();
         return modelLocations.size();
@@ -99,24 +99,28 @@ public class ModelLibrary implements iModelLibrary {
      * @param N
      * @return
      */
-    private NGram addModel(int N, ProgressBar pb) {
+    private NGram addModel(int N, ProgressBar pb) 
+    {
         NGram model = null;
         pb.updateProgress(33);
         //1. check if it exists
-        if(docHandler.getModelLocation(N).equals(DocHandler.MODEL_DOES_NOT_EXIST)) {
+        if(docHandler.getModelLocation(N).equals(DocHandler.MODEL_DOES_NOT_EXIST)) 
+        {
             //1.a does not exist: create a new one
             model = ModelCreator.createModel(N);
 
             //multithreading stop
             pb.updateProgress(90);
 
-        } else {
+        } 
+        else 
+        {
             //1.b model does exist: read it in from file
             model = ModelFilehandler.readModel(N);
             pb.updateProgress(66);
         }
         //either way add it to the loaded in models
-        allModels.put(N,model);
+        allModels.put(Integer.valueOf(N), model);
         return model;
     }
 }

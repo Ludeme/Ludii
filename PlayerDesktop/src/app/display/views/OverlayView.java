@@ -90,7 +90,7 @@ public final class OverlayView extends View
 				g2d.drawString("1. Choose a board", 30, 150);
 				
 				if (app.manager().ref().context().board().numSites() > 1)
-					g2d.drawString("2. Drag pieces onto board", 30, 298);
+					g2d.drawString("2. Drag pieces onto board", 30, 375);
 			}
 			else
 			{
@@ -242,6 +242,22 @@ public final class OverlayView extends View
 		{
 			final String str = "Pot: $" + context.state().pot();
 			drawStringBelowBoard(g2d, str, 0.95);
+		}
+		
+		// Game over message for exhibition
+		if (app.settingsPlayer().usingExhibitionApp() && context.trial().over())	
+		{
+			String message = "          Draw";
+			if (context.winners().size() > 0)
+				message = "Player " + context.winners().get(0) + " has won";
+
+			final Font font = new Font("Arial", Font.BOLD, 56);
+			g2d.setFont(font);
+			g2d.setColor(Color.RED);
+			
+			final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
+			final int pixels = DesktopApp.view().getBoardPanel().placement().width;
+			g2d.drawString(message, pixels, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.5));
 		}
 	}
 	

@@ -1,6 +1,5 @@
 (define "NonpriorityMoves" // arg: "NonMoverHops" see Chosen:nonMoverCaptures
-    (or
-        {
+    (or {
         (if
             ("SameTurn")
             (or
@@ -17,20 +16,22 @@
         ))
         #1
         #2
-        }
-))
+    })
+)
 
 (define "PriorityHopsOnly" // No friendly hops 
     (priority
         ("NonMoverHops")
         ("NonpriorityMoves" ~ ~)
-))
+    )
+)
 
 (define "PriorityHops" // Friendly Hops allowed 
     (priority
         ("NonMoverHops")
         ("NonpriorityMoves" ("MoverHops") ~)
-))  
+    )
+) 
 
 (define "MoverHops"
     ("HopChange" <CapOption:friendHops> "MoverSites")
@@ -43,13 +44,14 @@
 (define "HopChange" // Options: eg. "Moversites" or <Multi:capture>
     (if 
         ("SameTurn")
-        (if 
-            (is Pending)
+        (if (is Pending)
             (#1 (from (last To)) #2)
         )
         (do (forget Value All) 
             next:(#1 (from) #2)
-)))
+        )
+    )
+)
 
 //Player role function define
 
@@ -98,9 +100,12 @@
                 (% 
                     (+ {<NumberPlayers:inGame> (var "FirstNoPlace") (- (player)) -1})
                     <NumberPlayers:inGame>
-        )))
+                )
+            )
+        )
         (propose "End")
-))
+    )
+)
 
 (define "TurnPass"
     (do 
@@ -113,19 +118,22 @@
             )
         )
         next:(move Pass)
-))
+    )
+)
 
 (define "NoMorph" // argument where from, who's pieces
     (or
         ("GeneralHop" #1 #2 "Hex" "Hex" "ValueHex" "ValueHex")
         ("GeneralHop" #1 #2 "Disc" "Disc" "ValueDisc" "ValueDisc")
-))
+    )
+)
 
 (define "Morph" // argument where from, who's pieces
     (or
         ("GeneralHop" #1 #2 "Disc" "Hex" "ValueDisc" "ValueHex")
         ("GeneralHop" #1 #2 "Hex" "Disc" "ValueHex" "ValueDisc")
-))
+    )
+)
 
 (define "GeneralHop" // argument where from, who's sites, piece type hopped, piece typ replaced
     (forEach Piece "Disc"
@@ -140,17 +148,19 @@
                             (sites Occupied by:All component:#3) 
                         )
                         (sites (values Remembered))
-                ))
+                    )
+                )
                 (apply 
                     (and 
                         (addScore (player (who at:(between))) (- #5))
                         (set Pending (between))
-            )))
+                    )
+                )
+            )
             (to if:(is Empty (to)))
         )
         (then
-            (and
-                {
+            (and {
                 (remember Value (value Pending))
                 (remove (value Pending))
                 (add (piece (id #4 Mover)) (to (value Pending)))
@@ -160,7 +170,12 @@
                     (and
                         (set Pending)
                         (moveAgain)
-))))))  
+                    )
+                )
+            )
+        )
+    )
+) 
 
 (define "DiscStep"
     (forEach Piece "Disc"
@@ -168,7 +183,9 @@
             (from (from)) 
             (to (sites Around (from)) if:(is Empty (to))) 
             (then (moveAgain))
-)))
+        )
+    )
+)
 
 (define "PlaceHex"
     (move 
@@ -179,11 +196,14 @@
             (and
                 (addScore Mover "ValueHex")
                 (set Var "FirstNoPlace" 0)
-))))
+            )
+        )
+    )
+)
 
 (define "PlaceDisc" 
     (if
-        (not ("SameTurn"))
+        ("NewTurn")
         (move Add 
             (piece (id "Disc" Mover))
             (to (forEach <PlaceDisc:suicideOption> if:<PlaceDisc:location>))
@@ -191,7 +211,11 @@
                 (and
                     (addScore Mover "ValueDisc")
                     (set Var "FirstNoPlace" 0)
-)))))
+                )
+            )
+        )
+    )
+)
 
 (define "NoSuicide" 
     (difference 
@@ -210,7 +234,12 @@
                     )
                     (to
                         (sites Between from:(from) to:(site))
-))))))
+                    )
+                )
+            )
+        )
+    )
+)
 
 //----------------------------------------------------------
 
@@ -225,13 +254,13 @@
 (define "NearestPieces" // arg: Site of player to consider
     (count 
         Sites
-        in:(intersection
-            {
+        in:(intersection {
             (#1)
             (sites Direction from:(site) distance:<Equi:method>)
             (sites LineOfSight Piece at:(site) Orthogonal) 
-            }
-)))
+        })
+    )
+)
 
 (define "Dist2NearestLoSEnemy" 
     (min
@@ -242,7 +271,9 @@
                 if:(or (is Mover (who at:(site))) (is In (site) <Multi:influence>))
             )
             (count Steps Orthogonal (from) (to))
-)))
+        )
+    )
+)
 
 (define "Dist2NearestLoS"
     (min
@@ -250,7 +281,9 @@
             from:(site)
             to:(sites LineOfSight Piece at:(from) Orthogonal) 
             (count Steps Orthogonal (from) (to))
-)))
+        )
+    )
+)
 
 //---------------------------------------
 // Main routine
@@ -258,13 +291,11 @@
 
 (game "Hops-a-Daisy Generalized"
     (players <NumberPlayers:inGame>)
-    (equipment
-        {
+    (equipment {
         (board (hex <Board:size>) use:Cell)
         (piece "Disc" Each)
         (piece "Hex" Each)
-        }
-    )
+    })
     (rules 
         (start (set Score Each 0)) 
         (play
@@ -274,7 +305,10 @@
             (if 
                 (is Proposed "End")
                 (byScore)
-))))
+            )
+        )
+    )
+)
 
 //---------------------------------------
 
@@ -299,31 +333,31 @@
 
 (option "Capture" <CapOption> args:{ <enemyHops> <friendHops> }
     {
-    (item "Morph All" <"Morph">  <"Morph">  "Hopping any piece changes type, Hopping enemies also changes ownership") //default Hops-a-Daisy
-    (item "Morph Enemy" <"Morph">  <"NoMorph"> "Hopping enemies changes type and ownership, friendly pieces unaffected")
-    (item "Morph Own"  <"NoMorph"> <"Morph">  "Hopping enemies only changes ownership, Hopping friendly pieces changes type")
-    (item "No Morphs"   <"NoMorph"> <"NoMorph"> "Hopping enemies only changes ownership, Hopping friendly pieces unaffected")**** // default Equi
+    (item "Morph All" <"Morph"> <"Morph"> "Hopping any piece changes type, Hopping enemies also changes ownership") //default Hops-a-Daisy
+    (item "Morph Enemy" <"Morph"> <"NoMorph"> "Hopping enemies changes type and ownership, friendly pieces unaffected")
+    (item "Morph Own" <"NoMorph"> <"Morph"> "Hopping enemies only changes ownership, Hopping friendly pieces changes type")
+    (item "No Morphs"  <"NoMorph"> <"NoMorph"> "Hopping enemies only changes ownership, Hopping friendly pieces unaffected")**** // default Equi
     }
 )
 
 (option "Hopping" <ChosenHop> args: { <prioritySetting> }
     {
-    (item "Mandatory - Can hop own"  <("PriorityHops")>   "An adjacent Enemy must be hopped, a friend can be.") // default Hops-a-Daisy?
+    (item "Mandatory - Can hop own" <("PriorityHops")>  "An adjacent Enemy must be hopped, a friend can be.") // default Hops-a-Daisy?
     (item "Mandatory - Cannot hop own" <("PriorityHopsOnly")> "An adjacent Enemy must be hopped, Friends cannot be")**** // default Equiversi
-    (item "Optional - Can hop own"   <("NonpriorityMoves" ("MoverHops") ("NonMoverHops"))> "Hopping is Optional")
-    (item "Optional - Cannot hop own"   <("NonpriorityMoves" ("NonMoverHops") ~)> "Hopping is Optional")
+    (item "Optional - Can hop own"  <("NonpriorityMoves" ("MoverHops") ("NonMoverHops"))> "Hopping is Optional")
+    (item "Optional - Cannot hop own"  <("NonpriorityMoves" ("NonMoverHops") ~)> "Hopping is Optional")
     }
 )
 
 (option "Multi-" <Multi> args:{ <capture> <suicide> <influence> }
     {
     (item "hop Others, Equi: All Others" <"NonMoverSites"> <"NonMoverSites"> <"NonMoverSites"> "Can hop all others, Equi is based on all NonMovers") // first choice
-    (item "hop Next - Equi: Next"    <"NextSites">   <"PreviousSites"> <"NextSites">   "Can hop Next, Equi is based on Next")**** // second choice - default for 2 player
-    (item "hop Prev - Equi: Prev"    <"PreviousSites"> <"NextSites">   <"PreviousSites"> "Can hop Prev, Equi is based on Prev") // third choice
-    (item "hop Others - Equi: Next"   <"NonMoverSites"> <"NonMoverSites"> <"NextSites">   "Can hop others, Equi is based on Next")
-    (item "hop Others - Equi: Prev"   <"NonMoverSites"> <"NonMoverSites"> <"PreviousSites"> "Can hop others, Equi is based on Prev") 
-    (item "hop Prev - Equi: Next"    <"PreviousSites"> <"NextSites">   <"NextSites">   "Can hop Prev, Equi is based on Next")
-    (item "hop Next - Equi: Prev"    <"NextSites">   <"PreviousSites"> <"PreviousSites"> "Can hop Next, Equi is based on Prev")
+    (item "hop Next - Equi: Next"  <"NextSites">  <"PreviousSites"> <"NextSites">  "Can hop Next, Equi is based on Next")**** // second choice - default for 2 player
+    (item "hop Prev - Equi: Prev"  <"PreviousSites"> <"NextSites">  <"PreviousSites"> "Can hop Prev, Equi is based on Prev") // third choice
+    (item "hop Others - Equi: Next"  <"NonMoverSites"> <"NonMoverSites"> <"NextSites">  "Can hop others, Equi is based on Next")
+    (item "hop Others - Equi: Prev"  <"NonMoverSites"> <"NonMoverSites"> <"PreviousSites"> "Can hop others, Equi is based on Prev") 
+    (item "hop Prev - Equi: Next"  <"PreviousSites"> <"NextSites">  <"NextSites">  "Can hop Prev, Equi is based on Next")
+    (item "hop Next - Equi: Prev"  <"NextSites">  <"PreviousSites"> <"PreviousSites"> "Can hop Next, Equi is based on Prev")
     }
 )
 
@@ -337,9 +371,9 @@
 
 (option "Discs" <PlaceDisc> args:{ <location> <suicideOption> }
     {
-    (item "Anywhere" <(= 1 1)>  <(sites Empty)> "Place Discs at any Empty location") // default Equiversi 2, New Hops-a-Daisy
+    (item "Anywhere" <(= 1 1)> <(sites Empty)> "Place Discs at any Empty location") // default Equiversi 2, New Hops-a-Daisy
     (item "Non-Hex" <"DiscSite"> <(sites Empty)> "Place Discs at any Non-Hex location") //default Eqiversi Hops-a-Daisy
-    (item "Safe"   <(= 1 1)>  <"NoSuicide">  "Place Discs at any Empty location, except where it can be taken by the next player's first hop") 
+    (item "Safe"  <(= 1 1)> <"NoSuicide"> "Place Discs at any Empty location, except where it can be taken by the next player's first hop") 
     (item "Safe - Non-Hex" <"DiscSite"> <"NoSuicide"> "Place Discs at any Non-Hex location, except where it can be taken by the next player's first hop")**** //default Equi Equiversi
     }
 )
@@ -411,7 +445,7 @@
             
         Please have fun with this playground, and let me, the author, know which are your favorite game options...")
         (id "1159")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")

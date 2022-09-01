@@ -33,7 +33,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )  
+    ) 
 )
 
 (define "DecideToCastle"
@@ -82,16 +82,6 @@
     )
 )
 
-(define "DoubleStep"
-    (move
-        Slide 
-        Forward 
-        (between (exact 2) if:(is Empty (between))) 
-        (to if:(is Empty (to))) 
-        "SetEnPassantLocation"
-    )
-)
-
 (define "InLocationEnPassant"
     (and 
         (is Pending) 
@@ -126,14 +116,14 @@
 //------------------------------------------------------------------------------
 
 (game "Shakhmaty" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8)) 
         
         (piece "Pawn" Each 
             (or {
                 (if (is In (from) (sites Start (piece (what at:(from)))))
-                    "DoubleStep"
+                    ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
                 )
                 "StepForwardToEmpty" 
                 "CaptureForwardDiagonal"
@@ -220,7 +210,7 @@
                 (do 
                     (forEach Piece)
                     ifAfterwards:(and (is In (last To) (sites Mover "Half")) (not ("IsInCheck" "King" Mover)))
-                    (then (if (not "SameTurn") (moveAgain)))
+                    (then (if ("NewTurn") (moveAgain)))
                 )
             )
             (nextPhase Mover ("SameTurn") "Playing")
@@ -281,10 +271,10 @@
         ")
         (source "Murray 1913: 385.")
         (id "1426")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/chess")
         (credit "Eric Piette")
-        (origin  "This game was played in Russia, from around 1821 to 1854.")
+        (origin "This game was played in Russia, from around 1821 to 1854.")
         }
     )
     

@@ -52,9 +52,10 @@ public class DatabaseFunctions
 			for (final Map.Entry<Call, Set<String>> entry : allLudemeplexes.entrySet())
 			{
 				String outputLine = ludemeplexId + ",";
+				
 				final List<String> ludemeplexStringList = entry.getKey().ludemeFormat(0);
+				
 				final String ludemeplexString = String.join("", ludemeplexStringList);
-
 				// Try to compile ludemeplex
 				try
 				{
@@ -75,7 +76,10 @@ public class DatabaseFunctions
 				}
 				
 				String defineLudemeplexString = ludemeplexString.trim();
-				defineLudemeplexString = "(define \"\"DLP.Ludemeplexes." + ludemeplexId + "\"\" " + defineLudemeplexString + ")";
+				defineLudemeplexString = "(define \"DLP.Ludemeplexes." + ludemeplexId + "\" " + defineLudemeplexString + ")";
+				
+				// Replace all quotes with double quotes for database importing
+				defineLudemeplexString = defineLudemeplexString.replaceAll("\"", "\"\"");
 				
 				outputLine += "\"" + defineLudemeplexString + "\"";					// define version in .lud format
 				//outputLine += "\"" + entry.getKey().toString() + "\"";			// call tree string
@@ -108,18 +112,23 @@ public class DatabaseFunctions
 		// Map of all ludemeplexes (lud format) and the original Ludemeplexes that they relate to.
 		final Map<String, Set<Call>> allDefineLudemeplexesOriginalLudemeplexes = new HashMap<>();
 	
-		int counter = 1;
-		
 		// Record all Define ludemeplexes
+		int counter1 = 1;
 		for (final Map.Entry<Call, Set<String>> ludemeplexEntry : allLudemeplexes.entrySet())
 		{
-			System.out.println("" + counter + " / " + allLudemeplexes.entrySet().size());
-			counter++;
+			System.out.println("" + counter1 + " / " + allLudemeplexes.entrySet().size());
+			counter1++;
 			
 			final List<String> ludemeplexStringList = ludemeplexEntry.getKey().ludemeFormat(0);
-			
+
+			int counter2 = 1;
 			for (final Map.Entry<Call, Set<String>> entry : allLudemeplexes.entrySet())
 			{
+				// Skip any pairs of ludemeplexes that have already been compared.
+				counter2++;
+				if (counter1 > counter2)
+					continue;
+				
 				final List<String> storedLudemeplexStringList = entry.getKey().ludemeFormat(0);
 				
 				if (storedLudemeplexStringList.size() != ludemeplexStringList.size())
@@ -191,7 +200,10 @@ public class DatabaseFunctions
 				String outputLine = ludemeplexId + ",";
 				
 				String defineLudemeplexString = entry.getKey().trim();
-				defineLudemeplexString = "(define \"\"DLP.Ludemeplexes." + ludemeplexId + "\"\" " + defineLudemeplexString + ")";
+				defineLudemeplexString = "(define \"DLP.Ludemeplexes." + ludemeplexId + "\" " + defineLudemeplexString + ")";
+				
+				// Replace all quotes with double quotes for database importing
+				defineLudemeplexString = defineLudemeplexString.replaceAll("\"", "\"\"");
 				
 				int totalCount = 0;
 				for (final Call c : allDefineLudemeplexesOriginalLudemeplexes.get(entry.getKey()))
@@ -259,7 +271,7 @@ public class DatabaseFunctions
 					}
 					else
 					{
-						System.out.println("could not find game name: " + name);
+						System.out.println("could not find game name_1: " + name);
 					}
 				}
 				ludemeplexId++;
@@ -296,7 +308,7 @@ public class DatabaseFunctions
 					}
 					else
 					{
-						System.out.println("could not find game name: " + name);
+						System.out.println("could not find game name_2: " + name);
 					}
 				}
 				defineLudemeplexId++;
@@ -378,7 +390,7 @@ public class DatabaseFunctions
 					}
 					else
 					{
-						System.out.println("could not find game name: " + name);
+						System.out.println("could not find game name_3: " + name);
 					}
 				}
 			}

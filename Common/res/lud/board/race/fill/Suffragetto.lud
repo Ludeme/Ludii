@@ -72,7 +72,7 @@
             if:(is In (from) #1)
         )
         (between
-            if:(not (is Empty (between)))
+            if:(is Occupied (between))
             (apply 
                 (if
                     (if (= ("MinorPiece") (state at: (from)))
@@ -344,7 +344,7 @@ Properly hopping over your opponent’s pieces results in arresting or disabling
 If at any point, the Prison andthe Hospital each contain 12 or more inmates, either player may propose a release. The other player accept or reject this. If accepted the proposer moves one of their disabled pieces to the Prison Yard [PY] or Hospital Grounds [HG] as appropriate. Then the other player does the same but the piece chosen must be of the same value as the one the proposer released. The proposer cannot release a major piece if the other player does not have any disabled major pieces. This is repeated until either the Prison Yard and Hospital Grounds are full or the proposer passes. No exchange can be proposed while any piece remains on the Prison Yard or the Hospital Grounds.")
 (id "1188")
 (source "<a href=\"https://www.playsuffragetto.com/print\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.playsuffragetto.com</a>")
-(version "1.3.5")
+(version "1.3.6")
 (classification "board/race/fill")
 (credit "Nicholas Bamber")
 (date "1909")

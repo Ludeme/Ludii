@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * computed if that's leaf. If that's not a leaf, the concept is true if any
  * child is true.
  * 
- * Remarks: The next id in case of a new concept is the id 780.
+ * Remarks: The next id in case of a new concept is the id 798.
  * 
  * @author Eric.Piette
  */
@@ -356,6 +356,20 @@ public enum Concept
 		Concept.NumPlayers
 	),
 	
+	/** Players are using directions in their definitions. */
+	PlayersWithDirections
+	(
+		"1.2.2",
+		797,
+		"Players are using directions.",
+		ConceptType.Properties,
+		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
+		true,
+		Concept.Players
+	),
+	
 	/** */
 	Cooperation
 	(
@@ -464,7 +478,7 @@ public enum Concept
 		"2.1",
 		32, 
 		"Containers that hold components.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
@@ -478,7 +492,7 @@ public enum Concept
 		"2.1.1",
 		33, 
 		"Board shared by player for playing the game.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
@@ -492,7 +506,7 @@ public enum Concept
 		"2.1.1.1",
 		34, 
 		"The shape of the board.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
@@ -506,7 +520,7 @@ public enum Concept
 		"2.1.1.1.1",
 		35, 
 		"Square shape.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
@@ -520,7 +534,7 @@ public enum Concept
 		"2.1.1.1.2",
 		36, 
 		"Hexagonal shape.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
@@ -534,7 +548,7 @@ public enum Concept
 		"2.1.1.1.3",
 		37, 
 		"Triangle shape.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
@@ -548,7 +562,7 @@ public enum Concept
 		"2.1.1.1.4",
 		38, 
 		"Diamond shape.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
@@ -562,7 +576,7 @@ public enum Concept
 		"2.1.1.1.5",
 		39, 
 		"Rectangle shape.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
@@ -576,7 +590,7 @@ public enum Concept
 		"2.1.1.1.6",
 		40, 
 		"Spirale shape.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
@@ -590,7 +604,7 @@ public enum Concept
 		"2.1.1.1.7",
 		41, 
 		"Circle shape.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
@@ -604,7 +618,7 @@ public enum Concept
 		"2.1.1.1.8",
 		42, 
 		"Prism shape.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
@@ -617,7 +631,7 @@ public enum Concept
 		"2.1.1.1.9",
 		43, 
 		"Star shape.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
@@ -630,7 +644,7 @@ public enum Concept
 		"2.1.1.1.10",
 		44, 
 		"Parallelogram shape.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
@@ -643,7 +657,7 @@ public enum Concept
 		"2.1.1.1.11",
 		45, 
 		"Square Pyramidal shape.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
@@ -657,7 +671,7 @@ public enum Concept
 		"2.1.1.1.12",
 		46, 
 		"Rectangle Pyramidal shape.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
@@ -671,7 +685,7 @@ public enum Concept
 		"2.1.1.1.13",
 		47, 
 		"Regular shape.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
@@ -685,7 +699,7 @@ public enum Concept
 		"2.1.1.1.14",
 		48, 
 		"General polygonal shape.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
@@ -699,7 +713,7 @@ public enum Concept
 		"2.1.1.1.15",
 		49, 
 		"Target shape.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
@@ -712,8 +726,8 @@ public enum Concept
 	(
 		"2.1.1.2",
 		50, 
-		"The shape of the board.",
-		ConceptType.Equipment, 
+		"The tiling of the board.",
+		ConceptType.Container, 
 		ConceptDataType.BooleanData, 
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
@@ -727,7 +741,7 @@ public enum Concept
 		"2.1.1.2.1",
 		51, 
 		"Square tiling.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
@@ -741,7 +755,7 @@ public enum Concept
 		"2.1.1.2.2",
 		52, 
 		"Hexagonal tiling.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
@@ -755,7 +769,7 @@ public enum Concept
 		"2.1.1.2.3",
 		53, 
 		"Triangle tiling.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
@@ -769,7 +783,7 @@ public enum Concept
 		"2.1.1.2.4",
 		54, 
 		"Brick tiling.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
@@ -783,7 +797,7 @@ public enum Concept
 		"2.1.1.2.5",
 		55, 
 		"Semi regular tiling.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
@@ -797,7 +811,7 @@ public enum Concept
 		"2.1.1.2.6",
 		56, 
 		"Celtic tiling.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
@@ -811,7 +825,7 @@ public enum Concept
 		"2.1.1.2.7",
 		57, 
 		"Morris tiling.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
@@ -825,7 +839,7 @@ public enum Concept
 		"2.1.1.2.8",
 		58, 
 		"QuadHex tiling.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
@@ -839,7 +853,7 @@ public enum Concept
 		"2.1.1.2.9",
 		59, 
 		"Circle tiling.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
@@ -853,7 +867,7 @@ public enum Concept
 		"2.1.1.2.10",
 		60, 
 		"Concentric tiling.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
@@ -867,7 +881,7 @@ public enum Concept
 		"2.1.1.2.11",
 		61, 
 		"Spiral tiling.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
@@ -881,7 +895,7 @@ public enum Concept
 		"2.1.1.2.12",
 		62, 
 		"Alquerque tiling.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
@@ -895,7 +909,7 @@ public enum Concept
 		"2.1.1.3",
 		63, 
 		"Mancala board.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData, 
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
@@ -909,7 +923,7 @@ public enum Concept
 		"2.1.1.3.1",
 		64, 
 		"Mancala board with stores.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData, 
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
@@ -923,7 +937,7 @@ public enum Concept
 		"2.1.1.3.2",
 		65, 
 		"Mancala board with 2 rows.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData, 
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
@@ -937,7 +951,7 @@ public enum Concept
 		"2.1.1.3.3",
 		66, 
 		"Mancala board with 3 rows.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData, 
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
@@ -951,7 +965,7 @@ public enum Concept
 		"2.1.1.3.4",
 		67, 
 		"Mancala board with 4 rows.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData, 
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
@@ -965,7 +979,7 @@ public enum Concept
 		"2.1.1.3.5",
 		68, 
 		"Mancala board with 6 rows.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData, 
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
@@ -979,7 +993,7 @@ public enum Concept
 		"2.1.1.3.6",
 		69, 
 		"Mancala board with circular tiling.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData, 
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
@@ -987,13 +1001,195 @@ public enum Concept
 		Concept.MancalaBoard
 	),
 	
+	/** "AlquerqueBoard" ludemeplex (or a similar one) is used. */
+	AlquerqueBoard
+	(
+		"2.1.1.4",
+		780, 
+		"Alquerque board.",
+		ConceptType.Container, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.Board
+	),
+	
+	/** "AlquerqueBoardWithBottomTriangle" ludemeplex is used. */
+	AlquerqueBoardWithOneTriangle
+	(
+		"2.1.1.4.1",
+		781, 
+		"Alquerque board with one triangle extension.",
+		ConceptType.Container, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.AlquerqueBoard
+	),
+	
+	/** "AlquerqueBoardWithBottomAndTopTriangles" ludemeplex is used. */
+	AlquerqueBoardWithTwoTriangles
+	(
+		"2.1.1.4.2",
+		782, 
+		"Alquerque board with two triangle extensions.",
+		ConceptType.Container, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.AlquerqueBoard
+	),
+	
+	/** "AlquerqueBoardWithFourTriangles" ludemeplex is used. */
+	AlquerqueBoardWithFourTriangles
+	(
+		"2.1.1.4.3",
+		783, 
+		"Alquerque board with four triangle extensions.",
+		ConceptType.Container, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.AlquerqueBoard
+	),
+	
+	/** "AlquerqueBoardWithEightTriangles" ludemeplex is used. */
+	AlquerqueBoardWithEightTriangles
+	(
+		"2.1.1.4.4",
+		784, 
+		"Alquerque board with eight triangle extensions.",
+		ConceptType.Container, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.AlquerqueBoard
+	),
+	
+	/** "ThreeMenMorrisBoard" ludemeplex is used. */
+	ThreeMensMorrisBoard
+	(
+		"2.1.1.5",
+		786, 
+		"Three Men's Morris Board.",
+		ConceptType.Container, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.Board
+	),
+	
+	/** "ThreeMenMorrisBoardWithTwoTriangles" ludemeplex is used. */
+	ThreeMensMorrisBoardWithTwoTriangles
+	(
+		"2.1.1.5.1",
+		787, 
+		"Three Men's Morris Board with two triangle extensions.",
+		ConceptType.Container, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.ThreeMensMorrisBoard
+	),
+	
+	/** "NineMensMorrisBoard" ludemeplex is used. */
+	NineMensMorrisBoard
+	(
+		"2.1.1.6",
+		785, 
+		"Nine Men's Morris board.",
+		ConceptType.Container, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.Board
+	),
+	
+	/** "StarBoard" ludemeplex is used. */
+	StarBoard
+	(
+		"2.1.1.7",
+		788, 
+		"Star board.",
+		ConceptType.Container, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.Board
+	),
+	
+	/** "CrossBoard" ludemeplex is used. */
+	CrossBoard
+	(
+		"2.1.1.8",
+		789, 
+		"Cross board.",
+		ConceptType.Container, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.Board
+	),
+	
+	/** "KintsBoard" ludemeplex is used. */
+	KintsBoard
+	(
+		"2.1.1.9",
+		790, 
+		"Kints board.",
+		ConceptType.Container, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.Board
+	),
+	
+	/** "PachisiBoard" ludemeplex is used. */
+	PachisiBoard
+	(
+		"2.1.1.10",
+		791, 
+		"Pachisi board.",
+		ConceptType.Container, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.Board
+	),
+	
+	/** "FortyStonesWithFourGapsBoard" ludemeplex is used. */
+	FortyStonesWithFourGapsBoard
+	(
+		"2.1.1.11",
+		792, 
+		"Forty Stones in a circle with four gaps after each 10 stones.",
+		ConceptType.Container, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.Board
+	),
+	
 	/** The track list of the board is not empty. */
 	Track
 	(
-		"2.1.1.4",
+		"2.1.1.12",
 		70, 
 		"The board has a track.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData, 
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
@@ -1004,10 +1200,10 @@ public enum Concept
 	/** One track uses a loop. */
 	TrackLoop
 	(
-		"2.1.1.4.1",
+		"2.1.1.12.1",
 		71, 
 		"A track is a loop.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData, 
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
@@ -1018,10 +1214,10 @@ public enum Concept
 	/** One track uses a loop. */
 	TrackOwned
 	(
-		"2.1.1.4.2",
+		"2.1.1.12.2",
 		72, 
 		"A track is owned.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData, 
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
@@ -1032,10 +1228,10 @@ public enum Concept
 	/** The ludeme (hints ...) is used. */
 	Hints
 	(
-		"2.1.1.5", 
+		"2.1.1.13", 
 		73,
 		"The board has some hints.", 
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData, 
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
@@ -1046,10 +1242,10 @@ public enum Concept
 	/** The list of regions is not empty. */
 	Region
 	(
-		"2.1.1.6",
+		"2.1.1.14",
 		74, 
 		"The board has regions.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData, 
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
@@ -1060,10 +1256,10 @@ public enum Concept
 	/** The ludeme (boardless ...) is used. */
 	Boardless
 	(
-		"2.1.1.7",
+		"2.1.1.15",
 		75, 
 		"Game is played on an implied grid.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
@@ -1074,10 +1270,10 @@ public enum Concept
 	/** */
 	PlayableSites
 	(
-		"2.1.1.8",
+		"2.1.1.16",
 		76, 
 		"Playable sites.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
@@ -1088,10 +1284,10 @@ public enum Concept
 	/** SiteType = Vertex in at least a ludeme. */
 	Vertex
 	(
-		"2.1.1.8.1",
+		"2.1.1.16.1",
 		77, 
 		"Use Vertices.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI, }, 
@@ -1102,10 +1298,10 @@ public enum Concept
 	/** SiteType = Cell in at least a ludeme. */
 	Cell
 	(
-		"2.1.1.8.2",
+		"2.1.1.16.2",
 		78, 
 		"Use cells.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI, }, 
@@ -1116,10 +1312,10 @@ public enum Concept
 	/** SiteType = Edge in at least a ludeme. */
 	Edge
 	(
-		"2.1.1.8.3",
+		"2.1.1.16.3",
 		79, 
 		"Use edges.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI, }, 
@@ -1130,10 +1326,10 @@ public enum Concept
 	/** Number of playables sites on the board. */
 	NumPlayableSitesOnBoard
 	(
-		"2.1.1.8.4",
+		"2.1.1.16.4",
 		80, 
 		"Number of playables sites on the board.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.IntegerData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
@@ -1144,10 +1340,10 @@ public enum Concept
 	/** Number of columns of the board. */
 	NumColumns
 	(
-		"2.1.1.9",
+		"2.1.1.17",
 		81, 
 		"Number of columns of the board.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.IntegerData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
@@ -1158,10 +1354,10 @@ public enum Concept
 	/** Number of rows of the board. */
 	NumRows
 	(
-		"2.1.1.10",
+		"2.1.1.18",
 		82, 
 		"Number of rows of the board.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.IntegerData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[]{ ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
@@ -1172,10 +1368,10 @@ public enum Concept
 	/** Number of corners of the board. */
 	NumCorners
 	(
-		"2.1.1.11",
+		"2.1.1.19",
 		83, 
 		"Number of corners of the board.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.IntegerData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
@@ -1186,10 +1382,10 @@ public enum Concept
 	/** Average number of directions of each playable site on the board. */
 	NumDirections
 	(
-		"2.1.1.12",
+		"2.1.1.20",
 		84, 
 		"Average number of directions of each playable site on the board.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
@@ -1202,10 +1398,10 @@ public enum Concept
 	 */
 	NumOrthogonalDirections
 	(
-		"2.1.1.13",
+		"2.1.1.21",
 		85, 
 		"Average number of orthogonal directions of each playable site on the board.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
@@ -1216,10 +1412,10 @@ public enum Concept
 	/** Average number of diagonal directions of each playable site on the board. */
 	NumDiagonalDirections
 	(
-		"2.1.1.14",
+		"2.1.1.22",
 		86, 
 		"Average number of diagonal directions of each playable site on the board.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
@@ -1230,10 +1426,10 @@ public enum Concept
 	/** Average number of adjacent directions of each playable site on the board. */
 	NumAdjacentDirections
 	(
-		"2.1.1.15",
+		"2.1.1.23",
 		87, 
 		"Average number of adjacent directions of each playable site on the board.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
@@ -1244,10 +1440,10 @@ public enum Concept
 	/** Average number of off diagonal directions of each playable site on the board. */
 	NumOffDiagonalDirections
 	(
-		"2.1.1.16",
+		"2.1.1.24",
 		88, 
 		"Average number of off diagonal directions of each playable site on the board.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
@@ -1258,10 +1454,10 @@ public enum Concept
 	/** Number of outer sites of the board. */
 	NumOuterSites
 	(
-		"2.1.1.17",
+		"2.1.1.25",
 		89, 
 		"Number of outer sites of the board.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.IntegerData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
@@ -1272,10 +1468,10 @@ public enum Concept
 	/** Number of inner sites of the board. */
 	NumInnerSites
 	(
-		"2.1.1.18",
+		"2.1.1.26",
 		90, 
 		"Number of inner sites of the board.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.IntegerData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
@@ -1286,10 +1482,10 @@ public enum Concept
 	/** Number of layers of the board. */
 	NumLayers
 	(
-		"2.1.1.19",
+		"2.1.1.27",
 		91, 
 		"Number of layers of the board.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.IntegerData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
@@ -1300,10 +1496,10 @@ public enum Concept
 	/** Number of edges of the board. */
 	NumEdges
 	(
-		"2.1.1.20",
+		"2.1.1.28",
 		92, 
 		"Number of edges of the board.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.IntegerData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
@@ -1314,10 +1510,10 @@ public enum Concept
 	/** Number of cells of the board. */
 	NumCells
 	(
-		"2.1.1.21",
+		"2.1.1.29",
 		93, 
 		"Number of cells of the board.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.IntegerData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
@@ -1328,10 +1524,10 @@ public enum Concept
 	/** Number of vertices of the board. */
 	NumVertices
 	(
-		"2.1.1.22",
+		"2.1.1.30",
 		94, 
 		"Number of vertices of the board.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.IntegerData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
@@ -1342,10 +1538,10 @@ public enum Concept
 	/** Number of perimeter sites of the board. */
 	NumPerimeterSites
 	(
-		"2.1.1.23",
+		"2.1.1.31",
 		95, 
 		"Number of perimeter sites of the board.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.IntegerData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
@@ -1356,10 +1552,10 @@ public enum Concept
 	/** Number of top sites of the board. */
 	NumTopSites
 	(
-		"2.1.1.24",
+		"2.1.1.32",
 		96, 
 		"Number of top sites of the board.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.IntegerData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
@@ -1370,10 +1566,10 @@ public enum Concept
 	/** Number of bottom sites of the board. */
 	NumBottomSites
 	(
-		"2.1.1.25",
+		"2.1.1.33",
 		97, 
 		"Number of bottom sites of the board.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.IntegerData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
@@ -1384,10 +1580,10 @@ public enum Concept
 	/** Number of right sites of the board. */
 	NumRightSites
 	(
-		"2.1.1.26",
+		"2.1.1.34",
 		98, 
 		"Number of right sites of the board.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.IntegerData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
@@ -1398,10 +1594,10 @@ public enum Concept
 	/** Number of left sites of the board. */
 	NumLeftSites
 	(
-		"2.1.1.27",
+		"2.1.1.35",
 		99, 
 		"Number of left sites of the board.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.IntegerData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
@@ -1412,10 +1608,10 @@ public enum Concept
 	/** Number of centre sites of the board. */
 	NumCentreSites
 	(
-		"2.1.1.28",
+		"2.1.1.36",
 		100, 
 		"Number of centre sites of the board.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.IntegerData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
@@ -1426,10 +1622,10 @@ public enum Concept
 	/** Number of convex corners of the board. */
 	NumConvexCorners
 	(
-		"2.1.1.29",
+		"2.1.1.37",
 		101, 
 		"Number of convex corners of the board.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.IntegerData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
@@ -1440,10 +1636,10 @@ public enum Concept
 	/** Number of concave corners of the board. */
 	NumConcaveCorners
 	(
-		"2.1.1.30",
+		"2.1.1.38",
 		102, 
 		"Number of concave corners of the board.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.IntegerData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
@@ -1453,10 +1649,10 @@ public enum Concept
 	/** Number of phases of the board. */
 	NumPhasesBoard
 	(
-		"2.1.1.31",
+		"2.1.1.39",
 		103, 
 		"Number of phases of the board.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.IntegerData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
@@ -1470,7 +1666,7 @@ public enum Concept
 		"2.1.2",
 		104, 
 		"Player hands for storing own pieces.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
@@ -1484,7 +1680,7 @@ public enum Concept
 		"2.1.3",
 		105, 
 		"Number of containers.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.IntegerData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
@@ -1498,7 +1694,7 @@ public enum Concept
 		"2.1.4",
 		106, 
 		"Number of playables sites in total.",
-		ConceptType.Equipment, 
+		ConceptType.Container, 
 		ConceptDataType.IntegerData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
@@ -1512,7 +1708,7 @@ public enum Concept
 		"2.2",
 		107, 
 		"Components manipulated by the players.",
-		ConceptType.Equipment, 
+		ConceptType.Component, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
@@ -1526,7 +1722,7 @@ public enum Concept
 		"2.2.1",
 		108, 
 		"Game is played with pieces.",
-		ConceptType.Equipment, 
+		ConceptType.Component, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
@@ -1540,7 +1736,7 @@ public enum Concept
 		"2.2.2",
 		109, 
 		"Pieces have value.",
-		ConceptType.Equipment, 
+		ConceptType.Component, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
@@ -1554,7 +1750,7 @@ public enum Concept
 		"2.2.3",
 		110, 
 		"Pieces have rotations.",
-		ConceptType.Equipment, 
+		ConceptType.Component, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
@@ -1568,7 +1764,7 @@ public enum Concept
 		"2.2.4",
 		111, 
 		"Pieces have forward direction.",
-		ConceptType.Equipment,
+		ConceptType.Component,
 		ConceptDataType.BooleanData, 
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
@@ -1582,35 +1778,91 @@ public enum Concept
 		"2.2.5",
 		112, 
 		"Game is played with dice.",
-		ConceptType.Equipment, 
+		ConceptType.Component, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.Component
+	),
+	
+	/** A D2 is included in the components. */
+	DiceD2
+	(
+		"2.2.5.1",
+		793, 
+		"Game is played with D2 dice.",
+		ConceptType.Component, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true,
-		Concept.Component
+		Concept.Dice
+	),
+	
+	/** A D3 is included in the components. */
+	DiceD3
+	(
+		"2.2.5.2",
+		794, 
+		"Game is played with D3 dice.",
+		ConceptType.Component, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.Dice
+	),
+	
+	/** A D4 is included in the components. */
+	DiceD4
+	(
+		"2.2.5.3",
+		795, 
+		"Game is played with D4 dice.",
+		ConceptType.Component, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.Dice
+	),
+	
+	/** A D6 is included in the components. */
+	DiceD6
+	(
+		"2.2.5.4",
+		796, 
+		"Game is played with D6 dice.",
+		ConceptType.Component, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.Dice
 	),
 	
 	/** Use biased dice. */
 	BiasedDice
 	(
-		"2.2.6",
+		"2.2.5.5",
 		113, 
-		"Use biased dice.",
-		ConceptType.Equipment, 
+		"Game is played with biased dice.",
+		ConceptType.Component, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
-		Concept.Component
+		Concept.Dice
 	),
 	
 	/** A card is included in the components. */
 	Card
 	(
-		"2.2.7",
+		"2.2.6",
 		114, 
 		"Game is played with cards.",
-		ConceptType.Equipment,
+		ConceptType.Component,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
@@ -1621,10 +1873,10 @@ public enum Concept
 	/** A domino is included in the components. */
 	Domino
 	(
-		"2.2.8",
+		"2.2.7",
 		115, 
 		"Game is played with dominoes.",
-		ConceptType.Equipment, 
+		ConceptType.Component, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
@@ -1635,10 +1887,10 @@ public enum Concept
 	/** A large piece is included in the components. */
 	LargePiece
 	(
-		"2.2.9",
+		"2.2.8",
 		116, 
 		"Game is played with large pieces.",
-		ConceptType.Equipment, 
+		ConceptType.Component, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
@@ -1649,10 +1901,10 @@ public enum Concept
 	/** Use tiles. */
 	Tile
 	(
-		"2.2.10",
+		"2.2.9",
 		117, 
 		"Game is played with tiles.",
-		ConceptType.Equipment, 
+		ConceptType.Component, 
 		ConceptDataType.BooleanData, 
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
@@ -1663,10 +1915,10 @@ public enum Concept
 	/** Number of component types. */
 	NumComponentsType
 	(
-		"2.2.11",
+		"2.2.10",
 		118, 
 		"Number of component types.",
-		ConceptType.Equipment, 
+		ConceptType.Component, 
 		ConceptDataType.IntegerData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
@@ -1677,10 +1929,10 @@ public enum Concept
 	/** Average number of component types per player. */
 	NumComponentsTypePerPlayer
 	(
-		"2.2.12",
+		"2.2.11",
 		119, 
 		"Average number of component types per player.",
-		ConceptType.Equipment, 
+		ConceptType.Component, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
@@ -1691,10 +1943,10 @@ public enum Concept
 	/** Number of dice. */
 	NumDice
 	(
-		"2.2.13",
+		"2.2.12",
 		120, 
 		"Number of dice.",
-		ConceptType.Equipment, 
+		ConceptType.Component, 
 		ConceptDataType.IntegerData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
@@ -9924,7 +10176,7 @@ public enum Concept
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		new ConceptPurpose[] { }, 
 		false,
 		null
 	),
@@ -9938,7 +10190,7 @@ public enum Concept
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[]{ ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		new ConceptPurpose[]{ }, 
 		false,
 		Concept.Visual
 	),
@@ -9952,7 +10204,7 @@ public enum Concept
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		new ConceptPurpose[] { }, 
 		false,
 		Concept.Style
 	),
@@ -9966,7 +10218,7 @@ public enum Concept
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.BoardStyle
 	),
@@ -9980,7 +10232,7 @@ public enum Concept
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.BoardStyle
 	),
@@ -9994,7 +10246,7 @@ public enum Concept
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[]{ ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[]{ }, 
 		true,
 		Concept.BoardStyle
 	),
@@ -10008,7 +10260,7 @@ public enum Concept
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
+		new ConceptPurpose[] { },
 		true,
 		Concept.BoardStyle
 	),
@@ -10022,7 +10274,7 @@ public enum Concept
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.BoardStyle
 	),
@@ -10036,7 +10288,7 @@ public enum Concept
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.BoardStyle
 	),
@@ -10050,7 +10302,7 @@ public enum Concept
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.BoardStyle
 	),
@@ -10064,7 +10316,7 @@ public enum Concept
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.BoardStyle
 	),
@@ -10078,7 +10330,7 @@ public enum Concept
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.BoardStyle
 	),
@@ -10091,7 +10343,7 @@ public enum Concept
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.BoardStyle
 	),
@@ -10104,7 +10356,7 @@ public enum Concept
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.BoardStyle
 	),
@@ -10118,7 +10370,7 @@ public enum Concept
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.BoardStyle
 	),
@@ -10132,7 +10384,7 @@ public enum Concept
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.BoardStyle
 	),
@@ -10146,7 +10398,7 @@ public enum Concept
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.BoardStyle
 	),
@@ -10160,7 +10412,7 @@ public enum Concept
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		new ConceptPurpose[] { }, 
 		false,
 		Concept.Style
 	),
@@ -10174,7 +10426,7 @@ public enum Concept
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.ComponentStyle
 	),
@@ -10188,7 +10440,7 @@ public enum Concept
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		false,
 		Concept.ComponentStyle
 	),
@@ -10202,7 +10454,7 @@ public enum Concept
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.ChessComponent
 	),
@@ -10216,7 +10468,7 @@ public enum Concept
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.ChessComponent
 	),
@@ -10230,7 +10482,7 @@ public enum Concept
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.ChessComponent
 	),
@@ -10244,7 +10496,7 @@ public enum Concept
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.ChessComponent
 	),
@@ -10258,7 +10510,7 @@ public enum Concept
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.ChessComponent
 	),
@@ -10272,7 +10524,7 @@ public enum Concept
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.ChessComponent
 	),
@@ -10286,7 +10538,7 @@ public enum Concept
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.ComponentStyle
 	),
@@ -10300,7 +10552,7 @@ public enum Concept
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.ComponentStyle
 	),
@@ -10314,7 +10566,7 @@ public enum Concept
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.ComponentStyle
 	),
@@ -10328,7 +10580,7 @@ public enum Concept
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.ComponentStyle
 	),
@@ -10342,7 +10594,7 @@ public enum Concept
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.ComponentStyle
 	),
@@ -10356,7 +10608,7 @@ public enum Concept
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.ComponentStyle
 	),
@@ -10370,7 +10622,7 @@ public enum Concept
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.ComponentStyle
 	),
@@ -10384,7 +10636,7 @@ public enum Concept
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.ComponentStyle
 	),
@@ -10398,7 +10650,7 @@ public enum Concept
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.ComponentStyle
 	),
@@ -10412,7 +10664,7 @@ public enum Concept
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.ComponentStyle
 	),
@@ -10426,7 +10678,7 @@ public enum Concept
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.ComponentStyle
 	),
@@ -10440,7 +10692,7 @@ public enum Concept
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.ComponentStyle
 	),
@@ -10472,7 +10724,7 @@ public enum Concept
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
+		new ConceptPurpose[] { ConceptPurpose.AI },
 		true,
 		Concept.StackType
 	),
@@ -10486,7 +10738,7 @@ public enum Concept
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.Visual
 	),
@@ -10501,7 +10753,7 @@ public enum Concept
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
+		new ConceptPurpose[] { }, 
 		true,
 		Concept.Visual
 	),
@@ -10515,7 +10767,7 @@ public enum Concept
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
+		new ConceptPurpose[] { },
 		true,
 		Concept.Visual
 	),
@@ -10534,7 +10786,7 @@ public enum Concept
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		new ConceptPurpose[] { ConceptPurpose.AI }, 
 		false,
 		null
 	),
@@ -10548,7 +10800,7 @@ public enum Concept
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		new ConceptPurpose[] { ConceptPurpose.AI }, 
 		false,
 		Concept.Implementation
 	),
@@ -10562,7 +10814,7 @@ public enum Concept
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		new ConceptPurpose[] { ConceptPurpose.AI }, 
 		false,
 		Concept.State
 	),
@@ -10590,7 +10842,7 @@ public enum Concept
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		new ConceptPurpose[] { ConceptPurpose.AI }, 
 		false,
 		Concept.State
 	),
@@ -10871,7 +11123,7 @@ public enum Concept
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		new ConceptPurpose[] { ConceptPurpose.AI }, 
 		false,
 		Concept.Implementation
 	),

@@ -1,140 +1,33 @@
-(define "CaptureToPiece"
-    (apply 
-        (remove 
-            (to) 
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
-)
-
-//------------------------------------------------------------------------------
-
 (game "Shataranja"
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 10)) 
-        (piece "Pawn" Each 
-            (or 
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
-                (then
-                    (if (is In (last To) (sites Mover "Promotion")) 
-                        (and
-                            (promote (last To) (piece "Bishop_noCross") Mover)	
-                            (fromTo (from (last To)) (to (last From)))
-                        )
+        ("ChessPawn" "Pawn" ~
+            (then
+                (if (is In (last To) (sites Mover "Promotion")) 
+                    (and
+                        (promote (last To) (piece "Bishop_noCross") Mover)	
+                        (fromTo (from (last To)) (to (last From)))
                     )
                 )
             )
         )
-        (piece "Rook" Each 
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "King_noCross" Each 
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece" 
-                )
-            )
-        )
-        (piece "Elephant" Each 
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )		
-        ) 
-        (piece "Knight" Each 
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "Queen" Each 
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece" 
-                )
-            )
-        )
+        ("ChessRook" "Rook")
+        ("ChessKing" "King_noCross")
+        ("ChessRook" "Elephant")
+        ("ChessKnight" "Knight")
+        ("ChessKing" "Queen")
         (piece "Ferz_noCross" Each 
             (or
-                (move
-                    Slide 
-                    (to 
-                        if:("IsEnemyAt" (to)) 
-                        "CaptureToPiece"
-                    ) 
-                )
-                (move
-                    Leap 
-                    "KnightWalk" 
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        "CaptureToPiece"
-                    ) 
-                )
+                ("SlideCapture")
+                ("LeapCapture" "KnightWalk")
             )
         )
-        (piece "Bishop_noCross" Each 
-            (move
-                Slide 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )		
-        ) 
+        ("ChessQueen" "Bishop_noCross")
         (piece "Commoner" Each 
             (or
-                (move
-                    Slide
-                    Diagonal
-                    (to 
-                        if:("IsEnemyAt" (to)) 
-                        "CaptureToPiece"
-                    ) 
-                )
-                (move
-                    Leap 
-                    "KnightWalk" 
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        "CaptureToPiece"
-                    ) 
-                )
+                ("SlideCapture" Diagonal)
+                ("LeapCapture" "KnightWalk")
             )		
         ) 
         (regions "Promotion" P1 (sites Top))
@@ -160,12 +53,7 @@
         )
         
         (end {
-            (if (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
+            ("Checkmate" "King_noCross")
             (if (and {
                     (no Pieces Next "Ferz_noCross")
                     (no Pieces Next "Queen")
@@ -194,10 +82,10 @@
         ")
         (source "Iyer 1982: 48-50,  Bock-Raming 1995: 116.")
         (id "1463")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1871.")
+        (origin "This game was played in India, around 1871.")
         }
     )
     

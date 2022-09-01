@@ -31,6 +31,7 @@ import other.trial.Trial;
  * 
  * @author Eric.Piette
  */
+@SuppressWarnings("static-method")
 public class TestTrialsIntegrityPuzzle
 {
 	/**

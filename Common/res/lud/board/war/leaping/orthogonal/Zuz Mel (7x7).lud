@@ -26,7 +26,7 @@
             )
         )
         
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -40,10 +40,10 @@
         (rules "7x7 board. 24 pieces per player. Pieces begin in the rows closest to the player, and the three spaces to the right of the central space. Players alternate turns moving a piece orthogonally any distance. A player may capture an opponent's adjacent piece by hopping over it in an orthogonal direction to an empty space immediately on the opposite side of the opponent's piece. Multiple captures are allowed. The player who captures all of the opponent's pieces wins.")
         (source "Bellin 1964: 52-53.")
         (id "1571")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/leaping/orthogonal")
         (credit "Eric Piette")
-        (origin  "This game was played in Algeria, around 1964.")
+        (origin "This game was played in Algeria, around 1964.")
         }
     )
     

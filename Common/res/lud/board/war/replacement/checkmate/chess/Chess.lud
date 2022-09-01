@@ -1,5 +1,4 @@
 //**** Defines used to model the castling Moves. ****
-
 (define "HasNeverMoved"
     (= (state at:(mapEntry #1 (mover))) 1) 
 )
@@ -21,12 +20,11 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )  
+    ) 
 )
 
 (define "DecideToCastle"
-    (move
-        Slide 
+    (move Slide 
         (from (mapEntry #1 (mover))) 
         #2 
         (between 
@@ -87,20 +85,9 @@
 )
 
 //**** Defines used to model the extra Pawn moves. ****
-
 (define "SetEnPassantLocation"
     (then 
         (set Pending (ahead (last To) Backward))
-    )
-)
-
-(define "DoubleStep"
-    (move
-        Slide 
-        Forward 
-        (between (exact 2) if:(is Empty (between))) 
-        (to if:(is Empty (to))) 
-        "SetEnPassantLocation"
     )
 )
 
@@ -112,8 +99,7 @@
 )
 
 (define "EnPassant"
-    (move
-        Step 
+    (move Step 
         (directions {FR FL}) 
         (to if:"InLocationEnPassant") 
         (then 
@@ -126,14 +112,14 @@
 
 (define "InitialPawnMove"
     (if (is In (from) (sites Start (piece (what at:(from)))))
-        "DoubleStep"
+        ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
     )
 )
 
 //------------------------------------------------------------------------------
 
 (game "Chess" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8)) 
         
@@ -142,11 +128,9 @@
                 "InitialPawnMove"
                 "EnPassant"
             )
-            (then
+            (then 
                 (and
-                    (if (is In (last To) (sites Mover "Promotion")) 
-                        (moveAgain)
-                    )
+                    ("ReplayInMovingOn" (sites Mover "Promotion"))
                     (set Counter)
                 )
             )
@@ -202,10 +186,10 @@
         (rules "Played on an 8x8 board with pieces with specialized moves: Pawns (8): can move one space forward; Rooks (2): can move any number of spaces orthogonally; Bishops (2): can move any number of spaces diagonally; Knight (2): moves in any direction, one space orthogonally with one space forward diagonally; Queens (1): can move any number of spaces orthogonally or diagonally; Kings (1): can move one space orthogonally or diagonally. Players capture pieces by moving onto a space occupied by an opponent's piece. Player wins when they capture the other player's king.")
         (source "<a href=\"https://en.wikipedia.org/wiki/Rules_of_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
         (id "44")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/chess")
         (credit "Eric Piette")
-        (origin  "This game was played in Europe, from around 1475 to 2022.")
+        (origin "This game was played in Europe, from around 1475 to 2022.")
         }
     )
     

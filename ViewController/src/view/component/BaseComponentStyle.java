@@ -276,8 +276,9 @@ public abstract class BaseComponentStyle implements ComponentStyle
  	 		if (backgroundImageInfo.path() != null)
  	 		{
 	 	 		final String backgroundPath = ImageUtil.getImageFullPath(backgroundImageInfo.path());
-	 		 	final double backgroundScale = backgroundImageInfo.scale();
-	 		 	maxForegroundScale = Math.max(backgroundScale, maxBackgroundScale);
+	 	 		final double backgroundScaleX = backgroundImageInfo.scaleX();
+	 		 	final double backgroundScaleY = backgroundImageInfo.scaleY();
+	 		 	maxForegroundScale = Math.max(Math.max(backgroundScaleX, backgroundScaleY), maxBackgroundScale);
 	 		 	Color backgroundColour = backgroundImageInfo.mainColour();
 	 		 	Color backgroundEdgeColour = backgroundImageInfo.secondaryColour();
 	 		 	final int rotation = backgroundImageInfo.rotation();
@@ -289,11 +290,13 @@ public abstract class BaseComponentStyle implements ComponentStyle
 	 		 	if (backgroundEdgeColour == null)
 	 		 		backgroundEdgeColour = Color.BLACK;
 	 		 	
-	 		 	final int tileSize = (int) (dim * backgroundScale);
-	 		 	final int offset = (dim-tileSize)/2;
+	 		 	final int tileSizeX = (int) (dim * backgroundScaleX);
+	 		 	final int tileOffsetX = (dim-tileSizeX)/2;
+	 		 	final int tileSizeY = (int) (dim * backgroundScaleY);
+	 		 	final int tileOffsetY = (dim-tileSizeY)/2;
 	 			SVGtoImage.loadFromFilePath
 	 			(
-	 				g2d, backgroundPath, new Rectangle((int) (offset + offset*offsetX), (int) (offset + offset*offsetY), tileSize, tileSize), 
+	 				g2d, backgroundPath, new Rectangle((int) (tileOffsetX + tileOffsetX*offsetX), (int) (tileOffsetY + tileOffsetY*offsetY), tileSizeX, tileSizeY), 
 	 				backgroundEdgeColour, backgroundColour, rotation
 	 			);
  	 		}
@@ -324,8 +327,9 @@ public abstract class BaseComponentStyle implements ComponentStyle
 			if (foregroundImageInfo.path() != null)
  	 		{
 	 	 		final String foregroundPath = ImageUtil.getImageFullPath(foregroundImageInfo.path());
-	 		 	final double foregroundScale = foregroundImageInfo.scale();
-	 		 	maxForegroundScale = Math.max(foregroundScale, maxForegroundScale);
+	 		 	final double foregroundScaleX = foregroundImageInfo.scaleX();
+	 		 	final double foregroundScaleY = foregroundImageInfo.scaleY();
+	 		 	maxForegroundScale = Math.max(Math.max(foregroundScaleX, foregroundScaleY), maxForegroundScale);
 	 		 	Color foregroundColour = foregroundImageInfo.mainColour();
 	 		 	Color foregroundEdgeColour = foregroundImageInfo.secondaryColour();
 	 		 	final int rotation = foregroundImageInfo.rotation();
@@ -337,11 +341,13 @@ public abstract class BaseComponentStyle implements ComponentStyle
 	 		 	if (foregroundEdgeColour == null)
 	 		 		foregroundEdgeColour = Color.BLACK;
 	 		 	
-	 		 	final int tileSize = (int) (dim * foregroundScale);
-	 		 	final int offset = (dim-tileSize)/2;
+	 		 	final int tileSizeX = (int) (dim * foregroundScaleX);
+	 		 	final int tileOffsetX = (dim-tileSizeX)/2;
+	 		 	final int tileSizeY = (int) (dim * foregroundScaleY);
+	 		 	final int tileOffsetY = (dim-tileSizeY)/2;
 	 			SVGtoImage.loadFromFilePath
 	 			(
-	 				g2d, foregroundPath, new Rectangle((int) (offset + offset*offsetX), (int) (offset + offset*offsetY), tileSize, tileSize), 
+	 				g2d, foregroundPath, new Rectangle((int) (tileOffsetX + tileOffsetX*offsetX), (int) (tileOffsetY + tileOffsetY*offsetY), tileSizeX, tileSizeY), 
 	 				foregroundEdgeColour, foregroundColour, rotation
 	 			);
  	 		}

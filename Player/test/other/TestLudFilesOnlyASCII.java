@@ -21,6 +21,7 @@ import org.junit.Test;
 public class TestLudFilesOnlyASCII
 {
 	@Test
+	@SuppressWarnings("static-method")
 	public void test() throws IOException
 	{
 		final File startFolder = new File("../Common/res/lud/");

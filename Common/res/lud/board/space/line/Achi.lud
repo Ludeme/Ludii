@@ -52,7 +52,7 @@
                 )
             )
         )	
-        >  
+        > 
         "The game is played according to the rules of Murray."
     )** 
     
@@ -77,13 +77,11 @@
                 (nextPhase (>= (count Moves) 6) "Movement")
             )
             
-            (phase "Movement"
-                (play (forEach Piece))
-            )
+            ("PhaseMovePiece" "Movement")
             }
             (end ("Line3Win"))
         )
-        >  
+        > 
         "The game is played according to the rules described in Wikipedia in steping to any sites."
     )
     
@@ -108,13 +106,11 @@
                 (nextPhase (>= (count Moves) 6) "Movement")
             )
             
-            (phase "Movement"
-                (play (forEach Piece))
-            )
+            ("PhaseMovePiece" "Movement")
             }
             (end ("Line3Win"))
         )
-        >  
+        > 
         "The game is played according to the rules described in Wikipedia in steping to any sites except the middle."
     )
 })
@@ -152,7 +148,7 @@
         (useFor "Ruleset/Murray (Described)" (source "Murray 1951: 42-43."))
         (useFor "Ruleset/Murray (Described)" (id "563"))
         (id "563")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/space/line")
         (credit "Eric Piette")
         }

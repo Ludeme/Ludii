@@ -45,7 +45,7 @@ public class TestTrialsUndo
 	 * @throws IOException
 	 */
 	@Test
-	public void test() throws FileNotFoundException, IOException
+	public static void test() throws FileNotFoundException, IOException
 	{
 		final boolean stateComparaison = false;
 		final File startFolder = new File("../Common/res/lud");

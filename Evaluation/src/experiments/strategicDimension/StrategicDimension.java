@@ -23,7 +23,7 @@ import other.trial.Trial;
  */
 public class StrategicDimension
 {
-	void test()
+	static void test()
 	{
 		//final Game game = GameLoader.loadGameFromName("Tic-Tac-Toe.lud");
 		//final Game game = GameLoader.loadGameFromName("Breakthrough.lud");
@@ -121,7 +121,7 @@ public class StrategicDimension
 	
 	//-------------------------------------------------------------------------
 
-	double branchingFactor(final Game game)
+	static double branchingFactor(final Game game)
 	{
 		final int NUM_TRIALS = 10;
 		
@@ -147,7 +147,7 @@ public class StrategicDimension
 		return totalDecisions / (double)NUM_TRIALS;
 	}
 
-	double branchingFactorParallel(final Game game)
+	static double branchingFactorParallel(final Game game)
 	{
 		final int NUM_TRIALS = 10;
 		
@@ -209,8 +209,7 @@ public class StrategicDimension
 	
 	public static void main(String[] args)
 	{
-		final StrategicDimension sd = new StrategicDimension();
-		sd.test();
+		StrategicDimension.test();
 	}
 
 	//-------------------------------------------------------------------------

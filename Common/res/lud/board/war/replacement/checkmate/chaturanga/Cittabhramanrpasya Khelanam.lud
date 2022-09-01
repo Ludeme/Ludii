@@ -1,28 +1,3 @@
-(define "CaptureToPiece"
-    (apply 
-        (remove 
-            (to) 
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
-)
-
-//------------------------------------------------------------------------------
-
 (game "Cittabhramanrpasya Khelanam"
     (players {(player S) (player N)}) 
     (equipment { 
@@ -31,7 +6,7 @@
         (piece "Pawn" P1 
             (or 
                 "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
+                ("StepToEnemy" (directions {FR FL}))
                 (then
                     (if (is In (last To) (sites Mover "Promotion")) 
                         (and
@@ -42,74 +17,27 @@
                 )
             )
         )
-        (piece "Rook" P1 
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "King_noCross" P1 
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece" 
-                )
-            )
-        )
-        (piece "Elephant" P1 
-            (move
-                Slide 
-                Diagonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        ) 
-        (piece "Knight" P1 
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "Ferz_noCross" P1 
-            (move
-                Slide 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
+        (piece "Rook" P1 ("SlideCapture" ~ Orthogonal))
+        (piece "King_noCross" P1 ("StepToNotFriend"))
+        (piece "Elephant" P1 ("SlideCapture" ~ Diagonal))
+        (piece "Knight" P1 ("LeapCapture"  "KnightWalk"))
+        (piece "Ferz_noCross" P1  ("SlideCapture"))
         (piece "King_noCross" P2 
             (or
-                (move
-                    Leap 
+                (move Leap 
                     "KnightWalk" 
                     (to 
                         if:(and (not ("IsFriendAt" (to))) (not (is In (to) (sites Around (where "King-noCross" Next)))))
-                        "CaptureToPiece"
+                        (apply (remove (to))) 
                     ) 
                 )
                 
-                (move
-                    Slide 
+                (move Slide 
                     (to 
                         if:("IsEnemyAt" (to)) 
                         (apply 
                             if:(not (is In (to) (sites Around (where "King-noCross" Next))))
-                            (remove 
-                                (to) 
-                            )
+                            (remove (to))
                         )
                     ) 
                 )
@@ -124,18 +52,9 @@
             (place "King_noCross2" coord:"E1")
         })
         
-        (play 
-            (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-        )
+        (play (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))))
         
-        (end {
-            (if (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
-        })
+        (end ("Checkmate" "King_noCross"))
     )
 )
 
@@ -149,10 +68,10 @@
         (rules "8x8 board. One player plays with the following pieces: Raja (x1): moves one space in any direction; Mantri (x1): moves any distance orthogonally or diagonally; Ushtra (x2): moves diagonally any distance; Vaha (x2): move orthogonally one space and then diagonally another, jumping over any intervening pieces; Danti (x2): moves orthogonally any distance. Padati (x8): move forward orthogonally one space or one space diagonally forward to capture. When a Padati reaches the opposite edge of the board, it is promoted to a Mantri and is moved immediately to the space it last moved from. The opponent plays as one Raja, which can move as any of the other pieces. This Raja cannot move to a space adjacent to the opponent's Raja. An opponent's piece is captured by moving one of the player's own pieces onto the space occupied by the opponent's piece. If the Raja can be captured on the opponent's next turn, it is in check. The Raja cannot be in check at the end of the player's turn. If this is impossible, the opponent wins. Check and checkmate rules apply to the player with a single Raja.")
         (source "Iyer 1982: 51-52; Bock-Raming 1996: 116.")
         (id "1451")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1871.")
+        (origin "This game was played in India, around 1871.")
         }
     )
     

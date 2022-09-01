@@ -82,12 +82,12 @@
         )
         (piece "Seed" Shared)
         (hand Each)
-        (regions "Home" P1 (expand (sites Bottom)))        // P1 home
-        (regions "Home" P2 (expand (sites Top)))         // P2 home
-        (regions "Inner" P1 (sites Row 1))            // P1 inner
-        (regions "Inner" P2 (sites Row 2))            // P2 inner
-        (regions "SquaresHoles" (sites {19 12}))            // Square holes
-        (regions "RightSquare" (sites {18 13}))          // Right Square holes
+        (regions "Home" P1 (expand (sites Bottom)))    // P1 home
+        (regions "Home" P2 (expand (sites Top)))     // P2 home
+        (regions "Inner" P1 (sites Row 1))      // P1 inner
+        (regions "Inner" P2 (sites Row 2))      // P2 inner
+        (regions "SquaresHoles" (sites {19 12}))      // Square holes
+        (regions "RightSquare" (sites {18 13}))     // Right Square holes
         (map "LeftMostInner" {(pair P1 8) (pair P2 23)})
         (map "RightMostInner" {(pair P1 15) (pair P2 16)})
         (map "AdjacentLeftMostInner" {(pair P1 9) (pair P2 22)})
@@ -459,10 +459,10 @@
         A player wins when their opponent's inner row holes are empty. This includes in the middle of sowing (e.g., sowing into the outer row directly from a Kichwa when it is the only occupied hole in the front row). A player may also lose if they only  have single counters in their holes. ")
         (source "de Voogt 1995: 35-51.")
         (id "1567")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
-        (origin  "This game was played in East Africa, from around 1990 to 1994.")
+        (origin "This game was played in East Africa, from around 1990 to 1994.")
         }
     )
     

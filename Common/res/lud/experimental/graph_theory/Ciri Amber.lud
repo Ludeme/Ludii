@@ -1,19 +1,16 @@
 (game "Ciri Amber" 
     (players <Version:numPlayers>) 
-    (equipment 
-        { 
+    (equipment { 
         (board <Board:type> use:Edge)
         (piece "Marker" Neutral) 
-        }
-    ) 
+    }) 
     
     (rules
         (start
             <Board:start>
         )
         (play
-            (move
-                Remove
+            (move Remove
                 (sites Occupied by:Neutral)
                 (then 
                     (addScore Mover (cost Edge at:(last To)))
@@ -32,13 +29,13 @@
 
 (option "Board" <Board> args:{ <type> <start> }
     {
-    (item "Graph1"       
+    (item "Graph1"    
         <
         (complete (regular Star 7))
         > 
         <
         {
-        (set Neutral Edge (sites Board Edge))  
+        (set Neutral Edge (sites Board Edge)) 
         (set Cost 1 Edge at:0) 
         (set Cost 2 Edge at:1)
         (set Cost 3 Edge at:2) 
@@ -59,13 +56,13 @@
         (set Cost 2 Edge at:17)
         (set Cost 3 Edge at:18)
         (set Cost 3 Edge at:19)
-        (set Cost 1 Edge at:20)            
+        (set Cost 1 Edge at:20)      
         }
-        >    
+        >  
         ""
     )* 
     
-    (item "Graph2"       
+    (item "Graph2"    
         <
         (graph
             vertices:{ {0 1} {4 0} {8 1} {4 2} {3 4} {5 4} {1 5} {7 5} {4 9}}
@@ -101,7 +98,7 @@
         (set Cost 3 Edge at:22) 
         (set Cost 1 Edge at:23) 
         (set Cost 2 Edge at:24)
-        (set Cost 3 Edge at:25)     	
+        (set Cost 3 Edge at:25)   	
         (set Cost 1 Edge at:26) 
         (set Cost 2 Edge at:27) 
         (set Cost 3 Edge at:28) 
@@ -111,13 +108,13 @@
         (set Cost 3 Edge at:32) 
         (set Cost 1 Edge at:33) 
         (set Cost 2 Edge at:34)
-        (set Cost 3 Edge at:35)            
+        (set Cost 3 Edge at:35)      
         }
-        >    
+        >  
         ""
     ) 
     
-    (item "Graph3"       
+    (item "Graph3"    
         <
         (complete (regular Star 10))
         > 
@@ -149,7 +146,7 @@
         (set Cost 3 Edge at:22) 
         (set Cost 1 Edge at:23) 
         (set Cost 2 Edge at:24)
-        (set Cost 3 Edge at:25)     	
+        (set Cost 3 Edge at:25)   	
         (set Cost 1 Edge at:26) 
         (set Cost 2 Edge at:27)
         (set Cost 3 Edge at:28)
@@ -159,7 +156,7 @@
         (set Cost 3 Edge at:32) 
         (set Cost 1 Edge at:33) 
         (set Cost 2 Edge at:34)
-        (set Cost 3 Edge at:35)     	
+        (set Cost 3 Edge at:35)   	
         (set Cost 1 Edge at:36) 
         (set Cost 2 Edge at:37)
         (set Cost 3 Edge at:38)
@@ -171,9 +168,9 @@
         (set Cost 2 Edge at:44)
         
         }
-        >    
+        >  
         ""
-    )  
+    ) 
     
 })
 
@@ -187,14 +184,14 @@
     )* 
     
     (item "3" 
-        <3>      
+        <3>   
         "The version of the game played with 3 players."
     ) 
     
     (item "4" 
-        <4>     
+        <4>   
         "The version of the game played with 4 players."
-    )   
+    )  
 })
 
 //------------------------------------------------------------------------------
@@ -206,7 +203,7 @@
         (description "Ciri Amber is a multiplayer graph theory game, which is based on the principle of regular graphs. A graph is regular if all the vertices have the same degree. ")
         (rules "Ciri Amber can be played on any undirected and weighted graph. Initially, all the edges have the same colour. Each turn, a player removes a coloured edge and gets a score equals to the cost of that edge. The game is over when the graph becomes regular. The game is won by the player with the highest score. ")
         (id "660")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "experimental/graph theory")
         (author "Tahmina Begum")
         (credit "Tahmina Begum")

@@ -64,7 +64,7 @@ public class DecisivenessThreshold extends Metric
 			avgDecisivenessThreshold += decisivenessThreshold;
 		}
 
-		return avgDecisivenessThreshold / trials.length;
+		return Double.valueOf(avgDecisivenessThreshold / trials.length);
 	}
 
 	//-------------------------------------------------------------------------
@@ -82,8 +82,8 @@ public class DecisivenessThreshold extends Metric
 		{
 			final ArrayList<Double> allPlayerStateEvaluations = Utils.allPlayerStateEvaluations(evaluation, context);
 			for (int j = 1; j < allPlayerStateEvaluations.size(); j++)
-				if (allPlayerStateEvaluations.get(j) > decisivenessThreshold && !highestRankedPlayers.contains(Integer.valueOf(j)))
-					decisivenessThreshold = allPlayerStateEvaluations.get(j);
+				if (allPlayerStateEvaluations.get(j).doubleValue() > decisivenessThreshold && !highestRankedPlayers.contains(Integer.valueOf(j)))
+					decisivenessThreshold = allPlayerStateEvaluations.get(j).doubleValue();
 
 			context.game().apply(context, m);
 		}

@@ -1,7 +1,6 @@
 (define "OrthogonalHopCaptureCounter"
     (do
-        (move
-            Hop 
+        (move Hop 
             #1
             Orthogonal
             (between 
@@ -17,51 +16,24 @@
     )
 )
 
-(define "DiagonalHopCaptureCounter"
-    (move
-        Hop 
-        #1
-        Diagonal
-        (between 
-            if:("IsEnemyAt" (between))
-            (apply (remove (between)))
-        ) 
-        (to if:(is Empty (to)))
-        #2
-    )
-)
-
 (define "MoveAgainIfCanCaptureAgain" 
     (then 
-        (if 
-            (can Move 
-                (or 
-                    ("DiagonalHopCaptureCounter" (from (last To))) 
-                    ("OrthogonalHopCaptureCounter" (from (last To)))
-                )
+        ("ReplayIfCanMove" 
+            (or 
+                ("HopCapture" (from (last To)) Diagonal)
+                ("OrthogonalHopCaptureCounter" (from (last To)))
             )
-            (moveAgain)
         )
     )
 )
 
 (define "CounterMove"
     (or {
-        (move
-            Step 
-            Diagonal
-            (to if:(is Empty (to)))
-        )
-        (move
-            Hop 
-            Orthogonal
-            (between if:(is Empty (between)))
-            (to if:(is Empty (to)))
-        )
-        ("DiagonalHopCaptureCounter" (from) ("MoveAgainIfCanCaptureAgain"))
+        ("StepToEmpty" Diagonal) 
+        (move Slide Orthogonal (between (exact 2))) 
+        ("HopCapture" (from) Diagonal ("MoveAgainIfCanCaptureAgain"))
         ("OrthogonalHopCaptureCounter" (from) ("MoveAgainIfCanCaptureAgain"))
-        }
-    )
+    })
 )
 
 //------------------------------------------------------------------------------
@@ -73,20 +45,14 @@
         (piece "Counter" Each "CounterMove")
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-        }
-    ) 
+    }) 
     (rules 
-        (start
-            { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:3) (sites Phase 0) ))
-            (place "Counter2" (difference (expand (sites Top) steps:3) (sites Phase 0)))
-            }
-        )
+        ("WhiteCellsSetup" 4)
         
         (play 
             (if ("SameTurn")
                 (or {
-                    ("DiagonalHopCaptureCounter" (from (last To)) ("MoveAgainIfCanCaptureAgain"))
+                    ("HopCapture" (from (last To)) Diagonal ("MoveAgainIfCanCaptureAgain"))
                     ("OrthogonalHopCaptureCounter" (from (last To)) ("MoveAgainIfCanCaptureAgain"))
                     (move Pass)
                 })
@@ -94,7 +60,7 @@
             )
         ) 
         
-        (end (if (no Pieces Next) (result Mover Win))) 
+        (end ("CaptureAll" Next)) 
     )
 )
 
@@ -108,10 +74,10 @@
         (rules "10x10 checkered board. Twenty pieces per player, arranged on the four rows closest to the player. Pieces move orthogonally or diagonally in any direction, only on the white spaces. Pieces may capture by jumping over an enemy piece to an empty space on the other side of it. Multiple captures in one turn are allowed. The player to capture all of the opponent's pieces wins.")
         (source "Twiss 1805: 172; Murray 1951: 81.")
         (id "884")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/leaping/diagonal")
         (credit "Eric Piette")
-        (origin  "This game was played in France, from around 1736 to 1805.")
+        (origin "This game was played in France, from around 1736 to 1805.")
         }
     )
     

@@ -7,8 +7,7 @@
 )
 
 (define "CaptureForwardDiagonal"
-    (move
-        Step 
+    (move Step 
         (directions {FR FL}) 
         (to 
             if:(and 
@@ -41,19 +40,6 @@
                 (is Empty (to))
             )
         )
-    )
-)
-
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
-)
-
-(define "DoubleStep"
-    (move
-        Slide 
-        Forward 
-        (between (exact 2) if:(is Empty (between))) 
-        (to if:(is Empty (to))) 
     )
 )
 
@@ -105,7 +91,7 @@
 //------------------------------------------------------------------------------
 
 (game "Parsi Chess" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8))
         
@@ -113,7 +99,7 @@
             (or { 
                 (if (is In (from) (sites Start (piece (what at:(from)))))
                     (if (= 1 (state at:(ahead (from) Backward)))
-                        "DoubleStep"
+                        ("DoubleStepForwardToEmpty")
                     )
                 )
                 "StepForwardToEmpty" 
@@ -126,82 +112,29 @@
                 )
             )
         )
-        (piece "Boat" Each 
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-                "RememberPieceHasMoved"
-            )
-        )
+        ("ChessRook" "Boat" ~ "RememberPieceHasMoved")
         (piece "King_noCross" Each 
             (or
-                (move
-                    Step 
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        "CaptureToPiece" 
-                    )
-                )
+                ("StepToNotFriend")
                 (if (!= (value Player Mover) (mover))
-                    (move
-                        Leap 
-                        "KnightWalk" 
-                        (to 
-                            if:(is Empty (to))
-                        )
-                        (then (set Value Mover (mover)))
-                    )
+                    ("LeapToEmpty" "KnightWalk" (then (set Value Mover (mover))))
                 )
                 "RememberPieceHasMoved"
             )
         )
-        (piece "Elephant" Each 
-            (move
-                Slide 
-                Diagonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        ) 
-        (piece "Knight" Each 
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "Ferz_noCross" Each 
-            (move
-                Slide 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-                "RememberPieceHasMoved"
-            ) 
-        )
+        ("ChessBishop" "Elephant")
+        ("ChessKnight" "Knight")
+        ("ChessQueen" "Ferz_noCross" ~ "RememberPieceHasMoved")
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
-        }
-    ) 
+    }) 
     (rules 
-        (start
-            { 
+        (start { 
             (place "Pawn1" (sites Row 1))
             (place "Pawn2" (sites Row 6))
             (place "Boat1" {"A1" "H1"} state:1) (place "Knight1" {"B1" "G1"}) (place "Elephant1" {"C1" "F1"}) (place "Ferz_noCross1" coord:"D1" state:1) (place "King_noCross1" coord:"E1" state:1) 
             (place "Boat2" {"A8" "H8"} state:1) (place "Knight2" {"B8" "G8"}) (place "Elephant2" {"C8" "F8"}) (place "Ferz_noCross2" coord:"E8" state:1) (place "King_noCross2" coord:"D8" state:1) 
-            }
-        )
+        })
         
         (play 
             (do 
@@ -217,17 +150,10 @@
             )
         )
         
-        (end
-            {
-            (if (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
+        (end {
+            ("Checkmate" "King_noCross")
             (if (= 1 (count Pieces Next)) (result Mover Draw)) // Only the king
-            }
-        )
+        })
     )
 )
 
@@ -241,10 +167,10 @@
         (rules "8x8 board, marked as in Chaturanga. Pieces move according to specialized moves, as follows: Pawns (x8): can move one space forward, or one space diagonally to capture. The pawns in front of the Raja, Vizier, or Chariot may move two spaces on their first move, but only if the piece which began on the space behind them remains on that spot. Chariot (or Boat): any number of spaces orthogonally; Elephant (x2): can move any number of spaces diagonally; Horse (2): moves in any direction, one space orthogonally with one space forward diagonally; Vizier (x1): can move any number of spaces orthogonally or diagonally; Raja (x1): can move one space orthogonally or diagonally, but can also move like the horse once in the game, if it has not yet been checked. It cannot take a piece with this move. The pieces are arranged as in Chess, except the Vizier is place to the left of the Raja on both sides. Players capture pieces by moving onto a space occupied by an opponent's piece. When a Pawn reaches the opposite edge of the board from where it started, it may be promoted to the more powerful piece that begins the game in that position, but only if one of these belonging to the player has already been captured. If this has not happened, the pawn cannot move to the final row. When promoted to a Horse, the piece may immediately make a Horse's move. When a player can capture the opponent's Raja on the next turn, the Raja is in Check, the opponent's next move must free the Raja from Check. If the opponent cannot, it is Checkmate and the player wins. If a player captures all of the opponent's pieces aside from the Raja, it is a draw, or Boorj. When both players are left with only a Raja, it is a draw. Players are not allowed to stalemate the opponent. Perpetual check is not allowed, a player must make another move if such a state is entered.")
         (source "Shastree 1814: vii-x.")
         (id "297")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in South Asia, around 1814.")
+        (origin "This game was played in South Asia, around 1814.")
         }
     )
     

@@ -19,6 +19,7 @@ import utils.data_structures.experience_buffers.PrioritizedReplayBuffer;
  *
  * @author Dennis Soemers
  */
+@SuppressWarnings("static-method")
 public class TestPrioritizedExperienceReplay
 {
 

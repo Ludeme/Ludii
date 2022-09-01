@@ -20,7 +20,7 @@ import other.topology.TopologyElement;
 public class TestSquareSymmetries
 {
 	@Test
-	public void testSquareRotations()
+	public static void testSquareRotations()
 	{
 		final Board board = createBoard();
 		Container.createSymmetries(board.topology());
@@ -31,7 +31,7 @@ public class TestSquareSymmetries
 	}
 
 	@Test
-	public void testSquareReflections()
+	public static void testSquareReflections()
 	{
 		final Board board = createBoard();
 
@@ -45,7 +45,7 @@ public class TestSquareSymmetries
 	private static Board createBoard()
 	{
 		final Board board = new Board(new RectangleOnSquare(new DimConstant(8), null, null, null), null,
-				null, null, null, null, false);
+				null, null, null, null, Boolean.FALSE);
 
 		board.createTopology(0, 0);
 		final Topology topology = board.topology();

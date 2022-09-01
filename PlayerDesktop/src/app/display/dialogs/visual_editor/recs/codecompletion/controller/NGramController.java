@@ -2,7 +2,10 @@ package app.display.dialogs.visual_editor.recs.codecompletion.controller;
 
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.DocHandler;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.ModelLibrary;
-import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.*;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Context;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Instance;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.NGram;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Preprocessing;
 import app.display.dialogs.visual_editor.recs.interfaces.codecompletion.controller.iController;
 import app.display.dialogs.visual_editor.recs.utils.*;
 
@@ -64,6 +67,7 @@ public class NGramController implements iController {
      * @param contextString
      * @return list of candidate predictions sort after matching words with context, multiplicity
      */
+    @SuppressWarnings("all")
     @Override
     public List<Instance> getPicklist(String contextString) {
         // 0. if there is the wildcard COMPLETION_WILDCARD in there and cut it and everything after it off
@@ -117,13 +121,12 @@ public class NGramController implements iController {
      *
      * @param context
      * @param begunWord
-     * @return
      */
     @Override
     public List<Instance> getPicklist(String context, String begunWord) {
-        String cleanBegunWord = Preprocessing.preprocessBegunWord(begunWord);
+        //String cleanBegunWord = Preprocessing.preprocessBegunWord(begunWord);
         System.out.println("CONTROLLER: context -> "+context);
-        List<Instance> preliminaryPicklist = getPicklist(context);
+        //List<Instance> preliminaryPicklist = getPicklist(context);
         //List<Symbol> picklist = NGramUtils.filterByBegunWord(cleanBegunWord,preliminaryPicklist);//TODO
         return null;
     }
@@ -141,7 +144,6 @@ public class NGramController implements iController {
      * @param context
      * @param begunWord
      * @param maxLength
-     * @return
      */
     @Override
     public List<Instance> getPicklist(String context, String begunWord, int maxLength) {
@@ -160,12 +162,12 @@ public class NGramController implements iController {
     /**
      * This method switches out the current model, remember to update the N parameter
      *
-     * @param model
+     * @param ngramModel
      */
     @Override
-    public void changeModel(NGram model) {
-        this.model = model;
-        this.N = model.getN();
+    public void changeModel(NGram ngramModel) {
+        this.model = ngramModel;
+        this.N = ngramModel.getN();
     }
 
     /**
@@ -173,10 +175,10 @@ public class NGramController implements iController {
      */
     @Override
     public void close() {
-        DocHandler docHandler = DocHandler.getInstance();
+        DocHandler docHandlerInstance = DocHandler.getInstance();
         //find all files in res/models that end in .csv and delete them
         //because models are stored compressed as .gz
-        String modelsLocation = docHandler.getModelsLocation();
+        String modelsLocation = docHandlerInstance.getModelsLocation();
         List<File> allFilesModels = FileUtils.listFilesForFolder(modelsLocation);
         for(File f : allFilesModels) {
             String fPath = f.getPath();
@@ -185,16 +187,22 @@ public class NGramController implements iController {
             }
         }
 
-        docHandler.close();
+        docHandlerInstance.close();
     }
 
     /**
      * Get the value of N for the current model
-     *
-     * @return
      */
     @Override
     public int getN() {
         return N;
+    }
+    
+    /**
+     * @return a docHandler.
+     */
+    public DocHandler getDocHandler()
+    {
+    	return docHandler;
     }
 }

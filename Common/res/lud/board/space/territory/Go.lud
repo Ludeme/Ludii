@@ -1,12 +1,10 @@
-(define "HasFreedom" (> (count Liberties Orthogonal) 0))
-
 (define "CaptureSurroundedPiece"
     (enclose 
         (from (last To)) 
         Orthogonal 
         (between 
             if:("IsEnemyAt" (between)) 
-            (apply       
+            (apply    
                 (and 
                     (addScore Mover 1) 
                     (remove (between)) 
@@ -20,28 +18,21 @@
 
 (game "Go" 
     (players 2) 
-    (equipment 
-        { 
+    (equipment { 
         (board <Board> use:Vertex) 
         (piece "Marker" Each)
-        }
-    )
+    })
     
     (rules 
-        (meta
-            (no Repeat)
-        )
+        (meta (no Repeat))
         (play 
             (or
                 (do
-                    (move 
-                        Add
+                    (move Add
                         (to (sites Empty))
-                        (then 
-                            "CaptureSurroundedPiece"
-                        )
+                        (then "CaptureSurroundedPiece")
                     )
-                    ifAfterwards:"HasFreedom"
+                    ifAfterwards:("HasFreedom" Orthogonal)
                 )
                 (move Pass)
             )
@@ -62,10 +53,10 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "9x9"   <(square 9)>   "The game is played on a 9x9 board")  
-    (item "13x13"  <(square 13)>  "The game is played on a 13x13 board")  
-    (item "15x15"  <(square 15)>  "The game is played on a 15x15 board")  
-    (item "19x19"  <(square 19)>  "The game is played on a 19x19 board")**  
+    (item "9x9"  <(square 9)>  "The game is played on a 9x9 board") 
+    (item "13x13" <(square 13)> "The game is played on a 13x13 board") 
+    (item "15x15" <(square 15)> "The game is played on a 15x15 board") 
+    (item "19x19" <(square 19)> "The game is played on a 19x19 board")** 
 })
 
 //------------------------------------------------------------------------------
@@ -79,10 +70,10 @@
         (rules "Played on a 19x19 board. The board begins empty. One player plays as black, the other as white. The black player begins by placing a piece on one of the intersections on the board. Players alternate turns placing a piece on the board. A player may pass at any time. A piece or a group of pieces are captured when they are completely surrounded on all sides on adjacent intersections by the opposing player. Stones cannot be placed to recreate a previous position. The game ends when both players pass consecutively. Players total the number of intersections their pieces occupy or surround. The player with the highest total wins. ")
         (source "<a href=\"https://en.wikipedia.org/wiki/Rules_of_Go#Concise_statement\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
         (id "144")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/space/territory")
         (credit "Eric Piette")
-        (origin  "This game was played in China, from around 694 to 710.")
+        (origin "This game was played in China, from around 694 to 710.")
         }
     )
     

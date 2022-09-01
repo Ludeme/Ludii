@@ -40,6 +40,7 @@ public class TestSPatterNetFeatureSet
 	private static final int MAX_MOVES_PER_TRIAL = 200;
 	
 	@Test
+	@SuppressWarnings("static-method")
 	public void test()
 	{
 		for (final String gameName : GAMES)

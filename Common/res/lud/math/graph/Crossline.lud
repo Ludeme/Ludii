@@ -18,19 +18,19 @@
                 {7 9}}
             )
         use:Edge) 
-        (piece "Marker" Each)  
+        (piece "Marker" Each) 
         (piece "Disc" Shared)
     }) 
     
     (rules 
         (start
-            (set Shared Edge (sites {0..9}))            
+            (set Shared Edge (sites {0..9}))      
         ) 
         phases:{
         (phase "Init" P1 
             (play 
                 (move Add 
-                    (to Edge (sites Empty Edge))	          	
+                    (to Edge (sites Empty Edge))	     	
                 )
             )
             (nextPhase "Cross") 
@@ -40,21 +40,21 @@
             (play
                 (do 
                     (move Add 
-                        (to Edge (sites Empty Edge))      				
+                        (to Edge (sites Empty Edge))   				
                     )
                     ifAfterwards:"CrossLine"
                 )
-            )	      
+            )	   
         )
         (phase "Continue" P2 
             (play
                 (do 
                     (move Add 
-                        (to Edge (sites Empty Edge))      				
+                        (to Edge (sites Empty Edge))   				
                     )
                     ifAfterwards:"CrossLine"
                 )
-            )	      
+            )	   
         )
         
         } 
@@ -73,7 +73,7 @@
         (rules "Players begin by drawing a circle with ten dots evenly spaced around it (the spacing can be approximate). The first player starts by drawing a straight line connecting any two dots that are not adjacent. After that, each player in turns draws a straight line that connects any two dots and that crosses exactly one (and only one) previously drawn line. The player who draws the last legal line is the winner.")
         (id "678")
         (source "<a href=\"https://boardgamegeek.com/boardgame/58671/crossline\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "math/graph")
         (author "Rodrigo Jorquera")
         (credit "Tahmina Begum 22-06-2020")
@@ -81,13 +81,12 @@
         }
     )
     
-    (graphics {     
+    (graphics {   
         (player Colour P1 (colour Red))
         (player Colour P2 (colour Blue))
         (player Colour Shared (colour Black))
         (board Style PenAndPaper replaceComponentsWithFilledCells:True)
         (show Edges ThinDotted (colour 127 127 127))
-        
     })
     
     (ai

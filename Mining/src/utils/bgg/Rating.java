@@ -50,6 +50,7 @@ public class Rating
 
 	//-------------------------------------------------------------------------
 
+	@SuppressWarnings("static-method")
 	byte extractScore(final String details)
 	{
 		final int c = details.indexOf("'score':");

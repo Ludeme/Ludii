@@ -28,7 +28,7 @@ import other.GameLoader;
 public class GraphSize
 {
 	@Test
-	public void testCompilingLudFromMemory()
+	public static void testCompilingLudFromMemory()
 	{
 		final List<String> list = new ArrayList<String>();
 		final List<String> failedGames = new ArrayList<String>();

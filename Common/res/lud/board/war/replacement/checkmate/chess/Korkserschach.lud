@@ -1,7 +1,3 @@
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
-)
-
 (define "HasNeverMoved"
     (= (state at:(mapEntry #1 (mover))) 1) 
 )
@@ -45,12 +41,11 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )  
+    ) 
 )
 
 (define "DecideToCastle"
-    (move
-        Slide 
+    (move Slide 
         (from (mapEntry #1 (mover))) 
         #2 
         (between 
@@ -88,18 +83,8 @@
     ("DecideToCastle" "King" W 2 "KingNotCheckedAndToEmpty" (then ("CastleRook" "RookLeft" E 3 True)))
 )
 
-(define "DoubleStep"
-    (move
-        Slide 
-        Forward 
-        (between (exact 2) if:(is Empty (between))) 
-        (to if:(is Empty (to))) 
-    )
-)
-
 (define "CaptureForwardDiagonal"
-    (move
-        Step 
+    (move Step 
         (directions {FR FL}) 
         (to 
             if:("IsEnemyAt" (to)) 
@@ -135,7 +120,7 @@
 //------------------------------------------------------------------------------
 
 (game "Korkserschach" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8)) 
         
@@ -157,7 +142,7 @@
                                 )
                                 (moveAgain)
                             )
-                            (if (and (not ("SameTurn")) (<= (count Turns) 2))
+                            (if (and ("NewTurn") (<= (count Turns) 2))
                                 (and
                                     (set Pending)
                                     (moveAgain)
@@ -170,8 +155,7 @@
         )
         
         (piece "Rook" Each 
-            (move
-                Slide 
+            (move Slide 
                 Orthogonal 
                 (to 
                     if:("IsEnemyAt" (to)) 
@@ -181,8 +165,7 @@
             )
         )
         (piece "King" Each 
-            (move
-                Step 
+            (move Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece"
@@ -191,8 +174,7 @@
             )
         )
         (piece "Bishop" Each 
-            (move
-                Slide 
+            (move Slide 
                 Diagonal 
                 (to 
                     if:("IsEnemyAt" (to)) 
@@ -201,8 +183,7 @@
             )
         )
         (piece "Knight" Each 
-            (move
-                Leap 
+            (move Leap 
                 "KnightWalk" 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
@@ -211,8 +192,7 @@
             )
         )
         (piece "Queen" Each 
-            (move
-                Slide 
+            (move Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
@@ -281,15 +261,7 @@
             )
         )
         
-        (end {
-            (if (and 
-                    ("IsInCheck" "King" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
-            (if (no Moves Next) (result Mover Loss)) 
-        })
+        (end ("Checkmate" "King"))
     )
 )
 
@@ -299,12 +271,12 @@
     (item "Pawn Double Step" 
         <
         (if (is In (from) (sites Start (piece (what at:(from)))))
-            "DoubleStep"
+            ("DoubleStepForwardToEmpty")
         )
         > 
         "The pawns can double step from the starting positions."
-    )*  
-    (item "No Pawn Double Step" <> "No double step for the pawns.")  
+    )* 
+    (item "No Pawn Double Step" <> "No double step for the pawns.") 
 })
 
 //------------------------------------------------------------------------------
@@ -330,9 +302,9 @@
         ")
         (source "Murray 1913: 391.")
         (id "1430")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/chess")
-        (origin  "This game was played in Germany, around 1873.")
+        (origin "This game was played in Germany, around 1873.")
         }
     )
     

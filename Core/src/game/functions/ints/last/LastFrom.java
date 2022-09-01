@@ -14,7 +14,7 @@ import other.context.Context;
 import other.move.Move;
 
 /**
- * Returns the ``from'' location of the last move.
+ * Returns the ``from'' location of the last decision.
  * 
  * @author Eric.Piette
  */
@@ -31,7 +31,7 @@ public final class LastFrom extends BaseIntFunction
 	//-------------------------------------------------------------------------
 
 	/**
-	 * @param afterSubsequents Whether to return the ``from'' location after applying subsequents [False].
+	 * @param afterSubsequents Whether to return the ``from'' location after applying the consequences [False].
 	 */
 	public LastFrom
 	(

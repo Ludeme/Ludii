@@ -23,7 +23,7 @@
             (nextPhase "Movement")
         )
         
-        (phase "Movement" (play (forEach Piece)))
+        ("PhaseMovePiece" "Movement")
         }
         
         (end ("NoMovesP1NoPiecesP2")) 
@@ -40,10 +40,10 @@
         (rules "8x8 Draughts board. One player plays with a single fox, the other with twelve hens, played on the white squares. The hens begin on the first three rows; the fox may begin on whatever spot the player chooses. Hens move one space forward diagonally, the fox moves one space diagonally forward or backward. The fox may capture a hen by hopping over it to an empty space diagonally on the other side of it. The hens win by blocking the fox from being able to move; the fox wins by capturing all the hens.")
         (source "Mallet 1668: 445-447.")
         (id "877")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in France, around 1668.")
+        (origin "This game was played in France, around 1668.")
         }
     )
     

@@ -4,9 +4,11 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import features.spatial.elements.FeatureElement;
 import features.spatial.elements.RelativeFeatureElement;
@@ -408,12 +410,143 @@ public class RelativeFeature extends SpatialFeature
 		{
 			foundStrictGeneralization = true;
 		}
-		else if(!(pattern.equals(otherFeature.pattern)))
+		else if (!(pattern.equals(otherFeature.pattern)))
 		{
 			return false;
 		}
 		
 		return foundStrictGeneralization;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public List<SpatialFeature> generateGeneralisers(final Game game)
+	{
+		final Set<RotRefInvariantFeature> generalisers = new HashSet<RotRefInvariantFeature>();
+		
+		if (toPosition != null && fromPosition != null)
+		{
+			// We can generalise by removing either the to- or the from-specifier
+			addGeneraliser
+			(
+				new RelativeFeature
+				(
+					new Pattern(pattern),
+					new Walk(toPosition),
+					null,
+					lastToPosition == null ? null : new Walk(lastToPosition),
+					lastFromPosition == null ? null : new Walk(lastFromPosition)
+				),
+				game,
+				generalisers
+			);
+			
+			addGeneraliser
+			(
+				new RelativeFeature
+				(
+					new Pattern(pattern),
+					null,
+					new Walk(fromPosition),
+					lastToPosition == null ? null : new Walk(lastToPosition),
+					lastFromPosition == null ? null : new Walk(lastFromPosition)
+				),
+				game,
+				generalisers
+			);
+		}
+		
+		if (lastToPosition != null)
+		{
+			// We can generalise by removing last-to requirement
+			addGeneraliser
+			(
+				new RelativeFeature
+				(
+					new Pattern(pattern),
+					toPosition == null ? null : new Walk(toPosition),
+					fromPosition == null ? null : new Walk(fromPosition),
+					null,
+					lastFromPosition == null ? null : new Walk(lastFromPosition)
+				),
+				game,
+				generalisers
+			);
+		}
+		
+		if (lastFromPosition != null)
+		{
+			// We can generalise by removing last-to requirement
+			addGeneraliser
+			(
+				new RelativeFeature
+				(
+					new Pattern(pattern),
+					toPosition == null ? null : new Walk(toPosition),
+					fromPosition == null ? null : new Walk(fromPosition),
+					lastToPosition == null ? null : new Walk(lastToPosition),
+					null
+				),
+				game,
+				generalisers
+			);
+		}
+		
+		final FeatureElement[] patternElements = pattern.featureElements();
+		for (int i = 0; i < patternElements.length; ++i)
+		{
+			// We can generalise by removing the ith element of the pattern
+			final FeatureElement[] newElements = new FeatureElement[patternElements.length - 1];
+			int nextIdx = 0;
+			for (int j = 0; j < patternElements.length; ++j)
+			{
+				if (j != i)
+					newElements[nextIdx++] = FeatureElement.copy(patternElements[j]);
+			}
+			
+			final RelativeFeature newFeature = 
+					new RelativeFeature
+					(
+						new Pattern(newElements),
+						toPosition == null ? null : new Walk(toPosition),
+						fromPosition == null ? null : new Walk(fromPosition),
+						lastToPosition == null ? null : new Walk(lastToPosition),
+						lastFromPosition == null ? null : new Walk(lastFromPosition)
+					);
+			newFeature.pattern().setAllowedRotations(pattern.allowedRotations());
+			
+			addGeneraliser(newFeature, game, generalisers);
+		}
+
+		final List<SpatialFeature> outList = new ArrayList<SpatialFeature>(generalisers.size());
+		for (final RotRefInvariantFeature f : generalisers)
+		{
+			outList.add(f.feature());
+		}
+		
+		return outList;
+	}
+	
+	/**
+	 * Helper method to add generaliser for given game to given set of generalisers.
+	 * May not add it if it's equivalent to another feature already in the list.
+	 * 
+	 * @param generaliser
+	 * @param game
+	 * @param generalisers
+	 */
+	private static void addGeneraliser(final RelativeFeature generaliser, final Game game, final Set<RotRefInvariantFeature> generalisers)
+	{
+		generaliser.normalise(game);
+		if (generalisers.add(new RotRefInvariantFeature(generaliser)))
+		{
+			// Also add generalisers of the generaliser
+			for (final SpatialFeature f : generaliser.generateGeneralisers(game))
+			{
+				addGeneraliser((RelativeFeature) f, game, generalisers);
+			}
+		}
 	}
 	
 	//-------------------------------------------------------------------------

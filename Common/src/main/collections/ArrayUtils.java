@@ -30,7 +30,7 @@ public class ArrayUtils
 	 * @param val
 	 * @return True if given array contains given value, false otherwise
 	 */
-	public static boolean contains(final double[] arr, final double val)
+	public static boolean contains(final boolean[] arr, final boolean val)
 	{
 		for (int i = 0; i < arr.length; ++i)
 		{
@@ -47,6 +47,22 @@ public class ArrayUtils
 	 * @return True if given array contains given value, false otherwise
 	 */
 	public static boolean contains(final int[] arr, final int val)
+	{
+		for (int i = 0; i < arr.length; ++i)
+		{
+			if (arr[i] == val)
+				return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * @param arr
+	 * @param val
+	 * @return True if given array contains given value, false otherwise
+	 */
+	public static boolean contains(final double[] arr, final double val)
 	{
 		for (int i = 0; i < arr.length; ++i)
 		{

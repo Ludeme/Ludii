@@ -26,7 +26,6 @@ public class ModelCreator {
      * @param N
      * @param gameIDs List of game descriptions to be included in the model
      * @param validation If true, the model will not be written to a file
-     * @return
      */
     public static NGram createModel(int N, List<Integer> gameIDs, boolean validation) {
 
@@ -49,9 +48,9 @@ public class ModelCreator {
 
             @Override
             protected NGram doInBackground() throws Exception {
-                NGram model = new NGram(N);
+                NGram ngramModel = new NGram(N);
                 for(int i = 0; i < amountGames; i++) {
-                    int gameID = gameIDs.get(i);
+                    int gameID = gameIDs.get(i).intValue();
                     String curGameDescription = db.getDescription(gameID);
 
                     //apply preprocessing
@@ -63,7 +62,7 @@ public class ModelCreator {
                         for(List<String> substring : substrings) {
                             Instance curInstance = NGramUtils.createInstance(substring);
                             if(curInstance != null) {
-                                model.addInstanceToModel(curInstance);
+                                ngramModel.addInstanceToModel(curInstance);
                             }
                         }
                     }
@@ -73,7 +72,7 @@ public class ModelCreator {
                     setProgress(progress);
                     Thread.sleep(125);
                 }
-                return model;
+                return ngramModel;
             }
 
             @Override
@@ -113,7 +112,6 @@ public class ModelCreator {
      * The location is according to the internal storing mechanism that is based on the N parameter.
      * This method adds all game descriptions to the model and is therefore not for validation purposes.
      * @param N
-     * @return
      */
     public static NGram createModel(int N) {
         List<Integer> gameIDs = new ArrayList<>();
@@ -122,7 +120,7 @@ public class ModelCreator {
         int amountGames = db.getAmountGames();
 
         for (int i = 0; i < amountGames; i++) {
-            gameIDs.add(i);
+            gameIDs.add(Integer.valueOf(i));
         }
 
         //return createModel(N, gameIDs, false);

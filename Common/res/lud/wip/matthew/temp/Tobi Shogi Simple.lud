@@ -1,5 +1,5 @@
 (game "Tobi Shogi" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment
         {
         (board (square 9))
@@ -17,7 +17,7 @@
                     )
                     (to if:(is Empty (to)))
                 )
-            )	    	
+            )	  	
         )
         }
     )

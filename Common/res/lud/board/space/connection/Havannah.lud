@@ -16,7 +16,7 @@
                 })
                 (result Mover Win)
             )
-        )  
+        ) 
     )
 )
 
@@ -24,18 +24,18 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "4x4"   <4>   "The game is played on a 4x4 board")  
-    (item "5x5"   <5>   "The game is played on a 5x5 board") 
-    (item "6x6"   <6>   "The game is played on a 6x6 board") 
-    (item "7x7"   <7>   "The game is played on a 7x7 board") 
-    (item "8x8"   <8>   "The game is played on a 8x8 board")** 
-    (item "9x9"   <9>   "The game is played on a 9x9 board")  
-    (item "10x10"  <10>  "The game is played on a 10x10 board") 
+    (item "4x4"  <4>  "The game is played on a 4x4 board") 
+    (item "5x5"  <5>  "The game is played on a 5x5 board") 
+    (item "6x6"  <6>  "The game is played on a 6x6 board") 
+    (item "7x7"  <7>  "The game is played on a 7x7 board") 
+    (item "8x8"  <8>  "The game is played on a 8x8 board")** 
+    (item "9x9"  <9>  "The game is played on a 9x9 board") 
+    (item "10x10" <10> "The game is played on a 10x10 board") 
 })
 
 (option "Swap Rules" <Meta> args:{ <rule>} {
-    (item "On" <(meta (swap))> "The game uses the swap rule.")  
-    (item "Off" <> "The game does not use the swap rule.")*  
+    (item "On" <(meta (swap))> "The game uses the swap rule.") 
+    (item "Off" <> "The game does not use the swap rule.")* 
 })
 
 //------------------------------------------------------------------------------
@@ -48,7 +48,7 @@
         (rules "Players take turns placing pieces on the board. There are three winning conditions: 1. Connect any three edges (without corner points), or 2. Make a bridge connection between any two corners, or 3. loop around any site.")
         (source "<a href=\"https://en.wikipedia.org/wiki/Havannah\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
         (id "391")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/space/connection")
         (author "Christian Freeling")
         (credit "Eric Piette")

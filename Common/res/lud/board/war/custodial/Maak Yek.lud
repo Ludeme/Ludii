@@ -6,23 +6,8 @@
             (move Slide Orthogonal
                 (then 
                     (and
-                        (intervene 
-                            (from (last To))
-                            Orthogonal
-                            (to 
-                                if:("IsEnemyAt" (to))
-                                (apply (remove (to)))
-                            )
-                        )
-                        (custodial 
-                            (from (last To))
-                            Orthogonal
-                            (between
-                                if:("IsEnemyAt" (between))
-                                (apply (remove (between)))
-                            )
-                            (to if:("IsFriendAt" (to)))
-                        )
+                        ("InterveneCapture" Orthogonal)
+                        ("CustodialCapture" Orthogonal)
                     )
                 )
             )
@@ -34,7 +19,7 @@
             (place "Marker2" (union (sites Row 5) (sites Row 7)))
         })
         (play (forEach Piece))
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -48,10 +33,10 @@
         (rules "8x8 board. Sixteen pieces per player. The pieces begin on the first and third rank or squares with respect to each player. Pieces move orthogonally any distance. Pieces are captured when surrounded on both sides by an enemy piece. Enemy pieces may also be taken if a piece moves into a space such that the enemy pieces are on either side of it. The goal is to capture all of the enemy's pieces.")
         (source "Low 1839: 382-383.")
         (id "189")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/custodial")
         (credit "Eric Piette")
-        (origin  "This game was played in Thailand, around 1836.")
+        (origin "This game was played in Thailand, around 1836.")
         }
     )
     

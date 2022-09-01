@@ -11,9 +11,7 @@
     ) 
 )
 
-(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
-
-(define "JumpToPromotionZone" (is In (last To) (sites Next)))
+(define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
 
 //------------------------------------------------------------------------------
 
@@ -26,8 +24,7 @@
         (piece "DoubleCounter" Each)
         (regions P1 (union (sites Side SW) (sites Side SE)))
         (regions P2 (union (sites Side NW) (sites Side NE)))
-        }
-    ) 
+    }) 
     
     (rules 
         (start {
@@ -40,11 +37,8 @@
                     (max Moves
                         ("HopMan" (last To)
                             (then 
-                                (if (can Move ("HopMan" (last To))) 
-                                    (moveAgain)
-                                    (if "JumpToPromotionZone" 
-                                        (move Promote (last To) (piece "DoubleCounter") Mover)
-                                    )
+                                ("ReplayIfCanMove" ("HopMan" (last To)) 
+                                    ("PromoteIfReach" (sites Next) "DoubleCounter")
                                 ) 
                             ) 
                         )
@@ -57,11 +51,8 @@
                             (forEach Piece "Counter"
                                 ("HopMan" (from) 
                                     (then 
-                                        (if (can Move ("HopMan" (last To))) 
-                                            (moveAgain) 
-                                            (if "JumpToPromotionZone" 
-                                                (move Promote (last To) (piece "DoubleCounter") Mover)
-                                            )
+                                        ("ReplayIfCanMove" ("HopMan" (last To))
+                                            ("PromoteIfReach" (sites Next) "DoubleCounter")
                                         ) 
                                     ) 
                                 ) 
@@ -71,16 +62,8 @@
                     )
                     (or 
                         (forEach Piece "Counter" 
-                            (move
-                                Step 
-                                (directions {Forward FL FR}) 
-                                (to if:(is Empty (to)))
-                            )
-                            (then 
-                                (if "JumpToPromotionZone"
-                                    (promote (last To) (piece "DoubleCounter") Mover)
-                                )
-                            )
+                            ("StepToEmpty" (directions {Forward FL FR}))
+                            (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
                         )
                         (forEach Piece "DoubleCounter" (move Slide))
                     )
@@ -101,7 +84,7 @@
         (rules "Pieces move one step forward. Otherwise, the rules are the same as International Draughts: Pieces can jump an opponent's adjacent player to capture it. Pieces can move forward or backwards. When a piece reaches the opposite edge of the board from its starting position, it becomes a king and can may move and jump over any number of spaces diagonally. Captures are compulsory and the maximum number of jumps must be made. Winning is achieved by capturing all the opponent's pieces or by blocking them from moving.")
         (source "<a href=\"https://en.wikipedia.org/wiki/Hexdame\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
         (id "443")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/leaping/orthogonal")
         (author "Christian Freeling")
         (credit "Eric Piette")

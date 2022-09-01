@@ -190,6 +190,7 @@ public abstract class FeatureElement
 				case LineOfSightOrth:
 				case LineOfSightDiag:
 					return true;
+					//$CASES-OMITTED$
 				default:
 					return false;
 				}
@@ -206,6 +207,7 @@ public abstract class FeatureElement
 				case LineOfSightOrth:
 				case LineOfSightDiag:
 					return true;
+					//$CASES-OMITTED$
 				default:
 					return false;
 				}
@@ -222,6 +224,7 @@ public abstract class FeatureElement
 				case LineOfSightOrth:
 				case LineOfSightDiag:
 					return true;
+					//$CASES-OMITTED$
 				default:
 					return false;
 				}
@@ -243,6 +246,7 @@ public abstract class FeatureElement
 				case LineOfSightOrth:
 				case LineOfSightDiag:
 					return true;
+					//$CASES-OMITTED$
 				default:
 					return false;
 				}
@@ -260,6 +264,7 @@ public abstract class FeatureElement
 				case LineOfSightOrth:
 				case LineOfSightDiag:
 					return true;
+					//$CASES-OMITTED$
 				default:
 					return false;
 				}
@@ -277,6 +282,7 @@ public abstract class FeatureElement
 				case LineOfSightOrth:
 				case LineOfSightDiag:
 					return true;
+					//$CASES-OMITTED$
 				default:
 					return false;
 				}
@@ -294,6 +300,7 @@ public abstract class FeatureElement
 				case LineOfSightOrth:
 				case LineOfSightDiag:
 					return true;
+					//$CASES-OMITTED$
 				default:
 					return false;
 				}
@@ -301,6 +308,11 @@ public abstract class FeatureElement
 				return (otherType != ElementType.Off);
 			case RegionProximity:
 				return (otherType != ElementType.Off);
+			case LineOfSightOrth:
+				return (otherType != ElementType.Off);
+			case LineOfSightDiag:
+				return (otherType != ElementType.Off);
+				//$CASES-OMITTED$
 			default:
 				System.err.println("Unrecognised element type: " + myType);
 				throw new UnsupportedOperationException();
@@ -332,6 +344,11 @@ public abstract class FeatureElement
 				return (otherType != ElementType.Any);
 			case RegionProximity:
 				return (otherType != ElementType.Any);
+			case LineOfSightOrth:
+				return true;
+			case LineOfSightDiag:
+				return true;
+				//$CASES-OMITTED$
 			default:
 				System.err.println("Unrecognised element type: " + myType);
 				throw new UnsupportedOperationException();
@@ -363,6 +380,11 @@ public abstract class FeatureElement
 				return (otherType != ElementType.Off);
 			case RegionProximity:
 				return (otherType != ElementType.Off);
+			case LineOfSightOrth:
+				return true;
+			case LineOfSightDiag:
+				return true;
+				//$CASES-OMITTED$
 			default:
 				System.err.println("Unrecognised element type: " + myType);
 				throw new UnsupportedOperationException();
@@ -544,6 +566,7 @@ public abstract class FeatureElement
 			case LineOfSightDiag:
 				// "not in diagonal line of sight" doesn't generalise anything
 				return new TypeGeneralisationResult(false, false);
+				//$CASES-OMITTED$
 			default:
 				System.err.println("Unrecognised element type: " + firstType);
 				throw new UnsupportedOperationException();
@@ -652,6 +675,7 @@ public abstract class FeatureElement
 					return new TypeGeneralisationResult(false, false);
 				else
 					return new TypeGeneralisationResult(true, true);
+				//$CASES-OMITTED$
 			default:
 				System.err.println("Unrecognised element type: " + firstType);
 				throw new UnsupportedOperationException();

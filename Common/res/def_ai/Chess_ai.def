@@ -1,5 +1,5 @@
 (define "Chess_ai"
-    (bestAgent "Alpha-Beta")
+    (bestAgent "UBFM")
     (heuristics {
         (material transformation:(divNumInitPlacement) pieceWeights:{
             (pair "Pawn1" 1.0)
@@ -13,6 +13,7 @@
             (pair "Queen1" 9.0)
             (pair "Queen2" 9.0)
         })
+        (mobilityAdvanced weight:0.02)
     })
     
 )

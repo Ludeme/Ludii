@@ -79,7 +79,7 @@ public class ComputePlayoutConcepts
 			final double value = frequencyPlayouts.get(concept.name()) == null ? Constants.UNDEFINED
 				: frequencyPlayouts.get(concept.name()).doubleValue();
 						
-			game.nonBooleanConcepts().put(concept.id(), value+"");
+			game.nonBooleanConcepts().put(Integer.valueOf(concept.id()), value+"");
 		}
 	}
 
@@ -631,7 +631,7 @@ public class ComputePlayoutConcepts
 		for(final Metric metric: metrics)
 			if(metric.concept() != null)
 			{
-				double metricValue = metric.apply(game, evaluation, trialsMetrics, rngTrials);
+				double metricValue = metric.apply(game, evaluation, trialsMetrics, rngTrials).doubleValue();
 				metricValue = (Math.abs(metricValue) < Constants.EPSILON) ? 0 : metricValue;
 				playoutConceptValues.put(metric.concept().name(), Double.valueOf(metricValue));
 			}
@@ -687,8 +687,8 @@ public class ComputePlayoutConcepts
 		final double secs = (stopAt - start) / 1000000000.0;
 		final double rate = (playouts / secs);
 		final double rateMove = (moveDone / secs);
-		playoutConceptValues.put(Concept.PlayoutsPerSecond.name(), rate);
-		playoutConceptValues.put(Concept.MovesPerSecond.name(), rateMove);
+		playoutConceptValues.put(Concept.PlayoutsPerSecond.name(), Double.valueOf(rate));
+		playoutConceptValues.put(Concept.MovesPerSecond.name(), Double.valueOf(rateMove));
 
 		return playoutConceptValues;
 	}

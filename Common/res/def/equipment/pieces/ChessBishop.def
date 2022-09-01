@@ -7,20 +7,18 @@
 (define "ChessBishop"
     (piece #1 Each 
         (move
-            Slide 
-            Diagonal 
+            Slide
+            Diagonal
             (to 
-                if:("IsEnemyAt" (to)) 
+                if:("IsEnemyAt" (to))  
                 (apply 
-                    (if ("IsEnemyAt" (to))
-                        (remove 
-                            (to) 
-                            #2
-                        )
+                    (remove 
+                        (to) 
+                        #2
                     )
                 ) 
-            ) 
+            )
             #3
-        )
+        ) 		
     )
 )

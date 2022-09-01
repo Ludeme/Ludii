@@ -14,7 +14,7 @@ import other.context.Context;
 import other.move.Move;
 
 /**
- * Returns the ``to'' location of the last move.
+ * Returns the ``to'' location of the last decision.
  * 
  * @author Eric.Piette
  */
@@ -32,7 +32,7 @@ public final class LastTo extends BaseIntFunction
 
 	/**
 	 * @param afterSubsequents Whether to return the ``to'' location after applying
-	 *                         subsequents [False].
+	 *                         the consequences [False].
 	 */
 	public LastTo
 	(

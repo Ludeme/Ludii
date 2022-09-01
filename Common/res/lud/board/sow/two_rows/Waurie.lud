@@ -8,8 +8,8 @@
         (mancalaBoard 2 6
             (track "Track" "0,ESE,E,ENE,WNW,W" loop:True)
         )
-        (regions P1 (sites Bottom))           // P1 home
-        (regions P2 (sites Top))            // P2 home
+        (regions P1 (sites Bottom))      // P1 home
+        (regions P2 (sites Top))      // P2 home
         (map {(pair P1 LastSite) (pair P2 FirstSite)}) // kalahs (storage pits)
         (piece "Seed" Shared)
     }) 
@@ -53,10 +53,10 @@
         (rules "Two rows of six holes with two stores. Each player owns the store to their right. Four counters in each hole. Sowing occurs from any hole in the player's row in an anti-clockwise direction. Sowing includes the player's store but not the opponent's. When the final counter lands into the player's store, they play again. When a player has no more counters in their row, they win, even if it is now the opponent's turn and they could place counters in the player's row.")
         (source "<a href=\"https://mancala.fandom.com/wiki/Waurie \" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />mancala.fandom.com</a>")
         (id "439")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Cayman Islands, from around 1985 to 1995.")
+        (origin "This game was played in Cayman Islands, from around 1985 to 1995.")
         }
     )
     

@@ -4,17 +4,20 @@ package app.display.dialogs.visual_editor.view.components.ludemenodecomponent;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
-import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputArea;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 import main.grammar.Symbol;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,22 +32,28 @@ import java.util.List;
 
 public class LudemeNodeComponent extends JPanel
 {
-    /** X, Y coordinates of the node */
-    protected int x, y; // TODO: figure out this nonsense
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7213640452305410215L;
+	/** X, Y coordinates of the node */
+    protected int x, y;
     /** Position of the node */
-    private final ImmutablePoint position = new ImmutablePoint(x, y);
+    final ImmutablePoint position = new ImmutablePoint(x, y);
     /** The Ludeme Node LN this component represents */
     private final LudemeNode LN;
     /** Graph Panel this node is in */
     private final IGraphPanel GRAPH_PANEL;
+    /** Whether this node is marked as uncompilable */
+    private boolean markedUncompilable = false;
     // Whether the node is "marked"/selected
-    private boolean selected = false;
+    boolean selected = false;
     private boolean doubleSelected = false;
     private boolean subtree = false;
     /** Sub-Components of the node */
     private final LHeader header;
     private final LInputArea inputArea;
-    /** Check if ctrl is pressed */ //TODO: change value of ctlrPressed when ctrl is pressed or released
+    /** Check if ctrl is pressed */
     public static boolean cltrPressed = false;
 
     /**
@@ -93,7 +102,7 @@ public class LudemeNodeComponent extends JPanel
      */
     public void addTerminal(Symbol symbol)
     {
-        inputArea.addedConnection(symbol, graphPanel().connectionHandler().getSelectedConnectionComponent().inputField());
+        inputArea.addedConnection(symbol, graphPanel().connectionHandler().selectedComponent().inputField());
         revalidate();
         repaint();
     }
@@ -116,9 +125,7 @@ public class LudemeNodeComponent extends JPanel
      */
     public void updatePositions()
     {
-        if(inputArea == null || header == null) {
-            return;
-        }
+        if(inputArea == null || header == null) {return;}
         position.update(getLocation());
         inputArea.updateConnectionPointPositions();
         header.updatePosition();
@@ -127,21 +134,11 @@ public class LudemeNodeComponent extends JPanel
 
     public void syncPositionsWithLN()
     {
-        if(inputArea == null || header == null) {
-            return;
-        }
+        if(inputArea == null || header == null) {return;}
         setLocation(new Point((int)LN.pos().x(), (int)LN.pos().y()));
         position.update(getLocation());
         inputArea.updateConnectionPointPositions();
         header.updatePosition();
-    }
-
-    /**
-     * TODO: This is what?
-     */
-    public void updateLudemePosition()
-    {
-        LudemeNodeComponent.this.setLocation((int) LN.pos().x(), (int) LN.pos().y());
     }
 
     /**
@@ -151,6 +148,11 @@ public class LudemeNodeComponent extends JPanel
     public void updateProvidedInputs()
     {
         inputArea.updateProvidedInputs();
+    }
+
+    public boolean isPartOfDefine()
+    {
+        return graphPanel().graph().isDefine();
     }
 
     /**
@@ -204,7 +206,8 @@ public class LudemeNodeComponent extends JPanel
      *
      * @return the width of a node component according to the Design Palette
      */
-    public int width()
+    @SuppressWarnings("static-method")
+	public int width()
     {
         return DesignPalette.NODE_WIDTH;
     }
@@ -216,15 +219,6 @@ public class LudemeNodeComponent extends JPanel
     public IGraphPanel graphPanel()
     {
         return GRAPH_PANEL;
-    }
-
-    /**
-     *
-     * @return the position of the node component
-     */
-    public ImmutablePoint position()
-    {
-        return position;
     }
 
     /**
@@ -264,7 +258,7 @@ public class LudemeNodeComponent extends JPanel
         return inputArea.getPreferredSize().height + header.getPreferredSize().height;
     }
 
-    private List<LudemeNodeComponent> collapsedSubtreeNodes()
+    List<LudemeNodeComponent> collapsedSubtreeNodes()
     {
         List<LudemeNodeComponent> nodes = new ArrayList<>();
         for(LudemeNode node : node().childrenNodes())
@@ -298,36 +292,23 @@ public class LudemeNodeComponent extends JPanel
     }
 
     /**
-     * Switches the node to be a dynamic/un-dynamic node
-     * Dynamic nodes have no pre-selected clause
-     */
-    public void changeDynamic()
-    {
-        if(!LN.dynamicPossible()) return;
-        LN.setDynamic(!LN.dynamic());
-        // TODO: inputArea().setDynamic(LN.dynamic());
-        node().setDynamic(LN.dynamic());
-    }
-
-    /**
-     *
-     * @return whether the node is dynamic
-     */
-    public boolean dynamic()
-    {
-        return LN.dynamic();
-    }
-
-    /**
      *
      * @return whether this node is visible
      */
-    public boolean visible(){
+    public boolean visible()
+    {
         return node().visible();
     }
 
-    public void setCollapsed(boolean collapsed) {
-        node().setCollapsed(collapsed);
+    public void markUncompilable(boolean uncompilable)
+    {
+        markedUncompilable = uncompilable;
+        repaint();
+    }
+
+    public boolean isMarkedUncompilable()
+    {
+        return markedUncompilable;
     }
 
     /**
@@ -335,10 +316,8 @@ public class LudemeNodeComponent extends JPanel
      *  - When the node is dragged, the node is moved
      *  - When the node is selected and dragged, then all the selected nodes are moved according to the drag of this node
      */
-    MouseMotionListener dragListener = new MouseAdapter()
+    final MouseMotionListener dragListener = new MouseAdapter()
     {
-
-         boolean marked = false;
 
         @Override
         public void mouseDragged(MouseEvent e)
@@ -381,10 +360,9 @@ public class LudemeNodeComponent extends JPanel
      * Mouse Listener for the node component
      * - When the node is right-clicked, open a popup menu with options
      * - When the node is double-clicked, select it and it's subtrees
-     *          TODO: When double-clicking it multiple times -> Weird behaviour
      * - When currently connecting and this node is left-clicked, try to connect to this node
      */
-    MouseListener mouseListener = new MouseAdapter()
+    final MouseListener mouseListener = new MouseAdapter()
     {
         private void openPopupMenu(MouseEvent e){
             JPopupMenu popupMenu = new NodePopupMenu(LudemeNodeComponent.this, LudemeNodeComponent.this.graphPanel());
@@ -396,29 +374,7 @@ public class LudemeNodeComponent extends JPanel
         {
             super.mouseClicked(e);
             // when double click is performed on a node add its descendant into selection list
-            if (e.getClickCount() == 1 && !selected)
-            {
-                if (!cltrPressed) graphPanel().deselectEverything();
-                Handler.selectNode(LudemeNodeComponent.this);
-                subtree = false;
-            }
-            else if (e.getClickCount() >= 2 && !doubleSelected)
-            {
-                doubleSelected = true;
-                List<LudemeNodeComponent> Q = new ArrayList<>();
-                Q.add(LudemeNodeComponent.this);
-                while (!Q.isEmpty())
-                {
-                    LudemeNodeComponent lnc = Q.remove(0);
-                    Handler.selectNode(lnc);
-                    List<Integer> children = lnc.LN.children();
-                    children.forEach(v -> Q.add(GRAPH_PANEL.nodeComponent(GRAPH_PANEL.graph().getNode(v))));
-                }
-                subtree = !LudemeNodeComponent.this.LN.children().isEmpty();
-                graphPanel().repaint();
-                graphPanel().repaint();
-            }
-            LayoutSettingsPanel.getLayoutSettingsPanel().setSelectedComponent(LudemeNodeComponent.this.header.title().getText(), subtree);
+            handleNodeComponentSelection(e);
         }
 
         // When pressed, update position
@@ -428,7 +384,8 @@ public class LudemeNodeComponent extends JPanel
             super.mousePressed(e);
             LudemeNodeComponent.this.x = e.getX();
             LudemeNodeComponent.this.y = e.getY();
-            Handler.updatePosition(graphPanel().graph(), node(), getX(), getY());
+            Handler.updatePosition(node(), getX(), getY());
+            handleNodeComponentSelection(e);
         }
         // When released, update position
         // If right click, open popup menu
@@ -439,10 +396,10 @@ public class LudemeNodeComponent extends JPanel
             super.mouseReleased(e);
             LudemeNodeComponent.this.x = e.getX();
             LudemeNodeComponent.this.y = e.getY();
-            Handler.updatePosition(graphPanel().graph(), node(), getX(), getY());
+            Handler.updatePosition(node(), getX(), getY());
 
             if(e.getButton() == MouseEvent.BUTTON3){
-                if(!selected) graphPanel().deselectEverything();
+                // if(!selected) graphPanel().deselectEverything();
                 graphPanel().addNodeToSelections(LudemeNodeComponent.this);
                 openPopupMenu(e);
                 graphPanel().connectionHandler().cancelNewConnection();
@@ -452,6 +409,38 @@ public class LudemeNodeComponent extends JPanel
             }
         }
     };
+
+	void handleNodeComponentSelection(MouseEvent e)
+    {
+        if (e.getClickCount() == 1 && !selected)
+        {
+            if (!cltrPressed) graphPanel().deselectEverything();
+            Handler.selectNode(LudemeNodeComponent.this);
+            subtree = false;
+        }
+        else if (e.getClickCount() >= 2 && !doubleSelected)
+        {
+            doubleSelected = true;
+            graphPanel().graph().setSelectedRoot(this.LN.id());
+
+            if (this.LN.fixed()) LayoutSettingsPanel.getLayoutSettingsPanel().enableUnfixButton();
+            else LayoutSettingsPanel.getLayoutSettingsPanel().enableFixButton();
+
+            List<LudemeNodeComponent> Q = new ArrayList<>();
+            Q.add(LudemeNodeComponent.this);
+            while (!Q.isEmpty())
+            {
+                LudemeNodeComponent lnc = Q.remove(0);
+                Handler.selectNode(lnc);
+                List<Integer> children = lnc.LN.children();
+                children.forEach(v -> Q.add(GRAPH_PANEL.nodeComponent(GRAPH_PANEL.graph().getNode(v.intValue()))));
+            }
+            subtree = !LudemeNodeComponent.this.LN.children().isEmpty();
+            graphPanel().repaint();
+            graphPanel().repaint();
+        }
+        LayoutSettingsPanel.getLayoutSettingsPanel().setSelectedComponent(LudemeNodeComponent.this.header.title().getText(), subtree);
+    }
 
     /**
      * Paints the node component
@@ -471,11 +460,16 @@ public class LudemeNodeComponent extends JPanel
         setSize(getPreferredSize());
 
         LN.setWidth(getWidth());
-        LN.setHeight(getHeight());
+        LN.setHeight(getPreferredSize().height);
 
         setBackground(backgroundColour());
-        if (selected) setBorder(DesignPalette.LUDEME_NODE_BORDER_SELECTED);
-        else setBorder(DesignPalette.LUDEME_NODE_BORDER);
+        if (selected)
+            setBorder(DesignPalette.LUDEME_NODE_BORDER_SELECTED());
+        else if (markedUncompilable)
+            setBorder(DesignPalette.LUDEME_NODE_BORDER_UNCOMPILABLE());
+        else
+            setBorder(DesignPalette.LUDEME_NODE_BORDER());
+
     }
 
     @Override
@@ -500,11 +494,43 @@ public class LudemeNodeComponent extends JPanel
     {
         switch(node().packageName())
         {
-            case "game.equipment": return DesignPalette.BACKGROUND_LUDEME_BODY_EQUIPMENT;
-            case "game.functions": return DesignPalette.BACKGROUND_LUDEME_BODY_FUNCTIONS;
-            case "game.rules": return DesignPalette.BACKGROUND_LUDEME_BODY_RULES;
-            default: return DesignPalette.BACKGROUND_LUDEME_BODY;
+            case "game.equipment": return DesignPalette.BACKGROUND_LUDEME_BODY_EQUIPMENT();
+            case "game.functions": return DesignPalette.BACKGROUND_LUDEME_BODY_FUNCTIONS();
+            case "game.rules": return DesignPalette.BACKGROUND_LUDEME_BODY_RULES();
+            case "define": return DesignPalette.BACKGROUND_LUDEME_BODY_DEFINE();
+            default: return DesignPalette.BACKGROUND_LUDEME_BODY();
         }
     }
+
+    /**
+     * Updates the input area's input fields
+     * @param parameters
+     */
+    public void changedArguments(List<NodeArgument> parameters)
+    {
+        inputArea().updateCurrentInputFields(parameters);
+    }
+
+
+    // FOR DYNAMIC CONSTRUCTOR
+    /*
+     // Switches the node to be a dynamic/un-dynamic node
+     // Dynamic nodes have no pre-selected clause
+    public void changeDynamic()
+    {
+        if(!LN.dynamicPossible()) return;
+        LN.setDynamic(!LN.dynamic());
+        node().setDynamic(LN.dynamic());
+    }
+
+
+    // @return whether the node is dynamic
+    public boolean dynamic()
+    {
+        return LN.dynamic();
+    }
+     */
+
+
 
 }

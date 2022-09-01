@@ -33,7 +33,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )  
+    ) 
 )
 
 (define "DecideToCastle"
@@ -82,16 +82,6 @@
     )
 )
 
-(define "DoubleStep"
-    (move
-        Slide 
-        Forward 
-        (between (exact 2) if:(is Empty (between))) 
-        (to if:(is Empty (to))) 
-        "SetEnPassantLocation"
-    )
-)
-
 (define "InLocationEnPassant"
     (and 
         (is Pending) 
@@ -126,14 +116,14 @@
 //------------------------------------------------------------------------------
 
 (game "Skak" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8)) 
         
         (piece "Pawn" Each 
             (or {
                 (if (is In (from) (sites Start (piece (what at:(from)))))
-                    "DoubleStep"
+                    ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
                 )
                 "StepForwardToEmpty" 
                 "CaptureForwardDiagonal"
@@ -262,10 +252,10 @@
         ")
         (source "Murray 1913: 468-469.")
         (id "1334")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/chaturanga/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Iceland, around 1892.")
+        (origin "This game was played in Iceland, around 1892.")
         }
     )
     

@@ -1,6 +1,6 @@
 (define "CaptureToPieceAndAddScore"
     (apply
-        (if (not (is Empty (to)))
+        (if (is Occupied (to))
             (and 
                 (addScore Mover (value Piece at:(to))) 
                 (remove (to)) 
@@ -10,8 +10,7 @@
 )
 
 (define "CaptureForwardDiagonal"
-    (move
-        Step 
+    (move Step 
         (directions {FR FL}) 
         (to 
             if:("IsEnemyAt" (to)) 
@@ -21,7 +20,7 @@
 )
 
 (define "PromoteTo" 
-    (if (= (where #1 Mover) Off) (move Promote (last To) (piece #1) Mover (then #2)))
+    (if ("IsOffBoard" (where #1 Mover)) (move Promote (last To) (piece #1) Mover (then #2)))
 )
 
 (define "PlayAPiece"
@@ -61,8 +60,7 @@
             )
         )
         (piece "Boat" Each
-            (move
-                Hop 
+            (move Hop 
                 Diagonal 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
@@ -71,8 +69,7 @@
             )
         )
         (piece "Knight" Each
-            (move
-                Leap 
+            (move Leap 
                 "KnightWalk" 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
@@ -81,8 +78,7 @@
             )
         )
         (piece "Elephant" Each
-            (move
-                Slide 
+            (move Slide 
                 Orthogonal 
                 (between if:(is Empty (between))) 
                 (to 
@@ -92,8 +88,7 @@
             )
         ) 
         (piece "King_noCross" Each
-            (move
-                Step 
+            (move Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndAddScore" 
@@ -118,8 +113,8 @@
         })
         
         (play 
-            (do (if (not "SameTurn") (roll))
-                next:(if (and ("SameTurn") (is Pending))
+            ("RollEachNewTurnMove"
+                (if (and ("SameTurn") (is Pending))
                     (or {
                         ("PromoteTo" "Boat" (set Value at:(last To) 2))
                         ("PromoteTo" "Knight" (set Value at:(last To) 3))
@@ -152,7 +147,7 @@
 
 (option "Variant" <Variant> args:{ <type> }
     {
-    (item "Wikipedia"  <>    "The rules are describing with the Wikipedia ruleset.")  
+    (item "Wikipedia" <>  "The rules are describing with the Wikipedia ruleset.") 
 })
 
 //------------------------------------------------------------------------------
@@ -185,10 +180,10 @@
         (useFor "Ruleset/Historical Information (Incomplete)" (id "582"))
         (source "Murray 1913: 68-75.")
         (id "295")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
-        (origin  "This game was played in India, from around 1490 to 1580.")
+        (origin "This game was played in India, from around 1490 to 1580.")
         }
     )
     

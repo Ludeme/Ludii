@@ -1,7 +1,3 @@
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
-)
-
 (define "CaptureToPieceAndResetCounter"
     (apply 
         (if ("IsEnemyAt" (to))
@@ -17,8 +13,7 @@
 )
 
 (define "CaptureForwardDiagonal"
-    (move
-        Step 
+    (move Step 
         (directions {FR FL}) 
         (to 
             if:("IsEnemyAt" (to)) 
@@ -56,7 +51,7 @@
 //------------------------------------------------------------------------------
 
 (game "Quick Chess" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (rectangle 6 5)) 
         
@@ -77,8 +72,7 @@
         )
         
         (piece "Rook" Each 
-            (move
-                Slide 
+            (move Slide 
                 Orthogonal 
                 (to 
                     if:("IsEnemyAt" (to)) 
@@ -87,8 +81,7 @@
             )
         )
         (piece "King" Each 
-            (move
-                Step 
+            (move Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndResetCounter"
@@ -96,8 +89,7 @@
             )
         )
         (piece "Bishop" Each 
-            (move
-                Slide 
+            (move Slide 
                 Diagonal 
                 (to 
                     if:("IsEnemyAt" (to)) 
@@ -106,8 +98,7 @@
             )
         )
         (piece "Knight" Each 
-            (move
-                Leap 
+            (move Leap 
                 "KnightWalk" 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
@@ -116,8 +107,7 @@
             )
         )
         (piece "Queen" Each 
-            (move
-                Slide 
+            (move Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndResetCounter"
@@ -170,12 +160,7 @@
         )
         
         (end {
-            (if (and 
-                    ("IsInCheck" "King" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
+            ("Checkmate" "King")
             (if (no Moves Mover) (result Mover Draw))
             (if (= (var "NoEnoughCapture") 1) (byScore)) 
         })
@@ -190,7 +175,7 @@
         (place "Rook1" {"E1"}) (place "Knight1" {"A1"}) (place "Bishop1" {"D1"}) (place "Queen1" coord:"C1") (place "King1" coord:"B1") 
         (place "Rook2" {"E6"}) (place "Knight2" {"A6"}) (place "Bishop2" {"D6"}) (place "Queen2" coord:"C6") (place "King2" coord:"B6") 
         >
-    "The game starts like in the encyclopedia of Chess Variants.")*  
+    "The game starts like in the encyclopedia of Chess Variants.")* 
     (item "Quickchess.site" 
         <
         (place "Rook1" {"A1"}) (place "Knight1" {"E1"}) (place "Bishop1" {"B1"}) (place "Queen1" coord:"D1") (place "King1" coord:"C1") 
@@ -213,7 +198,7 @@
         - If 20 moves are played without a capture or promotion, the player with the most `points' on the board wins. (Pawn=1 pt., Bishop/Knight=3, Rook=5, Queen = 9.)")
         (id "1795")
         (source "<a href=\"https://www.chessvariants.com/small.dir/quick.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.chessvariants.com</a>")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/chess")
         (author "Joe Miccio")
         (publisher "Amerigames International")

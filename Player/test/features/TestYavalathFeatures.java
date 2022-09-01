@@ -33,6 +33,7 @@ import other.trial.Trial;
 public class TestYavalathFeatures
 {
 	
+	@SuppressWarnings("static-method")
 	@Test
 	public void test()
 	{

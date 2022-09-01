@@ -32,7 +32,7 @@
         phases:{
         (phase "Placement"
             (play 
-                (if (not ("HandEmpty" Mover)) 
+                (if ("HandOccupied" Mover)
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty))
@@ -42,8 +42,7 @@
             (nextPhase ("HandEmpty" P2) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
+        ("PhaseMovePiece" "Movement"
             (end ("NoMoves" Loss))
         )
         }
@@ -55,7 +54,7 @@
         phases:{
         (phase "Placement"
             (play 
-                (if (not ("HandEmpty" Mover)) 
+                (if ("HandOccupied" Mover)
                     (move 
                         (from (handSite Mover)) 
                         (to (sites Empty))
@@ -65,8 +64,7 @@
             (nextPhase ("HandEmpty" P2) "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
+        ("PhaseMovePiece" "Movement"
             (end {
                 ("NoMoves" Loss)
                 (if 
@@ -82,7 +80,7 @@
         >
         "The First player moves only when all the pieces are placed. The game has an ending condition for each player."
     )
-    (item "White moves only when his piece is placed"  
+    (item "White moves only when his piece is placed" 
         <
         phases:{
         (phase "Placement"
@@ -94,7 +92,7 @@
             )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
-        (phase "Movement" (play (forEach Piece)))
+        ("PhaseMovePiece" "Movement")
         }
         (end ("NoMoves" Loss)) 
         > 
@@ -132,10 +130,10 @@
         (useFor "Ruleset/Hare Wins (Suggested)" (id "1955"))
         (source "Michaelsen 2014: 204.")
         (id "521")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/hunt")
         (credit "Eric Piette")
-        (origin  "This game was played in Scandinavia, around 1860.")
+        (origin "This game was played in Scandinavia, around 1860.")
         }
     )
     

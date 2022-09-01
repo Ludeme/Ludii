@@ -73,6 +73,7 @@ public class RemoteDialogFunctionsPublic
 	/**
 	 * Show the remote dialog.
 	 */
+	@SuppressWarnings("static-method")
 	public void showRemoteDialog(final PlayerApp app) 
 	{
 		app.addTextToStatusPanel("Sorry. Remote play functionality is not available from the source code.\n");

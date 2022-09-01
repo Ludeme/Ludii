@@ -1,57 +1,20 @@
-(define "CaptureEnemyToPiece"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove (to))
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
-)
-
 (define "MovedBefore" (= 1 (state at:#1)))
 (define "RememberMoved" (set State at:#1 1))
 
 //------------------------------------------------------------------------------
 
 (game "Shatranj (Turkey)" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8)) 
-        (piece "King_noCross"
-            (move Step
-                (to if:(not ("IsFriendAt" (to)))
-                    ("CaptureEnemyToPiece")
-                )
-            )		
-        )
+        ("ChessKing" "King_noCross")
         (piece "Ferz_noCross"
             (or
-                (move Step Diagonal
-                    (to if:(not ("IsFriendAt" (to)))
-                        ("CaptureEnemyToPiece")
-                    )
-                )
-                
+                ("StepToNotFriend" Diagonal)
                 (if (not ("MovedBefore" (from)))
-                    (move
-                        Hop 
+                    (move Hop 
                         (between if:True)
-                        (to 
-                            if:(is Empty (to))
-                        )
+                        (to if:(is Empty (to)))
                     )
                 )
                 (then 
@@ -62,73 +25,40 @@
             )
         )
         (piece "Elephant"
-            (move
-                Hop 
+            (move Hop 
                 Diagonal
                 (between if:True)
                 (to if:(not ("IsFriendAt" (to)))
-                    ("CaptureEnemyToPiece")
+                    (apply 
+                        (if ("IsEnemyAt" (to))
+                            (remove (to))
+                        )
+                    ) 
                 )
             )	
         )
-        (piece "Knight"
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureEnemyToPiece"
-                ) 
-            )		
-        )
-        (piece "Rook"
-            (move
-                Slide 
-                Orthogonal
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureEnemyToPiece"
-                ) 
-            )		
-        )
-        (piece "Pawn"
-            (or 
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
-                (then
-                    (if (is In (last To) (sites Mover "Promotion"))
-                        (promote (last To) (piece "Ferz_noCross") Mover)
-                    )
-                )
-            )		
-        )
+        ("ChessKnight" "Knight")
+        ("ChessRook" "Rook")
+        ("ChessPawn" "Pawn" ~ (then ("PromoteIfReach" (sites Mover "Promotion") "Ferz_noCross")))
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     })
     
     (rules 
-        (start
-            { 
+        (start { 
             (place "Pawn1" (sites Row 1))
             (place "Pawn2" (sites Row 6))
             (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Elephant1" {"C1" "F1"}) (place "Ferz_noCross1" coord:"D1") (place "King_noCross1" coord:"E1") 
             (place "Rook2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Elephant2" {"C8" "F8"}) (place "Ferz_noCross2" coord:"D8") (place "King_noCross2" coord:"E8") 
-            }
-        )
+        })
         (play 
-            (do
-                (forEach Piece)
+            (do (forEach Piece)
                 ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
             )
         )
         
         (end {
-            (if (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
+            ("Checkmate" "King_noCross")
             (if (no Moves Mover) (result Mover Loss))
         })
     )
@@ -146,10 +76,10 @@
         ")
         (source "Murray 1913: 353.")
         (id "1436")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in Turkey, from around 1620 to 1640.")
+        (origin "This game was played in Turkey, from around 1620 to 1640.")
         }
     )
     

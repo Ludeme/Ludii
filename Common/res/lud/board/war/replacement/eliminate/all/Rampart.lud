@@ -41,12 +41,10 @@
 
 (game "Rampart"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (square <Size>) use:Vertex)
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
         (start {
             (place "Disc1" 
@@ -76,12 +74,7 @@
                 ("Remove")
             )
         )
-        (end 
-            (if 
-                (no Pieces Next) 
-                (result Next Loss)
-            )
-        )
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -89,14 +82,14 @@
 
 (option "Board Size" <Size> args:{ <size> }
     {
-    (item "5"  <5> "A size 5 board is currently selected")
-    (item "7"  <7> "A size 7 board is currently selected")
-    (item "9"  <9> "A size 9 board is currently selected")
-    (item "11"  <11> "A size 11 board is currently selected")
-    (item "13"  <13> "A size 13 board is currently selected")*
-    (item "15"  <15> "A size 15 board is currently selected")
-    (item "17"  <17> "A size 17 board is currently selected")
-    (item "19"  <19> "A size 19 board is currently selected")
+    (item "5" <5> "A size 5 board is currently selected")
+    (item "7" <7> "A size 7 board is currently selected")
+    (item "9" <9> "A size 9 board is currently selected")
+    (item "11" <11> "A size 11 board is currently selected")
+    (item "13" <13> "A size 13 board is currently selected")*
+    (item "15" <15> "A size 15 board is currently selected")
+    (item "17" <17> "A size 17 board is currently selected")
+    (item "19" <19> "A size 19 board is currently selected")
     }
 )
 
@@ -114,7 +107,7 @@
 For boards larger than 11x11 only the first criterion applies when determining if a group is dead. You may never remove your own dead groups. If a player has no legal move on his turn he must pass. Passing is otherwise not permitted. The player to remove all opposing groups from the board wins.")
 (id "1933")
 (source "<a href=\"https://boardgamegeek.com/boardgame/133923/rampart\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-(version "1.3.5")
+(version "1.3.6")
 (classification "board/war/replacement/eliminate/all")
 (author "Corey Clark")
 (credit "Michael Amundsen")

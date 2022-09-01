@@ -8,8 +8,8 @@
         (mancalaBoard 2 6 store:None
             (track "Track" "0,E,N,W" loop:True)
         )
-        (regions P1 (sites Bottom))           // P1 home
-        (regions P2 (sites Top))            // P2 home
+        (regions P1 (sites Bottom))      // P1 home
+        (regions P2 (sites Top))      // P2 home
         (piece "Seed" Shared)
         (hand Each)
     }) 
@@ -50,7 +50,7 @@
         (rules "2x6 board. Three counters in each hole. Sowing occurs in an anti-clockwise direction from one of the holes in the player's row. If the final counter lands in a hole containing one or three counters, these are taken, as well as an unbroken sequence behind this containing one or three (after a counter has been placed there), these are taken. The game ends when all of the counters have been captured. The player who has captured the most counters wins.")
         (source "And 1979: 52.")
         (id "285")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }

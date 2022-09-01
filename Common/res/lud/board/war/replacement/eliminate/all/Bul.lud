@@ -1,14 +1,12 @@
 (match "Bul" 
     (players <Player:num>)
-    (games 
-        {
-        (subgame "Aj Sayil"   <Player:option> next:1)
-        (subgame "Aj T'iwil"  <Player:option> next:2)
+    (games {
+        (subgame "Aj Sayil"  <Player:option> next:1)
+        (subgame "Aj T'iwil" <Player:option> next:2)
         (subgame "Aj Sina'anil" <Player:option> next:3)
-        (subgame "Aj Sakakil"  <Player:option> next:4)
-        (subgame "A K'aak'il"  <Player:option>   )
-        }
-    )
+        (subgame "Aj Sakakil" <Player:option> next:4)
+        (subgame "A K'aak'il" <Player:option>  )
+    })
     <Player:end>
 )
 
@@ -29,7 +27,7 @@
         })
         >
         <>
-    "The game has 6 players.")  
+    "The game has 6 players.") 
     (item "8" <8> 
         <
         (end { 
@@ -152,7 +150,7 @@
         (rules "Six or more players (even number), played on two teams. The games Aj Sayil, Aj T'iwil, Aj Sina'anil, Aj Sakakil, and A K'aak'il are played in succession.")
         (source "Verbeeck 1998: 87-90.")
         (id "327")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/eliminate/all")
         }
     )

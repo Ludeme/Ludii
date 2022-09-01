@@ -81,7 +81,7 @@ public class HeuristicWeightTuningOld
 		
 		public Double heuristicWinRate()
 		{
-			return heuristicWinRateSum/numComparisons;
+			return Double.valueOf(heuristicWinRateSum / numComparisons);
 		}
 		
 		public void addHeuristicWinRate(final double winRate)
@@ -196,7 +196,7 @@ public class HeuristicWeightTuningOld
 		}
 		
 		// Remove any entries that have below required win-rate.
-		candidateHeuristics.entrySet().removeIf(e -> e.getValue().heuristicWinRate() < initialWinRateThreshold);
+		candidateHeuristics.entrySet().removeIf(e -> e.getValue().heuristicWinRate().doubleValue() < initialWinRateThreshold);
 		
 		return candidateHeuristics;
 	}
@@ -229,7 +229,7 @@ public class HeuristicWeightTuningOld
 		double newHeuristicBestWeight = -1;
 		for (int i = 0; i < allHeuristics.size(); i++)
 		{
-			final double heurisitcWinRate = allCandidateHeuristics.get(i).get(allHeuristics.get(i)).heuristicWinRate();
+			final double heurisitcWinRate = allCandidateHeuristics.get(i).get(allHeuristics.get(i)).heuristicWinRate().doubleValue();
 			if (heurisitcWinRate > newHeuristicBestWeight)
 			{
 				candidateHeuristicsBest = allCandidateHeuristics.get(i);
@@ -269,7 +269,7 @@ public class HeuristicWeightTuningOld
 
 				final Heuristics heuristicMinusOne = new Heuristics(heuristicsMinusOneTerm.toArray(new HeuristicTerm[0]));
 				final LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristicsMinusOneWeight = addAndEvaluateHeuristic(game, candidateHeuristics, heuristicMinusOne);
-				final double newHeuristicMinusOneWeight = candidateHeuristicsMinusOneWeight.get(heuristicMinusOne).heuristicWinRate();
+				final double newHeuristicMinusOneWeight = candidateHeuristicsMinusOneWeight.get(heuristicMinusOne).heuristicWinRate().doubleValue();
 				
 				if (newHeuristicMinusOneWeight > newHeuristicBestWeight + heuristicRemovalImprovementRquirement)
 				{
@@ -388,7 +388,7 @@ public class HeuristicWeightTuningOld
 		while (selectedCandidateIndices.size() < k)
 		{
 			final int randomNum = ThreadLocalRandom.current().nextInt(0, candidates.keySet().size());
-			selectedCandidateIndices.add(randomNum);
+			selectedCandidateIndices.add(Integer.valueOf(randomNum));
 		}
 			
 		// Select the two best candidates from our random candidate set.
@@ -397,20 +397,20 @@ public class HeuristicWeightTuningOld
 		int counter = 0;
 		for (final Map.Entry<Heuristics, HeuristicStats> candidate : candidates.entrySet())
 		{
-			if (selectedCandidateIndices.contains(counter))
+			if (selectedCandidateIndices.contains(Integer.valueOf(counter)))
 			{
-				if (candidate.getValue().heuristicWinRate() > highestWinRate)
+				if (candidate.getValue().heuristicWinRate().doubleValue() > highestWinRate)
 				{
 					selectedCandidates[1] = Heuristics.copy(selectedCandidates[0]);
 					secondHighestWinRate = highestWinRate;
 					
 					selectedCandidates[0] = Heuristics.copy(candidate.getKey());
-					highestWinRate = candidate.getValue().heuristicWinRate();
+					highestWinRate = candidate.getValue().heuristicWinRate().doubleValue();
 				}
-				else if (candidate.getValue().heuristicWinRate() > secondHighestWinRate)
+				else if (candidate.getValue().heuristicWinRate().doubleValue() > secondHighestWinRate)
 				{
 					selectedCandidates[1] = Heuristics.copy(candidate.getKey());
-					secondHighestWinRate = candidate.getValue().heuristicWinRate();
+					secondHighestWinRate = candidate.getValue().heuristicWinRate().doubleValue();
 				} 
 			}
 			counter++;
@@ -444,7 +444,13 @@ public class HeuristicWeightTuningOld
 			
 			final ArrayList<Double> agentMeanWinRates = compareAgents(game, agents);
 			for (int i = 0; i < agentMeanWinRates.size(); i++)
-				candidateHeuristics.get(allHeuristics.get(agentIndices.get(i))).addHeuristicWinRate(agentMeanWinRates.get(i));
+				candidateHeuristics.get
+				(
+					allHeuristics.get
+					(
+						agentIndices.get(i))
+					).addHeuristicWinRate(agentMeanWinRates.get(i).doubleValue()
+				);
 		}
 
 		System.out.println("\n");
@@ -475,7 +481,7 @@ public class HeuristicWeightTuningOld
 		for (final Stats agentStats : gamesSet.resultsSummary().agentPoints())
 		{
 			agentStats.measure();
-			agentMeanWinRates.add(agentStats.mean());
+			agentMeanWinRates.add(Double.valueOf(agentStats.mean()));
 		}
 		
 		return agentMeanWinRates;
@@ -759,7 +765,7 @@ public class HeuristicWeightTuningOld
 	{
 		final Set<Integer> set = new HashSet<Integer>();
 		for (int i = 0; i < list.size(); i++)
-			set.add(list.get(i));
+			set.add(Integer.valueOf(list.get(i)));
 		return set.size() < list.size();
 	}
 
@@ -781,9 +787,17 @@ public class HeuristicWeightTuningOld
 			for (int j = 0; j < game.equipment().components().length-1; j++)
 			{
 				if (j == i)
-					componentPairs[j] = new Pair(game.equipment().components()[j+1].name(), 1f);
+					componentPairs[j] = new Pair
+										(
+											game.equipment().components()[j+1].name(), 
+											Float.valueOf(1f)
+										);
 				else
-					componentPairs[j] = new Pair(game.equipment().components()[j+1].name(), 0f);
+					componentPairs[j] = new Pair
+										(
+											game.equipment().components()[j+1].name(), 
+											Float.valueOf(0f)
+										);
 			}
 			allComponentPairsCombinations.add(componentPairs);
 		}

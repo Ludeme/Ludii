@@ -42,11 +42,11 @@ public class StateEvaluationDifference extends MultiMetricFramework
 	public Double[] getMetricValueList(final Evaluation evaluation, final Trial trial, final Context context)
 	{
 		final ArrayList<Double> valueList = new ArrayList<>();
-		valueList.add(getStateEvaluationDiscrepancy(evaluation, context));
+		valueList.add(Double.valueOf(getStateEvaluationDiscrepancy(evaluation, context)));
 		for (final Move m : trial.generateRealMovesList())
 		{
 			context.game().apply(context, m);
-			valueList.add(getStateEvaluationDiscrepancy(evaluation, context));
+			valueList.add(Double.valueOf(getStateEvaluationDiscrepancy(evaluation, context)));
 		}
 		return valueList.toArray(new Double[0]);
 	}
@@ -64,7 +64,7 @@ public class StateEvaluationDifference extends MultiMetricFramework
 		{
 			for (int pb = pa+1; pb <= numPlayers; pb++)
 			{
-				final double disc = Math.abs(allPlayerStateEvaluations.get(pa) - allPlayerStateEvaluations.get(pb));
+				final double disc = Math.abs(allPlayerStateEvaluations.get(pa).doubleValue() - allPlayerStateEvaluations.get(pb).doubleValue());
 				if (disc > maxDisc)
 					maxDisc = disc;
 			}

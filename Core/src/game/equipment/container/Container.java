@@ -28,6 +28,7 @@ import other.topology.Vertex;
  *
  * @author cambolbro and Eric.Piette
  */
+@SuppressWarnings("static-method")
 public abstract class Container extends Item implements Serializable, Cloneable
 {
 	private static final long serialVersionUID = 1L;
@@ -45,7 +46,7 @@ public abstract class Container extends Item implements Serializable, Cloneable
 	/** List of tracks. */
 	protected List<Track> tracks = new ArrayList<Track>();
 
-	/** List of tracks refering by owner. */
+	/** List of tracks referring by owner. */
 	protected Track[][] ownedTracks;
 
 	//-------------------------GUI---------------------------------

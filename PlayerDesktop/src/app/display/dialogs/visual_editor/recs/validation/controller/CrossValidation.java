@@ -33,9 +33,9 @@ public class CrossValidation {
             double u = Math.random();
 
             if(u < trainingProbability) {
-                trainingIDs.add(id);
+                trainingIDs.add(Integer.valueOf(id));
             } else {
-                testIDs.add(id);
+                testIDs.add(Integer.valueOf(id));
             }
         }
     }
@@ -48,5 +48,9 @@ public class CrossValidation {
         return testIDs;
     }
 
+	public double getTestProbability()
+	{
+		return testProbability;
+	}
 
 }

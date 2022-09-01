@@ -1,107 +1,27 @@
 (define "HopDiagonalCounter" 
-    (move Hop
-        Diagonal
-        (between 
-            #1
-            #2
-            if:("IsEnemyAt" (between)) 
-            (apply (remove (between) #3))
-        )
-        (to if:(is Empty (to)))
-        (then 
-            (if (can Move 
-                    (hop 
-                        (from (last To)) 
-                        Diagonal
-                        (between 
-                            if:("IsEnemyAt" (between))
-                            (apply (remove (between)))
-                        )
-                        (to if:(is Empty (to)))
-                    )
-                ) 
-                (moveAgain)
-                (if "JumpToPromotionZone"
-                    (promote (last To) (piece "DoubleCounter") Mover)
-                )
+    ("HopCapture" (from) Diagonal
+        (then ("ReplayIfCanMove" ("HopCapture" (from (last To)) Diagonal)
+                ("PromoteIfReach" (sites Next) "DoubleCounter")
             )
         )
     )
 )
 
 (define "HopDiagonalDoubleCounter" 
-    (move Hop 
-        Diagonal
-        (between 
-            before:(count Rows)
-            (range 1 (count Rows))
-            after:(count Rows)
-            if:("IsEnemyAt" (between)) 
-            (apply (remove (between)))
-        )
-        (to if:(is Empty (to)))
-        (then 
-            (if (can Move 
-                    (hop 
-                        (from (last To)) 
-                        Diagonal
-                        (between 
-                            before:(count Rows)
-                            (range 1 (count Rows))
-                            after:(count Rows)
-                            if:("IsEnemyAt" (between)) 
-                            (apply (remove (between)))
-                        )
-                        (to if:(is Empty (to)))
-                    )
-                ) 
-                (moveAgain)
-            )
-        )
+    ("HopCaptureDistance" (from) Diagonal (range 1 (count Rows))
+        (then ("ReplayIfCanMove" ("HopCaptureDistance" (from (last To)) Diagonal (range 1 (count Rows)))))
     )
 )
 
-(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
-
-(define "JumpToPromotionZone" (is In (last To) (sites Next)))
+(define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
 
 //------------------------------------------------------------------------------
 
 (game "Damspel" 
-    (players {(player N) (player S)})
-    (equipment { 
-        (board (square 8)) 
-        (piece "Counter" Each 
-            (or 
-                (move Step 
-                    (directions {FR FL})
-                    (to if:(is Empty (to)))
-                    (then 
-                        (if "JumpToPromotionZone"
-                            (promote (last To) (piece "DoubleCounter") Mover)
-                        )
-                    )
-                )
-                "HopDiagonalCounter"
-            )
-        )
-        (piece "DoubleCounter" Each
-            (or
-                (move Slide Diagonal)
-                ("HopDiagonalDoubleCounter")
-            )
-        )
-        (regions P1 (sites Bottom))
-        (regions P2 (sites Top))
-        }
-    ) 
+    ("TwoPlayersNorthSouth")
+    ("DraughtsEquipment" (square 8)) 
     (rules 
-        (start
-            { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 0) ))
-            (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 0)))
-            }
-        )
+        ("WhiteCellsSetup" 3)
         
         (play 
             (if	("SameTurn")
@@ -110,81 +30,49 @@
                         (move Pass 
                             (then 
                                 (forEach Site (sites Next) 
-                                    (if 
-                                        (= (what at:(site)) (id "Counter" Mover)) 
+                                    (if ("IsPieceAt" "Counter" Mover (site))
                                         (promote (site) (piece "DoubleCounter") Mover) 
                                     )
                                 )
                             )
                         )
-                        (move Hop 
-                            (from (last To)) 
-                            Diagonal
-                            (between 
-                                if:("IsEnemyAt" (between))
-                                (apply (remove (between)))
-                            )
-                            (to if:(is Empty (to)))
-                            (then 
-                                (if (can Move 
-                                        (hop 
-                                            (from (last To)) 
-                                            Diagonal
-                                            (between 
-                                                if:("IsEnemyAt" (between))
-                                                (apply (remove (between)))
-                                            )
-                                            (to if:(is Empty (to)))
-                                        )
-                                    ) 
-                                    (moveAgain)
-                                    (if "JumpToPromotionZone"
-                                        (promote (last To) (piece "DoubleCounter") Mover)
-                                    )
+                        ("HopCapture" (from (last To)) Diagonal
+                            (then ("ReplayIfCanMove" 
+                                    ("HopCapture" (from (last To)) Diagonal)
+                                    ("PromoteIfReach" (sites Next) "DoubleCounter")
                                 )
                             )
                         )
                     )
                     (or 
                         (move Pass)
-                        (move Hop 
-                            (from (last To)) 
-                            Diagonal
-                            (between 
-                                before:(count Rows)
-                                (range 1 (count Rows))
-                                after:(count Rows)
-                                if:("IsEnemyAt" (between)) 
-                                (apply (remove (between)))
-                            )
-                            (to if:(is Empty (to)))
-                            (then 
-                                (if (can Move 
-                                        (hop 
-                                            (from (last To)) 
-                                            Diagonal
-                                            (between 
-                                                before:(count Rows)
-                                                (range 1 (count Rows))
-                                                after:(count Rows)
-                                                if:("IsEnemyAt" (between)) 
-                                                (apply (remove (between)))
-                                            )
-                                            (to if:(is Empty (to)))
-                                        )
-                                    ) 
-                                    (moveAgain)
-                                )
-                            )
+                        ("HopCaptureDistance" (from (last To)) Diagonal (range 1 (count Rows))
+                            (then ("ReplayIfCanMove" ("HopCaptureDistance" (from (last To)) Diagonal (range 1 (count Rows)))))
                         )
                     )
                 )
-                (forEach Piece)
+                
+                (or
+                    (forEach Piece "Counter" 
+                        (or 
+                            ("StepToEmpty" (directions {FR FL})
+                                (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
+                            )
+                            "HopDiagonalCounter"
+                        )
+                    )
+                    (forEach Piece "DoubleCounter" 
+                        (or
+                            (move Slide Diagonal)
+                            ("HopDiagonalDoubleCounter")
+                        )
+                    )
+                )
             )
             
         ) 
         
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next)) 
     )
 )
 
@@ -199,7 +87,7 @@
         ")
         (source "Parlett 1999: 252.")
         (id "1246")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/leaping/diagonal")
         (credit "Eric Piette")
         }

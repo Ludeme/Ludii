@@ -1,26 +1,7 @@
-(define "FirstEmptySiteHand"
-    (if (is Empty (handSite #1 0)) (handSite #1 0)
-        (if (is Empty (handSite #1 1)) (handSite #1 1)
-            (if (is Empty (handSite #1 2)) (handSite #1 2)
-                (if (is Empty (handSite #1 3)) (handSite #1 3)
-                    (if (is Empty (handSite #1 4)) (handSite #1 4)
-                        (if (is Empty (handSite #1 5)) (handSite #1 5)
-                            (handSite #1 6)
-                        )
-                    )
-                )
-            )
-        )
-    )
-)
-
-(define "AllSites"
+(define "AllOccupiedCells"
     (union { 
         (forEach (sites Board Cell) if:(is Occupied Cell (site))) 
-        (forEach (sites Board Vertex) if:(is Occupied Vertex (site))) 
-        (sites Hand All) 
-        (sites Hand P1)
-        (sites Hand P2)
+        (sites Hand Shared) 
     })		
 )
 
@@ -30,73 +11,42 @@
     (players 2) 
     (equipment { 
         (board (concentric {1 8}))
-        (hand Each size:7)
-        (piece "Pawn" P1)
-        (piece "Pawn" P2)
-        (piece "Counter" P1)
-        (piece "Counter" P2)
-        (piece "Jarl" P1)
-        (piece "Jarl" P2)
-        (hand Shared size:6)
+        (piece "Marker" Each)
+        (hand Shared size:2)
     }) 
     (rules 
         (start {
-            (place "Pawn1" (handSite Shared 0))
-            (place "Pawn2" (handSite Shared 1))
-            (place "Counter1" (handSite Shared 2))
-            (place "Counter2" (handSite Shared 3))
-            (place "Jarl1" (handSite Shared 4))
-            (place "Jarl2" (handSite Shared 5))
+            (place "Marker1" (handSite Shared 0))
+            (place "Marker2" (handSite Shared 1))
         })
         (play 
             (or {
-                (if (not (all Sites (sites Hand P1) if:(is Occupied Cell (site))))
-                    (move 
-                        (from (forEach ("AllSites") if:(if (is In (site) (sites Board)) (= (who at:(site)) P1) (= (who Cell at:(site)) P1)))) 
-                        (to ("FirstEmptySiteHand" P1))
-                        copy:(is In (from) (sites Hand All))
-                        (then (moveAgain))
-                    )
-                )
-                (if (not (all Sites (sites Hand P2) if:(is Occupied Cell (site))))
-                    (move 
-                        (from (forEach ("AllSites") if:(if (is In (site) (sites Board)) (= (who at:(site)) P2) (= (who Cell at:(site)) P2)))) 
-                        (to ("FirstEmptySiteHand" P2))
-                        copy:(is In (from) (sites Hand All))
-                        (then (moveAgain))
-                    )
-                )
+                
                 (move Select
-                    (from ("AllSites")) 
-                    (then (moveAgain))
+                    (from Cell ("AllOccupiedCells")) 
                 )
+                
                 (move 
-                    (from ("AllSites")) 
-                    (to (forEach (sites Board) if:(is Empty (site))))
-                    copy:(is In (from) (sites Hand All))
-                    (then (moveAgain))
+                    (from Cell ("AllOccupiedCells")) 
+                    (to Cell (forEach (sites Board) if:(is Empty Cell (site))))
+                    copy:(is In (from) (sites Hand Shared))
                 )
+                
                 (move Select
-                    (from (sites Board) if:(is Occupied (from)))
-                    (to Cell (sites Hand All))
+                    (from Cell (sites Board Cell) if:(is Occupied Cell (from)))
+                    (to Cell (sites Hand Shared))
                     (then
-                        (and
-                            (remove (last From))
-                            (moveAgain)
-                        )
+                        (remove Cell (last From))
                     )
                 )
-                (move Select
-                    (from Cell (union (sites Hand P1) (sites Hand P2)) if:(is Occupied Cell (from)))
-                    (to Cell (sites Hand All))
-                    (then
-                        (and
-                            (remove (last From))
-                            (moveAgain)
-                        )
-                    )
+                
+                (move 
+                    (from Cell (sites Board Cell) if:(is Occupied Cell (from)))				
+                    (to Cell (sites Board Cell) if:(is Empty Cell (to)))
                 )
-            })
+                }
+                (then (moveAgain))
+            )
         )
         (end (if (is Line 9999) (result Mover Win)))
     )
@@ -105,15 +55,9 @@
 (metadata 
     
     (graphics {
-        (piece Colour "Pawn1" fillColour:(colour White))
-        (piece Colour "Pawn2" fillColour:(colour Red))
-        (piece Colour "Counter1" fillColour:(colour White))
-        (piece Colour "Counter2" fillColour:(colour Red))
-        (piece Colour "Jarl1" fillColour:(colour White))
-        (piece Colour "Jarl2" fillColour:(colour Red))
-        (board Colour InnerEdges (colour 17 103 177))
-        (board Colour OuterEdges (colour 17 103 177))
-        (piece Scale container:0 0.7)
+        (piece Scale "Marker" 0.7)
+        (board Colour OuterEdges (colour 120 190 240))
+        (board Colour InnerEdges (colour 120 190 240))
     })
     
 )

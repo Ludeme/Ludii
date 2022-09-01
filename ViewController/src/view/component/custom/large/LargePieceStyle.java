@@ -68,11 +68,11 @@ public class LargePieceStyle extends TileStyle
 		
 		final int numEdges = component.numSides();
 		if (numEdges == 3)
-			boardForLargePiece = new Board(new TriangleOnTri(new DimConstant(pieceScale)), null, null, null, null, null, false);
+			boardForLargePiece = new Board(new TriangleOnTri(new DimConstant(pieceScale)), null, null, null, null, null, Boolean.valueOf(false));
 		else if (numEdges == 6)
-			boardForLargePiece = new Board(new HexagonOnHex(new DimConstant(pieceScale)), null, null, null, null, null, false);
+			boardForLargePiece = new Board(new HexagonOnHex(new DimConstant(pieceScale)), null, null, null, null, null, Boolean.valueOf(false));
 		else if (numEdges == 4)
-			boardForLargePiece = new Board(new RectangleOnSquare(new DimConstant(pieceScale), null, null, null), null, null, null, null, null, false);
+			boardForLargePiece = new Board(new RectangleOnSquare(new DimConstant(pieceScale), null, null, null), null, null, null, null, null, Boolean.valueOf(false));
 		else
 			return null;	// Large pieces are not possible for a component with this many sides.
 		

@@ -31,6 +31,7 @@ public class TestHexFeatures
 {
 	
 	@Test
+	@SuppressWarnings("static-method")
 	public void test()
 	{
 		final Game game = GameLoader.loadGameFromName("board/space/connection/Hex.lud");

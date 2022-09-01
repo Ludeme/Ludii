@@ -144,7 +144,7 @@
                             )
                             ("Inward" SE NW)
                         )
-                    })                 
+                    })         
                 })
             })
         )
@@ -155,15 +155,12 @@
 
 (game "Cage"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (square <Board>))
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
-        (start 
-            {
+        (start {
             (place "Disc1" 
                 (difference
                     (sites Phase 0)
@@ -176,8 +173,7 @@
                     (sites Outer)
                 )
             )
-            }
-        )
+        })
         (play
             (forEach Piece
                 (if
@@ -210,9 +206,9 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "10"  <12> "A 10x10 board is currently selected")*
-    (item "8"  <10> "A 8x8 board is currently selected")
-    (item "6"  <8> "A 6x6 board is currently selected") 
+    (item "10" <12> "A 10x10 board is currently selected")*
+    (item "8" <10> "A 8x8 board is currently selected")
+    (item "6" <8> "A 6x6 board is currently selected") 
     }
 )
 
@@ -246,7 +242,7 @@
         If the jumping checker lands in a position where it can jump again, your turn does not end, and the checker must make yet a jump. If there are several ways to continue the sequence, you may choose freely between these. The sequence of jumps only ends when the checker lands on a square where it can make no further jump.")
         (id "1270")
         (source "<a href=\"http://web.archive.org/web/20200701105455/http://www.marksteeregames.com/Cage_rules.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.marksteeregames.com/</a>")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/leaping/orthogonal")
         (author "Mark Steere")
         (publisher "<a href=\"http://www.marksteeregames.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Mark Steere Games</a> (used with permission)")
@@ -264,6 +260,7 @@
         (board Style Chess)
         (no Sunken)
     })
+    
     (ai
         "Cage_ai"
     )

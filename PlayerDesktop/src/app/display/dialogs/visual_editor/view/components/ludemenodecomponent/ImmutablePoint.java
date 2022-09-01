@@ -1,6 +1,6 @@
 package app.display.dialogs.visual_editor.view.components.ludemenodecomponent;
 
-import java.awt.Point;
+import java.awt.*;
 
 public class ImmutablePoint {
     public int x, y;
@@ -18,7 +18,8 @@ public class ImmutablePoint {
         this.y = (int) p.getY();
     }
 
-    public String toString(){
+    @Override
+	public String toString(){
         return "[" + x + ", " + y + "]";
     }
 }

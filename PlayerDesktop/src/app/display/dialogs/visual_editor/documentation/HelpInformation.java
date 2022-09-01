@@ -9,12 +9,12 @@ import java.util.HashMap;
 public class HelpInformation
 {
 
-    private Symbol symbol;
+    private final Symbol symbol;
     private String description;
-    private HashMap<Clause, String> ctor = new HashMap<>(); // syntax
-    private HashMap<Clause, String> examples = new HashMap<>(); // examples
-    private HashMap<ClauseArg, String> parameters = new HashMap<>(); // arguments
-    private String remark;
+    private final HashMap<Clause, String> ctor = new HashMap<>(); // syntax
+    private final HashMap<Clause, String> examples = new HashMap<>(); // examples
+    private final HashMap<ClauseArg, String> parameters = new HashMap<>(); // arguments
+    private String remark = "";
 
     public HelpInformation(Symbol symbol)
     {
@@ -36,9 +36,9 @@ public class HelpInformation
         examples.put(clause, example);
     }
 
-    public void addParameter(ClauseArg arg, String description)
+    public void addParameter(ClauseArg arg, String description1)
     {
-        parameters.put(arg, description);
+        parameters.put(arg, description1);
     }
 
     public void setRemark(String remark)
@@ -61,26 +61,6 @@ public class HelpInformation
         return remark;
     }
 
-    public String ctor(Clause clause)
-    {
-        return ctor.get(clause);
-    }
-
-    public HashMap<Clause, String> ctors()
-    {
-        return ctor;
-    }
-
-    public String example(Clause clause)
-    {
-        return examples.get(clause);
-    }
-
-    public HashMap<Clause, String> examples()
-    {
-        return examples;
-    }
-
     public String parameter(ClauseArg arg)
     {
         return parameters.get(arg);
@@ -89,21 +69,6 @@ public class HelpInformation
     public HashMap<ClauseArg, String> parameters()
     {
         return parameters;
-    }
-
-    public void setCtor(HashMap<Clause, String> ctor)
-    {
-        this.ctor = ctor;
-    }
-
-    public void setExamples(HashMap<Clause, String> examples)
-    {
-        this.examples = examples;
-    }
-
-    public void setParameters(HashMap<ClauseArg, String> parameters)
-    {
-        this.parameters = parameters;
     }
 
 }

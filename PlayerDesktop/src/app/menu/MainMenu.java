@@ -178,9 +178,9 @@ public class MainMenu extends JMenuBar
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
 
-//			menuItem = new JMenuItem("Visual Editor (Beta)");
-//			menuItem.addActionListener(al);
-//			menu.add(menuItem);
+			menuItem = new JMenuItem("Visual Editor (Beta)");
+			menuItem.addActionListener(al);
+			menu.add(menuItem);
 		}
 
 		//---------------------------------------------------------------------
@@ -961,14 +961,28 @@ public class MainMenu extends JMenuBar
 				menuItem = new JMenuItem("Generate 1 Game with Restrictions (dev)");
 				menuItem.addActionListener(al);
 				menu.add(menuItem);
+				
+				menuItem = new JMenuItem("Contextual Distance");
+				menuItem.addActionListener(al);
+				menu.add(menuItem);
 			}
 
+			if (app.contextSnapshot().getContext(app).game().description().isReconstruction())	// Repalce this with the real check when completed
+			{
+				menu.addSeparator();
+				
+				menuItem = new JMenuItem("Reconstruction Dialog");
+				menuItem.addActionListener(al);
+				menu.add(menuItem);
+			}
+			
 			menu.addSeparator();
 			
 			menuItem = new JMenuItem("More Developer Options");
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
-
+			
+			MenuScroller.setScrollerFor(menu, 30, 50, 0, 0);
 		}
 		
 		//---------------------------------------------------------------------

@@ -63,7 +63,7 @@ public class StateSpaceComplexity extends Metric
 		if (game.hiddenInformation())
 			maxStatePossibilites *= Math.pow(2, 7);
 
-		return game.board().topology().getAllUsedGraphElements(game).size() * Math.log10(maxStatePossibilites);
+		return Double.valueOf(game.board().topology().getAllUsedGraphElements(game).size() * Math.log10(maxStatePossibilites));
 	}
 
 }

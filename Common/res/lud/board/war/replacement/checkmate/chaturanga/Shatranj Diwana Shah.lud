@@ -2,27 +2,6 @@
     (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" #1 Next)))))
 )
 
-(define "CaptureToPiece"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove 
-                (to) 
-            )
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
 (define "HasNeverMoved"
     (= (state at:#1) 1) 
 )
@@ -67,101 +46,35 @@
             (do
                 (or {
                     "StepForwardToEmpty" 
-                    "CaptureForwardDiagonal"
-                    }
-                )
+                    ("StepToEnemy" (directions {FR FL}))
+                })
                 ifAfterwards:(if (is In (last To) (sites Mover "Promotion"))
                     (!= Undefined ("PromotedPiece"))
                     True
                 )
-                (then
-                    (if (is In (last To) (sites Mover "Promotion")) 
-                        (promote (last To) (piece "PromotedPiece"))
-                    )
-                )
+                (then ("PromoteIfReach" (sites Mover "Promotion") "PromotedPiece"))
             )
         )
         
-        (piece "Boat" P2 
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
+        (piece "Boat" P2 ("SlideCapture" Orthogonal))
         (piece "King_noCross" Each
             (if (is Mover P1)
                 (or
-                    (move
-                        Leap 
-                        "KnightWalk" 
-                        (to 
-                            if:(not ("IsFriendAt" (to))) 
-                            "CaptureToPiece"
-                        ) 
-                    ) 
-                    (move
-                        Slide 
-                        (to 
-                            if:("IsEnemyAt" (to)) 
-                            "CaptureToPiece"
-                        ) 
-                    ) 
+                    ("LeapCapture" "KnightWalk")
+                    ("SlideCapture")
                 )
                 (or
-                    (move
-                        Step 
-                        (to 
-                            if:(not ("IsFriendAt" (to))) 
-                            "CaptureToPiece"
-                        ) 
-                    )
+                    ("StepToNotFriend")
                     (if ("HasNeverMoved" (from))
-                        (move
-                            Leap 
-                            "KnightWalk" 
-                            (to 
-                                if:(not ("IsFriendAt" (to))) 
-                                "CaptureToPiece"
-                            ) 
-                        )
+                        ("LeapCapture" "KnightWalk")
                     )
                     "RememberPieceHasMoved"
                 )
             )
         )
-        (piece "Elephant" P2 
-            (move
-                Slide 
-                Diagonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "Knight" P2 
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "Queen" P2 
-            (move
-                Slide 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            ) 
-        )
+        (piece "Elephant" P2 ("SlideCapture" Diagonal))
+        (piece "Knight" P2 ("LeapCapture" "KnightWalk"))
+        (piece "Queen" P2 ("SlideCapture"))
         (regions "Promotion" P2 (sites Bottom))
     }) 
     (rules 
@@ -176,7 +89,7 @@
                 (forEach Piece)
                 ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
                 (then
-                    (if (and (= (id "King_noCross" P1) (what at:(last To))) ("HasNeverMoved" (where "King_noCross" P2)))
+                    (if (and ("IsPieceAt" "King_noCross" P1 (last To)) ("HasNeverMoved" (where "King_noCross" P2)))
                         (if ("IsInCheck" "King_noCross" P2)
                             (set State at:(where "King_noCross" P2) 0) 
                         )
@@ -207,10 +120,10 @@
         (rules "8x8 board. One player plays as one Shah, which can move like any of the other pieces. The other player has the usual complement of pieces, as in Chess. Pawns (x8): can move one space forward and capture one space forward diagonally; Rook (x2): can move any number of spaces orthogonally; Elephant (x2): can move any number of spaces diagonally; Horse (2): moves in any direction, one space orthogonally with one space forward diagonally; Vizier (x1): can move any number of spaces orthogonally or diagonally; Shah (x1): can move one space orthogonally or diagonally, but can also move like the horse on its first move, if it has not yet been checked. The pieces are arranged as in Chess, with the Vizier is place to the left of the Shah. Players capture pieces by moving onto a space occupied by an opponent's piece. When a pawn reaches the opposite edge of the board from where it started, it may be promoted to the more powerful piece that begins the game in that position, but only if one of these belonging to the player has already been captured. If this has not happened, the pawn cannot move to the final row. When a player can capture the opponent's Shah on the next turn, the Shah is in check, the opponent's next move must free the Shah from check. If the opponent cannot, it is checkmate and the player wins.")
         (source "Sahib 1901: 194; Murray 1951.")
         (id "315")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1901.")
+        (origin "This game was played in India, around 1901.")
         }
     )
     

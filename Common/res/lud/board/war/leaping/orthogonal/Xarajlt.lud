@@ -1,5 +1,6 @@
 (game "Xarajlt"
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
+    
     (equipment {
         (board 
             (rectangle 5 3)
@@ -7,23 +8,19 @@
         )
         (piece "Marker" Each 
             (or
-                (move Step 
-                    (directions {Forward FR FL})
-                    (to if:(is Empty (to)))
-                )
+                ("StepToEmpty" (directions {Forward FR FL}))
                 ("HopOrthogonalCapture")
             )
         )
     })
+    
     (rules
         (start {
             (place "Marker1" (expand (sites Bottom)))
             (place "Marker2" (expand (sites Top)))
         })
-        (play 
-            (forEach Piece)
-        )
-        (end (if (no Pieces Next) (result Mover Win)))
+        (play (forEach Piece))
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -36,17 +33,17 @@
         (rules "3x5 intersecting lines. Six pieces per player, arranged on the two short rows on opposite sides of the board. Players alternate turns moving a piece to an empty adjacent spot. Pieces move orthogonally in a horizontal or forward direction only. To capture, a piece may jump over an adjacent opponent's piece to an empty spot immediately on the opposite side of the piece along the lines of the board. Pieces may capture in a backwards direction. The player who captures all of the opponent's pieces wins.")
         (source "Popova 1974: 34, 36-37.")
         (id "1041")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/leaping/orthogonal")
         (credit "Eric Piette")
-        (origin  "This game was played in Mongolia, from around 1963 to 1966.")
+        (origin "This game was played in Mongolia, from around 1963 to 1966.")
         }
     )
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
+    
     (ai
         "Xarajlt_ai"
     )

@@ -16,13 +16,6 @@
     (= 1 (pips))
 )
 
-(define "NextSiteFrom" 
-    (trackSite Move 
-        #2
-        steps:#1
-    )
-)
-
 (define "UseADie6" 
     (set Pending 
         (if (all DiceEqual)
@@ -45,7 +38,7 @@
         (move 
             (from)
             (to 
-                ("NextSiteFrom" #1) 
+                ("NextSiteOnTrack" #1)
                 if:(and 
                     (not ("IsFriendAt" (to)))
                     (if (>= (count Turns) 2) 
@@ -69,7 +62,7 @@
             (move 
                 (from)
                 (to 
-                    ("NextSiteFrom" (if (= #1 12) 4 (if (= #1 6) 2 #1)) "CornerTrack") 
+                    ("NextSiteOnTrack" (if (= #1 12) 4 (if (= #1 6) 2 #1)) "CornerTrack") 
                     if:(not ("IsFriendAt" (to)))
                     (apply 
                         if:("IsEnemyAt" (to)) 
@@ -85,8 +78,7 @@
 
 (game "Ad elta stelpur" 
     (players 2) 
-    (equipment 
-        { 
+    (equipment { 
         (board (rectangle 2 13) 
             {
             (track "NormalTrack" {0..5 7..12 25..20 18..13} loop:True)
@@ -98,21 +90,17 @@
         (regions "LeftMost" P2 {24 25})
         (dice num:2)
         (piece "Disc" Each) 
-        } 
-    )
+    })
     
     (rules
-        (start 
-            { 
+        (start { 
             (place "Disc1" {0..5})
             (place "Disc2" {20..25})
-            }
-        )
+        })
         
         (play 
             (do 
-                (if 
-                    (not "SameTurn") 
+                (if ("NewTurn") 
                     (roll)
                     (if 
                         (and 
@@ -155,11 +143,7 @@
             )
         )
         
-        (end 
-            (if (no Pieces Next)
-                (result Mover Win)
-            )
-        )
+        (end ("CaptureAll" Next)) 
     )
 )
 
@@ -173,10 +157,10 @@
         (rules "Played on a standard Backgammon board. Six pieces per player. Pieces begin the game, one on each point on the left half of the player's side of the board. Pieces move in an anti-clockwise direction for both players. Two six-sided dice are rolled. When a 6 is rolled, the player moves two pieces six places. If this is on the player's first turn it must be the two pieces furthest to the left. If a 1 is rolled, the player moves one piece one spot. If doubles are rolled, the player moves twice the normal roll, and plays again. When one player is reduced to a single piece, it moves only to a consecutive corner space with the roll of each 1, or two corner spaces with the roll of each 6, doubling still applies. The first player to capture all of the opponent's pieces wins.")
         (source "Arnason and Davidsson 1888-1892: 316-317.")
         (id "194")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
-        (origin  "This game was played in Iceland, from around 1888 to 1892.")
+        (origin "This game was played in Iceland, from around 1888 to 1892.")
         }
     )
     

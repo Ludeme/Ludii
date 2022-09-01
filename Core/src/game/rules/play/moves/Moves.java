@@ -233,6 +233,7 @@ public abstract class Moves extends BaseLudeme implements GameType
 	/**
 	 * @return True if the moves is a constraint move.
 	 */
+	@SuppressWarnings("static-method")
 	public boolean isConstraintsMoves()
 	{
 		return false;

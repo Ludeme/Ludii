@@ -1,0 +1,24 @@
+// Defines a hop move in all the directions specified (by default Adjacent) over a stack with on top an enemy to an empty site at any distance. The enemy piece is moved to the top of the jumping stack.
+// #1 = The from site.
+// #2 = Directions of the hop.
+// #3 = The consequences.
+// @example ("HopStackEnemyCaptureTopDistance")
+
+(define "HopStackEnemyCaptureTopDistance"
+    (move Hop 
+        #1
+        #2 
+        (between 
+            before:(count Rows)
+            after:(count Rows)
+            if:("IsEnemyAt" (between)) (apply (fromTo (from (between)) (to)))
+        )  	
+        (to if:(and 
+                (is In (from) (sites Occupied by:Mover)) 
+                (is Empty (to))
+            )
+        )
+        stack:True
+        #3
+    )
+)

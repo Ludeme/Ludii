@@ -2,62 +2,15 @@
     (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
 )
 
-(define "CaptureToPiece"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove 
-                (to) 
-            )
-        )
-    ) 
-)
-
-(define "DoubleStep"
-    (move
-        Slide 
-        Forward 
-        (between (exact 2) if:(is Empty (between))) 
-        (to if:(is Empty (to))) 
-    )
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
 //------------------------------------------------------------------------------
 
 (game "Shodra"
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment {
         (board (square 8))
         (hand Each size:5)
-        (piece "King_noCross" Each
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )			
-        )
-        (piece "Rook" Each
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )			
-        )
+        ("ChessKing" "King_noCross")
+        ("ChessRook" "Rook")
         (piece "Camel" Each
             (move Hop Diagonal 
                 (between if:True) 
@@ -70,46 +23,19 @@
                 ) 
             )			
         )
-        (piece "Knight" Each
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )			
+        ("ChessKnight" "Knight")
+        ("ChessPawn" "Pawn"
+            (if (is In (from) (sites Start (piece (what at:(from)))))
+                ("DoubleStepForwardToEmpty")
+            )
+            (then ("PromoteIfReach" (sites Mover "Promotion") "Dog"))
         )
-        (piece "Pawn" Each
-            (or {
-                (if (is In (from) (sites Start (piece (what at:(from)))))
-                    "DoubleStep"
-                )
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
-                }
-                (then
-                    (if (is In (last To) (sites Mover "Promotion")) 
-                        (promote (last To) (piece "Dog") Mover)
-                    )
-                )
-            )		
-        ) 
-        (piece "Dog" Each
-            (move
-                Step 
-                Diagonal
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )			
-        )
+        (piece "Dog" Each ("StepToNotFriend" Diagonal))
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     })
     (rules 
-        (start {  
+        (start { 
             (place "Pawn1" (sites Row 1))
             (place "Pawn2" (sites Row 6))
             (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Camel1" {"C1" "F1"}) (place "Dog1" coord:"D1") (place "King_noCross1" coord:"E1") 
@@ -146,10 +72,10 @@
         (rules "8x8 checkered board, with the left corner black for each player. Pieces with specialized moves, as follows: Noyion (x1): moves one space in any direction; Merzé (x1, \"dog\"): moves one space diagonally; Taba (x2, \"camel\"): move two spaces diagonally, jumping over the first square; Ot (x2, \"horse\"): move as a Chess knight; Targa (x2, \"cart\"); moves orthogonally over any distance; Oi (x8, \"child\"): moves one space forward orthogonally, one space forward diagonally to capture. May move two spaces on the first turn of the game. When it reaches the opposite edge of the board, it is promoted to Merzé. Pieces are captured when an opponent's piece moves to the square occupied by that piece. The goal is to checkmate the Noyion, and it must not be in check at the end of the player's turn, if possible. If checkmate is made without capturing all of the Oi, the game is a draw.")
         (source "Murray 1913: 372.")
         (id "318")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in Russia, around 1913.")
+        (origin "This game was played in Russia, around 1913.")
         }
     )
     

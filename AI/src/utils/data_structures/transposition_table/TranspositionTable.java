@@ -23,7 +23,7 @@ public class TranspositionTable
 	
 	//-------------------------------------------------------------------------
 	
-	/** Number of bits from hashes to use as primary coed */
+	/** Number of bits from hashes to use as primary code */
 	private final int numBitsPrimaryCode;
 	
 	/** Max number of entries for which we've allocated space */
@@ -234,6 +234,87 @@ public class TranspositionTable
 			this.valueType = valueType;
 		}
 		
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	public int nbEntries()
+	// (counts entries with double data as 1 entry)
+	{
+		int res = 0;
+		for (int i=0; i<maxNumEntries; i++)
+		{
+			if (table[i]!=null)
+				res += 1;
+		}
+		return res;
+	}
+	
+	public void dispValueStats()
+	// (counts entries with double data as 1 entry)
+	{
+		int maxDepth = 0;
+		for (int i=0; i<maxNumEntries; i++)
+		{
+			if (table[i]!=null)
+			{
+				if (table[i].data1!=null)
+				{
+					if (table[i].data1.depth>maxDepth)
+						maxDepth = table[i].data1.depth;
+				}
+				if (table[i].data2!=null)
+				{
+					if (table[i].data2.depth>maxDepth)
+						maxDepth = table[i].data2.depth;
+				}
+			}
+		}
+		
+		int[][] counters = new int[maxDepth+1][6];
+		for (int i=0; i<maxNumEntries; i++)
+		{
+			if (table[i]!=null)
+			{
+				if (table[i].data1!=null)
+				{
+					int index = table[i].data1.valueType;
+					switch (index)
+					{
+					case 0: break;
+					case 1: break;
+					case 2: break;
+					case 4: break;
+					default: index = 5;
+					}
+					counters[table[i].data1.depth][index] += 1;
+				}
+				if (table[i].data2!=null)
+				{
+					int index = table[i].data2.valueType;
+					switch (index)
+					{
+					case 0: break;
+					case 1: break;
+					case 2: break;
+					case 4: break;
+					default: index = 5;
+					}
+					counters[table[i].data2.depth][index] += 1;
+				}
+			}
+		}
+		
+		System.out.println("Search tree analysis:");
+		for (int i=1; i<maxDepth; i++)
+		{
+			System.out.print("At depth "+i+": ");
+			for (int k : new int[]{0,1,2,4})
+			{
+				System.out.print("value "+k+": "+counters[i][k]+", ");
+			}
+			System.out.println();
+		}
 	}
 	
 	//-------------------------------------------------------------------------

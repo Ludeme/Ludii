@@ -388,7 +388,7 @@ public final class SitesDistance extends BaseRegionFunction
 		final TopologyElement fromV = elements.get(from);
 		context.setFrom(from);
 		final List<AbsoluteDirection> directions = stepMove.directions().convertToAbsolute(realType, fromV, component, facingDirection,
-				rotation, context);
+				Integer.valueOf(rotation), context);
 		for (final AbsoluteDirection direction : directions)
 		{
 			final List<game.util.graph.Step> steps = graph.trajectories().steps(realType, from, realType, direction);

@@ -14,6 +14,7 @@ import main.collections.ListUtils;
 public class TestMath
 {
 	
+	@SuppressWarnings("static-method")
 	@Test
 	public void testCombinations()
 	{

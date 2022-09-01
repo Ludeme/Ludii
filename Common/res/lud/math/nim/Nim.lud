@@ -3,18 +3,16 @@
     (equipment { 
         (board (rectangle 1 <Size:board>)) 
         (piece "Marker" Neutral)
-        }
-    ) 
+    }) 
     (rules
-        (start   		
+        (start  		
             <Size:piles>
         ) 
         
         (play 
             (if "SameTurn"
                 (or
-                    (move 
-                        Select 
+                    (move Select 
                         (from (last To))
                         (then 
                             (if (= (count at:(last To)) 1)
@@ -25,8 +23,7 @@
                     )
                     (move Pass)
                 )
-                (move
-                    Select
+                (move Select
                     (from (sites Occupied by:Neutral))
                     (then 
                         (if (= (count at:(last To)) 1)
@@ -45,44 +42,44 @@
 
 (option "End Rules" <Result> args:{ <type> }
     {
-    (item "Last Mover Loses"  <Next>   "The last mover loses.")*  
-    (item "Last Mover Wins"  <Mover>  "The last mover wins.")  
+    (item "Last Mover Loses" <Next>  "The last mover loses.")* 
+    (item "Last Mover Wins" <Mover> "The last mover wins.") 
 })
 
 (option "Number Piles" <Size> args:{ <board> <piles> }
     {
-    (item "3"  <3> 
+    (item "3" <3> 
         <{
         (set Count 1 to:(sites {0 2}))
         (set Count 2 at:1)
-        }>                           
+        }>              
         "The game involves 3 piles."
-    )  
-    (item "5"  <5> 
+    ) 
+    (item "5" <5> 
         <{
         (set Count 3 to:(sites {0 4}))
         (set Count 4 to:(sites {1 3}))
         (set Count 5 at:2)
-        }>                          
-    "The game involves 5 piles.")*   
-    (item "7"  <7> 
+        }>             
+    "The game involves 5 piles.")*  
+    (item "7" <7> 
         <{
         (set Count 4 to:(sites {0 6}))
         (set Count 5 to:(sites {1 5}))
         (set Count 6 to:(sites {2 4}))
         (set Count 7 at:3)
-        }>                       
-    "The game involves 7 piles.")   
-    (item "9"  <9> 
+        }>            
+    "The game involves 7 piles.")  
+    (item "9" <9> 
         <{
         (set Count 5 to:(sites {0 8}))
         (set Count 6 to:(sites {1 7}))
         (set Count 7 to:(sites {2 6}))
         (set Count 8 to:(sites {3 5}))
         (set Count 9 at:4)
-        }>                      
-    "The game involves 9 piles.")   
-    (item "11"  <11> 
+        }>           
+    "The game involves 9 piles.")  
+    (item "11" <11> 
         <{
         (set Count 6 to:(sites {0 10}))
         (set Count 7 to:(sites {1 9}))
@@ -90,10 +87,10 @@
         (set Count 9 to:(sites {3 7}))
         (set Count 10 to:(sites {4 6}))
         (set Count 11 at:5)
-        }>                 
+        }>         
         
-    "The game involves 11 piles.")   
-    (item "13"  <13> 
+    "The game involves 11 piles.")  
+    (item "13" <13> 
         <{
         (set Count 7 to:(sites {0 12}))
         (set Count 8 to:(sites {1 11}))
@@ -102,9 +99,9 @@
         (set Count 11 to:(sites {4 8}))
         (set Count 12 to:(sites {5 7}))
         (set Count 13 at:6)
-        }>              
-    "The game involves 13 piles.")  
-    (item "15"  <15> 
+        }>       
+    "The game involves 13 piles.") 
+    (item "15" <15> 
         <{
         (set Count 8 to:(sites {0 14}))
         (set Count 9 to:(sites {1 13}))
@@ -114,9 +111,9 @@
         (set Count 13 to:(sites {5 9}))
         (set Count 14 to:(sites {6 8}))
         (set Count 15 at:7)
-        }>          
-    "The game involves 15 piles.")  
-    (item "17"  <17> 
+        }>     
+    "The game involves 15 piles.") 
+    (item "17" <17> 
         <{
         (set Count 9 to:(sites {0 16}))
         (set Count 10 to:(sites {1 15}))
@@ -127,9 +124,9 @@
         (set Count 15 to:(sites {6 10}))
         (set Count 16 to:(sites {7 9}))
         (set Count 17 at:8)
-        }>      
-    "The game involves 17 piles.")  
-    (item "19"  <19> <{
+        }>   
+    "The game involves 17 piles.") 
+    (item "19" <19> <{
         (set Count 10 to:(sites {0 18}))
         (set Count 11 to:(sites {1 17}))
         (set Count 12 to:(sites {2 16}))
@@ -140,8 +137,8 @@
         (set Count 17 to:(sites {7 11}))
         (set Count 18 to:(sites {8 10}))
         (set Count 19 at:9)
-        }>  
-    "The game involves 19 piles.")  
+        }> 
+    "The game involves 19 piles.") 
     }
 )
 
@@ -167,10 +164,10 @@
         (rules "Essentially, the game consists of a number of objects in \"heaps,\" and players alternate turns taking any number of objects from one of the heaps. This continues until no objects are left, and the last player to remove an object loses.")
         (source "<a href=\"https://en.wikipedia.org/wiki/Nim\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
         (id "130")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "math/nim")
         (credit "Eric Piette")
-        (origin  "This game was played in Europe?, from around 1496 to 1517.")
+        (origin "This game was played in Europe?, from around 1496 to 1517.")
         }
     )
     

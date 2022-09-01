@@ -16,8 +16,7 @@
                 ("StepToEmpty")
             )
         )
-        }
-    ) 
+    }) 
     
     (rules 
         (start {
@@ -41,16 +40,15 @@
         (rules "Each player begins with their eleven pieces arrayed on the intersections of the lines in one of the triangles. Pieces move to an adjacent point along one of the lines connecting it to its present location. Captures are made by hopping over an opponent's piece. The player who captures all of the opponent's pieces wins.")
         (source "Gupta 1926: 211.")
         (id "161")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1926.")
+        (origin "This game was played in India, around 1926.")
         }
     )
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai 

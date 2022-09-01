@@ -15,6 +15,7 @@ public abstract class Selection implements AIItem
 	/**
 	 * @return Do we require a learned selection policy?
 	 */
+	@SuppressWarnings("static-method")
 	public boolean requiresLearnedSelectionPolicy()
 	{
 		return false;

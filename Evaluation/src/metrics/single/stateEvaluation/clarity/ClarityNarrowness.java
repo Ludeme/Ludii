@@ -68,7 +68,7 @@ public class ClarityNarrowness extends Metric
 			{
 				final Stats moveEvaluations = new Stats();
 				for (final Move legalMoves : context.game().moves(context).moves())
-					moveEvaluations.addSample(Utils.evaluateMove(evaluation, context, legalMoves));
+					moveEvaluations.addSample(Utils.evaluateMove(evaluation, context, legalMoves).doubleValue());
 				
 				moveEvaluations.measure();
 				
@@ -90,7 +90,7 @@ public class ClarityNarrowness extends Metric
 			clarity += moveNarrowness.mean();
 		}
 
-		return trials.length == 0 ? 0 : clarity / trials.length;
+		return Double.valueOf(trials.length == 0 ? 0 : clarity / trials.length);
 	}
 
 }

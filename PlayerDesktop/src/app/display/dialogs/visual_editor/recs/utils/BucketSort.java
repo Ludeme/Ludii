@@ -18,7 +18,6 @@ public class BucketSort {
      * Then it sorts those buckets by multiplicity and ravels everything into one list again.
      *
      * @param unorderedPicklist
-     * @return
      */
     public static List<Instance> sort(List<Pair<Instance,Integer>> unorderedPicklist, int limit) {
         //use a bucket sort to sort after matched words
@@ -32,7 +31,11 @@ public class BucketSort {
         return sortedList;
     }
 
-    private static  List<Pair<Instance,Integer>> ravelList(List<List<Pair<Instance,Integer>>> list2d) {
+    private static  List<Pair<Instance,Integer>> ravelList
+    (
+    	List<List<Pair<Instance,Integer>>> list2d
+    ) 
+    {
         List<Pair<Instance,Integer>> ravelledList = new ArrayList<>();
         for(List<Pair<Instance,Integer>> bucket : list2d) {
             for(Pair<Instance,Integer> p : bucket) {
@@ -48,33 +51,41 @@ public class BucketSort {
      * @param list
      * @return
      */
-    private static List<List<Pair<Instance,Integer>>> bucketSort(List<Pair<Instance,Integer>> list, BucketSortComparator<Pair<Instance,Integer>> comparator) {
+    private static List<List<Pair<Instance,Integer>>> bucketSort
+    (
+    	List<Pair<Instance,Integer>> list, 
+    	BucketSortComparator<Pair<Instance,Integer>> comparator
+    ) 
+    {
         Map<Integer,List<Pair<Instance,Integer>>> firstBuckets = new HashMap<>();
         for(Pair<Instance,Integer> p : list) {
             int key = comparator.getKey(p);
-            List<Pair<Instance,Integer>> curBucket = firstBuckets.getOrDefault(key, new ArrayList<>());
+            List<Pair<Instance,Integer>> curBucket = firstBuckets.getOrDefault(Integer.valueOf(key), new ArrayList<>());
             curBucket.add(p);
-            firstBuckets.put(key,curBucket);
+            firstBuckets.put(Integer.valueOf(key), curBucket);
         }
         //count the number of elements in each bucket
         // first is the key from firstBuckets and then the bucketsize
         List<Pair<Integer,Integer>> firstBucketSizes = new ArrayList<>();
         for(Map.Entry<Integer,List<Pair<Instance,Integer>>> entry : firstBuckets.entrySet()) {
             int bucketSize = entry.getValue().size();
-            firstBucketSizes.add(new Pair<>(entry.getKey(), bucketSize));
+            firstBucketSizes.add(new Pair<>(entry.getKey(), Integer.valueOf(bucketSize)));
         }
-        firstBucketSizes.sort(new Comparator<Pair<Integer, Integer>>() {
+        firstBucketSizes.sort(new Comparator<Pair<Integer, Integer>>() 
+        {
             @Override
-            public int compare(Pair<Integer, Integer> o1, Pair<Integer, Integer> o2) {
+            public int compare(Pair<Integer, Integer> o1, Pair<Integer, Integer> o2) 
+            {
                 //R is the size of the bucket
-                return o2.getR() - o1.getR();
+            	return o2.getR().intValue() - o1.getR().intValue();
             }
         });
         //create a new list that contains the lists presorted after matchingwords descendingly
         List<List<Pair<Instance,Integer>>> firstBucketsSortedList = new ArrayList<>();
-        for(int i = 0; i < firstBucketSizes.size(); i++) {
-            int curMatchinWords = firstBucketSizes.get(i).getR();
-            List<Pair<Instance,Integer>> curBucket = firstBuckets.get(curMatchinWords);
+        for(int i = 0; i < firstBucketSizes.size(); i++) 
+        {
+            int curMatchinWords = firstBucketSizes.get(i).getR().intValue();
+            List<Pair<Instance,Integer>> curBucket = firstBuckets.get(Integer.valueOf(curMatchinWords));
             firstBucketsSortedList.add(curBucket);
             if(DEBUG)System.out.println("Matching words: " + curMatchinWords + " List of instances: " + curBucket);
         }

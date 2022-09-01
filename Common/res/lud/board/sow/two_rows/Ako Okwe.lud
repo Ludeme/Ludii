@@ -41,8 +41,8 @@
             (track "TrackCW" "6,E,S,W" loop:True)
             }
         )
-        (regions P1 (sites Bottom))          // P1 home
-        (regions P2 (sites Top))            // P2 home
+        (regions P1 (sites Bottom))     // P1 home
+        (regions P2 (sites Top))      // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
         (piece "Seed" Shared)
     }) 
@@ -60,13 +60,13 @@
 
 (option "Play Rules" <Capture> args:{ <doneSoFar> <numCounters> <ruleSecondCapture> }
     {
-    (item "First capture = 1"  
+    (item "First capture = 1" 
         <1> 
         <1>
         <>
         "The first capture must be of one counter."
-    )  
-    (item "First capture = 3, Second Capture = 1"  
+    ) 
+    (item "First capture = 3, Second Capture = 1" 
         <2> 
         <3>
         <(and (= "NumCaptureDone" 1) (= (count at:(to)) 1))>
@@ -107,10 +107,10 @@
         (useFor "Ruleset/Umuahia (Observed)" (source "Murray 1951: 192."))
         (useFor "Ruleset/Umuahia (Observed)" (id "30"))
         (id "30")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in West Africa, around 1951.")
+        (origin "This game was played in West Africa, around 1951.")
         }
     )
     

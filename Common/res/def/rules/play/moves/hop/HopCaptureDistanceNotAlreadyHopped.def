@@ -1,0 +1,23 @@
+// Defines a hop move in the specified directions over an enemy to an empty site at any distance. The enemy pieces are removed and you can not hop a piece you already hopped during your turn.
+// #1 = The from site.
+// #2 = The directions.
+// #2 = The consequences.
+// @example ("HopCaptureDistanceNotAlreadyHopped")
+
+(define "HopCaptureDistanceNotAlreadyHopped"
+    (move Hop 
+        #1 
+        #2 
+        (between 
+            before:(count Rows) 
+            after:(count Rows)
+            if:(and 
+                (not (is In (between) (sites ToClear))) 
+                ("IsEnemyAt" (between))
+            )
+            (apply (remove (between)))
+        ) 
+        (to if:(is Empty (to))) 
+        #3
+    )
+)

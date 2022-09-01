@@ -3,13 +3,6 @@
 (define "ThrowTwoDice" (+ ("Die1") ("Die2")))
 <Board:dice>
 
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
-        steps:#2
-    )
-)
-
 (define "Remember" 
     (if (is Mover P1)
         (remember Value "ScoreP1" #1)
@@ -72,7 +65,7 @@
                 )
             )
             (to 
-                ("NextSiteFrom" (from) (value))	
+                ("NextSiteOnTrack" (value) from:(from))
                 if:(and
                     (not ("IsFriendAt" (to)))
                     (or 
@@ -80,7 +73,7 @@
                         (= 0 
                             (count Sites in:(intersection 
                                     (sites Occupied by:Enemy) 
-                                (sites Track Mover from:("NextSiteFrom" (from) 1) to:("NextSiteFrom" (from) (- (value) 1))))
+                                (sites Track Mover from:("NextSiteOnTrack" 1 from:(from)) to:("NextSiteOnTrack" (- (value) 1) from:(from))))
                             )
                         )
                     )
@@ -112,7 +105,7 @@
             )
         )
         (to 
-            ("NextSiteFrom" (from) ("ThrowValue"))	
+            ("NextSiteOnTrack" ("ThrowValue") from:(from))
             if:(and
                 (not ("IsFriendAt" (to)))
                 (or 
@@ -120,7 +113,7 @@
                     (= 0 
                         (count Sites in:(intersection 
                                 (sites Occupied by:Enemy) 
-                            (sites Track Mover from:("NextSiteFrom" (from) 1) to:("NextSiteFrom" (from) (- ("ThrowValue") 1))))
+                            (sites Track Mover from:("NextSiteOnTrack" 1 from:(from)) to:("NextSiteOnTrack" (- ("ThrowValue") 1) from:(from))))
                         )
                     )
                 )
@@ -164,7 +157,7 @@
             <Board:tracks>
             use:Vertex
         )
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
         (piece "Marker" P1 ("Move"))
         (piece "Marker" P2 ("Move"))
         (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})
@@ -180,8 +173,8 @@
         
         (phase "StageOne" 
             (play 
-                (do (roll) 
-                    next:(move Pass)
+                ("RollMove"
+                    (move Pass)
                     (then
                         (if (or 
                                 (= ("ThrowValue") 6)
@@ -200,8 +193,8 @@
         
         (phase "StageTwo" 
             (play 
-                (do (roll) 
-                    next:(move Pass)
+                ("RollMove"
+                    (move Pass)
                     (then
                         (if (or 
                                 (= 0 ("ThrowThreeDice"))
@@ -226,8 +219,8 @@
         
         (phase "StageThree" 
             (play 
-                (do (roll) 
-                    next:(move Pass)
+                ("RollMove"
+                    (move Pass)
                     (then
                         (if 
                             (= 0 ("ThrowTwoDice"))
@@ -267,8 +260,7 @@
         
         (phase "Playing" 
             (play 
-                (do (roll) 
-                    next:(or 
+                ("RollMove" (or 
                         (if (or (is Mover P1) (is Mover P3)) 
                             (forEach Piece P1) 
                             (forEach Piece P2)
@@ -285,7 +277,7 @@
         )
         
         }
-        (end (if (no Pieces Enemy) (result TeamMover Win)))
+        (end ("CaptureAllTeam"))
     )
 )
 
@@ -481,17 +473,16 @@
         (rules "Board of intersecting lines: four horizontal and up to 100 vertical. Twenty is typical. Played on two teams with even-numbered players. One piece per vertical line, lined up on the outer rows. Four sticks, white on one side and black on the other, used as dice. The value of the throw is the number of white sides that land face up, when only black are face up, the value is 6. Each player must progress through the following three stages of throws to begin playing. In the first stage, they throw four sticks. A throw of 2 or 3 ends the turn, a throw of 4 or 6 gives another throw. A throw of 1 allows the player to progress to the next stage and to add 1 to their score. In the second stage, the player throws three sticks. If the player throws two or three black, they add 1 to their score and keep throwing, three white up allows the player to add 4 to their score and keep playing; one black face up allows the player to pass to the third stage. In the third stage, the player throws two sticks. If two black are thrown, all of the previously tabulated score is lost, the turn ends and the player must start again from the first stage in their next turn. If the player throws two white, the player scores 4 and reverts back to the second phase. When the player scores one white and one black, the player enters the game and plays the pieces according to their accumulated score. Each piece must be unlocked with a throw of 1 before being  moved normally. From this point, players throw all four sticks. Throws of 2 or 3 end the turn, players continue to throw until they receive one of these values. Each throw must be assigned to move a piece and a single throw cannot be subdivided, though separate throws can be assigned to different pieces. Players may choose not to play a throw if they wish. Throws of 1 must be used to unlock a piece if there are any which are locked. Pieces move from left to right in their home row, right to left in the second row, left to right in the third row, right to left in their opponent's home row, returning to the third row and progressing from left to right, then to the second row progressing from right to left, and then back into the home row, proceeding from left to right, and so in a loop. Pieces may not pass the pieces of the opposing team. When a piece lands on the same space occupied by an opponent's piece, the opponent's piece is removed from the board. The team that captures all the pieces of the opposing team wins.")
         (source "Marin 1931: 508-510.")
         (id "767")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
-        (origin  "This game was played in Somalia, around 1931.")
+        (origin "This game was played in Somalia, around 1931.")
         }
     )
     
     (graphics {
         (show Edges Diagonal Hidden)
         (piece Colour "Die" state:0 fillColour:(colour Black))
-        
     })
     
 )

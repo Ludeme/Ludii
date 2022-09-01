@@ -14,9 +14,9 @@ import main.collections.ChunkSet;
  *
  * @author Dennis Soemers
  */
+@SuppressWarnings("static-method")
 public class TestChunkSets
 {
-	
 	@Test
 	public void testViolatesNotA()
 	{

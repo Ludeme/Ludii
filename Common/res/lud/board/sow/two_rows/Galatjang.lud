@@ -37,8 +37,8 @@
             }
         )
         (piece "Seed" Shared)
-        (regions "Home" P1 (sites Bottom))       // P1 Home
-        (regions "Home" P2 (sites Top))         // P2 home
+        (regions "Home" P1 (sites Bottom))    // P1 Home
+        (regions "Home" P2 (sites Top))     // P2 home
         (map {(pair P1 LastSite) (pair P2 FirstSite)}) // kalahs (storage pits)
     }) 
     (rules 
@@ -141,10 +141,10 @@
         (rules "2x6 board with two stores. Seven counters in each hole. Play moves in an anti-clockwise direction and players sow into the store on their right hand side. A move may begin from any of the player's holes except their store. If the last counter falls into the store, they can sow again from any of the holes in their row. If it lands in a hole with counters in it, these are picked up and sowing continues. If the last counter falls into an empty hole the move ends, but if the hole is in the player's own row, any counters in the hole opposite it are captured and placed in the store. When no more moves can be made, a new round begins and each player fills as many holes as they can by putting seven in each. Surplus counters are placed in the store. Any unfilled holes are excluded from play. Play continues until one player cannot fill a hole with seven counters, and the opponent wins.")
         (source "Matthes 1859: 84, 898. ")
         (id "221")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Indonesia, around 1859.")
+        (origin "This game was played in Indonesia, around 1859.")
         }
     )
     

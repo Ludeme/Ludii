@@ -1,11 +1,3 @@
-(define "CaptureToPiece"
-    (apply
-        (if (not (is Empty (to)))
-            (remove (to)) 
-        )
-    ) 
-)
-
 (define "CaptureForwardDiagonal"
     (move
         Step 
@@ -13,16 +5,8 @@
         (directions {FR FL}) 
         (to 
             if:("IsEnemyAt" (to)) 
-            "CaptureToPiece"
+            (apply (remove (to)))
         )
-    )
-)
-(define "DoubleStep"
-    (move
-        Slide 
-        Forward 
-        (between (exact 2) if:(is Empty (between))) 
-        (to if:(is Empty (to))) 
     )
 )
 
@@ -94,67 +78,19 @@
         (piece "Pawn" Each
             (or {
                 (if (is In (from) (sites Start (piece (what at:(from)))))
-                    "DoubleStep"
+                    ("DoubleStepForwardToEmpty")
                 )
                 ("StepForwardToEmpty") 
                 ("CaptureForwardDiagonal")
                 }
-                (then
-                    (if (is In (last To) (sites Mover "Promotion"))
-                        (moveAgain) 
-                    )
-                )
+                (then ("ReplayInMovingOn" (sites Mover "Promotion")))
             )
         )
-        (piece "Bishop" Each
-            (move
-                Slide 
-                Diagonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "Knight" Each
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "Rook" Each
-            (move
-                Slide 
-                Orthogonal 
-                (between if:(is Empty (between))) 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece" 
-                )
-            )
-        )
-        (piece "Queen" Each
-            (move
-                Slide 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            ) 
-        )		
-        (piece "King_noCross" Each
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece" 
-                )
-            )
-        )
+        ("ChessBishop" "Bishop")
+        ("ChessKnight" "Knight")
+        ("ChessRook" "Rook")
+        ("ChessQueen" "Queen")
+        ("ChessKing" "King_noCross")
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     }) 
@@ -163,7 +99,7 @@
         <Board:start>
         
         (play 
-            (do (if (not "SameTurn") (roll))
+            (do (if ("NewTurn") (roll))
                 next:(if ("SameTurn")
                     (if (= (count Pips) 1)
                         (or {
@@ -217,12 +153,11 @@
         })
         >
         "The game is played on a 8x8 board."
-    )*  
+    )* 
     (item "10x10" 
         <10>
         <
-        (start
-            { 
+        (start { 
             (place "Pawn1" {"A2" "B2" "C2" "D2" "E2" "F2" "G2" "H2" "I2" "J2"})
             (place "Pawn2" {"J9" "I9" "H9" "G9" "E9" "F9" "D9" "C9" "B9" "A9"})
             (place "Bishop1" {"C1" "H1"}) (place "Bishop2" {"C10" "H10"}) 
@@ -230,11 +165,10 @@
             (place "Rook1" {"A1" "J1"}) (place "Rook2" {"A10" "J10"}) 
             (place "Queen1" coord:"D1") (place "Queen2" coord:"D10")			
             (place "King_noCross1" {"E1" "F1" "G1"}) (place "King_noCross2" {"E10" "F10" "G10"}) 
-            }
-        )
+        })
         >
         "The game is played on a 10x10 board."
-    )  
+    ) 
 })
 
 //------------------------------------------------------------------------------
@@ -251,7 +185,7 @@
         If a pawn is to be promoted (would advance to the last row), the player can move it even if the die does not show 1. However, he can only promote it to the piece chosen by the die roll - for example, if 3 is rolled, the pawn can be promoted to a bishop only. If 1 is rolled, the pawn can be promoted to any piece.")
         (id "1152")
         (source "<a href=\"https://brainking.com/en/GameRules?tp=95\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />brainking.com</a>")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/chess")
         (credit "Michael Taktikos and Eric Piette")
         }
@@ -265,7 +199,7 @@
         (board Colour OuterEdges (colour Black))
         (board Colour Symbols (colour Black))
         (board Colour Phase0 (colour 222 173 123))
-    })  
+    }) 
     (ai
         "Dice Chess_ai"
     )

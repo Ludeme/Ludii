@@ -49,15 +49,11 @@
         })
         (play 
             (do 
-                (if (not "SameTurn") (roll))
+                (if ("NewTurn") (roll))
                 next:(forEach Die 
                     if:("DieNotUsed")
-                    (forEach Piece top:True        
-                        (then 
-                            (if (not (all DiceUsed))
-                                (moveAgain)
-                            )
-                        )
+                    (forEach Piece top:True    
+                        (then ("ReplayNotAllDiceUsed"))
                     )
                 )
             )		
@@ -69,9 +65,9 @@
 //------------------------------------------------------------------------------
 
 (option "Dice" <Dice> args:{ <dice> } {
-    (item "Two Four-Sided Dice"  <(dice d:4 faces:{2 3 4 5} num:2) >  "The game is played with two four-sided dice.")  
-    (item "Two Cubic Dice"  <(dice d:6 num:2) >  "The game is played with two cubic dice.")  
-    (item "Three Cubic Dice"  <(dice d:6 num:3)>  "The game is played with three cubic dice.")  
+    (item "Two Four-Sided Dice" <(dice d:4 faces:{2 3 4 5} num:2) > "The game is played with two four-sided dice.") 
+    (item "Two Cubic Dice" <(dice d:6 num:2) > "The game is played with two cubic dice.") 
+    (item "Three Cubic Dice" <(dice d:6 num:3)> "The game is played with three cubic dice.") 
 })
 
 //------------------------------------------------------------------------------
@@ -108,9 +104,9 @@
         (useFor "Ruleset/Three Cubic Dice (Incomplete)" (source "Bock-Raming 1995a."))
         (useFor "Ruleset/Three Cubic Dice (Incomplete)" (id "1743"))
         (source "Bock-Raming 1995: 114-115.")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/race/escape/reconstruction")
-        (origin  "This game was played in India, from around 1126 to 1138.")
+        (origin "This game was played in India, from around 1126 to 1138.")
         }
     )
     

@@ -641,7 +641,7 @@ public class TestPregenGraphFunction
 	public void makeTheBoard(final GraphFunction function, final SiteType useType)
 	{
 		init();
-		board = new Board(function, null, null, null, null, useType, false);
+		board = new Board(function, null, null, null, null, useType, Boolean.FALSE);
 		board.createTopology(0, 0);
 		for (final SiteType type : SiteType.values())
 			for (final TopologyElement element : board.topology().getGraphElements(type))
@@ -653,7 +653,7 @@ public class TestPregenGraphFunction
 	 * 
 	 * @return A list with all the indices of a list of graph element.
 	 */
-	public TIntArrayList transformList(final List<? extends TopologyElement> graphElements)
+	public static TIntArrayList transformList(final List<? extends TopologyElement> graphElements)
 	{
 		final TIntArrayList result = new TIntArrayList();
 		for (final TopologyElement element : graphElements)
@@ -667,7 +667,7 @@ public class TestPregenGraphFunction
 	 * @param expectedIndices
 	 * @return True if the list has the same indices on it and the same size.
 	 */
-	public boolean check(final TIntArrayList indices, final TIntArrayList expectedIndices)
+	public static boolean check(final TIntArrayList indices, final TIntArrayList expectedIndices)
 	{
 		if (indices.size() != expectedIndices.size())
 			return false;

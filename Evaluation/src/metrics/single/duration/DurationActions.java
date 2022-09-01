@@ -52,7 +52,7 @@ public class DurationActions extends Metric
 			for (final Move m : trial.generateRealMovesList())
 				actionTally += m.actions().size();
 		
-		return actionTally / trials.length;
+		return Double.valueOf(actionTally / trials.length);
 	}
 
 	//-------------------------------------------------------------------------

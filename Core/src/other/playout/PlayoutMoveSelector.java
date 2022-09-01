@@ -46,6 +46,7 @@ public abstract class PlayoutMoveSelector
 	 * 
 	 * @return True if the MoveSelector wants to select a move uniformly at random.
 	 */
+	@SuppressWarnings("static-method")
 	public boolean wantsPlayUniformRandomMove()
 	{
 		return false;

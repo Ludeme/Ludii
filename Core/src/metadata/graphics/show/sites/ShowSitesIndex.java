@@ -37,7 +37,7 @@ public class ShowSitesIndex implements GraphicsItem
 	)
 	{
 		this.type = type == null ? SiteType.Cell : type;
-		this.additionalValue = additionalValue == null ? 0 : additionalValue;
+		this.additionalValue = additionalValue == null ? Integer.valueOf(0) : additionalValue;
 	}
 
 	//-------------------------------------------------------------------------

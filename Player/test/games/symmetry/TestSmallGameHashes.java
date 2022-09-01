@@ -11,7 +11,7 @@ import other.trial.Trial;
 public class TestSmallGameHashes
 {
 	@Test
-	public void testBicycleGameDoesntCrash()
+	public static void testBicycleGameDoesntCrash()
 	{
 		final Game game1 = GameLoader.loadGameFromName("board/war/other/Ja-Jeon-Geo-Gonu.lud");
 		final Trial trial1 = new Trial(game1);
@@ -22,7 +22,7 @@ public class TestSmallGameHashes
 	}
 	
 	@Test
-	public void testBoseogGonuGameDoesntCrash()
+	public static void testBoseogGonuGameDoesntCrash()
 	{
 		final Game game1 = GameLoader.loadGameFromName("board/war/other/Boseog Gonu.lud");
 		final Trial trial1 = new Trial(game1);

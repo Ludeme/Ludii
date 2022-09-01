@@ -91,6 +91,8 @@ public class Thumbnails
 		{
 			final File outputfile = new File("./thumb-" + outputName + "-a.png");
 			ImageIO.write(image, "png", outputfile);
+			final File outputfileSmallEmpty = new File("./thumb-" + outputName + "-f.png");
+			ImageIO.write(BufferedImageUtil.resize(image, 100, 100), "png", outputfileSmallEmpty);
 		}
 		catch (final IOException e)
 		{

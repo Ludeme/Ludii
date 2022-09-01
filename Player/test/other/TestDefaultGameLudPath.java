@@ -12,6 +12,7 @@ import main.Constants;
  *
  * @author Dennis Soemers
  */
+@SuppressWarnings("static-method")
 public class TestDefaultGameLudPath
 {
 	

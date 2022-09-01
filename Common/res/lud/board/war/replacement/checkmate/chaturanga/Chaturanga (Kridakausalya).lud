@@ -1,26 +1,3 @@
-(define "CaptureEnemyToPiece"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove (to))
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
-)
-
 (define "OnlyRajaAndPadati"
     (and {
         (no Pieces #1 "Ferz_noCross")
@@ -40,64 +17,20 @@
 //------------------------------------------------------------------------------
 
 (game "Chaturanga (Kridakausalya)"
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
-        (board (square 8)) 	
-        (piece "King_noCross"
-            (move Step
-                (to if:(not ("IsFriendAt" (to)))
-                    ("CaptureEnemyToPiece")
-                )
-            )
-        )
-        (piece "Ferz_noCross"
-            (move
-                Slide 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureEnemyToPiece"
-                ) 
-            ) 			
-        )
-        (piece "Knight"
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureEnemyToPiece"
-                ) 
-            )		
-        )
-        (piece "Elephant"
-            (move
-                Slide 
-                Diagonal
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureEnemyToPiece"
-                ) 
-            )		
-        )
-        (piece "Rook"
-            (move
-                Slide 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureEnemyToPiece"
-                ) 
-            ) 		
-        )
-        (piece "Pawn"
-            (or 
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
-                (then
-                    (if (is In (last To) (sites Mover "Promotion"))
-                        (and
-                            (promote (last To) (piece "Ferz_noCross") Mover)
-                            (fromTo (from (last To)) (to (last From)))	
-                        )
+        (board (square 8)) 
+        ("ChessKing" "King_noCross")
+        ("ChessQueen" "Ferz_noCross")
+        ("ChessKnight" "Knight")
+        ("ChessBishop" "Elephant")
+        ("ChessRook" "Rook")
+        ("ChessPawn" "Pawn" ~
+            (then
+                (if (is In (last To) (sites Mover "Promotion"))
+                    (and
+                        (promote (last To) (piece "Ferz_noCross") Mover)
+                        (fromTo (from (last To)) (to (last From)))	
                     )
                 )
             )		
@@ -121,12 +54,7 @@
         )
         
         (end {
-            (if (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
+            ("Checkmate" "King_noCross")
             (if ("OnlyRajaAndPadati" Next) (result Mover Win))
         })
     )
@@ -142,10 +70,10 @@
         (rules "8x8 board. Pieces move as follows: Raja (x1): moves one space in any direction; Mantri (x1): moves any distance orthogonally or diagonally; Ushtra (x2): moves diagonally any distance; Vaha (x2): move orthogonally one space and then diagonally another, jumping over any intervening pieces; Danti (x2): moves orthogonally any distance. Padati (x8): move forward orthogonally one space or one space diagonally forward to capture. When a Padati reaches the opposite edge of the board, it is promoted to a Mantri and is moved immediately to the space it last moved from. An opponent's piece is captured by moving one of the player's own pieces onto the space occupied by the opponent's piece. If the Raja can be captured on the opponent's next turn, it is in check. The Raja cannot be in check at the end of the player's turn. If this is impossible, the opponent wins. When a player is reduced to only their Raja and Padati, the opponent wins. In the case of a stalemate, the player in stalemate may remove any of the opponent's pieces (except their Raja). ")
         (source "Bock-Raming 1995: 319-320.")
         (id "1450")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1871.")
+        (origin "This game was played in India, around 1871.")
         }
     )
     

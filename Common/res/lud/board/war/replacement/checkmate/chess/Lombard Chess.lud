@@ -11,158 +11,73 @@
     (set State at:#1 0) 
 )
 
-(define "CaptureToPiece"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove 
-                (to)
-            )
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to))
-            (apply 
-                (remove 
-                    (to)
-                )
-            )
-        )
-    )
-)
-
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
-)
-
-(define "DoubleStep"
-    (move
-        Slide 
-        Forward 
-        (between (exact 2) if:(is Empty (between))) 
-        (to if:(is Empty (to))) 
-    )
-)
-
 //------------------------------------------------------------------------------
 
 (game "Lombard Chess"
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8)) 
         (piece "King" Each
             (or
-                (move
-                    Step 
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        "CaptureToPiece" 
-                    )
-                )
+                ("StepToNotFriend")
                 (if (= 1 (state at:(from)))
                     (or
-                        (move
-                            Hop 
+                        (move Hop 
                             (between 
                                 (range 1 2)
                                 if:(not ("IsEnemyAt" (between)))
                             ) 
-                            (to 
-                                if:(is Empty (to))
-                            )
+                            (to  if:(is Empty (to)))
                         )
-                        (move
-                            Leap 
-                            "KnightWalk" 
-                            (to 
-                                if:(is Empty (to))
-                            ) 
-                        )
+                        ("LeapToEmpty" "KnightWalk") 
                     )
                 )
                 ("RememberPieceHasMoved")
             )
         )
-        (piece "Rook" Each
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )		
-        )
+        ("ChessRook" "Rook")
         (piece "Bishop" Each
-            (move
-                Hop 
+            (move Hop 
                 Diagonal 
                 (between if:True) 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece" 
+                    (apply 
+                        (if ("IsEnemyAt" (to))
+                            (remove 
+                                (to)
+                            )
+                        )
+                    ) 
                 )
             )		
         )
-        (piece "Knight" Each
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )			
-        )
+        ("ChessKnight" "Knight")
         (piece "Queen" Each
             (or
-                (move
-                    Step 
-                    Diagonal
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        "CaptureToPiece" 
-                    )
-                    "RememberPieceHasMoved"
-                )	
+                ("StepToNotFriend" Diagonal "RememberPieceHasMoved")	
                 (if (= 1 (state at:(from)))
-                    (move
-                        Hop 
+                    (move Hop 
                         Diagonal
                         (between if:True)
-                        (to 
-                            if:(is Empty (to))
-                        )
+                        (to if:(is Empty (to)))
                     )
                 )
                 ("RememberPieceHasMoved")
             )
         )
-        (piece "Pawn" Each
-            (or {
-                (move Step 
-                    Forward 
-                    (to if:(is Empty (to)))
-                )
-                "CaptureForwardDiagonal"
-                (if (is In (from) (sites Start (piece (what at:(from)))))
-                    "DoubleStep"
-                )
-                }
-                (then
-                    (if (is In (last To) (sites Mover "Promotion")) 
-                        (and
-                            (promote (last To) (piece (id "Queen" Mover)))
-                            (set State at:(last To) 1)
-                        )
+        ("ChessPawn" "Pawn"
+            (if (is In (from) (sites Start (piece (what at:(from)))))
+                ("DoubleStepForwardToEmpty")
+            )
+            (then
+                (if (is In (last To) (sites Mover "Promotion")) 
+                    (and
+                        (promote (last To) (piece (id "Queen" Mover)))
+                        (set State at:(last To) 1)
                     )
                 )
-            )		
+            )
         )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
@@ -187,13 +102,8 @@
         )
         
         (end {
-            (if (and 
-                    ("IsInCheck" "King" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
-            (if (no Moves Next) (result Mover Draw)) 
+            ("Checkmate" "King")
+            ("DrawIfNoMoves" Next) 
         })
     )
 )
@@ -209,10 +119,10 @@
         ")
         (source "Murray 1913: 461-462.")
         (id "1330")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/chess")
         (credit "Eric Piette")
-        (origin  "This game was played in Italy, from around 1250 to 1322.")
+        (origin "This game was played in Italy, from around 1250 to 1322.")
         }
     )
     

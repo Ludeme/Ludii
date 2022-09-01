@@ -3,7 +3,7 @@
 (define "NotEmptyAndNoCastle"
     (and 
         (!= (what at:(between)) (id "Castle0")) 
-        (not (is Empty (between)))
+        (is Occupied (between))
     )
 )
 
@@ -41,13 +41,11 @@
 )
 
 (define "JumpAgain"
-    (move
-        Hop
+    (move Hop
         (from (last To)) 
         Orthogonal 
         (between 
-            if:(if 
-                (< (counter) "NumMaxCapture") 
+            if:(if (< (counter) "NumMaxCapture") 
                 "NotEmptyAndNoCastle" 
                 ("IsFriendAt" (between))
             ) 
@@ -55,8 +53,7 @@
         )
         (to if:"EmptyAndNotVisited")
         (then 
-            (if 
-                "CanJumpAgain" 
+            (if "CanJumpAgain" 
                 (moveAgain) 
                 (set Counter) 
             ) 
@@ -91,8 +88,7 @@
         (board (rectangle 15 21)) 
         (piece "Pawn" Each 
             (or 
-                (move
-                    Hop
+                (move Hop
                     Orthogonal
                     (between 
                         if:"NotEmptyAndNoCastle" 
@@ -100,14 +96,13 @@
                     )
                     (to if:(is Empty (to)))
                     (then 
-                        (if 
-                            "CanJumpAgain" 
+                        (if "CanJumpAgain" 
                             (moveAgain) 
                             (set Counter)
                         ) 
                     )
                 )
-                (move Step Orthogonal (to if:(is Empty (to)))) 
+                ("StepToEmpty" Orthogonal) 
             )
         ) 
         (piece "Castle" Neutral)
@@ -115,8 +110,7 @@
         (regions "LeftPart" (expand (sites Left) steps:6))
         (regions "RightPart" (expand (sites Right) steps:6))
         (regions "Middle" (expand (sites Centre)))
-        }
-    ) 
+    }) 
     (rules 
         (start {
             (place "Pawn1" (expand (sites Left)))
@@ -151,13 +145,8 @@
             )
         )
         (end {
-            (if (< (count Pieces Next) 3) (result Mover Win)) 
-            (if 
-                (> (count in:(sites Hand Mover)) 
-                    3
-                ) 
-                (result Mover Win)
-            )
+            ("HavingLessPiecesLoss" Next 3) 
+            (if (> (count in:(sites Hand Mover)) 3) (result Mover Win))
         }) 
     )
 )
@@ -170,7 +159,7 @@
         (rules "There are 30 game-pieces for each player and eleven castles. The gameboard is divided into three sections: homes and center section. Object of the game is to capture four castles (among those of the central section and the other side) or 28 pawns of your opponent. In a turn a player moves one of their pieces, horizontally, vertically. A pawn can step to an adjacent empty cell. Additionally a pawn can jump over another pawn as long as the square behind that pawn is free. Multiple jumps are allowed and all enemy pawns are captured this way and removed from the deck. A pawn can capture a maximum of five enemy pieces, and his movement ends after the fifth piece is captured. A castle is conquered when it is surrounded by three pawns.")
         (id "413")
         (source "Le Livre des Jeux de Pions, Michel Boutin, Page 41")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/custodial")
         (author "Carl Renström")
         (publisher "Alga, Brio AB")

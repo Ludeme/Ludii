@@ -1,0 +1,174 @@
+(define "HigherValue"
+    (>= 
+        (value Piece at:(from))
+        (value Piece at:(to))
+    )
+)
+
+(define "ZuMovingOnJiang"
+    (and
+        ("IsPieceAt" "Zu" Mover (from))
+        ("IsPieceAt" "Jiang" Next (to))
+    )
+)
+
+(define "JiangMovingOnZu"
+    (and
+        ("IsPieceAt" "Jiang" Mover (from))
+        ("IsPieceAt" "Zu" Next (to))
+    )
+)
+
+(define "StepMove" 
+    (move Step
+        Orthogonal
+        (to 
+            if:(or 
+                (is Empty (to)) 
+                (and {
+                    (not (is Hidden What at:(to) to:Mover)) 
+                    ("IsEnemyAt" (to))
+                    (or
+                        ("ZuMovingOnJiang")
+                        (and
+                            ("HigherValue")
+                            (not ("JiangMovingOnZu"))
+                        )
+                    )
+                })
+            ) 
+            (apply (remove (to)))
+        ) 
+    )
+)
+
+(define "RevealAPiece"
+    (move Select 
+        (from (sites Hidden What to:Mover))
+        (then
+            (and {
+                (set Hidden What at:(last To) False to:P1)
+                (set Hidden Who at:(last To) False to:P1)
+                (set Hidden What at:(last To) False to:P2)
+                (set Hidden Who at:(last To) False to:P2)
+                #1
+            })
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Banqi" 
+    (players 2)
+    (equipment { 
+        (board (rectangle 4 8)) 
+        
+        // General
+        (piece "Jiang" Each ("StepMove")) 
+        
+        // Chariot
+        (piece "Ju" Each ("StepMove")) 
+        
+        // Horse
+        (piece "Ma" Each ("StepMove")) 
+        
+        // Canon
+        (piece "Pao" Each ("StepMove")) 
+        
+        // Guard
+        (piece "Shi" Each ("StepMove")) 
+        
+        // Elephant
+        (piece "Xiang" Each ("StepMove")) 
+        
+        // Soldier
+        (piece "Zu" Each ("StepMove")) 
+    }) 
+    
+    (rules 
+        (start { 
+            (place Random {"Zu1"} count:5 value:1) (place Random {"Zu2"} count:5 value:1) 
+            (place Random {"Pao1"} count:2 value:4) (place Random {"Pao2"} count:2 value:4) 
+            (place Random {"Ju1"} count:2 value:6) (place Random {"Ju2"} count:2 value:6) 
+            (place Random {"Ma1"} count:2 value:5) (place Random {"Ma2"} count:2 value:5) 
+            (place Random {"Xiang1"} count:2 value:2) (place Random {"Xiang2"} count:2 value:2) 
+            (place Random {"Shi1"} count:2 value:3) (place Random {"Shi2"} count:2 value:3) 
+            (place Random {"Jiang1"} count:1 value:7) (place Random {"Jiang2"} count:1 value:7) 
+            (set Hidden {What Who} (sites Board) to:P1)
+            (set Hidden {What Who} (sites Board) to:P2)
+        })
+        
+        phases:{
+        (phase "Opening" P1
+            (play 
+                ("RevealAPiece" 
+                    (set NextPlayer (player (who at:(last To))))
+                )
+            )
+            (nextPhase Mover "Play")
+        )
+        (phase "Play" 
+            (play 
+                (or
+                    (forEach Piece)
+                    ("RevealAPiece")
+                )
+            )
+        )
+        }
+        
+        (end ("BlockWin"))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Banqi is a two-player Chinese board game played on a 4×8 grid, or half of the xiangqi (Chinese chess) board. 
+            
+        The pieces, as in Western chess, are placed inside the squares, rather than on the intersections as in Chinese chess.")
+        (aliases {"Half Chess" "Dark Chess" "Blind Chess"})
+        (rules "The 32 pieces are shuffled and randomly allocated face-down to squares on the board. 
+            
+            The first player turns up a piece to begin the game. The color of that first uncovered piece is the color he or she will play in the game. The second player then makes a move, and the two alternate until the game is finished.
+            
+            There are three kinds of moves. A player may turn a piece face-up, move a piece, or capture an enemy piece. In some game variants, multiple captures may be made in one turn.
+            
+            Turning a piece face-up is a legal move if there are any face-down pieces on the board. Once revealed, a piece may move, capture, or be captured. 
+            
+            A player may only move face-up pieces of their own color.
+            
+            Unlike Xiangqi, all pieces move identically: a piece may move only one square up, down, left, or right. A piece may never move onto a square that is already occupied unless such a move is a legal capture.
+            
+            A player may only capture with a face-up piece of their own color, and may only capture a face-up piece of the opposing color. In all captures, the captured piece is removed from the board and its square is occupied by the capturing piece.
+            
+            The pieces are ranked, forming a hierarchy with the general at the top and soldiers at the bottom. Only pieces of equal or lower rank may be captured, with one exception. For instance, a chariot may capture a horse, and the general may capture either, but a horse cannot capture a chariot, and neither can capture the general. The one exception concerns generals and soldiers: the general cannot capture soldiers, and soldiers can capture the general.
+            
+            In the Hong Kong version, the pieces are ranked in this order: General>Chariot>Horse>Cannon, Advisor>Minster>Soldier. This ranking reflects the approximate value of the corresponding pieces in Xiangqi (though the relative rank of horse and cannon is arguable). All pieces capture exactly as they move: one square up, down, left, or right.
+            
+        The game ends when a player cannot move, and that player is the loser. Most often, the game is lost because all of a player's pieces have been captured and so he has no pieces to move. However, it is possible for one player to surround all of the other player's remaining pieces in a manner that makes it impossible for them to move.")
+        (id "673")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Banqi\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.3.6")
+        (classification "board/space/blocking")
+        (credit "Eric Piette")
+        (date "1970")
+        }
+    )
+    (graphics {
+        (board Colour Phase0 (colour 255 230 130))
+        (board Colour InnerEdges (colour 100 75 50))
+        (board Colour OuterEdges (colour 100 75 50))
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour Red))
+        (piece Families {"Defined" "Western"})
+        (piece ExtendName P2 "_black")
+    })
+    
+    (ai
+        "Banqi_ai"
+    )
+)

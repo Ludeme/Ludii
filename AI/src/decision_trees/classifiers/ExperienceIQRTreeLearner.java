@@ -292,6 +292,7 @@ public class ExperienceIQRTreeLearner
 					case Top25:
 						++numTop25IfTrue;
 						break;
+						//$CASES-OMITTED$
 					default:
 						System.err.println("Unrecognised IQR class!");
 					}
@@ -309,6 +310,7 @@ public class ExperienceIQRTreeLearner
 					case Top25:
 						++numTop25IfFalse;
 						break;
+						//$CASES-OMITTED$
 					default:
 						System.err.println("Unrecognised IQR class!");
 					}
@@ -393,6 +395,7 @@ public class ExperienceIQRTreeLearner
 					case Top25:
 						++numTop25IfTrue;
 						break;
+						//$CASES-OMITTED$
 					default:
 						System.err.println("Unrecognised IQR class!");
 					}
@@ -410,6 +413,7 @@ public class ExperienceIQRTreeLearner
 					case Top25:
 						++numTop25IfFalse;
 						break;
+						//$CASES-OMITTED$
 					default:
 						System.err.println("Unrecognised IQR class!");
 					}

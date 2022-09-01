@@ -198,7 +198,7 @@ public class CompilationTest
 //	}
 
 	@Test
-	public void testCompilingLudFromMemory()
+	public static void testCompilingLudFromMemory()
 	{
 		System.out.println("\n=========================================\nTest: Compile all .lud from memory:\n");
 

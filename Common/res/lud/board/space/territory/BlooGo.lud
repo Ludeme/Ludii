@@ -12,12 +12,9 @@
     })
     
     (rules 
-        (meta
-            (no Repeat)
-        )
+        (meta (no Repeat))
         (play 
-            (move 
-                Add
+            (move Add
                 (to (sites Empty))
                 (then 
                     "RemoveSurrounded"
@@ -38,32 +35,32 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "9x9"   <(square 9)>   "The game is played on a 9x9 board")**  
-    (item "13x13"  <(square 13)>  "The game is played on a 13x13 board")  
-    (item "15x15"  <(square 15)>  "The game is played on a 15x15 board")  
-    (item "19x19"  <(square 19)>  "The game is played on a 19x19 board")  
+    (item "9x9"  <(square 9)>  "The game is played on a 9x9 board")** 
+    (item "13x13" <(square 13)> "The game is played on a 13x13 board") 
+    (item "15x15" <(square 15)> "The game is played on a 15x15 board") 
+    (item "19x19" <(square 19)> "The game is played on a 19x19 board") 
 })
 
 (option "Capture Threshold" <CapThreshold> args:{ <size> }
     {
-    (item "1"  <1>   "1 capture to win.")  
-    (item "2"  <2>  "2 captures to win.")
-    (item "3"  <3>  "2 captures to win.")  
-    (item "4"  <4>  "4 captures to win.")  
-    (item "5"  <5>  "5 captures to win.")** 
-    (item "6"  <6>  "6 captures to win.")
-    (item "7"  <7>  "7 captures to win.")
-    (item "8"  <8>  "8 captures to win.")
-    (item "9"  <9>  "9 captures to win.") 
-    (item "10"  <10>  "10 captures to win.") 
-    (item "15"  <15>  "15 captures to win.") 
-    (item "20"  <20>  "20 captures to win.") 
-    (item "25"  <25>  "25 captures to win.") 
-    (item "30"  <30>  "30 captures to win.") 
-    (item "35"  <35>  "35 captures to win.") 
-    (item "40"  <40>  "40 captures to win.") 
-    (item "45"  <45>  "45 captures to win.") 
-    (item "50"  <50>  "50 captures to win.")  
+    (item "1" <1>  "1 capture to win.") 
+    (item "2" <2> "2 captures to win.")
+    (item "3" <3> "2 captures to win.") 
+    (item "4" <4> "4 captures to win.") 
+    (item "5" <5> "5 captures to win.")** 
+    (item "6" <6> "6 captures to win.")
+    (item "7" <7> "7 captures to win.")
+    (item "8" <8> "8 captures to win.")
+    (item "9" <9> "9 captures to win.") 
+    (item "10" <10> "10 captures to win.") 
+    (item "15" <15> "15 captures to win.") 
+    (item "20" <20> "20 captures to win.") 
+    (item "25" <25> "25 captures to win.") 
+    (item "30" <30> "30 captures to win.") 
+    (item "35" <35> "35 captures to win.") 
+    (item "40" <40> "40 captures to win.") 
+    (item "45" <45> "45 captures to win.") 
+    (item "50" <50> "50 captures to win.") 
 })
 
 //------------------------------------------------------------------------------
@@ -76,7 +73,7 @@
         (rules "Played on a square grid. The board begins empty. One player plays as Black, the other as White. Players alternate turns placing a piece of their colour on the board; Black plays first. Passing is not allowed. After a move, all opposing pieces without liberties are captured (a stone or group of stones has no liberties if all adjacent points to that stone are occupied).  Stones cannot be placed to recreate a previous position. The game ends when one player captures a number of stones equal to a winning threshold agreed upon at the start of the game.  Despite not having an explicit territorial goal, this variant produces final positions quite reminiscent of standard Go.")
         (id "1425")
         (source "<a href=\"https://www.lifein19x19.com/forum/viewtopic.php?f=45&t=17869\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Life in 19x19 Forums</a>")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/space/territory")
         (author "Nick Bentley and Luis Bolaños Mures")
         (credit "Eric Silverman")

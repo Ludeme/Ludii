@@ -94,6 +94,7 @@ public class BaseCardImages
 	 * @param cardSizeInput The size of the card in input.
 	 * @return The small size of the suit.
 	 */
+	@SuppressWarnings("static-method")
 	public int getSuitSizeSmall(final int cardSizeInput) {
 		return (int)(0.100 * cardSizeInput);
 	}
@@ -109,6 +110,7 @@ public class BaseCardImages
 	 * @param cardSizeInput The size of the card in input.
 	 * @return The big size of the suit.
 	 */
+	@SuppressWarnings("static-method")
 	public int getSuitSizeBig(final int cardSizeInput) {
 		return (int)(0.160 * cardSizeInput);
 	}

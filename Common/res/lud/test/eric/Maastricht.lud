@@ -854,7 +854,7 @@
     }) 
     (rules 
         (meta (passEnd NoEnd))
-        (start {   
+        (start {  
             <Scenario:buildingSetup>
             <Scenario:pieceSetup>
             <Scenario:teams>
@@ -982,13 +982,13 @@
         (place "Train_track0" (sites {97 122 147 172 197 222 247 248 298 323 348 373 47 22}) state:8 value:100)
         (place "Cake0" (sites {243 208}) state:8 value:100)
         (place "Goose0" (sites {106..108}) state:8 value:100)
-        >    
+        >  
         <
         
-        >   
+        >  
         <
         100
-        >    
+        >  
         <
         > 
         <
@@ -999,7 +999,7 @@
         (show Symbol "waves" (sites "ShallowWater"))
         (show Symbol "waves" (sites "DeepWater"))
         (show Symbol "mountain" (sites "Mountain"))
-        >        
+        >    
         "Scenario - Maastricht"
     )**
     
@@ -1010,86 +1010,86 @@
 
 (option "Fog of War" <FogOfWar> args:{ <AttackCheck> <EachMove> <Metadata> }
     {
-    (item "Off"  	<> <> <> 															"No Fog of War.")**
-    (item "On"  	<"FogOfWarAttackCheck"> <"FogOfWarEachMove"> <"FogOfWarMetadata">	"Fog of War.")
+    (item "Off" 	<> <> <> 															"No Fog of War.")**
+    (item "On" 	<"FogOfWarAttackCheck"> <"FogOfWarEachMove"> <"FogOfWarMetadata">	"Fog of War.")
 })
 
 //------------------------------------------------------------------------------
 
 (option "Player 1 Doctrine" <Doctrine1> args:{ <doctrine> }
     {
-    (item "None"  			<"NoDoctrine">  		"Player 1 - No Doctrine.")**
-    (item "Special Forces"  	<"SpecialForces">  	"Player 1 - Special Forces.")
-    (item "Brute Strength"		<"BruteStrength">  	"Player 1 - Brute Strength.")
-    (item "Sharpshooter"  	<"Sharpshooter">  	"Player 1 - Sharpshooter.")
-    (item "Ace Pilot"  		<"AcePilot">  			"Player 1 - Ace Pilot.")
-    (item "Sea Dog"  			<"SeaDog">  			"Player 1 - Sea Dog.")
+    (item "None" 			<"NoDoctrine"> 		"Player 1 - No Doctrine.")**
+    (item "Special Forces" 	<"SpecialForces"> 	"Player 1 - Special Forces.")
+    (item "Brute Strength"		<"BruteStrength"> 	"Player 1 - Brute Strength.")
+    (item "Sharpshooter" 	<"Sharpshooter"> 	"Player 1 - Sharpshooter.")
+    (item "Ace Pilot" 		<"AcePilot"> 			"Player 1 - Ace Pilot.")
+    (item "Sea Dog" 			<"SeaDog"> 			"Player 1 - Sea Dog.")
     (item "Guerrilla Warfare" 	<"GuerrillaWarfare"> 	"Player 1 - Guerrilla Warfare.")
-    (item "Foreign Invader"  	<"ForeignInvader">  	"Player 1 - Foreign Invader.")
-    (item "Conscription"  	<"Conscription">  	"Player 1 - Conscription.")
-    (item "Elite Training"  	<"EliteTraining">  	"Player 1 - Elite Training.")
-    (item "Glass Cannon"  	<"GlassCannon">  		"Player 1 - Glass Cannon.")
-    (item "Hardened Resolve"  <"HardenedResolve"> 	"Player 1 - Hardened Resolve.")
+    (item "Foreign Invader" 	<"ForeignInvader"> 	"Player 1 - Foreign Invader.")
+    (item "Conscription" 	<"Conscription"> 	"Player 1 - Conscription.")
+    (item "Elite Training" 	<"EliteTraining"> 	"Player 1 - Elite Training.")
+    (item "Glass Cannon" 	<"GlassCannon"> 		"Player 1 - Glass Cannon.")
+    (item "Hardened Resolve" <"HardenedResolve"> 	"Player 1 - Hardened Resolve.")
     (item "Preemptive Strike" 	<"PreemptiveStrike"> 	"Player 1 - Preemptive Strike.")
-    (item "Retaliation"  		<"Retaliation">  		"Player 1 - Retaliation.")
-    (item "Lady Luck"  		<"LadyLuck">  		"Player 1 - Lady Luck.")
+    (item "Retaliation" 		<"Retaliation"> 		"Player 1 - Retaliation.")
+    (item "Lady Luck" 		<"LadyLuck"> 		"Player 1 - Lady Luck.")
 })
 
 (option "Player 2 Doctrine" <Doctrine2> args:{ <doctrine> }
     {
-    (item "None"  			<"NoDoctrine">  		"Player 2 - No Doctrine.")**
-    (item "Special Forces"  	<"SpecialForces">  	"Player 2 - Special Forces.")
-    (item "Brute Strength"		<"BruteStrength">  	"Player 2 - Brute Strength.")
-    (item "Sharpshooter"  	<"Sharpshooter">  	"Player 2 - Sharpshooter.")
-    (item "Ace Pilot"  		<"AcePilot">  			"Player 2 - Ace Pilot.")
-    (item "Sea Dog"  			<"SeaDog">  			"Player 2 - Sea Dog.")
+    (item "None" 			<"NoDoctrine"> 		"Player 2 - No Doctrine.")**
+    (item "Special Forces" 	<"SpecialForces"> 	"Player 2 - Special Forces.")
+    (item "Brute Strength"		<"BruteStrength"> 	"Player 2 - Brute Strength.")
+    (item "Sharpshooter" 	<"Sharpshooter"> 	"Player 2 - Sharpshooter.")
+    (item "Ace Pilot" 		<"AcePilot"> 			"Player 2 - Ace Pilot.")
+    (item "Sea Dog" 			<"SeaDog"> 			"Player 2 - Sea Dog.")
     (item "Guerrilla Warfare" 	<"GuerrillaWarfare"> 	"Player 2 - Guerrilla Warfare.")
-    (item "Foreign Invader"  	<"ForeignInvader">  	"Player 2 - Foreign Invader.")
-    (item "Conscription"  	<"Conscription">  	"Player 2 - Conscription.")
-    (item "Elite Training"  	<"EliteTraining">  	"Player 2 - Elite Training.")
-    (item "Glass Cannon"  	<"GlassCannon">  		"Player 2 - Glass Cannon.")
-    (item "Hardened Resolve"  <"HardenedResolve"> 	"Player 2 - Hardened Resolve.")
+    (item "Foreign Invader" 	<"ForeignInvader"> 	"Player 2 - Foreign Invader.")
+    (item "Conscription" 	<"Conscription"> 	"Player 2 - Conscription.")
+    (item "Elite Training" 	<"EliteTraining"> 	"Player 2 - Elite Training.")
+    (item "Glass Cannon" 	<"GlassCannon"> 		"Player 2 - Glass Cannon.")
+    (item "Hardened Resolve" <"HardenedResolve"> 	"Player 2 - Hardened Resolve.")
     (item "Preemptive Strike" 	<"PreemptiveStrike"> 	"Player 2 - Preemptive Strike.")
-    (item "Retaliation"  		<"Retaliation">  		"Player 2 - Retaliation.")
-    (item "Lady Luck"  		<"LadyLuck">  		"Player 2 - Lady Luck.")
+    (item "Retaliation" 		<"Retaliation"> 		"Player 2 - Retaliation.")
+    (item "Lady Luck" 		<"LadyLuck"> 		"Player 2 - Lady Luck.")
 })
 
 (option "Player 3 Doctrine" <Doctrine3> args:{ <doctrine> }
     {
-    (item "None"  			<"NoDoctrine">  		"Player 3 - No Doctrine.")**
-    (item "Special Forces"  	<"SpecialForces">  	"Player 3 - Special Forces.")
-    (item "Brute Strength"		<"BruteStrength">  	"Player 3 - Brute Strength.")
-    (item "Sharpshooter"  	<"Sharpshooter">  	"Player 3 - Sharpshooter.")
-    (item "Ace Pilot"  		<"AcePilot">  			"Player 3 - Ace Pilot.")
-    (item "Sea Dog"  			<"SeaDog">  			"Player 3 - Sea Dog.")
+    (item "None" 			<"NoDoctrine"> 		"Player 3 - No Doctrine.")**
+    (item "Special Forces" 	<"SpecialForces"> 	"Player 3 - Special Forces.")
+    (item "Brute Strength"		<"BruteStrength"> 	"Player 3 - Brute Strength.")
+    (item "Sharpshooter" 	<"Sharpshooter"> 	"Player 3 - Sharpshooter.")
+    (item "Ace Pilot" 		<"AcePilot"> 			"Player 3 - Ace Pilot.")
+    (item "Sea Dog" 			<"SeaDog"> 			"Player 3 - Sea Dog.")
     (item "Guerrilla Warfare" 	<"GuerrillaWarfare"> 	"Player 3 - Guerrilla Warfare.")
-    (item "Foreign Invader"  	<"ForeignInvader">  	"Player 3 - Foreign Invader.")
-    (item "Conscription"  	<"Conscription">  	"Player 3 - Conscription.")
-    (item "Elite Training"  	<"EliteTraining">  	"Player 3 - Elite Training.")
-    (item "Glass Cannon"  	<"GlassCannon">  		"Player 3 - Glass Cannon.")
-    (item "Hardened Resolve"  <"HardenedResolve"> 	"Player 3 - Hardened Resolve.")
+    (item "Foreign Invader" 	<"ForeignInvader"> 	"Player 3 - Foreign Invader.")
+    (item "Conscription" 	<"Conscription"> 	"Player 3 - Conscription.")
+    (item "Elite Training" 	<"EliteTraining"> 	"Player 3 - Elite Training.")
+    (item "Glass Cannon" 	<"GlassCannon"> 		"Player 3 - Glass Cannon.")
+    (item "Hardened Resolve" <"HardenedResolve"> 	"Player 3 - Hardened Resolve.")
     (item "Preemptive Strike" 	<"PreemptiveStrike"> 	"Player 3 - Preemptive Strike.")
-    (item "Retaliation"  		<"Retaliation">  		"Player 3 - Retaliation.")
-    (item "Lady Luck"  		<"LadyLuck">  		"Player 3 - Lady Luck.")
+    (item "Retaliation" 		<"Retaliation"> 		"Player 3 - Retaliation.")
+    (item "Lady Luck" 		<"LadyLuck"> 		"Player 3 - Lady Luck.")
 })
 
 (option "Player 4 Doctrine" <Doctrine4> args:{ <doctrine> }
     {
-    (item "None"  			<"NoDoctrine">  		"Player 4 - No Doctrine.")**
-    (item "Special Forces"  	<"SpecialForces">  	"Player 4 - Special Forces.")
-    (item "Brute Strength"		<"BruteStrength">  	"Player 4 - Brute Strength.")
-    (item "Sharpshooter"  	<"Sharpshooter">  	"Player 4 - Sharpshooter.")
-    (item "Ace Pilot"  		<"AcePilot">  			"Player 4 - Ace Pilot.")
-    (item "Sea Dog"  			<"SeaDog">  			"Player 4 - Sea Dog.")
+    (item "None" 			<"NoDoctrine"> 		"Player 4 - No Doctrine.")**
+    (item "Special Forces" 	<"SpecialForces"> 	"Player 4 - Special Forces.")
+    (item "Brute Strength"		<"BruteStrength"> 	"Player 4 - Brute Strength.")
+    (item "Sharpshooter" 	<"Sharpshooter"> 	"Player 4 - Sharpshooter.")
+    (item "Ace Pilot" 		<"AcePilot"> 			"Player 4 - Ace Pilot.")
+    (item "Sea Dog" 			<"SeaDog"> 			"Player 4 - Sea Dog.")
     (item "Guerrilla Warfare" 	<"GuerrillaWarfare"> 	"Player 4 - Guerrilla Warfare.")
-    (item "Foreign Invader"  	<"ForeignInvader">  	"Player 4 - Foreign Invader.")
-    (item "Conscription"  	<"Conscription">  	"Player 4 - Conscription.")
-    (item "Elite Training"  	<"EliteTraining">  	"Player 4 - Elite Training.")
-    (item "Glass Cannon"  	<"GlassCannon">  		"Player 4 - Glass Cannon.")
-    (item "Hardened Resolve"  <"HardenedResolve"> 	"Player 4 - Hardened Resolve.")
+    (item "Foreign Invader" 	<"ForeignInvader"> 	"Player 4 - Foreign Invader.")
+    (item "Conscription" 	<"Conscription"> 	"Player 4 - Conscription.")
+    (item "Elite Training" 	<"EliteTraining"> 	"Player 4 - Elite Training.")
+    (item "Glass Cannon" 	<"GlassCannon"> 		"Player 4 - Glass Cannon.")
+    (item "Hardened Resolve" <"HardenedResolve"> 	"Player 4 - Hardened Resolve.")
     (item "Preemptive Strike" 	<"PreemptiveStrike"> 	"Player 4 - Preemptive Strike.")
-    (item "Retaliation"  		<"Retaliation">  		"Player 4 - Retaliation.")
-    (item "Lady Luck"  		<"LadyLuck">  		"Player 4 - Lady Luck.")
+    (item "Retaliation" 		<"Retaliation"> 		"Player 4 - Retaliation.")
+    (item "Lady Luck" 		<"LadyLuck"> 		"Player 4 - Lady Luck.")
 })
 
 //------------------------------------------------------------------------------

@@ -136,7 +136,7 @@
         })
         (play 
             ("RollEachNewTurnMove"
-                (do (if (not "SameTurn") ("UpdateScore"))
+                (do (if ("NewTurn") ("UpdateScore"))
                     next:(or { 
                         (if (and (>= 0 (var "MovingFromHucke")) (>= 0 (var "MovingToHucke"))) (forEach Piece))
                         
@@ -196,8 +196,8 @@
 
 (option "Start Rules" <Pieces> args:{ <num> }
     {
-    (item "15" <15> "Each player has 15 pieces.")  
-    (item "16" <16> "Each player has 16 pieces.")  
+    (item "15" <15> "Each player has 15 pieces.") 
+    (item "16" <16> "Each player has 16 pieces.") 
 })
 
 //------------------------------------------------------------------------------
@@ -222,10 +222,10 @@
         (rules "2x12 board, with spaces as points, divided in two. Fifteen or sixteen pieces per player, which begin on one of the points, the furthest to the right of one player and the furthest to the left of the other (they will be opposite each other). The points form a continuous track in a horseshoe shape; each player progresses in opposite directions (one from their bottom right to the top right, the other from their bottom left to their top left). Players move according to the number on each die by moving one piece the value on one die then another piece the value on the other die, or by moving one piece the value of one die and then the value of the other. Doubles are only played once. Pieces may not land on a space occupied by an opponent's piece. Pieces may only move into the twelfth point on their side of the board (Hucke) with a throw that allows two pieces to move there at once. A player cannot move into or hit pieces in the opponent's Hucke. Players may move beyond their Hucke only on a throw that allows them, to move two pieces from the Hucke onto the opposite side of the board. Each player has another piece, placed at the tip of their point. The player moves this piece to mark the score they earn. Points are awarded as follows: When it is possible for a player to land on a space occupied by a single piece belonging to the opponent (a hit), a player gains one point. Hitting the opponent's Hucke is only possible by throwing two 1s with at least four pieces on the player's own Hucke. For a given throw, all possible hits made by any legal move are counted. Players move their pieces after the possible hits are calculated. A player gains two points by bringing all of their pieces into the final section of the board and bearing all of their pieces off by throwing more than the number of remaining spaces. The player who obtains twelve points wins. ")
         (source "Alvensleben 1853: 582-585.")
         (id "1076")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/race/escape")
         (credit "Eric Piette")
-        (origin  "This game was played in Germany, around 1853.")
+        (origin "This game was played in Germany, around 1853.")
         }
     )
     

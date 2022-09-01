@@ -13,32 +13,38 @@
             )
         )
         next:(do
-            (and
-                {
+            (and {
                 (remember Value 0)
                 (remember Value 0)
                 (forEach Group "GridDirection" 
-                    //  if:(is #1 (who at:(to)))
+                    // if:(is #1 (who at:(to)))
                     (if
                         (no Pieces in:(intersection (sites) (sites State 1))) 
                         (remember Value 
                             (count Sites in:(sites))
-                )))
-                }
-            )
+                        )
+                    )
+                )
+            })
             next:(set Var "TopValue" (max (values Remembered))
                 (then
                     (forget Value (max (values Remembered)) 
                         (then
                             (set Score #1 (* (var "TopValue") (max (values Remembered)))
                                 (then
-                                    (forget Value All)    
-        )))))))
-))
+                                    (forget Value All)  
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
 
 (define "AddOrPass"
-    (or
-        {
+    (or {
         (move Add
             (piece (id "Disc" Mover))
             (to (sites Empty)
@@ -47,26 +53,23 @@
             (then (set Var "Added" 1))
         )
         (move Pass) // without this there are obscure forced moves...
-        }
-))
+    })
+)
 
 //-----------------------------------------------
 // Main routine
 
 (game "Wrigglers Squared"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board <BoardShape:gridType> use:Vertex)
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
         (play
             (if
                 (= 1 (var "Added"))
-                (or
-                    {
+                (or {
                     "AddOrPass"
                     (forEach Piece
                         (if
@@ -76,11 +79,11 @@
                         ))
                         Mover
                     )
-                    }
-                )
+                })
                 "AddOrPass"
                 (then ("Score4" Mover))
-        ))
+            )
+        )
         (end 
             (if
                 (all Passed)
@@ -91,7 +94,10 @@
                 )
                 }
                 (result Next Win)
-))))
+            )
+        )
+    )
+)
 
 //-------------------------------------------------
 // Options
@@ -133,7 +139,7 @@
             
         The game ends when both players pass. ")
         (id "1970")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")
@@ -150,7 +156,7 @@
         (board StyleThickness InnerVertices .5)
         (show Edges Diagonal <BoardShape:DiagShow>)
         (piece Foreground "Disc" state:1 image:"square.svg" fillColour:(colour 0 0 0 50) scale:0.4)
-        //  (show Piece State)
+        // (show Piece State)
         }
     )
     (ai (heuristics (score weight:2)))

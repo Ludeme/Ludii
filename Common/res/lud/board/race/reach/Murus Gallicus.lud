@@ -38,7 +38,7 @@
         )
         (to 
             if:(and ("IsEnemyAt" (to)) ("IsSingletonStack" (to)))
-            (apply (remove (to)))  // This removes the only enemy piece in the 'to' cell.
+            (apply (remove (to))) // This removes the only enemy piece in the 'to' cell.
         )
         stack:True
         (then
@@ -47,7 +47,7 @@
                     (from (last To))
                     (to (last From))
                 )
-                (remove (last To))    
+                (remove (last To))  
             ) 
         )
     )
@@ -62,7 +62,7 @@
         )
         (to 
             if:(and ("IsEnemyAt" (to)) (= (size Stack at:(to)) 3))
-            (apply (remove (to)))  // This removes one enemy piece in the 'to' cell.
+            (apply (remove (to))) // This removes one enemy piece in the 'to' cell.
         )
         stack:True
         (then
@@ -84,8 +84,8 @@
     (move Hop
         (from if:(and (is Mover (who at:(from)))
                 (= (size Stack at:(from)) 3)
-            )  
-        )                    
+            ) 
+        )          
         (difference All Backwards)
         (between (range 1 2) if:True)
         (to if:
@@ -103,8 +103,8 @@
     (move Hop
         (from if:(and (is Mover (who at:(from)))
                 (= (size Stack at:(from)) 3)
-            )  
-        )                    
+            ) 
+        )          
         (difference All Backwards)
         (between (range 1 2) if:True)
         (to if:
@@ -122,7 +122,7 @@
 //**************************************************************************************************
 
 (game "Murus Gallicus" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (<Board:shape>)) 
         (piece "Counter_isometric" Each) 
@@ -143,18 +143,18 @@
                     (move
                         (from (last From))
                         (to (last To)) 
-                        stack:True        
+                        stack:True    
                         (then 
                             (and 
                                 (remove (last To)) 
                                 (remove (last To)) 
                             )
-                        )        
-                    )        
+                        )    
+                    )    
                     (move Pass)
                 )
                 (forEach Piece "Counter_isometric"
-                    (or   
+                    (or  
                         {
                         "MoveTower"
                         "SacrificeCaptureWall"
@@ -166,7 +166,7 @@
                     )
                     top:True
                 )
-            )      
+            )   
         )
         
         (end {
@@ -180,23 +180,23 @@
 
 (option "Stacking Limit" <Stack> args:{ <limit> }
     {
-    (item "Standard"    <2>  "Stack limit is 2.")*
-    (item "Advanced"    <3>  "Stack limit is 3.")
+    (item "Standard"  <2> "Stack limit is 2.")*
+    (item "Advanced"  <3> "Stack limit is 3.")
     }
 )
 
 (option "Board" <Board> args:{ <shape> <rangeP1> <rangeP2>}
     {
-    (item "Rectangle 7 x 8 1r"    <rectangle 7 8>  <0..7>  <48..55>  "Standard 7 x 8, one row")*
-    (item "Square 8 x 8 1r"      <square 8>     <0..7>  <56..63>   "Square 8 x 8, one row")
-    (item "Square 8 x 8 2r"      <square 8>     <0..15>  <48..63>  "Square 8 x 8, two rows")
-    (item "Hex 5 x 5 x 5 2r"      <hex 5>       <0..10> <50..60>   "Hexhex base 5, two rows.")
+    (item "Rectangle 7 x 8 1r"  <rectangle 7 8> <0..7> <48..55> "Standard 7 x 8, one row")*
+    (item "Square 8 x 8 1r"   <square 8>   <0..7> <56..63>  "Square 8 x 8, one row")
+    (item "Square 8 x 8 2r"   <square 8>   <0..15> <48..63> "Square 8 x 8, two rows")
+    (item "Hex 5 x 5 x 5 2r"   <hex 5>    <0..10> <50..60>  "Hexhex base 5, two rows.")
     }
 )
 
 (option "End Game" <End> args:{ <event> }
     {
-    (item "Immediate"    
+    (item "Immediate"  
         <
         (if 
             (and 
@@ -208,17 +208,17 @@
             )
             (result Mover Win)
         )
-        >  
-        "Immediately after reaching goal."  
-    )*  
-    (item "Delayed"   
+        > 
+        "Immediately after reaching goal." 
+    )* 
+    (item "Delayed"  
         <
-        (if (= 1 (count Sites in:(intersection (sites Occupied by:Next) (sites Next) )  ))
+        (if (= 1 (count Sites in:(intersection (sites Occupied by:Next) (sites Next) ) ))
             (result Next Win)
         )
-        >  
-        "After opponent's last chance to remove invader."  
-    )  
+        > 
+        "After opponent's last chance to remove invader." 
+    ) 
     }
 )
 
@@ -265,7 +265,7 @@ Goal: A player wins by reaching any cell of his or her opponent's home row and t
     
 <a href=\"https://nestorgames.com/rulebooks/MURUSGALLICUS_EN.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Nestor Games</a>")
 (id "1647")
-(version "1.3.5")
+(version "1.3.6")
 (classification "board/race/reach")
 (author "Phil Leduc")
 (publisher "<a href=\"https://www.nestorgames.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a>")
@@ -281,7 +281,7 @@ Goal: A player wins by reaching any cell of his or her opponent's home row and t
     (board Colour Phase1 (colour "#FCFCE1"))
     (player Colour P1 (colour HumanLight))
     (player Colour P2 (colour Brown))
-})    
+})  
 
 )
 

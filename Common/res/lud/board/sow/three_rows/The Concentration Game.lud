@@ -64,8 +64,8 @@
             (track "Track" "0,N,E,S,W2" loop:True)
         )
         (piece "Seed" Shared)
-        (regions P1 (union (sites {4}) (sites Bottom)))           // P1 home
-        (regions P2 (union (sites {7}) (sites Top)))            // P2 home
+        (regions P1 (union (sites {4}) (sites Bottom)))      // P1 home
+        (regions P2 (union (sites {7}) (sites Top)))      // P2 home
         (map {(pair P1 5) (pair P2 6)}) // kalahs (storage pits)
     }) 
     (rules 
@@ -112,16 +112,16 @@
 
 (option "Num Initial Seed To Capture" <ToCapture> args:{ <num> }
     {
-    (item "2"  <2> "The number of counters to have in the hole to capture in the initial captures before the sequence is 2.")*  
-    (item "3"  <3> "The number of counters to have in the hole to capture in the initial captures before the sequence is 3.")  
-    (item "4"  <4> "The number of counters to have in the hole to capture in the initial captures before the sequence is 4.")  
-    (item "5"  <5> "The number of counters to have in the hole to capture in the initial captures before the sequence is 5.")
+    (item "2" <2> "The number of counters to have in the hole to capture in the initial captures before the sequence is 2.")* 
+    (item "3" <3> "The number of counters to have in the hole to capture in the initial captures before the sequence is 3.") 
+    (item "4" <4> "The number of counters to have in the hole to capture in the initial captures before the sequence is 4.") 
+    (item "5" <5> "The number of counters to have in the hole to capture in the initial captures before the sequence is 5.")
 })
 
 (option "Num Initial Capture" <Sequence> args:{ <length> }
     {
-    (item "3"  <1> "The number of initial captures before the sequence is 3.")  
-    (item "7"  <5> "The number of initial captures before the sequence is 7.")*  
+    (item "3" <1> "The number of initial captures before the sequence is 3.") 
+    (item "7" <5> "The number of initial captures before the sequence is 7.")* 
 })
 
 //------------------------------------------------------------------------------
@@ -166,10 +166,10 @@
         (useFor "Ruleset/Five Counters (Described)" (id "1740"))
         (source "Murray 1951: 190-191.")
         (id "234")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/sow/three rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Nigeria, around 1948.")
+        (origin "This game was played in Nigeria, around 1948.")
         }
     )
     

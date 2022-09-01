@@ -157,7 +157,7 @@ public class Generator
 		final Report report = new Report();
 		final Description description = new Description(ludeme);
 		
-		Expander.expand(description, new UserSelections(new ArrayList<String>()), report, null, false);
+		Expander.expand(description, new UserSelections(new ArrayList<String>()), report, false);
 		
 		if (report.isError())
 			return ludeme;
@@ -763,7 +763,7 @@ public class Generator
 			final Description description = new Description(str);	
 			final UserSelections userSelections = new UserSelections(new ArrayList<String>());
 			
-			Parser.expandAndParse(description, userSelections, report, false);	
+			Parser.expandAndParse(description, userSelections, report, true, false);	
 			if (report.isError())
 			{
 				// Game does not parse
@@ -947,7 +947,7 @@ public class Generator
 			final Description description = new Description(str);	
 			final UserSelections userSelections = new UserSelections(new ArrayList<String>());
 			
-			Parser.expandAndParse(description, userSelections, report, false);	
+			Parser.expandAndParse(description, userSelections, report, true, false);	
 			if (report.isError())
 			{
 				// Game does not parse

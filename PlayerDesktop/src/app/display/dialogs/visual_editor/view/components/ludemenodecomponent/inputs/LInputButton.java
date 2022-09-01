@@ -1,7 +1,7 @@
 package app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs;
 
 
-import app.display.dialogs.visual_editor.view.DesignPalette;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,15 +11,21 @@ import java.awt.event.MouseListener;
 
 public class LInputButton extends JButton {
 
-    private final Color ACTIVE_COLOR = DesignPalette.FONT_LUDEME_INPUTS_COLOR;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6627034885726770235L;
+	public Color ACTIVE_COLOR;
     private final Color HOVER_COLOR = new Color(127,191,255);
 
-    private ImageIcon ACTIVE_ICON;
+    public ImageIcon ACTIVE_ICON;
     private ImageIcon HOVER_ICON;
     private boolean active = true;
 
-    public LInputButton(ImageIcon activeIcon, ImageIcon hoverIcon){
+    public LInputButton(ImageIcon activeIcon, ImageIcon hoverIcon)
+    {
         super(activeIcon);
+        this.ACTIVE_COLOR = DesignPalette.FONT_LUDEME_INPUTS_COLOR();
         this.ACTIVE_ICON = activeIcon;
         this.HOVER_ICON = hoverIcon;
 
@@ -33,7 +39,12 @@ public class LInputButton extends JButton {
         setBorderPainted(false);
 
         addMouseListener(hoverMouseListener);
+    }
 
+    public void updateDP()
+    {
+        if(active)
+            setActive();
     }
 
     public void setActive(){
@@ -51,11 +62,13 @@ public class LInputButton extends JButton {
         repaint();
     }
 
-    MouseListener hoverMouseListener = new MouseAdapter() {
-        public void mouseEntered(MouseEvent e) {
+    final MouseListener hoverMouseListener = new MouseAdapter() {
+        @Override
+		public void mouseEntered(MouseEvent e) {
             setHover();
         }
-        public void mouseExited(MouseEvent e) {
+        @Override
+		public void mouseExited(MouseEvent e) {
             setActive();
         }
     };

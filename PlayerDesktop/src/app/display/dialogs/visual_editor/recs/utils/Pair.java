@@ -16,7 +16,8 @@ public class Pair<R, S> {
         return s;
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         return r.toString() + " " + s.toString();
     }
 }

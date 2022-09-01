@@ -26,6 +26,7 @@ public class OnePlayoutPerGameTestWithOptions
 {
 
 	@Test
+	@SuppressWarnings("static-method")
 	public void test()
 	{
 		final File startFolder = new File("../Common/res/lud/");

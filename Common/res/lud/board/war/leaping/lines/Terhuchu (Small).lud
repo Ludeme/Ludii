@@ -15,9 +15,7 @@
         
         (play (forEach Piece))
         
-        (end 
-            (if (no Pieces Next) (result Mover Win))
-        ) 
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -27,24 +25,20 @@
     {
     (item "8 pieces" 
         <
-        (start 
-            { 
+        (start { 
             (place "Marker1" (union (sites Bottom) (sites {"B2" "C2" "D2"})))
             (place "Marker2" (union (sites Top) (sites {"B4" "C4" "D4"})))
-            }
-        )
-        >   
-    "Each player has 8 pieces.")  
+        })
+        >  
+    "Each player has 8 pieces.") 
     (item "10 pieces" 
         <
-        (start 
-            { 
+        (start { 
             (place "Marker1" (expand (sites Bottom)))
             (place "Marker2" (expand (sites Top)))
-            }
-        )
-        >  
-    "Each player has 10 pieces.")**  
+        })
+        > 
+    "Each player has 10 pieces.")** 
 })
 
 //------------------------------------------------------------------------------
@@ -76,16 +70,12 @@
         (useFor "Ruleset/Eight pieces (Observed)" (id "973"))
         (source "Murray 1951: 66.")
         (id "972")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in India, around 1921.")
+        (origin "This game was played in India, around 1921.")
         }
     )
-    
-    (graphics {
-        
-    })
     
     (ai
         "Terhuchu (Small)_ai"

@@ -3,8 +3,7 @@
             (= (state at:(from)) 1) 
             (and (= (state at:(from)) 0) (= 1 (pips)))
         )
-        (move
-            Slide
+        (move Slide
             #1 
             (between 
                 (exact (pips))
@@ -54,25 +53,20 @@
             (place "Minus2" (sites {20..27 32..35}))
         })
         (play 
-            (do 
-                (if (not "SameTurn") 
-                    (roll) 
-                )
-                next:(forEach Die 
+            ("RollEachNewTurnMove"
+                (forEach Die 
                     replayDouble:(and (= (face 36) 1) (= (face 37) 1))
                     (forEach Piece
                         (then 
                             (if (not (all DiceUsed))
-                                (if (can Move (forEach Die (forEach Piece)))
-                                    (moveAgain)
-                                )
+                                ("ReplayIfCanMove" (forEach Die (forEach Piece)))
                             )
                         )
                     )
                 )
             )
         )
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -89,10 +83,10 @@
         ")
         (source "Næsheim 2001.")
         (id "759")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
-        (origin  "This game was played in Norway, from around 1900 to 2001.")
+        (origin "This game was played in Norway, from around 1900 to 2001.")
         }
     )
     
@@ -100,7 +94,6 @@
         (show Edges Hidden) 
         (show Symbol "disc" "AllSites" Vertex fillColour:(colour Grey) edgeColour:(colour Black) scale:0.5)
         (piece Foreground "Die" state:0 image:"star" fillColour:(colour White) scale:0.2)
-        
     })
     
     (ai

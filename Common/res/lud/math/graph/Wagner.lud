@@ -8,23 +8,21 @@
             )
             use:Vertex
         ) 
-        (piece "Marker" Each ("StepToEmpty"))     
+        (piece "Marker" Each ("StepToEmpty"))   
     }) 
     
     (rules
-        (start 
-            {
+        (start {
             (set P1 Vertex (sites {0 5 6}))
             (set P2 Vertex (sites {1 2 7}))
-            }
-        )
+        })
         
         (play (forEach Piece)) 
         
         (end 
             (if (= 1 (count Groups if:(= (who at:(to)) (mover)))) 
                 (result Mover Win) 
-            )         
+            )     
         )
     )
 )
@@ -40,7 +38,7 @@
         (rules "Wagner is a non-capturing game. Initially, each player places a stone at any vertex (not the centre) to maintain the graph colouring rules (i.e., no two friendly pieces are adjacent to each other). Each turn a player moves a friendly stone to an adjacent empty site. The goal is to make all the friendly pieces into a single group. 
         ")
         (id "614")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "math/graph")
         (author "Tahmina Begum")
         (credit "Tahmina Begum")
@@ -51,7 +49,6 @@
     (graphics {
         (show Edges Diagonal Hidden)
         (board StyleThickness InnerVertices 5.0)
-        
     })
     
     (ai

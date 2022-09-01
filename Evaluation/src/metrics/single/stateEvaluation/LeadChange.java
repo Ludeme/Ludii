@@ -75,10 +75,10 @@ public class LeadChange extends Metric
 			{
 				final Set<Integer> currentLeaders = new HashSet<>();
 				final ArrayList<Double> allPlayerStateEvaluations = Utils.allPlayerStateEvaluations(evaluation, context);
-				final double highestStateEvaluation = Collections.max(allPlayerStateEvaluations);
+				final double highestStateEvaluation = Collections.max(allPlayerStateEvaluations).doubleValue();
 				for (int j = 1; j < allPlayerStateEvaluations.size(); j++)
-					if (allPlayerStateEvaluations.get(j) == highestStateEvaluation)
-						currentLeaders.add(j);
+					if (allPlayerStateEvaluations.get(j).doubleValue() == highestStateEvaluation)
+						currentLeaders.add(Integer.valueOf(j));
 				
 				if (!pastCurrentLeaders.equals(currentLeaders))
 					leadChange++;
@@ -90,7 +90,7 @@ public class LeadChange extends Metric
 			avgLeadChange += leadChange / trial.generateRealMovesList().size();
 		}
 
-		return avgLeadChange / trials.length;
+		return Double.valueOf(avgLeadChange / trials.length);
 	}
 
 	//-------------------------------------------------------------------------

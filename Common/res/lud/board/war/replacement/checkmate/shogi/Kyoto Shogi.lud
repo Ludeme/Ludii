@@ -43,29 +43,25 @@
 )
 
 (define "SlideMove"
-    (move
-        Slide
+    (move Slide
         #1 
         (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
-    )  	
+    ) 	
 )
 
 (define "StepMove"
-    (move
-        Step
+    (move Step
         #1
         (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
-    )  	
+    ) 	
 )
-
-(define "GoldMove" ("StepMove" (directions {Forward Backward Rightward Leftward FL FR}) (then "Promote")))
 
 //------------------------------------------------------------------------------
 
 (game "Kyoto Shogi" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     
     (equipment { 
         (board (square 5))
@@ -130,10 +126,10 @@
         )
         
         // Gold General
-        (piece "Kinsho" Each "GoldMove")
+        ("ShogiGold" "Kinsho" "CapturePiece" (then "Promote"))
         
         // Promoted Pawn
-        (piece "Tokin" Each "GoldMove")
+        ("ShogiGold" "Tokin" "CapturePiece" (then "Promote"))
         
         (map "Where" { 
             (pair (id "Fuhyo" P1) (handSite P2)) (pair (id "Fuhyo" P2) (handSite P1)) 
@@ -190,8 +186,7 @@
             )
         )
         
-        (end
-            {
+        (end {
             (if (and 
                     ("IsInCheck" "Osho" Next)
                     ("NextCannotMove")
@@ -199,8 +194,7 @@
                 (result Mover Win)
             ) 
             ("BlockWin")
-            }
-        )
+        })
     )
 )
 
@@ -229,7 +223,7 @@
         The conditions to win are the same of the conditions of Shogi by checkmating the King.")
         (id "793")
         (source "<a href=\"https://en.wikipedia.org/wiki/Kyoto_shogi\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/shogi")
         (author "Tamiya Katsuya")
         (credit "Matthew Stephenson")

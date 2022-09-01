@@ -3,7 +3,9 @@
     (max 0
         (max
             (sizes Group "ScoreConnectionDirection" #1) 
-)))
+        )
+    )
+)
 
 //---------------------
 // Defines for scoring options
@@ -14,7 +16,11 @@
             (set Var "NextScore" ("GroupCount" Next)
                 (then
                     <TieScoring:tiebreaker> 
-)))))
+                )
+            )
+        )
+    )
+)
 
 (define "PlusCaptureScore" // Captures + cascade scoring
     (set Var "MoverScore"
@@ -30,7 +36,11 @@
                 )
                 (then 
                     <TieScoring:tiebreaker> 
-)))))
+                )
+            )
+        )
+    )
+)
 
 (define "BonusMover"
     (set Var "MoverScore"
@@ -46,7 +56,11 @@
                 )
                 (then
                     <TieScoring:tiebreaker> 
-)))))
+                )
+            )
+        )
+    )
+)
 
 (define "BonusOpponent"
     (set Var "MoverScore"
@@ -62,7 +76,11 @@
                 )
                 (then
                     <TieScoring:tiebreaker> 
-)))))
+                )
+            )
+        )
+    )
+)
 
 //---------------------------
 // Defines for Tiebreaker scoring option
@@ -73,13 +91,17 @@
             (difference
                 (sizes Group "ScoreConnectionDirection" #1)
                 (sizes Group "ScoreConnectionDirection" #2)
-))))
+            )
+        )
+    )
+)
 
 (define "NoTiebreaker"
     (and
         (set Score Mover (var "MoverScore")) 
         (set Score Next (var "NextScore")) 
-))
+    )
+)
 
 (define "CascadeTiebreaker"
     (if 
@@ -89,7 +111,8 @@
             (set Score Next (- 0 ("CascadeScore" Next Mover)))
         )
         ("NoTiebreaker")
-))
+    )
+)
 
 //----------------------------
 (define "CaptureScores" 
@@ -109,15 +132,23 @@
                                     (set Value at:(handSite Mover) (+ 1 (value Piece at:(handSite Mover))))
                             ))
                             (set Value at:(handSite Mover) (+ 1 (value Piece at:(handSite Mover))))
-)))))))
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
 
 (define "Capture" 
     (forEach Value
         (array #1)
         (if 
             (> 2 (count Sites in:(sites Around (value) "ConnectionDirection" if:(is Empty (to)))))
-            (remove (value))     
-)))
+            (remove (value))   
+        )
+    )
+)
 
 (define "AllHave1Connection2Edge"
     (all Sites
@@ -134,21 +165,23 @@
                     )
                     (site)
                     (difference (sites Outer) (site))
-)))))
+                )
+            )
+        )
+    )
+)
 
 //-----------------------------------------------
 // Main routine
 
 (game "Branching Coral"
     (players 2)
-    (equipment
-        {
+    (equipment {
         "BoardUsed"
         (piece "Ball" Each)
         (piece "Disc" Each)
         <Scoring:handType>
-        }
-    )
+    })
     (rules
         (start (set Score Each 0))
         (play
@@ -162,12 +195,17 @@
                                 in:(intersection
                                     (sites Around (to) "ConnectionDirection")
                                     (sites Empty)
-                )))))
+                                )
+                            )
+                        )
+                    )
+                )
                 ifAfterwards:("AllHave1Connection2Edge" 
                     (intersection 
                         (sites Around (last To) "ConnectionDirection")
                         (sites Empty)
-                )) 
+                    )
+                ) 
                 (then
                     (do
                         (<Scoring:captureType> 
@@ -176,11 +214,13 @@
                                 (sites Around (last To) "ConnectionDirection") 
                         ))
                         next:(<Scoring:selScoring>)
-        ))))
+                    )
+                )
+            )
+        )
         (end 
             (if 
-                (no Moves Next)
-                {
+                (no Moves Next) {
                 (if 
                     (= (score Mover) (score Next))
                     <TieScoring:finalTie>
@@ -189,8 +229,10 @@
                     (!= (score Mover) (score Next))
                     (byScore)
                 )
-                }
-))))
+            })
+        )
+    )
+)
 
 /-----------------------------------------
 // Defines for Options
@@ -332,7 +374,7 @@
             A: Cascading largest group LOSES -- i.e. negative scores -- This excludes tied pairs; If all groups are paired, last to place. 
         B: Last player to have placed a stone.")
         (id "1660")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")

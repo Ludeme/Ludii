@@ -1,5 +1,5 @@
 (game "Guettal"
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment {
         ("AlquerqueBoard" 5 5)
         (piece "Counter" Each
@@ -13,7 +13,7 @@
             })		
         )
     })
-    (rules   
+    (rules  
         (start { 
             (place "Counter1" (union {(expand (sites Bottom)) (sites {"D3" "E3"}) }))
             (place "Counter2" (union {(sites {"A3" "B3"}) (expand (sites Top)) }))
@@ -33,10 +33,10 @@
         (rules "Square board divided into 36 divisions (probably like the Alquerque board). Twelve pieces per player, which begin on the side of the board closest to the player. Players alternate turns moving their pieces toward the opponent's side of the board. Players capture their opponent's pieces. The player who has more pieces at the end of the game wins.")
         (source "DLP evidence.")
         (id "1949")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/leaping/lines/reconstruction")
         (credit "Eric Piette")
-        (origin  "This game was played in Algeria, around 1921.")
+        (origin "This game was played in Algeria, around 1921.")
         }
     )
     

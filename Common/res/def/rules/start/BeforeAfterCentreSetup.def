@@ -1,0 +1,11 @@
+// Defines starting rules placing one piece on each site before and after the centre (e.g. Starting rules of Zamma).
+// #1 = The name of the piece of P1.
+// #2 = The name of the piece of P2.
+// @example ("BeforeAfterCentreSetup" "Marker1" "Marker2")
+
+(define "BeforeAfterCentreSetup"
+    (start { 
+        (place #1 (forEach (sites Board) if:(< (site) (centrePoint))))
+        (place #2 (forEach (sites Board) if:(> (site) (centrePoint))))
+    })
+)

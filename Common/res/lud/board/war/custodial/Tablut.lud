@@ -26,8 +26,7 @@
         (board (square 9)) 
         
         (piece "Thrall" P1 
-            (move
-                Slide
+            (move Slide
                 Orthogonal 
                 (between if:(and (!= (between) ("Castle")) (is Empty (between))))
                 (then 
@@ -40,8 +39,7 @@
         )
         
         (piece "Thrall" P2 
-            (move
-                Slide
+            (move Slide
                 Orthogonal 
                 (between if:(and (!= (between) ("Castle")) (is Empty (between))))
                 (then ("Custodial" "Thrall1")) 
@@ -49,8 +47,7 @@
         ) 
         
         (piece "Jarl" P2 
-            (move
-                Slide
+            (move Slide
                 Orthogonal 
                 (between if:(and (!= (between) ("Castle")) (is Empty (between))))
                 (then ("Custodial" "Thrall1")) 
@@ -74,7 +71,7 @@
         (play (forEach Piece)) 
         
         (end {
-            (if (is In (where "Jarl" P2) (sites Outer)) (result P2 Win))
+            ("PieceTypeReachWin" "Jarl2" (sites Outer) P2)
             (if "JarlWasCaptured" (result P1 Win))
         })
     )
@@ -83,8 +80,8 @@
 //------------------------------------------------------------------------------
 
 (option "Play Rules" <Jarl> args:{ <captureType> }
-    {  
-    (item "King Flanked"  
+    { 
+    (item "King Flanked" 
         <
         (surround 
             (from (last To)) 
@@ -108,7 +105,7 @@
         "The king is captured if the enemy flanks him, except on the castle where he should be surrounded."
     )*
     
-    (item "King Surrounded"  
+    (item "King Surrounded" 
         <(surround 
             (from (last To))
             Orthogonal
@@ -119,7 +116,7 @@
             (to 
                 if:("FriendOrCentre")
             )
-        )>   
+        )>  
         "The king is captured if the enemy surrounds him."
     ) 
     }
@@ -158,10 +155,10 @@
         (useFor "Ruleset/Smith (Suggested)" (id "592"))
         (source "Murray 1951:63-64")
         (id "373")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/custodial")
         (credit "Eric Piette")
-        (origin  "This game was played in Lapland, around 1732.")
+        (origin "This game was played in Lapland, around 1732.")
         }
     )
     

@@ -43,6 +43,7 @@ public class TestTrialsIntegrity
 	 * @throws IOException
 	 */
 	@Test
+	@SuppressWarnings("static-method")
 	public void test() throws FileNotFoundException, IOException
 	{
 		System.out.println(

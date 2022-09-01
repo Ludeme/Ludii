@@ -122,12 +122,10 @@
 
 (game "Mity"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (hex <Board>))
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
         (meta (swap))
         (play
@@ -138,12 +136,7 @@
                 )
             )
         )
-        (end 
-            (if 
-                (no Moves Next) 
-                (result Mover Win)
-            )
-        )
+        (end ("BlockWin"))
     )
 )
 
@@ -151,9 +144,9 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "4"  <4> "A size 4 board is currently selected")
-    (item "5"  <5> "A size 5 board is currently selected")* 
-    (item "6"  <6> "A size 6 board is currently selected")
+    (item "4" <4> "A size 4 board is currently selected")
+    (item "5" <5> "A size 5 board is currently selected")* 
+    (item "6" <6> "A size 6 board is currently selected")
     }
 )
 
@@ -168,7 +161,7 @@
             
         The game uses the pie rule: One player chooses the first move and the other player chooses whose move it is.")
         (id "1520")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/space/territory")
         (author "Michael Amundsen")
         (credit "Michael Amundsen")

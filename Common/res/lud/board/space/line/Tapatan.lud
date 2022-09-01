@@ -1,6 +1,6 @@
 (game "Tapatan"
     (players 2) 
-    (equipment  {
+    (equipment {
         ("AlquerqueBoard" 3 3)
         (hand Each)
         (piece "Marker" Each "StepToEmpty")
@@ -14,7 +14,7 @@
             (nextPhase ("HandEmpty" P2) "Movement")
         )
         
-        (phase "Movement" (play (forEach Piece)))
+        ("PhaseMovePiece" "Movement")
         }
         (end ("Line3Win"))
     )
@@ -31,10 +31,10 @@
         ")
         (source "Culin 1900: 648.")
         (id "948")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/space/line")
         (credit "Eric Piette")
-        (origin  "This game was played in Philippines, around 1892.")
+        (origin "This game was played in Philippines, around 1892.")
         }
     )
     

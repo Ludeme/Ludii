@@ -1,7 +1,6 @@
 (define "OrthogonalHopCaptureDoubleCounter"
     (do
-        (move
-            Hop 
+        (move Hop 
             #1
             Orthogonal
             (between 
@@ -18,8 +17,7 @@
 )
 
 (define "DiagonalHopCaptureDoubleCounter"
-    (move
-        Hop 
+    (move Hop 
         #1
         Diagonal
         (between 
@@ -34,8 +32,7 @@
 
 (define "OrthogonalHopCaptureCounter"
     (do
-        (move
-            Hop 
+        (move Hop 
             #1
             Orthogonal
             (between 
@@ -52,8 +49,7 @@
 )
 
 (define "DiagonalHopCaptureCounter"
-    (move
-        Hop 
+    (move Hop 
         #1
         Diagonal
         (between 
@@ -68,14 +64,11 @@
 
 (define "DoubleCounterMoveAgainIfCanCaptureAgain" 
     (then
-        (if 
-            (can Move 
-                (or 
-                    ("DiagonalHopCaptureDoubleCounter" (from (last To))) 
-                    ("OrthogonalHopCaptureDoubleCounter" (from (last To)))
-                )
+        ("ReplayIfCanMove" 
+            (or 
+                ("DiagonalHopCaptureDoubleCounter" (from (last To))) 
+                ("OrthogonalHopCaptureDoubleCounter" (from (last To)))
             )
-            (moveAgain)
         )
     )
 )
@@ -88,33 +81,18 @@
         )
         ("DiagonalHopCaptureDoubleCounter" (from) ("DoubleCounterMoveAgainIfCanCaptureAgain"))
         ("OrthogonalHopCaptureDoubleCounter" (from) ("DoubleCounterMoveAgainIfCanCaptureAgain"))
-        }
-    )
+    })
 )
 
 (define "CounterMoveAgainIfCanCaptureAgain" 
     (then 
-        (if ("JumpToPromotionZone") 
-            (and
-                (promote (last To) (piece "DoubleCounter") Mover)
-                (if 
-                    (can Move 
-                        (or 
-                            ("DiagonalHopCaptureDoubleCounter" (from (last To))) 
-                            ("OrthogonalHopCaptureDoubleCounter" (from (last To)))
-                        )
-                    )
-                    (moveAgain)
+        (and
+            ("PromoteIfReach" (sites Next) "DoubleCounter")
+            ("ReplayIfCanMove" 
+                (or 
+                    ("DiagonalHopCaptureCounter" (from (last To))) 
+                    ("OrthogonalHopCaptureCounter" (from (last To)))
                 )
-            )
-            (if 
-                (can Move 
-                    (or 
-                        ("DiagonalHopCaptureCounter" (from (last To))) 
-                        ("OrthogonalHopCaptureCounter" (from (last To)))
-                    )
-                )
-                (moveAgain)
             )
         )
     )
@@ -122,45 +100,23 @@
 
 (define "CounterMove"
     (or {
-        (move
-            Step 
-            (directions {FR FL}) 
-            (to if:(is Empty (to)))
-            (then 
-                (if ("JumpToPromotionZone") 
-                    (move Promote (last To) (piece "DoubleCounter") Mover)
-                )
-            )
+        ("StepToEmpty" (directions {FR FL}) 
+            (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
         )
         ("DiagonalHopCaptureCounter" (from) ("CounterMoveAgainIfCanCaptureAgain"))
         ("OrthogonalHopCaptureCounter" (from) ("CounterMoveAgainIfCanCaptureAgain"))
-        }
-    )
+    })
 )
 
-(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
-(define "JumpToPromotionZone" (is In (last To) (sites Next)))
+(define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
 
 //------------------------------------------------------------------------------
 
 (game "Maleys" 
-    (players 2) 
-    (equipment { 
-        (board (square 10)) 
-        (piece "Counter" P1 N "CounterMove")
-        (piece "Counter" P2 S "CounterMove") 
-        (piece "DoubleCounter" Each "DoubleCounterMove")
-        (regions P1 (sites Bottom))
-        (regions P2 (sites Top))
-        }
-    ) 
+    ("TwoPlayersNorthSouth")
+    ("DraughtsEquipment" (square 10))
     (rules 
-        (start
-            { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:3) (sites Phase 1) ))
-            (place "Counter2" (difference (expand (sites Top) steps:3) (sites Phase 1)))
-            }
-        )
+        ("BlackCellsSetup" 4)
         
         (play 
             (if ("SameTurn")
@@ -177,11 +133,14 @@
                     )
                     (move Pass)
                 )
-                (forEach Piece)
+                (or 
+                    (forEach Piece "Counter" "CounterMove")
+                    (forEach Piece "DoubleCounter" "DoubleCounterMove")
+                )
             )
         ) 
         
-        (end (if (no Pieces Next) (result Mover Win))) 
+        (end ("CaptureAll" Next)) 
     )
 )
 
@@ -196,10 +155,10 @@
         (rules "10x10  board. Twenty pieces per player, which begin in the four rows closest to the players. Pieces move diagonally forward one space. Pieces capture orthogonally or diagonally, in any direction, when there is one empty space between the piece and the opponent's piece, and an empty space immediately on the opposite side of the opponent's piece. Pieces are promoted to Queen when they reach the edge of the board opposite from where they start. Queens may capture orthogonally or diagonally in any direction over any distance, as long as there are no other pieces intervening and there is an empty spot immediately after the piece to be captured, which is where the Queen lands to make the capture. Multiple captures are allowed  for Queens and regular pieces. Queens move orthogonally or diagonally any distance. The player who captures all of the opponent's pieces wins.")
         (source "Twiss 1805: 173-174.")
         (id "887")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/leaping/diagonal")
         (credit "Eric Piette")
-        (origin  "This game was played in Holland, around 1805.")
+        (origin "This game was played in Holland, around 1805.")
         }
     )
     

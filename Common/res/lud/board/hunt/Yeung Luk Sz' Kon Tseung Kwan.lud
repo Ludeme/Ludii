@@ -26,7 +26,7 @@
 
 (option "Variant" <Variant> args:{ <pieceMoves> <endRules> }
     {
-    (item "Described"   
+    (item "Described"  
         <
         (piece "Marker" P1 "StepToEmpty")
         (piece "Marker" P2 
@@ -44,7 +44,7 @@
         > 
         "P1 wins in blocking P2 to move. P2 wins in capturing by hopping all the pieces of P1."
     ) 
-    (item "Murray"   
+    (item "Murray"  
         <
         (piece "Marker" P1 
             ("StepToEmpty"
@@ -102,9 +102,9 @@
         (useFor "Ruleset/Murray (Suggested)" (id "709"))
         (source "Murray 1951: 101.")
         (id "171")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/hunt")
-        (origin  "This game was played in China, around 1694.")
+        (origin "This game was played in China, around 1694.")
         }
     )
     

@@ -29,7 +29,7 @@ import other.GameLoader;
 public class ParseAllLud
 {
 	@Test
-	public void testCompilingLudFromMemory()
+	public static void testCompilingLudFromMemory()
 	{
 		System.out.println("\n=========================================");
 		System.out.println("Test: Compile all .lud from memory:\n");

@@ -22,8 +22,8 @@
         (mancalaBoard 2 "Columns" store:None
             (track "Track" <Board:trackDirection> loop:True)
         )
-        (regions P1 (sites Bottom))           // P1 home
-        (regions P2 (sites Top))            // P2 home
+        (regions P1 (sites Bottom))      // P1 home
+        (regions P2 (sites Top))      // P2 home
         (piece "Seed" Shared)
         (hand Each)
     }) 
@@ -42,7 +42,7 @@
                         )
                         if:(> (count at:(from)) 0)
                     )
-                    (then (sow (then (if (not (is Empty ("NextHole" ("PlayFromLastHole")))) (moveAgain)))))
+                    (then (sow (then (if (is Occupied ("NextHole" ("PlayFromLastHole"))) (moveAgain)))))
                 )	
             )
             
@@ -100,15 +100,15 @@
 (option "Board Size" <Board> args:{ <size> <trackDirection>}
     {
     (item "12 CCW" <12> <"0,E,N,W"> "Each player has 12 holes and sow anti-clockwise.") 
-    (item "12 CW"  <12> <"11,W,N,E"> "Each player has 12 holes and sow clockwise.") 
-    (item "15 CCW" <15> <"0,E,N,W"> "Each player has 15 holes and sow anti-clockwise.")  
-    (item "15 CW"  <15> <"14,W,N,E"> "Each player has 15 holes and sow clockwise.")  
-    (item "18 CCW" <18> <"0,E,N,W"> "Each player has 18 holes and sow anti-clockwise.")  
-    (item "18 CW"  <18> <"17,W,N,E"> "Each player has 18 holes and sow clockwise.")  
-    (item "21 CCW" <21> <"0,E,N,W"> "Each player has 21 holes and sow anti-clockwise.")  
-    (item "21 CW"  <21> <"20,W,N,E"> "Each player has 21 holes and sow clockwise.") 
-    (item "24 CCW" <24> <"0,E,N,W"> "Each player has 24 holes and sow anti-clockwise.")  
-    (item "24 CW"  <24> <"23,W,N,E"> "Each player has 24 holes and sow clockwise.") 
+    (item "12 CW" <12> <"11,W,N,E"> "Each player has 12 holes and sow clockwise.") 
+    (item "15 CCW" <15> <"0,E,N,W"> "Each player has 15 holes and sow anti-clockwise.") 
+    (item "15 CW" <15> <"14,W,N,E"> "Each player has 15 holes and sow clockwise.") 
+    (item "18 CCW" <18> <"0,E,N,W"> "Each player has 18 holes and sow anti-clockwise.") 
+    (item "18 CW" <18> <"17,W,N,E"> "Each player has 18 holes and sow clockwise.") 
+    (item "21 CCW" <21> <"0,E,N,W"> "Each player has 21 holes and sow anti-clockwise.") 
+    (item "21 CW" <21> <"20,W,N,E"> "Each player has 21 holes and sow clockwise.") 
+    (item "24 CCW" <24> <"0,E,N,W"> "Each player has 24 holes and sow anti-clockwise.") 
+    (item "24 CW" <24> <"23,W,N,E"> "Each player has 24 holes and sow clockwise.") 
 })
 
 //------------------------------------------------------------------------------
@@ -135,10 +135,10 @@
         (rules "2x12, 15, 18, 21, or 24 board. Two counters per hole. Typically played by a team of players, who consult each other about the moves to be made. Sowing occurs most commonly in an anti-clockwise direction, but can be played clockwise if the players agree. Play begins with one player picking up the counters in one of the holes in their row and sowing them, then picking up the counters in the hole following the one in which the last counter was sown, and continuing to sow in this way until there is a pattern of holes with three counters alternating with empty holes. The players then decide who gets to play first. Players sow counters from a hole in their row in the agreed-upon direction. When the final counter lands in an occupied hole, these counters are picked up and sowing continues. When the last counter falls into an empty hole, the sowing ends. If the sowing ends in the player's own row, any counters in the opponent's hole opposite are captured. Once both players are reduced to only single counters in their holes, when a player reaches the end of their row with a counter, it is captured instead of continuing to sow it to the opponent's rows. The player who is the last in possession of counters wins.")
         (source "Pankhurst 1971: 170.")
         (id "346")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Eritrea, around 1977.")
+        (origin "This game was played in Eritrea, around 1977.")
         }
     )
     

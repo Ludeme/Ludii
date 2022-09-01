@@ -37,10 +37,10 @@
         
         (play 
             (forEach Piece)
-            //      (do 
-                //        (if (not "SameTurn") (roll))
-                //        next:(forEach Piece)
-            //      )
+            //   (do 
+                //    (if ("NewTurn") (roll))
+                //    next:(forEach Piece)
+            //   )
         )
         
         (end {
@@ -71,9 +71,9 @@
         ")
         (source "Seville 2019: 21-22.")
         (id "148")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "war/replacement/WishlistDLP")
-        (origin  "This game was played in Italy, around 1453.")
+        (origin "This game was played in Italy, around 1453.")
         }
     )
     

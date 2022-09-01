@@ -1,67 +1,13 @@
-(define "CaptureToPiece"
-    (apply 
-        (remove 
-            (to) 
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
-)
-
-//------------------------------------------------------------------------------
-
 (game "Medieval Chess" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8)) 
         
-        (piece "Pawn" Each 
-            (or 
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
-                (then
-                    (if (is In (last To) (sites Mover "Promotion")) 
-                        (moveAgain)
-                    )
-                )
-            )
-        )
-        
-        (piece "Rook" Each 
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "King_noCross" Each 
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece" 
-                )
-            )
-        )
+        ("ChessPawn" "Pawn" ~ (then ("ReplayInMovingOn" (sites Mover "Promotion"))))
+        ("ChessRook" "Rook")
+        ("ChessKing" "King_noCross")
         (piece "Bishop_noCross" Each 
-            (move 
-                Hop 
+            (move Hop 
                 Diagonal 
                 (between if:True) 
                 (to 
@@ -69,30 +15,12 @@
                         (is Empty (to)) 
                         ("IsEnemyAt" (to))
                     ) 
-                    "CaptureToPiece"
+                    (apply (remove (to))) 
                 )
             )
         )
-        (piece "Knight" Each 
-            (move 
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "Ferz_noCross" Each 
-            (move
-                Step 
-                Diagonal
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece" 
-                )
-            )
-        )
+        ("ChessKnight" "Knight")
+        (piece "Ferz_noCross" Each ("StepToNotFriend" Diagonal))
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     }) 
@@ -111,19 +39,11 @@
             )
         )
         
-        (end
-            {
-            (if 
-                (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
+        (end {
+            ("Checkmate" "King_noCross")
             (if (= (count Pieces Next) 1) (result Mover Win)) 
             ("BlockWin")
-            }
-        )
+        })
     )
 )
 
@@ -138,10 +58,10 @@
         ")
         (source "Murray 1913.")
         (id "1435")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/chess")
         (credit "Eric Piette")
-        (origin  "This game was played in Europe, from around 990 to 1450.")
+        (origin "This game was played in Europe, from around 990 to 1450.")
         }
     )
     

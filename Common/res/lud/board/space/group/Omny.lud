@@ -22,7 +22,7 @@
                     (to (sites Empty))
                     <Balance>
                 )
-            )  
+            ) 
         )
         (end 
             (if 
@@ -51,7 +51,7 @@
                                         )
                                     )
                                 )
-                            )  
+                            ) 
                         )
                     )
                 )
@@ -65,26 +65,26 @@
 
 (option "Board Shape" <Shape> args:{ <shape> }
     {
-    (item "Hex"     <> "A hex board is currently selected")*
-    (item "Triangle"  <Triangle> "A triangluar board is currently selected")
-    (item "Diamond"   <Diamond> "A diamond shaped board is currently selected")
-    (item "Star"    <Star> "A star shaped board is currently selected")
+    (item "Hex"   <> "A hex board is currently selected")*
+    (item "Triangle" <Triangle> "A triangluar board is currently selected")
+    (item "Diamond"  <Diamond> "A diamond shaped board is currently selected")
+    (item "Star"  <Star> "A star shaped board is currently selected")
     (item "Limping Hex" <Limping> "A limping hex board is currently selected")
     }
 )
 
 (option "Board Size" <Size> args:{ <size> }
     {
-    (item "3"  <3> "A size 3 board is currently selected")
-    (item "4"  <4> "A size 4 board is currently selected")
-    (item "5"  <5> "A size 5 board is currently selected")
-    (item "6"  <6> "A size 6 board is currently selected")
-    (item "7"  <7> "A size 7 board is currently selected")*
-    (item "8"  <8> "A size 8 board is currently selected")
-    (item "9"  <9> "A size 9 board is currently selected")
-    (item "10"  <10> "A size 10 board is currently selected")
-    (item "11"  <11> "A size 11 board is currently selected")
-    (item "12"  <12> "A size 12 board is currently selected")
+    (item "3" <3> "A size 3 board is currently selected")
+    (item "4" <4> "A size 4 board is currently selected")
+    (item "5" <5> "A size 5 board is currently selected")
+    (item "6" <6> "A size 6 board is currently selected")
+    (item "7" <7> "A size 7 board is currently selected")*
+    (item "8" <8> "A size 8 board is currently selected")
+    (item "9" <9> "A size 9 board is currently selected")
+    (item "10" <10> "A size 10 board is currently selected")
+    (item "11" <11> "A size 11 board is currently selected")
+    (item "12" <12> "A size 12 board is currently selected")
     }
 )
 
@@ -138,7 +138,7 @@
 
 (option "Balance Rule" <Balance> args:{ <rule> }
     {
-    (item "Pie"  
+    (item "Pie" 
         <(then 
             (if
                 (= 1 (count Moves))
@@ -161,8 +161,8 @@
 
 (option "End Rule" <Result> args:{ <rule> }
     {
-    (item "Standard" <Win>  "The standard win condition is currently selected.")*
-    (item "Misère"  <Loss> "The misère win condition is currently selected")
+    (item "Standard" <Win> "The standard win condition is currently selected.")*
+    (item "Misère" <Loss> "The misère win condition is currently selected")
     }
 )
 
@@ -176,7 +176,7 @@
             
         In Misère Omny you lose if you make a group whose cuts each contain no more than half of the star cells.")
         (id "1529")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/space/group")
         (author "Luis Bolaños Mures (used with permission)")
         (credit "Michael Amundsen")

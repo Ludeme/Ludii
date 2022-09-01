@@ -1,35 +1,3 @@
-(define "CaptureEnemyToPiece"
-    (apply 
-        (if ("IsEnemyAt" (to))
-            (remove (to))
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (if (= 1 (state at:(from))) (directions {BR BL}) (directions {FR FL}))
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
-
-(define "DoubleStep"
-    (move
-        Slide 
-        Forward 
-        (between (exact 2) if:(is Empty (between))) 
-        (to if:(is Empty (to))) 
-    )
-)
-
-(define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
-)
-
 (define "SitesNextToKing" (sites {"C1" "E1" "D8" "F8"}))
 (define "KingSites" (sites {"E8" "D1"}))
 (define "RememberRookMoved" (set State at:#1 1))
@@ -41,15 +9,12 @@
 //------------------------------------------------------------------------------
 
 (game "Tepong"
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8)) 		
         (piece "King_noCross" Each
             (or
-                (move Step
-                    (to if:(not ("IsFriendAt" (to)))
-                        ("CaptureEnemyToPiece")
-                    )
+                ("StepToNotFriend" ~
                     (then
                         (if (not ("KingMovedBefore" (last To)))
                             ("RememberKingMoved" (last To))
@@ -58,8 +23,7 @@
                 )	
                 (if (not ("KingMovedBefore" (from)))
                     (or {
-                        (move
-                            Hop
+                        (move Hop
                             Orthogonal
                             (between
                                 (exact 2)
@@ -67,41 +31,30 @@
                             )
                             (to 
                                 if:(not ("IsFriendAt" (to))) 
-                                "CaptureEnemyToPiece"
+                                (apply (if ("IsEnemyAt" (to)) (remove (to)))) 
                             ) 
                         )
-                        (move
-                            Leap 
-                            "KnightWalk" 
-                            (to 
-                                if:(not ("IsFriendAt" (to))) 
-                                "CaptureEnemyToPiece"
-                            ) 
-                        )
+                        ("LeapCapture" "KnightWalk")
                         (if (is In (from) ("KingSites"))
                             (or
                                 (if (and {
                                         (is Empty (ahead (from) steps:2 W))
-                                        (= (id "Rook" Mover) (what at:(ahead (from) W))) 
+                                        ("IsPieceAt" "Rook" Mover (ahead (from) W))
                                         (not ("RookMovedBefore" (ahead (from) W)))
                                     })
                                     (move
                                         (from)
-                                        (to
-                                            (ahead (from) steps:2 W)
-                                        )
+                                        (to (ahead (from) steps:2 W))
                                     )
                                 )
                                 (if (and {
                                         (is Empty (ahead (from) steps:2 E))
-                                        (= (id "Rook" Mover) (what at:(ahead (from) E))) 
+                                        ("IsPieceAt" "Rook" Mover (ahead (from) E))
                                         (not ("RookMovedBefore" (ahead (from) E)))
                                     })
                                     (move
                                         (from)
-                                        (to
-                                            (ahead (from) steps:2 E)
-                                        )
+                                        (to (ahead (from) steps:2 E))
                                     )
                                 )
                             )
@@ -112,63 +65,28 @@
                 )
             )
         )
-        (piece "Queen" Each
-            (move
-                Slide 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureEnemyToPiece"
-                ) 
-            )
-        )
-        (piece "Bishop_noCross" Each
-            (move
-                Slide 
-                Diagonal
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureEnemyToPiece"
-                ) 
-            )		
-        )
-        (piece "Knight" Each
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureEnemyToPiece"
-                ) 
-            )		
-        )
-        (piece "Rook" Each
-            (move
-                Slide 
-                Orthogonal
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureEnemyToPiece"
-                ) 
-                (then
-                    (if (and 
-                            (not ("RookMovedBefore" (last To)))
-                            (not (is In (last To) ("SitesNextToKing")))
-                        )
-                        ("RememberRookMoved" (last To))
+        ("ChessQueen" "Queen")
+        ("ChessBishop" "Bishop_noCross")
+        ("ChessKnight" "Knight")
+        ("ChessRook" "Rook" ~
+            (then
+                (if (and 
+                        (not ("RookMovedBefore" (last To)))
+                        (not (is In (last To) ("SitesNextToKing")))
                     )
+                    ("RememberRookMoved" (last To))
                 )
-            )		
+            )
         )
         (piece "Pawn" Each
             (or {
                 (if (and (= 0 (state at:(last To))) (is In (from) (sites Start (piece (what at:(from))))))
-                    "DoubleStep"
+                    ("DoubleStepForwardToEmpty")
                 )
-                (move Step 
+                ("StepToEmpty" 
                     (if (= 1 (state at:(from))) Backward Forward)
-                    (to if:(is Empty (to)))
                 )
-                "CaptureForwardDiagonal"
+                ("StepToEnemy" (if (= 1 (state at:(from))) (directions {BR BL}) (directions {FR FL})))
                 }
                 (then
                     (if (is In (last To) (union (sites Bottom) (sites Top))) 
@@ -182,7 +100,7 @@
         )
     })
     (rules 
-        (start {  
+        (start { 
             (place "Pawn1" (sites Row 1))
             (place "Pawn2" (sites Row 6))
             (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Bishop_noCross1" {"C1" "F1"}) (place "King_noCross1" coord:"D1") (place "Queen1" coord:"E1") 
@@ -196,14 +114,7 @@
             )
         )
         
-        (end {
-            (if (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
-        })
+        (end ("Checkmate" "King_noCross"))
     )
 )
 
@@ -218,10 +129,10 @@
         ")
         (source "von Oefele 1904: 34-35.")
         (id "1468")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/chaturanga")
         (credit "Eric Piette")
-        (origin  "This game was played in Indonesia, around 1904.")
+        (origin "This game was played in Indonesia, around 1904.")
         }
     )
     

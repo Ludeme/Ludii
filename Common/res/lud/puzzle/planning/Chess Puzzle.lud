@@ -1,9 +1,10 @@
-(define "KingCheck"
-    (is Threatened (id "King" #1) at:(where "King" #1)) 
-)
-
 (define "NextCanNotMove"
     (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("KingCheck" Next)))))
+)
+
+//**** Defines used to model the castling Moves. ****
+(define "KingCheck"
+    (is Threatened (id "King" #1) at:(where "King" #1)) 
 )
 
 (define "KingInTheInitialPlace"
@@ -31,25 +32,15 @@
     ) 
 )
 
-(define "CaptureToPieceAndResetCounter"
-    (apply 
-        (remove 
-            (to) 
-            (then (set Counter))
-        )
-    ) 
-)
-
 (define "KingNotCheckedAndToEmpty"
     (and 
         (is Empty (to)) 
         (not (is Threatened (id "King" Mover) at:(to)))
-    )  
+    ) 
 )
 
 (define "DoCastle"
-    (move
-        Slide 
+    (move Slide 
         (from (mapEntry #1 (mover))) 
         #2 
         (between 
@@ -68,19 +59,33 @@
     ("DoCastle" "King" W 2 "KingNotCheckedAndToEmpty" (then (and ("PieceHasMoved") ("DoCastle" "RookLeft" E 3 True))))
 )
 
+(define "Castling"
+    (if (and {
+            "KingInTheInitialPlace" 
+            ("HasNeverMoved" "King")
+            (not ("KingCheck" Mover)) 
+        })
+        (or
+            (if (and 
+                    ("HasNeverMoved" "RookLeft")
+                    (can Move ("DoCastle" "RookLeft" E 3 (is Empty (to))))
+                )
+                "BigCastling"
+            )
+            (if (and 
+                    ("HasNeverMoved" "RookRight")
+                    (can Move ("DoCastle" "RookRight" W 2 (is Empty (to))))
+                )
+                "SmallCastling"
+            )
+        )
+    )		
+)
+
+//**** Defines used to model the extra Pawn moves. ****
 (define "SetEnPassantLocation"
     (then 
         (set Pending (ahead (last To) Backward))
-    )
-)
-
-(define "DoubleStep"
-    (move
-        Slide 
-        Forward 
-        (between (exact 2) if:(is Empty (between))) 
-        (to if:(is Empty (to))) 
-        "SetEnPassantLocation"
     )
 )
 
@@ -92,8 +97,7 @@
 )
 
 (define "EnPassant"
-    (move
-        Step
+    (move Step
         (directions {FR FL}) 
         (to if:"InLocationEnPassant") 
         (then 
@@ -104,94 +108,36 @@
     )
 )
 
-(define "CaptureForwardDiagonal"
-    (move
-        Step
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
+(define "InitialPawnMove"
+    (if (is In (from) (sites Start (piece (what at:(from)))))
+        ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
     )
 )
 
 //------------------------------------------------------------------------------
 
 (game "Chess Puzzle" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8))
         
-        (piece "Pawn" Each 
-            (or {
-                (if (is In (from) (sites Start (piece (what at:(from)))))
-                    "DoubleStep"
-                )
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
+        ("ChessPawn" "Pawn"
+            (or 
+                "InitialPawnMove"
                 "EnPassant"
-                }
-                (then
-                    (and
-                        (if (is In (last To) (sites Mover "Promotion")) 
-                            (moveAgain)
-                        )
-                        (set Counter)
-                    )
+            )
+            (then 
+                (and
+                    ("ReplayInMovingOn" (sites Mover "Promotion"))
+                    (set Counter)
                 )
             )
         )
-        
-        (piece "Rook" Each 
-            (move
-                Slide
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-                "RememberPieceHasMoved"
-            )
-        )
-        (piece "King" Each 
-            (move
-                Step
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-                "RememberPieceHasMoved"
-            )
-        )
-        (piece "Bishop" Each 
-            (move
-                Slide
-                Diagonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-            )
-        )
-        (piece "Knight" Each 
-            (move
-                Leap
-                "KnightWalk"
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-            )
-        )
-        (piece "Queen" Each 
-            (move
-                Slide
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-            ) 
-        )
+        ("ChessRook" "Rook" (then (set Counter)) ("RememberPieceHasMoved"))
+        ("ChessKing" "King" (then (set Counter)) ("RememberPieceHasMoved"))
+        ("ChessBishop" "Bishop" (then (set Counter)))
+        ("ChessKnight" "Knight" (then (set Counter)))
+        ("ChessQueen" "Queen" (then (set Counter)))
         
         (map "King" {(pair 1 "E1") (pair 2 "E8")})
         (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})
@@ -210,26 +156,7 @@
                 (do 
                     (or 
                         (forEach Piece)
-                        (if (and {
-                                "KingInTheInitialPlace" 
-                                ("HasNeverMoved" "King")
-                                (not ("KingCheck" Mover)) 
-                            })
-                            (or
-                                (if (and 
-                                        ("HasNeverMoved" "RookLeft")
-                                        (can Move ("DoCastle" "RookLeft" E 3 (is Empty (to))))
-                                    )
-                                    "BigCastling"
-                                )
-                                (if (and 
-                                        ("HasNeverMoved" "RookRight")
-                                        (can Move ("DoCastle" "RookRight" W 2 (is Empty (to))))
-                                    )
-                                    "SmallCastling"
-                                )
-                            )
-                        )
+                        ("Castling")
                     )
                     ifAfterwards:(not ("KingCheck" Mover))
                 )
@@ -253,69 +180,69 @@
 
 (option "Challenge" <challenge> args:{ <start> <limit> }
     {
-    (item "1 (1 Move)"  
+    (item "1 (1 Move)" 
         <(place "King1" 42) (place "Rook1" 12) (place "King2" 58)> 
         <1> 
         ""
     )
     
-    (item "2 (2 Moves)"  
+    (item "2 (2 Moves)" 
         <(place "King1" 6) (place "Queen1" 35) (place "Knight1" 47) (place "Rook1" {0 5}) (place "Pawn1" {9 10 13 14 15 16 26 28}) 
         (place "Bishop2" {49 38}) (place "Pawn2" {48 41 50 51 54 55}) (place "Queen2" 59) (place "Rook2" 60) (place "King2" 63)> 
         <3>
         ""
     )
     
-    (item "3 (2 Moves)"  
+    (item "3 (2 Moves)" 
         <(place "King1" 4) (place "Queen1" 47) (place "Bishop1" 26) (place "Knight1" {46 35}) (place "Rook1" {0 7}) (place "Pawn1" {8 9 10 19 28 13 14 15}) 
         (place "Bishop2" {34 58}) (place "Pawn2" {48 49 50 43 36 37 45 55}) (place "Queen2" 59) (place "Rook2" {56 53}) (place "Knight2" 42) (place "King2" 62)>
         <3> 
         ""
     )
     
-    (item "4 (2 Moves)"  
+    (item "4 (2 Moves)" 
         <(place "King1" 6) (place "Queen1" 18) (place "Bishop1" {24 9}) (place "Knight1" {1 21}) (place "Rook1" {0 5}) (place "Pawn1" {8 35 28 13 14 15}) 
         (place "Bishop2" {41 58}) (place "Pawn2" {40 49 50 43 53 54 55}) (place "Queen2" 30) (place "Rook2" {56 63}) (place "Knight2" {32 45}) (place "King2" 59)>
         <3> 
         ""
     )
     
-    (item "5 (2 Moves)"  
+    (item "5 (2 Moves)" 
         <(place "King1" 6) (place "Queen1" 3) (place "Bishop1" {44 47}) (place "Knight1" {54}) (place "Rook1" {0 5}) (place "Pawn1" {8 25 18 13 30 23}) 
         (place "Bishop2" {41 28}) (place "Pawn2" {48 49 50 43 27 55}) (place "Queen2" 59) (place "Rook2" {56 63}) (place "Knight2" {52 42}) (place "King2" 61)>
         <3> 
         ""
     )
     
-    (item "6 (2 Moves)"  
+    (item "6 (2 Moves)" 
         <(place "King1" 6) (place "Queen1" 39) (place "Bishop1" {26 45}) (place "Rook1" {0 4}) (place "Pawn1" {8 9 18 13 14 15}) 
         (place "Bishop2" {41 58}) (place "Pawn2" {48 49 50 43 27 53 55}) (place "Queen2" 37) (place "Rook2" {56 61}) (place "King2" 62)>
         <3>
         ""
     )
     
-    (item "7 (2 Moves)"  
+    (item "7 (2 Moves)" 
         <(place "King1" 58) (place "Rook1" {0}) (place "Pawn1" {41}) 
         (place "Bishop2" {57}) (place "Pawn2" {48 49}) (place "King2" 56)>
         <3>
         ""
     )
     
-    (item "8 (3 Moves)"  
+    (item "8 (3 Moves)" 
         <(place "King1" 31) (place "Bishop1" {22}) (place "Knight1" {14}) (place "Rook1" {4}) (place "Pawn1" {48 49}) 
         (place "Bishop2" {56 6}) (place "King2" 7)>
         <5> 
         ""
     )
     
-    (item "9 (3 Moves)"  
+    (item "9 (3 Moves)" 
         <(place "King1" 4) (place "Bishop1" {2 5}) (place "Knight1" {1 6}) (place "Rook1" {0 7}) (place "Pawn1" (sites Row 1)) (place "Queen1" 3)
         (place "King2" 31)>
         <5> 
         ""
     )
     
-    (item "10 (6 Moves)"  
+    (item "10 (6 Moves)" 
         < (place "Pawn1" {13 22}) (place "Pawn2" {48 49 30 21})
         (place "Rook1" {4}) (place "Knight1" {33}) (place "Queen1" 29) (place "King1" 6) 
         (place "Rook2" {51}) (place "Knight2" {41}) (place "Bishop2" {45}) (place "Queen2" 31) (place "King2" 56) >
@@ -334,7 +261,7 @@
         (rules "Play using the standard rules of chess.")
         (source "<a href=\"https://www.chess.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.chess.com</a>")
         (id "455")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "puzzle/planning")
         (credit "Eric Piette")
         }

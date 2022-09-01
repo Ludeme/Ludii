@@ -7,7 +7,9 @@
             (step (to if:(and (!= (var "From") (to)) (is Mover (who at:(to))))))
             from:(to)
             (min 0)
-)))
+        )
+    )
+)
 
 (define "PlayableSite" (difference <Board:area> (sites Occupied by:Mover)))
 (define "IsPlayableSiteType" (is In (to) ("PlayableSite")))
@@ -31,7 +33,10 @@
                 from:(last To) 
                 to:("FirstFriend" Orthogonal)
                 (size Group at:(to) Orthogonal if:(= (mover) (who at:(to))))
-))))
+            )
+        )
+    )
+)
 
 (define "ValueAtFrom"
     (set Var "MaxSizeFrom"
@@ -42,22 +47,27 @@
                     from:(from) 
                     to:("FirstFriend" Orthogonal)
                     (size Group at:(to) Orthogonal if:(= (mover) (who at:(to))))
-)))))
+                )
+            )
+        )
+    )
+)
 
 (define "FirstFriend" 
     (sites To
         (move Hop 
             #1
             (between (min 0)
-                if:(or
-                    {
+                if:(or {
                     (= (from) (between))
                     (is Next (who at:(between)))
                     (is Empty (between))
-                    }
-            ))
+                })
+            )
             (to <Board:area> if:(is Mover (who at:(to))))
-)))
+        )
+    )
+)
 //--------------------------------------------------------
 // Variants
 
@@ -69,9 +79,12 @@
                 (to (sites LineOfSight Piece at:(from))
                     if:(is Next (who at:(to)))
                     (apply (remove (to))) 
-            ))
+                )
+            )
             (<Game:option>)
-)))
+        )
+    )
+)
 
 (define "PriorityMoveOverCaptureByPiece"
     (forEach Piece
@@ -82,8 +95,11 @@
                 (to (sites LineOfSight Piece at:(from))
                     if:(is Next (who at:(to)))
                     (apply (remove (to))) 
-            ))
-)))
+                )
+            )
+        )
+    )
+)
 
 (define "PriorityCaptureOverMoveByPiece"
     (forEach Piece
@@ -93,9 +109,12 @@
                 (to (sites LineOfSight Piece at:(from))
                     if:(is Next (who at:(to)))
                     (apply (remove (to))) 
-            ))
+                )
+            )
             (<Game:option>)
-)))
+        )
+    )
+)
 
 (define "Shakattrition"
     (do
@@ -109,19 +128,21 @@
                 if:(<=
                     (var "OriginGroupSize")
                     ("DestinationGroupSize")
-)))))
+                )
+            )
+        )
+    )
+)
 
 //-----------------------------------------------
 // Main routine
 
 (game "Conflagration and Keep-a-riding"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (hex Hexagon <Board:side>) use:Cell)
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
         (start {<Board:white> <Board:black>})
         (play
@@ -129,7 +150,9 @@
         )
         (end 
             <Game:winCondition>
-)))
+        )
+    )
+)
 
 //--------------------------------------
 // End conditions
@@ -138,17 +161,17 @@
     (= 1
         (count Groups Cell Orthogonal
             if:(is #1 (who at:(to)))
-)))
+        )
+    )
+)
 
 (define "StandardEnd"
     (if 
-        (or
-            {
+        (or {
             (no Moves Next)
             ("IsSingleGroupOf" Mover)
             ("IsSingleGroupOf" Next)
-            }
-        )
+        })
         {
         (if 
             ("IsSingleGroupOf" Mover)
@@ -160,7 +183,8 @@
         )
         ("Last2MoveEnd")
         }
-))
+    )
+)
 
 (define "AMSEnd" (if (no Moves Next) (result Mover Loss)))
 (define "Last2MoveEnd" ("BlockWin"))
@@ -265,7 +289,7 @@
             4. Conflagration, - Backfire Variant (shorter), 
         Rule restriction: A piece can only step to join a larger group when it cannot slide to capture.")
         (id "1732")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")

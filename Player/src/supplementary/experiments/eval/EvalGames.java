@@ -409,7 +409,7 @@ public class EvalGames
 			{
 				final double weight = weights.get(m).doubleValue();
 				analysisPanelString += metric.name() + ": " + df.format(score) + " (weight: " + weight + ")\n";
-				finalScore += score * weight;
+				finalScore += score.doubleValue() * weight;
 				csvOutputString += score + ",";
 			}
 		}

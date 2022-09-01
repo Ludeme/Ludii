@@ -3,12 +3,7 @@
     (equipment {
         (board (square 8))
         (piece "Ball" Each
-            (move Step
-                (to if:("IsEnemyAt" (to))
-                    (apply
-                        (remove (to))
-                    )
-                )
+            ("StepToEnemy" ~
                 (then
                     (forEach Site
                         (sites Around (last To))
@@ -25,8 +20,6 @@
     })
     (rules
         (start {
-            //      (place "Ball1" (difference (union (sites Top) (sites Right)) (union {(sites Left) (sites Bottom) (intersertion (sites Top) (sites Right))})))
-            //      (place "Ball2" (difference (union (sites Bottom) (sites Left)) (union {(sites Right) (sites Top) (intersertion (sites Bottom) (sites Left))})))
             (place "Ball1" (sites Phase 1))
             (place "Ball2" (sites Phase 0))
         })
@@ -55,7 +48,7 @@
         The player which has more stones, after there is no valid move left, wins the game.")
         (id "1817")
         (source "<a href=\"https://boardgamegeek.com/boardgame/70926/crusade\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/eliminate/all")
         (author "Keith Carter")
         (credit "Eric Piette")

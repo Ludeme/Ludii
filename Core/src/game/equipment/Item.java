@@ -173,6 +173,7 @@ public abstract class Item extends BaseLudeme
 	 * @param game The game.
 	 * @return Accumulated flags for ludeme.
 	 */
+	@SuppressWarnings("static-method")
 	public long gameFlags(final Game game)
 	{
 		return 0l;
@@ -202,6 +203,7 @@ public abstract class Item extends BaseLudeme
 	 * @return Credit details for images and other resources, else null.
 	 * Default behaviour: no credits for this item.
 	 */
+	@SuppressWarnings("static-method")
 	public String credit()
 	{
 		return null;

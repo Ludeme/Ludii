@@ -52,18 +52,18 @@
         ("IsSameSizeAsShapeAtValue" #2) 
         (priority 
             {
-            ("IfThisRotationDo" ("DRow")    ("DCol") #1 #2) 
-            ("IfThisRotationDo" ("DRow")    (- "DRow" "DCol") #1 #2) 
+            ("IfThisRotationDo" ("DRow")  ("DCol") #1 #2) 
+            ("IfThisRotationDo" ("DRow")  (- "DRow" "DCol") #1 #2) 
             ("IfThisRotationDo" (- "DRow" "DCol") ("DRow") #1 #2) 
-            ("IfThisRotationDo" ("DCol")    ("DRow") #1 #2) 
-            ("IfThisRotationDo" (- "DCol")    (- "DRow" "DCol") #1 #2) 
+            ("IfThisRotationDo" ("DCol")  ("DRow") #1 #2) 
+            ("IfThisRotationDo" (- "DCol")  (- "DRow" "DCol") #1 #2) 
             ("IfThisRotationDo" (- "DCol" "DRow") ("DCol") #1 #2) 
             
-            ("IfThisRotationDo" (- "DRow")    (- "DCol") #1 #2) 
-            ("IfThisRotationDo" (- "DRow")    (- "DCol" "DRow") #1 #2) 
+            ("IfThisRotationDo" (- "DRow")  (- "DCol") #1 #2) 
+            ("IfThisRotationDo" (- "DRow")  (- "DCol" "DRow") #1 #2) 
             ("IfThisRotationDo" (- "DCol" "DRow") (- "DRow") #1 #2) 
-            ("IfThisRotationDo" (- "DCol")    (- "DRow") #1 #2) 
-            ("IfThisRotationDo" ("DCol")    (- "DCol" "DRow") #1 #2) 
+            ("IfThisRotationDo" (- "DCol")  (- "DRow") #1 #2) 
+            ("IfThisRotationDo" ("DCol")  (- "DCol" "DRow") #1 #2) 
             ("IfThisRotationDo" (- "DRow" "DCol") (- "DCol") #1 #2) 
             }
         )
@@ -158,7 +158,7 @@
                     (then
                         (forEach Piece (addScore Mover (state at:(from))))
                     )
-                )   
+                )  
                 }
             )
         )
@@ -212,7 +212,7 @@
             )
         )
     )
-)  
+) 
 
 //---------------
 
@@ -259,7 +259,7 @@
             Scoring:
         For each of your odd-sized broods, you score 1 point if its order is odd and 2 points if its order is even.")
         (id "1997")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/space/group")
         (author "Michael Admundsen")
         (credit "Dale Walton")

@@ -165,15 +165,22 @@ public class GameLoading
 		{
 			final String gameDescriptionString = getGameDescriptionRawFromName(app, name);
 			
-			app.settingsPlayer().setLoadedFromMemory(true);
-			app.manager().settingsManager().userSelections().setRuleset(Constants.UNDEFINED);
-			app.manager().settingsManager().userSelections().setSelectOptionStrings(options);
-			GameSetup.compileAndShowGame(app, gameDescriptionString, false);
+			if (gameDescriptionString == null)
+			{
+				loadGameFromFilePath(app, name.substring(0, name.length()));
+			}
+			else
+			{
+				app.settingsPlayer().setLoadedFromMemory(true);
+				app.manager().settingsManager().userSelections().setRuleset(Constants.UNDEFINED);
+				app.manager().settingsManager().userSelections().setSelectOptionStrings(options);
+				GameSetup.compileAndShowGame(app, gameDescriptionString, false);
+			}
 		}
 		catch (final Exception e)
 		{
 			// used if a recent game was selected from an external file.
-			loadGameFromFilePath(app, name.substring(0, name.length()));
+			
 		}
 	}
 	
@@ -185,6 +192,11 @@ public class GameLoading
 	public static String getGameDescriptionRawFromName(final PlayerApp app, final String name)
 	{
 		final String filePath = GameLoader.getFilePath(name);
+		
+		// Probably loading from an external .lud file.
+		if (filePath == null)
+			return null;
+		
 		final StringBuilder sb = new StringBuilder();
 		
 		app.manager().setSavedLudName(filePath);

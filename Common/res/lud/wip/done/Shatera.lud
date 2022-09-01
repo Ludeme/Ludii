@@ -34,16 +34,7 @@
     (and 
         (is Empty (to)) 
         (not ("IsInCheck" "King" Mover at:(to)))
-    )  
-)
-
-(define "DoubleStep"
-    (move
-        Slide 
-        Forward 
-        (between (exact 2) if:(is Empty (between))) 
-        (to if:(is Empty (to))) 
-    )
+    ) 
 )
 
 (define "CaptureForwardDiagonal"
@@ -60,14 +51,14 @@
 //------------------------------------------------------------------------------
 
 (game "Shatera" 
-    (players {(player N) (player S)}) 
+    ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8)) 
         
         (piece "Pawn" Each 
             (or {
                 (if (is In (from) (sites Start (piece (what at:(from)))))
-                    "DoubleStep"
+                    ("DoubleStepForwardToEmpty")
                 )
                 "StepForwardToEmpty" 
                 "CaptureForwardDiagonal"

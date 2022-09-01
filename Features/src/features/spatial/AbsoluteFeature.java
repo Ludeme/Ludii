@@ -1,5 +1,7 @@
 package features.spatial;
 
+import java.util.List;
+
 import features.spatial.elements.FeatureElement;
 import features.spatial.elements.RelativeFeatureElement;
 import game.Game;
@@ -231,6 +233,15 @@ public class AbsoluteFeature extends SpatialFeature
 				lastToPosition == otherFeature.lastToPosition &&
 				lastFromPosition == otherFeature.lastFromPosition &&
 				pattern.generalises(otherFeature.pattern));
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public List<SpatialFeature> generateGeneralisers(final Game game)
+	{
+		System.err.println("ERRROR: AbsoluteFeature::generateGeneralisers(Game) not yet implemented!");
+		return null;
 	}
 	
 	//-------------------------------------------------------------------------

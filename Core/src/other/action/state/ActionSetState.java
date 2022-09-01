@@ -129,9 +129,18 @@ public class ActionSetState extends BaseAction
 					alreadyApplied = true;
 				}
 				
-				if(to < context.containers()[cid].topology().getGraphElements(type).size())
-					cs.setSite(context.state(), to, Constants.UNDEFINED,
-							Constants.UNDEFINED, Constants.UNDEFINED, state, Constants.UNDEFINED, Constants.UNDEFINED, type);
+				if(cid == 0)
+				{
+					if(to < context.containers()[0].topology().getGraphElements(type).size())
+						cs.setSite(context.state(), to, Constants.UNDEFINED,
+								Constants.UNDEFINED, Constants.UNDEFINED, state, Constants.UNDEFINED, Constants.UNDEFINED, type);
+				}
+				else
+				{
+					if((to - context.sitesFrom()[cid]) < context.containers()[cid].topology().getGraphElements(type).size())
+						cs.setSite(context.state(), to, Constants.UNDEFINED,
+								Constants.UNDEFINED, Constants.UNDEFINED, state, Constants.UNDEFINED, Constants.UNDEFINED, type);
+				}
 			}
 		}
 		else
@@ -142,9 +151,20 @@ public class ActionSetState extends BaseAction
 				alreadyApplied = true;
 			}
 			
-			if(to < context.containers()[cid].topology().getGraphElements(type).size())
-				cs.setSite(context.state(), to, Constants.UNDEFINED,
-						Constants.UNDEFINED, Constants.UNDEFINED, state, Constants.UNDEFINED, Constants.UNDEFINED, type);
+			if(cid == 0)
+			{
+				if(to < context.containers()[0].topology().getGraphElements(type).size())
+					cs.setSite(context.state(), to, Constants.UNDEFINED,
+							Constants.UNDEFINED, Constants.UNDEFINED, state, Constants.UNDEFINED, Constants.UNDEFINED, type);
+			}
+			else
+			{
+				if((to - context.sitesFrom()[cid]) < context.containers()[cid].topology().getGraphElements(type).size())
+					cs.setSite(context.state(), to, Constants.UNDEFINED,
+							Constants.UNDEFINED, Constants.UNDEFINED, state, Constants.UNDEFINED, Constants.UNDEFINED, type);
+			}
+			
+			
 		}
 
 		return this;

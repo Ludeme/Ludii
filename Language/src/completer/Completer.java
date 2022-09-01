@@ -16,6 +16,7 @@ import java.util.Map;
 import main.StringRoutines;
 //import main.StringRoutines;
 import main.grammar.Report;
+import parser.Expander;
 
 //-----------------------------------------------------------------------------
 
@@ -33,31 +34,35 @@ public class Completer
 		
 	//-------------------------------------------------------------------------
 
-	public static boolean needsCompleting(final String str)  //Description description)
+	public static boolean needsCompleting(final String desc)
 	{
+		// Remove comments first, so that recon syntax can be commented out 
+		// to not trigger a reconstruction without totally removing it.
+		final String str = Expander.removeComments(desc);
 		return str.contains("[") && str.contains("]");
 	}
 	
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param raw    Partial raw game description.
-	 * @param report Report log for warnings and errors.
+	 * @param raw       Partial raw game description.
+	 * @param maxCompletions Maximum number of completions to make (default is 1, e.g. for Travis tests).
+	 * @param report    Report log for warnings and errors.
 	 * @return List of completed (raw) game descriptions ready for expansion and parsing.        
 	 */
-	public static List<Completion> complete(final String raw, final Report report)
+	public static List<Completion> complete(final String raw, final int maxCompletions, final Report report)
 	{
-//		System.out.println("Completing description...");
-		
-		// Create list of alternative Descriptions, as each will need to be expanded
+		System.out.println("Completer.complete(): Completing at most " + maxCompletions + " descriptions...");
+
 		final List<Completion> completions = new ArrayList<Completion>();
-		
+
+		// Create list of alternative Descriptions, as each will need to be expanded
 		final Map<String, String> ludMap = getAllLudContents();
 		final Map<String, String> defMap = getAllLudContents();
 		
 		final List<Completion> queue = new ArrayList<Completion>();
 		queue.add(new Completion(new String(raw)));
-		
+				
 		while (!queue.isEmpty())
 		{
 			final Completion comp = queue.remove(0);
@@ -65,11 +70,15 @@ public class Completer
 			{
 				// Completed!
 				completions.add(comp);
+				
+				if (completions.size() >= maxCompletions)
+					return completions;
+
 				continue;
 			}
 			
 			// Complete the next completion clause
-			nextCompletion(comp, queue, ludMap, defMap, report);
+			nextCompletion(comp, queue, ludMap, defMap, report);		
 		}
 				
 		return completions;
@@ -79,20 +88,19 @@ public class Completer
 
 	/**
 	 * Process next completion and add results to queue.
-	 * @param raw
 	 * @param queue
 	 * @param report
 	 */
 	public static void nextCompletion
 	(
-		final Completion comp, final List<Completion> queue, 
+		final Completion completion, final List<Completion> queue, 
 		final Map<String, String> ludMap, final Map<String, String> defMap, 
 		final Report report
 	)
 	{
-//		System.out.println("Completing next completion for raw string:\n" + raw);
+		System.out.println("Completing next completion for raw string:\n" + completion.raw());
 		
-		final String raw = comp.raw();
+		final String raw = completion.raw();
 		
 		// Find opening and closing bracket locations
 		final int from = raw.indexOf("[");
@@ -168,8 +176,8 @@ public class Completer
 			// Enumerate on parents
 			final String[] parent = parents.get(enumeration - 1);
 			//System.out.println("Enumerating on parent " + enumeration + ": " + parent[0] + "?" + parent[1]);
-			enumerateMatches(left, right, parent, ludMap, queue, comp.score());
-			enumerateMatches(left, right, parent, defMap, queue, comp.score());
+			enumerateMatches(left, right, parent, ludMap, queue, completion.score());
+			enumerateMatches(left, right, parent, defMap, queue, completion.score());
 		}
 		else
 		{
@@ -207,12 +215,12 @@ public class Completer
 				}
 				
 				final String str = raw.substring(0, from) + choice + raw.substring(to + 1);
-				final Completion completion = new Completion(str);
+				final Completion newCompletion = new Completion(str);
 				
 //				System.out.println("\n**********************************************************");
 //				System.out.println("completion " + n + "/" + choices.size() + " is:\n" + completion);
 				
-				queue.add(completion);
+				queue.add(newCompletion);
 			}
 		}
 	}
@@ -731,17 +739,15 @@ public class Completer
 	/**
 	 * Save reconstruction to file.
 	 * @param name    Reconstruction name for file.
-	 * @param content Completed string to print.
 	 * @throws IOException 
 	 */
-	@SuppressWarnings("boxing")
-	public static void saveReconstruction
+	public static void saveCompletion
 	(
 		final String name, final Completion completion
 	) throws IOException
 	{
 		final String outFileName = "../Common/res/out/recons/" + name + "-" + 
-									String.format("%.3f", completion.score()) + ".lud";	
+									String.format("%.3f", Double.valueOf(completion.score())) + ".lud";	
 		// Prepare the output file
 		final File file = new File(outFileName);
 		if (!file.exists())

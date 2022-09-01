@@ -1,7 +1,5 @@
 (define "ThrowValue" (mapEntry (count Pips)))
 
-(define "SiteToMoveOnTrack" (trackSite Move steps:("ThrowValue")))
-
 (define "CaptureEnemyPiece" 
     (apply 
         if:("IsEnemyAt" (to)) 
@@ -25,7 +23,7 @@
     (move 
         (from)
         (to 
-            "SiteToMoveOnTrack" 
+            ("NextSiteOnTrack" ("ThrowValue"))
             "CaptureEnemyPiece"
         )
         count:#1
@@ -37,7 +35,7 @@
 (define "CreateAKing" 
     (move 
         (from)
-        (to "SiteToMoveOnTrack")
+        (to ("NextSiteOnTrack" ("ThrowValue")))
     )		
 )
 
@@ -60,11 +58,11 @@
             (track "Track2" "51,W,S1,E,S1,W,S1,E" P2 directed:True)
             }
         )
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
         (map {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})
         (piece "Marker" Each
             (if (or ("ActivatedPiece") (and (= 1 ("ThrowValue")) ("InactivePiece")))
-                (if (!= "SiteToMoveOnTrack" Off)
+                (if ("IsNotOffBoard" ("NextSiteOnTrack" ("ThrowValue")))
                     (if (or 
                             (not ("InOpponentHome")) 
                             (and
@@ -73,8 +71,8 @@
                             )
                         )
                         (if (or
-                                (is In "SiteToMoveOnTrack" (sites Empty))
-                                (is Enemy (who at:"SiteToMoveOnTrack"))
+                                (is In ("NextSiteOnTrack" ("ThrowValue")) (sites Empty))
+                                ("IsEnemyAt" ("NextSiteOnTrack" ("ThrowValue")))
                             )
                             (or 
                                 (if ("ThrowEqualSizeKingMinusOne")
@@ -83,8 +81,8 @@
                                 ("KingMove")
                             )
                             (if (and 
-                                    (is In "SiteToMoveOnTrack" (sites "CentralRows"))
-                                    (is Friend (who at:"SiteToMoveOnTrack"))
+                                    (is In ("NextSiteOnTrack" ("ThrowValue")) (sites "CentralRows"))
+                                    ("IsFriendAt" ("NextSiteOnTrack" ("ThrowValue")))
                                 )
                                 ("CreateAKing")
                             )
@@ -105,9 +103,8 @@
             (place "Marker2" (sites Top) state:1)
         })
         (play 
-            (do 
-                (roll) 
-                next:(if (can Move (forEach Piece))
+            ("RollMove"
+                (if (can Move (forEach Piece))
                     (forEach Piece (then (if (is In ("ThrowValue") (sites "AnotherThrow")) (moveAgain))))
                     (move Pass (then (if (is In ("ThrowValue") (sites "AnotherThrow")) (moveAgain))))
                 )
@@ -155,10 +152,10 @@
         (rules "4x13, 19, 21, or 29 board. The number of pieces per player equals the number of spaces in a row, which begin the game arrayed in the outer rows of the board. Four sticks, each with a white side and a yellow side. Throws equal the number of white sides which fall up; when only yellow sides are up the throw equals 6. A throw of 1, 4, or 6 grants another throw to the player. Players  perform all of their throws first, and then move pieces according to the values of the throws without subdividing the value of a single throw. Players cannot move their pieces until the throw a 1. Pieces cannot move past one another in the home row. Each piece in the home row must individually be unlocked with a throw of 1 before it can move. In the central rows, when two of a player's pieces land on the same spot, they become a king and can be moved as one piece. There is no limit to the number of pieces in the king. They may be uncoupled with a throw of 1, or another throw which removes that number of pieces from the king. When a player's piece lands in a space occupied by an opponent's piece, the opponent's piece is removed from the board. Play progresses from left to right in the player's home row, and then from right to left in the second row, left to right in the third row, and then right to left in the opponent's row. When a piece enters the opponent's row, it cannot move if there are other pieces which can be moved. The player to capture the most of the opponent's pieces wins.")
         (source "Hyde 1694: 217-223.")
         (id "760")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
-        (origin  "This game was played in Southwest Asia, from around 1248 to 1762.")
+        (origin "This game was played in Southwest Asia, from around 1248 to 1762.")
         }
     )
     

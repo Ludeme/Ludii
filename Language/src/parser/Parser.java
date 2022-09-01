@@ -14,6 +14,7 @@ import completer.Completion;
 import grammar.Grammar;
 import main.Constants;
 import main.StringRoutines;
+import main.grammar.DefineInstances;
 import main.grammar.Description;
 import main.grammar.GrammarRule;
 import main.grammar.Instance;
@@ -59,7 +60,7 @@ public class Parser
 		final boolean        isVerbose
 	)
 	{
-		return expandAndParse(description, userSelections, report, isVerbose);
+		return expandAndParse(description, userSelections, report, true, isVerbose);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -103,9 +104,9 @@ public class Parser
 		if (Completer.needsCompleting(description.rawGameDescription()))
 		{
 			final String rawGame = description.rawGameDescription();
-			System.out.println("Raw game description is:\n" + rawGame);
+			System.out.println("Raw game description is: \n" + rawGame);
 		
-			final List<Completion> completions = Completer.complete(rawGame, report);
+			final List<Completion> completions = Completer.complete(rawGame, description.maxReconstructions(), report);
 			System.out.println(completions.size() + " completions found.");
 			
 			if (!completions.isEmpty())
@@ -113,6 +114,7 @@ public class Parser
 				// Replace raw description string passed in with best completion 
 				description.setRaw(completions.get(0).raw());
 			}
+			description.setIsRecontruction(true);
 		}
 		
 		try
@@ -121,9 +123,7 @@ public class Parser
 			{
 				//report.clear();
 				
-				final Map<String, DefineInstances> defineInstances = new HashMap<String, DefineInstances>();
-				
-				Expander.expand(description, userSelections, report, defineInstances, isVerbose);				
+				Expander.expand(description, userSelections, report, isVerbose);				
 				if (report.isError())
 				{
 //					System.out.println("Errors while expanding (A):");
@@ -132,10 +132,10 @@ public class Parser
 					return false;  // failed to expand -- return error
 				}
 				
-				if (defineInstances != null && isVerbose)
+				if (isVerbose)
 				{
 					System.out.println("Define instances:");
-					for (final DefineInstances defIn : defineInstances.values())
+					for (final DefineInstances defIn : description.defineInstances().values())
 						System.out.println(defIn + "\n");
 				}
 			}
@@ -667,7 +667,7 @@ public class Parser
 							continue;  // not a numbered variant
 						
 						// Check player index is in player range
-						final int pid = StringRoutines.numberAtEnd(str);
+//						final int pid = StringRoutines.numberAtEnd(str);
 						//System.out.println("pid=" + pid + ", numPlayers=" + numPlayers);
 //						if (pid < 0 || pid > numPlayers + 1)
 //						{
@@ -675,8 +675,8 @@ public class Parser
 //							return;
 //						}
 						
-						if (pid > numPlayers && !str.contains("Hand"))
-							report.addWarning("Item '" + str + "' is numbered " + pid + " but only " + numPlayers + " players.");
+//						if (pid > numPlayers && !str.contains("Hand"))
+//							report.addWarning("Item '" + str + "' is numbered " + pid + " but only " + numPlayers + " players.");
 						
 						match = true;
 						break;

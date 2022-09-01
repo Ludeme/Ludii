@@ -38,12 +38,12 @@
             (track "TrackCW" "4,W,N,E" loop:True)
             }
         )
-        (regions "Home1" P1 (sites Bottom))       // P1 home
-        (regions "Home2" P2 (sites Top))        // P2 home
-        (regions "Left1" P1 (sites {0..2}))      // P1 Three LeftMost
-        (regions "Left2" P2 (sites {9..7}))      // P2 Three LeftMost
-        (regions "Right1" P1 (sites {2..4}))      // P1 Three RightMost
-        (regions "Right2" P2 (sites {7..5}))      // P2 Three RightMost
+        (regions "Home1" P1 (sites Bottom))    // P1 home
+        (regions "Home2" P2 (sites Top))    // P2 home
+        (regions "Left1" P1 (sites {0..2}))   // P1 Three LeftMost
+        (regions "Left2" P2 (sites {9..7}))   // P2 Three LeftMost
+        (regions "Right1" P1 (sites {2..4}))   // P1 Three RightMost
+        (regions "Right2" P2 (sites {7..5}))   // P2 Three RightMost
         (piece "Seed" Shared)
         (hand Each)
     }) 
@@ -72,10 +72,10 @@
         (rules "2x5 board. Play begins with five counters in each hole. Players sow from any one of their holes. Sowing can occur in the following directions: From the leftmost two holes: clockwise. From the rightmost two holes: anti-clockwise. from the center hole: the player may choose either direction. If the final counter falls into a hole in the opponent's row containing either one or three counters, making it now contain two or four, these are taken. If the holes before them also contain two or four, in an unbroken sequence, they may all be captured. Single counters cannot be sown. When neither player can move, the single counters in each player's rows are taken by the player belonging to those rows. The player with the most counters wins.")
         (source "Davies 1925: 140-141.")
         (id "239")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
-        (origin  "This game was played in Sudan, around 1925.")
+        (origin "This game was played in Sudan, around 1925.")
         }
     )
     

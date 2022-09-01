@@ -11,7 +11,7 @@
             if:(>=
                 (count Steps (from) (to))
                 (size Stack at:(to))
-            )  
+            ) 
         )
         #1
     )
@@ -45,9 +45,7 @@
             (place "Disc1" (min (array (sites Board))))
             (place "Disc2" (max (array (sites Board))))
         })
-        (play
-            ("Select" (then ("Move")))
-        )
+        (play ("Select" (then ("Move"))))
         (end 
             (if (is Full) 
                 (byScore {
@@ -63,15 +61,15 @@
 
 (option "Board Size" <Board> args:{ <board> }
     {
-    (item "4"  <4> "A size 4 board is currently selected")*
-    (item "5"  <5> "A size 5 board is currently selected")
+    (item "4" <4> "A size 4 board is currently selected")*
+    (item "5" <5> "A size 5 board is currently selected")
     }
 )
 
 (option "Show Stack Size As Number" <Stack> args:{ <stack> }
     {
-    (item "No"  <Default 0.6> "The number of pieces in a stack is currently not shown on the top piece.")*
-    (item "Yes"  <DefaultAndCount 0.6> "The number of pieces in a stack is shown on the top piece.")
+    (item "No" <Default 0.6> "The number of pieces in a stack is currently not shown on the top piece.")*
+    (item "Yes" <DefaultAndCount 0.6> "The number of pieces in a stack is shown on the top piece.")
     }
 )
 
@@ -95,7 +93,7 @@
             
         When the board is full, the player controlling more stacks wins the game.")
         (id "1651")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/space/territory")
         (author "Alek Erickson and Michael Amundsen")
         (credit "Michael Amundsen")

@@ -253,8 +253,7 @@ public final class Slide extends Effect
 								if (stack)
 								{
 									move.setLevelMinNonDecision(0);
-									move.setLevelMaxNonDecision(
-											context.state().containerStates()[0].sizeStack(from, type) - 1);
+									move.setLevelMaxNonDecision(context.state().containerStates()[0].sizeStack(from, type) - 1);
 								}
 								move = MoveUtilities.chainRuleWithAction(context, sideEffect, move, true, false);
 							}

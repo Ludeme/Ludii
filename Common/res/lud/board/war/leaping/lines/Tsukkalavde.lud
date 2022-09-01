@@ -1,18 +1,14 @@
 (game "Tsukkalavde" 
     (players 2) 
     (equipment { 
-        (board 
-            (square 5 diagonals:Alternating)
-            use:Vertex
-        )
+        ("AlquerqueBoard" 5 5)
         (piece "Marker" Each
             (or 
                 ("HopSequenceCapture")
                 ("StepToEmpty")
             )		
         ) 
-        }
-    ) 
+    }) 
     (rules 
         (start { 
             (place "Marker1" (union (expand (sites Bottom)) (sites {"D3" "E3"})))
@@ -40,10 +36,10 @@
         (rules "5x5 intersecting lines, forming a grid. Diagonals in each of the quadrants. Twelve pieces per player, which begin on the points closest to the player, and the two points to the right of the center point. Players alternate turns moving a piece to an empty adjacent point along the lines of the board. A player may hop over an adjacent  opponent's pieces to an empty space immediately on the opposite side of it along the lines of the board to capture it. Multiple captures are allowed. A player wins if they capture all of their opponent's pieces, or reduces the opponent to one piece and blocks them from being able to move.")
         (source "Larsen 1950: 32.")
         (id "1232")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in Norway, from around 1870 to 1890.")
+        (origin "This game was played in Norway, from around 1870 to 1890.")
         }
     )
     

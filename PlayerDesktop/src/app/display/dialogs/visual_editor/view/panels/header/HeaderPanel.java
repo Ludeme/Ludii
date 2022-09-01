@@ -1,25 +1,47 @@
 package app.display.dialogs.visual_editor.view.panels.header;
 
 import app.display.dialogs.visual_editor.handler.Handler;
+import app.display.dialogs.visual_editor.view.VisualEditorPanel;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class HeaderPanel extends JPanel {
-    public HeaderPanel(){
-        setLayout(new BorderLayout());
-        setBackground(Color.RED);
+public class HeaderPanel extends JPanel
+{
 
-        add(new EditorPickerPanel(), BorderLayout.LINE_START);
-        ToolsPanel toolsPanel = new ToolsPanel();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3999066959490436008L;
+	private final EditorPickerPanel editorPickerPanel;
+    private final ToolsPanel toolsPanel;
+
+    public HeaderPanel(VisualEditorPanel visualEditorPanel)
+    {
+        setLayout(new BorderLayout());
+        editorPickerPanel = new EditorPickerPanel(visualEditorPanel);
+        add(editorPickerPanel, BorderLayout.LINE_START);
+        toolsPanel = new ToolsPanel();
         Handler.toolsPanel = toolsPanel;
         add(toolsPanel, BorderLayout.LINE_END);
-
-        setBackground(Color.WHITE);
+        setOpaque(true);
+        setBackground(DesignPalette.BACKGROUND_HEADER_PANEL());
 
         int preferredHeight = getPreferredSize().height;
         setPreferredSize(new Dimension(getPreferredSize().width, preferredHeight+20));
+    }
 
+    @Override
+	public void paintComponent(Graphics g)
+    {
+        super.paintComponent(g);
+        if(getBackground() != DesignPalette.BACKGROUND_HEADER_PANEL())
+        {
+            setBackground(DesignPalette.BACKGROUND_HEADER_PANEL());
+            editorPickerPanel.repaint();
+            toolsPanel.repaint();
+        }
     }
 
 }

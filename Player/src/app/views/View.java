@@ -78,6 +78,7 @@ public abstract class View
 	/**
 	 * @return Index of the container associated with this view.
 	 */
+	@SuppressWarnings("static-method")
 	public int containerIndex()
 	{
 		return -1;

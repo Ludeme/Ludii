@@ -1,0 +1,61 @@
+(define "AllOccupiedCells"
+    (union { 
+        (forEach (sites Board Cell) if:(is Occupied Cell (site))) 
+        (sites Hand Shared) 
+    })		
+)
+
+(game "Exhibition_example_7" 
+    (players 2) 
+    (equipment { 
+        (board (square 4) use:Cell)
+        (piece "Marker" Each)
+        (hand Shared size:2)
+    }) 
+    (rules 
+        (start {
+            (place "Marker1" (handSite Shared 0))
+            (place "Marker2" (handSite Shared 1))
+        })
+        (play 
+            (or {
+                
+                (move Select
+                    (from Cell ("AllOccupiedCells")) 
+                )
+                
+                (move 
+                    (from Cell ("AllOccupiedCells")) 
+                    (to Cell (forEach (sites Board) if:(is Empty Cell (site))))
+                    copy:(is In (from) (sites Hand Shared))
+                )
+                
+                (move Select
+                    (from Cell (sites Board Cell) if:(is Occupied Cell (from)))
+                    (to Cell (sites Hand Shared))
+                    (then
+                        (remove Cell (last From))
+                    )
+                )
+                
+                (move 
+                    (from Cell (sites Board Cell) if:(is Occupied Cell (from)))				
+                    (to Cell (sites Board Cell) if:(is Empty Cell (to)))
+                )
+                }
+                (then (moveAgain))
+            )
+        )
+        (end (if (is Line 9999) (result Mover Win)))
+    )
+)
+
+(metadata 
+    
+    (graphics {
+        (piece Scale "Marker" 0.7)
+        (board Colour OuterEdges (colour 120 190 240))
+        (board Colour InnerEdges (colour 120 190 240))
+    })
+    
+)

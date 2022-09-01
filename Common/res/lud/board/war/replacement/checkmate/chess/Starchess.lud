@@ -35,14 +35,6 @@
     )
 )
 
-// Source: Chess.lud - NextCanNotMove
-(define "NextCannotMove"
-    (not (can Move (do
-                (forEach Piece Next)
-                ifAfterwards:(not ("IsInCheck" "King" Next))
-    )))
-)
-
 // Usage: ("P12" <player1_arg> <player2_arg>)
 (define "P12"
     (if (is Mover P1) #1 #2)
@@ -55,8 +47,7 @@
 
 // Usage: ("SlideCaptureMove" <directions> <then>)
 (define "SlideCaptureMove"
-    (move
-        Slide
+    (move Slide
         #1
         (to if:("IsEnemyAt" (to))
             "CaptureToPieceAndResetCounter"
@@ -71,8 +62,7 @@
 
 // Usage: ("KingCaptureStep" <directions> <then>)
 (define "KingCaptureStep"
-    (move
-        Step
+    (move Step
         #1
         (to if:"IsToEmptyOrEnemy"
             "CaptureToPieceAndResetCounter"
@@ -89,17 +79,15 @@
 // Source: Derived from Chess.lud - DoubleStep
 // Usage: ("PawnHop" <fwd_dir> <back_dir>)
 (define "PawnHop"
-    (move
-        Hop
+    (move Hop
         #1
         (between if:(is In (between) (sites Empty)))
         (to if:"IsToEmpty")
-        (then (and
-                {
+        (then (and 
                 (set Pending (ahead (last To) #2))
                 (set Var (last To))
-                }
-        ))
+            )
+        )
     )
 )
 
@@ -112,27 +100,18 @@
 )
 
 // Usage: ("PawnStep_To" <directions>)
-(define "PawnStep_To"
-    (move
-        Step
-        #1
-        (to if:("IsEnemyAt" (to))
-            (apply (remove (to)))
-        )
-    )
-)
+(define "PawnStep_To" ("StepToEnemy" #1))
 
 //----------------------------------------
 // Pawn movement: En passant
-//  - Save skipped-over spaces in Pending
-//  - Save location of last-moved Pawn in Var.
+// - Save skipped-over spaces in Pending
+// - Save location of last-moved Pawn in Var.
 // Note: Counter is reset in (piece "Pawn" ...).
 //----------------------------------------
 
 // Usage: ("EnPassant_Base" <directions>)
 (define "EnPassant_Base"
-    (move
-        Step
+    (move Step
         #1
         (to if:"IsEnPassantCapture")
         (then (remove (var)))
@@ -153,26 +132,17 @@
 //------------------------------------------------------------------------------
 
 (game "Starchess"
-    (players {(player N) (player S)})
-    (equipment
-        {
+    ("TwoPlayersNorthSouth")
+    (equipment {
         (board (rotate 30 (hex Star 2)))
         
-        (piece "King"  Each ("KingCaptureStep" Orthogonal ~))
+        (piece "King" Each ("KingCaptureStep" Orthogonal ~))
         (piece "Queen" Each ("SlideCaptureMove" Orthogonal ~))
-        (piece "Rook"  Each ("SlideCaptureMove" (directions {N S}) ~))
+        (piece "Rook" Each ("SlideCaptureMove" (directions {N S}) ~))
         (piece "Bishop" Each
             ("SlideCaptureMove" (directions {WNW ENE WSW ESE}) ~)
         )
-        (piece "Knight" Each
-            (move
-                Leap
-                "KnightWalk"
-                (to if:"IsToEmptyOrEnemy"
-                    "CaptureToPieceAndResetCounter"
-                )
-            )
-        )
+        ("ChessKnight" "Knight" (then (set Counter)))
         
         (piece "Pawn" Each
             (or {
@@ -200,25 +170,22 @@
         (regions "PromotionZone" P1 (sites P2 "Home"))
         (regions "PromotionZone" P2 (sites P1 "Home"))
         
-        (regions "Region-Dark"  (sites Phase 1))
+        (regions "Region-Dark" (sites Phase 1))
         (regions "Region-Light" (sites Phase 2))
         (regions "Region-Medium" (sites Phase 0))
-        }
-    )
+    })
     
     (rules
-        (start
-            {
-            (place "King"  "Hand" count:1)
+        (start {
+            (place "King" "Hand" count:1)
             (place "Queen" "Hand" count:1)
-            (place "Rook"  "Hand" count:1)
+            (place "Rook" "Hand" count:1)
             (place "Bishop" "Hand" count:1)
             (place "Knight" "Hand" count:1)
             
             (place "Pawn1" {"B4" "C4" "D4" "D3" "D2"})
             (place "Pawn2" {"F8" "F7" "F6" "G6" "H6"})
-            }
-        )
+        })
         phases:{
         (phase "Placement"
             (play
@@ -238,22 +205,15 @@
                     )
                 )
             )
-            (end
-                {
-                (if (and
-                        ("IsInCheck" "King" Next)
-                        ("NextCannotMove")
-                    )
-                    (result Mover Win)
-                )
+            (end {
+                ("Checkmate" "King")
                 (if (or
                         (no Moves Mover)
                         (= (counter) 100)
                     )
                     (result Mover Draw)
                 )
-                }
-            )
+            })
         )
         }
     )
@@ -287,7 +247,7 @@
         (source "For a comparison of popular versions of hexagonal chess, see <a href=\"https://en.wikipedia.org/wiki/Hexagonal_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>. For more details on other chess variants, see The Classified Encyclopedia of Chess Variants, by D. B. Pritchard (2nd edition, completed and edited by John Beasley, 2007).
             
         ")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/checkmate/chess")
         (author "László Polgár")
         (credit "Jay Coskey, with some small functions drawn from Chess.lud, by Eric Piette")
@@ -303,7 +263,7 @@
         (piece Scale "Rook" 0.8)
         (board Style Chess)
         
-        (region Colour "Region-Dark"  (colour "#b5651d"))
+        (region Colour "Region-Dark" (colour "#b5651d"))
         (region Colour "Region-Light" (colour "#fff8dc"))
         (region Colour "Region-Medium" (colour "#daae7c"))
     })

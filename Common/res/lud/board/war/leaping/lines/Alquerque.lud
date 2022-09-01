@@ -24,8 +24,7 @@
     (item "No force capture no sequence" 
         <
         (play 
-            (forEach Piece 
-                "Counter" 
+            (forEach Piece "Counter" 
                 (or 
                     ("HopCapture") 
                     ("StepToEmpty")
@@ -44,8 +43,7 @@
                     ("HopSequenceCaptureAgain")	
                     (move Pass)
                 )
-                (forEach Piece 
-                    "Counter" 
+                (forEach Piece "Counter" 
                     (or 
                         ("HopSequenceCapture") 
                         ("StepToEmpty")
@@ -65,27 +63,10 @@
         (define "HasHuffed" (= (last To) (last From)))
         
         (define "HopCounter" 
-            (move
-                Hop 
-                (between 
-                    if:("IsEnemyAt" (between))
-                    (apply (remove (between)))
-                ) 
-                (to if:(is Empty (to))) 
+            ("HopCapture" ~ ~ 
                 (then
                     (and
-                        (if (can Move 
-                                (hop
-                                    (from (last To)) 
-                                    (between 
-                                        if:("IsEnemyAt" (between))
-                                        (apply (remove (between)))
-                                    )
-                                    (to if:(is Empty (to)))
-                                )
-                            ) 
-                            (moveAgain)
-                        )
+                        ("ReplayIfCanMove" ("HopCapture" (from (last To)))) 
                         ("HasCaptured")
                     )
                 )
@@ -106,7 +87,7 @@
             (move
                 Select 
                 (from #1
-                    if:(!= (what at:(from)) 0)
+                    if:(is Occupied (from))
                 )
                 (then 
                     (and {
@@ -130,11 +111,7 @@
                 next:(forEach Piece "Counter" 
                     (or 
                         ("HopCounter") 
-                        (move
-                            Step
-                            (to if:(is Empty (to)))
-                            (then ("HasNotCaptured"))
-                        )
+                        ("StepToEmpty" ~ (then ("HasNotCaptured")))
                     )
                 )
             )
@@ -142,7 +119,7 @@
         
         (play 
             (or
-                (if (and (not "SameTurn") ("DidNotCaptured"))
+                (if (and ("NewTurn") ("DidNotCaptured"))
                     (or
                         (if ("ShouldCapturedButMoved") 
                             ("HuffOnePieceOf" (last To))
@@ -153,17 +130,10 @@
                 (if ("SameTurn")
                     (if ("HasHuffed")
                         ("MoveOrCapture")
-                        (move
-                            Hop 
+                        ("HopCapture" 
                             (from (last To))
-                            (between 
-                                if:("IsEnemyAt" (between))
-                                (apply (remove (between)))
-                            ) 
-                            (to if:(is Empty (to))) 
-                            (then
-                                ("HasCaptured")
-                            )
+                            ~
+                            (then ("HasCaptured"))
                         )
                     )
                     ("MoveOrCapture")
@@ -214,16 +184,12 @@
         (useFor "Ruleset/Murray (Suggested)" (source "Murray 1951: 65."))
         (useFor "Ruleset/Murray (Suggested)" (id "597"))
         (id "52")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/leaping/lines")
         (credit "Eric Piette")
-        (origin  "This game was played in Islamic World, from around 1221 to 1674.")
+        (origin "This game was played in Islamic World, from around 1221 to 1674.")
         }
     )
-    
-    (graphics {
-        
-    })
     
     (ai 
         "Alquerque_ai"

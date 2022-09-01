@@ -51,6 +51,7 @@ public class ParserException extends RuntimeException
 	/**
 	 * @return The title of the message.
 	 */
+	@SuppressWarnings("static-method")
 	public String getMessageTitle() 
 	{
 		return "A parser error has occurred.";

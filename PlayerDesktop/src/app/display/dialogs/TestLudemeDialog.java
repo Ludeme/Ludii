@@ -436,7 +436,7 @@ public class TestLudemeDialog extends JDialog
 	//-------------------------------------------------------------------------
 	
 	// Tests a specified ludeme string when a test button is pressed in the dialog
-	void testLudemeString(final PlayerApp app, final String str, final Context context)
+	static void testLudemeString(final PlayerApp app, final String str, final Context context)
 	{
 		if (str == null || str.equals(""))
 			return;
@@ -471,7 +471,7 @@ public class TestLudemeDialog extends JDialog
 	 * @param str The string to check.
 	 * @param context The context.
 	 */
-	void testLudemeStringConcepts
+	static void testLudemeStringConcepts
 	(
 		final PlayerApp app, 
 		final String str, 

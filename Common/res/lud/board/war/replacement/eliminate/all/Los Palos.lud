@@ -2,10 +2,10 @@
 
 (define "SiteToMoveOnTrack" 
     (if (= (state at:(from)) 0)
-        (trackSite Move "Track" steps:("ThrowValue"))
+        ("NextSiteOnTrack" ("ThrowValue") "Track")
         (if (= (state at:(from)) 1)
-            (trackSite Move "TrackLeft" steps:("ThrowValue"))
-            (trackSite Move "TrackRight" steps:("ThrowValue"))
+            ("NextSiteOnTrack" ("ThrowValue") "TrackLeft")
+            ("NextSiteOnTrack" ("ThrowValue") "TrackRight")
         )
     )
 )
@@ -82,15 +82,14 @@
                 (shift 0 -1 (rectangle 1 4))
             })
             {
-            (track "Track1"   "20,W,N1,E" P1 directed:True)
-            (track "Track2"   "11,12,S2,E" P2 directed:True)
-            (track "Track3"   "6,E1,9,S1,W" P3 directed:True)
-            (track "Track4"   "0,1,2,3,4,W" P4 directed:True)
+            (track "Track1"  "20,W,N1,E" P1 directed:True)
+            (track "Track2"  "11,12,S2,E" P2 directed:True)
+            (track "Track3"  "6,E1,9,S1,W" P3 directed:True)
+            (track "Track4"  "0,1,2,3,4,W" P4 directed:True)
             (track "TrackRight" "14,E,W" directed:True) // Local state = 2
             (track "TrackLeft" "4,W,E" directed:True) // Local state = 1
-            }
-        )
-        (dice d:2 from:0 num:5)
+        })
+        ("StickDice" 5)
         (piece "Marker" Each
             (move
                 (from (from))
@@ -105,9 +104,7 @@
                         )
                     )
                 )
-                (then 
-                    ("UpdateState")
-                )
+                (then ("UpdateState"))
             )
         )
         (map "Throw" {(pair 0 5) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 5)})
@@ -124,12 +121,8 @@
             (set Team 1 {P1 P3})
             (set Team 2 {P2 P4})
         })
-        (play 
-            (do 
-                (roll) next:(forEach Piece)
-            )
-        )
-        (end (if (no Pieces Enemy) (result TeamMover Win)))
+        (play ("RollMove" (forEach Piece)))
+        (end ("CaptureAllTeam"))
     )
 )
 
@@ -144,10 +137,10 @@
         (rules "The main track of the board is a row of eleven squares, with both end squares and the central square marked with an X. On the left side, a row of four squares runs under and adjacent to the first four squares of the central row. Perpendicular to the left end square of the central row, there is a square and then three triangles. On the opposite end, below and perpendicular to the right end of the central track is a row of four squares, curving slightly to the right. Above the end square of the central row, a triangular space, adjacent to an oval divided into three. Two teams with two players on each team. Players each start from a different point: one from the right square in the bottom left row, one from one of the triangle spaces on the left, one from the end of the curving track on the right, and the other from one of the spaces in the oval. Three pieces per player. Five sticks, with a flat side and a curved sides, used as dice. The value of a throw is equal to the number of flat sides that land face up; five curved sides up = 5. Players move their pieces from their entry points onto the central track of the board and progressing to the opposite end of the board from where they started. Pieces must move backward when they reach the end of the central track. When a player's piece lands on a space occupied by an opponent's piece, the opponent's piece is taken. A piece resting on a space marked with an X is safe from capture. The team to successfully capture all of their opponent's pieces wins.")
         (source "Weitlaner and Castro 1973: 189; 191.")
         (id "328")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
-        (origin  "This game was played in Mexico, from around 1943 to 1953.")
+        (origin "This game was played in Mexico, from around 1943 to 1953.")
         }
     )
     

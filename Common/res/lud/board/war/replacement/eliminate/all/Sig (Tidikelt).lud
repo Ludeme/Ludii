@@ -2,8 +2,6 @@
 
 (define "ThrowValue" (mapEntry "Throw" (count Pips))) 
 
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
-
 (define "Sig" (= 1 ("ThrowValue")))
 
 (define "ActivatePiece" (set State at:#1 1))
@@ -15,7 +13,7 @@
         if:("IsEnemyAt" (to)) 
         (if (is In (to) (sites Next "Home"))
             (remove (to))
-            (if (= ("FirstAvailableInHome" Next) Off) 
+            (if ("IsOffBoard" ("FirstAvailableInHome" Next)) 
                 (remove (to))
                 (fromTo
                     (from (to))
@@ -33,7 +31,7 @@
 (define "CaptureEnemyPieceInEntering" 
     (apply 
         if:("IsEnemyAt" (to)) 
-        (if (= ("FirstAvailableInHome" Next) Off) 
+        (if ("IsOffBoard" ("FirstAvailableInHome" Next)) 
             (remove (to))
             (fromTo
                 (from (to))
@@ -51,11 +49,11 @@
                     True
                     ("Sig") 
                 )
-                (if (not (is Friend (who at:("SiteToMoveOnTrack" "HomeTrack" ("ThrowValue")))))
+                (if (not ("IsFriendAt" ("NextSiteOnTrack" ("ThrowValue") "HomeTrack")))
                     (move 
                         (from)
                         (to 
-                            ("SiteToMoveOnTrack" "HomeTrack" ("ThrowValue")) 
+                            ("NextSiteOnTrack" ("ThrowValue") "HomeTrack")
                             "CaptureEnemyPiece"
                         )
                         (then
@@ -68,11 +66,11 @@
             )
         )
         (if ("IsInTrack" (from) "EnemyTrack")
-            (if (not (is Friend (who at:("SiteToMoveOnTrack" "EnemyTrack" ("ThrowValue")))))
+            (if (not ("IsFriendAt" ("NextSiteOnTrack" ("ThrowValue") "EnemyTrack")))
                 (move 
                     (from)
                     (to 
-                        ("SiteToMoveOnTrack" "EnemyTrack" ("ThrowValue")) 
+                        ("NextSiteOnTrack" ("ThrowValue") "EnemyTrack")
                         "CaptureEnemyPiece"
                     )
                 )
@@ -101,7 +99,7 @@
         )
         (piece "Stick" Each)
         (regions "AllSites" (sites Board))
-        (dice d:2 from:0 num:<Dice:num>)
+        ("StickDice" <Dice:num>)
         <Dice:throwValues>
         (map "FirstEnemySite" {(pair P1 2) (pair P2 0)})
         (regions "Home" P1 (sites Left))
@@ -113,8 +111,8 @@
             (place "Stick2" (sites Right))
         })
         (play 
-            (do (roll) 
-                next:(or
+            ("RollMove"
+                (or
                     (if (and ("Sig") (= (mover) (who at:("BottomSite"))))
                         (move 
                             (from ("BottomSite"))
@@ -129,7 +127,7 @@
                 )
             )
         )
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -137,8 +135,8 @@
 
 (option "Dice" <Dice> args:{ <num> <throwValues> }
     {
-    (item "4"    <4> <(map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})> "The game is played with 4 dice.")*  
-    (item "6"    <6> <(map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 4) (pair 6 4)})> "The game is played with 6 dice.")  
+    (item "4"  <4> <(map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})> "The game is played with 4 dice.")* 
+    (item "6"  <6> <(map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 4) (pair 6 4)})> "The game is played with 6 dice.") 
     }
 )
 
@@ -171,19 +169,18 @@
         (useFor "Ruleset/Six Stick Dice (Observed)" (id "847"))
         (source "Depaulis 2001: 68; Gana 1991: 191.")
         (id "846")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "board/war/replacement/eliminate/all")
         (credit "Eric Piette")
-        (origin  "This game was played in Algeria, around 1964.")
+        (origin "This game was played in Algeria, around 1964.")
         }
     )
     
     (graphics {
-        (show Edges Hidden)  
+        (show Edges Hidden) 
         (show Symbol "disc" "AllSites" Vertex fillColour:(colour White) edgeColour:(colour Black) scale:1)
         (piece Colour "Die" state:0 fillColour:(colour Dark))
         (piece Scale "Stick" 0.5)
-        
     })
     
 )

@@ -5,18 +5,11 @@
     })		
 )
 
-(define "AllOccupiedVertices"
-    (forEach (sites Board Vertex) if:(is In (site) (sites Occupied by:All on:Vertex))) 		
-)
-
-//------------------------------------------------------------------------------
-
 (game "Exhibition_example_1" 
     (players 2) 
     (equipment { 
-        (board (square 6) use:Vertex)
-        (piece "Marker" P1)
-        (piece "Marker" P2)
+        (board (square 5) use:Cell)
+        (piece "Marker" Each)
         (hand Shared size:2)
     }) 
     (rules 
@@ -31,28 +24,10 @@
                     (from Cell ("AllOccupiedCells")) 
                 )
                 
-                (move Select
-                    (from Vertex ("AllOccupiedVertices")) 
-                )
-                
                 (move 
                     (from Cell ("AllOccupiedCells")) 
                     (to Cell (forEach (sites Board) if:(is Empty Cell (site))))
                     copy:(is In (from) (sites Hand Shared))
-                )
-                
-                (move 
-                    (from Cell ("AllOccupiedCells")) 
-                    (to Vertex (forEach (sites Board Vertex) if:(is Empty Vertex (site))))
-                    copy:(is In (from) (sites Hand Shared))
-                )
-                
-                (move Select
-                    (from Vertex (sites Board Vertex) if:(is Occupied Vertex (from)))
-                    (to Cell (sites Hand Shared))
-                    (then
-                        (remove (last From))
-                    )
                 )
                 
                 (move Select
@@ -64,21 +39,8 @@
                 )
                 
                 (move 
-                    (from Cell (sites Board Cell) if:(is Occupied Cell (from)))			
-                    (to Vertex (sites Board Vertex) if:(is Empty Vertex (to)))
-                )
-                
-                (move 
-                    (from Vertex (sites Board Vertex) if:(is Occupied Vertex (from)))			
-                    (to Cell (sites Board Cell) if:(is Empty Cell (to)))
-                )
-                (move 
                     (from Cell (sites Board Cell) if:(is Occupied Cell (from)))				
                     (to Cell (sites Board Cell) if:(is Empty Cell (to)))
-                )
-                (move 
-                    (from Vertex (sites Board Vertex) if:(is Occupied Vertex (from)))			
-                    (to Vertex (sites Board Vertex) if:(is Empty Vertex (to)))
                 )
                 }
                 (then (moveAgain))
@@ -92,8 +54,8 @@
     
     (graphics {
         (piece Scale "Marker" 0.7)
-        (board Colour InnerEdges (colour 17 103 177))
-        (board Colour OuterEdges (colour 17 103 177))
+        (board Colour OuterEdges (colour 120 190 240))
+        (board Colour InnerEdges (colour 120 190 240))
     })
     
 )
