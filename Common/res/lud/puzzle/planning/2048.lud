@@ -168,7 +168,7 @@
             )
         )
         (end {
-            (if (!= Off (where "Square2048" Shared)) (result Mover Win))
+            (if ("IsNotOffBoard" (where "Square2048" Shared)) (result Mover Win))
             (if (no Moves Next) (result Mover Loss))
         })
     )
