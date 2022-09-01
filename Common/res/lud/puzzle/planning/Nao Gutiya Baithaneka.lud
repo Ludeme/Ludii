@@ -1,22 +1,10 @@
 (game "Nao Gutiya Baithaneka"
     (players 1) 
     (equipment { 
-        (board 
-            (splitCrossings (regular Star 5))
-            use:Vertex
-        )
+    	("StarBoard" 5)
         (hand Each) 
-        (piece "Marker" P1
-            (move Hop 
-                (between 
-                    if:("IsFriendAt" (between))
-                    (apply (remove (between)))
-                )
-                (to if:(is Empty (to)))
-            )
-        ) 
-        }
-    ) 
+        (piece "Marker" P1 ("HopFriendCapture"))
+    }) 
     (rules 
         (start 
             (place "Marker" (handSite P1) count:9)
@@ -68,7 +56,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai

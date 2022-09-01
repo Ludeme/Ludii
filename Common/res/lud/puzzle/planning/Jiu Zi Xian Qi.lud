@@ -1,21 +1,9 @@
 (game "Jiu Zi Xian Qi"
     (players 1) 
     (equipment { 
-        (board 
-            (splitCrossings (regular Star 5))
-            use:Vertex
-        )
-        (piece "Marker" P1
-            (move Hop 
-                (between 
-                    if:("IsFriendAt" (between))
-                    (apply (remove (between)))
-                )
-                (to if:(is Empty (to)))
-            )
-        ) 
-        }
-    ) 
+    	("StarBoard" 5)
+        (piece "Marker" P1 ("HopFriendCapture"))
+    }) 
     (rules 
         (start 
             (place "Marker" (sites Board))
@@ -30,11 +18,10 @@
             (play (forEach Piece))
             (end { 
                 (if (= 1 (count Pieces P1)) (result Mover Win))
-                (if (no Moves Next) (result Mover Loss))
+                ("NoMoves" Loss)
             })
         )
         }
-        
     )		
 )
 
@@ -59,7 +46,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai

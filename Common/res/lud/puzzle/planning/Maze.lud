@@ -25,8 +25,7 @@
         (piece "Marker" Shared)
         (piece "Cross" Neutral)
         (piece "Human" P1
-            (move
-                Step 
+            (move Step 
                 Orthogonal 
                 (to 
                     if:(and (is Empty (to)) ("NoEdgeBetweenCells" (from) (to)))
@@ -120,7 +119,6 @@
         (board Style PenAndPaper replaceComponentsWithFilledCells:False)
         (board Colour InnerVertices (colour Hidden))
         (board Colour OuterVertices (colour Hidden))
-        
     })
     
     (ai

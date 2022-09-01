@@ -1,10 +1,7 @@
 (game "Kaooa" 
     (players 2) 
     (equipment { 
-        (board 
-            (splitCrossings (regular Star 5))
-            use:Vertex
-        )
+    	("StarBoard" 5)
         (hand Each) 
         (piece "Marker" P1 (or ("HopSequenceCapture") "StepToEmpty")) 
         (piece "Marker" P2 "StepToEmpty") 

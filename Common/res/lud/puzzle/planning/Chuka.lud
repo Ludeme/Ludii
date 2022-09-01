@@ -21,8 +21,7 @@
     (rules
         (start (set Count 2 to:"AllSitesNotRumba"))
         (play 
-            (move
-                Select
+            (move Select
                 (from
                     (if 
                         (!= ("Rumba") (value Pending)) 

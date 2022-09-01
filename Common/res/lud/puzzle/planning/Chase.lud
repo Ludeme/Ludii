@@ -9,14 +9,14 @@
 )
 
 (define "MoveRobot"
-    (if (= (id "Rubble0") (what at:(ahead (site) #1)))
+    (if ("IsPieceAt" "Rubble" Neutral (ahead (site) #1))
         (remove (site))
         (fromTo
             (from (site)) 
             (to 
                 (ahead (site) #1)
                 (apply 
-                    (if (= (id "Human") (what at:(to)))
+                    (if ("IsPieceAt" "Human" P1 (to))
                         (remove (to))
                     )
                 )
@@ -95,11 +95,7 @@
     (equipment { 
         (board (rectangle <Rows:num> <Columns:num>)) 
         (piece "Human" P1 
-            (move
-                Step 
-                (to 
-                    if:(is Empty (to))
-                )
+            ("StepToEmpty" ~
                 (then
                     ("RobotThreat")
                 )
@@ -109,16 +105,13 @@
         (piece "Rubble" Neutral)
     }) 
     (rules 
-        (start
-            {
+        (start {
             (place Random {"Human"})
             (place Random {"Robot"} count:("NumRobots"))
             (set Score P1 ("NumSafeTeleportation"))
-            }
-        )
+        })
         (play
-            (or
-                {
+            (or {
                 (forEach Piece)
                 (move Pass (then ("Teleportation")))
                 (if (< 0 (score P1))
@@ -138,12 +131,10 @@
                 )
             )
         )
-        (end 
-            {
+        (end {
             (if (no Pieces Mover) (result Mover Loss))
             (if (no Pieces "Robot") (result Mover Win))
-            }
-        )
+        })
     )
 )
 

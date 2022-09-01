@@ -3,8 +3,7 @@
     (equipment { 
         (board (square 8)) 
         (piece "Knight" P1)
-        }
-    ) 
+    }) 
     (rules 
         phases:{ 
         (phase "Placement" 
@@ -13,8 +12,7 @@
         )
         (phase "Movement" 
             (play 
-                (move
-                    Leap
+                (move Leap
                     (from (last To)) 
                     "KnightWalk" 
                     (to if:(is Empty (to)))

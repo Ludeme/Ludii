@@ -1,6 +1,5 @@
 (define "HopPiece" 
-    (move
-        Hop
+    (move Hop
         (from) 
         (between if:("IsFriendAt" (between))) 
         (to if:(is Empty (to))) 
@@ -25,14 +24,12 @@
                 {-1.0 5.0} {1.0 5.0}
                 {-1.0 6.0} {1.0 6.0}
                 {0.0 7.0}
-                }
-            )
+            })
             use:Vertex
         )
         (piece "Marker1" P1 (or ("StepToEmpty") ("HopPiece")))
         (piece "Marker2" P1 (or ("StepToEmpty") ("HopPiece")))
-        }
-    ) 
+    }) 
     (rules 
         (start {
             (place "Marker1" (expand (sites {0}) steps:2))
@@ -82,7 +79,6 @@
         (show Line { {20 21}})
         (piece Colour "Marker1" fillColour:(colour Red))
         (piece Colour "Marker2" fillColour:(colour Blue))
-        
     })
     
     (ai

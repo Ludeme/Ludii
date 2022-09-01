@@ -6,9 +6,7 @@
     }) 
     
     (rules
-        (start {
-            (place Random {<Version:random>})
-        }) 
+        (start (place Random {<Version:random>}))
         
         (play (forEach Piece))
         

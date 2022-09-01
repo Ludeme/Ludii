@@ -95,8 +95,7 @@
     (equipment { 
         (board <Board:type>) 
         (piece "Theseus" P1 
-            (move
-                Step 
+            (move Step 
                 Orthogonal 
                 (to 
                     if:(and (is Empty (to)) ("NoEdgeBetweenCells" (from) (to)))
@@ -108,8 +107,7 @@
         (regions "Exit" {<Board:exit>})
     }) 
     (rules 
-        (start
-            {
+        (start {
             (place "Theseus" coord:<Board:startTheseus>)
             (place "Minotaur0" coord:<Board:startMinotaur>)
             (set 
@@ -120,8 +118,7 @@
                     (sites {<Board:walls>})
                 )
             )
-            }
-        )
+        })
         (play
             (or
                 (forEach Piece)
@@ -131,12 +128,10 @@
                 )
             )
         )
-        (end 
-            {
+        (end {
             (if (no Pieces Mover) (result Mover Loss))
             (if (is In (where (id "Theseus")) (sites "Exit")) (result Mover Win))
-            }
-        )
+        })
     )
 )
 
@@ -219,7 +214,6 @@
         (show Symbol "door" "Exit" fillColour:(colour 110 52 52) scale:0.5) 
         (board Colour InnerVertices (colour Hidden))
         (board Colour OuterVertices (colour Hidden))
-        
     })
     (ai
         "Theseus and the Minotaur_ai"

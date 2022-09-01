@@ -1,7 +1,6 @@
 (define "MoveOfThePiece" 
     (or 
-        (move
-            Hop
+        (move Hop
             (from) 
             Forward 
             (between if:("IsFriendAt" (between))) 

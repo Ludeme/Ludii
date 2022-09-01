@@ -2,19 +2,8 @@
     (players 1) 
     (equipment { 
         <Variant:board>
-        (piece "Marker" P1 
-            (move
-                Hop
-                Orthogonal 
-                (between 
-                    if:("IsFriendAt" (between)) 
-                    (apply (remove (between)))
-                )
-                (to if:(is Empty (to)))
-            )
-        )
-        }
-    ) 
+        (piece "Marker" P1 ("HopFriendCapture" Orthogonal))
+    }) 
     (rules 
         (start { 
             (place "Marker" (difference (sites Board) (sites <Variant:noPieceSite>)))

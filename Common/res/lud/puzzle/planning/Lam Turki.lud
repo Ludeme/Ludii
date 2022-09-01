@@ -1,28 +1,14 @@
 (game "Lam Turki"
     (players 1) 
     (equipment { 
-        (board 
-            (splitCrossings (regular Star 5))
-            use:Vertex
-        )
+    	("StarBoard" 5)
         (hand Each) 
-        (piece "Marker" P1
-            (move Hop 
-                (between 
-                    if:("IsFriendAt" (between))
-                    (apply (remove (between)))
-                )
-                (to if:(is Empty (to)))
-            )
-        ) 
-        }
-    ) 
+        (piece "Marker" P1 ("HopFriendCapture"))
+    })
     (rules 
-        (start 
-            {
+        (start {
             (place "Marker" (handSite P1) count:9)
-            }
-        )
+         })
         
         phases:{
         (phase "Placement"
@@ -80,7 +66,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai
