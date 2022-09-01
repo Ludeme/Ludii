@@ -2,6 +2,20 @@
 
 (define "Centre" (= (to) (centrePoint)))
 
+(define "MoveOnlyIfAdjacentToEnemyOrCentre"
+		(move
+	            Step 
+	            (to if:(and
+	                    ("IsEmpty")
+	                    (or
+	                        (not "Centre")
+	                        (is Related Adjacent (from) (sites Occupied by:Next))
+	                    )
+	                ) 
+	            )
+	        )	
+)
+
 //------------------------------------------------------------------------------
 
 (game "Mu Torere"
@@ -40,17 +54,7 @@
 (option "Play Rules" <Play> args:{ <rules>}
     {
     (item "Complete"   
-        <(move
-            Step 
-            (to if:(and
-                    ("IsEmpty")
-                    (or
-                        (not "Centre")
-                        (is Related Adjacent (from) (sites Occupied by:Next))
-                    )
-                ) 
-            )
-        )>
+        <("MoveOnlyIfAdjacentToEnemyOrCentre")>
         "The game is played with all the rules"
     )*
     
@@ -58,6 +62,26 @@
         <"StepToEmpty">         
         "The game is played with no constraint on the centre site."
     ) 
+    
+    (item "FirstMove"   
+        <
+        (if (> (count Moves) 1)
+            "StepToEmpty"
+            ("MoveOnlyIfAdjacentToEnemyOrCentre")
+        )
+        >         
+        "The constraint to move a piece adjacent to an enemy is applied only for the first move."
+    ) 
+    
+    (item "FirstTwoTurns"   
+        <
+        (if (> (count Moves) 4)
+            "StepToEmpty"
+            ("MoveOnlyIfAdjacentToEnemyOrCentre")
+        )
+        >        
+        "The constraint to move a piece adjacent to an enemy is applied only for the first two turns."
+    )
 })
 
 //------------------------------------------------------------------------------
@@ -68,13 +92,26 @@
         {
         "Board/Wheel Shape" "Play Rules/Simplified"
         }
-    )
+    )    
+    
+    (ruleset "Ruleset/First Move (Observed)" 
+            {
+            "Board/Wheel Shape" "Play Rules/FirstMove"
+            }
+        )
+    
+    (ruleset "Ruleset/First Two Turns (Observed)" 
+            {
+            "Board/Wheel Shape" "Play Rules/FirstTwoTurns"
+            }
+        )
     
     (ruleset "Ruleset/Complete (Observed)" 
         {
         "Board/Wheel Shape" "Play Rules/Complete"
         }
     )
+
     
 })
 
