@@ -3814,7 +3814,7 @@ PARAM JAVADOC: {<moves>}: The list of moves.
 PARAM JAVADOC: [<then>]: The moves applied after that move is applied.
 EXAMPLE: (or { (set Score P1 100) (set Score P2 100) (set Score P3 100) })
 TYPE: game.rules.play.moves.nonDecision.operators.logical.Seq
-TYPE JAVADOC: Applies a sequence of moves one by one.
+TYPE JAVADOC: Applies a sequence of moves one by one. Each move will use the new (temporary) state/context created by the previous move applied in the sequence.
 NEW CTOR
 (seq {<moves>})
 PARAM JAVADOC: {<moves>}: Moves to apply one by one.
@@ -5921,14 +5921,14 @@ DEFINE: DraughtsEquipment
 DEFINE JAVADOC: Defines all the equipment used in most of the draught games. #1 = The graph of the board. #2 = The default site type to use [Optional by default Cell]. #3 = An optional element of the equipment. 
 DEFINE EXAMPLE: ("DraughtsEquipment" (square 8))
 DEFINE: CrossBoard
-DEFINE JAVADOC: Defines a regular cross board tilled by squares (example: Pachisi). #1 = The dimension of an arm of the cross. #2 = The full dimension of the board. #3 = The default site type of the board. #4 = The type of the diagonals of each tiling. 
-DEFINE EXAMPLE: ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
+DEFINE JAVADOC: Defines a regular start board (example: Kaooa). #1 = The dimension of the start. 
+DEFINE EXAMPLE: ("StarBoard" 5)
 DEFINE: LascaBoard
 DEFINE JAVADOC: Defines the original Lasca board. 
 DEFINE EXAMPLE: ("LascaBoard")
-DEFINE: NineMensMorrisBoard
-DEFINE JAVADOC: Defines a nine men's morris board. 
-DEFINE EXAMPLE: ("NineMensMorrisBoard")
+DEFINE: StarBoard
+DEFINE JAVADOC: Defines a regular cross board tilled by squares (example: Pachisi). #1 = The dimension of an arm of the cross. #2 = The full dimension of the board. #3 = The default site type of the board. #4 = The type of the diagonals of each tiling. 
+DEFINE EXAMPLE: ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
 DEFINE: AlquerqueBoard
 DEFINE JAVADOC: Defines a rectangular board with Alquerque-style alternating diagonals. 
 DEFINE EXAMPLE: ("AlquerqueBoard" 5 5)
@@ -5944,12 +5944,15 @@ DEFINE EXAMPLE: ("AlquerqueBoardWithEightTriangles")
 DEFINE: AlquerqueBoardWithFourTriangles
 DEFINE JAVADOC: Defines a rectangular board with Alquerque-style alternating diagonals with four triangle extensions on each side. 
 DEFINE EXAMPLE: ("AlquerqueBoardWithFourTriangles")
-DEFINE: ThreeMenMorrisBoard
+DEFINE: NineMensMorrisBoard
+DEFINE JAVADOC: Defines a nine men's morris board. 
+DEFINE EXAMPLE: ("NineMensMorrisBoard")
+DEFINE: ThreeMensMorrisBoard
 DEFINE JAVADOC: Defines a Three Men's Morris board. 
-DEFINE EXAMPLE: ("ThreeMenMorrisBoard")
-DEFINE: ThreeMenMorrisBoardWithLeftAndRightTriangles
+DEFINE EXAMPLE: ("ThreeMensMorrisBoard")
+DEFINE: ThreeMensMorrisBoardWithLeftAndRightTriangles
 DEFINE JAVADOC: Defines a Three Men's Morris board with two triangle extensions at the left and right. 
-DEFINE EXAMPLE: ("ThreeMenMorrisBoard")
+DEFINE EXAMPLE: ("ThreeMensMorrisBoardWithLeftAndRightTriangles")
 DEFINE: BackgammonBoard
 DEFINE JAVADOC: Defines a backgammon board (without the style). #1 = The tracks of the players. 
 DEFINE EXAMPLE: ("BackgammonBoard")
@@ -6034,9 +6037,9 @@ DEFINE EXAMPLE: ("AlquerqueGraphWithBottomTriangle")
 DEFINE: AlquerqueGraphWithFourTriangles
 DEFINE JAVADOC: Defines a rectangular graph with Alquerque-style alternating diagonals with four triangle extension on each side. 
 DEFINE EXAMPLE: ("AlquerqueGraphWithFourTriangles")
-DEFINE: ThreeMenMorrisGraphWithLeftAndRightTriangles
+DEFINE: ThreeMensMorrisGraphWithLeftAndRightTriangles
 DEFINE JAVADOC: Defines a Three Men's Morris graph with two triangle extensions at the left and right. 
-DEFINE EXAMPLE: ("ThreeMenMorrisGraphWithLeftAndRightTriangles")
+DEFINE EXAMPLE: ("ThreeMensMorrisGraphWithLeftAndRightTriangles")
 DEFINE: ChessBishop
 DEFINE JAVADOC: Defines a piece moving like a bishop in Chess. #1 = The name of the piece. #2 = Consequences of the capture effect. #3 = The consequences of the moves. 
 DEFINE EXAMPLE: ("ChessBishop" "Bishop")
@@ -6055,6 +6058,9 @@ DEFINE EXAMPLE: ("ChessQueen" "Queen")
 DEFINE: ChessRook
 DEFINE JAVADOC: Defines a piece moving like a rook in Chess. #1 = The name of the piece. #2 = Consequences of the capture effect. #3 = The consequences of the moves. 
 DEFINE EXAMPLE: ("ChessRook" "Rook")
+DEFINE: ShogiGold
+DEFINE JAVADOC: Defines a piece moving like a gold in Shogi. The effect of the capture have to be defined. #1 = The name of the piece. #2 = The capture effect. #3 = The consequences of the moves. 
+DEFINE EXAMPLE: ("ShogiGold" "Tokin")
 DEFINE: TwoPlayersNorthSouth
 DEFINE JAVADOC: Defines two players, P1 moving in direction to the north and P2 moving in direction to the south. 
 DEFINE EXAMPLE: ("TwoPlayersNorthSouth")
@@ -6082,6 +6088,9 @@ DEFINE EXAMPLE: ("OppositePitTwoRows" (to))
 DEFINE: CaptureAll
 DEFINE JAVADOC: Checks if a player has no piece and lose. This ludemeplex can be used only in an ending condition. 
 DEFINE EXAMPLE: ("CaptureAll" Next)
+DEFINE: CaptureAllTeam
+DEFINE JAVADOC: Checks if all the enemies have no piece and makes the current team to win. This ludemeplex can be used only in an ending condition. 
+DEFINE EXAMPLE: ("CaptureAllTeam")
 DEFINE: Checkmate
 DEFINE JAVADOC: If the next player is checkmate, the mover is winning. This ludemeplex can be used only in an ending condition. #1 = The name of the piece to check. 
 DEFINE EXAMPLE: ("Checkmate" "King")
@@ -6121,7 +6130,7 @@ DEFINE EXAMPLE: ("ReachWin" (sites Top) P1)
 DEFINE: BlockWin
 DEFINE JAVADOC: If the next player has no legal moves, the mover is winning. This ludemeplex can be used only in an ending condition. 
 DEFINE EXAMPLE: ("BlockWin")
-DEFINE: DrawIfNoMovesNext
+DEFINE: DrawIfNoMoves
 DEFINE JAVADOC: Checks if a player has no legal moves and the game ends in a draw. #1 = The Player with no moves. 
 DEFINE EXAMPLE: ("DrawIfNoMoves" Next)
 DEFINE: ForEachNonMoverNoMovesLoss
@@ -6213,6 +6222,9 @@ DEFINE: HopDiagonalSequenceCaptureAgain
 DEFINE JAVADOC: Defines a sequence of hop move in all the diagonal directions over an enemy to an empty site from the last ``to'' location of the previous move. The enemy pieces are removed. #1 = Maximum distance before the hop [0]. #2 = Maximum distance after the hop [0]. #3 = When to perform the capture (immediately or at the end of the turn) [immediately]. 
 DEFINE EXAMPLE: ("HopDiagonalSequenceCaptureAgain")
 DEFINE EXAMPLE: ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn)
+DEFINE: HopFriendCapture
+DEFINE JAVADOC: Defines a hop move in all the directions specified (by default Adjacent) over a friend to an empty site. The friend piece is removed. #1 = The from site. #2 = Directions of the hop. #3 = The consequences. 
+DEFINE EXAMPLE: ("HopFriendCapture")
 DEFINE: HopInternationalDraughtsStyle
 DEFINE JAVADOC: Defines a hop move in diagonal over an enemy to an empty site. The enemy pieces are removed at the end of the turn and you can not hop a piece you already hopped during your turn. #1 = The from site. #2 = The consequences. 
 DEFINE EXAMPLE: ("HopInternationalDraughtsStyle")
