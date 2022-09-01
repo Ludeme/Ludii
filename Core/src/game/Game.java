@@ -1993,6 +1993,96 @@ public class Game extends BaseLudeme implements API, Serializable
 						conceptToCheck = conceptToCheck.parent();
 					}
 				}
+			
+			// Detection of some concepts based on the ludemeplexes used.
+			for (String key: description().defineInstances().keySet()) {
+				final String define = key.substring(1, key.length()-1);
+				
+	            if(define.equals("AlquerqueBoard") && description().defineInstances().get(key).define().isKnown())
+	            	concept.set(Concept.AlquerqueBoard.id(), true);
+	            
+	            if(define.equals("AlquerqueGraph") && description().defineInstances().get(key).define().isKnown())
+	            	concept.set(Concept.AlquerqueBoard.id(), true);
+	            
+	            if(define.equals("AlquerqueBoardWithBottomAndTopTriangles") && description().defineInstances().get(key).define().isKnown())
+	            {
+	            	concept.set(Concept.AlquerqueBoard.id(), true);
+	            	concept.set(Concept.AlquerqueBoardWithTwoTriangles.id(), true);
+	            }
+	            
+	            if(define.equals("AlquerqueGraphWithBottomAndTopTriangles") && description().defineInstances().get(key).define().isKnown())
+	            {
+	            	concept.set(Concept.AlquerqueBoard.id(), true);
+	            	concept.set(Concept.AlquerqueBoardWithTwoTriangles.id(), true);
+	            }
+	            
+	            if(define.equals("AlquerqueBoardWithBottomTriangle") && description().defineInstances().get(key).define().isKnown())
+	            {
+	            	concept.set(Concept.AlquerqueBoard.id(), true);
+	            	concept.set(Concept.AlquerqueBoardWithOneTriangle.id(), true);
+	            }
+	            
+	            if(define.equals("AlquerqueGraphWithBottomTriangle") && description().defineInstances().get(key).define().isKnown())
+	            {
+	            	concept.set(Concept.AlquerqueBoard.id(), true);
+	            	concept.set(Concept.AlquerqueBoardWithOneTriangle.id(), true);
+	            }
+	            
+	            if(define.equals("AlquerqueBoardWithFourTriangles") && description().defineInstances().get(key).define().isKnown())
+	            {
+	            	concept.set(Concept.AlquerqueBoard.id(), true);
+	            	concept.set(Concept.AlquerqueBoardWithFourTriangles.id(), true);
+	            }
+	            
+	            if(define.equals("AlquerqueGraphWithFourTriangles") && description().defineInstances().get(key).define().isKnown())
+	            {
+	            	concept.set(Concept.AlquerqueBoard.id(), true);
+	            	concept.set(Concept.AlquerqueBoardWithFourTriangles.id(), true);
+	            }
+	            
+	            if(define.equals("AlquerqueBoardWithEightTriangles") && description().defineInstances().get(key).define().isKnown())
+	            {
+	            	concept.set(Concept.AlquerqueBoard.id(), true);
+	            	concept.set(Concept.AlquerqueBoardWithEightTriangles.id(), true);
+	            }
+	            
+	            if(define.equals("ThreeMensMorrisBoard") && description().defineInstances().get(key).define().isKnown())
+	            	concept.set(Concept.ThreeMensMorrisBoard.id(), true);
+	            
+	            if(define.equals("ThreeMensMorrisBoardWithLeftAndRightTriangles") && description().defineInstances().get(key).define().isKnown())
+	            {
+	            	concept.set(Concept.ThreeMensMorrisBoard.id(), true);
+	            	concept.set(Concept.ThreeMensMorrisBoardWithTwoTriangles.id(), true);
+	            }
+	            
+	            if(define.equals("ThreeMensMorrisGraphWithLeftAndRightTriangles") && description().defineInstances().get(key).define().isKnown())
+	            {
+	            	concept.set(Concept.ThreeMensMorrisBoard.id(), true);
+	            	concept.set(Concept.ThreeMensMorrisBoardWithTwoTriangles.id(), true);
+	            }
+	            
+	            if(define.equals("NineMensMorrisBoard") && description().defineInstances().get(key).define().isKnown())
+	            	concept.set(Concept.NineMensMorrisBoard.id(), true);
+	            
+	            if(define.equals("StarBoard") && description().defineInstances().get(key).define().isKnown())
+	            	concept.set(Concept.StarBoard.id(), true);
+	            
+	            if(define.equals("CrossBoard") && description().defineInstances().get(key).define().isKnown())
+	            	concept.set(Concept.CrossBoard.id(), true);
+	            
+	            if(define.equals("CrossGraph") && description().defineInstances().get(key).define().isKnown())
+	            	concept.set(Concept.CrossBoard.id(), true);
+	            
+	            if(define.equals("KintsBoard") && description().defineInstances().get(key).define().isKnown())
+	            	concept.set(Concept.KintsBoard.id(), true);
+	            
+	            if(define.equals("PachisiBoard") && description().defineInstances().get(key).define().isKnown())
+	            	concept.set(Concept.PachisiBoard.id(), true);
+	            
+	            if(define.equals("FortyStonesWithFourGapsBoard") && description().defineInstances().get(key).define().isKnown())
+	            	concept.set(Concept.FortyStonesWithFourGapsBoard.id(), true);
+	            
+	        }
 		}
 		catch (final Exception e)
 		{
