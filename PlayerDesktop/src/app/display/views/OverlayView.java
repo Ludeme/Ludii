@@ -90,7 +90,7 @@ public final class OverlayView extends View
 				g2d.drawString("1. Choose a board", 30, 150);
 				
 				if (app.manager().ref().context().board().numSites() > 1)
-					g2d.drawString("2. Drag pieces onto board", 30, 298);
+					g2d.drawString("2. Drag pieces onto board", 30, 375);
 			}
 			else
 			{
