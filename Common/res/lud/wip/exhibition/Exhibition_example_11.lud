@@ -10,10 +10,10 @@
 (game "Exhibition_example_11" 
     (players 2) 
     (equipment { 
-(board 
-        (rotate 90 ("ThreeMenMorrisGraphWithLeftAndRightTriangles"))
-        use:Vertex
-    )
+        (board 
+            (rotate 90 ("ThreeMenMorrisGraphWithLeftAndRightTriangles"))
+            use:Vertex
+        )
         (piece "Marker" Each)
         (hand Shared size:2)
     }) 

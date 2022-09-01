@@ -10,10 +10,10 @@
 (game "Exhibition_example_13" 
     (players 2) 
     (equipment { 
-    	(board 
-    	        (splitCrossings (regular Star 5))
-    	        use:Vertex
-    	    )
+        (board 
+            (splitCrossings (regular Star 5))
+            use:Vertex
+        )
         (piece "Marker" Each)
         (hand Shared size:2)
     }) 
