@@ -712,7 +712,7 @@ public enum Concept
 	(
 		"2.1.1.2",
 		50, 
-		"The shape of the board.",
+		"The tiling of the board.",
 		ConceptType.Container, 
 		ConceptDataType.BooleanData, 
 		ConceptComputationType.Compilation,
@@ -987,10 +987,206 @@ public enum Concept
 		Concept.MancalaBoard
 	),
 	
+	/** "AlquerqueBoard" ludemeplex (or a similar one) is used. */
+	AlquerqueBoard
+	(
+		"2.1.1.4",
+		780, 
+		"Alquerque board.",
+		ConceptType.Container, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.Board
+	),
+	
+	/** "AlquerqueBoardWithBottomTriangle" ludemeplex is used. */
+	AlquerqueBoardWithOneTriangle
+	(
+		"2.1.1.4.1",
+		781, 
+		"Alquerque board with one triangle extension.",
+		ConceptType.Container, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.AlquerqueBoard
+	),
+	
+	/** "AlquerqueBoardWithBottomAndTopTriangles" ludemeplex is used. */
+	AlquerqueBoardWithTwoTriangles
+	(
+		"2.1.1.4.2",
+		782, 
+		"Alquerque board with two triangle extensions.",
+		ConceptType.Container, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.AlquerqueBoard
+	),
+	
+	/** "AlquerqueBoardWithFourTriangles" ludemeplex is used. */
+	AlquerqueBoardWithFourTriangles
+	(
+		"2.1.1.4.3",
+		783, 
+		"Alquerque board with four triangle extensions.",
+		ConceptType.Container, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.AlquerqueBoard
+	),
+	
+	/** "AlquerqueBoardWithEightTriangles" ludemeplex is used. */
+	AlquerqueBoardWithEightTriangles
+	(
+		"2.1.1.4.4",
+		784, 
+		"Alquerque board with eight triangle extensions.",
+		ConceptType.Container, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.AlquerqueBoard
+	),
+	
+	/** One of the "*MorrisBoard*" ludemeplexes is used. */
+	MorrisBoard
+	(
+		"2.1.1.5",
+		785, 
+		"Morris board.",
+		ConceptType.Container, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.Board
+	),
+	
+	/** "ThreeMenMorrisBoard" ludemeplex is used. */
+	ThreeMensMorrisBoard
+	(
+		"2.1.1.5.1",
+		786, 
+		"Three Men's Morris Board.",
+		ConceptType.Container, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.MorrisBoard
+	),
+	
+	/** "ThreeMenMorrisBoardWithTwoTriangles" ludemeplex is used. */
+	ThreeMensMorrisBoardWithTwoTriangles
+	(
+		"2.1.1.5.2",
+		787, 
+		"Three Men's Morris Board with two triangle extensions.",
+		ConceptType.Container, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.MorrisBoard
+	),
+	
+	/** "NineMensMorrisBoard" ludemeplex is used. */
+	NineMensMorrisBoard
+	(
+		"2.1.1.5.3",
+		788, 
+		"Nine Men's Morris Board.",
+		ConceptType.Container, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.MorrisBoard
+	),
+	
+	/** "StarBoard" ludemeplex is used. */
+	StarBoard
+	(
+		"2.1.1.6",
+		789, 
+		"Star board.",
+		ConceptType.Container, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.Board
+	),
+	
+	/** "CrossBoard" ludemeplex is used. */
+	CrossBoard
+	(
+		"2.1.1.7",
+		790, 
+		"Cross board.",
+		ConceptType.Container, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.Board
+	),
+	
+	/** "KintsBoard" ludemeplex is used. */
+	KintsBoard
+	(
+		"2.1.1.8",
+		791, 
+		"Kints board.",
+		ConceptType.Container, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.Board
+	),
+	
+	/** "PachisiBoard" ludemeplex is used. */
+	PachisiBoard
+	(
+		"2.1.1.9",
+		792, 
+		"Pachisi board.",
+		ConceptType.Container, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.Board
+	),
+	
+	/** "FortyStonesWithFourGapsBoard" ludemeplex is used. */
+	FortyStonesWithFourGapsBoard
+	(
+		"2.1.1.10",
+		793, 
+		"Forty Stones in a circle with four gaps after each 10 stones.",
+		ConceptType.Container, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.Board
+	),
+	
 	/** The track list of the board is not empty. */
 	Track
 	(
-		"2.1.1.4",
+		"2.1.1.11",
 		70, 
 		"The board has a track.",
 		ConceptType.Container, 
@@ -1004,7 +1200,7 @@ public enum Concept
 	/** One track uses a loop. */
 	TrackLoop
 	(
-		"2.1.1.4.1",
+		"2.1.1.11.1",
 		71, 
 		"A track is a loop.",
 		ConceptType.Container, 
@@ -1018,7 +1214,7 @@ public enum Concept
 	/** One track uses a loop. */
 	TrackOwned
 	(
-		"2.1.1.4.2",
+		"2.1.1.11.2",
 		72, 
 		"A track is owned.",
 		ConceptType.Container, 
@@ -1032,7 +1228,7 @@ public enum Concept
 	/** The ludeme (hints ...) is used. */
 	Hints
 	(
-		"2.1.1.5", 
+		"2.1.1.12", 
 		73,
 		"The board has some hints.", 
 		ConceptType.Container, 
@@ -1046,7 +1242,7 @@ public enum Concept
 	/** The list of regions is not empty. */
 	Region
 	(
-		"2.1.1.6",
+		"2.1.1.13",
 		74, 
 		"The board has regions.",
 		ConceptType.Container, 
@@ -1060,7 +1256,7 @@ public enum Concept
 	/** The ludeme (boardless ...) is used. */
 	Boardless
 	(
-		"2.1.1.7",
+		"2.1.1.14",
 		75, 
 		"Game is played on an implied grid.",
 		ConceptType.Container, 
@@ -1074,7 +1270,7 @@ public enum Concept
 	/** */
 	PlayableSites
 	(
-		"2.1.1.8",
+		"2.1.1.15",
 		76, 
 		"Playable sites.",
 		ConceptType.Container, 
@@ -1088,7 +1284,7 @@ public enum Concept
 	/** SiteType = Vertex in at least a ludeme. */
 	Vertex
 	(
-		"2.1.1.8.1",
+		"2.1.1.15.1",
 		77, 
 		"Use Vertices.",
 		ConceptType.Container, 
@@ -1102,7 +1298,7 @@ public enum Concept
 	/** SiteType = Cell in at least a ludeme. */
 	Cell
 	(
-		"2.1.1.8.2",
+		"2.1.1.15.2",
 		78, 
 		"Use cells.",
 		ConceptType.Container, 
@@ -1116,7 +1312,7 @@ public enum Concept
 	/** SiteType = Edge in at least a ludeme. */
 	Edge
 	(
-		"2.1.1.8.3",
+		"2.1.1.15.3",
 		79, 
 		"Use edges.",
 		ConceptType.Container, 
@@ -1130,7 +1326,7 @@ public enum Concept
 	/** Number of playables sites on the board. */
 	NumPlayableSitesOnBoard
 	(
-		"2.1.1.8.4",
+		"2.1.1.15.4",
 		80, 
 		"Number of playables sites on the board.",
 		ConceptType.Container, 
@@ -1144,7 +1340,7 @@ public enum Concept
 	/** Number of columns of the board. */
 	NumColumns
 	(
-		"2.1.1.9",
+		"2.1.1.16",
 		81, 
 		"Number of columns of the board.",
 		ConceptType.Container, 
@@ -1158,7 +1354,7 @@ public enum Concept
 	/** Number of rows of the board. */
 	NumRows
 	(
-		"2.1.1.10",
+		"2.1.1.17",
 		82, 
 		"Number of rows of the board.",
 		ConceptType.Container, 
@@ -1172,7 +1368,7 @@ public enum Concept
 	/** Number of corners of the board. */
 	NumCorners
 	(
-		"2.1.1.11",
+		"2.1.1.18",
 		83, 
 		"Number of corners of the board.",
 		ConceptType.Container, 
@@ -1186,7 +1382,7 @@ public enum Concept
 	/** Average number of directions of each playable site on the board. */
 	NumDirections
 	(
-		"2.1.1.12",
+		"2.1.1.19",
 		84, 
 		"Average number of directions of each playable site on the board.",
 		ConceptType.Container, 
@@ -1202,7 +1398,7 @@ public enum Concept
 	 */
 	NumOrthogonalDirections
 	(
-		"2.1.1.13",
+		"2.1.1.20",
 		85, 
 		"Average number of orthogonal directions of each playable site on the board.",
 		ConceptType.Container, 
@@ -1216,7 +1412,7 @@ public enum Concept
 	/** Average number of diagonal directions of each playable site on the board. */
 	NumDiagonalDirections
 	(
-		"2.1.1.14",
+		"2.1.1.21",
 		86, 
 		"Average number of diagonal directions of each playable site on the board.",
 		ConceptType.Container, 
@@ -1230,7 +1426,7 @@ public enum Concept
 	/** Average number of adjacent directions of each playable site on the board. */
 	NumAdjacentDirections
 	(
-		"2.1.1.15",
+		"2.1.1.22",
 		87, 
 		"Average number of adjacent directions of each playable site on the board.",
 		ConceptType.Container, 
@@ -1244,7 +1440,7 @@ public enum Concept
 	/** Average number of off diagonal directions of each playable site on the board. */
 	NumOffDiagonalDirections
 	(
-		"2.1.1.16",
+		"2.1.1.23",
 		88, 
 		"Average number of off diagonal directions of each playable site on the board.",
 		ConceptType.Container, 
@@ -1258,7 +1454,7 @@ public enum Concept
 	/** Number of outer sites of the board. */
 	NumOuterSites
 	(
-		"2.1.1.17",
+		"2.1.1.24",
 		89, 
 		"Number of outer sites of the board.",
 		ConceptType.Container, 
@@ -1272,7 +1468,7 @@ public enum Concept
 	/** Number of inner sites of the board. */
 	NumInnerSites
 	(
-		"2.1.1.18",
+		"2.1.1.25",
 		90, 
 		"Number of inner sites of the board.",
 		ConceptType.Container, 
@@ -1286,7 +1482,7 @@ public enum Concept
 	/** Number of layers of the board. */
 	NumLayers
 	(
-		"2.1.1.19",
+		"2.1.1.26",
 		91, 
 		"Number of layers of the board.",
 		ConceptType.Container, 
@@ -1300,7 +1496,7 @@ public enum Concept
 	/** Number of edges of the board. */
 	NumEdges
 	(
-		"2.1.1.20",
+		"2.1.1.27",
 		92, 
 		"Number of edges of the board.",
 		ConceptType.Container, 
@@ -1314,7 +1510,7 @@ public enum Concept
 	/** Number of cells of the board. */
 	NumCells
 	(
-		"2.1.1.21",
+		"2.1.1.28",
 		93, 
 		"Number of cells of the board.",
 		ConceptType.Container, 
@@ -1328,7 +1524,7 @@ public enum Concept
 	/** Number of vertices of the board. */
 	NumVertices
 	(
-		"2.1.1.22",
+		"2.1.1.29",
 		94, 
 		"Number of vertices of the board.",
 		ConceptType.Container, 
@@ -1342,7 +1538,7 @@ public enum Concept
 	/** Number of perimeter sites of the board. */
 	NumPerimeterSites
 	(
-		"2.1.1.23",
+		"2.1.1.30",
 		95, 
 		"Number of perimeter sites of the board.",
 		ConceptType.Container, 
@@ -1356,7 +1552,7 @@ public enum Concept
 	/** Number of top sites of the board. */
 	NumTopSites
 	(
-		"2.1.1.24",
+		"2.1.1.31",
 		96, 
 		"Number of top sites of the board.",
 		ConceptType.Container, 
@@ -1370,7 +1566,7 @@ public enum Concept
 	/** Number of bottom sites of the board. */
 	NumBottomSites
 	(
-		"2.1.1.25",
+		"2.1.1.32",
 		97, 
 		"Number of bottom sites of the board.",
 		ConceptType.Container, 
@@ -1384,7 +1580,7 @@ public enum Concept
 	/** Number of right sites of the board. */
 	NumRightSites
 	(
-		"2.1.1.26",
+		"2.1.1.33",
 		98, 
 		"Number of right sites of the board.",
 		ConceptType.Container, 
@@ -1398,7 +1594,7 @@ public enum Concept
 	/** Number of left sites of the board. */
 	NumLeftSites
 	(
-		"2.1.1.27",
+		"2.1.1.34",
 		99, 
 		"Number of left sites of the board.",
 		ConceptType.Container, 
@@ -1412,7 +1608,7 @@ public enum Concept
 	/** Number of centre sites of the board. */
 	NumCentreSites
 	(
-		"2.1.1.28",
+		"2.1.1.35",
 		100, 
 		"Number of centre sites of the board.",
 		ConceptType.Container, 
@@ -1426,7 +1622,7 @@ public enum Concept
 	/** Number of convex corners of the board. */
 	NumConvexCorners
 	(
-		"2.1.1.29",
+		"2.1.1.36",
 		101, 
 		"Number of convex corners of the board.",
 		ConceptType.Container, 
@@ -1440,7 +1636,7 @@ public enum Concept
 	/** Number of concave corners of the board. */
 	NumConcaveCorners
 	(
-		"2.1.1.30",
+		"2.1.1.37",
 		102, 
 		"Number of concave corners of the board.",
 		ConceptType.Container, 
@@ -1453,7 +1649,7 @@ public enum Concept
 	/** Number of phases of the board. */
 	NumPhasesBoard
 	(
-		"2.1.1.31",
+		"2.1.1.38",
 		103, 
 		"Number of phases of the board.",
 		ConceptType.Container, 
