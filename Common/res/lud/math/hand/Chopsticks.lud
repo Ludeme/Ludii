@@ -1,12 +1,10 @@
 (game "Chopsticks"
     (players 2) 
-    (equipment 
-        { 
+    (equipment { 
         (board (square 2))
         (piece "Hand" Each)
         (piece "HandFlip" Each)
-        }
-    ) 
+    }) 
     (rules 
         (start { 
             (place "HandFlip1" coord:"A1" state:1) 
@@ -15,8 +13,7 @@
             (place "HandFlip2" coord:"B2" state:1) 
         })
         (play 
-            (move
-                Select
+            (move Select
                 (from 
                     (sites Occupied by:Mover) 
                     if:(!= (state at:(to)) 0)
@@ -37,6 +34,8 @@
         (end ("BlockWin"))
     )
 )
+
+//------------------------------------------------------------------------------
 
 (metadata
     
