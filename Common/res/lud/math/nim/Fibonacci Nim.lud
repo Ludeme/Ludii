@@ -9,8 +9,7 @@
     (equipment { 
         (board (square 1)) 
         (piece "Marker" Neutral)
-        }
-    ) 
+    }) 
     (rules
         (start (set Count <Size:pile> at:0)) 
         
@@ -18,8 +17,7 @@
             (if "SameTurn"
                 (or
                     (if (<= "NumRemove" "Max")
-                        (move 
-                            Select 
+                        (move Select 
                             (from (last To))
                             (then 
                                 (if (= (count at:(last To)) 1)
@@ -31,8 +29,7 @@
                     )
                     (move Pass (then (set Value Mover (- ("NumRemove") 1))))
                 )
-                (move
-                    Select
+                (move Select
                     (from (sites Occupied by:Neutral))
                     (then 
                         (if (= (count at:(last To)) 1)

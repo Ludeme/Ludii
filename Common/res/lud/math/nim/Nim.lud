@@ -3,8 +3,7 @@
     (equipment { 
         (board (rectangle 1 <Size:board>)) 
         (piece "Marker" Neutral)
-        }
-    ) 
+    }) 
     (rules
         (start  		
             <Size:piles>
@@ -13,8 +12,7 @@
         (play 
             (if "SameTurn"
                 (or
-                    (move 
-                        Select 
+                    (move Select 
                         (from (last To))
                         (then 
                             (if (= (count at:(last To)) 1)
@@ -25,8 +23,7 @@
                     )
                     (move Pass)
                 )
-                (move
-                    Select
+                (move Select
                     (from (sites Occupied by:Neutral))
                     (then 
                         (if (= (count at:(last To)) 1)
