@@ -3,17 +3,17 @@
 (define "Centre" (= (to) (centrePoint)))
 
 (define "MoveOnlyIfAdjacentToEnemyOrCentre"
-		(move
-	            Step 
-	            (to if:(and
-	                    ("IsEmpty")
-	                    (or
-	                        (not "Centre")
-	                        (is Related Adjacent (from) (sites Occupied by:Next))
-	                    )
-	                ) 
-	            )
-	        )	
+    (move
+        Step 
+        (to if:(and
+                ("IsEmpty")
+                (or
+                    (not "Centre")
+                    (is Related Adjacent (from) (sites Occupied by:Next))
+                )
+            ) 
+        )
+    )	
 )
 
 //------------------------------------------------------------------------------
@@ -95,23 +95,22 @@
     )    
     
     (ruleset "Ruleset/First Move (Observed)" 
-            {
-            "Board/Wheel Shape" "Play Rules/FirstMove"
-            }
-        )
+        {
+        "Board/Wheel Shape" "Play Rules/FirstMove"
+        }
+    )
     
     (ruleset "Ruleset/First Two Turns (Observed)" 
-            {
-            "Board/Wheel Shape" "Play Rules/FirstTwoTurns"
-            }
-        )
+        {
+        "Board/Wheel Shape" "Play Rules/FirstTwoTurns"
+        }
+    )
     
     (ruleset "Ruleset/Complete (Observed)" 
         {
         "Board/Wheel Shape" "Play Rules/Complete"
         }
     )
-
     
 })
 
