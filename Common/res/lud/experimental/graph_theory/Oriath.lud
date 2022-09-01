@@ -1,10 +1,8 @@
 (game "Oriath" 
     (players 1)
-    (equipment 
-        { 
+    (equipment { 
         (board <Board:type> use:Edge) 
-        }
-    ) 
+    }) 
     
     (rules  	 
         (play    
@@ -14,8 +12,7 @@
         )
         (end {   
             <Version:result>
-            }
-        )
+        })
     )
 )
 
@@ -104,7 +101,6 @@
         (player Colour P1 (colour 0 127 255))
         (board Style PenAndPaper replaceComponentsWithFilledCells:True)
         (show Edges ThinDotted (colour 127 127 127))
-        
     })
     (ai
         "Oriath_ai"

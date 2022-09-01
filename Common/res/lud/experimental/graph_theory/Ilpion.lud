@@ -4,9 +4,7 @@
         (board <Board:type> use:Vertex)
         (piece "Disc" Each) 
         (piece "Marker" Shared)   
-        }
-    ) 
-    
+    }) 
     (rules
         (start
             <Play:start>
@@ -168,7 +166,6 @@
         (player Colour P3 (colour Yellow)) 
         (player Colour P4 (colour Blue))  
         (board Style PenAndPaper replaceComponentsWithFilledCells:True)
-        
         (show Edges ThinDotted (colour 127 127 127))
     })
     (ai

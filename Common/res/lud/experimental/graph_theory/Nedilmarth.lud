@@ -1,19 +1,16 @@
 (game "Nedilmarth" 
     (players 2) 
-    (equipment 
-        { 
+    (equipment { 
         (board <Board:type> use:Edge) 
         (piece "Marker" Neutral) 
-        }
-    ) 
+    }) 
     (rules
         (start
             <Board:start>
         )
         
         (play
-            (move
-                Remove
+            (move Remove
                 (sites Occupied by:Neutral on:Edge)
             )
         )
@@ -93,7 +90,6 @@
         (player Colour P1 (colour Blue))
         (player Colour P2 (colour Red))
         (board Style PenAndPaper replaceComponentsWithFilledCells:True)
-        
         (show Edges ThinDotted (colour 127 127 127))
     })
     

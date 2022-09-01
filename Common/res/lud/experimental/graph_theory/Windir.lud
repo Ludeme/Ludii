@@ -1,11 +1,9 @@
 (game "Windir" 
     (players 2)
-    (equipment 
-        { 
+    (equipment { 
         (board <Board:type> use:Edge)
         (piece "Marker" Neutral) 
-        }
-    ) 
+    }) 
     
     (rules  	
         
@@ -97,7 +95,6 @@
         (player Colour Neutral (colour 0 127 255))
         (board Style PenAndPaper replaceComponentsWithFilledCells:True)
         (show Edges ThinDotted (colour 127 127 127))
-        
     })
     
     (ai

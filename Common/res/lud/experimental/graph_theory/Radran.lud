@@ -1,11 +1,9 @@
 (game "Radran" 
     (players <Version:numPlayers>) 
-    (equipment 
-        { 
+    (equipment { 
         (board <Board:type> use:Edge) 
         (piece "Marker" Neutral)  
-        }
-    ) 
+    }) 
     
     (rules
         (start
@@ -239,7 +237,6 @@
         (board Style PenAndPaper replaceComponentsWithFilledCells:True)
         (show Cost)
         (show Edges ThinDotted (colour 127 127 127))
-        
     })
     
     (ai

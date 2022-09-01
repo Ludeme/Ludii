@@ -11,8 +11,7 @@
         ) 
         (play
             (or
-                (move 
-                    Claim    
+                (move Claim    
                     (to (sites Empty)) 
                     (then 
                         (if (= 1 (size Group at:(last To))) 
@@ -205,7 +204,6 @@
         (board Style PenAndPaper replaceComponentsWithFilledCells:True)
         (show Cost)
         (show Edges ThinDotted (colour 127 127 127))
-        
     })
     
     (ai

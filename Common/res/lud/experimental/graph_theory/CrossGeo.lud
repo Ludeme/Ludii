@@ -1,12 +1,10 @@
 (game "CrossGeo" 
     (players 2)
-    (equipment 
-        { 
+    (equipment { 
         (board <Board:type> use:Edge)
         (piece "Disc" Each) 
         (piece "Marker" Shared) 
-        }
-    ) 
+    }) 
     
     (rules  	 
         (start
@@ -19,7 +17,6 @@
         (end      
             (if (no Moves Mover) (result Next Win))   
         )
-        
     )
 )
 //------------------------------------------------------------------------------
@@ -165,7 +162,6 @@
         (player Colour P1 (colour Red)) 
         (player Colour P2 (colour Blue))
         (board Style PenAndPaper replaceComponentsWithFilledCells:True)
-        
         (show Edges ThinDotted (colour 127 127 127))
     })
     (ai
