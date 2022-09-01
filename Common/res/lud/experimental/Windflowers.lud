@@ -216,14 +216,14 @@
             Either scoring for stones placed, or for the largest group.
             Tie breakers scoring is needed to reduce the frequency of ties.
             
-            multi-player cascade group scoring: Between those tied for winner, each pair of players is considered separately and the difference in size of their largest groups (after excluding all pairs of equal-size groups) is awarded to the owner of the larger group for cascade scoring (or to the owner of the smaller group for underdog scoring.) Underdog tiebreaking is currently prefered.
+            multi-player cascade group scoring: Between those tied for winner, each pair of players is considered separately and the difference in size of their largest groups (after excluding all pairs of equal-size groups) is awarded to the owner of the larger group for cascade scoring (or to the owner of the smaller group for underdog scoring.)  Underdog tiebreaking is currently prefered.
             In 2-player games, the last player to place is the final tie-breaker.
             
             Finiteness:
             Each individual placement/capture is obviously finite as eventually one of the players with the smallest number of surrounding pieces will have placed there. Proof is needed that, as a whole, cycling is impossible, but this is what is experienced practically, even with multiple players.
             
             If every thing is equal, the last to play wins. Thus on even boards, the first player is obligated to break mirror play to win.
-            ----------------------      
+            ----------------------           
         The previous version had the goal of least number of groups. This goal was flawed, allowing the simple strategy of always passing to force a win.")
         (rules "Choose between two versions: 
             -- Place the most stones, or 
@@ -250,9 +250,9 @@
             This difference is added to the score of the player with the larger group in that pairing - (or to the score of other player in that pairing, in the case of underdog tie-breaking) 
             
             The winner of the game is decided by these amended scores.
-        Ties may still remain. Also ties between non-leading players are not resolved.")
+        Ties may still remain.  Also ties between non-leading players are not resolved.")
         (id "1549")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")

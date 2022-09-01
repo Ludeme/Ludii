@@ -60,7 +60,7 @@
 )
 
 (define "Castling"
-        (if (and {
+    (if (and {
             "KingInTheInitialPlace" 
             ("HasNeverMoved" "King")
             (not ("KingCheck" Mover)) 
@@ -109,10 +109,10 @@
 )
 
 (define "InitialPawnMove"
-	    (if (is In (from) (sites Start (piece (what at:(from)))))
-	        ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
-	    )
-	)
+    (if (is In (from) (sites Start (piece (what at:(from)))))
+        ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
+    )
+)
 
 //------------------------------------------------------------------------------
 
@@ -120,24 +120,24 @@
     ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8))
-
+        
         ("ChessPawn" "Pawn"
-                (or 
-                    "InitialPawnMove"
-                    "EnPassant"
-                )
-                (then 
-                    (and
-                        ("ReplayInMovingOn" (sites Mover "Promotion"))
-                        (set Counter)
-                    )
+            (or 
+                "InitialPawnMove"
+                "EnPassant"
+            )
+            (then 
+                (and
+                    ("ReplayInMovingOn" (sites Mover "Promotion"))
+                    (set Counter)
                 )
             )
-            ("ChessRook" "Rook" (then (set Counter)) ("RememberPieceHasMoved"))
-            ("ChessKing" "King" (then (set Counter)) ("RememberPieceHasMoved"))
-            ("ChessBishop" "Bishop" (then (set Counter)))
-            ("ChessKnight" "Knight" (then (set Counter)))
-            ("ChessQueen" "Queen" (then (set Counter)))
+        )
+        ("ChessRook" "Rook" (then (set Counter)) ("RememberPieceHasMoved"))
+        ("ChessKing" "King" (then (set Counter)) ("RememberPieceHasMoved"))
+        ("ChessBishop" "Bishop" (then (set Counter)))
+        ("ChessKnight" "Knight" (then (set Counter)))
+        ("ChessQueen" "Queen" (then (set Counter)))
         
         (map "King" {(pair 1 "E1") (pair 2 "E8")})
         (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})
@@ -261,7 +261,7 @@
         (rules "Play using the standard rules of chess.")
         (source "<a href=\"https://www.chess.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.chess.com</a>")
         (id "455")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "puzzle/planning")
         (credit "Eric Piette")
         }

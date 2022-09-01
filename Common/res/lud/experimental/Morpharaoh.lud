@@ -214,7 +214,7 @@
             The game solves the cross-cut problem of boards with cells that meet 4-to-a-vertex in some locations, by use of a capture based on a majority n of adjacencies, thus preventing immediate recapture. To minimise the amount of captures, and thus provide the a more strategic game than one based on simple majority captures, the captures are limited to those that resolve crosscuts along an existing diagonal connection, using a lobsided 'V' pattern of surrounding stones. -- and restricting edge capture to captures adjacent to an adjacent pair of stones. 
             
             Option is provided for independently relaxing these restrictions.
-            A pie offer option has not yet been implemented. 
+            A pie offer option has not yet been implemented.  
             
         The boards provided are a 48 cell and 160 cell board, designed specifically to provide an odd number of neighbors to each cell: 5 in the interior, and 3 at every edge cell. The Cairo board is one of the few regualr grids that permit such a condition. It also dilutes the possible cross-cuts to two per location, compared with 4 per location on a square grid.")
         (rules "Goal: Connect your opposite sides with a continuous chain of stones on edge-to-edge ('orthogonally adjacent') cells.
@@ -229,7 +229,7 @@
         All other spaces are controlled by having at least 3 orthogonally adjacent mover stones, one of which that is both orthogonally adjacent to the second, and diagonally adjacent to the third.")
         (id "1585")
         (source "<a href=\"https://boardgamegeek.com/thread/2693572\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")

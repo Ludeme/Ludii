@@ -214,7 +214,7 @@
             
             Connection is determined by whether the lowest left-edge stone can step a continuous path to the upper rightmost stone.
             
-            Issues with implementing this game in Ludii:   
+            Issues with implementing this game in Ludii:     
             1. Ludii does not have a turn structure which would allow filtering for illegal diagonals at the end of 4 placements and reversing the entire move. (and that approach would be very inefficient anyway.) 
             
             Therefore each diagonal placement is being resolved on the next placement, and is not allowed as the forth placement.
@@ -255,7 +255,7 @@
             2. Restricting successive placements in the turn to locations around the previous placement.
         This keeps all the pieces played in one turn, as a group.")
         (id "1961")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")

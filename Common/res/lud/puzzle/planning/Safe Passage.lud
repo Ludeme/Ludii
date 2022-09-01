@@ -53,7 +53,7 @@
 )
 
 (define "Castling"
-        (if (and {
+    (if (and {
             "KingInTheInitialPlace" 
             ("HasNeverMoved" "King")
             (not ("IsInCheck" "King" Mover)) 
@@ -103,10 +103,10 @@
 )
 
 (define "InitialPawnMove"
-	    (if (is In (from) (sites Start (piece (what at:(from)))))
-	        ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
-	    )
-	)
+    (if (is In (from) (sites Start (piece (what at:(from)))))
+        ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
+    )
+)
 
 //------------------------------------------------------------------------------
 
@@ -116,22 +116,22 @@
         (board (square 8)) 
         
         ("ChessPawn" "Pawn"
-                (or 
-                    "InitialPawnMove"
-                    "EnPassant"
-                )
-                (then 
-                    (and
-                        ("ReplayInMovingOn" (sites Mover "Promotion"))
-                        (set Counter)
-                    )
+            (or 
+                "InitialPawnMove"
+                "EnPassant"
+            )
+            (then 
+                (and
+                    ("ReplayInMovingOn" (sites Mover "Promotion"))
+                    (set Counter)
                 )
             )
-            ("ChessRook" "Rook" (then (set Counter)) ("RememberPieceHasMoved"))
-            ("ChessKing" "King" (then (set Counter)) ("RememberPieceHasMoved"))
-            ("ChessBishop" "Bishop" (then (set Counter)))
-            ("ChessKnight" "Knight" (then (set Counter)))
-            ("ChessQueen" "Queen" (then (set Counter)))
+        )
+        ("ChessRook" "Rook" (then (set Counter)) ("RememberPieceHasMoved"))
+        ("ChessKing" "King" (then (set Counter)) ("RememberPieceHasMoved"))
+        ("ChessBishop" "Bishop" (then (set Counter)))
+        ("ChessKnight" "Knight" (then (set Counter)))
+        ("ChessQueen" "Queen" (then (set Counter)))
         
         (map "King" {(pair 1 "E1") (pair 2 "E8")})
         (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})
@@ -145,7 +145,7 @@
             (place "Pawn2" (sites Row 6))
             (place "Rook1" {"A1" "H1"} state:1) (place "Knight1" {"B1" "G1"}) (place "Bishop1" {"C1" "F1"}) (place "Queen1" coord:"D1") (place "King1" coord:"E1" state:1) 
             (place "Rook2" {"A8" "H8"} state:1) (place "Knight2" {"B8" "G8"}) (place "Bishop2" {"C8" "F8"}) (place "Queen2" coord:"D8") (place "King2" coord:"E8" state:1) 
-         })
+        })
         
         (play 
             (if "SameTurn"
@@ -176,7 +176,7 @@
         (rules "This Chess puzzle uses the same rules as Chess. To win this puzzle you have to swap the positions of the kings. However, if at any point it is possible to capture a piece, you lose.")
         (source "inspired by the puzzle presented here: <a href=\"https://www.chessvariants.com/rules/safe-passage\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />chessvariants.com</a>")
         (id "459")
-        (version "1.3.5")
+        (version "1.3.6")
         (classification "puzzle/planning")
         (author "Matthew Stephenson")
         }
