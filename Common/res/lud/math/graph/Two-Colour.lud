@@ -7,8 +7,7 @@
     (rules 
         (play    
             (or
-                (move
-                    Add
+                (move Add
                     (to (sites Empty)) 
                     (then 
                         (if (= 1 (size Group at:(last To))) 
@@ -106,7 +105,6 @@
         (player Colour P1 (colour Red))
         (player Colour P2 (colour Blue))
         (show Edges Diagonal Hidden)
-        
     }) 
     (ai
         "Two-Colour_ai"

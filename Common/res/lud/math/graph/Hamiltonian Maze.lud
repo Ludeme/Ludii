@@ -6,8 +6,7 @@
     
     (rules 
         (play 
-            (move 
-                Add
+            (move Add
                 (to
                     Edge 
                     (sites Empty Edge)
@@ -234,7 +233,6 @@
         (player Colour P1 (colour Red))
         (board Style PenAndPaper replaceComponentsWithFilledCells:True)
         (show Edges Orthogonal ThinDotted (colour 127 127 127))
-        
     })
     
     (ai

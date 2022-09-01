@@ -29,8 +29,7 @@
         phases:{
         (phase "Init" P1 
             (play 
-                (move
-                    Add
+                (move Add
                     (to
                         Edge 
                         (sites Empty Edge)	 
@@ -44,8 +43,7 @@
             (play 
                 (or
                     (do 
-                        (move 
-                            Add
+                        (move Add
                             (to
                                 Edge 
                                 (sites Empty Edge)   
@@ -54,8 +52,7 @@
                         ifAfterwards:"IncressPath"
                     )
                     (do 
-                        (move 
-                            Add
+                        (move Add
                             (to
                                 Edge 
                                 (sites Empty Edge)
@@ -99,7 +96,6 @@
         (player Colour P1 (colour Red))
         (board Style PenAndPaper replaceComponentsWithFilledCells:True)
         (show Edges Orthogonal ThinDotted)
-        
     })
     
     (ai

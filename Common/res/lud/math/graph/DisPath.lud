@@ -79,8 +79,7 @@
     {
     (item "Edge" 
         <
-        (move 
-            Add
+        (move Add
             (to
                 Edge 
                 (sites Empty Edge)
@@ -134,7 +133,6 @@
         (player Colour P2 (colour Blue))
         (board Style PenAndPaper replaceComponentsWithFilledCells:True)
         (show Edges Orthogonal ThinDotted (colour 127 127 127))
-        
     }) 
     (ai
         "DisPath_ai"

@@ -35,8 +35,7 @@
     (equipment {(board <Dual:begin> (<Board> <Size>) <Dual:end>) }) 
     
     (rules 
-        (play (move 
-                Add 
+        (play (move Add 
                 (to Edge (sites Empty Edge)) 
                 (then 
                     (forEach Site
@@ -140,7 +139,6 @@
         (player Colour P1 (colour Red))
         (player Colour P2 (colour Blue))
         (board Style PenAndPaper replaceComponentsWithFilledCells:True)
-        
     })
     (ai
         "Dots and Boxes_ai"

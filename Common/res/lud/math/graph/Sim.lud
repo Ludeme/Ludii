@@ -8,8 +8,7 @@
     }) 
     (rules 
         (play 
-            (move 
-                Add
+            (move Add
                 (to
                     Edge 
                     (sites Empty Edge)
@@ -46,7 +45,6 @@
         (player Colour P2 (colour Blue))
         (board Style PenAndPaper replaceComponentsWithFilledCells:True)
         (show Edges Orthogonal ThinDotted)
-        
     }) 
     (ai
         "Sim_ai"

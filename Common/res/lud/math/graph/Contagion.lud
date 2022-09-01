@@ -40,8 +40,7 @@
         phases:{
         (phase "InitContagion" P1 
             (play 
-                (move 
-                    Add
+                (move Add
                     (to
                         Cell 
                         (sites Empty Cell)
@@ -58,8 +57,7 @@
         )
         
         (phase "ContagionGrowth" P1 
-            (play (move 
-                    Add 
+            (play (move Add 
                     (to 
                         Cell 
                         (sites Empty Cell) 
@@ -77,8 +75,7 @@
         
         (phase "Containment" P2
             (play
-                (move
-                    Add
+                (move Add
                     (to
                         Edge 
                         (sites Empty Edge)
@@ -93,12 +90,10 @@
             )
         )
         }
-        (end 
-            {
+        (end {
             (if (> (score P1) (/ (* (count Rows) (count Columns)) 2)) (result P1 Win))
             (if (no Moves P1) (result P2 Win))
-            }
-        )
+        })
     )
 )
 
@@ -145,7 +140,6 @@
         (player Colour P1 (colour Black))
         (player Colour P2 (colour Blue))
         (board Style PenAndPaper replaceComponentsWithFilledCells:True)
-        
     })
     
     (ai
