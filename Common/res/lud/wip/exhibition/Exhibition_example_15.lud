@@ -1,0 +1,82 @@
+(define "AllOccupied"
+    (union { 
+        (forEach (sites Board Vertex) if:(is Occupied Vertex (site))) 
+        (sites Hand Shared) 
+    })		
+)
+
+//------------------------------------------------------------------------------
+
+(game "Exhibition_example_15" 
+    (players 2) 
+    (equipment { 
+        (board
+        		(add
+                (merge
+                    {
+                        (scale 0.96 (shift 2.38 -0.62 (rotate 60 (concentric {1 3}))))
+                        (merge
+                            {
+                                (shift 0.83 -1.44 (scale 1.66 (rectangle 1 3)))
+                                (rotate 60 (scale 1.66 (rectangle 1 3)))
+                                (shift
+                                    1.66
+                                    0
+                                    (rotate -60 (scale 1.66 (rectangle 1 3)))
+                                )
+                            }
+                        )
+                    }
+                )
+                edges:{{0 4} {0 5} {0 6}}
+                )
+                use:Vertex
+            )
+        (piece "Marker" Each)
+        (hand Shared size:2)
+    }) 
+    (rules 
+        (start {
+            (place "Marker1" (handSite Shared 0))
+            (place "Marker2" (handSite Shared 1))
+        })
+        (play 
+            (or {
+                
+                (move Select
+                    (from Vertex ("AllOccupied")) 
+                )
+                
+                (move 
+                    (from Vertex ("AllOccupied")) 
+                    (to Vertex (forEach (sites Board) if:(is Empty Vertex (site))))
+                    copy:(is In (from) (sites Hand Shared))
+                )
+                
+                (move Select
+                    (from Vertex (sites Board Vertex) if:(is Occupied Vertex (from)))
+                    (to Cell (sites Hand Shared))
+                    (then
+                        (remove Vertex (last From))
+                    )
+                )
+                
+                (move 
+                    (from Vertex (sites Board Vertex) if:(is Occupied Vertex (from)))				
+                    (to Vertex (sites Board Vertex) if:(is Empty Vertex (to)))
+                )
+                }
+                (then (moveAgain))
+            )
+        )
+        (end (if (is Line 9999) (result Mover Win)))
+    )
+)
+
+(metadata 
+    
+    (graphics {
+        (piece Scale "Marker" 0.7)
+    })
+    
+)

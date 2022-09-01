@@ -1,0 +1,61 @@
+(define "AllOccupied"
+    (union { 
+        (forEach (sites Board Vertex) if:(is Occupied Vertex (site))) 
+        (sites Hand Shared) 
+    })		
+)
+
+//------------------------------------------------------------------------------
+
+(game "Exhibition_example_12" 
+    (players 2) 
+    (equipment { 
+("NineMensMorrisBoard")
+        (piece "Marker" Each)
+        (hand Shared size:2)
+    }) 
+    (rules 
+        (start {
+            (place "Marker1" (handSite Shared 0))
+            (place "Marker2" (handSite Shared 1))
+        })
+        (play 
+            (or {
+                
+                (move Select
+                    (from Vertex ("AllOccupied")) 
+                )
+                
+                (move 
+                    (from Vertex ("AllOccupied")) 
+                    (to Vertex (forEach (sites Board) if:(is Empty Vertex (site))))
+                    copy:(is In (from) (sites Hand Shared))
+                )
+                
+                (move Select
+                    (from Vertex (sites Board Vertex) if:(is Occupied Vertex (from)))
+                    (to Cell (sites Hand Shared))
+                    (then
+                        (remove Vertex (last From))
+                    )
+                )
+                
+                (move 
+                    (from Vertex (sites Board Vertex) if:(is Occupied Vertex (from)))				
+                    (to Vertex (sites Board Vertex) if:(is Empty Vertex (to)))
+                )
+                }
+                (then (moveAgain))
+            )
+        )
+        (end (if (is Line 9999) (result Mover Win)))
+    )
+)
+
+(metadata 
+    
+    (graphics {
+        (piece Scale "Marker" 0.7)
+    })
+    
+)

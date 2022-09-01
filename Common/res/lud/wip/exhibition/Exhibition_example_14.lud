@@ -1,0 +1,67 @@
+(define "AllOccupied"
+    (union { 
+        (forEach (sites Board Vertex) if:(is Occupied Vertex (site))) 
+        (sites Hand Shared) 
+    })		
+)
+
+//------------------------------------------------------------------------------
+
+(game "Exhibition_example_14" 
+    (players 2) 
+    (equipment { 
+        (board 
+                (graph
+                    vertices:{ {1 0} {2 0} {0 1} {1 1} {2 1} {3 1} {0 2} {1 2} {2 2} {3 2} {1 3} {2 3}}
+                    edges:{ {0 2} {0 3} {3 2} {3 4} {1 4} {4 5} {1 5} {3 7} {4 8} {6 7} {7 8} {8 9} {6 10} {11 9} {10 7} {11 8}}
+                )
+                use:Vertex
+            )
+        (piece "Marker" Each)
+        (hand Shared size:2)
+    }) 
+    (rules 
+        (start {
+            (place "Marker1" (handSite Shared 0))
+            (place "Marker2" (handSite Shared 1))
+        })
+        (play 
+            (or {
+                
+                (move Select
+                    (from Vertex ("AllOccupied")) 
+                )
+                
+                (move 
+                    (from Vertex ("AllOccupied")) 
+                    (to Vertex (forEach (sites Board) if:(is Empty Vertex (site))))
+                    copy:(is In (from) (sites Hand Shared))
+                )
+                
+                (move Select
+                    (from Vertex (sites Board Vertex) if:(is Occupied Vertex (from)))
+                    (to Cell (sites Hand Shared))
+                    (then
+                        (remove Vertex (last From))
+                    )
+                )
+                
+                (move 
+                    (from Vertex (sites Board Vertex) if:(is Occupied Vertex (from)))				
+                    (to Vertex (sites Board Vertex) if:(is Empty Vertex (to)))
+                )
+                }
+                (then (moveAgain))
+            )
+        )
+        (end (if (is Line 9999) (result Mover Win)))
+    )
+)
+
+(metadata 
+    
+    (graphics {
+        (piece Scale "Marker" 0.7)
+    })
+    
+)
