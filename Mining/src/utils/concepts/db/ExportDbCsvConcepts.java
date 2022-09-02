@@ -874,8 +874,21 @@ public class ExportDbCsvConcepts
 		// We get the values of the frequencies.
 		mapFrequency.putAll(frequencyConcepts(game));
 		
+		final List<Concept> reconstructionConcepts = new ArrayList<Concept>();
+		reconstructionConcepts.add(Concept.DurationMoves);
+		reconstructionConcepts.add(Concept.DecisionMoves);
+		reconstructionConcepts.add(Concept.BoardCoverageDefault);
+		reconstructionConcepts.add(Concept.AdvantageP1);
+		reconstructionConcepts.add(Concept.Balance);
+		reconstructionConcepts.add(Concept.Completion);
+		reconstructionConcepts.add(Concept.Drawishness);
+		reconstructionConcepts.add(Concept.PieceNumberAverage);
+		reconstructionConcepts.add(Concept.BoardSitesOccupiedAverage);
+		reconstructionConcepts.add(Concept.BranchingFactorAverage);
+		reconstructionConcepts.add(Concept.DecisionFactorAverage);
+		
 		// We get the values of the metrics.
-		mapFrequency.putAll(metricsConcepts(game, evaluation));
+		mapFrequency.putAll(metricsConcepts(game, evaluation, reconstructionConcepts));
 
 		// We get the values of the starting concepts.
 		mapFrequency.putAll(startsConcepts(game));
@@ -1563,7 +1576,7 @@ public class ExportDbCsvConcepts
 	 * @param allStoredRNG The RNG for each trial.
 	 * @return The map of playout concepts to the their values for the metric ones.
 	 */
-	private static Map<String, Double> metricsConcepts(final Game game, final Evaluation evaluation)
+	private static Map<String, Double> metricsConcepts(final Game game, final Evaluation evaluation, final List<Concept> reconstructionConcepts)
 	{
 		final Map<String, Double> playoutConceptValues = new HashMap<String, Double>();
 		// We get the values of the metrics.
@@ -1581,16 +1594,21 @@ public class ExportDbCsvConcepts
 		for (final Metric metric : metrics)
 			if (metric.concept() != null)
 			{
-				Double value = metric.apply(game, evaluation, trialsMetrics, rngTrials);
-				if(value == null)
-					playoutConceptValues.put(metric.concept().name(), null);
+				Double value;
+				if(reconstructionConcepts.contains(metric.concept()))
+					value = metric.apply(game, evaluation, trialsMetrics, rngTrials);
 				else
-				{
-					double metricValue = metric.apply(game, evaluation, trialsMetrics, rngTrials).doubleValue();
-					metricValue = (Math.abs(metricValue) < Constants.EPSILON) ? 0 : metricValue;
-					playoutConceptValues.put(metric.concept().name(), Double.valueOf(metricValue));
-					if (metricValue != 0)
-						System.out.println(metric.concept().name() + ": " + metricValue);
+					value = null; // If that's not a reconstruction metrics we put NULL for it.
+					
+					if(value == null)
+						playoutConceptValues.put(metric.concept().name(), null);
+					else
+					{
+						double metricValue = metric.apply(game, evaluation, trialsMetrics, rngTrials).doubleValue();
+						metricValue = (Math.abs(metricValue) < Constants.EPSILON) ? 0 : metricValue;
+						playoutConceptValues.put(metric.concept().name(), Double.valueOf(metricValue));
+						if (metricValue != 0)
+							System.out.println(metric.concept().name() + ": " + metricValue);
 				}
 			}
 
