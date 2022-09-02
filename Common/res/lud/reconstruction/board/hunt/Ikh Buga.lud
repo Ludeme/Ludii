@@ -27,10 +27,7 @@
             (place "Dog2" (handSite P2) count:[1..80]) // Some can be introduced later.
         })
         (play (forEach Piece))
-        (end {
-            (if (no Pieces P2) (result P1 Win))
-            (if (no Moves P1) (result P2 Win))
-        })
+        (end ("NoMovesP1NoPiecesP2"))
     )
 )
 
@@ -53,6 +50,10 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
+    })
+    
+    (recon {
+  	  (concept "NumStartComponents" 88)
     })
     
 )
