@@ -1188,7 +1188,6 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param boardGraphicsTypeCond 	The BoardGraphicsType.
 	 * @return 							The new thickness.
 	 */
 	public float boardCurvature()

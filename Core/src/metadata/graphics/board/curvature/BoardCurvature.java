@@ -30,7 +30,7 @@ public class BoardCurvature implements GraphicsItem
 		final Float             curveOffset
 	)
 	{
-		this.curveOffset = curveOffset;
+		this.curveOffset = curveOffset.floatValue();
 	}
 
 	//-------------------------------------------------------------------------
