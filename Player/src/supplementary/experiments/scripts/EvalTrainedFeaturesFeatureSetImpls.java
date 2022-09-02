@@ -38,7 +38,7 @@ public class EvalTrainedFeaturesFeatureSetImpls
 	private static final String JVM_MEM = "5120";
 	
 	/** Memory to assign per process (in GB) */
-	private static final int MEM_PER_PROCESS = 6;
+	//private static final int MEM_PER_PROCESS = 6;
 	
 	/** Memory available per node in GB (this is for Thin nodes on Snellius) */
 	private static final int MEM_PER_NODE = 256;
@@ -253,7 +253,8 @@ public class EvalTrainedFeaturesFeatureSetImpls
 				if (exclusive)
 					jobMemRequestGB = Math.min(MEM_PER_NODE, MAX_REQUEST_MEM);	// We're requesting full node anyway, might as well take all the memory
 				else
-					jobMemRequestGB = Math.min(numProcessesThisJob * MEM_PER_PROCESS, MAX_REQUEST_MEM);
+					jobMemRequestGB = Math.min(MEM_PER_NODE, MAX_REQUEST_MEM);	// We're requesting full node anyway, might as well take all the memory
+					//Math.min(numProcessesThisJob * MEM_PER_PROCESS, MAX_REQUEST_MEM);
 				
 				writer.println("#SBATCH --cpus-per-task=" + numProcessesThisJob * CORES_PER_PROCESS);
 				writer.println("#SBATCH --mem=" + jobMemRequestGB + "G");		// 1 node, no MPI/OpenMP/etc
@@ -293,6 +294,7 @@ public class EvalTrainedFeaturesFeatureSetImpls
 								"/PolicyWeightsCE_P" + p + "_00201.txt"
 							);
 						}
+						playoutStrParts.add("implementation=" + (String)agent);
 						
 						final List<String> learnedSelectionStrParts = new ArrayList<String>();
 						learnedSelectionStrParts.add("learned_selection_policy=softmax");
@@ -308,6 +310,7 @@ public class EvalTrainedFeaturesFeatureSetImpls
 								StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), "")) + 
 								"/PolicyWeightsCE_P" + p + "_00201.txt"
 							);
+							learnedSelectionStrParts.add("implementation=" + (String)agent);
 						}
 						
 						final String agentStr = 
