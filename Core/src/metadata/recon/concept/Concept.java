@@ -56,7 +56,7 @@ public class Concept implements ReconItem
 	 * @param minValue The minimum value.
 	 * @param maxValue The maximum value.
 	 *
-	 * @example (concept "Num Players" 2 4)
+	 * @example (concept "Num Players" minValue:2 maxValue:4)
 	 */
 	public Concept
 	(
