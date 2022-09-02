@@ -86,6 +86,7 @@ import main.collections.FastArrayList;
 import main.grammar.Description;
 import main.options.Ruleset;
 import metadata.Metadata;
+import metadata.recon.ReconItem;
 import other.AI;
 import other.BaseLudeme;
 import other.Ludeme;
@@ -197,10 +198,13 @@ public class Game extends BaseLudeme implements API, Serializable
 	/** All variables constraint by the puzzle.*/
 	private final TIntArrayList constraintVariables = new TIntArrayList();
 
-	//-----------------------Metadata and Graphics-----------------------------
+	//-----------------------Metadata-------------------------------------------
 
 	/** The game's metadata */
 	protected Metadata metadata = null;
+
+	/** The expected concepts values for reconstruction. */
+	protected ArrayList<metadata.recon.concept.Concept> expectedConcepts = new ArrayList<metadata.recon.concept.Concept>();
 
 	// -----------------------Warning/Crash reports-----------------------------
 
@@ -440,6 +444,13 @@ public class Game extends BaseLudeme implements API, Serializable
 
 			if (metadata.graphics() != null)
 				metadata.graphics().computeNeedRedraw(this);
+			
+			if(metadata.recon() != null)
+			{
+				final List<ReconItem> reconItems = metadata.recon().getItem();
+				for(ReconItem item : reconItems)
+					expectedConcepts.add((metadata.recon.concept.Concept) item);
+			}
 		}
 		else
 		{

@@ -53,7 +53,7 @@ public class Concept implements ReconItem
 	{
 		final StringBuilder sb = new StringBuilder();
 
-		sb.append("    (concept \"" + conceptName + " value " + "\")\n");
+		sb.append(conceptName + " value " + value + "\n");
 
 		return sb.toString();
 	}
