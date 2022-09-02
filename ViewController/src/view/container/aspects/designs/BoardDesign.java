@@ -16,6 +16,7 @@ import java.util.List;
 import org.jfree.graphics2d.svg.SVGGraphics2D;
 
 import bridge.Bridge;
+import game.Game;
 import game.equipment.other.Regions;
 import game.types.board.SiteType;
 import game.util.graph.Properties;
@@ -374,7 +375,7 @@ public class BoardDesign extends ContainerDesign
 						}
 					}
 				}
-				addEdgeToPath(path, edge, edge.vA().index() == vertexA.index(), 0);
+				addEdgeToPath(context.game(), path, edge, edge.vA().index() == vertexA.index(), 0);
 			}
 
 			g2d.setColor(colorFillPhase0);
@@ -495,7 +496,7 @@ public class BoardDesign extends ContainerDesign
 			{
 				nextEdgeFound = false;
 				
-				addEdgeToPath(path, edge, edge.vA().index() == vertexA.index(), offsetY);
+				addEdgeToPath(context.game(), path, edge, edge.vA().index() == vertexA.index(), offsetY);
 				edgesToDraw.remove(edge);
 
 				for (final Edge nextEdge : edgesToDraw)
@@ -743,7 +744,7 @@ public class BoardDesign extends ContainerDesign
 					final Vector tangentB = new Vector(s.curve()[2].floatValue(), s.curve()[3].floatValue());
 					final GeneralPath path = new GeneralPath();
 					path.moveTo(boardStyle.screenPosn(v1.centroid()).x, boardStyle.screenPosn(v1.centroid()).y);
-					curvePath(path, v1.centroid(), v2.centroid(), tangentA, tangentB, 0, s.curveType());
+					curvePath(context.game(), path, v1.centroid(), v2.centroid(), tangentA, tangentB, 0, s.curveType());
 					g2d.draw(path);
 				}
 			}
@@ -899,7 +900,7 @@ public class BoardDesign extends ContainerDesign
 	
 	//-------------------------------------------------------------------------
 
-	private void addEdgeToPath(final GeneralPath path, final Edge edge, final boolean forwards, final double offsetY)
+	private void addEdgeToPath(final Game game, final GeneralPath path, final Edge edge, final boolean forwards, final double offsetY)
 	{
 		final Vertex vertexA = forwards ? edge.vA() : edge.vB();
 		final Vertex vertexB = forwards ? edge.vB() : edge.vA();
@@ -914,7 +915,7 @@ public class BoardDesign extends ContainerDesign
 				curveType = getMetadataImageInfoForEdge(edge).curveType();
 			
 			// Draw curve for this edge
-			curvePath(path, vertexA.centroid(), vertexB.centroid(), tangentA, tangentB, offsetY, curveType);
+			curvePath(game, path, vertexA.centroid(), vertexB.centroid(), tangentA, tangentB, offsetY, curveType);
 		}
 		else
 		{
@@ -936,11 +937,11 @@ public class BoardDesign extends ContainerDesign
 	 * @param tangentB
 	 * @param offsetY
 	 */
-	private void curvePath(final GeneralPath path, final Point2D vACentroid, final Point2D vBCentroid, final Vector tangentA, final Vector tangentB, final double offsetY, final CurveType curveType)
+	private void curvePath(final Game game, final GeneralPath path, final Point2D vACentroid, final Point2D vBCentroid, final Vector tangentA, final Vector tangentB, final double offsetY, final CurveType curveType)
 	{
 		final double dist = MathRoutines.distance(vACentroid, vBCentroid);
 		
-		final double off = 0.333;
+		final double off = game.metadata().graphics().boardCurvature();
 		
 		double aax = vACentroid.getX() + off * dist * tangentA.x();
 		double aay = vACentroid.getY() + off * dist * tangentA.y();

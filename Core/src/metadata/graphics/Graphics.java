@@ -24,6 +24,7 @@ import main.Constants;
 import main.StringRoutines;
 import metadata.graphics.board.Boolean.BoardCheckered;
 import metadata.graphics.board.colour.BoardColour;
+import metadata.graphics.board.curvature.BoardCurvature;
 import metadata.graphics.board.ground.BoardBackground;
 import metadata.graphics.board.ground.BoardForeground;
 import metadata.graphics.board.placement.BoardPlacement;
@@ -1182,6 +1183,22 @@ public class Graphics implements Serializable
 			}
 						
 		return (float) 1.0;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param boardGraphicsTypeCond 	The BoardGraphicsType.
+	 * @return 							The new thickness.
+	 */
+	public float boardCurvature()
+	{
+
+		for (final GraphicsItem graphicsItem : items)
+			if (graphicsItem instanceof BoardCurvature)
+				return ((BoardCurvature) graphicsItem).curveOffset();
+						
+		return (float) 0.333;
 	}
 	
 	//-------------------------------------------------------------------------
