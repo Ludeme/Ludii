@@ -5164,12 +5164,19 @@ PARAM JAVADOC: [scale:<float>]: scale for the board.
 PARAM JAVADOC: [offsetX:<float>]: X offset for board center.
 PARAM JAVADOC: [offsetY:<float>]: Y offset for board center.
 EXAMPLE: (board Placement scale:0.8)
+NEW CTOR
+(board Curvature <float>)
+PARAM JAVADOC: <float>: 
+EXAMPLE: (board Curvature 0.45)
 TYPE: metadata.graphics.board.BoardBooleanType
 TYPE JAVADOC: Defines the types of Board metadata depending only of a boolean.
 CONST JAVADOC: Checkered: To indicate whether the board should be drawn in a checkered pattern.
 TYPE: metadata.graphics.board.BoardColourType
 TYPE JAVADOC: Defines the types of Board metadata related to the colour.
 CONST JAVADOC: Colour: To set the colour of a specific aspect of the board.
+TYPE: metadata.graphics.board.BoardCurvatureType
+TYPE JAVADOC: Defines the types of Board metadata related to the curvature style.
+CONST JAVADOC: Curvature: To set the curve offset when drawing curves.
 TYPE: metadata.graphics.board.BoardPlacementType
 TYPE JAVADOC: Defines the types of Board metadata related to the placement.
 CONST JAVADOC: Placement: To set the placement of the board.

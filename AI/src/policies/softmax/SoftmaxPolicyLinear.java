@@ -520,11 +520,19 @@ public class SoftmaxPolicyLinear extends SoftmaxPolicy
 							policyWeightsFilepath = 
 								ExperimentFileUtils.getLastFilepath(parentDir + "/PolicyWeightsTSPG_P" + i, "txt");
 						}
+						else if (policyWeightsFilepath.contains("PolicyWeightsCE"))
+						{
+							policyWeightsFilepath = 
+									ExperimentFileUtils.getLastFilepath(parentDir + "/PolicyWeightsCE_P" + i, "txt");
+						}
 						else
 						{
 							policyWeightsFilepath = null;
 						}
 					}
+					
+					if (policyWeightsFilepath == null)
+						System.err.println("Cannot resolve policy weights filepath: " + policyWeightsFilepaths.get(i));
 					
 					if (boosted)
 						linearFunctions[i] = BoostedLinearFunction.boostedFromFile(policyWeightsFilepath, null);
