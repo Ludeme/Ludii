@@ -112,7 +112,7 @@ public class EvalTrainedFeaturesFeatureSetImpls
 			{
 				"JITSPatterNet",
 				"SPatterNet",
-				"Legacy",
+				"Tree",
 				"Naive"
 			};
 	
