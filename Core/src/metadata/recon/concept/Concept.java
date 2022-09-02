@@ -12,9 +12,11 @@ import metadata.recon.ReconItem;
  */
 public class Concept implements ReconItem
 {
-
 	/** Concept name. */
 	private final String conceptName;
+	
+	/** Concept name. */
+	private other.concept.Concept concept;
 
 	/** Concept value. */
 	private final double value;
@@ -36,6 +38,11 @@ public class Concept implements ReconItem
 	)
 	{
 		this.conceptName = conceptName;
+		try{this.concept = other.concept.Concept.valueOf(conceptName);}
+		catch(final Exception e)
+		{
+			this.concept = null;
+		}
 		value = ((valueDouble != null) ? valueDouble.doubleValue() : (valueBoolean.booleanValue() ? 1d : 0d) );
 	}
 
@@ -59,6 +66,15 @@ public class Concept implements ReconItem
 	public String conceptName()
 	{
 		return conceptName;
+	}
+
+	//-------------------------------------------------------------------------
+	/**
+	 * @return The name of the concept
+	 */
+	public other.concept.Concept concept()
+	{
+		return concept;
 	}
 
 	/**
