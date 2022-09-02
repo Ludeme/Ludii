@@ -965,7 +965,6 @@ public class BoardDesign extends ContainerDesign
 	}
 	
 	//-------------------------------------------------------------------------
-	//-------------------------------------------------------------------------
 	
 	protected void drawInnerCellEdges(final Graphics2D g2d, final Context context)
 	{
