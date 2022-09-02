@@ -1,20 +1,7 @@
 (game "Stenge Reven"
     (players 2) 
     (equipment { 
-        (board 
-            (add
-                (merge 
-                    {
-                    (rotate 90 (wedge 2))
-                    (shift -1 0 (rotate -90 (wedge 2)))
-                    (shift 1 0 (rotate -90 (wedge 2))) 
-                    (shift -2 0 (rotate 90 (wedge 2))) 
-                    }
-                )
-                edges:{{4 3} {6 1}}
-            )
-            use:Vertex
-        )
+    	("ThreeMensMorrisGraphWithLeftAndRightTriangles")
         (piece "Marker" P1 (move [#]))
         (piece "Marker" P2 (move [#]))
     }) 
