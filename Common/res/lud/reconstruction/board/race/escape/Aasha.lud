@@ -18,7 +18,7 @@
             (track "Track2" "23,21,16,S,W1,N" P2 directed:True)
             }
         )
-        (dice d:2 from:0 num:5)
+        ("StickDice" 5)
         (hand Each)
         (piece "Marker" Each (move [#]))
     }) 
@@ -26,8 +26,8 @@
     (rules 
         (start (place "Marker" "Hand" count:12))
         (play 
-            (do (roll) 
-                next:[#]
+            ("RollMove"
+            	[#]
             )
         )
         (end [#])
@@ -66,4 +66,7 @@
         (show Line {{36 35} {34 37}})
     })
     
+    (recon {
+    	  (concept "Capture" True)
+      })
 )
