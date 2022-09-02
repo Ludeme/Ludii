@@ -9,8 +9,7 @@
         )
         (dice d:2 from:0 num:[4 | 5 | 10])
         (piece "Pawn" Each) // 6 pieces per players
-        }
-    ) 
+    }) 
     (rules 
         (play (do (roll) next:[#])) // doubled when all of the beans have the marked side face-up
         (end [#])
@@ -40,4 +39,7 @@
         (show Symbol "thinCross" {46 47 64 65 16 34 3 23} scale:0.9)
     })
     
+    (recon {
+    	  (concept "NumStartComponents" 12)
+      })
 )
