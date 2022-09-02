@@ -113,6 +113,7 @@ public final class Enclose extends Effect
 		final Moves moves = new BaseMoves(super.then());
 		
 		final int from = startFn.eval(context);
+		
 		final int originBetween = context.between();
 		final int originTo = context.to();
 		

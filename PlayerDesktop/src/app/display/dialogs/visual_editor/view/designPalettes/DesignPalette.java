@@ -145,7 +145,8 @@ public class DesignPalette
         return instance;
     }
 
-    public static List<String> palettes()
+    @SuppressWarnings("resource")
+	public static List<String> palettes()
     {
         final List<String> names = new ArrayList<>();
         try
