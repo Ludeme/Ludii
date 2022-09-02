@@ -138,6 +138,7 @@ public class CreateSneliusClusterConceptScript
 //									+ numPlayout + " " + maxTime + " " + thinkingTime + " " + maxMove + " "  + "\"" + agentName + "\"" + " " + "\"" + folder  + "\"" + " " + "\"" + gameName.substring(1) + "\"");
 //					mainWriter.println("sbatch " + scriptName);
 				}
+				scriptId++;
 			}
 			
 //			if(rulesetNames.isEmpty())
