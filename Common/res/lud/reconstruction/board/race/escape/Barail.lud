@@ -1,11 +1,10 @@
 (game "Barail"
     (players 2)
     (equipment {
-        (board (rectangle 2 13) 
+    	("BackgammonBoard"
             {
             (track "Track" {25..20 18..13 0..5 7..12 End} P1 directed:True)
             } 
-            use:Vertex
         ) 
         (dice d:6 num:3)
         (piece "Disc" Each (move [#]))
