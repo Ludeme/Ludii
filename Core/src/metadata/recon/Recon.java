@@ -3,13 +3,11 @@ package metadata.recon;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import annotations.Or;
 import metadata.MetadataItem;
-import metadata.recon.concept.Concept;
 
 /**
  * Reconstruction metadata.
@@ -78,20 +76,6 @@ public class Recon implements Serializable
 		return Collections.unmodifiableList(items);
 	}
 	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * @return The required concept values.
-	 */
-	public Map<String, Double> getConceptValues()
-	{
-		final Map<String, Double> conceptValues = new HashMap<>();
-		for (final ReconItem infoItem : items)
-			if (infoItem instanceof Concept)
-				conceptValues.put(((Concept) infoItem).conceptName(), Double.valueOf(((Concept) infoItem).value()));
-		return conceptValues;
-	}
-
 	//-------------------------------------------------------------------------
 
 	@Override

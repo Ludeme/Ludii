@@ -1,5 +1,6 @@
 package metadata.recon.concept;
 
+import annotations.Name;
 import annotations.Or;
 import metadata.recon.ReconItem;
 
@@ -18,8 +19,11 @@ public class Concept implements ReconItem
 	/** Concept name. */
 	private other.concept.Concept concept;
 
-	/** Concept value. */
-	private final double value;
+	/** Concept minimal value. */
+	private double minValue;
+	
+	/** Concept maximal value. */
+	private double maxValue;
 
 	//-------------------------------------------------------------------------
 
@@ -43,7 +47,32 @@ public class Concept implements ReconItem
 		{
 			this.concept = null;
 		}
-		value = ((valueDouble != null) ? valueDouble.doubleValue() : (valueBoolean.booleanValue() ? 1d : 0d) );
+		minValue = ((valueDouble != null) ? valueDouble.doubleValue() : (valueBoolean.booleanValue() ? 1d : 0d) );
+		maxValue = minValue;
+	}
+	
+	/**
+	 * @param conceptName The name of the concept.
+	 * @param minValue The minimum value.
+	 * @param maxValue The maximum value.
+	 *
+	 * @example (concept "Num Players" 2 4)
+	 */
+	public Concept
+	(
+			 final String conceptName,
+	   @Name final Float minValue,
+	   @Name final Float maxValue
+	)
+	{
+		this.conceptName = conceptName;
+		try{this.concept = other.concept.Concept.valueOf(conceptName);}
+		catch(final Exception e)
+		{
+			this.concept = null;
+		}
+		this.minValue = minValue.doubleValue();
+		this.maxValue = maxValue.doubleValue();
 	}
 
 	//-------------------------------------------------------------------------
@@ -53,7 +82,10 @@ public class Concept implements ReconItem
 	{
 		final StringBuilder sb = new StringBuilder();
 
-		sb.append(conceptName + " value " + value + "\n");
+		if(minValue == maxValue)
+			sb.append(conceptName + " value = " + minValue + "\n");
+		else
+			sb.append(conceptName + " min value = " + minValue + " " + " max value = " + maxValue +"\n");
 
 		return sb.toString();
 	}
@@ -78,11 +110,19 @@ public class Concept implements ReconItem
 	}
 
 	/**
-	 * @return The value of the concept
+	 * @return The minimum value of the concept
 	 */
-	public double value()
+	public double minValue()
 	{
-		return value;
+		return minValue;
+	}
+
+	/**
+	 * @return The maximum value of the concept
+	 */
+	public double maxValue()
+	{
+		return maxValue;
 	}
 
 	//-------------------------------------------------------------------------
