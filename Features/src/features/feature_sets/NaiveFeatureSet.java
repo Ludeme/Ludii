@@ -662,121 +662,124 @@ public class NaiveFeatureSet extends BaseFeatureSet
 					key.resetData(player, fromPos, toPos);
 					final List<FeatureInstance>[] instanceLists = proactiveFeatures.get(key);
 
-					for (int i = 0; i < instanceLists.length; ++i)
+					if (instanceLists != null)
 					{
-						for (final FeatureInstance instance : instanceLists[i])
+						for (int i = 0; i < instanceLists.length; ++i)
 						{
-							if (instance.mustEmpty() != null)
+							for (final FeatureInstance instance : instanceLists[i])
 							{
-								switch (instance.graphElementType())
+								if (instance.mustEmpty() != null)
 								{
-								case Cell:
-									footprintEmptyCells.or(instance.mustEmpty());
-									break;
-								case Vertex:
-									footprintEmptyVertices.or(instance.mustEmpty());
-									break;
-								case Edge:
-									footprintEmptyEdges.or(instance.mustEmpty());
-									break;
-								//$CASES-OMITTED$ Hint
-								default:
-									break;
+									switch (instance.graphElementType())
+									{
+									case Cell:
+										footprintEmptyCells.or(instance.mustEmpty());
+										break;
+									case Vertex:
+										footprintEmptyVertices.or(instance.mustEmpty());
+										break;
+									case Edge:
+										footprintEmptyEdges.or(instance.mustEmpty());
+										break;
+									//$CASES-OMITTED$ Hint
+									default:
+										break;
+									}
 								}
-							}
-							
-							if (instance.mustNotEmpty() != null)
-							{
-								switch (instance.graphElementType())
+								
+								if (instance.mustNotEmpty() != null)
 								{
-								case Cell:
-									footprintEmptyCells.or(instance.mustNotEmpty());
-									break;
-								case Vertex:
-									footprintEmptyVertices.or(instance.mustNotEmpty());
-									break;
-								case Edge:
-									footprintEmptyEdges.or(instance.mustNotEmpty());
-									break;
-								//$CASES-OMITTED$ Hint
-								default:
-									break;
+									switch (instance.graphElementType())
+									{
+									case Cell:
+										footprintEmptyCells.or(instance.mustNotEmpty());
+										break;
+									case Vertex:
+										footprintEmptyVertices.or(instance.mustNotEmpty());
+										break;
+									case Edge:
+										footprintEmptyEdges.or(instance.mustNotEmpty());
+										break;
+									//$CASES-OMITTED$ Hint
+									default:
+										break;
+									}
 								}
-							}
-							
-							if (instance.mustWhoMask() != null)
-							{
-								switch (instance.graphElementType())
+								
+								if (instance.mustWhoMask() != null)
 								{
-								case Cell:
-									footprintWhoCells.or(instance.mustWhoMask());
-									break;
-								case Vertex:
-									footprintWhoVertices.or(instance.mustWhoMask());
-									break;
-								case Edge:
-									footprintWhoEdges.or(instance.mustWhoMask());
-									break;
-								//$CASES-OMITTED$ Hint
-								default:
-									break;
+									switch (instance.graphElementType())
+									{
+									case Cell:
+										footprintWhoCells.or(instance.mustWhoMask());
+										break;
+									case Vertex:
+										footprintWhoVertices.or(instance.mustWhoMask());
+										break;
+									case Edge:
+										footprintWhoEdges.or(instance.mustWhoMask());
+										break;
+									//$CASES-OMITTED$ Hint
+									default:
+										break;
+									}
 								}
-							}
-							
-							if (instance.mustNotWhoMask() != null)
-							{
-								switch (instance.graphElementType())
+								
+								if (instance.mustNotWhoMask() != null)
 								{
-								case Cell:
-									footprintWhoCells.or(instance.mustNotWhoMask());
-									break;
-								case Vertex:
-									footprintWhoVertices.or(instance.mustNotWhoMask());
-									break;
-								case Edge:
-									footprintWhoEdges.or(instance.mustNotWhoMask());
-									break;
-								//$CASES-OMITTED$ Hint
-								default:
-									break;
+									switch (instance.graphElementType())
+									{
+									case Cell:
+										footprintWhoCells.or(instance.mustNotWhoMask());
+										break;
+									case Vertex:
+										footprintWhoVertices.or(instance.mustNotWhoMask());
+										break;
+									case Edge:
+										footprintWhoEdges.or(instance.mustNotWhoMask());
+										break;
+									//$CASES-OMITTED$ Hint
+									default:
+										break;
+									}
 								}
-							}
-							
-							if (instance.mustWhatMask() != null)
-							{
-								switch (instance.graphElementType())
+								
+								if (instance.mustWhatMask() != null)
 								{
-								case Cell:
-									footprintWhatCells.or(instance.mustWhatMask());
-									break;
-								case Vertex:
-									footprintWhatVertices.or(instance.mustWhatMask());
-									break;
-								case Edge:
-									footprintWhatEdges.or(instance.mustWhatMask());
-									break;
-								//$CASES-OMITTED$ Hint
-								default:
-									break;
+									switch (instance.graphElementType())
+									{
+									case Cell:
+										footprintWhatCells.or(instance.mustWhatMask());
+										break;
+									case Vertex:
+										footprintWhatVertices.or(instance.mustWhatMask());
+										break;
+									case Edge:
+										footprintWhatEdges.or(instance.mustWhatMask());
+										break;
+									//$CASES-OMITTED$ Hint
+									default:
+										break;
+									}
 								}
-							}
-							
-							if (instance.mustNotWhatMask() != null)
-							{
-								switch (instance.graphElementType())
+								
+								if (instance.mustNotWhatMask() != null)
 								{
-								case Cell:
-									footprintWhatCells.or(instance.mustNotWhatMask());
-									break;
-								case Vertex:
-									footprintWhatVertices.or(instance.mustNotWhatMask());
-									break;
-								case Edge:
-									footprintWhatEdges.or(instance.mustNotWhatMask());
-									break;
-								//$CASES-OMITTED$ Hint
-								default:
-									break;
+									switch (instance.graphElementType())
+									{
+									case Cell:
+										footprintWhatCells.or(instance.mustNotWhatMask());
+										break;
+									case Vertex:
+										footprintWhatVertices.or(instance.mustNotWhatMask());
+										break;
+									case Edge:
+										footprintWhatEdges.or(instance.mustNotWhatMask());
+										break;
+									//$CASES-OMITTED$ Hint
+									default:
+										break;
+									}
 								}
 							}
 						}
