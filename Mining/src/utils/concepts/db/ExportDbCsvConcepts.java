@@ -875,7 +875,7 @@ public class ExportDbCsvConcepts
 		mapFrequency.putAll(frequencyConcepts(game));
 		
 		final List<Concept> reconstructionConcepts = new ArrayList<Concept>();
-		reconstructionConcepts.add(Concept.DurationMoves);
+		reconstructionConcepts.add(Concept.DurationTurns);
 		reconstructionConcepts.add(Concept.DecisionMoves);
 		reconstructionConcepts.add(Concept.BoardCoverageDefault);
 		reconstructionConcepts.add(Concept.AdvantageP1);
