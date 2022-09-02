@@ -6,7 +6,7 @@
         (piece "Human" P2 (move [#])) 
     }) 
     (rules 
-        (start [#]) // 2 tigers and 2 people (to put in the concepts).
+        (start [#])
         
         (play (forEach Piece)) 
         
@@ -38,5 +38,9 @@
         (piece Families {"Abstract" "Themed"})
         (show Edges Diagonal Hidden)
     })
+    
+    (recon {
+    	  (concept "NumStartComponents" 26)
+      })
     
 )
