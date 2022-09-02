@@ -940,10 +940,12 @@ public class BoardDesign extends ContainerDesign
 	{
 		final double dist = MathRoutines.distance(vACentroid, vBCentroid);
 		
-		double aax = vACentroid.getX() + 0.333 * dist * tangentA.x();
-		double aay = vACentroid.getY() + 0.333 * dist * tangentA.y();
-		double bbx = vBCentroid.getX() + 0.333 * dist * tangentB.x();
-		double bby = vBCentroid.getY() + 0.333 * dist * tangentB.y();
+		final double off = 0.333;
+		
+		double aax = vACentroid.getX() + off * dist * tangentA.x();
+		double aay = vACentroid.getY() + off * dist * tangentA.y();
+		double bbx = vBCentroid.getX() + off * dist * tangentB.x();
+		double bby = vBCentroid.getY() + off * dist * tangentB.y();
 		
 		if (curveType == CurveType.Bezier)
 		{
