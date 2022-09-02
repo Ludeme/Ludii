@@ -15,12 +15,9 @@
     }) 
     
     (rules 
-        // “The other player plays with twelve dogs, at least some of which begin in the main part of the board, but some may be introduced later. “
-        
         (start {
             (place "Deer2" (sites {"C3" "C7"}))
-            (place "Dog1" (handSite P1) count:12) // TODO "at least some of which begin in the main part of the board, but some may be introduced later."
-            // WARNING: SOME SHOULD BE PLACED ON THE BOARD AND SOME OTHERS SHOULD BE POTENTIALLY ABLE TO REPLACE THE CAPTURED ONES.... NO IDEA HOW TO MODEL THAT IN A RECONS WAY.
+            (place "Dog1" #) 
         })
         
         phases:{
@@ -38,10 +35,7 @@
         ("PhaseMovePiece" "Movement")
         }
         
-        (end {
-            (if (no Pieces P1) (result P2 Win))
-            (if (no Moves P2) (result P1 Win))
-        })
+        (end ("NoMovesP2NoPiecesP1"))
     )
 )
 
@@ -65,5 +59,9 @@
     (graphics {
         (show Edges Diagonal Hidden)
     })
+    
+    (recon {
+    	  (concept "NumStartComponents" 14)
+      })
     
 )
