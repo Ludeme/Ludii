@@ -1,13 +1,7 @@
 (game "Lupo e Pecore"
     (players 2) 
-    (equipment { 
-        (board 
-            (merge 
-                (shift 0 3 (rectangle 3 9 diagonals:Alternating))
-                (shift 3 0 (rectangle 9 3 diagonals:Alternating)) 
-            )
-            use:Vertex
-        )
+    (equipment {
+        ("CrossBoard" 3 9 use:Vertex diagonals:Alternating)
         (piece "Marker" P1 [#])
         (piece "Marker" P2 [#])
     }) 
