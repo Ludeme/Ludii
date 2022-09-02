@@ -1,10 +1,7 @@
 (game "Tavla (Ottoman)" 
     (players 2)
     (equipment {
-        (board 
-            (rectangle 2 13) 
-            use:Vertex
-        )
+    	("BackgammonBoard" [#])
         (dice d:6 num:2)
         (piece "Disc" Each (move [#]))
     })
