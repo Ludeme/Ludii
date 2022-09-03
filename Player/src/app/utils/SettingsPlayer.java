@@ -92,6 +92,8 @@ public class SettingsPlayer
 	private Rectangle boardPlacement = new Rectangle();
 	private Rectangle boardMarginPlacement = new Rectangle();
 	
+	private String lastGeneratedGameEnglishRules = "";
+	
 	//-------------------------------------------------------------------------
 	// User settings
 	
@@ -816,6 +818,16 @@ public class SettingsPlayer
 	public void setBoardMarginPlacement(final Rectangle boardMarginPlacement)
 	{
 		this.boardMarginPlacement = boardMarginPlacement;
+	}
+
+	public String lastGeneratedGameEnglishRules() 
+	{
+		return lastGeneratedGameEnglishRules;
+	}
+
+	public void setLastGeneratedGameEnglishRules(String lastGeneratedGameEnglishRules) 
+	{
+		this.lastGeneratedGameEnglishRules = lastGeneratedGameEnglishRules;
 	}
 			
 	//-------------------------------------------------------------------------
