@@ -1,58 +1,75 @@
-(game "GAME"
-(players 2)
-(equipment
-        {
-            (board (square 5) use:Cell)
-            (piece "Marker" Each)
-           }
+(define "AllOccupiedCells"
+    (union { 
+        (forEach (sites Board Cell) if:(is Occupied Cell (site))) 
+        (sites Hand Shared) 
+    })		
+)
+
+//------------------------------------------------------------------------------
+
+(game "Exhibition_example_5" 
+    (players 2) 
+    (equipment { 
+        (board (tri Hexagon 2))
+        (piece "Marker" Each)
+        (hand Shared size:2)
+    }) 
+    (rules 
+        (start {
+            (place "Marker1" (handSite Shared 0))
+            (place "Marker2" (handSite Shared 1))
+            (place "Marker1" 6)
+        })
+        (play 
+            (or {
+                
+//                (move Select
+//                    (from Cell ("AllOccupiedCells")) 
+//                )
+//                
+//                (move 
+//                    (from Cell ("AllOccupiedCells")) 
+//                    (to Cell (forEach (sites Board) if:(is Empty Cell (site))))
+//                    copy:(is In (from) (sites Hand Shared))
+//                )
+//                
+//                (move Select
+//                    (from Cell (sites Board Cell) if:(is Occupied Cell (from)))
+//                    (to Cell (sites Hand Shared))
+//                    (then
+//                        (remove Cell (last From))
+//                    )
+//                )
+//                
+//                (move 
+//                    (from Cell (sites Board Cell) if:(is Occupied Cell (from)))				
+//                    (to Cell (sites Board Cell) if:(is Empty Cell (to)))
+//                )
+            	(forEach Piece
+            	(move 
+            		(from)
+            		(to
+            			(difference
+            				(sites Distance Orthogonal from:(from) (exact 3))
+            				(sites Around (from))
+            			)
+            		)
+            	)
+            	)
+                }
+                (then (moveAgain))
+            )
+        )
+        (end (if (is Line 9999) (result Mover Win)))
     )
-(rules
-(start {
-})
-(play 
-(or 
-(move Add (to (union (sites Empty) (sites Occupied by:Next))(then (forEach Site (sites Around (last To)) (if (is Enemy (who at:(site))) (remove (site)))))))
-(forEach Piece
-//(or {
-//(move Step Adjacent (to if:(not (is Friend (who at:(to)))) (apply (remove (to))))(then (forEach Site (sites Around (last To)) (if (is Enemy (who at:(site))) (remove (site))))))
-//(move Step Adjacent (to if:(is Empty (to)))(then (forEach Site (sites Around (last To)) (if (is Enemy (who at:(site))) (remove (site))))))
-//(move Slide Adjacent (to if:("IsEnemyAt" (to)) (apply (remove (to))))(then (forEach Site (sites Around (last To)) (if (is Enemy (who at:(site))) (remove (site))))))
-//(move Slide Adjacent(then (forEach Site (sites Around (last To)) (if (is Enemy (who at:(site))) (remove (site))))))
-//(move Leap "KnightWalk" (to if:(not ("IsFriendAt" (to))) (apply (if ("IsEnemyAt" (to)) (remove (to)))))(then (forEach Site (sites Around (last To)) (if (is Enemy (who at:(site))) (remove (site))))))
-//(move Leap "KnightWalk" (to if:(is Empty (to)))(then (forEach Site (sites Around (last To)) (if (is Enemy (who at:(site))) (remove (site))))))
-//(move (from (from)) (to (union (sites Empty) (sites Occupied by:Next))))
-//(move (from (from)) (to (sites Empty))(then (forEach Site (sites Around (last To)) (if (is Enemy (who at:(site))) (remove (site))))))
-//(move Hop Adjacent (between if:("IsEnemyAt" (between)) (apply (remove (between)))) (to if:("IsEnemyAt" (to)))(then (forEach Site (sites Around (last To)) (if (is Enemy (who at:(site))) (remove (site))))))
-//})
-		
-//    	(or {
-//        	(move (from 0) (to (sites {7 5}) if:(not ("IsFriendAt" (to))) (apply (if ("IsEnemyAt" (to)) (remove (to))))))
-//        	(move (from 2) (to (sites {6 4}) if:(not ("IsFriendAt" (to))) (apply (if ("IsEnemyAt" (to)) (remove (to))))))
-//        	(move (from 8) (to (sites {3 5}) if:(not ("IsFriendAt" (to))) (apply (if ("IsEnemyAt" (to)) (remove (to))))))
-//        	(move (from 7) (to (sites {0 4}) if:(not ("IsFriendAt" (to))) (apply (if ("IsEnemyAt" (to)) (remove (to))))))
-//        	(move (from 6) (to (sites {3 2}) if:(not ("IsFriendAt" (to))) (apply (if ("IsEnemyAt" (to)) (remove (to))))))
-//        	(move (from 5) (to (sites {0 8}) if:(not ("IsFriendAt" (to))) (apply (if ("IsEnemyAt" (to)) (remove (to))))))
-//        	(move (from 4) (to (sites {7 2}) if:(not ("IsFriendAt" (to))) (apply (if ("IsEnemyAt" (to)) (remove (to))))))
-//        	(move (from 3) (to (sites {8 6}) if:(not ("IsFriendAt" (to))) (apply (if ("IsEnemyAt" (to)) (remove (to))))))
-//    	})
 )
+
+(metadata 
+    
+    (graphics {
+        (piece Scale "Marker" 0.7)
+        (board Colour OuterEdges (colour 120 190 240))
+        (board Colour InnerEdges (colour 120 190 240))
+    })
+    
 )
-)
-(end {
-(if (is Line 4) (result Mover Win))
-(if (can Move (enclose 
-				        (from (last To)) 
-				        Orthogonal 
-				        (between 
-				            if:("IsEnemyAt" (between)) 
-				            (apply   
-				                    (remove (between)) 
-				            ) 
-				        )
-				    ))
-				    (result Mover Win))
-(if (no Pieces Next) (result Mover Win))
-(if (no Moves Next) (result Mover Win))
-(if (is Line 3) (result Mover Win))
-})
-))
