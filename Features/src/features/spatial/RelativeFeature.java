@@ -4,7 +4,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -421,10 +420,13 @@ public class RelativeFeature extends SpatialFeature
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public List<SpatialFeature> generateGeneralisers(final Game game)
+	public List<SpatialFeature> generateGeneralisers
+	(
+		final Game game, 
+		final Set<RotRefInvariantFeature> generalisers, 
+		final int numRecursions
+	)
 	{
-		final Set<RotRefInvariantFeature> generalisers = new HashSet<RotRefInvariantFeature>();
-		
 		if (toPosition != null && fromPosition != null)
 		{
 			// We can generalise by removing either the to- or the from-specifier
@@ -439,7 +441,8 @@ public class RelativeFeature extends SpatialFeature
 					lastFromPosition == null ? null : new Walk(lastFromPosition)
 				),
 				game,
-				generalisers
+				generalisers,
+				numRecursions
 			);
 			
 			addGeneraliser
@@ -453,7 +456,8 @@ public class RelativeFeature extends SpatialFeature
 					lastFromPosition == null ? null : new Walk(lastFromPosition)
 				),
 				game,
-				generalisers
+				generalisers,
+				numRecursions
 			);
 		}
 		
@@ -471,7 +475,8 @@ public class RelativeFeature extends SpatialFeature
 					lastFromPosition == null ? null : new Walk(lastFromPosition)
 				),
 				game,
-				generalisers
+				generalisers,
+				numRecursions
 			);
 		}
 		
@@ -489,7 +494,8 @@ public class RelativeFeature extends SpatialFeature
 					null
 				),
 				game,
-				generalisers
+				generalisers,
+				numRecursions
 			);
 		}
 		
@@ -516,7 +522,7 @@ public class RelativeFeature extends SpatialFeature
 					);
 			newFeature.pattern().setAllowedRotations(pattern.allowedRotations());
 			
-			addGeneraliser(newFeature, game, generalisers);
+			addGeneraliser(newFeature, game, generalisers, numRecursions);
 		}
 
 		final List<SpatialFeature> outList = new ArrayList<SpatialFeature>(generalisers.size());
@@ -535,17 +541,25 @@ public class RelativeFeature extends SpatialFeature
 	 * @param generaliser
 	 * @param game
 	 * @param generalisers
+	 * @param numRecursions
 	 */
-	private static void addGeneraliser(final RelativeFeature generaliser, final Game game, final Set<RotRefInvariantFeature> generalisers)
+	private static void addGeneraliser
+	(
+		final RelativeFeature generaliser, 
+		final Game game, 
+		final Set<RotRefInvariantFeature> generalisers, 
+		final int numRecursions
+	)
 	{
 		generaliser.normalise(game);
 		if (generalisers.add(new RotRefInvariantFeature(generaliser)))
 		{
-			// Also add generalisers of the generaliser
-			for (final SpatialFeature f : generaliser.generateGeneralisers(game))
+			if (numRecursions > 0)
 			{
-				addGeneraliser((RelativeFeature) f, game, generalisers);
+				// Also add generalisers of the generaliser
+				generaliser.generateGeneralisers(game, generalisers, numRecursions - 1);
 			}
+				
 		}
 	}
 	
