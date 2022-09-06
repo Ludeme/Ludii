@@ -17,9 +17,7 @@
             use:Vertex
         )
         (hand Each)
-        (move
-            Step 
-            (to if:(is Empty (to))) 
+        ("StepToEmpty" ~
             "IfLine3MoveAgain" 
         )
     }) 
