@@ -28,7 +28,7 @@
     })
     (rules
         (start [#])
-        (play (do (roll) next:[#])) // Captures are made when landing on a space occupied by the opponent.
+        (play ("RollMove" [#])) // Captures are made when landing on a space occupied by the opponent.
         (end [#])
     )
 )
@@ -54,7 +54,6 @@
     (graphics {
         (show Edges Hidden)
         (show Symbol "disc" Vertex (sites Board) fillColour:(colour 223 178 110) edgeColour:(colour Black) scale:0.9)
-        
     })
     
 )
