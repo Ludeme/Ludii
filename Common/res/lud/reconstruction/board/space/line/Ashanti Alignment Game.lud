@@ -23,9 +23,7 @@
         (board [#] use:Vertex) 
         (hand Each)
         (piece "Marker" Each 
-            (move
-                Step 
-                (to if:(is Empty (to))) 
+            ("StepToEmpty" ~ 
                 "IfLine3MoveAgain" 
             )
         ) 
@@ -58,7 +56,7 @@
         )
         }
         
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 ---------------------------------------------------------------------------

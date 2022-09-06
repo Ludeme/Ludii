@@ -30,9 +30,7 @@
         (play 
             (if "SameTurn"
                 "RemoveEnemyPiece"
-                (do (roll)
-                    next:(if [#] ("IfLine3MoveAgain"))
-                )
+                ("RollMove" ([#] ("IfLine3MoveAgain")))
             )
         )
         (end [#])
