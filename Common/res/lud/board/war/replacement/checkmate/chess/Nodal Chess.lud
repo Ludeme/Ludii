@@ -21,15 +21,16 @@
      (to)
    ))
    (to)
-)))
+)
+  )
+ )
    
 (define "NodalQueen"
  (piece #1 Each 
   (move
    (from (from))
    (to
-    (union
-     {
+    (union {
       ("Diagonals" (from) (to if:("IsEnemyAt" (to))))
       ("ElbowSites" 
        (union
@@ -48,8 +49,7 @@
        )
        ("Diagonals" (site) (to if:("IsEnemyAt" (to))))
       )
-     }    
-    )
+    })
     (apply 
      (if ("IsEnemyAt" (to)) 
       (remove 
@@ -57,9 +57,13 @@
        #2
       )
       (set NextPlayer (player (next)))  // dummy action to allow move without capture.
-   )))
+   )
+     )
+    )
    #3
-)))
+)
+  )
+ )
 
 (define "NodalBishop"
  (piece #1 Each 
@@ -72,21 +76,24 @@
       (remove 
        (to) 
        #2
-   ))))
+   )
+      )
+     )
+    )
    #3
-)))
+)
+  )
+ )
 
 
 (define "NodalKnight"
  (piece #1 Each 
-  (move
-   Leap 
+  (move Leap 
    { {F R F F} {F L F F} }
    (to 
     if:(not (is Mover (who at:(to))))
     (apply
-     (if
-      (is Next (who at:(to)))
+     (if (is Next (who at:(to)))
       (remove
        (to)
        #2
@@ -104,16 +111,21 @@
          (sites Around (from) All)
         )
         #2
-   )))))
+   )
+       )
+      )
+     )
+    )
    #3
-)))
+)
+  )
+ )
 
 (define "CheckWorkAroundForKnight"  
  //Moves to attack the removal location piece when it is possible for a Knight to remove a piece by jumping.
  (forEach Piece "Knight"
   (or
-   (move Step 
-    Diagonal
+   (move Step Diagonal
     (to 
      if:(and
       ("IsEnemyAt" (to)) 
@@ -122,7 +134,10 @@
         in:(difference  // the potential end location of the Knight's actual move
          (sites Around (to) Orthogonal if:(is Empty (to)))
          (sites Around (from) Orthogonal)
-     ))))
+     )
+        )
+       )
+      )
      (apply (remove (to)))
    ))  
    (move Step 
@@ -135,9 +150,16 @@
         in:(difference  // the potential end location of the Knight's actual move
          (sites Around (to) Diagonal if:(is Empty (to)))
          (sites Around (from) Orthogonal)
-     ))))
+     )
+        )
+       )
+      )
      (apply (remove (to)))
-))))) 
+)
+    )
+   )
+  )
+ ) 
 
 (define "NodalPawn"
     (piece #1 Each 
@@ -168,9 +190,12 @@
     if:("IsEnemyAt" (to))
     (remove 
      (to)
-  )))
+  )
+    )
+   )
   #3
-))
+)
+ )
 
 (define "DoubleSteps" { {F R F F} {F L F F} {F R F} } )
 
@@ -196,7 +221,12 @@
      (remove 
       (to)
       #2
-))))))
+)
+     )
+    )
+   )
+  )
+ )
 
 (define "NewTurn" (not ("SameTurn")))
 
@@ -208,8 +238,7 @@
  (piece #1 Each 
   (if
    ("NewTurn")
-   (or
-    {     
+   (or {     
      ("NodalKingStep" ("IsEnemyAt" (to)) (from) (then (moveAgain #2))) 
      ("NodalKingStep" (is Empty (to)) (from) (then (moveAgain #2)))
      ("KingDoubleStep" ("IsEnemyAt" (to)) ~)
@@ -217,13 +246,15 @@
     }
     (then (set Var "LF" (last From)))
    )
-   (or
-    {
+   (or {
      (move Pass)    
      ("NodalKingStep" ("IsEnemyAt" (to)) (var "LF") ~) 
      ("NodalKingStep" (is Empty (to)) (var "LF") ~)
-    }
-))))
+    })
+   )
+  )
+ )
+
 (define "DidNotCrossStillExistingCheck"
  (can Move
   (do
@@ -232,11 +263,15 @@
     All
     (to // Site moved through -- or else homesite if it is adjacent.
      if:(is In (to) (sites Around (var "LF") All includeSelf:True))
-   ))
+   )
+    )
    ifAfterwards:(or
     (not ("IsInCheck" "King" Mover (forEach Piece  {"Queen" "Knight" "Bishop" "Pawn"} )))
     (= (var "LF") (last To))  //Moving back to the original position means the move is allowed because it was to an adjacent site.
-))))
+)
+   )
+  )
+ )
 
 (define "KingNotCheckedAndToEmpty"
  (and 
@@ -249,8 +284,7 @@
 
 (game "Nodal Chess" 
  (players {(player N) (player S)}) 
- (equipment
-  { 
+ (equipment { 
    (board
     (add
      (remove
@@ -279,8 +313,8 @@
    ("NodalQueen" "Queen" (then (set Counter)))
    (regions "Promotion" P1 (sites Top))
    (regions "Promotion" P2 (sites Bottom))
-  }
- ) 
+  })
+ 
  (rules 
   (start { 
    (place "Pawn1" (sites Row 1))
@@ -299,26 +333,26 @@
    (if "NewTurn"
     (or
      (do 
-      (forEach Piece  {"Queen" "Knight" "Bishop" "Pawn"} )
+      (forEach Piece {"Queen" "Knight" "Bishop" "Pawn"} )
       ifAfterwards:(and
        {
         (not ("IsInCheck" "King" Mover ~)) 
         (not ("IsInCheck" "King" Mover ("CheckWorkAroundForKnight")))
        }
-     ))
+     )
+      )
      (do 
       (forEach Piece  "King")
-      ifAfterwards:(and 
-       {
+      ifAfterwards:(and {
         (not ("IsInCheck" "King" Mover ~)) 
         (not ("IsInCheck" "King" Mover ("CheckWorkAroundForKnight")))
         ("DidNotCrossStillExistingCheck")
-       }
-    )))
+       })
+      )
+     )
     
     // 2nd parts of moves (for Pawn promotion and King moves)
-    (if
-     (= (id "King" Mover) (what at:(last To)))
+    (if ("IsPieceAt" "King" Mover (last To))
      (do 
       (forEach Piece "King" Mover) 
       ifAfterwards:(and
@@ -330,7 +364,8 @@
      (move Promote (last To) (piece {"Queen" "Knight" "Bishop"}) Mover)
     )
     
-  ))  
+  )
+   )  
   (end {
    (if (no Moves Next) (result Mover Win)) 
    (if (= (counter) 99) (result Mover Draw)) 
