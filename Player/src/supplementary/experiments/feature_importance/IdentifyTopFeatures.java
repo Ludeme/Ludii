@@ -340,6 +340,12 @@ public class IdentifyTopFeatures
 						// Play the trial
 						game.playout(context, ais, 1.0, null, -1, -1, null);
 						
+						// Cleanup memory
+						for (int player = 1; player <= numPlayers; ++player)
+						{
+							ais.get(player).closeAI();
+						}
+						
 						// Update feature evaluations
 						final double[] agentUtils = RankUtils.agentUtilities(context);
 						
@@ -547,6 +553,12 @@ public class IdentifyTopFeatures
 						
 						// Play the trial
 						game.playout(context, ais, 1.0, null, -1, -1, null);
+						
+						// Cleanup memory
+						for (int p = 1; p <= numPlayers; ++p)
+						{
+							ais.get(p).closeAI();
+						}
 						
 						// Update eval stats
 						final double[] agentUtils = RankUtils.agentUtilities(context);

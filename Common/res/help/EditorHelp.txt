@@ -2847,7 +2847,7 @@ PARAM JAVADOC: [<from>]: Description of the ``from'' location [(from)].
 PARAM JAVADOC: [<string>]: The track on which to slide.
 PARAM JAVADOC: [<direction>]: The directions of the move [Adjacent].
 PARAM JAVADOC: [<between>]: Description of the location(s) between ``from'' and ``to''.
-PARAM JAVADOC: [<to>]: Description of the ``to'' location [(to if:(is In (to) (sites Empty)))].
+PARAM JAVADOC: [<to>]: Description of the ``to'' location.
 PARAM JAVADOC: [stack:<boolean>]: True if the move is applied to a stack [False].
 PARAM JAVADOC: [<then>]: Moves to apply after this one.
 EXAMPLE: (move Slide)
@@ -3340,7 +3340,7 @@ PARAM JAVADOC: [<from>]: Description of the ``from'' location [(from)].
 PARAM JAVADOC: [<string>]: The track on which to slide.
 PARAM JAVADOC: [<direction>]: The directions of the move [Adjacent].
 PARAM JAVADOC: [<between>]: Description of the location(s) between ``from'' and ``to''.
-PARAM JAVADOC: [<to>]: Description of the ``to'' location [(to if:(is In (to) (sites Empty)))].
+PARAM JAVADOC: [<to>]: Description of the ``to'' location.
 PARAM JAVADOC: [stack:<boolean>]: True if the move is applied to a stack [False].
 PARAM JAVADOC: [<then>]: Moves to apply after this one.
 EXAMPLE: (slide)
@@ -5845,6 +5845,12 @@ PARAM JAVADOC: <string>: The name of the concept.
 PARAM JAVADOC: <float>: The double value.
 PARAM JAVADOC: <boolean>: The boolean value.
 EXAMPLE: (concept "Num Players" 6)
+NEW CTOR
+(concept <string> minValue:<float> maxValue:<float>)
+PARAM JAVADOC: <string>: The name of the concept.
+PARAM JAVADOC: minValue:<float>: The minimum value.
+PARAM JAVADOC: maxValue:<float>: The maximum value.
+EXAMPLE: (concept "Num Players" minValue:2 maxValue:4)
 DEFINE: IsInCheck
 DEFINE JAVADOC: Checks if a specific piece is threatened by any other enemy piece. #1 = The name of the piece (without the number). #2 = The roleType of the owner of the piece. #3 = The location where is the piece or The specific moves used to threat. This parameter is optional. If not specify the current location of the piece is used and all the legal moves are used. 
 DEFINE EXAMPLE: ("IsInCheck" "Osho" Next)
