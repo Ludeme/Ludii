@@ -8,7 +8,7 @@
     })
     (rules 
         (start [#])
-        (play (do (roll) next:[#]))
+        (play ("RollMove" [#]))
         (end [#])
     )
 )
@@ -35,8 +35,11 @@
         (show Symbol "disc" "AllSites" Vertex fillColour:(colour White) edgeColour:(colour Black) scale:0.5)
         (piece Colour "Die" state:0 fillColour:(colour Red))
         (piece Scale "Stick" 0.5)
-        
     })
+    
+    (recon {
+    	  (concept "NumStartComponents" 2)
+      })
     
 )
 

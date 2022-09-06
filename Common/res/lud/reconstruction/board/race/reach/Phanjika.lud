@@ -18,13 +18,13 @@
         )
         (piece "Disc" Each) 
         (hand Each)
-        (dice d:2 from:0 num:7)
+        ("StickDice" 7)
         (map "Throw" {(pair 0 14) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 5) (pair 6 6) (pair 7 7)}) // A special rule is attached to 14.
     })
     (rules
         (start (place "Disc" "Hand" count:5))
         (play [#]) // A throw of five ("phanjika") allows the player to enter a piece on the board. A piece that lands on a space occupied by an opponent's piece is removed from the board and must reenter. Safe squaeres exist on the board.
-        (end (if (no Moves Mover) (result Mover Win)))
+        (end ("EscapeWin"))
     )
 )
 
@@ -55,4 +55,9 @@
         (show Line {{12 101}} curve:{0.5 0.5 0.5 0.5} Bezier)
         (show Line {{101 95}} curve:{0.5 0.5 0.5 0.5} Bezier)
     })
+    
+    (recon {
+    	  (concept "NumStartComponentsBoard" 0)
+    	  (concept "NumStartComponents" minValue:5 maxValue:)
+      })
 )

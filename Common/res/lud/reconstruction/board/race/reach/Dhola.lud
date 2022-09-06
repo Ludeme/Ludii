@@ -1,5 +1,5 @@
 (game "Dhola" 
-    (players [2..4]) 
+    (players 4) 
     (equipment { 
         (board 
             (add
@@ -15,7 +15,7 @@
             [#]
         )
         (hand Each) 
-        (dice d:2 from:0 num:5)
+        ("StickDice" 5)
         (piece "Pawn" Each) // 4 pieces per player
     }) 
     (rules 
@@ -50,4 +50,7 @@
         (show Symbol "thinCross" (sites {55 94 64 85 19 34 22 31}))
     })
     
+    (recon {
+    	  (concept "NumStartComponents" 16)
+      })
 )

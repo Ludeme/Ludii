@@ -21,7 +21,7 @@
             (place "Stick1" (sites Bottom) state:1)
             (place "Stick2" (sites Top) state:1)
         })
-        (play (do (roll) next:[#])) // A throw of 1 is required for each piece's first move.
+        (play ("RollMove" [#])) // A throw of 1 is required for each piece's first move.
         (end 
             (if 
                 (and
@@ -56,6 +56,10 @@
         (show Symbol "disc" Vertex (sites Board) fillColour:(colour White) edgeColour:(colour Black) scale:1)
         (piece Scale "Stick" 0.5)
     })
+    
+    (recon {
+    	  (concept "Capture" True)
+      })
     
 )
 

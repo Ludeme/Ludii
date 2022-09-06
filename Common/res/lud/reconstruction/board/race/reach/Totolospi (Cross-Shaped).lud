@@ -15,7 +15,7 @@
             [#]
         )
         (hand Each) 
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
         (map "Throw" {(pair 0 1) (pair 1 0) (pair 2 0) (pair 3 0) (pair 4 1)})
         (piece "Marker" Each) // 1 piece per player
     }) 
