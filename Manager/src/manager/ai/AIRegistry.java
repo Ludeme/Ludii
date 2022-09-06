@@ -61,7 +61,7 @@ public class AIRegistry
 		registerAI("Score Bounded MCTS", 19, (game) -> {return AIFactory.createAI("Score Bounded MCTS").supportsGame(game);}, null);
 		registerAI("Heuristic Sampling", 20, (game) -> {return AIFactory.createAI("Heuristic Sampling").supportsGame(game);}, null);
 		registerAI("One-Ply (No Heuristic)", 21, (game) -> {return AIFactory.createAI("One-Ply (No Heuristic)").supportsGame(game);}, null);
-		registerAI("Bob the Basic AI", 22, (game) -> {return true;}, null);
+		//registerAI("Bob the Basic AI", 22, (game) -> {return true;}, null);
 		registerAI("UBFM", 23, (game) -> {return AIFactory.createAI("UBFM").supportsGame(game);}, null);
 		registerAI("Hybrid UBFM", 24, (game) -> {return AIFactory.createAI("Hybrid UBFM").supportsGame(game);}, null);
 		registerAI("Biased UBFM", 25, (game) -> {return AIFactory.createAI("Biased UBFM").supportsGame(game);}, null);
