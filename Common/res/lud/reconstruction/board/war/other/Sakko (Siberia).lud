@@ -18,12 +18,11 @@
             [#]
         })
         (play
-            (do (roll)
-                next:[#] // Sakko can activate a piece. Replacement capture. // Conversion of the king (but we dunno what happens to the piece landing on it). 
+            ("RollMove" [#] // Sakko can activate a piece. Replacement capture. // Conversion of the king (but we dunno what happens to the piece landing on it). 
             )
             
         )
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -59,5 +58,10 @@
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
     })
+    
+    (recon {
+    	  (concept "ReplacementCapture" True)
+    	  (concept "AdjacentDirection" True)
+      })
     
 )

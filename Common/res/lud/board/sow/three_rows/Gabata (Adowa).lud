@@ -32,13 +32,6 @@
     )
 )
 
-(define "RememberOwnedHolesRandom" 
-    (if (< 50 (value Random (range 1 100)))
-        (remember Value "OwnedP1" #1)
-        (remember Value "OwnedP2" #1)
-    )
-)
-
 (define "SitesMarkedBy" 
     (forEach (sites Board) if:(= #1 (state at:(site))))
 )

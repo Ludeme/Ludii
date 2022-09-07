@@ -3,12 +3,12 @@
     (equipment {
         (board [#]) // We have a pic for this one but we do not know what is playable.... So I can't do it for sure.
         (piece "Marker" Each (move [#])) // 6 pieces per player.
-        (dice d:2 from:0 num:6)
+        ("StickDice" 2)
     }) 
     (rules
         (start [#]) 
         (play
-            (do (roll)
+            ("RollMove"
                 [#]
             )
         )
@@ -32,5 +32,9 @@
         (origin "This game was played in China, from around 392BCE to 220.")
         }
     )
+    
+    (recon {
+    	  (concept "NumStartComponents" 12)
+      })
     
 )

@@ -2,16 +2,7 @@
     (players 2)
     
     (equipment { 
-        (board 
-            (merge 
-                { 
-                (shift 0 2 (square 5 diagonals:Alternating)) 
-                (wedge 3) 
-                (shift 0 6 (rotate 180 (wedge 3))) 
-                } 
-            ) 
-            use:Vertex
-        ) 
+        ("AlquerqueBoardWithBottomAndTopTriangles") 
         (piece "Marker" Each
             (or 
                 ("HopCapture")
@@ -42,7 +33,7 @@
             }
         ])
         (play (forEach Piece))
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 

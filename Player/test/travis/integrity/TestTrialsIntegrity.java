@@ -106,7 +106,7 @@ public class TestTrialsIntegrity
 		int iterations = 0;
 		for (final File fileEntry : entries)
 		{			
-			if (fileEntry.getName().contains("Nodal Chess.lud"))
+			if (fileEntry.getName().contains(".lud"))
 			{
 				final String ludPath = fileEntry.getPath().replaceAll(Pattern.quote("\\"), "/");
 				final String trialDirPath = 

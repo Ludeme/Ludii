@@ -3,16 +3,7 @@
     
     (equipment 
         { 
-        (board 
-            (merge 
-                { 
-                (shift 0 2 (square 5 diagonals:Alternating)) 
-                (wedge 3) 
-                (shift 0 6 (rotate 180 (wedge 3))) 
-                } 
-            ) 
-            use:Vertex
-        ) 
+        ("AlquerqueBoardWithBottomAndTopTriangles") 
         (hand Each)
         (piece "Marker" Each (move [#])) 
     }) 
@@ -45,6 +36,10 @@
     
     (graphics {
         (show Edges Diagonal (colour Hidden))
-        
+    })
+    
+    
+    (recon {
+  	  (concept "NumStartComponents" 32)
     })
 )

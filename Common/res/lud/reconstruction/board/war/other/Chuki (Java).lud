@@ -4,7 +4,7 @@
     (rules
         (start [#]) // Pieces are starting on the board and 60 pieces per player. Pieces move in all directions.
         (play [#]) // Players capture one, three, or five of the opponent's pieces at a time, and continue their turn until they are unable to do so
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -24,5 +24,11 @@
         (origin "This game was played in Java, around 1817.")
         }
     )
+    
+    (recon {
+    	  (concept "NumStartComponents" 120)
+    	  (concept "AdjacentDirection" True)
+    	  (concept "Capture" True)
+      })
     
 )

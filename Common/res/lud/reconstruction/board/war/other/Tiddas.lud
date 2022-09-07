@@ -14,7 +14,7 @@
     (rules 
         (start [#]) // 11 pieces.
         (play [#])
-        (end (if (no Pieces Next) (result Mover Win))) 
+        (end ("CaptureAll" Next)) 
     )
 )
 
@@ -41,5 +41,10 @@
         (show Edges Diagonal Hidden)
         (board StyleThickness InnerVertices 3.0)
     })
+    
+    (recon {
+    	  (concept "NumStartComponents" 22)
+    	  (concept "ReplacementCapture" True)
+      })
     
 )

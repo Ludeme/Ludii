@@ -1,75 +1,173 @@
-(define "AllOccupiedCells"
-    (union { 
-        (forEach (sites Board Cell) if:(is Occupied Cell (site))) 
-        (sites Hand Shared) 
-    })		
+(define "RollDice"
+	(and
+		(set State at:(handSite Shared 0) (value Random (range 1 6)))
+		(set State at:(handSite Shared 1) (value Random (range 1 6)))
+	)
 )
 
-//------------------------------------------------------------------------------
-
-(game "Exhibition_example_5" 
-    (players 2) 
-    (equipment { 
-        (board (tri Hexagon 2))
-        (piece "Marker" Each)
-        (hand Shared size:2)
-    }) 
-    (rules 
-        (start {
-            (place "Marker1" (handSite Shared 0))
-            (place "Marker2" (handSite Shared 1))
-            (place "Marker1" 6)
-        })
-        (play 
-            (or {
-                
-//                (move Select
-//                    (from Cell ("AllOccupiedCells")) 
-//                )
-//                
-//                (move 
-//                    (from Cell ("AllOccupiedCells")) 
-//                    (to Cell (forEach (sites Board) if:(is Empty Cell (site))))
-//                    copy:(is In (from) (sites Hand Shared))
-//                )
-//                
-//                (move Select
-//                    (from Cell (sites Board Cell) if:(is Occupied Cell (from)))
-//                    (to Cell (sites Hand Shared))
-//                    (then
-//                        (remove Cell (last From))
-//                    )
-//                )
-//                
-//                (move 
-//                    (from Cell (sites Board Cell) if:(is Occupied Cell (from)))				
-//                    (to Cell (sites Board Cell) if:(is Empty Cell (to)))
-//                )
-            	(forEach Piece
-            	(move 
-            		(from)
-            		(to
-            			(difference
-            				(sites Distance Orthogonal from:(from) (exact 3))
-            				(sites Around (from))
-            			)
-            		)
-            	)
-            	)
-                }
-                (then (moveAgain))
-            )
-        )
-        (end (if (is Line 9999) (result Mover Win)))
-    )
+(define "HigherDie"
+	(max
+		(state at:(handSite Shared 0))
+		(state at:(handSite Shared 1))
+	)
 )
 
-(metadata 
-    
+(define "LowerDie"
+	(min
+		(state at:(handSite Shared 0))
+		(state at:(handSite Shared 1))
+	)
+)
+
+(define "Place"
+	(move Add
+		(to 
+			(sites Empty)
+			if:(!=
+				(count Sites in:(sites Around (to)))
+				(count Sites in:(sites Around (to) Enemy))
+			)
+		)
+		(then
+			(seq {
+				(priority
+					(forEach Group
+						if:(is Enemy (who at:(to)))
+						(if
+							(and 
+								(= 1 (count Sites in:(sites)))
+								(=
+									(count Sites in:(sites Around (sites)))
+									(count Sites in:(sites Around (sites) Own))
+								)
+							)
+							(and
+								(remove (sites))
+								(set Var "NumberOfPlacementsThisTurn" 
+									(+ 1 (var "NumberOfPlacementsThisTurn"))
+								)
+							)
+						)
+					)
+					(pass)
+				)
+				(if 
+					(< 1 (var "NumberOfPlacementsThisTurn"))
+					(and 
+						(set Var "NumberOfPlacementsThisTurn" 
+							(- (var "NumberOfPlacementsThisTurn") 1)
+						)
+						(moveAgain)
+					)
+					("RollDice")
+				)
+			})
+		)
+	)
+)
+
+(define "Remove"
+	(move Remove
+		(sites Occupied by:Enemy)
+		(then 
+			(and
+				(set Var "NumberOfRemovalsThisTurn" 
+					(- (var "NumberOfRemovalsThisTurn") 1)
+				)
+				(moveAgain)
+			)
+		)
+	)
+)
+
+(game "Herd"
+	(players 2)
+	(equipment {
+		(board (hex <Board:size>))
+		(piece "Disc" Each)
+		(piece "Square" Shared maxState:6)
+		(hand Shared size:2)
+	})
+	(rules
+		(start {
+			(place "Square" (handSite Shared 0) state:(value Random (range 1 6)))
+			(place "Square" (handSite Shared 1) state:(value Random (range 1 6)))
+		})
+		(play
+			(if
+				(= 0 (count Moves))
+				(do
+					(and
+						(set Var "NumberOfRemovalsThisTurn" 0)
+						(set Var "NumberOfPlacementsThisTurn" ("LowerDie"))
+					)
+					next:(move Add (to (sites Empty))
+						(then
+							(if 
+								(< 1 (var "NumberOfPlacementsThisTurn"))
+								(and
+									(set Var "NumberOfPlacementsThisTurn" 
+										(-
+											(var "NumberOfPlacementsThisTurn")
+											1
+										)
+									)
+									(moveAgain)
+								)
+							)
+						)
+					)
+				)
+				(if
+					(= 0 (count MovesThisTurn))
+					(do
+						(and
+							(set Var "NumberOfRemovalsThisTurn" ("LowerDie"))
+							(set Var "NumberOfPlacementsThisTurn" ("HigherDie"))
+						)
+						next:(priority
+							("Remove")
+							(move Pass 
+								(then 
+									(and
+										(set Var "NumberOfRemovalsThisTurn" 0)
+										(moveAgain)
+									)
+								)
+							)
+						)
+					)
+					(if
+						(< 0 (var "NumberOfRemovalsThisTurn"))
+						("Remove")
+						("Place")
+					)
+				)
+			)
+		)
+		(end
+			(if
+				(is Full)
+				(byScore {
+					(score P1 (count Sites in:(sites Occupied by:P1)))
+					(score P2 (count Sites in:(sites Occupied by:P2)))
+				})
+			)
+		)
+	)
+)
+
+(option "Board Size" <Board> args:{ <size> }
+    {
+    (item "3"    <3>  "A size 3 board is currently selected")
+    (item "4"    <4>  "A size 4 board is currently selected")*
+    (item "5"    <5>  "A size 5 board is currently selected")
+    (item "6"    <6>  "A size 6 board is currently selected")
+    }
+)
+
+(metadata
     (graphics {
-        (piece Scale "Marker" 0.7)
-        (board Colour OuterEdges (colour 120 190 240))
-        (board Colour InnerEdges (colour 120 190 240))
+        (show Piece State Shared Middle)
     })
-    
 )
