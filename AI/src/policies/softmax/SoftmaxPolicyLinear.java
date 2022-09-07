@@ -29,8 +29,10 @@ import game.types.play.RoleType;
 import gnu.trove.list.array.TFloatArrayList;
 import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
+import main.FileHandling;
 import main.collections.FVector;
 import main.collections.FastArrayList;
+import main.grammar.Report;
 import metadata.ai.features.Features;
 import other.context.Context;
 import other.move.Move;
@@ -423,6 +425,7 @@ public class SoftmaxPolicyLinear extends SoftmaxPolicy
 	public void customise(final String[] inputs) 
 	{
 		final List<String> policyWeightsFilepaths = new ArrayList<String>();
+		Features featuresMetadata = null;
 		boolean boosted = false;
 		
 		for (int i = 1; i < inputs.length; ++i)
@@ -452,6 +455,25 @@ public class SoftmaxPolicyLinear extends SoftmaxPolicy
 						else		// Doubt we'll ever have more than 99 players
 							policyWeightsFilepaths.set(p, input.substring("policyweightsXX=".length()));
 					}
+				}
+			}
+			else if (input.toLowerCase().startsWith("featuresmetadata="))
+			{
+				final String featuresMetadatFilepath = input.substring("featuresmetadata=".length());
+				
+				try
+				{
+					featuresMetadata = 
+							(Features)compiler.Compiler.compileObject
+							(
+								FileHandling.loadTextContentsFromFile(featuresMetadatFilepath), 
+								"metadata.ai.features.Features",
+								new Report()
+							);
+				}
+				catch (final IOException e)
+				{
+					e.printStackTrace();
 				}
 			}
 			else if (input.toLowerCase().startsWith("playoutactionlimit="))
@@ -562,6 +584,22 @@ public class SoftmaxPolicyLinear extends SoftmaxPolicy
 					featureSets[i] = featureSet;
 				}
 			}
+		}
+		else if (featuresMetadata != null)
+		{
+			final List<BaseFeatureSet> featureSetsList = new ArrayList<BaseFeatureSet>();
+			final List<LinearFunction> linFuncs = new ArrayList<LinearFunction>();
+					
+			for (final metadata.ai.features.FeatureSet featureSet : featuresMetadata.featureSets())
+			{
+				if (featureSet.role() == RoleType.Shared || featureSet.role() == RoleType.Neutral)
+					addFeatureSetWeights(0, featureSet.featureStrings(), featureSet.selectionWeights(), featureSetsList, linFuncs);
+				else
+					addFeatureSetWeights(featureSet.role().owner(), featureSet.featureStrings(), featureSet.selectionWeights(), featureSetsList, linFuncs);
+			}
+			
+			this.featureSets = featureSetsList.toArray(new BaseFeatureSet[featureSetsList.size()]);
+			this.linearFunctions = linFuncs.toArray(new LinearFunction[linFuncs.size()]);
 		}
 		else
 		{
