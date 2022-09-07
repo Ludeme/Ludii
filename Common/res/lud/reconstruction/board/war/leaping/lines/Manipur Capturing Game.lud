@@ -23,7 +23,7 @@
             (place "Marker2" [#])
         })
         (play (forEach Piece))
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
