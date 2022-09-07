@@ -57,7 +57,7 @@
                     )
                     (then 
                         (if "JumpToPromotionZone"
-                            (move Promote (last To) (piece "DoubleCounter") Mover)
+                            (promote (last To) (piece "DoubleCounter") Mover)
                         )
                     )
                 )
@@ -89,5 +89,11 @@
     (graphics {
         (board Style Chess)
     })
+    
+    (recon {
+    	  (concept "NumStartComponents" 60)
+    	  (concept "Hop" True)
+    	  (concept "Capture" True)
+      })
     
 )
