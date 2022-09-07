@@ -280,7 +280,7 @@
             (place "Zhou1" {"B3" "N3"}) (place "Zhou2" {"B12" "N12"})
         })
         (play (forEach Piece))
-        (end (if (= Off (where "Jiang" Next)) (result Mover Win)))
+        (end (if ("IsOffBoard" (where "Jiang" Next)) (result Mover Win)))
     )
 )
 
