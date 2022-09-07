@@ -7,8 +7,7 @@
 )
 
 (define "CaptureForwardDiagonal"
-    (move
-        Step 
+    (move Step 
         (directions {FR FL}) 
         (to 
             if:("IsEnemyAt" (to)) 
@@ -21,8 +20,7 @@
 
 (game "Chaturanga (Payagunda)" 
     (players 2) 
-    (equipment 
-        { 
+    (equipment { 
         (board (square 8)) 
         (piece "Pawn" Each // Padati 
             (or 
@@ -80,8 +78,7 @@
                 (to if:(not ("IsFriendAt" (to))) (apply (remove (to)))) 
             )
         )
-        }
-    )
+    })
     
     (rules 
         (start { 
@@ -90,7 +87,7 @@
             (place "Ferz_noCross1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Rook1" {"C1" "F1"}) (place "King_noCross1" coord:"D1") (place "Elephant1" coord:"E1") 
             (place "Ferz_noCross2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Rook2" {"C8" "F8"}) (place "King_noCross2" coord:"E8") (place "Elephant2" coord:"D8") 
         })
-        (play [#])
+        (play [(forEach Piece) | #])
         (end [#])
     )
 )
