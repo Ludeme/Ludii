@@ -14,6 +14,10 @@ import game.functions.booleans.is.Hidden.IsHiddenState;
 import game.functions.booleans.is.Hidden.IsHiddenValue;
 import game.functions.booleans.is.Hidden.IsHiddenWhat;
 import game.functions.booleans.is.Hidden.IsHiddenWho;
+import game.functions.booleans.is.angle.IsAcute;
+import game.functions.booleans.is.angle.IsObtuse;
+import game.functions.booleans.is.angle.IsReflex;
+import game.functions.booleans.is.angle.IsRight;
 import game.functions.booleans.is.component.IsThreatened;
 import game.functions.booleans.is.component.IsWithin;
 import game.functions.booleans.is.connect.IsBlocked;
@@ -83,6 +87,46 @@ public class Is extends BaseBooleanFunction
 {
 	private static final long serialVersionUID = 1L;
 
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * For checking angles between sites.
+	 * 
+	 * @param isType         The type of query to perform.
+	 * @param type           The graph element type [default of the board].
+	 * @param at             The site
+	 * @param conditionSite  The condition on the first site.
+	 * @param conditionSite2 The condition on the second site.
+	 *
+	 * @example (is Acute at:(last To) (is Enemy at:(site)) (is Enemy at:(site)))
+	 */
+	public static BooleanFunction construct
+	(
+			   final IsAngleType      isType, 
+	    @Opt   final SiteType         type,
+		@Name  final IntFunction      at, 
+		       final BooleanFunction  conditionSite, 
+		       final BooleanFunction  conditionSite2
+	)
+	{
+		switch (isType)
+		{
+		case Acute:
+			return new IsAcute(type, at, conditionSite, conditionSite2);
+		case Obtuse:
+			return new IsObtuse(type, at, conditionSite, conditionSite2);
+		case Reflex:
+			return new IsReflex(type, at, conditionSite, conditionSite2);
+		case Right:
+			return new IsRight(type, at, conditionSite, conditionSite2);
+		default:
+			break;
+		}
+
+		// We should never reach that except if we forget some codes.
+		throw new IllegalArgumentException("Is(): An IsAngleType is not implemented.");
+	}
+	
 	//-------------------------------------------------------------------------
 
 	/**
