@@ -24,8 +24,9 @@ import other.GameLoader;
  */
 public class ReconstructionTest
 {
+	@SuppressWarnings("static-method")
 	@Test
-	public static void testCompilingLudFromMemory()
+	public void testCompilingLudFromMemory()
 	{
 		System.out.println("\n=========================================\nTest: Compile all .lud corresponding to reconstruction:\n");
 
@@ -91,6 +92,7 @@ public class ReconstructionTest
 				System.err.println("** FAILED TO COMPILE: " + fileName + ".");
 			}
 		}
+		
 		final long stopAt = System.nanoTime();
 		final double secs = (stopAt - startAt) / 1000000000.0;
 		System.out.println("\nDone in " + secs + "s.");
