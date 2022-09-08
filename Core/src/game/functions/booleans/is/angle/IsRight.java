@@ -91,7 +91,7 @@ public final class IsRight extends BaseBooleanFunction
 						final Point2D p1 = context.topology().getGraphElements(realSiteType).get(site1).centroid();
 						final Point2D p2 = context.topology().getGraphElements(realSiteType).get(site2).centroid();
 						double difX = p2.getX() - p1.getX(); double difY = p2.getY() - p1.getY();
-						double angle = Math.toDegrees(Math.atan2(difX,-difY));
+						double angle = Math.abs(Math.toDegrees(Math.atan2(difX,-difY)));
 						if(angle == 90)
 						{
 							context.setSite(originSite);
