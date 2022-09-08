@@ -329,6 +329,14 @@ public class Game extends BaseLudeme implements API, Serializable
 	}
 	
 	/**
+	 * @return The game's expected concepts used for reconstruction.
+	 */
+	public ArrayList<metadata.recon.concept.Concept> expectedConcepts()
+	{
+		return expectedConcepts;
+	}
+	
+	/**
 	 * Sets the game's metadata and update the concepts.
 	 * @param md The metadata.
 	 */

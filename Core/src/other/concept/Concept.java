@@ -1,7 +1,7 @@
 package other.concept;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Defines known concepts used in a game.
@@ -11387,5 +11387,31 @@ public enum Concept
 			returnConcepts[i] = portfolioConcepts.get(i);
 		
 		return returnConcepts;
+	}
+	
+	/**
+	 * @param description The description of the game.
+	 * @return True if the game description involves the expected concepts.
+	 */
+	public static boolean isExpectedConcepts(final String description)
+	{
+		System.out.println("TEST");
+		System.out.println(description);
+//		
+//		final Game game = (Game)Compiler.compileTest(new Description(description), false);
+//		game.computeBooleanConcepts();	
+//		
+//		final BitSet gameConcepts = game.booleanConcepts();	
+//		final ArrayList<metadata.recon.concept.Concept> expectedConcepts = game.expectedConcepts();
+//		
+//		for(metadata.recon.concept.Concept conceptMeta : expectedConcepts)
+//		{
+//			final Concept concept = conceptMeta.concept();
+//			if(concept != null)
+//				if(!gameConcepts.get(concept.id()))
+//						return false;
+//		}
+		
+		return true;
 	}
 }

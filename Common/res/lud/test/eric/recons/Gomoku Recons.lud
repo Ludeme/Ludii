@@ -14,28 +14,14 @@
 
 (metadata 
     
-    (info
-        {
-        (description "Gomoku (\"Five Pieces\") has been played in Japan since at least the Meiji Restoration. It is also popular in Korea, where it is called \"Omok.\" It was introduced to nineteenth century Britain as Go Bang.")
-        (aliases {"Omok" "Go Bang" "Gomok-narabe"})
-        (rules "Played on a Go board, using 15x15 of the intersecting lines. The first player places 2 black and 1 white piece on the board. The second player can then choose to: play as black, play as white and place another white piece, or place two more stones and let the other player choose which color to play. Players take turns placing pieces in an attempt to make 5 in a row. In the Standard version, rows of more than five do not count.")
-        (source "Murray 1951: 50.")
-        (id "91")
-        (version "1.3.6")
-        (classification "board/space/line")
-        (credit "Eric Piette")
-        (origin "This game was played in Japan, around 1905.")
-        }
-    )
-    
     (graphics {
         (board Style Go)
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
     })
     
-    (ai 
-        "Gomoku_ai"
-    )
+    (recons {
+    	(concept "LineWin" True)
+    })
     
 )

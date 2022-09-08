@@ -40,7 +40,7 @@ public class ReconstructionTest
 
 		for (final String fileName : choices)
 		{
-			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/"))
+			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/eric/recons/"))
 				continue;
 			
 			// Get game description from resource
@@ -69,7 +69,7 @@ public class ReconstructionTest
 				e1.printStackTrace();
 			}
 
-			// Parse and reconstruct one instance of a game
+			// Parse and reconstruct one instance of a game which is respected the expected concepts.
 			List<Completion> completions = null;
 			try
 			{
@@ -83,13 +83,24 @@ public class ReconstructionTest
 
 			if (completions != null)
 			{
-				System.out.println("Compiled " + fileName + ".");
+				System.out.println("Compiled " + fileName);
+				
+				// To save the results.
+				for (int n = 0; n < completions.size(); n++) 
+				{
+					final Completion completion = completions.get(n);
+					System.out.println(completion.raw());
+
+					// Check if the concepts expected are present.
+					//boolean expectedConcepts = Concept.isExpectedConcepts(completion.raw());
+					//System.out.println("RECONS HAS THE EXPECTED CONCEPTS? " + expectedConcepts);
+				}
 			}
 			else
 			{
 				failure = true;
 				failedGames.add(fileName);
-				System.err.println("** FAILED TO COMPILE: " + fileName + ".");
+				System.err.println("** FAILED TO COMPILE: " + fileName);
 			}
 		}
 		
@@ -107,5 +118,6 @@ public class ReconstructionTest
 		if (failure)
 			fail();
 	}
+
 
 }
