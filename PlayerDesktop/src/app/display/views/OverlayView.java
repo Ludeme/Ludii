@@ -20,6 +20,7 @@ import app.move.MoveVisuals;
 import app.move.animation.MoveAnimation;
 import app.utils.BufferedImageUtil;
 import app.utils.DrawnImageInfo;
+import app.utils.EnglishSwedishTranslations;
 import app.views.View;
 import app.views.tools.ToolView;
 import game.equipment.container.Container;
@@ -81,16 +82,16 @@ public final class OverlayView extends View
 			final Font exhbitionTitleFont = new Font("Cantarell", Font.BOLD, 52);
 			g2d.setFont(exhbitionTitleFont);
 			g2d.setColor(Color.BLUE);
-			g2d.drawString("Make Your Own Game", 40, 75);
+			g2d.drawString(EnglishSwedishTranslations.MYOGTITLE.toString(), 40, 75);
 			
 			if (app.manager().ref().context().game().hasSharedPlayer())
 			{
 				final Font exhbitionLabelFont = new Font("Cantarell", Font.PLAIN, 24);
 				g2d.setFont(exhbitionLabelFont);
-				g2d.drawString("1. Choose a board", 30, 150);
+				g2d.drawString("1. " + EnglishSwedishTranslations.CHOOSEBOARD.toString(), 30, 150);
 				
 				if (app.manager().ref().context().board().numSites() > 1)
-					g2d.drawString("2. Drag pieces onto board", 30, 375);
+					g2d.drawString("2. " + EnglishSwedishTranslations.DRAGPIECES.toString(), 30, 375);
 			}
 			else
 			{
