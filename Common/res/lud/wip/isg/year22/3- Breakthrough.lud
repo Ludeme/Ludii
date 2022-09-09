@@ -3,7 +3,7 @@
     (move Step (directions {FR FL}) 
         (to if:(or 
                 (is Empty (to)) 
-                ("IsEnemyAt" (to))
+                (is Enemy (who at:(to)))
             ) 
             (apply (remove (to)))
         )
