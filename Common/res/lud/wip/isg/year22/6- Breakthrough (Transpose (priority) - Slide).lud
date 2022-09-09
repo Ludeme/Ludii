@@ -1,0 +1,66 @@
+(define "IsSingleAt" (= 1 (size Stack at:#1)))
+(define "IsDoubleAt" (= 2 (size Stack at:#1)))
+
+(define "Transpose"
+	(if ("IsDoubleAt" (from))
+        (move Step (directions {FR FL})
+            (to 
+                if:(and
+                    (is Friend (who at:(to)))
+                    ("IsSingleAt" (to))
+                )
+            )
+        )
+    )	
+)
+
+(define "SlideDiagonal"
+	(move Slide 
+		(if ("IsSingleAt" (from))
+			(directions {FR FL}) 
+			(directions {BR BL}) 
+		)
+		stack:True
+	)
+)
+
+(define "ReachedTarget" (is In (last To) (sites Mover)))
+
+//------------------------------------------------------------------------------
+
+(game "Breakthrough (Transpose (priority) - Slide)" 
+	(players {(player N) (player S)})
+    (equipment { 
+        (board (square 8)) 
+        (piece "Pawn" Each 
+        	(priority {
+         	   ("Transpose")
+        	   ("SlideDiagonal") 
+        	})
+        )
+        (regions P1 (sites Top))
+        (regions P2 (sites Bottom))
+    }) 
+    (rules 
+        (start { 
+            (place "Pawn1" (sites Bottom))
+            (place "Pawn2" (sites Top))
+            (place Stack "Pawn1" (sites {"B7" "D7" "F7" "H7"}) count:2)
+            (place Stack "Pawn2" (sites {"B2" "D2" "F2" "H2"}) count:2)
+        })
+        
+        (play (forEach Piece))
+        
+        (end (if "ReachedTarget" (result Mover Win))) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (graphics {
+        (board Style Chess)
+    })
+    
+)
