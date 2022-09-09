@@ -1,10 +1,8 @@
-(define "StepForward" (move Step Forward (to if:(is Empty (to)))))
-(define "StepDiagonalForward" 
-    (move Step (directions {FR FL}) 
-        (to if:(or 
-                (is Empty (to)) 
-                ("IsEnemyAt" (to))
-            ) 
+(define "SlideForward" (move Slide Forward))
+(define "SlideDiagonalForward" 
+    (move Slide (directions {FR FL}) 
+    	(between if:(is Empty (between)))
+        (to if:("IsEnemyAt" (to))
             (apply (remove (to)))
         )
     )		
@@ -14,11 +12,11 @@
 
 //------------------------------------------------------------------------------
 
-(game "Breakthrough" 
-    (players {(player N) (player S)})
+(game "Breakthrough (Slide)" 
+	(players {(player N) (player S)})
     (equipment { 
         (board (square 8)) 
-        (piece "Pawn" Each (or ("StepForward") ("StepDiagonalForward")))
+        (piece "Pawn" Each (or ("SlideForward") ("SlideDiagonalForward")))
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
     }) 
