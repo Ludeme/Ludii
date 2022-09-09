@@ -1,11 +1,11 @@
 (define "SlideDiagonal"
-	(move Slide 
-		(if (= 1 (size Stack at:(from)))
-			(directions {FR FL}) 
-			(directions {BR BL}) 
-		)
-		stack:True
-	)
+    (move Slide 
+        (if (= 1 (size Stack at:(from)))
+            (directions {FR FL}) 
+            (directions {BR BL}) 
+        )
+        stack:True
+    )
 )
 
 (define "ReachedTarget" (is In (last To) (sites Mover)))
@@ -13,7 +13,7 @@
 //------------------------------------------------------------------------------
 
 (game "Breakthrough (Stack - Slide)" 
-	(players {(player N) (player S)})
+    (players {(player N) (player S)})
     (equipment { 
         (board (square 8)) 
         (piece "Pawn" Each ("SlideDiagonal"))

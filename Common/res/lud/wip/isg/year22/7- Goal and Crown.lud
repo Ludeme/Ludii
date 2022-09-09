@@ -24,11 +24,50 @@
     )
 )
 
-(define "ReachedTarget" (is In (last To) (sites Mover)))
+(define "FurthestRow" (sites Mover))
+(define "NearestRow" (sites Next))
+
+(define "OwnedSitesInFurthestRow"
+    (intersection (sites Occupied by:Mover) ("FurthestRow"))
+)
+
+(define "OwnedSitesNotInFurthestRow"
+    (difference (sites Occupied by:Mover) ("FurthestRow"))
+)
+
+(define "IsSingleInFurthestRow"
+    (not
+        (all Sites ("OwnedSitesInFurthestRow")
+            if:(not ("IsSingleAt" (site)))
+        )
+    )
+)
+
+(define "SingleNotInFurthestRow"
+    (not
+        (all Sites ("OwnedSitesNotInFurthestRow")
+            if:(not ("IsSingleAt" (site)))
+        )
+    )		
+)
+
+(define "CanCrown"
+    (and
+        ("IsSingleInFurthestRow")
+        ("SingleNotInFurthestRow")
+    )	
+)
+
+(define "Crown"
+    (move
+        (from "OwnedSitesNotInFurthestRow" if:("IsSingleAt" (from)))
+        (to ("OwnedSitesInFurthestRow") if:("IsSingleAt" (to)))
+    )	
+)
 
 //------------------------------------------------------------------------------
 
-(game "Breakthrough (Transpose (priority) - Slide)" 
+(game "Goal and Crown" 
     (players {(player N) (player S)})
     (equipment { 
         (board (square 8)) 
@@ -49,9 +88,21 @@
             (place Stack "Pawn2" (sites {"B2" "D2" "F2" "H2"}) count:2)
         })
         
-        (play (forEach Piece))
+        (play 
+            (if ("SameTurn")
+                ("Crown")
+                (forEach Piece
+                    (then
+                        (if 
+                            ("CanCrown")
+                            (moveAgain)
+                        )
+                    )		
+                )
+            )
+        )
         
-        (end (if "ReachedTarget" (result Mover Win))) 
+        (end (if (no Pieces Mover) (result Mover Win))) 
     )
 )
 

@@ -5,7 +5,7 @@
         (piece "Marker" Each) 
     }) 
     (rules 
-    	(play (move Add (to (sites Empty)))) 
+        (play (move Add (to (sites Empty)))) 
         (end (if [#] (result Mover Win))) 
     )
 )
@@ -21,7 +21,7 @@
     })
     
     (recons {
-    	(concept "LineWin" True)
+        (concept "LineWin" True)
     })
     
 )
