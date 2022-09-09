@@ -94,11 +94,11 @@ public class Is extends BaseBooleanFunction
 	 * 
 	 * @param isType         The type of query to perform.
 	 * @param type           The graph element type [default of the board].
-	 * @param at             The site
-	 * @param conditionSite  The condition on the first site.
-	 * @param conditionSite2 The condition on the second site.
+	 * @param at             The site to look the angle
+	 * @param conditionSite  The condition on the left site.
+	 * @param conditionSite2 The condition on the right site.
 	 *
-	 * @example (is Acute at:(last To) (is Enemy at:(site)) (is Enemy at:(site)))
+	 * @example (is Acute at:(last To) (is Enemy (who at:(site))) (is Enemy (who at:(site))))
 	 */
 	public static BooleanFunction construct
 	(

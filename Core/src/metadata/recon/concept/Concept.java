@@ -28,6 +28,8 @@ public class Concept implements ReconItem
 	//-------------------------------------------------------------------------
 
 	/**
+	 * For defining an expected concept with a specific value.
+	 * 
 	 * @param conceptName The name of the concept.
 	 * @param valueDouble The double value.
 	 * @param valueBoolean The boolean value.
@@ -52,6 +54,8 @@ public class Concept implements ReconItem
 	}
 	
 	/**
+	 * For defining an expected concept within a range.
+	 * 
 	 * @param conceptName The name of the concept.
 	 * @param minValue The minimum value.
 	 * @param maxValue The maximum value.

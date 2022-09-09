@@ -361,6 +361,14 @@ CONST JAVADOC: Sum: To check if the sum of a region is equal to the result.
 TYPE: game.functions.booleans.is.Is
 TYPE JAVADOC: Returns whether the specified query about the game state is true or not.
 NEW CTOR
+(is <isAngleType> [<siteType>] at:<int> <boolean> <boolean>)
+PARAM JAVADOC: <isAngleType>: The type of query to perform.
+PARAM JAVADOC: [<siteType>]: The graph element type [default of the board].
+PARAM JAVADOC: at:<int>: The site to look the angle
+PARAM JAVADOC: <boolean>: The condition on the left site.
+PARAM JAVADOC: <boolean>: The condition on the right site.
+EXAMPLE: (is Acute at:(last To) (is Enemy (who at:(site))) (is Enemy (who at:(site))))
+NEW CTOR
 (is Hidden [<hiddenData>] [<siteType>] at:<int> [level:<int>] (to:<player>  | To:<roleType>))
 PARAM JAVADOC: [<hiddenData>]: The type of hidden data [Invisible].
 PARAM JAVADOC: [<siteType>]: The graph element type [default of the board].
@@ -529,6 +537,12 @@ PARAM JAVADOC: <region>: The region.
 PARAM JAVADOC: <intArrayFunction>: The array of integers.
 EXAMPLE: (is In {(last To) (last From)} (sites Mover))
 EXAMPLE: (is In (last To) (sites Mover))
+TYPE: game.functions.booleans.is.IsAngleType
+TYPE JAVADOC: Defines the types of Is for a connected or blocked test.
+CONST JAVADOC: Acute: To check if a site and two other sites checking conditions form an acute angle (< 90 degrees).
+CONST JAVADOC: Right: To check if a site and two other sites checking conditions form a right angle (= 90 degrees).
+CONST JAVADOC: Obtuse: To check if a site and two other sites checking conditions form an obtuse angle (> 90 degrees).
+CONST JAVADOC: Reflex: To check if a site and two other sites checking conditions form a reflex angle (> 180 degrees).
 TYPE: game.functions.booleans.is.IsComponentType
 TYPE JAVADOC: Defines the types of Is test according to a component and a site/region.
 CONST JAVADOC: Threatened: To check if a location is under threat.
