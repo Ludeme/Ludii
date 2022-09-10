@@ -31,6 +31,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
 import agentPrediction.external.AgentPredictionExternal;
+import agentPrediction.external.MetricPredictionExternal;
 import agentPrediction.internal.AgentPredictionInternal;
 import agentPrediction.internal.models.LinearRegression;
 import app.DesktopApp;
@@ -1318,11 +1319,53 @@ public class MainMenuFunctions extends JMenuBar
 				System.out.println("This game no longer exists");
 			}
 		}
-		else if (getParentTitle(source, 4).equals("Predict Best Agent/Heuristic (external)"))
+		else if (getParentTitle(source, 2).equals("Predict Metrics (external)"))
 		{
-			// Agent/Heuristic prediction
+			final boolean useCompilationOnly = getParentTitle(source, 1).equals("Compilation");
+			
+			// Determine the file path for the model
+			if (useCompilationOnly)
+			{
+				final String modelFilePath = source.getText() + "-Regression" + "-Metrics" + "-True";
+				MetricPredictionExternal.predictMetrics(app.manager(), modelFilePath, true);
+			}
+			else
+			{
+				final String modelFilePath = source.getText() + "-Regression" + "-Metrics" + "-False";
+				MetricPredictionExternal.predictMetrics(app.manager(), modelFilePath, false);
+			}
+		}
+		else if (getParentTitle(source, 3).equals("Predict Best Agent (external)"))
+		{
+			// Agent prediction
+			final boolean useHeuristics = false;
 			final boolean useClassifier = getParentTitle(source, 2).equals("Classification");
-			final boolean useHeuristics = getParentTitle(source, 3).equals("Heuristic");
+			final boolean useCompilationOnly = getParentTitle(source, 1).equals("Compilation");
+			
+			// Determine the file path for the model
+			String modelFilePath = source.getText();
+			if (useClassifier)
+				modelFilePath += "-Classification";
+			else
+				modelFilePath += "-Regression";
+			if (useHeuristics)
+				modelFilePath += "-Heuristics";
+			else
+				modelFilePath += "-Agents";
+			if (useCompilationOnly)
+				modelFilePath += "-True";
+			else
+				modelFilePath += "-False";
+			
+			System.out.println("Predicting...\n");
+			AgentPredictionExternal.predictBestAgent(app.manager(), modelFilePath, 1, useClassifier, useHeuristics, useCompilationOnly);
+			System.out.println("Prediction complete.\n");
+		}
+		else if (getParentTitle(source, 3).equals("Predict Best Heuristic (external)"))
+		{
+			// Heuristic prediction
+			final boolean useHeuristics = true;
+			final boolean useClassifier = getParentTitle(source, 2).equals("Classification");
 			final boolean useCompilationOnly = getParentTitle(source, 1).equals("Compilation");
 			
 			// Determine the file path for the model

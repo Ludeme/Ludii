@@ -90,7 +90,7 @@ public class AgentPredictionExternal
 	/**
 	 * @return Name of the best predicted agent from our pre-trained set of models.
 	 */
-	private static String predictBestAgentName(final Manager manager, final List<String> allValidLabelNames, final String modelFilePath, final boolean classificationModel, final boolean compilationOnly)
+	public static String predictBestAgentName(final Manager manager, final List<String> allValidLabelNames, final String modelFilePath, final boolean classificationModel, final boolean compilationOnly)
 	{
 		final Game game  = manager.ref().context().game();
 		String sInput = null;
@@ -184,7 +184,7 @@ public class AgentPredictionExternal
      	            	{
      	            		final Double predictedValue = Double.valueOf(sInput.split("=")[1]);
      	            		allValidAgentPredictedValues.add(predictedValue);
-     	            		manager.getPlayerInterface().addTextToAnalysisPanel("Predicted win-rate for " + agentName + ": " + predictedValue + "\n");
+     	            		manager.getPlayerInterface().addTextToAnalysisPanel("Predicted value for " + agentName + ": " + predictedValue + "\n");
      	            	}
      	            }
      	            
