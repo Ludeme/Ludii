@@ -48,6 +48,8 @@ public class AgentPredictionExternal
 		
 		if (!compilationOnly)
 			ComputePlayoutConcepts.updateGame(game, new Evaluation(), 10, -1, 1, "Random", true);
+		else
+			ComputePlayoutConcepts.updateGame(game, new Evaluation(), 0, -1, 1, "Random", true);	// Still need to run this with zero trials to get compilation concepts
 
 		final double ms = (System.currentTimeMillis() - startTime);
 		System.out.println("Playouts computation done in " + ms + " ms.");
