@@ -32,10 +32,9 @@ public class MetricPredictionExternal
 		for (final File file : listOfFiles)
 			allMetricNames.add(file.getName());
 		
-		final String bestPredictedAgentName = AgentPredictionExternal.predictBestAgentName(manager, allMetricNames, modelFilePath, false, compilationOnly);
+		AgentPredictionExternal.predictBestAgentName(manager, allMetricNames, modelFilePath, false, compilationOnly);
 		
 		manager.getPlayerInterface().selectAnalysisTab();
-		manager.getPlayerInterface().addTextToAnalysisPanel("Best Predicted Agent/Heuristic is " + bestPredictedAgentName + "\n");
 		manager.getPlayerInterface().addTextToAnalysisPanel("//-------------------------------------------------------------------------\n");
 	}
 	
