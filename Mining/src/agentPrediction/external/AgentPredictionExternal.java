@@ -230,4 +230,31 @@ public class AgentPredictionExternal
 	
 	//-------------------------------------------------------------------------
 	
+	/**
+	 * @param modelName should be the name of the model to use (same as from GUI), e.g. "BayesianRidge"
+	 * @param useClassifier
+	 * @param useHeuristics
+	 * @param useCompilationOnly
+	 */
+	public static String getModelPath(final String modelName, final boolean useClassifier, final boolean useHeuristics, final boolean useCompilationOnly)
+	{
+		String modelFilePath = modelName;
+		if (useClassifier)
+			modelFilePath += "-Classification";
+		else
+			modelFilePath += "-Regression";
+		if (useHeuristics)
+			modelFilePath += "-Heuristics";
+		else
+			modelFilePath += "-Agents";
+		if (useCompilationOnly)
+			modelFilePath += "-True";
+		else
+			modelFilePath += "-False";
+		
+		return modelFilePath;
+	}
+	
+	//-------------------------------------------------------------------------
+	
 }

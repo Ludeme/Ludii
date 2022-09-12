@@ -1334,19 +1334,7 @@ public class MainMenuFunctions extends JMenuBar
 			final boolean useCompilationOnly = getParentTitle(source, 1).equals("Compilation");
 			
 			// Determine the file path for the model
-			String modelFilePath = source.getText();
-			if (useClassifier)
-				modelFilePath += "-Classification";
-			else
-				modelFilePath += "-Regression";
-			if (useHeuristics)
-				modelFilePath += "-Heuristics";
-			else
-				modelFilePath += "-Agents";
-			if (useCompilationOnly)
-				modelFilePath += "-True";
-			else
-				modelFilePath += "-False";
+			final String modelFilePath = AgentPredictionExternal.getModelPath(source.getText(), useClassifier, useHeuristics, useCompilationOnly);
 			
 			System.out.println("Predicting...\n");
 			final Map<String, Double> agentPredictions = AgentPredictionExternal.predictBestAgent(game, modelFilePath, useClassifier, useHeuristics, useCompilationOnly);
@@ -1361,19 +1349,7 @@ public class MainMenuFunctions extends JMenuBar
 			final boolean useCompilationOnly = getParentTitle(source, 1).equals("Compilation");
 			
 			// Determine the file path for the model
-			String modelFilePath = source.getText();
-			if (useClassifier)
-				modelFilePath += "-Classification";
-			else
-				modelFilePath += "-Regression";
-			if (useHeuristics)
-				modelFilePath += "-Heuristics";
-			else
-				modelFilePath += "-Agents";
-			if (useCompilationOnly)
-				modelFilePath += "-True";
-			else
-				modelFilePath += "-False";
+			final String modelFilePath = AgentPredictionExternal.getModelPath(source.getText(), useClassifier, useHeuristics, useCompilationOnly);
 			
 			System.out.println("Predicting...\n");
 			final Map<String, Double> heuristicPredictions = AgentPredictionExternal.predictBestAgent(game, modelFilePath, useClassifier, useHeuristics, useCompilationOnly);
