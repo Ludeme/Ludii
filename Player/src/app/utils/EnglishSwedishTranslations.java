@@ -57,6 +57,11 @@ public enum EnglishSwedishTranslations
 	
 	//-------------------------------------------------------------------------
 
+	public static boolean inEnglish()
+	{
+		return inEnglish;
+	}
+	
 	public static void setInEnglish(final boolean inEnglish)
 	{
 		EnglishSwedishTranslations.inEnglish = inEnglish;
