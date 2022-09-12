@@ -70,10 +70,7 @@ public enum EnglishSwedishTranslations
 	@Override
 	public String toString() 
 	{
-		if (inEnglish)
-			return english;
-		else
-			return swedish;
+		return inEnglish ? english : swedish;
 	}
 	
 }
