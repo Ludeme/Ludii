@@ -52,28 +52,6 @@ public class AgentPredictionExternal
 			allModelNames = Arrays.asList(AIUtils.allHeuristicNames());
 		
 		return AgentPredictionExternal.predictBestAgentName(game, allModelNames, modelFilePath, classificationModel, compilationOnly);
-		
-//		if (!heuristics)
-//		{
-//			if (playerIndexToUpdate > 0)
-//			{
-//				final JSONObject json = new JSONObject().put("AI",
-//						new JSONObject()
-//						.put("algorithm", bestPredictedAgentName)
-//						);
-//				
-//				AIUtil.updateSelectedAI(manager, json, playerIndexToUpdate, bestPredictedAgentName);
-//			}
-//		}
-//		else
-//		{
-//			if (manager.aiSelected()[playerIndexToUpdate].ai() != null)
-//			{
-//				final Heuristics heuristic = AIUtils.convertStringtoHeuristic(bestPredictedAgentName);
-//				manager.aiSelected()[playerIndexToUpdate].ai().setHeuristics(heuristic);
-//				manager.aiSelected()[playerIndexToUpdate].ai().initAI(manager.ref().context().game(), playerIndexToUpdate);
-//			}
-//		}
 	}
 	
 	//-------------------------------------------------------------------------
@@ -254,6 +232,33 @@ public class AgentPredictionExternal
 		
 		return modelFilePath;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+//	public static void updateAgent()
+//	{
+//		if (!heuristics)
+//		{
+//			if (playerIndexToUpdate > 0)
+//			{
+//				final JSONObject json = new JSONObject().put("AI",
+//						new JSONObject()
+//						.put("algorithm", bestPredictedAgentName)
+//						);
+//				
+//				AIUtil.updateSelectedAI(manager, json, playerIndexToUpdate, bestPredictedAgentName);
+//			}
+//		}
+//		else
+//		{
+//			if (manager.aiSelected()[playerIndexToUpdate].ai() != null)
+//			{
+//				final Heuristics heuristic = AIUtils.convertStringtoHeuristic(bestPredictedAgentName);
+//				manager.aiSelected()[playerIndexToUpdate].ai().setHeuristics(heuristic);
+//				manager.aiSelected()[playerIndexToUpdate].ai().initAI(manager.ref().context().game(), playerIndexToUpdate);
+//			}
+//		}
+//	}
 	
 	//-------------------------------------------------------------------------
 	
