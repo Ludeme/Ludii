@@ -7,13 +7,34 @@
 (game "58 Holes" 
     (players 2) 
     (equipment { 
-        "HoundsAndJackalsBoard"
+        <Board>
         (hand Each) 
         ("StickDice" 4)
-        (regions "Replay" {14 24 43 53})
+        <Variant/region>
         
-        (piece "Marker" Each
-            (if (= "MoveTo" (trackSite EndSite))
+        (piece "Marker" Each <Variant/pieceMove>)
+        
+        // Connected sites.
+        <Variant/map>
+    }) 
+    <Variant/rules>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board" <Board> args:{ <board> }
+	{
+		(item "Parallel Connections" <"HoundsAndJackalsBoard"> "Parallel Connections board.")* 
+	}
+)
+
+(option "Variant" <Variant> args:{ <region> <pieceMove> <map> <rules> }
+    {
+    (item "Carnarvon and Carter" 
+    		<(regions "Replay" {14 24 43 53})> 
+    
+		    <
+		    (if (= "MoveTo" (trackSite EndSite))
                 "RemovePiece"
                 (if ("IsNotOffBoard" "MoveTo") 	 			
                     (if (is Empty "MoveTo")
@@ -25,27 +46,24 @@
                     )
                 )
             )
-        )
-        
-        // Connected sites.
-        (map {(pair 5 19) (pair 7 9) (pair 34 48) (pair 36 38) })
-    }) 
-    (rules 
-        (start {
-            (place "Marker1" (handSite P1) count:5)
-            (place "Marker2" (handSite P2) count:5)
-        })
-        
-        (play ("RollMove" (or (forEach Piece) (forEach Piece container:(mover)))))
-        (end ("EscapeWin"))
-    )
-)
-
-//------------------------------------------------------------------------------
-
-(option "Variant" <Variant> args:{ <carnarvon> }
-    {
-    (item "Carnarvon and Carter" <> "Rules from Carnarvon and Carter.")* 
+		    > 
+		    
+		    <(map {(pair 5 19) (pair 7 9) (pair 34 48) (pair 36 38) })>
+		    
+		    <
+		    (rules 
+		            (start {
+		                (place "Marker1" (handSite P1) count:5)
+		                (place "Marker2" (handSite P2) count:5)
+		            })
+		            
+		            (play ("RollMove" (or (forEach Piece) (forEach Piece container:(mover)))))
+		            (end ("EscapeWin"))
+		        )
+		    >
+    
+    		"Rules from Carnarvon and Carter."
+    )* 
     }
 )
 
@@ -55,7 +73,7 @@
     
     (ruleset "Ruleset/Carnarvon and Carter (Suggested)" 
             {
-            "Variant/Carnarvon and Carter"
+            "Board/Paralell Connections" "Variant/Carnarvon and Carter"
             }
         )
     
