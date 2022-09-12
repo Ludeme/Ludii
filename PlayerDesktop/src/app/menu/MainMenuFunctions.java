@@ -1322,18 +1322,9 @@ public class MainMenuFunctions extends JMenuBar
 		else if (getParentTitle(source, 2).equals("Predict Metrics (external)"))
 		{
 			final boolean useCompilationOnly = getParentTitle(source, 1).equals("Compilation");
-			
-			// Determine the file path for the model
-			if (useCompilationOnly)
-			{
-				final String modelFilePath = source.getText() + "-Regression" + "-Metrics" + "-True";
-				MetricPredictionExternal.predictMetrics(app.manager(), modelFilePath, true);
-			}
-			else
-			{
-				final String modelFilePath = source.getText() + "-Regression" + "-Metrics" + "-False";
-				MetricPredictionExternal.predictMetrics(app.manager(), modelFilePath, false);
-			}
+			final String modelFilePath = source.getText() + "-Regression" + "-Metrics" + "-" + (useCompilationOnly ? "True" : "False");
+			final Map<String, Double> metricPredictions = MetricPredictionExternal.predictMetrics(game, modelFilePath, useCompilationOnly);
+			displayPredictionResults(app, metricPredictions, false, false);
 		}
 		else if (getParentTitle(source, 3).equals("Predict Best Agent (external)"))
 		{
@@ -1358,8 +1349,9 @@ public class MainMenuFunctions extends JMenuBar
 				modelFilePath += "-False";
 			
 			System.out.println("Predicting...\n");
-			AgentPredictionExternal.predictBestAgent(app.manager(), modelFilePath, 1, useClassifier, useHeuristics, useCompilationOnly);
-			System.out.println("Prediction complete.\n");
+			final Map<String, Double> agentPredictions = AgentPredictionExternal.predictBestAgent(game, modelFilePath, useClassifier, useHeuristics, useCompilationOnly);
+			displayPredictionResults(app, agentPredictions, useClassifier, true);
+
 		}
 		else if (getParentTitle(source, 3).equals("Predict Best Heuristic (external)"))
 		{
@@ -1384,8 +1376,8 @@ public class MainMenuFunctions extends JMenuBar
 				modelFilePath += "-False";
 			
 			System.out.println("Predicting...\n");
-			AgentPredictionExternal.predictBestAgent(app.manager(), modelFilePath, 1, useClassifier, useHeuristics, useCompilationOnly);
-			System.out.println("Prediction complete.\n");
+			final Map<String, Double> heuristicPredictions = AgentPredictionExternal.predictBestAgent(game, modelFilePath, useClassifier, useHeuristics, useCompilationOnly);
+			displayPredictionResults(app, heuristicPredictions, useClassifier, true);
 		}
 		
 		EventQueue.invokeLater(() ->
@@ -1393,6 +1385,35 @@ public class MainMenuFunctions extends JMenuBar
 			app.resetMenuGUI();
 			app.repaint();
 		});
+	}
+	
+	private static void displayPredictionResults(final PlayerApp app, final Map<String, Double> agentPredictions, final boolean useClassifier, final boolean printHighestValue)
+	{
+		app.manager().getPlayerInterface().selectAnalysisTab();
+		
+		String bestPredictedAgentName = "None";
+		double bestPredictedValue = -99999;
+		for (final String agentName : agentPredictions.keySet())
+		{
+			final double score = agentPredictions.get(agentName).doubleValue();
+			
+			if (useClassifier)
+				app.manager().getPlayerInterface().addTextToAnalysisPanel("Predicted probability for " + agentName + ": " + score + "\n");
+			else
+				app.manager().getPlayerInterface().addTextToAnalysisPanel("Predicted value for " + agentName + ": " + score + "\n");
+			
+			if (score > bestPredictedValue)
+			{
+				bestPredictedValue = score;
+				bestPredictedAgentName = agentName;
+			}
+		}
+
+		if (printHighestValue)
+			app.manager().getPlayerInterface().addTextToAnalysisPanel("Best Predicted Agent/Heuristic is " + bestPredictedAgentName + "\n");
+		
+		app.manager().getPlayerInterface().addTextToAnalysisPanel("//-------------------------------------------------------------------------\n");
+		System.out.println("Prediction complete.\n");
 	}
 	
 	//-------------------------------------------------------------------------
