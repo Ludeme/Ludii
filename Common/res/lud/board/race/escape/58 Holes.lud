@@ -10,59 +10,59 @@
         <Board>
         (hand Each) 
         ("StickDice" 4)
-        <Variant/region>
+        <Variant:region>
         
-        (piece "Marker" Each <Variant/pieceMove>)
+        (piece "Marker" Each <Variant:pieceMove>)
         
         // Connected sites.
-        <Variant/map>
+        <Variant:map>
     }) 
-    <Variant/rules>
+    <Variant:rules>
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board" <Board> args:{ <board> }
-	{
-		(item "Parallel Connections" <"HoundsAndJackalsBoard"> "Parallel Connections board.")* 
-	}
+    {
+    (item "Parallel Connections" <"HoundsAndJackalsBoard"> "Parallel Connections board.")* 
+    }
 )
 
 (option "Variant" <Variant> args:{ <region> <pieceMove> <map> <rules> }
     {
     (item "Carnarvon and Carter" 
-    		<(regions "Replay" {14 24 43 53})> 
-    
-		    <
-		    (if (= "MoveTo" (trackSite EndSite))
-                "RemovePiece"
-                (if ("IsNotOffBoard" "MoveTo") 	 			
-                    (if (is Empty "MoveTo")
-                        (move 
-                            (from) 
-                            (to "MoveTo")
-                            (then ("ReplayInMovingOn" (sites "Replay")))
-                        )
+        <(regions "Replay" {14 24 43 53})> 
+        
+        <
+        (if (= "MoveTo" (trackSite EndSite))
+            "RemovePiece"
+            (if ("IsNotOffBoard" "MoveTo") 	 			
+                (if (is Empty "MoveTo")
+                    (move 
+                        (from) 
+                        (to "MoveTo")
+                        (then ("ReplayInMovingOn" (sites "Replay")))
                     )
                 )
             )
-		    > 
-		    
-		    <(map {(pair 5 19) (pair 7 9) (pair 34 48) (pair 36 38) })>
-		    
-		    <
-		    (rules 
-		            (start {
-		                (place "Marker1" (handSite P1) count:5)
-		                (place "Marker2" (handSite P2) count:5)
-		            })
-		            
-		            (play ("RollMove" (or (forEach Piece) (forEach Piece container:(mover)))))
-		            (end ("EscapeWin"))
-		        )
-		    >
-    
-    		"Rules from Carnarvon and Carter."
+        )
+        > 
+        
+        <(map {(pair 5 19) (pair 7 9) (pair 34 48) (pair 36 38) })>
+        
+        <
+        (rules 
+            (start {
+                (place "Marker1" (handSite P1) count:5)
+                (place "Marker2" (handSite P2) count:5)
+            })
+            
+            (play ("RollMove" (or (forEach Piece) (forEach Piece container:(mover)))))
+            (end ("EscapeWin"))
+        )
+        >
+        
+        "Rules from Carnarvon and Carter."
     )* 
     }
 )
@@ -72,10 +72,10 @@
 (rulesets { 
     
     (ruleset "Ruleset/Carnarvon and Carter (Suggested)" 
-            {
-            "Board/Paralell Connections" "Variant/Carnarvon and Carter"
-            }
-        )
+        {
+        "Board/Paralell Connections" "Variant/Carnarvon and Carter"
+        }
+    )
     
     (ruleset "Ruleset/Carter Unmarked (Suggested)" {
         
@@ -85,18 +85,18 @@
         
     })
     
-   (ruleset "Ruleset/Carter Crossover 1 (Suggested)" {
+    (ruleset "Ruleset/Carter Crossover 1 (Suggested)" {
         
     })
-   
-   (ruleset "Ruleset/Carter Crossover 2 (Suggested)" {
-       
-   })
-   
-   (ruleset "Ruleset/Carter Crossover 3 (Suggested)" {
-       
-   })
-   
+    
+    (ruleset "Ruleset/Carter Crossover 2 (Suggested)" {
+        
+    })
+    
+    (ruleset "Ruleset/Carter Crossover 3 (Suggested)" {
+        
+    })
+    
     (ruleset "Ruleset/Carter Crossover 4 (Suggested)" {
         
     })
@@ -112,7 +112,7 @@
     (ruleset "Ruleset/Tab Marked (Safe) (Suggested)" {
         
     })
-
+    
     (ruleset "Ruleset/Tab Parallel Connections (Suggested)" {
         
     })
@@ -124,7 +124,7 @@
     (ruleset "Ruleset/Tab Crossover 2 (Suggested)" {
         
     })
-	
+    
     (ruleset "Ruleset/Tab Crossover 3 (Suggested)" {
         
     })
@@ -132,7 +132,7 @@
     (ruleset "Ruleset/Tab Crossover 4 (Suggested)" {
         
     })
-
+    
     // From here only incomplete rulesets.
     
     (ruleset "Ruleset/Unmarked (Incomplete)" {
