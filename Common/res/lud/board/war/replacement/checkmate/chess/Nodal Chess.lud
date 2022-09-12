@@ -4,426 +4,425 @@
 // *** Pieces
 
 (define "Diagonals"
- (sites To (slide (from #1) Diagonal #2))
+    (sites To (slide (from #1) Diagonal #2))
 )
 
 (define "ElbowSites"   // #1 (from int)  #2 (is Empty (to)) or (not (is Mover (who at:(to))))
- (sites 
-  (results
-   from:#1
-   to:(sites
-    (results
-     from:(sites Incident Cell of:Vertex at:(from))
-     to:(forEach
-      (sites Incident Vertex of:Cell at:(from))
-      if:#2
-     )
-     (to)
-   )
-    )
-   (to)
-)
-  )
- )
-   
-(define "NodalQueen"
- (piece #1 Each 
-  (move
-   (from (from))
-   (to
-    (union {
-      ("Diagonals" (from) (to if:("IsEnemyAt" (to))))
-      ("ElbowSites" 
-       (union
-        ("Diagonals" (from) ~ ) //(to if:(is In (to) (sites Empty)))) Explicitly adding this causes bug
-        (sites {(from)})
-       )
-       (not (is Mover (who at:(site))))
-      )
-      (forEach 
-       of:("ElbowSites" 
-        (union
-         ("Diagonals" (from) ~) //(to if:(is In (to) (sites Empty)))) Explicitly adding this causes bug
-         (sites {(from)})
+    (sites 
+        (results
+            from:#1
+            to:(sites
+                (results
+                    from:(sites Incident Cell of:Vertex at:(from))
+                    to:(forEach
+                        (sites Incident Vertex of:Cell at:(from))
+                        if:#2
+                    )
+                    (to)
+                )
+            )
+            (to)
         )
-        (is Empty (site))
-       )
-       ("Diagonals" (site) (to if:("IsEnemyAt" (to))))
-      )
-     }    
     )
-    (apply 
-     (if ("IsEnemyAt" (to)) 
-      (remove 
-       (to) 
-       #2
-      )
-      (set NextPlayer (player (next)))  // dummy action to allow move without capture.
-   )
-     )
-    )
-   #3
 )
-  )
- )
+
+(define "NodalQueen"
+    (piece #1 Each 
+        (move
+            (from (from))
+            (to
+                (union {
+                    ("Diagonals" (from) (to if:("IsEnemyAt" (to))))
+                    ("ElbowSites" 
+                        (union
+                        ("Diagonals" (from) ~ ) //(to if:(is In (to) (sites Empty)))) Explicitly adding this causes bug
+                        (sites {(from)})
+                    )
+                    (not (is Mover (who at:(site))))
+                )
+                (forEach 
+                    of:("ElbowSites" 
+                        (union
+                        ("Diagonals" (from) ~) //(to if:(is In (to) (sites Empty)))) Explicitly adding this causes bug
+                        (sites {(from)})
+                    )
+                    (is Empty (site))
+                )
+                ("Diagonals" (site) (to if:("IsEnemyAt" (to))))
+            )
+            }    
+        )
+        (apply 
+            (if ("IsEnemyAt" (to)) 
+                (remove 
+                    (to) 
+                    #2
+                )
+                (set NextPlayer (player (next)))  // dummy action to allow move without capture.
+            )
+        )
+    )
+    #3
+)
+)
+)
 
 (define "NodalBishop"
- (piece #1 Each 
-  (move
-   Slide All
-   (to 
-    if:("IsEnemyAt" (to)) 
-    (apply 
-     (if ("IsEnemyAt" (to)) 
-      (remove 
-       (to) 
-       #2
-   )
-      )
-     )
+    (piece #1 Each 
+        (move
+            Slide All
+            (to 
+                if:("IsEnemyAt" (to)) 
+                (apply 
+                    (if ("IsEnemyAt" (to)) 
+                        (remove 
+                            (to) 
+                            #2
+                        )
+                    )
+                )
+            )
+            #3
+        )
     )
-   #3
 )
-  )
- )
-
 
 (define "NodalKnight"
- (piece #1 Each 
-  (move Leap 
-   { {F R F F} {F L F F} }
-   (to 
-    if:(not (is Mover (who at:(to))))
-    (apply
-     (if
-      (is Next (who at:(to)))
-      (remove
-       (to)
-       #2
-      )
-      (if 
-       (< 0
-        (count Pieces Next
-         in:(intersection
-          (sites Around (to) All) 
-          (sites Around (from) All)
-       )
-         )
+    (piece #1 Each 
+        (move Leap 
+            { {F R F F} {F L F F} }
+            (to 
+                if:(not (is Mover (who at:(to))))
+                (apply
+                    (if
+                        (is Next (who at:(to)))
+                        (remove
+                            (to)
+                            #2
+                        )
+                        (if 
+                            (< 0
+                                (count Pieces Next
+                                    in:(intersection
+                                        (sites Around (to) All) 
+                                        (sites Around (from) All)
+                                    )
+                                )
+                            )
+                            (remove
+                                (intersection
+                                    (sites Around (to) All) 
+                                    (sites Around (from) All)
+                                )
+                                #2
+                            )
+                        )
+                    )
+                )
+            )
+            #3
         )
-       (remove
-        (intersection
-         (sites Around (to) All) 
-         (sites Around (from) All)
-        )
-        #2
-   )
-       )
-      )
-     )
     )
-   #3
 )
-  )
- )
 
 (define "CheckWorkAroundForKnight"  
- //Moves to attack the removal location piece when it is possible for a Knight to remove a piece by jumping.
- (forEach Piece "Knight"
-  (or
-   (move Step 
-    Diagonal
-    (to 
-     if:(and
-      ("IsEnemyAt" (to)) 
-      (< 0
-       (count Sites
-        in:(difference  // the potential end location of the Knight's actual move
-         (sites Around (to) Orthogonal if:(is Empty (to)))
-         (sites Around (from) Orthogonal)
-     )
+    //Moves to attack the removal location piece when it is possible for a Knight to remove a piece by jumping.
+    (forEach Piece "Knight"
+        (or
+            (move Step 
+                Diagonal
+                (to 
+                    if:(and
+                        ("IsEnemyAt" (to)) 
+                        (< 0
+                            (count Sites
+                                in:(difference  // the potential end location of the Knight's actual move
+                                    (sites Around (to) Orthogonal if:(is Empty (to)))
+                                    (sites Around (from) Orthogonal)
+                                )
+                            )
+                        )
+                    )
+                    (apply (remove (to)))
+                )
+            )  
+            (move Step 
+                Orthogonal
+                (to 
+                    if:(and
+                        ("IsEnemyAt" (to)) 
+                        (< 0
+                            (count Sites
+                                in:(difference  // the potential end location of the Knight's actual move
+                                    (sites Around (to) Diagonal if:(is Empty (to)))
+                                    (sites Around (from) Orthogonal)
+                                )
+                            )
+                        )
+                    )
+                    (apply (remove (to)))
+                )
+            )
         )
-       )
-      )
-     (apply (remove (to)))
-   )
-    )  
-   (move Step 
-    Orthogonal
-    (to 
-     if:(and
-      ("IsEnemyAt" (to)) 
-      (< 0
-       (count Sites
-        in:(difference  // the potential end location of the Knight's actual move
-         (sites Around (to) Diagonal if:(is Empty (to)))
-         (sites Around (from) Orthogonal)
-     )
-        )
-       )
-      )
-     (apply (remove (to)))
-)
     )
-   )
-  )
- ) 
+) 
 
 (define "NodalPawn"
- (piece #1 Each 
-  (or { // Forwards has bug
-    (move Step
-     (if (= 1 (mover)) (union N (union NE NW)) (union S (union SW SE)))
-     (to if:(is Empty (to))) 
-     #2
+    (piece #1 Each 
+        (or { // Forwards has bug
+            (move Step
+                (if (= 1 (mover)) (union N (union NE NW)) (union S (union SW SE)))
+                (to if:(is Empty (to))) 
+                #2
+            )
+            ("StepToEnemy" Diagonal #2)
+        })
     )
-    ("StepToEnemy" Diagonal #2)
-   })
-  )
- )
+)
 
 (define "NodalKingStep"
- (move
-  Step All 
-  (to
-   if:(and
-    {
-     (!= #2 (to))
-     #1 
-     (not
-      (is In (to)
-       (sites #2 { { F F } {F F R F F}})
-     )
-      )
-    }
-   )
-   (apply
-    if:("IsEnemyAt" (to))
-    (remove 
-     (to)
-     #3
-)
+    (move
+        Step All 
+        (to
+            if:(and
+                {
+                (!= #2 (to))
+                #1 
+                (not
+                    (is In (to)
+                        (sites #2 { { F F } {F F R F F}})
+                    )
+                )
+                }
+            )
+            (apply
+                if:("IsEnemyAt" (to))
+                (remove 
+                    (to)
+                    #3
+                )
+            )
+        )
     )
-   )
-  )
- )
-  
+)
+
 (define "DoubleSteps" { {F R F F} {F L F F} {F R F} } )
 
 (define "KingDoubleStep"  // for threats and capturing source of Check
- (move
-  (from (from))
-  (to
-   (difference (sites (from) "DoubleSteps") (sites Around (from) All))
-   if:(and
-    {
-     #1 //(is Next (who at:(to)))
-     (< 0
-      (count Sites
-       in:(intersection
-        (sites Around (from) All if:(is Empty (to))) 
-        (sites Around (to) All)
-     )
-       )
-      )
-    }
-   )
-   (apply 
-    (if
-     ("IsEnemyAt" (to))
-     (remove 
-      (to)
-      #2
-)
-     )
+    (move
+        (from (from))
+        (to
+            (difference (sites (from) "DoubleSteps") (sites Around (from) All))
+            if:(and
+                {
+                #1 //(is Next (who at:(to)))
+                (< 0
+                    (count Sites
+                        in:(intersection
+                            (sites Around (from) All if:(is Empty (to))) 
+                            (sites Around (to) All)
+                        )
+                    )
+                )
+                }
+            )
+            (apply 
+                (if
+                    ("IsEnemyAt" (to))
+                    (remove 
+                        (to)
+                        #2
+                    )
+                )
+            )
+        )
     )
-   )
-  )
- )
+)
 
 (define "NewTurn" (not ("SameTurn")))
 
 (define "NodalKing"
- // moves 2 but not straight
- // can only move through check to capture the source of the check
- // may capture along the way, but not if in check when capturing.
- // Can check another King through Check
- (piece #1 Each 
-  (if
-   ("NewTurn")
-   (or { 
-     ("KingDoubleStep" ("IsEnemyAt" (to)) (then (set Score Mover 0)))
-     ("KingDoubleStep" (is Empty (to)) (then (set Score Mover 0)))
-     (or 
-      ("NodalKingStep" ("IsEnemyAt" (to)) (from) (then (set Score Mover 0)))
-      ("NodalKingStep" (is Empty (to)) (from) (then (set Score Mover 0)))
-      (then (moveAgain))
-     )
-    }
-    (then (set Var "LF" (last From)))
-   )
-   (or
-    {
-     (move Pass)    
-     ("NodalKingStep" ("IsEnemyAt" (to)) (var "LF") (then (set Score Mover 0)))
-     ("NodalKingStep" (is Empty (to)) (var "LF") (then (set Score Mover 0)))
-    }
-)
-   )
-  )
- )
-(define "DidNotCrossStillExistingCheck"
- (can Move
-  (do
-   (move Step 
-    (from (last To))
-    All
-    (to // Site moved through -- or else homesite if it is adjacent.
-     if:(is In (to) (sites Around (var "LF") All includeSelf:True))
-   )
+    // moves 2 but not straight
+    // can only move through check to capture the source of the check
+    // may capture along the way, but not if in check when capturing.
+    // Can check another King through Check
+    (piece #1 Each 
+        (if
+            ("NewTurn")
+            (or { 
+                ("KingDoubleStep" ("IsEnemyAt" (to)) (then (set Score Mover 0)))
+                ("KingDoubleStep" (is Empty (to)) (then (set Score Mover 0)))
+                (or 
+                    ("NodalKingStep" ("IsEnemyAt" (to)) (from) (then (set Score Mover 0)))
+                    ("NodalKingStep" (is Empty (to)) (from) (then (set Score Mover 0)))
+                    (then (moveAgain))
+                )
+                }
+                (then (set Var "LF" (last From)))
+            )
+            (or
+                {
+                (move Pass)    
+                ("NodalKingStep" ("IsEnemyAt" (to)) (var "LF") (then (set Score Mover 0)))
+                ("NodalKingStep" (is Empty (to)) (var "LF") (then (set Score Mover 0)))
+                }
+            )
+        )
     )
-   ifAfterwards:(or
-    (not ("IsInCheck" "King" Mover (forEach Piece  {"Queen" "Knight" "Bishop" "Pawn"} )))
-    (= (var "LF") (last To))  //Moving back to the original position means the move is allowed because it was to an adjacent site.
 )
-   )
-  )
- )
+(define "DidNotCrossStillExistingCheck"
+    (can Move
+        (do
+            (move Step 
+                (from (last To))
+                All
+                (to // Site moved through -- or else homesite if it is adjacent.
+                    if:(is In (to) (sites Around (var "LF") All includeSelf:True))
+                )
+            )
+            ifAfterwards:(or
+                (not ("IsInCheck" "King" Mover (forEach Piece  {"Queen" "Knight" "Bishop" "Pawn"} )))
+                (= (var "LF") (last To))  //Moving back to the original position means the move is allowed because it was to an adjacent site.
+            )
+        )
+    )
+)
 
 (define "KingNotCheckedAndToEmpty"
- (and 
-  (is Empty (to)) 
-  (not ("IsInCheck" "King" Mover at:(to)))
- ) 
+    (and 
+        (is Empty (to)) 
+        (not ("IsInCheck" "King" Mover at:(to)))
+    ) 
 )
 
 (define "MakeAMove"
- (or
-  (do 
-   (forEach Piece  {"Queen" "Knight" "Bishop" "Pawn"} )
-   ifAfterwards:(and
-    {
-     (not ("IsInCheck" "King" Mover ~)) 
-     (not ("IsInCheck" "King" Mover ("CheckWorkAroundForKnight")))
-    }
-  )
-   )
-  (do 
-   (forEach Piece  "King")
-   ifAfterwards:(and 
-    {
-     (not ("IsInCheck" "King" Mover ~)) 
-     (not ("IsInCheck" "King" Mover ("CheckWorkAroundForKnight")))
-     ("DidNotCrossStillExistingCheck")
-    }
-  )
-   )
-  (then (addScore Mover 1))
+    (or
+        (do 
+            (forEach Piece  {"Queen" "Knight" "Bishop" "Pawn"} )
+            ifAfterwards:(and
+                {
+                (not ("IsInCheck" "King" Mover ~)) 
+                (not ("IsInCheck" "King" Mover ("CheckWorkAroundForKnight")))
+                }
+            )
+        )
+        (do 
+            (forEach Piece  "King")
+            ifAfterwards:(and 
+                {
+                (not ("IsInCheck" "King" Mover ~)) 
+                (not ("IsInCheck" "King" Mover ("CheckWorkAroundForKnight")))
+                ("DidNotCrossStillExistingCheck")
+                }
+            )
+        )
+        (then (addScore Mover 1))
+    )
 )
- )
-    
+
 //------------------------------------------------------------------------------
 
 (game "Nodal Chess" 
- (players {(player N) (player S)}) 
- (equipment { 
-   (board
-    (add
-     (remove
-      (rectangle 8 6) 
-      cells:{1 3 5 7 9 11 13 15 17 19 21 23 25 27 29 31 33}
-     )
-     edges:{ { 1 2 }{ 3 4 }{ 6 12}{11 17}{18 24}{23 29} {30 36}{35 41}{43 44}{45 46} }
-    ) 
-    use:Vertex
-   ) 
-   
-   ("NodalPawn" "Pawn"
-    (then
-     (and
-      (set Score Mover 0)
-      (if
-       (is In (last To) (sites Mover "Promotion")) 
-       (moveAgain)
-   )
-      )
-     )
+    (players {(player N) (player S)}) 
+    (equipment { 
+        (board
+            (add
+                (remove
+                    (rectangle 8 6) 
+                    cells:{1 3 5 7 9 11 13 15 17 19 21 23 25 27 29 31 33}
+                )
+                edges:{ { 1 2 }{ 3 4 }{ 6 12}{11 17}{18 24}{23 29} {30 36}{35 41}{43 44}{45 46} }
+            ) 
+            use:Vertex
+        ) 
+        
+        ("NodalPawn" "Pawn"
+            (then
+                (and
+                    (set Score Mover 0)
+                    (if
+                        (is In (last To) (sites Mover "Promotion")) 
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        ("NodalKing" "King" )
+        ("NodalBishop" "Bishop" (then (set Score Mover 0)))
+        ("NodalKnight" "Knight" (then (set Score Mover 0)))
+        ("NodalQueen" "Queen" (then (set Score Mover 0)))
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
+    }) 
+    (rules 
+        (start { 
+            (place "Pawn1" (sites Row 1))
+            (place "Pawn2" (sites Row 6))
+            (place "Knight1" {"B1" "E1"}) 
+            (place "Bishop1" {"A1" "F1"}) 
+            (place "Queen1" coord:"C1") 
+            (place "King1" coord:"D1" state:1) 
+            (place "Knight2" {"B8" "E8"}) 
+            (place "Bishop2" {"A8" "F8"}) 
+            (place "Queen2" coord:"C8") 
+            (place "King2" coord:"D8" state:1) 
+        })
+        
+        (play 
+            (if 
+                ("NewTurn")
+                
+                (if 
+                    (and {
+                        (not ("IsInCheck" "King" Mover ~))
+                        (not ("IsInCheck" "King" Mover ("CheckWorkAroundForKnight")))
+                    })
+                    ("MakeAMove")
+                    <MoveLimitCounter:escapeExclusion>
+                )    
+                
+                // 2nd parts of moves (for Pawn promotion and King moves)
+                (if
+                    (= (id "King" Mover) (what at:(last To)))
+                    (do 
+                        (forEach Piece "King" Mover) 
+                        ifAfterwards:(and {
+                            (not ("IsInCheck" "King" Mover ~)) 
+                            (not ("IsInCheck" "King" Mover ("CheckWorkAroundForKnight")))
+                        })
+                    )
+                    (move Promote (last To) (piece {"Queen" "Knight" "Bishop"}) Mover)
+                )
+                
+                (then
+                    (if 
+                        (and {
+                            (not ("IsInCheck" "King" Prev ~))
+                            (not ("IsInCheck" "King" Prev ("CheckWorkAroundForKnight")))
+                        })
+                        (addScore Mover 0)
+                        <MoveLimitCounter:checkExclusion>
+                    )
+                )
+            )
+        )  
+        (end {
+            (if (no Moves Next) (result Mover Win)) 
+            (if (< "MoveStallingLimit" (score Mover)) (result Mover Loss))
+        })
     )
-   ("NodalKing" "King" )
-   ("NodalBishop" "Bishop" (then (set Score Mover 0)))
-   ("NodalKnight" "Knight" (then (set Score Mover 0)))
-   ("NodalQueen" "Queen" (then (set Score Mover 0)))
-   (regions "Promotion" P1 (sites Top))
-   (regions "Promotion" P2 (sites Bottom))
-  }) 
- (rules 
-  (start { 
-   (place "Pawn1" (sites Row 1))
-   (place "Pawn2" (sites Row 6))
-   (place "Knight1" {"B1" "E1"}) 
-   (place "Bishop1" {"A1" "F1"}) 
-   (place "Queen1" coord:"C1") 
-   (place "King1" coord:"D1" state:1) 
-   (place "Knight2" {"B8" "E8"}) 
-   (place "Bishop2" {"A8" "F8"}) 
-   (place "Queen2" coord:"C8") 
-   (place "King2" coord:"D8" state:1) 
-  })
-  
-  (play 
-   (if 
-    ("NewTurn")
-       
-    (if 
-     (and {
-       (not ("IsInCheck" "King" Mover ~))
-       (not ("IsInCheck" "King" Mover ("CheckWorkAroundForKnight")))
-      })
-     ("MakeAMove")
-     <MoveLimitCounter:escapeExclusion>
-    )    
-    
-    // 2nd parts of moves (for Pawn promotion and King moves)
-    (if
-     (= (id "King" Mover) (what at:(last To)))
-     (do 
-      (forEach Piece "King" Mover) 
-      ifAfterwards:(and {
-        (not ("IsInCheck" "King" Mover ~)) 
-        (not ("IsInCheck" "King" Mover ("CheckWorkAroundForKnight")))
-       })
-      )
-     (move Promote (last To) (piece {"Queen" "Knight" "Bishop"}) Mover)
-    )
-    
-    (then
-     (if 
-      (and {
-        (not ("IsInCheck" "King" Prev ~))
-        (not ("IsInCheck" "King" Prev ("CheckWorkAroundForKnight")))
-       })
-      (addScore Mover 0)
-      <MoveLimitCounter:checkExclusion>
-  )
-     )
-    )
-   )  
-  (end {
-    (if (no Moves Next) (result Mover Win)) 
-    (if (< "MoveStallingLimit" (score Mover)) (result Mover Loss))
-   })
-  )
- )
+)
 
 (define "MoveStallingLimit" 13)
 
 //------------------------------------------------------------------------------
 
 (option "Move Limits" <MoveLimitCounter> args:{ <checkExclusion> <escapeExclusion> }
- {
-  (item "No Exclusion" < > <("MakeAMove")> "No move exclusion in move limit count")
-  (item "Exclude Checks" <(addScore Mover -1)> <("MakeAMove")> "Checking moves are excluded from the move limit count")
-  (item "Exclude Escape from Check" < > <(do ("MakeAMove") next:(addScore Mover -1))> "Resolution of Check is excluded from the move limit count.")*
- }
+    {
+    (item "No Exclusion" < > <("MakeAMove")> "No move exclusion in move limit count")
+    (item "Exclude Checks" <(addScore Mover -1)> <("MakeAMove")> "Checking moves are excluded from the move limit count")
+    (item "Exclude Escape from Check" < > <(do ("MakeAMove") next:(addScore Mover -1))> "Resolution of Check is excluded from the move limit count.")*
+    }
 )
 
 //------------------------------------------------------------------------------

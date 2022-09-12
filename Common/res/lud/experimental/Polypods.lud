@@ -2,262 +2,305 @@
 //---------------------------------------------
 // Utility for determining if a group is alive   
 (define "IsAliveAt" // <region>
- (<= 0
-  (+
-   (results
-    from:#1 
-    to:(from)
-    (if (!= 1 (state at:(to))) 1 (- 1))
-))))
+    (<= 0
+        (+
+            (results
+                from:#1 
+                to:(from)
+                (if (!= 1 (state at:(to))) 1 (- 1))
+            )
+        )
+    )
+)
 
 //----------------------------------  
 // Capture Locations and procedure
 
 (define "CaptureSites" 
-// i.e. opponent foot occupied sites that are next to the body sites of the group that includes the last placement
- (intersection
-  (sites Around (intersection (sites Group at:(last To)) (sites State 1)))
-  (difference (sites Occupied by:Next) (sites State 1))
-))
+    // i.e. opponent foot occupied sites that are next to the body sites of the group that includes the last placement
+    (intersection
+        (sites Around (intersection (sites Group at:(last To)) (sites State 1)))
+        (difference (sites Occupied by:Next) (sites State 1))
+    )
+)
 
 (define "KeySitesOfAffectedGroups"
- (sites
-  (results
-   from:"CaptureSites"
-   to:(min (array (difference (sites Group at:(from)) "CaptureSites")))
-   (to)
-)))
+    (sites
+        (results
+            from:"CaptureSites"
+            to:(min (array (difference (sites Group at:(from)) "CaptureSites")))
+            (to)
+        )
+    )
+)
 
 (define "AffectedGroupAt"  // The updated group without captured terminals associated with the key location.
- (difference (sites Group at:#1) (sites (values Remembered "CS")))
+    (difference (sites Group at:#1) (sites (values Remembered "CS")))
 )
 
 (define "Check4IllegalCapture"
- (and
-  {
-   ("UpdateTerminals" (sites Group at:(var "ConvertedFootSite"))) 
-  }
-  (then
-   (if
-    //work around: using  (last To) did not pick up the last consequence, but rather the last move
-    (not ("IsAliveAt" (sites Group at:(var "ConvertedFootSite"))))
-    (trigger "IllegalCapture" Mover)
-))))
+    (and {
+        ("UpdateTerminals" (sites Group at:(var "ConvertedFootSite"))) 
+        }
+        (then
+            (if
+                //work around: using  (last To) did not pick up the last consequence, but rather the last move
+                (not ("IsAliveAt" (sites Group at:(var "ConvertedFootSite"))))
+                (trigger "IllegalCapture" Mover)
+            )
+        )
+    )
+)
 
 (define "ClaimCapture" // site
- (if 
-  (= 1 (state at:(site)))
-  (remove (site))
-  (add
-   (to (site)
-    (apply
-     (and
-      (set Var "ConvertedFootSite" (to))
-      (remove (to))
-   )))
-   (then ("Check4IllegalCapture"))
-)))
+    (if 
+        (= 1 (state at:(site)))
+        (remove (site))
+        (add
+            (to (site)
+                (apply
+                    (and
+                        (set Var "ConvertedFootSite" (to))
+                        (remove (to))
+                    )
+                )
+            )
+            (then ("Check4IllegalCapture"))
+        )
+    )
+)
 
 //-------------------------------
 
 (define "Captures"
- (do
-  (forEach Site "CaptureSites"
-   (remember Value "CS" (site) unique:True)
-   (then
-    (forEach Site "KeySitesOfAffectedGroups"
-     (remember Value "KS" (site) unique:True)
-  )))
-  next:(forEach Site (sites (values Remembered "CS")) (remove (site))
-   (then
-    (forEach Value
-     (values Remembered "KS")  // a key site within the remainder of the group
-     ("UpdateTerminals" ("AffectedGroupAt" (value)))
-  )))
-  (then 
-   (and
-    (forEach Value (values Remembered "KS")  
-     (if 
-      (not ("IsAliveAt" ("AffectedGroupAt" (value))))
-      (forEach Site
-       ("AffectedGroupAt" (value)) 
-       ("ClaimCapture") 
-    )))
-    (forget Value "CS" All
-     (then (forget Value "KS" All))
-)))))
-   
+    (do
+        (forEach Site "CaptureSites"
+            (remember Value "CS" (site) unique:True)
+            (then
+                (forEach Site "KeySitesOfAffectedGroups"
+                    (remember Value "KS" (site) unique:True)
+                )
+            )
+        )
+        next:(forEach Site (sites (values Remembered "CS")) (remove (site))
+            (then
+                (forEach Value
+                    (values Remembered "KS")  // a key site within the remainder of the group
+                    ("UpdateTerminals" ("AffectedGroupAt" (value)))
+                )
+            )
+        )
+        (then 
+            (and
+                (forEach Value (values Remembered "KS")  
+                    (if 
+                        (not ("IsAliveAt" ("AffectedGroupAt" (value))))
+                        (forEach Site
+                            ("AffectedGroupAt" (value)) 
+                            ("ClaimCapture") 
+                        )
+                    )
+                )
+                (forget Value "CS" All
+                    (then (forget Value "KS" All))
+                )
+            )
+        )
+    )
+)
+
 //---------------------------------------------
 // Updating Group structures 
 
 (define "SurroundingSitesInGroup"
- (array (intersection #1 (sites Around (site))))
+    (array (intersection #1 (sites Around (site))))
 )
 
 (define "UpdateTerminals"
- (if
-  (= 6 (count Sites in:(sites Corners)))
-  ("UpdateTerminalsHex" #1)
-  ("UpdateTerminalsSquareOriented" #1)
+    (if
+        (= 6 (count Sites in:(sites Corners)))
+        ("UpdateTerminalsHex" #1)
+        ("UpdateTerminalsSquareOriented" #1)
 ))
 
 (define "UpdateTerminalsHex"  // <region> such as (sites) or (sites Group at:(last To))
- (forEach Site #1
-  (if
-   (or
-    (< 2 (size Array ("SurroundingSitesInGroup" #1)))
-    (and
-     (= 2 (size Array ("SurroundingSitesInGroup" #1)))
-     (< 1 
-      (count Steps 
-       (min ("SurroundingSitesInGroup" #1))
-       (max ("SurroundingSitesInGroup" #1))
-   ))))
-   (set State at:(site) 1)
-   (set State at:(site) 0)
-)))
+    (forEach Site #1
+        (if
+            (or
+                (< 2 (size Array ("SurroundingSitesInGroup" #1)))
+                (and
+                    (= 2 (size Array ("SurroundingSitesInGroup" #1)))
+                    (< 1 
+                        (count Steps 
+                            (min ("SurroundingSitesInGroup" #1))
+                            (max ("SurroundingSitesInGroup" #1))
+                        )
+                    )
+                )
+            )
+            (set State at:(site) 1)
+            (set State at:(site) 0)
+        )
+    )
+)
 
 (define "UpdateTerminalsSquareOriented"  // <region> such as (sites) or (sites Group at:(last To))
- (forEach Site #1
-  (if
-   (< 1 (size Array ("SurroundingSitesInGroup" #1)))
-   (set State at:(site) 1)
-   (if
-    (is Within (what at:(site)) in:(sites Around (site) N))
-    (set State at:(site) 2)
-    (if
-     (is Within (what at:(site)) in:(sites Around (site) E))
-     (set State at:(site) 3)
-     (if
-      (is Within (what at:(site)) in:(sites Around (site) S))
-      (set State at:(site) 4)
-      (if
-       (is Within (what at:(site)) in:(sites Around (site) W))
-       (set State at:(site) 5)
-       (set State at:(site) 0)
-)))))))
+    (forEach Site #1
+        (if
+            (< 1 (size Array ("SurroundingSitesInGroup" #1)))
+            (set State at:(site) 1)
+            (if
+                (is Within (what at:(site)) in:(sites Around (site) N))
+                (set State at:(site) 2)
+                (if
+                    (is Within (what at:(site)) in:(sites Around (site) E))
+                    (set State at:(site) 3)
+                    (if
+                        (is Within (what at:(site)) in:(sites Around (site) S))
+                        (set State at:(site) 4)
+                        (if
+                            (is Within (what at:(site)) in:(sites Around (site) W))
+                            (set State at:(site) 5)
+                            (set State at:(site) 0)
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
 
 //--------------------------------
 // Placement
 
 (define "ToAllowedSites"
- (to
-  (difference
-   (sites Empty)
-   (sites Around
-    (intersection (sites Occupied by:Next) (sites State 1))
-  ))
-//  level:0
-))
-
+    (to
+        (difference
+            (sites Empty)
+            (sites Around
+                (intersection (sites Occupied by:Next) (sites State 1))
+            )
+        )
+        //  level:0
+    )
+)
 
 //-----------------------------------------------
 // Main routine
 
 (game "Polypods"
- (players 2)
- (equipment
-  {
-   (board <BoardShape:gridType> use:Vertex)
-   (piece "Disc" Each maxState:1 maxValue:4)
-  }
- )
- (rules
-  (play
-   (or
-    (move Pass)
-    (do
-     (do
-      (move Add "ToAllowedSites" 
-       (then
-        (and
-         (set Value at:(last To) (layer of:(last To)))
-         ("UpdateTerminals" (sites Group at:(last To)))
-      )))
-      ifAfterwards:("IsAliveAt" (sites Group at:(last To)))
-      (then ("Captures"))
-     )
-     ifAfterwards:(not (is Triggered "IllegalCapture" Mover))
+    (players 2)
+    (equipment {
+        (board <BoardShape:gridType> use:Vertex)
+        (piece "Disc" Each maxState:1 maxValue:4)
+    })
+    (rules
+        (play
+            (or
+                (move Pass)
+                (do
+                    (do
+                        (move Add "ToAllowedSites" 
+                            (then
+                                (and
+                                    (set Value at:(last To) (layer of:(last To)))
+                                    ("UpdateTerminals" (sites Group at:(last To)))
+                                )
+                            )
+                        )
+                        ifAfterwards:("IsAliveAt" (sites Group at:(last To)))
+                        (then ("Captures"))
+                    )
+                    ifAfterwards:(not (is Triggered "IllegalCapture" Mover))
+                )
+                (then 
+                    ("Score")
+                )
+            )
+        )
+        (end 
+            (if
+                (all Passed) {
+                (if
+                    (> (score Mover) (score Next))
+                    (result Mover Win)
+                )
+                (if
+                    (and
+                        (= (score Mover) (score Next))
+                        (>= ("FringeScoreOf" Mover) ("FringeScoreOf" Next))
+                    )
+                    (result Mover Win)
+                )
+                (if
+                    (and
+                        (= (score Mover) (score Next))
+                        (= ("FringeScoreOf" Mover) ("FringeScoreOf" Next))
+                    )
+                    (result Mover Draw)
+                )
+                }
+                (result Next Win)
+            )
+        )
     )
-    (then 
-     ("Score")
-  )))
-  (end 
-   (if
-    (all Passed)
-    {
-     (if
-      (> (score Mover) (score Next))
-      (result Mover Win)
-     )
-     (if
-      (and
-       (= (score Mover) (score Next))
-       (>= ("FringeScoreOf" Mover) ("FringeScoreOf" Next))
-      )
-      (result Mover Win)
-     )
-     (if
-      (and
-       (= (score Mover) (score Next))
-       (= ("FringeScoreOf" Mover) ("FringeScoreOf" Next))
-      )
-      (result Mover Draw)
-     )
-    }
-    (result Next Win)
-))))
+)
 
 //-----------------------------
 //Scoring
 
 (define "Score"
- (and
-  ("ScoreCore4" Mover)
-  ("ScoreCore4" Next)
+    (and
+        ("ScoreCore4" Mover)
+        ("ScoreCore4" Next)
 ))
 
 (define "ScoreFringe4" (set Score #1 ("FringeScoreOf" #1)))
- 
+
 (define "ScoreCore4"
- (set Score #1
-  (count Sites 
-   in:(intersection
-    (sites Occupied by:#1) 
-    (sites State 1)
-))))
+    (set Score #1
+        (count Sites 
+            in:(intersection
+                (sites Occupied by:#1) 
+                (sites State 1)
+            )
+        )
+    )
+)
 
 (define "FringeScoreOf"
- (count Sites
-  in:(difference
-   (sites Around (sites Occupied by:#1))
-   (sites Around (difference (sites Occupied by:All) (sites Occupied by:#1)) includeSelf:True)
-)))
+    (count Sites
+        in:(difference
+            (sites Around (sites Occupied by:#1))
+            (sites Around (difference (sites Occupied by:All) (sites Occupied by:#1)) includeSelf:True)
+        )
+    )
+)
 
 //-------------------------------------------------
 // Options
 
 (option "Board" <BoardShape> args:{<gridType> <directionsUsed> <graphsOption> } 
-  {
-   (item "Square 4-7" <(rectangle 4 7)> <Orthogonal> <("Graphics")> "Order 5 Square Grid")*
-   (item "Square 5-6" <(rectangle 5 6)> <Orthogonal> <("Graphics")> "Order 5 Square Grid")
-   (item "Square 5-7" <(rectangle 5 7)> <Orthogonal> <("Graphics")> "Order 5 Square Grid")
-   (item "Square 6" <(square 6)> <Orthogonal> <("Graphics")> "Order 6 Square Grid")
-   (item "Square 8**" <(square 8)> <Orthogonal> <("Graphics")> "Order 8 Square Grid")**
-   (item "Square 10**" <(square 10)> <Orthogonal> <("Graphics")> "Order 10 Square Grid")*
-   (item "Square 12" <(square 12)> <Orthogonal> <("Graphics")> "Order 12 Square Grid")
-   (item "Square 14" <(square 14)> <Orthogonal> <("Graphics")> "Order 14 Square Grid")
-   (item "Square 16" <(square 16)> <Orthogonal> <("Graphics")> "Order 16 Square Grid")
-   (item "Square 18" <(square 18)> <Orthogonal> <("Graphics")> "Order 18 Square Grid")
-   (item "Hex 3" <(tri Hexagon 3)> <Orthogonal> <("GraphicsOption" "counter.svg" 0.98  "disc.svg" 0.75)>  "Order 3, Hex Grid")
-   (item "Hex 3,4*" <(tri Limping 3)> <Orthogonal> <("GraphicsOption" "counter.svg" 0.98  "disc.svg" 0.75)>  "Order 3-4, Hex Grid")*
-   (item "Hex 4" <(tri Hexagon 4)> <Orthogonal> <("GraphicsOption" "counter.svg" 0.98  "disc.svg" 0.75)>  "Order 4, Hex Grid")
-   (item "Hex 4,5**" <(tri Limping 4)> <Orthogonal> <("GraphicsOption" "counter.svg" 0.98  "disc.svg" 0.75)> "Order 4-5, Hex Grid")**
-   (item "Hex 5" <(tri Hexagon 5)> <Orthogonal> <("GraphicsOption" "counter.svg" 0.98  "disc.svg" 0.75)> "Order 5, Hex Grid")
-   (item "Hex 5,6" <(tri Limping 5)> <Orthogonal> <("GraphicsOption" "counter.svg" 0.98  "disc.svg" 0.75)>  "Order 5-6, Hex Grid") 
-//   (item "3D-4" <"ThreeD4Board"> <Orthogonal> <("Graphics3D" "disc.svg" "square.svg")> "3D Grid")
-//   (item "3D" <"ThreeD456Board"> <Orthogonal> <("Graphics3D" "disc.svg" "square.svg")> "3D Grid")
-  }
+    {
+    (item "Square 4-7" <(rectangle 4 7)> <Orthogonal> <("Graphics")> "Order 5 Square Grid")*
+    (item "Square 5-6" <(rectangle 5 6)> <Orthogonal> <("Graphics")> "Order 5 Square Grid")
+    (item "Square 5-7" <(rectangle 5 7)> <Orthogonal> <("Graphics")> "Order 5 Square Grid")
+    (item "Square 6" <(square 6)> <Orthogonal> <("Graphics")> "Order 6 Square Grid")
+    (item "Square 8**" <(square 8)> <Orthogonal> <("Graphics")> "Order 8 Square Grid")**
+    (item "Square 10**" <(square 10)> <Orthogonal> <("Graphics")> "Order 10 Square Grid")*
+    (item "Square 12" <(square 12)> <Orthogonal> <("Graphics")> "Order 12 Square Grid")
+    (item "Square 14" <(square 14)> <Orthogonal> <("Graphics")> "Order 14 Square Grid")
+    (item "Square 16" <(square 16)> <Orthogonal> <("Graphics")> "Order 16 Square Grid")
+    (item "Square 18" <(square 18)> <Orthogonal> <("Graphics")> "Order 18 Square Grid")
+    (item "Hex 3" <(tri Hexagon 3)> <Orthogonal> <("GraphicsOption" "counter.svg" 0.98  "disc.svg" 0.75)>  "Order 3, Hex Grid")
+    (item "Hex 3,4*" <(tri Limping 3)> <Orthogonal> <("GraphicsOption" "counter.svg" 0.98  "disc.svg" 0.75)>  "Order 3-4, Hex Grid")*
+    (item "Hex 4" <(tri Hexagon 4)> <Orthogonal> <("GraphicsOption" "counter.svg" 0.98  "disc.svg" 0.75)>  "Order 4, Hex Grid")
+    (item "Hex 4,5**" <(tri Limping 4)> <Orthogonal> <("GraphicsOption" "counter.svg" 0.98  "disc.svg" 0.75)> "Order 4-5, Hex Grid")**
+    (item "Hex 5" <(tri Hexagon 5)> <Orthogonal> <("GraphicsOption" "counter.svg" 0.98  "disc.svg" 0.75)> "Order 5, Hex Grid")
+    (item "Hex 5,6" <(tri Limping 5)> <Orthogonal> <("GraphicsOption" "counter.svg" 0.98  "disc.svg" 0.75)>  "Order 5-6, Hex Grid") 
+    //   (item "3D-4" <"ThreeD4Board"> <Orthogonal> <("Graphics3D" "disc.svg" "square.svg")> "3D Grid")
+    //   (item "3D" <"ThreeD456Board"> <Orthogonal> <("Graphics3D" "disc.svg" "square.svg")> "3D Grid")
+    }
 )
 
 (define "ThreeD456Board" (layers 4 (rectangle 5 6)))
@@ -268,7 +311,6 @@
 
 (define "ThreeD4Board" (layers 4 (rectangle 4 4)))
 // (scale 1.8 1 5 (layers 4 (rectangle 4 4)))
-
 
 (define "Graphics"  ("GraphicsOption" "counter.svg" 0.98  "disc.svg" 0.75))
 //  Other possible styles
@@ -283,132 +325,132 @@
 // (define "P2Colour" (colour 230 224 200))
 
 (define "GraphicsOption" // Orients symbols used for feet on the square grid - 
- (graphics
-  {
-    (player Colour P1 (colour DarkGreen))
-    (player Colour P2 (colour Cream))
-    (board Style Graph)
-    (board Background
-     fillColour:(colour 150 120 30 90) 
-     edgeColour:(colour 150 120 30 90)
-    )
-    (board StyleThickness InnerEdges .2)
-    (board StyleThickness OuterEdges .2)
-    (board StyleThickness InnerVertices .5)
-    (no Sunken False)
-    (show Edges Diagonal Hidden)
-    (piece Scale .04) 
-    (piece Foreground "Disc1" state:0 image:#3
-     fillColour:(colour DarkGreen) scale:#4 
-     rotation:0
-    )
-    (piece Background "Disc1" state:1 image:#1
-     fillColour:(colour DarkGreen) scale:#2 
-     rotation:90
-    )
-    (piece Foreground "Disc1" state:2 image:#3
-     fillColour:(colour DarkGreen) scale:#4 
-     rotation:180
-    )
-    (piece Foreground "Disc1" state:3 image:#3
-     fillColour:(colour DarkGreen) scale:#4 
-     rotation:270
-    )
-    (piece Foreground "Disc1" state:4 image:#3
-     fillColour:(colour DarkGreen) scale:#4 
-     rotation:0
-    )
-    (piece Foreground "Disc1" state:5 image:#3
-     fillColour:(colour DarkGreen) scale:#4 
-     rotation:90
-    )
-    (piece Foreground "Disc2" state:0 image:#3
-     fillColour:"P2Colour" scale:#4 rotation:0
-    )
-    (piece Background "Disc2" state:1 image:#1
-     fillColour:"P2Colour" scale:#2 
-     rotation:90
-    )
-    (piece Foreground "Disc2" state:2 image:#3
-     fillColour:"P2Colour" scale:#4 
-     rotation:180
-    )
-    (piece Foreground "Disc2" state:3 image:#3
-     fillColour:"P2Colour" scale:#4 
-     rotation:270
-    )
-    (piece Foreground "Disc2" state:4 image:#3
-     fillColour:"P2Colour" scale:#4 
-     rotation:0
-    )
-    (piece Foreground "Disc2" state:5 image:#3
-     fillColour:"P2Colour" scale:#4 
-     rotation:90
-    )
-    //(show Piece State)
-    (show Symbol "X"
-     (forEach
-      (sites Around (sites Occupied by:All) if:(is Empty (to)))
-      if:(and 
-       {
-       (all Passed)
-        (no Pieces P2 in:(sites Around (site)))
-       }
-     ))
-     edgeColour:"P1Colour"
-     scale:.4 
-    )
-    (show Symbol "X"
-     (forEach
-      (sites Around (sites Occupied by:All) if:(is Empty (to)))
-      if:(and 
-       {
-        (all Passed)
-        (no Pieces P1 in:(sites Around (site)))
-       }
-     ))
-     edgeColour:"P2Colour"
-     scale:.4 
-    )
-  }
+    (graphics
+        {
+        (player Colour P1 (colour DarkGreen))
+        (player Colour P2 (colour Cream))
+        (board Style Graph)
+        (board Background
+            fillColour:(colour 150 120 30 90) 
+            edgeColour:(colour 150 120 30 90)
+        )
+        (board StyleThickness InnerEdges .2)
+        (board StyleThickness OuterEdges .2)
+        (board StyleThickness InnerVertices .5)
+        (no Sunken False)
+        (show Edges Diagonal Hidden)
+        (piece Scale .04) 
+        (piece Foreground "Disc1" state:0 image:#3
+            fillColour:(colour DarkGreen) scale:#4 
+            rotation:0
+        )
+        (piece Background "Disc1" state:1 image:#1
+            fillColour:(colour DarkGreen) scale:#2 
+            rotation:90
+        )
+        (piece Foreground "Disc1" state:2 image:#3
+            fillColour:(colour DarkGreen) scale:#4 
+            rotation:180
+        )
+        (piece Foreground "Disc1" state:3 image:#3
+            fillColour:(colour DarkGreen) scale:#4 
+            rotation:270
+        )
+        (piece Foreground "Disc1" state:4 image:#3
+            fillColour:(colour DarkGreen) scale:#4 
+            rotation:0
+        )
+        (piece Foreground "Disc1" state:5 image:#3
+            fillColour:(colour DarkGreen) scale:#4 
+            rotation:90
+        )
+        (piece Foreground "Disc2" state:0 image:#3
+            fillColour:"P2Colour" scale:#4 rotation:0
+        )
+        (piece Background "Disc2" state:1 image:#1
+            fillColour:"P2Colour" scale:#2 
+            rotation:90
+        )
+        (piece Foreground "Disc2" state:2 image:#3
+            fillColour:"P2Colour" scale:#4 
+            rotation:180
+        )
+        (piece Foreground "Disc2" state:3 image:#3
+            fillColour:"P2Colour" scale:#4 
+            rotation:270
+        )
+        (piece Foreground "Disc2" state:4 image:#3
+            fillColour:"P2Colour" scale:#4 
+            rotation:0
+        )
+        (piece Foreground "Disc2" state:5 image:#3
+            fillColour:"P2Colour" scale:#4 
+            rotation:90
+        )
+        //(show Piece State)
+        (show Symbol "X"
+            (forEach
+                (sites Around (sites Occupied by:All) if:(is Empty (to)))
+                if:(and 
+                    {
+                    (all Passed)
+                    (no Pieces P2 in:(sites Around (site)))
+                    }
+            ))
+            edgeColour:"P1Colour"
+            scale:.4 
+        )
+        (show Symbol "X"
+            (forEach
+                (sites Around (sites Occupied by:All) if:(is Empty (to)))
+                if:(and 
+                    {
+                    (all Passed)
+                    (no Pieces P1 in:(sites Around (site)))
+                    }
+            ))
+            edgeColour:"P2Colour"
+            scale:.4 
+        )
+        }
 ))
 
 (define "Graphics3D" // Future use - Game works, but Ludii Gui doesn't
- (graphics
-  {
-    (player Colour P1 (colour DarkGreen))
-    (player Colour P2 (colour Cream))
-    (board Style Graph)
-    (board StyleThickness InnerEdges .2)
-    (board StyleThickness OuterEdges .2)
-    (board StyleThickness InnerVertices .5)
-    (show Edges Diagonal Hidden)
-//    (piece Scale .04)  
-    //Probably should use partly tranparent colors for 3D
-    (piece Colour fillColour:(colour 0 0 0 0) strokeColour:(colour 0 0 0 0))
-    (piece Foreground "Disc1" state:0 value:0 image:#1 fillColour:(colour DarkGreen) scale:1 rotation:0)
-    (piece Foreground "Disc1" state:0 value:1 image:#1 fillColour:(colour DarkGreen) scale:.8 rotation:0)
-    (piece Foreground "Disc1" state:0 value:2 image:#1 fillColour:(colour DarkGreen) scale:.6 rotation:0)
-    (piece Foreground "Disc1" state:0 value:3 image:#1 fillColour:(colour DarkGreen) scale:.4 rotation:0)
-    (piece Foreground "Disc1" state:0 value:4 image:#1 fillColour:(colour DarkGreen) scale:.2 rotation:0)
-    (piece Foreground "Disc2" state:0 value:0 image:#1 fillColour:(colour Cream) scale:1 rotation:0)
-    (piece Foreground "Disc2" state:0 value:1 image:#1 fillColour:(colour Cream) scale:.8 rotation:0)
-    (piece Foreground "Disc2" state:0 value:2 image:#1 fillColour:(colour Cream) scale:.6 rotation:0)
-    (piece Foreground "Disc2" state:0 value:3 image:#1 fillColour:(colour Cream) scale:.4 rotation:0)
-    (piece Background "Disc2" state:0 value:4 image:#1 fillColour:(colour Cream) scale:.2 rotation:0)
-    (piece Background "Disc1" state:1 value:0 image:#2 fillColour:(colour DarkGreen) scale:1 rotation:0)
-    (piece Background "Disc1" state:1 value:1 image:#2 fillColour:(colour DarkGreen) scale:.8 rotation:0)
-    (piece Background "Disc1" state:1 value:2 image:#2 fillColour:(colour DarkGreen) scale:.6 rotation:0)
-    (piece Background "Disc1" state:1 value:3 image:#2 fillColour:(colour DarkGreen) scale:.4 rotation:0)
-    (piece Background "Disc1" state:1 value:4 image:#2 fillColour:(colour DarkGreen) scale:.2 rotation:0)
-    (piece Background "Disc2" state:1 value:0 image:#2 fillColour:(colour Cream) scale:1 rotation:0)
-    (piece Background "Disc2" state:1 value:1 image:#2 fillColour:(colour Cream) scale:.8 rotation:0)
-    (piece Background "Disc2" state:1 value:2 image:#2 fillColour:(colour Cream) scale:.6 rotation:0)
-    (piece Background "Disc2" state:1 value:3 image:#2 fillColour:(colour Cream) scale:.4 rotation:0)
-    (piece Background "Disc2" state:1 value:4 image:#2 fillColour:(colour Cream) scale:.2 rotation:0)
-//    (piece Scale scaleX:1.5 scaleY:.95)
-//    (show Piece Value)
-  }
+    (graphics
+        {
+        (player Colour P1 (colour DarkGreen))
+        (player Colour P2 (colour Cream))
+        (board Style Graph)
+        (board StyleThickness InnerEdges .2)
+        (board StyleThickness OuterEdges .2)
+        (board StyleThickness InnerVertices .5)
+        (show Edges Diagonal Hidden)
+        //    (piece Scale .04)  
+        //Probably should use partly tranparent colors for 3D
+        (piece Colour fillColour:(colour 0 0 0 0) strokeColour:(colour 0 0 0 0))
+        (piece Foreground "Disc1" state:0 value:0 image:#1 fillColour:(colour DarkGreen) scale:1 rotation:0)
+        (piece Foreground "Disc1" state:0 value:1 image:#1 fillColour:(colour DarkGreen) scale:.8 rotation:0)
+        (piece Foreground "Disc1" state:0 value:2 image:#1 fillColour:(colour DarkGreen) scale:.6 rotation:0)
+        (piece Foreground "Disc1" state:0 value:3 image:#1 fillColour:(colour DarkGreen) scale:.4 rotation:0)
+        (piece Foreground "Disc1" state:0 value:4 image:#1 fillColour:(colour DarkGreen) scale:.2 rotation:0)
+        (piece Foreground "Disc2" state:0 value:0 image:#1 fillColour:(colour Cream) scale:1 rotation:0)
+        (piece Foreground "Disc2" state:0 value:1 image:#1 fillColour:(colour Cream) scale:.8 rotation:0)
+        (piece Foreground "Disc2" state:0 value:2 image:#1 fillColour:(colour Cream) scale:.6 rotation:0)
+        (piece Foreground "Disc2" state:0 value:3 image:#1 fillColour:(colour Cream) scale:.4 rotation:0)
+        (piece Background "Disc2" state:0 value:4 image:#1 fillColour:(colour Cream) scale:.2 rotation:0)
+        (piece Background "Disc1" state:1 value:0 image:#2 fillColour:(colour DarkGreen) scale:1 rotation:0)
+        (piece Background "Disc1" state:1 value:1 image:#2 fillColour:(colour DarkGreen) scale:.8 rotation:0)
+        (piece Background "Disc1" state:1 value:2 image:#2 fillColour:(colour DarkGreen) scale:.6 rotation:0)
+        (piece Background "Disc1" state:1 value:3 image:#2 fillColour:(colour DarkGreen) scale:.4 rotation:0)
+        (piece Background "Disc1" state:1 value:4 image:#2 fillColour:(colour DarkGreen) scale:.2 rotation:0)
+        (piece Background "Disc2" state:1 value:0 image:#2 fillColour:(colour Cream) scale:1 rotation:0)
+        (piece Background "Disc2" state:1 value:1 image:#2 fillColour:(colour Cream) scale:.8 rotation:0)
+        (piece Background "Disc2" state:1 value:2 image:#2 fillColour:(colour Cream) scale:.6 rotation:0)
+        (piece Background "Disc2" state:1 value:3 image:#2 fillColour:(colour Cream) scale:.4 rotation:0)
+        (piece Background "Disc2" state:1 value:4 image:#2 fillColour:(colour Cream) scale:.2 rotation:0)
+        //    (piece Scale scaleX:1.5 scaleY:.95)
+        //    (show Piece Value)
+        }
 ))
 
 //---------------------------------------------
@@ -418,7 +460,7 @@
         {
         }
     )
-
+    
     <BoardShape:graphsOption>
     (ai (heuristics (score weight:2)))
 )
