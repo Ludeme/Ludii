@@ -281,7 +281,8 @@
     (graphics {
         (player Colour P1 (colour Grey))
         (player Colour P2 (colour Brown))
-        (board Style HoundsAndJackals)
+        (board Style HoundsAndJackals)       
+        (piece Colour "Die" state:1 fillColour:(colour Yellow))
     })
     
     (ai 
