@@ -20,3 +20,10 @@ script:
 after_failure:
   - cat ./hs_err.log
   - cat ./replay.log
+  
+notifications:
+  email:
+    recipients:
+      - eric.piette@maastrichtuniversity.nl
+    on_success: never # default: change
+    on_failure: always # default: always
