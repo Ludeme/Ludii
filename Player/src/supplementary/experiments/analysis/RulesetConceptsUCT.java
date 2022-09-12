@@ -106,6 +106,8 @@ public class RulesetConceptsUCT
 				{
 					if (lineSplit[i].isEmpty())
 						vector.add(Double.NaN);
+					else if (lineSplit[i].equals("null"))
+						vector.add(Double.NaN);
 					else
 						vector.add(Double.parseDouble(lineSplit[i]));
 				}
