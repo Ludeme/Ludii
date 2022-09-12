@@ -18,7 +18,7 @@ import utils.AIUtils;
 import utils.concepts.ComputePlayoutConcepts;
 
 /**
- * Predict the best agent/heuristic using external python models.
+ * Predict the best agent/heuristic using external Python models.
  * 
  * Models are produced by the "generate_agent_heuristic_prediction_models()" function in the Sklearn "Main.py" file.
  *
@@ -28,7 +28,7 @@ public class AgentPredictionExternal
 {
 
 	/**
-	 * Predict the best agent/heuristic using external python models.
+	 * Predict the best agent/heuristic using external Python models.
 	 * @param game
 	 * @param modelFilePath
 	 * @param classificationModel

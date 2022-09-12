@@ -12,6 +12,12 @@ import utils.concepts.ComputePlayoutConcepts;
 public class MetricPredictionExternal 
 {
 
+	/**
+	 * Predict the values for each metric using external Python models.
+	 * @param game
+	 * @param modelFilePath
+	 * @param compilationOnly
+	 */
 	public static Map<String,Double> predictMetrics(final Game game, final String modelFilePath, final boolean compilationOnly)
 	{
 		final long startTime = System.currentTimeMillis();
