@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -24,12 +25,14 @@ import main.collections.ListUtils;
 import main.options.Ruleset;
 import other.AI;
 import other.GameLoader;
+import other.RankUtils;
 import other.context.Context;
 import other.model.Model;
 import other.trial.Trial;
 import search.minimax.AlphaBetaSearch;
 import search.minimax.AlphaBetaSearch.AllowedSearchDepths;
 import utils.AIFactory;
+import utils.experiments.ResultsSummary;
 
 /**
  * To generate, and store, trials for every game in parallel.
@@ -196,6 +199,13 @@ public class GenerateTrialsClusterParallel
 									TIntArrayList.wrap(IntStream.range(0, numPlayers).toArray()), 120);
 						}
 						
+						final List<String> agentStrings = new ArrayList<String>(numPlayers);
+						for (int p = 1; p <= numPlayers; ++p)
+						{
+							agentStrings.add(aisListPerThread.get(0).get(p - 1).friendlyName());
+						}
+						final ResultsSummary resultsSummary = new ResultsSummary(game, agentStrings);
+						
 						for (int i = beginTrialIndex; i < NUM_TRIALS_PER_GAME; ++i)
 						{
 							final String trialFilepath = rulesetFolderPath + File.separator + trialsDirName + "Trial_" + i + ".txt";
@@ -255,6 +265,14 @@ public class GenerateTrialsClusterParallel
 												e.printStackTrace();
 												fail("Crashed when trying to save trial to file.");
 											}
+											
+											// Record outcome
+											final double[] utilities = RankUtils.agentUtilities(context);
+											final int numMovesPlayed = context.trial().numMoves() - context.trial().numInitialPlacementMoves();
+											final int[] agentPermutation = new int[currentPlayersPermutation.size() + 1];
+											currentPlayersPermutation.toArray(agentPermutation, 0, 1, currentPlayersPermutation.size());
+											
+											resultsSummary.recordResults(agentPermutation, utilities, numMovesPlayed);
 										}
 										catch (final Exception e)
 										{
@@ -282,6 +300,13 @@ public class GenerateTrialsClusterParallel
 						}
 	
 						executorService.shutdown();
+						
+						if (new HashSet<String>(agentStrings).size() > 1)
+						{
+							// We have more than one agent name, so print per-agent results
+							final File resultsFile = new File(rulesetFolderPath + File.separator + trialsDirName + "alpha_rank_data.csv");
+							resultsSummary.writeAlphaRankData(resultsFile);
+						}
 					}
 				}
 			}
@@ -298,7 +323,7 @@ public class GenerateTrialsClusterParallel
 					break;
 			}
 			
-			if(beginTrialIndex < NUM_TRIALS_PER_GAME)
+			if (beginTrialIndex < NUM_TRIALS_PER_GAME)
 			{
 				final int parallelNum = (NUM_TRIALS_PER_GAME - beginTrialIndex) > NUM_PARALLEL ? NUM_PARALLEL : (NUM_TRIALS_PER_GAME - beginTrialIndex);
 				final ExecutorService executorService = Executors.newFixedThreadPool(parallelNum, new TrialsThreadFactory());
@@ -331,6 +356,13 @@ public class GenerateTrialsClusterParallel
 					aiListPermutations = ListUtils.samplePermutations(
 							TIntArrayList.wrap(IntStream.range(0, numPlayers).toArray()), 120);
 				}
+				
+				final List<String> agentStrings = new ArrayList<String>(numPlayers);
+				for (int p = 1; p <= numPlayers; ++p)
+				{
+					agentStrings.add(aisListPerThread.get(0).get(p - 1).friendlyName());
+				}
+				final ResultsSummary resultsSummary = new ResultsSummary(game, agentStrings);
 				
 				for (int i = beginTrialIndex; i < NUM_TRIALS_PER_GAME; ++i)
 				{
@@ -391,6 +423,14 @@ public class GenerateTrialsClusterParallel
 										e.printStackTrace();
 										fail("Crashed when trying to save trial to file.");
 									}
+									
+									// Record outcome
+									final double[] utilities = RankUtils.agentUtilities(context);
+									final int numMovesPlayed = context.trial().numMoves() - context.trial().numInitialPlacementMoves();
+									final int[] agentPermutation = new int[currentPlayersPermutation.size() + 1];
+									currentPlayersPermutation.toArray(agentPermutation, 0, 1, currentPlayersPermutation.size());
+
+									resultsSummary.recordResults(agentPermutation, utilities, numMovesPlayed);
 								}
 								catch (final Exception e)
 								{
@@ -418,6 +458,13 @@ public class GenerateTrialsClusterParallel
 				}
 	
 				executorService.shutdown();
+				
+				if (new HashSet<String>(agentStrings).size() > 1)
+				{
+					// We have more than one agent name, so print per-agent results
+					final File resultsFile = new File(gameFolderPath + File.separator + trialsDirName + "alpha_rank_data.csv");
+					resultsSummary.writeAlphaRankData(resultsFile);
+				}
 			}
 		}
 	}
