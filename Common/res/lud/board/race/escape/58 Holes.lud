@@ -99,13 +99,26 @@
         <(regions "Protection" {5 7 9 34 36 38 14 43 19 48 24 53 58})> 
         
         <
-        	(forEach Site (sites (values Remembered "Throws"))
-        		(if (is Empty ("NextSiteOnTrack" (site)))
-                    (move 
-                            (from) 
-                            (to ("NextSiteOnTrack" (site)) (apply (forget Value "Throws" (site))))
-                        )
-        		)
+        	(if (= 0 (state at:(from)))
+	        	(forEach Site (sites (values Remembered "Throws"))
+	        		(if (is Empty ("NextSiteOnTrack" (site)))
+	                    (move 
+	                            (from) 
+	                            (to ("NextSiteOnTrack" (site)) (apply (forget Value "Throws" (site))))
+	                        )
+	        		)
+	        	)
+	        	(forEach Site (sites (values Remembered "Throws"))
+	        			(if (= 1 (site))
+			        		(if (is Empty ("NextSiteOnTrack" (site)))
+			                    (move 
+			                            (from) 
+			                            (to ("NextSiteOnTrack" (site)) (apply (forget Value "Throws" (site))))
+			                            (then (set State at:(last To) 0))
+			                        )
+			        		)
+		        		)
+		        	)
         	)
         > 
         
@@ -146,10 +159,13 @@
                         )
         		(phase "Movement"
         			(play
+        				(if (can Move (forEach Piece))
         				(forEach Piece
         					(then
         						(if ("HasToPlay") (moveAgain))	
         					)
+        				)
+        				(move Pass (then (forget Value "Throws" All)))
         				)
         			)
         			
