@@ -174,7 +174,7 @@
         "Rules from Carnarvon and Carter."
     )* 
     
-    (item "Carter" 
+    (item "Carter Marked" 
             
             <(hand Each)>
             
@@ -211,7 +211,44 @@
             )
             >
             
-            "Rules from Carter."
+            "Rules from Carter with marked holes."
+        )
+    
+    (item "Carter Unmarked" 
+            
+            <(hand Each)>
+            
+            <> 
+            
+            <
+            (if (= "MoveTo" (trackSite EndSite))
+                "RemovePiece"
+                (if ("IsNotOffBoard" "MoveTo") 	 			
+                    (if (is Empty "MoveTo")
+                        (move 
+                            (from) 
+                            (to "MoveTo")
+                        )
+                    )
+                )
+            )
+            > 
+            
+            <(map {(pair 19 5) (pair 9 7) (pair 48 34) (pair 38 36) })>
+            
+            <
+            (rules 
+                (start {
+                    (place "Marker1" (handSite P1) count:5)
+                    (place "Marker2" (handSite P2) count:5)
+                })
+                
+                (play ("RollMove" (or (forEach Piece) (forEach Piece container:(mover)))))
+                (end ("EscapeWin"))
+            )
+            >
+            
+            "Rules from Carter with no marked holes."
         )
     
     
@@ -350,11 +387,11 @@
     )
     
     (ruleset "Ruleset/Carter Unmarked (Suggested)" {
-        
+        "Board/Marked holes Race tracks" "Variant/Carter Unmarked"
     })
     
     (ruleset "Ruleset/Carter Marked Holes (Suggested)" {
-        "Board/Marked holes Race tracks" "Variant/Carter"
+        "Board/Marked holes Race tracks" "Variant/Carter Marked"
     })
     
     (ruleset "Ruleset/Carter Crossover 1 (Suggested)" {
@@ -554,14 +591,22 @@
         (player Colour P1 (colour Grey))
         (player Colour P2 (colour Brown))
         (show Edges Hidden)
-        (useFor "Ruleset/Carnarvon and Carter (Suggested)" (board Style HoundsAndJackals))  
-        (useFor "Ruleset/Tab Parallel Connections (Suggested)" (board Style HoundsAndJackals))   
         (piece Colour "Die" state:0 fillColour:(colour Yellow))
+        
+        (useFor "Ruleset/Carnarvon and Carter (Suggested)" (board Style HoundsAndJackals))  
+        
+        (useFor "Ruleset/Tab Parallel Connections (Suggested)" (board Style HoundsAndJackals))   
+        
         (useFor "Ruleset/Carter Marked Holes (Suggested)" (show Symbol "Disc" (sites {0 5 7 9 14 19 24 58 53  48 43 38 36 34 29}) scale:2))        
         (useFor "Ruleset/Carter Marked Holes (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
         (useFor "Ruleset/Carter Marked Holes (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
         (useFor "Ruleset/Carter Marked Holes (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
         (useFor "Ruleset/Carter Marked Holes (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
+        
+        (useFor "Ruleset/Carter Unmarked (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
+        (useFor "Ruleset/Carter Unmarked (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
+        (useFor "Ruleset/Carter Unmarked (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
+        (useFor "Ruleset/Carter Unmarked (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
     })
     
     (ai 
