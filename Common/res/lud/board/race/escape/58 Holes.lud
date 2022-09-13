@@ -101,7 +101,7 @@
         <
         	(if (= 0 (state at:(from)))
 	        	(forEach Site (sites (values Remembered "Throws"))
-	        		(if (is Empty ("NextSiteOnTrack" (site)))
+	        		(if ("CaptureCondition")
 	                    (move 
 	                            (from) 
 	                            (to ("NextSiteOnTrack" (site)) (apply (forget Value "Throws" (site))))
@@ -110,7 +110,7 @@
 	        	)
 	        	(forEach Site (sites (values Remembered "Throws"))
 	        			(if (= 1 (site))
-			        		(if (is Empty ("NextSiteOnTrack" (site)))
+			        		(if ("CaptureCondition")
 			                    (move 
 			                            (from) 
 			                            (to ("NextSiteOnTrack" (site)) (apply (forget Value "Throws" (site))))
@@ -131,6 +131,15 @@
         (define "ThrowValue" (mapEntry "Throw" (count Pips)))
         (define "IsSpecialThrow" (is In ("ThrowValue") (sites {1 4 6})))
         (define "ThrowToPlay" (sites (values Remembered "Throws")))
+        (define "CaptureCondition"
+        		(or 
+        				(is Empty ("NextSiteOnTrack" (site))) 
+        				(and 
+        					(is Enemy (who at:("NextSiteOnTrack" (site)))) 
+        					(not (is In ("NextSiteOnTrack" (site)) (sites "Protection")))
+        				)
+        			)		
+        )
         
         (rules 
             (start {
