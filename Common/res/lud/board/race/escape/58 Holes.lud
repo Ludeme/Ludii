@@ -372,6 +372,121 @@
             "Rules from Tab no marked holes."
         )
     
+    (item "Tab Marked Throw" 
+            <>
+    		<(regions "Replay" {5 7 9 34 36 38 14 43 19 48 24 53 58})> 
+            
+            <
+            	(if (if ("InOpponentHome" (from)) ("AllPiecesInOpponentHome") True)
+    	        	(if (= 0 (state at:(from)))
+    		        	(forEach Site (sites (values Remembered "Throws"))
+    		        		(if ("CaptureCondition")
+    		                    (move 
+    		                            (from) 
+    		                            (to ("NextSiteOnTrack" (site)) 
+    		                            	(apply
+    		                            	(if (not (is In ("NextSiteOnTrack" (site)) (sites "Replay")))
+    		                            	 (forget Value "Throws" (site)))
+    		                            	)
+    		                            )
+    		                        )
+    		        		)
+    		        	)
+    		        	(forEach Site (sites (values Remembered "Throws"))
+    		        			(if (= 1 (site))
+    				        		(if ("CaptureCondition")
+    				                    (move 
+    				                            (from) 
+    	    		                            (to ("NextSiteOnTrack" (site)) 
+    	        		                            	(apply
+    	        		                            	(if (not (is In ("NextSiteOnTrack" (site)) (sites "Replay")))
+    	        		                            	 (forget Value "Throws" (site)))
+    	        		                            	)
+    	        		                            )
+    				                            (then 
+    				                            	(set State at:(last To) 0)
+    				                            )
+    				                        )
+    				        		)
+    			        		)
+    			        	)
+    	        	)
+            	)
+            > 
+            
+            <
+            (map "ConnectionP1" {(pair 5 19) (pair 7 9) (pair 48 34) (pair 38 36) })
+            (map "ConnectionP2" {(pair 19 5) (pair 9 7) (pair 34 48) (pair 36 38) })
+            (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)  })
+            >
+            
+            <
+            (define "ThrowValue" (mapEntry "Throw" (count Pips)))
+            (define "IsSpecialThrow" (is In ("ThrowValue") (sites {1 4 6})))
+            (define "ThrowToPlay" (sites (values Remembered "Throws")))
+            (define "CaptureCondition"
+            		(or 
+            				(is Empty ("NextSiteOnTrack" (site))) 
+            		        (is Enemy (who at:("NextSiteOnTrack" (site)))) 
+            			)		
+            )
+            
+            (define "Connection" (if (is Mover P1) (mapEntry "ConnectionP1" #1) (mapEntry "ConnectionP2" #1)))
+            
+            (define "InOpponentHome" (is In #1 (sites Start (piece (id "Marker" Next)))))
+            (define "AllPiecesInOpponentHome" (all Sites (sites Occupied by:Mover) if:(is In (site) (sites Start (piece (id "Marker" Next))))))
+            
+            (rules 
+                (start {
+                    (place "Marker1" (sites {0..4}) state:1)
+                    (place "Marker2" (sites {29..33}) state:1)
+                })
+                
+                phases:{
+            		(phase "GetMoves"
+                          (play 
+                        		  ("RollMove"
+                                        (move Pass
+                                            (then
+                                                (remember Value "Throws" "ThrowValue")
+                                            )
+                                        )
+                                    (then (moveAgain))
+                                    )
+                        		  )
+            		
+            		(nextPhase
+                            (not ("IsSpecialThrow"))
+                            "Movement"
+            		)
+
+                            )
+            		(phase "Movement"
+            			(play
+            				(if (can Move (forEach Piece))
+            				(forEach Piece
+            					(then
+            						(if ("HasToPlay") (moveAgain))	
+            					)
+            				)
+            				(move Pass (then (forget Value "Throws" All)))
+            				)
+            			)
+            			
+                		(nextPhase
+                                (not ("HasToPlay"))
+                                "GetMoves"
+                		)
+            		)
+            				
+            	}
+                
+                (end ("CaptureAll" Next))
+            )
+            >
+            
+            "Rules from Tab no marked holes."
+        )
     
     (item "Tab Parallel Connections" 
         <>
@@ -535,7 +650,7 @@
     })
     
     (ruleset "Ruleset/Tab Marked (Throw) (Suggested)" {
-        
+        "Board/Holes Capture tracks" "Variant/Tab Marked Throw"
     })
     
     (ruleset "Ruleset/Tab Marked (Safe) (Suggested)" {
@@ -727,6 +842,17 @@
         (useFor "Ruleset/Carter Unmarked (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
         (useFor "Ruleset/Carter Unmarked (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
         (useFor "Ruleset/Carter Unmarked (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
+        
+        (useFor "Ruleset/Tab Unmarked (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
+        (useFor "Ruleset/Tab Unmarked (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
+        (useFor "Ruleset/Tab Unmarked (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
+        (useFor "Ruleset/Tab Unmarked (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
+        
+        (useFor "Ruleset/Tab Marked (Throw) (Suggested)" (show Symbol "Disc" (sites {0 5 7 9 14 19 24 58 53  48 43 38 36 34 29}) scale:2))        
+        (useFor "Ruleset/Tab Marked (Throw) (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
+        (useFor "Ruleset/Tab Marked (Throw) (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
+        (useFor "Ruleset/Tab Marked (Throw) (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
+        (useFor "Ruleset/Tab Marked (Throw) (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
     })
     
     (ai 
