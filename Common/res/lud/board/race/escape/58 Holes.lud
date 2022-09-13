@@ -105,6 +105,7 @@
 	                    (move 
 	                            (from) 
 	                            (to ("NextSiteOnTrack" (site)) (apply (forget Value "Throws" (site))))
+	                            (then ("Teleportation"))
 	                        )
 	        		)
 	        	)
@@ -114,7 +115,12 @@
 			                    (move 
 			                            (from) 
 			                            (to ("NextSiteOnTrack" (site)) (apply (forget Value "Throws" (site))))
-			                            (then (set State at:(last To) 0))
+			                            (then 
+			                            	(and
+			                            	(set State at:(last To) 0)
+			                            	("Teleportation")
+			                            	)
+			                            )
 			                        )
 			        		)
 		        		)
@@ -123,8 +129,9 @@
         > 
         
         <
-        (map {(pair 5 19) (pair 7 9) (pair 34 48) (pair 36 38) })
-        (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})
+        (map "ConnectionP1" {(pair 5 19) (pair 7 9) (pair 48 34) (pair 38 36) })
+        (map "ConnectionP2" {(pair 19 5) (pair 9 7) (pair 34 48) (pair 36 38) })
+        (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)  })
         >
         
         <
@@ -139,6 +146,16 @@
         					(not (is In ("NextSiteOnTrack" (site)) (sites "Protection")))
         				)
         			)		
+        )
+        
+        (define "Connection" (if (is Mover P1) (mapEntry "ConnectionP1" #1) (mapEntry "ConnectionP2" #1)))
+        
+        (define "Teleportation"
+            	(if ("IsNotOffBoard" ("Connection" (last To)))
+            		(if (is Empty ("Connection" (last To)))
+            			(move (from (last To)) (to ("Connection" (last To))))
+            		)
+            	)		
         )
         
         (rules 
