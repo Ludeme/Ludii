@@ -170,6 +170,19 @@
         )
         > 
     "crossover 1 board.")
+    
+    (item "Crossover One Capture Track" 
+            <
+            (board 
+                ("HoundsAndJackalsCrossoverOne")
+                {
+                (track "Track1" {0..28 58..29} loop:True P1)
+                (track "Track2" {29..58 28..0 } loop:True P2)
+                }
+                use:Vertex
+            )
+            > 
+        "crossover 1 board with capture.")
     }
 )
 
@@ -696,8 +709,129 @@
     )
     
     (item "Tab Parallel Connections" 
+            <>
+            <(regions "Protection" {5 7 9 34 36 38 14 43 19 48 24 53 58})> 
+            
+            <
+            (if (if ("InOpponentHome" (from)) ("AllPiecesInOpponentHome") True)
+                (if (= 0 (state at:(from)))
+                    (forEach Site (sites (values Remembered "Throws"))
+                        (if ("CaptureCondition")
+                            (move 
+                                (from) 
+                                (to ("NextSiteOnTrack" (site)) (apply (forget Value "Throws" (site))))
+                                (then ("Teleportation"))
+                            )
+                        )
+                    )
+                    (forEach Site (sites (values Remembered "Throws"))
+                        (if (= 1 (site))
+                            (if ("CaptureCondition")
+                                (move 
+                                    (from) 
+                                    (to ("NextSiteOnTrack" (site)) (apply (forget Value "Throws" (site))))
+                                    (then 
+                                        (and
+                                            (set State at:(last To) 0)
+                                            ("Teleportation")
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            > 
+            
+            <
+            (map "ConnectionP1" {(pair 5 19) (pair 7 9) (pair 48 34) (pair 38 36) })
+            (map "ConnectionP2" {(pair 19 5) (pair 9 7) (pair 34 48) (pair 36 38) })
+            (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)  })
+            >
+            
+            <
+            (define "ThrowValue" (mapEntry "Throw" (count Pips)))
+            (define "IsSpecialThrow" (is In ("ThrowValue") (sites {1 4 6})))
+            (define "ThrowToPlay" (sites (values Remembered "Throws")))
+            (define "CaptureCondition"
+                (or 
+                    (is Empty ("NextSiteOnTrack" (site))) 
+                    (and 
+                        (is Enemy (who at:("NextSiteOnTrack" (site)))) 
+                        (not (is In ("NextSiteOnTrack" (site)) (sites "Protection")))
+                    )
+                )		
+            )
+            
+            (define "Connection" (if (is Mover P1) (mapEntry "ConnectionP1" #1) (mapEntry "ConnectionP2" #1)))
+            
+            (define "Teleportation"
+                (if (!= (last To) ("Connection" (last To)))
+                    (if (is Empty ("Connection" (last To)))
+                        (move (from (last To)) (to ("Connection" (last To))))
+                    )
+                )		
+            )
+            
+            (define "InOpponentHome" (is In #1 (sites Start (piece (id "Marker" Next)))))
+            (define "AllPiecesInOpponentHome" (all Sites (sites Occupied by:Mover) if:(is In (site) (sites Start (piece (id "Marker" Next))))))
+            
+            (rules 
+                (start {
+                    (place "Marker1" (sites {0..4}) state:1)
+                    (place "Marker2" (sites {29..33}) state:1)
+                })
+                
+                phases:{
+                (phase "GetMoves"
+                    (play 
+                        ("RollMove"
+                            (move Pass
+                                (then
+                                    (remember Value "Throws" "ThrowValue")
+                                )
+                            )
+                            (then (moveAgain))
+                        )
+                    )
+                    
+                    (nextPhase
+                        (not ("IsSpecialThrow"))
+                        "Movement"
+                    )
+                    
+                )
+                (phase "Movement"
+                    (play
+                        (if (can Move (forEach Piece))
+                            (forEach Piece
+                                (then
+                                    (if ("HasToPlay") (moveAgain))	
+                                )
+                            )
+                            (move Pass (then (forget Value "Throws" All)))
+                        )
+                    )
+                    
+                    (nextPhase
+                        (not ("HasToPlay"))
+                        "GetMoves"
+                    )
+                )
+                
+                }
+                
+                (end ("CaptureAll" Next))
+            )
+            >
+            
+            "Rules from Tab Crossover 1."
+        )
+    
+    (item "Tab Crossover 1" 
         <>
-        <(regions "Protection" {5 7 9 34 36 38 14 43 19 48 24 53 58})> 
+        <> 
         
         <
         (if (if ("InOpponentHome" (from)) ("AllPiecesInOpponentHome") True)
@@ -732,8 +866,8 @@
         > 
         
         <
-        (map "ConnectionP1" {(pair 5 19) (pair 7 9) (pair 48 34) (pair 38 36) })
-        (map "ConnectionP2" {(pair 19 5) (pair 9 7) (pair 34 48) (pair 36 38) })
+        (map "ConnectionP1" {(pair 5 36) (pair 34 7) (pair 14 19) (pair 19 24) (pair 53 48) (pair 48 43) })
+        (map "ConnectionP2" {(pair 36 5) (pair 7 34) (pair 19 14) (pair 24 19) (pair 48 53) (pair 43 48) })
         (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)  })
         >
         
@@ -744,10 +878,7 @@
         (define "CaptureCondition"
             (or 
                 (is Empty ("NextSiteOnTrack" (site))) 
-                (and 
-                    (is Enemy (who at:("NextSiteOnTrack" (site)))) 
-                    (not (is In ("NextSiteOnTrack" (site)) (sites "Protection")))
-                )
+                (is Enemy (who at:("NextSiteOnTrack" (site)))) 
             )		
         )
         
@@ -755,7 +886,7 @@
         
         (define "Teleportation"
             (if (!= (last To) ("Connection" (last To)))
-                (if (is Empty ("Connection" (last To)))
+                (if (not ("IsFriendAt" ("Connection" (last To))))
                     (move (from (last To)) (to ("Connection" (last To))))
                 )
             )		
@@ -869,7 +1000,7 @@
     })
     
     (ruleset "Ruleset/Tab Crosssover 1 (Suggested)" {
-        
+        "Board/Crossover One Capture Track" "Variant/Tab Crossover 1"
     })
     
     (ruleset "Ruleset/Tab Crossover 2 (Suggested)" {
@@ -1074,6 +1205,14 @@
         (useFor "Ruleset/Carter Crossover 1 (Suggested)" (show Line {{5 36} {7 34}}))
         (useFor "Ruleset/Carter Crossover 1 (Suggested)" (show Line {{43 48} {48 53}} curve:{-0.5 0 -0.5 0}))
         (useFor "Ruleset/Carter Crossover 1 (Suggested)" (show Line {{14 19} {19 24}} curve:{0.5 0 0.5 0}))
+        
+        (useFor "Ruleset/Tab Crosssover 1 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
+        (useFor "Ruleset/Tab Crosssover 1 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
+        (useFor "Ruleset/Tab Crosssover 1 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
+        (useFor "Ruleset/Tab Crosssover 1 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
+        (useFor "Ruleset/Tab Crosssover 1 (Suggested)" (show Line {{5 36} {7 34}}))
+        (useFor "Ruleset/Tab Crosssover 1 (Suggested)" (show Line {{43 48} {48 53}} curve:{-0.5 0 -0.5 0}))
+        (useFor "Ruleset/Tab Crosssover 1 (Suggested)" (show Line {{14 19} {19 24}} curve:{0.5 0 0.5 0}))
     })
     
     (ai 
