@@ -1,6 +1,8 @@
 package supplementary.experiments.feature_sets;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import features.feature_sets.BaseFeatureSet;
@@ -13,7 +15,16 @@ import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
 import main.StringRoutines;
+import other.AI;
 import other.GameLoader;
+import other.context.Context;
+import other.trial.Trial;
+import policies.softmax.SoftmaxPolicyLinear;
+import search.mcts.MCTS;
+import search.mcts.MCTS.QInit;
+import search.mcts.backpropagation.MonteCarloBackprop;
+import search.mcts.finalmoveselection.RobustChild;
+import search.mcts.selection.AG0Selection;
 import utils.ExperimentFileUtils;
 
 /**
@@ -148,11 +159,50 @@ public class MemoryUsage
 						featureSets[p] = JITSPatterNetFeatureSet.construct(featureSetFilepath);
 				}
 				
-				// TODO create policies from the feature sets
+				final SoftmaxPolicyLinear softmax = new SoftmaxPolicyLinear(linFuncs, featureSets);
+				final List<AI> ais = new ArrayList<AI>();
+				ais.add(null);
 				
-				// TODO create MCTS agents around the policies
+				for (int p = 1; p <= numPlayers; ++p)
+				{
+					final MCTS mcts = 
+							new MCTS
+							(
+								new AG0Selection(),
+								softmax,
+								new MonteCarloBackprop(),
+								new RobustChild()
+							);
+					mcts.setLearnedSelectionPolicy(softmax);
+					mcts.setPlayoutValueWeight(0.5);
+					mcts.setQInit(QInit.WIN);
+					
+					ais.add(mcts);
+				}
 				
-				// TODO play a bit
+				// Play for 60 move ~= 60 seconds
+				final Trial trial = new Trial(game);
+				final Context context = new Context(game, trial);
+				boolean needStart = true;
+				
+				for (int i = 0; i < 60; ++i)
+				{
+					if (needStart)
+					{
+						needStart = false;
+						game.start(context);
+						
+						for (int p = 1; p <= numPlayers; ++p)
+						{
+							ais.get(p).initAI(game, p);
+						}
+					}
+					
+					context.model().startNewStep(context, ais, 1.0);
+					
+					if (trial.over())
+						needStart = true;
+				}
 				
 				// TODO check memory usage
 			}
