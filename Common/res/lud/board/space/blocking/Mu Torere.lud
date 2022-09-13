@@ -16,6 +16,17 @@
     )	
 )
 
+(define "MoveOnlyIfAdjacentToEnemy"
+    (move
+        Step 
+        (to if:(and
+                ("IsEmpty")
+                (is Related Adjacent (from) (sites Occupied by:Next))
+            ) 
+        )
+    )	
+)
+
 //------------------------------------------------------------------------------
 
 (game "Mu Torere"
@@ -53,12 +64,12 @@
 
 (option "Play Rules" <Play> args:{ <rules>}
     {
-    (item "Complete"   
+    (item "Adjacent Enemy to Centre"   
         <("MoveOnlyIfAdjacentToEnemyOrCentre")>
         "The game is played with all the rules"
     )*
     
-    (item "Simplified"   
+    (item "No Restriction"   
         <"StepToEmpty">         
         "The game is played with no constraint on the centre site."
     ) 
@@ -82,15 +93,20 @@
         >        
         "The constraint to move a piece adjacent to an enemy is applied only for the first two turns."
     )
+    
+    (item "Adjacent Enemy"   
+        <("MoveOnlyIfAdjacentToEnemy")>
+        "The pieces can move only if they are adjacent to an enemy piece."
+    )*
 })
 
 //------------------------------------------------------------------------------
 
 (rulesets { 
     
-    (ruleset "Ruleset/Simple (Suggested)" 
+    (ruleset "Ruleset/No Restriction (Suggested)" 
         {
-        "Board/Wheel Shape" "Play Rules/Simplified"
+        "Board/Wheel Shape" "Play Rules/No Restriction"
         }
     )    
     
@@ -106,12 +122,17 @@
         }
     )
     
-    (ruleset "Ruleset/Complete (Observed)" 
+    (ruleset "Ruleset/Adjacent Enemy to Centre (Observed)" 
         {
-        "Board/Wheel Shape" "Play Rules/Complete"
+        "Board/Wheel Shape" "Play Rules/Adjacent Enemy to Centre"
         }
     )
     
+    (ruleset "Ruleset/Adjacent Enemy (Suggested)" 
+        {
+        "Board/Wheel Shape" "Play Rules/Adjacent Enemy"
+        }
+    ) 
 })
 
 //------------------------------------------------------------------------------
@@ -120,28 +141,11 @@
     
     (info
         {
-        (description "Mu Torere is a game played by the Maori of New Zealand. It is unknown how old the game is, Best claims that it was not played by Maori people in all parts of New Zealand. The board takes the form of a circle divided into eighths, with eight points on the circumference (kewai) and the central point (putahi) being playing spaces.")
-        (useFor "Ruleset/Complete (Observed)" (rules "Play begins with the pieces on the kewai, each player on half of the circle. Players move by moving one piece to an empty adjacent space. Players can only move to the putahi when the piece being moved is next to an opponent's piece. The player that blocks the other from moving is the winner."))
-        (useFor "Ruleset/Complete (Observed)" (source "Best 1925: 60-61."))
-        (useFor "Ruleset/Complete (Observed)" (id "81"))
-        (useFor "Ruleset/Simple (Suggested)" (rules "There is no restriction on moving a piece to the center hole, except that the first move must allow the second player to move. "))
-        (useFor "Ruleset/Simple (Suggested)" (source "Murray 1951: 93."))
-        (useFor "Ruleset/Simple (Suggested)" (id "559"))
-        (source "Murray 1951: 93")
-        (id "81")
-        (version "1.3.6")
-        (classification "board/space/blocking")
-        (credit "Eric Piette")
-        (origin "This game was played in New Zealand, around 1912.")
         }
     )
     
     (graphics {
         (no Curves)
     })
-    
-    (ai 
-        "Mu Torere_ai"
-    )
     
 )
