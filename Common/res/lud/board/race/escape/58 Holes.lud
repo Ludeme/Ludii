@@ -1,5 +1,5 @@
 (define "MoveTo" ("NextSiteOnTrack" (mapEntry (count Pips))))
-
+(define "HasToPlay" (!= 0 (count Sites in:(sites (values Remembered "Throws")))))
 (define "RemovePiece" (move Remove (from)))
 
 //------------------------------------------------------------------------------
@@ -8,7 +8,7 @@
     (players 2) 
     (equipment { 
         <Board>
-        (hand Each) 
+        <Variant:hand>
         ("StickDice" 4)
         <Variant:region>
         
@@ -24,13 +24,40 @@
 
 (option "Board" <Board> args:{ <board> }
     {
-    (item "Parallel Connections" <"HoundsAndJackalsBoard"> "Parallel Connections board.")* 
+    (item "Parallel Connections Race tracks" 
+        <
+        (board 
+            ("HoundsAndJackalsGraph")
+            {
+            (track "Track1" {59 0..28 58} P1 directed:True)
+            (track "Track2" {60 29..58  } P2 directed:True)
+            }
+            use:Vertex
+        )
+        > 
+    "Parallel Connections board.")* 
+    
+    (item "Parallel Connections Capture tracks" 
+        <
+        (board 
+            ("HoundsAndJackalsGraph")
+            {
+            (track "Track1" {0..28 58..29} loop:True P1)
+            (track "Track2" {29..58 28..0 } loop:True P2)
+            }
+            use:Vertex
+        )
+        > 
+    "Parallel Connections board.")* 
     }
 )
 
-(option "Variant" <Variant> args:{ <region> <pieceMove> <map> <rules> }
+(option "Variant" <Variant> args:{ <hand> <region> <pieceMove> <map> <rules> }
     {
     (item "Carnarvon and Carter" 
+        
+        <(hand Each)>
+        
         <(regions "Replay" {14 24 43 53})> 
         
         <
@@ -64,6 +91,82 @@
         
         "Rules from Carnarvon and Carter."
     )* 
+    
+    
+    
+    (item "Tab Parallel Connections" 
+        <>
+        <(regions "Protection" {5 7 9 34 36 38 14 43 19 48 24 53 58})> 
+        
+        <
+        	(forEach Site (sites (values Remembered "Throws"))
+        		(if (is Empty ("NextSiteOnTrack" (site)))
+                    (move 
+                            (from) 
+                            (to ("NextSiteOnTrack" (site)) (apply (forget Value "Throws" (site))))
+                        )
+        		)
+        	)
+        > 
+        
+        <
+        (map {(pair 5 19) (pair 7 9) (pair 34 48) (pair 36 38) })
+        (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})
+        >
+        
+        <
+        (define "ThrowValue" (mapEntry "Throw" (count Pips)))
+        (define "IsSpecialThrow" (is In ("ThrowValue") (sites {1 4 6})))
+        (define "ThrowToPlay" (sites (values Remembered "Throws")))
+        
+        (rules 
+            (start {
+                (place "Marker1" (sites {0..4}) state:1)
+                (place "Marker2" (sites {29..33}) state:1)
+            })
+            
+            phases:{
+        		(phase "GetMoves"
+                      (play 
+                    		  ("RollMove"
+                                    (move Pass
+                                        (then
+                                            (remember Value "Throws" "ThrowValue")
+                                        )
+                                    )
+                                (then (moveAgain))
+                                )
+                    		  )
+        		
+        		(nextPhase
+                        (not ("IsSpecialThrow"))
+                        "Movement"
+        		)
+
+                        )
+        		(phase "Movement"
+        			(play
+        				(forEach Piece
+        					(then
+        						(if ("HasToPlay") (moveAgain))	
+        					)
+        				)
+        			)
+        			
+            		(nextPhase
+                            (not ("HasToPlay"))
+                            "GetMoves"
+            		)
+        		)
+        				
+        	}
+            
+            (end ("CaptureAll" Next))
+        )
+        >
+        
+        "Rules from Parallel Connections."
+    )
     }
 )
 
@@ -73,7 +176,7 @@
     
     (ruleset "Ruleset/Carnarvon and Carter (Suggested)" 
         {
-        "Board/Paralell Connections" "Variant/Carnarvon and Carter"
+        "Board/Parallel Connections Race tracks" "Variant/Carnarvon and Carter"
         }
     )
     
@@ -114,7 +217,7 @@
     })
     
     (ruleset "Ruleset/Tab Parallel Connections (Suggested)" {
-        
+        "Board/Parallel Connections Capture tracks" "Variant/Tab Parallel Connections"
     })
     
     (ruleset "Ruleset/Tab Crosssover 1 (Suggested)" {
@@ -282,7 +385,7 @@
         (player Colour P1 (colour Grey))
         (player Colour P2 (colour Brown))
         (board Style HoundsAndJackals)       
-        (piece Colour "Die" state:1 fillColour:(colour Yellow))
+        (piece Colour "Die" state:0 fillColour:(colour Yellow))
     })
     
     (ai 
