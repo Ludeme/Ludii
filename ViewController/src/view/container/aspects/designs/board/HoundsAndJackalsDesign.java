@@ -36,7 +36,7 @@ public class HoundsAndJackalsDesign extends BoardDesign
 		specialDots.set(24);
 		specialDots.set(29);
 		specialDots.set(34);
-		specialDots.set(36);
+		specialDots.set(36); 
 		specialDots.set(38);
 		specialDots.set(43);
 		specialDots.set(48);
