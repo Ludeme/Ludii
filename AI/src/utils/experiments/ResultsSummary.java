@@ -16,7 +16,7 @@ import gnu.trove.map.hash.TObjectIntHashMap;
 import main.math.statistics.Stats;
 
 /**
- * A summary of results for multiple played games
+ * A summary of results for multiple played games. Thread-safe.
  * 
  * @author Dennis Soemers
  */
@@ -93,7 +93,7 @@ public class ResultsSummary
 	 * @param gameDuration
 	 * 	Number of moves made in the game
 	 */
-	public void recordResults
+	public synchronized void recordResults
 	(
 		final int[] agentPermutation, 
 		final double[] utilities, 
@@ -102,7 +102,7 @@ public class ResultsSummary
 	{
 		for (int p = 1; p < agentPermutation.length; ++p)
 		{
-			// convert utility from [-1.0, 1.0] to [0.0, 1.0]
+			// Convert utility from [-1.0, 1.0] to [0.0, 1.0]
 			final double points = (utilities[p] + 1.0) / 2.0;
 			final int agentNumber = agentPermutation[p];
 			
@@ -140,7 +140,7 @@ public class ResultsSummary
 	 * @return Score averaged over all games, all agents with name equal to 
 	 * given name.
 	 */
-	public double avgScoreForAgentName(final String agentName)
+	public synchronized double avgScoreForAgentName(final String agentName)
 	{
 		double sumScores = 0.0;
 		int sumNumGames = 0;
@@ -164,7 +164,7 @@ public class ResultsSummary
 	 * Generates an intermediate summary of results.
 	 * @return The generated summary
 	 */
-	public String generateIntermediateSummary()
+	public synchronized String generateIntermediateSummary()
 	{
 		final StringBuilder sb = new StringBuilder();
 		
@@ -220,7 +220,7 @@ public class ResultsSummary
 	 * 
 	 * @param outFile
 	 */
-	public void writeAlphaRankData(final File outFile)
+	public synchronized void writeAlphaRankData(final File outFile)
 	{
 		try (final PrintWriter writer = new PrintWriter(outFile, "UTF-8"))
 		{
@@ -272,72 +272,11 @@ public class ResultsSummary
 
 	//-------------------------------------------------------------------------
 	
-	public Stats[] agentPoints() 
+	public synchronized Stats[] agentPoints() 
 	{
 		return agentPoints;
 	}
-
-	
 	
 	//-------------------------------------------------------------------------
-
-	/**
-	 * if several similar EvalGamesSet are done, this method summerises the results together.
-	 * doesnt do savety check if same agents apply
-	 * 
-	 * @param first the resultSummery to squash the results of the second in
-	 * @param second 
-	 */
-	public static void squash(ResultsSummary first, ResultsSummary second) {
-		
-		for (int i = 0; i < second.agentGameDurations.length; i++) {
-			Stats secondAgentGameDurations = second.agentGameDurations[i];
-			Stats firstAgentGameDurations = first.agentGameDurations[i];
-			squash(firstAgentGameDurations,secondAgentGameDurations);
-			
-			
-			Stats[] firstStats = first.agentGameDurationsPerPlayer[i];
-			Stats[] secondStats = second.agentGameDurationsPerPlayer[i];
-			for (int j = 0; j < firstStats.length; j++) {
-				squash(firstStats[j], secondStats[j]);
-			}
-			
-			Stats[] secondStats2 = second.agentPointsPerPlayer[i];
-			Stats[] firstStats2 = first.agentPointsPerPlayer[i];
-			for (int j = 0; j < firstStats.length; j++) {
-				squash(firstStats2[j], secondStats2[j]);
-			}		
-		}
-		
-		for (List<String> key : second.matchupCountsMap.keySet()) {
-			if (!first.matchupCountsMap.containsKey(key))first.matchupCountsMap.put(key, second.matchupCountsMap.get(key));
-			else {
-				first.matchupCountsMap.adjustValue(key, second.matchupCountsMap.get(key));
-			}
-		}
-		for (List<String> key : second.matchupPayoffsMap.keySet()) {
-			if (!first.matchupPayoffsMap.containsKey(key))first.matchupPayoffsMap.put(key, second.matchupPayoffsMap.get(key));
-			else {
-				double[] smth = first.matchupPayoffsMap.get(key);
-				double[] smth2 = second.matchupPayoffsMap.get(key);
-				for (int j = 0; j < smth.length; j++) {
-					smth[j]+=smth2[j];
-				}
-			}
-		}
-	}
-
-	/**
-	 * appends the values of second into the first
-	 * @param firstAgentGameDurations
-	 * @param secondAgentGameDurations
-	 */
-	private static void squash(Stats firstStats, Stats secondStats) {
-		if (firstStats==null||secondStats==null)return;
-		int n = secondStats.n();
-		for (int j = 0; j < n; j++) {
-			firstStats.addSample(secondStats.get(j));
-		}
-	}
 	
 }
