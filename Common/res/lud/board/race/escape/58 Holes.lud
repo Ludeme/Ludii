@@ -68,16 +68,29 @@
                     (move 
                         (from) 
                         (to "MoveTo")
-                        (then ("ReplayInMovingOn" (sites "Replay")))
+                        (then
+                        	(and
+	                        	("ReplayInMovingOn" (sites "Replay"))
+	                        	("Teleportation")
+                        	)
+                        )
                     )
                 )
             )
         )
         > 
         
-        <(map {(pair 5 19) (pair 7 9) (pair 34 48) (pair 36 38) })>
+        <(map {(pair 19 5) (pair 9 7) (pair 48 34) (pair 38 36) })>
         
         <
+        (define "Teleportation"
+            	(if ("IsNotOffBoard" (mapEntry (last To)))
+            		(if (is Empty (mapEntry (last To)))
+            			(move (from (last To)) (to (mapEntry (last To))))
+            		)
+            	)		
+        )
+        
         (rules 
             (start {
                 (place "Marker1" (handSite P1) count:5)
