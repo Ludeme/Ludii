@@ -65,11 +65,11 @@ public class MemoryUsage
 				"Gonnect.lud",
 				"Havannah.lud",
 				"Hex.lud",
+				"Kensington.lud",
 				"Knightthrough.lud",
 				"Konane.lud",
 				"Level Chess.lud",
 				"Lines of Action.lud",
-				"Omega.lud",
 				"Pentalath.lud",
 				"Pretwa.lud",
 				"Reversi.lud",
@@ -233,7 +233,8 @@ public class MemoryUsage
 						final JITSPatterNetFeatureSet featureSet = (JITSPatterNetFeatureSet) featureSets[p];
 						final Map<MoveFeaturesKey, SPatterNet> spatterNets = featureSet.spatterNetMapThresholded();
 						
-						System.out.println("Num keys = " + spatterNets.keySet().size());
+						System.out.println("Num thresholded keys = " + spatterNets.keySet().size());
+						System.out.println("Num non-thresholded keys = " + featureSet.spatterNetMap().keySet().size());
 					}
 				}
 				

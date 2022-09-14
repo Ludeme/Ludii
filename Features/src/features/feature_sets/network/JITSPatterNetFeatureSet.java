@@ -716,7 +716,7 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 			
 			final boolean isKeyReactive = (key.lastFrom() >= 0 || key.lastTo() >= 0);
 			
-			if (net == null && !isKeyReactive)	// NOTE: we assume that proactive features are always computed before reactive ones
+			if (net == null && !isKeyReactive)	// FIXME
 			{
 				// JIT: instantiate net for this key
 				final BipartiteGraphFeatureInstanceSet proactiveBipartiteGraph = new BipartiteGraphFeatureInstanceSet();
@@ -819,8 +819,15 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 					);
 				}
 
-				net = proactiveBipartiteGraph.toSPatterNet(getNumSpatialFeatures(), new BitSet(), gameRef().get(), key.playerIdx());
-				spatterNetMap.put(new ProactiveFeaturesKey((ProactiveFeaturesKey)key), net);
+				if (isKeyReactive)
+				{
+					net = spatterNetMap.get(key);
+				}
+				else
+				{
+					net = proactiveBipartiteGraph.toSPatterNet(getNumSpatialFeatures(), new BitSet(), gameRef().get(), key.playerIdx());
+					spatterNetMap.put(new ProactiveFeaturesKey((ProactiveFeaturesKey)key), net);
+				}
 			}
 			
 			return net;
