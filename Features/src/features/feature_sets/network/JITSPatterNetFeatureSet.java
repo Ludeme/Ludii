@@ -715,8 +715,8 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 			SPatterNet net = spatterNetMap.get(key);
 			
 			final boolean isKeyReactive = (key.lastFrom() >= 0 || key.lastTo() >= 0);
-			
-			if (net == null && !isKeyReactive)	// FIXME
+						
+			if (net == null && !isKeyReactive)		// NOTE: we assume that proactive features are always computed before reactive ones
 			{
 				// JIT: instantiate net for this key
 				final BipartiteGraphFeatureInstanceSet proactiveBipartiteGraph = new BipartiteGraphFeatureInstanceSet();

@@ -268,7 +268,7 @@ public class SPatterNet
 		//
 		// The instance(s) that can potentially get proven by a proposition i through this mechanism
 		// will be marked "immune" and cannot get deactivated again through the same mechanism (proving
-		// a difference instance of the same feature) by a later proposition j > i. This is because
+		// a different instance of the same feature) by a later proposition j > i. This is because
 		// we want to avoid having to track which features are already "proven" (but not yet included
 		// because their single remaining instance still needs to be visited), and also want to avoid
 		// explicitly checking for duplicate features
