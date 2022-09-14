@@ -84,12 +84,20 @@ public class TestSPatterNetFeatureSet
 					final List<FeatureInstance> activeInstances =
 							featureSet.getActiveSpatialFeatureInstances(context.state(), lastFrom, lastTo, from, to, move.mover());
 					final TIntArrayList activeFeatureIndices = 
-							featureSet.getActiveSpatialFeatureIndices(context.state(), lastFrom, lastTo, from, to, move.mover(), false);
+							featureSet.getActiveSpatialFeatureIndices
+							(
+								context.state(), lastFrom, lastTo, from, to, move.mover(), 
+								Math.random() < 0.5 ? true : false
+							);
 					
 					final List<FeatureInstance> jitActiveInstances =
 							jitFeatureSet.getActiveSpatialFeatureInstances(context.state(), lastFrom, lastTo, from, to, move.mover());
 					final TIntArrayList jitActiveFeatureIndices = 
-							jitFeatureSet.getActiveSpatialFeatureIndices(context.state(), lastFrom, lastTo, from, to, move.mover(), false);
+							jitFeatureSet.getActiveSpatialFeatureIndices
+							(
+								context.state(), lastFrom, lastTo, from, to, move.mover(), 
+								Math.random() < 0.5 ? true : false
+							);
 					
 					// Convert instances to bitset representation, retaining only features (not caring about instances anymore)
 					final BitSet instancesBitSet = new BitSet();

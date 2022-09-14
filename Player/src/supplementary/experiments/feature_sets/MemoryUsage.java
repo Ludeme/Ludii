@@ -153,7 +153,15 @@ public class MemoryUsage
 			
 			final BaseFeatureSet[] featureSets = new BaseFeatureSet[numPlayers + 1];
 			
-			for (final FeatureSetImplementations impl : new FeatureSetImplementations[] {FeatureSetImplementations.SPATTERNET, FeatureSetImplementations.JITSPATTERNET})
+			for 
+			(
+				final FeatureSetImplementations impl : 
+					new FeatureSetImplementations[] 
+							{
+								FeatureSetImplementations.SPATTERNET, 
+								FeatureSetImplementations.JITSPATTERNET
+							}
+			)
 			{
 				System.out.println("Implementation: " + impl);
 				for (int p = 1; p <= numPlayers; ++p)
@@ -199,10 +207,14 @@ public class MemoryUsage
 						needStart = false;
 						game.start(context);
 						
+						final long startTime = System.currentTimeMillis();
 						for (int p = 1; p <= numPlayers; ++p)
 						{
 							ais.get(p).initAI(game, p);
 						}
+						final long endTime = System.currentTimeMillis();
+						
+						System.out.println("init for " + numPlayers + " players took " + ((endTime - startTime) / 1000.0) + " seconds.");
 					}
 					
 					context.model().startNewStep(context, ais, 1.0);
