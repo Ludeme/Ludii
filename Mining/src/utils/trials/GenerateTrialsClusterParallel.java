@@ -278,16 +278,16 @@ public class GenerateTrialsClusterParallel
 										{
 											e.printStackTrace();
 										}
+										finally
+										{
+											latch.countDown();
+										}
 									}
 								);
 							}				
 							catch (final Exception e)
 							{
 								e.printStackTrace();
-							}
-							finally
-							{
-								latch.countDown();
 							}
 						}
 						try
@@ -436,16 +436,16 @@ public class GenerateTrialsClusterParallel
 								{
 									e.printStackTrace();
 								}
+								finally
+								{
+									latch.countDown();
+								}
 							}
 						);
 					}				
 					catch (final Exception e)
 					{
 						e.printStackTrace();
-					}
-					finally
-					{
-						latch.countDown();
 					}
 				}
 				try
