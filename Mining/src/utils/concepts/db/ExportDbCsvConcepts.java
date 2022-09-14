@@ -933,7 +933,7 @@ public class ExportDbCsvConcepts
 		int num = 0;
 		for (final File trialFile : trialFolder.listFiles())
 		{
-			if(trialFile.getName().contains("lud"))
+			if(trialFile.getName().contains(".lud"))
 			{
 				MatchRecord loadedRecord;
 				try
