@@ -620,11 +620,27 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 	}
 	
 	/**
+	 * @return Map of SPatterNets for reactive features (thresholded)
+	 */
+	public HashMap<ReactiveFeaturesKey, SPatterNet> reactiveFeaturesThresholded()
+	{
+		return reactiveFeaturesThresholded;
+	}
+	
+	/**
 	 * @return Map of SPatterNets for proactive features
 	 */
 	public HashMap<ProactiveFeaturesKey, SPatterNet> proactiveFeatures()
 	{
 		return proactiveFeatures;
+	}
+	
+	/**
+	 * @return Map of SPatterNets for proactive features (thresholded)
+	 */
+	public HashMap<ProactiveFeaturesKey, SPatterNet> proactiveFeaturesThresholded()
+	{
+		return proactiveFeaturesThresholded;
 	}
 	
 	//-------------------------------------------------------------------------

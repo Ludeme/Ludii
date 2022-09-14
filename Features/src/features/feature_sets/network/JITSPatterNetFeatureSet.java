@@ -926,6 +926,14 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 		{
 			return spatterNetMap;
 		}
+		
+		/**
+		 * @return Map of SPatterNets (thresholded)
+		 */
+		public Map<MoveFeaturesKey, SPatterNet> spatterNetMapThresholded()
+		{
+			return spatterNetMapThresholded;
+		}
 	}
 	
 	//-------------------------------------------------------------------------
@@ -936,6 +944,14 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 	public Map<MoveFeaturesKey, SPatterNet> spatterNetMap()
 	{
 		return jitMap.spatterNetMap();
+	}
+	
+	/**
+	 * @return Map of SPatterNets for reactive as well as proactive features (thresholded)
+	 */
+	public Map<MoveFeaturesKey, SPatterNet> spatterNetMapThresholded()
+	{
+		return jitMap.spatterNetMapThresholded();
 	}
 	
 	//-------------------------------------------------------------------------

@@ -218,8 +218,8 @@ public class MemoryUsage
 					{
 						System.out.println("p = " + p);
 						final SPatterNetFeatureSet featureSet = (SPatterNetFeatureSet) featureSets[p];
-						final HashMap<ReactiveFeaturesKey, SPatterNet> reactiveSPatterNets = featureSet.reactiveFeatures();
-						final HashMap<ProactiveFeaturesKey, SPatterNet> proactiveSPatterNets = featureSet.proactiveFeatures();
+						final HashMap<ReactiveFeaturesKey, SPatterNet> reactiveSPatterNets = featureSet.reactiveFeaturesThresholded();
+						final HashMap<ProactiveFeaturesKey, SPatterNet> proactiveSPatterNets = featureSet.proactiveFeaturesThresholded();
 						
 						System.out.println("Num reactive keys = " + reactiveSPatterNets.keySet().size());
 						System.out.println("Num proactive keys = " + proactiveSPatterNets.keySet().size());
@@ -231,7 +231,7 @@ public class MemoryUsage
 					{
 						System.out.println("p = " + p);
 						final JITSPatterNetFeatureSet featureSet = (JITSPatterNetFeatureSet) featureSets[p];
-						final Map<MoveFeaturesKey, SPatterNet> spatterNets = featureSet.spatterNetMap();
+						final Map<MoveFeaturesKey, SPatterNet> spatterNets = featureSet.spatterNetMapThresholded();
 						
 						System.out.println("Num keys = " + spatterNets.keySet().size());
 					}
