@@ -933,24 +933,27 @@ public class ExportDbCsvConcepts
 		int num = 0;
 		for (final File trialFile : trialFolder.listFiles())
 		{
-			MatchRecord loadedRecord;
-			try
+			if(trialFile.getName().contains("lud"))
 			{
-				loadedRecord = MatchRecord.loadMatchRecordFromTextFile(trialFile, game);
-				final Trial loadedTrial = loadedRecord.trial();
-				trials.add(loadedTrial);
-				allStoredRNG.add(loadedRecord.rngState());
-				num++;
-				if (num == limit)
-					break;
-			}
-			catch (final FileNotFoundException e)
-			{
-				e.printStackTrace();
-			}
-			catch (final IOException e)
-			{
-				e.printStackTrace();
+				MatchRecord loadedRecord;
+				try
+				{
+					loadedRecord = MatchRecord.loadMatchRecordFromTextFile(trialFile, game);
+					final Trial loadedTrial = loadedRecord.trial();
+					trials.add(loadedTrial);
+					allStoredRNG.add(loadedRecord.rngState());
+					num++;
+					if (num == limit)
+						break;
+				}
+				catch (final FileNotFoundException e)
+				{
+					e.printStackTrace();
+				}
+				catch (final IOException e)
+				{
+					e.printStackTrace();
+				}
 			}
 		}
 	}
