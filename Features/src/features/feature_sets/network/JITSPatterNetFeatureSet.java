@@ -918,6 +918,24 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 			
 			return net;
 		}
+		
+		/**
+		 * @return Map of SPatterNets
+		 */
+		public Map<MoveFeaturesKey, SPatterNet> spatterNetMap()
+		{
+			return spatterNetMap;
+		}
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return Map of SPatterNets for reactive as well as proactive features
+	 */
+	public Map<MoveFeaturesKey, SPatterNet> spatterNetMap()
+	{
+		return jitMap.spatterNetMap();
 	}
 	
 	//-------------------------------------------------------------------------

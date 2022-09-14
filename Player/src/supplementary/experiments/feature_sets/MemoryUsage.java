@@ -2,12 +2,18 @@ package supplementary.experiments.feature_sets;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import features.feature_sets.BaseFeatureSet;
 import features.feature_sets.BaseFeatureSet.FeatureSetImplementations;
+import features.feature_sets.BaseFeatureSet.MoveFeaturesKey;
+import features.feature_sets.BaseFeatureSet.ProactiveFeaturesKey;
+import features.feature_sets.BaseFeatureSet.ReactiveFeaturesKey;
 import features.feature_sets.network.JITSPatterNetFeatureSet;
+import features.feature_sets.network.SPatterNet;
 import features.feature_sets.network.SPatterNetFeatureSet;
 import function_approx.LinearFunction;
 import game.Game;
@@ -90,6 +96,7 @@ public class MemoryUsage
 		
 		for (final String gameName : GAMES)
 		{
+			System.out.println("Game: " + gameName);
 			final Game game = GameLoader.loadGameFromName(gameName);
 			final int numPlayers = game.players().count();
 			
@@ -148,6 +155,7 @@ public class MemoryUsage
 			
 			for (final FeatureSetImplementations impl : new FeatureSetImplementations[] {FeatureSetImplementations.SPATTERNET, FeatureSetImplementations.JITSPATTERNET})
 			{
+				System.out.println("Implementation: " + impl);
 				for (int p = 1; p <= numPlayers; ++p)
 				{
 					final String parentDir = new File(policyWeightFilepathsPerPlayer[p]).getParent();
@@ -174,7 +182,6 @@ public class MemoryUsage
 								new RobustChild()
 							);
 					mcts.setLearnedSelectionPolicy(softmax);
-					mcts.setPlayoutValueWeight(0.5);
 					mcts.setQInit(QInit.WIN);
 					
 					ais.add(mcts);
@@ -204,8 +211,36 @@ public class MemoryUsage
 						needStart = true;
 				}
 				
-				// TODO check memory usage
+				// Check memory usage
+				if (impl == FeatureSetImplementations.SPATTERNET)
+				{
+					for (int p = 1; p <= numPlayers; ++p)
+					{
+						System.out.println("p = " + p);
+						final SPatterNetFeatureSet featureSet = (SPatterNetFeatureSet) featureSets[p];
+						final HashMap<ReactiveFeaturesKey, SPatterNet> reactiveSPatterNets = featureSet.reactiveFeatures();
+						final HashMap<ProactiveFeaturesKey, SPatterNet> proactiveSPatterNets = featureSet.proactiveFeatures();
+						
+						System.out.println("Num reactive keys = " + reactiveSPatterNets.keySet().size());
+						System.out.println("Num proactive keys = " + proactiveSPatterNets.keySet().size());
+					}
+				}
+				else if (impl == FeatureSetImplementations.JITSPATTERNET)
+				{
+					for (int p = 1; p <= numPlayers; ++p)
+					{
+						System.out.println("p = " + p);
+						final JITSPatterNetFeatureSet featureSet = (JITSPatterNetFeatureSet) featureSets[p];
+						final Map<MoveFeaturesKey, SPatterNet> spatterNets = featureSet.spatterNetMap();
+						
+						System.out.println("Num keys = " + spatterNets.keySet().size());
+					}
+				}
+				
+				System.out.println();
 			}
+			
+			System.out.println();
 		}
 	}
 	
