@@ -120,7 +120,10 @@ public class MemoryUsage
 					"jit_num_props_reactive",
 					"keys_ratio",
 					"keys_ratio_proactive",
-					"keys_ratio_reactive"
+					"keys_ratio_reactive",
+					"props_ratio",
+					"props_ratio_proactive",
+					"props_ratio_reactive"
 				)
 			);
 			
@@ -385,6 +388,9 @@ public class MemoryUsage
 				stringsToWrite.add(String.valueOf(((double) spatternetProactiveKeys.size() + spatternetReactiveKeys.size()) / (jitSpatternetProactiveKeys.size() + jitSpatternetReactiveKeys.size())));
 				stringsToWrite.add(String.valueOf(((double) spatternetProactiveKeys.size()) / (jitSpatternetProactiveKeys.size())));
 				stringsToWrite.add(String.valueOf(((double) spatternetReactiveKeys.size()) / (jitSpatternetReactiveKeys.size())));
+				stringsToWrite.add(String.valueOf(((double) spatternetNumPropsProactive + spatternetNumPropsReactive) / (jitNumPropsProactive + jitNumPropsReactive)));
+				stringsToWrite.add(String.valueOf(((double) spatternetNumPropsProactive) / (jitNumPropsProactive)));
+				stringsToWrite.add(String.valueOf(((double) spatternetNumPropsReactive) / (jitNumPropsReactive)));
 				writer.println(StringRoutines.join(",", stringsToWrite));
 			}
 		}
