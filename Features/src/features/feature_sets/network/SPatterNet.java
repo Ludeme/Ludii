@@ -577,5 +577,15 @@ public class SPatterNet
 	}
 	
 	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return Number of propositions in this SPatterNet
+	 */
+	public int numPropositions()
+	{
+		return propositions.length;
+	}
+	
+	//-------------------------------------------------------------------------
 
 }
