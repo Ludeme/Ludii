@@ -6,11 +6,9 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 import features.feature_sets.BaseFeatureSet;
@@ -186,10 +184,10 @@ public class MemoryUsage
 				
 				final BaseFeatureSet[] featureSets = new BaseFeatureSet[numPlayers + 1];
 				
-				final Set<ReactiveFeaturesKey> spatternetReactiveKeys = new HashSet<ReactiveFeaturesKey>();
-				final Set<ProactiveFeaturesKey> spatternetProactiveKeys = new HashSet<ProactiveFeaturesKey>();
-				final Set<ReactiveFeaturesKey> jitSpatternetReactiveKeys = new HashSet<ReactiveFeaturesKey>();
-				final Set<ProactiveFeaturesKey> jitSpatternetProactiveKeys = new HashSet<ProactiveFeaturesKey>();
+				final Map<ReactiveFeaturesKey, SPatterNet> spatternetReactiveMap = new HashMap<ReactiveFeaturesKey, SPatterNet>();
+				final Map<ProactiveFeaturesKey, SPatterNet> spatternetProactiveMap = new HashMap<ProactiveFeaturesKey, SPatterNet>();
+				final Map<ReactiveFeaturesKey, SPatterNet> jitSpatternetReactiveMap = new HashMap<ReactiveFeaturesKey, SPatterNet>();
+				final Map<ProactiveFeaturesKey, SPatterNet> jitSpatternetProactiveMap = new HashMap<ProactiveFeaturesKey, SPatterNet>();
 				
 				long spatternetNumPropsProactive = 0L;
 				long spatternetNumPropsReactive = 0L;
@@ -276,20 +274,16 @@ public class MemoryUsage
 							final HashMap<ReactiveFeaturesKey, SPatterNet> reactiveSPatterNets = featureSet.reactiveFeaturesThresholded();
 							final HashMap<ProactiveFeaturesKey, SPatterNet> proactiveSPatterNets = featureSet.proactiveFeaturesThresholded();
 							
-							spatternetReactiveKeys.addAll(reactiveSPatterNets.keySet());
-							spatternetProactiveKeys.addAll(proactiveSPatterNets.keySet());
-							
-							System.out.println("Num reactive keys = " + reactiveSPatterNets.keySet().size());
-							System.out.println("Num proactive keys = " + proactiveSPatterNets.keySet().size());
-							
 							for (final Entry<ReactiveFeaturesKey, SPatterNet> reactiveEntry : reactiveSPatterNets.entrySet())
 							{
 								spatternetNumPropsReactive += reactiveEntry.getValue().numPropositions();
+								spatternetReactiveMap.put(reactiveEntry.getKey(), reactiveEntry.getValue());
 							}
 							
 							for (final Entry<ProactiveFeaturesKey, SPatterNet> proactiveEntry : proactiveSPatterNets.entrySet())
 							{
 								spatternetNumPropsProactive += proactiveEntry.getValue().numPropositions();
+								spatternetProactiveMap.put(proactiveEntry.getKey(), proactiveEntry.getValue());
 							}
 						}
 					}
@@ -305,16 +299,34 @@ public class MemoryUsage
 							{
 								if (key instanceof ReactiveFeaturesKey)
 								{
-									if (jitSpatternetReactiveKeys.add((ReactiveFeaturesKey)key))
+									if (jitSpatternetReactiveMap.put((ReactiveFeaturesKey)key, spatterNets.get(key)) == null)
 										jitNumPropsReactive += spatterNets.get(key).numPropositions();
+									
+//									if (spatternetReactiveMap.containsKey(key))
+//									{
+//										if (spatternetReactiveMap.get(key).numPropositions() != spatterNets.get(key).numPropositions())
+//										{
+//											System.out.println("normal has " + spatternetReactiveMap.get(key).numPropositions() + " props for " + key);
+//											System.out.println("JIT has " + spatterNets.get(key).numPropositions() + " props for " + key);
+//										}
+//									}
 								}
 								else
 								{
-									if (jitSpatternetProactiveKeys.add((ProactiveFeaturesKey)key))
+									if (jitSpatternetProactiveMap.put((ProactiveFeaturesKey)key, spatterNets.get(key)) == null)
 										jitNumPropsProactive += spatterNets.get(key).numPropositions();
 									
-	//								if (!spatternetProactiveKeys.contains(key))
-	//									System.out.println("num props = " + spatterNets.get(key).numPropositions());
+//									if (!spatternetProactiveKeys.contains(key) && spatterNets.get(key).numPropositions() > 0)
+//										System.out.println("num props = " + spatterNets.get(key).numPropositions() + " for key: " + key);
+									
+//									if (spatternetProactiveMap.containsKey(key))
+//									{
+//										if (spatternetProactiveMap.get(key).numPropositions() != spatterNets.get(key).numPropositions())
+//										{
+//											System.out.println("normal has " + spatternetProactiveMap.get(key).numPropositions() + " props for " + key);
+//											System.out.println("JIT has " + spatterNets.get(key).numPropositions() + " props for " + key);
+//										}
+//									}
 								}
 							}
 							
@@ -322,21 +334,36 @@ public class MemoryUsage
 							{
 								if (key instanceof ReactiveFeaturesKey)
 								{
-									if (jitSpatternetReactiveKeys.add((ReactiveFeaturesKey)key))
+									if (jitSpatternetReactiveMap.put((ReactiveFeaturesKey)key, featureSet.spatterNetMap().get(key)) == null)
 										jitNumPropsReactive += featureSet.spatterNetMap().get(key).numPropositions();
+									
+//									if (spatternetReactiveMap.containsKey(key))
+//									{
+//										if (spatternetReactiveMap.get(key).numPropositions() != featureSet.spatterNetMap().get(key).numPropositions())
+//										{
+//											System.out.println("normal has " + spatternetReactiveMap.get(key).numPropositions() + " props for " + key);
+//											System.out.println("JIT has " + featureSet.spatterNetMap().get(key).numPropositions() + " props for " + key);
+//										}
+//									}
 								}
 								else
 								{
-									if (jitSpatternetProactiveKeys.add((ProactiveFeaturesKey)key))
+									if (jitSpatternetProactiveMap.put((ProactiveFeaturesKey)key, featureSet.spatterNetMap().get(key)) == null)
 										jitNumPropsProactive += featureSet.spatterNetMap().get(key).numPropositions();
 									
-	//								if (!spatternetProactiveKeys.contains(key))
-	//									System.out.println("num props = " + featureSet.spatterNetMap().get(key).numPropositions());
+//									if (!spatternetProactiveKeys.contains(key) && featureSet.spatterNetMap().get(key).numPropositions() > 0)
+//										System.out.println("num props = " + featureSet.spatterNetMap().get(key).numPropositions() + " for key: " + key);
+								
+//									if (spatternetProactiveMap.containsKey(key))
+//									{
+//										if (spatternetProactiveMap.get(key).numPropositions() != featureSet.spatterNetMap().get(key).numPropositions())
+//										{
+//											System.out.println("normal has " + spatternetProactiveMap.get(key).numPropositions() + " props for " + key);
+//											System.out.println("JIT has " + featureSet.spatterNetMap().get(key).numPropositions() + " props for " + key);
+//										}
+//									}
 								}
 							}
-							
-							System.out.println("Num thresholded keys = " + spatterNets.keySet().size());
-							System.out.println("Num non-thresholded keys = " + featureSet.spatterNetMap().keySet().size());
 						}
 					}
 					
@@ -377,17 +404,17 @@ public class MemoryUsage
 				
 				final List<String> stringsToWrite = new ArrayList<String>();
 				stringsToWrite.add(StringRoutines.quote(gameName));
-				stringsToWrite.add(String.valueOf(spatternetProactiveKeys.size()));
-				stringsToWrite.add(String.valueOf(spatternetReactiveKeys.size()));
+				stringsToWrite.add(String.valueOf(spatternetProactiveMap.size()));
+				stringsToWrite.add(String.valueOf(spatternetReactiveMap.size()));
 				stringsToWrite.add(String.valueOf(spatternetNumPropsProactive));
 				stringsToWrite.add(String.valueOf(spatternetNumPropsReactive));
-				stringsToWrite.add(String.valueOf(jitSpatternetProactiveKeys.size()));
-				stringsToWrite.add(String.valueOf(jitSpatternetReactiveKeys.size()));
+				stringsToWrite.add(String.valueOf(jitSpatternetProactiveMap.size()));
+				stringsToWrite.add(String.valueOf(jitSpatternetReactiveMap.size()));
 				stringsToWrite.add(String.valueOf(jitNumPropsProactive));
 				stringsToWrite.add(String.valueOf(jitNumPropsReactive));
-				stringsToWrite.add(String.valueOf(((double) spatternetProactiveKeys.size() + spatternetReactiveKeys.size()) / (jitSpatternetProactiveKeys.size() + jitSpatternetReactiveKeys.size())));
-				stringsToWrite.add(String.valueOf(((double) spatternetProactiveKeys.size()) / (jitSpatternetProactiveKeys.size())));
-				stringsToWrite.add(String.valueOf(((double) spatternetReactiveKeys.size()) / (jitSpatternetReactiveKeys.size())));
+				stringsToWrite.add(String.valueOf(((double) spatternetProactiveMap.size() + spatternetReactiveMap.size()) / (jitSpatternetProactiveMap.size() + jitSpatternetReactiveMap.size())));
+				stringsToWrite.add(String.valueOf(((double) spatternetProactiveMap.size()) / (jitSpatternetProactiveMap.size())));
+				stringsToWrite.add(String.valueOf(((double) spatternetReactiveMap.size()) / (jitSpatternetReactiveMap.size())));
 				stringsToWrite.add(String.valueOf(((double) spatternetNumPropsProactive + spatternetNumPropsReactive) / (jitNumPropsProactive + jitNumPropsReactive)));
 				stringsToWrite.add(String.valueOf(((double) spatternetNumPropsProactive) / (jitNumPropsProactive)));
 				stringsToWrite.add(String.valueOf(((double) spatternetNumPropsReactive) / (jitNumPropsReactive)));
