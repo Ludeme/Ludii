@@ -402,6 +402,8 @@ public class ExportDbCsvConcepts
 		final List<String> games = new ArrayList<String>();
 		final List<String> rulesets = new ArrayList<String>();
 		final TIntArrayList ids = new TIntArrayList();
+		
+		// Get the ids of the rulesets.
 		try (final InputStream in = ExportDbCsvConcepts.class.getResourceAsStream(GAME_RULESET_PATH);
 				BufferedReader reader = new BufferedReader(new InputStreamReader(in));)
 		{
@@ -436,6 +438,11 @@ public class ExportDbCsvConcepts
 		final String outputRulesetConcepts = rulesetExpected.isEmpty() ? "RulesetConcepts" + fileName + ".csv"
 				: "RulesetConcepts" + fileName + "-" + rulesetExpected.substring(8) + ".csv";
 		System.out.println("Writing " + outputRulesetConcepts);
+		
+		// Do nothing if the files already exist.
+		final File file = new File(outputRulesetConcepts);
+		if(file.exists())
+			return;
 		
 		// Computation of the concepts
 		try (final PrintWriter writer = new UnixPrintWriter(new File(outputRulesetConcepts), "UTF-8"))
