@@ -1416,25 +1416,25 @@ public class ExportDbCsvConcepts
 //						edgesUsage.set(j, edgesUsage.get(j)+1);
 //				}
 
-				// TO PRINT THE NUMBER OF PIECES PER TRIAL
-//				 int countPieces = 0;
-//				 int countPiecesP1 = 0;
-//				 int countPiecesP2 = 0;
-//				 final ContainerState cs = context.containerState(0);
-//				 final int numCells = context.topology().cells().size();
-//				 for(int j = 0; j < numCells; j++)
-//				 {
-//					 if(cs.what(j, SiteType.Cell) != 0)
-//					 countPieces++;
-//					
-//					 if(cs.what(j, SiteType.Cell) == 1)
-//					 countPiecesP1++;
-//					
-//					 if(cs.what(j, SiteType.Cell) == 2)
-//					 countPiecesP2++;
-//				 }
-//				
-//				 System.out.println(countPieces+","+countPiecesP1+","+countPiecesP2);
+				// TO PRINT THE NUMBER OF PIECES PER TRIAL (this was for LL xp)
+////				 int countPieces = 0;
+////				 int countPiecesP1 = 0;
+////				 int countPiecesP2 = 0;
+////				 final ContainerState cs = context.containerState(0);
+////				 final int numCells = context.topology().cells().size();
+////				 for(int j = 0; j < numCells; j++)
+////				 {
+////					 if(cs.what(j, SiteType.Cell) != 0)
+////					 countPieces++;
+////					
+////					 if(cs.what(j, SiteType.Cell) == 1)
+////					 countPiecesP1++;
+////					
+////					 if(cs.what(j, SiteType.Cell) == 2)
+////					 countPiecesP2++;
+////				 }
+////				
+////				 System.out.println(countPieces+","+countPiecesP1+","+countPiecesP2);
 			}
 			
 			// FOR THE MUSEUM GAME
