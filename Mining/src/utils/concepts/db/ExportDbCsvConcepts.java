@@ -861,7 +861,8 @@ public class ExportDbCsvConcepts
 		int num = 0;
 		for (final File trialFile : trialFolder.listFiles())
 		{
-			if(trialFile.getName().contains(".lud"))
+			System.out.println(trialFile.getName());
+			if(trialFile.getName().contains(".txt"))
 			{
 				MatchRecord loadedRecord;
 				try
