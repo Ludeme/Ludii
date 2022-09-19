@@ -58,7 +58,7 @@ public class MergeEdgesResultCSV
 				{
 					if(file.getName().contains(boardName))
 					{
-						String rulesetName = file.getName().substring(file.getName().indexOf('-')+1);
+						String rulesetName = file.getName().substring(file.getName().indexOf('-') + 1);
 						rulesetName = rulesetName.substring(0,rulesetName.length()-4);
 						try 
 						(
@@ -69,15 +69,18 @@ public class MergeEdgesResultCSV
 								)
 						)
 						{
+							mainWriter.print(agentName + ",");
+							mainWriter.print(rulesetName + ",");
 							String line = reader.readLine();
 							while (line != null)
 							{
-								mainWriter.print(agentName + ",");
-								mainWriter.print(rulesetName + ",");
-								mainWriter.println(line);
+								final double frequency = Double.parseDouble(line.substring(line.lastIndexOf(',') + 1 ));
+								mainWriter.print(frequency);
+								mainWriter.print(",");
 								line = reader.readLine();
 							}
 							reader.close();
+							mainWriter.println("");
 						}
 						catch (final IOException e)
 						{
