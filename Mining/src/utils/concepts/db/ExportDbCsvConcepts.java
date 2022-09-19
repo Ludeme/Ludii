@@ -1347,6 +1347,11 @@ public class ExportDbCsvConcepts
 		for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
 			frequencyPlayouts.add(0.0);
 
+		// FOR THE MUSEUM GAME
+//		final TIntArrayList edgesUsage = new TIntArrayList();	
+//		for(int i = 0; i < game.board().topology().edges().size(); i++)
+//			edgesUsage.add(0);
+		
 		for (int trialIndex = 0; trialIndex < trials.size(); trialIndex++)
 		{
 			final Trial trial = trials.get(trialIndex);
@@ -1360,11 +1365,6 @@ public class ExportDbCsvConcepts
 			for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
 				frequencyPlayout.add(0);
 
-			// FOR THE MUSEUM GAME
-//			final TIntArrayList edgesUsage = new TIntArrayList();	
-//			for(int i = 0; i < game.board().topology().edges().size(); i++)
-//				edgesUsage.add(0);
-			
 			// Run the playout.
 			int turnWithMoves = 0;
 			Context prevContext = null;
@@ -1416,7 +1416,7 @@ public class ExportDbCsvConcepts
 //					final Edge edge = game.board().topology().edges().get(j);
 //					if((edge.vertices().get(0).index() == vertexFrom && edge.vertices().get(1).index() == vertexTo) ||
 //							(edge.vertices().get(0).index() == vertexTo && edge.vertices().get(1).index() == vertexFrom))
-//						edgesUsage.set(j, edgesUsage.get(j)+1);
+//						edgesUsage.set(j, edgesUsage.get(j) + 1);
 //				}
 
 				// TO PRINT THE NUMBER OF PIECES PER TRIAL (this was for LL xp)
@@ -1440,37 +1440,6 @@ public class ExportDbCsvConcepts
 ////				 System.out.println(countPieces+","+countPiecesP1+","+countPiecesP2);
 			}
 			
-			// FOR THE MUSEUM GAME
-//			int totalEdgesUsage = 0;
-//			for(int i = 0 ; i < edgesUsage.size(); i++)
-//				totalEdgesUsage += edgesUsage.get(i);
-//			
-//			System.out.println("Total Moves on Edges = " + totalEdgesUsage);
-//			for(int i = 0 ; i < edgesUsage.size(); i++)
-//			{
-//				final Edge edge = game.board().topology().edges().get(i);
-//				final int vFrom = edge.vertices().get(0).index();
-//				final int vTo = edge.vertices().get(1).index();
-//				System.out.println("Edge " + i + "(" + vFrom + "-" + vTo + ")"+ " is used " + new DecimalFormat("##.##").format(Double.valueOf(((double)edgesUsage.get(i) / (double)totalEdgesUsage)*100.0))  +"% ("+edgesUsage.get(i)+ " times)");
-//			}
-//			
-//			final String outputEdgesResults =  "EdgesResult" + game.name() + "-" + game.getRuleset().heading().substring(8)+".csv";
-//			try (final PrintWriter writer = new UnixPrintWriter(new File(outputEdgesResults), "UTF-8"))
-//			{
-//				for(int i = 0 ; i < edgesUsage.size(); i++)
-//					writer.println(i+","+ edgesUsage.get(i) +","+ new DecimalFormat("##.##").format(Double.valueOf(((double)edgesUsage.get(i) / (double)totalEdgesUsage)*100.0)));
-//			}
-//			catch (FileNotFoundException e)
-//			{
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			catch (UnsupportedEncodingException e)
-//			{
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-
 			// Compute avg for all the playouts.
 			for (int j = 0; j < frequencyPlayout.size(); j++)
 				frequencyPlayouts.set(j, frequencyPlayouts.get(j) + frequencyPlayout.get(j) / turnWithMoves);
@@ -1553,6 +1522,45 @@ public class ExportDbCsvConcepts
 				}
 			}
 		}
+		
+		// FOR THE MUSEUM GAME
+//		int totalEdgesUsage = 0;
+//		for(int i = 0; i < edgesUsage.size(); i++)
+//			totalEdgesUsage += edgesUsage.get(i);
+//		
+//		System.out.println("Total Moves on Edges = " + totalEdgesUsage);
+//		for(int i = 0; i < edgesUsage.size(); i++)
+//		{
+//			final Edge edge = game.board().topology().edges().get(i);
+//			final int vFrom = edge.vertices().get(0).index();
+//			final int vTo = edge.vertices().get(1).index();
+//			if(totalEdgesUsage == 0)
+//				System.out.println("Edge " + i + "(" + vFrom + "-" + vTo + ")"+ " is used " + new DecimalFormat("##.##").format(0.0) + "% ("+edgesUsage.get(i) + " times)");
+//			else
+//				System.out.println("Edge " + i + "(" + vFrom + "-" + vTo + ")"+ " is used " + new DecimalFormat("##.##").format(Double.valueOf(((double)edgesUsage.get(i) / (double)totalEdgesUsage)*100.0)) + "% ("+edgesUsage.get(i) + " times)");
+//		}
+//		
+//		final String outputEdgesResults = "EdgesResult" + game.name() + "-" + game.getRuleset().heading().substring(8) + ".csv";
+//		try (final PrintWriter writer = new UnixPrintWriter(new File(outputEdgesResults), "UTF-8"))
+//		{
+//			for(int i = 0; i < edgesUsage.size(); i++)
+//			{
+//				if(totalEdgesUsage == 0)
+//					writer.println(i + ","+ edgesUsage.get(i) + ","+ new DecimalFormat("##.##").format(0.0*100.0));
+//				else
+//					writer.println(i + ","+ edgesUsage.get(i) + ","+ new DecimalFormat("##.##").format(Double.valueOf(((double)edgesUsage.get(i) / (double)totalEdgesUsage)*100.0)));
+//			}
+//		}
+//		catch (FileNotFoundException e)
+//		{
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		catch (UnsupportedEncodingException e)
+//		{
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 
 		// Compute avg frequency for the game.
 		for (int i = 0; i < frequencyPlayouts.size(); i++)
