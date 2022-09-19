@@ -1371,9 +1371,9 @@ public class ExportDbCsvConcepts
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
 				final Moves legalMoves = context.game().moves(context);
-				final TIntArrayList frenquencyTurn = new TIntArrayList();
+				final TIntArrayList frequencyTurn = new TIntArrayList();
 				for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
-					frenquencyTurn.add(0);
+					frequencyTurn.add(0);
 
 				final double numLegalMoves = legalMoves.moves().size();
 				if (numLegalMoves > 0)
@@ -1386,13 +1386,13 @@ public class ExportDbCsvConcepts
 					{
 						final Concept concept = Concept.values()[indexConcept];
 						if (moveConcepts.get(concept.id()))
-							frenquencyTurn.set(indexConcept, frenquencyTurn.get(indexConcept) + 1);
+							frequencyTurn.set(indexConcept, frequencyTurn.get(indexConcept) + 1);
 					}
 				}
 
-				for (int j = 0; j < frenquencyTurn.size(); j++)
+				for (int j = 0; j < frequencyTurn.size(); j++)
 					frequencyPlayout.set(j, frequencyPlayout.get(j)
-							+ (numLegalMoves == 0 ? 0 : frenquencyTurn.get(j) / numLegalMoves));
+							+ (numLegalMoves == 0 ? 0 : frequencyTurn.get(j) / numLegalMoves));
 
 				// We keep the context before the ending state for the frequencies of the end
 				// conditions.
@@ -1406,6 +1406,9 @@ public class ExportDbCsvConcepts
 				// To count the frequency/usage of each edge on the board.
 //				final Move lastMove = context.trial().lastMove();
 //				final int vertexFrom = lastMove.fromNonDecision();
+//				// To not take in account moves coming from the hand.
+//				if(vertexFrom < 0 || vertexFrom >= game.board().topology().vertices().size())
+//					continue;
 //				final int vertexTo = lastMove.toNonDecision();
 //
 //				for(int j = 0; j < game.board().topology().edges().size(); j++)
