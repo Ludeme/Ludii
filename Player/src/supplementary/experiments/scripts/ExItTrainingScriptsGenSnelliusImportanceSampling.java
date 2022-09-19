@@ -98,8 +98,8 @@ public class ExItTrainingScriptsGenSnelliusImportanceSampling
 				"None",
 				"EpisodeDurations",
 				"PER",
-				"CEExplore",
-				"CEExploreNoIS",
+				//"CEExplore",
+				//"CEExploreNoIS",
 				"All"
 			};
 	
@@ -297,7 +297,7 @@ public class ExItTrainingScriptsGenSnelliusImportanceSampling
 					{
 						javaCall += " --is-episode-durations";
                         javaCall += " --prioritized-experience-replay";
-                        javaCall += " --ce-explore --no-ce-explore-is";
+                        //javaCall += " --ce-explore --no-ce-explore-is";
 					}
 					
 					javaCall += " " + StringRoutines.join
