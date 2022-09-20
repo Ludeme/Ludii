@@ -1,0 +1,49 @@
+(define "MoveOfThePiece" 
+    (or 
+        (move Hop Forward 
+            (between if:("IsEnemyAt" (between))) 
+            (to if:(is Empty (to))) 
+        ) 
+        ("StepForwardToEmpty") 
+    ) 
+)
+
+//------------------------------------------------------------------------------
+
+(game "Toads and Frogs"
+    (players 2)
+    (equipment {
+        (board (rectangle 1 <BoardSize:BoardSize>))
+        (piece "Toad" P1 E "MoveOfThePiece")
+        (piece "Frog" P2 W "MoveOfThePiece")
+    })
+    (rules
+        (start {
+            (place "Toad1" (expand (sites Left) steps:(- <BoardSize:pieces> 1)))
+            (place "Frog2" (expand (sites Right) steps:(- <BoardSize:pieces> 1)))
+        })
+        (play (forEach Piece))
+        (end ("BlockWin"))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <BoardSize> args:{ <BoardSize> <pieces> }
+    {
+    (item "1x5" <5> <2> "The game is played on a 1x5 board.")**
+    (item "1x8" <8> <3> "The game is played on a 1x8 board.")
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info {
+    })
+
+    (graphics {
+        (piece Colour "Toad1" fillColour:(colour Blue))
+        (piece Colour "Frog2" fillColour:(colour Red))
+    })
+)
