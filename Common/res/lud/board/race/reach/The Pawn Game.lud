@@ -1,0 +1,92 @@
+//**** Defines used to model the extra Pawn moves. ****
+(define "SetEnPassantLocation"
+    (then 
+        (set Pending (ahead (last To) Backward))
+    )
+)
+
+(define "InLocationEnPassant"
+    (and 
+        (is Pending) 
+        (= (to) (value Pending)) 
+    )
+)
+
+(define "EnPassant"
+    (move Step 
+        (directions {FR FL}) 
+        (to if:"InLocationEnPassant") 
+        (then 
+            (remove 
+                (ahead (last To) Backward)
+            )
+        )
+    )
+)
+
+(define "InitialPawnMove"
+    (if (is In (from) (sites Start (piece (what at:(from)))))
+        ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "The Pawn Game" // Cross The Board
+    ("TwoPlayersNorthSouth") 
+    (equipment { 
+        (board (square 8))
+        ("ChessPawn" "Pawn"
+                (or 
+                    "InitialPawnMove"
+                    "EnPassant"
+                )
+            )
+        <Variant:piece>
+        (regions P1 (sites Top))
+        (regions P2 (sites Bottom))
+    }) 
+    (rules 
+        (start { 
+            (place "Pawn1" (sites Row 1))
+            (place "Pawn2" (sites Row 6))
+            <Variant:startP1>
+            <Variant:startP2>
+        })
+        
+        (play (forEach Piece))
+        
+        (end {
+        	("ReachWin" (sites Mover) Mover)
+        	("BlockWin")
+        	<Variant:end>
+        }) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <piece> <startP1> <startP2> <end> }
+{
+	(item "Only Pawn" <> <> <> <> "The game is played with only pawns.")* 
+	(item "Rooks" <("ChessRook" "Rook")> <(place "Rook1" {"A1" "H1"})> <(place "Rook2" {"A8" "H8"})> <> "Chess rooks are added to the game.") 
+	(item "Knights" <("ChessKnight" "Knight")> <(place "Knight1" {"B1" "G1"})> <(place "Knight2" {"B8" "G8"})> <> "Chess knights are added to the game.") 
+	(item "Bishops" <("ChessBishop" "Bishop")> <(place "Bishop1" {"C1" "F1"})> <(place "Bishop2" {"C8" "F8"})> <> "Chess bishops are added to the game.") 
+	(item "Queens" <("ChessQueen" "Queen")> <(place "Queen1" coord:"D1")> <(place "Queen2" coord:"D8")> <> "Chess queens are added to the game.") 
+	(item "Kings" <("ChessKing" "King")> <(place "King1" coord:"E1")> <(place "King2" coord:"E8")> <(if (no Pieces Enemy "King") (result Mover Win))> "Chess kings are added to the game. If you capture the king you win as well.") 
+})
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+    })
+    
+)
