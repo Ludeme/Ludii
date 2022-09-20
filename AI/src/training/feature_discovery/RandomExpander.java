@@ -32,9 +32,7 @@ import training.expert_iteration.params.ObjectiveParams;
 import utils.experiments.InterruptableExperiment;
 
 /**
- * Correlation-based Feature Set Expander. Mostly the same as the one proposed in our
- * CEC 2019 paper (https://arxiv.org/abs/1903.08942), possibly with some small
- * changes implemented since then.
+ * Random Feature Set Expander.
  *
  * @author Dennis Soemers
  */
