@@ -656,6 +656,10 @@ public class AIFactory
 		{
 			return new OnePlyNoHeuristic();
 		}
+		else if (algName.equalsIgnoreCase("Darkboard"))
+		{
+			return new Umpire("Darkboard");
+		}
 		else if (algName.equalsIgnoreCase("From JAR"))
 		{
 			final File jarFile = new File(aiObj.getString("JAR File"));

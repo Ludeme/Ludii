@@ -18,6 +18,7 @@ import search.minimax.BRSPlus;
 import utils.AIFactory;
 import utils.AIFactory.AIConstructor;
 import utils.RandomAI;
+import utils.Umpire;
 
 /**
  * A registry of AIs that can be instantiated in the GUI of Ludii.
@@ -66,6 +67,7 @@ public class AIRegistry
 		registerAI("Hybrid UBFM", 24, (game) -> {return AIFactory.createAI("Hybrid UBFM").supportsGame(game);}, null);
 		registerAI("Biased UBFM", 25, (game) -> {return AIFactory.createAI("Biased UBFM").supportsGame(game);}, null);
 		registerAI("Lazy UBFM", 26, (game) -> {return AIFactory.createAI("Lazy UBFM").supportsGame(game);}, null);
+		registerAI("Darkboard", 27, (game) -> {return new Umpire("Darkboard").supportsGame(game);}, null);
 		registerAI("From JAR", -1, (game) -> {return false;}, null);	// We have special handling for From JAR in dropdown menus
 	}
 	
