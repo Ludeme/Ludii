@@ -98,29 +98,29 @@ public class EvalTrainedFeaturesSnelliusImportanceSampling
 			    "MAST",
 			    "NST",
 			
-			    "Biased-00000-IS_None",
-			    "Biased-00050-IS_None",
-			    "Biased-00100-IS_None",
-			    "Biased-00150-IS_None",
-			    "Biased-00199-IS_None",
+			    "Biased-00000-None",
+			    "Biased-00050-None",
+			    "Biased-00100-None",
+			    "Biased-00150-None",
+			    "Biased-00199-None",
 			
-			    "Biased-00000-IS_EpisodeDurations",
-			    "Biased-00050-IS_EpisodeDurations",
-			    "Biased-00100-IS_EpisodeDurations",
-			    "Biased-00150-IS_EpisodeDurations",
-			    "Biased-00199-IS_EpisodeDurations",
+			    "Biased-00000-EpisodeDurations",
+			    "Biased-00050-EpisodeDurations",
+			    "Biased-00100-EpisodeDurations",
+			    "Biased-00150-EpisodeDurations",
+			    "Biased-00199-EpisodeDurations",
 			
-			    "Biased-00000-IS_PER",
-			    "Biased-00050-IS_PER",
-			    "Biased-00100-IS_PER",
-			    "Biased-00150-IS_PER",
-			    "Biased-00199-IS_PER",
+			    "Biased-00000-PER",
+			    "Biased-00050-PER",
+			    "Biased-00100-PER",
+			    "Biased-00150-PER",
+			    "Biased-00199-PER",
 			
-			    "Biased-00000-IS_All",
-			    "Biased-00050-IS_All",
-			    "Biased-00100-IS_All",
-			    "Biased-00150-IS_All",
-			    "Biased-00199-IS_All"
+			    "Biased-00000-All",
+			    "Biased-00050-All",
+			    "Biased-00100-All",
+			    "Biased-00150-All",
+			    "Biased-00199-All"
 			};
 	
 	//-------------------------------------------------------------------------
@@ -246,7 +246,7 @@ public class EvalTrainedFeaturesSnelliusImportanceSampling
 			try (final PrintWriter writer = new UnixPrintWriter(new File(scriptsDir + jobScriptFilename), "UTF-8"))
 			{
 				writer.println("#!/bin/bash");
-				writer.println("#SBATCH -J EvalFeatures");
+				writer.println("#SBATCH -J EvalFeaturesImportanceSampling");
 				writer.println("#SBATCH -p thin");
 				writer.println("#SBATCH -o /home/" + userName + "/EvalFeaturesIS/Out/Out_%J.out");
 				writer.println("#SBATCH -e /home/" + userName + "/EvalFeaturesIS/Out/Err_%J.err");
