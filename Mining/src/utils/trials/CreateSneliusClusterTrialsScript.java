@@ -27,7 +27,7 @@ public class CreateSneliusClusterTrialsScript
 		final int maxMove = 5000; // Constants.DEFAULT_MOVES_LIMIT;
 		//final int allocatedMemoryJava = 4096;
 		final int thinkingTime = 1;
-		final String agentName = "Alpha-Beta"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
+		final String agentName = "Random"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
 		//final String clusterLogin = "piettee";
 		final String mainScriptName = "GenTrials.sh";
 		
@@ -110,7 +110,7 @@ public class CreateSneliusClusterTrialsScript
 					writer.println("#SBATCH -t 6000");
 					writer.println("#SBATCH -N 1");
 					writer.println("#SBATCH --cpus-per-task=128");
-					writer.println("#SBATCH --mem=234G");
+					writer.println("#SBATCH --mem=224G");
 					writer.println("#SBATCH --exclusive");
 					writer.println("module load 2021");
 					writer.println("module load Java/11.0.2");
