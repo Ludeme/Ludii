@@ -514,14 +514,10 @@ public class IsLine extends BaseBooleanFunction
 		if (locn == Constants.UNDEFINED)
 			return false;
 
-		final int cidFrom = locn >= context.containerId().length ? 0 : context.containerId()[locn];
-
 		SiteType realType = type;
-		if (cidFrom > 0)
-			realType = SiteType.Cell;
-		else if (realType == null)
+		if (realType == null)
 			realType = context.board().defaultSite();
-
+		
 		final int contId = context.containerId()[locn];
 		final other.topology.Topology graph = context.containers()[contId].topology();
 		final BaseContainerStateStacking state = (BaseContainerStateStacking) context.state().containerStates()[contId];
@@ -590,7 +586,9 @@ public class IsLine extends BaseBooleanFunction
 					.distinctInDirection(dirn.absoluteDirection());
 
 			final int levelOrigin = sizeStack - 1;
-
+			if(levelOrigin < 0)
+				return false;
+			
 			for (final Radial radial : radials)
 			{
 				final List<Radial> oppositeRadials = radial.opposites();
