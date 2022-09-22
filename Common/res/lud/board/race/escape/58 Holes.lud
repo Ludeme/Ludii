@@ -180,7 +180,7 @@
     (equipment { 
         <Board>
         <Variant:hand>
-        ("StickDice" 4)
+        <Dice>
         <Variant:region>
         
         (piece "Marker" Each <Variant:pieceMove>)
@@ -192,6 +192,13 @@
 )
 
 //------------------------------------------------------------------------------
+
+(option "Dice" <Dice> args:{ <die>}
+	{
+		(item "D2" <("StickDice" 4)> "The game is using stick dices.")
+		(item "D6" <(dice d:6 num:1)> "The game is using one D6 die.")
+	}
+)
 
 (option "Board" <Board> args:{ <board> }
     {
@@ -1684,66 +1691,92 @@
 
 (rulesets { 
     
-    (ruleset "Ruleset/Carnarvon and Carter (Suggested)" 
-        {
-        "Board/Parallel Connections Race tracks" "Variant/Carnarvon and Carter"
-        }
-    )
+    (ruleset "Ruleset/Carnarvon and Carter (Suggested)" {
+        "Board/Parallel Connections Race tracks" "Variant/Carnarvon and Carter" "Dice/D2"
+    })
     
     (ruleset "Ruleset/Carter Unmarked (Suggested)" {
-        "Board/Holes Race tracks" "Variant/Carter Unmarked"
+        "Board/Holes Race tracks" "Variant/Carter Unmarked" "Dice/D2"
     })
     
     (ruleset "Ruleset/Carter Marked Holes (Suggested)" {
-        "Board/Holes Race tracks" "Variant/Carter Marked"
+        "Board/Holes Race tracks" "Variant/Carter Marked" "Dice/D2"
     })
     
     (ruleset "Ruleset/Carter Crossover 1 (Suggested)" {
-        "Board/Crossover One Race Track" "Variant/Carter Crossover 1"
+        "Board/Crossover One Race Track" "Variant/Carter Crossover 1" "Dice/D2"
     })
     
     (ruleset "Ruleset/Carter Crossover 2 (Suggested)" {
-        "Board/Crossover Two Race Track" "Variant/Carter Crossover 2"
+        "Board/Crossover Two Race Track" "Variant/Carter Crossover 2" "Dice/D2"
     })
     
     (ruleset "Ruleset/Carter Crossover 3 (Suggested)" {
-        "Board/Crossover Three Race Track" "Variant/Carter Crossover 3"
+        "Board/Crossover Three Race Track" "Variant/Carter Crossover 3" "Dice/D2"
     })
     
     (ruleset "Ruleset/Carter Crossover 4 (Suggested)" {
-        "Board/Crossover Four Race Track" "Variant/Carter Crossover 4"
+        "Board/Crossover Four Race Track" "Variant/Carter Crossover 4""Dice/D2"
     })
     
     (ruleset "Ruleset/Tab Unmarked (Suggested)" {
-        "Board/Holes Capture tracks" "Variant/Tab No Marked Holes"
+        "Board/Holes Capture tracks" "Variant/Tab No Marked Holes" "Dice/D2"
     })
     
     (ruleset "Ruleset/Tab Marked (Throw) (Suggested)" {
-        "Board/Holes Capture tracks" "Variant/Tab Marked Throw"
+        "Board/Holes Capture tracks" "Variant/Tab Marked Throw""Dice/D2"
     })
     
     (ruleset "Ruleset/Tab Marked (Safe) (Suggested)" {
-        "Board/Holes Capture tracks" "Variant/Tab Marked Safe"
+        "Board/Holes Capture tracks" "Variant/Tab Marked Safe" "Dice/D2"
     })
     
     (ruleset "Ruleset/Tab Parallel Connections (Suggested)" {
-        "Board/Parallel Connections Capture tracks" "Variant/Tab Parallel Connections"
+        "Board/Parallel Connections Capture tracks" "Variant/Tab Parallel Connections" "Dice/D2"
     })
     
     (ruleset "Ruleset/Tab Crosssover 1 (Suggested)" {
-        "Board/Crossover One Capture Track" "Variant/Tab Crossover 1"
+        "Board/Crossover One Capture Track" "Variant/Tab Crossover 1""Dice/D2"
     })
     
     (ruleset "Ruleset/Tab Crossover 2 (Suggested)" {
-        "Board/Crossover Two Capture Track" "Variant/Tab Crossover 2"
+        "Board/Crossover Two Capture Track" "Variant/Tab Crossover 2" "Dice/D2"
     })
     
     (ruleset "Ruleset/Tab Crossover 3 (Suggested)" {
-        "Board/Crossover Three Capture Track" "Variant/Tab Crossover 3"
+        "Board/Crossover Three Capture Track" "Variant/Tab Crossover 3" "Dice/D2"
     })
     
     (ruleset "Ruleset/Tab Crossover 4 (Suggested)" {
-        "Board/Crossover Four Capture Track" "Variant/Tab Crossover 4"
+        "Board/Crossover Four Capture Track" "Variant/Tab Crossover 4" "Dice/D2"
+    })
+    
+    (ruleset "Ruleset/Carnarvon and Carter D6 (Suggested)" {
+        "Board/Parallel Connections Race tracks" "Variant/Carnarvon and Carter" "Dice/D6"
+    })
+    
+    (ruleset "Ruleset/Carter Unmarked D6 (Suggested)" {
+        "Board/Holes Race tracks" "Variant/Carter Unmarked" "Dice/D6"
+    })
+    
+    (ruleset "Ruleset/Carter Marked Holes D6 (Suggested)" {
+        "Board/Holes Race tracks" "Variant/Carter Marked" "Dice/D6"
+    })
+    
+    (ruleset "Ruleset/Carter Crossover 1 D6 (Suggested)" {
+        "Board/Crossover One Race Track" "Variant/Carter Crossover 1" "Dice/D6"
+    })
+    
+    (ruleset "Ruleset/Carter Crossover 2 D6 (Suggested)" {
+        "Board/Crossover Two Race Track" "Variant/Carter Crossover 2" "Dice/D6"
+    })
+    
+    (ruleset "Ruleset/Carter Crossover 3 D6 (Suggested)" {
+        "Board/Crossover Three Race Track" "Variant/Carter Crossover 3" "Dice/D6"
+    })
+    
+    (ruleset "Ruleset/Carter Crossover 4 D6 (Suggested)" {
+        "Board/Crossover Four Race Track" "Variant/Carter Crossover 4""Dice/D6"
     })
     
     // From here only incomplete rulesets.
@@ -1895,39 +1928,57 @@
         (player Colour P1 (colour Grey))
         (player Colour P2 (colour Brown))
         (show Edges Hidden)
-        (piece Colour "Die" state:0 fillColour:(colour Yellow))
         
         (useFor "Ruleset/Carnarvon and Carter (Suggested)" (board Style HoundsAndJackals))  
+        (useFor "Ruleset/Carnarvon and Carter (Suggested)" (piece Colour "Die" state:0 fillColour:(colour Yellow)))
+        (useFor "Ruleset/Carnarvon and Carter D6 (Suggested)" (board Style HoundsAndJackals))  
         
         (useFor "Ruleset/Tab Parallel Connections (Suggested)" (board Style HoundsAndJackals))   
+        (useFor "Ruleset/Tab Parallel Connections (Suggested)" (piece Colour "Die" state:0 fillColour:(colour Yellow)))
         
         (useFor "Ruleset/Carter Marked Holes (Suggested)" (show Symbol "Disc" (sites {0 5 7 9 14 19 24 58 53  48 43 38 36 34 29}) scale:2))        
         (useFor "Ruleset/Carter Marked Holes (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
         (useFor "Ruleset/Carter Marked Holes (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
         (useFor "Ruleset/Carter Marked Holes (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
         (useFor "Ruleset/Carter Marked Holes (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
+        (useFor "Ruleset/Carter Marked Holes (Suggested)" (piece Colour "Die" state:0 fillColour:(colour Yellow)))
         
         (useFor "Ruleset/Carter Unmarked (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
         (useFor "Ruleset/Carter Unmarked (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
         (useFor "Ruleset/Carter Unmarked (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
         (useFor "Ruleset/Carter Unmarked (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
+        (useFor "Ruleset/Carter Unmarked (Suggested)" (piece Colour "Die" state:0 fillColour:(colour Yellow)))
+        
+        (useFor "Ruleset/Carter Marked Holes D6 (Suggested)" (show Symbol "Disc" (sites {0 5 7 9 14 19 24 58 53  48 43 38 36 34 29}) scale:2))        
+        (useFor "Ruleset/Carter Marked Holes D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
+        (useFor "Ruleset/Carter Marked Holes D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
+        (useFor "Ruleset/Carter Marked Holes D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
+        (useFor "Ruleset/Carter Marked Holes D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
+        
+        (useFor "Ruleset/Carter Unmarked D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
+        (useFor "Ruleset/Carter Unmarked D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
+        (useFor "Ruleset/Carter Unmarked D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
+        (useFor "Ruleset/Carter Unmarked D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
         
         (useFor "Ruleset/Tab Unmarked (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
         (useFor "Ruleset/Tab Unmarked (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
         (useFor "Ruleset/Tab Unmarked (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
         (useFor "Ruleset/Tab Unmarked (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
+        (useFor "Ruleset/Tab Unmarked (Suggested)" (piece Colour "Die" state:0 fillColour:(colour Yellow)))
         
         (useFor "Ruleset/Tab Marked (Throw) (Suggested)" (show Symbol "Disc" (sites {0 5 7 9 14 19 24 58 53  48 43 38 36 34 29}) scale:2))        
         (useFor "Ruleset/Tab Marked (Throw) (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
         (useFor "Ruleset/Tab Marked (Throw) (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
         (useFor "Ruleset/Tab Marked (Throw) (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
         (useFor "Ruleset/Tab Marked (Throw) (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
+        (useFor "Ruleset/Tab Marked (Throw) (Suggested)" (piece Colour "Die" state:0 fillColour:(colour Yellow)))
         
         (useFor "Ruleset/Tab Marked (Safe) (Suggested)" (show Symbol "Disc" (sites {0 5 7 9 14 19 24 58 53  48 43 38 36 34 29}) scale:2))        
         (useFor "Ruleset/Tab Marked (Safe) (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
         (useFor "Ruleset/Tab Marked (Safe) (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
         (useFor "Ruleset/Tab Marked (Safe) (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
         (useFor "Ruleset/Tab Marked (Safe) (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
+        (useFor "Ruleset/Tab Marked (Safe) (Suggested)" (piece Colour "Die" state:0 fillColour:(colour Yellow)))
         
         (useFor "Ruleset/Carter Crossover 1 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
         (useFor "Ruleset/Carter Crossover 1 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
@@ -1936,6 +1987,7 @@
         (useFor "Ruleset/Carter Crossover 1 (Suggested)" (show Line {{5 36} {7 34}}))
         (useFor "Ruleset/Carter Crossover 1 (Suggested)" (show Line {{43 48} {48 53}} curve:{-0.5 0 -0.5 0}))
         (useFor "Ruleset/Carter Crossover 1 (Suggested)" (show Line {{14 19} {19 24}} curve:{0.5 0 0.5 0}))
+        (useFor "Ruleset/Carter Crossover 1 (Suggested)" (piece Colour "Die" state:0 fillColour:(colour Yellow)))
         
         (useFor "Ruleset/Tab Crosssover 1 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
         (useFor "Ruleset/Tab Crosssover 1 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
@@ -1944,42 +1996,75 @@
         (useFor "Ruleset/Tab Crosssover 1 (Suggested)" (show Line {{5 36} {7 34}}))
         (useFor "Ruleset/Tab Crosssover 1 (Suggested)" (show Line {{43 48} {48 53}} curve:{-0.5 0 -0.5 0}))
         (useFor "Ruleset/Tab Crosssover 1 (Suggested)" (show Line {{14 19} {19 24}} curve:{0.5 0 0.5 0}))
+        (useFor "Ruleset/Tab Crosssover 1 (Suggested)" (piece Colour "Die" state:0 fillColour:(colour Yellow)))
+        
+        (useFor "Ruleset/Carter Crossover 1 D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
+        (useFor "Ruleset/Carter Crossover 1 D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
+        (useFor "Ruleset/Carter Crossover 1 D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
+        (useFor "Ruleset/Carter Crossover 1 D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
+        (useFor "Ruleset/Carter Crossover 1 D6 (Suggested)" (show Line {{5 36} {7 34}}))
+        (useFor "Ruleset/Carter Crossover 1 D6 (Suggested)" (show Line {{43 48} {48 53}} curve:{-0.5 0 -0.5 0}))
+        (useFor "Ruleset/Carter Crossover 1 D6 (Suggested)" (show Line {{14 19} {19 24}} curve:{0.5 0 0.5 0}))
         
         (useFor "Ruleset/Carter Crossover 2 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
         (useFor "Ruleset/Carter Crossover 2 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
         (useFor "Ruleset/Carter Crossover 2 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
         (useFor "Ruleset/Carter Crossover 2 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
         (useFor "Ruleset/Carter Crossover 2 (Suggested)" (show Line {{7 38} {36 9} {20 5} {49 34}}))
+        (useFor "Ruleset/Carter Crossover 2 (Suggested)" (piece Colour "Die" state:0 fillColour:(colour Yellow)))
         
         (useFor "Ruleset/Tab Crossover 2 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
         (useFor "Ruleset/Tab Crossover 2 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
         (useFor "Ruleset/Tab Crossover 2 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
         (useFor "Ruleset/Tab Crossover 2 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
         (useFor "Ruleset/Tab Crossover 2 (Suggested)" (show Line {{7 38} {36 9} {20 5} {49 34}}))
+        (useFor "Ruleset/Tab Crossover 2 (Suggested)" (piece Colour "Die" state:0 fillColour:(colour Yellow)))
+        
+        (useFor "Ruleset/Carter Crossover 2 D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
+        (useFor "Ruleset/Carter Crossover 2 D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
+        (useFor "Ruleset/Carter Crossover 2 D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
+        (useFor "Ruleset/Carter Crossover 2 D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
+        (useFor "Ruleset/Carter Crossover 2 D6 (Suggested)" (show Line {{7 38} {36 9} {20 5} {49 34}}))
         
         (useFor "Ruleset/Carter Crossover 3 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
         (useFor "Ruleset/Carter Crossover 3 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
         (useFor "Ruleset/Carter Crossover 3 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
         (useFor "Ruleset/Carter Crossover 3 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
         (useFor "Ruleset/Carter Crossover 3 (Suggested)" (show Line {{0 31} {29 2} {4 33} {5 14} {43 34} {19 4} {48 33} {24 0} {53 29}}))
+        (useFor "Ruleset/Carter Crossover 3 (Suggested)" (piece Colour "Die" state:0 fillColour:(colour Yellow)))
         
         (useFor "Ruleset/Tab Crossover 3 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
         (useFor "Ruleset/Tab Crossover 3 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
         (useFor "Ruleset/Tab Crossover 3 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
         (useFor "Ruleset/Tab Crossover 3 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
         (useFor "Ruleset/Tab Crossover 3 (Suggested)" (show Line {{0 31} {29 2} {4 33} {5 14} {43 34} {19 4} {48 33} {24 0} {53 29}}))
+        (useFor "Ruleset/Tab Crossover 3 (Suggested)" (piece Colour "Die" state:0 fillColour:(colour Yellow)))
+        
+        (useFor "Ruleset/Carter Crossover 3 D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
+        (useFor "Ruleset/Carter Crossover 3 D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
+        (useFor "Ruleset/Carter Crossover 3 D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
+        (useFor "Ruleset/Carter Crossover 3 D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
+        (useFor "Ruleset/Carter Crossover 3 D6 (Suggested)" (show Line {{0 31} {29 2} {4 33} {5 14} {43 34} {19 4} {48 33} {24 0} {53 29}}))
         
         (useFor "Ruleset/Carter Crossover 4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
         (useFor "Ruleset/Carter Crossover 4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
         (useFor "Ruleset/Carter Crossover 4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
         (useFor "Ruleset/Carter Crossover 4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
         (useFor "Ruleset/Carter Crossover 4 (Suggested)" (show Line {{0 29} {1 32} {30 3} {4 33} {5 38} {34 9} {5 14} {34 43} {33 48} {4 19} {4 20} {29 53} {0 24} {25 57} {54 28}}))
+        (useFor "Ruleset/Carter Crossover 4 (Suggested)" (piece Colour "Die" state:0 fillColour:(colour Yellow)))
         
         (useFor "Ruleset/Tab Crossover 4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
         (useFor "Ruleset/Tab Crossover 4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
         (useFor "Ruleset/Tab Crossover 4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
         (useFor "Ruleset/Tab Crossover 4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
         (useFor "Ruleset/Tab Crossover 4 (Suggested)" (show Line {{0 29} {1 32} {30 3} {4 33} {5 38} {34 9} {5 14} {34 43} {33 48} {4 19} {4 20} {29 53} {0 24} {25 57} {54 28}}))
+        (useFor "Ruleset/Tab Crossover 4 (Suggested)" (piece Colour "Die" state:0 fillColour:(colour Yellow)))
+        
+        (useFor "Ruleset/Carter Crossover 4 D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
+        (useFor "Ruleset/Carter Crossover 4 D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
+        (useFor "Ruleset/Carter Crossover 4 D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
+        (useFor "Ruleset/Carter Crossover 4 D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
+        (useFor "Ruleset/Carter Crossover 4 D6 (Suggested)" (show Line {{0 29} {1 32} {30 3} {4 33} {5 38} {34 9} {5 14} {34 43} {33 48} {4 19} {4 20} {29 53} {0 24} {25 57} {54 28}}))
         
     })
     
