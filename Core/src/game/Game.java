@@ -1098,6 +1098,9 @@ public class Game extends BaseLudeme implements API, Serializable
 	 */
 	public int maxCount()
 	{
+		if(isStacking())
+			return 1;
+		
 		if (hasDominoes())
 			return equipment.components().length;
 

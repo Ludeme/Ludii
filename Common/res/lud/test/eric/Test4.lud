@@ -1,20 +1,26 @@
-(game "TrackLoop"  
+(define "SizeStackInPlaceStack"
+    (place Stack "Disc1" 0 count:4)
+    (place Stack "Disc1" 1 count:(size Stack at:0))
+)
+
+(game "Container ludemes in start rule"
     (players 2)  
     (equipment { 
-        (board (square 4) (track "Track" "0,E,N,W,S2" loop:True directed:True)) 
+        (board (hex 2)) 
         (piece "Disc" Each)
     })
-    (rules 
-        (play
-            (move Select (from (sites Empty)) (then 
-                (and {
-                    (note (count StepsOnTrack 4 1))
-                    (note (trackSite Move from:4 steps:2))
-                })
-            ))
+    (rules
+        (start {
+            //Each of these causes java.lang.NullPointerExceptions with different trace
+//            (place Stack "Disc1" 0 count:(count Steps 0 6))
+           // (place Stack "Disc1" 0 count:(count Sites in:(sites Board)))
+            //("SizeStackInPlaceStack")
+        })
+        (play 
+            (move Add (to (sites Empty)))
         )
         
         (end {
         })
     )
-)
+    )
