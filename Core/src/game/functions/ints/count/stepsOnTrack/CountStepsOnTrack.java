@@ -157,22 +157,40 @@ public final class CountStepsOnTrack extends BaseIntFunction
 					if (track.elems()[i].site == currentLoc)
 						break;
 			}
-		} // If the track is a full loop like the mancala games, we just try to found the
-			// corresponding index for the current location.
-		else
+			
+			int count = 0;
+			for (; i < track.elems().length; i++)
+			{
+				if (track.elems()[i].site == site2)
+					return count;
+				count++;
+			}
+			
+		} 
+		else // If the track is a full loop.
 		{
 			for (i = 0; i < track.elems().length; i++)
 				if (track.elems()[i].site == currentLoc)
 					break;
+			
+			final int index = i;
+			int count = 0;
+			for (; i < track.elems().length; i++)
+			{
+				if (track.elems()[i].site == site2)
+					return count;
+				count++;
+			}
+			
+			for (i = 0; i < index; i++)
+			{
+				if (track.elems()[i].site == site2)
+					return count;
+				count++;
+			}
 		}
 
-		int count = 0;
-		for (; i < track.elems().length; i++)
-		{
-			if (track.elems()[i].site == site2)
-				return count;
-			count++;
-		}
+
 
 		return Constants.OFF;
 

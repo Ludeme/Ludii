@@ -1,33 +1,20 @@
-(game "Free Disc"
-    (players 2)
-    (equipment {
-        (board (square 7))
-        (regions "Board" {0..42}) // 42.
-        
-        (piece "Disc" Each (move (from)
-                (to (difference (sites "Board") (from)))
-                
-                //count:(size Stack at:(from)) // ?
-                
-        stack:True)) // but no whole stack-movement ..
+(game "TrackLoop"  
+    (players 2)  
+    (equipment { 
+        (board (square 4) (track "Track" "0,E,N,W,S2" loop:True directed:True)) 
+        (piece "Disc" Each)
     })
-    (rules
-        (start {(place Stack "Disc1" (coord:"B4") count:1)
-            (place Stack "Disc1" (coord:"B1") count:2)
-            (place Stack "Disc1" (coord:"G3") count:3)
-            (place Stack "Disc2" (coord:"A5") count:1)
-            (place Stack "Disc2" (coord:"C1") count:2)
-            (place Stack "Disc2" (coord:"E6") count:3)
+    (rules 
+        (play
+            (move Select (from (sites Empty)) (then 
+                (and {
+                    (note (count StepsOnTrack 4 1))
+                    (note (trackSite Move from:4 steps:2))
+                })
+            ))
+        )
+        
+        (end {
         })
-        
-        (play (forEach Piece) )
-        
-        (end (if (no Moves Next) (result Mover Win)))
     )
-)
-
-//------------------------------------------------------------------------------
-
-(metadata (info {(description "Stack-move-test")(version "1.3.4")})
-    (graphics {(piece Scale "Dot" 0.314) (board Style Chess) })
 )
