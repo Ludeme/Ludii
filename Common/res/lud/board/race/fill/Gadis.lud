@@ -1,0 +1,260 @@
+(define "HasToRotate" 
+		(or {
+			(and (is In (last From) (union (sites "SecondCircle") (sites Outer))) (is In (last To) (sites "FirstCircle")))
+			(and (is In (last From) (union (sites "FirstCircle") (sites "ThirdCircle"))) (is In (last To) (sites "SecondCircle")))
+			(and (is In (last From) (sites "SecondCircle")) (is In (last To) (sites "ThirdCircle")))
+		})
+)
+
+(define "RotateFirstCircleCW"
+		(do (set Var (what at:34))
+		next:(and {
+			(remove 34)
+			(if (is Occupied 35) (move (from 35) (to 34)))
+			(if (is Occupied 25) (move (from 25) (to 35)))
+			(if (is Occupied 24) (move (from 24) (to 25)))
+			(if (is Occupied 26) (move (from 26) (to 24)))
+			(if (is Occupied 27) (move (from 27) (to 26)))
+			(if (is Occupied 28) (move (from 28) (to 27)))
+			(if (is Occupied 29) (move (from 29) (to 28)))
+			(if (is Occupied 30) (move (from 30) (to 29)))
+			(if (is Occupied 31) (move (from 31) (to 30)))
+			(if (is Occupied 32) (move (from 32) (to 31)))
+			(if (is Occupied 33) (move (from 33) (to 32)))
+			(if (!= 0 (var)) (add (piece (var)) (to 33)))
+		})
+		)	
+)
+
+(define "RotateFirstCircleCCW"
+		(do (set Var (what at:34))
+		next:(and {
+			(remove 34)
+			(if (is Occupied 33) (move (from 33) (to 34)))
+			(if (is Occupied 32) (move (from 32) (to 33)))
+			(if (is Occupied 31) (move (from 31) (to 32)))
+			(if (is Occupied 30) (move (from 30) (to 31)))
+			(if (is Occupied 29) (move (from 29) (to 30)))
+			(if (is Occupied 28) (move (from 28) (to 29)))
+			(if (is Occupied 27) (move (from 27) (to 28)))
+			(if (is Occupied 26) (move (from 26) (to 27)))
+			(if (is Occupied 24) (move (from 24) (to 26)))
+			(if (is Occupied 25) (move (from 25) (to 24)))
+			(if (is Occupied 35) (move (from 35) (to 25)))
+			(if (!= 0 (var)) (add (piece (var)) (to 35)))
+		})
+		)	
+)
+
+(define "RotateSecondCircleCW"
+		(do (set Var (what at:22))
+		next:(and {
+			(remove 22)
+			(if (is Occupied 23) (move (from 23) (to 22)))
+			(if (is Occupied 13) (move (from 13) (to 23)))
+			(if (is Occupied 12) (move (from 12) (to 13)))
+			(if (is Occupied 14) (move (from 14) (to 12)))
+			(if (is Occupied 15) (move (from 15) (to 14)))
+			(if (is Occupied 16) (move (from 16) (to 15)))
+			(if (is Occupied 17) (move (from 17) (to 16)))
+			(if (is Occupied 18) (move (from 18) (to 17)))
+			(if (is Occupied 19) (move (from 19) (to 18)))
+			(if (is Occupied 20) (move (from 20) (to 19)))
+			(if (is Occupied 21) (move (from 21) (to 20)))
+			(if (!= 0 (var)) (add (piece (var)) (to 21)))
+		})
+		)	
+)
+
+(define "RotateSecondCircleCCW"
+		(do (set Var (what at:22))
+		next:(and {
+			(remove 22)
+			(if (is Occupied 21) (move (from 21) (to 22)))
+			(if (is Occupied 20) (move (from 20) (to 21)))
+			(if (is Occupied 19) (move (from 19) (to 20)))
+			(if (is Occupied 18) (move (from 18) (to 19)))
+			(if (is Occupied 17) (move (from 17) (to 18)))
+			(if (is Occupied 16) (move (from 16) (to 17)))
+			(if (is Occupied 15) (move (from 15) (to 16)))
+			(if (is Occupied 14) (move (from 14) (to 15)))
+			(if (is Occupied 12) (move (from 12) (to 14)))
+			(if (is Occupied 13) (move (from 13) (to 12)))
+			(if (is Occupied 23) (move (from 23) (to 13)))
+			(if (!= 0 (var)) (add (piece (var)) (to 23)))
+		})
+		)	
+)
+
+(define "RotateThirdCircleCW"
+		(do (set Var (what at:10))
+		next:(and {
+			(remove 10)
+			(if (is Occupied 11) (move (from 11) (to 10)))
+			(if (is Occupied 1) (move (from 1) (to 11)))
+			(if (is Occupied 0) (move (from 0) (to 1)))
+			(if (is Occupied 2) (move (from 2) (to 0)))
+			(if (is Occupied 3) (move (from 3) (to 2)))
+			(if (is Occupied 4) (move (from 4) (to 3)))
+			(if (is Occupied 5) (move (from 5) (to 4)))
+			(if (is Occupied 6) (move (from 6) (to 5)))
+			(if (is Occupied 7) (move (from 7) (to 6)))
+			(if (is Occupied 8) (move (from 8) (to 7)))
+			(if (is Occupied 9) (move (from 9) (to 8)))
+			(if (!= 0 (var)) (add (piece (var)) (to 9)))
+		})
+		)	
+)
+
+(define "RotateThirdCircleCCW"
+		(do (set Var (what at:10))
+		next:(and {
+			(remove 10)
+			(if (is Occupied 9) (move (from 9) (to 10)))
+			(if (is Occupied 8) (move (from 8) (to 9)))
+			(if (is Occupied 7) (move (from 7) (to 8)))
+			(if (is Occupied 6) (move (from 6) (to 7)))
+			(if (is Occupied 5) (move (from 5) (to 6)))
+			(if (is Occupied 4) (move (from 4) (to 5)))
+			(if (is Occupied 3) (move (from 3) (to 4)))
+			(if (is Occupied 2) (move (from 2) (to 3)))
+			(if (is Occupied 0) (move (from 0) (to 2)))
+			(if (is Occupied 1) (move (from 1) (to 0)))
+			(if (is Occupied 11) (move (from 11) (to 1)))
+			(if (!= 0 (var)) (add (piece (var)) (to 11)))
+		})
+		)	
+)
+
+(define "Rotate"
+	(if (is In (last To) (sites "FirstCircle"))
+		(or 
+			(move Select
+				(from 34)
+				(to 33)
+				(then ("RotateFirstCircleCW"))
+			)
+			(move Select
+					(from 34)
+					(to 35)
+					(then ("RotateFirstCircleCCW"))
+				)
+		)
+		(if (is In (last To) (sites "SecondCircle"))
+			(or 
+				(move Select
+					(from 22)
+					(to 21)
+					(then ("RotateSecondCircleCW"))
+				)
+				(move Select
+						(from 22)
+						(to 23)
+						(then ("RotateSecondCircleCCW"))
+					)
+			)
+			(if (is In (last To) (sites "ThirdCircle"))
+				(or 
+					(move Select
+						(from 10)
+						(to 9)
+						(then ("RotateThirdCircleCW"))
+					)
+					(move Select
+							(from 10)
+							(to 11)
+							(then ("RotateThirdCircleCCW"))
+						)
+				)
+			)
+		)
+	)
+)
+
+(define "PiecesOnNextStart" 
+	(count Sites in:(intersection (sites Occupied by:#1) (if (= (id #1) 1) (sites P2) (sites P1))))
+)
+
+//-------------------------------------------------------------------------	
+
+(game "Gadis"
+	(players 2)
+	(equipment {
+		(board
+			(remove
+				(concentric {0 0 12 12 12 24})
+				cells:{1}
+			)
+		)
+		(piece "Pawn" Each)
+		(regions P1 {45..56})
+		(regions P2 {57 58 59 36..44})
+		(regions "FirstCircle" {24..35})
+		(regions "SecondCircle" {12..23})
+		(regions "ThirdCircle" {1..11})
+	})
+	(rules
+		(start {
+			(place "Pawn1" (sites P1))
+			(place "Pawn2" (sites P2))
+		})
+		(play 
+			(if "SameTurn"
+				("Rotate")
+				(priority {
+					(forEach Piece
+							(move Step 
+								(from if:(not (is In (from) (sites Next))))
+								Orthogonal
+								(to 
+									if:(and
+										(is Enemy (who at:(to)))
+										(not (is In (to) (sites Outer)))
+										)
+									(apply (remove (to)))
+								)
+							)
+						)
+				(forEach Piece
+					(move Step 
+						(from if:(not (is In (from) (sites Next))))
+						Orthogonal
+						(to 
+							if:(and
+								(is Empty (to))
+								(not (is In (to) (sites Mover)))
+								)
+						)
+					)
+				)
+				}
+				(then (if ("HasToRotate") (moveAgain)))
+				)
+			)
+		)
+		(end { 
+			(if (no Moves Next)
+			(byScore {
+                (score P1 ("PiecesOnNextStart" P1)) 
+                (score P2 ("PiecesOnNextStart" P2)) 
+			})	
+			)
+		})
+	)
+)
+
+//-------------------------------------------------------------------------	
+
+(metadata
+	(info {
+		
+	})
+	(graphics {
+		(region Colour (sites Inner) (colour 252 203 84))
+		(region Colour (sites Outer) (colour 162 68 10))
+        (piece Scale "Pawn" 0.75)        
+        (board Colour OuterEdges (colour Black))
+        (board Colour InnerEdges (colour Black))
+        (show Line {{81 69} {67 4} {65 3} {63 2} {61 1} {83 12} {79 10} {77 9} {75 8} {73 7} {71 6}} (colour Black) scale:2.0)
+	})
+)
