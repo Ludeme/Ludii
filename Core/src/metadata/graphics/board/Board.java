@@ -38,8 +38,8 @@ public class Board implements GraphicsItem
 	@SuppressWarnings("javadoc")
 	public static GraphicsItem construct
 	(
-		final BoardStyleType boardType, 
-		final ContainerStyleType containerStyleType,
+				   final BoardStyleType boardType, 
+				   final ContainerStyleType containerStyleType,
 		@Opt @Name final Boolean replaceComponentsWithFilledCells
 	)
 	{
