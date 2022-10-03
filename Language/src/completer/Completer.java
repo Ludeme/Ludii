@@ -738,16 +738,26 @@ public class Completer
 	
 	/**
 	 * Save reconstruction to file.
-	 * @param name    Reconstruction name for file.
+	 * @param path Path to save output file (will use default /Common/res/out/recons/ if null).
+	 * @param name Output file name for reconstruction.
 	 * @throws IOException 
 	 */
 	public static void saveCompletion
 	(
-		final String name, final Completion completion
+		final String path, final String name, final Completion completion
 	) throws IOException
 	{
-		final String outFileName = "../Common/res/out/recons/" + name + "-" + 
-									String.format("%.3f", Double.valueOf(completion.score())) + ".lud";	
+		final String safePath = (path != null) ? path : "../Common/res/out/recons/";
+		
+		// **
+		// ** TODO: Need to check if this path exists! If not, then try to make it.
+		// **
+		
+		//final String scoreString = String.format("%.3f", Double.valueOf(completion.score()));
+		//final String outFileName = safePath + name + "-" + index + "-" + scoreString + ".lud";	
+
+		final String outFileName = safePath + name + ".lud";
+		
 		// Prepare the output file
 		final File file = new File(outFileName);
 		if (!file.exists())
