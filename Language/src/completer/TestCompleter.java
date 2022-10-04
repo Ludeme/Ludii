@@ -119,8 +119,8 @@ public class TestCompleter
 			System.out.println("File needs completing: " + Completer.needsCompleting(str));
 			
 			//final Report report = new Report();
-			final List<Completion> completions = Completer.complete(str, 3, null);   // save all completions
-			//final List<Completion> completions = Completer.complete(str, true, null);  // only save first completion for each file
+			//final List<Completion> completions = Completer.completeExhaustive(str, 3, null);   // save all completions
+			final List<Completion> completions = Completer.completeSampled(str, 3, null);  // only save first completion for each file
 			for (int n = 0; n < completions.size(); n++) 
 			{
 				final Completion completion = completions.get(n);

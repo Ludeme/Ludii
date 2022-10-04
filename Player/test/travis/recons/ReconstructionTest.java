@@ -40,7 +40,8 @@ public class ReconstructionTest
 
 		for (final String fileName : choices)
 		{
-			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/eric/recons/"))
+//			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/eric/recons/"))
+			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/"))
 				continue;
 			
 			// Get game description from resource
@@ -73,7 +74,7 @@ public class ReconstructionTest
 			List<Completion> completions = null;
 			try
 			{
-				completions = Completer.complete(desc, 1, null);
+				completions = Completer.completeSampled(desc, 1, null);
 			}
 			catch (final Exception e)
 			{

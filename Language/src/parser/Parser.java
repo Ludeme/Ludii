@@ -106,7 +106,12 @@ public class Parser
 			final String rawGame = description.rawGameDescription();
 			System.out.println("Raw game description is: \n" + rawGame);
 		
-			final List<Completion> completions = Completer.complete(rawGame, description.maxReconstructions(), report);
+			// **
+			// ** TODO: Maybe remove all formatting so that string matching during 
+			// **       completion is more likely to work.
+			// **
+			
+			final List<Completion> completions = Completer.completeExhaustive(rawGame, description.maxReconstructions(), report);
 			System.out.println(completions.size() + " completions found.");
 			
 			if (!completions.isEmpty())

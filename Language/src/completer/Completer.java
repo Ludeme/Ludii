@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import main.StringRoutines;
-//import main.StringRoutines;
 import main.grammar.Report;
 import parser.Expander;
 
@@ -45,12 +45,13 @@ public class Completer
 	//-------------------------------------------------------------------------
 	
 	/**
+	 * Creates all completions exhautively.
 	 * @param raw       Partial raw game description.
 	 * @param maxCompletions Maximum number of completions to make (default is 1, e.g. for Travis tests).
 	 * @param report    Report log for warnings and errors.
 	 * @return List of completed (raw) game descriptions ready for expansion and parsing.        
 	 */
-	public static List<Completion> complete(final String raw, final int maxCompletions, final Report report)
+	public static List<Completion> completeExhaustive(final String raw, final int maxCompletions, final Report report)
 	{
 		System.out.println("Completer.complete(): Completing at most " + maxCompletions + " descriptions...");
 
@@ -58,7 +59,7 @@ public class Completer
 
 		// Create list of alternative Descriptions, as each will need to be expanded
 		final Map<String, String> ludMap = getAllLudContents();
-		final Map<String, String> defMap = getAllLudContents();
+		final Map<String, String> defMap = getAllDefContents();
 		
 		final List<Completion> queue = new ArrayList<Completion>();
 		queue.add(new Completion(new String(raw)));
@@ -78,7 +79,7 @@ public class Completer
 			}
 			
 			// Complete the next completion clause
-			nextCompletion(comp, queue, ludMap, defMap, report);		
+			nextCompletionExhaustive(comp, queue, ludMap, defMap, report);		
 		}
 				
 		return completions;
@@ -88,10 +89,11 @@ public class Completer
 
 	/**
 	 * Process next completion and add results to queue.
+	 * Completes in order according to next available valid completion.
 	 * @param queue
 	 * @param report
 	 */
-	public static void nextCompletion
+	public static void nextCompletionExhaustive
 	(
 		final Completion completion, final List<Completion> queue, 
 		final Map<String, String> ludMap, final Map<String, String> defMap, 
@@ -223,6 +225,201 @@ public class Completer
 				queue.add(newCompletion);
 			}
 		}
+	}
+	
+	//-------------------------------------------------------------------------
+
+	/**
+	 * Creates list of completions irrespective of previous completions.
+	 * @param raw       Partial raw game description.
+	 * @param maxCompletions Maximum number of completions to make (default is 1, e.g. for Travis tests).
+	 * @param report    Report log for warnings and errors.
+	 * @return List of completed (raw) game descriptions ready for expansion and parsing.        
+	 */
+	public static List<Completion> completeSampled(final String raw, final int maxCompletions, final Report report)
+	{
+		System.out.println("Completer.complete(): Completing at most " + maxCompletions + " descriptions...");
+
+		final List<Completion> completions = new ArrayList<Completion>();
+
+		// Create list of alternative Descriptions, as each will need to be expanded
+		final Map<String, String> ludMap = getAllLudContents();
+		final Map<String, String> defMap = getAllDefContents();
+		
+		for (int n = 0; n < maxCompletions; n++)
+		{
+			Completion comp = new Completion(new String(raw));
+			while (needsCompleting(comp.raw()))
+				comp = nextCompletionSampled(comp, ludMap, defMap, report);		
+			completions.add(comp);
+		}				
+		return completions;
+	}
+
+	//-------------------------------------------------------------------------
+
+	/**
+	 * Process next completion and add results to queue.
+	 * Solves the next completion independently by sampling from candidates.
+	 * @param queue
+	 * @param report
+	 */
+	public static Completion nextCompletionSampled
+	(
+		final Completion completion, 
+		final Map<String, String> ludMap, final Map<String, String> defMap, 
+		final Report report
+	)
+	{
+		System.out.println("Completing next completion for raw string:\n" + completion.raw());
+		
+		final Random rng = new Random();
+	
+		final List<Completion> completions = new ArrayList<Completion>();
+		
+		// Find opening and closing bracket locations
+		final String raw = completion.raw();
+		final int from = raw.indexOf("[");
+		final int to = StringRoutines.matchingBracketAt(raw, from);
+
+		// Get reconstruction clause (substring within square brackets)
+		final String left   = raw.substring(0, from);
+		final String clause = raw.substring(from + 1, to);
+		final String right  = raw.substring(to + 1);
+		
+		//System.out.println("left  is: " + left);
+		//System.out.println("clause is: " + clause);
+		//System.out.println("right is: " + right);
+
+		// Determine left and right halves of parents
+		final List<String[]> parents = determineParents(left, right);
+		
+//		System.out.println("Parents:\n");
+//		for (final String[] parent : parents)
+//			System.out.println(parent[0] + "?" + parent[1] + "\n");
+		
+		final List<String> choices      = extractChoices(clause);
+		final List<String> inclusions   = new ArrayList<String>();
+		final List<String> exclusions   = new ArrayList<String>();
+		//final List<String> enumerations = new ArrayList<String>();
+		int enumeration = 0;
+
+		for (int c = choices.size() - 1; c >= 0; c--)
+		{
+			final String choice = choices.get(c);
+			//System.out.println("choice is: " + choice);
+			if 
+			(
+				choice.length() > 3 && choice.charAt(0) == '[' 
+				&& 
+				choice.charAt(1) == '+' && choice.charAt(choice.length() - 1) == ']'
+			)
+			{
+				// Is an inclusion
+				inclusions.add(choice.substring(2, choice.length() - 1).trim());
+				choices.remove(c);
+			}
+			else if 
+			(
+				choice.length() > 3 && choice.charAt(0) == '[' 
+				&& 
+				choice.charAt(1) == '-' && choice.charAt(choice.length() - 1) == ']'
+			)
+			{
+				// Is an exclusion
+				exclusions.add(choice.substring(2, choice.length() - 1).trim());
+				choices.remove(c);
+			}
+			else if 
+			(
+				choice.length() >= 1 && choice.charAt(0) == '#' 
+				|| 
+				choice.length() >= 3 && choice.charAt(0) == '[' 
+				&& 
+				choice.charAt(1) == '#' && choice.charAt(choice.length() - 1) == ']'
+			)
+			{
+				// Is an enumeration
+				//enumerations.add(choice.substring(1, choice.length() - 1).trim());
+				enumeration = numHashes(choice);
+				//System.out.println("Enumeration has " + enumeration + " hashes...");
+				choices.remove(c);
+			}
+		}
+			
+		if (enumeration > 0)
+		{
+			// Enumerate on parents
+			final String[] parent = parents.get(enumeration - 1);
+			
+			//System.out.println("Enumerating on parent " + enumeration + ": " + parent[0] + "?" + parent[1]);
+			enumerateMatches(left, right, parent, ludMap, completions, completion.score());
+			enumerateMatches(left, right, parent, defMap, completions, completion.score());
+		}
+		else
+		{
+			// Handle choices as usual
+			for (int n = 0; n < choices.size(); n++)
+			{
+				final String choice = choices.get(n);
+				
+				if (!exclusions.isEmpty())
+				{
+					// Check whether this choice contains excluded text
+					boolean found = false;
+					for (final String exclusion : exclusions)
+						if (choice.contains(exclusion))
+						{
+							found = true;
+							break;
+						}
+					if (found)
+						continue;  // excluded text is present
+				}
+				
+				if (!inclusions.isEmpty())
+				{
+					// Check that this choice contains included text
+					boolean found = false;
+					for (final String inclusion : inclusions)
+						if (choice.contains(inclusion))
+						{
+							found = true;
+							break;
+						}
+					if (!found)
+						continue;  // included text is not present
+				}
+				
+				final String str = raw.substring(0, from) + choice + raw.substring(to + 1);
+				final Completion newCompletion = new Completion(str);
+				
+//				System.out.println("\n**********************************************************");
+//				System.out.println("completion " + n + "/" + choices.size() + " is:\n" + completion);
+				
+				//queue.add(newCompletion);
+				
+				completions.add(newCompletion);
+			}
+		}		
+					
+		if (completions.isEmpty())
+		{
+			// No valid completions for this completion point
+			if (report != null)
+					report.addError("No completions for: " + raw);
+			return null;
+			
+			// **
+			// ** TODO: Choose preferred completion based on context.
+			// **
+			// ** TODO: Maybe use UCB to balance reward with novelty, i.e. prefer 
+			// **       high scoring candidates but not the same ones every time, 
+			// **       also try low scoring ones occasionally.
+			// **
+		}
+		
+		return completions.get(rng.nextInt(completions.size()));
 	}
 	
 	//-------------------------------------------------------------------------
