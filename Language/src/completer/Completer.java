@@ -261,7 +261,6 @@ public class Completer
 	/**
 	 * Process next completion and add results to queue.
 	 * Solves the next completion independently by sampling from candidates.
-	 * @param queue
 	 * @param report
 	 */
 	public static Completion nextCompletionSampled
