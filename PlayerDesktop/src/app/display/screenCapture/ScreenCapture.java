@@ -68,9 +68,18 @@ public class ScreenCapture
 				ImageIO.write(snapShot, "png", outputFile);
 				screenshotComplete = true;
 			}
-			catch (final IOException e)
+			catch (final Exception e)
 			{
-				e.printStackTrace();
+				try
+				{
+					final File outputFile = new File(savedName + ".png");
+					ImageIO.write(snapShot, "png", outputFile);
+					screenshotComplete = true;
+				}
+				catch (final IOException e2)
+				{
+					e.printStackTrace();
+				}
 			}
 		});
 	}
