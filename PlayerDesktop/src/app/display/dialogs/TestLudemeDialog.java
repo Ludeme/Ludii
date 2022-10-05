@@ -54,11 +54,11 @@ public class TestLudemeDialog extends JDialog
 	/**
 	 * Launch the dialog.
 	 */
-	public static void showDialog(final PlayerApp app, final Context context)
+	public static void showDialog(final PlayerApp app)
 	{
 		try
 		{
-			final TestLudemeDialog dialog = new TestLudemeDialog(app, context);
+			final TestLudemeDialog dialog = new TestLudemeDialog(app);
 			DialogUtil.initialiseDialog(dialog, "Test Ludeme Dialog", null);
 		}
 		catch (final Exception e)
@@ -72,7 +72,7 @@ public class TestLudemeDialog extends JDialog
 	/**
 	 * Create the dialog.
 	 */
-	public TestLudemeDialog(final PlayerApp app, final Context context)
+	public TestLudemeDialog(final PlayerApp app)
 	{
 		super(null, java.awt.Dialog.ModalityType.DOCUMENT_MODAL);
 		setBounds(100, 100, 650, 509);
@@ -223,7 +223,7 @@ public class TestLudemeDialog extends JDialog
 					@Override
 					public void actionPerformed(final ActionEvent e)
 					{
-						testLudemeString(app, textPane_1.getText(), context);
+						testLudemeString(app, textPane_1.getText());
 					}
 				};
 				
@@ -232,7 +232,7 @@ public class TestLudemeDialog extends JDialog
 					@Override
 					public void actionPerformed(final ActionEvent e)
 					{
-						testLudemeString(app, textPane_2.getText(), context);
+						testLudemeString(app, textPane_2.getText());
 					}
 				};
 				
@@ -241,7 +241,7 @@ public class TestLudemeDialog extends JDialog
 					@Override
 					public void actionPerformed(final ActionEvent e)
 					{
-						testLudemeString(app, textPane_3.getText(), context);
+						testLudemeString(app, textPane_3.getText());
 					}
 				};
 				
@@ -250,7 +250,7 @@ public class TestLudemeDialog extends JDialog
 					@Override
 					public void actionPerformed(final ActionEvent e)
 					{
-						testLudemeString(app, textPane_4.getText(), context);
+						testLudemeString(app, textPane_4.getText());
 					}
 				};
 				
@@ -266,7 +266,7 @@ public class TestLudemeDialog extends JDialog
 					@Override
 					public void actionPerformed(final ActionEvent e)
 					{
-						testLudemeStringConcepts(app, textPane_1.getText(), context);
+						testLudemeStringConcepts(app, textPane_1.getText());
 					}
 				};
 				
@@ -275,7 +275,7 @@ public class TestLudemeDialog extends JDialog
 					@Override
 					public void actionPerformed(final ActionEvent e)
 					{
-						testLudemeStringConcepts(app, textPane_2.getText(), context);
+						testLudemeStringConcepts(app, textPane_2.getText());
 					}
 				};
 				
@@ -284,7 +284,7 @@ public class TestLudemeDialog extends JDialog
 					@Override
 					public void actionPerformed(final ActionEvent e)
 					{
-						testLudemeStringConcepts(app, textPane_3.getText(), context);
+						testLudemeStringConcepts(app, textPane_3.getText());
 					}
 				};
 				
@@ -293,7 +293,7 @@ public class TestLudemeDialog extends JDialog
 					@Override
 					public void actionPerformed(final ActionEvent e)
 					{
-						testLudemeStringConcepts(app, textPane_4.getText(), context);
+						testLudemeStringConcepts(app, textPane_4.getText());
 					}
 				};
 				
@@ -436,7 +436,7 @@ public class TestLudemeDialog extends JDialog
 	//-------------------------------------------------------------------------
 	
 	// Tests a specified ludeme string when a test button is pressed in the dialog
-	static void testLudemeString(final PlayerApp app, final String str, final Context context)
+	static void testLudemeString(final PlayerApp app, final String str)
 	{
 		if (str == null || str.equals(""))
 			return;
@@ -446,7 +446,7 @@ public class TestLudemeDialog extends JDialog
 			final Object compiledObject = compileString(str);
 			if (compiledObject != null)
 			{
-				final String error = evalCompiledObject(app, compiledObject, context);
+				final String error = evalCompiledObject(app, compiledObject, app.manager().ref().context());
 				if (error != null)
 					app.addTextToStatusPanel(error + "\n");
 			}
@@ -469,13 +469,11 @@ public class TestLudemeDialog extends JDialog
 	 * 
 	 * @param app The app.
 	 * @param str The string to check.
-	 * @param context The context.
 	 */
 	static void testLudemeStringConcepts
 	(
 		final PlayerApp app, 
-		final String str, 
-		final Context context
+		final String str
 	)
 	{
 		if (str == null || str.equals(""))
@@ -486,7 +484,7 @@ public class TestLudemeDialog extends JDialog
 			final Object compiledObject = compileString(str);
 			if (compiledObject != null)
 			{
-				final String error = evalConceptCompiledObject(app, compiledObject, context);
+				final String error = evalConceptCompiledObject(app, compiledObject, app.manager().ref().context());
 				if (error != null)
 					app.addTextToStatusPanel(error + "\n");
 			}

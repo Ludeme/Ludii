@@ -202,7 +202,7 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().equals("Test Ludeme"))
 		{
-			TestLudemeDialog.showDialog(app, context);
+			TestLudemeDialog.showDialog(app);
 		}
 		else if (source.getText().equals("Create Game"))
 		{
