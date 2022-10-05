@@ -1,8 +1,10 @@
 package gameDistance.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -111,6 +113,44 @@ public class DistanceUtils
 		}
 		
 		return vocabulary;
+	}
+	
+	//-----------------------------------------------------------------------------
+	
+	/**
+	 * @return CSN distance between two rulesetIds
+	 */
+	public static double getRulesetCSNDistance(final int rulesetId1, final int rulesetId2)
+	{
+		return getAllRulesetCSNDistances(rulesetId1).get(rulesetId2);
+	}
+	
+	/**
+	 * @return Map of rulesetId (key) to CSN distance (value) pairs, based on distance to specified rulesetId.
+	 */
+	public static Map<Integer, Double> getAllRulesetCSNDistances(final int rulesetId)
+	{
+		// Load ruleset distances from specific directory.
+		final String distancesFilePath = "../../LudiiPrivate/DataMiningScripts/Geacron/GeacronDistance/res/output/contextualiser/similarity_" + rulesetId + ".csv";
+		
+		// Map of rulesetId (key) to CSN distance (value) pairs.
+		final Map<Integer, Double> rulesetCSNDistances = new HashMap<>();	
+		
+		try (BufferedReader br = new BufferedReader(new FileReader(distancesFilePath))) 
+		{
+		    String line = br.readLine();	// column names
+		    
+		    while ((line = br.readLine()) != null) 
+		    {
+		        final String[] values = line.split(",");
+		        rulesetCSNDistances.put(Integer.parseInt(values[0]), Double.parseDouble(values[1]));
+		    }
+		}
+		catch (final Exception e)
+		{
+			e.printStackTrace();
+		}
+		return rulesetCSNDistances;
 	}
 	
 	//-----------------------------------------------------------------------------
