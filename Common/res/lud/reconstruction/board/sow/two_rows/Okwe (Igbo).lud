@@ -2,7 +2,9 @@
     (players 2) 
     
     (equipment { 
-        (mancalaBoard 2 6 store:None [#])
+        (mancalaBoard 2 6 store:None 
+                (track [#])
+        )
         (piece "Seed" Shared)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
