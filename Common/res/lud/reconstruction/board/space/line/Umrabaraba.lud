@@ -13,32 +13,32 @@
         
         phases:{
         (phase "Placement"
-            (play
-                (if "SameTurn"
-                    [#]
-                    (move 
-                        (from (handSite Mover)) 
-                        (to (sites Empty)) 
-                        (then [#])
-                    ) 
-                )
-            ) 
+            (play [#])
+//                (if "SameTurn"
+//                    [#]
+//                    (move 
+//                        (from (handSite Mover)) 
+//                        (to (sites Empty)) 
+//                        (then [#])
+//                    ) 
+//                )
+//            ) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
         
         (phase "Movement" 
-            (play 
-                (if "SameTurn"
-                    [#]
-                    (if (> (count Pieces Mover) 3)
-                        (forEach Piece)
-                        (move 
-                            (from (sites Occupied by:Mover))
-                            (to (sites Empty))
-                        )
-                    )
-                )
-            )
+            (play [#])
+//                (if "SameTurn"
+//                    [#]
+//                    (if (> (count Pieces Mover) 3)
+//                        (forEach Piece)
+//                        (move 
+//                            (from (sites Occupied by:Mover))
+//                            (to (sites Empty))
+//                        )
+//                    )
+//                )
+//            )
         )
         }
         

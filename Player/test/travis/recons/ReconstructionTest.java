@@ -42,7 +42,7 @@ public class ReconstructionTest
 		{
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/eric/recons/"))
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/"))
-			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/space/line/Rwandan Alignment Game"))
+			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/war/other/Xiangqi (Song)"))
 				continue;
 			
 			// Get game description from resource

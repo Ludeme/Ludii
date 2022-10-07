@@ -1,9 +1,6 @@
 (game "Fidchell"
     (players 2) 
-    (equipment {
-        (board (square [#]))
-        [#] // equal number of pieces per side
-    }) 
+    (equipment [#]) 
     (rules
         (start [#])
         (play [#]) // custodial capture, pieces move orthogonally over any distance.
@@ -30,6 +27,7 @@
         (concept "CustodialCapture" True)
         (concept "SlideDecision" True)
         (concept "OrthogonalDirection" True)
+        (concept "SquareShape" True)
     })
     
 )

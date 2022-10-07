@@ -1,10 +1,6 @@
 (game "Aucai" 
     (players 2) 
-    (equipment {
-        (board [#])
-        (dice d:6 from:0 num:[#])
-        [#]
-    })
+    (equipment [#])
     (rules
         (start [#])
         (play [#])
@@ -29,5 +25,10 @@
         (origin "This game was played in South America, from around 1580 to 1590.")
         }
     )
+    
+    (recon {
+        (concept "Dice" True)
+        (concept "DiceD6" True)
+    })
     
 )

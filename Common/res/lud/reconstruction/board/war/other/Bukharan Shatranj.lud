@@ -4,7 +4,7 @@
         (board (square 8))
         (piece "Queen" Each (move [#])) // The first move is by the queen, which jumps two spaces forward orthogonally, and then is reduced to a weak piece
         (piece "Bishop" Each (move Hop Diagonal (between if:True) (to if:(not ("IsFriendAt" (to))) (apply (if ("IsEnemyAt" (to)) (remove (to)))))))
-        [#]
+        [?]
     }) 
     (rules
         (start [#])

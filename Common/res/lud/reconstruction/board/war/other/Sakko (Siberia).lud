@@ -5,7 +5,7 @@
 (game "Sakko (Siberia)"
     (players 2) 
     (equipment { 
-        (board (rectangle 3 13) [#] use:Vertex)
+        (board (rectangle 3 13) {[?]} use:Vertex)
         (dice d:6 from:0 num:3)
         (piece "Marker" Each [#])
         (piece "King" Each [#])
@@ -15,13 +15,10 @@
     (rules 
         (start {
             (place "King0" (centrePoint))
-            [#]
+            [?]
         })
-        (play
-            ("RollMove" [#] // Sakko can activate a piece. Replacement capture. // Conversion of the king (but we dunno what happens to the piece landing on it). 
-            )
-            
-        )
+        (play ("RollMove" [#])) // Sakko can activate a piece. Replacement capture. // Conversion of the king (but we dunno what happens to the piece landing on it). 
+        
         (end ("CaptureAll" Next))
     )
 )
