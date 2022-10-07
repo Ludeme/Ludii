@@ -277,7 +277,7 @@ public class Completer
 		final List<Completion> completions = new ArrayList<Completion>();
 		
 		// Find opening and closing bracket locations
-		final String raw = completion.raw();
+		final String raw = Expander.removeComments(completion.raw());
 		final int from = raw.indexOf("[");
 		final int to = StringRoutines.matchingBracketAt(raw, from);
 
