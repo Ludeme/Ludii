@@ -1,0 +1,13 @@
+(game "PlayDoRollNext" 
+    (players 2) 
+    (equipment [#])
+    (rules
+        (start [#])
+        (play 
+        	(do (roll)
+        		next:[#]
+        	)
+        )
+        (end [#])
+    )
+)
