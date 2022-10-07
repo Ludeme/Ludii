@@ -6,8 +6,10 @@
     (players 2)
     (equipment {
         (board 
-            (rectangle 4 12) 
-            [#]
+            (rectangle 4 12) 	
+            {
+                [?]
+                }
             use:Vertex
         )
         (piece "Stick" Each (move [#]))

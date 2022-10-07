@@ -29,11 +29,7 @@
             (set Team 2 {P2 P4})
             (place Stack items:{"Stick2" "Stick1"} Edge 56)
         })
-        (play 
-            (do (roll)
-                [#]
-            )
-        )
+        (play ("RollMove" [#]))
         (end [#])
     )
 )
