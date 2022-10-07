@@ -40,9 +40,9 @@ public class ReconstructionTest
 
 		for (final String fileName : choices)
 		{
-			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/eric/recons/"))
+			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/eric/recons/"))
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/"))
-			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/race/escape/Tavli (Zenon)"))
+			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/race/other/Pisca"))
 				continue;
 			
 			// Get game description from resource

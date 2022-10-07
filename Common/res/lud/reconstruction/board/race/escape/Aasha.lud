@@ -25,11 +25,7 @@
     
     (rules 
         (start (place "Marker" "Hand" count:12))
-        (play 
-            ("RollMove"
-                [#]
-            )
-        )
+        (play ("RollMove" [#]))
         (end [#])
     )
 )

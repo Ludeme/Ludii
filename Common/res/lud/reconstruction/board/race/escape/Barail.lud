@@ -15,7 +15,7 @@
             (place Stack "Disc1" 14 count:14)
             (place Stack "Disc2" 13 count:15)
         })
-        (play (do (roll) next:[#]))
+        (play ("RollMove" [#]))
         (end ("EscapeWin"))
     )
 )

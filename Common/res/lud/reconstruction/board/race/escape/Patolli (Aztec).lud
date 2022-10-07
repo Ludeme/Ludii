@@ -11,7 +11,7 @@
         (piece "Pawn" Each) // 6 pieces per players
     }) 
     (rules 
-        (play (do (roll) next:[#])) // doubled when all of the beans have the marked side face-up
+    	(play ("RollMove" [#])) // doubled when all of the beans have the marked side face-up
         (end [#])
     )
 )

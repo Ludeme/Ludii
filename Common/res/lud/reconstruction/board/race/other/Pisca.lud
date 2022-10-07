@@ -2,8 +2,8 @@
     (players 2) 
     (equipment {
         (board [#]) // The board has some tracks which are making a circuit.
-        (dice d:6 from:0 num:[#])
-        [#]
+        //(dice d:6 from:0 num:[#])
+        //[#]
     })
     (rules
         (start [#])
@@ -28,5 +28,10 @@
         (origin "This game was played in South America, from around 1580 to 1590.")
         }
     )
+    
+    (recon {
+        (concept "Dice" True)
+        (concept "DiceD6" True)
+    })
     
 )

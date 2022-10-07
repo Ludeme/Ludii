@@ -11,12 +11,8 @@
         (dice d:6 num:3)
     })
     (rules
-        (start [#]) // 15 pieces.
-        (play 
-            (do (roll)
-                next:[#] // Two pieces on a space block an opponent from moving to that spot.
-            )
-        )
+        (start [#]) 
+        (play ("RollMove" [#])) // Two pieces on a space block an opponent from moving to that spot.
         (end [#])
     )
 )

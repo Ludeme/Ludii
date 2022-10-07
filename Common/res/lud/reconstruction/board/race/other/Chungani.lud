@@ -1,7 +1,10 @@
 (game "Chungani"
     (players 2) 
     (equipment { 
-        (board (rectangle 1 5) [#] 
+        (board (rectangle 1 5) 
+        	{
+        	[?] // I put a ? because if I put a # no match exist. 
+        	}
             use:Vertex
         )
         (piece "Bean" Each (move [#]))
