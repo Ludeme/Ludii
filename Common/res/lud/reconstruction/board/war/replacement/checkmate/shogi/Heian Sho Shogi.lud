@@ -85,11 +85,11 @@
                 )
             )
         )
-        [#]
+        [?]
         (regions "Promotion" P1 (expand (sites Top) steps:2))
         (regions "Promotion" P2 (expand (sites Bottom) steps:2))
         (map "Promoted" { 
-            (pair (id "Fuhyo" P1) (id "GoldGeneral" P1)) (pair (id "Fuhyo" P2) (id "GoldGeneral" P2)) [#] 
+            (pair (id "Fuhyo" P1) (id "GoldGeneral" P1)) (pair (id "Fuhyo" P2) (id "GoldGeneral" P2)) [?] 
         })
     })
     (rules
