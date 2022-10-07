@@ -375,9 +375,17 @@ public class ExportDbCsvConcepts
 	 * @param rulesetExpected The name of the ruleset of the game.
 	 * @param agentName2	  The name for a different second agent (if not empty string)
 	 */
-	public static void exportRulesetConceptsCSV(final Evaluation evaluation, final int numPlayouts,
-			final double timeLimit, final double thinkingTime, final String agentName, final String name,
-			final String rulesetExpected, final String agentName2)
+	public static void exportRulesetConceptsCSV
+	(
+		final Evaluation evaluation, 
+		final int numPlayouts,
+		final double timeLimit, 
+		final double thinkingTime, 
+		final String agentName, 
+		final String name,
+		final String rulesetExpected, 
+		final String agentName2
+	)
 	{
 		final List<Concept> ignoredConcepts = new ArrayList<Concept>();
 		ignoredConcepts.add(Concept.Behaviour);
