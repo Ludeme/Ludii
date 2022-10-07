@@ -1,8 +1,7 @@
 (game "Wo Shuo"
     (players 2) 
     (equipment {
-        [#] 
-        (dice d:6 num:2)
+        [#]
     }) 
     (rules
         (start [#])
@@ -27,5 +26,11 @@
         (origin "This game was played in China, from around 505 to 842.")
         }
     )
+    
+    (recon {
+        (concept "Dice" True)
+        (concept "DiceD6" True)
+        (concept "NumDice" 2)
+    })
     
 )
