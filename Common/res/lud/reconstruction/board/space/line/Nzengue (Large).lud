@@ -26,26 +26,26 @@
         
         phases:{
         (phase "Placement"
-            (play
-                (if "SameTurn"
-                    [#]
-                    (move 
-                        (from (handSite Mover)) 
-                        (to (sites Empty)) 
-                        "IfLine3MoveAgain" 
-                    ) 
-                )
-            ) 
+            (play [#])
+//                (if "SameTurn"
+//                    [#]
+//                    (move 
+//                        (from (handSite Mover)) 
+//                        (to (sites Empty)) 
+//                        "IfLine3MoveAgain" 
+//                    ) 
+//                )
+            //) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
         
         (phase "Movement" 
-            (play 
-                (if "SameTurn"
-                    [#]
-                    (forEach Piece)
-                )
-            )
+            (play [#])
+//                (if "SameTurn"
+//                    [?]
+//                    (forEach Piece)
+//                )
+//            )
         )
         }
         

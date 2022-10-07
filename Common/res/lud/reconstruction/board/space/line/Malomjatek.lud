@@ -13,16 +13,12 @@
         
         phases:{
         (phase "Placement"
-            (play
-                [#]
-            ) 
+            (play [#]) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
         
         (phase "Movement" 
-            (play 
-                [#]
-            )
+            (play [#])
         )
         }
         

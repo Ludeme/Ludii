@@ -21,9 +21,7 @@
     (equipment { 
         ("NineMensMorrisBoard")
         (hand Each)
-        (piece "Marker" Each 
-            [#] // Probably stepping or sliding.... That's the most obvious....
-        )
+        (piece "Marker" Each [#]) // Probably stepping or sliding.... That's the most obvious....
     }) 
     (rules 
         (start (place "Marker" "Hand" count:12))
