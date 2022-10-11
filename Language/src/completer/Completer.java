@@ -238,7 +238,7 @@ public class Completer
 	 */
 	public static List<Completion> completeSampled(final String raw, final int maxCompletions, final Report report)
 	{
-		System.out.println("Completer.complete(): Completing at most " + maxCompletions + " descriptions...");
+//		System.out.println("\nCompleter.complete(): Completing at most " + maxCompletions + " descriptions...");
 
 		final List<Completion> completions = new ArrayList<Completion>();
 
@@ -252,7 +252,12 @@ public class Completer
 			while (needsCompleting(comp.raw()))
 				comp = nextCompletionSampled(comp, ludMap, defMap, report);		
 			completions.add(comp);
-		}				
+		}
+		
+		System.out.println("\nList of completions:");
+		for (final Completion comp : completions)
+			System.out.println(comp.raw());
+		
 		return completions;
 	}
 
@@ -270,7 +275,7 @@ public class Completer
 		final Report report
 	)
 	{
-		System.out.println("Completing next completion for raw string:\n" + completion.raw());
+//		System.out.println("\nCompleting next completion for raw string:\n" + completion.raw());
 		
 		final Random rng = new Random();
 	
@@ -351,7 +356,7 @@ public class Completer
 			// Enumerate on parents
 			final String[] parent = parents.get(enumeration - 1);
 			
-			//System.out.println("Enumerating on parent " + enumeration + ": " + parent[0] + "?" + parent[1]);
+//			System.out.println("\nEnumerating on parent " + enumeration + ": \"" + parent[0] + "\" + ? + \"" + parent[1] + "\"");
 			enumerateMatches(left, right, parent, ludMap, completions, completion.score());
 			enumerateMatches(left, right, parent, defMap, completions, completion.score());
 		}
@@ -406,7 +411,7 @@ public class Completer
 		{
 			// No valid completions for this completion point
 			if (report != null)
-					report.addError("No completions for: " + raw);
+				report.addError("No completions for: " + raw);
 			return null;
 			
 			// **
@@ -449,28 +454,43 @@ public class Completer
 			if (l < 0)
 				continue;  // not a match
 			
-			final String secondPart = mapString.substring(l + parent[0].length());
+			String secondPart = mapString.substring(l + parent[0].length());  //.trim();
 			
-			final int r = secondPart.indexOf(parent[1]);
+//			System.out.println("\nmapString is: " + mapString);
+//			System.out.println("parent[0] is: " + parent[0]);
+//			System.out.println("parent[1] is: " + parent[1]);
+//			System.out.println("secondPart is: " + secondPart);
+//			System.out.println("left  is: " + left);
+//			System.out.println("right is: " + right);
 			
+//			final int r = secondPart.indexOf(parent[1]);
+			
+			final int r = (StringRoutines.isBracket(secondPart.charAt(0)))
+							? StringRoutines.matchingBracketAt(secondPart, 0)
+							: secondPart.indexOf(parent[1]) - 1;
+
 			if (r >= 0)
 			{
 				// Is a match
-				final String match = mapString.substring(l, l + parent[0].length() + r + parent[1].length());
-				//System.out.println("match is: " + match);
+				//final String match = mapString.substring(l, l + parent[0].length() + r + parent[1].length());
+				final String match = secondPart.substring(0, r + 1);  //l, l + parent[0].length() + r + parent[1].length());
+//				System.out.println("match is: " + match);
 				
-				final String str = 
-						left.substring(0, left.length() - parent[0].length())
-						+
-						match
-						+
-						right.substring(parent[1].length());
+//				final String str = 
+//						left.substring(0, left.length() - parent[0].length())
+//						+
+//						match
+//						+
+//						right.substring(parent[1].length());
+
+				//final String str = left + " " + match + " " + right;
+				final String str = left + match + right;
 				final Completion completion = new Completion(str);
-				//System.out.println("completion is:\n" + completion);
+//				System.out.println("completion is:\n" + completion.raw());
 				
 				if (!queue.contains(completion))
 				{
-					//System.out.println("Adding completion:\n" + completion);
+//					System.out.println("Adding completion:\n" + completion.raw());
 					completion.setScore(confidence * (1 - distance));
 					queue.add(completion);
 				}
@@ -598,8 +618,12 @@ public class Completer
 			
 			// Store the two halves of the parent
 			final String[] parent = new String[2];
-			parent[0] = left.substring(l);
-			parent[1] = right.substring(0, r);
+			parent[0] = left.substring(l);  //.trim();
+			parent[1] = right.substring(0, r);  //.trim();
+			
+			// Strip leading spaces from parent[0]
+			while (parent[0].length() > 0 && parent[0].charAt(0) == ' ')
+				parent[0] = parent[0].substring(1);
 			
 			//System.out.println("Parent " + p + " is " + parent[0] + "?" + parent[1]);
 			
