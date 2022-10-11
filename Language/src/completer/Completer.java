@@ -254,9 +254,9 @@ public class Completer
 			completions.add(comp);
 		}
 		
-		System.out.println("\nList of completions:");
-		for (final Completion comp : completions)
-			System.out.println(comp.raw());
+//		System.out.println("\nList of completions:");
+//		for (final Completion comp : completions)
+//			System.out.println(comp.raw());
 		
 		return completions;
 	}
