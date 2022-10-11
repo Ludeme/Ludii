@@ -157,7 +157,7 @@ public class Expander
 	
 	//-------------------------------------------------------------------------
 
-	static String cleanUp(final String strIn, final Report report)
+	public static String cleanUp(final String strIn, final Report report)
 	{
 		String str = strIn;
 		
@@ -185,7 +185,7 @@ public class Expander
 //		str = str.replaceAll("\\(\"", "\\(itemCount \"");		
 
 		str = handleDoubleBrackets(str, report);  // do this after reducing spaces
-		if (report.isError())
+		if (report != null && report.isError())
 			return null;
 		
 		return str;
@@ -297,7 +297,8 @@ public class Expander
 			if (cc < 0 || cc >= str.length())
 			{
 				//throw new UnclosedClauseException(str.substring(c));
-				report.addError("Couldn't close clause '" + Report.clippedString(str.substring(c), 20) + "'.");
+				if (report != null)
+					report.addError("Couldn't close clause '" + Report.clippedString(str.substring(c), 20) + "'.");
 				return null;
 			}
 		
@@ -310,7 +311,8 @@ public class Expander
 			else
 			{
 				// Opening pair do not have closing pair, should never occur
-				report.addError("Opening bracket pair '((' in '" + Report.clippedString(str.substring(c), 20) + "' does not have closing pair.");
+				if (report != null)
+					report.addError("Opening bracket pair '((' in '" + Report.clippedString(str.substring(c), 20) + "' does not have closing pair.");
 				return null;
 			}
 		}

@@ -912,7 +912,11 @@ public class Completer
 					        line = br.readLine();
 					    }
 					    
-					    final String everything = sb.toString();
+					    String everything = sb.toString();
+					    
+					    // Strip out formatting so that completion string matching it more robust
+					    everything = Expander.cleanUp(everything, null);
+					    		
 					    fileContents.put(fileEntry.getName(), everything);
 					} 
 					catch (final FileNotFoundException e) 
