@@ -754,20 +754,20 @@ public class Expander
 	 * @param strIn
 	 * @return Game description with defines removed and stored in list.
 	 */
-	private static String extractDefines
+	public static String extractDefines
 	(
 		final String strIn, 
 		final List<Define> defines,
 		final Report report
 	)
 	{
-		final int[] extent = new int[2];
+		final int[] extent = new int[2];  // char indices of opening and closing brackets
 		
 		String str = new String(strIn);
 		while (str.contains("(define "))
 		{		
 			final Define define = interpretDefine(str, extent, report, false);
-			if (report.isError())
+			if (report != null && report.isError())
 				return null;
 				
 			if (define == null)
@@ -807,7 +807,8 @@ public class Expander
 		{
 //			System.out.println("** Bad define string: " + str);
 //			throw new BadSyntaxException("define", "Badly formed define. Should start and end with `(define' and end with a bracket.");
-			report.addError("Could not close '(define ...' in '" + Report.clippedString(str.substring(c), 20) + "'.");
+			if (report != null)
+				report.addError("Could not close '(define ...' in '" + Report.clippedString(str.substring(c), 20) + "'.");
 			return null;
 		}		
 
@@ -834,7 +835,8 @@ public class Expander
 		if (numQuotes < 2)
 		{
 //			throw new BadSyntaxException("define", "Badly formed define. Should be start (define \"name\".");
-			report.addError("Badly fomred '(define \"name\"...' in '" + Report.clippedString(desc, 20) + "'.");
+			if (report != null)
+				report.addError("Badly fomred '(define \"name\"...' in '" + Report.clippedString(desc, 20) + "'.");
 			return null;
 		}
 			

@@ -9,12 +9,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 import main.StringRoutines;
+import main.grammar.Define;
 import main.grammar.Report;
 import parser.Expander;
 
@@ -443,20 +445,22 @@ public class Completer
 	{
 		for (Map.Entry<String, String> entry : map.entrySet()) 
 		{
-			final String mapString = entry.getValue();
+			final String otherDescription = entry.getValue();
+			
+			final String candidate = new String(otherDescription);
 			
 			// **
 			// ** TODO: Determine distance between map entry and this completion
 			// **
 			final double distance = 0.1;  // dummy value for testing
 			
-			final int l = mapString.indexOf(parent[0]);
+			final int l = candidate.indexOf(parent[0]);
 			if (l < 0)
 				continue;  // not a match
 			
-			String secondPart = mapString.substring(l + parent[0].length());  //.trim();
+			String secondPart = candidate.substring(l + parent[0].length());  //.trim();
 			
-//			System.out.println("\nmapString is: " + mapString);
+//			System.out.println("\notherDescription is: " + otherDescription);
 //			System.out.println("parent[0] is: " + parent[0]);
 //			System.out.println("parent[1] is: " + parent[1]);
 //			System.out.println("secondPart is: " + secondPart);
@@ -474,7 +478,7 @@ public class Completer
 				// Is a match
 				//final String match = mapString.substring(l, l + parent[0].length() + r + parent[1].length());
 				final String match = secondPart.substring(0, r + 1);  //l, l + parent[0].length() + r + parent[1].length());
-//				System.out.println("match is: " + match);
+				//System.out.println("match is: " + match);
 				
 //				final String str = 
 //						left.substring(0, left.length() - parent[0].length())
@@ -484,18 +488,82 @@ public class Completer
 //						right.substring(parent[1].length());
 
 				//final String str = left + " " + match + " " + right;
-				final String str = left + match + right;
-				final Completion completion = new Completion(str);
-//				System.out.println("completion is:\n" + completion.raw());
+				String str = left + match + right;
 				
+				str = addLocalDefines(str, otherDescription);
+				
+				final Completion completion = new Completion(str);
+				//System.out.println("completion is:\n" + completion.raw());
+					
 				if (!queue.contains(completion))
 				{
-//					System.out.println("Adding completion:\n" + completion.raw());
+					//System.out.println("Adding completion:\n" + completion.raw());
 					completion.setScore(confidence * (1 - distance));
 					queue.add(completion);
 				}
 			}	
 		}	
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return Completed string with all necessary local defines added.
+	 */
+	static String addLocalDefines(final String current, final String otherDescription)
+	{
+		// Make a list of local defines in the current description
+		final List<Define> localDefinesCurrent = new ArrayList<Define>();
+		
+		Expander.extractDefines(current, localDefinesCurrent, null);
+
+//		System.out.println("Local defines (current):");
+//		for (final Define def : localDefinesCurrent)
+//			System.out.println("-- " + def.formatted());
+
+		// Make a list of local defines in the other description
+		final List<Define> localDefinesOther = new ArrayList<Define>();
+		
+		Expander.extractDefines(otherDescription, localDefinesOther, null);
+
+//		System.out.println("Local defines (other):");
+//		for (final Define def : localDefinesOther)
+//			System.out.println("-- " + def.formatted());
+
+		// Determine which defines from the other description are used in the current description
+		final BitSet used = new BitSet();
+		
+		for (int n = 0; n < localDefinesOther.size(); n++)
+			if (current.contains(localDefinesOther.get(n).tag()))
+				used.set(n);
+		
+		// Turn off the ones already present in the current description
+		for (int n = 0; n < localDefinesCurrent.size(); n++)
+		{
+			if (!used.get(n))
+				continue;  // not used
+			
+			final Define localDefineCurrent = localDefinesCurrent.get(n);
+			
+			boolean found = false;
+			for (int o = 0; o < localDefinesOther.size() && !found; o++)
+			{
+				final Define localDefineOther = localDefinesOther.get(o);
+				if (localDefineOther.tag().equals(localDefineCurrent.tag()))
+					found = true;
+			}
+
+			if (found)
+				used.set(n, false);  // turn it off again
+		}
+		
+		// Prepend used defines to the current string
+		String result = new String(current);
+
+		for (int n = used.nextSetBit(0); n >= 0; n = used.nextSetBit(n + 1))
+			result = localDefinesOther.get(n).formatted() + result;
+		
+		return result;
 	}
 	
 	//-------------------------------------------------------------------------

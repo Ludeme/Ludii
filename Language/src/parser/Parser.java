@@ -104,11 +104,11 @@ public class Parser
 		if (Completer.needsCompleting(description.rawGameDescription()))
 		{
 			String rawGame = description.rawGameDescription();
-			System.out.println("Raw game description is: \n" + rawGame);
+//			System.out.println("Raw game description is: \n" + rawGame);
 		
 			// Remove formatting so that string matching during completion is more likely to work.
 			rawGame = Expander.cleanUp(rawGame, report);
-			System.out.println("Raw game description after cleaning up is: \n" + rawGame);
+//			System.out.println("Raw game description after cleaning up is: \n" + rawGame);
 			
 			//final List<Completion> completions = Completer.completeExhaustive(rawGame, description.maxReconstructions(), report);
 			final List<Completion> completions = Completer.completeSampled(rawGame, description.maxReconstructions(), report);
