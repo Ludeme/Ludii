@@ -3,9 +3,13 @@ package utils.recons;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import compiler.Compiler;
 import game.Game;
 import main.FileHandling;
+import main.grammar.Description;
+import main.grammar.Report;
 import main.options.Ruleset;
+import main.options.UserSelections;
 import other.GameLoader;
 
 /**
@@ -64,7 +68,7 @@ public final class PreProcessRecons
 						{
 							final String rulesetId = ids.get(0); 
 							System.out.println("Game: " + game.name() + " RulesetName = " + rulesetGame.getRuleset().heading() + " RulesetID = " + rulesetId);
-							System.out.println(formatOneLineDesc(rulesetGame.description().raw()));
+							final String formattedDesc = formatOneLineDesc(rulesetGame.description().expanded());
 						}
 					}
 				}
@@ -76,7 +80,7 @@ public final class PreProcessRecons
 				{
 					final String rulesetId = ids.get(0); 
 					System.out.println("Game: " + game.name() + " RulesetID = " + rulesetId);
-					System.out.println(formatOneLineDesc(game.description().raw()));
+					final String formattedDesc = formatOneLineDesc(game.description().expanded());
 				}
 			}
 		}
@@ -91,8 +95,27 @@ public final class PreProcessRecons
 	 */
 	public static String formatOneLineDesc(final String originalDesc)
 	{
-		final String formattedDesc = originalDesc;
-		
-		return formattedDesc;
+		final StringBuffer formattedDesc = new StringBuffer("");
+		for(int i = 0; i < originalDesc.length(); i++)
+		{
+			final char c = originalDesc.charAt(i);
+			if(Character.isLetterOrDigit(c) || c == '(' || c == ')' || c == '{' || c == '}' || c == '"' || c == '.' || c == ',' 
+					|| c == ':' || c == '=' || c == '<' || c == '>' || c == '+' || c == '-' || c == '/' || c == '^' || c == '%' || c == '*' || Character.isSpaceChar(c))
+			{
+				if(i != 0 && Character.isSpaceChar(c))
+				{
+					final char lastChar = formattedDesc.toString().charAt(formattedDesc.length()-1);
+					if(!Character.isSpaceChar(lastChar))
+					{
+						formattedDesc.append(c);
+					}
+				}
+				else
+					formattedDesc.append(c);
+			}
+		}
+		System.out.println(formattedDesc.toString());
+		Compiler.compile(new Description(formattedDesc.toString()), new UserSelections(null), new Report(), false);
+		return formattedDesc.toString();
 	}
 }
