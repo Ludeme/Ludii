@@ -500,7 +500,7 @@ public class MCTS extends ExpertPolicy
 			
 			if (offsetActionToTraverse < 0)
 			{
-				// something strange happened, probably forgot to call
+				// Something strange happened, probably forgot to call
 				// initAI() for a newly-started game. Won't be a good
 				// idea to reuse tree anyway
 				rootNode = null;
@@ -510,7 +510,6 @@ public class MCTS extends ExpertPolicy
 			{
 				final Move move = actionHistory.get(actionHistory.size() - offsetActionToTraverse);
 				rootNode = rootNode.findChildForMove(move);
-				//System.out.println("move to traverse: " + move);
 				
 				if (rootNode == null)
 				{
@@ -753,6 +752,7 @@ public class MCTS extends ExpertPolicy
 		lastNumMctsIterations = numIterations.get();
 		
 		final Move returnMove = finalMoveSelectionStrategy.selectMove(this, rootThisCall);
+		int playedChildIdx = -1;
 		
 		if (!wantsInterrupt)
 		{
@@ -770,6 +770,7 @@ public class MCTS extends ExpertPolicy
 				        final int moverAgent = state.playerToAgent(state.mover());
 						moveVisits = child.numVisits();
 						lastReturnedMoveValueEst = child.expectedScore(moverAgent);
+						playedChildIdx = i;
 						
 						break;
 					}
@@ -803,7 +804,10 @@ public class MCTS extends ExpertPolicy
 			}
 			else if (!wantsInterrupt)	// only clean up if we didn't pause the AI / interrupt it
 			{
-				rootNode = rootNode.findChildForMove(returnMove);
+				if (playedChildIdx >= 0)
+					rootNode = rootThisCall.childForNthLegalMove(playedChildIdx);
+				else
+					rootNode = null;
 				
 				if (rootNode != null)
 				{

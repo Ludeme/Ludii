@@ -126,6 +126,10 @@ public abstract class DeterministicNode extends BaseNode
 				result = child;
 				break;
 			}
+//			else if (child != null)
+//			{
+//				System.out.println(child.parentMove() + " no match for: " + move);
+//			}
 		}
 		
 		return result;
