@@ -85,16 +85,15 @@ public class ReconstructionTest
 			{
 				System.out.println("Compiled " + fileName);
 				
-				// To save the results.
-				for (int n = 0; n < completions.size(); n++) 
-				{
-					final Completion completion = completions.get(n);
-					System.out.println(completion.raw());
+//				for (int n = 0; n < completions.size(); n++) 
+//				{
+					//final Completion completion = completions.get(n);
+					//System.out.println(completion.raw());
 
 					// Check if the concepts expected are present.
 					//boolean expectedConcepts = Concept.isExpectedConcepts(completion.raw());
 					//System.out.println("RECONS HAS THE EXPECTED CONCEPTS? " + expectedConcepts);
-				}
+	//			}
 			}
 			else
 			{
