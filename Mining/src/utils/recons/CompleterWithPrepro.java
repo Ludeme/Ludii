@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.regex.Pattern;
 
 import completer.Completion;
 import main.StringRoutines;
@@ -57,7 +56,7 @@ public class CompleterWithPrepro
 			String line = reader.readLine();
 			while (line != null)
 			{
-				String lineNoQuote = line.replaceAll(Pattern.quote("\""), "");
+				String lineNoQuote = line;
 				
 				int separatorIndex = lineNoQuote.indexOf(',');
 				final String gameName = lineNoQuote.substring(0, separatorIndex);
@@ -75,8 +74,11 @@ public class CompleterWithPrepro
 				final String desc = lineNoQuote;
 
 				// To check if a specific part of the ludemes appear in some games.
-//				if(desc.contains("(rectangle 1 "))
+//				if(desc.contains("\"Marker1\""))
+//				{
 //					System.out.println(gameName + " HAS IT");
+//					System.out.println(desc);
+//				}
 				
 //				System.out.println("game = " + gameName);
 //				System.out.println("ruleset = " + rulesetName);
@@ -235,6 +237,9 @@ public class CompleterWithPrepro
 			{
 				// Enumerate on parents
 				final String[] parent = parents.get(enumeration - 1);
+				// To print the parents
+//				System.out.println(parent[0]);
+//				System.out.println(parent[1]);
 				
 //				System.out.println("\nEnumerating on parent " + enumeration + ": \"" + parent[0] + "\" + ? + \"" + parent[1] + "\"");
 				enumerateMatches(left, right, parent, completions, completion.score());

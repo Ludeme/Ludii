@@ -64,7 +64,7 @@
         (piece "Marker" Each "StepToEmpty") 
     }) 
     (rules 
-        (start (place "Marker" "Hand" count:[#])) // The unknow information is the number of pieces.
+        (start (place "Marker" "Hand" count:[1..32])) // The unknow information is the number of pieces.
         
         phases:{
         (phase "Placement"

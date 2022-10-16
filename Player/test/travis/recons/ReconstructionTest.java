@@ -43,7 +43,7 @@ public class ReconstructionTest
 		{
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/eric/recons/"))
 			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/"))
-			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/hunt/Dintja le Nmutla"))
+			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/war/leaping/lines/Manipur Capturing Game"))
 				continue;
 			
 			// Get game description from resource
@@ -119,8 +119,7 @@ public class ReconstructionTest
 		}
 
 		if (failure)
-			return; // To remove when code ready for travis
-			//fail();
+			fail();
 	}
 
 

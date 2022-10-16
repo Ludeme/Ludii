@@ -1,7 +1,7 @@
 (game "Sugoroku" 
     (players 2)
     (equipment {
-        ("TableBoard" [#])
+        ("TableBoard" {[#]})
         (dice d:6 num:2)
         (piece "Disc" Each (move [#]))
         (hand Each)
