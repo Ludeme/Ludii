@@ -853,8 +853,8 @@ public final class StringRoutines
 			if(Character.isLetterOrDigit(c) || c == '(' || c == ')' || c == '{' 
 					|| c == '}' || c == '"' || c == '.' || c == ',' || c == ':'
 					|| c == '=' || c == '<' || c == '>' || c == '+' || c == '-'
-					|| c == '/' || c == '^' || c == '%' || c == '*' 
-					|| Character.isSpaceChar(c)
+					|| c == '/' || c == '^' || c == '%' || c == '*' || c == '['
+					|| c == ']' || c == '#' || c == '?' || Character.isSpaceChar(c)
 			)
 			{
 				if(i != 0 && Character.isSpaceChar(c))

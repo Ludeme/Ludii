@@ -305,11 +305,14 @@ public class CompleterWithPrepro
 	{
 //		System.out.println("\nCompleter.complete(): Completing at most " + maxCompletions + " descriptions...");
 
+		final String gameDescriptionOneLine = StringRoutines.formatOneLineDesc(Expander.removeComments(raw));
+		System.out.println(gameDescriptionOneLine);
+		
 		final List<Completion> completions = new ArrayList<Completion>();
 
 		for (int n = 0; n < maxCompletions; n++)
 		{
-			Completion comp = new Completion(new String(raw));
+			Completion comp = new Completion(gameDescriptionOneLine);
 			while (needsCompleting(comp.raw()))
 				comp = nextCompletionSampled(comp, report);		
 			completions.add(comp);
@@ -338,11 +341,10 @@ public class CompleterWithPrepro
 //		System.out.println("\nCompleting next completion for raw string:\n" + completion.raw());
 		
 		final Random rng = new Random();
-	
 		final List<Completion> completions = new ArrayList<Completion>();
 		
 		// Find opening and closing bracket locations
-		final String raw = Expander.removeComments(completion.raw());
+		final String raw = completion.raw();
 		final int from = raw.indexOf("[");
 		final int to = StringRoutines.matchingBracketAt(raw, from);
 
