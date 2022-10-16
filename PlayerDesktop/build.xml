@@ -284,6 +284,7 @@
     		</fileset>
     	</copy>
     	<copy file="${Mining.location}/res/concepts/input/GameRulesets.csv" tofile="bin/concepts/input/GameRulesets.csv" />
+    	<copy file="${Mining.location}/res/recons/input/RulesetFormatted.csv" tofile="bin/recons/input/RulesetFormatted.csv" />
     	<copy includeemptydirs="false" todir="bin/features">
     		<fileset dir="${Mining.location}/res/features">
     	    	<exclude name="**/*.launch"/>
