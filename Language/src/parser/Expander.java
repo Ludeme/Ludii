@@ -237,7 +237,7 @@ public class Expander
 	/**
 	 * Check for lowercase define labels.
 	 */
-	private static void checkDefineCase(final String str, final Report report)
+	public static void checkDefineCase(final String str, final Report report)
 	{
 		// System.out.println(str);
 		
@@ -632,7 +632,7 @@ public class Expander
 	/**
 	 * Expand defines iteratively until no more expansions occur.
 	 */
-	private static String expandDefines
+	public static String expandDefines
 	(
 		final String strIn,
 		final Report report, 
@@ -1270,7 +1270,7 @@ public class Expander
 	 * @param strIn
 	 * @return Game description with all number range occurrences expanded.
 	 */
-	private static String expandRanges
+	public static String expandRanges
 	(
 		final String strIn,
 		final Report report
@@ -1338,7 +1338,7 @@ public class Expander
 	 * @param strIn
 	 * @return Game description with all site range occurrences expanded.
 	 */
-	private static String expandSiteRanges
+	public static String expandSiteRanges
 	(
 		final String strIn,
 		final Report report

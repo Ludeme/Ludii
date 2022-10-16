@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +17,7 @@ import java.util.regex.Pattern;
 
 import completer.Completion;
 import main.StringRoutines;
-import main.grammar.Define;
+import main.grammar.Description;
 import main.grammar.Report;
 import parser.Expander;
 
@@ -37,21 +36,22 @@ public class CompleterWithPrepro
 	private static final int MAX_RANGE = 1000;
 	
 	/** The path of the csv with the id of the rulesets for each game and its description on one line. */
-	private static final String RULESET_PATH = "/recons/input/RulesetFormatted.csv";
+	private static final String RULESETS_PATH = "/recons/input/RulesetFormatted.csv";
 	
+	/** The ruleset id and their corresponding description formatted on one line */
 	private final Map<Integer, String> ludMap;
 	
 	//-------------------------------------------------------------------------
 		
 	/**
-	 * Constructor.
+	 * Constructor getting the rulesets expanded description on one line and rulesets ids.
 	 */
 	public CompleterWithPrepro()
 	{
 		ludMap = new HashMap<Integer, String>();
 		
 		// Get the ids and descriptions of the rulesets.
-		try (final InputStream in = CompleterWithPrepro.class.getResourceAsStream(RULESET_PATH);
+		try (final InputStream in = CompleterWithPrepro.class.getResourceAsStream(RULESETS_PATH);
 				BufferedReader reader = new BufferedReader(new InputStreamReader(in));)
 		{
 			String line = reader.readLine();
@@ -73,7 +73,7 @@ public class CompleterWithPrepro
 				lineNoQuote = lineNoQuote.substring(rulesetIdStr.length() + 1);
 				
 				final String desc = lineNoQuote;
-
+				
 //				System.out.println("game = " + gameName);
 //				System.out.println("ruleset = " + rulesetName);
 //				System.out.println("rulesetId = " + rulesetId);
@@ -82,7 +82,6 @@ public class CompleterWithPrepro
 				ludMap.put(Integer.valueOf(rulesetId), desc);
 				
 				line = reader.readLine();
-				break;
 			}
 			reader.close();
 		}
@@ -94,13 +93,210 @@ public class CompleterWithPrepro
 	
 	//-------------------------------------------------------------------------
 
-	public static boolean needsCompleting(final String desc)
+	/**
+	 * Creates list of completions irrespective of previous completions.
+	 * @param raw            Partial raw game description.
+	 * @param maxCompletions Maximum number of completions to make (default is 1, e.g. for Travis tests).
+	 * @param report         Report log for warnings and errors.
+	 * @return List of completed (raw) game descriptions ready for expansion and parsing.        
+	 */
+	public List<Completion> completeSampled
+	(
+		final String raw, 
+		final int    maxCompletions, 
+		final Report report
+	)
 	{
-		// Remove comments first, so that recon syntax can be commented out 
-		// to not trigger a reconstruction without totally removing it.
-		final String str = Expander.removeComments(desc);
-		return str.contains("[") && str.contains("]");
+//		System.out.println("\nCompleter.complete(): Completing at most " + maxCompletions + " descriptions...");
+
+		// Expand the defines of rulesets needed reconstruction.
+		Description description = new Description(raw);
+		expandRecons(description);
+		
+		// Format the description.
+		final String rulesetDescriptionOneLine = StringRoutines.formatOneLineDesc(description.expanded()); // Same format of all other rulesets.
+				
+		//System.out.println(rulesetDescriptionOneLine);
+		
+		final List<Completion> completions = new ArrayList<Completion>();
+
+		for (int n = 0; n < maxCompletions; n++)
+		{
+			Completion comp = new Completion(rulesetDescriptionOneLine);
+			while (needsCompleting(comp.raw()))
+				comp = nextCompletionSampled(comp, report);	
+			completions.add(comp);
+		}
+		
+//		System.out.println("\nList of completions:");
+//		for (final Completion comp : completions)
+//			System.out.println(comp.raw());
+//		System.out.println();
+		
+		return completions;
 	}
+	
+	//-------------------------------------------------------------------------
+
+		/**
+		 * Process next completion and add results to queue.
+		 * Solves the next completion independently by sampling from candidates.
+		 * @param report
+		 */
+		public Completion nextCompletionSampled
+		(
+			final Completion completion, 
+			final Report     report
+		)
+		{
+//			System.out.println("\nCompleting next completion for raw string:\n" + completion.raw());
+			
+			final Random rng = new Random();
+			final List<Completion> completions = new ArrayList<Completion>();
+			
+			// Find opening and closing bracket locations
+			final String raw = completion.raw();
+			final int from = raw.indexOf("[");
+			final int to = StringRoutines.matchingBracketAt(raw, from);
+
+			// Get reconstruction clause (substring within square brackets)
+			final String left   = raw.substring(0, from);
+			final String clause = raw.substring(from + 1, to);
+			final String right  = raw.substring(to + 1);
+			
+			//System.out.println("left  is: " + left);
+			//System.out.println("clause is: " + clause);
+			//System.out.println("right is: " + right);
+
+			// Determine left and right halves of parents
+			final List<String[]> parents = determineParents(left, right);
+			
+//			System.out.println("Parents:\n");
+//			for (final String[] parent : parents)
+//				System.out.println(parent[0] + "?" + parent[1] + "\n");
+			
+			final List<String> choices      = extractChoices(clause);
+			final List<String> inclusions   = new ArrayList<String>();
+			final List<String> exclusions   = new ArrayList<String>();
+			//final List<String> enumerations = new ArrayList<String>();
+			int enumeration = 0;
+
+			for (int c = choices.size() - 1; c >= 0; c--)
+			{
+				final String choice = choices.get(c);
+				//System.out.println("choice is: " + choice);
+				if 
+				(
+					choice.length() > 3 && choice.charAt(0) == '[' 
+					&& 
+					choice.charAt(1) == '+' && choice.charAt(choice.length() - 1) == ']'
+				)
+				{
+					// Is an inclusion
+					inclusions.add(choice.substring(2, choice.length() - 1).trim());
+					choices.remove(c);
+				}
+				else if 
+				(
+					choice.length() > 3 && choice.charAt(0) == '[' 
+					&& 
+					choice.charAt(1) == '-' && choice.charAt(choice.length() - 1) == ']'
+				)
+				{
+					// Is an exclusion
+					exclusions.add(choice.substring(2, choice.length() - 1).trim());
+					choices.remove(c);
+				}
+				else if 
+				(
+					choice.length() >= 1 && choice.charAt(0) == '#' 
+					|| 
+					choice.length() >= 3 && choice.charAt(0) == '[' 
+					&& 
+					choice.charAt(1) == '#' && choice.charAt(choice.length() - 1) == ']'
+				)
+				{
+					// Is an enumeration
+					//enumerations.add(choice.substring(1, choice.length() - 1).trim());
+					enumeration = numHashes(choice);
+					//System.out.println("Enumeration has " + enumeration + " hashes...");
+					choices.remove(c);
+				}
+			}
+				
+			if (enumeration > 0)
+			{
+				// Enumerate on parents
+				final String[] parent = parents.get(enumeration - 1);
+				
+//				System.out.println("\nEnumerating on parent " + enumeration + ": \"" + parent[0] + "\" + ? + \"" + parent[1] + "\"");
+				enumerateMatches(left, right, parent, completions, completion.score());
+			}
+			else
+			{
+				// Handle choices as usual
+				for (int n = 0; n < choices.size(); n++)
+				{
+					final String choice = choices.get(n);
+					
+					if (!exclusions.isEmpty())
+					{
+						// Check whether this choice contains excluded text
+						boolean found = false;
+						for (final String exclusion : exclusions)
+							if (choice.contains(exclusion))
+							{
+								found = true;
+								break;
+							}
+						if (found)
+							continue;  // excluded text is present
+					}
+					
+					if (!inclusions.isEmpty())
+					{
+						// Check that this choice contains included text
+						boolean found = false;
+						for (final String inclusion : inclusions)
+							if (choice.contains(inclusion))
+							{
+								found = true;
+								break;
+							}
+						if (!found)
+							continue;  // included text is not present
+					}
+					
+					final String str = raw.substring(0, from) + choice + raw.substring(to + 1);
+					final Completion newCompletion = new Completion(str);
+					
+//					System.out.println("\n**********************************************************");
+//					System.out.println("completion " + n + "/" + choices.size() + " is:\n" + completion);
+					
+					//queue.add(newCompletion);
+					
+					completions.add(newCompletion);
+				}
+			}		
+						
+			if (completions.isEmpty())
+			{
+				// No valid completions for this completion point
+				if (report != null)
+					report.addError("No completions for: " + raw);
+				return null;
+				
+				// **
+				// ** TODO: Choose preferred completion based on context.
+				// **
+				// ** TODO: Maybe use UCB to balance reward with novelty, i.e. prefer 
+				// **       high scoring candidates but not the same ones every time, 
+				// **       also try low scoring ones occasionally.
+				// **
+			}
+			
+			return completions.get(rng.nextInt(completions.size()));
+		}
 	
 	//-------------------------------------------------------------------------
 	
@@ -290,206 +486,6 @@ public class CompleterWithPrepro
 	//-------------------------------------------------------------------------
 
 	/**
-	 * Creates list of completions irrespective of previous completions.
-	 * @param raw       Partial raw game description.
-	 * @param maxCompletions Maximum number of completions to make (default is 1, e.g. for Travis tests).
-	 * @param report    Report log for warnings and errors.
-	 * @return List of completed (raw) game descriptions ready for expansion and parsing.        
-	 */
-	public List<Completion> completeSampled
-	(
-		final String raw, 
-		final int    maxCompletions, 
-		final Report report
-	)
-	{
-//		System.out.println("\nCompleter.complete(): Completing at most " + maxCompletions + " descriptions...");
-
-		final String gameDescriptionOneLine = StringRoutines.formatOneLineDesc(Expander.removeComments(raw));
-		System.out.println(gameDescriptionOneLine);
-		
-		final List<Completion> completions = new ArrayList<Completion>();
-
-		for (int n = 0; n < maxCompletions; n++)
-		{
-			Completion comp = new Completion(gameDescriptionOneLine);
-			while (needsCompleting(comp.raw()))
-				comp = nextCompletionSampled(comp, report);		
-			completions.add(comp);
-		}
-		
-//		System.out.println("\nList of completions:");
-//		for (final Completion comp : completions)
-//			System.out.println(comp.raw());
-		
-		return completions;
-	}
-
-	//-------------------------------------------------------------------------
-
-	/**
-	 * Process next completion and add results to queue.
-	 * Solves the next completion independently by sampling from candidates.
-	 * @param report
-	 */
-	public Completion nextCompletionSampled
-	(
-		final Completion completion, 
-		final Report     report
-	)
-	{
-//		System.out.println("\nCompleting next completion for raw string:\n" + completion.raw());
-		
-		final Random rng = new Random();
-		final List<Completion> completions = new ArrayList<Completion>();
-		
-		// Find opening and closing bracket locations
-		final String raw = completion.raw();
-		final int from = raw.indexOf("[");
-		final int to = StringRoutines.matchingBracketAt(raw, from);
-
-		// Get reconstruction clause (substring within square brackets)
-		final String left   = raw.substring(0, from);
-		final String clause = raw.substring(from + 1, to);
-		final String right  = raw.substring(to + 1);
-		
-		//System.out.println("left  is: " + left);
-		//System.out.println("clause is: " + clause);
-		//System.out.println("right is: " + right);
-
-		// Determine left and right halves of parents
-		final List<String[]> parents = determineParents(left, right);
-		
-//		System.out.println("Parents:\n");
-//		for (final String[] parent : parents)
-//			System.out.println(parent[0] + "?" + parent[1] + "\n");
-		
-		final List<String> choices      = extractChoices(clause);
-		final List<String> inclusions   = new ArrayList<String>();
-		final List<String> exclusions   = new ArrayList<String>();
-		//final List<String> enumerations = new ArrayList<String>();
-		int enumeration = 0;
-
-		for (int c = choices.size() - 1; c >= 0; c--)
-		{
-			final String choice = choices.get(c);
-			//System.out.println("choice is: " + choice);
-			if 
-			(
-				choice.length() > 3 && choice.charAt(0) == '[' 
-				&& 
-				choice.charAt(1) == '+' && choice.charAt(choice.length() - 1) == ']'
-			)
-			{
-				// Is an inclusion
-				inclusions.add(choice.substring(2, choice.length() - 1).trim());
-				choices.remove(c);
-			}
-			else if 
-			(
-				choice.length() > 3 && choice.charAt(0) == '[' 
-				&& 
-				choice.charAt(1) == '-' && choice.charAt(choice.length() - 1) == ']'
-			)
-			{
-				// Is an exclusion
-				exclusions.add(choice.substring(2, choice.length() - 1).trim());
-				choices.remove(c);
-			}
-			else if 
-			(
-				choice.length() >= 1 && choice.charAt(0) == '#' 
-				|| 
-				choice.length() >= 3 && choice.charAt(0) == '[' 
-				&& 
-				choice.charAt(1) == '#' && choice.charAt(choice.length() - 1) == ']'
-			)
-			{
-				// Is an enumeration
-				//enumerations.add(choice.substring(1, choice.length() - 1).trim());
-				enumeration = numHashes(choice);
-				//System.out.println("Enumeration has " + enumeration + " hashes...");
-				choices.remove(c);
-			}
-		}
-			
-		if (enumeration > 0)
-		{
-			// Enumerate on parents
-			final String[] parent = parents.get(enumeration - 1);
-			
-//			System.out.println("\nEnumerating on parent " + enumeration + ": \"" + parent[0] + "\" + ? + \"" + parent[1] + "\"");
-			enumerateMatches(left, right, parent, completions, completion.score());
-		}
-		else
-		{
-			// Handle choices as usual
-			for (int n = 0; n < choices.size(); n++)
-			{
-				final String choice = choices.get(n);
-				
-				if (!exclusions.isEmpty())
-				{
-					// Check whether this choice contains excluded text
-					boolean found = false;
-					for (final String exclusion : exclusions)
-						if (choice.contains(exclusion))
-						{
-							found = true;
-							break;
-						}
-					if (found)
-						continue;  // excluded text is present
-				}
-				
-				if (!inclusions.isEmpty())
-				{
-					// Check that this choice contains included text
-					boolean found = false;
-					for (final String inclusion : inclusions)
-						if (choice.contains(inclusion))
-						{
-							found = true;
-							break;
-						}
-					if (!found)
-						continue;  // included text is not present
-				}
-				
-				final String str = raw.substring(0, from) + choice + raw.substring(to + 1);
-				final Completion newCompletion = new Completion(str);
-				
-//				System.out.println("\n**********************************************************");
-//				System.out.println("completion " + n + "/" + choices.size() + " is:\n" + completion);
-				
-				//queue.add(newCompletion);
-				
-				completions.add(newCompletion);
-			}
-		}		
-					
-		if (completions.isEmpty())
-		{
-			// No valid completions for this completion point
-			if (report != null)
-				report.addError("No completions for: " + raw);
-			return null;
-			
-			// **
-			// ** TODO: Choose preferred completion based on context.
-			// **
-			// ** TODO: Maybe use UCB to balance reward with novelty, i.e. prefer 
-			// **       high scoring candidates but not the same ones every time, 
-			// **       also try low scoring ones occasionally.
-			// **
-		}
-		
-		return completions.get(rng.nextInt(completions.size()));
-	}
-	
-	//-------------------------------------------------------------------------
-
-	/**
 	 * Enumerate all parent matches in the specified map.
 	 * @param parent
 	 * @param map
@@ -551,9 +547,6 @@ public class CompleterWithPrepro
 				//final String str = left + " " + match + " " + right;
 				String str = left + match + right;
 				
-				// Eric: I COMMENTED THIS, BECAUSE this code is making an infinite loop on some cases and break Travis.
-				//str = addLocalDefines(str, otherDescription);
-				
 				final Completion completion = new Completion(str);
 				//System.out.println("completion is:\n" + completion.raw());
 					
@@ -565,71 +558,6 @@ public class CompleterWithPrepro
 				}
 			}	
 		}	
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * @return Completed string with all necessary local defines added.
-	 */
-	static String addLocalDefines
-	(
-		final String current, 
-		final String otherDescription
-	)
-	{
-		// Make a list of local defines in the current description
-		final List<Define> localDefinesCurrent = new ArrayList<Define>();
-		
-		Expander.extractDefines(current, localDefinesCurrent, null);
-
-//		System.out.println("Local defines (current):");
-//		for (final Define def : localDefinesCurrent)
-//			System.out.println("-- " + def.formatted());
-
-		// Make a list of local defines in the other description
-		final List<Define> localDefinesOther = new ArrayList<Define>();
-		
-		Expander.extractDefines(otherDescription, localDefinesOther, null);
-
-//		System.out.println("Local defines (other):");
-//		for (final Define def : localDefinesOther)
-//			System.out.println("-- " + def.formatted());
-
-		// Determine which defines from the other description are used in the current description
-		final BitSet used = new BitSet();
-		
-		for (int n = 0; n < localDefinesOther.size(); n++)
-			if (current.contains(localDefinesOther.get(n).tag()))
-				used.set(n);
-		
-		// Turn off the ones already present in the current description
-		for (int n = 0; n < localDefinesCurrent.size(); n++)
-		{
-			if (!used.get(n))
-				continue;  // not used
-			
-			final Define localDefineCurrent = localDefinesCurrent.get(n);
-			
-			boolean found = false;
-			for (int o = 0; o < localDefinesOther.size() && !found; o++)
-			{
-				final Define localDefineOther = localDefinesOther.get(o);
-				if (localDefineOther.tag().equals(localDefineCurrent.tag()))
-					found = true;
-			}
-
-			if (found)
-				used.set(n, false);  // turn it off again
-		}
-		
-		// Prepend used defines to the current string
-		String result = new String(current);
-
-		for (int n = used.nextSetBit(0); n >= 0; n = used.nextSetBit(n + 1))
-			result = localDefinesOther.get(n).formatted() + result;
-		
-		return result;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -1055,5 +983,49 @@ public class CompleterWithPrepro
 	}
 	
 	//-------------------------------------------------------------------------
+
+	public static boolean needsCompleting(final String desc)
+	{
+		// Remove comments first, so that recon syntax can be commented out 
+		// to not trigger a reconstruction without totally removing it.
+		final String str = Expander.removeComments(desc);
+		return str.contains("[") && str.contains("]");
+	}
+
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Expands defines in user string to give full description of a description needed reconstruction.
+	 * 
+	 * @param description     The description.
+	 */
+	public static void expandRecons(final Description  description)
+	{
+		final Report report = new Report();
+		String str = new String(description.raw());
+
+		// Remove comments before any expansions
+		str = Expander.removeComments(str); // remove comment.
+
+		final int c = str.indexOf("(metadata");
+		if (c >= 0)
+		{
+			// Remove metadata
+			str = str.substring(0, c).trim();
+		}
+		// Continue expanding defines for full description
+		str = Expander.expandDefines(str, report, description.defineInstances());
+
+		// Do again after expanding defines, as external defines could have comments
+		str = Expander.removeComments(str); // remove comment.
+
+		// Do after expanding defines, as external defines could have ranges
+		str = Expander.expandRanges(str, report);
+		str = Expander.expandSiteRanges(str, report);
+		
+		str = Expander.cleanUp(str, report);
+		
+		description.setExpanded(str); 
+	}
 
 }
