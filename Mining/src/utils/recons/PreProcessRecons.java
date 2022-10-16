@@ -1,15 +1,18 @@
 package utils.recons;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import compiler.Compiler;
 import game.Game;
 import main.FileHandling;
-import main.grammar.Description;
-import main.grammar.Report;
+import main.StringRoutines;
+import main.UnixPrintWriter;
 import main.options.Ruleset;
-import main.options.UserSelections;
 import other.GameLoader;
 
 /**
@@ -21,101 +24,95 @@ public final class PreProcessRecons
 {
 	public static void main(final String[] args)
 	{
-		countRuleSets();
+		generateCSVOneLineRulesetAndId();
 	}
 
 	//-------------------------------------------------------------------------
 
-	private static void countRuleSets()
+	//**
+	
+	private static void generateCSVOneLineRulesetAndId()
 	{
 		final String[] gameNames = FileHandling.listGames();
+		final String output = "RulesetFormatted.csv";
 
-		for (int index = 0; index < gameNames.length; index++)
+		try (final PrintWriter writer = new UnixPrintWriter(new File(output), "UTF-8"))
 		{
-			final String gameName = gameNames[index];
-			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/bad/"))
-				continue;
-
-			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/wip/"))
-				continue;
-
-			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/WishlistDLP/"))
-				continue;
-
-			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/"))
-				continue;
-
-			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("subgame"))
-				continue;
-
-			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("reconstruction"))
-				continue;
-
-			final Game game = GameLoader.loadGameFromName(gameName);
-			final List<Ruleset> rulesetsInGame = game.description().rulesets();
-			
-			// Get all the rulesets of the game if it has some.
-			if (rulesetsInGame != null && !rulesetsInGame.isEmpty())
+			for (int index = 0; index < gameNames.length; index++)
 			{
-				for (int rs = 0; rs < rulesetsInGame.size(); rs++)
+				final String gameName = gameNames[index];
+				if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/bad/"))
+					continue;
+	
+				if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/wip/"))
+					continue;
+	
+				if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/WishlistDLP/"))
+					continue;
+	
+				if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/"))
+					continue;
+	
+				if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("subgame"))
+					continue;
+	
+				if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("reconstruction"))
+					continue;
+	
+				final Game game = GameLoader.loadGameFromName(gameName);
+				final List<Ruleset> rulesetsInGame = game.description().rulesets();
+				
+				// Get all the rulesets of the game if it has some.
+				if (rulesetsInGame != null && !rulesetsInGame.isEmpty())
 				{
-					final Ruleset ruleset = rulesetsInGame.get(rs);
-					if (!ruleset.optionSettings().isEmpty()) // We check if the ruleset is implemented.
+					for (int rs = 0; rs < rulesetsInGame.size(); rs++)
 					{
-						final Game rulesetGame = GameLoader.loadGameFromName(gameName, ruleset.optionSettings());
-						final List<String> ids = rulesetGame.metadata().info().getId();
-						if(!ids.isEmpty())
+						final Ruleset ruleset = rulesetsInGame.get(rs);
+						if (!ruleset.optionSettings().isEmpty()) // We check if the ruleset is implemented.
 						{
-							final String rulesetId = ids.get(0); 
-							System.out.println("Game: " + game.name() + " RulesetName = " + rulesetGame.getRuleset().heading() + " RulesetID = " + rulesetId);
-							final String formattedDesc = formatOneLineDesc(rulesetGame.description().expanded());
+							final Game rulesetGame = GameLoader.loadGameFromName(gameName, ruleset.optionSettings());
+							final List<String> ids = rulesetGame.metadata().info().getId();
+							if(!ids.isEmpty())
+							{
+								final String rulesetId = ids.get(0); 
+								System.out.println("Game: " + game.name() + " RulesetName = " + rulesetGame.getRuleset().heading() + " RulesetID = " + rulesetId);
+								final String formattedDesc = StringRoutines.formatOneLineDesc(rulesetGame.description().expanded());
+								final List<String> lineToWrite = new ArrayList<String>();
+								lineToWrite.add(game.name());
+								lineToWrite.add(rulesetGame.getRuleset().heading());
+								lineToWrite.add(rulesetId);
+								lineToWrite.add(formattedDesc);
+								writer.println(StringRoutines.join(",", lineToWrite));
+							}
 						}
 					}
 				}
-			}
-			else
-			{
-				final List<String> ids = game.metadata().info().getId();
-				if(!ids.isEmpty())
+				else
 				{
-					final String rulesetId = ids.get(0); 
-					System.out.println("Game: " + game.name() + " RulesetID = " + rulesetId);
-					final String formattedDesc = formatOneLineDesc(game.description().expanded());
-				}
-			}
-		}
-		
-//		System.out.println(count + " rulesets implemented");
-//		System.out.println(countOptionCombinations + " option combinations implemented");
-	}
-	
-	/**
-	 * @param originalDesc The description of the ruleset
-	 * @return formatted description on a single line.
-	 */
-	public static String formatOneLineDesc(final String originalDesc)
-	{
-		final StringBuffer formattedDesc = new StringBuffer("");
-		for(int i = 0; i < originalDesc.length(); i++)
-		{
-			final char c = originalDesc.charAt(i);
-			if(Character.isLetterOrDigit(c) || c == '(' || c == ')' || c == '{' || c == '}' || c == '"' || c == '.' || c == ',' 
-					|| c == ':' || c == '=' || c == '<' || c == '>' || c == '+' || c == '-' || c == '/' || c == '^' || c == '%' || c == '*' || Character.isSpaceChar(c))
-			{
-				if(i != 0 && Character.isSpaceChar(c))
-				{
-					final char lastChar = formattedDesc.toString().charAt(formattedDesc.length()-1);
-					if(!Character.isSpaceChar(lastChar))
+					final List<String> ids = game.metadata().info().getId();
+					if(!ids.isEmpty())
 					{
-						formattedDesc.append(c);
+						final String rulesetId = ids.get(0); 
+						System.out.println("Game: " + game.name() + " RulesetID = " + rulesetId);
+						final String formattedDesc = StringRoutines.formatOneLineDesc(game.description().expanded());
+						final List<String> lineToWrite = new ArrayList<String>();
+						lineToWrite.add(game.name());
+						lineToWrite.add("ONLY ONE RULESET");
+						lineToWrite.add(rulesetId);
+						lineToWrite.add(formattedDesc);
+						writer.println(StringRoutines.join(",", lineToWrite));
 					}
 				}
-				else
-					formattedDesc.append(c);
 			}
 		}
-		System.out.println(formattedDesc.toString());
-		Compiler.compile(new Description(formattedDesc.toString()), new UserSelections(null), new Report(), false);
-		return formattedDesc.toString();
+		catch (final FileNotFoundException | UnsupportedEncodingException e)
+		{
+			e.printStackTrace();
+		}
+		
+		System.out.println("CSV GENERATED");
+		
 	}
+	
+
 }

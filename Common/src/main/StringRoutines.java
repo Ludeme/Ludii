@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 /**
  * Miscellaneous string manipulation routines.
  * 
- * @author cambolbro
+ * @author cambolbro and Eric.Piette
  */
 public final class StringRoutines
 {
@@ -840,6 +840,38 @@ public final class StringRoutines
 	
 	//-------------------------------------------------------------------------
 
+	/**
+	 * @param originalDesc Description of a ruleset after expansion.
+	 * @return Formatted description on a single line.
+	 */
+	public static String formatOneLineDesc(final String originalDesc)
+	{
+		final StringBuffer formattedDesc = new StringBuffer("");
+		for(int i = 0; i < originalDesc.length(); i++)
+		{
+			final char c = originalDesc.charAt(i);
+			if(Character.isLetterOrDigit(c) || c == '(' || c == ')' || c == '{' 
+					|| c == '}' || c == '"' || c == '.' || c == ',' || c == ':'
+					|| c == '=' || c == '<' || c == '>' || c == '+' || c == '-'
+					|| c == '/' || c == '^' || c == '%' || c == '*' 
+					|| Character.isSpaceChar(c)
+			)
+			{
+				if(i != 0 && Character.isSpaceChar(c))
+				{
+					final char lastChar = formattedDesc.toString().charAt(formattedDesc.length()-1);
+					if(!Character.isSpaceChar(lastChar))
+					{
+						formattedDesc.append(c);
+					}
+				}
+				else
+					formattedDesc.append(c);
+			}
+		}
+		return formattedDesc.toString();
+	}
+	
 }
 
 		
