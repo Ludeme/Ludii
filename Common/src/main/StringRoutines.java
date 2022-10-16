@@ -865,8 +865,12 @@ public final class StringRoutines
 						formattedDesc.append(c);
 					}
 				}
-				else
+				else 
+				{
 					formattedDesc.append(c);
+					if(c == '{') // add a space after the open curly bracket to not be next to an open parenthesis.
+						formattedDesc.append(' ');
+				}
 			}
 		}
 		return formattedDesc.toString();

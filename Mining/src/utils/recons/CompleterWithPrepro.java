@@ -73,6 +73,10 @@ public class CompleterWithPrepro
 				lineNoQuote = lineNoQuote.substring(rulesetIdStr.length() + 1);
 				
 				final String desc = lineNoQuote;
+
+				// To check if a specific part of the ludemes appear in some games.
+//				if(desc.contains("(rectangle 1 "))
+//					System.out.println(gameName + " HAS IT");
 				
 //				System.out.println("game = " + gameName);
 //				System.out.println("ruleset = " + rulesetName);
@@ -124,7 +128,10 @@ public class CompleterWithPrepro
 		{
 			Completion comp = new Completion(rulesetDescriptionOneLine);
 			while (needsCompleting(comp.raw()))
+			{
+				//System.out.println(comp.raw());
 				comp = nextCompletionSampled(comp, report);	
+			}
 			completions.add(comp);
 		}
 		
@@ -298,6 +305,84 @@ public class CompleterWithPrepro
 			return completions.get(rng.nextInt(completions.size()));
 		}
 	
+		//-------------------------------------------------------------------------
+
+		/**
+		 * Enumerate all parent matches in the specified map.
+		 * @param parent
+		 * @param map
+		 * @param queue
+		 */
+		private void enumerateMatches
+		(
+			final String           left, 
+			final String           right, 
+			final String[]         parent, 
+			final List<Completion> queue,  
+			final double           confidence
+		)
+		{
+			for (Map.Entry<Integer, String> entry : ludMap.entrySet()) 
+			{
+				final String otherDescription = entry.getValue();
+				
+				final String candidate = new String(otherDescription);
+				
+				// **
+				// ** TODO: Determine distance between map entry and this completion
+				// **
+				final double distance = 0.1;  // dummy value for testing
+				
+				final int l = candidate.indexOf(parent[0]);
+				
+				if (l < 0)
+					continue;  // not a match
+				
+				String secondPart = candidate.substring(l + parent[0].length());  //.trim();
+				
+//				System.out.println("\notherDescription is: " + otherDescription);
+//				System.out.println("parent[0] is: " + parent[0]);
+//				System.out.println("parent[1] is: " + parent[1]);
+//				System.out.println("secondPart is: " + secondPart);
+//				System.out.println("left  is: " + left);
+//				System.out.println("right is: " + right);
+				
+//				final int r = secondPart.indexOf(parent[1]);
+				
+				final int r = (StringRoutines.isBracket(secondPart.charAt(0)))
+								? StringRoutines.matchingBracketAt(secondPart, 0)
+								: secondPart.indexOf(parent[1]) - 1;
+
+				if (r >= 0)
+				{
+					// Is a match
+					//final String match = mapString.substring(l, l + parent[0].length() + r + parent[1].length());
+					final String match = secondPart.substring(0, r + 1);  //l, l + parent[0].length() + r + parent[1].length());
+					//System.out.println("match is: " + match);
+					
+//					final String str = 
+//							left.substring(0, left.length() - parent[0].length())
+//							+
+//							match
+//							+
+//							right.substring(parent[1].length());
+
+					//final String str = left + " " + match + " " + right;
+					String str = left + match + right;
+					
+					final Completion completion = new Completion(str);
+					//System.out.println("completion is:\n" + completion.raw());
+						
+					if (!queue.contains(completion))
+					{
+						//System.out.println("Adding completion:\n" + completion.raw());
+						completion.setScore(confidence * (1 - distance));
+						queue.add(completion);
+					}
+				}	
+			}	
+		}
+		
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -481,83 +566,6 @@ public class CompleterWithPrepro
 				queue.add(newCompletion);
 			}
 		}
-	}
-	
-	//-------------------------------------------------------------------------
-
-	/**
-	 * Enumerate all parent matches in the specified map.
-	 * @param parent
-	 * @param map
-	 * @param queue
-	 */
-	private void enumerateMatches
-	(
-		final String           left, 
-		final String           right, 
-		final String[]         parent, 
-		final List<Completion> queue,  
-		final double           confidence
-	)
-	{
-		for (Map.Entry<Integer, String> entry : ludMap.entrySet()) 
-		{
-			final String otherDescription = entry.getValue();
-			
-			final String candidate = new String(otherDescription);
-			
-			// **
-			// ** TODO: Determine distance between map entry and this completion
-			// **
-			final double distance = 0.1;  // dummy value for testing
-			
-			final int l = candidate.indexOf(parent[0]);
-			if (l < 0)
-				continue;  // not a match
-			
-			String secondPart = candidate.substring(l + parent[0].length());  //.trim();
-			
-//			System.out.println("\notherDescription is: " + otherDescription);
-//			System.out.println("parent[0] is: " + parent[0]);
-//			System.out.println("parent[1] is: " + parent[1]);
-//			System.out.println("secondPart is: " + secondPart);
-//			System.out.println("left  is: " + left);
-//			System.out.println("right is: " + right);
-			
-//			final int r = secondPart.indexOf(parent[1]);
-			
-			final int r = (StringRoutines.isBracket(secondPart.charAt(0)))
-							? StringRoutines.matchingBracketAt(secondPart, 0)
-							: secondPart.indexOf(parent[1]) - 1;
-
-			if (r >= 0)
-			{
-				// Is a match
-				//final String match = mapString.substring(l, l + parent[0].length() + r + parent[1].length());
-				final String match = secondPart.substring(0, r + 1);  //l, l + parent[0].length() + r + parent[1].length());
-				//System.out.println("match is: " + match);
-				
-//				final String str = 
-//						left.substring(0, left.length() - parent[0].length())
-//						+
-//						match
-//						+
-//						right.substring(parent[1].length());
-
-				//final String str = left + " " + match + " " + right;
-				String str = left + match + right;
-				
-				final Completion completion = new Completion(str);
-				//System.out.println("completion is:\n" + completion.raw());
-					
-				if (!queue.contains(completion))
-				{
-					//System.out.println("Adding completion:\n" + completion.raw());
-					completion.setScore(confidence * (1 - distance));
-					queue.add(completion);
-				}
-			}	
-		}	
 	}
 	
 	//-------------------------------------------------------------------------

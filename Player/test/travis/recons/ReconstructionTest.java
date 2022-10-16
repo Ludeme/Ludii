@@ -43,7 +43,7 @@ public class ReconstructionTest
 		{
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/eric/recons/"))
 			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/"))
-			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/war/replacement/checkmate/xiangqi/Gwangsanghui"))
+			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/hunt/Dintja le Nmutla"))
 				continue;
 			
 			// Get game description from resource
