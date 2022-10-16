@@ -3,8 +3,6 @@ package utils.recons;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -1010,74 +1008,6 @@ public class CompleterWithPrepro
 			choices.add(sub);
 
 		return choices;
-	}
-
-	//-------------------------------------------------------------------------
-	// Ludeme loader code from Matthew
-	
-	/**
-	 * @return Names and contents of all files within the lud/board path.
-	 */
-	public static Map<Integer, String> getAllLudContents()
-	{
-		Map<Integer, String> ludMap = new HashMap<Integer, String>();
-		return ludMap;
-	}
-	
-	/**
-	 * @return Names and contents of all files within the specific directory path.
-	 */
-	public static Map<String, String> getAllDirectoryContents(final String dir)
-	{
-		final File startFolder = new File(dir);
-		final List<File> gameDirs = new ArrayList<>();
-		gameDirs.add(startFolder);
-		final Map<String, String> fileContents = new HashMap<>();
-
-		for (int i = 0; i < gameDirs.size(); ++i)
-		{
-			final File gameDir = gameDirs.get(i);
-
-			for (final File fileEntry : gameDir.listFiles())
-			{
-				if (fileEntry.isDirectory())
-				{
-					gameDirs.add(fileEntry);
-				}
-				else
-				{
-					try(BufferedReader br = new BufferedReader(new FileReader(fileEntry))) 
-					{
-					    final StringBuilder sb = new StringBuilder();
-					    String line = br.readLine();
-
-					    while (line != null) 
-					    {
-					        sb.append(line);
-					        sb.append(System.lineSeparator());
-					        line = br.readLine();
-					    }
-					    
-					    String everything = sb.toString();
-					    
-					    // Strip out formatting so that completion string matching it more robust
-					    everything = Expander.cleanUp(everything, null);
-					    		
-					    fileContents.put(fileEntry.getName(), everything);
-					} 
-					catch (final FileNotFoundException e) 
-					{
-						e.printStackTrace();
-					} 
-					catch (final IOException e) 
-					{
-						e.printStackTrace();
-					}
-				}
-			}
-		}
-		
-		return fileContents;
 	}
 
 	//-------------------------------------------------------------------------
