@@ -490,7 +490,8 @@ public class Completer
 				//final String str = left + " " + match + " " + right;
 				String str = left + match + right;
 				
-				str = addLocalDefines(str, otherDescription);
+				// Eric: I COMMENTED THIS, BECAUSE this code is making an infinite loop on some cases and break Travis.
+				//str = addLocalDefines(str, otherDescription);
 				
 				final Completion completion = new Completion(str);
 				//System.out.println("completion is:\n" + completion.raw());

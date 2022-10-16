@@ -1,5 +1,7 @@
 package travis.recons;
 
+import static org.junit.Assert.fail;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -115,8 +117,7 @@ public class ReconstructionTest
 		}
 
 		if (failure)
-			return; // TO UNCOMMENT THIS WHEN RECONS PROCESS IS FIXED.
-			//fail();
+			fail();
 	}
 
 

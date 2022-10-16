@@ -64,6 +64,7 @@ public final class PreProcessRecons
 						{
 							final String rulesetId = ids.get(0); 
 							System.out.println("Game: " + game.name() + " RulesetName = " + rulesetGame.getRuleset().heading() + " RulesetID = " + rulesetId);
+							System.out.println(formatOneLineDesc(rulesetGame.description().raw()));
 						}
 					}
 				}
@@ -75,11 +76,23 @@ public final class PreProcessRecons
 				{
 					final String rulesetId = ids.get(0); 
 					System.out.println("Game: " + game.name() + " RulesetID = " + rulesetId);
+					System.out.println(formatOneLineDesc(game.description().raw()));
 				}
 			}
 		}
 		
 //		System.out.println(count + " rulesets implemented");
 //		System.out.println(countOptionCombinations + " option combinations implemented");
+	}
+	
+	/**
+	 * @param originalDesc The description of the ruleset
+	 * @return formatted description on a single line.
+	 */
+	public static String formatOneLineDesc(final String originalDesc)
+	{
+		final String formattedDesc = originalDesc;
+		
+		return formattedDesc;
 	}
 }
