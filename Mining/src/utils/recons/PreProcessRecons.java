@@ -38,6 +38,7 @@ public final class PreProcessRecons
 
 		try (final PrintWriter writer = new UnixPrintWriter(new File(output), "UTF-8"))
 		{
+			// Look at each ruleset.
 			for (int index = 0; index < gameNames.length; index++)
 			{
 				final String gameName = gameNames[index];
@@ -76,6 +77,7 @@ public final class PreProcessRecons
 							{
 								final String rulesetId = ids.get(0); 
 								System.out.println("Game: " + game.name() + " RulesetName = " + rulesetGame.getRuleset().heading() + " RulesetID = " + rulesetId);
+								
 								final String formattedDesc = StringRoutines.formatOneLineDesc(rulesetGame.description().expanded());
 								final List<String> lineToWrite = new ArrayList<String>();
 								lineToWrite.add(game.name());
@@ -94,6 +96,7 @@ public final class PreProcessRecons
 					{
 						final String rulesetId = ids.get(0); 
 						System.out.println("Game: " + game.name() + " RulesetID = " + rulesetId);
+						
 						final String formattedDesc = StringRoutines.formatOneLineDesc(game.description().expanded());
 						final List<String> lineToWrite = new ArrayList<String>();
 						lineToWrite.add(game.name());
