@@ -11,7 +11,8 @@ import utils.DBGameInfo;
 public class ContextualSimilarity 
 {
 	private static final String rulesetIdsFilePath = "../Mining/res/concepts/input/GameRulesets.csv";
-	private static final String rulesetLudemesOutputFilePath = "../../LudiiPrivate/DataMiningScripts/Geacron/GeacronDistance/res/output/contextualiser/similarity_";
+	// private static final String rulesetLudemesOutputFilePath = "../../LudiiPrivate/DataMiningScripts/Geacron/GeacronDistance/res/output/contextualiser/similarity_";
+	private static final String rulesetLudemesOutputFilePath = "../Mining/res/recons/input/contextualiser/similarity_";
 
 	/**
 	 * @param game Game to compare similarity against.
