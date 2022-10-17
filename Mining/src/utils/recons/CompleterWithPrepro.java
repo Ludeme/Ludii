@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import compiler.Compiler;
 import completer.Completion;
 import main.StringRoutines;
 import main.UnixPrintWriter;
@@ -308,7 +309,23 @@ public class CompleterWithPrepro
 				// **
 			}
 			
-			return completions.get(rng.nextInt(completions.size()));
+			// Return completion only if it compiles correctly and the last one done after 10 tries.
+			Completion returnCompletion = null;
+			int count = 0;
+			
+			while(returnCompletion == null)
+			{
+				returnCompletion = completions.get(rng.nextInt(completions.size()));
+				try{Compiler.compileTest(new Description(returnCompletion.raw()), false);}
+				catch(final Exception e)
+				{
+					count++;
+					if(count < 10)
+						returnCompletion = null;
+				}
+			}
+			
+			return returnCompletion;
 		}
 	
 		//-------------------------------------------------------------------------

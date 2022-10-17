@@ -36,7 +36,8 @@ public class ReconsRulesets
 		for (final String fileName : choices)
 		{
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/"))
-			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/hunt/Fortresse"))
+			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/hunt/Fortresse"))
+			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/hunt/Bagh Bukree"))
 				continue;
 			
 			final String gameName = fileName.substring(fileName.lastIndexOf("/")+1,fileName.length()-4);
@@ -67,7 +68,7 @@ public class ReconsRulesets
 			List<Completion> completions = null;
 			try
 			{
-				completions = completer.completeSampled(desc, 10, null);
+				completions = completer.completeSampled(desc, 1, null);
 			}
 			catch (final Exception e)
 			{
@@ -79,6 +80,17 @@ public class ReconsRulesets
 				for (int n = 0; n < completions.size(); n++) 
 				{
 					final Completion completion = completions.get(n);
+					
+					// Test if the completion compiles.
+//					try{Compiler.compile(new Description(completion.raw()), new UserSelections(new ArrayList<String>()), new Report(), false);}
+//					catch(final Exception e)
+//					{
+//						System.out.println("Impossible to compile number "+ n);
+//						System.out.println("DESC IS");
+//						System.out.println(completion.raw());
+//						e.printStackTrace();
+//					}
+					
 					CompleterWithPrepro.saveCompletion(outputPath, gameName+n, completion);
 					
 					// Check if the concepts expected are present.
