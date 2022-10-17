@@ -309,7 +309,8 @@ public class CompleterWithPrepro
 				// **
 			}
 			
-			// Return completion only if it compiles correctly and the last one done after 10 tries.
+			final int NUMBER_TRIES = 10;
+			// Return completion only if it compiles correctly or the last one  generated after NUMBER_TRIES tries.
 			Completion returnCompletion = null;
 			int count = 0;
 			
@@ -320,7 +321,7 @@ public class CompleterWithPrepro
 				catch(final Exception e)
 				{
 					count++;
-					if(count < 10)
+					if(count < NUMBER_TRIES)
 						returnCompletion = null;
 				}
 			}
