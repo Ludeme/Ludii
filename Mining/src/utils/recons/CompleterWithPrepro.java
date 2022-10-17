@@ -1,13 +1,13 @@
 package utils.recons;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +16,7 @@ import java.util.Random;
 
 import completer.Completion;
 import main.StringRoutines;
+import main.UnixPrintWriter;
 import main.grammar.Description;
 import main.grammar.Report;
 import parser.Expander;
@@ -959,39 +960,29 @@ public class CompleterWithPrepro
 	 * Save reconstruction to file.
 	 * @param path Path to save output file (will use default /Common/res/out/recons/ if null).
 	 * @param name Output file name for reconstruction.
-	 * @throws IOException 
 	 */
 	public static void saveCompletion
 	(
-		final String path, final String name, final Completion completion
-	) throws IOException
+		final String     path, 
+		final String     name, 
+		final Completion completion
+	) 
 	{
-		final String safePath = (path != null) ? path : "../Common/res/out/recons/";
-		
-		// **
-		// ** TODO: Need to check if this path exists! If not, then try to make it.
-		// **
+		final String savePath = (path != null) ? path : "../Common/res/out/recons/";
 		
 		//final String scoreString = String.format("%.3f", Double.valueOf(completion.score()));
 		//final String outFileName = safePath + name + "-" + index + "-" + scoreString + ".lud";	
 
-		final String outFileName = safePath + name + ".lud";
+		final String outFileName = savePath + name + ".lud";
 		
-		// Prepare the output file
-		final File file = new File(outFileName);
-		if (!file.exists())
-			file.createNewFile();
-
-		try 
-		(
-			final PrintWriter writer = 
-				new PrintWriter
-				(
-					new BufferedWriter(new FileWriter(outFileName, false))
-				)
-		)
+		System.out.println(outFileName);
+		try (final PrintWriter writer = new UnixPrintWriter(new File(outFileName), "UTF-8"))
 		{
-			writer.write(completion.raw());
+			writer.print(completion.raw());
+		}
+		catch (FileNotFoundException | UnsupportedEncodingException e)
+		{
+			e.printStackTrace();
 		}
 	}
 	
