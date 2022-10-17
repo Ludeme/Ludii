@@ -8,12 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import compiler.Compiler;
 import completer.Completion;
+import game.Game;
 import main.FileHandling;
 import main.StringRoutines;
 import main.grammar.Description;
 import other.GameLoader;
-import compiler.Compiler;
 
 /**
  * To reconstruct rulesets.
@@ -26,10 +27,9 @@ public class ReconsRulesets
 	{
 		String outputPath = args.length == 0 ?  "./res/recons/output/" : args[0];
 		int numRecons = args.length < 1 ?  10 : Integer.parseInt(args[1]);
+		int maxNumberAttemps = args.length < 2 ?  10000 : Integer.parseInt(args[2]);
 		
 		System.out.println("\n=========================================\nTest: Start reconstruction all of rulesets:\n");
-
-		final List<String> failedGames = new ArrayList<String>();
 
 		final long startAt = System.nanoTime();
 
@@ -39,8 +39,8 @@ public class ReconsRulesets
 
 		for (final String fileName : choices)
 		{
-			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/"))
-			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/hunt/Fortresse"))
+			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/"))
+			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/hunt/Fortresse"))
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/hunt/Bagh Bukree"))
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/eric/recons/Bagh Bukree test"))
 				continue;
@@ -69,47 +69,50 @@ public class ReconsRulesets
 				e1.printStackTrace();
 			}
 
-			// Parse and reconstruct one instance of a game which is respected the expected concepts.
-			List<Completion> completions = null;
-			try
+			int numAttempts = 0;
+			List<String> compilingCompletions = new ArrayList<String>();
+			while(numAttempts < maxNumberAttemps && compilingCompletions.size() < numRecons)
 			{
-				completions = completer.completeSampled(desc, numRecons, null);
-			}
-			catch (final Exception e)
-			{
-				e.printStackTrace();
-			}
-
-			if (completions != null)
-			{
-				for (int n = 0; n < completions.size(); n++) 
+				List<Completion> completions = null;
+				try
 				{
-					final Completion completion = completions.get(n);
-					final String completionRaw = indentNicely(StringRoutines.unformatOneLineDesc(completion.raw()));
-					String doNotCompile = "";
-					// Test if the completion compiles.
-					try{Compiler.compileTest(new Description(completionRaw), false);}
-					catch(final Exception e)
-					{
-//						System.out.println("Impossible to compile number "+ n);
-//						System.out.println("DESC IS");
-//						System.out.println(completionRaw);
-//						e.printStackTrace();
-						doNotCompile = "doNotCompile";
-					}
-					
-					CompleterWithPrepro.saveCompletion(outputPath, gameName+n+doNotCompile, completionRaw);
-
-					// Check if the concepts expected are present.
-					//boolean expectedConcepts = Concept.isExpectedConcepts(completion.raw());
-					//System.out.println("RECONS HAS THE EXPECTED CONCEPTS? " + expectedConcepts);
+					completions = completer.completeSampled(desc, 1, null);
 				}
+				catch (final Exception e)
+				{
+					e.printStackTrace();
+				}
+
+				if (completions != null)
+				{
+					for (int n = 0; n < completions.size(); n++) 
+					{
+						final Completion completion = completions.get(n);
+						final String completionRaw = indentNicely(StringRoutines.unformatOneLineDesc(completion.raw()));
+						// Test if the completion compiles.
+						Game game = null;
+						try{game = (Game) Compiler.compileTest(new Description(completionRaw), false);}
+						catch(final Exception e)
+						{
+//							System.out.println("Impossible to compile number "+ n);
+//							System.out.println("DESC IS");
+//							System.out.println(completionRaw);
+//							e.printStackTrace();
+						}
+						if(game != null)
+							compilingCompletions.add(completionRaw);
+
+						// Check if the concepts expected are present.
+						//boolean expectedConcepts = Concept.isExpectedConcepts(completion.raw());
+						//System.out.println("RECONS HAS THE EXPECTED CONCEPTS? " + expectedConcepts);
+					}
+				}
+				numAttempts++;
 			}
-			else
-			{
-				failedGames.add(fileName);
-				System.err.println("** FAILED TO COMPILE: " + fileName);
-			}
+			numAttempts = 0;
+
+			for (int n = 0; n < compilingCompletions.size(); n++) 
+				CompleterWithPrepro.saveCompletion(outputPath, gameName+n, compilingCompletions.get(n));
 		}
 		
 		final long stopAt = System.nanoTime();
