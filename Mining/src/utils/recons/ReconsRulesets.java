@@ -11,10 +11,12 @@ import java.util.regex.Pattern;
 import completer.Completion;
 import main.FileHandling;
 import main.StringRoutines;
+import main.grammar.Description;
 import other.GameLoader;
+import compiler.Compiler;
 
 /**
- * Unit Test to compile all the reconstruction games on the lud/reconstruction folder
+ * To reconstruct rulesets.
  *
  * @author Eric.Piette
  */
@@ -22,7 +24,8 @@ public class ReconsRulesets
 {
 	public static void main(final String[] args)
 	{
-		String outputPath = args.length == 0 ?  "./" : args[0];
+		String outputPath = args.length == 0 ?  "./res/recons/output/" : args[0];
+		int numRecons = args.length < 1 ?  10 : Integer.parseInt(args[1]);
 		
 		System.out.println("\n=========================================\nTest: Start reconstruction all of rulesets:\n");
 
@@ -36,8 +39,8 @@ public class ReconsRulesets
 
 		for (final String fileName : choices)
 		{
-			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/"))
-			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/hunt/Fortresse"))
+			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/"))
+			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/hunt/Fortresse"))
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/hunt/Bagh Bukree"))
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/eric/recons/Bagh Bukree test"))
 				continue;
@@ -70,7 +73,7 @@ public class ReconsRulesets
 			List<Completion> completions = null;
 			try
 			{
-				completions = completer.completeSampled(desc, 1, null);
+				completions = completer.completeSampled(desc, numRecons, null);
 			}
 			catch (final Exception e)
 			{
@@ -83,18 +86,19 @@ public class ReconsRulesets
 				{
 					final Completion completion = completions.get(n);
 					final String completionRaw = indentNicely(StringRoutines.unformatOneLineDesc(completion.raw()));
-					
+					String doNotCompile = "";
 					// Test if the completion compiles.
-//					try{Compiler.compile(new Description(completion.raw()), new UserSelections(new ArrayList<String>()), new Report(), false);}
-//					catch(final Exception e)
-//					{
+					try{Compiler.compileTest(new Description(completionRaw), false);}
+					catch(final Exception e)
+					{
 //						System.out.println("Impossible to compile number "+ n);
 //						System.out.println("DESC IS");
-//						System.out.println(completion.raw());
+//						System.out.println(completionRaw);
 //						e.printStackTrace();
-//					}
+						doNotCompile = "doNotCompile";
+					}
 					
-					CompleterWithPrepro.saveCompletion(outputPath, gameName+n, completionRaw);
+					CompleterWithPrepro.saveCompletion(outputPath, gameName+n+doNotCompile, completionRaw);
 
 					// Check if the concepts expected are present.
 					//boolean expectedConcepts = Concept.isExpectedConcepts(completion.raw());
@@ -119,9 +123,11 @@ public class ReconsRulesets
 //				System.out.println(name);
 //		}
 	}
+
+	//-----------------------------------------------------------------------------
 	
 	/**
-	 * Nicely indents the specified .lud or .def file.
+	 * Nicely indents the description in entry.
 	 */
 	public static String indentNicely(final String desc)
 	{
@@ -168,7 +174,7 @@ public class ReconsRulesets
  	}
 	
 	/**
-	 * Nicely indents the specified lines of a .lud or .def file.
+	 * Nicely indents the lines of a desc.
 	 */
 	final static void indentLines(final List<String> lines)
 	{

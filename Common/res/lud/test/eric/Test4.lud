@@ -1,13 +1,53 @@
-(game "Dintja le Nmutla" 
-		(players {(player N) (player S)}) 
-		(equipment {
-			(board [#]) 
-			(piece "Hound" P1 (move [#])) 
-			(piece "Rabbit" P2 (move [#]))
-		}) 
-		(rules 
-				(start [#]) 
-				(play [#]) 
-				(end {(if (no Moves P2) (result P1 Win)) (if [#] (result P2 Win))})
-		)
+(game "10-Ring" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric { 10}
+            )
+        use:Vertex)
+        
+        (piece "Disc" Each 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (set Score Each 0)
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (and 
+                    (not 
+                        (all Sites 
+                            (sites Occupied by:Mover)
+                            if:
+                            (is In 
+                                (site)
+                                
+                                (sites Mover)
+                            )
+                        )
+                    )
+                    
+                    (is Line 3)
+                )
+                
+                (result Mover Win)
+            )
+        )
+    )
 )
