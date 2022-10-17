@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import compiler.Compiler;
 import completer.Completion;
 import main.StringRoutines;
 import main.UnixPrintWriter;
@@ -308,22 +307,22 @@ public class CompleterWithPrepro
 				// **       also try low scoring ones occasionally.
 				// **
 			}
-			
-			final int NUMBER_TRIES = 10;
+
 			// Return completion only if it compiles correctly or the last one  generated after NUMBER_TRIES tries.
+//			final int NUMBER_TRIES = 10;
 			Completion returnCompletion = null;
-			int count = 0;
+//			int count = 0;
 			
 			while(returnCompletion == null)
 			{
 				returnCompletion = completions.get(rng.nextInt(completions.size()));
-				try{Compiler.compileTest(new Description(returnCompletion.raw()), false);}
-				catch(final Exception e)
-				{
-					count++;
-					if(count < NUMBER_TRIES)
-						returnCompletion = null;
-				}
+//				try{Compiler.compileTest(new Description(returnCompletion.raw()), false);}
+//				catch(final Exception e)
+//				{
+//					count++;
+//					if(count < NUMBER_TRIES)
+//						returnCompletion = null;
+//				}
 			}
 			
 			return returnCompletion;
@@ -373,9 +372,26 @@ public class CompleterWithPrepro
 				
 //				final int r = secondPart.indexOf(parent[1]);
 				
-				final int r = (StringRoutines.isBracket(secondPart.charAt(0)))
-								? StringRoutines.matchingBracketAt(secondPart, 0)
-								: secondPart.indexOf(parent[1]) - 1;
+				// Eric: I rewrote the detection or the r index, because the previous code did not work for many cases.
+				int countParenthesis = 0;
+				int r = 0;
+				for(; r < secondPart.length(); r++)
+				{
+					if(secondPart.charAt(r) == '(')
+						countParenthesis++;
+					else
+						if(secondPart.charAt(r) == ')')
+							countParenthesis--;
+					if(countParenthesis == -1)
+					{
+						r--;
+						break;
+					}
+				}
+				
+//				final int r = (StringRoutines.isBracket(secondPart.charAt(0)))
+//								? StringRoutines.matchingBracketAt(secondPart, 0)
+//								: secondPart.indexOf(parent[1]) - 1;
 
 				if (r >= 0)
 				{
@@ -393,7 +409,7 @@ public class CompleterWithPrepro
 
 					//final String str = left + " " + match + " " + right;
 					String str = left + match + right;
-					
+					//System.out.println(right);
 					final Completion completion = new Completion(str);
 					//System.out.println("completion is:\n" + completion.raw());
 						
@@ -981,22 +997,18 @@ public class CompleterWithPrepro
 	 */
 	public static void saveCompletion
 	(
-		final String     path, 
-		final String     name, 
-		final Completion completion
+		final String path, 
+		final String name, 
+		final String completionRaw
 	) 
 	{
 		final String savePath = (path != null) ? path : "../Common/res/out/recons/";
-		
-		//final String scoreString = String.format("%.3f", Double.valueOf(completion.score()));
-		//final String outFileName = safePath + name + "-" + index + "-" + scoreString + ".lud";	
-
 		final String outFileName = savePath + name + ".lud";
 		
 		System.out.println(outFileName);
 		try (final PrintWriter writer = new UnixPrintWriter(new File(outFileName), "UTF-8"))
 		{
-			writer.print(completion.raw());
+			writer.print(completionRaw);
 		}
 		catch (FileNotFoundException | UnsupportedEncodingException e)
 		{

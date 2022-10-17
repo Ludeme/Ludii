@@ -47,7 +47,7 @@ public class ReconstructionTest
 				continue;
 			
 			// Get game description from resource
-			System.out.println("Game: " + fileName);
+			//System.out.println("Game: " + fileName);
 
 			String path = fileName.replaceAll(Pattern.quote("\\"), "/");
 			path = path.substring(path.indexOf("/lud/"));
@@ -88,16 +88,16 @@ public class ReconstructionTest
 			{
 				System.out.println("Reconstruction(s) of " + fileName);
 				
-				for (int n = 0; n < completions.size(); n++) 
-				{
-					final Completion completion = completions.get(n);
-					System.out.println(completion.raw());
+//				for (int n = 0; n < completions.size(); n++) 
+//				{
+//					final Completion completion = completions.get(n);
+					//System.out.println(completion.raw());
 
 					// Check if the concepts expected are present.
 					//boolean expectedConcepts = Concept.isExpectedConcepts(completion.raw());
 					//System.out.println("RECONS HAS THE EXPECTED CONCEPTS? " + expectedConcepts);
-				}
-				System.out.println();
+//				}
+				//System.out.println();
 			}
 			else
 			{

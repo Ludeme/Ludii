@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 import completer.Completion;
 import main.FileHandling;
+import main.StringRoutines;
 import other.GameLoader;
 
 /**
@@ -36,8 +37,9 @@ public class ReconsRulesets
 		for (final String fileName : choices)
 		{
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/"))
-			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/hunt/Fortresse"))
-			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/hunt/Bagh Bukree"))
+			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/hunt/Fortresse"))
+			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/hunt/Bagh Bukree"))
+			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/eric/recons/Bagh Bukree test"))
 				continue;
 			
 			final String gameName = fileName.substring(fileName.lastIndexOf("/")+1,fileName.length()-4);
@@ -80,6 +82,7 @@ public class ReconsRulesets
 				for (int n = 0; n < completions.size(); n++) 
 				{
 					final Completion completion = completions.get(n);
+					final String completionRaw = indentNicely(StringRoutines.unformatOneLineDesc(completion.raw()));
 					
 					// Test if the completion compiles.
 //					try{Compiler.compile(new Description(completion.raw()), new UserSelections(new ArrayList<String>()), new Report(), false);}
@@ -91,8 +94,8 @@ public class ReconsRulesets
 //						e.printStackTrace();
 //					}
 					
-					CompleterWithPrepro.saveCompletion(outputPath, gameName+n, completion);
-					
+					CompleterWithPrepro.saveCompletion(outputPath, gameName+n, completionRaw);
+
 					// Check if the concepts expected are present.
 					//boolean expectedConcepts = Concept.isExpectedConcepts(completion.raw());
 					//System.out.println("RECONS HAS THE EXPECTED CONCEPTS? " + expectedConcepts);
@@ -115,6 +118,88 @@ public class ReconsRulesets
 //			for (final String name : failedGames)
 //				System.out.println(name);
 //		}
+	}
+	
+	/**
+	 * Nicely indents the specified .lud or .def file.
+	 */
+	public static String indentNicely(final String desc)
+	{
+		final String linesArray[] = desc.split("\\r?\\n");
+		final List<String> lines = new ArrayList<String>();
+        for (int n = 0; n < linesArray.length; n++)
+        	lines.add(linesArray[n]);
+		          
+        // Left justify all lines
+        for (int n = 0; n < lines.size(); n++)
+        {
+        	String str = lines.get(n);
+        	final int c = 0;
+        	while (c < str.length() && (str.charAt(c) == ' ' || str.charAt(c) == '\t'))
+        		str = str.substring(1);
+        	
+        	lines.remove(n);
+        	lines.add(n, str);
+        }
+
+        removeDoubleEmptyLines(lines);
+        indentLines(lines);
+        
+        final StringBuffer outputDesc = new StringBuffer();
+        for (final String result : lines)
+        	outputDesc.append(result + "\n");
+        
+        return outputDesc.toString();
+    }
+	
+	/**
+	 * Removes double empty lines.
+	 */
+	final static void removeDoubleEmptyLines(final List<String> lines)
+	{
+        int n = 1;
+        while (n < lines.size())
+        {
+        	if (lines.get(n).equals("") && lines.get(n-1).equals(""))
+        		lines.remove(n);
+        	else
+        		n++;
+        }
+ 	}
+	
+	/**
+	 * Nicely indents the specified lines of a .lud or .def file.
+	 */
+	final static void indentLines(final List<String> lines)
+	{
+		final String indentString = "    ";
+        int indent = 0;
+        for (int n = 0; n < lines.size(); n++)
+        {
+        	String str = lines.get(n);
+        	
+        	final int numOpen  = StringRoutines.numChar(str, '(');  // don't count curly braces!
+        	final int numClose = StringRoutines.numChar(str, ')');
+        	
+        	final int difference = numOpen - numClose;
+        	
+        	if (difference < 0)
+        	{
+        		// Unindent from this line
+        		indent += difference;
+        		if (indent < 0)
+        			indent = 0;
+        	}
+        	        	
+        	for (int step = 0; step < indent; step++)
+        		str = indentString + str; 
+ 
+   	       	lines.remove(n);
+        	lines.add(n, str);
+        	
+        	if (difference > 0)
+        		indent += difference;  // indent from next line
+        }
 	}
 
 

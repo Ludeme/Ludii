@@ -8,8 +8,8 @@
     
     (rules 
         (start {
-            (place "Tiger1" (sites [#])) // 3 Tigers
-            (place "Sheep2" (sites [#])) // 13 Sheeps
+            (place "Tiger1" [#]) // 3 Tigers
+            (place "Sheep2" [#]) // 13 Sheeps
         })
         (play [#])
         (end [#])

@@ -1,0 +1,26 @@
+(game "Bagh Bukree Test"
+    (players 2) 
+    (equipment { 
+        ("AlquerqueBoardWithBottomAndTopTriangles")
+        (piece "Tiger" P1 (move [#]))
+        (piece "Sheep" P2 (move Step (to if:(is Empty (to)))))
+    })
+    
+    (rules 
+        (start {
+            (place "Tiger1" (sites Bottom)) // 3 Tigers
+            (place "Sheep2" (sites Top)) // 13 Sheeps
+        })
+        (play (forEach Piece))
+        (end (if (no Moves Mover) (result Mover Win)))
+    )
+    
+//    (rules 
+//            (start {
+//                (place "Tiger1" [#]) // 3 Tigers
+//                (place "Sheep2" [#]) // 13 Sheeps
+//            })
+//            (play [#])
+//            (end [#])
+//        )
+)

@@ -876,6 +876,26 @@ public final class StringRoutines
 		return formattedDesc.toString();
 	}
 	
+	/**
+	 * @param desc The description of a ruleset on a single line.
+	 * @return The description on multiple lines.
+	 */
+	public static String unformatOneLineDesc(final String desc)
+	{
+		final StringBuffer formattedDesc = new StringBuffer("");
+		formattedDesc.append('(');
+		for(int i = 1; i < desc.length(); i++) // Start at 1 to not break line at the first parenthesis.
+		{
+			final char c = desc.charAt(i);
+			if(c == '(' && desc.charAt(desc.length()-1) != ':')
+				formattedDesc.append("\n");
+			formattedDesc.append(c);
+			if(c == ')' || c == '}')
+				formattedDesc.append("\n");
+		}
+		return formattedDesc.toString();
+	}
+	
 }
 
 		
