@@ -184,7 +184,7 @@ public class ResultsSummary
 			sb.append("Agent " + (i+1) + " (" + agents.get(i) + ")\n");
 			
 			agentPoints()[i].measure();
-			sb.append("Overall" + agentPoints()[i] + "\n");
+			sb.append("Winning score (between 0 and 1) " + agentPoints()[i] + "\n");
 			
 			for (int p = 1; p < agentPointsPerPlayer[i].length; ++p)
 			{
