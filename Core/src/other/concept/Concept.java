@@ -11411,29 +11411,32 @@ public enum Concept
 		
 		for(metadata.recon.concept.Concept conceptMeta : expectedConcepts)
 		{
-			final Concept concept = conceptMeta.concept();
-			final double minValue = conceptMeta.minValue();
-			final double maxValue = conceptMeta.maxValue();
-
-			if(concept != null)
+			if(conceptMeta != null)
 			{
-				if(concept.dataType().equals(ConceptDataType.BooleanData))
+				final Concept concept = conceptMeta.concept();
+				final double minValue = conceptMeta.minValue();
+				final double maxValue = conceptMeta.maxValue();
+	
+				if(concept != null)
 				{
-					if(!booleanConcepts.get(concept.id()))
+					if(concept.dataType().equals(ConceptDataType.BooleanData))
+					{
+						if(!booleanConcepts.get(concept.id()))
+								return false;
+					}
+					else if(concept.type.equals(ConceptType.Start))
+					{
+						final Double value = startConcepts.get(concept.name());
+						if(minValue > value.doubleValue() || value.doubleValue() > maxValue)
 							return false;
-				}
-				else if(concept.type.equals(ConceptType.Start))
-				{
-					final Double value = startConcepts.get(concept.name());
-					if(minValue > value.doubleValue() || value.doubleValue() > maxValue)
-						return false;
-				}
-				else 
-				{
-					final String valuestr = nonBooleanConcepts.get(Integer.valueOf(concept.id()));
-					final Double value = Double.valueOf(valuestr);
-					if(minValue > value.doubleValue() || value.doubleValue() > maxValue)
-						return false;
+					}
+					else 
+					{
+						final String valuestr = nonBooleanConcepts.get(Integer.valueOf(concept.id()));
+						final Double value = Double.valueOf(valuestr);
+						if(minValue > value.doubleValue() || value.doubleValue() > maxValue)
+							return false;
+					}
 				}
 			}
 		}

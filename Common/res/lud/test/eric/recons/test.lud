@@ -1,35 +1,17 @@
 (game "Test" 
-    (players 2)
-    
+    (players 2) 
     (equipment { 
-        (board 
-            (square 3)
-        )
-        
-        (piece "Disc" P1)
-        
-        (piece "Cross" P2)
-        }
-    )
-    
+        (board (square 3)) 
+        (piece "Disc" P1) 
+        (piece "Cross" P2) 
+    }) 
     (rules 
-        (play 
-            (move Add 
-                (to 
-                    (sites Empty)
-                )
-            )
-        )
-        
-        (end 
-            (if 
-                (is Line 4 byLevel:True)
-                
-                (result Mover Win)
-            )
-        )
+        (play (move Add (to (sites Empty))))
+        (end [#])
     )
 )
+
+//------------------------------------------------------------------------------
 
 (metadata 
     

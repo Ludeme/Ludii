@@ -43,9 +43,9 @@ public class ReconsRulesets
 		for (final String fileName : choices)
 		{
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/"))
-			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/hunt/Fortresse"))
+			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/hunt/Fortresse"))
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/hunt/Bagh Bukree"))
-			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/eric/recons/Bagh Bukree test"))
+			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/eric/recons/test"))
 				continue;
 			
 			final String gameName = fileName.substring(fileName.lastIndexOf("/")+1,fileName.length()-4);

@@ -357,7 +357,20 @@ public class CompleterWithPrepro
 				
 				final String candidate = new String(otherDescription);
 				
-				final double distance = rulesetReconId < 0 ? 1.0 : DistanceUtils.getRulesetCSNDistance(entry.getKey().intValue(), rulesetReconId); 
+				double distance = 0;
+				if(rulesetReconId == -1) // We do not use the CSN.
+					distance = 1.0;
+				else
+				{
+					final String distancesFilePath = "./res/recons/input/contextualiser/similarity_";
+					File file1 = new File(distancesFilePath + rulesetReconId + ".csv");
+					File file2 = new File(distancesFilePath + entry.getKey().intValue() + ".csv");
+					
+					if(!file1.exists() || !file2.exists() || (rulesetReconId == entry.getKey().intValue()))
+						distance = 0.0;
+					else
+						distance = DistanceUtils.getRulesetCSNDistance(entry.getKey().intValue(), rulesetReconId);
+				}
 				
 				final int l = candidate.indexOf(parent[0]);
 				
