@@ -15,6 +15,7 @@ import main.FileHandling;
 import main.StringRoutines;
 import main.grammar.Description;
 import other.GameLoader;
+import other.concept.Concept;
 
 /**
  * To reconstruct rulesets.
@@ -28,7 +29,8 @@ public class ReconsRulesets
 		String outputPath = args.length == 0 ?  "./res/recons/output/" : args[0];
 		int numRecons = args.length < 1 ?  10 : Integer.parseInt(args[1]);
 		int numReconsNoWarning = args.length < 2 ?  1 : Integer.parseInt(args[2]);
-		int maxNumberAttempts = args.length < 3 ?  10000 : Integer.parseInt(args[3]);
+		int numReconsNoWarningExpectedConcepts = args.length < 3 ?  1 : Integer.parseInt(args[3]);
+		int maxNumberAttempts = args.length < 4 ?  10000 : Integer.parseInt(args[4]);
 		
 		System.out.println("\n=========================================\nTest: Start reconstruction all of rulesets:\n");
 
@@ -75,9 +77,14 @@ public class ReconsRulesets
 			int numAttempts = 0;
 			List<String> compilingCompletions = new ArrayList<String>();
 			List<String> compilingNoWarningCompletions = new ArrayList<String>();
+			List<String> compilingNoWarningExpectedConceptsCompletions = new ArrayList<String>();
 			
 			// Run the recons process until enough attempts is executed or reconstruction are generated.
-			while(numAttempts < maxNumberAttempts && (compilingCompletions.size() < numRecons || compilingNoWarningCompletions.size() < numReconsNoWarning))
+			while(numAttempts < maxNumberAttempts && 
+					(compilingCompletions.size() < numRecons ||
+							compilingNoWarningCompletions.size() < numReconsNoWarning ||
+							compilingNoWarningExpectedConceptsCompletions.size() < numReconsNoWarningExpectedConcepts)
+			)
 			{
 				List<Completion> completions = null;
 				try
@@ -107,14 +114,17 @@ public class ReconsRulesets
 						}
 						if(game != null)
 						{
-							compilingCompletions.add(completionRaw + "\n" + metadata);
+							final String rawDescMetadata = completionRaw + "\n" + metadata;
+							compilingCompletions.add(rawDescMetadata);
 							if(!game.hasMissingRequirement() && !game.willCrash())
-								compilingNoWarningCompletions.add(completionRaw  + "\n" + metadata);
+								compilingNoWarningCompletions.add(rawDescMetadata);
+							game = (Game) Compiler.compileTest(new Description(rawDescMetadata), false);
+							
+							// Check if the concepts expected are present.
+							boolean expectedConcepts = Concept.isExpectedConcepts(rawDescMetadata);
+							if(expectedConcepts)
+								compilingNoWarningExpectedConceptsCompletions.add(rawDescMetadata);
 						}
-						
-						// Check if the concepts expected are present.
-						//boolean expectedConcepts = Concept.isExpectedConcepts(completion.raw());
-						//System.out.println("RECONS HAS THE EXPECTED CONCEPTS? " + expectedConcepts);
 					}
 				}
 				numAttempts++;
@@ -122,8 +132,10 @@ public class ReconsRulesets
 
 			for (int n = 0; n < compilingCompletions.size(); n++) 
 			{
-				if(compilingNoWarningCompletions.contains(compilingCompletions.get(n)))
-					CompleterWithPrepro.saveCompletion(outputPath + gameName + "/" + "noWarning/", gameName+n, compilingNoWarningCompletions.get(n));
+				if(compilingNoWarningExpectedConceptsCompletions.contains(compilingCompletions.get(n)))
+					CompleterWithPrepro.saveCompletion(outputPath + gameName + "/" + "noWarning/"+ "expectedConcepts/", gameName+n, compilingCompletions.get(n));
+				else if(compilingNoWarningCompletions.contains(compilingCompletions.get(n)))
+					CompleterWithPrepro.saveCompletion(outputPath + gameName + "/" + "noWarning/", gameName+n, compilingCompletions.get(n));
 				else
 					CompleterWithPrepro.saveCompletion(outputPath + gameName + "/", gameName+n, compilingCompletions.get(n));
 			}

@@ -1,7 +1,13 @@
 package other.concept;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.List;
+import java.util.Map;
+
+import compiler.Compiler;
+import game.Game;
+import main.grammar.Description;
 
 /**
  * Defines known concepts used in a game.
@@ -11395,23 +11401,44 @@ public enum Concept
 	 */
 	public static boolean isExpectedConcepts(final String description)
 	{
-		System.out.println("TEST");
-		System.out.println(description);
-//		
-//		final Game game = (Game)Compiler.compileTest(new Description(description), false);
-//		game.computeBooleanConcepts();	
-//		
-//		final BitSet gameConcepts = game.booleanConcepts();	
-//		final ArrayList<metadata.recon.concept.Concept> expectedConcepts = game.expectedConcepts();
-//		
-//		for(metadata.recon.concept.Concept conceptMeta : expectedConcepts)
-//		{
-//			final Concept concept = conceptMeta.concept();
-//			if(concept != null)
-//				if(!gameConcepts.get(concept.id()))
-//						return false;
-//		}
+		final Game game = (Game)Compiler.compileTest(new Description(description), false);
+
+		final BitSet booleanConcepts = game.computeBooleanConcepts();	
+		final Map<Integer, String> nonBooleanConcepts = game.computeNonBooleanConcepts();
+		final Map<String, Double> startConcepts = game.startsConceptsWithoutRNG();
+		
+		final ArrayList<metadata.recon.concept.Concept> expectedConcepts = game.expectedConcepts();
+		
+		for(metadata.recon.concept.Concept conceptMeta : expectedConcepts)
+		{
+			final Concept concept = conceptMeta.concept();
+			final double minValue = conceptMeta.minValue();
+			final double maxValue = conceptMeta.maxValue();
+
+			if(concept != null)
+			{
+				if(concept.dataType().equals(ConceptDataType.BooleanData))
+				{
+					if(!booleanConcepts.get(concept.id()))
+							return false;
+				}
+				else if(concept.type.equals(ConceptType.Start))
+				{
+					final Double value = startConcepts.get(concept.name());
+					if(minValue > value.doubleValue() || value.doubleValue() > maxValue)
+						return false;
+				}
+				else 
+				{
+					final String valuestr = nonBooleanConcepts.get(Integer.valueOf(concept.id()));
+					final Double value = Double.valueOf(valuestr);
+					if(minValue > value.doubleValue() || value.doubleValue() > maxValue)
+						return false;
+				}
+			}
+		}
 		
 		return true;
 	}
+	
 }
