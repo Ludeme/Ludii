@@ -131,7 +131,7 @@ public class DistanceUtils
 	public static Map<Integer, Double> getAllRulesetCSNDistances(final int rulesetId)
 	{
 		// Load ruleset distances from specific directory.
-		final String distancesFilePath = "../../LudiiPrivate/DataMiningScripts/Geacron/GeacronDistance/res/output/contextualiser/similarity_" + rulesetId + ".csv";
+		final String distancesFilePath = "/res/output/contextualiser/similarity_" + rulesetId + ".csv";
 		
 		// Map of rulesetId (key) to CSN distance (value) pairs.
 		final Map<Integer, Double> rulesetCSNDistances = new HashMap<>();	
