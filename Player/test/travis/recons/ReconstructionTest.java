@@ -38,6 +38,7 @@ public class ReconstructionTest
 		// Load from memory
 		final String[] choices = FileHandling.listGames();
 		CompleterWithPrepro completer = new CompleterWithPrepro();
+		final int idRulesetToRecons = -1;
 
 		for (final String fileName : choices)
 		{
@@ -76,7 +77,7 @@ public class ReconstructionTest
 			List<Completion> completions = null;
 			try
 			{
-				completions = completer.completeSampled(desc, 1, null);
+				completions = completer.completeSampled(desc, 1, idRulesetToRecons, null);
 			}
 			catch (final Exception e)
 			{

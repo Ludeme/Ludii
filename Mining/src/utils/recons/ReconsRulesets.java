@@ -72,8 +72,11 @@ public class ReconsRulesets
 				e1.printStackTrace();
 			}
 			
-			final String metadata = desc.contains("metadata") ? desc.substring(desc.indexOf("(metadata")) : "";
-
+			final String metadata = desc.contains("(metadata") ? desc.substring(desc.indexOf("(metadata")) : "";
+			String idStr = metadata.contains("(id") ? metadata.substring(metadata.indexOf("(id")+ 5) : "";
+			idStr = idStr.substring(0, idStr.indexOf(')')-1);
+			final int idRulesetToRecons = Integer.valueOf(idStr).intValue();
+			
 			int numAttempts = 0;
 			List<String> compilingCompletions = new ArrayList<String>();
 			List<String> compilingNoWarningCompletions = new ArrayList<String>();
@@ -89,7 +92,7 @@ public class ReconsRulesets
 				List<Completion> completions = null;
 				try
 				{
-					completions = completer.completeSampled(desc, 1, null);
+					completions = completer.completeSampled(desc, 1, idRulesetToRecons, null);
 				}
 				catch (final Exception e)
 				{
