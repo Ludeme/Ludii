@@ -1006,6 +1006,13 @@ public class CompleterWithPrepro
 		final String outFileName = savePath + name + ".lud";
 		
 		System.out.println(outFileName);
+		
+		// Create the file if it is not existing.
+		File folder = new File(path);
+		System.out.println(folder.getAbsolutePath());
+		if(!folder.exists())
+			folder.mkdirs();
+		
 		try (final PrintWriter writer = new UnixPrintWriter(new File(outFileName), "UTF-8"))
 		{
 			writer.print(completionRaw);

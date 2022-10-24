@@ -7,7 +7,7 @@
     }) 
     (rules 
         (start {
-            (place "Marker1" (forEach (sites [#]) if:(is Occupied (site)))) // We do not know where start the pieces of P1
+            (place "Marker1" [#]) // We do not know where start the pieces of P1
             (place "Marker2" (union (sites Row 2) (expand (sites Bottom) steps:2)))
         })
         

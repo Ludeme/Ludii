@@ -1,61 +1,127 @@
-(game "Bagh Bukree" 
+(game "Fortresse" 
     (players 2)
     
     (equipment { 
         (board 
-            (merge { 
-                (square 5 diagonals:Alternating)
-                
-                (shift 0 4 
-                    (rotate 180 
-                        (wedge 3)
-                    )
+            (merge 
+                (shift 0 
+                    (/ 
+                        (- 7 3)
+                    2)
+                    
+                    (rectangle 3 7 diagonals:Alternating)
                 )
                 
-                (shift 0 -2 
-                    (wedge 3)
+                (shift 
+                    (/ 
+                        (- 7 3)
+                    2)
+                    0 
+                    (rectangle 7 3 diagonals:Alternating)
                 )
-                }
             )
         use:Vertex)
         
-        (piece "Tiger" P1 
-            (move Select 
-                (from 
-                    (sites Mover)
-                )
-                
-                (piece "Sheep" P2 
-                    (move Step 
-                        (to if:
-                            (is Empty 
-                                (to)
+        (piece "Marker" P1 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
                             )
-                            }
                         )
                         
-                        (rules 
-                            (start { 
-                                (place "Tiger1" 
-                                    (centrePoint)
-                                )
-                                
-                                (place "Sheep2" 
-                                    (handSite P2)
-                                )
-                                }
-                            )
-                            
-                            (play 
-                                (forEach Piece)
-                            )
-                            
-                            (end 
-                                (if 
-                                    (is Line 3)
-                                    
-                                    (result Mover Win)
-                                )
+                        (apply 
+                            (remove 
+                                (between)
                             )
                         )
                     )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Marker" P2 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (sites { "C6" "E6"}
+                )
+            )
+            
+            (place "Marker2" 
+                (union 
+                    (sites Row 2)
+                    
+                    (expand 
+                        (sites Bottom)
+                    steps:2)
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end { 
+            (if 
+                (no Pieces P2)
+                
+                (result P1 Win)
+            )
+            
+            (if 
+                (or 
+                    (or 
+                        (no Pieces P1)
+                        
+                        (no Moves P1)
+                    )
+                    
+                    (= 0 
+                        (count Sites in:
+                            (difference 
+                                (expand 
+                                    (sites Top)
+                                steps:2)
+                                
+                                (sites Occupied by:P2)
+                            )
+                        )
+                    )
+                )
+                
+                (result P2 Win)
+            )
+            }
+        )
+    )
+)

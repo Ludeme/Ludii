@@ -27,7 +27,8 @@ public class ReconsRulesets
 	{
 		String outputPath = args.length == 0 ?  "./res/recons/output/" : args[0];
 		int numRecons = args.length < 1 ?  10 : Integer.parseInt(args[1]);
-		int maxNumberAttemps = args.length < 2 ?  10000 : Integer.parseInt(args[2]);
+		int numReconsNoWarning = args.length < 2 ?  1 : Integer.parseInt(args[2]);
+		int maxNumberAttemps = args.length < 3 ?  10000 : Integer.parseInt(args[3]);
 		
 		System.out.println("\n=========================================\nTest: Start reconstruction all of rulesets:\n");
 
@@ -71,7 +72,8 @@ public class ReconsRulesets
 
 			int numAttempts = 0;
 			List<String> compilingCompletions = new ArrayList<String>();
-			while(numAttempts < maxNumberAttemps && compilingCompletions.size() < numRecons)
+			List<String> compilingNoWarningCompletions = new ArrayList<String>();
+			while(numAttempts < maxNumberAttemps && (compilingCompletions.size() < numRecons || compilingNoWarningCompletions.size() < numReconsNoWarning))
 			{
 				List<Completion> completions = null;
 				try
@@ -100,8 +102,12 @@ public class ReconsRulesets
 //							e.printStackTrace();
 						}
 						if(game != null)
+						{
 							compilingCompletions.add(completionRaw);
-
+							if(!game.hasMissingRequirement() && !game.willCrash())
+								compilingNoWarningCompletions.add(completionRaw);
+						}
+						
 						// Check if the concepts expected are present.
 						//boolean expectedConcepts = Concept.isExpectedConcepts(completion.raw());
 						//System.out.println("RECONS HAS THE EXPECTED CONCEPTS? " + expectedConcepts);
@@ -109,10 +115,18 @@ public class ReconsRulesets
 				}
 				numAttempts++;
 			}
-			numAttempts = 0;
 
 			for (int n = 0; n < compilingCompletions.size(); n++) 
-				CompleterWithPrepro.saveCompletion(outputPath, gameName+n, compilingCompletions.get(n));
+			{
+				if(compilingNoWarningCompletions.contains(compilingCompletions.get(n)))
+					CompleterWithPrepro.saveCompletion(outputPath + gameName + "/" + "noWarning/", gameName+n, compilingNoWarningCompletions.get(n));
+				else
+					CompleterWithPrepro.saveCompletion(outputPath + gameName + "/", gameName+n, compilingCompletions.get(n));
+			}
+
+			System.out.println("Num Attempts = " + numAttempts);
+			
+			System.out.println(compilingCompletions.size() + " recons generated, " + compilingNoWarningCompletions.size() + " recons without warning generated.");
 		}
 		
 		final long stopAt = System.nanoTime();
