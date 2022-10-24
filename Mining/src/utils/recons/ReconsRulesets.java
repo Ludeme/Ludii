@@ -69,6 +69,8 @@ public class ReconsRulesets
 			{
 				e1.printStackTrace();
 			}
+			
+			final String metadata = desc.contains("metadata") ? desc.substring(desc.indexOf("(metadata")) : "";
 
 			int numAttempts = 0;
 			List<String> compilingCompletions = new ArrayList<String>();
@@ -105,9 +107,9 @@ public class ReconsRulesets
 						}
 						if(game != null)
 						{
-							compilingCompletions.add(completionRaw);
+							compilingCompletions.add(completionRaw + "\n" + metadata);
 							if(!game.hasMissingRequirement() && !game.willCrash())
-								compilingNoWarningCompletions.add(completionRaw);
+								compilingNoWarningCompletions.add(completionRaw  + "\n" + metadata);
 						}
 						
 						// Check if the concepts expected are present.
