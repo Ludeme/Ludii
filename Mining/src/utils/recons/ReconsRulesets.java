@@ -28,7 +28,7 @@ public class ReconsRulesets
 		String outputPath = args.length == 0 ?  "./res/recons/output/" : args[0];
 		int numRecons = args.length < 1 ?  10 : Integer.parseInt(args[1]);
 		int numReconsNoWarning = args.length < 2 ?  1 : Integer.parseInt(args[2]);
-		int maxNumberAttemps = args.length < 3 ?  10000 : Integer.parseInt(args[3]);
+		int maxNumberAttempts = args.length < 3 ?  10000 : Integer.parseInt(args[3]);
 		
 		System.out.println("\n=========================================\nTest: Start reconstruction all of rulesets:\n");
 
@@ -73,7 +73,9 @@ public class ReconsRulesets
 			int numAttempts = 0;
 			List<String> compilingCompletions = new ArrayList<String>();
 			List<String> compilingNoWarningCompletions = new ArrayList<String>();
-			while(numAttempts < maxNumberAttemps && (compilingCompletions.size() < numRecons || compilingNoWarningCompletions.size() < numReconsNoWarning))
+			
+			// Run the recons process until enough attempts is executed or reconstruction are generated.
+			while(numAttempts < maxNumberAttempts && (compilingCompletions.size() < numRecons || compilingNoWarningCompletions.size() < numReconsNoWarning))
 			{
 				List<Completion> completions = null;
 				try
