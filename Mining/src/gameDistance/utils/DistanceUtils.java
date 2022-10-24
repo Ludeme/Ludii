@@ -122,7 +122,7 @@ public class DistanceUtils
 	 */
 	public static double getRulesetCSNDistance(final int rulesetId1, final int rulesetId2)
 	{
-		return getAllRulesetCSNDistances(rulesetId1).get(rulesetId2);
+		return getAllRulesetCSNDistances(rulesetId1).get(Integer.valueOf(rulesetId2)).doubleValue();
 	}
 	
 	/**
@@ -143,7 +143,7 @@ public class DistanceUtils
 		    while ((line = br.readLine()) != null) 
 		    {
 		        final String[] values = line.split(",");
-		        rulesetCSNDistances.put(Integer.parseInt(values[0]), Double.parseDouble(values[1]));
+		        rulesetCSNDistances.put(Integer.valueOf(Integer.parseInt(values[0])), Double.valueOf(Double.parseDouble(values[1])));
 		    }
 		}
 		catch (final Exception e)
