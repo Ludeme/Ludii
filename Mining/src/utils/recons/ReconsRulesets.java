@@ -45,8 +45,9 @@ public class ReconsRulesets
 		{
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/"))
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/hunt/Fortresse"))
+			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/space/line/Ashanti Alignment Game"))
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/hunt/Bagh Bukree"))
-			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/eric/recons/test"))
+			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/eric/recons/test"))
 				continue;
 			
 			final String gameName = fileName.substring(fileName.lastIndexOf("/")+1,fileName.length()-4);
@@ -108,6 +109,7 @@ public class ReconsRulesets
 						final String completionRaw = indentNicely(StringRoutines.unformatOneLineDesc(completion.raw()));
 						// Test if the completion compiles.
 						Game game = null;
+						//System.out.println(completionRaw);
 						try{game = (Game) Compiler.compileTest(new Description(completionRaw), false);}
 						catch(final Exception e)
 						{
@@ -122,20 +124,30 @@ public class ReconsRulesets
 							completions.get(n).setRaw(rawDescMetadata);
 							compilingCompletions.add(completions.get(n));
 							
+							System.out.print("One Completion found");
+							
 							if(!game.hasMissingRequirement() && !game.willCrash())
+							{
+								System.out.print( " with no warning");
 								compilingNoWarningCompletions.add(completions.get(n));
+							}
 							game = (Game) Compiler.compileTest(new Description(rawDescMetadata), false);
 							
 							// Check if the concepts expected are present.
 							boolean expectedConcepts = Concept.isExpectedConcepts(rawDescMetadata);
 							if(expectedConcepts)
+							{
 								compilingNoWarningExpectedConceptsCompletions.add(completions.get(n));
+								System.out.print( " and with the expected concepts");
+							}
+							System.out.println();
 						}
 					}
 				}
 				numAttempts++;
 			}
 
+			// We rank the completions.
 			Collections.sort(compilingCompletions, (c1, c2) -> c1.score() < c2.score() ? 1 : c1.score() == c2.score() ? 0 : -1);
 			
 			for (int n = 0; n < compilingCompletions.size(); n++) 

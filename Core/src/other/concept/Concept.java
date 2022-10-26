@@ -11405,7 +11405,15 @@ public enum Concept
 
 		final BitSet booleanConcepts = game.computeBooleanConcepts();	
 		final Map<Integer, String> nonBooleanConcepts = game.computeNonBooleanConcepts();
-		final Map<String, Double> startConcepts = game.startsConceptsWithoutRNG();
+		final Map<String, Double> startConcepts;
+		
+		try {
+			startConcepts = game.startsConceptsWithoutRNG();
+		}
+		catch(Exception e) // In case the starting rules can not be applied, the concepts are not correct.
+		{
+			return false;
+		}
 		
 		final ArrayList<metadata.recon.concept.Concept> expectedConcepts = game.expectedConcepts();
 		

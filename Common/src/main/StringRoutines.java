@@ -847,9 +847,21 @@ public final class StringRoutines
 	public static String formatOneLineDesc(final String originalDesc)
 	{
 		final StringBuffer formattedDesc = new StringBuffer("");
+		
+		String desc = originalDesc;
 		for(int i = 0; i < originalDesc.length(); i++)
 		{
 			final char c = originalDesc.charAt(i);
+			if(!Character.isSpaceChar(c))
+			{
+				desc = originalDesc.substring(i);
+				break;
+			}
+		}
+		
+		for(int i = 0; i < desc.length(); i++)
+		{
+			final char c = desc.charAt(i);
 			if(Character.isLetterOrDigit(c) || c == '(' || c == ')' || c == '{' 
 					|| c == '}' || c == '"' || c == '.' || c == ',' || c == ':'
 					|| c == '=' || c == '<' || c == '>' || c == '+' || c == '-'
