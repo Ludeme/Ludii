@@ -1,0 +1,39 @@
+(game "Chatrang (Sassanian)" 
+    (players 2) 
+    (equipment { 
+        (board (square 8)) 
+        (piece "King" Each [#]) // Shah
+        (piece "Queen" Each [#]) // Ferz
+        (piece "Rook" Each [#]) // Rukh
+        (piece "Elephant" Each [#])
+        (piece "Knight" Each [#]) // Asp
+        (piece "Pawn" Each [#]) // Piyadak
+    })
+    
+    (rules 
+        (start [#])
+        (play [(forEach Piece) | #])
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+    (recon {
+        (concept "ReplacementCapture" True)
+    })
+    
+)
