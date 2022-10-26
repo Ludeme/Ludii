@@ -1282,52 +1282,62 @@ public class Expander
 		String str = new String(strIn);
 
 		int ref = 1;
+		boolean inCompletion = false;
 		while (ref < str.length() - 2)
 		{
-			if
-			(
-				str.charAt(ref) == '.' && str.charAt(ref+1) == '.'
-				&&
-				Character.isDigit(str.charAt(ref-1))
-				&&
-				Character.isDigit(str.charAt(ref+2))
-			)
+			if(str.charAt(ref) == '[')
+				inCompletion = true;
+
+			if(str.charAt(ref) == ']')
+				inCompletion = false;
+			
+			if(!inCompletion)
 			{
-				// Is a range: expand it
-				int c = ref - 1;
-				while (c >= 0 && Character.isDigit(str.charAt(c)))
-					c--;
-				c++;
-				final String strM = str.substring(c, ref);
-				final int m = Integer.parseInt(strM);
-
-				c = ref + 2;
-				while (c < str.length() && Character.isDigit(str.charAt(c)))
+				if
+				(
+					str.charAt(ref) == '.' && str.charAt(ref+1) == '.'
+					&&
+					Character.isDigit(str.charAt(ref-1))
+					&&
+					Character.isDigit(str.charAt(ref+2))
+				)
+				{
+					// Is a range: expand it
+					int c = ref - 1;
+					while (c >= 0 && Character.isDigit(str.charAt(c)))
+						c--;
 					c++;
-				final String strN = str.substring(ref+2, c);
-				final int n = Integer.parseInt(strN);
-
-				if (Math.abs(n - m) > MAX_RANGE)
-				{
-					//throw new BadRangeException(MAX_RANGE);
-					report.addError("Range exceeded maximum of " + MAX_RANGE + ".");
-					return null;
+					final String strM = str.substring(c, ref);
+					final int m = Integer.parseInt(strM);
+	
+					c = ref + 2;
+					while (c < str.length() && Character.isDigit(str.charAt(c)))
+						c++;
+					final String strN = str.substring(ref+2, c);
+					final int n = Integer.parseInt(strN);
+	
+					if (Math.abs(n - m) > MAX_RANGE)
+					{
+						//throw new BadRangeException(MAX_RANGE);
+						report.addError("Range exceeded maximum of " + MAX_RANGE + ".");
+						return null;
+					}
+					
+					// Generate the expanded range substring
+					String sub = " ";
+	
+					final int inc = (m <= n) ? 1 : -1;
+					for (int step = m; step != n; step += inc)
+					{
+						if (step == m || step == n)
+							continue;  // don't include end points
+	
+						sub += step + " ";
+					}
+	
+					str = str.substring(0, ref) + sub + str.substring(ref+2);
+					ref += sub.length();
 				}
-				
-				// Generate the expanded range substring
-				String sub = " ";
-
-				final int inc = (m <= n) ? 1 : -1;
-				for (int step = m; step != n; step += inc)
-				{
-					if (step == m || step == n)
-						continue;  // don't include end points
-
-					sub += step + " ";
-				}
-
-				str = str.substring(0, ref) + sub + str.substring(ref+2);
-				ref += sub.length();
 			}
 			ref++;
 		}
@@ -1349,64 +1359,74 @@ public class Expander
 		
 		String str = new String(strIn);
 
+		boolean inCompletion = false;
 		int ref = 1;
 		while (ref < str.length() - 2)
 		{
-			if
-			(
-				str.charAt(ref) == '.' && str.charAt(ref+1) == '.'
-				&&
-				str.charAt(ref-1) == '"' && str.charAt(ref+2) == '"'
-			)
+			if(str.charAt(ref) == '[')
+				inCompletion = true;
+
+			if(str.charAt(ref) == ']')
+				inCompletion = false;
+			
+			if(!inCompletion)
 			{
-				// Must be a site range
-				int c = ref - 2;
-				while (c >= 0 && str.charAt(c) != '"')
-					c--;
-								
-				final String strC = str.substring(c+1, ref-1);
-//				System.out.println("strC: " + strC);
-				
-				int d = ref + 3;
-				while (d < str.length() && str.charAt(d) != '"')
+				if
+				(
+					str.charAt(ref) == '.' && str.charAt(ref+1) == '.'
+					&&
+					str.charAt(ref-1) == '"' && str.charAt(ref+2) == '"'
+				)
+				{
+					// Must be a site range
+					int c = ref - 2;
+					while (c >= 0 && str.charAt(c) != '"')
+						c--;
+									
+					final String strC = str.substring(c+1, ref-1);
+	//				System.out.println("strC: " + strC);
+					
+					int d = ref + 3;
+					while (d < str.length() && str.charAt(d) != '"')
+						d++;
 					d++;
-				d++;
-								
-				final String strD = str.substring(ref+3, d-1);
-//				System.out.println("strD: " + strD);
-				
-//				System.out.println("Range: " + str.substring(c, d));
-				
-				if (strC.length() < 2 || !StringRoutines.isLetter(strC.charAt(0)))
-				{
-					report.addError("Bad 'from' coordinate in site range: " + str.substring(c, d));
-					return null;
-				}			
-				final int fromChar = Character.toUpperCase(strC.charAt(0)) - 'A';
-				
-				if (strD.length() < 2 || !StringRoutines.isLetter(strD.charAt(0)))
-				{
-					report.addError("Bad 'to' coordinate in site range: " + str.substring(c, d));
-					return null;
-				}			
-				final int toChar = Character.toUpperCase(strD.charAt(0)) - 'A';
-				
-//				System.out.println("fromChar=" + fromChar + ", toChar=" + toChar + ".");
-				
-				final int fromNum = Integer.parseInt(strC.substring(1));
-				final int toNum   = Integer.parseInt(strD.substring(1));
-
-//				System.out.println("fromNum=" + fromNum + ", toNum=" + toNum + ".");
-
-				// Generate the expanded range substring
-				String sub = "";
-				
-				for (int m = fromChar; m < toChar + 1; m++)
-					for (int n = fromNum; n < toNum + 1; n++)
-						sub += "\"" + (char)('A' + m) + (n) + "\" ";
-
-				str = str.substring(0, c) + sub.trim() + str.substring(d);
-				ref += sub.length();
+									
+					final String strD = str.substring(ref+3, d-1);
+	//				System.out.println("strD: " + strD);
+					
+	//				System.out.println("Range: " + str.substring(c, d));
+					
+					if (strC.length() < 2 || !StringRoutines.isLetter(strC.charAt(0)))
+					{
+						report.addError("Bad 'from' coordinate in site range: " + str.substring(c, d));
+						return null;
+					}			
+					final int fromChar = Character.toUpperCase(strC.charAt(0)) - 'A';
+					
+					if (strD.length() < 2 || !StringRoutines.isLetter(strD.charAt(0)))
+					{
+						report.addError("Bad 'to' coordinate in site range: " + str.substring(c, d));
+						return null;
+					}			
+					final int toChar = Character.toUpperCase(strD.charAt(0)) - 'A';
+					
+	//				System.out.println("fromChar=" + fromChar + ", toChar=" + toChar + ".");
+					
+					final int fromNum = Integer.parseInt(strC.substring(1));
+					final int toNum   = Integer.parseInt(strD.substring(1));
+	
+	//				System.out.println("fromNum=" + fromNum + ", toNum=" + toNum + ".");
+	
+					// Generate the expanded range substring
+					String sub = "";
+					
+					for (int m = fromChar; m < toChar + 1; m++)
+						for (int n = fromNum; n < toNum + 1; n++)
+							sub += "\"" + (char)('A' + m) + (n) + "\" ";
+	
+					str = str.substring(0, c) + sub.trim() + str.substring(d);
+					ref += sub.length();
+				}
 			}
 			ref++;
 		}
