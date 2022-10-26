@@ -19,12 +19,11 @@
     ) 
 )
 
-(define "CaptureToPieceAndResetCounter"
+(define "CaptureToPiece"
     (apply 
         (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
-                (then (set Counter))
             )
         )
     ) 
@@ -63,14 +62,6 @@
                 "StepForwardToEmpty" 
                 "CaptureForwardDiagonal"
                 }
-                (then
-                    (and
-                        (if (is In (last To) (sites Mover "Promotion")) 
-                            (moveAgain)
-                        )
-                        (set Counter)
-                    )
-                )
             )
         )
         
@@ -80,7 +71,7 @@
                 Orthogonal 
                 (to 
                     if:("IsEnemyAt" (to)) 
-                    "CaptureToPieceAndResetCounter"
+                    "CaptureToPiece"
                 ) 
             )
         )
@@ -89,7 +80,7 @@
                 Step 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPieceAndResetCounter"
+                    "CaptureToPiece"
                 ) 
             )
         )
@@ -99,7 +90,7 @@
                 Diagonal 
                 (to 
                     if:("IsEnemyAt" (to)) 
-                    "CaptureToPieceAndResetCounter"
+                    "CaptureToPiece"
                 ) 
             )
         )
@@ -109,7 +100,7 @@
                 "KnightWalk" 
                 (to 
                     if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPieceAndResetCounter"
+                    "CaptureToPiece"
                 ) 
             )
         )
@@ -118,7 +109,7 @@
                 Slide 
                 (to 
                     if:("IsEnemyAt" (to)) 
-                    "CaptureToPieceAndResetCounter"
+                    "CaptureToPiece"
                 ) 
             ) 
         )
@@ -163,15 +154,14 @@
         )
         }
         
-        (end {
+        (end 
             (if (and 
                     ("IsInCheck" "King" Next)
                     ("NextCanNotMove")
                 ) 
                 (result Mover Win)
             ) 
-            (if (or (no Moves Mover) (= (counter) 99)) (result Mover Draw)) 
-        })
+        )
     )
 )
 
