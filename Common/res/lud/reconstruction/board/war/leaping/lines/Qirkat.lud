@@ -1,0 +1,29 @@
+(game "Qirkat"
+    (players 2) 
+    (equipment { 
+        ("AlquerqueBoard" 5 5)
+        (piece "Marker" P1 (move [#]))
+        (piece "Marker" P2 (move [#]))
+    }) 
+    
+    (rules 
+        (start [#])
+        (play [#])
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+    })
+    
+)
