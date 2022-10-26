@@ -3,7 +3,7 @@
     
     (equipment { 
         (board 
-            (rectangle 5 6)
+            (square 8)
         use:Vertex)
         
         (hand Each)
@@ -30,7 +30,7 @@
     
     (rules 
         (start 
-            (place "Marker" "Hand" count:12)
+            (place "Marker" "Hand" count:3)
         )
         phases:{ 
         (phase "Placement" 
