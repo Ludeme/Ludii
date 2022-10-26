@@ -1,0 +1,45 @@
+(game "Chess (Siberia)" 
+    (players 2) 
+    (equipment { 
+        (board (square 9)) 
+        (piece [#] Each [#])
+        (piece [#] Each [#])
+        (piece [#] Each [#])
+        (piece [#] Each [#])
+        (piece [#] Each [#])
+        (piece [#] Each [#])
+        (piece [#] Each [#])
+        (piece [#] Each [#])
+    })
+    
+    (rules 
+        (start [#])
+        (play [(forEach Piece) | #])
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+//        (description "Chaturanga is the name of a replacement capture game from India. This particular version was played in the early eighteent century, and shows movement from the older version of the game toward the modern version.")
+//        (rules "8x8 board. Ratha start on the corers, with the Turaja next to them and the Dvipa next to the Horses. The Raja and Mantri are in the center. Ratha jump diagonally to the second space; Turaja move orthogonally one space and then diagonally another space, jumping over any intervening pieces; Dvipa moves orthogonally any distance; Mantri moves diagonally any distance; Raja moves one space orthogonally or diagonally, Padati move forward orthogonally one square or forward diagonally to capture.")
+//        (source "DLP evidence.")
+//        (id "1447")
+//        (version "1.3.6")
+//        (classification "board/war/replacement/checkmate/chaturanga/reconstruction")
+//        (credit "Eric Piette")
+//        (origin "This game was played in India, from around 1700 to 1750.")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)
