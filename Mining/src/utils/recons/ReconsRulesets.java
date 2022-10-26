@@ -5,13 +5,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
 import compiler.Compiler;
 import completer.Completion;
 import game.Game;
-import gnu.trove.list.array.TDoubleArrayList;
 import main.FileHandling;
 import main.StringRoutines;
 import main.grammar.Description;
@@ -79,10 +79,9 @@ public class ReconsRulesets
 			final int idRulesetToRecons = Integer.valueOf(idStr).intValue();
 			
 			int numAttempts = 0;
-			List<String> compilingCompletions = new ArrayList<String>();
-			TDoubleArrayList compilingCompletionScores = new TDoubleArrayList();
-			List<String> compilingNoWarningCompletions = new ArrayList<String>();
-			List<String> compilingNoWarningExpectedConceptsCompletions = new ArrayList<String>();
+			List<Completion> compilingCompletions = new ArrayList<Completion>();
+			List<Completion> compilingNoWarningCompletions = new ArrayList<Completion>();
+			List<Completion> compilingNoWarningExpectedConceptsCompletions = new ArrayList<Completion>();
 			
 			// Run the recons process until enough attempts is executed or reconstruction are generated.
 			while(numAttempts < maxNumberAttempts && 
@@ -120,32 +119,34 @@ public class ReconsRulesets
 						if(game != null)
 						{
 							final String rawDescMetadata = completionRaw + "\n" + metadata;
-							compilingCompletions.add(rawDescMetadata);
-							compilingCompletionScores.add(completions.get(n).score());
+							completions.get(n).setRaw(rawDescMetadata);
+							compilingCompletions.add(completions.get(n));
 							
 							if(!game.hasMissingRequirement() && !game.willCrash())
-								compilingNoWarningCompletions.add(rawDescMetadata);
+								compilingNoWarningCompletions.add(completions.get(n));
 							game = (Game) Compiler.compileTest(new Description(rawDescMetadata), false);
 							
 							// Check if the concepts expected are present.
 							boolean expectedConcepts = Concept.isExpectedConcepts(rawDescMetadata);
 							if(expectedConcepts)
-								compilingNoWarningExpectedConceptsCompletions.add(rawDescMetadata);
+								compilingNoWarningExpectedConceptsCompletions.add(completions.get(n));
 						}
 					}
 				}
 				numAttempts++;
 			}
 
+			Collections.sort(compilingCompletions, (c1, c2) -> c1.score() < c2.score() ? 1 : c1.score() == c2.score() ? 0 : -1);
+			
 			for (int n = 0; n < compilingCompletions.size(); n++) 
 			{
-				System.out.println("Completion " + n + " has a score of " + compilingCompletionScores.get(n));
+				System.out.println("Completion " + n + " has a score of " + compilingCompletions.get(n).score());
 				if(compilingNoWarningExpectedConceptsCompletions.contains(compilingCompletions.get(n)))
-					CompleterWithPrepro.saveCompletion(outputPath + gameName + "/" + "noWarning/"+ "expectedConcepts/", gameName + n, compilingCompletions.get(n));
+					CompleterWithPrepro.saveCompletion(outputPath + gameName + "/" + "noWarning/"+ "expectedConcepts/", gameName + n, compilingCompletions.get(n).raw());
 				else if(compilingNoWarningCompletions.contains(compilingCompletions.get(n)))
-					CompleterWithPrepro.saveCompletion(outputPath + gameName + "/" + "noWarning/", gameName + n, compilingCompletions.get(n));
+					CompleterWithPrepro.saveCompletion(outputPath + gameName + "/" + "noWarning/", gameName + n, compilingCompletions.get(n).raw());
 				else
-					CompleterWithPrepro.saveCompletion(outputPath + gameName + "/", gameName + n, compilingCompletions.get(n));
+					CompleterWithPrepro.saveCompletion(outputPath + gameName + "/", gameName + n, compilingCompletions.get(n).raw());
 			}
 
 			System.out.println("Num Attempts = " + numAttempts);

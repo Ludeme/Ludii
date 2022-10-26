@@ -336,23 +336,23 @@ public class CompleterWithPrepro
 				
 				final String candidate = new String(otherDescription);
 				
-				double distance = 0;
+				double similarity = 0;
 				if(rulesetReconId == -1) // We do not use the CSN.
-					distance = 1.0;
+					similarity = 1.0;
 				else
 				{
-					final String distancesFilePath = "./res/recons/input/contextualiser/similarity_";
-					File file1 = new File(distancesFilePath + rulesetReconId + ".csv");
-					File file2 = new File(distancesFilePath + entry.getKey().intValue() + ".csv");
+					final String similaryFilePath = "./res/recons/input/contextualiser/similarity_";
+					File file1 = new File(similaryFilePath + rulesetReconId + ".csv");
+					File file2 = new File(similaryFilePath + entry.getKey().intValue() + ".csv");
 					
-					if(!file1.exists() || !file2.exists() || (rulesetReconId == entry.getKey().intValue())) // If CSN not computing or comparing the same rulesets, distance is 0.
-						distance = 0.0;
+					if(!file1.exists() || !file2.exists() || (rulesetReconId == entry.getKey().intValue())) // If CSN not computing or comparing the same rulesets, similarity is 0.
+						similarity = 0.0;
 					else
-						distance = DistanceUtils.getRulesetCSNDistance(entry.getKey().intValue(), rulesetReconId);
+						similarity = DistanceUtils.getRulesetCSNDistance(entry.getKey().intValue(), rulesetReconId);
 				}
 				
-				// We ignore all the ludemes coming from a negative distance.
-				if(distance < 0)
+				// We ignore all the ludemes coming from a negative similarity value.
+				if(similarity < 0)
 					continue;
 				
 				final int l = candidate.indexOf(parent[0]);
@@ -416,10 +416,10 @@ public class CompleterWithPrepro
 					{
 						//System.out.println("Adding completion:\n" + completion.raw());
 						completion.addCompletionPoints();
-						completion.setScore(((completion.score() * (completion.numCompletionPoints() - 1) + distance))/ completion.numCompletionPoints());
+						completion.setScore(((completion.score() * (completion.numCompletionPoints() - 1) + similarity))/ completion.numCompletionPoints());
 						//System.out.println("SCORE IS " + completion.score());
 						queue.add(completion);
-					} // TO WORK ON THESE DISTANCES
+					} 
 				}	
 			}	
 		}

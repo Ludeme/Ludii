@@ -6,7 +6,7 @@ package completer;
  */
 public class Completion
 {
-	private final String raw;  // completed game description
+	private String raw;  // completed game description
 	private double score = 0;  // confidence in enumeration (0..1)
 	private int numCompletionPoints = 0;  // number of completions points
 
@@ -22,6 +22,11 @@ public class Completion
 	public String raw()
 	{
 		return raw;
+	}
+	
+	public void setRaw(final String raw)
+	{
+		this.raw = raw;
 	}
 	
 	public double score()
