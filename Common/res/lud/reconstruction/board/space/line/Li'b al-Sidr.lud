@@ -1,0 +1,25 @@
+(game "Li'b al-Sidr"
+    (players 2)
+    
+    (equipment { 
+    	(board (concentric Square rings:3 joinCorners:True) use:Vertex)
+        (hand Each)
+        (piece [#]) 
+    })
+    (rules
+        (start [#])
+        (play [#])
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+)
