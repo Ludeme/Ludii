@@ -366,7 +366,7 @@ public class CompleterWithPrepro
 					File file1 = new File(distancesFilePath + rulesetReconId + ".csv");
 					File file2 = new File(distancesFilePath + entry.getKey().intValue() + ".csv");
 					
-					if(!file1.exists() || !file2.exists() || (rulesetReconId == entry.getKey().intValue()))
+					if(!file1.exists() || !file2.exists() || (rulesetReconId == entry.getKey().intValue())) // If CSN not computing or comparing the same rulesets, distance is 0.
 						distance = 0.0;
 					else
 						distance = DistanceUtils.getRulesetCSNDistance(entry.getKey().intValue(), rulesetReconId);
@@ -432,9 +432,11 @@ public class CompleterWithPrepro
 					if (!queue.contains(completion))
 					{
 						//System.out.println("Adding completion:\n" + completion.raw());
-						completion.setScore(confidence * (1 - distance));
+						completion.addCompletionPoints();
+						completion.setScore(((completion.score() * (completion.numCompletionPoints() - 1) + distance))/ completion.numCompletionPoints());
+						//System.out.println("SCORE IS " + completion.score());
 						queue.add(completion);
-					}
+					} // TO WORK ON THESE DISTANCES
 				}	
 			}	
 		}
