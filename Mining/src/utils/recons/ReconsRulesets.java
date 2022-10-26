@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 import compiler.Compiler;
 import completer.Completion;
 import game.Game;
+import gnu.trove.list.array.TDoubleArrayList;
 import main.FileHandling;
 import main.StringRoutines;
 import main.grammar.Description;
@@ -79,6 +80,7 @@ public class ReconsRulesets
 			
 			int numAttempts = 0;
 			List<String> compilingCompletions = new ArrayList<String>();
+			TDoubleArrayList compilingCompletionScores = new TDoubleArrayList();
 			List<String> compilingNoWarningCompletions = new ArrayList<String>();
 			List<String> compilingNoWarningExpectedConceptsCompletions = new ArrayList<String>();
 			
@@ -119,6 +121,8 @@ public class ReconsRulesets
 						{
 							final String rawDescMetadata = completionRaw + "\n" + metadata;
 							compilingCompletions.add(rawDescMetadata);
+							compilingCompletionScores.add(completions.get(n).score());
+							
 							if(!game.hasMissingRequirement() && !game.willCrash())
 								compilingNoWarningCompletions.add(rawDescMetadata);
 							game = (Game) Compiler.compileTest(new Description(rawDescMetadata), false);
@@ -135,12 +139,13 @@ public class ReconsRulesets
 
 			for (int n = 0; n < compilingCompletions.size(); n++) 
 			{
+				System.out.println("Completion " + n + " has a score of " + compilingCompletionScores.get(n));
 				if(compilingNoWarningExpectedConceptsCompletions.contains(compilingCompletions.get(n)))
-					CompleterWithPrepro.saveCompletion(outputPath + gameName + "/" + "noWarning/"+ "expectedConcepts/", gameName+n, compilingCompletions.get(n));
+					CompleterWithPrepro.saveCompletion(outputPath + gameName + "/" + "noWarning/"+ "expectedConcepts/", gameName + n, compilingCompletions.get(n));
 				else if(compilingNoWarningCompletions.contains(compilingCompletions.get(n)))
-					CompleterWithPrepro.saveCompletion(outputPath + gameName + "/" + "noWarning/", gameName+n, compilingCompletions.get(n));
+					CompleterWithPrepro.saveCompletion(outputPath + gameName + "/" + "noWarning/", gameName + n, compilingCompletions.get(n));
 				else
-					CompleterWithPrepro.saveCompletion(outputPath + gameName + "/", gameName+n, compilingCompletions.get(n));
+					CompleterWithPrepro.saveCompletion(outputPath + gameName + "/", gameName + n, compilingCompletions.get(n));
 			}
 
 			System.out.println("Num Attempts = " + numAttempts);

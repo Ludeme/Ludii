@@ -12,12 +12,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import completer.Completion;
 import gameDistance.utils.DistanceUtils;
 import main.StringRoutines;
 import main.UnixPrintWriter;
+import main.collections.FVector;
 import main.grammar.Description;
 import main.grammar.Report;
 import parser.Expander;
@@ -166,7 +166,6 @@ public class CompleterWithPrepro
 		{
 //			System.out.println("\nCompleting next completion for raw string:\n" + completion.raw());
 			
-			final Random rng = new Random();
 			final List<Completion> completions = new ArrayList<Completion>();
 			
 			// Find opening and closing bracket locations
@@ -303,33 +302,13 @@ public class CompleterWithPrepro
 				if (report != null)
 					report.addError("No completions for: " + raw);
 				return null;
-				
-				// **
-				// ** TODO: Choose preferred completion based on context.
-				// **
-				// ** TODO: Maybe use UCB to balance reward with novelty, i.e. prefer 
-				// **       high scoring candidates but not the same ones every time, 
-				// **       also try low scoring ones occasionally.
-				// **
 			}
 
-			// Return completion only if it compiles correctly or the last one  generated after NUMBER_TRIES tries.
-//			final int NUMBER_TRIES = 10;
-			Completion returnCompletion = null;
-//			int count = 0;
-			
-			while(returnCompletion == null)
-			{
-				returnCompletion = completions.get(rng.nextInt(completions.size()));
-//				try{Compiler.compileTest(new Description(returnCompletion.raw()), false);}
-//				catch(final Exception e)
-//				{
-//					count++;
-//					if(count < NUMBER_TRIES)
-//						returnCompletion = null;
-//				}
-			}
-			
+			// Get a random completion according to the score of each completion.
+			FVector vectorCompletions = new FVector(completions.size());
+			for(int i = 0; i < completions.size(); i++)
+				vectorCompletions.add((float) completions.get(i).score());
+			Completion returnCompletion = completions.get(vectorCompletions.sampleProportionally());
 			return returnCompletion;
 		}
 	
@@ -371,6 +350,10 @@ public class CompleterWithPrepro
 					else
 						distance = DistanceUtils.getRulesetCSNDistance(entry.getKey().intValue(), rulesetReconId);
 				}
+				
+				// We ignore all the ludemes coming from a negative distance.
+				if(distance < 0)
+					continue;
 				
 				final int l = candidate.indexOf(parent[0]);
 				
@@ -838,11 +821,8 @@ public class CompleterWithPrepro
 		final String savePath = (path != null) ? path : "../Common/res/out/recons/";
 		final String outFileName = savePath + name + ".lud";
 		
-		System.out.println(outFileName);
-		
 		// Create the file if it is not existing.
 		File folder = new File(path);
-		System.out.println(folder.getAbsolutePath());
 		if(!folder.exists())
 			folder.mkdirs();
 		

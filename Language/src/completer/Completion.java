@@ -2,7 +2,7 @@ package completer;
 
 /**
  * Record of a reconstruction completion, which will be a raw *.lud description.
- * @author cambolbro
+ * @author cambolbro and Eric.Piette
  */
 public class Completion
 {
