@@ -1,0 +1,40 @@
+(game "Tsjoncka" 
+    (players 2) 
+    (equipment { 
+        (mancalaBoard 2 7 store:None
+            {
+            (track [#])
+            (track [#])
+            }
+        )
+        (piece "Seed" Shared)
+    }) 
+    (rules 
+        (start [#]) 
+        (play 
+            (move Select 
+                (from [#])
+                (then (sow [#]))
+            )
+        )
+        (end (if (no Moves Mover) (byScore)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+    (recon {
+        (concept "Sow" True)
+    })
+)
+
