@@ -1,0 +1,343 @@
+(define "CountSquares"
+    (if (> ("HowManySquareSurroundedLastTo") 0)
+        (and
+            (set Value Mover "HowManySquareSurroundedLastTo")
+            (moveAgain)
+        )
+    )
+)
+(define "SquareRemove" 
+    (move Remove 
+        (sites Occupied by:Next) 
+        (then 
+            (if (> (value Player Mover) 1)
+                (and 
+                    (moveAgain)
+                    (set Value Mover (- (value Player Mover) 1))
+                )
+                (set Value Mover 0)
+            )
+        )
+    )  
+)
+(define "HopSequenceCaptureAgainJiu"
+    (if (is Mover (who at:(last To)))
+        (move Hop
+            (from (last To))
+            (between 
+                #1 
+                #2 
+                if:(and {(not (is In (between) (sites ToClear))) ("IsEnemyAt" (between))(!= (between) (var "Between") )}) 
+                (apply 
+                    (and
+                        (remove (between) #3)
+                        (remove (var "Between"))
+                    )
+                ) 
+            ) 
+            (to if:(is Empty (to))) 
+            (then 
+                (if (can Move 
+                        (hop 
+                            (from (last To)) 
+                            (between 
+                                #1 
+                                #2 
+                                if:(and 
+                                    (not (is In (between) (sites ToClear)))
+                                    ("IsEnemyAt" (between)) 
+                                ) 
+                            ) 
+                            (to if:(is Empty (to))) 
+                        ) 
+                    )
+                    (and
+                        (set Value Mover "HowManySquareSurroundedLastTo")
+                        (moveAgain)
+                    ) 
+                    ("CountSquares") 
+                ) 
+            ) 
+        ) 
+    )
+)
+(define "HopSequenceCapturePlayPhase"
+    (move Hop
+        (between 
+            #1 
+            #2 
+            if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between))) 
+            (apply (remove (between) #3)) 
+        ) 
+        (to if:(is Empty (to))) 
+        (then 
+            (if (can Move 
+                    (hop 
+                        (from (last To)) 
+                        (between 
+                            #1 
+                            #2 
+                            if:(and 
+                                (not (is In (between) (sites ToClear)))
+                                ("IsEnemyAt" (between)) 
+                            ) 
+                        ) 
+                        (to if:(is Empty (to))) 
+                    ) 
+                ) 
+                (and
+                    (set Value Mover "HowManySquareSurroundedLastTo")
+                    (moveAgain)
+                )  
+                ("CountSquares")
+            ) 
+        ) 
+    ) 
+)
+(define "HopSequenceCaptureFlyPhase"
+    (move Hop
+        (from (sites Occupied by:Mover))
+        (between 
+            #1 
+            #2 
+            if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between))) 
+            (apply  (set Var "Between" (between))) 
+        ) 
+        (to if:(is Empty (to))) 
+        (then 
+            (if (can Move 
+                    (hop 
+                        (from (last To)) 
+                        (between 
+                            #1 
+                            #2 
+                            if:(and {(not (is In (between) (sites ToClear))) ("IsEnemyAt" (between))(!= (between) (var "Between") )})  
+                        ) 
+                        (to if:(is Empty (to))) 
+                    ) 
+                ) 
+                (and
+                    (set Value Mover "HowManySquareSurroundedLastTo")
+                    (moveAgain)
+                )  
+                ("CountSquares")
+            ) 
+        ) 
+    ) 
+)
+(define "HopSequenceCaptureFlyPhaseMoreThanEight"
+    (move Hop
+        (from (sites Occupied by:Mover))
+        (between 
+            #1 
+            #2 
+            if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between))) 
+            (apply  (set Var "Between" (between))) 
+        ) 
+        (to if:
+            (and
+                (is Empty (to))
+                (can Move 
+                    (hop 
+                        (from (to)) 
+                        (between 
+                            if:(and {(not (is In (between) (sites ToClear))) ("IsEnemyAt" (between))(!= (between) (var "Between") )})  
+                        ) 
+                        (to if:(is Empty (to))) 
+                    ) 
+                )    
+            )
+        ) 
+        (then 
+            (if (can Move 
+                    (hop 
+                        (from (last To)) 
+                        (between 
+                            #1 
+                            #2 
+                            if:(and {(not (is In (between) (sites ToClear))) ("IsEnemyAt" (between))(!= (between) (var "Between") )})  
+                        ) 
+                        (to if:(is Empty (to))) 
+                    ) 
+                ) 
+                (and
+                    (set Value Mover "HowManySquareSurroundedLastTo")
+                    (moveAgain)
+                )  
+                ("CountSquares")
+            ) 
+        ) 
+    ) 
+)
+(define "SquareConfirm" 
+    (and {
+        (is Mover (who at:(ahead (site) #1)))
+        (is Mover (who at:(ahead (site) #2)))
+        (is Mover (who at:(site)))        
+    })        
+)
+(define "HowManySquareSurroundedLastTo"
+    (count Sites
+        in:(forEach (sites Around (last To))
+            if:(if  (is In (last To) (sites {(ahead (site) S)}))
+                    (if (not (is In (site) (sites {"H2" "H3" "H4" "H5" "H6" "H7" "H8"}))  )
+                        ("SquareConfirm" E SE )
+                    )  
+                    (if (is In (last To) (sites {(ahead (site) W)}))
+                        (if (not (is In (site) (sites {"B1" "C1" "D1" "E1" "F1" "G1" "H1"}))  )
+                            ("SquareConfirm" S SW )
+                        )   
+                        (if (is In (last To) (sites {(ahead (site) N)}))
+                            (if (not (is In (site) (sites {"A1" "A2" "A3" "A4" "A5" "A6" "A7"}))  )
+                                ("SquareConfirm" W NW  )
+                            )  
+                            (if (is In (last To) (sites {(ahead (site) E)}))
+                                (if (not (is In (site) (sites {"A8" "B8" "C8" "D8" "E8" "F8" "G8" }))  )
+                                        ("SquareConfirm" N NE  )  
+                                )         
+                            ) 
+                        ) 
+                    )          
+                )
+            )
+    )
+)
+//------------------------------------------------------------------------------
+
+(game "Tibetan Jiuqi"
+    (players 2)
+    (equipment {
+        (board 
+            (add
+                (square 8)
+            )
+            use:Vertex
+        )
+        (piece "Marker" Each
+            (or 
+                ("StepToEmpty" ~
+                    (then 
+                       ("CountSquares")
+                    )
+                )
+                ("HopSequenceCapturePlayPhase")
+            )
+        )
+        (hand Each)
+    })
+    (rules
+        (start 
+            (place "Marker" "Hand" count:32)          
+        )
+        
+        phases:{
+        (phase "FirstPlacement" 
+            (play 
+                (or
+                    (move (from (handSite Mover)) ( to (sites  "D4") if:(is Empty (to))  ))
+                    (move (from (handSite Mover)) ( to (sites  "E5") if:(is Empty (to))  ))
+                )
+            )
+            (nextPhase Mover "Layout")    
+        )
+        (phase "Layout" 
+            (play (move (from (handSite Mover)) (to (sites Empty))))
+            (nextPhase Mover ("HandEmpty" Mover) "RemoveCentre")    
+        )
+        (phase "RemoveCentre" 
+            (play
+                (move Remove (sites {"D4" "E5"}) 
+                    (then 
+                        (if (not (and (is Empty  27) (is Empty  36)  ))
+                            (moveAgain)
+                        )
+                    )
+                )   
+            )
+            (nextPhase All (and (is Empty  27) (is Empty  36)  ) "Battle")    
+        )
+        (phase "Battle" 
+            (play
+                (if "SameTurn"
+                (if (> (value Player Mover) 0)
+                    (or
+                        ("SquareRemove") 
+                        ("HopSequenceCaptureAgainJiu")  
+                    )
+                    (or
+                        ("HopSequenceCaptureAgainJiu")
+                        (move Pass)
+                    )     
+                )
+                (forEach Piece)
+                )
+            )
+            (nextPhase All (or (< (count Pieces Mover) 9) (< (count Pieces Next) 9)  )  "Fly")    
+        )
+        (phase "Fly"
+            (play
+               
+                (if "SameTurn"
+                    (if (> (value Player Mover) 0)
+                        (or
+                            ("SquareRemove") 
+                            ("HopSequenceCaptureAgainJiu")  
+                        )
+                        (or
+                            ("HopSequenceCaptureAgainJiu")
+                            (move Pass)
+                        )     
+                    )
+                    (if (< (count Pieces Mover) 9)
+                        (forEach Piece 
+                            (or
+                                ("HopSequenceCaptureFlyPhase")
+                                (move 
+                                    (from (sites Occupied by:Mover))
+                                    (to (sites Empty))
+                                    (then 
+                                        ("CountSquares")
+                                    )
+                                )
+                            ) 
+                        )
+                        (forEach Piece
+                            (or 
+                                ("StepToEmpty" ~
+                                    (then 
+                                    ("CountSquares")
+                                    )
+                                )
+                                ("HopSequenceCaptureFlyPhaseMoreThanEight")
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+        (end ("HavingLessPiecesLoss" Next 3))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board style Board)
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (show Line { {27 36}} scale:1.0)
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour Black))
+        (show Edges Diagonal Hidden)
+    })
+)
+
