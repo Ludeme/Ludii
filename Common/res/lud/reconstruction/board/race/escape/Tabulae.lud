@@ -1,0 +1,38 @@
+(game "Tabulae"
+    (players 2)
+    (equipment {
+        ("BackgammonBoard"
+            {
+            (track [#])
+            } 
+        ) 
+        (dice d:6 num:[#])
+        (piece "Disc" Each (move [#]))
+    })
+    (rules 
+        (start [#])
+        (play ("RollMove" [#]))
+        (end ("EscapeWin"))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style backgammon)
+        (stackType Backgammon)
+    })
+    
+    (recon {
+        (concept "NumStartComponents" 30)
+    })
+    
+)
+
