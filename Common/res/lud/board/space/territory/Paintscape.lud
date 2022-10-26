@@ -1,0 +1,218 @@
+(define "Swap"
+	(do 
+		(add (piece (who at:(last From)))
+			(to
+				(last To)
+				(apply
+					(do
+						(set Var "StateToBeAtLastFrom" (state at:(to)))
+						next:(remove (to))
+					)
+				)
+			)
+		)
+		next:(add (piece 3 state:(var "StateToBeAtLastFrom"))
+			(to
+				(last From)
+				(apply
+					(remove (to))
+				)
+			)
+		)
+	)
+)
+
+(define "BalanceProtocol"
+	(phase "Swapping"
+		(play
+			(or
+				(move Pass
+					(then (set Var "Passed" 1))
+				)
+				(move Select
+					(from 
+						(sites Board)
+						if:(and
+							(!= 3 (who at:(from)))
+							(not 
+								(is In (from) (values Remembered))
+							)
+						)
+					)
+					(to
+						(sites Board)
+						if:(= 3 (who at:(to)))
+					)
+					(then
+						(and {
+							(remember Value (last To))
+							("Swap")
+							(if
+								(!= 3 (size Array (values Remembered)))
+								(moveAgain)
+							)
+						})
+					)
+				)
+			)
+		)
+		(nextPhase
+			(or
+				(= 1 (var "Passed"))
+				(= 4 (size Array (values Remembered)))
+			)
+			"Choose"
+		)
+	)
+	(phase "Choose"
+		(play
+			(or
+				(move Swap Players P1 P2
+					(then (set NextPlayer (player 1)))
+				)
+				(move Pass)
+			)
+		)
+		(nextPhase "Play")
+	)
+)
+
+//-------------------------------------------------------------------------
+
+(game "Paintscape"
+	(players 2)
+	(equipment {
+		(board (square 8))
+		(piece "Disc" Each)
+		(piece "Square" Shared maxState:5)
+	})
+	(rules
+		(start {
+			(place Random (sites Empty) {"Disc1" "Disc2"} count:2)
+			(place Random (sites Empty) {"Square"} count:12 state:1)
+			(place Random (sites Empty) {"Square"} count:12 state:2)
+			(place Random (sites Empty) {"Square"} count:12 state:3)
+			(place Random (sites Empty) {"Square"} count:12 state:4)
+			(place Random (sites Empty) {"Square"} count:12 state:5)
+		})
+		phases:{
+		<Balance>
+		(phase "Play"
+			(play
+				(move Add
+					(to 
+						(sites Around 
+							(sites Occupied by:Mover)
+							Orthogonal
+						)
+						if:(not
+							(or
+								(= (mover) (who at:(to)))
+								(= (next) (who at:(to)))
+							)
+						)
+					)
+					stack:True
+					(then
+						(if 
+							(and
+								(= 3 (who at:(last To) level:0))
+								(= 6
+									(count Sites
+										in:(forEach
+											(sites Occupied by:Mover)
+											if:(= 
+												(state at:(last To) level:0)
+												(state at:(site) level:0)
+											)
+										)
+									)
+								)
+							)
+							(and
+								(remove
+									(forEach
+										(sites Board)
+										if:(= 
+											(state at:(last To) level:0)
+											(state at:(site) level:0)
+										)
+									)
+									count:2
+								)
+								(addScore Mover 1)
+							)
+						)
+					)
+				)
+			)
+		)
+		}
+		(end
+			(if
+				(or
+					(= 3 (score P1))
+					(= 3 (score P2))
+				)
+				(byScore)
+			)
+		)
+	)
+)
+
+//-------------------------------------------------------------------------
+
+(option "Balance Phase" <Balance> args:{ <balance> }
+	{
+	(item "On" <("BalanceProtocol")> "The balance protocol is currently in force.")*
+	(item "Off" <> "The balance protocol is currently not in force.")
+	}
+)
+
+//-------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        }
+    )
+    
+	(graphics {
+		(player Colour P1 (colour Dark))
+		(player Colour P2 (colour White))
+		(piece Colour P1
+			fillColour:(colour Dark)
+			strokeColour:(colour Dark)
+		)
+		(piece Colour P2
+			fillColour:(colour White)
+			strokeColour:(colour Dark)
+		)
+		(piece Scale P1 .67)
+		(piece Scale P2 .67)
+		(piece Colour  Shared state:1
+			fillColour:(colour Yellow)
+			strokeColour:(colour White)
+		)        
+		(piece Colour Shared state:2
+			fillColour:(colour Red)
+			strokeColour:(colour White)
+		)
+		(piece Colour Shared state:3
+			fillColour:(colour Cyan)
+			strokeColour:(colour White)
+		)
+		(piece Colour Shared state:4
+			fillColour:(colour Pink)
+			strokeColour:(colour White)
+		)
+		(piece Colour Shared state:5
+			fillColour:(colour DarkBrown)
+			strokeColour:(colour White)
+		)
+		(region Colour (sites Board) (colour 250 210 148))
+		(board Colour InnerEdges (colour 178 151 100))
+		(board Colour OuterEdges (colour 178 151 100))
+		(stackType Default 0.0)
+	})
+)
