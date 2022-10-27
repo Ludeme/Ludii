@@ -84,6 +84,11 @@ public class ReconsRulesets
 			List<Completion> compilingNoWarningCompletions = new ArrayList<Completion>();
 			List<Completion> compilingNoWarningExpectedConceptsCompletions = new ArrayList<Completion>();
 			
+			final List<Concept> trueConcepts = computeTrueConcepts(desc);
+			System.out.println("The true concepts of this reconstruction are:");
+			for(Concept concept: trueConcepts)
+				System.out.println(concept);
+			
 			// Run the recons process until enough attempts is executed or reconstruction are generated.
 			while(numAttempts < maxNumberAttempts && 
 					(compilingCompletions.size() < numRecons ||
@@ -260,6 +265,56 @@ public class ReconsRulesets
         	if (difference > 0)
         		indent += difference;  // indent from next line
         }
+	}
+	
+	/**
+	 * @param desc The recons desc of the game.
+	 * @return The list of concepts which are sure to be true for a recons description.
+	 */
+	final static List<Concept> computeTrueConcepts(final String desc)
+	{
+		final List<Concept> trueConcepts = new ArrayList<Concept>();
+		
+		// Keep only the game description.
+		String descNoMetadata = desc.substring(0,desc.lastIndexOf("(metadata"));
+		descNoMetadata = descNoMetadata.substring(0, descNoMetadata.lastIndexOf(')'));
+
+		Description description = new Description(descNoMetadata);
+		CompleterWithPrepro.expandRecons(description);
+		descNoMetadata = description.expanded();
+		
+		// Get all the ludemeplexes between parenthesis.
+		final List<String> ludemeplexes = new ArrayList<String>();
+		for(int i = 0; i < descNoMetadata.length(); i++)
+		{
+			final char c = descNoMetadata.charAt(i);
+			if(c == '(')
+			{
+				int countParenthesis = 1;
+				int indexCorrespondingParenthesis = i+1;
+				for(; indexCorrespondingParenthesis < descNoMetadata.length(); indexCorrespondingParenthesis++)
+				{
+					if(descNoMetadata.charAt(indexCorrespondingParenthesis) == '(')
+						countParenthesis++;
+					else
+						if(descNoMetadata.charAt(indexCorrespondingParenthesis) == ')')
+							countParenthesis--;
+					if(countParenthesis == 0)
+					{
+						indexCorrespondingParenthesis++;
+						break;
+					}
+				}
+				final String ludemeplex = descNoMetadata.substring(i, indexCorrespondingParenthesis);
+				if(!ludemeplex.contains("#") && !ludemeplex.contains("[") && !ludemeplex.contains("]"))
+					ludemeplexes.add(ludemeplex);
+			}
+		}
+		
+		for(String ludemeplex : ludemeplexes)
+			System.out.println(ludemeplex);
+		
+		return trueConcepts;
 	}
 
 

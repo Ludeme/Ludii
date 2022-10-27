@@ -852,7 +852,7 @@ public class CompleterWithPrepro
 	/**
 	 * Expands defines in user string to give full description of a description needed reconstruction.
 	 * 
-	 * @param description     The description.
+	 * @param description The description.
 	 */
 	public static void expandRecons(final Description  description)
 	{
