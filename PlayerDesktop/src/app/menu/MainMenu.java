@@ -277,9 +277,9 @@ public class MainMenu extends JMenuBar
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
 			
-//			menuItem = new JMenuItem("Game Description Length (All Games)");
-//			menuItem.addActionListener(al);
-//			menu.add(menuItem);
+			menuItem = new JMenuItem("Game Description Length (All Games)");
+			menuItem.addActionListener(al);
+			menu.add(menuItem);
 		}
 
 		//---------------------------------------------------------------------
