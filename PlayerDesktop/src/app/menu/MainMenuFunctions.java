@@ -151,7 +151,7 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().equals("Game Description Length"))
 		{
-			final String allOutputs = game.name() + ", Raw: " + game.description().raw().replaceAll("\\s+","").length() + ", Expanded: " + game.description().expanded().replaceAll("\\s+","").length() + ", Tokens: " + game.description().tokenForest().tokenTree().countKeywords();
+			final String allOutputs = game.name() + ", Raw: " + game.description().raw().replaceAll("\\s+","").length() + ", Expanded: " + game.description().expanded().replaceAll("\\s+","").length() + ", Tokens: " + game.description().tokenForest().tokenTree().countKeywords() + ", ludemes: " + game.description().callTree().countClasses();
 			app.addTextToStatusPanel(allOutputs + "\n");
 		}
 		else if (source.getText().equals("Game Description Length (All Games)"))
@@ -167,7 +167,7 @@ public class MainMenuFunctions extends JMenuBar
 					if (gameTemp.hasSubgames())
 						continue;
 					
-					final String allOutputs = gameTemp.name() + "," + gameTemp.description().raw().replaceAll("\\s+","").length() + "," + gameTemp.description().expanded().replaceAll("\\s+","").length() + "," + gameTemp.description().tokenForest().tokenTree().countKeywords();
+					final String allOutputs = gameTemp.name() + "," + gameTemp.description().raw().replaceAll("\\s+","").length() + "," + gameTemp.description().expanded().replaceAll("\\s+","").length() + "," + gameTemp.description().tokenForest().tokenTree().countKeywords() + "," + gameTemp.description().callTree().countClasses();
 					System.out.println(allOutputs);
 				}
 			}
