@@ -1,0 +1,29 @@
+(game "Riga Game (Small)"
+    (players 2) 
+    (equipment { 
+        ("ThreeMensMorrisBoardWithLeftAndRightTriangles")
+        (piece [#])
+        (piece [#])
+    }) 
+    
+    (rules 
+        (start [#])
+        (play [#])
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+    })
+    
+)
