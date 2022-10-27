@@ -1,0 +1,33 @@
+(define "Columns" 6)
+
+//------------------------------------------------------------------------------
+
+(game "Gabata (Gondar)" 
+    (players 2) 
+    (equipment { 
+        (mancalaBoard 3 "Columns" store:None)
+        (piece "Seed" Shared)
+    }) 
+    (rules 
+        (start [#])
+        (play [#])
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+    (recon {
+        (concept "Sow" True)
+    })
+)
