@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -12,9 +14,12 @@ import java.util.regex.Pattern;
 import compiler.Compiler;
 import completer.Completion;
 import game.Game;
+import grammar.Grammar;
 import main.FileHandling;
 import main.StringRoutines;
 import main.grammar.Description;
+import main.grammar.Report;
+import main.grammar.Symbol;
 import other.GameLoader;
 import other.concept.Concept;
 
@@ -312,9 +317,124 @@ public class ReconsRulesets
 		}
 		
 		for(String ludemeplex : ludemeplexes)
-			System.out.println(ludemeplex);
+		{
+			for(Concept concept: getTrueConcepts(ludemeplex))
+			{
+				if(!trueConcepts.contains(concept))
+					trueConcepts.add(concept);
+			}
+		}
 		
 		return trueConcepts;
+	}
+
+	//----------------------CODE TO GET THE CONCEPTS OF A STRING (TO MOVE TO ANOTHER CLASS LATER)------------------------------------
+	
+	/**
+	 * @param str The description of the ludemeplex.
+	 * @return The true concepts of the ludemeplex.
+	 */
+	static List<Concept> getTrueConcepts(final String str)
+	{
+		final List<Concept> trueConcepts = new ArrayList<Concept>();
+		
+		if (str == null || str.equals(""))
+			return trueConcepts;
+
+		try
+		{
+			final Object compiledObject = compileString(str);
+			if (compiledObject != null)
+			{
+				trueConcepts.addAll(evalConceptCompiledObject(compiledObject));
+			}
+		}
+		catch (final Exception ex)
+		{
+			// Nothing to do.
+		}
+		
+		return trueConcepts;
+	}
+	
+	/**
+	 * Attempts to get the concepts from a ludemeplex.
+	 */
+	static List<Concept> evalConceptCompiledObject(final Object obj)
+	{
+		final Game tempGame = new Game("test", new Description("(game \"Tic-Tac-Toe\" (players 2) (equipment { (board (square 3)) "
+				+ "	          (piece \"Disc\" P1) (piece \"Cross\" P2) }) (rules (play (move Add (to "
+				+ "	          (sites Empty)))) (end (if (is Line 3) (result Mover Win))) ) )"));
+		
+		final List<Concept> trueConcepts = new ArrayList<Concept>();
+		
+		// Need to preprocess the ludemes before to call the eval method.
+		Method preprocess = null;
+		try
+		{
+			preprocess = obj.getClass().getDeclaredMethod("preprocess", tempGame.getClass());
+			if (preprocess != null)
+				preprocess.invoke(obj, tempGame);
+		}
+		catch (final Exception e)
+		{
+			// Nothing to do.
+		}
+		
+		Method conceptMethod = null;
+		BitSet concepts = new BitSet();
+		try
+		{
+			conceptMethod = obj.getClass().getDeclaredMethod("concepts", tempGame.getClass());
+			if (preprocess != null)
+				concepts = ((BitSet) conceptMethod.invoke(obj, tempGame));
+		}
+		catch (final Exception e)
+		{
+			//e.printStackTrace();
+		}
+		
+		for (int i = 0; i < Concept.values().length; i++)
+		{
+			final Concept concept = Concept.values()[i];
+			if (concepts.get(concept.id()))
+				trueConcepts.add(concept);
+		}
+
+		return trueConcepts;
+	}
+	
+	/**
+	 * Attempts to compile a given string for every possible symbol class.
+	 * @return Compiled object if possible, else null.
+	 */
+	static Object compileString(final String str)
+	{
+		Object obj = null;
+		
+		final String token = StringRoutines.getFirstToken(str);
+		final List<Symbol> symbols = Grammar.grammar().symbolsWithPartialKeyword(token);
+
+		// Try each possible symbol for this token
+		for (final Symbol symbol : symbols)
+		{
+			final String className = symbol.cls().getName();
+			final Report report = new Report();
+			
+			try
+			{
+				obj = Compiler.compileObject(str, className, report);
+			}
+			catch (final Exception ex)
+			{
+				//System.out.println("Couldn't compile.");
+			}
+				
+			if (obj == null)
+				continue;
+		}
+		
+		return obj;
 	}
 
 
