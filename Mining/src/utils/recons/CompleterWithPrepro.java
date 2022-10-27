@@ -286,6 +286,7 @@ public class CompleterWithPrepro
 					
 					final String str = raw.substring(0, from) + choice + raw.substring(to + 1);
 					final Completion newCompletion = new Completion(str);
+					newCompletion.setScore(completion.score());
 					
 //					System.out.println("\n**********************************************************");
 //					System.out.println("completion " + n + "/" + choices.size() + " is:\n" + completion);
