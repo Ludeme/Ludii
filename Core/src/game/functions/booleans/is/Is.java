@@ -94,7 +94,7 @@ public class Is extends BaseBooleanFunction
 	 * 
 	 * @param isType         The type of query to perform.
 	 * @param type           The graph element type [default of the board].
-	 * @param at             The site to look the angle
+	 * @param at             The site to look the angle.
 	 * @param conditionSite  The condition on the left site.
 	 * @param conditionSite2 The condition on the right site.
 	 *

@@ -239,8 +239,8 @@ public class Board implements GraphicsItem
 	/**
 	 * For setting the curvature of the board.
 	 * 
-	 * @param BoardCurvatureType The type of data.
-	 * @param boardOffset The curve offest.
+	 * @param boardType   The type of data.
+	 * @param curveOffset The curve offest.
 	 * 
 	 * @example (board Curvature 0.45)
 	 */

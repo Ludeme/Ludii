@@ -1,6 +1,7 @@
 package utils.recons;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -90,9 +91,43 @@ public class ReconsRulesets
 			List<Completion> compilingNoWarningExpectedConceptsCompletions = new ArrayList<Completion>();
 			
 			final List<Concept> trueConcepts = computeTrueConcepts(desc);
-			System.out.println("The true concepts of this reconstruction are:");
-			for(Concept concept: trueConcepts)
-				System.out.println(concept);
+//			System.out.println("The true concepts of this reconstruction are:");
+//			for(Concept concept: trueConcepts)
+//				System.out.println(concept);
+
+			// Compute % TrueConcepts in each complete ruleset.
+			final String[] gameNames = FileHandling.listGames();
+
+			// Check only the games wanted
+			for (int index = 0; index < gameNames.length; index++)
+			{
+				final String nameGame = gameNames[index];
+				if (nameGame.replaceAll(Pattern.quote("\\"), "/").contains("/lud/bad/"))
+					continue;
+
+				if (nameGame.replaceAll(Pattern.quote("\\"), "/").contains("/lud/wip/"))
+					continue;
+
+				if (nameGame.replaceAll(Pattern.quote("\\"), "/").contains("/lud/WishlistDLP/"))
+					continue;
+
+				if (nameGame.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/"))
+					continue;
+
+				if (nameGame.replaceAll(Pattern.quote("\\"), "/").contains("subgame"))
+					continue;
+
+				if (nameGame.replaceAll(Pattern.quote("\\"), "/").contains("reconstruction"))
+					continue;
+
+				final Game game = GameLoader.loadGameFromName(gameName);
+				
+				final List<String> ids = game.metadata().info().getId();
+				
+			}
+			
+			
+			
 			
 			// Run the recons process until enough attempts is executed or reconstruction are generated.
 			while(numAttempts < maxNumberAttempts && 
@@ -311,11 +346,14 @@ public class ReconsRulesets
 					}
 				}
 				final String ludemeplex = descNoMetadata.substring(i, indexCorrespondingParenthesis);
+				
+				// We keep the ludemeplexes with no completion point.
 				if(!ludemeplex.contains("#") && !ludemeplex.contains("[") && !ludemeplex.contains("]"))
 					ludemeplexes.add(ludemeplex);
 			}
 		}
 		
+		// Get the true concepts.
 		for(String ludemeplex : ludemeplexes)
 		{
 			for(Concept concept: getTrueConcepts(ludemeplex))
@@ -345,12 +383,11 @@ public class ReconsRulesets
 		{
 			final Object compiledObject = compileString(str);
 			if (compiledObject != null)
-			{
 				trueConcepts.addAll(evalConceptCompiledObject(compiledObject));
-			}
 		}
 		catch (final Exception ex)
 		{
+			ex.getStackTrace();
 			// Nothing to do.
 		}
 		
@@ -362,9 +399,9 @@ public class ReconsRulesets
 	 */
 	static List<Concept> evalConceptCompiledObject(final Object obj)
 	{
-		final Game tempGame = new Game("test", new Description("(game \"Tic-Tac-Toe\" (players 2) (equipment { (board (square 3)) "
-				+ "	          (piece \"Disc\" P1) (piece \"Cross\" P2) }) (rules (play (move Add (to "
-				+ "	          (sites Empty)))) (end (if (is Line 3) (result Mover Win))) ) )"));
+		final Game tempGame = (Game)Compiler.compileTest(new Description("(game \"Test\" (players 2) (equipment { (board (square 3)) "
+				+ "	          (piece \"Disc\" Each) }) (rules (play (move Add (to "
+				+ "	          (sites Empty)))) (end (if (is Line 3) (result Mover Win)))))"), false);
 		
 		final List<Concept> trueConcepts = new ArrayList<Concept>();
 		
@@ -379,18 +416,21 @@ public class ReconsRulesets
 		catch (final Exception e)
 		{
 			// Nothing to do.
+			//e.printStackTrace();
 		}
-		
+
+		// get the concepts by reflection.
 		Method conceptMethod = null;
 		BitSet concepts = new BitSet();
 		try
 		{
 			conceptMethod = obj.getClass().getDeclaredMethod("concepts", tempGame.getClass());
-			if (preprocess != null)
+			if (conceptMethod != null)
 				concepts = ((BitSet) conceptMethod.invoke(obj, tempGame));
 		}
 		catch (final Exception e)
 		{
+			// Nothing to do.
 			//e.printStackTrace();
 		}
 		
@@ -430,8 +470,8 @@ public class ReconsRulesets
 				//System.out.println("Couldn't compile.");
 			}
 				
-			if (obj == null)
-				continue;
+			if (obj != null)
+				break;
 		}
 		
 		return obj;
