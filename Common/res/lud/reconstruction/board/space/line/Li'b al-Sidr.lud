@@ -2,7 +2,7 @@
     (players 2)
     
     (equipment { 
-    	(board (concentric Square rings:3 joinCorners:True) use:Vertex)
+        (board (concentric Square rings:3 joinCorners:True) use:Vertex)
         (hand Each)
         (piece [#]) 
     })
@@ -19,6 +19,13 @@
     
     (info
         {
+        (description "L'ib al-Sidr is an alignment game played in West Asia during the Middle Ages. It was played on a typical merels board, with twelve pieces per player.")
+        (rules "Three concentric circles with  lines connecting the corners and midpoints of the squares.")
+        (source "DLP evidence.")
+        (id "2035")
+        (version "1.3.7")
+        (classification "board/space/line/reconstruction")
+        (origin "This game was played in West Asia, from around 600 to 1410.")
         }
     )
     

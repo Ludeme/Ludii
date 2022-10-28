@@ -285,23 +285,19 @@
             2.3 The mass of a brood is the number of stones in it (its size times its order).
             
             Play:
-            On your turn, you must take one of the following two actions:
-            • Place 1 stone of your color
-            • Place 2 stones of a neutral color
-            Placement is always onto empty cells.
+            On the very first turn of the game, Black places one stone of their colour on any hex.
+            After, that – starting with White – take turns doing one of the following:
+            - Pass.
+            - Place two stones of your colour on empty hexes.
             
-            In this implementation, 
-            (i) to place a piece of your color, you simply click an empty cell,
-            (ii) to place two neutrals, first click the neutral piece above the board, then two empty cells.
-            
-            When the board is full, the player with the higher score wins.
+            When the players pass consecutively, the winner is the player with the higher score.
             
             Scoring:
             For each of your broods, you score its mass multiplied by the lesser of its size and its order.
             
         For example, if a brood consists of 2 groups of size 3, it is worth 12 points. Its order is 3, its size is 2 and its mass is 6. Since 2 is smaller than 3, the brood is worth 6*2 = 12.")
         (id "1998")
-        (version "1.3.6")
+        (version "1.3.7")
         (classification "board/space/group")
         (author "Michael Admundsen")
         (credit "Dale Walton")
