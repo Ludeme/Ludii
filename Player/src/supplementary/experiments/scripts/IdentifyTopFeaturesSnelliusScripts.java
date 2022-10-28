@@ -25,11 +25,11 @@ public class IdentifyTopFeaturesSnelliusScripts
 	/** Don't submit more than this number of jobs at a single time */
 	private static final int MAX_JOBS_PER_BATCH = 800;
 
-	/** Memory to assign to JVM, in MB (2 GB per core --> we take 3 cores per job, 6GB per job, use 5GB for JVM) */
-	private static final String JVM_MEM = "5120";
+	/** Memory to assign to JVM, in MB (2 GB per core --> we take 4 cores per job, 8GB per job, use 7.5GB for JVM) */
+	private static final String JVM_MEM = "7680";
 	
 	/** Memory to assign per process (in GB) */
-	private static final int MEM_PER_PROCESS = 6;
+	private static final int MEM_PER_PROCESS = 8;
 	
 	/** Memory available per node in GB (this is for Thin nodes on Snellius) */
 	private static final int MEM_PER_NODE = 256;
@@ -44,7 +44,7 @@ public class IdentifyTopFeaturesSnelliusScripts
 	private static final int CORES_PER_NODE = 128;
 	
 	/** Number of cores per Java call */
-	private static final int CORES_PER_PROCESS = 3;
+	private static final int CORES_PER_PROCESS = 4;
 	
 	/** If we request more cores than this in a job, we get billed for the entire node anyway, so should request exclusive */
 	private static final int EXCLUSIVE_CORES_THRESHOLD = 96;

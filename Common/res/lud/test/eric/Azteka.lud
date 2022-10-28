@@ -1,0 +1,337 @@
+(define "RotateRingOne"
+    (do (set Var (what at:27))
+        next:(and {
+            (remove 27)
+            (if (is Occupied 28) (move (from 28) (to 27)))
+            (if (is Occupied 29) (move (from 29) (to 28)))
+            (if (is Occupied 30) (move (from 30) (to 29)))
+            (if (is Occupied 31) (move (from 31) (to 30)))
+            (if (is Occupied 25) (move (from 25) (to 31)))
+            (if (is Occupied 24) (move (from 24) (to 25)))
+            (if (is Occupied 26) (move (from 26) (to 24)))
+            (if (!= 0 (var)) (add (piece (var)) (to 26)))
+        })
+    )    
+)
+
+(define "RotateRingTwo"
+    (do (set Var (what at:19))
+        next:(and {
+            (remove 19)
+            (if (is Occupied 20) (move (from 20) (to 19)))
+            (if (is Occupied 21) (move (from 21) (to 20)))
+            (if (is Occupied 22) (move (from 22) (to 21)))
+            (if (is Occupied 23) (move (from 23) (to 22)))
+            (if (is Occupied 17) (move (from 17) (to 23)))
+            (if (is Occupied 16) (move (from 16) (to 17)))
+            (if (is Occupied 18) (move (from 18) (to 16)))
+            (if (!= 0 (var)) (add (piece (var)) (to 18)))
+        })
+    )    
+)
+
+(define "RotateRingThree"
+    (do (set Var (what at:11))
+        next:(and {
+            (remove 11)
+            (if (is Occupied 12) (move (from 12) (to 11)))
+            (if (is Occupied 13) (move (from 13) (to 12)))
+            (if (is Occupied 14) (move (from 14) (to 13)))
+            (if (is Occupied 15) (move (from 15) (to 14)))
+            (if (is Occupied 9) (move (from 9) (to 15)))
+            (if (is Occupied 8) (move (from 8) (to 9)))
+            (if (is Occupied 10) (move (from 10) (to 8)))
+            (if (!= 0 (var)) (add (piece (var)) (to 10)))
+        })
+    )    
+)
+
+(define "RotateRingFour"
+    (do (set Var (what at:3))
+        next:(and {
+            (remove 3)
+            (if (is Occupied 4) (move (from 4) (to 3)))
+            (if (is Occupied 5) (move (from 5) (to 4)))
+            (if (is Occupied 6) (move (from 6) (to 5)))
+            (if (is Occupied 7) (move (from 7) (to 6)))
+            (if (is Occupied 1) (move (from 1) (to 7)))
+            (if (is Occupied 0) (move (from 0) (to 1)))
+            (if (is Occupied 2) (move (from 2) (to 0)))
+            (if (!= 0 (var)) (add (piece (var)) (to 2)))
+        })
+    )    
+)
+
+(define "Rotate"
+    (or {
+        (move Select (from 27) (to 26) (then ("RotateRingOne")))
+        (move Select (from 19) (to 18) (then ("RotateRingTwo")))
+        (move Select (from 11) (to 10) (then ("RotateRingThree")))
+        (move Select (from 3) (to 2) (then ("RotateRingFour")))
+    })
+)
+
+(define "LifeGoal"
+    (and {
+        (not (all Sites (sites "RingOne") if:(!= (who at:(site)) #1)))
+        (not (all Sites (sites "RingTwo") if:(!= (who at:(site)) #1)))
+        (not (all Sites (sites "RingThree") if:(!= (who at:(site)) #1)))
+        (not (all Sites (sites "RingFour") if:(!= (who at:(site)) #1)))
+        (not (all Sites (sites "SegmentOne") if:(!= (who at:(site)) #1)))
+        (not (all Sites (sites "SegmentTwo") if:(!= (who at:(site)) #1)))
+        (not (all Sites (sites "SegmentThree") if:(!= (who at:(site)) #1)))
+        (not (all Sites (sites "SegmentFour") if:(!= (who at:(site)) #1)))
+        (not (all Sites (sites "SegmentFive") if:(!= (who at:(site)) #1)))
+        (not (all Sites (sites "SegmentSix") if:(!= (who at:(site)) #1)))
+        (not (all Sites (sites "SegmentSeven") if:(!= (who at:(site)) #1)))
+        (not (all Sites (sites "SegmentEight") if:(!= (who at:(site)) #1)))
+    })
+)
+
+(define "DeathGoal"
+    (or {
+        (all Sites (sites "RingOne") if:(= (who at:(site)) #1))
+        (all Sites (sites "RingTwo") if:(= (who at:(site)) #1))
+        (all Sites (sites "RingThree") if:(= (who at:(site)) #1))
+        (all Sites (sites "RingFour") if:(= (who at:(site)) #1))
+        (all Sites (sites "SegmentOne") if:(= (who at:(site)) #1))
+        (all Sites (sites "SegmentTwo") if:(= (who at:(site)) #1))
+        (all Sites (sites "SegmentThree") if:(= (who at:(site)) #1))
+        (all Sites (sites "SegmentFour") if:(= (who at:(site)) #1))
+        (all Sites (sites "SegmentFive") if:(= (who at:(site)) #1))
+        (all Sites (sites "SegmentSix") if:(= (who at:(site)) #1))
+        (all Sites (sites "SegmentSeven") if:(= (who at:(site)) #1))
+        (all Sites (sites "SegmentEight") if:(= (who at:(site)) #1))
+    })
+)
+
+(define "DestinGoal"
+    (= 14 (count Sites in:(sites Occupied by:#1)))
+)
+
+(define "SpecialLifePower"
+    (if (is In (last To) (sites "SegmentOne"))
+        (all Sites (sites "SegmentOne") if:(= (who at:(site)) #1))
+        (if (is In (last To) (sites "SegmentTwo"))
+            (all Sites (sites "SegmentTwo") if:(= (who at:(site)) #1))
+            (if (is In (last To) (sites "SegmentThree"))
+                (all Sites (sites "SegmentThree") if:(= (who at:(site)) #1))
+                (if (is In (last To) (sites "SegmentFour"))
+                    (all Sites (sites "SegmentFour") if:(= (who at:(site)) #1))
+                    (if (is In (last To) (sites "SegmentFive"))
+                        (all Sites (sites "SegmentFive") if:(= (who at:(site)) #1))
+                        (if (is In (last To) (sites "SegmentSix"))
+                            (all Sites (sites "SegmentSix") if:(= (who at:(site)) #1))
+                            (if (is In (last To) (sites "SegmentSeven"))
+                                (all Sites (sites "SegmentSeven") if:(= (who at:(site)) #1))
+                                (all Sites (sites "SegmentEight") if:(= (who at:(site)) #1))
+                            )	
+                        )	
+                    )	
+                )	
+            )	
+        )
+    )
+)
+
+(define "SpecialDeathPower"
+    (surround 
+        (from (last To)) 
+        Orthogonal
+        (between 
+            if:("IsEnemyAt" (between)) 
+            (apply (fromTo (from (handSite Mover)) (to (between))))
+        ) 
+        (to 
+            if:("IsFriendAt" (to))
+        )
+    )
+)
+
+//-------------------------------------------------------------------------	
+
+(game "Azteka"
+    (players 2)
+    (equipment {
+        (board
+            (remove
+                (concentric {0 0 8 8 8 8})
+                cells:{1}
+            )
+        )
+        (piece "Pawn" Each)
+        (hand Each)
+        (regions "RingOne" {24..31})
+        (regions "RingTwo" {16..23})
+        (regions "RingThree" {8..15})
+        (regions "RingFour" {0..7})
+        (regions "SegmentOne" {0 8 16 24})
+        (regions "SegmentTwo" {2 10 18 26})
+        (regions "SegmentThree" {3 11 19 27})
+        (regions "SegmentFour" {4 12 20 28})
+        (regions "SegmentFive" {5 13 21 29})
+        (regions "SegmentSix" {6 14 22 30})
+        (regions "SegmentSeven" {7 15 23 31})
+        (regions "SegmentEight" {1 9 17 25})
+    })
+    (rules
+        (start (place "Pawn" "Hand" count:14))
+        phases:{
+        (phase "FirstPhase"
+            (play
+                (if ("SameTurn")
+                    (move
+                        (from (handSite Mover))
+                        (to (sites Around (sites Occupied by:Mover) Orthogonal if:(is Empty (to))))
+                        (then
+                            (if (and ("HandOccupied" Mover) ("SpecialLifePower" P1)) (moveAgain))
+                        )
+                    )
+                    (or
+                        (if ("HandOccupied" Mover)
+                            (move
+                                (from (handSite Mover))
+                                (to (if (< (count Moves) 2) (sites Empty) (sites Around (sites Occupied by:Mover) Orthogonal if:(is Empty (to)))))
+                            )
+                        )
+                        (if (>= (count Moves) 2)
+                            ("Rotate")
+                        )
+                        (then
+                            (if (is Mover P1)
+                                (if (and ("HandOccupied" Mover) ("SpecialLifePower" P1)) (moveAgain))
+                                ("SpecialDeathPower" P2)
+                            )
+                        )
+                    )
+                    (then
+                        (if (is Mover P1)
+                            (if (or ("DestinGoal" P1) ("LifeGoal" P1))
+                                (and {
+                                    (set Score P1 (count Pieces Mover in:(sites Board)))
+                                    (remove (sites Board))
+                                    (remove (sites Hand P1))
+                                    (remove (sites Hand P2))
+                                    (add (piece (id "Pawn" P1)) (to (handSite P1)) count:14)
+                                    (add (piece (id "Pawn" P2)) (to (handSite P2)) count:14)
+                                    (set NextPlayer (player 2))
+                                    (set Pending)
+                                })
+                            )
+                            (if (or ("DestinGoal" P2) ("DeathGoal" P2))
+                                (and {
+                                    (set Score P2 (count Pieces Mover in:(sites Board)))
+                                    (remove (sites Board))
+                                    (remove (sites Hand P1))
+                                    (remove (sites Hand P2))
+                                    (add (piece (id "Pawn" P1)) (to (handSite P1)) count:14)
+                                    (add (piece (id "Pawn" P2)) (to (handSite P2)) count:14)
+                                    (set NextPlayer (player 2))
+                                    (set Pending)
+                                })
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase (or (!= 0 (score P1)) (!= 0 (score P2))) "SecondPhase")
+        )
+        (phase "SecondPhase"
+            (play
+                (if (and (not (is Pending)) ("SameTurn"))
+                    (move
+                        (from (handSite Mover))
+                        (to (sites Around (sites Occupied by:Mover) Orthogonal if:(is Empty (to))))
+                        (then
+                            (if (and ("HandOccupied" Mover) ("SpecialLifePower" P2)) (moveAgain))
+                        )
+                    )
+                    (or
+                        (if ("HandOccupied" Mover)
+                            (move
+                                (from (handSite Mover))
+                                (to (if (< (count Sites in:(sites Occupied by:All container:"Board")) 2) (sites Empty) (sites Around (sites Occupied by:Mover) Orthogonal if:(is Empty (to)))))
+                            )
+                        )
+                        (if (>= (count Sites in:(sites Occupied by:All container:"Board")) 2)
+                            ("Rotate")
+                        )
+                        (then
+                            (if (is Mover P2)
+                                (if (and ("HandOccupied" Mover) ("SpecialLifePower" P2)) (moveAgain))
+                                ("SpecialDeathPower" P1)
+                            )
+                        )
+                    )
+                    (then
+                        (if (is Mover P2)
+                            (if (or ("DestinGoal" P2) ("LifeGoal" P2))
+                                (if (> (score P2) 0)
+                                    (set Var "End" 2)
+                                    (if (> (count Pieces Mover in:(sites Board)) (score P1))
+                                        (and
+                                            (set Var "End" 1)
+                                            (set Score P2 (count Pieces Mover in:(sites Board)))
+                                        )
+                                        (if (< (count Pieces Mover in:(sites Board)) (score P1))
+                                            (and
+                                                (set Var "End" 2)
+                                                (set Score P2 (count Pieces Mover in:(sites Board)))
+                                            )
+                                            (set Var "End" 3)
+                                        )
+                                    )
+                                )
+                            )
+                            (if (or ("DestinGoal" P1) ("DeathGoal" P1))
+                                (if (> (score P1) 0)
+                                    (set Var "End" 1)
+                                    (if (> (count Pieces Mover in:(sites Board)) (score P2))
+                                        (and
+                                            (set Var "End" 2)
+                                            (set Score P1 (count Pieces Mover in:(sites Board)))
+                                        )
+                                        (if (< (count Pieces Mover in:(sites Board)) (score P2))
+                                            (and
+                                                (set Var "End" 1)
+                                                (set Score P1 (count Pieces Mover in:(sites Board)))
+                                            )
+                                            (set Var "End" 3)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            (end {
+                (if (= (var "End") 3) (result Mover Draw))
+                (if (= (var "End") 2) (result P2 Win))
+                (if (= (var "End") 1) (result P1 Win))
+            })
+        )
+        }
+    )
+)
+
+//-------------------------------------------------------------------------	
+
+(metadata
+    (info {
+        
+    })
+    
+    (graphics {
+        (board Colour Phase0 (colour VeryDarkGrey))
+        (board Background image:"Disc" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scale:0.8)
+        (piece Scale "Pawn" 0.75)        
+        (board Colour OuterEdges (colour Black))
+        (board Colour InnerEdges (colour Black))
+        (piece Rename piece:"Pawn1" "Heart1")
+        (piece Rename piece:"Pawn2" "Death2")
+        (piece Rename piece:"Pawn3" "Mummy3")
+        (player Colour P2 (colour White))
+        (player Colour P3 (colour White))
+    })
+)

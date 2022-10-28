@@ -434,8 +434,7 @@ public final class Move extends Decision
 	 * @param track      The track on which to slide.
 	 * @param directions The directions of the move [Adjacent].
 	 * @param between    Description of the location(s) between ``from'' and ``to''.
-	 * @param to         Description of the ``to'' location [(to if:(is In (to)
-	 *                   (sites Empty)))].
+	 * @param to         Description of the ``to'' location.
 	 * @param stack      True if the move is applied to a stack [False].
 	 * @param then       Moves to apply after this one.
 	 * 

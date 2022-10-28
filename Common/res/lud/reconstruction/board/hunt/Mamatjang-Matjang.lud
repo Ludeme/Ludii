@@ -6,7 +6,7 @@
         (piece "Human" P2 (move [#])) 
     }) 
     (rules 
-        (start [#]) // 2 tigers and 2 people (to put in the concepts).
+        (start [#])
         
         (play (forEach Piece)) 
         
@@ -27,7 +27,7 @@
         (rules "Two players. One player plays as two tigers. The other plays as 24 people. The tigers capture the people by jumping over them. The goal of the tigers is to capture all the people, the goal of the people is to block the tigers from being able to move.")
         (source "DLP evidence.")
         (id "1093")
-        (version "1.3.6")
+        (version "1.3.7")
         (classification "board/hunt/reconstruction")
         (credit "Eric Piette")
         (origin "This game was played in Indonesia, around 1874.")
@@ -37,6 +37,10 @@
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (show Edges Diagonal Hidden)
+    })
+    
+    (recon {
+        (concept "NumStartComponents" 26)
     })
     
 )

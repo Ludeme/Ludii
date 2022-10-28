@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 /**
  * Miscellaneous string manipulation routines.
  * 
- * @author cambolbro
+ * @author cambolbro and Eric.Piette
  */
 public final class StringRoutines
 {
@@ -840,6 +840,74 @@ public final class StringRoutines
 	
 	//-------------------------------------------------------------------------
 
+	/**
+	 * @param originalDesc Description of a ruleset after expansion.
+	 * @return Formatted description on a single line.
+	 */
+	public static String formatOneLineDesc(final String originalDesc)
+	{
+		final StringBuffer formattedDesc = new StringBuffer("");
+		
+		String desc = originalDesc;
+		for(int i = 0; i < originalDesc.length(); i++)
+		{
+			final char c = originalDesc.charAt(i);
+			if(!Character.isSpaceChar(c))
+			{
+				desc = originalDesc.substring(i);
+				break;
+			}
+		}
+		
+		for(int i = 0; i < desc.length(); i++)
+		{
+			final char c = desc.charAt(i);
+			if(Character.isLetterOrDigit(c) || c == '(' || c == ')' || c == '{' 
+					|| c == '}' || c == '"' || c == '.' || c == ',' || c == ':'
+					|| c == '=' || c == '<' || c == '>' || c == '+' || c == '-'
+					|| c == '/' || c == '^' || c == '%' || c == '*' || c == '['
+					|| c == ']' || c == '#' || c == '?' || Character.isSpaceChar(c)
+			)
+			{
+				if(i != 0 && Character.isSpaceChar(c))
+				{
+					final char lastChar = formattedDesc.toString().charAt(formattedDesc.length()-1);
+					if(!Character.isSpaceChar(lastChar))
+					{
+						formattedDesc.append(c);
+					}
+				}
+				else 
+				{
+					formattedDesc.append(c);
+					if(c == '{') // add a space after the open curly bracket to not be next to an open parenthesis.
+						formattedDesc.append(' ');
+				}
+			}
+		}
+		return formattedDesc.toString();
+	}
+	
+	/**
+	 * @param desc The description of a ruleset on a single line.
+	 * @return The description on multiple lines.
+	 */
+	public static String unformatOneLineDesc(final String desc)
+	{
+		final StringBuffer formattedDesc = new StringBuffer("");
+		formattedDesc.append('(');
+		for(int i = 1; i < desc.length(); i++) // Start at 1 to not break line at the first parenthesis.
+		{
+			final char c = desc.charAt(i);
+			if(c == '(' && desc.charAt(desc.length()-1) != ':')
+				formattedDesc.append("\n");
+			formattedDesc.append(c);
+			if(c == ')' || c == '}')
+				formattedDesc.append("\n");
+		}
+		return formattedDesc.toString();
+	}
+	
 }
 
 		

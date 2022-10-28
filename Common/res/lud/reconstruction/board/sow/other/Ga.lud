@@ -15,7 +15,7 @@
         (board 
             (concentric {"NumHolesCircle"}) 
             { 
-            (track "Track" [#] loop:True)
+            (track [#] loop:True)
             }
             use:Vertex
         )
@@ -86,7 +86,7 @@
         (rules "Pits are created in a circle or rectangle. Two or more players. A player takes counters from their first hole and sows them toward the right (anticlockwise). When counters are placed in an opponent's hole, the hole is captured. When one player can circuit the entire board, thus capturing all of the holes, they win.")
         (source "DLP evidence.")
         (id "1350")
-        (version "1.3.6")
+        (version "1.3.7")
         (classification "board/sow/reconstruction")
         (credit "Eric Piette")
         (origin "This game was played in Republic of Congo, around 1971.")
@@ -99,6 +99,10 @@
         (player Colour P2 (colour Black))
         (player Colour P3 (colour Red))
         (player Colour P4 (colour Blue))
+    })
+    
+    (recon {
+        (concept "Sow" True)
     })
     
 )

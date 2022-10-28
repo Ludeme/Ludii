@@ -2,7 +2,7 @@
     (players 2) 
     (equipment { 
         (board (square 19))
-        [#]
+        [?]
         // We know: 192 pieces in total.
     })
     (rules
@@ -22,7 +22,7 @@
         (rules "19x19 board. 192 pieces.")
         (source "DLP evidence.")
         (id "1338")
-        (version "1.3.6")
+        (version "1.3.7")
         (classification "board/war/replacement/checkmate/shogi/reconstruction")
         (credit "Eric Piette")
         }
@@ -34,6 +34,10 @@
         (piece Families {"Defined" "Study"})
         (board Style Shogi)
         (piece Rotate P2 degrees:180)
+    })
+    
+    (recon {
+        (concept "NumStartComponents" 192)
     })
     
 )

@@ -1,0 +1,64 @@
+(game "Ukraining Cats and Dogs" 
+    (players 2) 
+    (equipment { 
+        (board 
+            (merge {
+                (shift -1 2 (rectangle 1 7))
+                (shift 2 -1 (rectangle 7 1))
+                (shift 0 1 (rectangle 3 5))
+                (shift 1 0 (rectangle 5 3))
+            })
+        )
+        (piece "Dog" P2 
+            (or
+                ("StepToEmpty")
+                (move Hop
+                    (between if:(is Enemy (who at:(between))))
+                    (to if:(is Empty (to)) (apply (remove (between))))
+                )
+            )
+        )
+        (piece "Cat" P1 ("StepToEmpty")) 
+        (piece "Umbrella" Shared ("StepToEmpty")) 
+        (piece "Umbrella" P1 ("StepToEmpty")) 
+        (piece "Umbrella" P2 ("StepToEmpty")) 
+    }) 
+    (rules 
+        (start {
+            (place "Dog2" (sites {12 14 16}))
+            (place "Cat1" (sites {1 5 9}))
+            (place "Umbrella2" (sites {24}))
+            (place "Umbrella1" (sites {17}))
+            (place "Umbrella" (sites {19 20 22 23}))
+        })
+        (play
+            (or
+                (forEach Piece)
+                (forEach Piece Shared)
+            )
+        )
+        (end ("CaptureAll" Next))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (show Symbol "square-alt1" Cell {0 2 1 3 19 18 17} fillColour:(colour Red) scale:1.08)
+        (show Symbol "square-alt1" Cell {12 4 5 20} fillColour:(colour Yellow) scale:1.08)
+        (show Symbol "square-alt1" Cell {13 6 7} fillColour:(colour White) scale:1.08)
+        (show Symbol "square-alt1" Cell {22 14 8 9} fillColour:(colour Green) scale:1.08)
+        (show Symbol "square-alt1" Cell {24 21 23 15 16 10 11} fillColour:(colour Purple) scale:1.08)
+        (player Colour P1 (colour Blue))
+        (player Colour P2 (colour Yellow))
+        (player Colour Shared (colour White))
+    })
+    
+)

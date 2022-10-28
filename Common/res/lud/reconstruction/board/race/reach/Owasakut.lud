@@ -8,12 +8,14 @@
                     vertices:{32 11 10}
                 )
                 edges:{{28 29} {11 9} {8 10}}
-            )
-            [#]
+            )	
+            {
+            [?]
+            }
             use:Edge
         )
         (piece "Stick" Each (move [#]))
-        (dice d:2 from:0 num:3)
+        ("StickDice" 3)
         (map "Throw" {(pair 0 5) (pair 1 2) (pair 2 3) (pair 3 10)})
     })
     (rules 
@@ -54,7 +56,7 @@
         (rules "Thirty stones placed in a circle, with a large gap after every tenth stone. The spaces between the stones are the playing spaces. One stick per player. Three stick dice, black on one side and white on the other. Throws are as follows: three black = 10; three white = 5; two white = 2; one white = 3.")
         (source "DLP evidence.")
         (id "842")
-        (version "1.3.6")
+        (version "1.3.7")
         (classification "board/race/reach/reconstruction")
         (credit "Eric Piette")
         (origin "This game was played in New Mexico, around 1907.")
@@ -68,5 +70,8 @@
         (piece Colour "Die" state:1 fillColour:(colour Black))
     })
     
+    (recon {
+        (concept "NumStartComponents" 2)
+    })
 )
 

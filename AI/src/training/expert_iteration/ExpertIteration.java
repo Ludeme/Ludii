@@ -974,7 +974,14 @@ public class ExpertIteration
 
 							// Note: not really game duration! Just from perspective of one player!
 							final int gameDuration = pExperience.size();	// NOTE: technically wrong for non-root experiences
+							
 							avgGameDurations[p].observe(gameDuration);
+							
+//							// For WED we want to weigh this observation proportionally to the value of the observation itself
+//							for (int i = 0; i < gameDuration; ++i)
+//							{
+//								avgGameDurations[p].observe(gameDuration);
+//							}
 							
 							final double[] playerOutcomes = RankUtils.agentUtilities(context);
 							
@@ -1725,7 +1732,7 @@ public class ExpertIteration
 					
 					if (currentGameDurationTrackerFilenames[p] == null)
 					{
-						// create new tracker
+						// Create new tracker
 						tracker = new ExponentialMovingAverage();
 						logLine(logWriter, "starting with new tracker for average game duration");
 					}

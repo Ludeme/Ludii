@@ -2,7 +2,7 @@
 (define "PlayerHasReserve" (> (count Pieces Mover in:(sites "Reserve")) 0 ))
 (define "PlayerHasStarters"   (not (no Pieces Mover in:(sites "Base"))))
 (define "PlayerHasPrisoners" (not (no Pieces Mover in:(sites "Prison"))))
-(define "PieceDef" (piece Foreground #1 image:"cone" fillColour:(colour #2) edgeColour:(colour Black) scale:0.5 offsetY:+0.7))
+(define "PieceDef" (piece Foreground #1 image:"triangle" fillColour:(colour #2) edgeColour:(colour Black) scaleX:0.35 scaleY:0.65 offsetY:+0.94))
 (define "Extinction" (and (= 0 (count Sites in:(difference (sites Occupied by:Mover) (sites Mover "Reserve")))) (not (no Moves Next))))
 (define "StartThen" 
     (then 
@@ -174,6 +174,7 @@
         (then   
             (and { 
                 (set Var "CntrAttack" 0)
+                (set Score Mover 0)
                 (remove 15 )
                 (remove (sites Mover "Reserve"))
                 (if (= (id Mover) 1) 
@@ -454,7 +455,7 @@
             But be aware: almost all moves change the steplength and attack & defence-patterns, ie. the whole situation.
         This makes it complicated to calculate, but entertaining to play.")
         (id "2002")
-        (version "1.3.6")
+        (version "1.3.7")
         (classification "board/war/replacement/eliminate/all")
         (author "Andreas Pichler")
         (credit "Franz Pichler")

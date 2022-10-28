@@ -2,7 +2,7 @@
     (players 2) 
     (equipment { 
         (board (square 13))
-        [#]
+        [?]
         // We know: 68 pieces and 13 piece types.
     })
     (rules
@@ -22,7 +22,7 @@
         (rules "13x13 board. 68 pieces, 13 types of pieces. ")
         (source "DLP evidence.")
         (id "803")
-        (version "1.3.6")
+        (version "1.3.7")
         (classification "board/war/replacement/checkmate/shogi/reconstruction")
         (credit "Eric Piette")
         (origin "This game was played in Japan, from around 1210 to 1212.")
@@ -35,6 +35,11 @@
         (piece Families {"Defined" "Study"})
         (board Style Shogi)
         (piece Rotate P2 degrees:180)
+    })
+    
+    (recon {
+        (concept "NumStartComponents" 68)
+        (concept "NumComponentsType" 13)
     })
     
 )

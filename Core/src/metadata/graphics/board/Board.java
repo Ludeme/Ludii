@@ -8,6 +8,7 @@ import game.Game;
 import metadata.graphics.GraphicsItem;
 import metadata.graphics.board.Boolean.BoardCheckered;
 import metadata.graphics.board.colour.BoardColour;
+import metadata.graphics.board.curvature.BoardCurvature;
 import metadata.graphics.board.ground.BoardBackground;
 import metadata.graphics.board.ground.BoardForeground;
 import metadata.graphics.board.placement.BoardPlacement;
@@ -37,8 +38,8 @@ public class Board implements GraphicsItem
 	@SuppressWarnings("javadoc")
 	public static GraphicsItem construct
 	(
-		final BoardStyleType boardType, 
-		final ContainerStyleType containerStyleType,
+				   final BoardStyleType boardType, 
+				   final ContainerStyleType containerStyleType,
 		@Opt @Name final Boolean replaceComponentsWithFilledCells
 	)
 	{
@@ -231,6 +232,35 @@ public class Board implements GraphicsItem
 
 		// We should never reach that except if we forget some codes.
 		throw new IllegalArgumentException("Board(): A BoardShapeType is not implemented.");
+	}
+	
+	//-------------------------------------------------------------------------------
+	
+	/**
+	 * For setting the curvature of the board.
+	 * 
+	 * @param BoardCurvatureType The type of data.
+	 * @param boardOffset The curve offest.
+	 * 
+	 * @example (board Curvature 0.45)
+	 */
+	@SuppressWarnings("javadoc")
+	public static GraphicsItem construct
+	(
+		final BoardCurvatureType boardType, 
+		final Float curveOffset
+	)
+	{
+		switch (boardType)
+		{
+		case Curvature:
+			return new BoardCurvature(curveOffset);
+		default:
+			break;
+		}
+
+		// We should never reach that except if we forget some codes.
+		throw new IllegalArgumentException("Board(): A BoardCurvatureType is not implemented.");
 	}
 
 	//-------------------------------------------------------------------------------

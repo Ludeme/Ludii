@@ -61,7 +61,7 @@
     (players 2) 
     (equipment { 
         (mancalaBoard 3 "Columns" store:None
-            (track "Track" "0,N,E,S,W2" loop:True)
+            (track "Track" "0,E,N,W,S2" loop:True)
         )
         (piece "Seed" Shared)
         (regions P1 (union (sites {4}) (sites Bottom)))      // P1 home
@@ -166,7 +166,7 @@
         (useFor "Ruleset/Five Counters (Described)" (id "1740"))
         (source "Murray 1951: 190-191.")
         (id "234")
-        (version "1.3.6")
+        (version "1.3.7")
         (classification "board/sow/three rows")
         (credit "Eric Piette")
         (origin "This game was played in Nigeria, around 1948.")

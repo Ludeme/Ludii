@@ -1,9 +1,6 @@
 (game "Wo Shuo"
     (players 2) 
-    (equipment {
-        [#] 
-        (dice d:6 num:2)
-    }) 
+    (equipment [#]) 
     (rules
         (start [#])
         (play [#]) // Single pieces on the board are vulnerable
@@ -21,11 +18,17 @@
         (rules "Two six-sided dice. Single pieces on the board are vulnerable.")
         (source "DLP evidence.")
         (id "1220")
-        (version "1.3.6")
+        (version "1.3.7")
         (classification "board/race/reconstruction")
         (credit "Eric Piette")
         (origin "This game was played in China, from around 505 to 842.")
         }
     )
+    
+    (recon {
+        (concept "Dice" True)
+        (concept "DiceD6" True)
+        (concept "NumDice" 2)
+    })
     
 )

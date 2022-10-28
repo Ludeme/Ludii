@@ -1,6 +1,7 @@
 package features.spatial;
 
 import java.util.List;
+import java.util.Set;
 
 import features.spatial.elements.FeatureElement;
 import features.spatial.elements.RelativeFeatureElement;
@@ -238,7 +239,7 @@ public class AbsoluteFeature extends SpatialFeature
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public List<SpatialFeature> generateGeneralisers(final Game game)
+	public List<SpatialFeature> generateGeneralisers(final Game game, final Set<RotRefInvariantFeature> generalisers, final int numRecursions)
 	{
 		System.err.println("ERRROR: AbsoluteFeature::generateGeneralisers(Game) not yet implemented!");
 		return null;

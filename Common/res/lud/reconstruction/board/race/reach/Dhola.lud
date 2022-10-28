@@ -1,5 +1,5 @@
 (game "Dhola" 
-    (players [2..4]) 
+    (players 4) 
     (equipment { 
         (board 
             (add
@@ -11,11 +11,13 @@
                     (poly {{8 8} {8 11} {11 11} {11 8}})
                 )
                 cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9 } }
-            )
-            [#]
+            )	
+            {
+            [?]
+            }
         )
         (hand Each) 
-        (dice d:2 from:0 num:5)
+        ("StickDice" 5)
         (piece "Pawn" Each) // 4 pieces per player
     }) 
     (rules 
@@ -35,7 +37,7 @@
         (rules "Four 3x8 rectangles, arranged in a cross. The outermost square in the central row of each arm is marked, as is the fourth square from the top in all three rows of each arm. Four pieces per player. Five cowry shells, used as dice. Played with up to four players.")
         (source "DLP evidence.")
         (id "1002")
-        (version "1.3.6")
+        (version "1.3.7")
         (classification "board/race/reach/reconstruction")
         (credit "Eric Piette")
         (origin "This game was played in Maldives, around 1883.")
@@ -50,4 +52,7 @@
         (show Symbol "thinCross" (sites {55 94 64 85 19 34 22 31}))
     })
     
+    (recon {
+        (concept "NumStartComponents" 16)
+    })
 )

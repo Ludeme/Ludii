@@ -1,18 +1,11 @@
 (game "Pasakakrida (Type 6)" 
     (players 2) 
     (equipment { 
-        (board 
-            (merge {
-                (rectangle 1 6) 
-                (shift 7 0 (rectangle 1 6))
-                (shift 0 6 (rectangle 1 6))
-                (shift 7 6 (rectangle 1 6))
-            })
+        ("TableBoard"
             {
-            (track "Track1" [#] P1 directed:True)
-            (track "Track2" [#] P1 directed:True)
+            (track [#] P1)
+            (track [#] P2)
             }
-            use:Vertex
         )
         <Dice:dice>
         (piece "Disc" Each
@@ -105,7 +98,7 @@
         (useFor "Ruleset/Three Six-Sided Dice (Incomplete)" (source "Bock-Raming 1995a."))
         (useFor "Ruleset/Three Six-Sided Dice (Incomplete)" (id "1760"))
         (source "Bock-Raming 1995: 114-115.")
-        (version "1.3.6")
+        (version "1.3.7")
         (classification "board/race/escape/reconstruction")
         (origin "This game was played in India, from around 1126 to 1138.")
         }

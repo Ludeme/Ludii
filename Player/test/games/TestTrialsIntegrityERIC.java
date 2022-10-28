@@ -135,7 +135,7 @@ public class TestTrialsIntegrityERIC
 
 				final File trialsDir = new File(trialDirPath);
 
-				if (!trialsDir.exists())
+				if (!trialsDir.exists()) 
 				{
 					System.err.println("WARNING: No directory of trials exists at: " + trialsDir.getAbsolutePath());
 					continue;

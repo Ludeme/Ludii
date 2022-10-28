@@ -18,7 +18,7 @@ public class HoundsAndJackalsStyle extends BoardStyle
 		final HoundsAndJackalsPlacement houndsAndJackalsPlacement = new HoundsAndJackalsPlacement(bridge, this);
 		containerPlacement = houndsAndJackalsPlacement;
 		containerDesign = new HoundsAndJackalsDesign(this, houndsAndJackalsPlacement);
-	}
+	} 
 	
 	//-------------------------------------------------------------------------
 	

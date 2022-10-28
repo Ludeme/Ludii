@@ -46,7 +46,7 @@ public final class TrackSite extends BaseIntFunction
 	)
 	{
 		switch (trackSiteType)
-		{
+		{ 
 		case FirstSite:
 			return new TrackSiteFirstTrack(player, role, name, from, If);
 		default:

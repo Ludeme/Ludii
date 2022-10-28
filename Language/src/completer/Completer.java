@@ -9,12 +9,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import main.StringRoutines;
-//import main.StringRoutines;
+import main.grammar.Define;
 import main.grammar.Report;
 import parser.Expander;
 
@@ -45,12 +47,13 @@ public class Completer
 	//-------------------------------------------------------------------------
 	
 	/**
+	 * Creates all completions exhautively.
 	 * @param raw       Partial raw game description.
 	 * @param maxCompletions Maximum number of completions to make (default is 1, e.g. for Travis tests).
 	 * @param report    Report log for warnings and errors.
 	 * @return List of completed (raw) game descriptions ready for expansion and parsing.        
 	 */
-	public static List<Completion> complete(final String raw, final int maxCompletions, final Report report)
+	public static List<Completion> completeExhaustive(final String raw, final int maxCompletions, final Report report)
 	{
 		System.out.println("Completer.complete(): Completing at most " + maxCompletions + " descriptions...");
 
@@ -58,7 +61,7 @@ public class Completer
 
 		// Create list of alternative Descriptions, as each will need to be expanded
 		final Map<String, String> ludMap = getAllLudContents();
-		final Map<String, String> defMap = getAllLudContents();
+		final Map<String, String> defMap = getAllDefContents();
 		
 		final List<Completion> queue = new ArrayList<Completion>();
 		queue.add(new Completion(new String(raw)));
@@ -78,7 +81,7 @@ public class Completer
 			}
 			
 			// Complete the next completion clause
-			nextCompletion(comp, queue, ludMap, defMap, report);		
+			nextCompletionExhaustive(comp, queue, ludMap, defMap, report);		
 		}
 				
 		return completions;
@@ -88,10 +91,11 @@ public class Completer
 
 	/**
 	 * Process next completion and add results to queue.
+	 * Completes in order according to next available valid completion.
 	 * @param queue
 	 * @param report
 	 */
-	public static void nextCompletion
+	public static void nextCompletionExhaustive
 	(
 		final Completion completion, final List<Completion> queue, 
 		final Map<String, String> ludMap, final Map<String, String> defMap, 
@@ -228,6 +232,205 @@ public class Completer
 	//-------------------------------------------------------------------------
 
 	/**
+	 * Creates list of completions irrespective of previous completions.
+	 * @param raw       Partial raw game description.
+	 * @param maxCompletions Maximum number of completions to make (default is 1, e.g. for Travis tests).
+	 * @param report    Report log for warnings and errors.
+	 * @return List of completed (raw) game descriptions ready for expansion and parsing.        
+	 */
+	public static List<Completion> completeSampled(final String raw, final int maxCompletions, final Report report)
+	{
+//		System.out.println("\nCompleter.complete(): Completing at most " + maxCompletions + " descriptions...");
+
+		final List<Completion> completions = new ArrayList<Completion>();
+
+		// Create list of alternative Descriptions, as each will need to be expanded
+		final Map<String, String> ludMap = getAllLudContents();
+		final Map<String, String> defMap = getAllDefContents();
+		
+		for (int n = 0; n < maxCompletions; n++)
+		{
+			Completion comp = new Completion(new String(raw));
+			while (needsCompleting(comp.raw()))
+				comp = nextCompletionSampled(comp, ludMap, defMap, report);		
+			completions.add(comp);
+		}
+		
+//		System.out.println("\nList of completions:");
+//		for (final Completion comp : completions)
+//			System.out.println(comp.raw());
+		
+		return completions;
+	}
+
+	//-------------------------------------------------------------------------
+
+	/**
+	 * Process next completion and add results to queue.
+	 * Solves the next completion independently by sampling from candidates.
+	 * @param report
+	 */
+	public static Completion nextCompletionSampled
+	(
+		final Completion completion, 
+		final Map<String, String> ludMap, final Map<String, String> defMap, 
+		final Report report
+	)
+	{
+//		System.out.println("\nCompleting next completion for raw string:\n" + completion.raw());
+		
+		final Random rng = new Random();
+	
+		final List<Completion> completions = new ArrayList<Completion>();
+		
+		// Find opening and closing bracket locations
+		final String raw = Expander.removeComments(completion.raw());
+		final int from = raw.indexOf("[");
+		final int to = StringRoutines.matchingBracketAt(raw, from);
+
+		// Get reconstruction clause (substring within square brackets)
+		final String left   = raw.substring(0, from);
+		final String clause = raw.substring(from + 1, to);
+		final String right  = raw.substring(to + 1);
+		
+		//System.out.println("left  is: " + left);
+		//System.out.println("clause is: " + clause);
+		//System.out.println("right is: " + right);
+
+		// Determine left and right halves of parents
+		final List<String[]> parents = determineParents(left, right);
+		
+//		System.out.println("Parents:\n");
+//		for (final String[] parent : parents)
+//			System.out.println(parent[0] + "?" + parent[1] + "\n");
+		
+		final List<String> choices      = extractChoices(clause);
+		final List<String> inclusions   = new ArrayList<String>();
+		final List<String> exclusions   = new ArrayList<String>();
+		//final List<String> enumerations = new ArrayList<String>();
+		int enumeration = 0;
+
+		for (int c = choices.size() - 1; c >= 0; c--)
+		{
+			final String choice = choices.get(c);
+			//System.out.println("choice is: " + choice);
+			if 
+			(
+				choice.length() > 3 && choice.charAt(0) == '[' 
+				&& 
+				choice.charAt(1) == '+' && choice.charAt(choice.length() - 1) == ']'
+			)
+			{
+				// Is an inclusion
+				inclusions.add(choice.substring(2, choice.length() - 1).trim());
+				choices.remove(c);
+			}
+			else if 
+			(
+				choice.length() > 3 && choice.charAt(0) == '[' 
+				&& 
+				choice.charAt(1) == '-' && choice.charAt(choice.length() - 1) == ']'
+			)
+			{
+				// Is an exclusion
+				exclusions.add(choice.substring(2, choice.length() - 1).trim());
+				choices.remove(c);
+			}
+			else if 
+			(
+				choice.length() >= 1 && choice.charAt(0) == '#' 
+				|| 
+				choice.length() >= 3 && choice.charAt(0) == '[' 
+				&& 
+				choice.charAt(1) == '#' && choice.charAt(choice.length() - 1) == ']'
+			)
+			{
+				// Is an enumeration
+				//enumerations.add(choice.substring(1, choice.length() - 1).trim());
+				enumeration = numHashes(choice);
+				//System.out.println("Enumeration has " + enumeration + " hashes...");
+				choices.remove(c);
+			}
+		}
+			
+		if (enumeration > 0)
+		{
+			// Enumerate on parents
+			final String[] parent = parents.get(enumeration - 1);
+			
+//			System.out.println("\nEnumerating on parent " + enumeration + ": \"" + parent[0] + "\" + ? + \"" + parent[1] + "\"");
+			enumerateMatches(left, right, parent, ludMap, completions, completion.score());
+			enumerateMatches(left, right, parent, defMap, completions, completion.score());
+		}
+		else
+		{
+			// Handle choices as usual
+			for (int n = 0; n < choices.size(); n++)
+			{
+				final String choice = choices.get(n);
+				
+				if (!exclusions.isEmpty())
+				{
+					// Check whether this choice contains excluded text
+					boolean found = false;
+					for (final String exclusion : exclusions)
+						if (choice.contains(exclusion))
+						{
+							found = true;
+							break;
+						}
+					if (found)
+						continue;  // excluded text is present
+				}
+				
+				if (!inclusions.isEmpty())
+				{
+					// Check that this choice contains included text
+					boolean found = false;
+					for (final String inclusion : inclusions)
+						if (choice.contains(inclusion))
+						{
+							found = true;
+							break;
+						}
+					if (!found)
+						continue;  // included text is not present
+				}
+				
+				final String str = raw.substring(0, from) + choice + raw.substring(to + 1);
+				final Completion newCompletion = new Completion(str);
+				
+//				System.out.println("\n**********************************************************");
+//				System.out.println("completion " + n + "/" + choices.size() + " is:\n" + completion);
+				
+				//queue.add(newCompletion);
+				
+				completions.add(newCompletion);
+			}
+		}		
+					
+		if (completions.isEmpty())
+		{
+			// No valid completions for this completion point
+			if (report != null)
+				report.addError("No completions for: " + raw);
+			return null;
+			
+			// **
+			// ** TODO: Choose preferred completion based on context.
+			// **
+			// ** TODO: Maybe use UCB to balance reward with novelty, i.e. prefer 
+			// **       high scoring candidates but not the same ones every time, 
+			// **       also try low scoring ones occasionally.
+			// **
+		}
+		
+		return completions.get(rng.nextInt(completions.size()));
+	}
+	
+	//-------------------------------------------------------------------------
+
+	/**
 	 * Enumerate all parent matches in the specified map.
 	 * @param parent
 	 * @param map
@@ -242,44 +445,126 @@ public class Completer
 	{
 		for (Map.Entry<String, String> entry : map.entrySet()) 
 		{
-			final String mapString = entry.getValue();
+			final String otherDescription = entry.getValue();
+			
+			final String candidate = new String(otherDescription);
 			
 			// **
 			// ** TODO: Determine distance between map entry and this completion
 			// **
 			final double distance = 0.1;  // dummy value for testing
 			
-			final int l = mapString.indexOf(parent[0]);
+			final int l = candidate.indexOf(parent[0]);
 			if (l < 0)
 				continue;  // not a match
 			
-			final String secondPart = mapString.substring(l + parent[0].length());
+			String secondPart = candidate.substring(l + parent[0].length());  //.trim();
 			
-			final int r = secondPart.indexOf(parent[1]);
+//			System.out.println("\notherDescription is: " + otherDescription);
+//			System.out.println("parent[0] is: " + parent[0]);
+//			System.out.println("parent[1] is: " + parent[1]);
+//			System.out.println("secondPart is: " + secondPart);
+//			System.out.println("left  is: " + left);
+//			System.out.println("right is: " + right);
 			
+//			final int r = secondPart.indexOf(parent[1]);
+			
+			final int r = (StringRoutines.isBracket(secondPart.charAt(0)))
+							? StringRoutines.matchingBracketAt(secondPart, 0)
+							: secondPart.indexOf(parent[1]) - 1;
+
 			if (r >= 0)
 			{
 				// Is a match
-				final String match = mapString.substring(l, l + parent[0].length() + r + parent[1].length());
+				//final String match = mapString.substring(l, l + parent[0].length() + r + parent[1].length());
+				final String match = secondPart.substring(0, r + 1);  //l, l + parent[0].length() + r + parent[1].length());
 				//System.out.println("match is: " + match);
 				
-				final String str = 
-						left.substring(0, left.length() - parent[0].length())
-						+
-						match
-						+
-						right.substring(parent[1].length());
-				final Completion completion = new Completion(str);
-				//System.out.println("completion is:\n" + completion);
+//				final String str = 
+//						left.substring(0, left.length() - parent[0].length())
+//						+
+//						match
+//						+
+//						right.substring(parent[1].length());
+
+				//final String str = left + " " + match + " " + right;
+				String str = left + match + right;
 				
+				// Eric: I COMMENTED THIS, BECAUSE this code is making an infinite loop on some cases and break Travis.
+				//str = addLocalDefines(str, otherDescription);
+				
+				final Completion completion = new Completion(str);
+				//System.out.println("completion is:\n" + completion.raw());
+					
 				if (!queue.contains(completion))
 				{
-					//System.out.println("Adding completion:\n" + completion);
+					//System.out.println("Adding completion:\n" + completion.raw());
 					completion.setScore(confidence * (1 - distance));
 					queue.add(completion);
 				}
 			}	
 		}	
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return Completed string with all necessary local defines added.
+	 */
+	static String addLocalDefines(final String current, final String otherDescription)
+	{
+		// Make a list of local defines in the current description
+		final List<Define> localDefinesCurrent = new ArrayList<Define>();
+		
+		Expander.extractDefines(current, localDefinesCurrent, null);
+
+//		System.out.println("Local defines (current):");
+//		for (final Define def : localDefinesCurrent)
+//			System.out.println("-- " + def.formatted());
+
+		// Make a list of local defines in the other description
+		final List<Define> localDefinesOther = new ArrayList<Define>();
+		
+		Expander.extractDefines(otherDescription, localDefinesOther, null);
+
+//		System.out.println("Local defines (other):");
+//		for (final Define def : localDefinesOther)
+//			System.out.println("-- " + def.formatted());
+
+		// Determine which defines from the other description are used in the current description
+		final BitSet used = new BitSet();
+		
+		for (int n = 0; n < localDefinesOther.size(); n++)
+			if (current.contains(localDefinesOther.get(n).tag()))
+				used.set(n);
+		
+		// Turn off the ones already present in the current description
+		for (int n = 0; n < localDefinesCurrent.size(); n++)
+		{
+			if (!used.get(n))
+				continue;  // not used
+			
+			final Define localDefineCurrent = localDefinesCurrent.get(n);
+			
+			boolean found = false;
+			for (int o = 0; o < localDefinesOther.size() && !found; o++)
+			{
+				final Define localDefineOther = localDefinesOther.get(o);
+				if (localDefineOther.tag().equals(localDefineCurrent.tag()))
+					found = true;
+			}
+
+			if (found)
+				used.set(n, false);  // turn it off again
+		}
+		
+		// Prepend used defines to the current string
+		String result = new String(current);
+
+		for (int n = used.nextSetBit(0); n >= 0; n = used.nextSetBit(n + 1))
+			result = localDefinesOther.get(n).formatted() + result;
+		
+		return result;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -402,8 +687,12 @@ public class Completer
 			
 			// Store the two halves of the parent
 			final String[] parent = new String[2];
-			parent[0] = left.substring(l);
-			parent[1] = right.substring(0, r);
+			parent[0] = left.substring(l);  //.trim();
+			parent[1] = right.substring(0, r);  //.trim();
+			
+			// Strip leading spaces from parent[0]
+			while (parent[0].length() > 0 && parent[0].charAt(0) == ' ')
+				parent[0] = parent[0].substring(1);
 			
 			//System.out.println("Parent " + p + " is " + parent[0] + "?" + parent[1]);
 			
@@ -716,7 +1005,11 @@ public class Completer
 					        line = br.readLine();
 					    }
 					    
-					    final String everything = sb.toString();
+					    String everything = sb.toString();
+					    
+					    // Strip out formatting so that completion string matching it more robust
+					    everything = Expander.cleanUp(everything, null);
+					    		
 					    fileContents.put(fileEntry.getName(), everything);
 					} 
 					catch (final FileNotFoundException e) 
@@ -738,16 +1031,26 @@ public class Completer
 	
 	/**
 	 * Save reconstruction to file.
-	 * @param name    Reconstruction name for file.
+	 * @param path Path to save output file (will use default /Common/res/out/recons/ if null).
+	 * @param name Output file name for reconstruction.
 	 * @throws IOException 
 	 */
 	public static void saveCompletion
 	(
-		final String name, final Completion completion
+		final String path, final String name, final Completion completion
 	) throws IOException
 	{
-		final String outFileName = "../Common/res/out/recons/" + name + "-" + 
-									String.format("%.3f", Double.valueOf(completion.score())) + ".lud";	
+		final String safePath = (path != null) ? path : "../Common/res/out/recons/";
+		
+		// **
+		// ** TODO: Need to check if this path exists! If not, then try to make it.
+		// **
+		
+		//final String scoreString = String.format("%.3f", Double.valueOf(completion.score()));
+		//final String outFileName = safePath + name + "-" + index + "-" + scoreString + ".lud";	
+
+		final String outFileName = safePath + name + ".lud";
+		
 		// Prepare the output file
 		final File file = new File(outFileName);
 		if (!file.exists())

@@ -72,6 +72,13 @@ public class Define
 	
 	//---------------------------------------------------- --------------------
 
+	public String formatted()
+	{
+		return "(define " + tag + " " + expression + ")";
+	}
+
+	//---------------------------------------------------- --------------------
+
 	@Override
 	public String toString()
 	{
@@ -79,8 +86,7 @@ public class Define
 		str += "{tag:" + tag + ", expression:" + expression + ", parameterised:" + parameterised + "}";
 		return str;
 	}
-	
-	
+		
 	//---------------------------------------------------- --------------------
 	
 

@@ -1,13 +1,9 @@
 package app.display.dialogs.visual_editor.view.designPalettes;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-
-import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 /**
  * Stores colors and fonts for objects in the visual editor
@@ -140,13 +145,13 @@ public class DesignPalette
         return instance;
     }
 
-    public static List<String> palettes()
+    @SuppressWarnings("resource")
+	public static List<String> palettes()
     {
-        List<String> names = new ArrayList<>();
+        final List<String> names = new ArrayList<>();
         try
         {
-            try (@SuppressWarnings("resource")
-			BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(DesignPalette.class.getResourceAsStream(PALETTE_FILE_PATH)))))
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(DesignPalette.class.getResourceAsStream(PALETTE_FILE_PATH)))))
 			{
                 System.out.println("Loading palettes...");
 				br.lines().forEach(line ->
@@ -160,18 +165,18 @@ public class DesignPalette
 				br.close();
 			}
         }
-        catch(Exception e)
+        catch(final Exception e)
         {
             e.printStackTrace();
         }
         return names;
     }
 
-    public static void loadPalette(String paletteName)
+    public static void loadPalette(final String paletteName)
     {
         System.out.println("Loading palette: " + paletteName);
         // read json
-        JSONObject palette = readPaletteJSON(paletteName);
+        final JSONObject palette = readPaletteJSON(paletteName);
         if(palette == null)
         {
             System.out.println("Palette not found");
@@ -181,18 +186,18 @@ public class DesignPalette
         setColours(palette.toMap());
     }
 
-    private static JSONObject readPaletteJSON(String paletteName)
+    private static JSONObject readPaletteJSON(final String paletteName)
     {
         try (InputStream is = DesignPalette.class.getResourceAsStream(PALETTE_FILE_PATH + paletteName + ".json"))
 		{
 			if(is == null)
 			    return null;
-			JSONObject obj = new JSONObject(new JSONTokener(is));
+			final JSONObject obj = new JSONObject(new JSONTokener(is));
 			try
 			{
 				is.close();
 			}
-			catch (IOException e)
+			catch (final IOException e)
 			{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -207,12 +212,12 @@ public class DesignPalette
 		}
     }
 
-    private static void setColours(Map<String, Object> palette)
+    private static void setColours(final Map<String, Object> palette)
     {
-        for(Map.Entry<String, Object> entry : palette.entrySet())
+        for(final Map.Entry<String, Object> entry : palette.entrySet())
         {
-            String key = entry.getKey();
-            String value = (String) entry.getValue();
+            final String key = entry.getKey();
+            final String value = (String) entry.getValue();
 
             if(key.equals("name"))
             {
@@ -229,7 +234,7 @@ public class DesignPalette
         }
     }
 
-    private static void setColour(String name, Color colour)
+    private static void setColour(final String name, final Color colour)
     {
         switch(name.toLowerCase())
         {
@@ -314,7 +319,7 @@ public class DesignPalette
         }
     }
 
-    private static void setIcons(String style)
+    private static void setIcons(final String style)
     {
         switch(style)
         {
@@ -406,7 +411,7 @@ public class DesignPalette
     public static int BACKGROUND_LINE_PADDING = (int) (DEFAULT_BACKGROUND_LINE_PADDING * SCALAR);
 
 
-    public static void scale(float scalar)
+    public static void scale(final float scalar)
     {
         SCALAR *= scalar;
         SCALAR = (float) Math.min(2.0, Math.max(0.85, SCALAR));
@@ -793,12 +798,12 @@ public class DesignPalette
     public static EmptyBorder HEADER_PADDING_BORDER = new EmptyBorder(DesignPalette.HEADER_PADDING_TOP,0,DesignPalette.HEADER_PADDING_BOTTOM,0);
 
 
-    private static URL getIconURL(String path)
+    private static URL getIconURL(final String path)
     {
         return DesignPalette.class.getResource("/visual_editor/"+path);
     }
 
-    private static ImageIcon getIcon(String path)
+    private static ImageIcon getIcon(final String path)
     {
         return new ImageIcon(getIconURL(path));
     }

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import features.Feature;
 import features.spatial.elements.AbsoluteFeatureElement;
@@ -1522,11 +1523,18 @@ public abstract class SpatialFeature extends Feature
 	/**
 	 * @param game The game for which we're generating features (passed such that
 	 * 	we can normalise)
+	 * @param generalisers The set in which we'll collect the generated generalisers
+	 * @param numRecursions Number of recursive calls we're still allowed to do
 	 * @return List of new spatial features that generalise (in a game-independent
 	 * manner, i.e. having strictly fewer elements in patterns or action-specifiers)
 	 * this feature.
 	 */
-	public abstract List<SpatialFeature> generateGeneralisers(final Game game);
+	public abstract List<SpatialFeature> generateGeneralisers
+	(
+		final Game game, 
+		final Set<RotRefInvariantFeature> generalisers,
+		final int numRecursions
+	);
 	
 	//-------------------------------------------------------------------------
 

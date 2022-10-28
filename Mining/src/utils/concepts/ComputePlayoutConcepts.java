@@ -438,7 +438,6 @@ public class ComputePlayoutConcepts
 		mapStarting.put(Concept.NumStartComponentsBoard.name(), Double.valueOf(numStartComponentsBoard / allStoredRNG.size()));
 		
 		return mapStarting;
-		
 	}
 	
 	//------------------------------Frequency CONCEPTS-----------------------------------------------------

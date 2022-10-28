@@ -284,6 +284,7 @@
     		</fileset>
     	</copy>
     	<copy file="${Mining.location}/res/concepts/input/GameRulesets.csv" tofile="bin/concepts/input/GameRulesets.csv" />
+    	<copy file="${Mining.location}/res/recons/input/RulesetFormatted.csv" tofile="bin/recons/input/RulesetFormatted.csv" />
     	<copy includeemptydirs="false" todir="bin/features">
     		<fileset dir="${Mining.location}/res/features">
     	    	<exclude name="**/*.launch"/>
@@ -402,10 +403,12 @@
 	        	<test name="features.TestGomokuFeatures" todir="${junit.output.dir}"/>
 	        	<test name="features.TestHexFeatures" todir="${junit.output.dir}"/>
 	        	<test name="features.TestKharbagaFeatures" todir="${junit.output.dir}"/>
+	        	<test name="features.TestSPatterNetFeatureSet" todir="${junit.output.dir}"/>
 	        	<test name="features.TestYavalathFeatures" todir="${junit.output.dir}"/>
 	        	<test name="tensor.TestYavalathTensors" todir="${junit.output.dir}"/>
 	        	<test name="other.TestChunkSets" todir="${junit.output.dir}"/>
 	        	<test name="other.TestZhangShasha" todir="${junit.output.dir}"/>
+	        	<test name="travis.recons.ReconstructionTest" todir="${junit.output.dir}"/>
 
 	        	<!-- General Travis Test uniting many others tests. --> 
 				<test name="travis.TravisTest" todir="${junit.output.dir}"/>

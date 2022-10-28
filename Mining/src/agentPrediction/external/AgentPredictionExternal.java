@@ -3,17 +3,13 @@ package agentPrediction.external;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-
-import org.json.JSONObject;
+import java.util.Map;
 
 import game.Game;
-import manager.Manager;
 import manager.ai.AIRegistry;
-import manager.ai.AIUtil;
-import metadata.ai.heuristics.Heuristics;
 import metrics.Evaluation;
 import other.concept.Concept;
 import other.concept.ConceptComputationType;
@@ -22,7 +18,7 @@ import utils.AIUtils;
 import utils.concepts.ComputePlayoutConcepts;
 
 /**
- * Predict the best agent/heuristic using external python models.
+ * Predict the best agent/heuristic using external Python models.
  * 
  * Models are produced by the "generate_agent_heuristic_prediction_models()" function in the Sklearn "Main.py" file.
  *
@@ -32,22 +28,21 @@ public class AgentPredictionExternal
 {
 
 	/**
-	 * Predict the best agent/heuristic using external python models.
-	 * @param manager
+	 * Predict the best agent/heuristic using external Python models.
+	 * @param game
 	 * @param modelFilePath
-	 * @param playerIndexToUpdate
 	 * @param classificationModel
 	 * @param heuristics
 	 * @param compilationOnly
 	 */
-	public static void predictBestAgent(final Manager manager, final String modelFilePath, final int playerIndexToUpdate, final boolean classificationModel, final boolean heuristics, final boolean compilationOnly)
+	public static Map<String,Double> predictBestAgent(final Game game, final String modelFilePath, final boolean classificationModel, final boolean heuristics, final boolean compilationOnly)
 	{
-		final Game game = manager.ref().context().game();
-		
 		final long startTime = System.currentTimeMillis();
 		
 		if (!compilationOnly)
 			ComputePlayoutConcepts.updateGame(game, new Evaluation(), 10, -1, 1, "Random", true);
+		else
+			ComputePlayoutConcepts.updateGame(game, new Evaluation(), 0, -1, 1, "Random", true);	// Still need to run this with zero trials to get compilation concepts
 
 		final double ms = (System.currentTimeMillis() - startTime);
 		System.out.println("Playouts computation done in " + ms + " ms.");
@@ -56,33 +51,7 @@ public class AgentPredictionExternal
 		if (heuristics)
 			allModelNames = Arrays.asList(AIUtils.allHeuristicNames());
 		
-		final String bestPredictedAgentName = AgentPredictionExternal.predictBestAgentName(manager, allModelNames, modelFilePath, classificationModel, compilationOnly);
-		
-		manager.getPlayerInterface().selectAnalysisTab();
-		manager.getPlayerInterface().addTextToAnalysisPanel("Best Predicted Agent/Heuristic is " + bestPredictedAgentName + "\n");
-		manager.getPlayerInterface().addTextToAnalysisPanel("//-------------------------------------------------------------------------\n");
-		
-		if (!heuristics)
-		{
-			if (playerIndexToUpdate > 0)
-			{
-				final JSONObject json = new JSONObject().put("AI",
-						new JSONObject()
-						.put("algorithm", bestPredictedAgentName)
-						);
-				
-				AIUtil.updateSelectedAI(manager, json, playerIndexToUpdate, bestPredictedAgentName);
-			}
-		}
-		else
-		{
-			if (manager.aiSelected()[playerIndexToUpdate].ai() != null)
-			{
-				final Heuristics heuristic = AIUtils.convertStringtoHeuristic(bestPredictedAgentName);
-				manager.aiSelected()[playerIndexToUpdate].ai().setHeuristics(heuristic);
-				manager.aiSelected()[playerIndexToUpdate].ai().initAI(manager.ref().context().game(), playerIndexToUpdate);
-			}
-		}
+		return AgentPredictionExternal.predictBestAgentName(game, allModelNames, modelFilePath, classificationModel, compilationOnly);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -90,9 +59,10 @@ public class AgentPredictionExternal
 	/**
 	 * @return Name of the best predicted agent from our pre-trained set of models.
 	 */
-	private static String predictBestAgentName(final Manager manager, final List<String> allValidLabelNames, final String modelFilePath, final boolean classificationModel, final boolean compilationOnly)
+	public static Map<String,Double> predictBestAgentName(final Game game, final List<String> allValidLabelNames, final String modelFilePath, final boolean classificationModel, final boolean compilationOnly)
 	{
-		final Game game  = manager.ref().context().game();
+		final Map<String, Double> agentPredictions = new HashMap<>();
+		
 		String sInput = null;
 		String sError = null;
 
@@ -131,23 +101,15 @@ public class AgentPredictionExternal
 	            			if (classNames.length != values.length)
 	            				System.out.println("ERROR! Class Names and Values should be the same length.");
 	            			
-	            			double highestProbabilityValue = -1.0;
-	            			String highestProbabilityName = "Random";
 	            			for (int i = 0; i < classNames.length; i++)
 	            			{
-	            				manager.getPlayerInterface().addTextToAnalysisPanel("Predicted probability for " + classNames[i] + ": " + values[i] + "\n");
-	            				if (values[i].doubleValue() > highestProbabilityValue)
-	            				{
-	            					highestProbabilityValue = values[i].doubleValue();
-	            					highestProbabilityName = classNames[i];
-	            				}
+	            				agentPredictions.put(classNames[i], values[i]);
 	            			}
-	            			
-	            			return highestProbabilityName;
+	            			return agentPredictions;
 	            		}
 	            		catch (final Exception e)
 	            		{
-	            			return sInput.split("=")[1];
+	            			e.printStackTrace();
 	            		}
 	            	}	
 	            }
@@ -165,7 +127,6 @@ public class AgentPredictionExternal
         	else
         	{
         		// Record the predicted value for each agent.
-        		final ArrayList<Double> allValidAgentPredictedValues = new ArrayList<>();
         		for (final String agentName : allValidLabelNames)
         		{
         			final String arg1 = modelFilePath;
@@ -183,8 +144,7 @@ public class AgentPredictionExternal
      	            	if (sInput.contains("PREDICTION"))
      	            	{
      	            		final Double predictedValue = Double.valueOf(sInput.split("=")[1]);
-     	            		allValidAgentPredictedValues.add(predictedValue);
-     	            		manager.getPlayerInterface().addTextToAnalysisPanel("Predicted win-rate for " + agentName + ": " + predictedValue + "\n");
+     	            		agentPredictions.put(agentName, predictedValue);
      	            	}
      	            }
      	            
@@ -196,19 +156,8 @@ public class AgentPredictionExternal
      	                System.out.println(sError);
      	            }
         		}
-        		
-        		// Select the agent with the best predicted score.
-        		String bestAgentName = "Random";
-        		double bestPredictedValue = -1.0;
-        		for (int i = 0; i < allValidLabelNames.size(); i++)
-        		{
-        			if (allValidAgentPredictedValues.get(i).doubleValue() > bestPredictedValue)
-        			{
-        				bestAgentName = allValidLabelNames.get(i);
-        				bestPredictedValue = allValidAgentPredictedValues.get(i).doubleValue();
-        			}
-        		}
-        		return bestAgentName;
+
+        		return agentPredictions;
         	}
         }
         catch (final IOException e) 
@@ -216,7 +165,7 @@ public class AgentPredictionExternal
             e.printStackTrace();
         }
     
-		return "Random";
+		return agentPredictions;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -256,6 +205,60 @@ public class AgentPredictionExternal
 		sb.deleteCharAt(sb.length()-1);
 		return sb.toString();
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param modelName should be the name of the model to use (same as from GUI), e.g. "BayesianRidge"
+	 * @param useClassifier
+	 * @param useHeuristics
+	 * @param useCompilationOnly
+	 */
+	public static String getModelPath(final String modelName, final boolean useClassifier, final boolean useHeuristics, final boolean useCompilationOnly)
+	{
+		String modelFilePath = modelName;
+		if (useClassifier)
+			modelFilePath += "-Classification";
+		else
+			modelFilePath += "-Regression";
+		if (useHeuristics)
+			modelFilePath += "-Heuristics";
+		else
+			modelFilePath += "-Agents";
+		if (useCompilationOnly)
+			modelFilePath += "-True";
+		else
+			modelFilePath += "-False";
+		
+		return modelFilePath;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+//	public static void updateAgent()
+//	{
+//		if (!heuristics)
+//		{
+//			if (playerIndexToUpdate > 0)
+//			{
+//				final JSONObject json = new JSONObject().put("AI",
+//						new JSONObject()
+//						.put("algorithm", bestPredictedAgentName)
+//						);
+//				
+//				AIUtil.updateSelectedAI(manager, json, playerIndexToUpdate, bestPredictedAgentName);
+//			}
+//		}
+//		else
+//		{
+//			if (manager.aiSelected()[playerIndexToUpdate].ai() != null)
+//			{
+//				final Heuristics heuristic = AIUtils.convertStringtoHeuristic(bestPredictedAgentName);
+//				manager.aiSelected()[playerIndexToUpdate].ai().setHeuristics(heuristic);
+//				manager.aiSelected()[playerIndexToUpdate].ai().initAI(manager.ref().context().game(), playerIndexToUpdate);
+//			}
+//		}
+//	}
 	
 	//-------------------------------------------------------------------------
 	

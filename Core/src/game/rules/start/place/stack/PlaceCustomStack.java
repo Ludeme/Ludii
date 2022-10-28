@@ -279,8 +279,8 @@ public final class PlaceCustomStack extends StartRule
 		if (valueFn.eval(new Context(game, new Trial(game))) != Constants.UNDEFINED)
 			flags |= GameType.Value;
 
-		if (countFn.eval(new Context(game, new Trial(game))) > 1)
-			flags |= GameType.Count;
+//		if (countFn.eval(new Context(game, new Trial(game))) > 1)
+//			flags |= GameType.Count;
 
 		flags |= countFn.gameFlags(game);
 		flags |= rotationFn.gameFlags(game);

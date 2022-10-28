@@ -64,4 +64,91 @@ public class QrCodeGeneration
 			e1.printStackTrace();
 		} 
 	}
+	
+	/**
+	 * To be used only for exhibition QR codes.
+	 */
+//	public static void main(String[] args)
+//	{
+//		final File startFolder = new File("../Common/res/lud");
+//		final List<File> gameDirs = new ArrayList<File>();
+//		gameDirs.add(startFolder);
+//
+//		final List<File> entries = new ArrayList<File>();
+//
+//		//final String moreSpecificFolder = "../Common/res/lud/board/war/leaping/diagonal";
+//		final String moreSpecificFolder = "";
+//		
+//		for (int i = 0; i < gameDirs.size(); ++i)
+//		{
+//			final File gameDir = gameDirs.get(i);
+//
+//			for (final File fileEntry : gameDir.listFiles())
+//			{
+//				if (fileEntry.isDirectory())
+//				{
+//					final String fileEntryPath = fileEntry.getPath().replaceAll(Pattern.quote("\\"), "/");
+//
+//					if (fileEntryPath.equals("../Common/res/lud/plex"))
+//						continue;
+//
+//					if (fileEntryPath.equals("../Common/res/lud/wip"))
+//						continue;
+//
+//					if (fileEntryPath.equals("../Common/res/lud/wishlist"))
+//						continue;
+//
+//					if (fileEntryPath.equals("../Common/res/lud/WishlistDLP"))
+//						continue;
+//
+//					if (fileEntryPath.equals("../Common/res/lud/test"))
+//						continue;
+//
+//					if (fileEntryPath.equals("../Common/res/lud/bad"))
+//						continue;
+//
+//					if (fileEntryPath.equals("../Common/res/lud/bad_playout"))
+//						continue;
+//
+//						gameDirs.add(fileEntry);
+//				}
+//				else
+//				{
+//					final String fileEntryPath = fileEntry.getPath().replaceAll(Pattern.quote("\\"), "/");
+//					if (moreSpecificFolder.equals("") || fileEntryPath.contains(moreSpecificFolder))
+//						entries.add(fileEntry);
+//				}
+//			}
+//		}
+//		
+//		for (File file : entries)
+//		{
+//			String gameName = file.getPath().substring(file.getPath().lastIndexOf('\\')+1);
+//			gameName = gameName.substring(0, gameName.length()-4);
+//			
+//			// Determine the file name
+//			String fileName = "qr-" + gameName;
+//
+//			//fileName = fileName.replaceAll(" ", "-");  // remove empty spaces
+//			//fileName = fileName.replaceAll("/", "-");  // remove slashes spaces
+//			fileName += ".png";
+//			
+//			// Determine URL to encode
+//			String url = "https://ludii.games/details.php?keyword=" + gameName; 
+//			url = url.replaceAll(" ", "%20");  // make URL valid HTML (yuck)
+//			
+//			final QrCode qr = QrCode.encodeText(url, QrCode.Ecc.MEDIUM);
+//		
+//			// Make the image
+//			final BufferedImage img = ToImage.toLudiiCodeImage(qr, 5, 2);   
+//			try
+//			{
+//				ImageIO.write(img, "png", new File(fileName));
+//			}
+//			catch (final IOException e1)
+//			{
+//				e1.printStackTrace();
+//			} 
+//		}
+//	}
 }

@@ -87,19 +87,23 @@ public class TestCompleter
 
 	static void testCompletion()
 	{
-		testCompletion("TestReconOneClause.lud");
-		testCompletion("TestReconTwoClauses.lud");
-		testCompletion("TestReconNested.lud");
-		testCompletion("TestReconRange.lud");
-		testCompletion("TestReconRanges.lud");
-		testCompletion("TestReconRangeSite.lud");
-		testCompletion("TestReconInclude.lud");
-		testCompletion("TestReconExclude.lud");
-		testCompletion("TestReconEnumeration1.lud");
-		testCompletion("TestReconEnumeration2.lud");
+		testCompletion(null, "TestReconOneClause.lud");
+		testCompletion(null, "TestReconTwoClauses.lud");
+		testCompletion(null, "TestReconNested.lud");
+		testCompletion(null, "TestReconRange.lud");
+		testCompletion(null, "TestReconRanges.lud");
+		testCompletion(null, "TestReconRangeSite.lud");
+		testCompletion(null, "TestReconInclude.lud");
+		testCompletion(null, "TestReconExclude.lud");
+		testCompletion(null, "TestReconEnumeration1.lud");
+		testCompletion(null, "TestReconEnumeration2.lud");
 	}
 	
-	static void testCompletion(final String fileName)
+	/**
+	 * @param outFilePath Path to save output file (will use default /Common/res/out/recons/ if null).
+	 * @param fileName    File name.
+	 */
+	static void testCompletion(final String outFilePath, final String fileName)
 	{
 		//final String fileName = "TestReconA.lud";
 		final String filePath = "../Common/res/lud/test/recon/" + fileName;
@@ -115,8 +119,8 @@ public class TestCompleter
 			System.out.println("File needs completing: " + Completer.needsCompleting(str));
 			
 			//final Report report = new Report();
-			final List<Completion> completions = Completer.complete(str, 3, null);   // save all completions
-			//final List<Completion> completions = Completer.complete(str, true, null);  // only save first completion for each file
+			//final List<Completion> completions = Completer.completeExhaustive(str, 3, null);   // save all completions
+			final List<Completion> completions = Completer.completeSampled(str, 3, null);  // only save first completion for each file
 			for (int n = 0; n < completions.size(); n++) 
 			{
 				final Completion completion = completions.get(n);
@@ -126,7 +130,7 @@ public class TestCompleter
 				final String outFileName = fileName.substring(0, suffixAt) + "-" + n; 			
 				try
 				{
-					Completer.saveCompletion(outFileName, completion);
+					Completer.saveCompletion(outFilePath, outFileName, completion);
 				} 
 				catch (IOException e)
 				{

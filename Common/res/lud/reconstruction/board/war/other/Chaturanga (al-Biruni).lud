@@ -18,10 +18,15 @@
         (rules " The Elephant moves forward one space or diagonally forward or backward. ")
         (source "DLP evidence.")
         (id "1441")
-        (version "1.3.6")
+        (version "1.3.7")
         (classification "board/war/reconstruction")
         (origin "This game was played in Pakistan, from around 973 to 1043.")
         }
     )
+    
+    (recon {
+        (concept "StepDecision" True)
+        (concept "PieceDirection" True)
+    })
     
 )

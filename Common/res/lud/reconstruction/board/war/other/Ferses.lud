@@ -4,7 +4,7 @@
     (rules
         (start [#])
         (play [#]) // Pieces move forward one space diagonally. Pieces may be promoted. 
-        (end (if (no Pieces Next) (result Mover Win))) 
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -19,9 +19,16 @@
         (rules "Twelve pieces per player. Pieces move forward one space diagonally. Pieces may be promoted. Players lose when all of their pieces are taken. ")
         (source "DLP evidence.")
         (id "886")
-        (version "1.3.6")
+        (version "1.3.7")
         (classification "board/war/reconstruction")
         }
     )
+    
+    (recon {
+        (concept "NumStartComponents" 24)
+        (concept "StepDecision" True)
+        (concept "PieceDirection" True)
+        (concept "PromotionEffect" True)
+    })
     
 )

@@ -277,9 +277,9 @@ public class MainMenu extends JMenuBar
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
 			
-//			menuItem = new JMenuItem("Game Description Length (All Games)");
-//			menuItem.addActionListener(al);
-//			menu.add(menuItem);
+			menuItem = new JMenuItem("Game Description Length (All Games)");
+			menuItem.addActionListener(al);
+			menu.add(menuItem);
 		}
 
 		//---------------------------------------------------------------------
@@ -466,41 +466,6 @@ public class MainMenu extends JMenuBar
 			
 			if (DesktopApp.devJar)
 			{
-				menu.addSeparator();
-				
-				submenu = new JMenu("Predict Best Agent/Heuristic (external)");
-				
-				final JMenu submenuAgent = new JMenu("Agent");
-				final JMenu submenuHeuristic = new JMenu("Heuristic");
-				
-				final JMenu submenuAgentReg = new JMenu("Regression");
-				final JMenu submenuHeuristicReg = new JMenu("Regression");
-				final JMenu submenuAgentCla = new JMenu("Classification");
-				final JMenu submenuHeuristicCla = new JMenu("Classification");
-				
-				final JMenu submenuAgentRegComp = new JMenu("Compilation");
-				final JMenu submenuHeuristicRegComp = new JMenu("Compilation");
-				final JMenu submenuAgentClaComp = new JMenu("Compilation");
-				final JMenu submenuHeuristicClaComp = new JMenu("Compilation");
-				final JMenu submenuAgentRegAll = new JMenu("All");
-				final JMenu submenuHeuristicRegAll = new JMenu("All");
-				final JMenu submenuAgentClaAll = new JMenu("All");
-				final JMenu submenuHeuristicClaAll = new JMenu("All");
-				
-				submenuAgentReg.add(submenuAgentRegComp);
-				submenuAgentReg.add(submenuAgentRegAll);
-				submenuHeuristicReg.add(submenuHeuristicRegComp);
-				submenuHeuristicReg.add(submenuHeuristicRegAll);
-				submenuAgentCla.add(submenuAgentClaComp);
-				submenuAgentCla.add(submenuAgentClaAll);
-				submenuHeuristicCla.add(submenuHeuristicClaComp);
-				submenuHeuristicCla.add(submenuHeuristicClaAll);
-				
-				submenuAgent.add(submenuAgentReg);
-				submenuHeuristic.add(submenuHeuristicReg);
-				submenuAgent.add(submenuAgentCla);
-				submenuHeuristic.add(submenuHeuristicCla);
-				
 				final File file = new File("../../LudiiPrivate/DataMiningScripts/Sklearn/res/trainedModels");
 				final String[] directories = file.list(new FilenameFilter() {
 					  @Override
@@ -509,6 +474,29 @@ public class MainMenu extends JMenuBar
 					  }
 					});
 				
+				menu.addSeparator();
+				
+				//---------------------------------------------------------------------
+				// Agent prediction
+				
+				submenu = new JMenu("Predict Best Agent (external)");
+				
+				final JMenu submenuAgentReg = new JMenu("Regression");
+				final JMenu submenuAgentCla = new JMenu("Classification");
+				
+				final JMenu submenuAgentRegComp = new JMenu("Compilation");
+				final JMenu submenuAgentClaComp = new JMenu("Compilation");
+				final JMenu submenuAgentRegAll = new JMenu("All");
+				final JMenu submenuAgentClaAll = new JMenu("All");
+				
+				submenuAgentReg.add(submenuAgentRegComp);
+				submenuAgentReg.add(submenuAgentRegAll);
+				submenuAgentCla.add(submenuAgentClaComp);
+				submenuAgentCla.add(submenuAgentClaAll);
+				
+				submenu.add(submenuAgentReg);
+				submenu.add(submenuAgentCla);
+
 				if (directories != null)
 				{
 					for (final String s : directories)
@@ -546,7 +534,37 @@ public class MainMenu extends JMenuBar
 								}
 							}
 						}
-						else
+					}
+				}
+				
+				menu.add(submenu);
+				
+				//---------------------------------------------------------------------
+				// Heuristic prediction
+				
+				submenu = new JMenu("Predict Best Heuristic (external)");
+
+				final JMenu submenuHeuristicReg = new JMenu("Regression");
+				final JMenu submenuHeuristicCla = new JMenu("Classification");
+				
+				final JMenu submenuHeuristicRegComp = new JMenu("Compilation");
+				final JMenu submenuHeuristicClaComp = new JMenu("Compilation");
+				final JMenu submenuHeuristicRegAll = new JMenu("All");
+				final JMenu submenuHeuristicClaAll = new JMenu("All");
+				
+				submenuHeuristicReg.add(submenuHeuristicRegComp);
+				submenuHeuristicReg.add(submenuHeuristicRegAll);
+				submenuHeuristicCla.add(submenuHeuristicClaComp);
+				submenuHeuristicCla.add(submenuHeuristicClaAll);
+				
+				submenu.add(submenuHeuristicReg);
+				submenu.add(submenuHeuristicCla);
+				
+				if (directories != null)
+				{
+					for (final String s : directories)
+					{
+						if (s.contains("Heuristics"))
 						{
 							if (s.contains("Classification"))
 							{
@@ -582,8 +600,40 @@ public class MainMenu extends JMenuBar
 					}
 				}
 				
-				submenu.add(submenuAgent);
-				submenu.add(submenuHeuristic);
+				menu.add(submenu);
+				
+				//---------------------------------------------------------------------
+				// Metric prediction
+				
+				submenu = new JMenu("Predict Metrics (external)");
+				
+				final JMenu submenuComp = new JMenu("Compilation");
+				final JMenu submenuAll = new JMenu("All");
+				
+				if (directories != null)
+				{
+					for (final String s : directories)
+					{
+						if (s.contains("Metrics"))
+						{
+							if (s.contains("True"))
+							{
+								menuItem = new JMenuItem(s.split("-")[0]);
+								menuItem.addActionListener(al);
+								submenuComp.add(menuItem);
+							}
+							else
+							{
+								menuItem = new JMenuItem(s.split("-")[0]);
+								menuItem.addActionListener(al);
+								submenuAll.add(menuItem);
+							}
+						}
+					}
+				}
+				
+				submenu.add(submenuComp);
+				submenu.add(submenuAll);
 				
 				menu.add(submenu);
 			}

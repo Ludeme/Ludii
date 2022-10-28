@@ -1,7 +1,13 @@
 package other.concept;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.List;
+import java.util.Map;
+
+import compiler.Compiler;
+import game.Game;
+import main.grammar.Description;
 
 /**
  * Defines known concepts used in a game.
@@ -11388,4 +11394,62 @@ public enum Concept
 		
 		return returnConcepts;
 	}
+	
+	/**
+	 * @param description The description of the game.
+	 * @return True if the game description involves the expected concepts.
+	 */
+	public static boolean isExpectedConcepts(final String description)
+	{
+		final Game game = (Game)Compiler.compileTest(new Description(description), false);
+
+		final BitSet booleanConcepts = game.computeBooleanConcepts();	
+		final Map<Integer, String> nonBooleanConcepts = game.computeNonBooleanConcepts();
+		final Map<String, Double> startConcepts;
+		
+		try {
+			startConcepts = game.startsConceptsWithoutRNG();
+		}
+		catch(Exception e) // In case the starting rules can not be applied, the concepts are not correct.
+		{
+			return false;
+		}
+		
+		final ArrayList<metadata.recon.concept.Concept> expectedConcepts = game.expectedConcepts();
+		
+		for(metadata.recon.concept.Concept conceptMeta : expectedConcepts)
+		{
+			if(conceptMeta != null)
+			{
+				final Concept concept = conceptMeta.concept();
+				final double minValue = conceptMeta.minValue();
+				final double maxValue = conceptMeta.maxValue();
+	
+				if(concept != null)
+				{
+					if(concept.dataType().equals(ConceptDataType.BooleanData))
+					{
+						if(!booleanConcepts.get(concept.id()))
+								return false;
+					}
+					else if(concept.type.equals(ConceptType.Start))
+					{
+						final Double value = startConcepts.get(concept.name());
+						if(minValue > value.doubleValue() || value.doubleValue() > maxValue)
+							return false;
+					}
+					else 
+					{
+						final String valuestr = nonBooleanConcepts.get(Integer.valueOf(concept.id()));
+						final Double value = Double.valueOf(valuestr);
+						if(minValue > value.doubleValue() || value.doubleValue() > maxValue)
+							return false;
+					}
+				}
+			}
+		}
+		
+		return true;
+	}
+	
 }

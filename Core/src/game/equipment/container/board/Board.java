@@ -335,7 +335,7 @@ public class Board extends Container
 			text = ((BaseLudeme) graphFunction).toEnglish(game).toLowerCase() + " " + name().toLowerCase();
 		}
 
-		return text;
+		return text.trim();
 	}
 	
 	//----------------------------------
@@ -429,6 +429,6 @@ public class Board extends Container
 	 */
 	public boolean largeStack()
 	{
-		return this.largeStack;
+		return largeStack;
 	}
 }

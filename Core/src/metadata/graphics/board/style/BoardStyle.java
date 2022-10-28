@@ -34,7 +34,7 @@ public class BoardStyle implements GraphicsItem
 	 */
 	public BoardStyle
 	(
-		final ContainerStyleType containerStyleType,
+				   final ContainerStyleType containerStyleType,
 		@Opt @Name final Boolean replaceComponentsWithFilledCells
 	)
 	{

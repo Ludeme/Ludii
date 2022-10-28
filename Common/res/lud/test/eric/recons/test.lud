@@ -1,0 +1,51 @@
+(game "test"
+    (players 2) 
+    
+    (equipment { 
+        (board (square 3 diagonals:Alternating) use:Vertex) 
+        (hand Each)
+        (piece "Marker" Each 
+            (move
+                (from) 
+                (to (sites Empty)) 
+            )
+        ) 
+    })
+    
+    (rules 
+        (start (place "Marker" "Hand" count:3))
+        
+        phases:{
+        (phase "Placement"
+            (play
+                (move 
+                    (from (handSite Mover)) 
+                    (to (sites Empty)) 
+                ) 
+            ) 
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        ("PhaseMovePiece" "Movement")
+        }
+        
+        (end 
+            [#]
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (id "184")
+        (version "1.3.6")
+        (classification "board/space/line")
+        (credit "Eric Piette")
+        }
+    )
+    
+)

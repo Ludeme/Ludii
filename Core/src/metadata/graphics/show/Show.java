@@ -84,7 +84,7 @@ public class Show implements GraphicsItem
 		 @Opt final Integer additionalValue
 	)
 	{
-		return new ShowSitesIndex(type, additionalValue);
+		return new ShowSitesIndex(type, additionalValue); 
 	}
 
 	//-------------------------------------------------------------------------------

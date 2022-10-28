@@ -4,7 +4,7 @@
     (rules
         (start [#]) // Pieces are starting on the board and 60 pieces per player. Pieces move in all directions.
         (play [#]) // Players capture one, three, or five of the opponent's pieces at a time, and continue their turn until they are unable to do so
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end ("CaptureAll" Next))
     )
 )
 
@@ -18,11 +18,17 @@
         (rules "Board made of crossed lines, with 120 intersections. Two players, sixty pieces per player. The pieces begin on the board. Pieces move in all directions. Players capture one, three, or five of the opponent's pieces at a time, and continue their turn until they are unable to do so. The player who captures all of the opponent's pieces wins.")
         (source "DLP evidence.")
         (id "994")
-        (version "1.3.6")
+        (version "1.3.7")
         (classification "board/war/reconstruction")
         (credit "Eric Piette")
         (origin "This game was played in Java, around 1817.")
         }
     )
+    
+    (recon {
+        (concept "NumStartComponents" 120)
+        (concept "AdjacentDirection" True)
+        (concept "Capture" True)
+    })
     
 )

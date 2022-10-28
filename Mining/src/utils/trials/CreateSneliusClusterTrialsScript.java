@@ -110,7 +110,7 @@ public class CreateSneliusClusterTrialsScript
 					writer.println("#SBATCH -t 6000");
 					writer.println("#SBATCH -N 1");
 					writer.println("#SBATCH --cpus-per-task=128");
-					writer.println("#SBATCH --mem=234G");
+					writer.println("#SBATCH --mem=224G");
 					writer.println("#SBATCH --exclusive");
 					writer.println("module load 2021");
 					writer.println("module load Java/11.0.2");

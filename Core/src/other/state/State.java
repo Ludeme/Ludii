@@ -406,7 +406,7 @@ public class State implements Serializable
 		checkmatedHashes = ZobristHashUtilities.getSequence(generator, numPlayers + 1);
 		stalematedHashes = ZobristHashUtilities.getSequence(generator, numPlayers + 1);
 		
-		tempHashes = ZobristHashUtilities.getSequence(generator, game.equipment().totalDefaultSites() * Math.max(1,game.maxCount()) + Constants.CONSTANT_RANGE + 1); // could be negative
+		tempHashes = ZobristHashUtilities.getSequence(generator, game.equipment().totalDefaultSites() * Math.max(1, game.maxCount()) + Constants.CONSTANT_RANGE + 1); // could be negative
 		playerOrderHashes = ZobristHashUtilities.getSequence(generator, numPlayers + 1, numPlayers + 1);
 		consecutiveTurnHashes = ZobristHashUtilities.getSequence(generator, 2, Constants.MAX_CONSECUTIVES_TURNS);
 		playerSwitchHashes = ZobristHashUtilities.getSequence(generator, 2, TURN_MAX_HASH);

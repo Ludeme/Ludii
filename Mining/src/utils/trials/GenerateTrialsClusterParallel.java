@@ -5,26 +5,34 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 import java.util.regex.Pattern;
+import java.util.stream.IntStream;
 
 import org.apache.commons.rng.core.RandomProviderDefaultState;
 
 import game.Game;
+import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
 import main.FileHandling;
+import main.collections.ListUtils;
 import main.options.Ruleset;
 import other.AI;
 import other.GameLoader;
+import other.RankUtils;
 import other.context.Context;
 import other.model.Model;
 import other.trial.Trial;
 import search.minimax.AlphaBetaSearch;
 import search.minimax.AlphaBetaSearch.AllowedSearchDepths;
 import utils.AIFactory;
+import utils.experiments.ResultsSummary;
 
 /**
  * To generate, and store, trials for every game in parallel.
@@ -57,6 +65,8 @@ public class GenerateTrialsClusterParallel
 	 * Arg 4 = Name of the agent. // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
 	 * Arg 5 = Name of the game.
 	 * Arg 6 = Name of the ruleset.
+	 * Arg 7 = Name of second agent (leave empty if we only want to use Arg 4).
+	 * Arg 8 = Name we append to "Trials" to get name we save files in. Will use Arg 4 if left empty.
 	 */
 	public static void main(final String[] args)
 	{
@@ -66,6 +76,8 @@ public class GenerateTrialsClusterParallel
 		final String agentName = args.length < 4 ? "Random" : args[3];
 		final String gameNameExpected = args.length < 5 ? "" : args[4];
 		final String rulesetExpected = args.length < 6 ? "" : args[5];
+		final String agentName2 = args.length < 7 ? "" : args[6];
+		final String trialsDirName = args.length < 8 ? agentName : args[7];
 		
 		final File startFolder = new File("Ludii/lud/");
 		final List<File> gameDirs = new ArrayList<File>();
@@ -102,13 +114,13 @@ public class GenerateTrialsClusterParallel
 			
 		System.out.println("Loading game: " + game.name());
 		
-		final String testPath = rootPath + "Trials" + agentName;
+		final String testPath = rootPath + "Trials" + trialsDirName;
 		final File testfile = new File(testPath);
 		System.out.println(testPath);
 		if(!testfile.exists())
 			System.out.println("not existing :(");
 		
-		final String gameFolderPath = rootPath + "Trials" + agentName + File.separator + game.name() ;
+		final String gameFolderPath = rootPath + "Trials" + trialsDirName + File.separator + game.name() ;
 		final File gameFolderFile = new File(gameFolderPath);
 		
 		System.out.println(gameFolderFile);
@@ -127,7 +139,7 @@ public class GenerateTrialsClusterParallel
 				final Ruleset ruleset = rulesetsInGame.get(rs);
 				
 				// We check if we want a specific ruleset.
-				if(!rulesetExpected.isEmpty() && !rulesetExpected.equals(ruleset.heading()))
+				if (!rulesetExpected.isEmpty() && !rulesetExpected.equals(ruleset.heading()))
 					continue;
 				
 				if (!ruleset.optionSettings().isEmpty()) // We check if the ruleset is implemented.
@@ -146,75 +158,137 @@ public class GenerateTrialsClusterParallel
 					int beginTrialIndex = 0;
 					for (; beginTrialIndex < NUM_TRIALS_PER_GAME; ++beginTrialIndex)
 					{
-						final String trialFilepath = rulesetFolderPath + File.separator + agentName + "Trial_" + beginTrialIndex + ".txt";
+						final String trialFilepath = rulesetFolderPath + File.separator + trialsDirName + "Trial_" + beginTrialIndex + ".txt";
 						final File trialFile = new File(trialFilepath);
 							
-						if(!trialFile.exists())
+						if (!trialFile.exists())
 							break;
 					}
 					
-					if(beginTrialIndex < NUM_TRIALS_PER_GAME)
+					if (beginTrialIndex < NUM_TRIALS_PER_GAME)
 					{
 						final int parallelNum = (NUM_TRIALS_PER_GAME - beginTrialIndex) > NUM_PARALLEL ? NUM_PARALLEL : (NUM_TRIALS_PER_GAME - beginTrialIndex);
-						final ExecutorService executorService = Executors.newFixedThreadPool(parallelNum);
-						final CountDownLatch latch = new CountDownLatch(parallelNum);
+						final ExecutorService executorService = Executors.newFixedThreadPool(parallelNum, new TrialsThreadFactory());
+						final CountDownLatch latch = new CountDownLatch(NUM_TRIALS_PER_GAME - beginTrialIndex);
+						
+						// For every thread, create a list of AIs to be used for all trials in that thread
+						final List<List<AI>> aisListPerThread = new ArrayList<List<AI>>(parallelNum);
+						for (int i = 0; i < parallelNum; ++i)
+						{
+							aisListPerThread.add(chooseAI(game, agentName, agentName2, 0));
+							
+							for (final AI ai : aisListPerThread.get(i))
+								if (ai != null)
+									ai.setMaxSecondsPerMove(thinkingTime);
+						}
+						
+						final int numPlayers = game.players().count();
+						final List<TIntArrayList> aiListPermutations;
+						if (numPlayers <= 5)
+						{
+							// Compute all possible permutations of indices for the list of AIs
+							aiListPermutations = ListUtils.generatePermutations(
+									TIntArrayList.wrap(IntStream.range(0, numPlayers).toArray()));
+		
+							Collections.shuffle(aiListPermutations);
+						}
+						else
+						{
+							// Randomly generate some permutations of indices for the list of AIs
+							aiListPermutations = ListUtils.samplePermutations(
+									TIntArrayList.wrap(IntStream.range(0, numPlayers).toArray()), 120);
+						}
+						
+						final List<String> agentStrings = new ArrayList<String>(numPlayers);
+						for (int p = 1; p <= numPlayers; ++p)
+						{
+							agentStrings.add(aisListPerThread.get(0).get(p - 1).friendlyName());
+						}
+						final ResultsSummary resultsSummary = new ResultsSummary(game, agentStrings);
 						
 						for (int i = beginTrialIndex; i < NUM_TRIALS_PER_GAME; ++i)
 						{
-							final String trialFilepath = rulesetFolderPath + File.separator + agentName + "Trial_" + i + ".txt";
+							final String trialFilepath = rulesetFolderPath + File.separator + trialsDirName + "Trial_" + i + ".txt";
 							final File trialFile = new File(trialFilepath);
 								
-							System.out.println("Starting playout " + i + ": ...");
-							
-							try {
+							try 
+							{
 								final int numTrial = i ;
 								final String path = gamePath;
 								executorService.submit
 								(
 								() -> 
 									{
-										// Set the agents.
-										final List<AI> ais = chooseAI(rulesetGame, agentName, numTrial);
-										for(final AI ai : ais)
-											if(ai != null)
-												ai.setMaxSecondsPerMove(thinkingTime);
-			
-										final Trial trial = new Trial(rulesetGame);
-										final Context context = new Context(rulesetGame, trial);
-					
-										final byte[] startRNGState = ((RandomProviderDefaultState) context.rng().saveState()).getState();
-										rulesetGame.start(context);
-											
-										// Init the ais.
-										for (int p = 1; p <= rulesetGame.players().count(); ++p)
-											ais.get(p).initAI(rulesetGame, p);
-										final Model model = context.model();
-									
-										// Run the trial.
-										while (!trial.over())
-											model.startNewStep(context, ais, thinkingTime);
-											
 										try
 										{
-											trial.saveTrialToTextFile(trialFile, path, rulesetGame.getOptions(), new RandomProviderDefaultState(startRNGState));
-											System.out.println("Saved trial for " + rulesetGame.name() + "|" + rulesetGame.getRuleset().heading().replace("/", "_") +" to file: " + trialFilepath);
+											System.out.println("Starting playout " + numTrial + ": ...");
+											
+											// Figure out the 0-based index of our thread
+											final int threadIdx = 
+													Integer.parseInt(Thread.currentThread().getName().substring("Trials Thread ".length()));
+											
+											// Create re-ordered list of AIs for this particular trial
+											final List<AI> ais = new ArrayList<AI>();
+											ais.add(null);
+											final int currentAIsPermutation = numTrial % aiListPermutations.size();
+											final TIntArrayList currentPlayersPermutation = aiListPermutations.get(currentAIsPermutation);
+											for (int j = 0; j < currentPlayersPermutation.size(); ++j)
+											{
+												ais.add
+												(
+													aisListPerThread.get(threadIdx).get(currentPlayersPermutation.getQuick(j) % numPlayers)
+												);
+											}
+				
+											final Trial trial = new Trial(rulesetGame);
+											final Context context = new Context(rulesetGame, trial);
+						
+											final byte[] startRNGState = ((RandomProviderDefaultState) context.rng().saveState()).getState();
+											rulesetGame.start(context);
+												
+											// Init the ais.
+											for (int p = 1; p <= rulesetGame.players().count(); ++p)
+												ais.get(p).initAI(rulesetGame, p);
+											final Model model = context.model();
+										
+											// Run the trial.
+											while (!trial.over())
+												model.startNewStep(context, ais, thinkingTime);
+												
+											try
+											{
+												trial.saveTrialToTextFile(trialFile, path, rulesetGame.getOptions(), new RandomProviderDefaultState(startRNGState));
+												System.out.println("Saved trial for " + rulesetGame.name() + "|" + rulesetGame.getRuleset().heading().replace("/", "_") +" to file: " + trialFilepath);
+											}
+											catch (final IOException e)
+											{
+												e.printStackTrace();
+												fail("Crashed when trying to save trial to file.");
+											}
+											
+											// Record outcome
+											final double[] utilities = RankUtils.agentUtilities(context);
+											final int numMovesPlayed = context.trial().numMoves() - context.trial().numInitialPlacementMoves();
+											final int[] agentPermutation = new int[currentPlayersPermutation.size() + 1];
+											currentPlayersPermutation.toArray(agentPermutation, 0, 1, currentPlayersPermutation.size());
+											
+											resultsSummary.recordResults(agentPermutation, utilities, numMovesPlayed);
 										}
-										catch (final IOException e)
+										catch (final Exception e)
 										{
 											e.printStackTrace();
-											fail("Crashed when trying to save trial to file.");
+										}
+										finally
+										{
+											latch.countDown();
 										}
 									}
 								);
-								}				
-								catch (final Exception e)
-								{
-									e.printStackTrace();
-								}
-								finally
-								{
-									latch.countDown();
-								}
+							}				
+							catch (final Exception e)
+							{
+								e.printStackTrace();
+							}
 						}
 						try
 						{
@@ -226,6 +300,13 @@ public class GenerateTrialsClusterParallel
 						}
 	
 						executorService.shutdown();
+						
+						if (new HashSet<String>(agentStrings).size() > 1)
+						{
+							// We have more than one agent name, so print per-agent results
+							final File resultsFile = new File(rulesetFolderPath + File.separator + trialsDirName + "alpha_rank_data.csv");
+							resultsSummary.writeAlphaRankData(resultsFile);
+						}
 					}
 				}
 			}
@@ -235,74 +316,136 @@ public class GenerateTrialsClusterParallel
 			int beginTrialIndex = 0;
 			for (; beginTrialIndex < NUM_TRIALS_PER_GAME; ++beginTrialIndex)
 			{
-				final String trialFilepath = gameFolderPath + File.separator + agentName + "Trial_" + beginTrialIndex + ".txt";
+				final String trialFilepath = gameFolderPath + File.separator + trialsDirName + "Trial_" + beginTrialIndex + ".txt";
 				final File trialFile = new File(trialFilepath);
 					
 				if(!trialFile.exists())
 					break;
 			}
 			
-			if(beginTrialIndex < NUM_TRIALS_PER_GAME)
+			if (beginTrialIndex < NUM_TRIALS_PER_GAME)
 			{
 				final int parallelNum = (NUM_TRIALS_PER_GAME - beginTrialIndex) > NUM_PARALLEL ? NUM_PARALLEL : (NUM_TRIALS_PER_GAME - beginTrialIndex);
-				final ExecutorService executorService = Executors.newFixedThreadPool(parallelNum);
-				final CountDownLatch latch = new CountDownLatch(parallelNum);
+				final ExecutorService executorService = Executors.newFixedThreadPool(parallelNum, new TrialsThreadFactory());
+				final CountDownLatch latch = new CountDownLatch(NUM_TRIALS_PER_GAME - beginTrialIndex);
+				
+				// For every thread, create a list of AIs to be used for all trials in that thread
+				final List<List<AI>> aisListPerThread = new ArrayList<List<AI>>(parallelNum);
+				for (int i = 0; i < parallelNum; ++i)
+				{
+					aisListPerThread.add(chooseAI(game, agentName, agentName2, 0));
+					
+					for (final AI ai : aisListPerThread.get(i))
+						if (ai != null)
+							ai.setMaxSecondsPerMove(thinkingTime);
+				}
+				
+				final int numPlayers = game.players().count();
+				final List<TIntArrayList> aiListPermutations;
+				if (numPlayers <= 5)
+				{
+					// Compute all possible permutations of indices for the list of AIs
+					aiListPermutations = ListUtils.generatePermutations(
+							TIntArrayList.wrap(IntStream.range(0, numPlayers).toArray()));
+
+					Collections.shuffle(aiListPermutations);
+				}
+				else
+				{
+					// Randomly generate some permutations of indices for the list of AIs
+					aiListPermutations = ListUtils.samplePermutations(
+							TIntArrayList.wrap(IntStream.range(0, numPlayers).toArray()), 120);
+				}
+				
+				final List<String> agentStrings = new ArrayList<String>(numPlayers);
+				for (int p = 1; p <= numPlayers; ++p)
+				{
+					agentStrings.add(aisListPerThread.get(0).get(p - 1).friendlyName());
+				}
+				final ResultsSummary resultsSummary = new ResultsSummary(game, agentStrings);
 				
 				for (int i = beginTrialIndex; i < NUM_TRIALS_PER_GAME; ++i)
 				{
-					final String trialFilepath = gameFolderPath + File.separator + agentName + "Trial_" + i + ".txt";
+					final String trialFilepath = gameFolderPath + File.separator + trialsDirName + "Trial_" + i + ".txt";
 					final File trialFile = new File(trialFilepath);
 					
-					System.out.println("Starting playout " + i + ": ...");
-					
-					try {
-						final int numTrial = i ;
+					try 
+					{
+						final int numTrial = i;
 						final String path = gamePath;
 						executorService.submit
 						(
 						() -> 
 							{
-								// Set the agents.
-								final List<AI> ais = chooseAI(game, agentName, numTrial);
-								for(final AI ai : ais)
-									if(ai != null)
-										ai.setMaxSecondsPerMove(thinkingTime);
-									
-								final Trial trial = new Trial(game);
-								final Context context = new Context(game, trial);
-					
-								final byte[] startRNGState = ((RandomProviderDefaultState) context.rng().saveState()).getState();
-								game.start(context);
-									
-								// Init the ais.
-								for (int p = 1; p <= game.players().count(); ++p)
-									ais.get(p).initAI(game, p);
-								final Model model = context.model();
-								
-								// Run the trial.
-								while (!trial.over())
-									model.startNewStep(context, ais, thinkingTime);
-										
 								try
 								{
-									trial.saveTrialToTextFile(trialFile, path, new ArrayList<String>(), new RandomProviderDefaultState(startRNGState));
-									System.out.println("Saved trial for " + game.name() +" to file: " + trialFilepath);
+									System.out.println("Starting playout " + numTrial + ": ...");
+									
+									// Figure out the 0-based index of our thread
+									final int threadIdx = 
+											Integer.parseInt(Thread.currentThread().getName().substring("Trials Thread ".length()));
+									
+									// Create re-ordered list of AIs for this particular trial
+									final List<AI> ais = new ArrayList<AI>();
+									ais.add(null);
+									final int currentAIsPermutation = numTrial % aiListPermutations.size();
+									final TIntArrayList currentPlayersPermutation = aiListPermutations.get(currentAIsPermutation);
+									for (int j = 0; j < currentPlayersPermutation.size(); ++j)
+									{
+										ais.add
+										(
+											aisListPerThread.get(threadIdx).get(currentPlayersPermutation.getQuick(j) % numPlayers)
+										);
+									}
+										
+									final Trial trial = new Trial(game);
+									final Context context = new Context(game, trial);
+						
+									final byte[] startRNGState = ((RandomProviderDefaultState) context.rng().saveState()).getState();
+									game.start(context);
+										
+									// Init the ais.
+									for (int p = 1; p <= game.players().count(); ++p)
+										ais.get(p).initAI(game, p);
+									final Model model = context.model();
+									
+									// Run the trial.
+									while (!trial.over())
+										model.startNewStep(context, ais, thinkingTime);
+											
+									try
+									{
+										trial.saveTrialToTextFile(trialFile, path, new ArrayList<String>(), new RandomProviderDefaultState(startRNGState));
+										System.out.println("Saved trial for " + game.name() +" to file: " + trialFilepath);
+									}
+									catch (final IOException e)
+									{
+										e.printStackTrace();
+										fail("Crashed when trying to save trial to file.");
+									}
+									
+									// Record outcome
+									final double[] utilities = RankUtils.agentUtilities(context);
+									final int numMovesPlayed = context.trial().numMoves() - context.trial().numInitialPlacementMoves();
+									final int[] agentPermutation = new int[currentPlayersPermutation.size() + 1];
+									currentPlayersPermutation.toArray(agentPermutation, 0, 1, currentPlayersPermutation.size());
+
+									resultsSummary.recordResults(agentPermutation, utilities, numMovesPlayed);
 								}
-								catch (final IOException e)
+								catch (final Exception e)
 								{
 									e.printStackTrace();
-									fail("Crashed when trying to save trial to file.");
 								}
-						}
-					);
+								finally
+								{
+									latch.countDown();
+								}
+							}
+						);
 					}				
 					catch (final Exception e)
 					{
 						e.printStackTrace();
-					}
-					finally
-					{
-						latch.countDown();
 					}
 				}
 				try
@@ -315,6 +458,13 @@ public class GenerateTrialsClusterParallel
 				}
 	
 				executorService.shutdown();
+				
+				if (new HashSet<String>(agentStrings).size() > 1)
+				{
+					// We have more than one agent name, so print per-agent results
+					final File resultsFile = new File(gameFolderPath + File.separator + trialsDirName + "alpha_rank_data.csv");
+					resultsSummary.writeAlphaRankData(resultsFile);
+				}
 			}
 		}
 	}
@@ -322,13 +472,31 @@ public class GenerateTrialsClusterParallel
 	/**
 	 * @param game The game.
 	 * @param agentName The name of the agent.
+	 * @param agentName2 The name of the second agent (can be empty string if not used).
 	 * @param indexPlayout The index of the playout.
 	 * @return The list of AIs to play that playout.
 	 */
-	private static List<AI> chooseAI(final Game game, final String agentName, final int indexPlayout)
+	private static List<AI> chooseAI(final Game game, final String agentName, final String agentName2, final int indexPlayout)
 	{
 		final List<AI> ais = new ArrayList<AI>();
-		ais.add(null);
+		//ais.add(null);
+		
+		if (agentName2.length() > 0)
+		{
+			// Special case where we have provided two different names
+			if (game.players().count() == 2)
+			{
+				ais.add(AIFactory.createAI(agentName));
+				ais.add(AIFactory.createAI(agentName2));
+				return ais;
+			}
+			else
+			{
+				System.err.println("Provided 2 agent names, but not a 2-player game!");
+			}
+		}
+
+		// Continue with Eric's original implementation
 		
 		for (int p = 1; p <= game.players().count(); ++p)
 		{
@@ -505,6 +673,25 @@ public class GenerateTrialsClusterParallel
 			}
 		}
 		return ais;
+	}
+	
+	/**
+	 * Thread factory that gives us consecutive IDs, starting from 0, we can access from
+	 * each thread in our pool.
+	 * 
+	 * @author Dennis Soemers
+	 */
+	protected static class TrialsThreadFactory implements ThreadFactory
+	{
+		
+		private int nextID = 0;
+
+		@Override
+		public Thread newThread(final Runnable r) 
+		{
+			return new Thread(r, "Trials Thread " + nextID++);
+		}
+		
 	}
 
 }

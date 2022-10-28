@@ -1,0 +1,61 @@
+(define "MoveOfThePiece" 
+    (or 
+        (move Hop Forward 
+            (between if:("IsEnemyAt" (between))) 
+            (to if:(is Empty (to))) 
+        ) 
+        ("StepForwardToEmpty") 
+    ) 
+)
+
+//------------------------------------------------------------------------------
+
+(game "Toads and Frogs"
+    (players 2)
+    (equipment {
+        (board (rectangle 1 <BoardSize:BoardSize>))
+        (piece "Toad" P1 E "MoveOfThePiece")
+        (piece "Frog" P2 W "MoveOfThePiece")
+    })
+    (rules
+        (start {
+            (place "Toad1" (expand (sites Left) steps:(- <BoardSize:pieces> 1)))
+            (place "Frog2" (expand (sites Right) steps:(- <BoardSize:pieces> 1)))
+        })
+        (play (forEach Piece))
+        (end ("BlockWin"))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <BoardSize> args:{ <BoardSize> <pieces> }
+    {
+    (item "1x5" <5> <2> "The game is played on a 1x5 board.")**
+    (item "1x8" <8> <3> "The game is played on a 1x8 board.")
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Mathematical game used as an introductory game in the book Winning Ways for your Mathematical Plays.")
+        (rules "This game is played on an empty 1row x n coloumn board with m stones on each side. At each turn, each player must do one of the following actions. Move a stone forward (i.e., left to one player, right to the other) or jump over one enemy stone, landing on the immediate empty cell. The player who makes the last move wins the game.")
+        (id "2022")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Toads_and_Frogs\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>
+        ")
+        (version "1.3.7")
+        (classification "board/space/blocking")
+        (author "Richard Guy")
+        (credit "Fabio Barbero")
+        (date "1980")
+        }
+    )
+    
+    (graphics {
+        (piece Colour "Toad1" fillColour:(colour Blue))
+        (piece Colour "Frog2" fillColour:(colour Red))
+    })
+)

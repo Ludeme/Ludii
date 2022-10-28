@@ -134,33 +134,33 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 	 */
 	public SPatterNetFeatureSet(final String filename)
 	{
+		final List<AspatialFeature> aspatialFeaturesList = new ArrayList<AspatialFeature>();
+		final List<SpatialFeature> spatialFeaturesList = new ArrayList<SpatialFeature>();
+		
 		Feature[] tempFeatures;
 		
 		//System.out.println("loading feature set from " + filename);
 		try (Stream<String> stream = Files.lines(Paths.get(filename)))
 		{
 			tempFeatures = stream.map(s -> Feature.fromString(s)).toArray(Feature[]::new);
+			
+			for (final Feature feature : tempFeatures)
+			{
+				if (feature instanceof AspatialFeature)
+				{
+					aspatialFeaturesList.add((AspatialFeature)feature);
+				}
+				else
+				{
+					((SpatialFeature)feature).setSpatialFeatureSetIndex(spatialFeaturesList.size());
+					spatialFeaturesList.add((SpatialFeature)feature);
+				}
+			}
 		} 
 		catch (final IOException exception) 
 		{
 			tempFeatures = null;
 			exception.printStackTrace();
-		}
-		
-		final List<AspatialFeature> aspatialFeaturesList = new ArrayList<AspatialFeature>();
-		final List<SpatialFeature> spatialFeaturesList = new ArrayList<SpatialFeature>();
-		
-		for (final Feature feature : tempFeatures)
-		{
-			if (feature instanceof AspatialFeature)
-			{
-				aspatialFeaturesList.add((AspatialFeature)feature);
-			}
-			else
-			{
-				((SpatialFeature)feature).setSpatialFeatureSetIndex(spatialFeaturesList.size());
-				spatialFeaturesList.add((SpatialFeature)feature);
-			}
 		}
 		
 		this.aspatialFeatures = aspatialFeaturesList.toArray(new AspatialFeature[aspatialFeaturesList.size()]);
@@ -607,6 +607,40 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 		}
 		
 		return null;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return Map of SPatterNets for reactive features
+	 */
+	public HashMap<ReactiveFeaturesKey, SPatterNet> reactiveFeatures()
+	{
+		return reactiveFeatures;
+	}
+	
+	/**
+	 * @return Map of SPatterNets for reactive features (thresholded)
+	 */
+	public HashMap<ReactiveFeaturesKey, SPatterNet> reactiveFeaturesThresholded()
+	{
+		return reactiveFeaturesThresholded;
+	}
+	
+	/**
+	 * @return Map of SPatterNets for proactive features
+	 */
+	public HashMap<ProactiveFeaturesKey, SPatterNet> proactiveFeatures()
+	{
+		return proactiveFeatures;
+	}
+	
+	/**
+	 * @return Map of SPatterNets for proactive features (thresholded)
+	 */
+	public HashMap<ProactiveFeaturesKey, SPatterNet> proactiveFeaturesThresholded()
+	{
+		return proactiveFeaturesThresholded;
 	}
 	
 	//-------------------------------------------------------------------------

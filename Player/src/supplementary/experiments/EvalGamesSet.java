@@ -267,11 +267,11 @@ public class EvalGamesSet
 					
 					if (interrupted)
 					{
-						// time to abort the experiment due to wall time
+						// Time to abort the experiment due to wall time
 						break;
 					}
 					
-					// compute list of AIs to use for this game
+					// Compute list of AIs to use for this game
 					// (we rotate every game)
 					final List<AI> currentAIList = new ArrayList<AI>(numPlayers);
 					final int currentAIsPermutation = gameCounter % aiListPermutations.size();

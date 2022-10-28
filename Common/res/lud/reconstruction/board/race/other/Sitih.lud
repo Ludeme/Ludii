@@ -6,15 +6,13 @@
             use:Edge
         )
         (piece "Marker" Each)
-        (dice d:2 from:0 num:3)
+        ("StickDice" 3)
         (map "Throw" {(pair 0 10) (pair 1 2) (pair 2 3) (pair 3 5)})
     })
     (rules 
         (start [#])
         (play 
-            (do (roll)
-                next:[#]
-            )
+            ("RollMove" [#])
         )
         (end [#])
     )
@@ -51,7 +49,7 @@
         (rules "Forty stones, arranged in a circle, the spaces between the stones are the playing spaces. Three sticks, each marked with three bands on one side and two on the other, used as dice. The throws are as follows: all three bands up = 5; all two bands up = 10; one with three bands and two with two bands = 2; two with three bands and one with two bands = 3; one with two bands and two with three bands = 3.")
         (source "DLP evidence.")
         (id "843")
-        (version "1.3.6")
+        (version "1.3.7")
         (classification "board/race/reconstruction")
         (credit "Eric Piette")
         (origin "This game was played in Arizona, around 1907.")

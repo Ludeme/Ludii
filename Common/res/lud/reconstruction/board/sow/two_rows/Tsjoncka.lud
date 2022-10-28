@@ -1,0 +1,47 @@
+(game "Tsjoncka" 
+    (players 2) 
+    (equipment { 
+        (mancalaBoard 2 7 store:None
+            {
+            (track [#])
+            (track [#])
+            }
+        )
+        (piece "Seed" Shared)
+    }) 
+    (rules 
+        (start [#]) 
+        (play 
+            (move Select 
+                (from [#])
+                (then (sow [#]))
+            )
+        )
+        (end (if (no Moves Mover) (byScore)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Tsjoncka is a game that was played on Ambon Island, Indonesia during the seventeenth century. Based on its description and name, it is likely to have been a two-row mancala-style game, which could be played either with cowrie shells or seeds as counters.")
+        (rules "2x7 board. Pieces are sown around the board. The game ends when one player cannot sow.")
+        (source "Rumphius 1797: 90.")
+        (id "2021")
+        (version "1.3.7")
+        (classification "board/sow/two rows/reconstruction")
+        (origin "This game was played in Indonesia, from around 1653 to 1702.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+    (recon {
+        (concept "Sow" True)
+    })
+)
+

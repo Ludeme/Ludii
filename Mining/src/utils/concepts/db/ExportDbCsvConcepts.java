@@ -375,9 +375,17 @@ public class ExportDbCsvConcepts
 	 * @param rulesetExpected The name of the ruleset of the game.
 	 * @param agentName2	  The name for a different second agent (if not empty string)
 	 */
-	public static void exportRulesetConceptsCSV(final Evaluation evaluation, final int numPlayouts,
-			final double timeLimit, final double thinkingTime, final String agentName, final String name,
-			final String rulesetExpected, final String agentName2)
+	public static void exportRulesetConceptsCSV
+	(
+		final Evaluation evaluation, 
+		final int numPlayouts,
+		final double timeLimit, 
+		final double thinkingTime, 
+		final String agentName, 
+		final String name,
+		final String rulesetExpected, 
+		final String agentName2
+	)
 	{
 		final List<Concept> ignoredConcepts = new ArrayList<Concept>();
 		ignoredConcepts.add(Concept.Behaviour);
@@ -402,6 +410,8 @@ public class ExportDbCsvConcepts
 		final List<String> games = new ArrayList<String>();
 		final List<String> rulesets = new ArrayList<String>();
 		final TIntArrayList ids = new TIntArrayList();
+		
+		// Get the ids of the rulesets.
 		try (final InputStream in = ExportDbCsvConcepts.class.getResourceAsStream(GAME_RULESET_PATH);
 				BufferedReader reader = new BufferedReader(new InputStreamReader(in));)
 		{
@@ -436,6 +446,11 @@ public class ExportDbCsvConcepts
 		final String outputRulesetConcepts = rulesetExpected.isEmpty() ? "RulesetConcepts" + fileName + ".csv"
 				: "RulesetConcepts" + fileName + "-" + rulesetExpected.substring(8) + ".csv";
 		System.out.println("Writing " + outputRulesetConcepts);
+		
+		// Do nothing if the files already exist.
+		final File file = new File(outputRulesetConcepts);
+		if(file.exists())
+			return;
 		
 		// Computation of the concepts
 		try (final PrintWriter writer = new UnixPrintWriter(new File(outputRulesetConcepts), "UTF-8"))
@@ -716,11 +731,6 @@ public class ExportDbCsvConcepts
 
 		// We run the playouts needed for the computation.
 
-		// FOR THE MUSEUM GAME
-//		final TIntArrayList edgesUsage = new TIntArrayList();	
-//		for(int i = 0; i < game.board().topology().edges().size(); i++)
-//			edgesUsage.add(0);
-
 		if (folderTrials.isEmpty())
 		{
 			// Create list of AI objects to be used in all trials
@@ -780,43 +790,7 @@ public class ExportDbCsvConcepts
 				final Model model = context.model();
 
 				while (!trial.over())
-				{
 					model.startNewStep(context, ais, thinkingTime);
-
-					// FOR THE MUSEUM GAME
-					// To count the frequency/usage of each edge on the board.
-//					final Move lastMove = trial.lastMove();
-//					final int vertexFrom = lastMove.fromNonDecision();
-//					final int vertexTo = lastMove.toNonDecision();
-//	
-//					for(int i = 0; i < game.board().topology().edges().size(); i++)
-//					{
-//						final Edge edge = game.board().topology().edges().get(i);
-//						if((edge.vertices().get(0).index() == vertexFrom && edge.vertices().get(1).index() == vertexTo) ||
-//								(edge.vertices().get(0).index() == vertexTo && edge.vertices().get(1).index() == vertexFrom))
-//							edgesUsage.set(i, edgesUsage.get(i)+1);
-//					}
-
-					// TO PRINT THE NUMBER OF PIECES PER TRIAL
-					// int countPieces = 0;
-					// int countPiecesP1 = 0;
-					// int countPiecesP2 = 0;
-					// final ContainerState cs = context.containerState(0);
-					// final int numCells = context.topology().cells().size();
-					// for(int i = 0; i < numCells; i++)
-					// {
-					// if(cs.what(i, SiteType.Cell) != 0)
-					// countPieces++;
-					//
-					// if(cs.what(i, SiteType.Cell) == 1)
-					// countPiecesP1++;
-					//
-					// if(cs.what(i, SiteType.Cell) == 2)
-					// countPiecesP2++;
-					// }
-					//
-					// System.out.println(countPieces+","+countPiecesP1+","+countPiecesP2);
-				}
 
 				trials.add(trial);
 				playoutsDone++;
@@ -840,42 +814,24 @@ public class ExportDbCsvConcepts
 			getTrials(game);
 		}
 
-		// FOR THE MUSEUM GAME
-//		int totalEdgesUsage = 0;
-//		for(int i = 0 ; i < edgesUsage.size(); i++)
-//			totalEdgesUsage += edgesUsage.get(i);
-//		
-//		System.out.println("Total Moves on Edges = " + totalEdgesUsage);
-//		for(int i = 0 ; i < edgesUsage.size(); i++)
-//		{
-//			final Edge edge = game.board().topology().edges().get(i);
-//			final int vFrom =edge.vertices().get(0).index();
-//			final int vTo = edge.vertices().get(1).index();
-//			System.out.println("Edge " + i + "(" + vFrom + "-" + vTo + ")"+ " is used " + new DecimalFormat("##.##").format(Double.valueOf(((double)edgesUsage.get(i) / (double)totalEdgesUsage)*100.0))  +"% ("+edgesUsage.get(i)+ " times)");
-//		}
-//		
-//		final String outputEdgesResults =  "EdgesResult" + game.name() + "-" + game.getRuleset().heading().substring(8)+".csv";
-//		try (final PrintWriter writer = new UnixPrintWriter(new File(outputEdgesResults), "UTF-8"))
-//		{
-//			for(int i = 0 ; i < edgesUsage.size(); i++)
-//				writer.println(i+","+ edgesUsage.get(i) +","+ new DecimalFormat("##.##").format(Double.valueOf(((double)edgesUsage.get(i) / (double)totalEdgesUsage)*100.0)));
-//		}
-//		catch (FileNotFoundException e)
-//		{
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		catch (UnsupportedEncodingException e)
-//		{
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
 		// We get the values of the frequencies.
 		mapFrequency.putAll(frequencyConcepts(game));
 		
+		final List<Concept> reconstructionConcepts = new ArrayList<Concept>();
+		reconstructionConcepts.add(Concept.DurationTurns);
+		reconstructionConcepts.add(Concept.DecisionMoves);
+		reconstructionConcepts.add(Concept.BoardCoverageDefault);
+		reconstructionConcepts.add(Concept.AdvantageP1);
+		reconstructionConcepts.add(Concept.Balance);
+		reconstructionConcepts.add(Concept.Completion);
+		reconstructionConcepts.add(Concept.Drawishness);
+		reconstructionConcepts.add(Concept.PieceNumberAverage);
+		reconstructionConcepts.add(Concept.BoardSitesOccupiedAverage);
+		reconstructionConcepts.add(Concept.BranchingFactorAverage);
+		reconstructionConcepts.add(Concept.DecisionFactorAverage);
+		
 		// We get the values of the metrics.
-		mapFrequency.putAll(metricsConcepts(game, evaluation));
+		mapFrequency.putAll(metricsConcepts(game, evaluation, reconstructionConcepts));
 
 		// We get the values of the starting concepts.
 		mapFrequency.putAll(startsConcepts(game));
@@ -919,24 +875,28 @@ public class ExportDbCsvConcepts
 		int num = 0;
 		for (final File trialFile : trialFolder.listFiles())
 		{
-			MatchRecord loadedRecord;
-			try
+			System.out.println(trialFile.getName());
+			if(trialFile.getName().contains(".txt"))
 			{
-				loadedRecord = MatchRecord.loadMatchRecordFromTextFile(trialFile, game);
-				final Trial loadedTrial = loadedRecord.trial();
-				trials.add(loadedTrial);
-				allStoredRNG.add(loadedRecord.rngState());
-				num++;
-				if (num == limit)
-					break;
-			}
-			catch (final FileNotFoundException e)
-			{
-				e.printStackTrace();
-			}
-			catch (final IOException e)
-			{
-				e.printStackTrace();
+				MatchRecord loadedRecord;
+				try
+				{
+					loadedRecord = MatchRecord.loadMatchRecordFromTextFile(trialFile, game);
+					final Trial loadedTrial = loadedRecord.trial();
+					trials.add(loadedTrial);
+					allStoredRNG.add(loadedRecord.rngState());
+					num++;
+					if (num == limit)
+						break;
+				}
+				catch (final FileNotFoundException e)
+				{
+					e.printStackTrace();
+				}
+				catch (final IOException e)
+				{
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -1395,6 +1355,11 @@ public class ExportDbCsvConcepts
 		for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
 			frequencyPlayouts.add(0.0);
 
+		// FOR THE MUSEUM GAME
+//		final TIntArrayList edgesUsage = new TIntArrayList();	
+//		for(int i = 0; i < game.board().topology().edges().size(); i++)
+//			edgesUsage.add(0);
+		
 		for (int trialIndex = 0; trialIndex < trials.size(); trialIndex++)
 		{
 			final Trial trial = trials.get(trialIndex);
@@ -1414,9 +1379,9 @@ public class ExportDbCsvConcepts
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
 				final Moves legalMoves = context.game().moves(context);
-				final TIntArrayList frenquencyTurn = new TIntArrayList();
+				final TIntArrayList frequencyTurn = new TIntArrayList();
 				for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
-					frenquencyTurn.add(0);
+					frequencyTurn.add(0);
 
 				final double numLegalMoves = legalMoves.moves().size();
 				if (numLegalMoves > 0)
@@ -1429,13 +1394,13 @@ public class ExportDbCsvConcepts
 					{
 						final Concept concept = Concept.values()[indexConcept];
 						if (moveConcepts.get(concept.id()))
-							frenquencyTurn.set(indexConcept, frenquencyTurn.get(indexConcept) + 1);
+							frequencyTurn.set(indexConcept, frequencyTurn.get(indexConcept) + 1);
 					}
 				}
 
-				for (int j = 0; j < frenquencyTurn.size(); j++)
+				for (int j = 0; j < frequencyTurn.size(); j++)
 					frequencyPlayout.set(j, frequencyPlayout.get(j)
-							+ (numLegalMoves == 0 ? 0 : frenquencyTurn.get(j) / numLegalMoves));
+							+ (numLegalMoves == 0 ? 0 : frequencyTurn.get(j) / numLegalMoves));
 
 				// We keep the context before the ending state for the frequencies of the end
 				// conditions.
@@ -1444,8 +1409,45 @@ public class ExportDbCsvConcepts
 
 				// We go to the next move.
 				context.game().apply(context, trial.getMove(i));
-			}
+				
+				// FOR THE MUSEUM GAME
+				// To count the frequency/usage of each edge on the board.
+//				final Move lastMove = context.trial().lastMove();
+//				final int vertexFrom = lastMove.fromNonDecision();
+//				// To not take in account moves coming from the hand.
+//				if(vertexFrom < 0 || vertexFrom >= game.board().topology().vertices().size())
+//					continue;
+//				final int vertexTo = lastMove.toNonDecision();
+//
+//				for(int j = 0; j < game.board().topology().edges().size(); j++)
+//				{
+//					final Edge edge = game.board().topology().edges().get(j);
+//					if((edge.vertices().get(0).index() == vertexFrom && edge.vertices().get(1).index() == vertexTo) ||
+//							(edge.vertices().get(0).index() == vertexTo && edge.vertices().get(1).index() == vertexFrom))
+//						edgesUsage.set(j, edgesUsage.get(j) + 1);
+//				}
 
+				// TO PRINT THE NUMBER OF PIECES PER TRIAL (this was for LL xp)
+////				 int countPieces = 0;
+////				 int countPiecesP1 = 0;
+////				 int countPiecesP2 = 0;
+////				 final ContainerState cs = context.containerState(0);
+////				 final int numCells = context.topology().cells().size();
+////				 for(int j = 0; j < numCells; j++)
+////				 {
+////					 if(cs.what(j, SiteType.Cell) != 0)
+////					 countPieces++;
+////					
+////					 if(cs.what(j, SiteType.Cell) == 1)
+////					 countPiecesP1++;
+////					
+////					 if(cs.what(j, SiteType.Cell) == 2)
+////					 countPiecesP2++;
+////				 }
+////				
+////				 System.out.println(countPieces+","+countPiecesP1+","+countPiecesP2);
+			}
+			
 			// Compute avg for all the playouts.
 			for (int j = 0; j < frequencyPlayout.size(); j++)
 				frequencyPlayouts.set(j, frequencyPlayouts.get(j) + frequencyPlayout.get(j) / turnWithMoves);
@@ -1528,6 +1530,45 @@ public class ExportDbCsvConcepts
 				}
 			}
 		}
+		
+		// FOR THE MUSEUM GAME
+//		int totalEdgesUsage = 0;
+//		for(int i = 0; i < edgesUsage.size(); i++)
+//			totalEdgesUsage += edgesUsage.get(i);
+//		
+//		System.out.println("Total Moves on Edges = " + totalEdgesUsage);
+//		for(int i = 0; i < edgesUsage.size(); i++)
+//		{
+//			final Edge edge = game.board().topology().edges().get(i);
+//			final int vFrom = edge.vertices().get(0).index();
+//			final int vTo = edge.vertices().get(1).index();
+//			if(totalEdgesUsage == 0)
+//				System.out.println("Edge " + i + "(" + vFrom + "-" + vTo + ")"+ " is used " + new DecimalFormat("##.##").format(0.0) + "% ("+edgesUsage.get(i) + " times)");
+//			else
+//				System.out.println("Edge " + i + "(" + vFrom + "-" + vTo + ")"+ " is used " + new DecimalFormat("##.##").format(Double.valueOf(((double)edgesUsage.get(i) / (double)totalEdgesUsage)*100.0)) + "% ("+edgesUsage.get(i) + " times)");
+//		}
+//		
+//		final String outputEdgesResults = "EdgesResult" + game.name() + "-" + game.getRuleset().heading().substring(8) + ".csv";
+//		try (final PrintWriter writer = new UnixPrintWriter(new File(outputEdgesResults), "UTF-8"))
+//		{
+//			for(int i = 0; i < edgesUsage.size(); i++)
+//			{
+//				if(totalEdgesUsage == 0)
+//					writer.println(i + ","+ edgesUsage.get(i) + ","+ new DecimalFormat("##.##").format(0.0*100.0));
+//				else
+//					writer.println(i + ","+ edgesUsage.get(i) + ","+ new DecimalFormat("##.##").format(Double.valueOf(((double)edgesUsage.get(i) / (double)totalEdgesUsage)*100.0)));
+//			}
+//		}
+//		catch (FileNotFoundException e)
+//		{
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		catch (UnsupportedEncodingException e)
+//		{
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 
 		// Compute avg frequency for the game.
 		for (int i = 0; i < frequencyPlayouts.size(); i++)
@@ -1563,7 +1604,7 @@ public class ExportDbCsvConcepts
 	 * @param allStoredRNG The RNG for each trial.
 	 * @return The map of playout concepts to the their values for the metric ones.
 	 */
-	private static Map<String, Double> metricsConcepts(final Game game, final Evaluation evaluation)
+	private static Map<String, Double> metricsConcepts(final Game game, final Evaluation evaluation, final List<Concept> reconstructionConcepts)
 	{
 		final Map<String, Double> playoutConceptValues = new HashMap<String, Double>();
 		// We get the values of the metrics.
@@ -1581,16 +1622,21 @@ public class ExportDbCsvConcepts
 		for (final Metric metric : metrics)
 			if (metric.concept() != null)
 			{
-				Double value = metric.apply(game, evaluation, trialsMetrics, rngTrials);
-				if(value == null)
-					playoutConceptValues.put(metric.concept().name(), null);
+				Double value;
+				if(reconstructionConcepts.contains(metric.concept()))
+					value = metric.apply(game, evaluation, trialsMetrics, rngTrials);
 				else
-				{
-					double metricValue = metric.apply(game, evaluation, trialsMetrics, rngTrials).doubleValue();
-					metricValue = (Math.abs(metricValue) < Constants.EPSILON) ? 0 : metricValue;
-					playoutConceptValues.put(metric.concept().name(), Double.valueOf(metricValue));
-					if (metricValue != 0)
-						System.out.println(metric.concept().name() + ": " + metricValue);
+					value = null; // If that's not a reconstruction metrics we put NULL for it.
+					
+					if(value == null)
+						playoutConceptValues.put(metric.concept().name(), null);
+					else
+					{
+						double metricValue = metric.apply(game, evaluation, trialsMetrics, rngTrials).doubleValue();
+						metricValue = (Math.abs(metricValue) < Constants.EPSILON) ? 0 : metricValue;
+						playoutConceptValues.put(metric.concept().name(), Double.valueOf(metricValue));
+						if (metricValue != 0)
+							System.out.println(metric.concept().name() + ": " + metricValue);
 				}
 			}
 

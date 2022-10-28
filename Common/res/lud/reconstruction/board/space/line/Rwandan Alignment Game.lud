@@ -13,16 +13,12 @@
         
         phases:{
         (phase "Placement"
-            (play
-                [#]
-            ) 
+            (play [#]) 
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
         
         (phase "Movement" 
-            (play 
-                [#]
-            )
+            (play [#])
         )
         }
         
@@ -40,7 +36,7 @@
         (rules "\"Mill\" game. Two players. Three pieces per player, sometimes more.")
         (source "DLP evidence.")
         (id "1361")
-        (version "1.3.6")
+        (version "1.3.7")
         (classification "board/space/line/reconstruction")
         (credit "Eric Piette")
         (origin "This game was played in Rwanda, around 1971.")

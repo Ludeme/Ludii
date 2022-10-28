@@ -6,7 +6,9 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 import decision_trees.classifiers.DecisionConditionNode;
@@ -19,6 +21,7 @@ import features.aspatial.AspatialFeature;
 import features.feature_sets.BaseFeatureSet;
 import features.feature_sets.network.JITSPatterNetFeatureSet;
 import features.spatial.SpatialFeature;
+import features.spatial.SpatialFeature.RotRefInvariantFeature;
 import function_approx.LinearFunction;
 import game.Game;
 import game.types.play.RoleType;
@@ -62,7 +65,7 @@ public class IdentifyTopFeatures
 	 * Every feature is, per generation, guaranteed to get this many trials 
 	 * (likely each against a different opponent feature) for eval.
 	 */
-	private static final int NUM_TRIALS_PER_FEATURE_EVAL = 25;
+	private static final int NUM_TRIALS_PER_FEATURE_EVAL = 50;
 	
 	/** Number of features we want to end up with at the end (per player). */
 	private static final int GOAL_NUM_FEATURES = 15;
@@ -164,10 +167,16 @@ public class IdentifyTopFeatures
 			spatialFeaturesList = SpatialFeature.simplifySpatialFeaturesList(game, spatialFeaturesList);
 			
 			// Add generalisers of our candidate spatial features
-			final int origNumSpatialFeatures = spatialFeaturesList.size();
-			for (int i = 0; i < origNumSpatialFeatures; ++i)
+			final Set<RotRefInvariantFeature> generalisers = new HashSet<RotRefInvariantFeature>();
+			
+			for (final SpatialFeature f : spatialFeaturesList)
 			{
-				spatialFeaturesList.addAll(spatialFeaturesList.get(i).generateGeneralisers(game));
+				f.generateGeneralisers(game, generalisers, 1);
+			}
+			
+			for (final RotRefInvariantFeature f : generalisers)
+			{
+				spatialFeaturesList.add(f.feature());
 			}
 			
 			// Do another round of cleaning up duplicates
@@ -330,6 +339,12 @@ public class IdentifyTopFeatures
 						
 						// Play the trial
 						game.playout(context, ais, 1.0, null, -1, -1, null);
+						
+						// Cleanup memory
+						for (int player = 1; player <= numPlayers; ++player)
+						{
+							ais.get(player).closeAI();
+						}
 						
 						// Update feature evaluations
 						final double[] agentUtils = RankUtils.agentUtilities(context);
@@ -538,6 +553,12 @@ public class IdentifyTopFeatures
 						
 						// Play the trial
 						game.playout(context, ais, 1.0, null, -1, -1, null);
+						
+						// Cleanup memory
+						for (int p = 1; p <= numPlayers; ++p)
+						{
+							ais.get(p).closeAI();
+						}
 						
 						// Update eval stats
 						final double[] agentUtils = RankUtils.agentUtilities(context);

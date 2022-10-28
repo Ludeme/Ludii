@@ -157,7 +157,7 @@ public class Expander
 	
 	//-------------------------------------------------------------------------
 
-	static String cleanUp(final String strIn, final Report report)
+	public static String cleanUp(final String strIn, final Report report)
 	{
 		String str = strIn;
 		
@@ -185,7 +185,7 @@ public class Expander
 //		str = str.replaceAll("\\(\"", "\\(itemCount \"");		
 
 		str = handleDoubleBrackets(str, report);  // do this after reducing spaces
-		if (report.isError())
+		if (report != null && report.isError())
 			return null;
 		
 		return str;
@@ -237,7 +237,7 @@ public class Expander
 	/**
 	 * Check for lowercase define labels.
 	 */
-	private static void checkDefineCase(final String str, final Report report)
+	public static void checkDefineCase(final String str, final Report report)
 	{
 		// System.out.println(str);
 		
@@ -297,7 +297,8 @@ public class Expander
 			if (cc < 0 || cc >= str.length())
 			{
 				//throw new UnclosedClauseException(str.substring(c));
-				report.addError("Couldn't close clause '" + Report.clippedString(str.substring(c), 20) + "'.");
+				if (report != null)
+					report.addError("Couldn't close clause '" + Report.clippedString(str.substring(c), 20) + "'.");
 				return null;
 			}
 		
@@ -310,7 +311,8 @@ public class Expander
 			else
 			{
 				// Opening pair do not have closing pair, should never occur
-				report.addError("Opening bracket pair '((' in '" + Report.clippedString(str.substring(c), 20) + "' does not have closing pair.");
+				if (report != null)
+					report.addError("Opening bracket pair '((' in '" + Report.clippedString(str.substring(c), 20) + "' does not have closing pair.");
 				return null;
 			}
 		}
@@ -630,7 +632,7 @@ public class Expander
 	/**
 	 * Expand defines iteratively until no more expansions occur.
 	 */
-	private static String expandDefines
+	public static String expandDefines
 	(
 		final String strIn,
 		final Report report, 
@@ -752,20 +754,20 @@ public class Expander
 	 * @param strIn
 	 * @return Game description with defines removed and stored in list.
 	 */
-	private static String extractDefines
+	public static String extractDefines
 	(
 		final String strIn, 
 		final List<Define> defines,
 		final Report report
 	)
 	{
-		final int[] extent = new int[2];
+		final int[] extent = new int[2];  // char indices of opening and closing brackets
 		
 		String str = new String(strIn);
 		while (str.contains("(define "))
 		{		
 			final Define define = interpretDefine(str, extent, report, false);
-			if (report.isError())
+			if (report != null && report.isError())
 				return null;
 				
 			if (define == null)
@@ -805,7 +807,8 @@ public class Expander
 		{
 //			System.out.println("** Bad define string: " + str);
 //			throw new BadSyntaxException("define", "Badly formed define. Should start and end with `(define' and end with a bracket.");
-			report.addError("Could not close '(define ...' in '" + Report.clippedString(str.substring(c), 20) + "'.");
+			if (report != null)
+				report.addError("Could not close '(define ...' in '" + Report.clippedString(str.substring(c), 20) + "'.");
 			return null;
 		}		
 
@@ -832,7 +835,8 @@ public class Expander
 		if (numQuotes < 2)
 		{
 //			throw new BadSyntaxException("define", "Badly formed define. Should be start (define \"name\".");
-			report.addError("Badly fomred '(define \"name\"...' in '" + Report.clippedString(desc, 20) + "'.");
+			if (report != null)
+				report.addError("Badly fomred '(define \"name\"...' in '" + Report.clippedString(desc, 20) + "'.");
 			return null;
 		}
 			
@@ -1266,7 +1270,7 @@ public class Expander
 	 * @param strIn
 	 * @return Game description with all number range occurrences expanded.
 	 */
-	private static String expandRanges
+	public static String expandRanges
 	(
 		final String strIn,
 		final Report report
@@ -1278,52 +1282,62 @@ public class Expander
 		String str = new String(strIn);
 
 		int ref = 1;
+		boolean inCompletion = false;
 		while (ref < str.length() - 2)
 		{
-			if
-			(
-				str.charAt(ref) == '.' && str.charAt(ref+1) == '.'
-				&&
-				Character.isDigit(str.charAt(ref-1))
-				&&
-				Character.isDigit(str.charAt(ref+2))
-			)
+			if(str.charAt(ref) == '[')
+				inCompletion = true;
+
+			if(str.charAt(ref) == ']')
+				inCompletion = false;
+			
+			if(!inCompletion)
 			{
-				// Is a range: expand it
-				int c = ref - 1;
-				while (c >= 0 && Character.isDigit(str.charAt(c)))
-					c--;
-				c++;
-				final String strM = str.substring(c, ref);
-				final int m = Integer.parseInt(strM);
-
-				c = ref + 2;
-				while (c < str.length() && Character.isDigit(str.charAt(c)))
+				if
+				(
+					str.charAt(ref) == '.' && str.charAt(ref+1) == '.'
+					&&
+					Character.isDigit(str.charAt(ref-1))
+					&&
+					Character.isDigit(str.charAt(ref+2))
+				)
+				{
+					// Is a range: expand it
+					int c = ref - 1;
+					while (c >= 0 && Character.isDigit(str.charAt(c)))
+						c--;
 					c++;
-				final String strN = str.substring(ref+2, c);
-				final int n = Integer.parseInt(strN);
-
-				if (Math.abs(n - m) > MAX_RANGE)
-				{
-					//throw new BadRangeException(MAX_RANGE);
-					report.addError("Range exceeded maximum of " + MAX_RANGE + ".");
-					return null;
+					final String strM = str.substring(c, ref);
+					final int m = Integer.parseInt(strM);
+	
+					c = ref + 2;
+					while (c < str.length() && Character.isDigit(str.charAt(c)))
+						c++;
+					final String strN = str.substring(ref+2, c);
+					final int n = Integer.parseInt(strN);
+	
+					if (Math.abs(n - m) > MAX_RANGE)
+					{
+						//throw new BadRangeException(MAX_RANGE);
+						report.addError("Range exceeded maximum of " + MAX_RANGE + ".");
+						return null;
+					}
+					
+					// Generate the expanded range substring
+					String sub = " ";
+	
+					final int inc = (m <= n) ? 1 : -1;
+					for (int step = m; step != n; step += inc)
+					{
+						if (step == m || step == n)
+							continue;  // don't include end points
+	
+						sub += step + " ";
+					}
+	
+					str = str.substring(0, ref) + sub + str.substring(ref+2);
+					ref += sub.length();
 				}
-				
-				// Generate the expanded range substring
-				String sub = " ";
-
-				final int inc = (m <= n) ? 1 : -1;
-				for (int step = m; step != n; step += inc)
-				{
-					if (step == m || step == n)
-						continue;  // don't include end points
-
-					sub += step + " ";
-				}
-
-				str = str.substring(0, ref) + sub + str.substring(ref+2);
-				ref += sub.length();
 			}
 			ref++;
 		}
@@ -1334,7 +1348,7 @@ public class Expander
 	 * @param strIn
 	 * @return Game description with all site range occurrences expanded.
 	 */
-	private static String expandSiteRanges
+	public static String expandSiteRanges
 	(
 		final String strIn,
 		final Report report
@@ -1345,64 +1359,74 @@ public class Expander
 		
 		String str = new String(strIn);
 
+		boolean inCompletion = false;
 		int ref = 1;
 		while (ref < str.length() - 2)
 		{
-			if
-			(
-				str.charAt(ref) == '.' && str.charAt(ref+1) == '.'
-				&&
-				str.charAt(ref-1) == '"' && str.charAt(ref+2) == '"'
-			)
+			if(str.charAt(ref) == '[')
+				inCompletion = true;
+
+			if(str.charAt(ref) == ']')
+				inCompletion = false;
+			
+			if(!inCompletion)
 			{
-				// Must be a site range
-				int c = ref - 2;
-				while (c >= 0 && str.charAt(c) != '"')
-					c--;
-								
-				final String strC = str.substring(c+1, ref-1);
-//				System.out.println("strC: " + strC);
-				
-				int d = ref + 3;
-				while (d < str.length() && str.charAt(d) != '"')
+				if
+				(
+					str.charAt(ref) == '.' && str.charAt(ref+1) == '.'
+					&&
+					str.charAt(ref-1) == '"' && str.charAt(ref+2) == '"'
+				)
+				{
+					// Must be a site range
+					int c = ref - 2;
+					while (c >= 0 && str.charAt(c) != '"')
+						c--;
+									
+					final String strC = str.substring(c+1, ref-1);
+	//				System.out.println("strC: " + strC);
+					
+					int d = ref + 3;
+					while (d < str.length() && str.charAt(d) != '"')
+						d++;
 					d++;
-				d++;
-								
-				final String strD = str.substring(ref+3, d-1);
-//				System.out.println("strD: " + strD);
-				
-//				System.out.println("Range: " + str.substring(c, d));
-				
-				if (strC.length() < 2 || !StringRoutines.isLetter(strC.charAt(0)))
-				{
-					report.addError("Bad 'from' coordinate in site range: " + str.substring(c, d));
-					return null;
-				}			
-				final int fromChar = Character.toUpperCase(strC.charAt(0)) - 'A';
-				
-				if (strD.length() < 2 || !StringRoutines.isLetter(strD.charAt(0)))
-				{
-					report.addError("Bad 'to' coordinate in site range: " + str.substring(c, d));
-					return null;
-				}			
-				final int toChar = Character.toUpperCase(strD.charAt(0)) - 'A';
-				
-//				System.out.println("fromChar=" + fromChar + ", toChar=" + toChar + ".");
-				
-				final int fromNum = Integer.parseInt(strC.substring(1));
-				final int toNum   = Integer.parseInt(strD.substring(1));
-
-//				System.out.println("fromNum=" + fromNum + ", toNum=" + toNum + ".");
-
-				// Generate the expanded range substring
-				String sub = "";
-				
-				for (int m = fromChar; m < toChar + 1; m++)
-					for (int n = fromNum; n < toNum + 1; n++)
-						sub += "\"" + (char)('A' + m) + (n) + "\" ";
-
-				str = str.substring(0, c) + sub.trim() + str.substring(d);
-				ref += sub.length();
+									
+					final String strD = str.substring(ref+3, d-1);
+	//				System.out.println("strD: " + strD);
+					
+	//				System.out.println("Range: " + str.substring(c, d));
+					
+					if (strC.length() < 2 || !StringRoutines.isLetter(strC.charAt(0)))
+					{
+						report.addError("Bad 'from' coordinate in site range: " + str.substring(c, d));
+						return null;
+					}			
+					final int fromChar = Character.toUpperCase(strC.charAt(0)) - 'A';
+					
+					if (strD.length() < 2 || !StringRoutines.isLetter(strD.charAt(0)))
+					{
+						report.addError("Bad 'to' coordinate in site range: " + str.substring(c, d));
+						return null;
+					}			
+					final int toChar = Character.toUpperCase(strD.charAt(0)) - 'A';
+					
+	//				System.out.println("fromChar=" + fromChar + ", toChar=" + toChar + ".");
+					
+					final int fromNum = Integer.parseInt(strC.substring(1));
+					final int toNum   = Integer.parseInt(strD.substring(1));
+	
+	//				System.out.println("fromNum=" + fromNum + ", toNum=" + toNum + ".");
+	
+					// Generate the expanded range substring
+					String sub = "";
+					
+					for (int m = fromChar; m < toChar + 1; m++)
+						for (int n = fromNum; n < toNum + 1; n++)
+							sub += "\"" + (char)('A' + m) + (n) + "\" ";
+	
+					str = str.substring(0, c) + sub.trim() + str.substring(d);
+					ref += sub.length();
+				}
 			}
 			ref++;
 		}

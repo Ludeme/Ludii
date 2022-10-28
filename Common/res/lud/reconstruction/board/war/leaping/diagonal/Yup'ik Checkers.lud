@@ -1,6 +1,5 @@
 (define "HopMan" 
-    (move
-        Hop 
+    (move Hop 
         (from #1) 
         (directions {FR FL}) 
         (between 
@@ -12,7 +11,7 @@
     ) 
 )
 
-(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
+(define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
 
 (define "JumpToPromotionZone" (is In (last To) (sites Next)))
 
@@ -20,14 +19,7 @@
 
 (game "Yup'ik Checkers"
     (players 2) 
-    (equipment { 
-        (board (square 8))
-        (piece "Counter" P1 N)
-        (piece "Counter" P2 S) 
-        (piece "DoubleCounter" Each)
-        (regions P1 (sites Bottom))
-        (regions P2 (sites Top))
-    }) 
+    ("DraughtsEquipment" (square 8))
     
     (rules 
         (start [#])
@@ -62,11 +54,7 @@
                     
                     (or 
                         (forEach Piece "Counter" 
-                            (move
-                                Step 
-                                (directions {FR FL}) 
-                                (to if:(is Empty (to)))
-                            ) 
+                            ("StepToEmpty" (directions {FR FL})) 
                             (then 
                                 (if "JumpToPromotionZone"
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
@@ -79,7 +67,7 @@
             )
         ) 
         
-        (end ("BlockWin"))
+        (end ("CaptureAll Next"))
     )
 )
 
@@ -94,7 +82,7 @@
         ")
         (source "DLP evidence.")
         (id "1250")
-        (version "1.3.6")
+        (version "1.3.7")
         (classification "board/war/leaping/diagonal/reconstruction")
         (credit "Eric Piette")
         (origin "This game was played in Alaska, from around 1973 to 1974.")
@@ -105,4 +93,7 @@
         (board Style Chess)
     })
     
+    (recon {
+        (concept "NumStartComponents" 40)
+    })
 )

@@ -1,13 +1,7 @@
 (game "Nardshir" 
     (players 2)
     (equipment {
-        (board 
-            (merge {
-                (rectangle 1 6) 
-                (shift 7 0 (rectangle 1 6))
-                (shift 0 6 (rectangle 1 6))
-                (shift 7 6 (rectangle 1 6))
-            })
+        ("TableBoard"
             [
             {
             (track "Track1" {24 11..0 12..23} P1 directed:True)
@@ -19,7 +13,6 @@
             } 
             | 
             ]
-            use:Vertex
         )
         (dice d:[2..6] num:2)
         (piece "Disc" Each)
@@ -43,10 +36,10 @@
         (rules "Board with 24 points, board divided into four quadrants. 15 pieces per player. Two players. Two six-sided dice. Pieces move in opposite directions from one another. Single pieces are removed from the board and must reenter when an opposing piece lands on the same space.")
         (source "DLP evidence.")
         (id "323")
-        (version "1.3.6")
+        (version "1.3.7")
         (classification "board/race/escape/reconstruction")
         (credit "Eric Piette")
-        (origin "This game was played in Persia, from around 500 to 651.")
+        (origin "This game was played in Persia, from around 500 to 799.")
         }
     )
     

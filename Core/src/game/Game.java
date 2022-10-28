@@ -86,6 +86,7 @@ import main.collections.FastArrayList;
 import main.grammar.Description;
 import main.options.Ruleset;
 import metadata.Metadata;
+import metadata.recon.ReconItem;
 import other.AI;
 import other.BaseLudeme;
 import other.Ludeme;
@@ -197,10 +198,13 @@ public class Game extends BaseLudeme implements API, Serializable
 	/** All variables constraint by the puzzle.*/
 	private final TIntArrayList constraintVariables = new TIntArrayList();
 
-	//-----------------------Metadata and Graphics-----------------------------
+	//-----------------------Metadata-------------------------------------------
 
 	/** The game's metadata */
 	protected Metadata metadata = null;
+
+	/** The expected concepts values for reconstruction. */
+	protected ArrayList<metadata.recon.concept.Concept> expectedConcepts = new ArrayList<metadata.recon.concept.Concept>();
 
 	// -----------------------Warning/Crash reports-----------------------------
 
@@ -325,6 +329,14 @@ public class Game extends BaseLudeme implements API, Serializable
 	}
 	
 	/**
+	 * @return The game's expected concepts used for reconstruction.
+	 */
+	public ArrayList<metadata.recon.concept.Concept> expectedConcepts()
+	{
+		return expectedConcepts;
+	}
+	
+	/**
 	 * Sets the game's metadata and update the concepts.
 	 * @param md The metadata.
 	 */
@@ -440,6 +452,13 @@ public class Game extends BaseLudeme implements API, Serializable
 
 			if (metadata.graphics() != null)
 				metadata.graphics().computeNeedRedraw(this);
+			
+			if(metadata.recon() != null)
+			{
+				final List<ReconItem> reconItems = metadata.recon().getItem();
+				for(ReconItem item : reconItems)
+					expectedConcepts.add((metadata.recon.concept.Concept) item);
+			}
 		}
 		else
 		{
@@ -1079,6 +1098,9 @@ public class Game extends BaseLudeme implements API, Serializable
 	 */
 	public int maxCount()
 	{
+		if(isStacking())
+			return 1;
+		
 		if (hasDominoes())
 			return equipment.components().length;
 
@@ -2316,6 +2338,71 @@ public class Game extends BaseLudeme implements API, Serializable
 			}
 		
 		return nonBooleanConcepts;
+	}
+	
+	/**
+	 * @return The starting concepts. To use only for recons purposes because this is not taking in account the RNG.
+	 */
+	public Map<String, Double> startsConceptsWithoutRNG()
+	{
+		final Map<String, Double> mapStarting = new HashMap<String, Double>();
+		
+		double numStartComponents = 0.0;
+		double numStartComponentsHands = 0.0;
+		double numStartComponentsBoard = 0.0;
+		
+		// Setup a new instance of the game
+		final BitSet concepts = computeBooleanConcepts();	
+		final Context context = new Context(this,  new Trial(this));
+		this.start(context);
+		for (int cid = 0; cid < context.containers().length; cid++)
+		{
+			final Container cont = context.containers()[cid];
+			final ContainerState cs = context.containerState(cid);
+			if (cid == 0)
+			{
+				if (concepts.get(Concept.Cell.id()))
+					for (int cell = 0; cell < cont.topology().cells().size(); cell++)
+					{
+						final int count = isStacking() ? cs.sizeStack(cell, SiteType.Cell) : cs.count(cell, SiteType.Cell);
+						numStartComponents += count;
+						numStartComponentsBoard += count;
+					}
+				
+				if (concepts.get(Concept.Vertex.id()))
+					for (int vertex = 0; vertex < cont.topology().vertices().size(); vertex++)
+					{
+						final int count = isStacking() ? cs.sizeStack(vertex, SiteType.Vertex) : cs.count(vertex, SiteType.Vertex);
+						numStartComponents += count;
+						numStartComponentsBoard += count;
+					}
+		
+				if (concepts.get(Concept.Edge.id()))
+					for (int edge = 0; edge < cont.topology().edges().size(); edge++)
+					{
+						final int count = isStacking() ? cs.sizeStack(edge, SiteType.Edge) : cs.count(edge, SiteType.Edge);
+						numStartComponents += count;
+						numStartComponentsBoard += count;
+					}
+			}
+			else
+			{
+				if (concepts.get(Concept.Cell.id()))
+					for (int cell = context.sitesFrom()[cid]; cell < context.sitesFrom()[cid]
+							+ cont.topology().cells().size(); cell++)
+					{
+						final int count = isStacking() ? cs.sizeStack(cell, SiteType.Cell) : cs.count(cell, SiteType.Cell);
+						numStartComponents += count;
+						numStartComponentsHands += count;
+					}
+			}
+		}
+		
+		mapStarting.put(Concept.NumStartComponents.name(), Double.valueOf(numStartComponents));
+		mapStarting.put(Concept.NumStartComponentsHand.name(), Double.valueOf(numStartComponentsHands));
+		mapStarting.put(Concept.NumStartComponentsBoard.name(), Double.valueOf(numStartComponentsBoard));
+		
+		return mapStarting;
 	}
 
 	/**

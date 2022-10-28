@@ -1,0 +1,43 @@
+(define "SlideForward" (move Slide Forward))
+(define "SlideDiagonalForward" 
+    (move Slide (directions {FR FL}) 
+        (between if:(is Empty (between)))
+        (to if:(is Enemy (who at:(to)))
+            (apply (remove (to)))
+        )
+    )		
+)
+
+(define "ReachedTarget" (is In (last To) (sites Mover)))
+
+//------------------------------------------------------------------------------
+
+(game "Breakthrough (Slide)" 
+    (players {(player N) (player S)})
+    (equipment { 
+        (board (square 8)) 
+        (piece "Pawn" Each (or ("SlideForward") ("SlideDiagonalForward")))
+        (regions P1 (sites Top))
+        (regions P2 (sites Bottom))
+    }) 
+    (rules 
+        (start { 
+            (place "Pawn1" (expand (sites Bottom)))
+            (place "Pawn2" (expand (sites Top)))
+        })
+        
+        (play (forEach Piece))
+        
+        (end (if "ReachedTarget" (result Mover Win))) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (graphics {
+        (board Style Chess)
+    })
+    
+)

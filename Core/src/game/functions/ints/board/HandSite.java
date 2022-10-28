@@ -27,7 +27,7 @@ public final class HandSite extends BaseIntFunction
 
 	//-------------------------------------------------------------------------
 
-	/** Which player. */
+	/** Which player. */ 
 	private final IntFunction playerId;
 	
 	/** Which site. */
