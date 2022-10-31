@@ -1,7 +1,6 @@
 package utils.recons;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -21,6 +20,7 @@ import main.StringRoutines;
 import main.grammar.Description;
 import main.grammar.Report;
 import main.grammar.Symbol;
+import main.options.Ruleset;
 import other.GameLoader;
 import other.concept.Concept;
 
@@ -120,14 +120,63 @@ public class ReconsRulesets
 				if (nameGame.replaceAll(Pattern.quote("\\"), "/").contains("reconstruction"))
 					continue;
 
-				final Game game = GameLoader.loadGameFromName(gameName);
+				final Game game = GameLoader.loadGameFromName(nameGame);
 				
-				final List<String> ids = game.metadata().info().getId();
+				final List<Ruleset> rulesetsInGame = game.description().rulesets();
 				
+				// Code for games with many rulesets
+				if (rulesetsInGame != null && !rulesetsInGame.isEmpty()) 
+				{
+					for (int rs = 0; rs < rulesetsInGame.size(); rs++)
+					{
+						final Ruleset ruleset = rulesetsInGame.get(rs);
+						
+						if (!ruleset.optionSettings().isEmpty()) // We check if the ruleset is implemented.
+						{
+							final Game rulesetGame = GameLoader.loadGameFromName(nameGame, ruleset.optionSettings());
+							
+							final List<String> ids = rulesetGame.metadata().info().getId();
+							if(ids == null || ids.isEmpty())
+								continue;
+							
+							final int id = Integer.parseInt(ids.get(0));
+
+							final BitSet concepts = rulesetGame.booleanConcepts();
+							
+							int countCommonConcepts = 0;
+							for(Concept concept: trueConcepts)
+								if(concepts.get(concept.id()))
+									countCommonConcepts++;
+							
+							final double avgCommonConcepts = ((double) countCommonConcepts / (double) trueConcepts.size());
+
+							System.out.println("id = " + id + " Game Name = " + rulesetGame.name() + " ruleset = " + rulesetGame.getRuleset().heading());
+							
+							System.out.println("% True Concepts = " + avgCommonConcepts);
+						}
+					}
+				}
+				else
+				{
+					final List<String> ids = game.metadata().info().getId();
+					if(ids == null || ids.isEmpty())
+						continue;
+					
+					final int id = Integer.parseInt(ids.get(0));
+					
+					final BitSet concepts = game.booleanConcepts();
+					
+					int countCommonConcepts = 0;
+					for(Concept concept: trueConcepts)
+						if(concepts.get(concept.id()))
+							countCommonConcepts++;
+					
+					final double avgCommonConcepts = ((double) countCommonConcepts / (double) trueConcepts.size());
+					
+					System.out.println("id = " + id + " Game Name = " + game.name());
+					System.out.println("% True Concepts = " + avgCommonConcepts);
+				}
 			}
-			
-			
-			
 			
 			// Run the recons process until enough attempts is executed or reconstruction are generated.
 			while(numAttempts < maxNumberAttempts && 
