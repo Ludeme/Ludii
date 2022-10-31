@@ -248,7 +248,7 @@ public class CompleterWithPrepro
 //				System.out.println(parent[1]);
 				
 //				System.out.println("\nEnumerating on parent " + enumeration + ": \"" + parent[0] + "\" + ? + \"" + parent[1] + "\"");
-				enumerateMatches(left, right, parent, completions, completion.score(), rulesetReconId);
+				enumerateMatches(completion, left, right, parent, completions, completion.score(), rulesetReconId);
 			}
 			else
 			{
@@ -324,6 +324,7 @@ public class CompleterWithPrepro
 		 */
 		private void enumerateMatches
 		(
+			final Completion       completion,
 			final String           left, 
 			final String           right, 
 			final String[]         parent, 
@@ -418,7 +419,7 @@ public class CompleterWithPrepro
 					//final String str = left + " " + match + " " + right;
 					String str = left + match + right;
 					//System.out.println(right);
-					final Completion completion = new Completion(str);
+					final Completion newCompletion = new Completion(str);
 					//System.out.println("completion is:\n" + completion.raw());
 						
 					//System.out.println("Adding completion:\n" + completion.raw());
@@ -426,15 +427,16 @@ public class CompleterWithPrepro
 					final double newSimilarityScore = (completion.idsUsed().size() == 0) ? similarity : ((completion.score() * completion.idsUsed().size() + similarity) / (1 + completion.idsUsed().size()));
 					final double newCommonTrueConceptsAvgScore = (completion.idsUsed().size() == 0) ? trueConceptsAvg : ((completion.score() * completion.idsUsed().size() + trueConceptsAvg) / (1 + completion.idsUsed().size()));
 					
-					completion.addId(rulesetReconId);
-					completion.setScore(newScore);
-					completion.setSimilarityScore(newSimilarityScore);
-					completion.setCommonTrueConceptsScore(newCommonTrueConceptsAvgScore);
+					newCompletion.setIdsUsed(completion.idsUsed());
+					newCompletion.addId(rulesetId);
+					newCompletion.setScore(newScore);
+					newCompletion.setSimilarityScore(newSimilarityScore);
+					newCompletion.setCommonTrueConceptsScore(newCommonTrueConceptsAvgScore);
 					//System.out.println("SCORE IS " + completion.score());
 					
-					if (!queue.contains(completion))
-						queue.add(completion);
-				}	
+					if (!queue.contains(newCompletion))
+						queue.add(newCompletion);
+				}
 			}	
 		}
 		

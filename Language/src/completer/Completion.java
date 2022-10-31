@@ -12,7 +12,7 @@ public class Completion
 	private double score = 0;  // confidence in enumeration (0..1)
 	private double similarityScore = 0;  // (0..1)
 	private double commonTrueConceptsScore = 0;  // (0..1)
-	private final TIntArrayList idsUsed = new TIntArrayList(); // The ruleset ids used to make the completion.
+	private TIntArrayList idsUsed = new TIntArrayList(); // The ruleset ids used to make the completion.
 
 	//-------------------------------------------------------------------------
 
@@ -66,6 +66,11 @@ public class Completion
 	public TIntArrayList idsUsed()
 	{
 		return idsUsed;
+	}
+	
+	public void setIdsUsed(final TIntArrayList ids)
+	{
+		idsUsed = new TIntArrayList(ids);
 	}
 	
 	public void addId(final int id)
