@@ -3,6 +3,7 @@ package utils.recons;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -337,24 +338,31 @@ public class CompleterWithPrepro
 				
 				final String candidate = new String(otherDescription);
 				
-				double similarity = 0;
+				double similarity = 0.0;
+				double trueConceptsAvg = 0.0;
 				if(rulesetReconId == -1) // We do not use the CSN.
 					similarity = 1.0;
 				else
 				{
 					final String similaryFilePath = "./res/recons/input/contextualiser/similarity_";
-					File file1 = new File(similaryFilePath + rulesetReconId + ".csv");
-					File file2 = new File(similaryFilePath + entry.getKey().intValue() + ".csv");
+					File fileSimilarity1 = new File(similaryFilePath + rulesetReconId + ".csv");
+					File fileSimilarity2 = new File(similaryFilePath + entry.getKey().intValue() + ".csv");
 					
-					if(!file1.exists() || !file2.exists() || (rulesetReconId == entry.getKey().intValue())) // If CSN not computing or comparing the same rulesets, similarity is 0.
+					if(!fileSimilarity1.exists() || !fileSimilarity2.exists() || (rulesetReconId == entry.getKey().intValue())) // If CSN not computing or comparing the same rulesets, similarity is 0.
 						similarity = 0.0;
 					else
 						similarity = DistanceUtils.getRulesetCSNDistance(entry.getKey().intValue(), rulesetReconId);
+					
+					trueConceptsAvg = getAVGCommonTrueConcept(rulesetReconId, entry.getKey().intValue());
 				}
 				
 				// We ignore all the ludemes coming from a negative similarity value.
-				if(similarity < 0)
+				if(similarity < 0 && trueConceptsAvg < 0)
 					continue;
+				
+				final double weightSimilarity = 0.5;
+				final double wieghtCommonTrueConcepts = 0.5; 
+				final double score = weightSimilarity * similarity + wieghtCommonTrueConcepts * trueConceptsAvg;
 				
 				final int l = candidate.indexOf(parent[0]);
 				
@@ -417,7 +425,7 @@ public class CompleterWithPrepro
 					{
 						//System.out.println("Adding completion:\n" + completion.raw());
 						completion.addCompletionPoints();
-						completion.setScore(((completion.score() * (completion.numCompletionPoints() - 1) + similarity))/ completion.numCompletionPoints());
+						completion.setScore(((completion.score() * (completion.numCompletionPoints() - 1) + score))/ completion.numCompletionPoints());
 						//System.out.println("SCORE IS " + completion.score());
 						queue.add(completion);
 					} 
@@ -881,6 +889,41 @@ public class CompleterWithPrepro
 		str = Expander.cleanUp(str, report);
 		
 		description.setExpanded(str); 
+	}
+	
+	/**
+	 * @return Map of rulesetId (key) to CSN distance (value) pairs, based on distance to specified rulesetId.
+	 */
+	public static double getAVGCommonTrueConcept(final int reconsRulesetId, final int rulesetID)
+	{
+		// Load ruleset avg common true concepts from specific directory.
+		final String trueConceptsFilePath = "./res/recons/input/trueConcepts/TrueConcepts" + reconsRulesetId + ".csv";
+		File fileTrueConcept1 = new File(trueConceptsFilePath);
+		
+		if(!fileTrueConcept1.exists() || (reconsRulesetId == rulesetID)) // If TrueConcept not computing or comparing the same rulesets, trueConceptsAvg is 0.
+			return 0.0;
+		
+		// Map of rulesetId (key) to common true concepts avg pairs.
+		final Map<Integer, Double> rulesetCommonTrueConcept = new HashMap<>();	
+		
+		try (BufferedReader br = new BufferedReader(new FileReader(trueConceptsFilePath))) 
+		{
+		    String line = br.readLine();	// column names
+		    
+		    while ((line = br.readLine()) != null) 
+		    {
+		        final String[] values = line.split(",");
+		        rulesetCommonTrueConcept.put(Integer.valueOf(Integer.parseInt(values[0])), Double.valueOf(Double.parseDouble(values[1])));
+		    }
+		}
+		catch (final Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		final Double avgCommonTrueConcepts = rulesetCommonTrueConcept.get(Integer.valueOf(rulesetID));
+		
+		return avgCommonTrueConcepts.doubleValue();
 	}
 
 }
