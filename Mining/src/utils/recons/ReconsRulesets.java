@@ -34,8 +34,8 @@ public class ReconsRulesets
 	{
 		String outputPath = args.length == 0 ?  "./res/recons/output/" : args[0];
 		int numRecons = args.length < 1 ?  10 : Integer.parseInt(args[1]);
-		int numReconsNoWarning = args.length < 2 ?  1 : Integer.parseInt(args[2]);
-		int numReconsNoWarningExpectedConcepts = args.length < 3 ?  1 : Integer.parseInt(args[3]);
+		int numReconsNoWarning = args.length < 2 ?  10 : Integer.parseInt(args[2]);
+		int numReconsNoWarningExpectedConcepts = args.length < 3 ?  10 : Integer.parseInt(args[3]);
 		int maxNumberAttempts = args.length < 4 ?  10000 : Integer.parseInt(args[4]);
 		
 		System.out.println("\n=========================================\nTest: Start reconstruction all of rulesets:\n");
@@ -50,7 +50,8 @@ public class ReconsRulesets
 		{
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/"))
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/hunt/Fortresse"))
-			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/space/line/Ashanti Alignment Game"))
+			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/space/line/Ashanti Alignment Game"))
+			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/war/other/Macheng"))
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/hunt/Bagh Bukree"))
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/eric/recons/test"))
 				continue;
@@ -135,16 +136,17 @@ public class ReconsRulesets
 							{
 								System.out.print( " with no warning");
 								compilingNoWarningCompletions.add(completions.get(n));
+								// Check if the concepts expected are present.
+								boolean expectedConcepts = Concept.isExpectedConcepts(rawDescMetadata);
+								if(expectedConcepts)
+								{
+									compilingNoWarningExpectedConceptsCompletions.add(completions.get(n));
+									System.out.print( " and with the expected concepts");
+								}
 							}
 							game = (Game) Compiler.compileTest(new Description(rawDescMetadata), false);
 							
-							// Check if the concepts expected are present.
-							boolean expectedConcepts = Concept.isExpectedConcepts(rawDescMetadata);
-							if(expectedConcepts)
-							{
-								compilingNoWarningExpectedConceptsCompletions.add(completions.get(n));
-								System.out.print( " and with the expected concepts");
-							}
+
 							System.out.println();
 						}
 					}
@@ -157,7 +159,7 @@ public class ReconsRulesets
 			
 			for (int n = 0; n < compilingCompletions.size(); n++) 
 			{
-				System.out.println("Completion " + n + " has a score of " + compilingCompletions.get(n).score());
+				System.out.println("Completion " + n + " has a score of " + compilingCompletions.get(n).score() + " similarity Score = " + compilingCompletions.get(n).similarityScore() + " true concepts score = " + compilingCompletions.get(n).commonTrueConceptsScore() + " IDS used = " + compilingCompletions.get(n).idsUsed());
 				if(compilingNoWarningExpectedConceptsCompletions.contains(compilingCompletions.get(n)))
 					CompleterWithPrepro.saveCompletion(outputPath + gameName + "/" + "noWarning/"+ "expectedConcepts/", gameName + n, compilingCompletions.get(n).raw());
 				else if(compilingNoWarningCompletions.contains(compilingCompletions.get(n)))

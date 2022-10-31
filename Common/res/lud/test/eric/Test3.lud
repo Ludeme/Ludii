@@ -1,9 +1,9 @@
-(game "Ashanti Alignment Game" 
+(game "Macheng" 
     (players 2)
     
     (equipment { 
         (board 
-            (square 12)
+            (concentric Square rings:3 joinCorners:True)
         use:Vertex)
         
         (hand Each)
@@ -17,10 +17,63 @@
                 )
                 
                 (then 
-                    (if 
-                        (is Line 3 Orthogonal exact:True)
+                    (and { 
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between 
+                                (max 1)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
                         
-                        (moveAgain)
+                        (intervene 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (to if:
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                        }
                     )
                 )
             )
@@ -30,7 +83,7 @@
     
     (rules 
         (start 
-            (place "Marker" "Hand" count:1)
+            (place "Marker" "Hand" count:3)
         )
         phases:{ 
         (phase "Placement" 
@@ -52,10 +105,63 @@
                         )
                         
                         (then 
-                            (if 
-                                (is Line 3 Orthogonal exact:True)
+                            (and { 
+                                (custodial 
+                                    (from 
+                                        (last To)
+                                    )
+                                    Orthogonal 
+                                    (between 
+                                        (max 1)
+                                        if:
+                                        (is Enemy 
+                                            (who at:
+                                                (between)
+                                            )
+                                        )
+                                        
+                                        (apply 
+                                            (remove 
+                                                (between)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (to if:
+                                        (is Friend 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
                                 
-                                (moveAgain)
+                                (intervene 
+                                    (from 
+                                        (last To)
+                                    )
+                                    Orthogonal 
+                                    (to if:
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (apply 
+                                            (remove 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                                }
                             )
                         )
                     )
@@ -84,7 +190,15 @@
                         (sites Occupied by:Next container:"Board")
                     )
                     
-                    (forEach Piece)
+                    (move 
+                        (from 
+                            (sites Occupied by:Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
                 )
             )
         )
@@ -92,27 +206,26 @@
         
         (end 
             (if 
-                (no Pieces Next)
+                (is Line 3)
                 
-                (result Next Loss)
+                (result Mover Win)
             )
         )
     )
 )
----------------------------------------------------------------------------
 
 (metadata 
     
     (info
         {
-        (description "This alignment game, the name of which was not recorded, was played in the Ashanti Kingdom in the early nineteenth century. It was played on a wooden board with perforations, and the pieces were pegs to be inserted in the board.")
-        (rules "The board is a series of intersecting lines in many directions, each line with three points. Players have equal numbers of pegs, and place their pieces at the same time. Players who place three of their pieces in a row remove one of the opponent's pieces. The player who removes all of the opponent's pieces wins.")
+        (description "Macheng is a capturing game played in Ming Dynasty China. It was described as a game commonly played in alleys.")
+        (rules "Played on a merels board. Players place their pieces on the board. When three pieces are in a straight line, one of the opponent's pieces is removed from the board. When a player surrounds an opponent's piece with two of their pieces, the opponent's piece is  removed. When a player places their piece between two of the opponent's pieces, the opponent's pieces are removed.")
         (source "DLP evidence.")
-        (id "1269")
-        (version "1.3.6")
-        (classification "board/space/line/reconstruction")
+        (id "1239")
+        (version "1.3.7")
+        (classification "board/war/reconstruction")
         (credit "Eric Piette")
-        (origin "This game was played in Ashanti, around 1817.")
+        (origin "This game was played in China, from around 1567 to 1624.")
         }
     )
     

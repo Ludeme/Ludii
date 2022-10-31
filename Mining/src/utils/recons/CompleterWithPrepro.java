@@ -335,7 +335,7 @@ public class CompleterWithPrepro
 			for (Map.Entry<Integer, String> entry : ludMap.entrySet()) 
 			{
 				final String otherDescription = entry.getValue();
-				
+				final int rulesetId = entry.getKey().intValue();
 				final String candidate = new String(otherDescription);
 				
 				double similarity = 0.0;
@@ -348,21 +348,21 @@ public class CompleterWithPrepro
 					File fileSimilarity1 = new File(similaryFilePath + rulesetReconId + ".csv");
 					File fileSimilarity2 = new File(similaryFilePath + entry.getKey().intValue() + ".csv");
 					
-					if(!fileSimilarity1.exists() || !fileSimilarity2.exists() || (rulesetReconId == entry.getKey().intValue())) // If CSN not computing or comparing the same rulesets, similarity is 0.
+					if(!fileSimilarity1.exists() || !fileSimilarity2.exists() || (rulesetReconId == rulesetId)) // If CSN not computing or comparing the same rulesets, similarity is 0.
 						similarity = 0.0;
 					else
-						similarity = DistanceUtils.getRulesetCSNDistance(entry.getKey().intValue(), rulesetReconId);
+						similarity = DistanceUtils.getRulesetCSNDistance(rulesetId, rulesetReconId);
 					
-					trueConceptsAvg = getAVGCommonTrueConcept(rulesetReconId, entry.getKey().intValue());
+					trueConceptsAvg = getAVGCommonTrueConcept(rulesetReconId, rulesetId);
 				}
 				
 				// We ignore all the ludemes coming from a negative similarity value.
-				if(similarity < 0 && trueConceptsAvg < 0)
+				if(similarity < 0)
 					continue;
 				
 				final double weightSimilarity = 0.5;
-				final double wieghtCommonTrueConcepts = 0.5; 
-				final double score = weightSimilarity * similarity + wieghtCommonTrueConcepts * trueConceptsAvg;
+				final double weightCommonTrueConcepts = 0.5; 
+				final double score = weightSimilarity * similarity + weightCommonTrueConcepts * trueConceptsAvg;
 				
 				final int l = candidate.indexOf(parent[0]);
 				
@@ -421,14 +421,19 @@ public class CompleterWithPrepro
 					final Completion completion = new Completion(str);
 					//System.out.println("completion is:\n" + completion.raw());
 						
+					//System.out.println("Adding completion:\n" + completion.raw());
+					final double newScore = (completion.idsUsed().size() == 0) ? score : ((completion.score() * completion.idsUsed().size() + score) / (1 + completion.idsUsed().size()));
+					final double newSimilarityScore = (completion.idsUsed().size() == 0) ? similarity : ((completion.score() * completion.idsUsed().size() + similarity) / (1 + completion.idsUsed().size()));
+					final double newCommonTrueConceptsAvgScore = (completion.idsUsed().size() == 0) ? trueConceptsAvg : ((completion.score() * completion.idsUsed().size() + trueConceptsAvg) / (1 + completion.idsUsed().size()));
+					
+					completion.addId(rulesetReconId);
+					completion.setScore(newScore);
+					completion.setSimilarityScore(newSimilarityScore);
+					completion.setCommonTrueConceptsScore(newCommonTrueConceptsAvgScore);
+					//System.out.println("SCORE IS " + completion.score());
+					
 					if (!queue.contains(completion))
-					{
-						//System.out.println("Adding completion:\n" + completion.raw());
-						completion.addCompletionPoints();
-						completion.setScore(((completion.score() * (completion.numCompletionPoints() - 1) + score))/ completion.numCompletionPoints());
-						//System.out.println("SCORE IS " + completion.score());
 						queue.add(completion);
-					} 
 				}	
 			}	
 		}
@@ -897,10 +902,10 @@ public class CompleterWithPrepro
 	public static double getAVGCommonTrueConcept(final int reconsRulesetId, final int rulesetID)
 	{
 		// Load ruleset avg common true concepts from specific directory.
-		final String trueConceptsFilePath = "./res/recons/input/trueConcepts/TrueConcepts" + reconsRulesetId + ".csv";
-		File fileTrueConcept1 = new File(trueConceptsFilePath);
+		final String trueConceptsFilePath = "./res/recons/input/trueConcepts/TrueConcept_" + reconsRulesetId + ".csv";
+		File fileTrueConcept = new File(trueConceptsFilePath);
 		
-		if(!fileTrueConcept1.exists() || (reconsRulesetId == rulesetID)) // If TrueConcept not computing or comparing the same rulesets, trueConceptsAvg is 0.
+		if(!fileTrueConcept.exists() || (reconsRulesetId == rulesetID)) // If TrueConcept not computing or comparing the same rulesets, trueConceptsAvg is 0.
 			return 0.0;
 		
 		// Map of rulesetId (key) to common true concepts avg pairs.
@@ -921,9 +926,9 @@ public class CompleterWithPrepro
 			e.printStackTrace();
 		}
 		
-		final Double avgCommonTrueConcepts = rulesetCommonTrueConcept.get(Integer.valueOf(rulesetID));
-		
-		return avgCommonTrueConcepts.doubleValue();
+		final Double mapValue = rulesetCommonTrueConcept.get(Integer.valueOf(rulesetID));
+		final double avgCommonTrueConcepts = (mapValue == null) ? 0.0 : mapValue.doubleValue();
+		return avgCommonTrueConcepts;
 	}
 
 }
