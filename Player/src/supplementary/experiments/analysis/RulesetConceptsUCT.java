@@ -31,7 +31,7 @@ public class RulesetConceptsUCT
 	 * is very useful for editing the filepath when running on cluster (where LudiiPrivate
 	 * is not available).
 	 */
-	public static String FILEPATH = "../../LudiiPrivate/DataMiningScripts/Sklearn/res/Input/RulesetConceptsUCT.csv";
+	public static String FILEPATH = "../../LudiiPrivate/DataMiningScripts/Sklearn/res/Input/rulesetConceptsUCT.csv";
 	
 	/** Names of our columns */
 	private static String[] columnNames = null;
