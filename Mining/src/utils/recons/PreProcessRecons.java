@@ -30,7 +30,7 @@ import other.GameLoader;
 import other.concept.Concept;
 
 /**
- * To format all rulesets
+ * To run the preprocessing part of the recons process.
  * 
  * @author Eric.Piette
  */
