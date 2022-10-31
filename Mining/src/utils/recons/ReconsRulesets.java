@@ -20,7 +20,6 @@ import main.StringRoutines;
 import main.grammar.Description;
 import main.grammar.Report;
 import main.grammar.Symbol;
-import main.options.Ruleset;
 import other.GameLoader;
 import other.concept.Concept;
 
@@ -89,93 +88,6 @@ public class ReconsRulesets
 			List<Completion> compilingCompletions = new ArrayList<Completion>();
 			List<Completion> compilingNoWarningCompletions = new ArrayList<Completion>();
 			List<Completion> compilingNoWarningExpectedConceptsCompletions = new ArrayList<Completion>();
-			
-			final List<Concept> trueConcepts = computeTrueConcepts(desc);
-//			System.out.println("The true concepts of this reconstruction are:");
-//			for(Concept concept: trueConcepts)
-//				System.out.println(concept);
-
-			// Compute % TrueConcepts in each complete ruleset.
-			final String[] gameNames = FileHandling.listGames();
-
-			// Check only the games wanted
-			for (int index = 0; index < gameNames.length; index++)
-			{
-				final String nameGame = gameNames[index];
-				if (nameGame.replaceAll(Pattern.quote("\\"), "/").contains("/lud/bad/"))
-					continue;
-
-				if (nameGame.replaceAll(Pattern.quote("\\"), "/").contains("/lud/wip/"))
-					continue;
-
-				if (nameGame.replaceAll(Pattern.quote("\\"), "/").contains("/lud/WishlistDLP/"))
-					continue;
-
-				if (nameGame.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/"))
-					continue;
-
-				if (nameGame.replaceAll(Pattern.quote("\\"), "/").contains("subgame"))
-					continue;
-
-				if (nameGame.replaceAll(Pattern.quote("\\"), "/").contains("reconstruction"))
-					continue;
-
-				final Game game = GameLoader.loadGameFromName(nameGame);
-				
-				final List<Ruleset> rulesetsInGame = game.description().rulesets();
-				
-				// Code for games with many rulesets
-				if (rulesetsInGame != null && !rulesetsInGame.isEmpty()) 
-				{
-					for (int rs = 0; rs < rulesetsInGame.size(); rs++)
-					{
-						final Ruleset ruleset = rulesetsInGame.get(rs);
-						
-						if (!ruleset.optionSettings().isEmpty()) // We check if the ruleset is implemented.
-						{
-							final Game rulesetGame = GameLoader.loadGameFromName(nameGame, ruleset.optionSettings());
-							
-							final List<String> ids = rulesetGame.metadata().info().getId();
-							if(ids == null || ids.isEmpty())
-								continue;
-							
-							final int id = Integer.parseInt(ids.get(0));
-
-							final BitSet concepts = rulesetGame.booleanConcepts();
-							
-							int countCommonConcepts = 0;
-							for(Concept concept: trueConcepts)
-								if(concepts.get(concept.id()))
-									countCommonConcepts++;
-							
-							final double avgCommonConcepts = ((double) countCommonConcepts / (double) trueConcepts.size());
-
-							System.out.println("id = " + id + " Game Name = " + rulesetGame.name() + " ruleset = " + rulesetGame.getRuleset().heading());
-							System.out.println("% True Concepts = " + avgCommonConcepts);
-						}
-					}
-				}
-				else
-				{
-					final List<String> ids = game.metadata().info().getId();
-					if(ids == null || ids.isEmpty())
-						continue;
-					
-					final int id = Integer.parseInt(ids.get(0));
-					
-					final BitSet concepts = game.booleanConcepts();
-					
-					int countCommonConcepts = 0;
-					for(Concept concept: trueConcepts)
-						if(concepts.get(concept.id()))
-							countCommonConcepts++;
-					
-					final double avgCommonConcepts = ((double) countCommonConcepts / (double) trueConcepts.size());
-					
-					System.out.println("id = " + id + " Game Name = " + game.name());
-					System.out.println("% True Concepts = " + avgCommonConcepts);
-				}
-			}
 			
 			// Run the recons process until enough attempts is executed or reconstruction are generated.
 			while(numAttempts < maxNumberAttempts && 
