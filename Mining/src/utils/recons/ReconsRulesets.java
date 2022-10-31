@@ -151,7 +151,6 @@ public class ReconsRulesets
 							final double avgCommonConcepts = ((double) countCommonConcepts / (double) trueConcepts.size());
 
 							System.out.println("id = " + id + " Game Name = " + rulesetGame.name() + " ruleset = " + rulesetGame.getRuleset().heading());
-							
 							System.out.println("% True Concepts = " + avgCommonConcepts);
 						}
 					}
