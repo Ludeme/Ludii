@@ -33,9 +33,9 @@ public class ReconsRulesets
 	public static void main(final String[] args)
 	{
 		String outputPath = args.length == 0 ?  "./res/recons/output/" : args[0];
-		int numRecons = args.length < 1 ?  10 : Integer.parseInt(args[1]);
-		int numReconsNoWarning = args.length < 2 ?  10 : Integer.parseInt(args[2]);
-		int numReconsNoWarningExpectedConcepts = args.length < 3 ?  10 : Integer.parseInt(args[3]);
+		int numRecons = args.length < 1 ?  100 : Integer.parseInt(args[1]);
+		int numReconsNoWarning = args.length < 2 ?  100 : Integer.parseInt(args[2]);
+		int numReconsNoWarningExpectedConcepts = args.length < 3 ?  100 : Integer.parseInt(args[3]);
 		int maxNumberAttempts = args.length < 4 ?  10000 : Integer.parseInt(args[4]);
 		
 		System.out.println("\n=========================================\nTest: Start reconstruction all of rulesets:\n");
@@ -84,6 +84,11 @@ public class ReconsRulesets
 			String idStr = metadata.contains("(id") ? metadata.substring(metadata.indexOf("(id")+ 5) : "";
 			idStr = idStr.substring(0, idStr.indexOf(')')-1);
 			final int idRulesetToRecons = Integer.valueOf(idStr).intValue();
+
+			final List<Concept> trueConcepts = computeTrueConcepts(desc);
+			
+			for(Concept c: trueConcepts)
+				System.out.println(c.name());
 			
 			int numAttempts = 0;
 			List<Completion> compilingCompletions = new ArrayList<Completion>();
