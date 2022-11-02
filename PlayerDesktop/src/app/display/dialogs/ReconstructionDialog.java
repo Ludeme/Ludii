@@ -5,6 +5,8 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.swing.JButton;
@@ -29,7 +31,7 @@ public class ReconstructionDialog extends JDialog
 	JTextField textFieldCSNScore;
 	JTextField textFieldConceptScore;
 	JTextField textFieldPlayability;
-	private final JTextField textField;
+	final JTextField textFieldMaxTries;
 	static String selectedLudPath = "";
 
 	/**
@@ -133,7 +135,14 @@ public class ReconstructionDialog extends JDialog
 			{
 				try
 				{
-		        	final String[] choices = FileHandling.listGames();
+		        	String[] choices = FileHandling.listGames();
+		        	
+		        	// Remove any invalid network games from the possible choices
+        			final List<String> reconGamesList = new ArrayList<>();
+        			for (final String lud : choices)
+        				if (lud.contains("reconstruction/") && !lud.contains("wip/"))
+        					reconGamesList.add(lud);
+        			choices = reconGamesList.toArray(new String[0]);
 		        	
 	        		String initialChoice = choices[0];
 	        		for (final String choice : choices)
@@ -190,11 +199,11 @@ public class ReconstructionDialog extends JDialog
 		lblMaximumTries.setBounds(12, 128, 149, 38);
 		contentPanel.add(lblMaximumTries);
 		
-		textField = new JTextField();
-		textField.setText("10000");
-		textField.setColumns(10);
-		textField.setBounds(280, 138, 130, 19);
-		contentPanel.add(textField);
+		textFieldMaxTries = new JTextField();
+		textFieldMaxTries.setText("10000");
+		textFieldMaxTries.setColumns(10);
+		textFieldMaxTries.setBounds(280, 138, 130, 19);
+		contentPanel.add(textFieldMaxTries);
 		
 		final JPanel buttonPane = new JPanel();
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -210,17 +219,17 @@ public class ReconstructionDialog extends JDialog
 				@Override
 				public void actionPerformed(final ActionEvent arg0)
 				{
-					// TODO Cameron you can call your function with the parameters stored here
 					try
 					{
 						final String outputPath = txtcommonresoutput.getText();
 						final Integer playableRecons = Integer.valueOf(textFieldMaxRecons.getText());
-						final Integer maxTries = Integer.valueOf(lblMaximumTries.getText());
+						final Integer maxTries = Integer.valueOf(textFieldMaxTries.getText());
 						final Double csnScore = Double.valueOf(textFieldCSNScore.getText());
 						final Double conceptScore = Double.valueOf(textFieldConceptScore.getText());
 						final Double qualityScore = Double.valueOf(textFieldPlayability.getText());
-						
 						System.out.println(selectedLudPath);
+						
+						// TODO Eric you need to call your function here with the values above.
 					}
 					catch (final Exception e)
 					{
