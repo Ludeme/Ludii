@@ -5,9 +5,9 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.regex.Pattern;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -16,7 +16,9 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import app.DesktopApp;
+import app.PlayerApp;
 import app.display.dialogs.util.DialogUtil;
+import main.FileHandling;
 
 public class ReconstructionDialog extends JDialog
 {
@@ -27,15 +29,17 @@ public class ReconstructionDialog extends JDialog
 	JTextField textFieldCSNScore;
 	JTextField textFieldConceptScore;
 	JTextField textFieldPlayability;
+	private final JTextField textField;
+	static String selectedLudPath = "";
 
 	/**
 	 * Launch the application.
 	 */
-	public static void createAndShowGUI()
+	public static void createAndShowGUI(final PlayerApp app)
 	{
 		try
 		{
-			final ReconstructionDialog dialog = new ReconstructionDialog();
+			final ReconstructionDialog dialog = new ReconstructionDialog(app);
 			DialogUtil.initialiseSingletonDialog(dialog, "Reconstruction", null);
 		}
 		catch (final Exception e)
@@ -47,100 +51,112 @@ public class ReconstructionDialog extends JDialog
 	/**
 	 * Create the dialog.
 	 */
-	public ReconstructionDialog()
+	public ReconstructionDialog(final PlayerApp app)
 	{
 		setTitle("Reconstruction");
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 350);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		
 		final JLabel lblOutputPath = new JLabel("Output Path");
-		lblOutputPath.setBounds(12, 18, 149, 38);
+		lblOutputPath.setBounds(12, 56, 149, 38);
 		contentPanel.add(lblOutputPath);
 		
 		txtcommonresoutput = new JTextField();
 		txtcommonresoutput.setText("/common/res/output/");
-		txtcommonresoutput.setBounds(167, 30, 220, 19);
+		txtcommonresoutput.setBounds(167, 68, 220, 19);
 		contentPanel.add(txtcommonresoutput);
 		txtcommonresoutput.setColumns(10);
 		{
-			final JLabel lblMaximumNumber = new JLabel("Maximum Number");
-			lblMaximumNumber.setBounds(12, 61, 149, 38);
+			final JLabel lblMaximumNumber = new JLabel("Playable Recons");
+			lblMaximumNumber.setBounds(12, 99, 149, 38);
 			contentPanel.add(lblMaximumNumber);
 		}
 		{
 			textFieldMaxRecons = new JTextField();
 			textFieldMaxRecons.setText("100");
 			textFieldMaxRecons.setColumns(10);
-			textFieldMaxRecons.setBounds(280, 71, 130, 19);
+			textFieldMaxRecons.setBounds(280, 109, 130, 19);
 			contentPanel.add(textFieldMaxRecons);
 		}
 		{
-			final JLabel lblCsnScore = new JLabel("CSN Score");
-			lblCsnScore.setBounds(12, 132, 149, 38);
+			final JLabel lblCsnScore = new JLabel("Historical");
+			lblCsnScore.setBounds(12, 170, 149, 38);
 			contentPanel.add(lblCsnScore);
 		}
 		{
-			final JLabel lblConceptScore = new JLabel("Concept Score");
-			lblConceptScore.setBounds(12, 161, 149, 38);
+			final JLabel lblConceptScore = new JLabel("Concept");
+			lblConceptScore.setBounds(12, 199, 149, 38);
 			contentPanel.add(lblConceptScore);
 		}
 		{
-			final JLabel lblPlayability = new JLabel("Playability");
-			lblPlayability.setBounds(12, 190, 149, 38);
+			final JLabel lblPlayability = new JLabel("Quality");
+			lblPlayability.setBounds(12, 228, 149, 38);
 			contentPanel.add(lblPlayability);
 		}
 		{
 			textFieldCSNScore = new JTextField();
 			textFieldCSNScore.setText("1.0");
 			textFieldCSNScore.setColumns(10);
-			textFieldCSNScore.setBounds(280, 142, 130, 19);
+			textFieldCSNScore.setBounds(280, 180, 130, 19);
 			contentPanel.add(textFieldCSNScore);
 		}
 		{
 			textFieldConceptScore = new JTextField();
 			textFieldConceptScore.setText("1.0");
 			textFieldConceptScore.setColumns(10);
-			textFieldConceptScore.setBounds(280, 171, 130, 19);
+			textFieldConceptScore.setBounds(280, 209, 130, 19);
 			contentPanel.add(textFieldConceptScore);
 		}
 		{
 			textFieldPlayability = new JTextField();
 			textFieldPlayability.setText("1.0");
 			textFieldPlayability.setColumns(10);
-			textFieldPlayability.setBounds(280, 200, 130, 19);
+			textFieldPlayability.setBounds(280, 238, 130, 19);
 			contentPanel.add(textFieldPlayability);
 		}
 		
-		final JCheckBox chckbxRankByContext = new JCheckBox("Rank by context");
-		chckbxRankByContext.setSelected(true);
-		chckbxRankByContext.setBounds(10, 110, 168, 23);
-		final ActionListener chckbxRankByContextListener = new ActionListener()
+		final JButton btnSelectGame = new JButton("Select Game");
+		btnSelectGame.setBounds(12, 28, 130, 25);
+		contentPanel.add(btnSelectGame);
+		
+		final JLabel selectedGameText = new JLabel("");
+		selectedGameText.setBounds(177, 21, 233, 38);
+		contentPanel.add(selectedGameText);
+		
+		btnSelectGame.addActionListener(new ActionListener()
 		{
 			@Override
-			public void actionPerformed(final ActionEvent arg0)
+			public void actionPerformed(final ActionEvent e)
 			{
-				if (chckbxRankByContext.isSelected())
+				try
 				{
-					textFieldCSNScore.setEnabled(true);
-					textFieldConceptScore.setEnabled(true);
-					textFieldPlayability.setEnabled(true);
+		        	final String[] choices = FileHandling.listGames();
+		        	
+	        		String initialChoice = choices[0];
+	        		for (final String choice : choices)
+	        		{
+	        			if (app.manager().savedLudName() != null && app.manager().savedLudName().endsWith(choice.replaceAll(Pattern.quote("\\"), "/")))
+	        			{
+	        				initialChoice = choice;
+	        				break;
+	        			}
+	        		}
+		        	
+	        		selectedLudPath = GameLoaderDialog.showDialog(DesktopApp.frame(), choices, initialChoice);
+	        		selectedGameText.setText(selectedLudPath.split("/")[selectedLudPath.split("/").length-1]);
 				}
-				else
+				catch (final Exception e1)
 				{
-					textFieldCSNScore.setEnabled(false);
-					textFieldConceptScore.setEnabled(false);
-					textFieldPlayability.setEnabled(false);
+					// Probably just cancelled the game loader.
 				}
-			}
-		};
-		chckbxRankByContext.addActionListener(chckbxRankByContextListener);
-		contentPanel.add(chckbxRankByContext);
+			}	
+		});
 		
 		final JButton buttonSelectDir = new JButton("");
-		buttonSelectDir.setBounds(388, 30, 20, 18);
+		buttonSelectDir.setBounds(388, 68, 20, 18);
 		final ActionListener buttonListener = new ActionListener()
 		{
 			@Override
@@ -170,6 +186,16 @@ public class ReconstructionDialog extends JDialog
 		buttonSelectDir.addActionListener(buttonListener);
 		contentPanel.add(buttonSelectDir);
 		
+		final JLabel lblMaximumTries = new JLabel("Maximum Tries");
+		lblMaximumTries.setBounds(12, 128, 149, 38);
+		contentPanel.add(lblMaximumTries);
+		
+		textField = new JTextField();
+		textField.setText("10000");
+		textField.setColumns(10);
+		textField.setBounds(280, 138, 130, 19);
+		contentPanel.add(textField);
+		
 		final JPanel buttonPane = new JPanel();
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
@@ -188,18 +214,13 @@ public class ReconstructionDialog extends JDialog
 					try
 					{
 						final String outputPath = txtcommonresoutput.getText();
-						final Integer maxRecons = Integer.valueOf(textFieldMaxRecons.getText());
-						final boolean rankByContext = chckbxRankByContext.isSelected();
+						final Integer playableRecons = Integer.valueOf(textFieldMaxRecons.getText());
+						final Integer maxTries = Integer.valueOf(lblMaximumTries.getText());
 						final Double csnScore = Double.valueOf(textFieldCSNScore.getText());
 						final Double conceptScore = Double.valueOf(textFieldConceptScore.getText());
-						final Double playabilityScore = Double.valueOf(textFieldPlayability.getText());
+						final Double qualityScore = Double.valueOf(textFieldPlayability.getText());
 						
-						System.out.println("output path = " + outputPath);
-						System.out.println("max recons = " + maxRecons);
-						System.out.println("rank by context = " + rankByContext);
-						System.out.println("csn score = " + csnScore);
-						System.out.println("concept score = " + conceptScore);
-						System.out.println("playability = " + playabilityScore);
+						System.out.println(selectedLudPath);
 					}
 					catch (final Exception e)
 					{
@@ -210,13 +231,5 @@ public class ReconstructionDialog extends JDialog
 			};
 			okButton.addActionListener(okButtonListener);
 		}
-		{
-			final JButton cancelButton = new JButton("Cancel");
-			cancelButton.setActionCommand("Cancel");
-			buttonPane.add(cancelButton);
-		}
-		
-		
-		
 	}
 }

@@ -1017,14 +1017,11 @@ public class MainMenu extends JMenuBar
 				menu.add(menuItem);
 			}
 
-			if (app.contextSnapshot().getContext(app).game().description().isReconstruction())	// Repalce this with the real check when completed
-			{
-				menu.addSeparator();
-				
-				menuItem = new JMenuItem("Reconstruction Dialog");
-				menuItem.addActionListener(al);
-				menu.add(menuItem);
-			}
+			menu.addSeparator();
+			
+			menuItem = new JMenuItem("Reconstruction Dialog");
+			menuItem.addActionListener(al);
+			menu.add(menuItem);
 			
 			menu.addSeparator();
 			

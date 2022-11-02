@@ -1315,7 +1315,7 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().equals("Reconstruction Dialog"))
 		{
-			ReconstructionDialog.createAndShowGUI();
+			ReconstructionDialog.createAndShowGUI(app);
 		}
 		else if (((JMenu)((JPopupMenu) source.getParent()).getInvoker()).getText().equals("Load Recent"))
 		{
